@@ -30,6 +30,10 @@ const router = new Router({
   ]
 })
 
+/**
+ * 路由守卫
+ * 布局检测
+ */
 router.beforeResolve(({ matched }, from, next) => {
   if (matched && matched.length > 0) {
     let [{ components }] = matched

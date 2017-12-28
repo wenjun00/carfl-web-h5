@@ -23,10 +23,9 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { AuthService } from "~/services/auth.service";
 import { Dependencies } from "~/core/decorator";
 import { Mutation } from "vuex-class";
-import AppConfig from "~/config/app.config";
+import { AuthService } from "~/services/auth.service";
 
 @Component({})
 export default class Login extends Vue {

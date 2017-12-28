@@ -2,10 +2,12 @@
   <div class="component data-box">
     <div class="table">
       <el-table ref="table" :data="data" :stripe="stripe">
-        <slot name="table-columns"></slot>
+        <el-table-column type="index" label="序号" width="80">
+        </el-table-column>
+        <slot name="columns"></slot>
       </el-table>
     </div>
-    <div class="page row end-span">
+    <div v-if="data&&data.length>0" class="page row end-span">
       <el-pagination size="small" layout="total, sizes, prev, pager, next, jumper" :total="page.total" @on-change="pageChange" @on-page-size-change="pageChange"></el-pagination>
     </div>
   </div>
@@ -22,14 +24,12 @@ import { PageService } from "~/utils/page.service";
 })
 export default class WorkHeader extends Vue {
   @Prop({ required: true })
-  columns: Array<any>;
-  @Prop({ required: true })
   data: Array<any>;
   @Prop({ default: true })
   stripe: boolean;
   @Prop({ default: () => new PageService() })
   page: PageService;
-  @Emit("pageChange")
+  @Emit("onPageChange")
   pageConfigChange(page) {}
 
   public table;

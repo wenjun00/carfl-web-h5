@@ -1,13 +1,15 @@
+import { requestType } from '~/config/enum.config'
+
 const CONTROLLER = 'auth'
 
-export const authController =  {
+export const authController = {
   /**
    * 用户登录
    */
   login: {
     controller: CONTROLLER,
     action: 'login',
-    type: 'POST'
+    type: requestType.Post
   }
   // /**
   //  * 用户登录

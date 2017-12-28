@@ -1,6 +1,6 @@
 <template>
   <div class="layout col full">
-    <work-header>123</work-header>
+    <work-header></work-header>
     <div class="row row-span">
       <work-menu></work-menu>
       <router-view class="col-span" />
