@@ -1,0 +1,25 @@
+{
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es5",
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "~/*" : ["src/*"]
+    }
+  }
+}
