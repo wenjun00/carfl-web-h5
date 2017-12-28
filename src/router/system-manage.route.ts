@@ -1,6 +1,6 @@
-const OrganizationManage = () => import('../pages/system-manage/organization-manage.vue')
-const RoleManage = () => import('../pages/system-manage/role-manage.vue')
-const UserManage = () => import('../pages/system-manage/user-manage.vue')
+const OrganizationManage = () => import('~/pages/system-manage/organization-manage.vue')
+const RoleManage = () => import('~/pages/system-manage/role-manage.vue')
+const UserManage = () => import('~/pages/system-manage/user-manage.vue')
 
 export default [
   {

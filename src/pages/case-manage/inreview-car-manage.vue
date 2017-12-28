@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section class="page inreview-car-manage">
     <data-form :model="caseImportModel" @onSearch="refreshData">
       <!--<template slot="default">
         <el-form-item label="客户姓名:" prop="name">
@@ -13,7 +13,7 @@
         </el-table-column>
       </template>
     </data-box>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">

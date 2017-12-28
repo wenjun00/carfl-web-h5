@@ -1,4 +1,4 @@
-const TemplateSettings = () => import('../pages/template-manage/template-settings.vue')
+const TemplateSettings = () => import('~/pages/template-manage/template-settings.vue')
 
 export default [
   {

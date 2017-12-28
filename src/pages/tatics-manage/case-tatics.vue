@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <section class="page case-tatics">
     OrganizationManage
-  </div>
+  </section>
 </template>
 
 <script lang="ts">

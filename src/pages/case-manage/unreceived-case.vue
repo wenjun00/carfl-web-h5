@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section class="page unreceived-case">
     <data-form :model="undistriCaseModel" @onSearch="refreshData">
     </data-form>
     <data-box :data="undistributeData" @onPageChange="refreshData">
@@ -8,7 +8,7 @@
         </el-table-column>
       </template>
     </data-box>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">

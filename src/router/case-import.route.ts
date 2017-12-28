@@ -1,5 +1,5 @@
-const CaseImport = () => import('../pages/case-import/case-import.vue')
-const UndistributedCase = () => import('../pages/case-import/undistributed-case.vue')
+const CaseImport = () => import('~/pages/case-import/case-import.vue')
+const UndistributedCase = () => import('~/pages/case-import/undistributed-case.vue')
 
 export default [
   {

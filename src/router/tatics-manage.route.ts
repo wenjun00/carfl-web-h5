@@ -1,4 +1,4 @@
-const CaseTatics = () => import('../pages/tatics-manage/case-tatics.vue')
+const CaseTatics = () => import('~/pages/tatics-manage/case-tatics.vue')
 
 export default [
   {
