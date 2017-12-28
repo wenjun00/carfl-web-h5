@@ -10,24 +10,28 @@ const Login = () => import('~/pages/login.vue')
 
 Vue.use(Router)
 
+// 生成路由配置
+const routes = [
+  {
+    path: '/',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/test1',
+    name: 'test1',
+    component: Test1
+  }, {
+    path: '/test2',
+    name: 'test2',
+    component: Test2
+  },
+  ...systemManageRoute
+]
+
+// 生成路由实体
 const router = new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/test1',
-      name: 'test1',
-      component: Test1
-    }, {
-      path: '/test2',
-      name: 'test2',
-      component: Test2
-    },
-    ...systemManageRoute
-  ]
+  routes
 })
 
 /**

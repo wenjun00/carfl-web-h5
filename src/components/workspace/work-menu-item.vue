@@ -1,12 +1,12 @@
 <template>
-  <div class="component work-menu-item row top-span">
-    <el-submenu index="1">
+  <div class="component work-menu-item">
+    <el-submenu index="1" class="sub-menu">
       <template slot="title">
         <i class="el-icon-location"></i>
-        <span slot="title">{{data.name}}</span>
+        <span slot="title" class="title">{{data.name}}</span>
       </template>
       <template v-if="data.children">
-        <el-menu-item v-for="item in data.children" :key="item.id" :index="item.url">{{item.name}}</el-menu-item>
+        <el-menu-item class="sub-menu-item" v-for="item in data.children" :key="item.id" :index="item.url">{{item.name}}</el-menu-item>
       </template>
     </el-submenu>
   </div>

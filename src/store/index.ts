@@ -14,6 +14,7 @@ const store = new Vuex.Store({
     userRole: '',
     userRescource: '',
     menuCollapse: false,
+    theme: 'theme-default'
   },
   mutations: {
     updateMenuCollapse(state, collapse) {

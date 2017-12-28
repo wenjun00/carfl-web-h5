@@ -3,7 +3,10 @@
     <work-header></work-header>
     <div class="row row-span">
       <work-menu></work-menu>
-      <router-view class="col-span" />
+      <div class="col-span col">
+        <work-tab></work-tab>
+        <router-view class="row-span" />
+      </div>
     </div>
   </div>
 </template>
@@ -13,10 +16,12 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import WorkHeader from "~/components/workspace/work-header.vue";
 import WorkMenu from "~/components/workspace/work-menu.vue";
+import WorkTab from "~/components/workspace/work-tab.vue";
 @Component({
   components: {
     WorkHeader,
-    WorkMenu
+    WorkMenu,
+    WorkTab
   }
 })
 export default class WorkSpaceLayout extends Vue {

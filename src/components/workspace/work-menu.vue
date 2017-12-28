@@ -1,5 +1,5 @@
 <template>
-  <div class="component work-menu row top-span">
+  <div class="component work-menu">
     <el-menu unique-opened router :default-active="$route.fullPath">
       <work-menu-item v-for="item in menuList" :data="item" :key="item.id"></work-menu-item>
     </el-menu>
@@ -30,6 +30,7 @@ export default class WorkMenu extends Vue {
   set menuCollapse(value) {
     this.updateMenuCollapse(value);
   }
+
   /**
    * 菜单列表
    */
@@ -45,7 +46,6 @@ export default class WorkMenu extends Vue {
       x.children = children;
       return x;
     });
-
     return menus;
   }
 }

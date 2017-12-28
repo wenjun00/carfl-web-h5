@@ -1,0 +1,41 @@
+.generateTheme(@theme){
+  // work-header样式
+  .component.work-header{
+    background-color:@COLOR1;
+  }
+  // work-menu样式
+  .component.work-menu{
+    background-color:@COLOR2;
+    // work-menu-item样式
+    .component.work-menu-item{
+      // 一级菜单
+      .sub-menu
+      .el-submenu__title,
+      .el-menu-item{
+        background-color:@COLOR2;
+        color:@COLOR4;
+        &:hover{
+          background-color:@COLOR3;
+        }
+      }
+
+      // 二级菜单样式
+      .sub-menu-item{
+        background-color:@COLOR3;
+        &.is-active{
+          color:red;
+        }
+      }
+    }
+   }
+}
+
+// 主题列表
+#app{
+  // 默认主题
+  &.theme-default{
+    @theme:default;
+    @import "./themes/@{theme}.less";
+    .generateTheme(@theme)
+  }
+}

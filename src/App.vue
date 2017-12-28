@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="[theme]">
     <component :is="$store.state.layout"></component>
   </div>
 </template>
@@ -7,6 +7,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { State } from "vuex-class";
 import DefaultLauout from "~/layouts/default.vue";
 import WorkspaceLayout from "~/layouts/workspace.vue";
 
@@ -17,6 +18,7 @@ import WorkspaceLayout from "~/layouts/workspace.vue";
   }
 })
 export default class App extends Vue {
+  @State theme: string;
   created() {}
 }
 </script>
@@ -26,4 +28,5 @@ export default class App extends Vue {
 @import "assets/styles/layout.less";
 @import "assets/styles/common.less";
 @import "assets/styles/default.less";
+@import "assets/styles/theme.less";
 </style>
