@@ -41,19 +41,10 @@ const routes = [
 
 // 生成路由实体
 const router = new Router({
+  mode: 'history',
   routes
 })
 
-const generateTab = (path) => {
-  let target: any = store.state.userRescource.find((x: any) => x.url === path)
-
-  let tabs = store.state.userRescource
-    .filter((x: any) => x.type === "MENU")
-    .filter((x: any) => x.parentId === target.parentId)
-    .sort((x: any, y: any) => x.sort - y.sort)
-
-  return tabs
-}
 /**
  * 路由守卫
  * 布局检测
@@ -63,13 +54,6 @@ router.beforeResolve(({ matched, path }, from, next) => {
     let [{ components }] = matched
     let component = components.default
     store.commit('updateLayout', component['$layout'] || 'default')
-
-    try {
-      let tabs = generateTab(path)
-      store.commit('updateTabs', tabs)
-    } catch (ex) {
-
-    }
   }
 
   next()
