@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     userToken: '',
     userData: '',
     userRole: '',
-    userRescource: '',
+    userRescource: [],
     menuCollapse: false,
     theme: 'theme-default'
   },
