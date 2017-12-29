@@ -1,6 +1,6 @@
 import { requestType } from '~/config/enum.config'
 
-const CONTROLLER = 'orderController'
+const CONTROLLER = 'order'
 
 export const orderController = {
   /**
