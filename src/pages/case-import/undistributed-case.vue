@@ -54,6 +54,9 @@
         </el-table-column>
       </template>
     </data-box>
+    <el-dialog :visible.sync="dialog.smartAllocate" title="策略分配结果" :center="true">
+      <span>9999</span>
+    </el-dialog>  
   </section>
 </template>
 
@@ -88,6 +91,9 @@
     private undistriCaseModel: any = {
       name: ""
     };
+    private dialog: any = {
+      smartAllocate: false
+    };
 
     /**
      * 初始化
@@ -99,7 +105,7 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.orderService.query().subscribe(data => {
+      this.orderService.query('UNALLOCATED').subscribe(data => {
         this.undistributeData = data.content;
       });
     }
@@ -113,7 +119,7 @@
      * 策略分案
      */
     smartAllocatClick() {
-
+      // this.dialog.smartAllocate =true
     }
   }
 

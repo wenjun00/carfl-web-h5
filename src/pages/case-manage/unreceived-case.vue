@@ -1,10 +1,29 @@
 <template>
   <section class="page unreceived-case">
-    <data-form :model="undistriCaseModel" @onSearch="refreshData">
+    <data-form :model="unReceivedModel" @onSearch="refreshData">
     </data-form>
-    <data-box :data="undistributeData" @onPageChange="refreshData">
+    <data-box :data="unReceivedDataStr" @onPageChange="refreshData">
       <template slot="columns">
-        <el-table-column prop="name" label="姓名">
+        <el-table-column prop="batch" label="批次号" min-width="130">
+        </el-table-column>
+        <el-table-column prop="prinName" label="委托方" min-width="90">
+        </el-table-column>
+        <el-table-column prop="personalName" label="客户姓名" min-width="90">
+        </el-table-column>
+        <el-table-column prop="idCard" label="身份证号" min-width="125">
+        </el-table-column>
+        <el-table-column prop="mobileNo" label="手机号" min-width="80">
+        </el-table-column>
+        <el-table-column prop="overDueDays" label="逾期天数" min-width="80">
+        </el-table-column>
+        <el-table-column prop="overdueAmount " label="案件金额(元)" min-width="100">
+        </el-table-column>
+        <el-table-column prop="operatorTime" label="导入日期" min-width="100">
+        </el-table-column>
+        <el-table-column prop="createDate" label="操作" min-width="60">
+          <template slot-scope="scope">
+            <el-button type="text" @click="checkInfo(scope.row)" v-if="scope.row.state==='ERROR'&&'UNCONFIRM'">查看</el-button>
+          </template>
         </el-table-column>
       </template>
     </data-box>
@@ -21,8 +40,8 @@
     Dependencies
   } from "~/core/decorator";
   import {
-    RoleService
-  } from "~/services/role.service";
+    orderService
+  } from "~/services/order.service";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
 
@@ -34,12 +53,12 @@
     }
   })
   export default class UnreceivedCase extends Vue {
-    @Dependencies(RoleService) private roleService: RoleService;
+    @Dependencies(orderService) private orderService: orderService;
 
     // 角色列表数据集
-    private undistributeData: Array < any > = [];
+    private unReceivedDataStr: Array < any > = [];
     // 角色数据实体
-    private undistriCaseModel: any = {
+    private unReceivedModel: any = {
       name: ""
     };
 
@@ -47,6 +66,7 @@
      * 初始化
      */
     mounted() {
+      console.log('this.orderService', this.orderService)
       this.refreshData()
     }
 
@@ -54,8 +74,8 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.roleService.getAllRoles().subscribe(data => {
-        this.undistributeData = data;
+      this.orderService.query('ASSIGNED').subscribe(data => {
+        this.unReceivedDataStr = data.content;
       });
     }
   }

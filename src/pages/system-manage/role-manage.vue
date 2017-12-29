@@ -19,15 +19,9 @@
 <script lang="ts">
   import Vue from "vue";
   import Component from "vue-class-component";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    RoleService
-  } from "~/services/role.service";
+  import {Layout} from "~/core/decorator";
+  import {Dependencies} from "~/core/decorator";
+  import {RoleService} from "~/services/role.service";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
 
