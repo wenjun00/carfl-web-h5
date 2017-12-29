@@ -1,8 +1,8 @@
-const UnreceivedCase = () => import('../pages/case-manage/unreceived-case.vue')
-const ReclaimedCase = () => import('../pages/case-manage/reclaimed-case.vue')
-const InstorageCarManage = () => import('../pages/case-manage/instorage-car-manage.vue')
-const InreviewCarManage = () => import('../pages/case-manage/inreview-car-manage.vue')
-const InpullCarManage = () => import('../pages/case-manage/inpull-car-manage.vue')
+const UnreceivedCase = () => import('~/pages/case-manage/unreceived-case.vue')
+const ReclaimedCase = () => import('~/pages/case-manage/reclaimed-case.vue')
+const InstorageCarManage = () => import('~/pages/case-manage/instorage-car-manage.vue')
+const InreviewCarManage = () => import('~/pages/case-manage/inreview-car-manage.vue')
+const InpullCarManage = () => import('~/pages/case-manage/inpull-car-manage.vue')
 
 export default [
   {

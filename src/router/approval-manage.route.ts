@@ -1,6 +1,6 @@
-const RemainCaseApproval = () => import('../pages/approval-manage/remain-case-approval.vue')
-const ReturnCaseApproval = () => import('../pages/approval-manage/return-case-approval.vue')
-const StorageApproval = () => import('../pages/approval-manage/storage-approval.vue')
+const RemainCaseApproval = () => import('~/pages/approval-manage/remain-case-approval.vue')
+const ReturnCaseApproval = () => import('~/pages/approval-manage/return-case-approval.vue')
+const StorageApproval = () => import('~/pages/approval-manage/storage-approval.vue')
 
 export default [
   {

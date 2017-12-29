@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <section class="page template-settings">
     OrganizationManage
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
