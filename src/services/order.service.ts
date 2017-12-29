@@ -11,10 +11,25 @@ export class orderService {
    * 查询案件
    */
   @Debounce()
-  query() {
+  query(state) {
     return this.netService.send({
-      server: orderController.query
+      server: orderController.query,
+      data: {
+        "state": state
+      }
     })
   }
+  /**
+   * 待接收案件
+   */
+  queryTeamAssigned() {
+    return this.netService.send({
+      server: orderController.queryTeamAssigned
+    })
+  }
+  /**
+   * 已入库案件
+   */
+  // queryTeamStorage()
 }
 
