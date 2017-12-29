@@ -41,7 +41,7 @@
 
     <!--新增案件弹框-->
     <el-dialog title="新增案件信息" :visible.sync="dialog.createCase" :center="true">
-      <create-case @success="dialog.createCase=false"></create-case>
+      <create-case @success="dialog.createCase=false" @close="dialog.createCase=false"></create-case>
     </el-dialog>
     <!--取消导入-->
     <el-dialog title="取消导入" :visible.sync="dialog.cancelImport" :center="true">
@@ -87,7 +87,7 @@
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
   import CaseExcelImport from "~/pages/case-import/case-excel-import.vue";
-  import CreateCase from "~/pages/case-import/create-case.vue";
+  import CreateCase from "~/components/pages/case-import/create-case.vue";
 
   @Layout("workspace")
   @Component({
