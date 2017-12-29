@@ -42,7 +42,10 @@ const store = new Vuex.Store({
 
   },
   plugins: [
-    createPersistedState(localStorage)
+    createPersistedState({
+      key:'vuex',
+      storage:localStorage
+    })
   ]
 })
 
