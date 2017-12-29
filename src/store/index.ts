@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-
+import { StorageService } from '~/utils/storage.service'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -28,6 +28,7 @@ const store = new Vuex.Store({
     },
     updateUserToken(state, token) {
       state.userToken = token
+      StorageService.setItem('userToken', token)
     },
     updateUserData(state, user) {
       state.userData = user
@@ -37,7 +38,8 @@ const store = new Vuex.Store({
     },
     updateUserResource(state, rescource) {
       state.userRescource = rescource
-    }
+    },
+
   },
   plugins: [
     createPersistedState(localStorage)
