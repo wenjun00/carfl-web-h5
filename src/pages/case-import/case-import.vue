@@ -1,18 +1,74 @@
 <template>
   <section class="page case-import">
-    <data-form :model="caseImportModel" @onSearch="refreshData">
-      <!--<template slot="default">
+    <data-form :model="importModel" @onSearch="refreshData">
+      <template slot="default">
         <el-form-item label="客户姓名:" prop="name">
-          <el-input v-model="roleModel.name"></el-input>
+          <el-input v-model="importModel.name"></el-input>
         </el-form-item>
-      </template>-->
+      </template>
+      <template slot="collapse">
+        <el-button @click="importClick">案件导入</el-button>
+        <el-button @click="createClick">新增案件</el-button>
+        <el-button @click="cancelClick">取消导入</el-button>
+        <el-button @click="confirmClick">确认导入</el-button>
+      </template>
     </data-form>
-    <data-box :data="caseImportData" @onPageChange="refreshData">
+    <data-box :data="importDataSet" @onPageChange="refreshData">
       <template slot="columns">
-        <el-table-column prop="name" label="姓名">
+        <el-table-column prop="batch" label="批次号" min-width="130">
+        </el-table-column>
+        <el-table-column prop="prinName" label="委托方" min-width="90">
+        </el-table-column>
+        <el-table-column prop="personalName" label="客户姓名" min-width="90">
+        </el-table-column>
+        <el-table-column prop="idCard" label="身份证号" min-width="125">
+        </el-table-column>
+        <el-table-column prop="mobileNo" label="手机号" min-width="80">
+        </el-table-column>
+        <el-table-column prop="overDueDays" label="逾期天数" min-width="80">
+        </el-table-column>
+        <el-table-column prop="overdueAmount " label="案件金额(元)" min-width="100">
+        </el-table-column>
+        <el-table-column prop="operatorTime" label="导入日期" min-width="100">
+        </el-table-column>
+        <el-table-column prop="createDate" label="操作" min-width="60">
+          <template slot-scope="scope">
+            <el-button type="text" @click="checkInfo(scope.row)" v-if="scope.row.state==='ERROR'&&'UNCONFIRM'">查看</el-button>
+          </template>
         </el-table-column>
       </template>
     </data-box>
+
+    <!--新增案件弹框-->
+    <el-dialog title="新增案件信息" :visible.sync="dialog.createCase" :center="true">
+      <create-case @success="dialog.createCase=false" @close="dialog.createCase=false"></create-case>
+    </el-dialog>
+    <!--取消导入-->
+    <el-dialog title="取消导入" :visible.sync="dialog.cancelImport" :center="true">
+      <el-row type="flex" justify="center">
+        <el-select v-model="batchNumber">
+          <el-option v-for="v,i in this.batchList" :key="i" :label="v" :value="v">
+          </el-option>
+        </el-select>
+      </el-row>
+      <el-row style="margin-top:20px" type="flex" justify="center">
+        <el-button @click="cancelHandle">取消</el-button>
+        <el-button @click="confirmHandle">确认</el-button>
+      </el-row>
+    </el-dialog>
+    <!--确认导入-->
+    <el-dialog title="确认导入" :visible.sync="dialog.confirmImport" :center="true">
+      <el-row type="flex" justify="center">
+        <el-select v-model="batchNumber">
+          <el-option v-for="v,i in this.batchList" :key="i" :label="v" :value="v">
+          </el-option>
+        </el-select>
+      </el-row>
+      <el-row style="margin-top:20px" type="flex" justify="center">
+        <el-button @click="cancelImportClick">取消</el-button>
+        <el-button @click="confirmImportClick">确认</el-button>
+      </el-row>
+    </el-dialog>
   </section>
 </template>
 
@@ -26,42 +82,177 @@
     Dependencies
   } from "~/core/decorator";
   import {
-    RoleService
-  } from "~/services/role.service";
+    dataImpService
+  } from "~/services/data-imp.service";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
+  import CaseExcelImport from "~/pages/case-import/case-excel-import.vue";
+  import CreateCase from "~/components/pages/case-import/create-case.vue";
 
   @Layout("workspace")
   @Component({
     components: {
       DataForm,
-      DataBox
+      DataBox,
+      CaseExcelImport,
+      CreateCase
     }
   })
   export default class CaseImport extends Vue {
-    @Dependencies(RoleService) private roleService: RoleService;
+    @Dependencies(dataImpService) private dataImpService: dataImpService;
 
     // 角色列表数据集
-    private caseImportData: Array < any > = [];
+    private importDataSet: Array < any > = [];
     // 角色数据实体
-    private caseImportModel: any = {
+    private importModel: any = {
       name: ""
     };
-
+    private dialog: any = {
+      checkUnconfirmInfo: false,
+      checkErrInfo: false,
+      excelImport: false,
+      createCase: false,
+      cancelImport: false,
+      confirmImport: false
+    };
+    // 案件信息数据集
+    private caseData: Array < any > = [];
+    // 错误信息数据集
+    private errData: Array < any > = [];
+    private batchNumber: any = '';
+    private batchList: Array < any > = [];
+    private excelModel: any = {};
+    private createModel: any = {
+      actualName: '',
+      bankCardNumber: '',
+      businessDepartment: '',
+      city: '',
+      closingDate: '',
+      commissionDate: '',
+      companyAddress: '',
+      contractAmount: '',
+      contractNumber: '',
+      engineNumber: '',
+      expireDate: '2017-12-31',
+      expiredPeriod: '',
+      familyAddress: '',
+      frameNumber: '',
+      idNumber: '',
+      licensePlateNumber: '',
+      loanAmount: '',
+      loanPeriod: '',
+      overdueAmount: '',
+      overduePeriod: '',
+      phone: '',
+      province: '',
+      repaymentDate: '',
+      trustee: '',
+      vehicleBrands: '',
+      vehicleColor: '',
+      vehicleModel: '',
+      vehiclePrices: ''
+    };
     /**
      * 初始化
      */
     mounted() {
       this.refreshData()
+      // console.log(this.batchList)
+      this.dataImpService.getAllBatch().subscribe(data => {
+        // this.importDataSet = data.content;
+        console.log('cancelHandle', data)
+        this.batchList = data
+      });
     }
 
     /**
      * 获取刷新数据
      */
     refreshData() {
-      this.roleService.getAllRoles().subscribe(data => {
-        this.caseImportData = data;
+      this.dataImpService.getAllDataImpRecord().subscribe(data => {
+        this.importDataSet = data.content;
       });
+    }
+    /**
+     * 查看案件详情
+     */
+    checkInfo(row) {
+      if (row.state === 'UNCONFIRM') {
+        this.dialog.checkUnconfirmInfo = true
+        this.getCaseData(row.batch)
+      } else if (row.state === 'ERROR') {
+        this.dialog.checkErrInfo = true
+        console.log(this.dialog)
+      }
+    }
+    /**
+     * 获取案件详情
+     */
+    getCaseData(batch) {
+      this.dataImpService.getDataImpByBatch(batch).subscribe(data => {
+        this.caseData = data.content;
+      });
+    }
+    /**
+     * 获取错误信息
+     */
+    getErrData(batch) {
+      this.dataImpService.getErrorMsgByBatch(batch).subscribe(data => {
+        this.caseData = data.content;
+      });
+    }
+    /**
+     * 案件导入弹框
+     */
+    importClick() {
+      this.dialog.excelImport = true
+    }
+    /**
+     * 新增案件弹框
+     */
+    createClick() {
+      this.dialog.createCase = true
+      console.log(this)
+    }
+    /**
+     * 取消导入
+     */
+    cancelClick() {
+      this.dialog.cancelImport = true
+    }
+    /**
+     * 确认导入
+     */
+    confirmClick() {
+      this.dialog.confirmImport = true
+    }
+    cancelHandle() {
+      this.dialog.cancelImport = false
+    }
+    confirmHandle() {
+      this.dataImpService.cancelImp(this.batchNumber).subscribe(data => {
+        // this.importDataSet = data.content;
+        console.log('cancelHandle', data)
+        this.$message({
+          type: 'success',
+          message: '取消导入成功'
+        })
+        this.batchNumber = ''
+      });
+    }
+    confirmImportClick() {
+      this.dataImpService.confirmImp(this.batchNumber).subscribe(data => {
+        // this.importDataSet = data.content;
+        console.log('cancelHandle', data)
+        this.$message({
+          type: 'success',
+          message: '确认导入成功'
+        })
+        this.batchNumber = ''
+      });
+    }
+    cancelImportClick() {
+
     }
   }
 
