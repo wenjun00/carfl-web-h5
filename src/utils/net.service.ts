@@ -65,7 +65,7 @@ export class NetService {
    * @param param0
    */
   send(options: any): Observable<any> {
-    let data
+    let data =  Object.assign({}, options.data)
     let postData
     let getData
 
@@ -74,7 +74,7 @@ export class NetService {
     let headers = this.generateRequestHeader(options.headers)
 
     if (options.page) {
-      data = Object.assign({}, options.data || {}, options.page.getConfig())
+      data = Object.assign(data, options.page.getConfig())
     }
 
     // 判断参数类型
