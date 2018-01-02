@@ -121,7 +121,7 @@
               this.updateUserResource(role.resources);
 
               // 跳转工作区
-              this.$router.push("/approval-manage/storage-approval");
+              this.$router.push("/home/dashborad");
             },
             ({
               msg

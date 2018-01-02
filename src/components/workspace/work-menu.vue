@@ -39,13 +39,17 @@ export default class WorkMenu extends Vue {
       ["MENU", "DIRECTORY"].includes(x.type)
     );
 
-    let menus = rescource.filter(x => x.type === "DIRECTORY").map(x => {
+    let menus = rescource
+    .filter(x => x.type === "DIRECTORY")
+    .map(x => {
       let children = rescource.filter(
         item => item.parentId === x.id && item.type === "MENU"
       );
       x.children = children;
       return x;
-    });
+    })
+    .sort((x: any, y: any) => x.sort - y.sort)
+
     return menus;
   }
 }
