@@ -13,8 +13,6 @@
     </data-form>
     <data-box :data="undistributeData" @onPageChange="refreshData" :page="pageService">
       <template slot="columns">
-        <el-table-column type="index" label="序号" width="40">
-        </el-table-column>
         <el-table-column prop="contractNumber" label="合同编号" min-width="125">
         </el-table-column>
         <el-table-column prop="trustee" label="委托方" min-width="90">
@@ -47,9 +45,9 @@
             <span>{{scope.row.closingDate?dateFormat(scope.row.closingDate ,'yyyy-MM-dd'): ''}}</span>
           </template>-->
         </el-table-column>
-        <el-table-column label="操作" min-width="90">
+        <el-table-column label="案件详情" min-width="90">
           <template slot-scope="scope">
-            <el-button type="text">案件详情</el-button>
+            <el-button type="text">查看</el-button>
           </template>
         </el-table-column>
       </template>

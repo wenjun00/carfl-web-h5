@@ -16,5 +16,33 @@ export class RoleService {
       server: roleController.getAllRoles
     })
   }
+  /**
+   * 新增角色
+   */
+  createRole(name) {
+    return this.netService.send({
+      server: roleController.createRole,
+      data: {
+        name: name
+      }
+    })
+  }
+  /**
+   * 更新角色
+   */
+  updateRole(updateParams) {
+    return this.netService.send({
+      server: roleController.createRole,
+      data: updateParams
+    })
+  }
+  deleteRole(id) {
+    return this.netService.send({
+      server: roleController.deleteRole,
+      append: {
+        id: id
+      }
+    })
+  }
 }
 
