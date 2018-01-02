@@ -34,21 +34,31 @@ export default class WorkHeader extends Vue {
 
   public table: Table;
 
+  /**
+   * 组件初始化
+   */
   created() {
     this.table = <Table>this.$refs["table"];
   }
+
   /**
    * 监听绑定数据变化
    */
   @Watch("data")
   onDataChanged(newVal: string, oldVal: string) {}
 
+  /**
+   * 页码数量变化回调
+   */
   pageSizeChange(value) {
     this.page.pageIndex = 1
     this.page.pageSize = value;
     this.pageConfigChange(this.page);
   }
 
+  /**
+   * 页码位置变化回调
+   */
   pageIndexChange(value) {
     this.page.pageIndex = value;
     this.pageConfigChange(this.page);
