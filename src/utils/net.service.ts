@@ -22,17 +22,25 @@ export class NetService {
     })
   }
 
-  private generateRequestUrl({ controller, action, url }, append): String {
+  private generateRequestUrl({ controller, action, url }, append = [], sort): String {
     // 自定义url优先级最高
     if (url) return url
 
     // 进行url拼接
     if (controller) {
-      return [
+      let targetUrl =  [
         'api',
         controller,
         action,
         ...append].filter(x => x).join('/')
+
+      if(sort){
+        console.log(sort)
+        targetUrl += '?'
+        targetUrl += Object.entries(sort).map(([k,v])=>`sort=${k},${v}`).join('&')
+      }
+
+      return targetUrl
     } else {
       throw new Error('server配置异常,请检查对应server配置')
     }
@@ -61,7 +69,7 @@ export class NetService {
     let postData
     let getData
 
-    let url = this.generateRequestUrl(options.server, options.append)
+    let url = this.generateRequestUrl(options.server, options.append, options.sort)
     let method = options.server.type || 'GET'
     let headers = this.generateRequestHeader(options.headers)
 

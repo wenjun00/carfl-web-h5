@@ -100,9 +100,14 @@ export default class UndistributedCase extends Vue {
      * 获取刷新数据
      */
   refreshData() {
-    this.orderService.query("UNALLOCATED", this.pageService).subscribe(data => {
-      this.undistributeData = data;
-    });
+    this.orderService
+      .query("UNALLOCATED", this.pageService, {
+        trustee: "asc",
+        "vehicle.licensePlateNumber": "asc"
+      })
+      .subscribe(data => {
+        this.undistributeData = data;
+      });
   }
   /**
      * 手动分案
