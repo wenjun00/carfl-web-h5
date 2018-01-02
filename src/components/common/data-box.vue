@@ -7,7 +7,7 @@
         <slot name="columns"></slot>
       </el-table>
     </div>
-    <div v-if="data&&data.length>0" class="page row end-span">
+    <div v-if="page&&data&&data.length>0" class="page row end-span">
       <el-pagination size="small" :layout="page.layout" :total="page.total" :current-page.sync="page.pageIndex" :page-size="page.pageSize" @size-change="pageSizeChange" @current-change="pageIndexChange"></el-pagination>
     </div>
   </div>
