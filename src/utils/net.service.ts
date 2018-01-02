@@ -53,14 +53,17 @@ export class NetService {
    * @param param0
    */
   send(options: any): Observable<any> {
-    let data = Object.assign({}, options.data)
-
-    let postData = {}
-    let getData = {}
+    let data
+    let postData
+    let getData
 
     let url = this.generateRequestUrl(options.server)
     let method = options.server.type || 'GET'
     let headers = this.generateRequestHeader(options.headers)
+
+    if (options.page) {
+      data = Object.assign({}, options.data || {}, options.page.getConfig())
+    }
 
     // 判断参数类型
     getType.indexOf(method) > -1 ? (getData = data) : (postData = data)
@@ -78,20 +81,21 @@ export class NetService {
         headers,
         data: postData,
         params: getData
-      }).then(({ headers, data }) => {
+      }).then(({ data }) => {
         if (options.page && data.content) {
           options.page.update(data)
           data = data.content
         }
 
         observer.next(data)
-      }).catch(({ response }) => {
+      }).catch((ex, { response }) => {
         if (options.loading && options.loading.state) {
           options.loading.state = false
         }
+        console.log(ex)
 
         // 通讯状态检测
-        if(!response){
+        if (!response) {
           let error = {
             msg: "服务端连接异常，请检查服务端状态.",
           }
