@@ -29,13 +29,11 @@ export function Dependencies(target?: any) {
  */
 export function Inject(target?): PropertyDecorator {
   return function (container, key) {
-    console.log(injector.$$factories)
-    console.log(injector.$$factories['netService'])
     try {
       container[key] = injector.get(key);
     }
     catch (ex) {
-      console.log(ex)
+      console.warn(ex)
     }
   }
 }

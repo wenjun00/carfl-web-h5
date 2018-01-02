@@ -10,61 +10,30 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 // import { Prop } from "vue-property-decorator";
-import { State, Mutation } from "vuex-class";
+import { State, Mutation,namespace } from "vuex-class";
+const ModuleState = namespace('workspace', State)
+const ModuleMutation = namespace('workspace', State)
 
 @Component({
   components: {}
 })
 export default class WorkTab extends Vue {
-  @State userRescource;
-  @Mutation updateTabs;
 
-  private currentTabs = [];
-  private currentTab = "";
+  @State userRescource
+  @Mutation updateTabs
+  @ModuleState currentTabs
+  @ModuleState('currentTab') _currentTab
+  @ModuleMutation('updateCurrentTab') updateCurrentTab
 
-  created() {
-    this.$router.beforeResolve((to, from, next) => {
-      // 更新tab
-      if (this.isUpdateTabs(to.path, from.path)) {
-        this.currentTabs = this.generateTabs(to.path);
-      }
-
-      this.currentTab = to.path;
-
-      next();
-    });
+  get currentTab(){
+    console.log(this._currentTab)
+    return this._currentTab
   }
-
-  isUpdateTabs(toPath, fromPath) {
-    if (!toPath || !fromPath) {
-      return true;
-    }
-
-    let toItem = this.userRescource.find(x => x.url === toPath);
-    let fromItem = this.userRescource.find(x => x.url === fromPath);
-
-    if (!toItem || !fromItem) {
-      return true;
-    }
-
-    if (toItem.parentId !== fromItem.parentId) {
-      return true;
-    }
-  }
-
-  generateTabs(path) {
-    let target: any = this.userRescource.find((x: any) => x.url === path);
-
-    let tabs = this.userRescource
-      .filter((x: any) => x.type === "MENU")
-      .filter((x: any) => x.parentId === target.parentId)
-      .sort((x: any, y: any) => x.sort - y.sort);
-
-    return tabs;
+  set currentTab(value){
+    this.updateCurrentTab(value)
   }
 
   changeTab() {
-    console.log(this.$route)
     if (this.$route.path !== this.currentTab) {
       this.$router.push(this.currentTab);
     }

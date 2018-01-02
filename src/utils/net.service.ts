@@ -90,6 +90,17 @@ export class NetService {
           options.loading.state = false
         }
 
+        // 通讯状态检测
+        if(!response){
+          let error = {
+            msg: "服务端连接异常，请检查服务端状态.",
+          }
+          console.error(error.msg)
+          observer.error(error)
+          return
+        }
+
+        // 错误类型检测
         switch (response.status) {
           case 400:
             {

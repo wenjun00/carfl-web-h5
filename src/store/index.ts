@@ -2,9 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import { StorageService } from '~/utils/storage.service'
+import workspace from './modules/workspace'
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  modules: {
+    workspace: workspace,
+  },
   state: {
     layout: 'default',
     resourceData: '',
