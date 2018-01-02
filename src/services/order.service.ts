@@ -28,8 +28,13 @@ export class orderService {
     })
   }
   /**
-   * 已入库案件
+   * 查看案件详情
    */
-  // queryTeamStorage()
+  getOrder(id) {
+    return this.netService.send({
+      server: orderController.getOrder,
+      append: id
+    })
+  }
 }
 

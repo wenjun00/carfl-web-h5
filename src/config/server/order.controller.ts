@@ -18,5 +18,13 @@ export const orderController = {
     controller: CONTROLLER,
     action: 'queryTeamAssigned',
     type: requestType.Get
+  },
+  /**
+   * 按id查看案件详情
+   */
+   getOrder: {
+    controller: CONTROLLER,
+    action: 'getOrder',
+    type: requestType.Get
   }
 }
