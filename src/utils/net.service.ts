@@ -22,13 +22,17 @@ export class NetService {
     })
   }
 
-  private generateRequestUrl({ controller, action, url }): String {
+  private generateRequestUrl({ controller, action, url }, append): String {
     // 自定义url优先级最高
     if (url) return url
 
     // 进行url拼接
     if (controller) {
-      return `api/${controller}${(action ? '/' + action : '')}`
+      return [
+        'api',
+        controller,
+        action,
+        ...append].filter(x => x).join('/')
     } else {
       throw new Error('server配置异常,请检查对应server配置')
     }
@@ -57,7 +61,7 @@ export class NetService {
     let postData
     let getData
 
-    let url = this.generateRequestUrl(options.server)
+    let url = this.generateRequestUrl(options.server, options.append)
     let method = options.server.type || 'GET'
     let headers = this.generateRequestHeader(options.headers)
 
@@ -67,11 +71,6 @@ export class NetService {
 
     // 判断参数类型
     getType.indexOf(method) > -1 ? (getData = data) : (postData = data)
-
-    // 添加append参数
-    if (options.append) {
-      typeof options.append === 'object' ? Object.assign(getData, options.append || {}) : (url += options.append)
-    }
 
     // 创建待观察对象
     var observable = Observable.create((observer) => {
