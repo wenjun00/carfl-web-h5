@@ -8,7 +8,7 @@
       </el-table>
     </div>
     <div v-if="data&&data.length>0" class="page row end-span">
-      <el-pagination size="small" layout="total, sizes, prev, pager, next, jumper" :total="page.total" @on-change="pageChange" @on-page-size-change="pageChange"></el-pagination>
+      <el-pagination size="small" :layout="page.layout" :total="page.total" :current-page.sync="page.pageIndex" :page-size="page.pageSize" @size-change="pageSizeChange" @current-change="pageIndexChange"></el-pagination>
     </div>
   </div>
 </template>
@@ -18,6 +18,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Watch, Prop, Emit } from "vue-property-decorator";
 import { PageService } from "~/utils/page.service";
+import { Table } from "element-ui";
 
 @Component({
   components: {}
@@ -27,25 +28,29 @@ export default class WorkHeader extends Vue {
   data: Array<any>;
   @Prop({ default: true })
   stripe: boolean;
-  @Prop({ default: () => new PageService() })
-  page: PageService;
+  @Prop() page: PageService;
   @Emit("onPageChange")
   pageConfigChange(page) {}
 
-  public table;
+  public table: Table;
 
-  mounted() {
-    this.table = this.$refs["table"];
+  created() {
+    this.table = <Table>this.$refs["table"];
   }
   /**
    * 监听绑定数据变化
    */
   @Watch("data")
-  onDataChanged(newVal: string, oldVal: string) {
-    this.page.total = newVal.length;
+  onDataChanged(newVal: string, oldVal: string) {}
+
+  pageSizeChange(value) {
+    this.page.pageIndex = 1
+    this.page.pageSize = value;
+    this.pageConfigChange(this.page);
   }
 
-  pageChange() {
+  pageIndexChange(value) {
+    this.page.pageIndex = value;
     this.pageConfigChange(this.page);
   }
 }

@@ -11,14 +11,16 @@ export class orderService {
    * 查询案件
    */
   @Debounce()
-  query(state) {
+  query(state, page?) {
     return this.netService.send({
       server: orderController.query,
       data: {
-        "state": state
-      }
+        "state": state,
+      },
+      page: page
     })
   }
+
   /**
    * 待接收案件
    */

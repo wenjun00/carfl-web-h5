@@ -11,7 +11,7 @@
         <el-button @click="smartAllocatClick">策略分案</el-button>
       </template>
     </data-form>
-    <data-box :data="undistributeData" @onPageChange="refreshData">
+    <data-box :data="undistributeData" @onPageChange="refreshData" :page="pageService">
       <template slot="columns">
         <el-table-column prop="contractNumber" label="合同编号" min-width="125">
         </el-table-column>
@@ -54,75 +54,66 @@
     </data-box>
     <el-dialog :visible.sync="dialog.smartAllocate" title="策略分配结果" :center="true">
       <span>9999</span>
-    </el-dialog>  
+    </el-dialog>
   </section>
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    orderService
-  } from "~/services/order.service";
-  import DataForm from "~/components/common/data-form.vue";
-  import DataBox from "~/components/common/data-box.vue";
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Layout } from "~/core/decorator";
+import { Dependencies } from "~/core/decorator";
+import { orderService } from "~/services/order.service";
+import DataForm from "~/components/common/data-form.vue";
+import DataBox from "~/components/common/data-box.vue";
+import { PageService } from "~/utils/page.service";
 
-  @Layout("workspace")
-  @Component({
-    components: {
-      DataForm,
-      DataBox
-    }
-  })
-  export default class UndistributedCase extends Vue {
-    @Dependencies(orderService) private orderService: orderService;
+@Layout("workspace")
+@Component({
+  components: {
+    DataForm,
+    DataBox
+  }
+})
+export default class UndistributedCase extends Vue {
+  @Dependencies(orderService) private orderService: orderService;
+  @Dependencies(PageService) private pageService: PageService;
+  // 角色列表数据集
+  private undistributeData: Array<any> = [];
+  // 角色数据实体
+  private undistriCaseModel: any = {
+    name: ""
+  };
+  private dialog: any = {
+    smartAllocate: false
+  };
 
-    // 角色列表数据集
-    private undistributeData: Array < any > = [];
-    // 角色数据实体
-    private undistriCaseModel: any = {
-      name: ""
-    };
-    private dialog: any = {
-      smartAllocate: false
-    };
-
-    /**
+  /**
      * 初始化
      */
-    mounted() {
-      this.refreshData()
-    }
-    /**
+  mounted() {
+    this.refreshData();
+  }
+  /**
      * 获取刷新数据
      */
-    refreshData() {
-      this.orderService.query('UNALLOCATED').subscribe(data => {
-        this.undistributeData = data.content;
-      });
-    }
-    /**
+  refreshData() {
+    this.orderService.query("UNALLOCATED", this.pageService).subscribe(data => {
+      this.undistributeData = data;
+    });
+  }
+  /**
      * 手动分案
      */
-    manualDistruibute() {
-
-    }
-    /**
+  manualDistruibute() {}
+  /**
      * 策略分案
      */
-    smartAllocatClick() {
-      // this.dialog.smartAllocate =true
-    }
+  smartAllocatClick() {
+    // this.dialog.smartAllocate =true
   }
-
+}
 </script>
 <style>
-
 
 </style>
