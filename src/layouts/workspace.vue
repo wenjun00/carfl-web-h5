@@ -5,7 +5,7 @@
       <work-menu></work-menu>
       <div class="col-span col">
         <work-tab></work-tab>
-        <div>
+        <div class="row-span" style="overflow:auto">
           <keep-alive :include="keepLiveList">
             <router-view class="row-span" />
           </keep-alive>
@@ -35,16 +35,17 @@ const ModuleState = namespace("workspace", State);
 export default class WorkSpaceLayout extends Vue {
   @ModuleState currentTabs;
 
+  /**
+   * 缓存列表
+   */
   get keepLiveList() {
-    let a =  this.currentTabs.filter(x => x.url).map(x => {
+    return  this.currentTabs.filter(x => x.url).map(x => {
       let pathList = x.url.split("/");
       let name = pathList[pathList.length - 1];
       return `-${name}`.replace(/\-(\w)/g, ($0, $1) =>
         $1.toUpperCase()
       )
-    });
-    console.log(a)
-    return a
+    })
   }
 }
 </script>
