@@ -1,6 +1,6 @@
 <template>
   <div class="component work-menu-item">
-    <el-submenu :index="data.id" class="sub-menu">
+    <el-submenu :index="data.url" class="sub-menu">
       <template slot="title">
         <i class="el-icon-location"></i>
         <span slot="title" class="title">{{data.name}}</span>

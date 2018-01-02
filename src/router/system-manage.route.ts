@@ -4,8 +4,8 @@ const UserManage = () => import('~/pages/system-manage/user-manage.vue')
 
 export default [
   {
-    path: '/system-manage/origanization-manage',
-    name: 'origanization-manage',
+    path: '/system-manage/organization-manage',
+    name: 'organization-manage',
     component: OrganizationManage
   },
   {

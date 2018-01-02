@@ -9,10 +9,9 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-// import { Prop } from "vue-property-decorator";
 import { State, Mutation,namespace } from "vuex-class";
 const ModuleState = namespace('workspace', State)
-const ModuleMutation = namespace('workspace', State)
+const ModuleMutation = namespace('workspace', Mutation)
 
 @Component({
   components: {}
@@ -26,16 +25,18 @@ export default class WorkTab extends Vue {
   @ModuleMutation('updateCurrentTab') updateCurrentTab
 
   get currentTab(){
-    console.log(this._currentTab)
     return this._currentTab
   }
+
   set currentTab(value){
-    this.updateCurrentTab(value)
+    if(this.currentTab !== value){
+      this.updateCurrentTab(value)
+    }
   }
 
   changeTab() {
     if (this.$route.path !== this.currentTab) {
-      this.$router.push(this.currentTab);
+      this.$router.push(this.currentTab)
     }
   }
 }

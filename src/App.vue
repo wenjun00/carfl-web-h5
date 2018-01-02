@@ -1,6 +1,6 @@
 <template>
   <div id="app" :class="[theme]">
-    <component :is="$store.state.layout"></component>
+    <component :is="layout"></component>
   </div>
 </template>
 
@@ -19,6 +19,7 @@ import WorkspaceLayout from "~/layouts/workspace.vue";
 })
 export default class App extends Vue {
   @State theme: string;
+  @State layout: string;
   created() {}
 }
 </script>

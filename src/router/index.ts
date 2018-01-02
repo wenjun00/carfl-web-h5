@@ -8,6 +8,7 @@ import caseManageRoute from './case-manage.route'
 import approvalManageRoute from './approval-manage.route'
 import TemplateSettings from './template-manage.route'
 import TaticsManage from './tatics-manage.route'
+import HomeRoute from './home.route'
 
 const Test1 = () => import('~/pages/test1.vue')
 const Test2 = () => import('~/pages/test2.vue')
@@ -36,7 +37,8 @@ const routes = [
   ...caseManageRoute,
   ...approvalManageRoute,
   ...TemplateSettings,
-  ...TaticsManage
+  ...TaticsManage,
+  ...HomeRoute
 ]
 
 // 生成路由实体
@@ -50,12 +52,27 @@ const router = new Router({
  * 路由守卫
  * 布局检测
  */
-router.beforeResolve(({ matched, path }, from, next) => {
-  //  布局检测
-  layoutCheck(matched)
-  // workspaceTab检测
-  tabsCheck(path,from.path)
+// router.beforeResolve(({ matched, path }, from, next) => {
+//   // workspaceTab检测
+//   // tabsCheck(path, from.path)
+//   next()
+//   // setTimeout(() => tabsCheck(path, from.path), 100)
+// })
+
+router.beforeEach(({ matched, path }, from, next) => {
+  // Tab更新检测
+  // tabsCheck(path, from.path)
   next()
+})
+/**
+ * 路由后置守卫
+ * 布局检测
+ */
+router.afterEach((to, from) => {
+  //  布局检测
+  layoutCheck(to.matched)
+  // Tab更新检测
+  tabsCheck(to.path, from.path)
 })
 
 // 布局监测
@@ -63,11 +80,20 @@ function layoutCheck(matched) {
   if (matched && matched.length > 0) {
     let [{ components }] = matched
     let component = components.default
-    store.commit('updateLayout', component['$layout'] || 'default')
+    let targetLayout = component['$layout'] || 'default'
+    if (store.state.layout !== targetLayout) {
+      store.commit('updateLayout', targetLayout )
+    }
+
   }
 }
 
-function tabsCheck(toPath,fromPath) {
+/**
+ * Tabs更新检测
+ * @param toPath
+ * @param fromPath
+ */
+function tabsCheck(toPath, fromPath) {
   if (!toPath || toPath == '/') {
     return
   }
@@ -79,15 +105,14 @@ function tabsCheck(toPath,fromPath) {
     return
   }
 
-  // 更新当前选中tab
-  store.commit('workspace/updateCurrentTab', toItem.url)
-
-  // 生成tabs
-  if (!fromItem || toItem.parentId !== fromItem.parentId) {
+  if (!store.state.workspace.currentTabs || !fromItem) {
     store.dispatch('workspace/updateTabs', toItem.parentId)
   }
+
+  if (toItem.url !== store.state.workspace.currentTab) {
+    // 更新当前选中tab
+    store.commit('workspace/updateCurrentTab', toItem.url)
+  }
 }
-
-
 
 export default router

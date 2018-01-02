@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    asd
   </div>
 </template>
 
@@ -13,9 +13,9 @@ import { Layout } from "~/core/decorator";
 @Component({
   components: {}
 })
-export default class Dashborad extends Vue {}
+export default class Dashboard extends Vue {}
 </script>
 
-<style>
+<style lang="less" scoped>
 
 </style>
