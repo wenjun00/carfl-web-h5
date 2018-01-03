@@ -1,7 +1,7 @@
 <template>
   <section class="page role-manage">
     <data-form :model="roleModel" @onSearch="refreshData">
-      <template slot="default-input">
+      <template slot="default">
         <el-form-item label="客户姓名:" prop="name">
           <el-input v-model="roleModel.name"></el-input>
         </el-form-item>
@@ -38,14 +38,6 @@
         <el-row type="flex" justify="center">
           <el-form-item label="角色名称" prop="name" align="left" :rules="[{ required: true, message: '请输入角色姓名', trigger: 'blur' }]">
             <el-input v-model="addParams.name" :maxlength="20" style="width:178px"></el-input>
-          </el-form-item>
-        </el-row>
-        <el-row type="flex" justify="center">
-          <el-form-item label="状态" prop="status" align="left" :rules="[{ required: true, message: '请选择状态', trigger: 'change' }]">
-            <el-select v-model="addParams.status">
-              <el-option label="启用" value="0"></el-option>
-              <el-option label="停用" value="1"></el-option>
-            </el-select>
           </el-form-item>
         </el-row>
         <el-form-item label-width="0px">
@@ -88,168 +80,154 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import {Layout} from "~/core/decorator";
-  import {Dependencies} from "~/core/decorator";
-  import {RoleService} from "~/services/role.service";
-  import DataForm from "~/components/common/data-form.vue";
-  import DataBox from "~/components/common/data-box.vue";
-  import UserList from "~/components/pages/system-manage/user-list.vue";
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Layout } from "~/core/decorator";
+import { Dependencies } from "~/core/decorator";
+import { RoleService } from "~/services/role.service";
+import DataForm from "~/components/common/data-form.vue";
+import DataBox from "~/components/common/data-box.vue";
+import UserList from "~/components/pages/system-manage/user-list.vue";
 
-  @Layout("workspace")
-  @Component({
-    components: {
-      DataForm,
-      DataBox
-    }
-  })
-  export default class RoleManage extends Vue {
-    @Dependencies(RoleService) private roleService: RoleService;
+@Layout("workspace")
+@Component({
+  components: {
+    DataForm,
+    DataBox,
+    UserList
+  }
+})
+export default class RoleManage extends Vue {
+  @Dependencies(RoleService) private roleService: RoleService;
 
-    // 角色列表数据集
-    private roleDataSet: Array < any > = [];
-    // 角色数据实体
-    private roleModel: any = {
-      name: ""
-    };
-    private dialog: any = {
-      createRoleVisual: false,
-      updateRoleVisual: false
-    };
-    private addParams: any = {
-      name: ""
-    };
-    private updateParams: any = {
-      name: "",
-      status: "",
-      id: "",
-      resources: []
-    };
-    /**
+  // 角色列表数据集
+  private roleDataSet: Array<any> = [];
+  // 角色数据实体
+  private roleModel: any = {
+    name: ""
+  };
+  private dialog: any = {
+    createRoleVisual: false,
+    updateRoleVisual: false,
+    userListVisual: false
+  };
+  private addParams: any = {
+    name: ""
+  };
+  private updateParams: any = {
+    name: "",
+    status: "",
+    id: "",
+    resources: []
+  };
+  /**
      * 初始化
      */
-    mounted() {
-      this.refreshData();
-    }
-    /**
+  mounted() {
+    this.refreshData();
+  }
+  /**
      * 新建角色
      */
-    createRole() {
-      this.dialog.createRoleVisual = true;
-    }
-    /**
+  createRole() {
+    this.dialog.createRoleVisual = true;
+  }
+  /**
      * 确定新增角色
      */
-    addCommit() {
-      let addForm: any = this.$refs["add-form"];
-      addForm.validate(success => {
-        if (!success) {
-          return;
-        }
-        this.roleService.createRole(this.addParams.name).subscribe(data => {
-          this.$message({
-            type: 'success',
-            message: '新增角色成功'
-          })
-          this.dialog.createRoleVisual = false
-          this.refreshData()
+  addCommit() {
+    let addForm: any = this.$refs["add-form"];
+    addForm.validate(success => {
+      if (!success) {
+        return;
+      }
+      this.roleService.createRole(this.addParams.name).subscribe(data => {
+        this.$message({
+          type: "success",
+          message: "新增角色成功"
         });
         this.dialog.createRoleVisual = false;
       });
     });
   }
   /**
-   * 取消新增角色
-   */
+     * 取消新增角色
+     */
   cancelCommit() {
     this.dialog.createRoleVisual = false;
   }
   /**
-   * 打开更新角色弹框
-   */
+     * 打开更新角色弹框
+     */
   updateRoleClick(row) {
-    this.dialog.updateRoleVisual = true
-    this.updateParams.id = row.id
-    this.updateParams.resources = row.resources
-    this.updateParams.name = row.name
-    this.updateParams.status = row.status
+    this.dialog.updateRoleVisual = true;
+    this.updateParams.id = row.id;
+    this.updateParams.resources = row.resources;
   }
   /**
-   * 确定更新角色
-   */
+     * 确定更新角色
+     */
   updateCommit() {
-    console.log(this.$refs["update-form"])
-    let updateForm: any = this.$refs["update-form"];
-    updateForm.validate(success => {
-      if (!success) {
-        return;
-      }
-      this.roleService.updateRole(this.updateParams).subscribe(data => {
-        this.$message({
-          type: 'success',
-          message: "更新成功"
-        })
-        this.dialog.updateRoleVisual = false
-        this.refreshData()
+    console.log(this.updateParams);
+    this.roleService.updateRole(this.updateParams).subscribe(data => {
+      this.$message({
+        type: "success",
+        message: "更新成功"
       });
-    })
+      this.dialog.updateRoleVisual = false;
+    });
   }
   /**
-   * 取消更新角色
-   */
+     * 取消更新角色
+     */
   cancelUpdate() {
     this.dialog.updateRoleVisual = false;
   }
   /**
-   * 删除角色
-   */
+     * 删除角色
+     */
   deleteRole(row) {
-    console.log(row)
-    this.$confirm('您确认要删除吗?', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }).then(() => {
-      this.roleService.deleteRole(row.id).subscribe(data => {
+    this.$confirm("您确认要删除吗?", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning"
+    })
+      .then(() => {
+        this.roleService.deleteRole(row.id).subscribe(data => {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          });
+        });
+      })
+      .catch(() => {
         this.$message({
-          type: 'success',
-          message: '删除成功'
-        })
-        this.refreshData()
+          type: "info",
+          message: "已取消删除"
+        });
       });
-    }).catch(() => {
-      this.$message({
-        type: "info",
-        message: "已取消删除"
-      });
-    });
   }
-  /**
+/**
    * 查看用户列表
    */
   checkUserList(row) {
     this.dialog.userListVisual = true
-    // userList.refreshData(row.id)
     this.$nextTick(() => {
       let userList: any = this.$refs["user-list"];
-      // console.log('this', userList)
       userList.refreshData(row.id)
     })
   }
   /**
-   * 获取刷新数据
-   */
+     * 获取刷新数据
+     */
   refreshData() {
     this.roleService.getAllRoles().subscribe(data => {
       this.roleDataSet = data;
     });
   }
-  }
-
+}
 </script>
 
 <style>
-
 
 </style>
