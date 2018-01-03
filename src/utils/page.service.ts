@@ -15,7 +15,7 @@ export class PageService {
     this.pageSizeOpts = [10, 20, 30, 40]
     this.layout = 'total, sizes, prev, pager, next, jumper'
   }
-
+  
   /**
    * 获取分页配置信息
    */
