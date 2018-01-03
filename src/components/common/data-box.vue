@@ -1,5 +1,5 @@
 <template>
-  <div class="component data-box">
+  <section class="component data-box">
     <div class="table">
       <el-table ref="table" :data="data" :stripe="stripe">
         <el-table-column type="index" label="序号" width="80">
@@ -10,7 +10,7 @@
     <div v-if="page&&data&&data.length>0" class="page row end-span">
       <el-pagination size="small" :layout="page.layout" :total="page.total" :current-page.sync="page.pageIndex" :page-size="page.pageSize" @size-change="pageSizeChange" @current-change="pageIndexChange"></el-pagination>
     </div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">

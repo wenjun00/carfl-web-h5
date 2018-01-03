@@ -5,3 +5,4 @@ export * from './order.controller'; // 案件
 export * from './storage-apply.controller'; // 入库申请接口
 export * from './return-apply.controller'; // 退案申请接口
 export * from './stay-apply.controller'; // 留案申请接口
+export * from './upload-file.controller'; // 留案申请接口
