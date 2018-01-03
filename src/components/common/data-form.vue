@@ -1,17 +1,17 @@
 <template>
   <section class="component data-from">
     <el-form ref="data-form" :inline="true" :rules="rules" label-position="left" :model="model">
-      <div class="row" style="flex-wrap:nowrap">
-        <div style="row middle-span col-span">
+      <div class="row" style="flex-wrap:nowrap;width:100%;">
+        <div class="row middle-span col-span">
           <slot name="default-input"></slot>
-          <slot name="collapse-input"></slot>
+          <slot name="collapse-input" v-if="showCollapseContext"></slot>
           <slot name="default-button"></slot>
-          <slot name="collapse-button"></slot>
+          <slot name="collapse-button" v-if="showCollapseContext"></slot>
           <el-button @click="submitForm" class="button" style="vertical-align:top">搜索</el-button>
           <el-button @click="resetForm" class="button" style="vertical-align:top">重置</el-button>
         </div>
-        <div style="flex-basis:40px">
-          <el-button @click="resetForm" class="button" style="vertical-align:top">11</el-button>
+        <div class="row middle-span center-span" style="flex-basis:40px;" @click="changeCollapseHandle">
+          <svg-icon :class="[showCollapseContext ? 'arrow-up':'arrow-down']"  v-if="showCollapseIcon" iconClass="xiala"></svg-icon>
         </div>
       </div>
     </el-form>
@@ -23,16 +23,19 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Watch, Prop, Emit } from "vue-property-decorator";
 import { Form } from "element-ui";
-
+import SvgIcon from "~/components/common/svg-icon.vue";
 @Component({
-  components: {}
+  components: {
+    SvgIcon
+  }
 })
 export default class DataForm extends Vue {
   @Prop() rules: Array<any>;
   @Prop() model: any;
   @Emit("onSearch")
   onSearch() {}
-
+  private showCollapseIcon: boolean = false;
+  private showCollapseContext: boolean = false;
   /**
    * 提交输入表单
    */
@@ -40,6 +43,11 @@ export default class DataForm extends Vue {
     this.onSearch();
   }
 
+  mounted() {
+    if (this.$slots["collapse-input"] || this.$slots["collapse-button"]) {
+      this.showCollapseIcon = true;
+    }
+  }
   /**
    * 重置输入表单
    */
@@ -47,9 +55,24 @@ export default class DataForm extends Vue {
     let dataForm = <Form>this.$refs["data-form"];
     dataForm.resetFields();
   }
+
+  changeCollapseHandle() {
+    console.log(this.showCollapseContext)
+    this.showCollapseContext = !this.showCollapseContext
+  }
+
+  getCollapseStyle
 }
 </script>
 
 <style lang="less" scoped>
+  .arrow-down {
+    transform: rotate(0deg);
+    transition: transform ease-in 0.2s;
+  }
 
+  .arrow-up {
+    transform: rotate(180deg);
+    transition: transform ease-in 0.2s;
+  }
 </style>

@@ -6,7 +6,7 @@
           <el-input v-model="roleModel.name"></el-input>
         </el-form-item>
       </template>
-      <template slot="button">
+      <template slot="collapse-button">
         <el-button @click="createRole">新增角色</el-button>
       </template>
     </data-form>
@@ -76,147 +76,141 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    RoleService
-  } from "~/services/role.service";
-  import DataForm from "~/components/common/data-form.vue";
-  import DataBox from "~/components/common/data-box.vue";
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Layout } from "~/core/decorator";
+import { Dependencies } from "~/core/decorator";
+import { RoleService } from "~/services/role.service";
+import DataForm from "~/components/common/data-form.vue";
+import DataBox from "~/components/common/data-box.vue";
 
-  @Layout("workspace")
-  @Component({
-    components: {
-      DataForm,
-      DataBox
-    }
-  })
-  export default class RoleManage extends Vue {
-    @Dependencies(RoleService) private roleService: RoleService;
+@Layout("workspace")
+@Component({
+  components: {
+    DataForm,
+    DataBox
+  }
+})
+export default class RoleManage extends Vue {
+  @Dependencies(RoleService) private roleService: RoleService;
 
-    // 角色列表数据集
-    private roleDataSet: Array < any > = [];
-    // 角色数据实体
-    private roleModel: any = {
-      name: ""
-    };
-    private dialog: any = {
-      createRoleVisual: false,
-      updateRoleVisual: false
-    }
-    private addParams: any = {
-      name: ""
-    }
-    private updateParams: any = {
-      name: "",
-      status: "",
-      id: "",
-      resources: []
-    }
-    /**
+  // 角色列表数据集
+  private roleDataSet: Array<any> = [];
+  // 角色数据实体
+  private roleModel: any = {
+    name: ""
+  };
+  private dialog: any = {
+    createRoleVisual: false,
+    updateRoleVisual: false
+  };
+  private addParams: any = {
+    name: ""
+  };
+  private updateParams: any = {
+    name: "",
+    status: "",
+    id: "",
+    resources: []
+  };
+  /**
      * 初始化
      */
-    mounted() {
-      this.refreshData()
-    }
-    /**
+  mounted() {
+    this.refreshData();
+  }
+  /**
      * 新建角色
      */
-    createRole() {
-      this.dialog.createRoleVisual = true
-    }
-    /**
+  createRole() {
+    this.dialog.createRoleVisual = true;
+  }
+  /**
      * 确定新增角色
      */
-    addCommit() {
-      let addForm: any = this.$refs["add-form"];
-      addForm.validate(success => {
-        if (!success) {
-          return;
-        }
-        this.roleService.createRole(this.addParams.name).subscribe(data => {
-          this.$message({
-            type: 'success',
-            message: '新增角色成功'
-          })
-          this.dialog.createRoleVisual = false
+  addCommit() {
+    let addForm: any = this.$refs["add-form"];
+    addForm.validate(success => {
+      if (!success) {
+        return;
+      }
+      this.roleService.createRole(this.addParams.name).subscribe(data => {
+        this.$message({
+          type: "success",
+          message: "新增角色成功"
         });
-      })
-    }
-    /**
+        this.dialog.createRoleVisual = false;
+      });
+    });
+  }
+  /**
      * 取消新增角色
      */
-    cancelCommit() {
-      this.dialog.createRoleVisual = false
-    }
-    /**
+  cancelCommit() {
+    this.dialog.createRoleVisual = false;
+  }
+  /**
      * 打开更新角色弹框
      */
-    updateRoleClick(row) {
-      this.dialog.updateRoleVisual = true
-      this.updateParams.id = row.id
-      this.updateParams.resources = row.resources
-    }
-    /**
+  updateRoleClick(row) {
+    this.dialog.updateRoleVisual = true;
+    this.updateParams.id = row.id;
+    this.updateParams.resources = row.resources;
+  }
+  /**
      * 确定更新角色
      */
-    updateCommit() {
-      console.log(this.updateParams)
-      this.roleService.updateRole(this.updateParams).subscribe(data => {
-        this.$message({
-          type: 'success',
-          message: "更新成功"
-        })
-        this.dialog.updateRoleVisual = false
+  updateCommit() {
+    console.log(this.updateParams);
+    this.roleService.updateRole(this.updateParams).subscribe(data => {
+      this.$message({
+        type: "success",
+        message: "更新成功"
       });
-    }
-    /**
+      this.dialog.updateRoleVisual = false;
+    });
+  }
+  /**
      * 取消更新角色
      */
-    cancelUpdate() {
-      this.dialog.updateRoleVisual = false
-    }
-    /**
+  cancelUpdate() {
+    this.dialog.updateRoleVisual = false;
+  }
+  /**
      * 删除角色
      */
-    deleteRole(row) {
-      this.$confirm('您确认要删除吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+  deleteRole(row) {
+    this.$confirm("您确认要删除吗?", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning"
+    })
+      .then(() => {
         this.roleService.deleteRole(row.id).subscribe(data => {
           this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
+            type: "success",
+            message: "删除成功"
+          });
         });
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
       })
-    }
-    /**
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "已取消删除"
+        });
+      });
+  }
+  /**
      * 获取刷新数据
      */
-    refreshData() {
-      this.roleService.getAllRoles().subscribe(data => {
-        this.roleDataSet = data;
-      });
-    }
+  refreshData() {
+    this.roleService.getAllRoles().subscribe(data => {
+      this.roleDataSet = data;
+    });
   }
-
+}
 </script>
 
 <style>
-
 
 </style>
