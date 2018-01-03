@@ -1,19 +1,19 @@
 <template>
-  <section class="component create-tatics">
-    <el-form ref="create-form" :model="createModel">
+  <section class="component modify-tatics">
+    <el-form ref="modify-form" :model="modifyModel">
       <el-form-item label="策略名称" prop="name">
-        <el-input v-model="createModel.name"></el-input>
+        <el-input v-model="modifyModel.name"></el-input>
       </el-form-item>
       <el-form-item label="优先级" prop="priority">
-        <el-input v-model="createModel.priority"></el-input>
+        <el-input v-model="modifyModel.priority"></el-input>
       </el-form-item>
       <el-form-item label="城市" prop="areaCodes">
-        <el-input v-model="createModel.areaCodes[0]"></el-input>
-        <!--<el-cascader v-for="v,i in createModel.areaCodes" :options="areaOptions" :props="{value:'id',label:'name'}" v-model="createModel.areaCodes[i]"
+        <el-input v-model="modifyModel.areaCodes[0]"></el-input>
+        <!--<el-cascader v-for="v,i in modifyModel.areaCodes" :options="areaOptions" :props="{value:'id',label:'name'}" v-model="modifyModel.areaCodes[i]"
           :key="i" :show-all-levels="false"></el-cascader>-->
       </el-form-item>
       <el-form-item label="机构" prop="organizations">
-        <el-cascader v-for="v,i in createModel.organizations" :options="organizeOptions" :props="{value:'id',label:'name'}" v-model="createModel.organizations[0]"
+        <el-cascader v-for="v,i in modifyModel.organizations" :options="organizeOptions" :props="{value:'id',label:'name'}" v-model="modifyModel.organizations[0]"
           :key="i" :show-all-levels="false" change-on-select></el-cascader>
       </el-form-item>
       <el-row type="flex" justify="center">
@@ -41,10 +41,11 @@
   } from "~/services/organization.service";
 
   @Component({})
-  export default class CreateTatics extends Vue {
+  export default class modifyTatics extends Vue {
     @Dependencies(orderStrategyConfigService) private orderStrategyConfigService: orderStrategyConfigService;
     @Dependencies(organizationService) private organizationService: organizationService;
-    private createModel: any = {
+    private modifyModel: any = {
+      id: '',
       areaCodes: [
         ''
       ],
@@ -56,17 +57,30 @@
     };
     private areaOptions: any = [];
     private organizeOptions: any = [];
+    refresh(modify) {
+      this.modifyModel.id = modify.id
+      this.modifyModel.name = modify.name
+      this.modifyModel.priority = modify.priority
+      this.modifyModel.areaCodes = modify.areaCodes && modify.areaCodes.length ? modify.areaCodes.map(v => v.id) : [
+        ''
+      ]
+      this.modifyModel.organizations = modify.organizations && modify.organizations.length ? modify.organizations.map(
+        v => [v.id]) : [
+        []
+      ]
+    }
     /**
-     * 新增案件提交
+     * 修改案件提交
      */
     submit() {
       let obj: any = {
-        areaCodes: this.createModel.areaCodes,
-        name: this.createModel.name,
-        priority: this.createModel.priority,
-        organizations: this.createModel.organizations.map(v => v[v.length - 1])
+        areaCodes: this.modifyModel.areaCodes,
+        name: this.modifyModel.name,
+        id: this.modifyModel.id,
+        priority: this.modifyModel.priority,
+        organizations: this.modifyModel.organizations.map(v => v[v.length - 1])
       }
-      this.orderStrategyConfigService.createOrderStrategyConfig(obj).subscribe(data => {
+      this.orderStrategyConfigService.modify(obj).subscribe(data => {
         this.$message({
           type: 'success',
           message: '创建成功'

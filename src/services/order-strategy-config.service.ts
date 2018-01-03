@@ -19,9 +19,10 @@ export class orderStrategyConfigService {
   /**
    * 修改策略配置
    */
-  modify() {
+  modify(modifyModel) {
     return this.netService.send({
-      server: orderStrategyConfigController.modify
+      server: orderStrategyConfigController.modify,
+      data: modifyModel
     })
   }
   /**

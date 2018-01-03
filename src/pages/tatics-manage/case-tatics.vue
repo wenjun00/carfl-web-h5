@@ -14,26 +14,29 @@
       <template slot="columns">
         <el-table-column prop="prinName" label="委托方" min-width="90">
         </el-table-column>
-        <el-table-column prop="personalName" label="策略名称" min-width="90">
+        <el-table-column prop="name" label="策略名称" min-width="90">
         </el-table-column>
-        <el-table-column prop="idCard" label="优先级" min-width="125">
+        <el-table-column prop="priority" label="优先级" min-width="125">
         </el-table-column>
-        <el-table-column prop="mobileNo" label="创建时间" min-width="80">
+        <el-table-column prop="createTime" label="创建时间" min-width="80">
         </el-table-column>
         <el-table-column prop="overDueDays" label="创建人" min-width="80">
         </el-table-column>
         <el-table-column prop="createDate" label="操作" min-width="60">
           <template slot-scope="scope">
-            <el-button type="text" @click="pauseClick(scope.row)">暂停</el-button>
-            <el-button type="text" @click="modifyClick(scope.row)">修改</el-button>
-            <el-button type="text" @click="deleteClick(scope.row)">删除</el-button>
+            <!--<el-button type="text" @click="pauseClick(scope)">暂停</el-button>-->
+            <el-button type="text" @click="modifyClick(scope)">修改</el-button>
+            <!--<el-button type="text" @click="deleteClick(scope)">删除</el-button>-->
           </template>
         </el-table-column>
       </template>
     </data-box>
     <!--新建策略-->
     <el-dialog title="新增分案策略" :center="true" :visible.sync="dialog.create" width="40%">
-      <create-tatics ref="create-tatics" @close="dialog.create = false"></create-tatics>
+      <create-tatics ref="create-tatics" @close="dialog.create = false" @success="refreshData"></create-tatics>
+    </el-dialog>
+    <el-dialog title="修改分案策略" :center="true" :visible.sync="dialog.modify" width="40%" @open="modifyOpen">
+      <modify-tatics ref="modify-tatics" @close="dialog.modify = false" @success="refreshData"></modify-tatics>
     </el-dialog>
   </section>
 </template>
@@ -53,11 +56,13 @@
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
   import CreateTatics from "~/components/pages/tatics-manage/create-tatics.vue";
+  import ModifyTatics from "~/components/pages/tatics-manage/Modify-tatics.vue";
 
   @Layout('workspace')
   @Component({
     components: {
       CreateTatics,
+      ModifyTatics,
       DataForm,
       DataBox
     }
@@ -72,8 +77,10 @@
       name: ""
     };
     private dialog: any = {
-      create: false
+      create: false,
+      modify: false
     };
+    private modifyData: any = {};
     /**
      * 初始化
      */
@@ -95,8 +102,15 @@
     /**
      * 修改
      */
-    modifyClick() {
-
+    modifyClick(scope) {
+      this.dialog.modify = true
+      this.modifyData = scope.row
+    }
+    modifyOpen() {
+      this.$nextTick(() => {
+        let ref: any = this.$refs['modify-tatics']
+        ref.refresh(this.modifyData)
+      })
     }
     /**
      * 删除
