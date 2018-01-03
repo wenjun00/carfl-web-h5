@@ -11,7 +11,7 @@
           <el-button @click="resetForm" class="button" style="vertical-align:top">重置</el-button>
         </div>
         <div class="row middle-span center-span" style="flex-basis:40px;" @click="changeCollapseHandle">
-          <svg-icon :class="[showCollapseContext ? 'arrow-up':'arrow-down']"  v-if="showCollapseIcon" iconClass="xiala"></svg-icon>
+          <svg-icon :class="[showCollapseContext ? 'arrow-up':'arrow-down']" v-if="showCollapseIcon" iconClass="xiala"></svg-icon>
         </div>
       </div>
     </el-form>
@@ -36,18 +36,28 @@ export default class DataForm extends Vue {
   onSearch() {}
   private showCollapseIcon: boolean = false;
   private showCollapseContext: boolean = false;
-  /**
-   * 提交输入表单
-   */
-  submitForm() {
-    this.onSearch();
-  }
 
+  /**
+   * 初始化
+   */
   mounted() {
     if (this.$slots["collapse-input"] || this.$slots["collapse-button"]) {
       this.showCollapseIcon = true;
     }
   }
+
+  /**
+   * 提交输入表单
+   */
+  submitForm() {
+    let dataForm = <Form>this.$refs["data-form"];
+    dataForm.validate(success => {
+      if (success) {
+        this.onSearch();
+      }
+    })
+  }
+
   /**
    * 重置输入表单
    */
@@ -56,23 +66,24 @@ export default class DataForm extends Vue {
     dataForm.resetFields();
   }
 
+  /**
+   * 折叠状态改变
+   */
   changeCollapseHandle() {
-    console.log(this.showCollapseContext)
-    this.showCollapseContext = !this.showCollapseContext
+    console.log(this.showCollapseContext);
+    this.showCollapseContext = !this.showCollapseContext;
   }
-
-  getCollapseStyle
 }
 </script>
 
 <style lang="less" scoped>
-  .arrow-down {
-    transform: rotate(0deg);
-    transition: transform ease-in 0.2s;
-  }
+.arrow-down {
+  transform: rotate(0deg);
+  transition: transform ease-in 0.2s;
+}
 
-  .arrow-up {
-    transform: rotate(180deg);
-    transition: transform ease-in 0.2s;
-  }
+.arrow-up {
+  transform: rotate(180deg);
+  transition: transform ease-in 0.2s;
+}
 </style>
