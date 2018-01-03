@@ -6,5 +6,6 @@ export * from './storage-apply.controller'; // 入库申请接口
 export * from './return-apply.controller'; // 退案申请接口
 export * from './stay-apply.controller'; // 留案申请接口
 export * from './operator.controller'; // 系统用户相关接口
+export * from './resource.controller'; // 功能/菜单相关接口
 export * from './order-strategy-config.controller'; // 分案策略配置相关接口
 export * from './organization.controller'; // 机构相关接口
