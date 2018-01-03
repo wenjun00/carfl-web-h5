@@ -1,12 +1,12 @@
 <template>
   <section class="page role-manage">
     <data-form :model="roleModel" @onSearch="refreshData">
-      <template slot="default">
+      <template slot="default-input">
         <el-form-item label="客户姓名:" prop="name">
           <el-input v-model="roleModel.name"></el-input>
         </el-form-item>
       </template>
-      <template slot="button">
+      <template slot="default-button">
         <el-button @click="createRole">新增角色</el-button>
       </template>
     </data-form>
@@ -26,7 +26,7 @@
           <template slot-scope="scope">
             <el-button type="text" @click="updateRoleClick(scope.row)">修改</el-button>
             <el-button type="text">模块权限</el-button>
-            <el-button type="text">用户列表</el-button>
+            <el-button type="text" @click="checkUserList(scope.row)">用户列表</el-button>
             <el-button type="text" @click="deleteRole(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -38,6 +38,14 @@
         <el-row type="flex" justify="center">
           <el-form-item label="角色名称" prop="name" align="left" :rules="[{ required: true, message: '请输入角色姓名', trigger: 'blur' }]">
             <el-input v-model="addParams.name" :maxlength="20" style="width:178px"></el-input>
+          </el-form-item>
+        </el-row>
+        <el-row type="flex" justify="center">
+          <el-form-item label="状态" prop="status" align="left" :rules="[{ required: true, message: '请选择状态', trigger: 'change' }]">
+            <el-select v-model="addParams.status">
+              <el-option label="启用" value="0"></el-option>
+              <el-option label="停用" value="1"></el-option>
+            </el-select>
           </el-form-item>
         </el-row>
         <el-form-item label-width="0px">
@@ -72,6 +80,10 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <!--用户列表弹框-->
+    <el-dialog title="用户列表" :center="true" :visible.sync="dialog.userListVisual" width="40%">
+      <user-list ref="user-list"></user-list>
+    </el-dialog>
   </section>
 </template>
 
@@ -89,12 +101,14 @@
   } from "~/services/role.service";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
+  import UserList from "~/components/pages/system-manage/user-list.vue";
 
   @Layout("workspace")
   @Component({
     components: {
       DataForm,
-      DataBox
+      DataBox,
+      UserList
     }
   })
   export default class RoleManage extends Vue {
@@ -108,10 +122,12 @@
     };
     private dialog: any = {
       createRoleVisual: false,
-      updateRoleVisual: false
+      updateRoleVisual: false,
+      userListVisual: false
     }
     private addParams: any = {
-      name: ""
+      name: "",
+      status: ""
     }
     private updateParams: any = {
       name: "",
@@ -146,6 +162,7 @@
             message: '新增角色成功'
           })
           this.dialog.createRoleVisual = false
+          this.refreshData()
         });
       })
     }
@@ -162,19 +179,28 @@
       this.dialog.updateRoleVisual = true
       this.updateParams.id = row.id
       this.updateParams.resources = row.resources
+      this.updateParams.name = row.name
+      this.updateParams.status = row.status
     }
     /**
      * 确定更新角色
      */
     updateCommit() {
-      console.log(this.updateParams)
-      this.roleService.updateRole(this.updateParams).subscribe(data => {
-        this.$message({
-          type: 'success',
-          message: "更新成功"
-        })
-        this.dialog.updateRoleVisual = false
-      });
+      console.log(this.$refs["update-form"])
+      let updateForm: any = this.$refs["update-form"];
+      updateForm.validate(success => {
+        if (!success) {
+          return;
+        }
+        this.roleService.updateRole(this.updateParams).subscribe(data => {
+          this.$message({
+            type: 'success',
+            message: "更新成功"
+          })
+          this.dialog.updateRoleVisual = false
+          this.refreshData()
+        });
+      })
     }
     /**
      * 取消更新角色
@@ -186,6 +212,7 @@
      * 删除角色
      */
     deleteRole(row) {
+      console.log(row)
       this.$confirm('您确认要删除吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -196,12 +223,25 @@
             type: 'success',
             message: '删除成功'
           })
+          this.refreshData()
         });
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
         })
+      })
+    }
+    /**
+     * 查看用户列表
+     */
+    checkUserList(row) {
+      this.dialog.userListVisual = true
+      // userList.refreshData(row.id)
+      this.$nextTick(() => {
+        let userList: any = this.$refs["user-list"];
+        // console.log('this', userList)
+        userList.refreshData(row.id)
       })
     }
     /**
