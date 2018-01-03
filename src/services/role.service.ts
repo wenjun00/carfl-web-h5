@@ -32,16 +32,14 @@ export class RoleService {
    */
   updateRole(updateParams) {
     return this.netService.send({
-      server: roleController.createRole,
+      server: roleController.updateRole,
       data: updateParams
     })
   }
   deleteRole(id) {
     return this.netService.send({
       server: roleController.deleteRole,
-      append: {
-        id: id
-      }
+      append: id
     })
   }
 }

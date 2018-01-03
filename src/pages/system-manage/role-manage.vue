@@ -25,8 +25,8 @@
         <el-table-column label="操作" min-width="150">
           <template slot-scope="scope">
             <el-button type="text" @click="updateRoleClick(scope.row)">修改</el-button>
-            <el-button type="text">模块权限</el-button>
-            <el-button type="text">用户列表</el-button>
+            <el-button type="text" @click="permissionClick(scope.row)">模块权限</el-button>
+            <el-button type="text" @click="checkUserList(scope.row)">用户列表</el-button>
             <el-button type="text" @click="deleteRole(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -72,6 +72,14 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <!--用户列表弹框-->
+    <el-dialog title="用户列表" :center="true" :visible.sync="dialog.userListVisual" width="60%">
+      <user-list ref="user-list"></user-list>
+    </el-dialog>
+    <!--角色模块权限弹框-->
+    <el-dialog title="角色模块权限" :center="true" :visible.sync="dialog.permissionVisual">
+      <role-permission ref="role-permission" :allData="resourceData" :roleResource="roleResource" @success="dialog.permissionVisual=false"></role-permission>
+    </el-dialog>
   </section>
 </template>
 
@@ -81,18 +89,24 @@ import Component from "vue-class-component";
 import { Layout } from "~/core/decorator";
 import { Dependencies } from "~/core/decorator";
 import { RoleService } from "~/services/role.service";
+import {ResourceService} from "~/services/resource.service";
 import DataForm from "~/components/common/data-form.vue";
 import DataBox from "~/components/common/data-box.vue";
+import UserList from "~/components/pages/system-manage/user-list.vue";
+import RolePermission from "~/components/pages/system-manage/role-permission.vue";
 
 @Layout("workspace")
 @Component({
   components: {
     DataForm,
-    DataBox
+    DataBox,
+    UserList,
+    RolePermission
   }
 })
 export default class RoleManage extends Vue {
   @Dependencies(RoleService) private roleService: RoleService;
+  @Dependencies(ResourceService) private ResourceService: ResourceService;
 
   // 角色列表数据集
   private roleDataSet: Array<any> = [];
@@ -102,7 +116,9 @@ export default class RoleManage extends Vue {
   };
   private dialog: any = {
     createRoleVisual: false,
-    updateRoleVisual: false
+    updateRoleVisual: false,
+    userListVisual: false,
+    permissionVisual: false
   };
   private addParams: any = {
     name: ""
@@ -113,11 +129,14 @@ export default class RoleManage extends Vue {
     id: "",
     resources: []
   };
+  private resourceData: Array<any> = [];
+  private roleResource: Array<any> = [];
   /**
      * 初始化
      */
   mounted() {
     this.refreshData();
+    this.getAllResource();
   }
   /**
      * 新建角色
@@ -199,6 +218,31 @@ export default class RoleManage extends Vue {
           message: "已取消删除"
         });
       });
+  }
+/**
+   * 查看用户列表
+   */
+  checkUserList(row) {
+    this.dialog.userListVisual = true
+    this.$nextTick(() => {
+      let userList: any = this.$refs["user-list"];
+      userList.refreshData(row.id)
+    })
+  }
+  /**
+   * 打开模块权限弹框
+   */
+  permissionClick(row){
+    this.dialog.permissionVisual = true
+    this.$nextTick(() => {
+      let RolePermission: any = this.$refs["role-permission"];
+      RolePermission.getRoleRes(row.resources,row)
+    })
+  }
+  getAllResource(){
+    this.ResourceService.getAllResources().subscribe(data => {
+      this.resourceData = data;
+    });
   }
   /**
      * 获取刷新数据
