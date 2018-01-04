@@ -87,7 +87,8 @@
     </el-dialog>
     <!--案件导入-->
     <el-dialog title="案件导入" :visible.sync="dialog.excelImport" :center="true">
-       <file-upload :limit="1"></file-upload>
+       <file-upload :fileNumberLimit="1" :fileList.sync="importCaseFileList"></file-upload>
+
     </el-dialog>
   </section>
 </template>
@@ -138,36 +139,7 @@ export default class CaseImport extends Vue {
   private batchNumber: any = "";
   private batchList: Array<any> = [];
   private excelModel: any = {};
-  private createModel: any = {
-    actualName: "",
-    bankCardNumber: "",
-    businessDepartment: "",
-    city: "",
-    closingDate: "",
-    commissionDate: "",
-    companyAddress: "",
-    contractAmount: "",
-    contractNumber: "",
-    engineNumber: "",
-    expireDate: "2017-12-31",
-    expiredPeriod: "",
-    familyAddress: "",
-    frameNumber: "",
-    idNumber: "",
-    licensePlateNumber: "",
-    loanAmount: "",
-    loanPeriod: "",
-    overdueAmount: "",
-    overduePeriod: "",
-    phone: "",
-    province: "",
-    repaymentDate: "",
-    trustee: "",
-    vehicleBrands: "",
-    vehicleColor: "",
-    vehicleModel: "",
-    vehiclePrices: ""
-  };
+  private importCaseFileList:Array<any> = []
   /**
      * 初始化
      */
