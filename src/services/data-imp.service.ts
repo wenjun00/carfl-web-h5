@@ -16,6 +16,11 @@ export class dataImpService {
       server: dataImpController.getAllDataImpRecord
     })
   }
+  // getAllDataImpRecord() {
+  //   return this.netService.send({
+  //     server: dataImpController.getAllDataImpRecord
+  //   })
+  // }
   getDataImpByBatch(batch) {
     return this.netService.send({
       server: dataImpController.getDataImpByBatch,

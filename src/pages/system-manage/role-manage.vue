@@ -84,177 +84,206 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { Layout } from "~/core/decorator";
-import { Dependencies } from "~/core/decorator";
-import { RoleService } from "~/services/role.service";
-import {ResourceService} from "~/services/resource.service";
-import DataForm from "~/components/common/data-form.vue";
-import DataBox from "~/components/common/data-box.vue";
-import UserList from "~/components/pages/system-manage/user-list.vue";
-import RolePermission from "~/components/pages/system-manage/role-permission.vue";
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {
+    Layout
+  } from "~/core/decorator";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    State,
+    Mutation,
+    Action,
+    namespace
+  } from "vuex-class";
+  import {
+    RoleService
+  } from "~/services/role.service";
+  import {
+    ResourceService
+  } from "~/services/resource.service";
+  import DataForm from "~/components/common/data-form.vue";
+  import DataBox from "~/components/common/data-box.vue";
+  import UserList from "~/components/pages/system-manage/role-manage/user-list.vue";
+  import RolePermission from "~/components/pages/system-manage/role-manage/role-permission.vue";
 
-@Layout("workspace")
-@Component({
-  components: {
-    DataForm,
-    DataBox,
-    UserList,
-    RolePermission
-  }
-})
-export default class RoleManage extends Vue {
-  @Dependencies(RoleService) private roleService: RoleService;
-  @Dependencies(ResourceService) private ResourceService: ResourceService;
+  const ModuleState = namespace('systemManage', State)
+  const ModuleMutation = namespace('systemManage', Mutation)
+  // const ModuleAction = namespace('systemManage', Action)
 
-  // 角色列表数据集
-  private roleDataSet: Array<any> = [];
-  // 角色数据实体
-  private roleModel: any = {
-    name: ""
-  };
-  private dialog: any = {
-    createRoleVisual: false,
-    updateRoleVisual: false,
-    userListVisual: false,
-    permissionVisual: false
-  };
-  private addParams: any = {
-    name: ""
-  };
-  private updateParams: any = {
-    name: "",
-    status: "",
-    id: "",
-    resources: []
-  };
-  private resourceData: Array<any> = [];
-  private roleResource: Array<any> = [];
-  /**
+  @Layout("workspace")
+  @Component({
+    components: {
+      DataForm,
+      DataBox,
+      UserList,
+      RolePermission
+    }
+  })
+  export default class RoleManage extends Vue {
+    @Dependencies(RoleService) private RoleService: RoleService;
+    @Dependencies(ResourceService) private ResourceService: ResourceService;
+    @ModuleState ('roleList') _roleList
+    @ModuleMutation ('updateRoleList') updateRoleList
+    // @ModuleAction getAllRoleData
+    // 角色列表数据集
+    private roleDataSet: Array < any > = [];
+    // 角色数据实体
+    private roleModel: any = {
+      name: ""
+    };
+    private dialog: any = {
+      createRoleVisual: false,
+      updateRoleVisual: false,
+      userListVisual: false,
+      permissionVisual: false
+    };
+    private addParams: any = {
+      name: ""
+    };
+    private updateParams: any = {
+      name: "",
+      status: "",
+      id: "",
+      resources: []
+    };
+    private resourceData: Array < any > = [];
+    private roleResource: Array < any > = [];
+    /**
      * 初始化
      */
-  mounted() {
-    this.refreshData();
-    this.getAllResource();
-  }
-  /**
+    mounted() {
+      this.refreshData();
+      this.getAllResource();
+    }
+    /**
      * 新建角色
      */
-  createRole() {
-    this.dialog.createRoleVisual = true;
-  }
-  /**
+    createRole() {
+      this.dialog.createRoleVisual = true;
+    }
+    /**
      * 确定新增角色
      */
-  addCommit() {
-    let addForm: any = this.$refs["add-form"];
-    addForm.validate(success => {
-      if (!success) {
-        return;
-      }
-      this.roleService.createRole(this.addParams.name).subscribe(data => {
-        this.$message({
-          type: "success",
-          message: "新增角色成功"
+    addCommit() {
+      let addForm: any = this.$refs["add-form"];
+      addForm.validate(success => {
+        if (!success) {
+          return;
+        }
+        this.RoleService.createRole(this.addParams.name).subscribe(data => {
+          this.$message({
+            type: "success",
+            message: "新增角色成功"
+          });
+          this.dialog.createRoleVisual = false;
         });
-        this.dialog.createRoleVisual = false;
       });
-    });
-  }
-  /**
+    }
+    /**
      * 取消新增角色
      */
-  cancelCommit() {
-    this.dialog.createRoleVisual = false;
-  }
-  /**
+    cancelCommit() {
+      this.dialog.createRoleVisual = false;
+    }
+    /**
      * 打开更新角色弹框
      */
-  updateRoleClick(row) {
-    this.dialog.updateRoleVisual = true;
-    this.updateParams.id = row.id;
-    this.updateParams.resources = row.resources;
-  }
-  /**
+    updateRoleClick(row) {
+      this.dialog.updateRoleVisual = true;
+      this.updateParams.id = row.id;
+      this.updateParams.resources = row.resources;
+    }
+    /**
      * 确定更新角色
      */
-  updateCommit() {
-    console.log(this.updateParams);
-    this.roleService.updateRole(this.updateParams).subscribe(data => {
-      this.$message({
-        type: "success",
-        message: "更新成功"
+    updateCommit() {
+      console.log(this.updateParams);
+      this.RoleService.updateRole(this.updateParams).subscribe(data => {
+        this.$message({
+          type: "success",
+          message: "更新成功"
+        });
+        this.dialog.updateRoleVisual = false;
       });
-      this.dialog.updateRoleVisual = false;
-    });
-  }
-  /**
+    }
+    /**
      * 取消更新角色
      */
-  cancelUpdate() {
-    this.dialog.updateRoleVisual = false;
-  }
-  /**
+    cancelUpdate() {
+      this.dialog.updateRoleVisual = false;
+    }
+    /**
      * 删除角色
      */
-  deleteRole(row) {
-    this.$confirm("您确认要删除吗?", "提示", {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
-      type: "warning"
-    })
-      .then(() => {
-        this.roleService.deleteRole(row.id).subscribe(data => {
+    deleteRole(row) {
+      this.$confirm("您确认要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.RoleService.deleteRole(row.id).subscribe(data => {
           this.$message({
             type: "success",
             message: "删除成功"
           });
         });
-      })
-      .catch(() => {
+      }).catch(() => {
         this.$message({
           type: "info",
           message: "已取消删除"
         });
       });
-  }
-/**
-   * 查看用户列表
-   */
-  checkUserList(row) {
-    this.dialog.userListVisual = true
-    this.$nextTick(() => {
-      let userList: any = this.$refs["user-list"];
-      userList.refreshData(row.id)
-    })
-  }
-  /**
-   * 打开模块权限弹框
-   */
-  permissionClick(row){
-    this.dialog.permissionVisual = true
-    this.$nextTick(() => {
-      let RolePermission: any = this.$refs["role-permission"];
-      RolePermission.getRoleRes(row.resources,row)
-    })
-  }
-  getAllResource(){
-    this.ResourceService.getAllResources().subscribe(data => {
-      this.resourceData = data;
-    });
-  }
-  /**
+    }
+    /**
+     * 查看用户列表
+     */
+    checkUserList(row) {
+      this.dialog.userListVisual = true
+      this.$nextTick(() => {
+        let userList: any = this.$refs["user-list"];
+        userList.refreshData(row.id)
+      })
+    }
+    /**
+     * 打开模块权限弹框
+     */
+    permissionClick(row) {
+      this.dialog.permissionVisual = true
+      this.$nextTick(() => {
+        let RolePermission: any = this.$refs["role-permission"];
+        RolePermission.getRoleRes(row.resources, row)
+      })
+    }
+    getAllResource() {
+      this.ResourceService.getAllResources().subscribe(data => {
+        this.resourceData = data;
+      });
+    }
+    /**
      * 获取刷新数据
      */
-  refreshData() {
-    this.roleService.getAllRoles().subscribe(data => {
-      this.roleDataSet = data;
-    });
+    refreshData() {
+      this.RoleService.getAllRoles().subscribe(data => {
+        this.roleDataSet = data;
+        this.updateRoleList(data)
+      });
+      // console.log('refff', this.roleList)
+      // this.getAllRoleData()
+    }
+    get roleList() {
+      return this._roleList
+    }
+    set roleList(value){
+      this.updateRoleList(value)
+    }
   }
-}
+
 </script>
 
 <style>
+
 
 </style>
