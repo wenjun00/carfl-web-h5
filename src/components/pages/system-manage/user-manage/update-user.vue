@@ -85,7 +85,7 @@
       username: "",
       fullName: "",
       organization: "",
-      password: "888888",
+      password: "",
       role: "",
       id: "",
       state: ""

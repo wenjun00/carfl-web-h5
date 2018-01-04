@@ -104,6 +104,9 @@
   import {
     ResourceService
   } from "~/services/resource.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
   import UserList from "~/components/pages/system-manage/role-manage/user-list.vue";
@@ -123,10 +126,11 @@
     }
   })
   export default class RoleManage extends Vue {
+    @Dependencies(PageService) private pageService: PageService;
     @Dependencies(RoleService) private RoleService: RoleService;
     @Dependencies(ResourceService) private ResourceService: ResourceService;
-    @ModuleState ('roleList') _roleList
-    @ModuleMutation ('updateRoleList') updateRoleList
+    @ModuleState('roleList') _roleList
+    @ModuleMutation('updateRoleList') updateRoleList
     // @ModuleAction getAllRoleData
     // 角色列表数据集
     private roleDataSet: Array < any > = [];
@@ -276,7 +280,7 @@
     get roleList() {
       return this._roleList
     }
-    set roleList(value){
+    set roleList(value) {
       this.updateRoleList(value)
     }
   }
