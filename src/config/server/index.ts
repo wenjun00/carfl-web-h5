@@ -9,3 +9,4 @@ export * from './operator.controller'; // 系统用户相关接口
 export * from './resource.controller'; // 功能/菜单相关接口
 export * from './order-strategy-config.controller'; // 分案策略配置相关接口
 export * from './organization.controller'; // 机构相关接口
+export * from './import-order-config.controller'; // Excel模板配置相关接口
