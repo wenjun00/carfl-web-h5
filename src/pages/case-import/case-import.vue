@@ -15,11 +15,11 @@
     </data-form>
     <data-box :data="importDataSet" @onPageChange="refreshData" :page="pageService">
       <template slot="columns">
-        <el-table-column prop="contractNumber" label="合同编号" min-width="125">
+        <el-table-column prop="batch" label="批次号" min-width="200">
         </el-table-column>
         <el-table-column prop="trustee" label="委托方" min-width="90">
         </el-table-column>
-        <el-table-column prop="actualName" label="车主姓名" min-width="80">
+        <el-table-column prop="fullName" label="车主姓名" min-width="80">
         </el-table-column>
         <el-table-column prop="phone" label="车主电话" min-width="90">
         </el-table-column>
@@ -42,7 +42,7 @@
             <span>{{scope.row.commissionDate?dateFormat(scope.row.commissionDate ,'yyyy-MM-dd'): ''}}</span>
           </template>-->
         </el-table-column>
-        <el-table-column prop="closingDate " label="结案日期" min-width="90">
+        <el-table-column prop="operatorTime" label="结案日期" min-width="90">
           <!--<template slot-scope="scope">
             <span>{{scope.row.closingDate?dateFormat(scope.row.closingDate ,'yyyy-MM-dd'): ''}}</span>
           </template>-->
@@ -87,8 +87,7 @@
     </el-dialog>
     <!--案件导入-->
     <el-dialog title="案件导入" :visible.sync="dialog.excelImport" :center="true">
-      <file-upload :fileNumberLimit="1" :fileList.sync="importCaseFileList"></file-upload>
-
+      <case-excel-import @close="dialog.excelImport=false" @success="successImport" ref="excel-import"></case-excel-import>
     </el-dialog>
   </section>
 </template>
@@ -109,7 +108,6 @@
   import DataBox from "~/components/common/data-box.vue";
   import CaseExcelImport from "~/pages/case-import/case-excel-import.vue";
   import CreateCase from "~/components/pages/case-import/create-case.vue";
-  import FileUpload from '~/components/common/file-upload.vue'
   import {
     PageService
   } from "~/utils/page.service";
@@ -119,7 +117,6 @@
     components: {
       DataForm,
       DataBox,
-      FileUpload,
       CaseExcelImport,
       CreateCase
     }
@@ -149,7 +146,6 @@
     private batchNumber: any = "";
     private batchList: Array < any > = [];
     private excelModel: any = {};
-    private importCaseFileList: Array < any > = []
     /**
      * 初始化
      */
@@ -205,6 +201,10 @@
      */
     importClick() {
       this.dialog.excelImport = true;
+      this.$nextTick(() => {
+        let excelImport: any = this.$refs['excel-import']
+        excelImport.refreshData()
+      })
     }
     /**
      * 新增案件弹框
@@ -253,6 +253,9 @@
     }
     cancelImportClick() {
       this.dialog.confirmImport = false;
+    }
+    successImport() {
+      this.refreshData()
     }
   }
 
