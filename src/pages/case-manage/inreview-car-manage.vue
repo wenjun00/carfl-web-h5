@@ -7,7 +7,7 @@
         </el-form-item>
       </template>-->
     </data-form>
-    <data-box :data="reviewDataSet" @onPageChange="refreshData">
+    <data-box :data="reviewDataSet" @onPageChange="refreshData" :page="pageService">
       <template slot="columns">
         <el-table-column prop="contractNumber" label="合同编号" min-width="125">
         </el-table-column>
@@ -65,7 +65,9 @@
   } from "~/services/storage-apply.service";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
-
+  import {
+    PageService
+  } from "~/utils/page.service";
   @Layout("workspace")
   @Component({
     components: {
@@ -75,6 +77,7 @@
   })
   export default class InreviewCarManage extends Vue {
     @Dependencies(storageApplyService) private storageApplyService: storageApplyService;
+    @Dependencies(PageService) private pageService: PageService;
 
     // 角色列表数据集
     private reviewDataSet: Array < any > = [];
@@ -94,8 +97,8 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.storageApplyService.getAllStorageApply().subscribe(data => {
-        this.reviewDataSet = data.content;
+      this.storageApplyService.getAllStorageApply(this.reviewModel, this.pageService).subscribe(data => {
+        this.reviewDataSet = data;
       });
     }
   }

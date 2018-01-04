@@ -11,9 +11,11 @@ export class stayApplyService {
    * 留案申请记录查询
    */
   @Debounce()
-  getAllStayApply() {
+  getAllStayApply(data, page) {
     return this.netService.send({
-      server: stayApplyController.getAllStayApply
+      server: stayApplyController.getAllStayApply,
+      data: data,
+      page: page
     })
   }
 }
