@@ -17,5 +17,18 @@ export class operatorService {
       append: id
     })
   }
+  orgSimpleListByOrg() {
+    return this.netService.send({
+      server: operatorController.orgSimpleListByOrg,
+      append: '713182982016163840'
+    })
+  }
+  createOperator(createParams) {
+    return this.netService.send({
+      server: operatorController.createOperator,
+      data: createParams
+    })
+  }
+
 }
 
