@@ -16,5 +16,31 @@ export class organizationService {
       server: organizationController.getAllOrganizations
     })
   }
+  /**
+   * 创建机构
+   */  
+  createOrganization(create) {
+    return this.netService.send({
+      server: organizationController.createOrganization,
+      data: create
+    })
+  }
+  /**
+   * 修改机构
+   */  
+  updateOrganization(modify) {
+    return this.netService.send({
+      server: organizationController.updateOrganization,
+      data: modify
+    })
+  }
+  /**
+   * 删除机构
+   */  
+  deleteOrganization(id) {
+    return this.netService.send({
+      server: organizationController.deleteOrganization,
+      append: id
+    })
+  }
 }
-

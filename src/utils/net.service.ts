@@ -22,22 +22,22 @@ export class NetService {
     })
   }
 
-  private generateRequestUrl({ controller, action, url }, append = [], sort): String {
+  public static generateRequestUrl({ controller, action, url }: { controller: string, action: string, url?: string }, append = [], sort?): String {
     // 自定义url优先级最高
     if (url) return url
 
     // 进行url拼接
     if (controller) {
-      let targetUrl =  [
+      let targetUrl = [
         'api',
         controller,
         action,
         ...append].filter(x => x).join('/')
 
-      if(sort){
+      if (sort) {
         console.log(sort)
         targetUrl += '?'
-        targetUrl += Object.entries(sort).map(([k,v])=>`sort=${k},${v}`).join('&')
+        targetUrl += Object.entries(sort).map(([k, v]) => `sort=${k},${v}`).join('&')
       }
 
       return targetUrl
@@ -65,11 +65,11 @@ export class NetService {
    * @param param0
    */
   send(options: any): Observable<any> {
-    let data =  Object.assign({}, options.data)
+    let data = Object.assign({}, options.data)
     let postData
     let getData
 
-    let url = this.generateRequestUrl(options.server, options.append, options.sort)
+    let url = NetService.generateRequestUrl(options.server, options.append, options.sort)
     let method = options.server.type || 'GET'
     let headers = this.generateRequestHeader(options.headers)
 
