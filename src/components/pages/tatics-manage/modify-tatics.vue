@@ -8,13 +8,29 @@
         <el-input v-model="modifyModel.priority"></el-input>
       </el-form-item>
       <el-form-item label="城市" prop="areaCodes">
-        <el-input v-model="modifyModel.areaCodes[0]"></el-input>
+        <el-row v-for="(v,i) in modifyModel.areaCodes" :key="i">
+          <el-input v-model="modifyModel.areaCodes[i]"></el-input>
+          <el-button @click="modifyModel.areaCodes.splice(i,1)" v-if="modifyModel.areaCodes.length!==1">
+            <svg-icon iconClass="shanchu"></svg-icon>
+          </el-button>
+          <el-button @click="modifyModel.areaCodes.push('')" v-if="i === modifyModel.areaCodes.length-1">
+            <svg-icon iconClass="zengjia"></svg-icon>
+          </el-button>
+        </el-row>
         <!--<el-cascader v-for="v,i in modifyModel.areaCodes" :options="areaOptions" :props="{value:'id',label:'name'}" v-model="modifyModel.areaCodes[i]"
           :key="i" :show-all-levels="false"></el-cascader>-->
       </el-form-item>
       <el-form-item label="机构" prop="organizations">
-        <el-cascader v-for="v,i in modifyModel.organizations" :options="organizeOptions" :props="{value:'id',label:'name'}" v-model="modifyModel.organizations[0]"
-          :key="i" :show-all-levels="false" change-on-select></el-cascader>
+        <el-row v-for="(v,i) in modifyModel.organizations" :key="i">
+          <el-cascader :options="organizeOptions" :props="{value:'id',label:'name'}" v-model="modifyModel.organizations[i]" :show-all-levels="false"
+            change-on-select></el-cascader>
+          <el-button @click="modifyModel.organizations.splice(i,1)" v-if="modifyModel.organizations.length!==1">
+            <svg-icon iconClass="shanchu"></svg-icon>
+          </el-button>
+          <el-button @click="modifyModel.organizations.push([])" v-if="i === modifyModel.organizations.length-1">
+            <svg-icon iconClass="zengjia"></svg-icon>
+          </el-button>
+        </el-row>
       </el-form-item>
       <el-row type="flex" justify="center">
         <el-button @click="close">取消</el-button>
@@ -29,6 +45,7 @@
     Layout
   } from "~/core/decorator";
   import Component from "vue-class-component";
+  import SvgIcon from "~/components/common/svg-icon.vue";
   import {
     Dependencies
   } from "~/core/decorator";
@@ -40,7 +57,11 @@
     organizationService
   } from "~/services/organization.service";
 
-  @Component({})
+  @Component({
+    components: {
+      SvgIcon
+    }
+  })
   export default class modifyTatics extends Vue {
     @Dependencies(orderStrategyConfigService) private orderStrategyConfigService: orderStrategyConfigService;
     @Dependencies(organizationService) private organizationService: organizationService;
@@ -83,7 +104,7 @@
       this.orderStrategyConfigService.modify(obj).subscribe(data => {
         this.$message({
           type: 'success',
-          message: '创建成功'
+          message: '修改成功'
         })
         this.close()
         this.$emit('success')

@@ -11,9 +11,11 @@ export class orderStrategyConfigService {
    * 策略分案配置查询
    */
   @Debounce()
-  query() {
+  query(data, page) {
     return this.netService.send({
-      server: orderStrategyConfigController.query
+      server: orderStrategyConfigController.query,
+      data: data,
+      page: page
     })
   }
   /**

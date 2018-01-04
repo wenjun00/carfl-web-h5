@@ -1,19 +1,17 @@
 <template>
   <section class="page case-tatics">
     <data-form :model="caseTaticsModel" @onSearch="refreshData">
-      <!--<template slot="default">
-        <el-form-item label="客户姓名:" prop="name">
-          <el-input v-model="roleModel.name"></el-input>
+      <template slot="default-input">
+        <el-form-item label="策略名称" prop="name">
+          <el-input v-model="caseTaticsModel.name"></el-input>
         </el-form-item>
-      </template>-->
+      </template>
       <template slot="default-button">
         <el-button @click="creatClick">新建分案策略</el-button>
       </template>
     </data-form>
-    <data-box :data="caseTaticsDataSet" @onPageChange="refreshData">
+    <data-box :data="caseTaticsDataSet" @onPageChange="refreshData" :page="pageService">
       <template slot="columns">
-        <el-table-column prop="prinName" label="委托方" min-width="90">
-        </el-table-column>
         <el-table-column prop="name" label="策略名称" min-width="90">
         </el-table-column>
         <el-table-column prop="priority" label="优先级" min-width="125">
@@ -57,7 +55,9 @@
   import DataBox from "~/components/common/data-box.vue";
   import CreateTatics from "~/components/pages/tatics-manage/create-tatics.vue";
   import ModifyTatics from "~/components/pages/tatics-manage/Modify-tatics.vue";
-
+  import {
+    PageService
+  } from "~/utils/page.service";
   @Layout('workspace')
   @Component({
     components: {
@@ -69,6 +69,7 @@
   })
   export default class CaseTatics extends Vue {
     @Dependencies(orderStrategyConfigService) private orderStrategyConfigService: orderStrategyConfigService;
+    @Dependencies(PageService) private pageService: PageService;
 
     // 列表数据集
     private caseTaticsDataSet: Array < any > = [];
@@ -122,8 +123,8 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.orderStrategyConfigService.query().subscribe(data => {
-        this.caseTaticsDataSet = data.content;
+      this.orderStrategyConfigService.query(this.caseTaticsModel, this.pageService).subscribe(data => {
+        this.caseTaticsDataSet = data;
       });
       console.log('aaa')
     }

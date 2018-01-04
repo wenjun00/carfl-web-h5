@@ -2,7 +2,8 @@
   <section class="page user-manage">
     <el-row type="flex">
       <el-col :span="8" style="flex-basis:250px;border:1px solid #e4e4e4;min-height:595px">
-        <el-tree align="left" :data="orgData" highlight-current node-key="id" ref="tree" :props="defaultProps" @node-click="getCheckedNodes"></el-tree>
+        <el-tree align="left" :data="orgData" highlight-current default-expand-all node-key="id" ref="tree" :props="defaultProps"
+          @node-click="getCheckedNodes"></el-tree>
       </el-col>
       <el-col :span="16">
         <data-form :model="userModel" @onSearch="refreshData">
@@ -32,15 +33,18 @@
                 <el-button type="text" @click="allocateClick(scope.row)">分配角色</el-button>
                 <el-button type="text" @click="updateUserClick(scope.row)">修改</el-button>
                 <el-button type="text" @click="resetCodeListClick(scope.row)">重置密码</el-button>
-                <el-button type="text" @click="deviceManageClick(scope.row)">设备管理</el-button>
               </template>
             </el-table-column>
           </template>
         </data-box>
       </el-col>
     </el-row>
+    <!--新增用户-->
     <el-dialog title="新增用户" :center="true" :visible.sync="dialog.createUserVisual" width="30%">
-      <create-user @success="dialog.createUserVisual=false" :orgId="orgId"></create-user>
+      <create-user @close="dialog.createUserVisual=false" :orgId="orgId" :roleList="roleDataList"></create-user>
+    </el-dialog>
+    <el-dialog title="修改用户" :center="true" :visible.sync="dialog.updateUserVisual" width="30%">
+      <update-user ref="update-user" :roleList="roleDataList" @close="dialog.updateUserVisual=false"></update-user>
     </el-dialog>
   </section>
 </template>
@@ -60,21 +64,27 @@
   import {
     operatorService
   } from "~/services/operator.service";
+  import {
+    RoleService
+  } from "~/services/role.service";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
-  import CreateUser from "~/components/pages/system-manage/create-user.vue";
+  import CreateUser from "~/components/pages/system-manage/user-manage/create-user.vue";
+  import UpdateUser from "~/components/pages/system-manage/user-manage/update-user.vue";
 
   @Layout('workspace')
   @Component({
     components: {
       DataForm,
       DataBox,
-      CreateUser
+      CreateUser,
+      UpdateUser
     }
   })
   export default class UserManage extends Vue {
     @Dependencies(organizationService) private organizationService: organizationService;
     @Dependencies(operatorService) private operatorService: operatorService;
+    @Dependencies(RoleService) private RoleService: RoleService;
     private userDataSet: Array < any > = [];
     private userModel: any = {
       name: ""
@@ -85,16 +95,18 @@
       label: 'label'
     };
     private dialog: any = {
-      createUserVisual: false
+      createUserVisual: false,
+      updateUserVisual: false
     }
-    private orgId: any;
+    private orgId: string = "";
+    private roleDataList: Array < any > = [];
     getCheckedNodes(item) {
-      console.log('713182982016163840')
       this.operatorService.orgSimpleListByOrg().subscribe(data => {
         this.userDataSet = data
         console.log(data)
       });
       this.orgId = item.id
+      console.log('713182982016163840', this.orgId)
     }
     /**
      * 获取组织机构树
@@ -145,8 +157,12 @@
     /**
      * 修改角色
      */
-    updateUserClick() {
-
+    updateUserClick(row) {
+      this.dialog.updateUserVisual = true
+      this.$nextTick(() => {
+        let updateUser: any = this.$refs['update-user']
+        updateUser.refreshData(row)
+      })
     }
     /**
      * 新增角色
@@ -156,6 +172,10 @@
     }
     mounted() {
       this.getAllOrgTree()
+      this.RoleService.getAllRoles().subscribe(data => {
+        this.roleDataList = data;
+        // this.updateRoleList(data)
+      });
     }
     refreshData() {
 

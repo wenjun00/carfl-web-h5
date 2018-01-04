@@ -12,6 +12,7 @@ export class RoleService {
    */
   @Debounce()
   getAllRoles() {
+    // console.log(this.netService)
     return this.netService.send({
       server: roleController.getAllRoles
     })

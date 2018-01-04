@@ -58,5 +58,13 @@ export const dataImpController = {
     controller: CONTROLLER,
     action: 'getAllBatch',
     type: requestType.Get
+  },
+  /**
+   * excel案件模板导入
+   */
+  importExcel: {
+    controller: CONTROLLER,
+    action: 'importOrders',
+    type: requestType.Post
   }
 }

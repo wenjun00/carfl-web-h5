@@ -3,12 +3,14 @@ import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import { StorageService } from '~/utils/storage.service'
 import workspace from './modules/workspace'
+import systemManage from './modules/system-manage'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
     workspace: workspace,
+    systemManage : systemManage
   },
   state: {
     layout: 'default',

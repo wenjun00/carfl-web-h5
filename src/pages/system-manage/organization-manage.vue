@@ -25,6 +25,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="modifyClick(scope)">修改</el-button>
+            <el-button type="text" @click="deleteClick(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </template>
@@ -53,8 +54,8 @@
   } from "~/core/decorator";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
-  import CreateOrganization from "~/components/pages/system-manage/create-organization.vue";
-  import ModifyOrganization from "~/components/pages/system-manage/Modify-organization.vue";
+  import CreateOrganization from "~/components/pages/system-manage/organization-manage/create-organization.vue";
+  import ModifyOrganization from "~/components/pages/system-manage/organization-manage/modify-organization.vue";
 
   @Layout('workspace')
   @Component({
@@ -76,7 +77,7 @@
       modify: false
     };
     private modifyData: any = {};
-    createOrg(){
+    createOrg() {
       this.dialog.create = true
     }
     /**
@@ -95,13 +96,36 @@
       this.dialog.modify = true
       this.modifyData = scope.row
     }
+    /**
+     * 删除
+     */
+    deleteClick(row) {
+      console.log(row)
+      this.$confirm("您确认要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.organizationService.deleteOrganization(row.id).subscribe(data => {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          });
+        });
+      }).catch(() => {
+        this.$message({
+          type: "info",
+          message: "已取消删除"
+        });
+      });
+    }
     modifyOpen() {
       this.$nextTick(() => {
         let ref: any = this.$refs['modify-organization']
         ref.refresh(this.modifyData)
       })
     }
-    mounted () {
+    mounted() {
       this.refreshData()
     }
   }

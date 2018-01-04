@@ -25,5 +25,13 @@ export const operatorController = {
     controller: CONTROLLER,
     action: 'createOperator',
     type: requestType.Post
+  },
+  /**
+   * 修改用户
+   */
+  updateOperator: {
+    controller: CONTROLLER,
+    action: 'modify',
+    type: requestType.Post
   }
 }
