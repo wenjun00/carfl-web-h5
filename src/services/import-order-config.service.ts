@@ -17,5 +17,13 @@ export class importOrderConfigService {
       data: data
     })
   }
+  /**
+   * 查询Excel配置模板
+   */
+  getAllImportConfig() {
+    return this.netService.send({
+      server: importOrderConfigController.getAllImportConfig
+    })
+  }
 }
 

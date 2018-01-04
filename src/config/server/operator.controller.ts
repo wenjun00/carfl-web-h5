@@ -9,5 +9,21 @@ export const operatorController = {
     controller: CONTROLLER,
     action: 'orgSimpleListByRole',
     type: requestType.Get
+  },
+  /**
+  * 获取组织下的所有用户简略信息
+  */
+  orgSimpleListByOrg: {
+    controller: CONTROLLER,
+    action: 'orgSimpleListByOrg',
+    type: requestType.Get
+  },
+  /**
+   * 创建新用户
+   */
+  createOperator: {
+    controller: CONTROLLER,
+    action: 'createOperator',
+    type: requestType.Post
   }
 }

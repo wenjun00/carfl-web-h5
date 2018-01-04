@@ -72,10 +72,9 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.importOrderConfigService.createImportConfig().subscribe(data => {
+      this.importOrderConfigService.getAllImportConfig().subscribe(data => {
         this.caseTaticsDataSet = data.content;
       });
-      console.log('aaa')
     }
   }
 

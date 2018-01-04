@@ -9,5 +9,13 @@ export const importOrderConfigController = {
     controller: CONTROLLER,
     action: 'createImportConfig',
     type: requestType.Post
+  },
+  /**
+   * 查询Excel配置模板
+   */
+  getAllImportConfig: {
+    controller: CONTROLLER,
+    action: 'getAllImportConfig',
+    type: requestType.Get
   }
 }
