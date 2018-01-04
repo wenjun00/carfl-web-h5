@@ -40,10 +40,11 @@ export class importOrderConfigService {
   /**
    * 查询Excel配置模板
    */
-  getAllImportConfig(data) {
+  getAllImportConfig(data, page) {
     return this.netService.send({
       server: importOrderConfigController.getAllImportConfig,
-      data: data
+      data: data,
+      page: page
     })
   }
   /**

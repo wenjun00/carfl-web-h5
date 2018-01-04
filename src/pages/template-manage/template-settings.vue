@@ -13,7 +13,7 @@
         <el-button @click="creatClick">新增模板</el-button>
       </template>
     </data-form>
-    <data-box :data="caseTemplateDataSet" @onPageChange="refreshData">
+    <data-box :data="caseTemplateDataSet" @onPageChange="refreshData" :page="pageService">
       <template slot="columns">
         <el-table-column prop="name" label="模板名称" min-width="90">
         </el-table-column>
@@ -59,6 +59,9 @@
   import DataBox from "~/components/common/data-box.vue";
   import CreateTemplate from "~/components/pages/template-manage/create-template.vue";
   import ModifyTemplate from "~/components/pages/template-manage/Modify-template.vue";
+  import {
+    PageService
+  } from "~/utils/page.service";
 
   @Layout('workspace')
   @Component({
@@ -71,6 +74,7 @@
   })
   export default class TemplateSettings extends Vue {
     @Dependencies(importOrderConfigService) private importOrderConfigService: importOrderConfigService;
+    @Dependencies(PageService) private pageService: PageService;
     // 列表数据集
     private caseTemplateDataSet: Array < any > = [];
     // 数据实体
@@ -129,10 +133,9 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.importOrderConfigService.getAllImportConfig({
-        ...this.caseTemplateModel
-      }).subscribe(data => {
-        this.caseTemplateDataSet = data.content;
+      this.importOrderConfigService.getAllImportConfig(this.caseTemplateModel, this.pageService).subscribe(data => {
+        this.caseTemplateDataSet = data;
+        console.log(data)
       });
     }
     mounted() {
