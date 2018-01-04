@@ -1,6 +1,6 @@
 <template>
   <section class="component create-tatics">
-    <el-form ref="create-form" :model="createModel">
+    <el-form ref="create-form" :model="createModel" label-position="top">
       <el-form-item label="策略名称" prop="name">
         <el-input v-model="createModel.name"></el-input>
       </el-form-item>
@@ -8,13 +8,29 @@
         <el-input v-model="createModel.priority"></el-input>
       </el-form-item>
       <el-form-item label="城市" prop="areaCodes">
-        <el-input v-model="createModel.areaCodes[0]"></el-input>
+        <el-row v-for="(v,i) in createModel.areaCodes" :key="i">
+          <el-input v-model="createModel.areaCodes[i]"></el-input>
+          <el-button @click="createModel.areaCodes.splice(i,1)" v-if="createModel.areaCodes.length!==1">
+            <svg-icon iconClass="shanchu"></svg-icon>
+          </el-button>
+          <el-button @click="createModel.areaCodes.push('')" v-if="i === createModel.areaCodes.length-1">
+            <svg-icon iconClass="zengjia"></svg-icon>
+          </el-button>
+        </el-row>
         <!--<el-cascader v-for="v,i in createModel.areaCodes" :options="areaOptions" :props="{value:'id',label:'name'}" v-model="createModel.areaCodes[i]"
           :key="i" :show-all-levels="false"></el-cascader>-->
       </el-form-item>
       <el-form-item label="机构" prop="organizations">
-        <el-cascader v-for="v,i in createModel.organizations" :options="organizeOptions" :props="{value:'id',label:'name'}" v-model="createModel.organizations[0]"
-          :key="i" :show-all-levels="false" change-on-select></el-cascader>
+        <el-row v-for="(v,i) in createModel.organizations" :key="i">
+          <el-cascader :options="organizeOptions" :props="{value:'id',label:'name'}" v-model="createModel.organizations[i]" :show-all-levels="false"
+            change-on-select></el-cascader>
+          <el-button @click="createModel.organizations.splice(i,1)" v-if="createModel.organizations.length!==1">
+            <svg-icon iconClass="shanchu"></svg-icon>
+          </el-button>
+          <el-button @click="createModel.organizations.push([])" v-if="i === createModel.organizations.length-1">
+            <svg-icon iconClass="zengjia"></svg-icon>
+          </el-button>
+        </el-row>
       </el-form-item>
       <el-row type="flex" justify="center">
         <el-button @click="close">取消</el-button>
@@ -25,6 +41,7 @@
 </template>
 <script lang="ts">
   import Vue from "vue";
+  import SvgIcon from "~/components/common/svg-icon.vue";
   import {
     Layout
   } from "~/core/decorator";
@@ -40,7 +57,11 @@
     organizationService
   } from "~/services/organization.service";
 
-  @Component({})
+  @Component({
+    components: {
+      SvgIcon
+    }
+  })
   export default class CreateTatics extends Vue {
     @Dependencies(orderStrategyConfigService) private orderStrategyConfigService: orderStrategyConfigService;
     @Dependencies(organizationService) private organizationService: organizationService;
