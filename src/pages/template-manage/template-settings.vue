@@ -58,7 +58,7 @@
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
   import CreateTemplate from "~/components/pages/template-manage/create-template.vue";
-  import ModifyTemplate from "~/components/pages/template-manage/Modify-template.vue";
+  import ModifyTemplate from "~/components/pages/template-manage/modify-template.vue";
   import {
     PageService
   } from "~/utils/page.service";
@@ -84,7 +84,8 @@
     private modifyData: any = {};
     private dialog: any = {
       create: false,
-      modify: false
+      modify: false,
+      choose: false
     };
     /**
      * 新增

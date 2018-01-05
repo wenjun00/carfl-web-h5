@@ -1,5 +1,5 @@
 <template>
-  <section class="component modify-tatics">
+  <section class="component modify-template">
     <el-form ref="modify-form" :model="modifyModel">
       <el-form-item label="模板名称" prop="name">
         <el-input v-model="modifyModel.name" disabled></el-input>
@@ -9,11 +9,7 @@
       </el-form-item>
     </el-form>
     <el-table :data="modifyModel.set" stripe>
-      <el-table-column type="index" label="序号" width="80">
-      </el-table-column>
       <el-table-column prop="name" label="名称" min-width="90">
-      </el-table-column>
-      <el-table-column prop="attribute" label="属性名" min-width="90">
       </el-table-column>
       <el-table-column label="对应列" min-width="60">
         <template slot-scope="scope">

@@ -174,6 +174,8 @@ export default class FileUpload extends Vue {
   reset(){
     let upload = <any>this.$refs['upload']
     upload.clearFiles()
+    this.fileList = []
+    this.updateFileList(this.fileList);
   }
 }
 </script>
