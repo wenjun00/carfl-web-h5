@@ -143,46 +143,6 @@
           return list
         }
         this.orgData = fun()
-
-        // console.log('treedata', data)
-        // let arr: any = [{
-        //   id: -1,
-        //   label: data.length ? data[0].name : '',
-        //   parentId: null,
-        //   children: []
-        // }]
-        // let num = 0
-        // data.map(v => {
-        //   if (v.parentId === "-1") {
-        //     arr[0].children.push({
-        //       id: v.id,
-        //       label: v.name,
-        //       parentId: -1,
-        //       children: []
-        //     })
-        //     let funNum = 0
-        //     data.map(val => {
-        //       if (val.parentId && val.parentId === v.id) {
-        //         console.log('num', num)
-        //         console.log('val.id', val.id)
-        //         arr[0].children[num].children.push({
-        //           id: parseInt(val.id),
-        //           label: val.name,
-        //           parentId: parseInt(val.parentId),
-        //         })
-        //         data.map(value => {
-        //           if (value.parentId && value.parentId === val.id) {
-        //             arr[0].children[num].children[funNum].function.push(value)
-        //           }
-        //         })
-        //         funNum++
-        //       }
-        //     })
-        //     num++
-        //   }
-        // })
-        // this.orgData = arr
-        // console.log(this.orgData, 999)
       });
     }
     /**

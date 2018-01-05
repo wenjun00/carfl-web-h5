@@ -61,13 +61,13 @@
     Dependencies
   } from "~/core/decorator";
   import {
+    PageService
+  } from "~/utils/page.service";
+  import {
     storageApplyService
   } from "~/services/storage-apply.service";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
-  import {
-    PageService
-  } from "~/utils/page.service";
   @Layout("workspace")
   @Component({
     components: {
@@ -97,7 +97,9 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.storageApplyService.getAllStorageApply(this.reviewModel, this.pageService).subscribe(data => {
+      this.storageApplyService.getAllStorageApply(this.reviewModel, this.pageService, {
+         "phone": "asc"
+      }).subscribe(data => {
         this.reviewDataSet = data;
       });
     }

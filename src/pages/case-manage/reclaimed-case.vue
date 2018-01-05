@@ -7,7 +7,7 @@
         </el-form-item>
       </template>-->
     </data-form>
-    <data-box :data="reclaimedDatSet" @onPageChange="refreshData">
+    <data-box :data="reclaimedDatSet" @onPageChange="refreshData" :page="pageService">
       <template slot="columns">
         <el-table-column prop="contractNumber" label="合同编号" min-width="125">
         </el-table-column>
@@ -61,6 +61,9 @@
     Dependencies
   } from "~/core/decorator";
   import {
+    PageService
+  } from "~/utils/page.service";
+  import {
     orderService
   } from "~/services/order.service";
   import DataForm from "~/components/common/data-form.vue";
@@ -74,6 +77,7 @@
     }
   })
   export default class ReclaimedCase extends Vue {
+    @Dependencies(PageService) private pageService: PageService;
     @Dependencies(orderService) private orderService: orderService;
 
     // 角色列表数据集
@@ -101,8 +105,11 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.orderService.query('REFUNDED').subscribe(data => {
-        this.reclaimedDatSet = data.content;
+      this.orderService.query('REFUNDED', this.pageService, {
+        trustee: "asc",
+        "vehicle.licensePlateNumber": "asc"
+      }).subscribe(data => {
+        this.reclaimedDatSet = data;
       });
     }
   }

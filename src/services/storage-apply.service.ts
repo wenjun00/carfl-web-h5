@@ -11,11 +11,12 @@ export class storageApplyService {
    * 获取所有角色信息
    */
   @Debounce()
-  getAllStorageApply(data, page) {
+  getAllStorageApply(data?, page?, sort?) {
     return this.netService.send({
       server: storageApplyController.getAllStorageApply,
       data: data,
-      page: page
+      page: page,
+      sort :sort
     })
   }
 }

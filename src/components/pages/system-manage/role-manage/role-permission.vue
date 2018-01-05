@@ -4,7 +4,7 @@
       <el-col :span="8">
         <el-row class="title">模块</el-row>
         <el-row class="module-tree">
-          <el-tree align="left" :data="treeData" :show-checkbox="true" highlight-current node-key="id" ref="tree" :props="defaultProps"
+          <el-tree align="left" :data="treeData" :show-checkbox="true" default-expand-all highlight-current node-key="id" ref="tree" :props="defaultProps"
             :default-expanded-keys="treeExpanded" :default-checked-keys="treeDefaultSelection" @node-click="getCheckedNodes"
             @check-change="handleCheckChange">
           </el-tree>
@@ -72,7 +72,8 @@
     private multipleSelection: Array < any > = [];
     private defaultProps: any = {
       children: 'children',
-      label: 'label'
+      label: 'name',
+      value: 'id'
     };
     private currentRole: any = {
       name: "",
@@ -92,42 +93,20 @@
       console.log('tableData', this.tableData)
     }
     getTreeData() {
-      let arr: any = [{
-        id: 0,
-        label: this.allData.length ? this.allData[0].name : '',
-        parentId: 1,
-        children: []
-      }]
-      let num = 0
-      this.allData.map(v => {
-        if (v.parentId === "-1") {
-          arr[0].children.push({
-            id: v.id,
-            label: v.name,
-            parentId: null,
-            children: []
-          })
-          let funNum = 0
-          this.allData.map(val => {
-            if (val.parentId && val.parentId === v.id) {
-              arr[0].children[num].children.push({
-                id: parseInt(val.id),
-                label: val.name,
-                parentId: parseInt(val.parentId),
-                function: []
-              })
-              this.allData.map(value => {
-                if (value.parentId && value.parentId === val.id) {
-                  arr[0].children[num].children[funNum].function.push(value)
-                }
-              })
-              funNum++
-            }
-          })
-          num++
-        }
-      })
-      this.treeData = arr
+      let fun: any = (id) => {
+        // 递归对象子元素
+        let list = this.allData.filter(x => id ? x.parentId === id : !x.parentId).map(node => {
+          // 递归构建子节点
+          let children = fun(node.id)
+          if (children && children.length) {
+            node.children = children
+          }
+          return node
+        })
+        return list
+      }
+      this.treeData = fun()
+      console.log('this.treeData', this.treeData)
     }
     getRoleRes(roleResource, row) {
       this.treeExpanded = roleResource.map(v => v.id)

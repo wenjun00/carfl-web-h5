@@ -11,7 +11,7 @@
         <el-button @click="createClick">重新分配</el-button>
       </template>
     </data-form>
-    <data-box :data="unReceivedDataStr" @onPageChange="refreshData">
+    <data-box :data="unReceivedDataStr" @onPageChange="refreshData" :page="pageService">
       <template slot="columns">
         <el-table-column prop="contractNumber" label="合同编号" min-width="125">
         </el-table-column>
@@ -66,6 +66,9 @@
     Dependencies
   } from "~/core/decorator";
   import {
+    PageService
+  } from "~/utils/page.service";
+  import {
     orderService
   } from "~/services/order.service";
   import DataForm from "~/components/common/data-form.vue";
@@ -80,7 +83,7 @@
   })
   export default class UnreceivedCase extends Vue {
     @Dependencies(orderService) private orderService: orderService;
-
+    @Dependencies(PageService) private pageService: PageService;
     // 角色列表数据集
     private unReceivedDataStr: Array < any > = [];
     // 角色数据实体
@@ -100,8 +103,11 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.orderService.query('ASSIGNED').subscribe(data => {
-        this.unReceivedDataStr = data.content;
+      this.orderService.query('ASSIGNED', this.pageService, {
+        trustee: "asc",
+        "vehicle.licensePlateNumber": "asc"
+      }).subscribe(data => {
+        this.unReceivedDataStr = data;
       });
     }
   }
