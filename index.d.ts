@@ -13,3 +13,6 @@ declare module 'vue/types/vue' {
 declare module '*.vue' {
   export default Vue
 }
+
+// 环信
+declare var WebIM:any
