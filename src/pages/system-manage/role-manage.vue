@@ -10,7 +10,7 @@
         <el-button @click="createRole">新增角色</el-button>
       </template>
     </data-form>
-    <data-box :data="roleDataSet" @onPageChange="refreshData">
+    <data-box :data="roleDataSet"  @onPageChange="refreshData">
       <template slot="columns">
         <el-table-column prop="name" label="角色名称">
         </el-table-column>

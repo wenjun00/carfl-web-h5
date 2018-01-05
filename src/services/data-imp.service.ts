@@ -78,5 +78,16 @@ export class dataImpService {
       }
     })
   }
+  /**
+   * 导入自定义模板信息
+   */
+  importAttribute(fileId) {
+    return this.netService.send({
+      server: dataImpController.importAttribute,
+      data: {
+        fileId: fileId
+      }
+    })
+  }
 }
 

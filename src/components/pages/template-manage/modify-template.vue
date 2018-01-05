@@ -1,5 +1,5 @@
 <template>
-  <section class="component modify-tatics">
+  <section class="component modify-template">
     <el-form ref="modify-form" :model="modifyModel">
       <el-form-item label="模板名称" prop="name">
         <el-input v-model="modifyModel.name" disabled></el-input>
@@ -9,15 +9,14 @@
       </el-form-item>
     </el-form>
     <el-table :data="modifyModel.set" stripe>
-      <el-table-column type="index" label="序号" width="80">
+      <el-table-column prop="cell" label="名称" min-width="90">
       </el-table-column>
-      <el-table-column prop="name" label="名称" min-width="90">
-      </el-table-column>
-      <el-table-column prop="attribute" label="属性名" min-width="90">
-      </el-table-column>
-      <el-table-column label="对应列" min-width="60">
+      <el-table-column label="映射字段" min-width="60">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.cell"></el-input>
+          <el-select v-model="scope.row.name" placeholder="请选择" clearable @change="change(scope)" filterable>
+            <el-option v-for="(v,i) in canUse" :key="i" :label="v.name" :value="v.name">
+            </el-option>
+          </el-select>        
         </template>
       </el-table-column>
     </el-table>
@@ -48,19 +47,40 @@
       trustee: '',
       set: []
     };
-    private areaOptions: any = [];
+    private allAttribute: Array < any > = [];
+    private canUse: Array < any > = [];
     refresh(modify) {
       this.modifyModel.name = modify.name
       this.modifyModel.trustee = modify.trustee
       this.modifyModel.set = []
-      this.importOrderConfigService.getImportOrderById(modify.id).subscribe(data => {
-        this.modifyModel.set = data
+      this.canUse = []
+      this.importOrderConfigService.getAllAttribute().subscribe(data => {
+        this.allAttribute = data
+        this.importOrderConfigService.getImportOrderById(modify.id).subscribe(res => {
+          this.modifyModel.set = res
+          this.canUse = this.allAttribute.filter(v => !this.modifyModel.set.find(val => val.attribute === v.attribute))
+        });
       });
+    }
+    change(scope) {
+      scope.row.name ? scope.row.attribute = this.allAttribute.find(v => v.name === scope.row.name).attribute :
+        scope.row.attribute = '';
+      this.canUse = this.allAttribute.filter(v => !this.modifyModel.set.find(val => val.attribute === v.attribute))
     }
     /**
      * 修改案件提交
      */
     submit() {
+      let flag = true
+      for (let index = 0; index < this.modifyModel.set.length; index++) {
+        if (!this.modifyModel.set[index].attribute) {
+          flag = false
+        }
+      }
+      if (!flag) {
+        this.$message('映射字段不能为空')
+        return
+      }
       let obj: any = {
         list: this.modifyModel.set,
       }
