@@ -1,0 +1,70 @@
+{
+  "standard.enable": false,
+  "eslint.enable": false,
+  // "editor.formatOnSave": true,
+  "editor.detectIndentation": false,
+  "standard.run": "onSave",
+  "standard.autoFixOnSave": true,
+  "javascript.validate.enable": false,
+  "extensions.ignoreRecommendations": false,
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  // beautify配置
+  "beautify.language": {
+    "js": {
+      "type": [
+        "javascript",
+        "json"
+      ],
+      "filename": [
+        ".jshintrc",
+        ".jsbeautify"
+      ]
+    },
+    "css": [
+      "css",
+      "scss"
+    ],
+    "html": [
+      "htm",
+      "html",
+      "vue"
+    ]
+  },
+  // standard配置
+  "standard.options": {
+    "globals": [
+      "$",
+      "jQuery",
+      "fetch"
+    ],
+    "ignore": [
+      "node_modules/**"
+    ],
+    "plugins": [
+      "html"
+    ],
+    "parser": "babel-eslint"
+  },
+  "standard.validate": [
+    "javascript",
+    {
+      "language": "html",
+      "autoFix": true
+    },
+    {
+      "language": "vue",
+      "autoFix": true
+    }
+  ],
+  "files.associations": {
+    "*.vue": "vue"
+  },
+  "files.autoSave": "afterDelay"
+  // "emmet.syntaxProfiles": {
+  //     "javascript": "jsx",
+  //     "vue": "html",
+  //     "vue-html": "html"
+  // },
+  // "vim.disableAnnoyingNeovimMessage": true,
+  // "vim.enableNeovim":true
+}

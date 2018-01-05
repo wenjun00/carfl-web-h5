@@ -87,7 +87,7 @@ export default class FileUpload extends Vue {
    * 上传成功回调
    */
   onSucess(data, { uid }) {
-    // this.onUploadSucess(uid, data);
+    this.onUploadSucess(uid, data);
   }
 
   /**
@@ -105,7 +105,7 @@ export default class FileUpload extends Vue {
    * 错误信息回调
    */
   onError(err, file) {
-    // this.onUploadError(err, file);
+    this.onUploadError(err, file);
   }
 
   /**
