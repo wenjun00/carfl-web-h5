@@ -1,10 +1,45 @@
 <template>
   <section class="page inpull-car-manage">
     <data-form :model="inpullCarModel" @onSearch="refreshData">
-      <!--<template slot="default">
-        <el-form-item label="客户姓名:" prop="name">
-          <el-input v-model="roleModel.name"></el-input>
+      <template slot="default-input">
+        <el-form-item label="车主姓名:" prop="actualName">
+          <el-input v-model="inpullCarModel.actualName"></el-input>
         </el-form-item>
+        <el-form-item label="车主电话:" prop="phone">
+          <el-input v-model="inpullCarModel.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="车牌号:" prop="licensePlateNumber">
+          <el-input v-model="inpullCarModel['vehicle.licensePlateNumber']"></el-input>
+        </el-form-item>
+      </template>
+      <template slot="collapse-input">
+        <!--<el-form-item label="车架号:" prop="name">
+          <el-input v-model="inpullCarModel.name"></el-input>
+        </el-form-item>-->
+        <el-form-item label="车辆型号:" prop="name">
+          <el-input v-model="inpullCarModel['vehicle.vehicleModel']"></el-input>
+        </el-form-item>
+        <el-form-item label="委托方:" prop="trustee">
+          <el-input v-model="inpullCarModel.trustee"></el-input>
+        </el-form-item>
+        <el-form-item label="委案日期:" prop="commissionDate">
+          <el-input v-model="inpullCarModel.commissionDate"></el-input>
+        </el-form-item>
+        <el-form-item label="结案日期:" prop="closingDate">
+          <el-input v-model="inpullCarModel.closingDate"></el-input>
+        </el-form-item>
+        <el-form-item label="所属营业部:" prop="businessDepartment">
+          <el-input v-model="inpullCarModel['contract.businessDepartment']"></el-input>
+        </el-form-item>
+        <el-form-item label="省份:" prop="province">
+          <el-input v-model="inpullCarModel.province"></el-input>
+        </el-form-item>
+        <el-form-item label="城市:" prop="city">
+          <el-input v-model="inpullCarModel.city"></el-input>
+        </el-form-item>
+      </template>
+      <!--<template slot="default-button">
+        <el-button @click="restartAllot">重新分配</el-button>
       </template>-->
     </data-form>
     <data-box :data="inpullCarDataSet" @onPageChange="refreshData" :page="pageService">
@@ -84,7 +119,18 @@
     private inpullCarDataSet: Array < any > = [];
     // 数据实体
     private inpullCarModel: any = {
-      name: ""
+      actualName: '', //车主姓名
+      phone: '', // 车主电话
+      'vehicle.licensePlateNumber': '', // 车牌号
+      'vehicle.frameNumber': '', // 车架号
+      trustee: '', // 委托方
+      commissionDate: '', // 委案日期
+      closingDate: '', // 结案日期
+      'contract.businessDepartment': '', // 所属营业部
+      'vehicle.vehicleModel': '', // 车辆型号
+      province: '', // 省份
+      city: '', // 城市
+      state: 'ASSIGNED'
     };
 
     /**

@@ -11,12 +11,10 @@ export class orderService {
    * 查询案件
    */
   @Debounce()
-  query(state, page?, sort?) {
+  query(data, page?, sort?) {
     return this.netService.send({
       server: orderController.query,
-      data: {
-        "state": state
-      },
+      data: data,
       page: page,
       sort: sort
     })
