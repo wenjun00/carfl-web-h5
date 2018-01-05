@@ -1,5 +1,5 @@
 <template>
-  <section class="component approval-handle">
+  <section class="component storage-message">
     <el-row type="flex" justify="center">
       <el-button @click="close">取消</el-button>
       <el-button @click="submit">确定</el-button>
@@ -21,7 +21,7 @@
   } from "~/services/data-imp.service";
 
   @Component({})
-  export default class ApprovalHandle extends Vue {
+  export default class StorageMessage extends Vue {
     @Dependencies(dataImpService) private dataImpService: dataImpService;
     private excelModel: any = {};
     private approvalModel: any = {
@@ -64,6 +64,9 @@
           message: '提交成功'
         })
       });
+    }
+    refreshData(data) {
+      this.approvalModel = data
     }
     close() {
       this.$emit('close')

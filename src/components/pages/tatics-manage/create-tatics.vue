@@ -9,16 +9,14 @@
       </el-form-item>
       <el-form-item label="城市" prop="areaCodes">
         <el-row v-for="(v,i) in createModel.areaCodes" :key="i">
-          <el-input v-model="createModel.areaCodes[i]"></el-input>
+          <el-cascader :options="$city.getCityData({level:2})" v-model="createModel.areaCodes[i]" :key="i" :show-all-levels="false"></el-cascader>
           <el-button @click="createModel.areaCodes.splice(i,1)" v-if="createModel.areaCodes.length!==1">
             <svg-icon iconClass="shanchu"></svg-icon>
           </el-button>
-          <el-button @click="createModel.areaCodes.push('')" v-if="i === createModel.areaCodes.length-1">
+          <el-button @click="createModel.areaCodes.push([])" v-if="i === createModel.areaCodes.length-1">
             <svg-icon iconClass="zengjia"></svg-icon>
           </el-button>
         </el-row>
-        <!--<el-cascader v-for="v,i in createModel.areaCodes" :options="areaOptions" :props="{value:'id',label:'name'}" v-model="createModel.areaCodes[i]"
-          :key="i" :show-all-levels="false"></el-cascader>-->
       </el-form-item>
       <el-form-item label="机构" prop="organizations">
         <el-row v-for="(v,i) in createModel.organizations" :key="i">
@@ -67,7 +65,7 @@
     @Dependencies(organizationService) private organizationService: organizationService;
     private createModel: any = {
       areaCodes: [
-        ''
+        []
       ],
       name: '',
       priority: '',
@@ -75,14 +73,13 @@
         []
       ]
     };
-    private areaOptions: any = [];
     private organizeOptions: any = [];
     /**
      * 新增案件提交
      */
     submit() {
       let obj: any = {
-        areaCodes: this.createModel.areaCodes,
+        areaCodes: this.createModel.areaCodes.map(v => v[v.length - 1]),
         name: this.createModel.name,
         priority: this.createModel.priority,
         organizations: this.createModel.organizations.map(v => v[v.length - 1])

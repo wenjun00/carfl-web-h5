@@ -1,6 +1,6 @@
 <template>
   <section class="component modify-tatics">
-    <el-form ref="modify-form" :model="modifyModel">
+    <el-form ref="modify-form" :model="modifyModel" label-position="top">
       <el-form-item label="策略名称" prop="name">
         <el-input v-model="modifyModel.name"></el-input>
       </el-form-item>
@@ -9,16 +9,14 @@
       </el-form-item>
       <el-form-item label="城市" prop="areaCodes">
         <el-row v-for="(v,i) in modifyModel.areaCodes" :key="i">
-          <el-input v-model="modifyModel.areaCodes[i]"></el-input>
+          <el-cascader :options="$city.getCityData({level:2})" v-model="modifyModel.areaCodes[i]" :key="i" :show-all-levels="false"></el-cascader>
           <el-button @click="modifyModel.areaCodes.splice(i,1)" v-if="modifyModel.areaCodes.length!==1">
             <svg-icon iconClass="shanchu"></svg-icon>
           </el-button>
-          <el-button @click="modifyModel.areaCodes.push('')" v-if="i === modifyModel.areaCodes.length-1">
+          <el-button @click="modifyModel.areaCodes.push([])" v-if="i === modifyModel.areaCodes.length-1">
             <svg-icon iconClass="zengjia"></svg-icon>
           </el-button>
         </el-row>
-        <!--<el-cascader v-for="v,i in modifyModel.areaCodes" :options="areaOptions" :props="{value:'id',label:'name'}" v-model="modifyModel.areaCodes[i]"
-          :key="i" :show-all-levels="false"></el-cascader>-->
       </el-form-item>
       <el-form-item label="机构" prop="organizations">
         <el-row v-for="(v,i) in modifyModel.organizations" :key="i">
@@ -68,7 +66,7 @@
     private modifyModel: any = {
       id: '',
       areaCodes: [
-        ''
+        []
       ],
       name: '',
       priority: '',
@@ -76,26 +74,54 @@
         []
       ]
     };
-    private areaOptions: any = [];
     private organizeOptions: any = [];
     refresh(modify) {
-      this.modifyModel.id = modify.id
-      this.modifyModel.name = modify.name
-      this.modifyModel.priority = modify.priority
-      this.modifyModel.areaCodes = modify.areaCodes && modify.areaCodes.length ? modify.areaCodes.map(v => v.id) : [
-        ''
-      ]
-      this.modifyModel.organizations = modify.organizations && modify.organizations.length ? modify.organizations.map(
-        v => [v.id]) : [
-        []
-      ]
+      this.organizationService.getAllOrganizations().subscribe(data => {
+        console.log(data)
+        let fun: any = (id) => {
+          // 递归对象子元素
+          let list = data.filter(x => id ? x.parentId === id : !x.parentId).map(node => {
+            // 递归构建子节点
+            let children = fun(node.id)
+            if (children && children.length) {
+              node.children = children
+            }
+            return node
+          })
+          return list
+        }
+        this.organizeOptions = fun()
+        console.log(this.organizeOptions)
+        this.modifyModel.id = modify.id
+        this.modifyModel.name = modify.name
+        this.modifyModel.priority = modify.priority
+        this.modifyModel.areaCodes = modify.areaCodes && modify.areaCodes.length ? modify.areaCodes.map(v => [v.parentId,
+          v.id
+        ]) : [
+          []
+        ];
+        this.modifyModel.organizations = modify.organizations && modify.organizations.length ? modify.organizations
+          .map(v => {
+            let arr: any = []
+            arr.unshift(v.id)
+            let parentId = v.parentId
+            while (data.find(val => val.id === parentId)) {
+              let obj: any = data.find(val => val.id === parentId)
+              parentId = obj.parentId
+              arr.unshift(obj.id)
+            }
+            return arr
+          }) : [
+            []
+          ];
+      })
     }
     /**
      * 修改案件提交
      */
     submit() {
       let obj: any = {
-        areaCodes: this.modifyModel.areaCodes,
+        areaCodes: this.modifyModel.areaCodes.map(v => v[v.length - 1]),
         name: this.modifyModel.name,
         id: this.modifyModel.id,
         priority: this.modifyModel.priority,
@@ -113,25 +139,7 @@
     close() {
       this.$emit('close')
     }
-    mounted() {
-      this.organizationService.getAllOrganizations().subscribe(data => {
-        console.log(data)
-        let fun: any = (id) => {
-          // 递归对象子元素
-          let list = data.filter(x => id ? x.parentId === id : !x.parentId).map(node => {
-            // 递归构建子节点
-            let children = fun(node.id)
-            if (children && children.length) {
-              node.children = children
-            }
-            return node
-          })
-          return list
-        }
-        this.organizeOptions = fun()
-        console.log(this.organizeOptions)
-      });
-    }
+    mounted() {}
   }
 
 </script>
