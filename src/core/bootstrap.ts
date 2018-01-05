@@ -3,6 +3,7 @@ import injector from 'vue-inject';
 // import createFilter from '~/core/filter'
 // import createDirectives from '../core/directive'
 import createProvide from '~/core/provide'
+import createPlugins from '~/extension/plugin'
 
 export default function ({ store }) {
   // 安装过滤器
@@ -18,6 +19,13 @@ export default function ({ store }) {
   //     Vue.directive(key, fun)
   //   })
   // }
+
+
+  if (createPlugins) {
+    Object.entries(createPlugins({ store })).forEach(([key, plugin]) => {
+      Vue.use(plugin)
+    })
+  }
 
   // 创建提供器
   if (createProvide) {

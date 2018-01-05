@@ -1,27 +1,26 @@
 const cityData = require('~/assets/json/city.json');
 
 export class CityService {
-  static instance
 
   /**
-   * 城市输入
+   * 获取城市信息
    * @param level
    * @param id
    */
-  static getCityJson({ level = 3, id = 1 }) {
-    let currentLevel = 0
-
-    let fun = (id, currentLevel = 0) => {
+  static getCityData({ level = 3, id = 1 } = {}) {
+    let fun = (id, currentLevel = 1) => {
       let items = new Array()
 
       cityData
         .filter(x => x.pid === id)
         .forEach(x => {
+          // 生成城市对象
           let item: any = {
             value: x.id,
             label: x.name
           }
 
+          // 检测获取级别
           if (currentLevel < level) {
             let children = fun(x.id, currentLevel + 1)
             if (children && children.length > 0) {
@@ -34,8 +33,8 @@ export class CityService {
 
       return items
     }
-    console.log(fun(1))
-    return fun(1)
+
+    return fun(id)
   }
 
   /**
@@ -57,5 +56,20 @@ export class CityService {
     fun(id)
 
     return result
+  }
+
+  /**
+   * 获取城市名称
+   * @param id
+   */
+  static getCityName(...ids) {
+    let results: Array<string> = []
+
+    ids.forEach(id => {
+      let item = cityData.find(c => c.id === id)
+      results.push(item.name)
+    })
+
+    return results.length === 1 ? results[0] : results
   }
 }
