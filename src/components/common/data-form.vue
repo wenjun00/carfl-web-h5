@@ -1,5 +1,5 @@
 <template>
-  <section class="component data-from">
+  <section class="component data-form">
     <el-form ref="data-form" :inline="true" :rules="rules" label-position="left" :model="model">
       <div class="row" style="flex-wrap:nowrap;width:100%;">
         <div class="row middle-span col-span">
@@ -55,7 +55,7 @@ export default class DataForm extends Vue {
       if (success) {
         this.onSearch();
       }
-    })
+    });
   }
 
   /**
@@ -85,5 +85,14 @@ export default class DataForm extends Vue {
 .arrow-up {
   transform: rotate(180deg);
   transition: transform ease-in 0.2s;
+}
+</style>
+<style lang="less">
+.data-form.component {
+  .el-form {
+    .el-form-item {
+      margin-bottom: 0;
+    }
+  }
 }
 </style>
