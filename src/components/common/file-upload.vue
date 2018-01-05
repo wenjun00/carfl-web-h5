@@ -1,6 +1,6 @@
 <template>
   <section class="component file-upload" :class="{'disable':disableUpload}">
-    <el-upload ref="upload" class="upload" :disabled="disableUpload" multiple :before-upload="onBeforeUpload" :before-remove="onBeforeRemove" :file-list="fileList"  :action="uploadUrl" :limit="fileNumberLimit?fileNumberLimit:null" :show-file-list="true" :on-success="onSucess" :on-progress="onProgress" :on-error="onError" :on-change="onChange" :on-remove="onRemove">
+    <el-upload ref="upload" class="upload" :disabled="disableUpload" multiple :before-upload="onBeforeUpload" :before-remove="onBeforeRemove" :file-list="fileList" :action="uploadUrl" :limit="fileNumberLimit?fileNumberLimit:null" :show-file-list="true" :on-success="onSucess" :on-progress="onProgress" :on-error="onError" :on-change="onChange" :on-remove="onRemove">
       <el-button size="small" type="primary">上传文件</el-button>
     </el-upload>
   </section>
@@ -14,7 +14,7 @@ import { Dependencies } from "~/core/decorator";
 import { NetService } from "~/utils/net.service";
 import { uploadFileController } from "~/config/server";
 import app from "~/config/app.config";
-import {Upload} from 'element-ui'
+import { Upload } from "element-ui";
 @Component({
   components: {}
 })
