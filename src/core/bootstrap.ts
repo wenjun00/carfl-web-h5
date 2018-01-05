@@ -8,27 +8,6 @@ import createPlugins from '~/extension/plugin'
 
 
 export default function ({ store }) {
-  // 安装过滤器
-  if (createFilters) {
-    Object.entries(createFilters({ store })).forEach(([key, fun]) => {
-      Vue.filter(key, fun)
-    })
-  }
-
-  // 安装指令
-  if (createDirectives) {
-    Object.entries(createDirectives({ store })).forEach(([key, fun]) => {
-      Vue.directive(key, fun)
-    })
-  }
-
-
-  if (createPlugins) {
-    Object.entries(createPlugins({ store })).forEach(([key, plugin]:[string,any]) => {
-      Vue.use(plugin)
-    })
-  }
-
   // 创建提供器
   if (createProvide) {
     Vue.use(injector)
@@ -45,6 +24,27 @@ export default function ({ store }) {
 
       let [target] = Object.values(provide())
       injector.service(key, target);
+    })
+  }
+
+  // 安装过滤器
+  if (createFilters) {
+    Object.entries(createFilters({ store })).forEach(([key, fun]) => {
+      Vue.filter(key, fun)
+    })
+  }
+
+  // 安装指令
+  if (createDirectives) {
+    Object.entries(createDirectives({ store })).forEach(([key, fun]) => {
+      Vue.directive(key, fun)
+    })
+  }
+
+
+  if (createPlugins) {
+    Object.entries(createPlugins({ store })).forEach(([key, plugin]: [string, any]) => {
+      Vue.use(plugin)
     })
   }
 }

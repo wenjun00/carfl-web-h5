@@ -4,7 +4,7 @@ import { Inject, Debounce } from "~/core/decorator";
 
 export class organizationService {
 
-  @Inject()
+  @Inject(NetService)
   private netService: NetService
 
   /**
@@ -18,7 +18,7 @@ export class organizationService {
   }
   /**
    * 创建机构
-   */  
+   */
   createOrganization(create) {
     return this.netService.send({
       server: organizationController.createOrganization,
@@ -27,7 +27,7 @@ export class organizationService {
   }
   /**
    * 修改机构
-   */  
+   */
   updateOrganization(modify) {
     return this.netService.send({
       server: organizationController.updateOrganization,
@@ -36,7 +36,7 @@ export class organizationService {
   }
   /**
    * 删除机构
-   */  
+   */
   deleteOrganization(id) {
     return this.netService.send({
       server: organizationController.deleteOrganization,

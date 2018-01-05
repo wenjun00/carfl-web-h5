@@ -4,7 +4,7 @@ import { Inject, Debounce } from "~/core/decorator";
 
 export class operatorService {
 
-  @Inject()
+  @Inject(NetService)
   private netService: NetService
 
   /**

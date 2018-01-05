@@ -1,7 +1,11 @@
 <template>
   <section class="component work-message">
-    <svg-icon iconClass="zengjia" @click=""></svg-icon>
-    <el-dialog :visible.sync="dialog.messageBox">
+    <span @click="dialog.messageBox=true">
+      <el-badge :value="3" class="item">
+        <svg-icon iconClass="xiaoxi" iconSize="26"></svg-icon>
+      </el-badge>
+    </span>
+  <el-dialog :visible.sync="dialog.messageBox">
       <message-box></message-box>
     </el-dialog>
   </section>
@@ -13,6 +17,7 @@ import Component from "vue-class-component";
 import { State, Mutation,namespace } from "vuex-class";
 import MessageBox from "~/components/message/message-box.vue"
 import SvgIcon from "~/components/common/svg-icon.vue";
+
 const ModuleState = namespace('workspace', State)
 const ModuleMutation = namespace('workspace', Mutation)
 
@@ -29,6 +34,18 @@ export default class WorkMessage extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  .component.work-message{
+    margin:20px;
+  }
+</style>
 
+<style lang="less">
+  .component.work-message{
+    .el-dialog{
+      .el-dialog__body{
+        padding:0!important;
+      }
+    }
+  }
 </style>

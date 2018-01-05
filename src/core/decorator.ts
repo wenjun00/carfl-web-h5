@@ -29,6 +29,10 @@ export function Dependencies(target?: any) {
  */
 export function Inject(target?): PropertyDecorator {
   return function (container, key) {
+    if (!injector.$$factories[key] && target) {
+      injector.service(key, target).lift;
+    }
+
     try {
       container[key] = injector.get(key);
     }
