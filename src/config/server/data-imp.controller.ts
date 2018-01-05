@@ -66,5 +66,13 @@ export const dataImpController = {
     controller: CONTROLLER,
     action: 'importOrders',
     type: requestType.Post
+  },
+  /**
+   * 导入自定义模板信息
+   */
+  importAttribute: {
+    controller: CONTROLLER,
+    action: 'importAttribute',
+    type: requestType.Get
   }
 }
