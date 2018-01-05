@@ -37,11 +37,24 @@ export class RoleService {
       data: updateParams
     })
   }
+  /**
+   * 删除角色
+   */
   deleteRole(id) {
     return this.netService.send({
       server: roleController.deleteRole,
       append: id
     })
   }
+  /**
+   * 根据id查找角色
+   */
+  getRoleById(id) {
+    return this.netService.send({
+      server: roleController.getRole,
+      append: id
+    })
+  }
+
 }
 

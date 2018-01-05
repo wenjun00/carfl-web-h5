@@ -1,13 +1,19 @@
 <template>
   <section class="page storage-approval">
     <data-form :model="approvalModel" @onSearch="refreshData">
-      <!--<template slot="default">
-        <el-form-item label="客户姓名:" prop="name">
-          <el-input v-model="roleModel.name"></el-input>
+      <template slot="default-input">
+        <el-form-item label="车主姓名" prop="actualName">
+          <el-input v-model="approvalModel.actualName"></el-input>
         </el-form-item>
-      </template>-->
+        <el-form-item label="车主电话" prop="phone">
+          <el-input v-model="approvalModel.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="车牌号" prop="licensePlateNumber">
+          <el-input v-model="approvalModel.licensePlateNumber"></el-input>
+        </el-form-item>
+      </template>
     </data-form>
-    <data-box :data="approvalDataSet" @onPageChange="refreshData">
+    <data-box :data="approvalDataSet" @onPageChange="refreshData" :page="pageService">
       <template slot="columns">
         <el-table-column prop="contractNumber" label="合同编号" min-width="125">
         </el-table-column>
@@ -49,6 +55,9 @@
         </el-table-column>
       </template>
     </data-box>
+    <el-dialog title="入库审批" :center="true" :visible.sync="dialog.approval" width="40%" @open="$nextTick(()=>{$refs['storage-approval'].refreshData()})">
+      <storage-approval ref="storage-approval" @close="dialog.approval = false" @success="refreshData"></storage-approval>
+    </el-dialog>
   </section>
 </template>
 
@@ -66,7 +75,9 @@
   } from "~/services/storage-apply.service";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
-
+  import {
+    PageService
+  } from "~/utils/page.service";
   @Layout("workspace")
   @Component({
     components: {
@@ -76,14 +87,19 @@
   })
   export default class StorageApproval extends Vue {
     @Dependencies(storageApplyService) private storageApplyService: storageApplyService;
+    @Dependencies(PageService) private pageService: PageService;
 
     // 角色列表数据集
     private approvalDataSet: Array < any > = [];
     // 角色数据实体
     private approvalModel: any = {
-      name: ""
+      actualName: "",
+      phone: "",
+      licensePlateNumber: ""
     };
-
+    private dialog: any = {
+      approval: false
+    };
     /**
      * 初始化
      */
@@ -94,6 +110,7 @@
      * 审批
      */
     applyClick() {
+      this.dialog.approval = true
       console.log('审批')
     }
     /**
@@ -106,8 +123,8 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.storageApplyService.getAllStorageApply().subscribe(data => {
-        this.approvalDataSet = data.content;
+      this.storageApplyService.getAllStorageApply(this.approvalModel, this.pageService).subscribe(data => {
+        this.approvalDataSet = data;
       });
     }
   }

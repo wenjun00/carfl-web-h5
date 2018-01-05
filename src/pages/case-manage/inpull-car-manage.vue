@@ -7,7 +7,7 @@
         </el-form-item>
       </template>-->
     </data-form>
-    <data-box :data="inpullCarDataSet" @onPageChange="refreshData">
+    <data-box :data="inpullCarDataSet" @onPageChange="refreshData" :page="pageService">
       <template slot="columns">
         <el-table-column prop="contractNumber" label="合同编号" min-width="125">
         </el-table-column>
@@ -61,6 +61,9 @@
     Dependencies
   } from "~/core/decorator";
   import {
+    PageService
+  } from "~/utils/page.service";
+  import {
     orderService
   } from "~/services/order.service";
   import DataForm from "~/components/common/data-form.vue";
@@ -74,11 +77,12 @@
     }
   })
   export default class InpullCarManage extends Vue {
+    @Dependencies(PageService) private pageService: PageService;
     @Dependencies(orderService) private orderService: orderService;
 
-    // 角色列表数据集
+    // 列表数据集
     private inpullCarDataSet: Array < any > = [];
-    // 角色数据实体
+    // 数据实体
     private inpullCarModel: any = {
       name: ""
     };
@@ -94,8 +98,11 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.orderService.query('RECEIVED').subscribe(data => {
-        this.inpullCarDataSet = data.content;
+      this.orderService.query('RECEIVED', this.pageService, {
+        trustee: "asc",
+        "vehicle.licensePlateNumber": "asc"
+      }).subscribe(data => {
+        this.inpullCarDataSet = data;
       });
     }
   }

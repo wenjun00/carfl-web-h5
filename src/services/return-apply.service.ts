@@ -11,9 +11,11 @@ export class returnApplyService {
    * 获取所有角色信息
    */
   @Debounce()
-  getAllReturnApply() {
+  getAllReturnApply(data, page) {
     return this.netService.send({
-      server: returnApplyController.getAllReturnApply
+      server: returnApplyController.getAllReturnApply,
+      data: data,
+      page: page
     })
   }
 }

@@ -33,5 +33,12 @@ export const operatorController = {
     controller: CONTROLLER,
     action: 'modify',
     type: requestType.Post
+  },
+  /**
+   * 获取系统用户详情
+   */
+  operatorsDetail: {
+    controller: CONTROLLER,
+    type: requestType.Get
   }
 }

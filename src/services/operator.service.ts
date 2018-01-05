@@ -20,10 +20,10 @@ export class operatorService {
   /**
    * 获取组织下用户列表
    */
-  orgSimpleListByOrg() {
+  orgSimpleListByOrg(id) {
     return this.netService.send({
       server: operatorController.orgSimpleListByOrg,
-      append: '713182982016163840'
+      append: id
     })
   }
   /**
@@ -44,6 +44,14 @@ export class operatorService {
       data: updateParams
     })
   }
-
+/**
+ * 获取系统用户详情
+ */
+  operatorsDetail(id) {
+    return this.netService.send({
+      server: operatorController.operatorsDetail,
+      append: id
+    })
+  }
 }
 

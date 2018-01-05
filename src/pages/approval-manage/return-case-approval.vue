@@ -1,13 +1,19 @@
 <template>
   <section class="page return-case-approval">
     <data-form :model="caseImportModel" @onSearch="refreshData">
-      <!--<template slot="default">
-        <el-form-item label="客户姓名:" prop="name">
-          <el-input v-model="roleModel.name"></el-input>
+      <template slot="default-input">
+        <el-form-item label="车主姓名" prop="actualName">
+          <el-input v-model="caseImportModel.actualName"></el-input>
         </el-form-item>
-      </template>-->
+        <el-form-item label="车主电话" prop="phone">
+          <el-input v-model="caseImportModel.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="车牌号" prop="licensePlateNumber">
+          <el-input v-model="caseImportModel.licensePlateNumber"></el-input>
+        </el-form-item>
+      </template>
     </data-form>
-    <data-box :data="caseImportData" @onPageChange="refreshData">
+    <data-box :data="caseImportData" @onPageChange="refreshData" :page="pageService">
       <template slot="columns">
         <el-table-column prop="contractNumber" label="合同编号" min-width="125">
         </el-table-column>
@@ -65,7 +71,9 @@
   } from "~/services/return-apply.service";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
-
+  import {
+    PageService
+  } from "~/utils/page.service";
   @Layout("workspace")
   @Component({
     components: {
@@ -75,12 +83,15 @@
   })
   export default class ReturnCaseApproval extends Vue {
     @Dependencies(returnApplyService) private returnApplyService: returnApplyService;
+    @Dependencies(PageService) private pageService: PageService;
 
     // 角色列表数据集
     private caseImportData: Array < any > = [];
     // 角色数据实体
     private caseImportModel: any = {
-      name: ""
+      actualName: "",
+      phone: "",
+      licensePlateNumber: ""
     };
 
     /**
@@ -94,8 +105,8 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.returnApplyService.getAllReturnApply().subscribe(data => {
-        this.caseImportData = data.content;
+      this.returnApplyService.getAllReturnApply(this.caseImportModel, this.pageService).subscribe(data => {
+        this.caseImportData = data;
       });
     }
   }
