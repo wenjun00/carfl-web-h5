@@ -26,5 +26,13 @@ export const orderController = {
     controller: CONTROLLER,
     action: 'getOrder',
     type: requestType.Get
+  },
+  /**
+   * 手动分案
+   */
+  manualDistribute: {
+    controller: CONTROLLER,
+    action: 'distribute',
+    type: requestType.Post
   }
 }

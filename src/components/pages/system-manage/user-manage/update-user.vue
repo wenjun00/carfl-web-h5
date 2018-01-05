@@ -15,13 +15,13 @@
           </el-col>
         </el-row>
       </el-form-item>
-      <el-form-item label="密码" prop="password" label-width="80">
+      <!--<el-form-item label="密码" prop="password" label-width="80">
         <el-row type="flex" justify="center">
           <el-col :span="12">
             <el-input v-model="updateUserModel.password"></el-input>
           </el-col>
         </el-row>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="所属机构" prop="organization" label-width="80">
         <el-row type="flex" justify="center">
           <el-col :span="12">
@@ -39,7 +39,7 @@
           </el-col>
         </el-row>
       </el-form-item>
-      <el-form-item label="角色" prop="role">
+      <!--<el-form-item label="角色" prop="role">
         <el-row type="flex" justify="center">
           <el-col :span="12">
             <el-select v-model="updateUserModel.role">
@@ -47,7 +47,7 @@
             </el-select>
           </el-col>
         </el-row>
-      </el-form-item>
+      </el-form-item>-->
     </el-form>
     <el-row type="flex" justify="center">
       <el-button @click="cancelUpdate">取消</el-button>
@@ -94,7 +94,7 @@
     @Prop() roleList: any;
     private orgIdArr: Array < any > = [];
     private orgNameList: Array < any > = [];
-    // private roleList: Array < any > = [];
+    private orgList: Array < any > = [];
     confirmUpdate() {
       console.log(this.orgIdArr)
       this.updateUserModel.organization = this.orgIdArr[this.orgIdArr.length - 1]
@@ -113,9 +113,13 @@
     close() {
       this.$emit('close')
     }
-    mounted() {
+    /**
+     * 获取组织名称列表
+     */
+    getOrgNameList(dept) {
       this.organizationService.getAllOrganizations().subscribe(data => {
-        console.log(data)
+        this.orgList = Object.assign([], data)
+        console.log('this.orgList', this.orgList)
         let fun: any = (id) => {
           // 递归对象子元素
           let list = data.filter(x => id ? x.parentId === id : !x.parentId).map(node => {
@@ -129,12 +133,34 @@
           return list
         }
         this.orgNameList = fun()
+        // 设置默认值
+        let arr: any = [];
+        let func = (id) => {
+          let item = data.find(v => v.id === id)
+          if (item) {
+            func(item.parentId)
+          }
+          arr.push(id)
+        }
+        func(dept)
+        arr.splice(0, 1)
+        this.orgIdArr = arr
         console.log(this.orgNameList)
       });
     }
+    mounted() {}
     refreshData(row) {
       this.updateUserModel = row
-      console.log('uuuu', this.updateUserModel)
+      this.operatorService.operatorsDetail(row.id).subscribe(data => {
+        this.updateUserModel.password = data.password
+        this.updateUserModel.role = data.role.id
+        this.updateUserModel.organization = parseInt(data.organization.id)
+        this.updateUserModel.id = data.id
+        this.updateUserModel.state = data.state
+        this.updateUserModel.fullName = data.fullName
+        this.updateUserModel.username = data.username
+        this.getOrgNameList(data.organization.id)
+      });
     }
   }
 

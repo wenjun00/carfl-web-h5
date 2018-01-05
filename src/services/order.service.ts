@@ -39,5 +39,17 @@ export class orderService {
       append: id
     })
   }
+  /**
+   * 手动分案
+   */
+  manualDistribute(idArr, orgId) {
+    return this.netService.send({
+      server: orderController.manualDistribute,
+      data: {
+        organizationId: orgId,
+        ids: idArr
+      }
+    })
+  }
 }
 

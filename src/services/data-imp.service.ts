@@ -16,11 +16,6 @@ export class dataImpService {
       server: dataImpController.getAllDataImpRecord
     })
   }
-  // getAllDataImpRecord() {
-  //   return this.netService.send({
-  //     server: dataImpController.getAllDataImpRecord
-  //   })
-  // }
   /**
    * 获取案件信息
    */
