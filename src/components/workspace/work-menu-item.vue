@@ -24,7 +24,7 @@ import { State } from "vuex-class";
 export default class WorkMenu extends Vue {
   @Prop() data: any;
 
-  @State userRescource;
+  @State userResource;
 }
 </script>
 

@@ -14,6 +14,12 @@ export default ({ store }): Object => ({
         console.error('未传入权限')
         return
       }
+      let item = store.state.userResource.find(x => x.id === authCode)
+
+      // 验证权限
+      if (!item) {
+        el.style.display = 'none'
+      }
 
       // try {
       //   authCode = String.padStart(parseInt(roleCode).toString(16), 6, '0').toUpperCase()

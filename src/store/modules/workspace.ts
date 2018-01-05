@@ -15,7 +15,7 @@ export default {
   actions: {
     updateTabs({ state, commit, rootState }, parentId) {
       // 获取tabs标签页
-      let tabs = rootState.userRescource
+      let tabs = rootState.userResource
         .filter((x: any) => x.type === "MENU")
         .filter((x: any) => x.parentId === parentId)
         .sort((x: any, y: any) => x.sort - y.sort);

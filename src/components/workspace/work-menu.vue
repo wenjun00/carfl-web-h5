@@ -19,7 +19,7 @@ const ModuleAction = namespace("workspace", Action);
   }
 })
 export default class WorkMenu extends Vue {
-  @State userRescource;
+  @State userResource;
   @State("menuCollapse") _menuCollapse;
   @Mutation updateMenuCollapse;
   @ModuleAction updateTabs;
@@ -36,7 +36,7 @@ export default class WorkMenu extends Vue {
    * 菜单列表
    */
   get menuList() {
-    let rescource = this.userRescource.filter(x =>
+    let rescource = this.userResource.filter(x =>
       ["MENU", "DIRECTORY"].includes(x.type)
     );
 
@@ -75,7 +75,7 @@ export default class WorkMenu extends Vue {
 
     // 非统计菜单需要更新tabs
     if (!this.$route.path.startsWith(path1)) {
-      let target = this.userRescource.find(x => x.url === path1);
+      let target = this.userResource.find(x => x.url === path1);
       target && this.updateTabs(target.id);
       this.updateTabs(target.id);
     }

@@ -98,8 +98,8 @@ function tabsCheck(toPath, fromPath) {
     return
   }
 
-  let toItem: any = store.state.userRescource.find((x: any) => x.url === toPath);
-  let fromItem: any = store.state.userRescource.find((x: any) => x.url === fromPath);
+  let toItem: any = store.state.userResource.find((x: any) => x.url === toPath);
+  let fromItem: any = store.state.userResource.find((x: any) => x.url === fromPath);
 
   if (!toItem) {
     return

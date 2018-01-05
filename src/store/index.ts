@@ -19,7 +19,7 @@ const store = new Vuex.Store({
     userToken: '',
     userData: '',
     userRole: '',
-    userRescource: [],
+    userResource: [],
     menuCollapse: false,
     theme: 'theme-default'
   },
@@ -44,7 +44,7 @@ const store = new Vuex.Store({
       state.userRole = role
     },
     updateUserResource(state, rescource) {
-      state.userRescource = rescource
+      state.userResource = rescource
     },
 
   },

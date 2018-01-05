@@ -18,7 +18,7 @@ const ModuleMutation = namespace('workspace', Mutation)
 })
 export default class WorkTab extends Vue {
 
-  @State userRescource
+  @State userResource
   @Mutation updateTabs
   @ModuleState currentTabs
   @ModuleState('currentTab') _currentTab
