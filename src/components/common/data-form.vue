@@ -19,80 +19,94 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { Watch, Prop, Emit } from "vue-property-decorator";
-import { Form } from "element-ui";
-import SvgIcon from "~/components/common/svg-icon.vue";
-@Component({
-  components: {
-    SvgIcon
-  }
-})
-export default class DataForm extends Vue {
-  @Prop() rules: Array<any>;
-  @Prop() model: any;
-  @Emit("onSearch")
-  onSearch() {}
-  private showCollapseIcon: boolean = false;
-  private showCollapseContext: boolean = false;
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {
+    Watch,
+    Prop,
+    Emit
+  } from "vue-property-decorator";
+  import {
+    Form
+  } from "element-ui";
+  import SvgIcon from "~/components/common/svg-icon.vue";
+  @Component({
+    components: {
+      SvgIcon
+    }
+  })
+  export default class DataForm extends Vue {
+    @Prop() rules: Array < any > ;
+    @Prop() model: any;
+    @Emit("onSearch")
+    onSearch() {}
 
-  /**
-   * 初始化
-   */
-  mounted() {
-    if (this.$slots["collapse-input"] || this.$slots["collapse-button"]) {
-      this.showCollapseIcon = true;
+    @Emit("handleResetForm") // 手动清空输入框
+    handleResetForm() {} 
+
+    private showCollapseIcon: boolean = false;
+    private showCollapseContext: boolean = false;
+
+    /**
+     * 初始化
+     */
+    mounted() {
+      if (this.$slots["collapse-input"] || this.$slots["collapse-button"]) {
+        this.showCollapseIcon = true;
+      }
+    }
+
+    /**
+     * 提交输入表单
+     */
+    submitForm() {
+      let dataForm = < Form > this.$refs["data-form"];
+      dataForm.validate(success => {
+        if (success) {
+          this.onSearch();
+        }
+      });
+    }
+
+    /**
+     * 重置输入表单
+     */
+    resetForm() {
+      let dataForm = < Form > this.$refs["data-form"];
+      dataForm.resetFields();
+      this.handleResetForm()
+    }
+
+    /**
+     * 折叠状态改变
+     */
+    changeCollapseHandle() {
+      console.log(this.showCollapseContext);
+      this.showCollapseContext = !this.showCollapseContext;
     }
   }
 
-  /**
-   * 提交输入表单
-   */
-  submitForm() {
-    let dataForm = <Form>this.$refs["data-form"];
-    dataForm.validate(success => {
-      if (success) {
-        this.onSearch();
-      }
-    });
-  }
-
-  /**
-   * 重置输入表单
-   */
-  resetForm() {
-    let dataForm = <Form>this.$refs["data-form"];
-    dataForm.resetFields();
-  }
-
-  /**
-   * 折叠状态改变
-   */
-  changeCollapseHandle() {
-    console.log(this.showCollapseContext);
-    this.showCollapseContext = !this.showCollapseContext;
-  }
-}
 </script>
 
 <style lang="less" scoped>
-.arrow-down {
-  transform: rotate(0deg);
-  transition: transform ease-in 0.2s;
-}
+  .arrow-down {
+    transform: rotate(0deg);
+    transition: transform ease-in 0.2s;
+  }
 
-.arrow-up {
-  transform: rotate(180deg);
-  transition: transform ease-in 0.2s;
-}
+  .arrow-up {
+    transform: rotate(180deg);
+    transition: transform ease-in 0.2s;
+  }
+
 </style>
 <style lang="less">
-.data-form.component {
-  .el-form {
-    .el-form-item {
-      margin-bottom: 0;
+  .data-form.component {
+    .el-form {
+      .el-form-item {
+        margin-bottom: 0;
+      }
     }
   }
-}
+
 </style>
