@@ -1,7 +1,7 @@
 <!--待接收案件-->
 <template>
   <section class="page unreceived-case">
-    <data-form :model="unReceivedModel" @onSearch="refreshData">
+    <data-form :model="unReceivedModel" @onSearch="refreshData" @handleResetForm="resetForm">
       <template slot="default-input">
         <el-form-item label="车主姓名:" prop="actualName">
           <el-input v-model="unReceivedModel.actualName"></el-input>
@@ -14,9 +14,9 @@
         </el-form-item>
       </template>
       <template slot="collapse-input">
-        <!--<el-form-item label="车架号:" prop="name">
-          <el-input v-model="unReceivedModel.name"></el-input>
-        </el-form-item>-->
+        <el-form-item label="车架号:" prop="name">
+          <el-input v-model="unReceivedModel['vehicle.frameNumber']"></el-input>
+        </el-form-item>
         <el-form-item label="车辆型号:" prop="name">
           <el-input v-model="unReceivedModel['vehicle.vehicleModel']"></el-input>
         </el-form-item>
@@ -162,7 +162,15 @@
       this.caseIds = scope.row.id
       this.dialog.restartAllot = true
     }
-
+    /**
+     * 重置输入框
+     */
+    resetForm() {
+      this.unReceivedModel['vehicle.licensePlateNumber'] = ''
+      this.unReceivedModel['vehicle.vehicleModel'] = ''
+      this.unReceivedModel['contract.businessDepartment'] = ''
+      this.unReceivedModel['vehicle.frameNumber'] = ''
+    }
     /**
      * 弹窗打开事件
      */

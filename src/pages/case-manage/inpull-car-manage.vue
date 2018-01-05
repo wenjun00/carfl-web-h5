@@ -1,6 +1,6 @@
 <template>
   <section class="page inpull-car-manage">
-    <data-form :model="inpullCarModel" @onSearch="refreshData">
+    <data-form :model="inpullCarModel" @onSearch="refreshData" @handleResetForm="resetForm">
       <template slot="default-input">
         <el-form-item label="车主姓名:" prop="actualName">
           <el-input v-model="inpullCarModel.actualName"></el-input>
@@ -71,7 +71,7 @@
             <span>{{scope.row.commissionDate?dateFormat(scope.row.commissionDate ,'yyyy-MM-dd'): ''}}</span>
           </template>-->
         </el-table-column>
-        <el-table-column prop="closingDate " label="结案日期" min-width="90">
+        <el-table-column prop="closingDate" label="结案日期" min-width="90">
           <!--<template slot-scope="scope">
             <span>{{scope.row.closingDate?dateFormat(scope.row.closingDate ,'yyyy-MM-dd'): ''}}</span>
           </template>-->
@@ -130,7 +130,7 @@
       'vehicle.vehicleModel': '', // 车辆型号
       province: '', // 省份
       city: '', // 城市
-      state: 'ASSIGNED'
+      state: 'RECEIVED'
     };
 
     /**
@@ -144,12 +144,19 @@
      * 获取刷新数据
      */
     refreshData() {
-      this.orderService.query('RECEIVED', this.pageService, {
+      this.orderService.query(this.inpullCarModel, this.pageService, {
         trustee: "asc",
         "vehicle.licensePlateNumber": "asc"
       }).subscribe(data => {
         this.inpullCarDataSet = data;
       });
+    }
+
+    resetForm() {
+      this.inpullCarModel['vehicle.licensePlateNumber'] = ''
+      this.inpullCarModel['vehicle.vehicleModel'] = ''
+      this.inpullCarModel['contract.businessDepartment'] = ''
+      this.inpullCarModel['vehicle.frameNumber'] = ''
     }
   }
 
