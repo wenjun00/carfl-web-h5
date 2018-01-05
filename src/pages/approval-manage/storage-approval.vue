@@ -55,8 +55,11 @@
         </el-table-column>
       </template>
     </data-box>
-    <el-dialog title="入库审批" :center="true" :visible.sync="dialog.approval" width="40%" @open="$nextTick(()=>{$refs['storage-approval'].refreshData()})">
-      <storage-approval ref="storage-approval" @close="dialog.approval = false" @success="refreshData"></storage-approval>
+    <el-dialog title="入库审批" :center="true" :visible.sync="dialog.approval" width="40%" @open="$nextTick(()=>{$refs['storage-approval-handle'].refreshData(approvalData)})">
+      <storage-approval-handle ref="storage-approval-handle" @close="dialog.approval = false" @success="refreshData"></storage-approval-handle>
+    </el-dialog>
+    <el-dialog title="入库信息" :center="true" :visible.sync="dialog.message" width="40%" @open="$nextTick(()=>{$refs['storage-message'].refreshData(approvalData)})">
+      <storage-message ref="storage-message" @close="dialog.message = false" @success="refreshData"></storage-message>
     </el-dialog>
   </section>
 </template>
@@ -75,12 +78,16 @@
   } from "~/services/storage-apply.service";
   import DataForm from "~/components/common/data-form.vue";
   import DataBox from "~/components/common/data-box.vue";
+  import StorageApprovalHandle from "~/components/pages/approval-manage/storage-approval/storage-approval-handle.vue";
+  import StorageMessage from "~/components/pages/approval-manage/storage-approval/storage-message.vue";
   import {
     PageService
   } from "~/utils/page.service";
   @Layout("workspace")
   @Component({
     components: {
+      StorageMessage,
+      StorageApprovalHandle,
       DataForm,
       DataBox
     }
@@ -98,8 +105,10 @@
       licensePlateNumber: ""
     };
     private dialog: any = {
-      approval: false
+      approval: false,
+      message: false
     };
+    private approvalData: any = {};
     /**
      * 初始化
      */
@@ -109,14 +118,17 @@
     /**
      * 审批
      */
-    applyClick() {
+    applyClick(scope) {
       this.dialog.approval = true
+      this.approvalData = scope.row
       console.log('审批')
     }
     /**
      * 入库信息
      */
-    checkInfo() {
+    checkInfo(scope) {
+      this.dialog.message = true
+      this.approvalData = scope.row
       console.log('入库信息')
     }
     /**
