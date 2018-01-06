@@ -20,12 +20,11 @@ export class NetService {
         'Accept': 'application/json'
       }
     })
-    console.log(app, 999)
-    if (app.mock) {
+    if (true) {
       let MockAdapter = require('axios-mock-adapter')
       let mock = new MockAdapter(this.axiosInstance, { delayResponse: 300 });
       this.createMock(mock)
-    }
+    } 
   }
 
 

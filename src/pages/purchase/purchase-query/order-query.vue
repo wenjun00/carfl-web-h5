@@ -95,10 +95,12 @@
   import {
     OrderQueryService
   } from "~/services/business-service/order-query.service";
- import {
+  import {
     Layout
   } from "~/core/decorator";
-
+  import {
+    Mutation
+  } from 'vuex-class'
   @Layout("workspace")
   @Component({
     components: {
@@ -112,6 +114,7 @@
   export default class OrderQuery extends Page {
     @Dependencies(OrderQueryService) private orderQueryService: OrderQueryService;
     private queryColumns: any;
+    @Mutation openPage
     private columns2: any;
     private queryData: Array < Object > = [];
     private data2: Array < Object > = [];
@@ -126,7 +129,10 @@
 
     confirm() {
       this.modal2 = false
-      // this.$router.push(`/${this.accCenterType(val.cupoRectype)}`)
+      this.openPage({
+        title: '融资租赁申请',
+        path: 'purchase/purchase-manage/financing-lease-apply'
+      })
     }
     cancel() {
       this.modal2 = false
@@ -353,10 +359,12 @@
       this.loading = !this.loading
     }
   }
+
 </script>
 
 <style>
   td {
     padding: 10px;
   }
+
 </style>

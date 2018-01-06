@@ -137,7 +137,7 @@
     height: 98%;
     background-repeat: no-repeat!important;
     background-size: 100% 98%;
-    background-image: url('~/assets/image/common/china.png')
+    background-image: url('/static/images/common/china.png')
   }
 
 </style>

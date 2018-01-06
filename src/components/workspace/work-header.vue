@@ -1,7 +1,7 @@
 <template>
 <div class="component work-header row between-span middle-span">
   <div class="logo">
-    <img src="assets/image/common/logo.png" width="200"></img>
+    <img src="/static/images/common/logo.png" width="200"></img>
   </div>
   <work-menu class="col-span"></work-menu>
   <div class="row">
