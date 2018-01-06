@@ -1,6 +1,5 @@
 <template>
   <section class="main-container">
-    asd
     <work-tab></work-tab>
   </section>
 </template>
