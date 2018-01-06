@@ -2,43 +2,24 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '~/store'
 
-import systemManageRoute from './system-manage.route'
-import caseImportRoute from './case-import.route'
-import caseManageRoute from './case-manage.route'
-import approvalManageRoute from './approval-manage.route'
-import TemplateSettings from './template-manage.route'
-import TaticsManage from './tatics-manage.route'
-import HomeRoute from './home.route'
-
 const Test1 = () => import('~/pages/test1.vue')
 const Test2 = () => import('~/pages/test2.vue')
 const Login = () => import('~/pages/login.vue')
+const Index = () => import('~/pages/index.vue')
 
 Vue.use(Router)
 
 // 生成路由配置
 const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: Login
-  },
-  {
-    path: '/test1',
-    name: 'test1',
-    component: Test1
-  }, {
-    path: '/test2',
-    name: 'test2',
-    component: Test2
-  },
-  ...systemManageRoute,
-  ...caseImportRoute,
-  ...caseManageRoute,
-  ...approvalManageRoute,
-  ...TemplateSettings,
-  ...TaticsManage,
-  ...HomeRoute
+  },{
+      path: '/',
+      name: 'index',
+      component: Index
+  }
 ]
 
 // 生成路由实体

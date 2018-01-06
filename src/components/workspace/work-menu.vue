@@ -1,97 +1,124 @@
 <template>
-  <div class="component work-menu">
-    <el-menu unique-opened :default-active="$route.fullPath" @select="selectMenuItem">
-      <work-menu-item v-for="item in menuList" :data="item" :key="item.id"></work-menu-item>
-    </el-menu>
+  <div class="component work-menu text-left row middle-span">
+    <div v-for="menu_lv1 in menuConfig" :key="menu_lv1.path" class="menu-level-1">
+      <Poptip v-model="menu_lv1.popue" placement="bottom" trigger="hover">
+        <div class="menu-level-1-title row middle-span center-span" style="height:100%">
+          <span>{{menu_lv1.title}}</span>
+        </div>
+        <div v-if="menu_lv1.children" class="menu-popue row" slot="content">
+          <div v-for="menu_lv2 in menu_lv1.children" :key="menu_lv2.path" class="menu-level-2 row">
+            <div>
+              <div style="font-size:14px;font-weight:bold;color:#1D4F8B;margin-bottom:20px;padding-top:30px;">{{menu_lv2.title}}</div>
+              <div v-if="menu_lv2.children">
+                <div v-for="menu_lv3 in menu_lv2.children" :key="menu_lv3.path" @click="redirect(menu_lv3,menu_lv1)" style="margin:12px 0;cursor:pointer;">
+                  {{menu_lv3.title}}
+                </div>
+              </div>
+            </div>
+            <div class="verticleLine">
+            </div>
+          </div>
+        </div>
+      </Poptip>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import WorkMenuItem from "~/components/workspace/work-menu-item.vue";
-// import { Prop } from "vue-property-decorator";
-import { State, Mutation, Action, namespace } from "vuex-class";
-const ModuleAction = namespace("workspace", Action);
-@Component({
-  components: {
-    WorkMenuItem
-  }
-})
-export default class WorkMenu extends Vue {
-  @State userResource;
-  @State("menuCollapse") _menuCollapse;
-  @Mutation updateMenuCollapse;
-  @ModuleAction updateTabs;
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {
+    Prop
+  } from "vue-property-decorator";
+  import {
+    State,
+    Mutation,
+    Action
+  } from "vuex-class";
+  import menuConfig from "~/config/menu.config";
 
-  get menuCollapse() {
-    return this._menuCollapse;
-  }
+  @Component({})
+  export default class WorkMenu extends Vue {
+    @State("pageList") pageList;
+    @Mutation("openPage") openPage;
+    private menuConfig: Array < any > = [];
 
-  set menuCollapse(value) {
-    this.updateMenuCollapse(value);
-  }
-
-  /**
-   * 菜单列表
-   */
-  get menuList() {
-    let rescource = this.userResource.filter(x =>
-      ["MENU", "DIRECTORY"].includes(x.type)
-    );
-
-    let menus = rescource
-      .filter(x => x.type === "DIRECTORY")
-      .map(x => {
-        let children = rescource
-        .filter(item => item.parentId === x.id && item.type === "MENU")
-        .sort((x: any, y: any) => x.sort - y.sort)
-
-        x.children = children;
-        return x;
-      })
-      .sort((x: any, y: any) => x.sort - y.sort);
-
-    return menus;
-  }
-
-  /**
-   * 选择菜单项
-   * 生成缓存项
-   */
-  selectMenuItem(path, pathArray) {
-    // 防止重复点击
-    if (this.$route.path === path) {
-      return;
+    created() {
+      this.menuConfig = menuConfig.map((item: any) => {
+        item.popue = false;
+        return item;
+      });
     }
 
-    // 路径长度验证
-    if (pathArray.length !== 2) {
-      return;
+    private redirect(page, menu) {
+      menu.popue = false;
+      this.openPage(page);
     }
-
-    // 获取一级,二级路径
-    let [path1, path2] = pathArray;
-
-    // 非统计菜单需要更新tabs
-    if (!this.$route.path.startsWith(path1)) {
-      let target = this.userResource.find(x => x.url === path1);
-      target && this.updateTabs(target.id);
-      this.updateTabs(target.id);
-    }
-
-    this.$nextTick(() => {
-      this.$router.push(path);
-    });
   }
-}
 </script>
 
-<style scoped>
-.work-menu {
-  flex-basis: 200px;
-  width: 200px;
-  height: 100%;
-  max-height: 100%;
-}
+<style lang="less" scoped>
+  .menu-level-1 {
+    height: 100%;
+
+    .menu-level-1-title {
+      padding: 0 30px;
+      font-size: 16px;
+      color: #feffff;
+
+      &>* {
+        padding: 0 3px;
+      }
+    }
+  }
+
+  .menu-level-2 {
+    // height:410px;
+    // display: inline-block; // border-right: 1px solid #DDDDDD;
+    flex-wrap: nowrap;
+    padding: 0 60px;
+    text-align: center;
+  }
+
+  .verticleLine {
+    width: 1px;
+    height: 150px;
+    background-color: #DDDDDD; // margin-left: 50px;
+    // margin-top: 46px;
+    position: relative;
+    top: 46px;
+    left: 60px;
+  }
+
+  .menu-level-2:last-child {
+    width: 0px;
+  }
+</style>
+
+<style lang="less">
+  .work-menu.component {
+    height: 100%;
+    .ivu-poptip-body-content {
+      overflow: hidden;
+    }
+    .ivu-poptip {
+      height: 100%;
+    }
+    .ivu-poptip-rel {
+      height: 100%;
+    }
+    .ivu-poptip-arrow {
+      display: none;
+      border-bottom-color: #1d4f8b;
+    }
+    .ivu-poptip-inner {
+      border: solid 2px #1d4f8b;
+      border-radius: 0;
+    }
+    .menu-popue {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+  }
 </style>

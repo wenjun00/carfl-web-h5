@@ -6,12 +6,11 @@ import App from '~/App.vue'
 import store from './store'
 import router from './router'
 import bootstrap from '~/core/bootstrap'
-import ElementUI from 'element-ui'
-import "element-ui/lib/theme-chalk/index.css";
+import iView from 'iview'
 
 bootstrap({ store })
 
-Vue.use(ElementUI)
+Vue.use(iView)
 
 Vue.config.productionTip = false
 

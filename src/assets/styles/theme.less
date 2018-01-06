@@ -1,40 +1,40 @@
-.generateTheme(@theme){
-  // work-header样式
-  .component.work-header{
-    background-color:@COLOR1;
-  }
-  // work-menu样式
-  .component.work-menu{
-    background-color:@COLOR2;
-    // work-menu-item样式
-    .component.work-menu-item{
-      // 一级菜单
-      .sub-menu
-      .el-submenu__title,
-      .el-menu-item{
-        background-color:@COLOR2;
-        color:@COLOR4;
-        &:hover{
-          background-color:@COLOR3;
-        }
-      }
+// iview主题
+@import '~iview/src/styles/index.less';
 
-      // 二级菜单样式
-      .sub-menu-item{
-        background-color:@COLOR3;
-        &.is-active{
-          color:@COLOR5;
-        }
+// // Here are the variables to cover, such as:
+// // @primary-color: #8c0776;
+
+.generateTheme(@theme){
+  .component.work-header{
+    background:@COLOR1;
+    .component.work-menu{
+      .menu-level-1{
+      &:hover {
+        background: @COLOR2;
+      }
+      }
+      .menu-level-2-title{
+        color:@COLOR2;
+      }
+      .ivu-poptip-inner{
+        border-color:@COLOR1;
       }
     }
-   }
+  }
 }
 
 // 主题列表
-#app{
+body{
   // 默认主题
-  &.theme-default{
+  .theme-default{
     @theme:default;
+    @import "./themes/@{theme}.less";
+    .generateTheme(@theme)
+  }
+
+  // test1主题
+  .theme-theme1{
+    @theme:theme1;
     @import "./themes/@{theme}.less";
     .generateTheme(@theme)
   }

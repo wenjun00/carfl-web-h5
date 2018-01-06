@@ -1,0 +1,281 @@
+<template>
+  <div class="component purchase-information row">
+    <!--选购信息-->
+    <i-row>
+      <h2>选购信息</h2>
+      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left">
+        <data-grid-item label="申请省份：" :span="3">上海</data-grid-item>
+        <data-grid-item label="申请城市：" :span="3">上海</data-grid-item>
+        <data-grid-item label="所属公司：" :span="3">开呗上海</data-grid-item>
+        <data-grid-item label="" :span="3"></data-grid-item>
+        <data-grid-item label="融资租赁用途" :span="3">个人使用</data-grid-item>
+        <data-grid-item label="自缴费用" :span="9">
+          <i-checkbox-group v-model="fruit">
+            <i-checkbox label="保险费"></i-checkbox>
+            <i-checkbox label="购置费"></i-checkbox>
+          </i-checkbox-group>
+        </data-grid-item>
+        <data-grid-item label="意向融资金额" :span="3">128,000.00</data-grid-item>
+        <data-grid-item label="租金支付" :span="3">4,560.00</data-grid-item>
+        <data-grid-item label="意向期限" :span="3">12期</data-grid-item>
+        <data-grid-item label="意向首付比例" :span="3">10%</data-grid-item>
+        <data-grid-item label="车辆型号" :span="6">别克 君越 2016改款</data-grid-item>
+        <data-grid-item label="上牌地区" :span="3">上海</data-grid-item>
+        <data-grid-item label="车身颜色" :span="3">紫檀红</data-grid-item>
+        <data-grid-item label="购车排量" :span="3">1.8t</data-grid-item>
+        <data-grid-item label="购车配置" :span="3"></data-grid-item>
+        <data-grid-item label="车辆牌照" :span="3">沪XXXXX</data-grid-item>
+        <data-grid-item label="" :span="3"></data-grid-item>
+      </data-grid>
+    </i-row>
+    <!--产品信息-->
+    <i-row style="margin-top:20px;">
+      <h2>产品信息</h2>
+      <table border="1" width="670">
+        <tr>
+          <td>产品系列</td>
+          <td>直租</td>
+          <td>产品名称</td>
+          <td>群泰融资</td>
+          <td>产品期数</td>
+          <td>24期</td>
+          <td>产品利率</td>
+          <td>0.99/月</td>
+        </tr>
+        <tr>
+          <td>还款方式</td>
+          <td>等本等息</td>
+          <td>融资总额</td>
+          <td>182270</td>
+          <td>月供金额</td>
+          <td>5584</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>首付金额</td>
+          <td>20252</td>
+          <td>保证金金额</td>
+          <td>0</td>
+          <td>尾付金额</td>
+          <td>0</td>
+          <td>管理费</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>保险费</td>
+          <td>0</td>
+          <td>购置税</td>
+          <td>0</td>
+          <td>上牌费</td>
+          <td>0</td>
+          <td>GPS</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>备注</td>
+          <td colspan="7"></td>
+        </tr>
+      </table>
+    </i-row>
+    <!--个人资料-->
+    <i-row style="margin-top:20px;">
+      <h2>个人资料</h2>
+      <table border="1" width="670">
+        <tr>
+          <td>姓名</td>
+          <td>左拉</td>
+          <td>性别</td>
+          <td>女</td>
+          <td>出生日期</td>
+          <td>92-03-09</td>
+          <td>微信号码</td>
+          <td>dgadget</td>
+        </tr>
+        <tr>
+          <td>手机号码</td>
+          <td>139****2432</td>
+          <td>手机号码（次）</td>
+          <td>139****2453</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>身份证号码</td>
+          <td>213****3521</td>
+          <td>婚属状况</td>
+          <td colspan="5">已婚</td>
+        </tr>
+        <tr>
+          <td>身份证有效期</td>
+          <td colspan="3">2035-02-30</td>
+          <td>发证机关</td>
+          <td colspan="3">上海宝山政府</td>
+        </tr>
+        <tr>
+          <td>身份证地址</td>
+          <td colspan="7">上海市上海市宝山区中山北路2687号</td>
+        </tr>
+        <tr>
+          <td>现居住地址</td>
+          <td colspan="7">上海市上海市宝山区中山北路</td>
+        </tr>
+        <tr>
+          <td>居住地址家庭座机</td>
+          <td></td>
+          <td>本市生活时长</td>
+          <td>12年</td>
+          <td>现居驻地生活时常</td>
+          <td colspan="3"></td>
+        </tr>
+        <tr>
+          <td>现居住地房产归属</td>
+          <td colspan="7">本人名下</td>
+        </tr>
+        <tr>
+          <td>本市自有房产状况及归属</td>
+          <td colspan="3">商品房</td>
+          <td>电费账号</td>
+          <td></td>
+          <td>电费密码</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>本市房产地址</td>
+          <td colspan="7">上海市上海市宝山区中山北路</td>
+        </tr>
+        <tr>
+          <td>教育程度</td>
+          <td colspan="2">本科</td>
+          <td>毕业院校</td>
+          <td colspan="2"></td>
+          <td>是否接受现场勘查</td>
+          <td>
+            <i-radio :checked.sync="single">是</i-radio>
+          </td>
+       </tr>
+      </table>
+    </i-row>
+    <!--职业信息-->
+    <i-row style="margin-top:20px;">
+      <h2>职业信息</h2>
+      <table border="1"  width="670">
+        <tr>
+          <td>姓名</td>
+          <td>与本人关系</td>
+          <td>联系方式</td>
+          <td>单位名称</td>
+          <td>家庭住址</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>配偶</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>父母</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>子女</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="5">其他联系人（提示：必填3个其他联系人）</td>
+        </tr>
+        <tr>
+          <td>姓名</td>
+          <td>与本人关系</td>
+          <td>联系方式</td>
+          <td>单位名称</td>
+          <td>家庭住址</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>配偶</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>父母</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>子女</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </i-row>
+    <!--客户来源-->
+    <i-row style="margin-top:20px;" >
+      <h2>客户来源</h2>
+      <table border="1" width="670">
+        <tr>
+          <td>通过传销</td>
+          <td colspan="4">
+            <i-radio value="true">其他</i-radio>
+          </td>
+        </tr>
+        <tr>
+          <td>通过介绍</td>
+          <td>
+            <i-radio>同行推荐</i-radio>
+            <span>同行姓名：</span>
+            <input type="text" style="border:0px;border-bottom:1px ;">
+          </td>
+        </tr>
+      </table>
+    </i-row>
+  </div>
+</template>
+
+<script lang="ts">
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import { DataGrid, DataGridItem } from "fintech-vue-component";
+
+  import {
+    Prop
+  } from "vue-property-decorator";
+  import {
+    Action
+  } from "vuex-class";
+
+  @Component({
+    components: {
+      DataGrid,
+      DataGridItem
+    }
+  })
+  export default class PurchaseInformation extends Vue {
+    private fruit: Array<String> = ['购置费'];
+    private single: Boolean = false;
+    
+    @Prop() person;
+    @Action select;
+  }
+</script>
+
+<style scoped>
+td{
+  font-size:14px;
+  padding: 5px;
+}
+</style>

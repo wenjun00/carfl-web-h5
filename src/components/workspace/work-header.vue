@@ -1,9 +1,11 @@
 <template>
-<div class="component work-header row between-span middle-span" style="color:white">
-  <div>这是一个催收系统</div>
-  <div class="row end-span middle-span">
-      <work-user></work-user>
-      <work-message></work-message>
+<div class="component work-header row between-span middle-span">
+  <div class="logo">
+    <img src="assets/image/common/logo.png" width="200"></img>
+  </div>
+  <work-menu class="col-span"></work-menu>
+  <div class="row">
+    <work-theme></work-theme>
   </div>
 </div>
 </template>
@@ -11,19 +13,19 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-// import { Prop } from "vue-property-decorator";
-// import { Action } from "vuex-class";
-import WorkUser from "~/components/workspace/work-user.vue"
-import WorkMessage from "~/components/workspace/work-message.vue"
+import { Prop } from "vue-property-decorator";
+import { Action } from "vuex-class";
+import WorkMenu from "~/components/workspace/work-menu.vue";
+import WorkTheme from '~/components/workspace/work-theme.vue'
 @Component({
   components:{
-    WorkUser,
-    WorkMessage
+    WorkMenu,
+    WorkTheme
   }
 })
 export default class WorkHeader extends Vue {
-  // @Prop() person;
-  // @Action select;
+  @Prop() person;
+  @Action select;
 }
 </script>
 

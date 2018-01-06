@@ -4,15 +4,13 @@ import Vue from 'vue'
 declare module 'vue/types/vue' {
   // 3. 声明为 Vue 补充的东西
   interface Vue {
-    $router: any  // 路由属性
-    $layout: String
-    $message: any
+    $router: any,  // 路由属性
+    $layout: String,
+    $Message: any,
+    $Modal: any
   }
 }
 
 declare module '*.vue' {
   export default Vue
 }
-
-// 环信
-declare var WebIM:any

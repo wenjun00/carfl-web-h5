@@ -1,47 +1,91 @@
 <template>
-  <div class="component work-tab">
-    <el-tabs type="card" v-model="currentTab" @tab-click="changeTab">
-      <el-tab-pane v-for="tab in currentTabs" :key="tab.path" :label="tab.name" :name="tab.url"></el-tab-pane>
-    </el-tabs>
+  <div class="">
+    <Tabs v-model="currentPage" type="card" closable :animated="false" @on-tab-remove="closePage">
+      <TabPane v-for="page in pageList" :key="page.path" :label="page.title" :name="page.path" :closable="page.path !== 'home'">
+        <component ref="pages" :is="getComponentName(page.path)"></component>
+      </TabPane>
+    </Tabs>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { State, Mutation,namespace } from "vuex-class";
-const ModuleState = namespace('workspace', State)
-const ModuleMutation = namespace('workspace', Mutation)
+import { Watch } from "vue-property-decorator";
+import { State, Mutation } from "vuex-class";
+import menuConfig from "~/config/menu.config";
+import { CommonService } from "~/utils/common.service";
+import Home from "~/pages/home.vue";
 
 @Component({
-  components: {}
+  name: "work-tab",
+  components: {
+    Home
+  },
+  beforeCreate() {
+    // 动态导入组件
+    let importComponents = item => {
+      if (item.children) {
+        item.children.forEach(importComponents);
+      }
+      if (item.path) {
+        let componentName = CommonService.getComponentName(item.path);
+
+        let components = this.$options.components;
+        if (components) {
+          components[componentName] = () =>
+            import("~/pages/" + item.path + ".vue");
+        }
+      }
+    };
+    menuConfig.forEach(importComponents);
+  }
 })
 export default class WorkTab extends Vue {
+  @State("currentPage") _currentPage: any; // 当前page
+  @State("pageList") pageList: Array<any>;
+  @Mutation("updatePage") updatePage: Function;
+  @Mutation("closePage") closeTab: Function;
+  private getComponentName = CommonService.getComponentName;
 
-  @State userResource
-  @Mutation updateTabs
-  @ModuleState currentTabs
-  @ModuleState('currentTab') _currentTab
-  @ModuleMutation('updateCurrentTab') updateCurrentTab
-
-  get currentTab(){
-    return this._currentTab
+  /**
+   * 获取当前页面路径
+   */
+  get currentPage() {
+    return this._currentPage;
   }
 
-  set currentTab(value){
-    if(this.currentTab !== value){
-      this.updateCurrentTab(value)
-    }
+  /**
+  * 设置当前页面路径
+  */
+  set currentPage(path) {
+    this.updatePage(path);
   }
 
-  changeTab() {
-    if (this.$route.path !== this.currentTab) {
-      this.$router.push(this.currentTab)
-    }
+  /**
+   * 监听当前页面变化
+   */
+  @Watch("currentPage")
+  onPageChanged(val: string, oldVal: string) {
+    // let components = <Array<Vue>>this.$refs["pages"];
+    // let component = components.find(
+    //   x => x.$options.name === this.getComponentName(val)
+    // );
+    // if (
+    //   component &&
+    //   component.$options.activated &&
+    //   component.$options.activated.length > 1
+    // ) {
+    //   let activated = component.$options.activated[1];
+    //   activated.call(component);
+    // }
+  }
+
+  /**
+   * 关闭页面
+   */
+  closePage(path) {
+    this.closeTab(path);
   }
 }
 </script>
-
-<style scoped>
-
-</style>

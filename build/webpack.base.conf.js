@@ -36,6 +36,13 @@ module.exports = {
         options: vueLoaderConfig
       },
       {
+        test: /\.vue$/,
+        loader: 'iview-loader',
+        options: {
+          prefix: true
+        }
+      },
+      {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         exclude: /node_modules/,

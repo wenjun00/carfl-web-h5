@@ -1,28 +1,25 @@
 <template>
-  <section class="component work-user">
-    <span>{{userData.username}}</span>
-    <router-link to="/">注销</router-link>
-  </section>
+  <div class="component work-theme">
+     <Poptip title="提示标题" content="提示内容">
+        <Button>
+          <Icon type="contrast"></Icon>
+        </Button>
+    </Poptip>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { State, Mutation,namespace } from "vuex-class";
+// import { Prop } from "vue-property-decorator";
+// import { State, Mutation, Action } from "vuex-class";
+// import menuConfig from "~/config/menu.config";
 
-@Component({
-  components: {}
-})
-export default class WorkUser extends Vue {
-  @State userData
+@Component({})
+export default class WorkTheme extends Vue {
+
 }
 </script>
 
-<style lang="less" scoped>
-  .work-user.component{
-    *{
-      padding:10px;
-      color:white;
-    }
-  }
+<style lang="less">
 </style>
