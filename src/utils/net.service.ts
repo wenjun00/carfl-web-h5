@@ -20,6 +20,31 @@ export class NetService {
         'Accept': 'application/json'
       }
     })
+
+    if (app.mock) {
+      let MockAdapter = require('axios-mock-adapter')
+      let mock = new MockAdapter(this.axiosInstance, { delayResponse: 300 });
+      this.createMock(mock)
+    }
+  }
+
+
+  /**
+   * 创建mock服务
+   * @param mock
+   */
+  createMock(mock) {
+    let mockServices = require('../mock')
+
+    Object.values(mockServices).forEach(mockItem => {
+      Object.values(mockItem).forEach(items => {
+        Object.values(items).forEach(({server,data}) => {
+          let url = NetService.generateRequestUrl(server)
+
+          mock.onAny(url).reply(200, data)
+        })
+      })
+    })
   }
 
   public static generateRequestUrl({ controller, action, url }: { controller: string, action: string, url?: string }, append = [], sort?): String {
