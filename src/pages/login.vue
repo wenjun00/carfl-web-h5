@@ -1,104 +1,164 @@
 <template>
-  <section class="page login-page theme-defaultaasd">
+  <section class="login-page theme-defaultaasd">
     <i-row type="flex" justify="center" align="middle" class="full-absolute">
-      <i-form ref="login-form" :model="loginModel" :rules="loginRule" :label-width="80" class="login-form">
-        <i-form-item label="用户名" prop="username">
-          <i-input type="text" v-model="loginModel.username" placeholder="请输入用户名" @on-keyup.enter="submitForm">
-            <i-icon type="ios-person-outline" slot="prepend"></i-icon>
-          </i-input>
-        </i-form-item>
-        <i-form-item label="密码" prop="password">
-          <i-input type="password" v-model="loginModel.password" placeholder="请输入密码" @on-keyup.enter="submitForm">
-            <i-icon type="ios-person-outline" slot="prepend"></i-icon>
-          </i-input>
-        </i-form-item>
-        <i-form-item :label-width="0" style="text-align:center">
-          <i-button type="primary" class="submit_btn" @click="submitForm">登录</i-button>
-        </i-form-item>
-      </i-form>
+      <div class="login-bg">
+      </div>
+      <div>
+        <div style="position: relative;left: 350px;color:#fff;text-align:center;margin-bottom:28px;"><span style="font-size:22px">指旺汽车金融系统</span><span style="font-size:12px;margin-left:4px;">v1.0.0</span></div>
+        <div class="loginContainer">
+          <div style="font-size:20px;color:#1D4F8B;font-weight:bold;margin-bottom:20px;margin-left:56px;font-family:AdobeHeitiStd-Regular">登录</div>
+          <i-form ref="login-form" :model="loginModel" :rules="loginRule" :label-width="80" class="login-form">
+            <i-form-item prop="username">
+              <i-input type="text" size="large" v-model="loginModel.username" placeholder="用户名" @on-keyup.enter="submitForm">
+              </i-input>
+            </i-form-item>
+            <i-form-item prop="password">
+              <i-input type="password" size="large" v-model="loginModel.password" placeholder="密码" @on-keyup.enter="submitForm">
+              </i-input>
+            </i-form-item>
+            <!--<i-form-item label="验证码" prop="password">
+            <i-input type="password" v-model="loginModel.password" placeholder="请输入密码" @on-keyup.enter="submitForm">
+              <i-icon type="ios-person-outline" slot="prepend"></i-icon>
+            </i-input>
+          </i-form-item>-->
+            <i-form-item>
+              <i-checkbox><span>记住用户名与密码</span></i-checkbox>
+              <i-button type="text" style="float:right;color:#1D4F8B">注册</i-button>
+            </i-form-item>
+            <i-form-item :label-width="0" style="text-align:center">
+              <i-button class="submit_btn blueButton" @click="submitForm">登录</i-button>
+            </i-form-item>
+          </i-form>
+        </div>
+      </div>
     </i-row>
+    <div style="width:100%;color:#999999;position:absolute;bottom:20px;text-align:center">© 2018 Zhiwang All Rights Reserved. For Internal Use Only</div>
   </section>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { LoginService } from "~/services/business-service/login.service";
-import { Dependencies } from "~/core/decorator";
-import { Mutation } from "vuex-class";
-import AppConfig from '~/config/app.config'
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {
+    LoginService
+  } from "~/services/business-service/login.service";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    Mutation
+  } from "vuex-class";
+  import AppConfig from '~/config/app.config'
 
-@Component({})
-export default class Login extends Vue {
-  @Dependencies(LoginService) private loginService: LoginService;
-  @Mutation("updateUserToken") updateUserToken;
-  @Mutation("updateUserData") updateUserData;
+  @Component({})
+  export default class Login extends Vue {
+    @Dependencies(LoginService) private loginService: LoginService;
+    @Mutation("updateUserToken") updateUserToken;
+    @Mutation("updateUserData") updateUserData;
 
-  private loginRule: Object = {};
-  private loginModel: any;
+    private loginRule: Object = {};
+    private loginModel: any;
 
-  created() {
-    // 设置表单数据
-    this.loginModel = {
-      username: "",
-      password: ""
-    };
+    created() {
+      // 设置表单数据
+      this.loginModel = {
+        username: "",
+        password: ""
+      };
 
-    // 设置验证规则
-    this.loginRule = {
-      username: [
-        {
+      // 设置验证规则
+      this.loginRule = {
+        username: [{
           required: true,
           message: "用户名不能为空",
           trigger: "blur"
-        }
-      ],
-      password: [
-        {
+        }],
+        password: [{
           required: true,
           message: "密码不能为空",
           trigger: "blur"
+        }]
+      };
+    }
+
+    /**
+     * 提交登录表单
+     */
+    submitForm() {
+      let loginForm: any = this.$refs["login-form"];
+      loginForm.validate(success => {
+        if (!success) {
+          return;
         }
-      ]
-    };
+
+        this.loginService
+          .login({
+            username: this.loginModel.username,
+            password: this.loginModel.password
+          })
+          .subscribe(
+            ({
+              token,
+              user
+            }) => {
+              this.updateUserToken(token);
+              this.updateUserData(user);
+              this.$router.push('/')
+            },
+            ({
+              msg
+            }) => {
+              // this.$Message.error(msg);
+            }
+          );
+      });
+    }
   }
 
-  /**
-   * 提交登录表单
-   */
-  submitForm() {
-    let loginForm: any = this.$refs["login-form"];
-    loginForm.validate(success => {
-      if (!success) {
-        return;
-      }
-
-      this.loginService
-        .login({
-          username: this.loginModel.username,
-          password: this.loginModel.password
-        })
-        .subscribe(
-          ({token,user}) => {
-            this.updateUserToken(token);
-            this.updateUserData(user);
-            this.$router.push('/')
-          },
-          ({ msg }) => {
-            this.$Message.error(msg);
-          }
-        );
-    });
-  }
-}
 </script>
-
 <style lang="less">
-.login-form {
-  width: 350px;
-}
+  .full-absolute {
+    background: #265EA3;
+  }
 
-.submit_btn {
-  width: 120px;
-}
+  .login-bg {
+    width: 500px;
+    height: 500px;
+    background: url('~/assets/image/common/login-bg.png');
+    position: absolute;
+    left: 140px;
+    background-repeat: no-repeat;
+    background-size: 500px 500px;
+>>>>>>> 1271aee68e2e9fa16a03532646d88713465c60a3
+  }
+
+  .login-form {
+    width: 350px;
+    position: relative;
+    right: 23px;
+  }
+
+  .submit_btn {
+    width: 270px;
+    height: 40px;
+    background: #265EA2;
+    color: #fff;
+  }
+
+  .submit_btn:hover {
+    background: #1D4F8B;
+    color: #fff;
+  }
+
+  .loginContainer {
+    border: 1px solid #dddddd;
+    background: white;
+    height: 409px;
+    width: 378px;
+    padding-top: 50px;
+    position: relative;
+    left: 350px;
+    bottom: 20px;
+  }
+
 </style>
