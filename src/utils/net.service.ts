@@ -20,7 +20,7 @@ export class NetService {
         'Accept': 'application/json'
       }
     })
-
+    console.log(app, 999)
     if (app.mock) {
       let MockAdapter = require('axios-mock-adapter')
       let mock = new MockAdapter(this.axiosInstance, { delayResponse: 300 });
@@ -38,7 +38,7 @@ export class NetService {
 
     Object.values(mockServices).forEach(mockItem => {
       Object.values(mockItem).forEach(items => {
-        Object.values(items).forEach(({server,data}) => {
+        Object.values(items).forEach(({ server, data }) => {
           let url = NetService.generateRequestUrl(server)
 
           mock.onAny(url).reply(200, data)

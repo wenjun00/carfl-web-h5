@@ -364,7 +364,7 @@ export default {
         firmName:'西安市长安区政府',
         address:'东窑头'
       }]
-    }
+    }    
   },
   getContactsRelationInfo:{
     server: businessService.orderController.getContactsRelationInfo,
@@ -388,7 +388,7 @@ export default {
         firmName:'西安市长安区政府',
         address:'东窑头'
       }]
-    }
+    }    
   },
   getRoleList:{
     server: businessService.orderController.getRoleList,
