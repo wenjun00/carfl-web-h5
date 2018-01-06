@@ -34,7 +34,7 @@ export class NetService {
    * @param mock
    */
   createMock(mock) {
-    let mockServices = require('../mock')
+    let mockServices = require('../../mock')
 
     Object.values(mockServices).forEach(mockItem => {
       Object.values(mockItem).forEach(items => {
