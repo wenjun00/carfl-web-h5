@@ -1,0 +1,415 @@
+<!--客户还款查询-->
+<template>
+  <section class="page customer-repay-query">
+    <span class="form-title">客户还款查询</span>
+    <i-button type="text">昨日</i-button>
+    <i-button type="text">今日</i-button>
+    <i-button type="text">本周</i-button>
+    <i-button type="text">本月</i-button>
+    <i-button type="text">上月</i-button>
+    <i-button type="text">最近三月</i-button>
+    <i-button type="text">本季度</i-button>
+    <i-button type="text">本年</i-button>
+    <i-button @click="openSearch" style="color:#265EA2">
+      <span v-if="!searchOptions">展开</span>
+      <span v-if="searchOptions">关闭</span>
+      <span>高级搜索</span>
+    </i-button>
+    <i-row v-if="searchOptions" style="margin:6px;">
+      <span style="margin-left:20px;">工号：</span>
+      <i-input style="display:inline-block;width:10%;" placeholder="请输入工号"></i-input>
+      <span style="margin-left:10px;">姓名：</span>
+      <i-input style="display:inline-block;width:10%;" placeholder="请输入姓名"></i-input>
+      <span style="margin-left:10px;">所属部门：</span>
+      <i-input style="display:inline-block;width:10%;" placeholder="请输入所属部门"></i-input>
+      <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+    </i-row>
+    <data-box :columns="columns1" :data="data1"></data-box>
+    <div v-show="repayInfo">
+      <span class="form-title">还款详情</span>
+      <data-box :columns="columns2" :data="data2"></data-box>
+    </div>
+
+    <template>
+      <i-modal title="还款总揽" :transfer="false" width="900" v-model="repaySumModal">
+        <repay-sum></repay-sum>
+      </i-modal>
+    </template>
+  </section>
+</template>
+
+<script lang="ts">
+  import Page from "~/core/page";
+  import DataBox from "~/components/common/data-box.vue";
+  import Component from "vue-class-component";
+  import RepaySum from "~/components/approval-manage/repay-sum.vue"
+  import CustomerSettleModal from "~/components/approval-manage/customer-settle-modal.vue"
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    OrderService
+  } from "~/services/business-service/order.service";
+ import {
+    Layout
+  } from "~/core/decorator";
+
+  @Layout("workspace")
+  @Component({
+    
+    components: {
+      DataBox,
+      RepaySum,
+      // 客户结算号弹窗
+      CustomerSettleModal
+    }
+  })
+  export default class CustomerRepayQuery extends Page {
+    @Dependencies(OrderService) private orderService: OrderService;
+    private columns1: any;
+    private data1: Array < Object > = [];
+    private columns2: any;
+    private data2: Array < Object > = [];
+    private repayInfo: Boolean = false;
+    private ceshiShow: Boolean = false;
+    private searchOptions: Boolean = false;
+    private repaySumModal: Boolean = false;
+
+
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
+    created() {
+      this.columns1 = [{
+          align: "center",
+          type: "index",
+          width: "60",
+          title: '序号'
+        },
+        {
+          title: "操作",
+          width: "180",
+          align: "center",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("div", [
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      // this.$Modal.info({
+                      //   title: '还款总览',
+                      //   width: '900',
+                      //   transfer: false,
+                      //   render: h => h(RepaySum)
+                      // })
+                      this.repaySumModal = true
+                    }
+                  }
+                },
+                "还款总览"
+              ),
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.trailerCar(row);
+                    }
+                  }
+                },
+                "拖车"
+              )
+            ]);
+          }
+        },
+        {
+          align: "center",
+          title: "订单号",
+          width: '150',
+          render: (h, params) => {
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.repayInfo = true
+                }
+              }
+            }, 'KB2017100801')
+          }
+        },
+        {
+          align: "center",
+          title: "客户结算号",
+          key: "customerSettleId",
+          width: '150',
+          render: (h, params) => {
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.$Modal.info({
+                    title: '客户当前结算号',
+                    render: h => h(CustomerSettleModal),
+                    okText: '关闭'
+                  })
+                }
+              }
+            }, 'LSK13902344')
+          }
+        },
+        {
+          align: "center",
+          title: "客户姓名",
+          key: "customerName"
+        },
+        {
+          align: "center",
+          title: " 证件号",
+          key: "idCard",
+          width: '160'
+        },
+        {
+          align: "center",
+          title: " 手机号",
+          key: "phone",
+          width: '120'
+        },
+        {
+          align: "center",
+          title: " 订单创建时间",
+          key: "orderCreateTime",
+          width: '160'
+        },
+        {
+          align: "center",
+          title: " 合同生效日",
+          key: "contractDate",
+          width: '160'
+        },
+        {
+          align: "center",
+          title: " 待还本金",
+          key: "noPayMajorMoney",
+          width: '90'
+        },
+        {
+          align: "center",
+          title: " 待还利息",
+          key: "noPayInterest",
+          width: '90'
+        },
+        {
+          align: "center",
+          title: " 待还罚息",
+          key: "noPayPunishInterest",
+          width: '90'
+        },
+        {
+          align: "center",
+          title: " 利率%/月",
+          key: "interestRate",
+          width: '90'
+        },
+        {
+          align: "center",
+          title: " 结算通道",
+          key: "windAccountChannel"
+        },
+        {
+          align: "center",
+          title: " 归属公司",
+          key: "belongFirm"
+        }
+      ];
+      this.data1 = [{
+        customerSettleId: '622820190001',
+        customerName: '韩冰',
+        idCard: '610525199312061245',
+        phone: '18292465893',
+        orderCreateTime: '2017-07-07 14:45:36',
+        contractDate: '2017-07-08 14:45:36',
+        noPayMajorMoney: '1000.00',
+        noPayInterest: '120.00',
+        noPayPunishInterest: '45.55',
+        interestRate: '4.35%',
+        windAccountChannel: '汇付',
+        belongFirm: '群泰西安'
+      }]
+
+      this.columns2 = [{
+          align: "center",
+          type: "index",
+          width: "60",
+          title: '期数'
+        },
+        {
+          title: "操作",
+          width: "120",
+          align: "center",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("div", [
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.checkProof(row);
+                    }
+                  }
+                },
+                "查看凭证"
+              )
+            ]);
+          }
+        },
+        {
+          align: "center",
+          title: "还款状态",
+          key: 'payStatus'
+        },
+        {
+          align: "center",
+          title: "应付款日",
+          key: "supposedPayDate",
+          width: '110'
+        },
+        {
+          align: "center",
+          title: "实际付款日",
+          key: "actualPayDate",
+          width: '110'
+        },
+        {
+          align: "center",
+          title: " 逾期天数",
+          key: "overPeriodsDay"
+        },
+        {
+          align: "center",
+          title: " 每日罚息",
+          key: "interestEachDay"
+        },
+        {
+          align: "center",
+          title: " 金额",
+          key: "money"
+        },
+        {
+          align: "center",
+          title: " 罚金",
+          key: "punishMoney"
+        },
+        {
+          align: "center",
+          title: " 开票日",
+          key: "invoiceDate",
+          width: '110'
+        },
+        {
+          align: "center",
+          title: " 应收租金",
+          key: "supposedRentMoney"
+        },
+        {
+          align: "center",
+          title: " 应收本金",
+          key: "supposedPrincipalMoney"
+        },
+        {
+          align: "center",
+          title: "应收利息",
+          key: "supposedInterest"
+        },
+        {
+          align: "center",
+          title: " 应收罚息",
+          key: "supposedPunishInterest"
+        },
+        {
+          align: "center",
+          title: " 减免罚息",
+          key: "derateInterest"
+        },
+        {
+          align: "center",
+          title: " 冻结罚息",
+          key: "frozenInterest"
+        },
+        {
+          align: "center",
+          title: " 实收本金",
+          key: "actualPrincipalMoney"
+        },
+        {
+          align: "center",
+          title: " 实收利息",
+          key: "actualInterest"
+        }
+      ];
+
+      this.data2 = [{
+        payStatus: '结清',
+        supposedPayDate: '2017-12-01',
+        actualPayDate: '2017-12-01',
+        overPeriodsDay: '0',
+        interestEachDay: '0',
+        money: '1600',
+        punishMoney: '0',
+        invoiceDate: '2017-12-01',
+        supposedRentMoney: '500',
+        supposedPrincipalMoney: '950',
+        supposedInterest: '150',
+        supposedPunishInterest: '0',
+        derateInterest: '0',
+        frozenInterest: '0',
+        actualPrincipalMoney: '1100',
+        actualInterest: '150'
+      }]
+
+    }
+
+    repaySum(row) {}
+    trailerCar(row) {
+
+    }
+    /**
+     * 查看凭证
+     */
+    checkProof(row) {
+
+    }
+
+
+  }
+</script>
+<style>
+
+</style>
