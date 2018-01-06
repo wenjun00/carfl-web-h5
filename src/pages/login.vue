@@ -86,6 +86,10 @@
      */
     submitForm() {
       let loginForm: any = this.$refs["login-form"];
+      if (this.loginModel.username !== 'liujia' && this.loginModel.password !== 'liujia') {
+        this.$Message.error('账号或密码不正确！')
+        return
+      }
       loginForm.validate(success => {
         if (!success) {
           return;
@@ -103,7 +107,7 @@
             }) => {
               this.updateUserToken(token);
               this.updateUserData(user);
-              this.$router.push('/')
+              this.$router.push('/home')
             },
             ({
               msg
@@ -124,7 +128,7 @@
   .login-bg {
     width: 500px;
     height: 500px;
-    background: url('~/assets/image/common/login-bg.png');
+    background: url('/static/images/common/login-bg.png');
     position: absolute;
     left: 140px;
     background-repeat: no-repeat;

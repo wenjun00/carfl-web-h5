@@ -7,7 +7,7 @@
           <div style="float:right;margin-right:20px;">
             <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
               <svg-icon iconClass="dayin" style="font-size:24px;"></svg-icon>
-              <span style="font-size:12px;">打印</span>
+              <span style="font-size:12px;" @click="print">打印</span>
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@
           </i-form>
         </i-col>
         <i-col span="6" style="display: flex;justify-content: center;align-items: center;position:absolute;top:20%;right:18%;" pull="6">
-          <i-button class="blueButton">添加新申请</i-button>
+          <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
         </i-col>
       </i-row>
       <i-tabs value="选购材料" type="card" v-model="materialTabs" style="height:76%;overflow-y:auto;">
@@ -94,7 +94,7 @@
   import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue";
   import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue";
   import SvgIcon from '~/components/common/svg-icon.vue'
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
@@ -116,13 +116,21 @@
     private customerModel: any;
     private addCar: Boolean = false;
     private materialTabs: String = '选购资料'
-
+    print() {
+      window.print()
+    }
     created() {
       // 设置表单数据
       this.customerModel = {
         idCard: "",
         userName: ""
       };
+    }
+    addNewApply() {
+      this.$Modal.confirm({
+        title: '提示',
+        content:'有未提交的申请，确定创建新申请吗？'
+      })
     }
     saveAndSubmit() {
       this.customerModel.idCard = ''
@@ -132,6 +140,7 @@
       this.customerModel.worker = ''
     }
   }
+
 </script>
 
 <style lang="less" scope>
@@ -158,4 +167,5 @@
       width: 240%;
     }
   }
+
 </style>

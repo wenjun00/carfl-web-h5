@@ -48,7 +48,7 @@
       </i-col>
       <i-col span="6" type="flex" justify="center" style="display: flex;justify-content: center;align-items: center;position:absolute;top:20%;right:18%;"
         pull="6">
-        <i-button class="blueButton">添加新申请</i-button>
+        <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
       </i-col>
     </i-row>
     <i-tabs value="purchaseItem" type="card" style="height:76%;overflow-y:auto;background:white">
@@ -185,6 +185,7 @@
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
         <i-col :span="6" style="text-align:right">
+          <i-button size="large" class="highDefaultButton">保存草稿</i-button>
           <i-button class="highButton" @click="saveAndSubmit">保存并提交</i-button>
         </i-col>
       </i-row>
@@ -230,7 +231,7 @@
     PageService
   } from "~/utils/page.service";
   import SvgIcon from '~/components/common/svg-icon.vue'
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
@@ -265,6 +266,12 @@
     private loading: Boolean = false;
     private addCar: Boolean = false;
     private isShown: Boolean = true;
+    addNewApply() {
+      this.$Modal.confirm({
+        title: '提示',
+        content: '有未提交的申请，确定创建新申请吗？'
+      })
+    }
     created() {
       this.columns1 = [{
         title: '操作',
@@ -459,7 +466,11 @@
         this.data1 = val
       })
     }
+    saveAndSubmit() {
+
+    }
   }
+
 </script>
 
 <style lang="less" scope>
@@ -539,4 +550,5 @@
       border-radius: 0;
     }
   }
+
 </style>

@@ -1,22 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '~/store'
-
-const Test1 = () => import('~/pages/test1.vue')
-const Test2 = () => import('~/pages/test2.vue')
-const Login = () => import('~/pages/login.vue')
-const Index = () => import('~/pages/index.vue')
-
+// import Login from '~/pages/login.vue'
+// import Index from '~/pages/index.vue'
+const Login = () => Promise.resolve(require('~/pages/login.vue'))
+const Index = () => Promise.resolve(require('~/pages/index.vue'))
 Vue.use(Router)
 
 // 生成路由配置
 const routes = [
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: Login
   },{
-      path: '/',
+      path: '/home',
       name: 'index',
       component: Index
   }
@@ -53,7 +51,7 @@ router.afterEach((to, from) => {
   //  布局检测
   layoutCheck(to.matched)
   // Tab更新检测
-  tabsCheck(to.path, from.path)
+  // tabsCheck(to.path, from.path)
 })
 
 // 布局监测

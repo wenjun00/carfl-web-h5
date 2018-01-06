@@ -23,11 +23,11 @@
       </i-col>
     </i-row>
 
-    <!--<template>
-      <i-modal v-model="modifyRoleModal" title="修改角色">
-        <modify-role></modify-role>
+    <template>
+      <i-modal v-model="allotRoleModal" title="分配角色">
+        <allot-role-modal></allot-role-modal>
       </i-modal>
-    </template>-->
+    </template>
 
   </section>
 </template>
@@ -36,7 +36,7 @@
   import Page from "~/core/page";
   import DataBox from "~/components/common/data-box.vue";
   import Component from "vue-class-component";
-  import ModifyRole from "~/components/system-manage/modify-role.vue"
+  import allotRoleModal from "~/components/system-manage/allot-role-modal.vue"
   import UserList from "~/components/system-manage/user-list.vue"
   import WaitHandleCase from "~/components/system-manage/wait-handle-case.vue"
   import ModulePower from "~/components/system-manage/module-power.vue"
@@ -51,16 +51,16 @@
   import {
     RoleService
   } from "~/services/role-service/role.service";
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
       DataBox,
-      ModifyRole,
+      allotRoleModal,
       UserList,
       WaitHandleCase,
       ModulePower
@@ -75,9 +75,10 @@
     private columns2: any;
     private data2: Array < Object > = [];
     private treeData: Array < any > = [];
+    private allotRoleModal: Boolean = false;
 
     allotRole(row) {
-
+      this.allotRoleModal = true
     }
     modifyRole(row) {
 
@@ -272,4 +273,5 @@
 
 
   }
+
 </script>

@@ -8,28 +8,28 @@
             <div style="width:7px;height:18px;background:#265EA2;display:inline-block"></div>
             <span style="margin-left:10px;font-size:16px;color:#333333;position:relative;bottom:3px;">快速上手</span>
             <div style="width:600px;height:100px;display:flex;justify-content:space-around;align-items:center">
-              <div class="quickStartContainer">
+              <div class="quickStartContainer" @click="financeLeaseApply">
                 <div class="quickStart">
                   <svg-icon class="svg" iconClass="tianxie"></svg-icon>
                 </div>
                 <div class="quickText">融资租赁申请</div>
               </div>
 
-              <div class="quickStartContainer">
+              <div class="quickStartContainer" @click="fullPayClick">
                 <div class="quickStart">
                   <svg-icon class="svg" iconClass="shenqingbaoming"></svg-icon>
                 </div>
                 <div class="quickText">全额付款申请</div>
               </div>
 
-              <div class="quickStartContainer">
+              <div class="quickStartContainer" @click="customerAccountClick">
                 <div class="quickStart">
                   <svg-icon class="svg" iconClass="tianxie"></svg-icon>
                 </div>
                 <div class="quickText">客户开户</div>
               </div>
 
-              <div class="quickStartContainer">
+              <div class="quickStartContainer" @click="customerSignClick">
                 <div class="quickStart">
                   <svg-icon class="svg" iconClass="tianxie"></svg-icon>
                 </div>
@@ -40,7 +40,7 @@
         </div>
         <!--左下-->
         <div style="width:100%;border:1px solid #DDDDDD;height:630px;margin-top:10px;background:#fff;">
-          <div class="mapContainer"></div>
+          <zmap></zmap>
         </div>
       </div>
       <!--右边待办事项-->
@@ -65,6 +65,7 @@
   import Component from "vue-class-component";
   import Test2 from "./test2.vue";
   import SvgIcon from '~/components/common/svg-icon.vue'
+  import Map from "~/components/common/map.vue"
   import {
     DataGrid,
     DataGridItem
@@ -72,17 +73,22 @@
   import {
     Layout
   } from "~/core/decorator";
+  import {
+    Mutation
+  } from 'vuex-class'
 
   @Layout("workspace")
   @Component({
     components: {
       DataGrid,
       DataGridItem,
-      SvgIcon
+      SvgIcon,
+      'zmap': Map
     }
   })
   export default class Home extends Vue {
     private waitToHandle: Array < any >= []
+    @Mutation openPage
 
     created() {
       this.waitToHandle = [{
@@ -94,6 +100,33 @@
         name: '退回的销售申请',
         number: 8
       }]
+    }
+    financeLeaseApply() {
+      this.openPage({
+        title: '融资租赁申请',
+        path: 'purchase/purchase-manage/financing-lease-apply'
+      })
+    }
+    fullPayClick() {
+      this.openPage({
+        title: '全额付款申请',
+        path: 'purchase/purchase-manage/full-payment-apply'
+      })
+    }
+    customerAccountClick() {
+      this.openPage({
+        title: '客户开户',
+        path: 'purchase/purchase-manage/open-account'
+      })
+
+    }
+    customerSignClick() {
+      this.openPage({
+        title: '客户签约',
+        path: 'purchase/purchase-manage/customer-sign'
+      })
+
+
     }
   }
 

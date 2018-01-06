@@ -235,7 +235,7 @@
         manageMoney: '0',
         publishStatus: '已发布'
       }, {
-        id: 1,
+        id: 2,
         number: '编号002',
         month: '12',
         accountType: '固定账期（5日）',
@@ -248,7 +248,7 @@
         manageMoney: '0',
         publishStatus: '已发布'
       }, {
-        id: 1,
+        id: 3,
         number: '编号003',
         month: '12',
         accountType: '固定账期（5日）',
@@ -261,7 +261,7 @@
         manageMoney: '0',
         publishStatus: '未发布'
       }, {
-        id: 1,
+        id: 4,
         number: '编号004',
         month: '12',
         accountType: '固定账期（5日）',

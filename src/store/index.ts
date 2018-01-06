@@ -17,6 +17,7 @@ const store = new Vuex.Store({
     workspace: workspace
   },
   state: {
+    layout: 'default',
     resourceData: '',
     dictData: '',
     userToken: '',
@@ -39,6 +40,9 @@ const store = new Vuex.Store({
   mutations: {
     updateResourceData(state, data) {
       state.resourceData = data
+    },
+    updateLayout(state, layout) {
+      state.layout = layout || 'default'
     },
     updateDictData(state, data) {
       state.dictData = data

@@ -20,7 +20,7 @@
     @Prop({
       default: 4
     }) zoom: number;
-    @Prop() center: any;
+    @Prop({default:()=>[121.59996, 31.197646]}) center: any;
     @Prop({
       default: () => []
     }) markers

@@ -208,7 +208,7 @@
           </i-form-item>
           <i-form-item label="验证码" v-if="current===1">
             <i-input v-model="qCode" style="width:160px;"></i-input>
-            <i-button style="display:inline-block;margin-left:8px;" @click='sendQcode' class="blueButton" size="small">发送验证码<span>{{timeout1}}</span></i-button>
+            <i-button style="display:inline-block;margin-left:8px;" @click='sendQcode' class="blueButton" size="small">发送验证码<span>60</span></i-button>
           </i-form-item>
         </i-form>
         <i-button @click="confirmUnBindCard" v-if="current===1" style="position:relative;left:340px;">确认解绑</i-button>
