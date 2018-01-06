@@ -88,7 +88,7 @@
       DataGridItem
     }
   })
-  export default class PurchaseInformation extends Vue {
+  export default class PurchaseInformationTotal extends Vue {
     private fruit: Array<String> = ['购置费'];
     private single: Boolean = false;
     

@@ -6,6 +6,8 @@
     <data-box :columns="columns1" :data="data1"></data-box>
     <div style="margin-left:10px;">其他联系人（提示：必填3个其他联系人）</div>
     <data-box :columns="columns1" :data="data2"></data-box>
+    <!--<div style="height:60px;width:100%;">
+    </div>-->
   </section>
 </template>
 
@@ -37,7 +39,7 @@
       this.columns1 = [{
         title: '操作',
         align: 'center',
-        width: '60',
+        width: 160,
         render: (h, {
           row,
           column,
@@ -53,11 +55,21 @@
               cursor: 'pointer'
             }
           }, [h('Icon', {
-            props: {
-              type: 'edit',
-              size: '20'
-            }
-          })])
+              props: {
+                type: 'edit',
+                size: '20'
+              }
+            }),
+            h('Icon', {
+              props: {
+                type: 'android-delete',
+                size: '20'
+              },
+              style: {
+                marginLeft: '10px'
+              }
+            })
+          ])
         }
       }, {
         title: '与本人关系',
@@ -79,31 +91,6 @@
         title: '家庭住址',
         key: 'address',
         align: 'center'
-      },{
-        title: '操作',
-        align: 'center',
-        width: '60',
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          return h('div', {
-            on: {
-              click: () => {
-                this.deleteRelation(row)
-              }
-            },
-            style: {
-              cursor: 'pointer'
-            }
-          }, [h('Icon', {
-            props: {
-              type: 'android-delete',
-              size: '20'
-            }
-          })])
-        }
       }]
       // 获取客户联系人直系亲属
       this.orderService.getContactsInfo().subscribe(({
@@ -121,15 +108,15 @@
     }
     editModalOpen(row) {
       this.$Modal.info({
-        title:'编辑联系人',
-        render:h=>h(EditRelation,{
-          props:{
+        title: '编辑联系人',
+        render: h => h(EditRelation, {
+          props: {
             row
           }
         })
       })
     }
-    deleteRelation(row){
+    deleteRelation(row) {
 
     }
   }

@@ -138,7 +138,7 @@
     Dependencies
   } from "~/core/decorator";
   @Component({
-    layout: "workspace",
+
     components: {}
   })
   export default class SimulateCalculate extends Vue {
