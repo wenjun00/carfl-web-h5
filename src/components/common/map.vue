@@ -30,7 +30,7 @@
 
 <style lang="less" scoped>
   .map.component {
-    height: 600px;
+    height: 620px;
   }
 
 </style>
