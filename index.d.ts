@@ -1,11 +1,8 @@
 import Vue from 'vue'
-
-// 扩展vue接口
+import VueRouter from 'vue-router'
 declare module 'vue/types/vue' {
-  // 3. 声明为 Vue 补充的东西
   interface Vue {
-    $router: any,  // 路由属性
-    $layout: String,
+    $router: VueRouter,
     $Message: any,
     $Modal: any
   }

@@ -10,7 +10,6 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@types/node": "^8.5.2",
     "axios": "^0.17.1",
     "fintech-vue-component": "git+http://git:123456@117.36.75.166:3000/web_dev/fintech-vue-component.git",
     "iview": "^2.8.0",
@@ -26,6 +25,7 @@
     "vuex-persistedstate": "^2.4.2"
   },
   "devDependencies": {
+    "@types/node": "^8.5.2",
     "@types/core-js": "^0.9.43",
     "@types/webpack-env": "^1.13.3",
     "iview-loader": "^1.0.0",

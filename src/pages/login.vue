@@ -85,7 +85,7 @@ export default class Login extends Vue {
             this.$router.push('/')
           },
           ({ msg }) => {
-
+            this.$Message.error(msg);
           }
         );
     });
