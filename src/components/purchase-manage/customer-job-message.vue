@@ -19,7 +19,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12" pull="4">
           <i-form-item label="部门" prop="group">
             <i-input type="text" v-model="job.group" placeholder="请输入部门">
             </i-input>
@@ -32,7 +32,7 @@
             </i-select>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12" pull="4">
           <i-form-item label="职务" prop="duty">
             <i-input type="text" v-model="job.duty" placeholder="请输入职务">
             </i-input>
@@ -52,7 +52,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12" pull="4">
           <i-form-item label="单位地址" prop="address">
             <i-input type="text" v-model="job.address" placeholder="请输入单位地址">
             </i-input>
@@ -77,7 +77,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12" pull="3">
           <i-form-item label="每月发薪日" prop="day">
             <i-input type="text" v-model="revenue.day" placeholder="请输入每月发薪日">
             </i-input>
@@ -89,7 +89,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12" pull="3">
           <i-form-item label="年收入(万元)" prop="year">
             <i-input type="text" v-model="revenue.year" placeholder="请输入年收入">
             </i-input>
@@ -101,7 +101,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12" pull="3">
           <i-form-item label="其他收入来源" prop="otherWay">
             <i-input type="text" v-model="revenue.otherWay" placeholder="请输入其他收入来源">
             </i-input>
@@ -115,7 +115,7 @@
     <!--企业经营者-->
     <div v-if="jobType === '企业经营者'">
       <i-form ref="company-form" :model="company" :label-width="110">
-        <i-col span="12">
+        <i-col span="12" style="position:relative;right:60px;">
           <i-form-item label="身份" prop="identity">
             <i-radio-group v-model="company.identity">
               <i-radio label="法人代表"></i-radio>
@@ -123,13 +123,13 @@
             </i-radio-group>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12" pull="3">
           <i-form-item label="企业经营年限" prop="year">
             <i-input type="text" v-model="company.year" placeholder="请输入企业经营年限">
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12" pull="3">
           <i-form-item label="经营地归属" prop="address">
             <i-input type="text" v-model="company.address" placeholder="请输入经营地归属">
             </i-input>
@@ -141,7 +141,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12" pull="3">
           <i-form-item label="注册资本(万元)" prop="capital">
             <i-input type="text" v-model="company.capital" placeholder="请输入注册资本">
             </i-input>
@@ -153,7 +153,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12" pull="3">
           <i-form-item label="过去一年营业收入(万元)" prop="yearRevenue">
             <i-input type="text" v-model="company.yearRevenue" placeholder="请输入过去一年营业收入">
             </i-input>
@@ -165,6 +165,10 @@
             </i-input>
           </i-form-item>
         </i-col>
+        <!--<i-col span="24">
+          <div style="height:60px;">
+          </div>
+        </i-col>-->
       </i-form>
     </div>
 
@@ -219,5 +223,13 @@
 </script>
 
 <style lang="less" scope>
-
+  .customer-job-message {
+    .ivu-select-selection {
+      width: 240%;
+      display: inline-block;
+      border-style: none;
+      border-bottom-style: solid;
+      border-radius: 0;
+    }
+  }
 </style>

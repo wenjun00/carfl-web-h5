@@ -108,7 +108,7 @@
             ({
               msg
             }) => {
-              // this.$Message.error(msg);
+              this.$Message.error(msg);
             }
           );
       });
@@ -129,7 +129,6 @@
     left: 140px;
     background-repeat: no-repeat;
     background-size: 500px 500px;
->>>>>>> 1271aee68e2e9fa16a03532646d88713465c60a3
   }
 
   .login-form {

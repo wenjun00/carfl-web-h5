@@ -4,7 +4,7 @@
     <i-row style="margin-left:50px;">
       <h2>上传素材</h2>
       <br>
-      <i-button type="primary" @click="openClick">上传</i-button>
+      <i-button class="blueButton" @click="openClick">上传</i-button>
       <span style="margin-left:15px;">建议文件大小100M以内</span>
     </i-row>
     <i-row style="margin-left:50px;">

@@ -1,6 +1,6 @@
 <!--客户职业-->
 <template>
-  <section class="component customer-origin ">
+  <section class="component customer-origin">
     <h2>客户来源</h2>
     <i-form ref="job-form" :model="job" :label-width="110">
       <i-row>
