@@ -1,0 +1,110 @@
+<!--划扣记录-->
+<template>
+  <section class="component deduct-record">
+    <span>支付日期：</span>
+    <i-input style="width:10%;display:inline-block"></i-input>~
+    <i-input style="width:10%;display:inline-block"></i-input>
+    <span style="margin-left:10px;">期数：</span>
+    <i-input style="width:10%;display:inline-block"></i-input>
+    <i-select placeholder="全部交易状态" style="width:14%;display:inline-block;margin-left:10px;">
+      <i-option label="初始" value="初始" key="初始"></i-option>
+      <i-option label="处理中" value="初始" key="初始"></i-option>
+      <i-option label="成功" value="成功" key="成功"></i-option>
+      <i-option label="失败" value="失败" key="失败"></i-option>
+    </i-select>
+    <div style="position:relative;top:10px;"><span>客户姓名：王泽杰</span><span style="float:right">出账客户号：666600000000565656</span></div>
+    <data-box :columns="columns1" :data="data1"></data-box>
+  </section>
+</template>
+
+<script lang="ts">
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import DataBox from "~/components/common/data-box.vue";
+
+  @Component({
+    components: {
+      DataBox
+    }
+  })
+  export default class DeductRecord extends Vue {
+    private columns1: any;
+    private data1: Array < Object >= [];
+
+    created() {
+      this.columns1 = [{
+          title: '序号',
+          type: 'index',
+          width: '60',
+          align: 'center'
+        },
+        {
+          title: '期数',
+          key: 'periods',
+          width: '70',
+          align: 'center'
+        },
+        {
+          title: '支付日期',
+          width: '120',
+          key: 'payDate',
+          align: 'center'
+        },
+        {
+          title: '出账卡号',
+          width: '165',
+          key: 'outAccountId',
+          align: 'center'
+        },
+        {
+          title: '支付银行',
+          key: 'payBank',
+          align: 'center'
+        },
+        {
+          title: '支付金额',
+          key: 'payAmt',
+          align: 'center'
+        },
+        {
+          title: '汇付交易订单号',
+          width: '180',
+          key: 'huifuId',
+          align: 'center'
+        },
+        {
+          title: '交易状态',
+          key: 'dealStatus',
+          align: 'center'
+        },
+        {
+          title: '失败原因',
+          key: 'failReason',
+          align: 'center'
+        },
+        {
+          title: '操作人',
+          key: 'operator',
+          align: 'center'
+        }
+      ]
+
+      this.data1 = [{
+        periods: '12期',
+        payDate: '2017-12-01',
+        outAccountId: '6227001454452014325',
+        payBank: '建行',
+        payAmt: '1500.00',
+        huifuId: 'QC000000000000002155',
+        dealStatus: '成功',
+        failReason: '',
+        operator: '胡开甲'
+      }]
+    }
+
+  }
+</script>
+
+<style>
+
+</style>
