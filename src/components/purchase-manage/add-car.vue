@@ -96,7 +96,7 @@
       this.carColumns = [{
         type: 'selection',
         align: 'center',
-        width: 60
+        width: 100
       }, {
         title: '车辆品牌',
         key: 'brand',

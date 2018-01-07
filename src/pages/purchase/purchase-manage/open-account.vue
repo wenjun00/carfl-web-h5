@@ -289,7 +289,7 @@
       this.columns1 = [{
           align: 'center',
           type: 'index',
-          width: '60',
+          width: 60,
           renderHeader: (h, {
             column,
             index
@@ -314,7 +314,7 @@
           }
         }, {
           title: '操作',
-          width: '100',
+          width: 100,
           align: 'center',
           render: (h, {
             row,
@@ -403,7 +403,7 @@
         },
         {
           key: 'prdName',
-          width: '140',
+          width: 140,
           renderHeader: (h, {
             column,
             index
@@ -430,7 +430,7 @@
         },
         {
           title: '结算通道',
-          width: '200',
+          width: 200,
           align: 'center',
           render: (h, {
             row,
@@ -486,7 +486,7 @@
       this.columns2 = [{
         title: '序号',
         type: 'index',
-        width: '80',
+        width: 80,
         align: 'center'
       }, {
         title: '列名',
@@ -494,19 +494,19 @@
         align: 'center'
       }, {
         type: 'selection',
-        width: '80',
+        width: 80,
         align: 'center'
       }]
       this.columnsHelp = [{
         title: '银行',
         key: 'bankName',
         align: 'center',
-        width: '60'
+        width: 60
       }, {
         title: '验卡失败原因',
         key: 'checkCardFailReason',
         align: 'center',
-        width: '400'
+        width: 400
       }, {
         title: '资讯电话',
         key: 'bankPhone',

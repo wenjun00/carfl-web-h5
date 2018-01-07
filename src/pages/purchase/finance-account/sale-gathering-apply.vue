@@ -57,7 +57,7 @@
         <i-table :columns="columns3" :data="data3"></i-table>
       </i-tab-pane>
       <i-tab-pane name="customerItem" label="上传素材">
-        <!--TODO-->
+         <upload-the-material></upload-the-material>
       </i-tab-pane>
     </i-tabs>
     <div class="submitBar">
@@ -118,13 +118,15 @@
  import {
     Layout
   } from "~/core/decorator";
+  import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
 
   @Layout("workspace")
 
   @Component({
     components: {
       DataBox,
-      SvgIcon
+      SvgIcon,
+      UploadTheMaterial
     }
   })
   export default class SaleGatheringApply extends Page {

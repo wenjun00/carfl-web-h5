@@ -254,9 +254,9 @@ import {
                 },
                 on: {
                   click: () => {
-                    this.$Modal.info({
-                      width: '1300',
-                      render: h => h(RepayInfo)
+                    this.$Modal.success({
+                        title:'提示',
+                        content:'撤销成功'
                     })
                   }
                 },

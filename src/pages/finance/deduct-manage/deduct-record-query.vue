@@ -20,7 +20,7 @@
     <!--Modal-->
     <template>
       <i-modal title="订单领取" v-model="orderModal" width="300">
-        <span>确定将所选订单领取到我的订单？</span>
+        <span>确定将所选订单领取到我的审核？</span>
         <div slot="footer">
           <i-button @click="orderModal=false">取消</i-button>
           <i-button @click="orderModal=false" class="blueButton">确定</i-button>

@@ -95,21 +95,23 @@
     private waitHandleCaseModal: Boolean = false; // 待办事项配置
 
     created() {
-      this.roleService.queryRolePage().subscribe(({
-        val
-      }) => {
-        console.log(888, val)
-        this.data1 = val
-      })
+     this.data1=[{
+         roleName:'管理员',
+         belongSystem:'指旺上海',
+         operator:'刘佳',
+         createTime:'2017-12-01 10:16:32',
+         updateTime:'2017-12-01 13:56:21',
+         desc:''
+     }]
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           title: '序号'
         },
         {
           title: "操作",
-          width: "420",
+          width: 420,
           align: "center",
           render: (h, {
             row,
@@ -218,12 +220,14 @@
         {
           align: "center",
           title: "创建时间",
-          key: "createTime"
+          key: "createTime",
+          width:160
         },
         {
           align: "center",
           title: "修改时间",
-          key: "updateTime"
+          key: "updateTime",
+          width:160
         },
         {
           align: "center",
@@ -234,7 +238,7 @@
       this.columns2 = [{
           title: "序号",
           type: "index",
-          width: "80",
+          width: 80,
           align: "center"
         },
         {
@@ -244,7 +248,7 @@
         },
         {
           type: "selection",
-          width: "80",
+          width: 80,
           align: "center"
         }
       ];
@@ -256,7 +260,7 @@
         {
           type: "selection",
           align: "center",
-          width: "80"
+          width: 80
         }
       ];
       this.data2 = [{

@@ -350,52 +350,50 @@
       })
       this.columns2 = [{
         type: 'selection',
-        align: 'center'
+        align: 'center',
+        width:60
       }, {
         title: '车辆品牌',
         key: 'brand',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '车辆型号',
         key: 'model',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '车身颜色',
         key: 'color',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '车辆排量',
         key: 'output',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '车辆配置',
         key: 'configuration',
-        align: 'center',
-        width: '86'
+        align: 'center'
       }, {
         title: '上牌地区',
         key: 'area',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '车辆牌照',
         key: 'license',
-        align: 'center',
-        width: '86'
+        align: 'center'
       }, {
         title: '所在门店',
         key: 'store',
-        align: 'center',
-        width: '86'
+        align: 'center'
       }, {
         title: '状态',
         key: 'status',
         align: 'center',
-        width: '86'
+        width: 86
       }]
       this.applyQueryService.addCarQueryData().subscribe(({
         val

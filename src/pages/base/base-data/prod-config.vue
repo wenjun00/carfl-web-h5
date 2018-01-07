@@ -22,7 +22,7 @@
           <i-tree :data="treeData"></i-tree>
         </div>
       </i-col>
-      <i-col :span="18">
+      <i-col :span="18" style="overflow:auto">
         <i-row>
           <i-col :span="12">
             <data-grid :labelWidth="100" labelAlign="left" contentAlign="left">

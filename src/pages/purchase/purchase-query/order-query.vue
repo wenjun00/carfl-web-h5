@@ -28,6 +28,12 @@
     <template>
       <i-modal v-model="columnsManage" title="列配置">
         <i-table :columns="columns2" :data="data2" border stripe></i-table>
+        <div slot="footer">
+          <i-button>上移</i-button>
+          <i-button>下移</i-button>
+          <i-button>恢复默认</i-button>
+          <i-button @click="openColumnsConfig=false">关闭</i-button>
+        </div>
       </i-modal>
     </template>
     <template>
@@ -195,7 +201,10 @@
                   },
                   on: {
                     click: () => {
-
+                        this.$Modal.confirm({
+                            title:'提示',
+                            content:'确认申请收款吗？'
+                        })
                     }
                   }
                 }, '申请收款'),

@@ -19,8 +19,13 @@
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
-        <!--<i-table :columns="columns2" :data="data2" border stripe @on-select="multipleSelect"></i-table>-->
         <data-box :columns="columns2" :data="data2"></data-box>
+        <div slot="footer">
+          <i-button>上移</i-button>
+          <i-button>下移</i-button>
+          <i-button>恢复默认</i-button>
+          <i-button @click="openColumnsConfig=false">关闭</i-button>
+        </div>
       </i-modal>
     </template>
     <!--上传资料、补充资料-->

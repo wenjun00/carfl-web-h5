@@ -72,6 +72,14 @@ import {
                   },
                   style: {
                     color: 'blue'
+                  },
+                  on:{
+                      click:()=>{
+                          this.$Modal.success({
+                              title:'提示',
+                              content:'停用成功！'
+                          })
+                      }
                   }
                 }, '停用')
               ])
@@ -83,6 +91,14 @@ import {
                   },
                   style: {
                     color: 'blue'
+                  },
+                  on:{
+                      click:()=>{
+                          this.$Modal.success({
+                              title:'提示',
+                              content:'启用成功！'
+                          })
+                      }
                   }
                 }, '启用')
               ])

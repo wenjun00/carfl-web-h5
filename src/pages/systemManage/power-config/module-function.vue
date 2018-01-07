@@ -175,11 +175,13 @@
         align: 'center',
         type: 'index',
         title: '选择',
-        width: 60
+        width: 60,
+        fixed:'left'
       }, {
         align: 'center',
         title: '操作',
         width: 260,
+        fixed:'left',
         render: (h, {
           row,
           columns,
@@ -226,7 +228,10 @@
               },
               on: {
                 click: () => {
-
+                    this.$Modal.confirm({
+                        title:'提示',
+                        content:'确定删除吗?'
+                    })
                 }
               }
             }, '删除')
@@ -236,11 +241,14 @@
         align: 'center',
         key: 'path',
         title: '路径',
+        fixed:'left',
+        width:120
       }, {
         align: 'center',
         key: 'requestType',
         title: '请求方式',
-        width: 90
+        width: 120,
+        fixed:'left'
       }, {
         align: 'center',
         key: 'powerIcon',

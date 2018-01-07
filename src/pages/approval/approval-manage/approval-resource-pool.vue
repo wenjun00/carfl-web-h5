@@ -42,10 +42,10 @@
     <!--Modal-->
     <template>
       <i-modal title="订单领取" v-model="orderModal" width="300">
-        <span>确定将所选订单领取到我的订单？</span>
+        <span>确定将所选订单领取到我的审核？</span>
         <div slot="footer">
           <i-button @click="orderModal=false">取消</i-button>
-          <i-button @click="orderModal=false" class="blueButton">确定</i-button>
+          <i-button @click="confirmGetOrder" class="blueButton">确定</i-button>
         </div>
       </i-modal>
     </template>
@@ -67,6 +67,9 @@
  import {
     Layout
   } from "~/core/decorator";
+  import {
+    Mutation,
+  } from "vuex-class";
 
   @Layout("workspace")
   @Component({
@@ -83,6 +86,7 @@
     private data2: Array < Object > = [];
     private orderModal: Boolean = false;
     private searchOptions: Boolean = false;
+    @Mutation("openPage") openPage;
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -109,12 +113,13 @@
         {
           align: "center",
           type: "index",
-          width: "60",
-          title: '序号'
+          width: 60,
+          title: '序号',
+          fixed:'left'
         },
         {
           title: "操作",
-          width: "100",
+          width: 90,
           align: "center",
           render: (h, {
             row,
@@ -139,17 +144,18 @@
                 "领取"
               )
             ]);
-          }
+          },
+          fixed:'left'
         },
         {
           key: 'step',
           title: '环节',
           align: 'center',
-          width: '120',
+          width: 120,
           render: (h, params) => {
             return h('Tooltip', {
               props: {
-                content: '面审tooltip'
+                content: '面审通过'
               },
             }, [h('span', {}, '面审'),
               h('Icon', {
@@ -166,12 +172,14 @@
                 }
               })
             ])
-          }
+          },
+          fixed:'left'
         },
         {
           title: "订单号",
           key: "orderId",
           align: "center",
+          width:150,
           render: (h, params) => {
             return h('i-button', {
               props: {
@@ -186,55 +194,62 @@
                 }
               }
             }, '2017101001')
-          }
+          },
+          fixed:'left'
         },
         {
           title: "订单状态",
           align: "center",
-          key: "orderStatus"
+          key: "orderStatus",
+          width:100
         },
         {
           align: "center",
           title: "订单创建时间",
           key: "orderCreateTime",
-          width: '160'
+          width: 160
         },
         {
           align: "center",
           title: "进入资源池时间",
           key: "orderPoolTime",
-          width: '160'
+          width: 160
         },
         {
           align: "center",
           title: "省份",
-          key: "province"
+          key: "province",
+          width:100
         },
         {
           align: "center",
           title: "城市",
-          key: "city"
+          key: "city",
+          width:100
         },
         {
           align: "center",
           title: "订单类型",
-          key: "orderType"
+          key: "orderType",
+          width:100
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customerName"
+          key: "customerName",
+          width:100
         },
         {
           align: "center",
           title: "证件号",
           key: "idCard",
-          width: '160'
+          width: 180
         },
         {
           align: "center",
           title: "手机号",
-          key: "phone"
+          key: "phone",
+          width:160
         }
       ];
 
@@ -284,6 +299,13 @@
      */
     getOrder(row) {
       this.orderModal = true
+    }
+    confirmGetOrder(){
+     this.orderModal=false
+      this.openPage({
+        title: '我的审核',
+        path: 'approval/approval-manage/my-approval'
+      })
     }
   }
 </script>

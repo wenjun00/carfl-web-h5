@@ -122,7 +122,10 @@
                   },
                   on: {
                     click: () => {
-                      // this.getOrder(row);
+                        this.$Modal.success({
+                            title:'提示',
+                            content:'审核成功！'
+                        })
                     }
                   }
                 },

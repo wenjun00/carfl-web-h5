@@ -84,7 +84,10 @@
 
     }
     resetPwd(row) {
-
+        this.$Modal.success({
+            title:'提示',
+            content:'重置成功！'
+        })
     }
     deviceManage(row) {
 
@@ -106,7 +109,7 @@
         }]
       }]
       this.data1 = [{
-        userName: 'dianguangshihuio',
+        userName: 'dianguan',
         actualName: '胡开甲',
         belongOrg: '指旺西安',
         status: '开启',
@@ -116,12 +119,12 @@
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           title: '序号'
         },
         {
           title: "操作",
-          width: "420",
+          width: 300,
           align: "center",
           render: (h, {
             row,
@@ -176,22 +179,6 @@
                   }
                 },
                 "重置密码"
-              ),
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.deviceManage(row);
-                    }
-                  }
-                },
-                "设备管理"
               )
             ]);
           }
@@ -219,18 +206,20 @@
         {
           align: "center",
           title: "电话",
-          key: "phone"
+          key: "phone",
+          width:160
         },
         {
           align: "center",
           title: "创建时间",
-          key: "createTime"
+          key: "createTime",
+          width:180
         }
       ];
       this.columns2 = [{
           title: "序号",
           type: "index",
-          width: "80",
+          width: 80,
           align: "center"
         },
         {
@@ -240,7 +229,7 @@
         },
         {
           type: "selection",
-          width: "80",
+          width: 80,
           align: "center"
         }
       ];
