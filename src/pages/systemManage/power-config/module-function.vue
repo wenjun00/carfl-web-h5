@@ -100,13 +100,13 @@
   import {
     Dependencies
   } from "~/core/decorator";
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
       DataBox,
       FunctionModule
@@ -176,12 +176,12 @@
         type: 'index',
         title: '选择',
         width: 60,
-        fixed:'left'
+        fixed: 'left'
       }, {
         align: 'center',
         title: '操作',
         width: 260,
-        fixed:'left',
+        fixed: 'left',
         render: (h, {
           row,
           columns,
@@ -223,32 +223,17 @@
               props: {
                 type: 'text'
               },
-              style: {
-                color: 'blue'
-              },
               on: {
                 click: () => {
-                    this.$Modal.confirm({
-                        title:'提示',
-                        content:'确定删除吗?'
-                    })
+
                 }
+              },
+              style: {
+                color: 'blue'
               }
-            }, '删除')
+            }, '查看')
           ]
         }
-      }, {
-        align: 'center',
-        key: 'path',
-        title: '路径',
-        fixed:'left',
-        width:120
-      }, {
-        align: 'center',
-        key: 'requestType',
-        title: '请求方式',
-        width: 120,
-        fixed:'left'
       }, {
         align: 'center',
         key: 'powerIcon',
@@ -258,7 +243,7 @@
         align: 'center',
         key: 'createTime',
         title: '创建时间',
-        width: 180
+        width: 220
       }, {
         align: 'center',
         key: 'operator',
@@ -268,7 +253,7 @@
         align: 'center',
         key: 'modifyTime',
         title: '修改时间',
-        width: 120
+        width: 220
       }, {
         align: 'center',
         key: 'status',
@@ -278,40 +263,15 @@
         align: 'center',
         key: 'moduleId',
         title: '模块编号',
-        width: 120
+        width: 132
       }, {
         align: 'center',
         key: 'belongSystem',
         title: '所属系统',
         width: 120
-      }, {
-        align: 'center',
-        title: '描述',
-        width: 120,
-        render: (h, {
-          row,
-          columns,
-          index
-        }) => {
-          return h('i-button', {
-            props: {
-              type: 'text'
-            },
-            on: {
-              click: () => {
-
-              }
-            },
-            style: {
-              color: 'blue'
-            }
-          }, '查看')
-        }
       }]
 
       this.treeDatabox = [{
-        path: 'restoration/lease/toApplyList.html',
-        requestType: 'POST',
         powerIcon: 'leftico01.png',
         createTime: '2017-12-01 13:56:56',
         operator: '管理员',
@@ -322,6 +282,7 @@
       }]
     }
   }
+
 </script>
 
 <style>
@@ -333,4 +294,5 @@
   .input {
     width: 60%;
   }
+
 </style>

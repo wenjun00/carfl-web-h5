@@ -45,31 +45,32 @@
           column,
           index
         }) => {
-          return h('div', {
-            on: {
-              click: () => {
-                this.editModalOpen(row)
-              }
-            },
-            style: {
-              cursor: 'pointer'
-            }
-          }, [h('Icon', {
-              props: {
-                type: 'edit',
-                size: '20'
-              }
-            }),
-            h('Icon', {
-              props: {
-                type: 'android-delete',
-                size: '20'
-              },
-              style: {
-                marginLeft: '10px'
-              }
-            })
-          ])
+          // return h('div', {
+          //   on: {
+          //     click: () => {
+          //       this.editModalOpen(row)
+          //     }
+          //   },
+          //   style: {
+          //     cursor: 'pointer'
+          //   }
+          // }, [h('Icon', {
+          //     props: {
+          //       type: 'edit',
+          //       size: '20'
+          //     }
+          //   }),
+          //   h('Icon', {
+          //     props: {
+          //       type: 'android-delete',
+          //       size: '20'
+          //     },
+          //     style: {
+          //       marginLeft: '10px'
+          //     }
+          //   })
+          // ])
+          return h('div',)
         }
       }, {
         title: '与本人关系',

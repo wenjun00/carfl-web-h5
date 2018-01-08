@@ -1,0 +1,119 @@
+<!--新增用户-->
+<template>
+  <section class="component add-user">
+    <i-form :label-width="100" class="modifyUserForm">
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="用户名">
+            <i-input></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="姓名">
+            <i-input></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+
+        <i-col :span="12">
+          <i-form-item label="电话呼叫绑定的通道号码">
+            <i-input></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="主叫电话的区号">
+            <i-input></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="电话">
+            <i-input></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="邮箱">
+            <i-input></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="公司名称">
+            <i-select>
+              <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="所属机构">
+            <i-input></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="年龄">
+            <i-input></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="性别">
+            <i-input></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="民族">
+            <i-input></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="绑定主叫号码">
+            <i-input></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="24">
+          <i-form-item label="备注">
+            <i-input type="textarea"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+    </i-form>
+  </section>
+</template>
+
+<script lang="ts">
+  import Vue from 'vue';
+  import Component from 'vue-class-component'
+  import {
+    Prop
+  } from "vue-property-decorator";
+
+  @Component({
+    components: {}
+  })
+  export default class AddUser extends Vue {
+    created() {}
+    cancel() {
+
+    }
+    confirm() {
+
+    }
+  }
+
+</script>
+<style lang="less">
+  // .modifyUserForm {
+  //   .ivu-input {
+  //     width: 65%;
+  //   }
+  // }
+
+</style>

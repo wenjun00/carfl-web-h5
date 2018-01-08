@@ -4,6 +4,7 @@
     <span class="form-title">机构与用户管理</span>
     <i-row>
       <i-col :span="4">
+        <i-button class="blueButton" @click="addNewOrg">添加机构</i-button>
         <i-tree :data="treeData"></i-tree>
       </i-col>
       <i-col :span="20">
@@ -17,7 +18,9 @@
             <i-option label="启用" value="启用" key="启用"></i-option>
             <i-option label="停用" value="停用" key="停用"></i-option>
           </i-select>
-          <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+          <i-button class="blueButton" style="margin-left:20px;" @click="addNewUser">新增用户</i-button>
+          <i-button class="blueButton" style="margin-left:20px;" @click="batchAllotRole">批量分配角色</i-button>
+          <i-button class="blueButton" style="margin-left:20px;" @click="batchManageDevice">批量管理设备</i-button>
         </i-row>
         <data-box :columns="columns1" :data="data1"></data-box>
       </i-col>
@@ -29,6 +32,30 @@
       </i-modal>
     </template>
 
+    <template>
+      <i-modal v-model="modifyUserModal" title="修改用户" width="600">
+        <modify-user></modify-user>
+      </i-modal>
+    </template>
+
+
+    <template>
+      <i-modal v-model="addNewUserModal" title="新增用户" width="600">
+        <add-user></add-user>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="deviceManageModal" title="设备管理" width="600">
+        <device-manage :userName="userName"></device-manage>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="addNewOrgModal" title="添加机构" width="400">
+        <add-org></add-org>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -40,7 +67,10 @@
   import UserList from "~/components/system-manage/user-list.vue"
   import WaitHandleCase from "~/components/system-manage/wait-handle-case.vue"
   import ModulePower from "~/components/system-manage/module-power.vue"
-
+  import ModifyUser from "~/components/system-manage/modify-user.vue"
+  import AddUser from "~/components/system-manage/add-user.vue"
+  import DeviceManage from '~/components/system-manage/device-manage.vue'
+  import AddOrg from '~/components/system-manage/add-org.vue'
 
   import {
     Dependencies
@@ -63,7 +93,11 @@
       allotRoleModal,
       UserList,
       WaitHandleCase,
-      ModulePower
+      ModulePower,
+      ModifyUser,
+      AddUser,
+      DeviceManage,
+      AddOrg
     }
   })
   export default class OrgUserManage extends Page {
@@ -76,21 +110,55 @@
     private data2: Array < Object > = [];
     private treeData: Array < any > = [];
     private allotRoleModal: Boolean = false;
+    private modifyUserModal: Boolean = false;
+    private addNewUserModal: Boolean = false;
+    private deviceManageModal: Boolean = false;
+    private addNewOrgModal: Boolean = false;
+    private userName: String = '';
 
+    public databox;
     allotRole(row) {
       this.allotRoleModal = true
     }
-    modifyRole(row) {
-
+    /**
+     * 添加机构
+     */
+    addNewOrg() {
+      this.addNewOrgModal = true
+    }
+    /**
+     * 修改用户
+     */
+    modifyUser(row) {
+      this.modifyUserModal = true
     }
     resetPwd(row) {
-        this.$Modal.success({
-            title:'提示',
-            content:'重置成功！'
-        })
+      this.$Modal.success({
+        title: '提示',
+        content: '重置成功！'
+      })
     }
-    deviceManage(row) {
-
+    deviceManageOpen(row) {
+      this.deviceManageModal = true
+      this.userName = row.userName
+    }
+    /**
+     * 新增用户
+     */
+    addNewUser() {
+      this.addNewUserModal = true
+    }
+    /**
+     * 批量分配角色
+     */
+    batchAllotRole() {
+      this.allotRoleModal = true
+    }
+    /**
+     * 批量管理设备
+     */
+    batchManageDevice() {
+      this.deviceManageModal = true
     }
     created() {
       this.treeData = [{
@@ -115,16 +183,22 @@
         status: '开启',
         phone: '13565757815',
         createTime: '2017-12-01 13:56:56'
+      }, {
+        userName: 'zhangfeng',
+        actualName: '张峰',
+        belongOrg: '指旺西安',
+        status: '开启',
+        phone: '13589727012',
+        createTime: '2017-12-01 14:26:56'
       }]
       this.columns1 = [{
           align: "center",
-          type: "index",
-          width: 60,
-          title: '序号'
+          type: "selection",
+          width: 60
         },
         {
           title: "操作",
-          width: 300,
+          width: 340,
           align: "center",
           render: (h, {
             row,
@@ -158,7 +232,7 @@
                   },
                   on: {
                     click: () => {
-                      this.modifyRole(row);
+                      this.modifyUser(row);
                     }
                   }
                 },
@@ -179,6 +253,22 @@
                   }
                 },
                 "重置密码"
+              ),
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.deviceManageOpen(row);
+                    }
+                  }
+                },
+                "设备管理"
               )
             ]);
           }
@@ -207,13 +297,13 @@
           align: "center",
           title: "电话",
           key: "phone",
-          width:160
+          width: 160
         },
         {
           align: "center",
           title: "创建时间",
           key: "createTime",
-          width:180
+          width: 180
         }
       ];
       this.columns2 = [{

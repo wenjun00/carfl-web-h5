@@ -41,6 +41,7 @@
               <Radio label="第三方"></Radio>
             </RadioGroup>
             <i-button class="blueButton" @click="customerFodderConfig">客户素材配置</i-button>
+            <i-button class="blueButton" @click="chargeAgainstOrderConfig">冲抵顺序配置</i-button>
           </i-col>
         </i-row>
         <i-row :gutter="10" style="margin-top:20px;min-width:1366px">
@@ -129,6 +130,12 @@
         <add-periods></add-periods>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal v-model="chargeAgainstOrderConfigModal" title="冲抵顺序配置" width="900">
+        <charge-against-order></charge-against-order>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -138,6 +145,7 @@
   import Component from "vue-class-component";
   import SvgIcon from '~/components/common/svg-icon.vue'
   import AddPeriods from '~/components/base-data/add-periods.vue'
+  import ChargeAgainstOrder from '~/components/base-data/charge-against-order.vue'
   import {
     Dependencies
   } from "~/core/decorator";
@@ -154,13 +162,13 @@
 
   @Layout("workspace")
   @Component({
-
     components: {
       DataBox,
       SvgIcon,
       DataGrid,
       DataGridItem,
-      AddPeriods
+      AddPeriods,
+      ChargeAgainstOrder
     }
   })
   export default class ProdConfig extends Page {
@@ -177,6 +185,7 @@
     private customerFodderConfigModal: Boolean = false;
     private addPeriodsModal: Boolean = false;
     private checkId: Number = 1
+    private chargeAgainstOrderConfigModal: Boolean = false;
 
     /**
      * 新增期数
@@ -418,6 +427,9 @@
     }
     publish() {
       this.confirmPublishModal = true
+    }
+    chargeAgainstOrderConfig() {
+      this.chargeAgainstOrderConfigModal = true
     }
   }
 

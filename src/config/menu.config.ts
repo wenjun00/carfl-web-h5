@@ -260,12 +260,25 @@ export default [
       }, {
         title: '客户还款撤销',
         path: 'systemManage/operation-config/customer-repay-revert'
+      }, {
+        title: '系统参数管理',
+        path: 'systemManage/operation-config/system-param-manage'
+      }, {
+        title: '系统备份',
+        path: 'systemManage/operation-config/system-backups'
+      }, {
+        title: '批量管理',
+        path: 'systemManage/operation-config/batch-manage'
       }
-        // , {
-        //   title: '组织架构同步',
-        //   path: 'systemManage/operation-config/org-frame-syn'
-        // }
       ]
+    },
+    {
+      title: '其他设置',
+      path: 'systemManage/other-config',
+      children: [{
+        title: '系统日志',
+        path: 'systemManage/other-config/system-log'
+      }]
     }]
   }
 ]

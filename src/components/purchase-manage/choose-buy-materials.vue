@@ -313,11 +313,18 @@
                   },
                   on: {
                     click: () => {
-                      this.carData.forEach((x, i) => {
-                        if (i === index) {
-                          this.carData.splice(i, 1)
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '确定删除吗？',
+                        onOk: () => {
+                          this.carData.forEach((x, i) => {
+                            if (i === index) {
+                              this.carData.splice(i, 1)
+                            }
+                          })
                         }
                       })
+
                     }
                   }
                 },
@@ -384,6 +391,7 @@
     }
 
   }
+
 </script>
 
 <style lang="less" scope>
@@ -402,4 +410,5 @@
       display: none!important;
     }
   }
+
 </style>
