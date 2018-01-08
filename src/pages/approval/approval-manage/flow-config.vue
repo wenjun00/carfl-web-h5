@@ -153,7 +153,10 @@
     }
 
     deleteFlow(row) {
-
+      this.$Modal.confirm({
+        title:'提示',
+        content:'确定删除吗？'
+      })
     }
     moveUp(row) {
 

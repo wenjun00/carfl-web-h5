@@ -11,13 +11,13 @@
     <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">关闭</span>高级搜索</i-button>
     <div style="float:right;margin-right:10px;margin-top:10px;">
-      <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+      <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" @click="printPage">
         <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
         <span style="font-size:12px;">打印</span>
       </div>
       <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
         <svg-icon iconClass="daochu"></svg-icon>
-        <span>导出</span>
+        <span @click="exportDatabox">导出</span>
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin:6px;">
@@ -25,13 +25,13 @@
       <i-button class="blueButton">搜索</i-button>
     </i-row>
     <!--<i-table :columns="columns1" :data="data1" border stripe></i-table>-->
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="data1" ref="databox"></data-box>
 
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
         <!--<i-table :columns="columns2" :data="data2" border stripe @on-select="multipleSelect"></i-table>-->
-        <data-box :columns="columns2" :data="data2"></data-box>
+        <data-box :columns="columns2" :data="data2" ref="databox1"></data-box>
         <div slot="footer">
           <i-button>上移</i-button>
           <i-button>下移</i-button>
@@ -237,7 +237,7 @@
     OrderService
   } from "~/services/business-service/order.service";
   import SvgIcon from '~/components/common/svg-icon.vue'
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
@@ -277,13 +277,16 @@
     private certificateId: String = '';
     private openHelp: Boolean = false;
     private dataHelp: Array < Object > = [];
-
+    public databox;
 
     constructor() {
       super()
       // console.log(111333)
     }
-
+    exportDatabox() {
+      this.databox = this.$refs["databox"]
+      this.databox.exportDatabox()
+    }
     created() {
       // console.log(123)
       this.columns1 = [{
@@ -626,5 +629,9 @@
     openHelpPage() {
       this.openHelp = true
     }
+    printPage() {
+      window.print()
+    }
   }
+
 </script>

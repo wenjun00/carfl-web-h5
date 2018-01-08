@@ -59,12 +59,14 @@
  import {
     Layout
   } from "~/core/decorator";
+  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
 
   @Layout("workspace")
   @Component({
     
     components: {
-      DataBox
+      DataBox,
+      PurchaseInformation
     }
   })
   export default class BlackList extends Page {
@@ -105,6 +107,11 @@
                   },
                   on: {
                     click: () => {
+                       this.$Modal.info({
+                        title:'申请单详情',
+                        width:'900',
+                        render:h=>h(PurchaseInformation)
+                      })
                     }
                   }
                 },

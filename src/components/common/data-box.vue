@@ -54,7 +54,7 @@
     @Emit("rowClick")
     getRowByClick(row) {}
     @Emit("currentChange") // 行单击高亮后change事件
-    getRowInfo(currentRow, oldRow){}
+    getRowInfo(currentRow, oldRow) {}
     @Prop()
     width: Number;
     // @Prop({default:500})
@@ -83,7 +83,14 @@
     currentChange(currentRow, oldRow) {
       this.getRowInfo(currentRow, oldRow)
     }
+    exportDatabox() {
+      this.table = this.$refs["table"]
+      this.table.exportCsv({
+        filename: '客户开户'
+      })
+    }
   }
+
 </script>
 
 <style lang="less" scoped>
@@ -92,4 +99,5 @@
       padding: 10px;
     }
   }
+
 </style>

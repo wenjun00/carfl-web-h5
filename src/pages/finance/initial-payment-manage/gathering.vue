@@ -122,7 +122,10 @@ import {
                   },
                   on: {
                     click: () => {
-
+                      this.$Modal.success({
+                        title:'提示',
+                        content:'确认收款成功！'
+                      })
                     }
                   }
                 },

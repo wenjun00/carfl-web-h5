@@ -31,7 +31,6 @@
   import Page from "~/core/page";
   import Component from "vue-class-component";
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
-
   import {
     Dependencies
   } from "~/core/decorator";
@@ -84,7 +83,13 @@
                     color: "#265EA2"
                   },
                   on: {
-                    click: () => {}
+                    click: () => {
+                       this.$Modal.info({
+                        title:'申请单详情',
+                        width:'900',
+                        render:h=>h(PurchaseInformation)
+                      })
+                    }
                   }
                 },
                 "查看订单"
@@ -205,7 +210,7 @@
             on: {
               click: () => {
                 this.$Modal.info({
-                  width: 800,
+                  width: 900,
                   closable: true,
                   render: h => h(PurchaseInformation)
                 })

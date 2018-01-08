@@ -27,7 +27,7 @@
             <td>{{item.id}}</td>
             <td width="360">
               <i-button type="text" style="color:blue">编辑</i-button>
-              <i-button type="text" style="color:blue">删除</i-button>
+              <i-button type="text" style="color:blue" @click="deleteDataDict">删除</i-button>
             </td>
             <td>{{item.name}}</td>
           </tr>
@@ -48,13 +48,13 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       SvgIcon
@@ -186,10 +186,18 @@ import {
       let tb = document.getElementById('tb')
       console.log(tb, 999)
     }
+    deleteDataDict() {
+      this.$Modal.confirm({
+        title: '提示',
+        content: '确定删除吗？'
+      })
+    }
   }
+
 </script>
 <style>
   .dataTypeCss {
     background: #E4F4FA;
   }
+
 </style>

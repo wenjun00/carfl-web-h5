@@ -70,6 +70,14 @@ import {
                 },
                 style: {
                   color: 'blue'
+                },
+                on:{
+                  click:()=>{
+                    this.$Modal.confirm({
+                      title:'提示',
+                      content:'确定删除吗？'
+                    })
+                  }
                 }
               },'删除')
             ])
