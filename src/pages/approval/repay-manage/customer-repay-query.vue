@@ -83,12 +83,12 @@
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           title: '序号'
         },
         {
           title: "操作",
-          width: "180",
+          width: 180,
           align: "center",
           render: (h, {
             row,
@@ -117,30 +117,31 @@
                   }
                 },
                 "还款总览"
-              ),
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.trailerCar(row);
-                    }
-                  }
-                },
-                "拖车"
               )
+              // ,
+              // h(
+              //   "i-button", {
+              //     props: {
+              //       type: "text"
+              //     },
+              //     style: {
+              //       color: "#265EA2"
+              //     },
+              //     on: {
+              //       click: () => {
+              //         this.trailerCar(row);
+              //       }
+              //     }
+              //   },
+              //   "拖车"
+              // )
             ]);
           }
         },
         {
           align: "center",
           title: "订单号",
-          width: '150',
+          width: 150,
           render: (h, params) => {
             return h('i-button', {
               props: {
@@ -158,7 +159,7 @@
           align: "center",
           title: "客户结算号",
           key: "customerSettleId",
-          width: '150',
+          width: 150,
           render: (h, params) => {
             return h('i-button', {
               props: {
@@ -185,49 +186,49 @@
           align: "center",
           title: " 证件号",
           key: "idCard",
-          width: '160'
+          width: 160
         },
         {
           align: "center",
           title: " 手机号",
           key: "phone",
-          width: '120'
+          width: 120
         },
         {
           align: "center",
           title: " 订单创建时间",
           key: "orderCreateTime",
-          width: '160'
+          width: 160
         },
         {
           align: "center",
           title: " 合同生效日",
           key: "contractDate",
-          width: '160'
+          width: 160
         },
         {
           align: "center",
           title: " 待还本金",
           key: "noPayMajorMoney",
-          width: '90'
+          width: 90
         },
         {
           align: "center",
           title: " 待还利息",
           key: "noPayInterest",
-          width: '90'
+          width: 90
         },
         {
           align: "center",
           title: " 待还罚息",
           key: "noPayPunishInterest",
-          width: '90'
+          width: 90
         },
         {
           align: "center",
           title: " 利率%/月",
           key: "interestRate",
-          width: '90'
+          width: 90
         },
         {
           align: "center",

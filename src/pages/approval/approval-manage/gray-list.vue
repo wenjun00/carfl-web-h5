@@ -55,14 +55,14 @@
   import {
     Dependencies
   } from "~/core/decorator";
- import {
+  import {
     Layout
   } from "~/core/decorator";
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
       DataBox,
       PurchaseInformation
@@ -83,12 +83,12 @@
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           title: '序号'
         },
         {
           title: "操作",
-          width: "100",
+          width: 220,
           align: "center",
           render: (h, {
             row,
@@ -108,14 +108,40 @@
                     click: () => {
                       // this.getOrder(row);
                       this.$Modal.info({
-                        title:'申请单详情',
-                        width:'900',
-                        render:h=>h(PurchaseInformation)
+                        title: '申请单详情',
+                        width: '900',
+                        render: h => h(PurchaseInformation)
                       })
                     }
                   }
                 },
                 "查看"
+              ),
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '确定移出吗？',
+                        onOk: () => {
+                          this.data1.forEach((x, i) => {
+                            if (i === index) {
+                              this.data1.splice(i, 1)
+                            }
+                          })
+                        }
+                      })
+                    }
+                  }
+                },
+                "移出"
               )
             ]);
           }
@@ -254,8 +280,10 @@
       this.orderModal = true
     }
   }
+
 </script>
 
 <style>
+
 
 </style>

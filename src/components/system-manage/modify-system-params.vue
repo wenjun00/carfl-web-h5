@@ -70,6 +70,9 @@
     .ivu-select,
     .ivu-select-single {
       width: 85%;
+      border-style: none;
+      border-bottom-style: solid;
+      border-radius: 0;
     }
   }
 

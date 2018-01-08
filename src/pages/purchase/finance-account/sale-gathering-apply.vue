@@ -52,12 +52,12 @@
     <i-tabs value="purchaseItem" type="card" style="height:76%;overflow-y:auto;background:white">
       <i-tab-pane name="purchaseItem" label="收款明细">
         <i-table :columns="columns1" :data="data1"></i-table>
-        <i-button class="blueButton">变更收款项</i-button>
+        <i-button class="blueButton" style="margin-top:10px" @click="changeGatherItem">变更收款项</i-button>
         <div class="form-title">账户信息</div>
         <i-table :columns="columns3" :data="data3"></i-table>
       </i-tab-pane>
       <i-tab-pane name="customerItem" label="上传素材">
-         <upload-the-material></upload-the-material>
+        <upload-the-material></upload-the-material>
       </i-tab-pane>
     </i-tabs>
     <div class="submitBar">
@@ -99,6 +99,20 @@
         </i-row>
       </i-modal>
     </template>
+
+    <!--变更收款项-->
+    <template>
+      <i-modal v-model="changeGatherItemModal" title="变更收款项">
+        <change-gather-item></change-gather-item>
+      </i-modal>
+    </template>
+
+    <!--编辑收款项-->
+    <template>
+      <i-modal v-model="modifyGatherItemModal" title="编辑收款项" width="300">
+        <modify-gather-item></modify-gather-item>
+      </i-modal>
+    </template>
   </section>
 </template>
 <script lang="ts">
@@ -115,10 +129,13 @@
     PageService
   } from "~/utils/page.service";
   import SvgIcon from '~/components/common/svg-icon.vue'
- import {
+  import {
     Layout
   } from "~/core/decorator";
   import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
+  import ChangeGatherItem from "~/components/purchase-manage/change-gather-item.vue";
+  import ModifyGatherItem from "~/components/purchase-manage/modify-gather-item.vue";
+
 
   @Layout("workspace")
 
@@ -126,7 +143,9 @@
     components: {
       DataBox,
       SvgIcon,
-      UploadTheMaterial
+      UploadTheMaterial,
+      ChangeGatherItem,
+      ModifyGatherItem
     }
   })
   export default class SaleGatheringApply extends Page {
@@ -154,8 +173,65 @@
     private loading: Boolean = false;
     private addCar: Boolean = false;
     private isShown: Boolean = true;
+    private changeGatherItemModal: Boolean = false;
+    private modifyGatherItemModal: Boolean = false;
+
     created() {
       this.columns1 = [{
+        title: "操作",
+        width: 340,
+        align: "center",
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h("div", [
+            h(
+              "i-button", {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.modifyGatherItem();
+                  }
+                }
+              },
+              "编辑"
+            ),
+            h(
+              "i-button", {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: '提示',
+                      content: '确定删除吗？',
+                      onOk: () => {
+                        this.data1.forEach((x, i) => {
+                          if (i === index) {
+                            this.data1.splice(i, 1)
+                          }
+                        })
+                      }
+                    })
+                  }
+                }
+              },
+              "删除"
+            )
+          ]);
+        }
+      }, {
         key: 'itemName',
         title: '项目名称',
         align: 'center'
@@ -165,34 +241,34 @@
         align: 'center'
       }]
 
-      this.columns3=[{
-        key:'accountName',
-        align:'center',
-        title:'户名'
-      },{
-        key:'openAccountBank',
-        align:'center',
-        title:'开户银行'
-      },{
-        key:'bankCardId',
-        align:'center',
-        title:'银行卡号'
-      },{
-        key:'branchBankName',
-        align:'center',
-        title:'支行名称'
-      },{
-        key:'thirdCustomId',
-        align:'center',
-        title:'第三方客户号'
+      this.columns3 = [{
+        key: 'accountName',
+        align: 'center',
+        title: '户名'
+      }, {
+        key: 'openAccountBank',
+        align: 'center',
+        title: '开户银行'
+      }, {
+        key: 'bankCardId',
+        align: 'center',
+        title: '银行卡号'
+      }, {
+        key: 'branchBankName',
+        align: 'center',
+        title: '支行名称'
+      }, {
+        key: 'thirdCustomId',
+        align: 'center',
+        title: '第三方客户号'
       }]
 
-      this.data3=[{
-        accountName:'李兵强',
-        openAccountBank:'中国建设银行',
-        bankCardId:'6227004171150315789',
-        branchBankName:'丈八六路支行',
-        thirdCustomId:'3456878774154'
+      this.data3 = [{
+        accountName: '李兵强',
+        openAccountBank: '中国建设银行',
+        bankCardId: '6227004171150315789',
+        branchBankName: '丈八六路支行',
+        thirdCustomId: '3456878774154'
       }]
 
       this.data1 = [{
@@ -212,27 +288,27 @@
         title: '车辆品牌',
         key: 'brand',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '车辆型号',
         key: 'model',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '车身颜色',
         key: 'color',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '车辆排量',
         key: 'output',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '车辆配置',
         key: 'configuration',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '上牌地区',
         key: 'area',
@@ -242,23 +318,22 @@
         title: '车辆牌照',
         key: 'license',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '所在门店',
         key: 'store',
         align: 'center',
-        width: '86'
+        width: 86
       }, {
         title: '状态',
         key: 'status',
         align: 'center',
-        width: '86'
+        width: 86
       }]
       this.applyQueryService.addCarQueryData().subscribe(({
         val
       }) => {
         this.data2 = val
-        console.log('val', val)
       })
       this.categoryData = [{
         title: '所有品牌',
@@ -316,7 +391,17 @@
     showCategory() {
       this.isShown = !this.isShown
     }
+    /**
+     * 变更收款项
+     */
+    changeGatherItem() {
+      this.changeGatherItemModal = true
+    }
+    modifyGatherItem() {
+      this.modifyGatherItemModal = true
+    }
   }
+
 </script>
 
 <style lang="less" scope>
@@ -391,6 +476,15 @@
     .ivu-select-selection {
       width: 240%;
       display: inline-block;
+      border-style: none;
+      border-bottom-style: solid;
+      border-radius: 0;
+    }
+  }
+
+ .sale-gathering-apply {
+    .ivu-select-selection {
+      width: 240%;
       border-style: none;
       border-bottom-style: solid;
       border-radius: 0;

@@ -10,7 +10,7 @@
     </i-select>
     <i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>
     <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
-    <div style="float:right">
+    <div style="font-size:16px;cursor:pointer;display:inline-block;color:#3367A7;float:right;margin-right:10px;margin-top:10px;">
       <svg-icon iconClass="daochu"></svg-icon>
       <span>导出</span>
     </div>
@@ -27,6 +27,12 @@
         </div>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="审批" width="500" v-model="approvalModal">
+        <approval></approval>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -38,7 +44,8 @@
   import SvgIcon from '~/components/common/svg-icon.vue'
   // 添加新申请
   import AddApply from "~/components/purchase-manage/add-apply.vue";
- import {
+  import Approval from "~/components/common/approval.vue"
+  import {
     Layout
   } from "~/core/decorator";
 
@@ -47,7 +54,8 @@
     components: {
       DataBox,
       SvgIcon,
-      AddApply
+      AddApply,
+      Approval
     }
   })
   export default class ReceiptApprove extends Page {
@@ -57,6 +65,7 @@
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false
+    private approvalModal: Boolean = false
 
     addNewApply() {
       this.$Modal.info({
@@ -110,6 +119,12 @@
                 },
                 style: {
                   color: 'blue'
+                },
+                on: {
+                  click: () => {
+                    // this.approvalModal = true
+                    this.$Message.info('审批成功！')
+                  }
                 }
               }, '审批')
             ])
@@ -170,6 +185,15 @@
         handleStatus: '已处理',
         handleTime: '2017-12-01 13:56:56',
         handlePerson: '李健',
+        gatheringAmt: '8000.00',
+        gatheringType: '理赔收款',
+        gatheringAccountName: '中国人寿',
+        applyDate: '2017-12-01 13:56:45',
+        applyPerson: '大壮'
+      }, {
+        handleStatus: '未处理',
+        handleTime: '2017-12-01 13:56:56',
+        handlePerson: '李群',
         gatheringAmt: '8000.00',
         gatheringType: '理赔收款',
         gatheringAccountName: '中国人寿',
@@ -236,4 +260,5 @@
 
     }
   }
+
 </script>

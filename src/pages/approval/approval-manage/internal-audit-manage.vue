@@ -66,13 +66,13 @@
   import {
     Dependencies
   } from "~/core/decorator";
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
       DataBox
     }
@@ -90,21 +90,6 @@
     }
     created() {
       this.columns1 = [{
-          align: "center",
-          type: "expand",
-          width: "60",
-          title: '审批记录',
-          render: (h, params) => {
-            return h('i-table', {
-              props: {
-                columns: this.columns2,
-                data: this.data2,
-                border: true,
-                stripe: true
-              }
-            })
-          }
-        }, {
           align: "center",
           type: "index",
           width: "60",
@@ -130,11 +115,21 @@
                   },
                   on: {
                     click: () => {
-                      this.getOrder(row);
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '确定移出吗？',
+                        onOk: () => {
+                          this.data1.forEach((x, i) => {
+                            if (i === index) {
+                              this.data1.splice(i, 1)
+                            }
+                          })
+                        }
+                      })
                     }
                   }
                 },
-                "领取"
+                "移出"
               )
             ]);
           }
@@ -273,8 +268,10 @@
       this.orderModal = true
     }
   }
+
 </script>
 
 <style>
+
 
 </style>

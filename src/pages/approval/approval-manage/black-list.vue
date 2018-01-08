@@ -84,12 +84,12 @@
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           title: '序号'
         },
         {
           title: "操作",
-          width: "100",
+          width: 220,
           align: "center",
           render: (h, {
             row,
@@ -116,6 +116,32 @@
                   }
                 },
                 "查看"
+              ),
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '确定移出吗？',
+                        onOk: () => {
+                          this.data1.forEach((x, i) => {
+                            if (i === index) {
+                              this.data1.splice(i, 1)
+                            }
+                          })
+                        }
+                      })
+                    }
+                  }
+                },
+                "移出"
               )
             ]);
           }
