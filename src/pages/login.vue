@@ -86,13 +86,12 @@
      */
     submitForm() {
       let loginForm: any = this.$refs["login-form"];
-      console.log(this.loginModel,4545)
-      // if (this.loginModel.username === 'liujia' && this.loginModel.password === 'liujia') {
-      //   this.$Message.info('登录成功！')
-      // }else{
-      //   this.$Message.error('账号或密码不正确!')
-      //   return
-      // }
+      if (this.loginModel.username === 'liujia' && this.loginModel.password === 'liujia') {
+        this.$Message.info('登录成功！')
+      } else {
+        this.$Message.error('账号或密码不正确!')
+        return
+      }
       loginForm.validate(success => {
         if (!success) {
           return;
