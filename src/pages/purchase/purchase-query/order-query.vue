@@ -201,10 +201,16 @@
                   },
                   on: {
                     click: () => {
-                        this.$Modal.confirm({
-                            title:'提示',
-                            content:'确认申请收款吗？'
-                        })
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '确认申请收款吗？',
+                        onOk: () => {
+                          this.openPage({
+                            title: '销售收款申请',
+                            path: 'purchase/finance-account/sale-gathering-apply',
+                          })
+                        }
+                      })
                     }
                   }
                 }, '申请收款'),

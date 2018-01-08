@@ -64,7 +64,7 @@
   import {
     Dependencies
   } from "~/core/decorator";
- import {
+  import {
     Layout
   } from "~/core/decorator";
   import {
@@ -73,7 +73,7 @@
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
       DataBox,
       PurchaseInformation
@@ -115,7 +115,7 @@
           type: "index",
           width: 60,
           title: '序号',
-          fixed:'left'
+          fixed: 'left'
         },
         {
           title: "操作",
@@ -145,13 +145,35 @@
               )
             ]);
           },
-          fixed:'left'
+          fixed: 'left'
+        },
+        {
+          title: "订单号",
+          key: "orderId",
+          align: "center",
+          width: 150,
+          render: (h, params) => {
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.$Modal.info({
+                    width: '900',
+                    render: h => h(PurchaseInformation)
+                  })
+                }
+              }
+            }, '2017101001')
+          },
+          fixed: 'left'
         },
         {
           key: 'step',
           title: '环节',
           align: 'center',
-          width: 120,
+          width: 186,
           render: (h, params) => {
             return h('Tooltip', {
               props: {
@@ -172,72 +194,49 @@
                 }
               })
             ])
-          },
-          fixed:'left'
-        },
-        {
-          title: "订单号",
-          key: "orderId",
-          align: "center",
-          width:150,
-          render: (h, params) => {
-            return h('i-button', {
-              props: {
-                type: 'text'
-              },
-              on: {
-                click: () => {
-                  this.$Modal.info({
-                    width: '900',
-                    render: h => h(PurchaseInformation)
-                  })
-                }
-              }
-            }, '2017101001')
-          },
-          fixed:'left'
+          }
         },
         {
           title: "订单状态",
           align: "center",
           key: "orderStatus",
-          width:100
+          width: 100
         },
         {
           align: "center",
           title: "订单创建时间",
           key: "orderCreateTime",
-          width: 160
+          width: 260
         },
         {
           align: "center",
           title: "进入资源池时间",
           key: "orderPoolTime",
-          width: 160
+          width: 260
         },
         {
           align: "center",
           title: "省份",
           key: "province",
-          width:100
+          width: 100
         },
         {
           align: "center",
           title: "城市",
           key: "city",
-          width:100
+          width: 100
         },
         {
           align: "center",
           title: "订单类型",
           key: "orderType",
-          width:100
+          width: 100
         },
         {
           align: "center",
           title: "客户姓名",
           key: "customerName",
-          width:100
+          width: 100
         },
         {
           align: "center",
@@ -249,7 +248,7 @@
           align: "center",
           title: "手机号",
           key: "phone",
-          width:160
+          width: 160
         }
       ];
 
@@ -300,16 +299,18 @@
     getOrder(row) {
       this.orderModal = true
     }
-    confirmGetOrder(){
-     this.orderModal=false
+    confirmGetOrder() {
+      this.orderModal = false
       this.openPage({
         title: '我的审核',
         path: 'approval/approval-manage/my-approval'
       })
     }
   }
+
 </script>
 
 <style>
+
 
 </style>

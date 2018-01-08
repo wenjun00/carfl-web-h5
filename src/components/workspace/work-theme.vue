@@ -2,7 +2,7 @@
   <div class="component work-theme">
      <Poptip v-model="showTheme" placement="bottom-end">
         <!-- <Button type="ghost">click 激活</Button> -->
-        <i-button type="text" style="color:white">主题</i-button>
+        <!--<i-button type="text" style="color:white">主题</i-button>-->
         <div slot="content" class="row center-span">
             <div class="theme-item" v-for="item in themeList" :key="item.name" :style="{background:item.color}" @click="showTheme=false,updateTheme(item.name)">
               <Icon type="checkmark-round" color="white" v-if="theme === item.name"></Icon>

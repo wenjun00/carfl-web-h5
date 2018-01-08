@@ -21,13 +21,13 @@
       <i-row>
         <i-col span="12">
           <i-form-item label="出生日期" prop="name">
-            <i-input type="text" placeholder="请输入姓名">
+            <i-input type="text" placeholder="请输入出生日期">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="4">
           <i-form-item label="微信号码" prop="group">
-            <i-input type="text" placeholder="请输入性别">
+            <i-input type="text" placeholder="请输入微信号码">
             </i-input>
           </i-form-item>
         </i-col>
@@ -99,13 +99,13 @@
       <i-row>
         <i-col span="12">
           <i-form-item label="身份证地址">
-            <i-input type="text" placeholder="请输入身份证号码">
+            <i-input type="text" placeholder="请输入身份证地址">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="4">
           <i-form-item label="身份证有效期">
-            <i-input type="text" placeholder="请输入发证机关">
+            <i-input type="text" placeholder="请输入身份证有效期">
             </i-input>
           </i-form-item>
         </i-col>
@@ -117,13 +117,13 @@
       <i-row>
         <i-col span="12">
           <i-form-item label="现居住地址">
-            <i-input type="text" placeholder="请输入身份证号码">
+            <i-input type="text" placeholder="请输入现居住地址">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="4">
           <i-form-item label="居住地址家庭座机">
-            <i-input type="text" placeholder="请输入发证机关">
+            <i-input type="text" placeholder="请输入居住地址家庭座机">
             </i-input>
           </i-form-item>
         </i-col>
@@ -147,8 +147,8 @@
     <i-col span="24" style="line-height:30px;background:#ddd">勘察请求</i-col>
     <span>是否接受现场勘察</span>
     <i-radio-group v-model="checkRadio">
-      <i-radio label="工薪者"></i-radio>
-      <i-radio label="企业经营者"></i-radio>
+      <i-radio label="是"></i-radio>
+      <i-radio label="否"></i-radio>
     </i-radio-group>
   </section>
 </template>
@@ -158,7 +158,7 @@
   import Component from "vue-class-component";
 
   export default class CustomerMaterials extends Vue {
-    private checkRadio: String = "工薪者";
+    private checkRadio: String = "是";
     checkRadioChange(val) {}
   }
 </script>

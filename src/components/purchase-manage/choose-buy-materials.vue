@@ -103,61 +103,61 @@
       <i-form ref="customer-form" :model="chooseBuyModel" :label-width="100" style="margin-top:20px;">
         <i-col span="12">
           <i-form-item label="产品系列" prop="province">
-            <i-input type="text" v-model="chooseBuyModel.province" placeholder="请输入申请省份">
+            <i-input type="text" v-model="chooseBuyModel.province" placeholder="请输入产品系列">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="产品名称" prop="city">
-            <i-input type="text" v-model="chooseBuyModel.city" placeholder="请输入申请城市">
+            <i-input type="text" v-model="chooseBuyModel.city" placeholder="请输入产品名称">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="产品期数" prop="company">
-            <i-input type="text" v-model="chooseBuyModel.company" placeholder="请输入所属公司">
+            <i-input type="text" v-model="chooseBuyModel.company" placeholder="请输入产品期数">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="产品利率" prop="usedMode">
-            <i-input type="text" v-model="chooseBuyModel.usedMode" placeholder="请输入融资租赁用途">
+            <i-input type="text" v-model="chooseBuyModel.usedMode" placeholder="请输入产品利率">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="还款方式" prop="hopeMoney">
-            <i-input type="text" v-model="chooseBuyModel.hopeMoney" placeholder="请输入意向融资金额">
+            <i-input type="text" v-model="chooseBuyModel.hopeMoney" placeholder="请输入还款方式">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="融资总额" prop="hopeTime">
-            <i-input type="text" v-model="chooseBuyModel.hopeTime" placeholder="请输入意向期限">
+            <i-input type="text" v-model="chooseBuyModel.hopeTime" placeholder="请输入融资总额">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="月供金额" prop="moneyPay">
-            <i-input type="text" v-model="chooseBuyModel.moneyPay" placeholder="请输入租金支付">
+            <i-input type="text" v-model="chooseBuyModel.moneyPay" placeholder="请输入月供金额">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="首付金额" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入意向首付比例">
+            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入首付金额">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="保证金金额" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入意向首付比例">
+            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入保证金金额">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="尾付金额" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入意向首付比例">
+            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入尾付金额">
             </i-input>
           </i-form-item>
         </i-col>
@@ -169,37 +169,37 @@
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="保险费" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入意向首付比例">
+            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入管理费">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="购置费" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入意向首付比例">
+            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入购置费">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="上牌费" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入意向首付比例">
+            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入上牌费">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="GPS费" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入意向首付比例">
+            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入GPS费">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="其他费用" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入意向首付比例">
+            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入其他费用">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="备注" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入意向首付比例">
+            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入备注">
             </i-input>
           </i-form-item>
         </i-col>
@@ -218,11 +218,11 @@
     </template>
 
     <template>
-      <i-modal title="编辑车辆" width="1200" v-model="editCarModal" :trandfer="false">
+      <i-modal title="添加车辆" width="1200" v-model="editCarModal" :trandfer="false">
         <add-car></add-car>
-        <!--<div slot="footer">
+        <div slot="footer">
           <i-button @click="editCarModal=false">确认并返回</i-button>
-        </div>-->
+        </div>
       </i-modal>
     </template>
   </section>
@@ -372,15 +372,15 @@
     }
     editModalOpen(row) {
       this.editCarModal = true
-      this.$Modal.info({
-        title: '车辆选择',
-        width: 1200,
-        render: h => h(AddCar, {
-          props: {
-            value: row
-          }
-        })
-      })
+      // this.$Modal.info({
+      //   title: '车辆选择',
+      //   width: 1200,
+      //   render: h => h(AddCar, {
+      //     props: {
+      //       value: row
+      //     }
+      //   })
+      // })
     }
 
   }

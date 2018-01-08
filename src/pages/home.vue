@@ -7,7 +7,7 @@
           <div style="margin-top:20px;margin-left:20px;">
             <div style="width:7px;height:18px;background:#265EA2;display:inline-block"></div>
             <span style="margin-left:10px;font-size:16px;color:#333333;position:relative;bottom:3px;">快速上手</span>
-            <div style="width:600px;height:100px;display:flex;justify-content:space-around;align-items:center">
+            <div style="width:600px;height:145px;display:flex;justify-content:space-around;align-items:center">
               <div class="quickStartContainer" @click="financeLeaseApply">
                 <div class="quickStart">
                   <svg-icon class="svg" iconClass="tianxie"></svg-icon>

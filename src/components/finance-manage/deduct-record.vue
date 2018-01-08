@@ -8,7 +8,7 @@
     <i-input style="width:10%;display:inline-block"></i-input>
     <i-select placeholder="全部交易状态" style="width:14%;display:inline-block;margin-left:10px;">
       <i-option label="初始" value="初始" key="初始"></i-option>
-      <i-option label="处理中" value="初始" key="初始"></i-option>
+      <i-option label="处理中" value="处理中" key="处理中"></i-option>
       <i-option label="成功" value="成功" key="成功"></i-option>
       <i-option label="失败" value="失败" key="失败"></i-option>
     </i-select>

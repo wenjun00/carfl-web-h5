@@ -1,16 +1,12 @@
-<!--全额付款申请-->
+<!--全额销售申请-->
 <template>
   <section class="page full-payment-apply specialInput">
     <div class="header">
-      <span class="form-title">全款付款申请</span>
+      <span class="form-title">全额销售申请</span>
       <div style="float:right;margin-top: 10px;margin-right:10px">
         <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
           <span style="font-size:12px;">打印</span>
-        </div>
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon iconClass="daochu"></svg-icon>
-          <span>导出</span>
         </div>
       </div>
     </div>
@@ -53,51 +49,35 @@
     </i-row>
     <i-tabs value="purchaseItem" type="card" style="height:76%;overflow-y:auto;background:white">
       <i-tab-pane name="purchaseItem" label="选购资料">
-        <div class="form-title">选购资料</div>
-        <i-row>
+        <div class="form-title">选购信息</div>
+        <i-row class="proCity">
           <i-form ref="parchase-form" :model="applyData" :rules="applyRule" :label-width="80">
             <i-col span="12">
-              <i-form-item label="购车方" prop="idCard">
-                <i-input></i-input>
+              <i-form-item label="申请省份" prop="idCard">
+                <i-select style="width:80px;">
+                  <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
+                </i-select>
               </i-form-item>
             </i-col>
             <i-col span="12" pull="3">
-              <i-form-item label="联系电话" prop="userName">
-                <i-input></i-input>
+              <i-form-item label="申请城市" prop="userName">
+                <i-select style="width:80px;">
+                  <i-option label="西安市" value="西安市" key="西安市"></i-option>
+                  <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
+                  <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
+                  <i-option label="渭南市" value="渭南市" key="渭南市"></i-option>
+                  <i-option label="铜川市" value="铜川市" key="铜川市"></i-option>
+                  <i-option label="榆林市" value="榆林市" key="榆林市"></i-option>
+                  <i-option label="延安市" value="延安市" key="延安市"></i-option>
+                  <i-option label="汉中市" value="汉中市" key="汉中市"></i-option>
+                  <i-option label="安康市" value="安康市" key="安康市"></i-option>
+                  <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
+                </i-select>
               </i-form-item>
             </i-col>
             <i-col span="12">
-              <i-form-item label="证件类型" prop="phone">
+              <i-form-item label="所属公司" prop="phone">
                 <i-input></i-input>
-              </i-form-item>
-            </i-col>
-            <i-col span="12" pull="3">
-              <i-form-item label="证件号码" prop="phone">
-                <i-input></i-input>
-              </i-form-item>
-            </i-col>
-            <i-col span="12">
-              <i-form-item label="联系地址" prop="phone">
-                <i-input></i-input>
-              </i-form-item>
-            </i-col>
-            <i-col span="12" pull="3">
-              <i-form-item label="邮政编码" prop="phone">
-                <i-input></i-input>
-              </i-form-item>
-            </i-col>
-            <i-col span="12">
-              <i-form-item label="代办服务" prop="phone">
-                <i-checkbox-group>
-                  <i-checkbox label="上牌"></i-checkbox>
-                  <i-checkbox label="办理保险"></i-checkbox>
-                  <i-checkbox label="代缴购置税"></i-checkbox>
-                  <i-checkbox label="代缴车船税"></i-checkbox>
-                  <i-checkbox label="按揭贷款"></i-checkbox>
-                  <i-checkbox label="车辆装潢"></i-checkbox>
-                  <i-checkbox label="代缴其他费用"></i-checkbox>
-                  <i-checkbox label="其他"></i-checkbox>
-                </i-checkbox-group>
               </i-form-item>
             </i-col>
           </i-form>
@@ -126,7 +106,6 @@
               </i-col>
             </i-row>
             <i-row>
-
               <i-col span="12">
                 <i-form-item label="证件类型" prop="phone">
                   <i-input type="text" v-model="purchaseData.company">
@@ -166,12 +145,22 @@
                 </i-form-item>
               </i-col>
             </i-row>
-            <i-col span="12" pull="12">
-              <i-form-item label="代办服务" prop="phone">
-                <i-input type="text" v-model="purchaseData.company">
-                </i-input>
-              </i-form-item>
-            </i-col>
+            <i-row>
+              <i-col span="12">
+                <i-form-item label="代办服务" prop="phone">
+                  <i-checkbox-group>
+                    <i-checkbox label="上牌"></i-checkbox>
+                    <i-checkbox label="办理保险"></i-checkbox>
+                    <i-checkbox label="代缴购置税"></i-checkbox>
+                    <i-checkbox label="代缴车船税"></i-checkbox>
+                    <i-checkbox label="按揭贷款"></i-checkbox>
+                    <i-checkbox label="车辆装潢"></i-checkbox>
+                    <i-checkbox label="代缴其他费用"></i-checkbox>
+                    <i-checkbox label="其他"></i-checkbox>
+                  </i-checkbox-group>
+                </i-form-item>
+              </i-col>
+            </i-row>
           </i-form>
         </i-row>
       </i-tab-pane>
@@ -351,7 +340,7 @@
       this.columns2 = [{
         type: 'selection',
         align: 'center',
-        width:60
+        width: 60
       }, {
         title: '车辆品牌',
         key: 'brand',
@@ -534,8 +523,7 @@
     .ivu-input {
       border-style: none;
       border-bottom-style: solid;
-      border-radius: 0;
-      width: 240%;
+      border-radius: 0; // width: 240%;
     }
   }
 
@@ -547,6 +535,14 @@
       border-bottom-style: solid;
       border-radius: 0;
     }
+  }
+
+  .proCity .ivu-select-selection {
+    width: 358%;
+    display: inline-block;
+    border-style: none;
+    border-bottom-style: solid;
+    border-radius: 0;
   }
 
 </style>

@@ -10,7 +10,7 @@ export default [
           title: '融资租赁申请',
           path: 'purchase/purchase-manage/financing-lease-apply'
         }, {
-          title: '全额付款申请',
+          title: '全额销售申请',
           path: 'purchase/purchase-manage/full-payment-apply'
         }, {
           title: '客户开户',

@@ -19,7 +19,7 @@ export default {
           phone: '15091146267',
           prdName: '梅赛德斯',
           prdPeriods: '1期',
-          stage: '出仓',
+          stage: '面审',
           approvalStatus: '待审批'
         }, {
           orderId: '000002',
@@ -32,7 +32,7 @@ export default {
           phone: '15091146267',
           prdName: '梅赛德斯',
           prdPeriods: '1期',
-          stage: '出仓',
+          stage: '复审',
           approvalStatus: '待审批'
         }, {
           orderId: '000003',
@@ -45,7 +45,7 @@ export default {
           phone: '15091146267',
           prdName: '梅赛德斯',
           prdPeriods: '1期',
-          stage: '出仓',
+          stage: '复审',
           approvalStatus: '待审批'
         }, {
           orderId: '000004',
@@ -58,7 +58,7 @@ export default {
           phone: '15091146267',
           prdName: '梅赛德斯',
           prdPeriods: '1期',
-          stage: '出仓',
+          stage: '合规检查',
           approvalStatus: '待审批'
         }, {
           orderId: '000005',
@@ -71,7 +71,7 @@ export default {
           phone: '15091146267',
           prdName: '梅赛德斯',
           prdPeriods: '1期',
-          stage: '出仓',
+          stage: '终审',
           approvalStatus: '待审批'
         }
       ]

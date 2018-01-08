@@ -23,9 +23,9 @@
         </i-row>
       </i-col>
     </i-row>
-    <i-row style="margin-top:20px;">
+    <!--<i-row style="margin-top:20px;">
       <i-button class="blueButton" style="float:right">确认并返回</i-button>
-    </i-row>
+    </i-row>-->
   </section>
 </template>
 
