@@ -93,24 +93,7 @@
     }
 
     created() {
-      this.columns1 = [
-        // {
-        //   align: "center",
-        //   type: "expand",
-        //   width: "60",
-        //   title: '审批记录',
-        //   render: (h, params) => {
-        //     return h('i-table', {
-        //       props: {
-        //         columns: this.columns2,
-        //         data: this.data2,
-        //         border: true,
-        //         stripe: true
-        //       }
-        //     })
-        //   }
-        // },
-        {
+      this.columns1 = [{
           align: "center",
           type: "index",
           width: 60,
@@ -161,7 +144,7 @@
                 click: () => {
                   this.$Modal.info({
                     width: '900',
-                    title:'订单详情',
+                    title: '订单详情',
                     render: h => h(PurchaseInformation)
                   })
                 }
@@ -175,26 +158,51 @@
           title: '环节',
           align: 'center',
           width: 186,
-          render: (h, params) => {
-            return h('Tooltip', {
-              props: {
-                content: '面审通过'
-              },
-            }, [h('span', {}, '面审'),
-              h('Icon', {
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.orderStatus === '拒绝') {
+              return h('Tooltip', {
                 props: {
-                  type: 'ios-information',
-                  size: '20',
-                  color: 'red'
+                  content: row.content
                 },
-                style: {
-                  position: 'relative',
-                  top: '2px',
-                  left: '6px',
-                  cursor: 'pointer'
-                }
-              })
-            ])
+              }, [h('span', {}, row.status),
+                h('Icon', {
+                  props: {
+                    type: 'ios-information',
+                    size: '20',
+                    color: 'red'
+                  },
+                  style: {
+                    position: 'relative',
+                    top: '2px',
+                    left: '6px',
+                    cursor: 'pointer'
+                  }
+                })
+              ])
+            } else {
+              return h('Tooltip', {
+                props: {
+                  content: row.content
+                },
+              }, [h('span', {}, row.status),
+                h('Icon', {
+                  props: {
+                    type: 'ios-information',
+                    size: '20'
+                  },
+                  style: {
+                    position: 'relative',
+                    top: '2px',
+                    left: '6px',
+                    cursor: 'pointer'
+                  }
+                })
+              ])
+            }
           }
         },
         {
@@ -263,7 +271,9 @@
         customerName: '刘佳',
         idCard: '610303199111142564',
         orderId: 20170805,
-        phone: '15094156575'
+        phone: '15094156575',
+        content:'通过',
+        status:'复审'
       }, {
         orderStatus: '面审通过',
         orderCreateTime: '2017-12-01 13:56:03',
@@ -274,7 +284,9 @@
         customerName: '刘陇刚',
         idCard: '610303198911041564',
         orderId: 20170806,
-        phone: '13096133575'
+        phone: '13096133575',
+        content:'通过',
+        status:'复审'
       }, {
         orderStatus: '面审通过',
         orderCreateTime: '2017-12-01 13:56:03',
@@ -285,7 +297,9 @@
         customerName: '王泽杰',
         orderId: 20170807,
         idCard: '610303199111142564',
-        phone: '15989756575'
+        phone: '15989756575',
+        content:'通过',
+        status:'复审'
       }, {
         orderStatus: '面审通过',
         orderCreateTime: '2017-12-01 13:56:03',
@@ -297,9 +311,11 @@
         customerName: '刘佳',
         idCard: '610303199111142564',
         prdName: '直租',
-        phone: '15094156575'
+        phone: '15094156575',
+        content:'通过',
+        status:'复审'
       }, {
-        orderStatus: '面审通过',
+        orderStatus: '拒绝',
         orderCreateTime: '2017-12-01 13:56:03',
         orderPoolTime: '2017-12-02 11:36:26',
         province: '陕西',
@@ -309,9 +325,11 @@
         orderId: 20170807,
         idCard: '610303198911041564',
         prdName: '直租',
-        phone: '13096133575'
+        phone: '13096133575',
+        content:'终审资料不全',
+        status:'终审'
       }, {
-        orderStatus: '面审通过',
+        orderStatus: '拒绝',
         orderCreateTime: '2017-12-01 13:56:03',
         orderPoolTime: '2017-12-02 11:36:26',
         province: '陕西',
@@ -321,7 +339,9 @@
         orderId: 20170808,
         idCard: '610303199111142564',
         prdName: '直租',
-        phone: '15989756575'
+        phone: '15989756575',
+        content:'复审资料造假',
+        status:'复审'
       }]
 
       this.columns2 = [{

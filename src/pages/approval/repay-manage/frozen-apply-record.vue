@@ -15,7 +15,7 @@
       <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
-    <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;" >
+    <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
       <svg-icon iconClass="daochu"></svg-icon>
       <span>导出</span>
     </div>
@@ -50,13 +50,13 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
       DataBox,
       RepaySum,
@@ -102,7 +102,13 @@
                   },
                   on: {
                     click: () => {
-
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '确定解冻吗？',
+                        onOk: () => {
+                          this.$Message.info('解冻成功')
+                        }
+                      })
                     }
                   }
                 },
@@ -361,7 +367,9 @@
 
 
   }
+
 </script>
 <style>
+
 
 </style>

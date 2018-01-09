@@ -56,13 +56,13 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
       DataBox
     }
@@ -89,7 +89,7 @@
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           title: '序号'
         },
         {
@@ -138,13 +138,75 @@
           align: "center",
           title: "审核状态",
           key: "approvalStatus",
-          width: 160
+          width: 160,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.approvalStatus === '拒绝') {
+              return h('span', {
+                style: {
+                  color: 'red'
+                }
+              }, row.approvalStatus)
+            } else {
+              return h('span', {}, row.approvalStatus)
+            }
+          }
         },
         {
           align: "center",
           title: "是否提车",
           key: "isDeliveryCar",
-          width: 160
+          width: 180,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.approvalStatus === '拒绝') {
+              return h('Tooltip', {
+                props: {
+                  content: row.content
+                },
+              }, [h('span', {}, row.isDeliveryCar),
+                h('Icon', {
+                  props: {
+                    type: 'ios-information',
+                    size: '20',
+                    color: 'red'
+                  },
+                  style: {
+                    position: 'relative',
+                    top: '2px',
+                    left: '6px',
+                    cursor: 'pointer'
+                  }
+                })
+              ])
+            } else {
+              return h('Tooltip', {
+                props: {
+                  content: row.content
+                },
+              }, [h('span', {}, row.isDeliveryCar),
+                h('Icon', {
+                  props: {
+                    type: 'ios-information',
+                    size: '20'
+                  },
+                  style: {
+                    position: 'relative',
+                    top: '2px',
+                    left: '6px',
+                    cursor: 'pointer'
+                  }
+                })
+              ])
+            }
+          }
+
         },
         {
           align: "center",
@@ -167,7 +229,8 @@
         {
           align: "center",
           title: "审核人员",
-          key: "approvalMan"
+          key: "approvalMan",
+          width: 160
         }
       ];
       this.data1 = [{
@@ -180,9 +243,55 @@
         idCard: '610101199006052416',
         approvalStatus: '通过',
         isDeliveryCar: '已提车',
+        content: '成功提车',
         refuseReason: '',
         refuseDetail: '',
         remark: '成功提车',
+        approvalMan: '李蓓'
+      }, {
+        approvalTime: '2017-12-01 15:36:45',
+        province: '陕西',
+        city: '西安',
+        branchAddress: '大雁塔门店',
+        salesman: '吴小川',
+        customerName: '韩冰',
+        idCard: '610101199006052416',
+        approvalStatus: '通过',
+        content: '成功提车',
+        isDeliveryCar: '已提车',
+        refuseReason: '',
+        refuseDetail: '',
+        remark: '成功提车',
+        approvalMan: '李蓓'
+      }, {
+        approvalTime: '2017-12-01 15:36:45',
+        province: '陕西',
+        city: '西安',
+        branchAddress: '大雁塔门店',
+        salesman: '吴小川',
+        customerName: '韩冰',
+        idCard: '610101199006052416',
+        content: '逾期了',
+        approvalStatus: '拒绝',
+        isDeliveryCar: '已提车',
+        refuseReason: '逾期',
+        refuseDetail: '银行贷款逾期',
+        remark: '',
+        approvalMan: '李蓓'
+      }, {
+        approvalTime: '2017-12-01 15:36:45',
+        province: '陕西',
+        city: '西安',
+        branchAddress: '大雁塔门店',
+        salesman: '吴小川',
+        customerName: '韩冰',
+        idCard: '610101199006052416',
+        content: '逾期了',
+        approvalStatus: '拒绝',
+        isDeliveryCar: '已提车',
+        refuseReason: '逾期',
+        refuseDetail: '银行贷款逾期',
+        remark: '',
         approvalMan: '李蓓'
       }]
 
@@ -200,4 +309,5 @@
 
 
   }
+
 </script>

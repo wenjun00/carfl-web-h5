@@ -88,7 +88,7 @@
         },
         {
           title: "操作",
-          width: 220,
+          width: 160,
           align: "center",
           render: (h, {
             row,
@@ -261,6 +261,7 @@
         city: '宝鸡',
         orderType: '直租',
         customerName: '刘佳',
+        orderId:20170816,
         idCard: '610303199111142564',
         prdName: '直租',
         phone: '15094156575'
@@ -273,6 +274,7 @@
         orderType: '直租',
         step: '终审',
         customerName: '刘陇刚',
+        orderId:20170817,
         prdName: '直租',
         idCard: '610303198911041564',
         phone: '13096133575'
@@ -282,6 +284,7 @@
         orderPoolTime: '2017-12-02 11:36:26',
         province: '陕西',
         city: '渭南',
+        orderId:20170818,
         orderType: '直租',
         step: '终审',
         prdName: '直租',

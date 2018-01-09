@@ -13,57 +13,67 @@
       <!--单位信息 Start-->
       <i-col span="24" style="line-height:30px;background:#ddd">单位信息</i-col>
       <i-form ref="job-form" :model="job" :label-width="110">
-        <i-col span="12">
-          <i-form-item label="单位名称" prop="name">
-            <i-input type="text" v-model="job.name" placeholder="请输入单位名称">
-            </i-input>
-          </i-form-item>
-        </i-col>
-        <i-col span="12" pull="4">
-          <i-form-item label="部门" prop="group">
-            <i-input type="text" v-model="job.group" placeholder="请输入部门">
-            </i-input>
-          </i-form-item>
-        </i-col>
-        <i-col span="12">
-          <i-form-item label="单位性质" prop="type">
-            <i-select v-model="job.type">
-              <i-option v-for="item in typeList" :value="item" :key="item">{{ item }}</i-option>
-            </i-select>
-          </i-form-item>
-        </i-col>
-        <i-col span="12" pull="4">
-          <i-form-item label="职务" prop="duty">
-            <i-input type="text" v-model="job.duty" placeholder="请输入职务">
-            </i-input>
-          </i-form-item>
-        </i-col>
-        <i-col span="24">
-          <i-form-item label="职级" prop="rank">
-            <i-select v-model="job.rank">
-              <i-option v-for="item in typeList" :value="item" :key="item">{{ item }}</i-option>
-            </i-select>
-          </i-form-item>
-        </i-col>
-        <i-col span="12">
-          <i-form-item label="何时进入公司" prop="joinTime">
-            <!--<i-date-picker type="date" placeholder="i-select date" v-model="job.joinTime"></i-date-picker>-->
-            <i-input type="text" v-model="job.joinTime" placeholder="请输入何时进入公司">
-            </i-input>
-          </i-form-item>
-        </i-col>
-        <i-col span="12" pull="4">
-          <i-form-item label="单位地址" prop="address">
-            <i-input type="text" v-model="job.address" placeholder="请输入单位地址">
-            </i-input>
-          </i-form-item>
-        </i-col>
-        <i-col span="12">
-          <i-form-item label="单位固定电话" prop="phone">
-            <i-input type="text" v-model="job.phone" placeholder="请输入单位固定电话">
-            </i-input>
-          </i-form-item>
-        </i-col>
+        <i-row>
+
+          <i-col :span="12">
+            <i-form-item label="单位名称" prop="name">
+              <i-input type="text" v-model="job.name" placeholder="请输入单位名称">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col :span="12" :pull="4">
+            <i-form-item label="部门" prop="group">
+              <i-input type="text" v-model="job.group" placeholder="请输入部门">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+
+        <i-row>
+          <i-col :span="12">
+            <i-form-item label="单位性质" prop="type">
+              <i-select v-model="job.type">
+                <i-option v-for="item in typeList" :value="item" :key="item">{{ item }}</i-option>
+              </i-select>
+            </i-form-item>
+          </i-col>
+          <i-col :span="12" :pull="4">
+            <i-form-item label="职务" prop="duty">
+              <i-input type="text" v-model="job.duty" placeholder="请输入职务">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+        <i-row>
+          <i-col :span="12">
+            <i-form-item label="职级" prop="rank">
+              <i-select v-model="job.rank">
+                <i-option v-for="item in typeList" :value="item" :key="item">{{ item }}</i-option>
+              </i-select>
+            </i-form-item>
+          </i-col>
+          <i-col :span="12" :pull="4">
+            <i-form-item label="何时进入公司" prop="joinTime">
+              <!--<i-date-picker type="date" placeholder="i-select date" v-model="job.joinTime"></i-date-picker>-->
+              <i-input type="text" v-model="job.joinTime" placeholder="请输入何时进入公司">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+        <i-row>
+          <i-col :span="12">
+            <i-form-item label="单位地址" prop="address">
+              <i-input type="text" v-model="job.address" placeholder="请输入单位地址">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col :span="12" :pull="4">
+            <i-form-item label="单位固定电话" prop="phone">
+              <i-input type="text" v-model="job.phone" placeholder="请输入单位固定电话">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
       </i-form>
 
       <!--单位信息 End-->
@@ -220,6 +230,7 @@
     }
 
   }
+
 </script>
 
 <style lang="less" scope>
@@ -232,4 +243,5 @@
       border-radius: 0;
     }
   }
+
 </style>

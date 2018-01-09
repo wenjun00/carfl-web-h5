@@ -98,13 +98,13 @@
   import {
     Dependencies
   } from "~/core/decorator";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       ConfirmRepayment,
@@ -254,9 +254,12 @@ import {
                 },
                 on: {
                   click: () => {
-                    this.$Modal.success({
-                        title:'提示',
-                        content:'撤销成功'
+                    this.$Modal.confirm({
+                      title: '提示',
+                      content: '确定撤销吗？',
+                      onOk: () => {
+                        this.$Message.info('撤销成功')
+                      }
                     })
                   }
                 },
@@ -440,8 +443,10 @@ import {
      */
     confirm() {}
   }
+
 </script>
 
 <style>
+
 
 </style>

@@ -144,7 +144,7 @@
                 click: () => {
                   this.$Modal.info({
                     width: 900,
-                    title: '订单查询',
+                    title: '订单详情',
                     render: h => h(PurchaseInformation)
                   })
                 }
