@@ -50,14 +50,82 @@
       <i-modal v-model="approveModal" title="审批" width="800" class="approve">
         <approve></approve>
         <div slot="footer">
-          <i-button class="defaultButton">退回资源池</i-button>
-          <i-button class="defaultButton">提交内审</i-button>
-          <i-button class="defaultButton">黑名单</i-button>
-          <i-button class="defaultButton">灰名单</i-button>
-          <i-button class="bigButtonErr">拒绝</i-button>
+          <i-button class="defaultButton" @click="backToResource">退回资源池</i-button>
+          <i-button class="defaultButton" @click="submitToInternal">提交内审</i-button>
+          <i-button class="defaultButton" @click="submitToblack">黑名单</i-button>
+          <i-button class="defaultButton" @click="submitToGray">灰名单</i-button>
+          <i-button class="bigButtonErr" @click="rejectOrder">拒绝</i-button>
           <i-button class="bigButtonDefault">退件</i-button>
           <i-button class="bigButtonDefault">通过</i-button>
         </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="提交内审" v-model="submitToInternalModal">
+        <i-form>
+          <i-form-item label="详细原因">
+            <i-input type="textarea"></i-input>
+          </i-form-item>
+        </i-form>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="黑名单" v-model="blackListModal">
+        <i-form>
+          <i-form-item>
+            <i-select placeholder="请选择结果" style="width:30%">
+              <i-option label="拒绝" value="拒绝" key="拒绝"></i-option>
+            </i-select>
+            <i-select placeholder="请选择结果类型" style="width:30%">
+              <i-option label="进件条件不足" value="进件条件不足" key="进件条件不足"></i-option>
+            </i-select>
+            <i-select placeholder="请选择拒绝原因" style="width:30%">
+              <i-option label="逾期比例超30%" value="逾期比例超30%" key="逾期比例超30%"></i-option>
+              <i-option label="风控限制区域" value="风控限制区域" key="风控限制区域"></i-option>
+              <i-option label="社保公积金不满6个月" value="社保公积金不满6个月" key="社保公积金不满6个月"></i-option>
+              <i-option label="户籍、年龄限制" value="户籍、年龄限制" key="户籍、年龄限制"></i-option>
+            </i-select>
+          </i-form-item>
+          <i-form-item>
+            <i-input type="textarea"></i-input>
+          </i-form-item>
+        </i-form>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="拒绝" v-model="rejectModal">
+        <i-form>
+          <i-form-item>
+            <i-select placeholder="请选择结果" style="width:30%">
+              <i-option label="拒绝" value="拒绝" key="拒绝"></i-option>
+            </i-select>
+            <i-select placeholder="请选择结果类型" style="width:30%">
+              <i-option label="进件条件不足" value="进件条件不足" key="进件条件不足"></i-option>
+            </i-select>
+            <i-select placeholder="请选择拒绝原因" style="width:30%">
+              <i-option label="逾期比例超30%" value="逾期比例超30%" key="逾期比例超30%"></i-option>
+              <i-option label="风控限制区域" value="风控限制区域" key="风控限制区域"></i-option>
+              <i-option label="社保公积金不满6个月" value="社保公积金不满6个月" key="社保公积金不满6个月"></i-option>
+              <i-option label="户籍、年龄限制" value="户籍、年龄限制" key="户籍、年龄限制"></i-option>
+            </i-select>
+          </i-form-item>
+          <i-form-item>
+            <i-input type="textarea"></i-input>
+          </i-form-item>
+        </i-form>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="灰名单" v-model="grayListModal">
+        <i-form>
+          <i-form-item label="详细原因">
+            <i-input type="textarea"></i-input>
+          </i-form-item>
+        </i-form>
       </i-modal>
     </template>
   </section>
@@ -92,29 +160,34 @@
     private orderModal: Boolean = false;
     private searchOptions: Boolean = false;
     private approveModal: Boolean = false;
+    private submitToInternalModal: Boolean = false;
+    private blackListModal: Boolean = false;
+    private grayListModal: Boolean = false;
+    private rejectModal: Boolean = false;
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
+    backToResource() {
+      this.$Modal.confirm({
+        title: '退回资源池',
+        content: '确定停止并放弃审核此订单？'
+      })
+    }
+    rejectOrder() {
+      this.rejectModal = true
+    }
+    submitToblack() {
+      this.blackListModal = true
+    }
+    submitToInternal() {
+      this.submitToInternalModal = true
+    }
+    submitToGray() {
+      this.grayListModal = true
+    }
     created() {
-      this.columns1 = [
-        // {
-        //   align: "center",
-        //   type: "expand",
-        //   width: "60",
-        //   title: '审批记录',
-        //   render: (h, params) => {
-        //     return h('i-table', {
-        //       props: {
-        //         columns: this.columns2,
-        //         data: this.data2,
-        //         border: true,
-        //         stripe: true
-        //       }
-        //     })
-        //   }
-        // },
-        {
+      this.columns1 = [{
           align: "center",
           type: "index",
           width: "60",
@@ -140,10 +213,6 @@
                   },
                   on: {
                     click: () => {
-                      // this.$Modal.success({
-                      //   title: '提示',
-                      //   content: '审核成功！'
-                      // })
                       console.log(1111)
                       this.approveModal = true
                     }

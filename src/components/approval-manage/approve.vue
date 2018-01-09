@@ -164,7 +164,61 @@
         </tr>
       </table>
     </i-row>
+
     <!--职业信息-->
+    <i-row>
+      <div>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>职业信息</span>
+      </div>
+      <table border="1" width="760" style="margin-top:10px;">
+        <tr>
+          <td>单位名称</td>
+          <td>中资联</td>
+          <td>部门</td>
+          <td>产品部</td>
+        </tr>
+        <tr>
+          <td>单位性质</td>
+          <td>私营有限企业</td>
+          <td>职务</td>
+          <td>产品经理</td>
+        </tr>
+        <tr>
+          <td>职级</td>
+          <td colspan="8">负责人</td>
+        </tr>
+        <tr>
+          <td>单位地址</td>
+          <td colspan="8">上海市上海市宝山区中山北路2687号</td>
+        </tr>
+        <tr>
+          <td>单位固定电话</td>
+          <td>021-43452342</td>
+          <td>何时进入公司</td>
+          <td>2017-3</td>
+        </tr>
+        <tr>
+          <td>基本月薪(元)</td>
+          <td>10000</td>
+          <td>每月发薪日(元)</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>发薪方式</td>
+          <td>公司转账</td>
+          <td>年收入(万元)</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>每月其他收入(元)</td>
+          <td>10000</td>
+          <td>其他收入来源</td>
+          <td>10000</td>
+        </tr>
+      </table>
+
+    </i-row>
+    <!--联系人信息-->
     <i-row style="margin-top:20px;">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>联系人信息</span>
