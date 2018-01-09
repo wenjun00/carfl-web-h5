@@ -1,5 +1,5 @@
 <template>
-  <div class="component purchase-information row">
+  <div class="component approve row">
     <!--选购信息-->
     <i-row style="margin-top:20px;">
       <div>
@@ -297,7 +297,7 @@
       DataGridItem
     }
   })
-  export default class PurchaseInformation extends Vue {
+  export default class Approve extends Vue {
     private fruit: Array < String > = ['购置费'];
     private single: Boolean = false;
 

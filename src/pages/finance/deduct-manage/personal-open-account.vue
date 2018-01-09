@@ -44,8 +44,8 @@
         <i-option value="话单本人名下但不满半年" label="通过" key="通过"></i-option>
       </i-select>
       <span style="margin-left:10px">日期：</span>
-      <i-input style="display:inline-block;width:10%"></i-input>~
-      <i-input style="display:inline-block;width:10%"></i-input>
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
       <i-button class="blueButton">搜索</i-button>
     </i-row>
     <!--<i-table :columns="columns1" :data="data1" border stripe></i-table>-->

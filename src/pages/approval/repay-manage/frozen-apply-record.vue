@@ -22,8 +22,8 @@
     <i-row v-if="searchOptions" style="margin:6px;">
       <i-input style="display:inline-block;width:10%;margin-left:10px;" placeholder="请输入客户姓名\证件号码"></i-input>
       <span style="margin-left:10px;">日期：</span>
-      <i-input style="display:inline-block;width:10%;"></i-input>~
-      <i-input style="display:inline-block;width:10%;"></i-input>
+      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>
       <i-select style="width:10%;margin-left:10px" placeholder="全部结算通道">
         <i-option label="汇付" value="汇付" key="汇付"></i-option>
         <i-option label="现金" value="现金" key="现金"></i-option>

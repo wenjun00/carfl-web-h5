@@ -37,8 +37,8 @@
         <i-option label="话单本人明下但不满半年" value="话单本人明下但不满半年" key="话单本人明下但不满半年"></i-option>
       </i-select>
       <span style="margin-left:10px;">日期：</span>
-      <i-input style="display:inline-block;width:10%;"></i-input>~
-      <i-input style="display:inline-block;width:10%;"></i-input>
+      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>
       <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>

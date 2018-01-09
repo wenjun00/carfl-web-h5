@@ -42,7 +42,7 @@
 
     <template>
       <i-modal v-model="makeInvoiceModal" title="确认开票" width="600">
-        <table border="1" width="500" align="center">
+        <table border="1" width="550" align="center">
           <tr height="40" align="center">
             <td bgcolor="#F2F2F2">开票金额</td>
             <td>35662</td>
@@ -73,8 +73,10 @@
           </tr>
         </table>
 
-        <div style="margin-top:6px;margin-left:1016px;">
-          <i-button class="blueButton">发票上传</i-button>
+        <div style="margin-top:6px;margin-left:10px;">
+          <Upload style="display:inline-block">
+            <Button class="blueButton">上传发票</Button>
+          </Upload>
           <i-button class="blueButton" style="margin-left:10px;">全部下载</i-button>
         </div>
         <data-box :columns="invoiceColumns" :data="invoiceData"></data-box>
@@ -143,7 +145,7 @@
 
       this.invoiceColumns = [{
           title: '操作',
-          width: '200',
+          width: 200,
           align: 'center',
           render: (h, params) => {
 
@@ -207,7 +209,8 @@
         {
           align: 'center',
           title: '上传日期',
-          key: 'uploadTime'
+          key: 'uploadTime',
+          width: 180
         },
         {
           align: 'center',
@@ -219,11 +222,12 @@
       this.columns1 = [{
           align: "center",
           type: "selection",
-          width: "60"
+          width: 60,
+          fixed: 'left'
         },
         {
           title: "操作",
-          width: "220",
+          width: 200,
           align: "center",
           render: (h, {
             row,
@@ -258,9 +262,10 @@
                       title: '提示',
                       content: '确定撤销吗？',
                       onOk: () => {
-                        this.$Message.info('撤销成功')
+                        this.$Message.info('撤销成功！')
                       }
                     })
+                    console.log(45454)
                   }
                 },
                 style: {
@@ -268,10 +273,11 @@
                 }
               }, '撤销')
             ])
-          }
+          },
+          fixed: 'left'
         },
         {
-          title: "订单号",
+          title: "订单编号",
           key: "orderId",
           align: "center",
           render: (h, row) => {
@@ -285,7 +291,9 @@
                 }
               }
             }, 'kb20154575')
-          }
+          },
+          fixed: 'left',
+          width: 180
         },
         {
           align: "center",
@@ -302,66 +310,108 @@
                 }
               }
             }, 'LSK3125465')
-          }
+          },
+          fixed: 'left',
+          width: 180
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customName"
+          key: "customName",
+          width: 180,
+          fixed: 'left'
         },
         {
           align: "center",
           title: "证件号",
-          key: "idCard"
+          key: "idCard",
+          width: 180
         },
         {
           align: "center",
           title: "手机号",
-          key: "phone"
+          key: "phone",
+          width: 180
         },
         {
           align: "center",
           title: "订单创建时间",
-          key: "orderCreateTime"
+          key: "orderCreateTime",
+          width: 180
         },
         {
           align: "center",
           title: "合同生效日",
-          key: "compactApplyDate"
+          key: "compactApplyDate",
+          width: 180
         },
         {
           align: "center",
           title: "待还本金",
-          key: "supposedMajorMoney"
+          key: "supposedMajorMoney",
+          width: 100
         },
         {
           align: "center",
           title: "待还利息",
-          key: "supposedInterest"
+          key: "supposedInterest",
+          width: 100
         },
         {
           align: "center",
           title: "待还罚息",
-          key: "supposedPunishedInterest"
+          key: "supposedPunishedInterest",
+          width: 100
         },
         {
           align: "center",
           title: "利率%/月",
-          key: "interestRate"
+          key: "interestRate",
+          width: 100
         },
         {
           align: "center",
           title: "结算通道",
-          key: "clearAccountChannel"
+          key: "clearAccountChannel",
+          width: 100
         },
         {
           align: "center",
           title: "归属公司",
-          key: "belongFirm"
+          key: "belongFirm",
+          width: 120
         }
       ];
 
       this.data1 = [{
+        orderId: 'KB56481456',
+        customerSettleId: 'LSK3125465',
+        customName: '陈丽',
+        idCard: '610303199111414245',
+        phone: '18265481548',
+        orderCreateTime: '2017-12-03 13:56:03',
+        compactApplyDate: '2017-12-03',
+        supposedMajorMoney: '800.00',
+        supposedPunishedInterest: '12.2',
+        supposedInterest: '50.00',
+        interestRate: '3.45',
+        clearAccountChannel: '支付宝',
+        belongFirm: '群泰西安'
+      }, {
+        orderId: 'KB56481456',
+        customerSettleId: 'LSK3125465',
+        customName: '陈丽',
+        idCard: '610303199111414245',
+        phone: '18265481548',
+        orderCreateTime: '2017-12-03 13:56:03',
+        compactApplyDate: '2017-12-03',
+        supposedMajorMoney: '800.00',
+        supposedPunishedInterest: '12.2',
+        supposedInterest: '50.00',
+        interestRate: '3.45',
+        clearAccountChannel: '支付宝',
+        belongFirm: '群泰西安'
+      }, {
         orderId: 'KB56481456',
         customerSettleId: 'LSK3125465',
         customName: '陈丽',

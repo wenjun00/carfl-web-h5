@@ -33,8 +33,12 @@
 
     <!--确认收回-->
     <template>
-      <i-modal title="确认收回" width="900" v-model="confirmRepaymentModal">
-        <confirm-repayment></confirm-repayment>
+      <i-modal title="确认收回" width="930" v-model="confirmWithdrawModal" class="confirmWithdraw">
+        <confirm-withdraw></confirm-withdraw>
+        <div slot="footer">
+          <i-button class="highDefaultButton">保存草稿</i-button>
+          <i-button class="highButton">确认</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -51,7 +55,7 @@
   import DataBox from "~/components/common/data-box.vue";
   import Page from "~/core/page";
   import Component from "vue-class-component";
-  import ConfirmRepayment from "~/components/finance-manage/confirm-repayment.vue";
+  import ConfirmWithdraw from "~/components/finance-manage/confirm-withdraw.vue";
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
 
@@ -61,16 +65,16 @@
   import {
     Dependencies
   } from "~/core/decorator";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
-      ConfirmRepayment,
+      ConfirmWithdraw,
       DeductRecord,
       RepayInfo
     }
@@ -82,7 +86,7 @@ import {
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
-    private confirmRepaymentModal: Boolean = false;
+    private confirmWithdrawModal: Boolean = false;
     private repayInfoModal: Boolean = false;
 
     openSearch() {
@@ -93,7 +97,7 @@ import {
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           renderHeader: (h, {
             column,
             index
@@ -121,7 +125,7 @@ import {
         },
         {
           title: "操作",
-          width: "220",
+          width: 220,
           align: "center",
           render: (h, {
             row,
@@ -136,12 +140,7 @@ import {
                   },
                   on: {
                     click: () => {
-                      // this.$Modal.info({
-                      //   title: "确认收回",
-                      //   width: '900',
-                      //   render: h => h(ConfirmRepayment)
-                      // })
-                      this.confirmRepaymentModal = true
+                      this.confirmWithdrawModal = true
                     }
                   },
                   style: {
@@ -154,10 +153,6 @@ import {
                   },
                   on: {
                     click: () => {
-                      // this.$Modal.info({
-                      //   width: '1300',
-                      //   render: h => h(RepayInfo)
-                      // })
                       this.repayInfoModal = true
                     }
                   },
@@ -314,7 +309,7 @@ import {
       this.columns2 = [{
           title: "序号",
           type: "index",
-          width: "80",
+          width: 80,
           align: "center"
         },
         {
@@ -324,7 +319,7 @@ import {
         },
         {
           type: "selection",
-          width: "80",
+          width: 80,
           align: "center"
         }
       ];
@@ -377,8 +372,15 @@ import {
      */
     confirm() {}
   }
+
 </script>
 
-<style>
+<style lang="less">
+  .confirmWithdraw {
+    .ivu-modal-body {
+      height: 600px;
+      overflow: auto;
+    }
+  }
 
 </style>

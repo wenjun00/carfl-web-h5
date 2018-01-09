@@ -64,7 +64,6 @@
         this.updateData()
     }
     updateData() {
-      console.log(1123)
       this.orderQueryService.getOrderProgress().subscribe(({ val }) => {
         this.progressData = val;
       })

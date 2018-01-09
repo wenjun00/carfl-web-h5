@@ -6,7 +6,7 @@
     <i-input></i-input>~
     <i-input></i-input>
     <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
-    <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
+    <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
       <svg-icon iconClass="daochu"></svg-icon>
       <span>导出</span>
     </div>

@@ -1,27 +1,29 @@
 <!--企业开户列表-->
 <template>
   <section class="page company-account-list">
-    <span style="font-size:18px;font-weight:bold">企业开户列表</span>
-    <!--<i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
-    <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
-    <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
-    <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
-    <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
-    <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
-    <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
-    <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">关闭</span>
-      <span>高级搜索</span>
-    </i-button>-->
-    <i-input placeholder="请录入门店\员工姓名查询" style="display:inline-block;width:16%;margin-left:10px;"></i-input>
-    <span style="margin-left:10px;">下载日期：</span>
-    <i-input style="display:inline-block;width:10%"></i-input>~
-    <i-input style="display:inline-block;width:10%"></i-input>
-    <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
-    <i-button class="blueButton" style="margin-left:10px;" @click="addCompany">新增企业</i-button>
-    <i-button class="blueButton" style="margin-left:10px;" @click="transferAccount">转账</i-button>
+    <i-row style="margin-top:10px">
+      <span style="font-size:18px;font-weight:bold">企业开户列表</span>
+      <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
+      <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
+      <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
+      <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
+      <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
+      <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
+      <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
+      <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
+      <i-button @click="openSearch" style="color:#265EA2">
+        <span v-if="!searchOptions">展开</span>
+        <span v-if="searchOptions">关闭</span>
+        <span>高级搜索</span>
+      </i-button>
+      <i-input placeholder="请录入门店\员工姓名查询" style="display:inline-block;width:16%;margin-left:10px;"></i-input>
+      <span style="margin-left:10px;">下载日期：</span>
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
+      <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="addCompany">新增企业</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="transferAccount">转账</i-button>
+    </i-row>
     <i-row v-if="searchOptions" style="margin:6px;">
       <i-select style="display:inline-block;width:10%;margin-left:10px;" placeholder="全部状态">
         <i-option value="拒绝" label="拒绝" key="拒绝"></i-option>
@@ -43,8 +45,8 @@
         <i-option value="话单本人名下但不满半年" label="通过" key="通过"></i-option>
       </i-select>
       <span style="margin-left:10px">日期：</span>
-      <i-input style="display:inline-block;width:10%"></i-input>~
-      <i-input style="display:inline-block;width:10%"></i-input>
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
       <i-button class="blueButton">搜索</i-button>
     </i-row>
     <!--<i-table :columns="columns1" :data="data1" border stripe></i-table>-->
@@ -102,10 +104,10 @@
                 <i-input style="width:160px;"></i-input>
               </i-form-item>
               <i-form-item label="证照起始日期">
-                <i-input style="width:160px;"></i-input>
+                <i-date-picker style="width:160px;"></i-date-picker>
               </i-form-item>
               <i-form-item label="证照结束日期">
-                <i-input style="width:160px;"></i-input>
+                <i-date-picker style="width:160px;"></i-date-picker>
               </i-form-item>
               <i-form-item label="企业经营地址">
                 <i-input style="width:160px;"></i-input>
@@ -139,10 +141,10 @@
                 <i-input style="width:160px;"></i-input>
               </i-form-item>
               <i-form-item label="法人证件起始日期">
-                <i-input style="width:160px;"></i-input>
+                <i-date-picker style="width:160px;"></i-date-picker>
               </i-form-item>
               <i-form-item label="法人证件结束日期">
-                <i-input style="width:160px;"></i-input>
+                <i-date-picker style="width:160px;"></i-date-picker>
               </i-form-item>
               <i-form-item label="法定代表人手机号码">
                 <i-input style="width:160px;"></i-input>
@@ -279,14 +281,14 @@
           <i-form-item label="入账客户号">
             <i-input style="width:160px;"></i-input>
           </i-form-item>
-             <i-form-item label="入账账户号">
+          <i-form-item label="入账账户号">
             <i-input style="width:160px;"></i-input>
           </i-form-item>
-             <i-form-item label="入账账户余额">
+          <i-form-item label="入账账户余额">
             <i-input style="width:160px;"></i-input><span>元</span>
           </i-form-item>
           </i-form-item>
-             <i-form-item label="转账金额">
+          <i-form-item label="转账金额">
             <i-input style="width:160px;"></i-input><span>元</span>
           </i-form-item>
         </i-form>
@@ -303,13 +305,13 @@
   import {
     Dependencies
   } from "~/core/decorator";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox
     }
@@ -352,36 +354,12 @@ import {
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
-          title:'序号'
-          // renderHeader: (h, {
-          //   column,
-          //   index
-          // }) => {
-          //   return h(
-          //     "div", {
-          //       on: {
-          //         click: () => {
-          //           this.columnsConfig();
-          //         }
-          //       },
-          //       style: {
-          //         cursor: "pointer"
-          //       }
-          //     }, [
-          //       h("Icon", {
-          //         props: {
-          //           type: "gear-b",
-          //           size: "20"
-          //         }
-          //       })
-          //     ]
-          //   );
-          // }
+          width: 60,
+          title: '序号'
         },
         {
           title: "操作",
-          width: "180",
+          width: 220,
           align: "center",
           render: (h, {
             row,
@@ -426,7 +404,7 @@ import {
         },
         {
           title: "查看",
-          width: "210",
+          width: 240,
           align: "center",
           render: (h, {
             row,
@@ -444,11 +422,11 @@ import {
                   },
                   on: {
                     click: () => {
-                      // this.$Modal.info({
-                      //   title: '银行卡详情',
-                      //   // transfer:false,
-                      //   render: h => h(BankCardInfo)
-                      // })
+                      this.$Modal.info({
+                        title: '银行卡详情',
+                        // transfer:false,
+                        render: h => h(BankCardInfo)
+                      })
                     }
                   }
                 },
@@ -597,6 +575,20 @@ import {
         companyName: '开呗（上海）汽车租赁有限公司成都分公司',
         businessLicenseId: '91510107MA61UP7F8M',
         approvalStatus: '待审核'
+      }, {
+        userCustomerId: '612535456485',
+        userSonAccountId: '6485',
+        companyLicenseType: '三证合一企业',
+        companyName: '开呗（上海）汽车租赁有限公司成都分公司',
+        businessLicenseId: '91510107MA61UP7F8M',
+        approvalStatus: '待审核'
+      }, {
+        userCustomerId: '612535456485',
+        userSonAccountId: '6485',
+        companyLicenseType: '三证合一企业',
+        companyName: '开呗（上海）汽车租赁有限公司成都分公司',
+        businessLicenseId: '91510107MA61UP7F8M',
+        approvalStatus: '待审核'
       }]
     }
     getOrderInfoByTime() {}
@@ -720,4 +712,5 @@ import {
      */
     confirm() {}
   }
+
 </script>

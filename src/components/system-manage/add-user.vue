@@ -15,19 +15,6 @@
         </i-col>
       </i-row>
       <i-row>
-
-        <i-col :span="12">
-          <i-form-item label="电话呼叫绑定的通道号码">
-            <i-input></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="主叫电话的区号">
-            <i-input></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row>
         <i-col :span="12">
           <i-form-item label="电话">
             <i-input></i-input>

@@ -166,6 +166,10 @@ import {
       ];
       this.data1 = [{
         companyProfile: '群泰西安'
+      },{
+        companyProfile: '群泰上海'
+      },{
+        companyProfile: '群泰武汉'
       }]
 
       this.columnsHuifu = [{

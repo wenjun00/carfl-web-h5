@@ -1,29 +1,31 @@
 <!--订单信息导出-->
 <template>
   <section class="page order-info-export">
-    <span style="font-size:18px;font-weight:bold">订单信息导出</span>
-    <span style="margin-left:10px;">订单创建日期：</span>
-    <i-input></i-input>~
-    <i-input></i-input>
-    <i-select style="margin-left:10px;width:10%;">
-      <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
-      <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
-      <i-option label="群泰武汉" value="群泰武汉" key="群泰武汉"></i-option>
-    </i-select>
-    <i-select style="margin-left:10px;width:10%;" placeholder="我的查询模版">
-      <i-option label="财务模版1" value="财务模版1" key="财务模版1"></i-option>
-      <i-option label="财务模版2" value="财务模版2" key="财务模版2"></i-option>
-    </i-select>
-    <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
-    <i-button @click="openSearch" style="margin-left:10px">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">关闭</span>
-      <span>导出配置</span>
-    </i-button>
-    <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
-      <svg-icon iconClass="daochu"></svg-icon>
-      <span>导出</span>
-    </div>
+    <i-row style="margin-top:10px">
+      <span style="font-size:18px;font-weight:bold">订单信息导出</span>
+      <span style="margin-left:10px;">订单创建日期：</span>
+      <i-input></i-input>~
+      <i-input></i-input>
+      <i-select style="margin-left:10px;width:10%;">
+        <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
+        <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
+        <i-option label="群泰武汉" value="群泰武汉" key="群泰武汉"></i-option>
+      </i-select>
+      <i-select style="margin-left:10px;width:10%;" placeholder="我的查询模版">
+        <i-option label="财务模版1" value="财务模版1" key="财务模版1"></i-option>
+        <i-option label="财务模版2" value="财务模版2" key="财务模版2"></i-option>
+      </i-select>
+      <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+      <i-button @click="openSearch" style="margin-left:10px">
+        <span v-if="!searchOptions">展开</span>
+        <span v-if="searchOptions">关闭</span>
+        <span>导出配置</span>
+      </i-button>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;color:#3367A7;float:right;margin:10px" @click="exportTemplate">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span>导出</span>
+      </div>
+    </i-row>
     <i-row v-if="searchOptions" style="margin:6px;">
       <div class="exportTitle">选购信息</div>
       <div style="padding-bottom:6px;margin-bottom:6px;">
@@ -65,11 +67,35 @@
         <Checkbox v-for="item in orderInfoList" :label="item.name" :key="item.index"></Checkbox>
       </CheckboxGroup>
       <div style="text-align:center">
-        <i-button class="blueButton" style="margin-right:10px">另存为模板</i-button>
+        <i-button class="blueButton" style="margin-right:10px" @click="savaAsNewTemplate">另存为模板</i-button>
         <i-button class="blueButton">确认</i-button>
       </div>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
+
+    <template>
+      <i-modal title="另存为模板" width="400" v-model="saveTemplateModal" @on-ok="confirmSaveTemplate">
+        <i-form :label-width="100">
+          <i-form-item label="模板名称">
+            <i-input style="display:inline-block;width:80%"></i-input>
+          </i-form-item>
+        </i-form>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="导出" width="400" v-model="templateListModal">
+        <i-form :label-width="100">
+          <i-form-item label="模板名称">
+            <i-select>
+              <i-option label="模板1" value="模板1" key="模板1"></i-option>
+              <i-option label="模板2" value="模板2" key="模板2"></i-option>
+              <i-option label="模板3" value="模板3" key="模板3"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-form>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -84,13 +110,13 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       SvgIcon
@@ -101,6 +127,9 @@ import {
     private columns1: any;
     private data1: Array < Object > = [];
     private searchOptions: Boolean = false;
+    private saveTemplateModal: Boolean = false;
+    private templateListModal: Boolean = false;
+
     // 选购信息checkbox相关
     private buyInfoCheckAll: Boolean = false;
     private buyInfoIndeterminate: Boolean = false;
@@ -127,6 +156,34 @@ import {
     private orderCheckAllGroup: Array < String >= []
     private orderInfoList: Array < any >= []
 
+    /**
+     * 另存为模板
+     */
+    savaAsNewTemplate() {
+      if (!this.buyInfoCheckAllGroup.length && !this.prdInfoCheckAllGroup.length && !this.financeCheckAllGroup.length &&
+        !this.customerCheckAllGroup
+        .length && !this.orderCheckAllGroup.length) {
+        this.$Modal.info({
+          title: '提示',
+          content: '请至少选择一项模版导出项'
+        })
+        return false
+      } else {
+        this.saveTemplateModal = true
+      }
+    }
+    /**
+     * 确定保存模板
+     */
+    confirmSaveTemplate() {
+      this.$Message.success('保存成功！')
+    }
+    /**
+     * 导出
+     */
+    exportTemplate() {
+      this.templateListModal = true
+    }
     /**
      * 选购信息
      */
@@ -642,13 +699,14 @@ import {
       console.log(12314)
     }
   }
+
 </script>
 
 <style>
   .exportTitle {
     font-size: 14px;
     font-weight: bold;
-    margin-top:20px;
-
+    margin-top: 20px;
   }
+
 </style>

@@ -198,7 +198,7 @@
         },
         {
           title: "操作",
-          width: 340,
+          width: 360,
           align: "center",
           render: (h, {
             row,
@@ -345,8 +345,7 @@
         {
           columnsName: "最近合同生成日期"
         }
-      ];
-
+      ]
 
     }
 

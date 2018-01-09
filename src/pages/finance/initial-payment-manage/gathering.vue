@@ -35,6 +35,17 @@
         </div>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal v-model="confirmGatherModal" title="确认收款" width="900" class="confirmGather">
+        <confirm-gather></confirm-gather>
+        <div slot="footer">
+          <i-button class="highDefaultButton">保存草稿</i-button>
+          <i-button class="highButton">退回</i-button>
+          <i-button class="highButton">确认</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -42,22 +53,23 @@
   import DataBox from "~/components/common/data-box.vue";
   import Page from "~/core/page";
   import Component from "vue-class-component";
-
+  import ConfirmGather from "~/components/finance-manage/confirm-gather.vue"
   import {
     Tooltip
   } from 'iview'
   import {
     Dependencies
   } from "~/core/decorator";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
-      DataBox
+      DataBox,
+      ConfirmGather
     }
   })
   export default class Gathering extends Page {
@@ -67,6 +79,7 @@ import {
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
+    private confirmGatherModal: Boolean = false;
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -122,10 +135,7 @@ import {
                   },
                   on: {
                     click: () => {
-                      this.$Modal.success({
-                        title:'提示',
-                        content:'确认收款成功！'
-                      })
+                      this.confirmGatherModal = true
                     }
                   }
                 },
@@ -227,20 +237,27 @@ import {
           columnsName: "申请日期"
         },
         {
-          columnsName:"申请人"
+          columnsName: "申请人"
         }
       ];
     }
     columnsConfig() {
       this.openColumnsConfig = true;
     }
-     /**
+    /**
      * 确定
      */
     confirm() {}
   }
+
 </script>
 
-<style>
+<style lang="less">
+  .confirmGather {
+    .ivu-modal-body {
+      height: 600px;
+      overflow: auto;
+    }
+  }
 
 </style>

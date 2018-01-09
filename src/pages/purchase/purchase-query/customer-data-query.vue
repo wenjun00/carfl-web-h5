@@ -30,7 +30,7 @@
     </template>
     <!--上传资料、补充资料-->
     <template>
-      <i-modal v-model="openUpload" title="上传合同">
+      <i-modal v-model="openUpload" title="上传资料">
         <i-button @click="uploadDialog">上传</i-button>
         <div style="font-size:18px;font-weight:bold;margin-top:10px">
           <span>文件数量（3）</span>
@@ -85,7 +85,7 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
@@ -280,8 +280,10 @@
       this.uploadList = true
     }
   }
+
 </script>
 
 <style lang="less" scope>
+
 
 </style>

@@ -11,20 +11,6 @@
       </i-row>
       <i-row>
         <i-col :span="24">
-          <i-form-item label="组织机构类型">
-            <i-input></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row>
-        <i-col :span="24">
-          <i-form-item label="组织机构等级">
-            <i-input></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row>
-        <i-col :span="24">
           <i-form-item label="状态">
             <i-select>
               <i-option label="启用" value="启用" key="启用"></i-option>
@@ -36,7 +22,9 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="公司名称">
-            <i-input></i-input>
+            <i-select>
+              <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
+            </i-select>
           </i-form-item>
         </i-col>
       </i-row>

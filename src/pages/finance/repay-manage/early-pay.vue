@@ -49,6 +49,18 @@
         <confirm-repayment></confirm-repayment>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal v-model="repayInfoModal" title="还款详情" width="900">
+        <repay-info></repay-info>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="deductRecordModal" title="划扣记录" width="1300">
+        <deduct-record></deduct-record>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -66,13 +78,13 @@
   import {
     Dependencies
   } from "~/core/decorator";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       ConfirmRepayment,
@@ -88,7 +100,8 @@ import {
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private confirmRepaymentModal: Boolean = false;
-
+    private repayInfoModal: Boolean = false;
+    private deductRecordModal: Boolean = false;
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
@@ -125,31 +138,64 @@ import {
         },
         {
           title: "操作",
-          width: "120",
+          width: "320",
           align: "center",
           render: (h, {
             row,
             column,
             index
           }) => {
-            return h('i-button', {
-              props: {
-                type: 'text'
-              },
-              style: {
-                color: 'blue'
-              },
-              on: {
-                click: () => {
-                  // this.$Modal.info({
-                  //   title: "确认结清",
-                  //   width: '900',
-                  //   render: h => h(ConfirmRepayment)
-                  // })
-                  this.confirmRepaymentModal = true
+            return h('div', [
+              h('i-button', {
+                props: {
+                  type: 'text'
+                },
+                on: {
+                  click: () => {
+                    this.confirmRepaymentModal = true
+                  }
+                },
+                style: {
+                  color: 'blue'
                 }
-              }
-            }, '确认结清')
+              }, '确认结清'),
+              h('i-button', {
+                props: {
+                  type: 'text'
+                },
+                on: {
+                  click: () => {
+                    // this.$Modal.info({
+                    //   width: 1300,
+                    //   title: '还款详情',
+                    //   render: h => h(RepayInfo)
+                    // })
+                    this.repayInfoModal = true
+                  }
+                },
+                style: {
+                  color: 'blue'
+                }
+              }, '还款详情'),
+              h('i-button', {
+                props: {
+                  type: 'text'
+                },
+                on: {
+                  click: () => {
+                    // this.$Modal.info({
+                    //   width: '1300',
+                    //   title: '划扣记录',
+                    //   render: h => h(DeductRecord)
+                    // })
+                    this.deductRecordModal = true
+                  }
+                },
+                style: {
+                  color: 'blue'
+                }
+              }, '划扣记录')
+            ])
           }
         },
         {
@@ -314,8 +360,10 @@ import {
      */
     confirm() {}
   }
+
 </script>
 
 <style>
+
 
 </style>

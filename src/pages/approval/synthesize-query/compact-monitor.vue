@@ -6,8 +6,8 @@
     <span style="margin-left:10px;">姓名：</span>
     <i-input style="display:inline-block;width:10%;" placeholder="请输入姓名"></i-input>
     <span style="margin-left:10px;">下载日期：</span>
-    <i-input style="display:inline-block;width:10%;"></i-input>~
-    <i-input style="display:inline-block;width:10%;"></i-input>
+    <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>~
+    <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>
     <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
     <data-box :columns="columns1" :data="data1"></data-box>
   </section>

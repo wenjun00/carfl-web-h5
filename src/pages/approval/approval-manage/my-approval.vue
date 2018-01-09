@@ -18,8 +18,8 @@
     <i-row v-if="searchOptions" style="margin:6px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-input style="display:inline-block;width:10%"></i-input>~
-      <i-input style="display:inline-block;width:10%"></i-input>
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
       <span style="margin-left:10px;">省市：</span>
       <i-select style="width:80px;margin-left:10px;" placeholder="选择省">
         <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
@@ -46,6 +46,20 @@
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
     <!--Modal-->
+    <template>
+      <i-modal v-model="approveModal" title="审批" width="800" class="approve">
+        <approve></approve>
+        <div slot="footer">
+          <i-button class="defaultButton">退回资源池</i-button>
+          <i-button class="defaultButton">提交内审</i-button>
+          <i-button class="defaultButton">黑名单</i-button>
+          <i-button class="defaultButton">灰名单</i-button>
+          <i-button class="bigButtonErr">拒绝</i-button>
+          <i-button class="bigButtonDefault">退件</i-button>
+          <i-button class="bigButtonDefault">通过</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -60,13 +74,14 @@
     Layout
   } from "~/core/decorator";
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
-
+  import Approve from '~/components/approval-manage/approve.vue'
   @Layout("workspace")
   @Component({
 
     components: {
       DataBox,
-      PurchaseInformation
+      PurchaseInformation,
+      Approve
     }
   })
   export default class MyApproval extends Page {
@@ -76,6 +91,7 @@
     private data2: Array < Object > = [];
     private orderModal: Boolean = false;
     private searchOptions: Boolean = false;
+    private approveModal: Boolean = false;
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -124,10 +140,12 @@
                   },
                   on: {
                     click: () => {
-                      this.$Modal.success({
-                        title: '提示',
-                        content: '审核成功！'
-                      })
+                      // this.$Modal.success({
+                      //   title: '提示',
+                      //   content: '审核成功！'
+                      // })
+                      console.log(1111)
+                      this.approveModal = true
                     }
                   }
                 },
@@ -163,21 +181,74 @@
           }
         },
         {
+          key: 'step',
+          title: '环节',
+          align: 'center',
+          width: 100,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.orderStatus === '拒绝') {
+              return h('Tooltip', {
+                props: {
+                  content: row.content
+                },
+              }, [h('span', {}, row.status),
+                h('Icon', {
+                  props: {
+                    type: 'ios-information',
+                    size: '20',
+                    color: 'red'
+                  },
+                  style: {
+                    position: 'relative',
+                    top: '2px',
+                    left: '6px',
+                    cursor: 'pointer'
+                  }
+                })
+              ])
+            } else {
+              return h('Tooltip', {
+                props: {
+                  content: row.content
+                },
+              }, [h('span', {}, row.status),
+                h('Icon', {
+                  props: {
+                    type: 'ios-information',
+                    size: '20'
+                  },
+                  style: {
+                    position: 'relative',
+                    top: '2px',
+                    left: '6px',
+                    cursor: 'pointer'
+                  }
+                })
+              ])
+            }
+          }
+        },
+        {
           title: "订单状态",
           align: "center",
-          key: "orderStatus"
+          key: "orderStatus",
+          width: 100
         },
         {
           align: "center",
           title: "订单创建时间",
           key: "orderCreateTime",
-          width:180
+          width: 180
         },
         {
           align: "center",
           title: "我的领取时间",
           key: "myGetTime",
-          width:180
+          width: 180
         },
         {
           align: "center",
@@ -208,13 +279,13 @@
           align: "center",
           title: "证件号",
           key: "idCard",
-          width:180
+          width: 180
         },
         {
           align: "center",
           title: "手机号",
           key: "phone",
-          width:120
+          width: 120
         }
       ];
 
@@ -223,43 +294,51 @@
         orderCreateTime: '2017-12-01 13:56:03',
         myGetTime: '2017-12-02 11:36:26',
         province: '陕西',
-        orderId:20170814,
+        orderId: 20170814,
         city: '宝鸡',
         orderType: '直租',
+        content: '通过',
+        status: '复审',
         customerName: '刘佳',
         idCard: '610303199111142564',
         prdName: '直租',
         phone: '15094156575'
-      },{
+      }, {
         orderStatus: '待合规',
         orderCreateTime: '2017-12-01 13:56:03',
-        orderId:20170815,
+        orderId: 20170815,
         myGetTime: '2017-12-02 11:36:26',
         province: '陕西',
         city: '宝鸡',
+        content: '通过',
+        status: '复审',
         orderType: '直租',
         customerName: '刘佳',
         idCard: '610303199111142564',
         prdName: '直租',
         phone: '15094156575'
-      },{
+      }, {
         orderStatus: '待终审',
         orderCreateTime: '2017-12-01 13:56:03',
-        orderId:20170816,
+        orderId: 20170816,
         myGetTime: '2017-12-02 11:36:26',
         province: '陕西',
         city: '宝鸡',
         orderType: '直租',
         customerName: '刘佳',
+        content: '通过',
+        status: '复审',
         idCard: '610303199111142564',
         prdName: '直租',
         phone: '15094156575'
-      },{
-        orderStatus: '待复审',
+      }, {
+        orderStatus: '拒绝',
         orderCreateTime: '2017-12-01 13:56:03',
-        orderId:20170817,
+        orderId: 20170817,
         myGetTime: '2017-12-02 11:36:26',
         province: '陕西',
+        content: '征信评价不高',
+        status: '复审',
         city: '宝鸡',
         orderType: '直租',
         customerName: '刘佳',
@@ -306,7 +385,21 @@
 
 </script>
 
-<style>
-
+<style lang="less">
+  .approve {
+    .defaultButton {}
+    .bigButtonErr {
+      height: 46px;
+      width: 80px;
+      background: red;
+      color: #fff;
+    }
+    .bigButtonDefault {
+      height: 46px;
+      width: 80px;
+      background: green;
+      color: #fff;
+    }
+  }
 
 </style>

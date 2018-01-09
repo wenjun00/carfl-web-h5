@@ -152,11 +152,6 @@ import {
                 },
                 on: {
                   click: () => {
-                    // this.$Modal.info({
-                    //   title: "确认还款",
-                    //   width: '900',
-                    //   render: h => h(ConfirmRepayment)
-                    // })
                     this.confirmRepaymentModal = true
                   }
                 },
@@ -199,7 +194,7 @@ import {
                 style: {
                   color: 'blue'
                 }
-              }, '划扣记录'),
+              }, '划扣记录')
             ])
           }
         },

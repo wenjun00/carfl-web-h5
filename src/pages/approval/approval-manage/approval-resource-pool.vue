@@ -18,8 +18,8 @@
     <i-row v-if="searchOptions" style="margin:6px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-input style="display:inline-block;width:10%"></i-input>~
-      <i-input style="display:inline-block;width:10%"></i-input>
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
       <i-select style="width:80px;margin-left:10px;" placeholder="选择省">
         <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
       </i-select>

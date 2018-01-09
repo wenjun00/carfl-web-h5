@@ -192,7 +192,6 @@ export default class Test1 extends Vue {
   }
 
   updateData(){
-    console.log(1123)
      this.orderQueryService.getOrderQueryData().subscribe(({ val }) => {
       this.testData = val;
     });

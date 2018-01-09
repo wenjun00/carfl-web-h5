@@ -18,8 +18,8 @@
     <i-row v-if="searchOptions" style="margin:6px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-input style="display:inline-block;width:10%"></i-input>~
-      <i-input style="display:inline-block;width:10%"></i-input>
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
       <span style="margin-left:10px;">省市：</span>
       <i-select style="width:80px;margin-left:10px;" placeholder="选择省">
         <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
@@ -153,6 +153,58 @@
           }
         },
         {
+          key: 'step',
+          title: '环节',
+          align: 'center',
+          width: 186,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.orderStatus === '拒绝') {
+              return h('Tooltip', {
+                props: {
+                  content: row.content
+                },
+              }, [h('span', {}, row.status),
+                h('Icon', {
+                  props: {
+                    type: 'ios-information',
+                    size: '20',
+                    color: 'red'
+                  },
+                  style: {
+                    position: 'relative',
+                    top: '2px',
+                    left: '6px',
+                    cursor: 'pointer'
+                  }
+                })
+              ])
+            } else {
+              return h('Tooltip', {
+                props: {
+                  content: row.content
+                },
+              }, [h('span', {}, row.status),
+                h('Icon', {
+                  props: {
+                    type: 'ios-information',
+                    size: '20'
+                  },
+                  style: {
+                    position: 'relative',
+                    top: '2px',
+                    left: '6px',
+                    cursor: 'pointer'
+                  }
+                })
+              ])
+            }
+          }
+        },
+        {
           title: "订单状态",
           align: "center",
           key: "orderStatus"
@@ -204,26 +256,30 @@
       ];
 
       this.data1 = [{
-        orderStatus: '面审通过',
         orderCreateTime: '2017-12-01 13:56:03',
         orderPoolTime: '2017-12-02 11:36:26',
         province: '陕西',
         city: '宝鸡',
         orderType: '直租',
         customerName: '刘佳',
-        orderId:20170811,
+        orderId: 20170811,
         idCard: '610303199111142564',
+        content: '通过',
+        status: '复审',
+        orderStatus: '通过',
         phone: '15094156575'
       }, {
-        orderStatus: '面审通过',
         orderCreateTime: '2017-12-01 13:56:03',
         orderPoolTime: '2017-12-02 11:36:26',
         province: '陕西',
         city: '宝鸡',
         orderType: '直租',
-        orderId:20170812,
+        orderId: 20170812,
         customerName: '刘陇刚',
         idCard: '610303198911041564',
+        content: '通过',
+        status: '复审',
+        orderStatus: '拒绝',
         phone: '13096133575'
       }]
 

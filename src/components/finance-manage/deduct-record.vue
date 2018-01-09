@@ -12,7 +12,7 @@
       <i-option label="成功" value="成功" key="成功"></i-option>
       <i-option label="失败" value="失败" key="失败"></i-option>
     </i-select>
-    <div style="position:relative;top:10px;"><span>客户姓名：王泽杰</span><span style="float:right">出账客户号：666600000000565656</span></div>
+    <div style="position:relative;top:10px;left:16px;"><span>客户姓名：王泽杰</span><span style="float:right;margin-right:24px">出账客户号：666600000000565656</span></div>
     <data-box :columns="columns1" :data="data1"></data-box>
   </section>
 </template>
@@ -90,7 +90,47 @@
       ]
 
       this.data1 = [{
-        periods: '12期',
+        periods: '1期',
+        payDate: '2017-12-01',
+        outAccountId: '6227001454452014325',
+        payBank: '建行',
+        payAmt: '1500.00',
+        huifuId: 'QC000000000000002155',
+        dealStatus: '成功',
+        failReason: '',
+        operator: '胡开甲'
+      },{
+        periods: '2期',
+        payDate: '2017-12-01',
+        outAccountId: '6227001454452014325',
+        payBank: '建行',
+        payAmt: '1500.00',
+        huifuId: 'QC000000000000002155',
+        dealStatus: '成功',
+        failReason: '',
+        operator: '胡开甲'
+      },{
+        periods: '3期',
+        payDate: '2017-12-01',
+        outAccountId: '6227001454452014325',
+        payBank: '建行',
+        payAmt: '1500.00',
+        huifuId: 'QC000000000000002155',
+        dealStatus: '成功',
+        failReason: '',
+        operator: '胡开甲'
+      },{
+        periods: '4期',
+        payDate: '2017-12-01',
+        outAccountId: '6227001454452014325',
+        payBank: '建行',
+        payAmt: '1500.00',
+        huifuId: 'QC000000000000002155',
+        dealStatus: '成功',
+        failReason: '',
+        operator: '胡开甲'
+      },{
+        periods: '5期',
         payDate: '2017-12-01',
         outAccountId: '6227001454452014325',
         payBank: '建行',

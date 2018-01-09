@@ -1,25 +1,27 @@
 <!--个人开户列表-->
 <template>
   <section class="page personal-account-list">
-    <span style="font-size:18px;font-weight:bold">个人开户列表</span>
-    <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
-    <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
-    <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
-    <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
-    <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
-    <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
-    <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
-    <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">关闭</span>
-      <span>高级搜索</span>
-    </i-button>
-    <i-button class="blueButton" style="margin-left:10px;" @click="createAccount">客户开户</i-button>
-    <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
-      <svg-icon iconClass="daochu"></svg-icon>
-      <span>导出</span>
-    </div>
+    <i-row style="margin-top:10px">
+      <span style="font-size:18px;font-weight:bold">个人开户列表</span>
+      <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
+      <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
+      <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
+      <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
+      <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
+      <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
+      <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
+      <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
+      <i-button @click="openSearch" style="color:#265EA2">
+        <span v-if="!searchOptions">展开</span>
+        <span v-if="searchOptions">关闭</span>
+        <span>高级搜索</span>
+      </i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="createAccount">客户开户</i-button>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span>导出</span>
+      </div>
+    </i-row>
     <i-row v-if="searchOptions" style="margin:6px;">
       <i-select style="display:inline-block;width:10%;margin-left:10px;" placeholder="全部状态">
         <i-option value="拒绝" label="拒绝" key="拒绝"></i-option>
@@ -41,8 +43,8 @@
         <i-option value="话单本人名下但不满半年" label="通过" key="通过"></i-option>
       </i-select>
       <span style="margin-left:10px">日期：</span>
-      <i-input style="display:inline-block;width:10%"></i-input>~
-      <i-input style="display:inline-block;width:10%"></i-input>
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
       <i-button class="blueButton">搜索</i-button>
     </i-row>
     <!--<i-table :columns="columns1" :data="data1" border stripe></i-table>-->
@@ -125,6 +127,12 @@
         <bank-card-info></bank-card-info>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal v-model="deductModal" title="划扣" width="930">
+        <deduct></deduct>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -134,20 +142,22 @@
   import BankCardInfo from "~/components/finance-manage/bank-card-info.vue";
   import Component from "vue-class-component";
   import SvgIcon from '~/components/common/svg-icon.vue'
+  import Deduct from '~/components/finance-manage/deduct.vue'
   import {
     Dependencies
   } from "~/core/decorator";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       BankCardInfo,
-      SvgIcon
+      SvgIcon,
+      Deduct
     }
   })
   export default class PersonalAccountList extends Page {
@@ -163,6 +173,7 @@ import {
     private columns3: any;
     private openCreateAccount: Boolean = false;
     private bankCardInfoModal: Boolean = false;
+    private deductModal: Boolean = false;
 
     /**
      * 开户
@@ -174,7 +185,7 @@ import {
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           renderHeader: (h, {
             column,
             index
@@ -202,7 +213,7 @@ import {
         },
         {
           title: "操作",
-          width: "200",
+          width: 220,
           align: "center",
           render: (h, {
             row,
@@ -220,11 +231,6 @@ import {
                   },
                   on: {
                     click: () => {
-                      // this.$Modal.info({
-                      //   title: '银行卡信息',
-                      //   // transfer:false,
-                      //   render: h => h(BankCardInfo)
-                      // })
                       this.bankCardInfoModal = true
                     }
                   }
@@ -240,7 +246,9 @@ import {
                     color: "#265EA2"
                   },
                   on: {
-                    click: () => {}
+                    click: () => {
+                      this.deductModal = true
+                    }
                   }
                 },
                 "划扣"
@@ -282,7 +290,7 @@ import {
       this.columns2 = [{
           title: "序号",
           type: "index",
-          width: "80",
+          width: 80,
           align: "center"
         },
         {
@@ -292,7 +300,7 @@ import {
         },
         {
           type: "selection",
-          width: "80",
+          width: 80,
           align: "center"
         }
       ];
@@ -304,7 +312,7 @@ import {
         {
           type: "selection",
           align: "center",
-          width: "80"
+          width: 80
         }
       ];
       this.data2 = [{
@@ -366,6 +374,27 @@ import {
       ];
 
       this.data1 = [{
+        openAccountDate: '2017-12-01',
+        openAccountType: '汇付',
+        customerId: '62103526456',
+        customerName: '胡开甲',
+        IdCard: '610303199110054516',
+        phone: '18899245146'
+      },{
+        openAccountDate: '2017-12-01',
+        openAccountType: '汇付',
+        customerId: '62103526456',
+        customerName: '胡开甲',
+        IdCard: '610303199110054516',
+        phone: '18899245146'
+      },{
+        openAccountDate: '2017-12-01',
+        openAccountType: '汇付',
+        customerId: '62103526456',
+        customerName: '胡开甲',
+        IdCard: '610303199110054516',
+        phone: '18899245146'
+      },{
         openAccountDate: '2017-12-01',
         openAccountType: '汇付',
         customerId: '62103526456',
@@ -497,4 +526,5 @@ import {
      */
     confirm() {}
   }
+
 </script>

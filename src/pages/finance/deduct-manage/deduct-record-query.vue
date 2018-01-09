@@ -4,8 +4,8 @@
     <span class="form-title">划扣记录查询</span>
     <i-row style="margin:6px;">
       <span style="margin-left:10px">支付日期：</span>
-      <i-input style="display:inline-block;width:10%"></i-input>~
-      <i-input style="display:inline-block;width:10%"></i-input>
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
       <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请输入客户姓名、客户号查询"></i-input>
       <i-select style="width:120px;margin-left:10px;" placeholder="全部">
         <i-option label="初始" value="西安市" key="西安市"></i-option>
