@@ -34,13 +34,13 @@
   import {
     Dependencies
   } from "~/core/decorator";
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
       DataBox,
       PurchaseInformation
@@ -84,10 +84,10 @@
                   },
                   on: {
                     click: () => {
-                       this.$Modal.info({
-                        title:'申请单详情',
-                        width:'900',
-                        render:h=>h(PurchaseInformation)
+                      this.$Modal.info({
+                        title: '订单详情',
+                        width: '900',
+                        render: h => h(PurchaseInformation)
                       })
                     }
                   }
@@ -278,8 +278,10 @@
       this.$Modal.info()
     }
   }
+
 </script>
 
 <style>
+
 
 </style>

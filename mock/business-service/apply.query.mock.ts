@@ -61,22 +61,24 @@ export default {
         {
           brand: '大众',
           model: '帕萨特',
-          color: 'red',
-          output: '5',
-          configuration: '88',
+          color: '黑色',
+          output: '1.8L',
+          configuration: '高配',
           area: '上海',
           license: '上海',
-          store: 'xxxx',
+          store: '群泰上海',
+          isOutStore: '否',
           status: '入库初期'
         }, {
           brand: '大众',
-          model: '帕萨特',
-          color: 'red',
-          output: '5',
-          configuration: 777777,
+          model: '辉腾',
+          color: '黑色',
+          output: '2.0T',
+          configuration: '高配',
           area: '上海',
           license: '上海',
-          store: 'xxxx',
+          store: '群泰上海',
+          isOutStore: '否',
           status: '入库初期'
         }
       ]

@@ -56,15 +56,17 @@
   import {
     Dependencies
   } from "~/core/decorator";
- import {
+  import {
     Layout
   } from "~/core/decorator";
+  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
-      DataBox
+      DataBox,
+      PurchaseInformation
     }
   })
   export default class MyApproval extends Page {
@@ -96,7 +98,7 @@
         //     })
         //   }
         // },
-         {
+        {
           align: "center",
           type: "index",
           width: "60",
@@ -122,16 +124,42 @@
                   },
                   on: {
                     click: () => {
-                        this.$Modal.success({
-                            title:'提示',
-                            content:'审核成功！'
-                        })
+                      this.$Modal.success({
+                        title: '提示',
+                        content: '审核成功！'
+                      })
                     }
                   }
                 },
                 "审核"
               )
             ]);
+          }
+        },
+        {
+          title: '订单编号',
+          key: 'orderId',
+          align: 'center',
+          width: 180,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.$Modal.info({
+                    width: 900,
+                    title: '订单详情',
+                    render: h => h(PurchaseInformation)
+                  })
+                }
+              }
+            }, row.orderId)
           }
         },
         {
@@ -142,12 +170,14 @@
         {
           align: "center",
           title: "订单创建时间",
-          key: "orderCreateTime"
+          key: "orderCreateTime",
+          width:180
         },
         {
           align: "center",
           title: "我的领取时间",
-          key: "myGetTime"
+          key: "myGetTime",
+          width:180
         },
         {
           align: "center",
@@ -166,30 +196,75 @@
         },
         {
           align: "center",
+          title: "产品名称",
+          key: "prdName"
+        },
+        {
+          align: "center",
           title: "客户姓名",
           key: "customerName"
         },
         {
           align: "center",
           title: "证件号",
-          key: "idCard"
+          key: "idCard",
+          width:180
         },
         {
           align: "center",
           title: "手机号",
-          key: "phone"
+          key: "phone",
+          width:120
         }
       ];
 
       this.data1 = [{
-        orderStatus: '面审通过',
+        orderStatus: '待复审',
         orderCreateTime: '2017-12-01 13:56:03',
+        myGetTime: '2017-12-02 11:36:26',
+        province: '陕西',
+        orderId:20170814,
+        city: '宝鸡',
+        orderType: '直租',
+        customerName: '刘佳',
+        idCard: '610303199111142564',
+        prdName: '直租',
+        phone: '15094156575'
+      },{
+        orderStatus: '待合规',
+        orderCreateTime: '2017-12-01 13:56:03',
+        orderId:20170815,
         myGetTime: '2017-12-02 11:36:26',
         province: '陕西',
         city: '宝鸡',
         orderType: '直租',
         customerName: '刘佳',
         idCard: '610303199111142564',
+        prdName: '直租',
+        phone: '15094156575'
+      },{
+        orderStatus: '待终审',
+        orderCreateTime: '2017-12-01 13:56:03',
+        orderId:20170816,
+        myGetTime: '2017-12-02 11:36:26',
+        province: '陕西',
+        city: '宝鸡',
+        orderType: '直租',
+        customerName: '刘佳',
+        idCard: '610303199111142564',
+        prdName: '直租',
+        phone: '15094156575'
+      },{
+        orderStatus: '待复审',
+        orderCreateTime: '2017-12-01 13:56:03',
+        orderId:20170817,
+        myGetTime: '2017-12-02 11:36:26',
+        province: '陕西',
+        city: '宝鸡',
+        orderType: '直租',
+        customerName: '刘佳',
+        idCard: '610303199111142564',
+        prdName: '直租',
         phone: '15094156575'
       }]
 
@@ -228,8 +303,10 @@
       // this.orderModal = true
     }
   }
+
 </script>
 
 <style>
+
 
 </style>

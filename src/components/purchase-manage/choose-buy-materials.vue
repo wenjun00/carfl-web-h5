@@ -267,27 +267,27 @@
     created() {
       // 设置表单数据
       this.chooseBuyModel = {
-       usedMode:'',
-       hopeMoney:'',
-       hopeTime:'',
-       rentPay:'',
-       hopeProportion:'',
-       prdSeriods:'',
-       prdName:'',
-       prdPeriods:'',
-       prdInterestRate:'',
-       payWay:'',
-       financeTotalMoney:'',
-       moneyPay:'',
-       downPayMoney:'',
-       promiseMoney:'',
-       lastPayMoney:'',
-       manageMoney:'',
-       purchaseMoney:'',
-       licenseMoney:'',
-       GpsMoney:'',
-       otherMoney:'',
-       remark:''
+        usedMode: '',
+        hopeMoney: '',
+        hopeTime: '',
+        rentPay: '',
+        hopeProportion: '',
+        prdSeriods: '',
+        prdName: '',
+        prdPeriods: '',
+        prdInterestRate: '',
+        payWay: '',
+        financeTotalMoney: '',
+        moneyPay: '',
+        downPayMoney: '',
+        promiseMoney: '',
+        lastPayMoney: '',
+        manageMoney: '',
+        purchaseMoney: '',
+        licenseMoney: '',
+        GpsMoney: '',
+        otherMoney: '',
+        remark: ''
       }
       this.carColumns = [{
           title: '操作',
@@ -376,6 +376,10 @@
         }, {
           title: '所在门店',
           key: 'store',
+          align: 'center'
+        }, {
+          title: '是否出库',
+          key: 'isOutStore',
           align: 'center'
         }, {
           title: '状态',

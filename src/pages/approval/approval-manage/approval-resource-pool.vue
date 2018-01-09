@@ -148,7 +148,7 @@
           fixed: 'left'
         },
         {
-          title: "订单号",
+          title: "订单编号",
           key: "orderId",
           align: "center",
           width: 150,
@@ -161,6 +161,7 @@
                 click: () => {
                   this.$Modal.info({
                     width: '900',
+                    title:'订单详情',
                     render: h => h(PurchaseInformation)
                   })
                 }
@@ -256,13 +257,71 @@
         orderStatus: '面审通过',
         orderCreateTime: '2017-12-01 13:56:03',
         orderPoolTime: '2017-12-02 11:36:26',
-        step: '面审',
         province: '陕西',
         city: '宝鸡',
         orderType: '直租',
         customerName: '刘佳',
         idCard: '610303199111142564',
+        orderId: 20170805,
         phone: '15094156575'
+      }, {
+        orderStatus: '面审通过',
+        orderCreateTime: '2017-12-01 13:56:03',
+        orderPoolTime: '2017-12-02 11:36:26',
+        province: '陕西',
+        city: '宝鸡',
+        orderType: '直租',
+        customerName: '刘陇刚',
+        idCard: '610303198911041564',
+        orderId: 20170806,
+        phone: '13096133575'
+      }, {
+        orderStatus: '面审通过',
+        orderCreateTime: '2017-12-01 13:56:03',
+        orderPoolTime: '2017-12-02 11:36:26',
+        province: '陕西',
+        city: '渭南',
+        orderType: '直租',
+        customerName: '王泽杰',
+        orderId: 20170807,
+        idCard: '610303199111142564',
+        phone: '15989756575'
+      }, {
+        orderStatus: '面审通过',
+        orderCreateTime: '2017-12-01 13:56:03',
+        orderPoolTime: '2017-12-02 11:36:26',
+        orderId: 20170806,
+        province: '陕西',
+        city: '宝鸡',
+        orderType: '直租',
+        customerName: '刘佳',
+        idCard: '610303199111142564',
+        prdName: '直租',
+        phone: '15094156575'
+      }, {
+        orderStatus: '面审通过',
+        orderCreateTime: '2017-12-01 13:56:03',
+        orderPoolTime: '2017-12-02 11:36:26',
+        province: '陕西',
+        city: '宝鸡',
+        orderType: '直租',
+        customerName: '刘陇刚',
+        orderId: 20170807,
+        idCard: '610303198911041564',
+        prdName: '直租',
+        phone: '13096133575'
+      }, {
+        orderStatus: '面审通过',
+        orderCreateTime: '2017-12-01 13:56:03',
+        orderPoolTime: '2017-12-02 11:36:26',
+        province: '陕西',
+        city: '渭南',
+        orderType: '直租',
+        customerName: '王泽杰',
+        orderId: 20170808,
+        idCard: '610303199111142564',
+        prdName: '直租',
+        phone: '15989756575'
       }]
 
       this.columns2 = [{

@@ -66,15 +66,17 @@
   import {
     Dependencies
   } from "~/core/decorator";
- import {
+  import {
     Layout
   } from "~/core/decorator";
+  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
-      DataBox
+      DataBox,
+      PurchaseInformation
     }
   })
   export default class LastApproval extends Page {
@@ -92,12 +94,12 @@
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           title: '序号'
         },
         {
           title: "操作",
-          width: "100",
+          width: 100,
           align: "center",
           render: (h, {
             row,
@@ -125,19 +127,42 @@
           }
         },
         {
-          title: "订单状态",
-          align: "center",
-          key: "orderStatus"
+          title: '订单编号',
+          key: 'orderId',
+          align: 'center',
+          width: 180,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.$Modal.info({
+                    width: 900,
+                    title: '订单详情',
+                    render: h => h(PurchaseInformation)
+                  })
+                }
+              }
+            }, row.orderId)
+          }
         },
         {
           align: "center",
           title: "订单创建时间",
-          key: "orderCreateTime"
+          key: "orderCreateTime",
+          width:180
         },
         {
           align: "center",
           title: "进入资源池时间",
-          key: "orderPoolTime"
+          key: "orderPoolTime",
+          width:180
         },
         {
           align: "center",
@@ -156,71 +181,50 @@
         },
         {
           align: "center",
+          title: "产品名称",
+          key: "prdName"
+        },
+        {
+          align: "center",
           title: "客户姓名",
           key: "customerName"
         },
         {
           align: "center",
           title: "证件号",
-          key: "idCard"
+          key: "idCard",
+          width:180
         },
         {
           align: "center",
           title: "手机号",
-          key: "phone"
+          key: "phone",
+          width:120
         }
       ];
 
       this.data1 = [{
-        orderStatus: '面审通过',
         orderCreateTime: '2017-12-01 13:56:03',
         orderPoolTime: '2017-12-02 11:36:26',
         province: '陕西',
         city: '宝鸡',
         orderType: '直租',
         customerName: '刘佳',
+        prdName: '直租',
         idCard: '610303199111142564',
+        orderId: 20170809,
         phone: '15094156575'
       }, {
-        orderStatus: '面审通过',
         orderCreateTime: '2017-12-01 13:56:03',
         orderPoolTime: '2017-12-02 11:36:26',
         province: '陕西',
         city: '宝鸡',
         orderType: '直租',
+        prdName: '直租',
         customerName: '刘陇刚',
+        orderId: 20170810,
         idCard: '610303198911041564',
         phone: '13096133575'
-      }, {
-        orderStatus: '面审通过',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '渭南',
-        orderType: '直租',
-        customerName: '王泽杰',
-        idCard: '610303199111142564',
-        phone: '15989756575'
-      }, {
-        orderStatus: '面审通过',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '咸阳',
-        orderType: '直租',
-        customerName: '刘佳',
-        idCard: '610303199111142564',
-        phone: '15168156575'
-      }, {
-        orderStatus: '待面审',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '西安',
-        orderType: '直租',
-        customerName: '刘佳',
-        idCard: '610303199111142564',
-        phone: '18294156575'
       }]
 
       this.columns2 = [{
@@ -258,8 +262,10 @@
       this.orderModal = true
     }
   }
+
 </script>
 
 <style>
+
 
 </style>
