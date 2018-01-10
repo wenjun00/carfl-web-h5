@@ -70,6 +70,12 @@
         </div>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="转交记录" v-model="transferRecordModal">
+        <transfer-record></transfer-record>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -87,15 +93,17 @@
     OrderService
   } from "~/services/business-service/order.service";
   import SvgIcon from '~/components/common/svg-icon.vue'
- import {
+  import {
     Layout
   } from "~/core/decorator";
+  import TransferRecord from '~/components/purchase-manage/transfer-record.vue'
 
   @Layout("workspace")
   @Component({
     components: {
       DataBox,
-      SvgIcon
+      SvgIcon,
+      TransferRecord
     }
   })
   export default class OrderTransfer extends Page {
@@ -112,6 +120,7 @@
     private customName: String = '';
     private openColumnsConfig: Boolean = false
     private openOneKeyToConnect: Boolean = false
+    private transferRecordModal: Boolean = false
     private checkRadio: String = ""
     activated() {}
     created() {
@@ -223,7 +232,7 @@
               },
               on: {
                 click: () => {
-
+                  this.transferRecordModal = true
                 }
               },
               style: {
@@ -373,4 +382,5 @@
 
     }
   }
+
 </script>

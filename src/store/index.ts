@@ -69,10 +69,17 @@ const store = new Vuex.Store({
         state.pageList.splice(index, 1)
       }
     },
+    closeAllPage(state) {
+      state.pageList = [{
+        path: 'home',
+        title: '主页'
+      }]
+      state.currentPage = 'home'
+    },
     updatePage(state, path) {
       state.currentPage = path
     },
-    updateTheme(state,theme){
+    updateTheme(state, theme) {
       state.theme = theme
     }
   },
@@ -87,7 +94,7 @@ const store = new Vuex.Store({
 export default store
 
 
-function updateCurrentPage(commit, state, { path },redirect) {
+function updateCurrentPage(commit, state, { path }, redirect) {
   let page = state.pageList.find(x => x.path === path)
   if (page) {
     commit('updatePage', path)

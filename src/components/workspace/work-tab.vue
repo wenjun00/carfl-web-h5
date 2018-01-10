@@ -1,91 +1,115 @@
 <template>
   <div class="">
-    <Tabs v-model="currentPage" type="card" closable :animated="false" @on-tab-remove="closePage">
+    <Tabs v-model="currentPage" type="card" closable :animated="false" @on-tab-remove="closePage" class="workTabs">
       <TabPane v-for="page in pageList" :key="page.path" :label="page.title" :name="page.path" :closable="page.path !== 'home'">
         <component ref="pages" :is="getComponentName(page.path)"></component>
       </TabPane>
     </Tabs>
+    <i-button style="position:absolute;top:67px;right:8px" @click="closeAllTabs">关闭所有</i-button>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { Watch } from "vue-property-decorator";
-import { State, Mutation } from "vuex-class";
-import menuConfig from "~/config/menu.config";
-import { CommonService } from "~/utils/common.service";
-import Home from "~/pages/home.vue";
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {
+    Watch
+  } from "vue-property-decorator";
+  import {
+    State,
+    Mutation
+  } from "vuex-class";
+  import menuConfig from "~/config/menu.config";
+  import {
+    CommonService
+  } from "~/utils/common.service";
+  import Home from "~/pages/home.vue";
 
-@Component({
-  name: "work-tab",
-  components: {
-    Home
-  },
-  beforeCreate() {
-    // 动态导入组件
-    let importComponents = item => {
-      if (item.children) {
-        item.children.forEach(importComponents);
-      }
-      if (item.path) {
-        let componentName = CommonService.getComponentName(item.path);
-
-        let components = this.$options.components;
-        if (components) {
-          components[componentName] = () =>
-            import("~/pages/" + item.path + ".vue");
+  @Component({
+    name: "work-tab",
+    components: {
+      Home
+    },
+    beforeCreate() {
+      // 动态导入组件
+      let importComponents = item => {
+        if (item.children) {
+          item.children.forEach(importComponents);
         }
-      }
-    };
-    menuConfig.forEach(importComponents);
-  }
-})
-export default class WorkTab extends Vue {
-  @State("currentPage") _currentPage: any; // 当前page
-  @State("pageList") pageList: Array<any>;
-  @Mutation("updatePage") updatePage: Function;
-  @Mutation("closePage") closeTab: Function;
-  private getComponentName = CommonService.getComponentName;
+        if (item.path) {
+          let componentName = CommonService.getComponentName(item.path);
 
-  /**
-   * 获取当前页面路径
-   */
-  get currentPage() {
-    return this._currentPage;
+          let components = this.$options.components;
+          if (components) {
+            components[componentName] = () =>
+              import ("~/pages/" + item.path + ".vue");
+          }
+        }
+      };
+      menuConfig.forEach(importComponents);
+    }
+  })
+  export default class WorkTab extends Vue {
+    @State("currentPage") _currentPage: any; // 当前page
+    @State("pageList") pageList: Array < any > ;
+    @Mutation("updatePage") updatePage: Function;
+    @Mutation("closePage") closeTab: Function;
+    @Mutation("closeAllPage") closeAllPage: Function;
+    private getComponentName = CommonService.getComponentName;
+
+    /**
+     * 获取当前页面路径
+     */
+    get currentPage() {
+      return this._currentPage;
+    }
+
+    /**
+     * 设置当前页面路径
+     */
+    set currentPage(path) {
+      this.updatePage(path);
+    }
+    closeAllTabs(path) {
+      this.closeAllPage(path)
+    }
+    /**
+     * 监听当前页面变化
+     */
+    @Watch("currentPage")
+    onPageChanged(val: string, oldVal: string) {
+      // let components = <Array<Vue>>this.$refs["pages"];
+      // let component = components.find(
+      //   x => x.$options.name === this.getComponentName(val)
+      // );
+      // if (
+      //   component &&
+      //   component.$options.activated &&
+      //   component.$options.activated.length > 1
+      // ) {
+      //   let activated = component.$options.activated[1];
+      //   activated.call(component);
+      // }
+    }
+
+    /**
+     * 关闭页面
+     */
+    closePage(path) {
+      this.closeTab(path);
+    }
   }
 
-  /**
-  * 设置当前页面路径
-  */
-  set currentPage(path) {
-    this.updatePage(path);
-  }
-
-  /**
-   * 监听当前页面变化
-   */
-  @Watch("currentPage")
-  onPageChanged(val: string, oldVal: string) {
-    // let components = <Array<Vue>>this.$refs["pages"];
-    // let component = components.find(
-    //   x => x.$options.name === this.getComponentName(val)
-    // );
-    // if (
-    //   component &&
-    //   component.$options.activated &&
-    //   component.$options.activated.length > 1
-    // ) {
-    //   let activated = component.$options.activated[1];
-    //   activated.call(component);
-    // }
-  }
-
-  /**
-   * 关闭页面
-   */
-  closePage(path) {
-    this.closeTab(path);
-  }
-}
 </script>
+
+<style lang="less">
+  .workTabs {
+    .ivu-tabs-nav-scroll {
+      width: 93%;
+    }
+    .ivu-tabs-nav-container {
+      background: #fff;
+    }
+  }
+
+</style>
