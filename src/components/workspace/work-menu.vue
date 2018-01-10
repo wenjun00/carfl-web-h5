@@ -60,14 +60,14 @@
 <style lang="less" scoped>
   .menu-level-1 {
     height: 100%;
-
     .menu-level-1-title {
-      padding: 0 30px;
+      padding: 0 15px;
       font-size: 16px;
       color: #feffff;
 
       &>* {
         padding: 0 3px;
+        font-size:14px;
       }
     }
   }

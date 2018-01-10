@@ -17,7 +17,13 @@
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
-        <data-box :columns="columns2" :data="data2"></data-box>
+        <i-table :columns="columns2" :data="data2"></i-table>
+        <div slot="footer">
+          <i-button>上移</i-button>
+          <i-button>下移</i-button>
+          <i-button>恢复默认</i-button>
+          <i-button @click="openColumnsConfig=false">关闭</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -43,14 +49,14 @@
   import {
     Dependencies
   } from "~/core/decorator";
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
 
   @Component({
-    
+
     components: {
       DataBox
     }
@@ -245,8 +251,10 @@
       this.changeStatusOpen = true
     }
   }
+
 </script>
 
 <style lang="less" scope>
+
 
 </style>

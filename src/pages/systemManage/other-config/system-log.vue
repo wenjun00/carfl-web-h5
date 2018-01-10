@@ -203,12 +203,6 @@
       this.openOneKeyToConnect = true
     }
     /**
-     * 列配置
-     */
-    columnsConfig() {
-      this.openColumnsConfig = true
-    }
-    /**
      * 多选
      */
     multipleSelect(selection) {}

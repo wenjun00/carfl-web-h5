@@ -5,7 +5,9 @@
         <component ref="pages" :is="getComponentName(page.path)"></component>
       </TabPane>
     </Tabs>
-    <i-button style="position:absolute;top:67px;right:8px" @click="closeAllTabs">关闭所有</i-button>
+    <div @click="closeAllTabs" style="position:absolute;top:70px;right:10px;border-bottom-style:none;font-size:14px;cursor:pointer;" title="关闭所有">
+      <Icon type="close"></Icon>
+    </div>
   </div>
 </template>
 
@@ -104,11 +106,16 @@
 
 <style lang="less">
   .workTabs {
-    .ivu-tabs-nav-scroll {
-      width: 93%;
-    }
+    // .ivu-tabs-nav-scroll {
+    //   width: 93%;
+    // }
     .ivu-tabs-nav-container {
       background: #fff;
+      width: 98%;
+    }
+    .ivu-tabs-bar {
+      background: #fff;
+      border-bottom: 1px solid #fff;
     }
   }
 

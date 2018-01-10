@@ -18,7 +18,7 @@
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
-        <data-box :columns="columns2" :data="data2"></data-box>
+        <i-table :columns="columns2" :data="data2"></i-table>
         <div slot="footer">
           <i-button>上移</i-button>
           <i-button>下移</i-button>

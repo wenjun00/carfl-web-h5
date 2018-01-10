@@ -56,7 +56,7 @@
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
         <!--<i-table :columns="columns2" :data="data2" border stripe @on-select="multipleSelect"></i-table>-->
-        <data-box :columns="columns2" :data="data2"></data-box>
+        <i-table :columns="columns2" :data="data2"></i-table>
         <div slot="footer">
           <i-button>上移</i-button>
           <i-button>下移</i-button>

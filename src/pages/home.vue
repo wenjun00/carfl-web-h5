@@ -1,7 +1,7 @@
 <template>
   <section class="home-page theme-default">
     <div style="width:100%;background:#EFF3F5;display:flex;justify-content:space-around">
-      <div style="width:74%;">
+      <div style="width:76%;">
         <!--左上-->
         <div style="width:100%;border:1px solid #DDDDDD;height:200px;background:#fff">
           <div style="margin-top:20px;margin-left:20px;">
@@ -39,12 +39,12 @@
           </div>
         </div>
         <!--左下-->
-        <div style="width:100%;border:1px solid #DDDDDD;height:630px;margin-top:10px;background:#fff;">
+        <div style="width:100%;border:1px solid #DDDDDD;height:630px;margin-top:10px;background:#fff;padding:10px;">
           <zmap></zmap>
         </div>
       </div>
       <!--右边待办事项-->
-      <div style="width:22%;border:1px solid #DDDDDD;height:840px;background:#fff">
+      <div style="width:23%;border:1px solid #DDDDDD;height:840px;background:#fff;">
         <div style="margin-top:20px;margin-left:20px;">
           <div style="width:7px;height:18px;background:#265EA2;display:inline-block"></div>
           <span style="margin-left:10px;font-size:16px;color:#333333;position:relative;bottom:3px;">待办事项</span>
