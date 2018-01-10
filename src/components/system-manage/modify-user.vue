@@ -104,10 +104,8 @@
 
 </script>
 <style lang="less">
-  // .modifyUserForm {
-  //   .ivu-input {
-  //     width: 65%;
-  //   }
-  // }
-
+  .modifyUserForm{
+    position: relative;
+    right:30px;
+  }
 </style>

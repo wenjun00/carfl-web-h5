@@ -104,13 +104,11 @@
       }]
 
       this.data1 = [{
-        approvalFlow: '面审'
+        approvalFlow: '本金'
       }, {
-        approvalFlow: '复审'
+        approvalFlow: '利息'
       }, {
-        approvalFlow: '终审'
-      }, {
-        approvalFlow: '合规'
+        approvalFlow: '罚息'
       }]
     }
 

@@ -1,7 +1,7 @@
 <!--新增组织-->
 <template>
   <section class="component add-org">
-    <i-form :label-width="100" class="modifyUserForm">
+    <i-form :label-width="100" class="addOrg">
       <i-row>
         <i-col :span="24">
           <i-form-item label="机构名称">
@@ -61,12 +61,15 @@
 
 </script>
 <style lang="less">
-  .modifyUserForm {
-    .ivu-input,
-    .ivu-select,
-    .ivu-select-single {
-      width: 85%;
-    }
-  }
-
+  // .modifyUserForm {
+  //   .ivu-input,
+  //   .ivu-select,
+  //   .ivu-select-single {
+  //     width: 85%;
+  //   }
+  // }
+.addOrg{
+   position: relative;
+   right:30px;
+}
 </style>

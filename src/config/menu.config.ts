@@ -207,23 +207,27 @@ export default [
       title: '基础数据',
       path: 'base/base-data',
       children: [{
-        title: '产品配置',
-        path: 'base/base-data/prod-config'
-      }, {
         title: '产品包信息',
         path: 'base/base-data/prod-package-info'
       }, {
         title: '数据字典',
         path: 'base/base-data/data-dict'
       }, {
-        title: '客户素材维护',
-        path: 'base/base-data/customer-fodder-maintain'
-      }, {
         title: '审批原因管理',
         path: 'base/base-data/approval-reason-manage'
       }, {
         title: '分公司信息',
         path: 'base/base-data/branch-company-info'
+      }]
+    }, {
+      title: '配置管理',
+      path: 'base/config-manage',
+      children: [{
+        title: '产品配置',
+        path: 'base/base-data/prod-config'
+      },  {
+        title: '客户素材维护',
+        path: 'base/base-data/customer-fodder-maintain'
       }]
     }]
   },

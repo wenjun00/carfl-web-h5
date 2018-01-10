@@ -37,9 +37,6 @@
               </i-input>
             </i-form-item>
           </i-col>
-          <!--<i-form-item :label-width="0" style="text-align:center">
-        <i-button  class="submit_btn blueButton" @click="submitForm">登录</i-button>
-      </i-form-item>-->
         </i-form>
       </i-col>
       <i-col span="6" type="flex" justify="center" style="display: flex;justify-content: center;align-items: center;position:absolute;top:20%;right:18%;"

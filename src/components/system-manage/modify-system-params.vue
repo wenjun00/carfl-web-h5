@@ -1,7 +1,7 @@
 <!--修改系统参数-->
 <template>
   <section class="component modify-system-params">
-    <i-form :label-width="100" class="modifyUserForm">
+    <i-form :label-width="100" class="modifySystemParams">
       <i-row>
         <i-col :span="24">
           <i-form-item label="参数代码">
@@ -65,15 +65,9 @@
 
 </script>
 <style lang="less">
-  .modifyUserForm {
-    .ivu-input,
-    .ivu-select,
-    .ivu-select-single {
-      width: 85%;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
+  .modifySystemParams {
+    position: relative;
+    right: 30px;
   }
 
 </style>

@@ -6,12 +6,6 @@
       <i-button style="margin-left:10px;" class="blueButton" @click="addNewBackups">新增备份</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
-
-    <template>
-      <i-modal v-model="editSysParamsModal" title="修改系统参数">
-        <modify-system-params></modify-system-params>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -32,14 +26,12 @@
   import {
     Layout
   } from "~/core/decorator";
-  import ModifySystemParams from "~/components/system-manage/modify-system-params.vue";
 
   @Layout("workspace")
   @Component({
     components: {
       DataBox,
-      SvgIcon,
-      ModifySystemParams
+      SvgIcon
     }
   })
   export default class SystemBackups extends Page {

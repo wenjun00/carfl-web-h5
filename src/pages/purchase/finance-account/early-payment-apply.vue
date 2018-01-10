@@ -53,7 +53,7 @@
       </i-col>
       <i-col span="6" type="flex" justify="center" style="display: flex;justify-content: center;align-items: center;position:absolute;top:20%;right:18%;"
         pull="6">
-        <i-button class="submit_btn blueButton">清空</i-button>
+        <i-button class="blueButton">清空</i-button>
       </i-col>
     </i-row>
     <i-tabs value="purchaseItem" type="card" style="height:76%;overflow-y:auto;background:white">
