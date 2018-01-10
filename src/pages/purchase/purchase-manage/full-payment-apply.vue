@@ -541,7 +541,7 @@
     bottom: 0;
     left: 0;
     border: 1px solid #ddd;
-    box-shadow: -3px 2px 20px gray;
+    box-shadow: -3px 2px 20px #dddddd;
   }
 
   .specialInput {
