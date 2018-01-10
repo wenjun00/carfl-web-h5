@@ -44,7 +44,7 @@
         <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
       </i-col>
     </i-row>
-    <i-tabs value="purchaseItem" type="card" style="height:76%;overflow-y:auto;background:white">
+    <i-tabs value="purchaseItem" type="card" style="height:69%;overflow-y:auto;background:white">
       <i-tab-pane name="purchaseItem" label="选购资料">
         <div class="form-title">选购信息</div>
         <i-row class="proCity">
@@ -79,7 +79,8 @@
             </i-col>
           </i-form>
         </i-row>
-        <data-box :columns="columns1" :data="data1" :width="1100"></data-box>
+        <i-table :columns="columns1" :data="data1" :width="1100"></i-table>
+        <i-button @click="addModalOpen" class="blueButton" style="margin:10px 0;">添加车辆</i-button>
         <div style="height:60px;width:100%;">
         </div>
       </i-tab-pane>
@@ -201,6 +202,15 @@
         </i-row>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="1200" v-model="editCarModal" :trandfer="false">
+        <add-car></add-car>
+        <div slot="footer">
+          <i-button @click="confirmAndBack">确认并返回</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 <script lang="ts">
@@ -220,13 +230,15 @@
   import {
     Layout
   } from "~/core/decorator";
+  import AddCar from "~/components/purchase-manage/add-car.vue"
 
   @Layout("workspace")
 
   @Component({
     components: {
       DataBox,
-      SvgIcon
+      SvgIcon,
+      AddCar
     }
   })
   export default class FullPaymentApply extends Page {
@@ -252,6 +264,9 @@
     private loading: Boolean = false;
     private addCar: Boolean = false;
     private isShown: Boolean = true;
+    private editCarModal: Boolean = false;
+    private addOrEditFlag: Boolean = false;
+
     addNewApply() {
       this.$Modal.confirm({
         title: '提示',
@@ -329,11 +344,11 @@
         key: 'carNumber',
         align: 'center'
       }]
-      this.applyQueryService.getFullQueryData().subscribe(({
-        val
-      }) => {
-        this.data1 = val
-      })
+      // this.applyQueryService.getFullQueryData().subscribe(({
+      //   val
+      // }) => {
+      //   this.data1 = val
+      // })
       this.columns2 = [{
         type: 'selection',
         align: 'center',
@@ -437,21 +452,33 @@
     multipleSelect(selection) {
       console.log(888, selection)
     }
+    addModalOpen() {
+      this.addOrEditFlag = true
+      this.editCarModal = true
+    }
     /**
     是否显示汽车分类
      */
     showCategory() {
       this.isShown = !this.isShown
     }
-    updateData() {
+    // updateData() {
+    //   this.applyQueryService.getFullQueryData().subscribe(({
+    //     val
+    //   }) => {
+    //     this.data1 = val
+    //   })
+    // }
+    saveAndSubmit() {
+
+    }
+    confirmAndBack() {
+      this.editCarModal = false
       this.applyQueryService.getFullQueryData().subscribe(({
         val
       }) => {
         this.data1 = val
       })
-    }
-    saveAndSubmit() {
-
     }
   }
 
@@ -514,6 +541,7 @@
     bottom: 0;
     left: 0;
     border: 1px solid #ddd;
+    box-shadow: -3px 2px 20px gray;
   }
 
   .specialInput {

@@ -73,7 +73,7 @@
 
     <template>
       <i-modal title="转交记录" v-model="transferRecordModal">
-        <transfer-record></transfer-record>
+        <transfer-record :customerName="customerName" :orderId="orderId"></transfer-record>
       </i-modal>
     </template>
   </section>
@@ -122,6 +122,9 @@
     private openOneKeyToConnect: Boolean = false
     private transferRecordModal: Boolean = false
     private checkRadio: String = ""
+    private customerName: String = ""
+    private orderId: String = ""
+
     activated() {}
     created() {
       this.treeData = [{
@@ -232,6 +235,7 @@
               },
               on: {
                 click: () => {
+                  this.transferRecord(row)
                   this.transferRecordModal = true
                 }
               },
@@ -380,6 +384,10 @@
      */
     confirm() {
 
+    }
+    transferRecord(row) {
+      this.customerName = row.customName
+      this.orderId = row.orderId
     }
   }
 

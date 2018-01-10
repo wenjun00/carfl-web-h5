@@ -74,7 +74,7 @@
         <i-button class="blueButton">清空</i-button>
       </i-col>
     </i-row>
-    <i-tabs value="purchaseItem" type="card" style="height:76%;overflow-y:auto;background:white">
+    <i-tabs value="purchaseItem" type="card" style="height:69%;overflow-y:auto;background:white">
       <i-tab-pane name="purchaseItem" label="收款明细">
         <i-table :columns="columns1" :data="data1"></i-table>
         <i-button class="blueButton" style="margin-top:10px;" @click="changeGatherItem">添加收款项</i-button>
@@ -209,50 +209,52 @@
           column,
           index
         }) => {
-          return h("div", [
-            h(
-              "i-button", {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    this.modifyGatherItem();
+          if (row.itemName !== '合计') {
+            return h("div", [
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.modifyGatherItem();
+                    }
                   }
-                }
-              },
-              "编辑"
-            ),
-            h(
-              "i-button", {
-                props: {
-                  type: "text"
                 },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '提示',
-                      content: '确定删除吗？',
-                      onOk: () => {
-                        this.data1.forEach((x, i) => {
-                          if (i === index) {
-                            this.data1.splice(i, 1)
-                          }
-                        })
-                      }
-                    })
+                "编辑"
+              ),
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '确定删除吗？',
+                        onOk: () => {
+                          this.data1.forEach((x, i) => {
+                            if (i === index) {
+                              this.data1.splice(i, 1)
+                            }
+                          })
+                        }
+                      })
+                    }
                   }
-                }
-              },
-              "删除"
-            )
-          ]);
+                },
+                "删除"
+              )
+            ]);
+          }
         }
       }, {
         key: 'itemName',

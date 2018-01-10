@@ -14,7 +14,7 @@ export default {
           orderDept: '前端开发',
           orderTransferPerson: '刘琛',
           orderCreateTime: '2016-10-03',
-          customName: '王泽杰',
+          customName: '王宝财',
           IdCard: '610303199111142416',
           phone: '15091146267',
           prdName: '梅赛德斯',
@@ -27,51 +27,12 @@ export default {
           orderDept: '前端开发',
           orderTransferPerson: '刘琛',
           orderCreateTime: '2016-10-03',
-          customName: '王泽杰',
+          customName: '李良琛',
           IdCard: '610303199111142416',
           phone: '15091146267',
           prdName: '梅赛德斯',
           prdPeriods: '1期',
           stage: '复审',
-          approvalStatus: '待审批'
-        }, {
-          orderId: '000003',
-          orderOwner: '刘佳',
-          orderDept: '前端开发',
-          orderTransferPerson: '刘琛',
-          orderCreateTime: '2016-10-03',
-          customName: '王泽杰',
-          IdCard: '610303199111142416',
-          phone: '15091146267',
-          prdName: '梅赛德斯',
-          prdPeriods: '1期',
-          stage: '复审',
-          approvalStatus: '待审批'
-        }, {
-          orderId: '000004',
-          orderOwner: '刘佳',
-          orderDept: '前端开发',
-          orderTransferPerson: '刘琛',
-          orderCreateTime: '2016-10-03',
-          customName: '王泽杰',
-          IdCard: '610303199111142416',
-          phone: '15091146267',
-          prdName: '梅赛德斯',
-          prdPeriods: '1期',
-          stage: '合规检查',
-          approvalStatus: '待审批'
-        }, {
-          orderId: '000005',
-          orderOwner: '刘佳',
-          orderDept: '前端开发',
-          orderTransferPerson: '刘琛',
-          orderCreateTime: '2016-10-03',
-          customName: '王泽杰',
-          IdCard: '610303199111142416',
-          phone: '15091146267',
-          prdName: '梅赛德斯',
-          prdPeriods: '1期',
-          stage: '终审',
           approvalStatus: '待审批'
         }
       ]
@@ -351,18 +312,6 @@ export default {
         phone:'18898253654',
         firmName:'西安市长安区政府',
         address:'南窑头'
-      },{
-        relation:'子女',
-        relationName:'刘陇刚',
-        phone:'18898253654',
-        firmName:'西安市长安区政府',
-        address:'南窑头'
-      },{
-        relation:'父母',
-        relationName:'李楠',
-        phone:'18898253654',
-        firmName:'西安市长安区政府',
-        address:'东窑头'
       }]
     }    
   },
@@ -370,23 +319,11 @@ export default {
     server: businessService.orderController.getContactsRelationInfo,
     data:{
       val:[{
-        relation:'朋友',
-        relationName:'李兵强',
-        phone:'18898253654',
-        firmName:'西安市长安区政府',
-        address:'南窑头'
-      },{
         relation:'同事',
         relationName:'刘陇刚',
         phone:'18898253654',
         firmName:'西安市长安区政府',
         address:'南窑头'
-      },{
-        relation:'老师',
-        relationName:'李楠',
-        phone:'18898253654',
-        firmName:'西安市长安区政府',
-        address:'东窑头'
       }]
     }    
   },

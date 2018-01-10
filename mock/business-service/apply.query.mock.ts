@@ -9,9 +9,9 @@ export default {
     data: {
       val: [
         {
-          columnsName: '起亚智跑',
-          color: 'red',
-          price: '$999',
+          columnsName: '帕萨特',
+          color: '黑色',
+          price: '$51999',
           amount: '1',
           carNumber: '陕AW1241'
         }, {
@@ -21,35 +21,11 @@ export default {
           amount: '1',
           carNumber: '陕A289V1'
         }, {
-          columnsName: '丰田卡罗拉',
-          color: 'red',
-          price: '$999',
+          columnsName: '辉腾',
+          color: '黑色',
+          price: '$190000',
           amount: '1',
           carNumber: '陕ARC341'
-        }, {
-          columnsName: '福特探险者',
-          color: 'pink',
-          price: '$999',
-          amount: '1',
-          carNumber: '陕C23757'
-        }, {
-          columnsName: '凯迪拉克SRX',
-          color: 'red',
-          price: '$999',
-          amount: '1',
-          carNumber: '陕A21241'
-        }, {
-          columnsName: '福特福克斯',
-          color: 'red',
-          price: '$999',
-          amount: '1',
-          carNumber: '陕A25441'
-        }, {
-          columnsName: '福特金牛座',
-          color: 'red',
-          price: '$999',
-          amount: '1',
-          carNumber: '陕A2LM41'
         }
       ]
     }

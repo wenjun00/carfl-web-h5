@@ -74,13 +74,20 @@
         </table>
 
         <div style="margin-top:6px;margin-left:10px;">
-          <Upload style="display:inline-block">
+          <Upload style="display:inline-block" action="">
             <Button class="blueButton">上传发票</Button>
           </Upload>
           <i-button class="blueButton" style="margin-left:10px;">全部下载</i-button>
         </div>
         <data-box :columns="invoiceColumns" :data="invoiceData"></data-box>
 
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="查看附件" v-model="checkAttachmentModal">
+     
+        <check-attachment></check-attachment>
       </i-modal>
     </template>
   </section>
@@ -93,7 +100,7 @@
   import ConfirmRepayment from "~/components/finance-manage/confirm-repayment.vue";
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
-
+  import CheckAttachment from '~/components/finance-manage/check-attachment.vue'
   import {
     Tooltip
   } from 'iview'
@@ -111,7 +118,8 @@
       DataBox,
       ConfirmRepayment,
       DeductRecord,
-      RepayInfo
+      RepayInfo,
+      CheckAttachment
     }
   })
   export default class FinanceMakeInvoice extends Page {
@@ -124,6 +132,7 @@
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private makeInvoiceModal: Boolean = false;
+    private checkAttachmentModal: Boolean = false;
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -241,11 +250,7 @@
                 },
                 on: {
                   click: () => {
-                    // this.$Modal.info({
-                    //   title: "确认收回",
-                    //   width: '900',
-                    //   render: h => h(ConfirmRepayment)
-                    // })
+                    this.checkAttachment(row)
                   }
                 },
                 style: {
@@ -492,6 +497,12 @@
      * 确定
      */
     confirm() {}
+    /**
+     * 查看附件
+     */
+    checkAttachment(row) {
+      this.checkAttachmentModal = true
+    }
   }
 
 </script>

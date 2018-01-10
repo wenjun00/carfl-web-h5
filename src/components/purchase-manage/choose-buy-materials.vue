@@ -5,7 +5,6 @@
     <i-row>
       <i-form ref="customer-form" :model="chooseBuyModel" :label-width="100" style="margin-top:20px;">
         <i-row>
-
           <i-col span="12">
             <i-form-item label="申请省份" prop="province">
               <i-select>
@@ -91,7 +90,7 @@
       </i-form>
     </i-row>
     <i-table :columns="carColumns" :data="carData" stripe style="margin:10px;"></i-table>
-    <i-button @click="editModalOpen" class="blueButton" style="margin-left:10px;">添加车辆</i-button>
+    <i-button @click="addModalOpen" class="blueButton" style="margin-left:10px;">添加车辆</i-button>
     <i-col span="24" style="line-height:30px;margin-top:20px;" class="form-title">
       <span>产品信息</span>
       <div style="font-size:14px;cursor:pointer;display:inline-block;color:#3367A7;position:absolute;z-index:999;left:52%;" @click="openSimulateCalculate">
@@ -218,10 +217,10 @@
     </template>
 
     <template>
-      <i-modal title="添加车辆" width="1200" v-model="editCarModal" :trandfer="false">
+      <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="1200" v-model="editCarModal" :trandfer="false">
         <add-car></add-car>
         <div slot="footer">
-          <i-button @click="editCarModal=false">确认并返回</i-button>
+          <i-button @click="confirmAndBack">确认并返回</i-button>
         </div>
       </i-modal>
     </template>
@@ -256,6 +255,7 @@
     private carData: Array < Object > = [];
     private simulateCalculateModal: Boolean = false;
     private editCarModal: Boolean = false;
+    private addOrEditFlag: Boolean = false;
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
 
     /**
@@ -264,6 +264,7 @@
     openSimulateCalculate() {
       this.simulateCalculateModal = true
     }
+
     created() {
       // 设置表单数据
       this.chooseBuyModel = {
@@ -310,6 +311,7 @@
                   on: {
                     click: () => {
                       this.editModalOpen(row)
+                      this.addOrEditFlag = false
                     }
                   }
                 },
@@ -387,25 +389,24 @@
           align: 'center'
         }
       ]
+
+      this.carData = []
+    }
+    editModalOpen(row) {
+      this.editCarModal = true
+    }
+    addModalOpen() {
+      this.addOrEditFlag = true
+      this.editCarModal = true
+    }
+    confirmAndBack() {
+      this.editCarModal = false
       this.applyQueryService.addCarQueryData().subscribe(({
         val
       }) => {
         this.carData = val
       })
     }
-    editModalOpen(row) {
-      this.editCarModal = true
-      // this.$Modal.info({
-      //   title: '车辆选择',
-      //   width: 1200,
-      //   render: h => h(AddCar, {
-      //     props: {
-      //       value: row
-      //     }
-      //   })
-      // })
-    }
-
   }
 
 </script>

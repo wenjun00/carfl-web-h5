@@ -45,7 +45,7 @@
           <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
         </i-col>
       </i-row>
-      <i-tabs value="选购材料" type="card" v-model="materialTabs" style="height:76%;overflow-y:auto;">
+      <i-tabs value="选购材料" type="card" v-model="materialTabs" style="height:69%;overflow-y:auto;">
         <i-tab-pane label="选购资料" name="选购资料">
           <choose-buy-materials></choose-buy-materials>
         </i-tab-pane>
@@ -157,6 +157,7 @@
     bottom: 0;
     left: 0;
     border: 1px solid #ddd;
+    box-shadow: -3px 2px 20px gray;
   }
 
   .specialInput {
