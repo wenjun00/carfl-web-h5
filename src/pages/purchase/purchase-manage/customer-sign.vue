@@ -51,8 +51,11 @@
             <!--<i-table :columns="columns3" :data="data3" border stripe></i-table>-->
             <!--</i-row>-->
           </i-radio-group>
-          <data-box :columns="columns3" :data="data3"></data-box>
+          <i-table :columns="columns3" :data="data3"></i-table>
         </i-row>
+        <div slot="footer">
+          <i-button class="blueButton">确认打印</i-button>
+        </div>
       </i-modal>
     </template>
     <template>
@@ -100,7 +103,7 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
@@ -471,4 +474,5 @@
      */
     confirm() {}
   }
+
 </script>

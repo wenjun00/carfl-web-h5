@@ -30,7 +30,7 @@
     </template>
     <!--上传资料、补充资料-->
     <template>
-      <i-modal v-model="openUpload" title="上传资料">
+      <i-modal v-model="openUpload" :title="uploadOrAddFlag?'上传资料':'补充资料'">
         <i-button @click="uploadDialog">上传</i-button>
         <div style="font-size:18px;font-weight:bold;margin-top:10px">
           <span>文件数量（3）</span>
@@ -105,6 +105,7 @@
     private columns1: any;
     private data1: Array < Object > = [];
     private openColumnsConfig: Boolean = false;
+    private uploadOrAddFlag: Boolean = false;
     private columns2: any;
     private data2: Array < Object > ;
 
@@ -262,6 +263,7 @@
      * 上传资料
      */
     uploadFiles(row) {
+      this.uploadOrAddFlag = true
       this.openUpload = true
     }
     /**
@@ -269,6 +271,7 @@
      */
     addFiles(row) {
       this.openUpload = true
+      this.uploadOrAddFlag = false
     }
     /**
      * 列配置

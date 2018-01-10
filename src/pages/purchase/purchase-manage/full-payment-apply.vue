@@ -122,13 +122,23 @@
                 <i-form-item label="联系地址" prop="phone">
                   <i-row type="flex">
                     <i-col>
-                      <i-select></i-select>
+                      <i-select>
+                        <i-option label="陕西" value="陕西" key="陕西"></i-option>
+                      </i-select>
                     </i-col>
                     <i-col>
-                      <i-select></i-select>
+                      <i-select>
+                        <i-option label="西安" value="西安" key="西安"></i-option>
+                      </i-select>
                     </i-col>
                     <i-col>
-                      <i-select></i-select>
+                      <i-select>
+                        <i-option label="雁塔" value="雁塔" key="雁塔"></i-option>
+                        <i-option label="碑林" value="碑林" key="碑林"></i-option>
+                        <i-option label="未央" value="未央" key="未央"></i-option>
+                        <i-option label="长安" value="长安" key="长安"></i-option>
+                        <i-option label="临潼" value="临潼" key="临潼"></i-option>
+                      </i-select>
                     </i-col>
                   </i-row>
                   <!--<i-row>

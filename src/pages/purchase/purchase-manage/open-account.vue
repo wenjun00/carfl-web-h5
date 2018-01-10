@@ -42,7 +42,7 @@
     </template>
     <!--开户弹窗-->
     <template>
-      <i-modal v-model="openCreateAccount" title="开户申请" width="400">
+      <i-modal v-model="openCreateAccount" title="开户申请" width="500">
         <i-form :label-width="100">
           <i-form-item label="开户渠道">
             <i-select style="width:160px;">
@@ -92,9 +92,12 @@
           </i-form-item>
           <i-form-item label="验证码">
             <i-input v-model="qCode" style="width:160px;"></i-input>
-            <i-button style="display:inline-block;margin-left:8px;" @click='sendQcode' class="blueButton" size="small">发送验证码<span>{{timeout}}</span></i-button>
+            <i-button style="display:inline-block;margin-left:8px;" @click='sendQcode' class="blueButton">发送验证码<span>{{timeout}}</span></i-button>
           </i-form-item>
         </i-form>
+        <div slot="footer">
+          <i-button class="blueButton">确认并返回</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -118,7 +121,6 @@
             <i-input v-model="bank" style="width:160px;"></i-input>
           </i-form-item>
           <i-form-item label="开户省市">
-            <!--<i-input v-model="province" style="width:80px;" placeholder="请选择省份"></i-input><i-input v-model="city" placeholder="请选择城市" style="width:80px;"></i-input>-->
             <i-select style="width:80px;">
               <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
             </i-select>
@@ -142,6 +144,9 @@
             <i-input v-model="bankLeavePhone" style="width:160px;"></i-input>
           </i-form-item>
         </i-form>
+        <div slot="footer">
+          <i-button class="blueButton">确认绑卡</i-button>
+        </div>
       </i-modal>
     </template>
     <!--结算通道-->
@@ -179,7 +184,7 @@
           <i-form-item label="证件号码" v-if="current===2">
             <i-input v-model="certificateId" style="width:160px;"></i-input>
           </i-form-item>
-          <i-form-item label="身份证号码" v-if="current===1">
+          <i-form-item label="身份证号码" v-if="current===0">
             <i-input v-model="idCard" style="width:160px;"></i-input>
           </i-form-item>
           <i-form-item label="开户银行">
@@ -206,13 +211,15 @@
           <i-form-item label="银行预留手机号">
             <i-input v-model="bankLeavePhone" style="width:160px;"></i-input>
           </i-form-item>
-          <i-form-item label="验证码" v-if="current===1">
+          <i-form-item label="验证码" v-if="current===0">
             <i-input v-model="qCode" style="width:160px;"></i-input>
             <i-button style="display:inline-block;margin-left:8px;" @click='sendQcode' class="blueButton" size="small">发送验证码<span>60</span></i-button>
           </i-form-item>
         </i-form>
-        <i-button @click="confirmUnBindCard" v-if="current===1" style="position:relative;left:340px;">确认解绑</i-button>
-        <i-button @click="confirmBindCard" v-if="current===2" style="position:relative;left:340px;">确认绑卡</i-button>
+        <div slot="footer">
+          <i-button @click="confirmUnBindCard" class="blueButton" v-if="current===0">确认解绑</i-button>
+          <i-button @click="confirmBindCard" class="blueButton" v-if="current===1">确认绑卡</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -272,7 +279,7 @@
     private openAccountChannel: Boolean = false;
     private openBindCard: Boolean = false;
     private openChangeBankCard: Boolean = false;
-    private current: any = 1;
+    private current: any = 0;
     private certificateType: String = '身份证';
     private certificateId: String = '';
     private openHelp: Boolean = false;
@@ -579,7 +586,7 @@
      * 确认绑卡
      */
     confirmBindCard() {
-      this.current = 1
+      this.current = 0
       this.openChangeBankCard = false
     }
     /**

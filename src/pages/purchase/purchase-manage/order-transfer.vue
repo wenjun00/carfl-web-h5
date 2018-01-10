@@ -48,7 +48,7 @@
     </template>
 
     <template>
-      <i-modal v-model="openOneKeyToConnect" title="一键交接" width="600">
+      <i-modal v-model="openOneKeyToConnect" title="一键交接" width="800">
         <i-row>
           <!--树-->
           <i-col :span="10">
@@ -168,7 +168,7 @@
       this.treeColumns = [{
         align: 'center',
         title: '选择',
-        width: 320,
+        width: 180,
         render: (h, {
           row,
           columns,
@@ -188,7 +188,8 @@
       }, {
         align: 'center',
         key: 'personalName',
-        title: '姓名'
+        title: '姓名',
+        width:120
       }]
       this.columns1 = [{
           align: 'center',

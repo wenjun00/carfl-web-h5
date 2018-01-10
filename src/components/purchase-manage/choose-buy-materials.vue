@@ -98,7 +98,8 @@
         <span>月供模拟计算器</span>
       </div>
     </i-col>
-    <i-row>
+    <i-button style="display:block;margin-left:10px;" class="blueButton" @click="addNewPrd" v-show="buttonShow">添加产品</i-button>
+    <i-row v-show="prdInfoShow">
       <i-form ref="customer-form" :model="chooseBuyModel" :label-width="100" style="margin-top:20px;">
         <i-col span="12">
           <i-form-item label="产品系列" prop="prdSeriods">
@@ -224,6 +225,15 @@
         </div>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal v-model="addProductModal" title="添加产品" width="1500">
+        <add-product></add-product>
+        <div slot="footer">
+          <i-button @click="confirmAndBack" class="blueButton">确认并返回</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -240,13 +250,14 @@
   import SvgIcon from '~/components/common/svg-icon.vue'
   import DataBox from "~/components/common/data-box.vue"
   import SimulateCalculate from "~/components/common/simulate-calculate.vue"
-
+  import AddProduct from '~/components/purchase-manage/add-product.vue'
   @Component({
     components: {
       SvgIcon,
       DataBox,
       SimulateCalculate,
-      AddCar
+      AddCar,
+      AddProduct
     }
   })
   export default class ChooseBuyMaterials extends Vue {
@@ -256,6 +267,11 @@
     private simulateCalculateModal: Boolean = false;
     private editCarModal: Boolean = false;
     private addOrEditFlag: Boolean = false;
+    private prdInfoShow: Boolean = false;
+    private buttonShow: Boolean = true;
+    private addProductModal: Boolean = false;
+
+
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
 
     /**
@@ -406,6 +422,11 @@
       }) => {
         this.carData = val
       })
+    }
+    addNewPrd() {
+      this.addProductModal = true
+      this.prdInfoShow = true
+      this.buttonShow = false
     }
   }
 

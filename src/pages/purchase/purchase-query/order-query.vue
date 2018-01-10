@@ -75,8 +75,9 @@
 
     <!--进度查询-->
     <template>
-      <i-modal v-model="orderProgressModal" title="订单进度" width="800">
+      <i-modal v-model="orderProgressModal" title="审核进度" width="1200">
         <order-progress></order-progress>
+        <div slot="footer"></div>
       </i-modal>
     </template>
   </section>
