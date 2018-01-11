@@ -40,7 +40,7 @@
   import SvgIcon from '~/components/common/svg-icon.vue'
   // 添加新申请
   import AddApply from "~/components/purchase-manage/add-apply.vue";
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
@@ -159,7 +159,7 @@
       this.columns2 = [{
         title: '序号',
         type: 'index',
-        width: '80',
+        width: 80,
         align: 'center'
       }, {
         title: '列名',
@@ -167,7 +167,7 @@
         align: 'center'
       }, {
         type: 'selection',
-        width: '80',
+        width: 80,
         align: 'center'
       }]
       this.data2 = [{
@@ -216,4 +216,5 @@
 
     }
   }
+
 </script>

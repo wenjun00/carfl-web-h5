@@ -230,7 +230,7 @@
       <i-modal v-model="addProductModal" title="添加产品" width="1500">
         <add-product></add-product>
         <div slot="footer">
-          <i-button @click="confirmAndBack" class="blueButton">确认并返回</i-button>
+          <i-button @click="confirmAndBackPrd" class="blueButton">确认并返回</i-button>
         </div>
       </i-modal>
     </template>
@@ -427,6 +427,9 @@
       this.addProductModal = true
       this.prdInfoShow = true
       this.buttonShow = false
+    }
+    confirmAndBackPrd() {
+      this.addProductModal = false
     }
   }
 

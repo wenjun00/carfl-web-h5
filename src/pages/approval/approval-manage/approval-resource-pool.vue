@@ -49,6 +49,19 @@
         </div>
       </i-modal>
     </template>
+
+    <!--Model-->
+    <template>
+      <i-modal v-model="openColumnsConfig" title="列配置">
+        <i-table :columns="columns3" :data="data3"></i-table>
+        <div slot="footer">
+          <i-button>上移</i-button>
+          <i-button>下移</i-button>
+          <i-button>恢复默认</i-button>
+          <i-button @click="openColumnsConfig=false">关闭</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -86,6 +99,9 @@
     private data2: Array < Object > = [];
     private orderModal: Boolean = false;
     private searchOptions: Boolean = false;
+    private openColumnsConfig: Boolean = false;
+    private columns3: any;
+    private data3: Array < Object > = [];
     @Mutation("openPage") openPage;
 
     openSearch() {
@@ -94,11 +110,34 @@
 
     created() {
       this.columns1 = [{
-          align: "center",
-          type: "index",
-          width: 60,
-          title: '序号',
-          fixed: 'left'
+          align: 'center',
+          width: 90,
+          type: 'index',
+          fixed: 'left',
+          renderHeader: (h, {
+            column,
+            index
+          }) => {
+            return h(
+              "div", {
+                on: {
+                  click: () => {
+                    this.columnsConfig();
+                  }
+                },
+                style: {
+                  cursor: "pointer"
+                }
+              }, [
+                h("Icon", {
+                  props: {
+                    type: "gear-b",
+                    size: "20"
+                  }
+                })
+              ]
+            );
+          }
         },
         {
           title: "操作",
@@ -131,32 +170,10 @@
           fixed: 'left'
         },
         {
-          title: "订单编号",
-          key: "orderId",
-          align: "center",
-          width: 150,
-          render: (h, params) => {
-            return h('i-button', {
-              props: {
-                type: 'text'
-              },
-              on: {
-                click: () => {
-                  this.$Modal.info({
-                    width: '900',
-                    title: '订单详情',
-                    render: h => h(PurchaseInformation)
-                  })
-                }
-              }
-            }, '2017101001')
-          },
-          fixed: 'left'
-        },
-        {
           key: 'step',
           title: '环节',
           align: 'center',
+          fixed: 'left',
           width: 186,
           render: (h, {
             row,
@@ -204,6 +221,29 @@
               ])
             }
           }
+        },
+        {
+          title: "订单编号",
+          key: "orderId",
+          align: "center",
+          width: 150,
+          render: (h, params) => {
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.$Modal.info({
+                    width: '900',
+                    title: '订单详情',
+                    render: h => h(PurchaseInformation)
+                  })
+                }
+              }
+            }, '2017101001')
+          },
+          fixed: 'left'
         },
         {
           title: "订单状态",
@@ -272,8 +312,8 @@
         idCard: '610303199111142564',
         orderId: 20170805,
         phone: '15094156575',
-        content:'通过',
-        status:'复审'
+        content: '通过',
+        status: '复审'
       }, {
         orderStatus: '面审通过',
         orderCreateTime: '2017-12-01 13:56:03',
@@ -285,8 +325,8 @@
         idCard: '610303198911041564',
         orderId: 20170806,
         phone: '13096133575',
-        content:'通过',
-        status:'复审'
+        content: '通过',
+        status: '复审'
       }, {
         orderStatus: '面审通过',
         orderCreateTime: '2017-12-01 13:56:03',
@@ -298,8 +338,8 @@
         orderId: 20170807,
         idCard: '610303199111142564',
         phone: '15989756575',
-        content:'通过',
-        status:'复审'
+        content: '通过',
+        status: '复审'
       }, {
         orderStatus: '面审通过',
         orderCreateTime: '2017-12-01 13:56:03',
@@ -312,8 +352,8 @@
         idCard: '610303199111142564',
         prdName: '直租',
         phone: '15094156575',
-        content:'通过',
-        status:'复审'
+        content: '通过',
+        status: '复审'
       }, {
         orderStatus: '拒绝',
         orderCreateTime: '2017-12-01 13:56:03',
@@ -326,8 +366,8 @@
         idCard: '610303198911041564',
         prdName: '直租',
         phone: '13096133575',
-        content:'终审资料不全',
-        status:'终审'
+        content: '终审资料不全',
+        status: '终审'
       }, {
         orderStatus: '拒绝',
         orderCreateTime: '2017-12-01 13:56:03',
@@ -340,8 +380,8 @@
         idCard: '610303199111142564',
         prdName: '直租',
         phone: '15989756575',
-        content:'复审资料造假',
-        status:'复审'
+        content: '复审资料造假',
+        status: '复审'
       }]
 
       this.columns2 = [{
@@ -358,6 +398,44 @@
         title: '环节'
       }]
 
+      this.columns3 = [{
+        title: '序号',
+        type: 'index',
+        width: 80,
+        align: 'center'
+      }, {
+        title: '列名',
+        key: 'columnsName',
+        align: 'center'
+      }, {
+        type: 'selection',
+        width: 80,
+        align: 'center'
+      }]
+
+      this.data3 = [{
+        columnsName: '申请类型'
+      }, {
+        columnsName: '环节'
+      }, {
+        columnsName: '订单状态'
+      }, {
+        columnsName: '订单创建时间'
+      }, {
+        columnsName: '进入资源池时间'
+      }, {
+        columnsName: '省份'
+      }, {
+        columnsName: '城市'
+      }, {
+        columnsName: '订单类型'
+      }, {
+        columnsName: '客户姓名'
+      }, {
+        columnsName: '证件号'
+      }, {
+        columnsName: '手机号'
+      }]
       this.data2 = [{
         handleTime: '2017-12-06 18:45:36',
         operator: '刘佳',
@@ -377,6 +455,12 @@
      */
     getOrder(row) {
       this.orderModal = true
+    }
+    /**
+     * 列配置
+     */
+    columnsConfig() {
+      this.openColumnsConfig = true
     }
     confirmGetOrder() {
       this.orderModal = false
