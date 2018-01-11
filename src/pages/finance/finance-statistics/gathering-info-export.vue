@@ -8,7 +8,7 @@
     <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
     <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
       <svg-icon iconClass="daochu"></svg-icon>
-      <span>导出</span>
+      <span style="font-size: 12px;">导出</span>
     </div>
     <i-row v-if="searchOptions" style="margin:6px;">
       <i-input style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>

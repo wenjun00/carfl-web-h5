@@ -5,7 +5,8 @@
         <component ref="pages" :is="getComponentName(page.path)"></component>
       </TabPane>
     </Tabs>
-    <div @click="closeAllTabs" style="position:absolute;top:70px;right:10px;border-bottom-style:none;font-size:14px;cursor:pointer;" title="关闭所有">
+    <div @click="closeAllTabs" style="position:absolute;top:70px;right:10px;border-bottom-style:none;font-size:14px;cursor:pointer;"
+      title="关闭所有">
       <Icon type="close"></Icon>
     </div>
   </div>
@@ -73,7 +74,13 @@
       this.updatePage(path);
     }
     closeAllTabs(path) {
-      this.closeAllPage(path)
+      this.$Modal.confirm({
+        title: '提示',
+        content: '确定关闭所有已打开页面吗？',
+        onOk: () => {
+          this.closeAllPage(path)
+        }
+      })
     }
     /**
      * 监听当前页面变化

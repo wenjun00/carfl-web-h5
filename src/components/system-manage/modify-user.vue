@@ -1,7 +1,7 @@
 <!--修改用户-->
 <template>
   <section class="component modify-user">
-    <i-form :label-width="100" class="modifyUserForm">
+    <i-form :label-width="110" class="modifyUserForm">
       <i-row>
         <i-col :span="12">
           <i-form-item label="用户名">

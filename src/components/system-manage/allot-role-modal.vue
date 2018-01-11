@@ -1,7 +1,7 @@
 <!--分配角色-->
 <template>
   <section class="component allot-role-modal">
-    <i-form :label-width="100" style="margin-top:20px;">
+    <i-form :label-width="110" style="margin-top:20px;">
       <span>角色名称：</span>
       <i-input style="display:inline-block;width:20%;"></i-input>
       <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>

@@ -1,8 +1,8 @@
-<!--全额销售申请-->
+<!--全款销售申请-->
 <template>
   <section class="page full-payment-apply specialInput">
     <div class="header">
-      <span class="form-title">全额销售申请</span>
+      <span class="form-title">全款销售申请</span>
       <div style="float:right;margin-top: 10px;margin-right:10px">
         <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
@@ -12,10 +12,10 @@
     </div>
     <i-row type="flex">
       <i-col span="18">
-        <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80" style="margin-top:20px;">
+        <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="110" style="margin-top:20px;">
           <i-col span="12">
             <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码">
+              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab">
               </i-input>
             </i-form-item>
           </i-col>
@@ -31,10 +31,11 @@
               </i-input>
             </i-form-item>
           </i-col>
-          <i-col span="12">
+          <i-col span="12" class="belongSalers">
             <i-form-item label="归属业务员" prop="worker">
-              <i-input type="text" v-model="applyData.worker" placeholder="请输入归属业务员">
-              </i-input>
+              <i-select>
+                <i-option label="吴小川" value="吴小川" key="吴小川"></i-option>
+              </i-select>
             </i-form-item>
           </i-col>
         </i-form>
@@ -44,20 +45,20 @@
         <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
       </i-col>
     </i-row>
-    <i-tabs value="purchaseItem" type="card" style="height:69%;overflow-y:auto;background:white">
+    <i-tabs value="purchaseItem" type="card" style="height:76%;overflow-y:auto;background:white" v-show="tabShow">
       <i-tab-pane name="purchaseItem" label="选购资料">
         <div class="form-title">选购信息</div>
         <i-row class="proCity">
-          <i-form ref="parchase-form" :model="applyData" :rules="applyRule" :label-width="80">
+          <i-form ref="parchase-form" :model="applyData" :rules="applyRule" :label-width="110">
             <i-col span="12">
-              <i-form-item label="申请省份" prop="idCard">
+              <i-form-item label="申请省份" prop="">
                 <i-select style="width:80px;">
                   <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
                 </i-select>
               </i-form-item>
             </i-col>
             <i-col span="12" pull="3">
-              <i-form-item label="申请城市" prop="userName">
+              <i-form-item label="申请城市" prop="">
                 <i-select style="width:80px;">
                   <i-option label="西安市" value="西安市" key="西安市"></i-option>
                   <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
@@ -73,21 +74,28 @@
               </i-form-item>
             </i-col>
             <i-col span="12">
-              <i-form-item label="所属公司" prop="phone">
-                <i-input></i-input>
+              <i-form-item label="所属公司" prop="">
+                <i-select style="width:80px;">
+                  <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
+                  <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
+                </i-select>
               </i-form-item>
             </i-col>
           </i-form>
         </i-row>
         <i-table :columns="columns1" :data="data1" :width="1100"></i-table>
-        <i-button @click="addModalOpen" class="blueButton" style="margin:10px 0;">添加车辆</i-button>
+        <!--<i-button @click="addModalOpen" class="blueButton" style="margin:10px 0;">添加车辆</i-button>-->
+        <div>
+          <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
+          <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
+        </div>
         <div style="height:60px;width:100%;">
         </div>
       </i-tab-pane>
       <i-tab-pane name="customerItem" label="客户资料">
         <span class="form-title">个人信息</span>
         <i-row>
-          <i-form ref="parchase-form" :model="applyData" :rules="applyRule" :label-width="80">
+          <i-form ref="parchase-form" :model="applyData" :rules="applyRule" :label-width="110">
             <i-row>
               <i-col span="12" class="bigSelect">
                 <i-form-item label="购车方" prop="idCard">
@@ -254,12 +262,7 @@
   export default class FullPaymentApply extends Page {
     @Dependencies() private pageService: PageService;
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
-    private applyData: Object = {
-      idNumber: '',
-      customerName: '',
-      phone: '',
-      salesManName: ''
-    };
+    private applyData: any;
     applyRule: Object = {};
     private purchaseData: Object = {
       province: '',
@@ -276,6 +279,7 @@
     private isShown: Boolean = true;
     private editCarModal: Boolean = false;
     private addOrEditFlag: Boolean = false;
+    private tabShow: Boolean = false;
 
     addNewApply() {
       this.$Modal.confirm({
@@ -284,6 +288,12 @@
       })
     }
     created() {
+      this.applyData = {
+        idCard: '',
+        customerName: '',
+        phone: '',
+        salesManName: ''
+      }
       this.columns1 = [{
         title: '操作',
         align: 'center',
@@ -482,6 +492,11 @@
     saveAndSubmit() {
 
     }
+    showTab() {
+      if (this.applyData.idCard.length === 18) {
+        this.tabShow = true
+      }
+    }
     confirmAndBack() {
       this.editCarModal = false
       this.applyQueryService.getFullQueryData().subscribe(({
@@ -578,6 +593,16 @@
     border-style: none;
     border-bottom-style: solid;
     border-radius: 0;
+  }
+
+  .belongSalers {
+    .ivu-select-selection {
+      width: 240%;
+      display: inline-block;
+      border-style: none;
+      border-bottom-style: solid;
+      border-radius: 0;
+    }
   }
 
 </style>

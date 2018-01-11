@@ -31,7 +31,7 @@
 
     <template>
       <i-modal title="模块添加/修改" v-model="addModuleFunctionModal" class="modal" width="400">
-        <i-form :label-width="100" style="margin-top:20px;">
+        <i-form :label-width="110" style="margin-top:20px;">
           <i-form-item label="模块名称">
             <i-input class="input"></i-input>
           </i-form-item>

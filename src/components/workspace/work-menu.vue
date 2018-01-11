@@ -1,7 +1,7 @@
 <template>
   <div class="component work-menu text-left row middle-span">
     <div v-for="menu_lv1 in menuConfig" :key="menu_lv1.path" class="menu-level-1">
-      <Poptip v-model="menu_lv1.popue" placement="bottom" trigger="click">
+      <Poptip v-model="menu_lv1.popue" placement="bottom" trigger="hover">
         <div class="menu-level-1-title row middle-span center-span" style="height:100%">
           <span>{{menu_lv1.title}}</span>
         </div>

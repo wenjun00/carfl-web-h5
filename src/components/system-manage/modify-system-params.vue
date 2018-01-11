@@ -1,7 +1,7 @@
 <!--修改系统参数-->
 <template>
   <section class="component modify-system-params">
-    <i-form :label-width="100" class="modifySystemParams">
+    <i-form :label-width="110" class="modifySystemParams">
       <i-row>
         <i-col :span="24">
           <i-form-item label="参数代码">

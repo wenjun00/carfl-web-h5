@@ -79,13 +79,13 @@
   import {
     Dependencies
   } from "~/core/decorator";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       SvgIcon
@@ -430,4 +430,5 @@ import {
      */
     confirm() {}
   }
+
 </script>

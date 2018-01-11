@@ -27,7 +27,7 @@
 
     <template>
       <i-modal v-model="modifyPwdModal" title="修改密码">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="请输入原密码">
             <i-input></i-input>
           </i-form-item>

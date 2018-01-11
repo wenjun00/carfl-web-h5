@@ -1,7 +1,7 @@
 <!--编辑联系人-->
 <template>
   <section class="component edit-relation">
-    <i-form :label-width="100" style="margin-top:20px;">
+    <i-form :label-width="110" style="margin-top:20px;">
       <i-form-item label="与本人关系">
         <i-select>
           <i-option label="朋友" value="朋友" key="朋友"></i-option>

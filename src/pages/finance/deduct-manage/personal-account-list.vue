@@ -19,7 +19,7 @@
       <i-button class="blueButton" style="margin-left:10px;" @click="createAccount">客户开户</i-button>
       <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
         <svg-icon iconClass="daochu"></svg-icon>
-        <span>导出</span>
+        <span style="font-size: 12px;">导出</span>
       </div>
     </i-row>
     <i-row v-if="searchOptions" style="margin:6px;">
@@ -69,7 +69,7 @@
     <!--开户弹窗-->
     <template>
       <i-modal v-model="openCreateAccount" title="开户绑卡" width="400">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="账户类型">
             <i-select style="width:160px;">
               <i-option label="汇付" value="汇付" key="汇付"></i-option>

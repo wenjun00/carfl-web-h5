@@ -23,7 +23,7 @@
       </i-button>
       <div style="font-size:16px;cursor:pointer;display:inline-block;color:#3367A7;float:right;margin:10px" @click="exportTemplate">
         <svg-icon iconClass="daochu"></svg-icon>
-        <span>导出</span>
+        <span style="font-size: 12px;">导出</span>
       </div>
     </i-row>
     <i-row v-if="searchOptions" style="margin:6px;">
@@ -75,7 +75,7 @@
 
     <template>
       <i-modal title="另存为模板" width="400" v-model="saveTemplateModal" @on-ok="confirmSaveTemplate">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="模板名称">
             <i-input style="display:inline-block;width:80%"></i-input>
           </i-form-item>
@@ -85,7 +85,7 @@
 
     <template>
       <i-modal title="导出" width="400" v-model="templateListModal">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="模板名称">
             <i-select>
               <i-option label="模板1" value="模板1" key="模板1"></i-option>

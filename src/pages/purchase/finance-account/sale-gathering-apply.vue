@@ -10,7 +10,7 @@
         </div>
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon iconClass="daochu"></svg-icon>
-          <span>导出</span>
+          <span style="font-size: 12px;">导出</span>
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
         <i-button class="blueButton">清空</i-button>
       </i-col>
     </i-row>
-    <i-tabs value="purchaseItem" type="card" style="height:69%;overflow-y:auto;background:white">
+    <i-tabs value="purchaseItem" type="card" style="height:76%;overflow-y:auto;background:white">
       <i-tab-pane name="purchaseItem" label="收款明细">
         <i-table :columns="columns1" :data="data1"></i-table>
         <i-button class="blueButton" style="margin-top:10px" @click="changeGatherItem">变更收款项</i-button>

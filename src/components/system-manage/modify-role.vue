@@ -1,7 +1,7 @@
 <!--修改角色-->
 <template>
   <section class="component modify-role">
-    <i-form :label-width="100" style="margin-top:20px;">
+    <i-form :label-width="110" style="margin-top:20px;">
       <i-form-item label="角色名称">
         <i-input></i-input>
       </i-form-item>

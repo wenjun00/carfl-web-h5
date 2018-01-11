@@ -3,7 +3,7 @@
   <section class="component choose-buy-materials">
     <i-col span="24" style="line-height:30px" class="form-title">选购信息</i-col>
     <i-row>
-      <i-form ref="customer-form" :model="chooseBuyModel" :label-width="100" style="margin-top:20px;">
+      <i-form ref="customer-form" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;position:relative;left:16px;" label-position="left">
         <i-row>
           <i-col span="12">
             <i-form-item label="申请省份" prop="province">
@@ -89,8 +89,11 @@
         </i-col>
       </i-form>
     </i-row>
-    <i-table :columns="carColumns" :data="carData" stripe style="margin:10px;"></i-table>
-    <i-button @click="addModalOpen" class="blueButton" style="margin-left:10px;">添加车辆</i-button>
+    <i-table :columns="carColumns" :data="carData" stripe style="margin:10px;" width="1100"></i-table>
+    <div>
+      <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
+      <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
+    </div>
     <i-col span="24" style="line-height:30px;margin-top:20px;" class="form-title">
       <span>产品信息</span>
       <div style="font-size:14px;cursor:pointer;display:inline-block;color:#3367A7;position:absolute;z-index:999;left:52%;" @click="openSimulateCalculate">
@@ -98,9 +101,16 @@
         <span>月供模拟计算器</span>
       </div>
     </i-col>
-    <i-button style="display:block;margin-left:10px;" class="blueButton" @click="addNewPrd" v-show="buttonShow">添加产品</i-button>
+    <!--<div>
+      <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
+      <i-button style="display:block;margin-left:10px;color:#265ea2" type="text" @click="addNewPrd" v-show="buttonShow">添加产品</i-button>
+    </div>-->
+    <div>
+      <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
+      <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
+    </div>
     <i-row v-show="prdInfoShow">
-      <i-form ref="customer-form" :model="chooseBuyModel" :label-width="100" style="margin-top:20px;">
+      <i-form ref="customer-form" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;">
         <i-col span="12">
           <i-form-item label="产品系列" prop="prdSeriods">
             <i-input type="text" v-model="chooseBuyModel.prdSeriods" placeholder="请输入产品系列">
@@ -438,7 +448,7 @@
 <style lang="less" scope>
   .choose-buy-materials {
     .ivu-select-selection {
-      width: 240%;
+      // width: 240%;
       display: inline-block;
       border-style: none;
       border-bottom-style: solid;

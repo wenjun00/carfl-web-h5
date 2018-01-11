@@ -12,7 +12,7 @@
     <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
     <div style="font-size:16px;cursor:pointer;display:inline-block;color:#3367A7;float:right;margin-right:10px;margin-top:10px;">
       <svg-icon iconClass="daochu"></svg-icon>
-      <span>导出</span>
+      <span style="font-size: 12px;">导出</span>
     </div>
     <data-box :columns="columns1" :data="data1"></data-box>
     <!--Model-->

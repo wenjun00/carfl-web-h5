@@ -50,7 +50,7 @@
 
     <template>
       <i-modal v-model="uploadList" title="上传合同">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="文件类型">
             <i-select style="width:160px;">
               <i-option label="身份证（必须）" value="身份证（必须）" key="身份证（必须）"></i-option>

@@ -17,7 +17,7 @@
       </div>
       <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
         <svg-icon iconClass="daochu"></svg-icon>
-        <span @click="exportDatabox">导出</span>
+        <span @click="exportDatabox" style="font-size: 12px;">导出</span>
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin:6px;">
@@ -43,7 +43,7 @@
     <!--开户弹窗-->
     <template>
       <i-modal v-model="openCreateAccount" title="开户申请" width="500">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="开户渠道">
             <i-select style="width:160px;">
               <i-option label="汇付" value="汇付" key="汇付"></i-option>
@@ -104,7 +104,7 @@
     <!--绑卡弹窗-->
     <template>
       <i-modal v-model="openBindCard" title="绑定银行卡" width="400">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="账户类型">
             <i-input v-model="accountType" style="width:160px;"></i-input>
           </i-form-item>
@@ -171,7 +171,7 @@
           <i-step title="解绑"></i-step>
           <i-step title="绑卡"></i-step>
         </i-steps>
-        <i-form :label-width="100" style="margin-top:20px;">
+        <i-form :label-width="110" style="margin-top:20px;">
           <i-form-item label="账户类型">
             <i-input v-model="accountType" style="width:160px;"></i-input>
           </i-form-item>

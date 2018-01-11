@@ -3,7 +3,7 @@
   <section class="component add-apply">
     <!--销售收款申请-->
     <i-row>
-      <i-form :label-width="100" style="margin-top:20px;">
+      <i-form :label-width="110" style="margin-top:20px;">
         <i-col :span="12">
           <i-form-item label="客户姓名">
             <i-input></i-input>

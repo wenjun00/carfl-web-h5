@@ -2,8 +2,10 @@
 <template>
   <section class="component customer-materials">
     <i-col span="24" style="line-height:30px" class="form-title">个人信息</i-col>
-    <i-col span="24" style="line-height:30px;background:#ddd">基础信息</i-col>
-    <i-form ref="job-form" :label-width="110">
+    <i-form ref="job-form" :label-width="110" label-position="left" style="position:relative;left:16px;margin-top:10px;">
+      <div>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">基础信息</span>
+      </div>
       <i-row>
         <i-col span="12">
           <i-form-item label="姓名" prop="name">
@@ -11,7 +13,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12" pull="4">
+        <i-col span="12" pull="3">
           <i-form-item label="性别" prop="group">
             <i-input type="text" placeholder="请输入性别">
             </i-input>
@@ -25,7 +27,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12" pull="4">
+        <i-col span="12" pull="3">
           <i-form-item label="微信号码" prop="group">
             <i-input type="text" placeholder="请输入微信号码">
             </i-input>
@@ -39,7 +41,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12" pull="4">
+        <i-col span="12" pull="3">
           <i-form-item label="手机号码（主）" prop="group">
             <i-input type="text" placeholder="请输入手机号码（次）">
             </i-input>
@@ -56,7 +58,7 @@
             </i-select>
           </i-form-item>
         </i-col>
-        <i-col span="12" pull="4">
+        <i-col span="12" pull="3">
           <i-form-item label="毕业院校" prop="group">
             <i-input type="text" placeholder="请输入毕业院校">
             </i-input>
@@ -75,13 +77,16 @@
           </i-form-item>
         </i-col>
       </i-row>
-    </i-form>
+      <!--</i-form>-->
 
-    <!--单位信息 End-->
-    <!--收入信息 Start-->
+      <!--单位信息 End-->
+      <!--收入信息 Start-->
 
-    <i-col span="24" style="line-height:30px;background:#ddd">身份证信息</i-col>
-    <i-form :label-width="110">
+      <!--<i-col span="24" style="line-height:30px;background:#ddd">身份证信息</i-col>-->
+      <div>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">身份证信息</span>
+      </div>
+      <!--<i-form :label-width="110">-->
       <i-row>
         <i-col span="12">
           <i-form-item label="身份证号码">
@@ -110,10 +115,13 @@
           </i-form-item>
         </i-col>
       </i-row>
-    </i-form>
+      <!--</i-form>-->
 
-    <i-col span="24" style="line-height:30px;background:#ddd">居住信息</i-col>
-    <i-form :label-width="110">
+      <!--<i-col span="24" style="line-height:30px;background:#ddd">居住信息</i-col>-->
+      <div>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">居住信息</span>
+      </div>
+      <!--<i-form :label-width="110">-->
       <i-row>
         <i-col span="12">
           <i-form-item label="现居住地址">
@@ -142,14 +150,17 @@
           </i-form-item>
         </i-col>
       </i-row>
+      <div>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">勘察请求</span>
+      </div>
+      <span>是否接受现场勘察</span>
+      <i-radio-group v-model="checkRadio">
+        <i-radio label="是"></i-radio>
+        <i-radio label="否"></i-radio>
+      </i-radio-group>
     </i-form>
 
-    <i-col span="24" style="line-height:30px;background:#ddd">勘察请求</i-col>
-    <span>是否接受现场勘察</span>
-    <i-radio-group v-model="checkRadio">
-      <i-radio label="是"></i-radio>
-      <i-radio label="否"></i-radio>
-    </i-radio-group>
+    <!--<i-col span="24" style="line-height:30px;background:#ddd">勘察请求</i-col>-->
   </section>
 </template>
 
@@ -161,6 +172,7 @@
     private checkRadio: String = "是";
     checkRadioChange(val) {}
   }
+
 </script>
 
 <style lang="less" scope>
@@ -173,4 +185,5 @@
       border-radius: 0;
     }
   }
+
 </style>

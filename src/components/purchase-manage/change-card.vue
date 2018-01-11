@@ -5,7 +5,7 @@
       <i-step title="解绑"></i-step>
       <i-step title="绑卡"></i-step>
     </i-steps>
-    <i-form :label-width="100" style="margin-top:20px;">
+    <i-form :label-width="110" style="margin-top:20px;">
       <i-form-item label="账户类型">
         <i-input style="width:160px;"></i-input>
       </i-form-item>

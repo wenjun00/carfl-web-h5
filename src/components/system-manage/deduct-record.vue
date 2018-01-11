@@ -16,7 +16,7 @@
       <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
       <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
         <svg-icon iconClass="daochu"></svg-icon>
-        <span>导出</span>
+        <span style="font-size: 12px;">导出</span>
       </div>
     </i-row>
     <data-grid :labelWidth="100" labelAlign="left" contentAlign="left">
@@ -133,4 +133,5 @@
 
     }
   }
+
 </script>

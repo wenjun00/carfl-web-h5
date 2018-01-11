@@ -2,16 +2,24 @@
 <template>
   <section class="component customer-contacts">
     <div class="form-title">客户联系人</div>
-    <i-button @click="addNewContacts" style="margin:10px 0" class="blueButton">添加联系人</i-button>
-    <div style="margin-left:10px;display:inline-block">直系亲属（提示：配偶(已婚必填)+必填2个直系亲属）</div>
-    <i-table :columns="columns1" :data="data1"></i-table>
-    <i-button @click="addNewContacts2" style="margin:10px 0" class="blueButton">添加联系人</i-button>
-    <div style="margin-left:10px;margin-top:20px;display:inline-block">其他联系人（提示：必填3个其他联系人）</div>
-    <i-table :columns="columns1" :data="data2"></i-table>
+    <div style="margin-left:10px;">直系亲属（提示：配偶(已婚必填)+必填2个直系亲属）</div>
+    <i-table :columns="columns1" :data="data1" width="1100"></i-table>
+    <!--<i-button @click="addNewContacts" style="margin:10px 0" class="blueButton">添加联系人</i-button>-->
+    <div>
+      <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
+      <i-button @click="addNewContacts" style="margin-left:10px;color:#265ea2" type="text">添加联系人</i-button>
+    </div>
+    <div style="margin-left:10px;margin-top:20px;">其他联系人（提示：必填3个其他联系人）</div>
+    <i-table :columns="columns1" :data="data2" width="1100"></i-table>
+    <!--<i-button @click="addNewContacts2" style="margin:10px 0" class="blueButton">添加联系人</i-button>-->
+    <div>
+      <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
+      <i-button @click="addNewContacts2" style="margin-left:10px;color:#265ea2" type="text">添加联系人</i-button>
+    </div>
 
     <template>
       <i-modal :title="addNew?'添加联系人':'编辑联系人'" v-model="editOrAddContactsModal">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="与本人关系">
             <i-select v-model="contactsModel.relation">
               <i-option label="配偶" value="配偶" key="配偶"></i-option>
@@ -42,7 +50,7 @@
 
     <template>
       <i-modal :title="addNew?'添加联系人':'编辑联系人'" v-model="editOrAddContactsModal2">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="与本人关系">
             <i-select v-model="contactsModel.relation">
               <i-option label="配偶" value="配偶" key="配偶"></i-option>

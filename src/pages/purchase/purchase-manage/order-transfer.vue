@@ -20,7 +20,7 @@
         </div>
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon iconClass="daochu"></svg-icon>
-          <span>导出</span>
+          <span style="font-size: 12px;">导出</span>
         </div>
       </div>
     </i-row>

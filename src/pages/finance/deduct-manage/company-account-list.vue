@@ -73,7 +73,7 @@
         <i-row>
           <i-col :span="12">
             <div style="text-align:center;width:100%;font-size:14px;font-weight:bold">企业信息</div>
-            <i-form :label-width="100">
+            <i-form :label-width="110">
               <i-form-item label="客户类型">
                 <i-input style="width:160px;"></i-input>
               </i-form-item>
@@ -128,7 +128,7 @@
           </i-col>
           <i-col :span="12">
             <div style="text-align:center;width:100%;font-size:14px;font-weight:bold">企业法人信息</div>
-            <i-form :label-width="100">
+            <i-form :label-width="110">
               <i-form-item label="法定代表人姓名">
                 <i-input style="width:160px;"></i-input>
               </i-form-item>
@@ -160,7 +160,7 @@
               </i-form-item>
             </i-form>
             <div style="text-align:center;width:100%;font-size:14px;font-weight:bold">开户信息（取现账户）</div>
-            <i-form :label-width="100">
+            <i-form :label-width="110">
               <i-form-item label="开户银行账户名">
                 <i-input style="width:160px;"></i-input>
               </i-form-item>
@@ -187,7 +187,7 @@
 
     <template>
       <i-modal title="企业取现" v-model="getCashModal">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="用户客户号">
             <i-input style="width:160px;"></i-input>
           </i-form-item>
@@ -232,7 +232,7 @@
     <!--设置交易密码-->
     <template>
       <i-modal v-model="setCodeModal" title="设置交易密码">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="原交易密码：">
             <i-input></i-input>
           </i-form-item>
@@ -249,7 +249,7 @@
     <!--转账-->
     <template>
       <i-modal v-model="transferAccountModal" title="转账">
-        <i-form :label-width="100">
+        <i-form :label-width="110">
           <i-form-item label="转账类型">
             <i-select style="width:85%">
               <i-option label="商户转企业用户" value="商户转企业用户" key="商户转企业用户"></i-option>

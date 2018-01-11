@@ -8,11 +8,15 @@
         <i-radio label="企业经营者"></i-radio>
       </i-radio-group>
     </div>
+
     <!--工薪者-->
     <div v-if="jobType === '工薪者'">
       <!--单位信息 Start-->
-      <i-col span="24" style="line-height:30px;background:#ddd">单位信息</i-col>
-      <i-form ref="job-form" :model="job" :label-width="110">
+      <i-col span="24" style="line-height:30px;background:#ddd"></i-col>
+      <div>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">单位信息</span>
+      </div>
+      <i-form ref="job-form" :model="job" :label-width="110" label-position="left" style="position:relative;left:16px;">
         <i-row>
 
           <i-col :span="12">
@@ -21,7 +25,7 @@
               </i-input>
             </i-form-item>
           </i-col>
-          <i-col :span="12" :pull="4">
+          <i-col :span="12" :pull="3">
             <i-form-item label="部门" prop="group">
               <i-input type="text" v-model="job.group" placeholder="请输入部门">
               </i-input>
@@ -37,7 +41,7 @@
               </i-select>
             </i-form-item>
           </i-col>
-          <i-col :span="12" :pull="4">
+          <i-col :span="12" :pull="3">
             <i-form-item label="职务" prop="duty">
               <i-input type="text" v-model="job.duty" placeholder="请输入职务">
               </i-input>
@@ -52,7 +56,7 @@
               </i-select>
             </i-form-item>
           </i-col>
-          <i-col :span="12" :pull="4">
+          <i-col :span="12" :pull="3">
             <i-form-item label="何时进入公司" prop="joinTime">
               <!--<i-date-picker type="date" placeholder="i-select date" v-model="job.joinTime"></i-date-picker>-->
               <i-input type="text" v-model="job.joinTime" placeholder="请输入何时进入公司">
@@ -67,7 +71,7 @@
               </i-input>
             </i-form-item>
           </i-col>
-          <i-col :span="12" :pull="4">
+          <i-col :span="12" :pull="3">
             <i-form-item label="单位固定电话" prop="phone">
               <i-input type="text" v-model="job.phone" placeholder="请输入单位固定电话">
               </i-input>
@@ -79,8 +83,10 @@
       <!--单位信息 End-->
       <!--收入信息 Start-->
 
-      <i-col span="24" style="line-height:30px;background:#ddd">收入信息</i-col>
-      <i-form ref="revenue-form" :model="revenue" :label-width="110">
+      <div>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">收入信息</span>
+      </div>
+      <i-form ref="revenue-form" :model="revenue" :label-width="110" label-position="left">
         <i-col span="12">
           <i-form-item label="基本月薪(元)" prop="wages">
             <i-input type="text" v-model="revenue.wages" placeholder="请输入基本月薪">
@@ -124,52 +130,64 @@
 
     <!--企业经营者-->
     <div v-if="jobType === '企业经营者'">
-      <i-form ref="company-form" :model="company" :label-width="110">
-        <i-col span="12" style="position:relative;right:60px;">
-          <i-form-item label="身份" prop="identity">
-            <i-radio-group v-model="company.identity">
-              <i-radio label="法人代表"></i-radio>
-              <i-radio label="股东"></i-radio>
-            </i-radio-group>
-          </i-form-item>
-        </i-col>
-        <i-col span="12" pull="3">
-          <i-form-item label="企业经营年限" prop="year">
-            <i-input type="text" v-model="company.year" placeholder="请输入企业经营年限">
-            </i-input>
-          </i-form-item>
-        </i-col>
-        <i-col span="12" pull="3">
-          <i-form-item label="经营地归属" prop="address">
-            <i-input type="text" v-model="company.address" placeholder="请输入经营地归属">
-            </i-input>
-          </i-form-item>
-        </i-col>
+      <div>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">公司信息</span>
+      </div>
+      <i-form ref="company-form" :model="company" :label-width="110" label-position="left" style="position:relative;left:16px;">
+        <i-row>
+
+          <i-col span="12">
+            <i-form-item label="身份" prop="identity">
+              <i-row>
+                <i-radio-group v-model="company.identity">
+                  <i-radio label="法人代表"></i-radio>
+                  <i-radio label="股东"></i-radio>
+                </i-radio-group>
+                <i-input style="width:185px;" placeholder="股份占比%"></i-input>
+              </i-row>
+            </i-form-item>
+          </i-col>
+          <i-col span="12" pull="3">
+            <i-form-item label="企业经营年限" prop="year">
+              <i-input type="text" v-model="company.year" placeholder="请输入企业经营年限">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+
+        <i-row>
+          <i-col span="12" >
+            <i-form-item label="经营地归属" prop="address">
+              <i-input type="text" v-model="company.address" placeholder="请输入经营地归属">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col span="12" pull="3">
+            <i-form-item label="员工人数" prop="people">
+              <i-input type="text" v-model="company.people" placeholder="请输入员工人数">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
         <i-col span="12">
-          <i-form-item label="员工人数" prop="people">
-            <i-input type="text" v-model="company.people" placeholder="请输入员工人数">
-            </i-input>
-          </i-form-item>
-        </i-col>
-        <i-col span="12" pull="3">
           <i-form-item label="注册资本(万元)" prop="capital">
             <i-input type="text" v-model="company.capital" placeholder="请输入注册资本">
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12"  pull="3">
           <i-form-item label="所属行业" prop="industry">
             <i-input type="text" v-model="company.industry" placeholder="请输入所属行业">
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12" pull="3">
+        <i-col span="12" >
           <i-form-item label="过去一年营业收入(万元)" prop="yearRevenue">
             <i-input type="text" v-model="company.yearRevenue" placeholder="请输入过去一年营业收入">
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12">
+        <i-col span="12" pull="3">
           <i-form-item label="过去一年利润" prop="yearProfits">
             <i-input type="text" v-model="company.yearProfits" placeholder="请输入过去一年利润">
             </i-input>

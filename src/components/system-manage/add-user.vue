@@ -1,7 +1,7 @@
 <!--新增用户-->
 <template>
   <section class="component add-user">
-    <i-form :label-width="100" class="addUser">
+    <i-form :label-width="110" class="addUser">
       <i-row>
         <i-col :span="12">
           <i-form-item label="用户名">
