@@ -136,7 +136,7 @@ import {
               //       }
               //     },
               //     style: {
-              //       color: 'blue'
+              //       color: '#265EA2'
               //     }
               //   }, '确认收回'),
               //   h('i-button', {
@@ -152,7 +152,7 @@ import {
               //       }
               //     },
               //     style: {
-              //       color: 'blue'
+              //       color: '#265EA2'
               //     }
               //   }, '还款详情')
               // ])
@@ -172,7 +172,7 @@ import {
                   }
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 }
               }, '还款详情')
             }

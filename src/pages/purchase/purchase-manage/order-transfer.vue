@@ -13,7 +13,7 @@
       <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
       <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">关闭</span>高级搜索</i-button>
       <div style="float:right;margin-right:10px;margin-top:10px;">
-        <i-button @click="oneKeyToConnect" class="blueButton">一键交接</i-button>
+        <!--<i-button @click="oneKeyToConnect" class="blueButton">一键交接</i-button>-->
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
           <span style="font-size:12px;">打印</span>
@@ -33,6 +33,19 @@
       <i-button style="margin-left:10px;" class="blueButton">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1" :page="pageService"></data-box>
+    <div class="submitBar">
+      <i-row type="flex" align="middle" style="padding:5px">
+        <i-col :span="8" push="1">
+          <span>申请人：胡开甲</span>
+        </i-col>
+        <i-col :span="10" pull="4">
+          <span>申请时间： 2017-12-01 13:56:45</span>
+        </i-col>
+        <i-col :span="6" style="text-align:right;">
+          <i-button @click="oneKeyToConnect" class="highButton">一键交接</i-button>
+        </i-col>
+      </i-row>
+    </div>
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
@@ -189,7 +202,7 @@
         align: 'center',
         key: 'personalName',
         title: '姓名',
-        width:120
+        width: 120
       }]
       this.columns1 = [{
           align: 'center',
@@ -241,14 +254,26 @@
                 }
               },
               style: {
-                color: 'blue'
+                color: '#265EA2'
               }
             }, '转交记录')
           }
         }, {
           title: '订单编号',
           key: 'orderId',
-          align: 'center'
+          align: 'center',
+          render: (h, row) => {
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+
+                }
+              }
+            }, 'kb20154575')
+          }
         },
         {
           title: '订单所属人',

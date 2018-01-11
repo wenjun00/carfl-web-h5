@@ -77,7 +77,7 @@
         </i-upload>
         <div style="font-size:18px;font-weight:bold;margin-top:10px"><span>文件数量（3）</span>
           <div style="display:inline-block;float:right;">
-            <i-icon type="ios-download" style="position:relative;left:10px;"></i-icon>
+            <svg-icon style="font-size:24px;cursor:pointer;position:relative;left:18px;" iconClass="xiazai"></svg-icon>
             <i-button type="text">全部下载</i-button>
           </div>
         </div>

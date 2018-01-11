@@ -155,7 +155,7 @@
                 }
               },
               style: {
-                color: 'blue'
+                color: '#265EA2'
               }
             }, '修改')
           }

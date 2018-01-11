@@ -65,7 +65,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 }
               }, '预览'),
               h('i-button', {
@@ -73,7 +73,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 }
               }, '下载'),
               h('i-button', {
@@ -81,7 +81,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 },
                 on:{
                     click:()=>{

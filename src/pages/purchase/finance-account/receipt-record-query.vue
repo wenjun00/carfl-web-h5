@@ -118,7 +118,7 @@
                 }
               },
               style: {
-                color: 'blue'
+                color: '#265EA2'
               }
             }, '查看')
           ])

@@ -156,7 +156,7 @@ import {
                   }
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 }
               }, '确认还款'),
               h('i-button', {
@@ -174,7 +174,7 @@ import {
                   }
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 }
               }, '还款详情'),
               h('i-button', {
@@ -192,7 +192,7 @@ import {
                   }
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 }
               }, '划扣记录')
             ])

@@ -183,7 +183,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 },
                 on: {
                   click: () => {
@@ -198,7 +198,7 @@
                     type: 'text'
                   },
                   style: {
-                    color: 'blue'
+                    color: '#265EA2'
                   },
                   on: {
                     click: () => {
@@ -220,7 +220,7 @@
                     type: 'text'
                   },
                   style: {
-                    color: 'blue'
+                    color: '#265EA2'
                   },
                   on: {
                     click: () => {

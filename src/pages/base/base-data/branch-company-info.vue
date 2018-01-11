@@ -63,7 +63,7 @@ import {
                     type: 'text'
                   },
                   style: {
-                    color: 'blue'
+                    color: '#265EA2'
                   }
                 }, '修改'),
                 h('i-button', {
@@ -71,7 +71,7 @@ import {
                     type: 'text'
                   },
                   style: {
-                    color: 'blue'
+                    color: '#265EA2'
                   },
                   on:{
                       click:()=>{
@@ -90,7 +90,7 @@ import {
                     type: 'text'
                   },
                   style: {
-                    color: 'blue'
+                    color: '#265EA2'
                   },
                   on:{
                       click:()=>{

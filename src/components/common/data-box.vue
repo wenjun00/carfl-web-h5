@@ -5,7 +5,7 @@
         :width="width" @on-current-change="currentChange"></i-table>
     </div>
     <div class="row end-span" :style="{'width':`${width}px`}">
-      <i-page size="small" show-total show-sizer :show-elevator="page.showElevator" :total="page.total" @on-change="pageChange"
+      <i-page class="pagination" size="small" show-total show-sizer :show-elevator="page.showElevator" :total="page.total" @on-change="pageChange"
         @on-page-size-change="pageChange"></i-page>
     </div>
   </div>
@@ -97,6 +97,13 @@
   .data-box {
     &>* {
       padding: 10px;
+    }
+  }
+
+  .pagination {
+    .ivu-select,
+    .ivu-select-single .ivu-select-selection {
+      width: 78px;
     }
   }
 

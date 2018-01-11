@@ -254,7 +254,7 @@
                   }
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 }
               }, '查看附件'),
               h('i-button', {
@@ -274,7 +274,7 @@
                   }
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 }
               }, '撤销')
             ])

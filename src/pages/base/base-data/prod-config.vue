@@ -363,7 +363,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 }
               }, '编辑'),
               h('i-button', {
@@ -371,7 +371,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 }
               }, '删除')
             ])

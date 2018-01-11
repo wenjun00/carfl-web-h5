@@ -43,7 +43,7 @@
     <!--开户弹窗-->
     <template>
       <i-modal v-model="openCreateAccount" title="开户申请" width="500">
-        <i-form :label-width="110">
+        <i-form :label-width="110" style="position:relative;left:30px;">
           <i-form-item label="开户渠道">
             <i-select style="width:160px;">
               <i-option label="汇付" value="汇付" key="汇付"></i-option>
@@ -145,7 +145,7 @@
           </i-form-item>
         </i-form>
         <div slot="footer">
-          <i-button class="blueButton">确认绑卡</i-button>
+          <i-button class="blueButton" @click="openBindCard=false">确认绑卡</i-button>
         </div>
       </i-modal>
     </template>
@@ -213,7 +213,7 @@
           </i-form-item>
           <i-form-item label="验证码" v-if="current===0">
             <i-input v-model="qCode" style="width:160px;"></i-input>
-            <i-button style="display:inline-block;margin-left:8px;" @click='sendQcode' class="blueButton" size="small">发送验证码<span>60</span></i-button>
+            <i-button style="display:inline-block;margin-left:8px;" @click='sendQcode' class="blueButton">发送验证码<span>60</span></i-button>
           </i-form-item>
         </i-form>
         <div slot="footer">
@@ -337,7 +337,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 },
                 on: {
                   click: () => {
@@ -351,7 +351,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 },
                 on: {
                   click: () => {
@@ -365,7 +365,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 },
                 on: {
                   click: () => {
@@ -453,7 +453,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 },
                 on: {
                   click: () => {
@@ -467,7 +467,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 },
                 on: {
                   click: () => {
@@ -481,7 +481,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: '#265EA2'
                 },
                 on: {
                   click: () => {

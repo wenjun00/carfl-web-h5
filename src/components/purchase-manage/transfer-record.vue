@@ -57,7 +57,8 @@
       }, {
         title: '转交日期',
         key: 'transferDate',
-        align: 'center'
+        align: 'center',
+        width: 160
       }, {
         title: '制单人',
         key: 'makePerson',
@@ -74,7 +75,7 @@
         transferPerson: '朱晨通'
       }, {
         transferDate: '2017-07-24 15:12:35',
-        makePerson: '胡开甲',
+        makePerson: '李驰',
         transferPerson: '李楠'
       }]
     }

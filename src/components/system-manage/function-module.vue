@@ -52,7 +52,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: "#265EA2"
                 }
               }, '修改'),
               h('i-button', {
@@ -60,7 +60,7 @@
                   type: 'text'
                 },
                 style: {
-                  color: 'blue'
+                  color: "#265EA2"
                 }
               }, '移除')
             ])

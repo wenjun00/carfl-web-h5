@@ -139,7 +139,7 @@ import {
                   props: {
                     type: 'eye',
                     size: '20',
-                    color: 'blue'
+                    color: '#265EA2'
                   },
                   style: {
                     position: 'relative',
@@ -155,7 +155,7 @@ import {
                   props: {
                     type: 'loop',
                     size: '20',
-                    color: 'blue'
+                    color: '#265EA2'
                   },
                   style: {
                     position: 'relative',
