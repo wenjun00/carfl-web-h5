@@ -1,17 +1,22 @@
 <template>
   <div class="component work-menu text-left row middle-span">
     <div v-for="menu_lv1 in menuConfig" :key="menu_lv1.path" class="menu-level-1">
-      <Poptip v-model="menu_lv1.popue" placement="bottom" trigger="hover">
+      <Poptip v-model="menu_lv1.popue" placement="bottom" trigger="click">
         <div class="menu-level-1-title row middle-span center-span" style="height:100%">
           <span>{{menu_lv1.title}}</span>
         </div>
         <div v-if="menu_lv1.children" class="menu-popue row" slot="content">
           <div v-for="menu_lv2 in menu_lv1.children" :key="menu_lv2.path" class="menu-level-2 row">
             <div>
-              <div style="font-size:14px;font-weight:bold;color:#1D4F8B;margin-bottom:20px;padding-top:30px;">{{menu_lv2.title}}</div>
+              <div style="position:relative;right:20px;">
+                <div class="iconfont_container" :style="{background:menu_lv2.color}">
+                  <svg-icon :iconClass="menu_lv2.icon" class="work_menu_iconfont"></svg-icon>
+                </div>
+                <div class="menu2" :style="{color:menu_lv2.color}">{{menu_lv2.title}}</div>
+              </div>
               <div v-if="menu_lv2.children">
-                <div v-for="menu_lv3 in menu_lv2.children" :key="menu_lv3.path" @click="redirect(menu_lv3,menu_lv1)" style="margin:12px 0;cursor:pointer;">
-                  {{menu_lv3.title}}
+                <div v-for="menu_lv3 in menu_lv2.children" :key="menu_lv3.path" @click="redirect(menu_lv3,menu_lv1)" class="menu3">
+                  <span>{{menu_lv3.title}}</span>
                 </div>
               </div>
             </div>
@@ -35,9 +40,14 @@
     Mutation,
     Action
   } from "vuex-class";
+  import SvgIcon from '~/components/common/svg-icon.vue'
   import menuConfig from "~/config/menu.config";
 
-  @Component({})
+  @Component({
+    components: {
+      SvgIcon
+    }
+  })
   export default class WorkMenu extends Vue {
     @State("pageList") pageList;
     @Mutation("openPage") openPage;
@@ -55,6 +65,7 @@
       this.openPage(page);
     }
   }
+
 </script>
 
 <style lang="less" scoped>
@@ -67,7 +78,7 @@
 
       &>* {
         padding: 0 3px;
-        font-size:14px;
+        font-size: 14px;
       }
     }
   }
@@ -93,6 +104,7 @@
   .menu-level-2:last-child {
     width: 0px;
   }
+
 </style>
 
 <style lang="less">
@@ -120,5 +132,36 @@
       align-items: flex-start;
       justify-content: center;
     }
+    .menu2 {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: bold;
+      color: #1D4F8B;
+      margin-bottom: 20px;
+      padding-top: 30px; // text-align: left;
+      padding-left:4px;
+    }
+    .menu3 {
+      margin: 12px 0;
+      cursor: pointer;
+      text-align: left;
+    }
+    .menu3:hover {
+      color: #265EA2!important;
+    }
+    .iconfont_container {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: inline-block;
+      .work_menu_iconfont {
+        font-size: 18px;
+        text-align: center;
+        color: #fff;
+        position: relative;
+        top: 3px;
+      }
+    }
   }
+
 </style>

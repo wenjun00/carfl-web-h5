@@ -6,6 +6,8 @@ export default [
       {
         title: '进件管理',
         path: "purchase/purchase-manage",
+        color: '#598AC5',
+        icon: 'jinjianguanli',
         children: [{
           title: '融资租赁申请',
           path: 'purchase/purchase-manage/financing-lease-apply'
@@ -24,6 +26,8 @@ export default [
         }]
       }, {
         title: '进件查询',
+        color: '#36B48C',
+        icon: 'jinjianchaxun',
         children: [{
           title: '订单查询',
           path: 'purchase/purchase-query/order-query',
@@ -37,6 +41,8 @@ export default [
       },
       {
         title: '财务记账',
+        color: '#47AAB6',
+        icon: 'caiwujizhang',
         children: [{
           title: '销售收款申请',
           path: 'purchase/finance-account/sale-gathering-apply',
@@ -53,6 +59,8 @@ export default [
       },
       {
         title: '审批管理',
+        color: '#6D7AD9',
+        icon: 'shenpiguanli',
         children: [{
           title: '收款审批',
           path: 'purchase/purchase-approve/receipt-approve',
@@ -65,7 +73,9 @@ export default [
     path: 'approval',
     children: [{
       title: '审核管理',
+      color: '#598AC5',
       path: 'approval/approval-manage',
+      icon: 'shenheguanli',
       children: [{
         title: '审核资源池',
         path: 'approval/approval-manage/approval-resource-pool'
@@ -90,6 +100,8 @@ export default [
       }]
     }, {
       title: '审核查询',
+      icon: 'shenhechaxun',
+      color: '#36B48C',
       children: [{
         title: '内审管理',
         path: 'approval/approval-manage/internal-audit-manage'
@@ -105,7 +117,9 @@ export default [
       }]
     }, {
       title: '还款管理',
+      icon: 'huankuanguanli',
       path: 'approval/repay-manage',
+      color: '#47AAB6',
       children: [{
         title: '客户还款查询',
         path: 'approval/repay-manage/customer-repay-query'
@@ -118,7 +132,9 @@ export default [
       }]
     }, {
       title: '综合查询',
+      icon: 'zonghechaxun',
       path: 'approval/synthesize-query',
+      color: '#6D7AD9',
       children: [{
         title: '审核记录表',
         path: 'approval/synthesize-query/approval-record-table'
@@ -133,7 +149,9 @@ export default [
     path: 'finance',
     children: [{
       title: '首付款管理',
+      icon: 'shoufukuanguanli',
       path: 'finance/initial-payment-manage',
+      color: '#598AC5',
       children: [{
         title: '收款',
         path: 'finance/initial-payment-manage/gathering'
@@ -141,6 +159,8 @@ export default [
     },
     {
       title: '还款管理',
+      icon: 'huankuanguanli',
+      color: '#36B48C',
       path: 'finance/repay-manage',
       children: [{
         title: '客户还款',
@@ -158,6 +178,8 @@ export default [
     },
     {
       title: '划扣管理',
+      icon: 'huakouguanli',
+      color: '#47AAB6',
       path: 'finance/deduct-manage',
       children: [{
         title: '个人开户列表',
@@ -173,6 +195,8 @@ export default [
     {
       title: '发票管理',
       path: 'finance/invoice-manage',
+      icon: 'fapiaoguanli',
+      color: '#6D7AD9',
       children: [{
         title: '财务开票',
         path: 'finance/invoice-manage/finance-make-invoice'
@@ -180,6 +204,8 @@ export default [
     },
     {
       title: '财务统计',
+      icon: 'caiwutongji',
+      color: '#47AAB6',
       path: 'finance/finance-statistics',
       children: [{
         title: '清结算日报表',
@@ -205,6 +231,8 @@ export default [
     path: 'base',
     children: [{
       title: '基础数据',
+      icon: 'jichushuju',
+      color: '#598AC5',
       path: 'base/base-data',
       children: [{
         title: '产品包信息',
@@ -221,11 +249,13 @@ export default [
       }]
     }, {
       title: '配置管理',
+      icon: 'peizhiguanli',
+      color: '#36B48C',
       path: 'base/config-manage',
       children: [{
         title: '产品配置',
         path: 'base/base-data/prod-config'
-      },  {
+      }, {
         title: '客户素材维护',
         path: 'base/base-data/customer-fodder-maintain'
       }]
@@ -236,6 +266,8 @@ export default [
     path: 'systemManage',
     children: [{
       title: '权限设置',
+      color: '#598AC5',
+      icon: 'quanxianshezhi',
       path: 'systemManage/power-config',
       children: [{
         title: '模块功能',
@@ -254,6 +286,8 @@ export default [
       ]
     }, {
       title: '运维设置',
+      icon: 'yunweishezhi',
+      color: '#36B48C',
       path: 'systemManage/operation-config',
       children: [{
         title: '订单状态变更',
@@ -278,6 +312,8 @@ export default [
     },
     {
       title: '其他设置',
+      icon: 'qitashezhi',
+      color: '#47AAB6',
       path: 'systemManage/other-config',
       children: [{
         title: '系统日志',
