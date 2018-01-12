@@ -15,11 +15,13 @@
       <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
-    <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
-      <svg-icon iconClass="daochu"></svg-icon>
-      <span style="font-size: 12px;">导出</span>
+    <div style="float:right;margin-top: 10px;margin-right:10px">
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size: 12px;">导出</span>
+      </div>
     </div>
-    <i-row v-if="searchOptions" style="margin:6px;">
+    <i-row v-if="searchOptions" style="margin:6px;position;relative;right:6px;">
       <i-input style="display:inline-block;width:10%;margin-left:10px;" placeholder="请输入客户姓名\证件号码"></i-input>
       <span style="margin-left:10px;">日期：</span>
       <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>~

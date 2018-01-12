@@ -20,10 +20,6 @@
     <i-row style="margin-top:20px">
       <data-box :columns="queryColumns" :data="queryData"></data-box>
     </i-row>
-    <!--弹框进度查询-->
-    <!--<i-modal width="800" v-model="openColumnsConfig" title="订单进度">
-      <order-progress></order-progress>
-    </i-modal>-->
     <!--列配置-->
     <template>
       <i-modal v-model="columnsManage" title="列配置">

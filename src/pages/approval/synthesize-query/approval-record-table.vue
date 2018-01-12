@@ -1,21 +1,23 @@
 <!--审核记录表-->
 <template>
   <section class="page approval-record-table">
-    <span style="font-size:18px;font-weight:bold">审核记录表</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">关闭</span>
-      <span>高级搜索</span>
-    </i-button>
-    <i-row v-if="searchOptions" style="margin:6px;">
+    <i-row style="margin-top:10px;">
+      <span style="font-size:18px;font-weight:bold">审核记录表</span>
+      <i-button type="text">昨日</i-button>
+      <i-button type="text">今日</i-button>
+      <i-button type="text">本周</i-button>
+      <i-button type="text">本月</i-button>
+      <i-button type="text">上月</i-button>
+      <i-button type="text">最近三月</i-button>
+      <i-button type="text">本季度</i-button>
+      <i-button type="text">本年</i-button>
+      <i-button @click="openSearch" style="color:#265EA2">
+        <span v-if="!searchOptions">展开</span>
+        <span v-if="searchOptions">关闭</span>
+        <span>高级搜索</span>
+      </i-button>
+    </i-row>
+    <i-row v-if="searchOptions" style="margin:6px;position;relative;right:16px;">
       <i-select placeholder="全部状态" style="margin-left:20px;width:10%">
         <i-option label="拒绝" value="拒绝" key="拒绝"></i-option>
         <i-option label="退单" value="退单" key="退单"></i-option>
@@ -42,6 +44,26 @@
       <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
+
+    <template>
+      <i-modal v-model="openColumnsConfig" title="列配置">
+        <i-table :columns="columns3" :data="data3"></i-table>
+        <div slot="footer">
+          <i-button>上移</i-button>
+          <i-button>下移</i-button>
+          <i-button>恢复默认</i-button>
+          <i-button @click="openColumnsConfig=false">关闭</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <!--进度查询-->
+    <template>
+      <i-modal v-model="orderProgressModal" title="审核进度" width="1000">
+        <order-progress></order-progress>
+        <div slot="footer"></div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -49,7 +71,7 @@
   import Page from "~/core/page";
   import DataBox from "~/components/common/data-box.vue";
   import Component from "vue-class-component";
-
+  import OrderProgress from "~/components/purchase-query/order-progress.vue";
   import {
     Dependencies
   } from "~/core/decorator";
@@ -64,7 +86,8 @@
   @Component({
 
     components: {
-      DataBox
+      DataBox,
+      OrderProgress
     }
   })
   export default class ApprovalRecordTable extends Page {
@@ -81,22 +104,113 @@
     private data3: Array < Object > = [];
     private checkRadio: String = "融资租赁合同";
     private columns3: any;
+    private orderProgressModal: Boolean = false;
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     created() {
+      this.columns3 = [{
+        title: '序号',
+        type: 'index',
+        width: 80,
+        align: 'center'
+      }, {
+        title: '列名',
+        key: 'columnsName',
+        align: 'center'
+      }, {
+        type: 'selection',
+        width: 80,
+        align: 'center'
+      }]
+
+      this.data3 = [{
+        columnsName: '申请类型'
+      }, {
+        columnsName: '环节'
+      }, {
+        columnsName: '订单状态'
+      }, {
+        columnsName: '订单创建时间'
+      }, {
+        columnsName: '进入资源池时间'
+      }, {
+        columnsName: '省份'
+      }, {
+        columnsName: '城市'
+      }, {
+        columnsName: '订单类型'
+      }, {
+        columnsName: '客户姓名'
+      }, {
+        columnsName: '证件号'
+      }, {
+        columnsName: '手机号'
+      }]
       this.columns1 = [{
+          align: 'center',
+          width: 90,
+          type: 'index',
+          renderHeader: (h, {
+            column,
+            index
+          }) => {
+            return h(
+              "div", {
+                on: {
+                  click: () => {
+                    this.columnsConfig();
+                  }
+                },
+                style: {
+                  cursor: "pointer"
+                }
+              }, [
+                h("Icon", {
+                  props: {
+                    type: "gear-b",
+                    size: "20"
+                  }
+                })
+              ]
+            );
+          }
+        },
+        {
+          title: "操作",
+          width: 100,
           align: "center",
-          type: "index",
-          width: 60,
-          title: '序号'
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("div", [
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.orderProgressModal = true
+                    }
+                  }
+                },
+                "查看"
+              )
+            ]);
+          }
         },
         {
           align: "center",
           title: "审核时间",
           key: "approvalTime",
-          width: 160
+          width: 180
         },
         {
           align: "center",
@@ -241,12 +355,12 @@
         salesman: '吴小川',
         customerName: '韩冰',
         idCard: '610101199006052416',
-        approvalStatus: '通过',
-        isDeliveryCar: '已提车',
-        content: '成功提车',
-        refuseReason: '',
+        approvalStatus: '拒绝',
+        isDeliveryCar: '未提车',
+        content: '提车失败',
+        refuseReason: '风控不过',
         refuseDetail: '',
-        remark: '成功提车',
+        remark: '未提车',
         approvalMan: '李蓓'
       }, {
         approvalTime: '2017-12-01 15:36:45',
@@ -273,7 +387,7 @@
         idCard: '610101199006052416',
         content: '逾期了',
         approvalStatus: '拒绝',
-        isDeliveryCar: '已提车',
+        isDeliveryCar: '未提车',
         refuseReason: '逾期',
         refuseDetail: '银行贷款逾期',
         remark: '',
@@ -288,7 +402,7 @@
         idCard: '610101199006052416',
         content: '逾期了',
         approvalStatus: '拒绝',
-        isDeliveryCar: '已提车',
+        isDeliveryCar: '未提车',
         refuseReason: '逾期',
         refuseDetail: '银行贷款逾期',
         remark: '',
@@ -306,7 +420,12 @@
     dataPower(row) {
 
     }
-
+    /**
+     * 列配置
+     */
+    columnsConfig() {
+      this.openColumnsConfig = true
+    }
 
   }
 

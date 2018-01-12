@@ -17,9 +17,9 @@ export default {
           IdCard: '610303199111142416',
           prdName: '梅赛德斯',
           prdPeriods: '1期',
-          orderStatus: '面审',
+          orderStatus: '拒绝',
           prdPeriod: '24',
-          link: '待审批',
+          link: '面审',
           orderType: '借贷',
           totalFinancing: '13748',
           repaymentMethod: '等额本息'
@@ -80,34 +80,16 @@ export default {
     data: {
       val: [
         {
-          processingTime: '2016-10-03',
-          operator: '前端开发',
-          link: '死亡',
-          statusDescription: '已提交',
+          processingTime: '2016-10-03 13:56:56',
+          operator: '韩冰',
+          link: '面审',
+          statusDescription: '拒绝',
           noteDescription: ''
         }, {
-          processingTime: '2016-10-03',
-          operator: '前端开发',
-          link: '死亡',
-          statusDescription: '1.1面审拒绝  1.2复审拒绝  1.3终审拒绝  1.4合规拒绝',
-          noteDescription: '进件材料不足'
-        }, {
-          processingTime: '2016-10-03',
-          operator: '前端开发',
-          link: '待命',
-          statusDescription: '通过',
-          noteDescription: '评分低，有风险'
-        }, {
-          processingTime: '2016-10-03',
-          operator: '前端开发',
-          link: '待命',
-          statusDescription: '通过',
-          noteDescription: ''
-        }, {
-          processingTime: '2016-10-03',
-          operator: '前端开发',
-          link: '审批中',
-          statusDescription: '退回',
+          processingTime: '2016-10-03 14:02:11',
+          operator: '吴刚',
+          link: '复审',
+          statusDescription: '待复审',
           noteDescription: ''
         }
       ]

@@ -1,15 +1,39 @@
 <!--合同监控-->
 <template>
   <section class="page compact-monitor">
-    <span class="form-title">合同监控</span>
-    <i-input style="display:inline-block;width:12%;margin-left:10px;" placeholder="请输入门店\员工姓名查询"></i-input>
-    <span style="margin-left:10px;">姓名：</span>
-    <i-input style="display:inline-block;width:10%;" placeholder="请输入姓名"></i-input>
-    <span style="margin-left:10px;">下载日期：</span>
-    <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>~
-    <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>
-    <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+    <span class="form-title">合同下载监控</span>
+    <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
+    <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
+    <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
+    <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
+    <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
+    <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
+    <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
+    <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
+    <i-button @click="openSearch" style="color:#265EA2">
+      <span v-if="!searchOptions">展开</span>
+      <span v-if="searchOptions">关闭</span>
+      <span>高级搜索</span>
+    </i-button>
+
+    <i-row v-if="searchOptions" style="margin:6px;">
+      <i-date-picker style="display:inline-block;width:10%;" placeholder="起始日期"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%;" placeholder="终止日期"></i-date-picker>
+      <i-input style="display:inline-block;width:10%;" placeholder="请输入员工姓名"></i-input>
+      <i-select style="width:10%;">
+        <i-option label="吴小川" value="吴小川" key="吴小川"></i-option>
+        <i-option label="黄瑞" value="黄瑞" key="黄瑞"></i-option>
+        <i-option label="祁吉贵" value="祁吉贵" key="祁吉贵"></i-option>
+      </i-select>
+      <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+    </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
+
+    <template>
+      <i-modal title="合同下载详情" v-model="compactDownloadInfoModal" width="1300">
+        <compact-download-info></compact-download-info>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -19,6 +43,7 @@
   import Component from "vue-class-component";
   import RepaySum from "~/components/approval-manage/repay-sum.vue"
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue"
+  import CompactDownloadInfo from "~/components/approval-manage/compact-download-info.vue"
   import {
     Dependencies
   } from "~/core/decorator";
@@ -31,11 +56,12 @@
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
       DataBox,
       RepaySum,
-      PurchaseInformation
+      PurchaseInformation,
+      CompactDownloadInfo
     }
   })
   export default class CompactMonitor extends Page {
@@ -46,29 +72,48 @@
     private data2: Array < Object > = [];
     private repayInfo: Boolean = false;
     private ceshiShow: Boolean = false;
-
+    private searchOptions: Boolean = false;
+    private compactDownloadInfoModal: Boolean = false;
 
     activated() {}
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
     created() {
       this.columns1 = [{
           align: "center",
-          type: "expand",
-          width: "120",
-          title: '展开订单',
-          render: (h, params) => {
-            return h('i-table', {
-              props: {
-                columns: this.columns2,
-                data: this.data2,
-                border: true
-              }
-            })
-          }
-        }, {
-          align: "center",
           type: "index",
           title: '序号',
-          width: '60'
+          width: 60
+        },
+        {
+          title: "操作",
+          width: "200",
+          align: "center",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("div", [
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.compactDownloadInfoModal = true
+                    }
+                  }
+                },
+                "查看"
+              )
+            ]);
+          }
         },
         {
           align: "center",
@@ -88,85 +133,17 @@
       ];
       this.data1 = [{
         branchAddress: '大雁塔门店',
-        employeeName: '李蓓',
+        employeeName: '吴小川',
         downloadNum: '80'
+      }, {
+        branchAddress: '钟楼门店',
+        employeeName: '黄瑞',
+        downloadNum: '90'
+      }, {
+        branchAddress: '曲江门店',
+        employeeName: '祁吉贵',
+        downloadNum: '180'
       }]
-
-      this.columns2 = [{
-          title: "操作",
-          width: "120",
-          align: "center",
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h("div", [
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.$Modal.info({
-                        width: 800,
-                        closable: true,
-                        render: h => h(PurchaseInformation)
-                      })
-                    }
-                  }
-                },
-                "查看订单"
-              )
-            ]);
-          }
-        },
-        {
-          align: "center",
-          title: "订单创建时间",
-          key: 'orderCreateTime'
-        },
-        {
-          align: "center",
-          title: "订单编号",
-          key: "orderId",
-          width: '110'
-        },
-        {
-          align: "center",
-          title: "订单类型",
-          key: "orderType",
-          width: '110'
-        },
-        {
-          align: "center",
-          title: " 订单归属公司",
-          key: "belongFirm"
-        },
-        {
-          align: "center",
-          title: " 产品名称",
-          key: "prdName"
-        },
-        {
-          align: "center",
-          title: " 审批状态",
-          key: "approvalStatus"
-        }
-      ];
-
-      this.data2 = [{
-        orderCreateTime: '2017-12-01 17:34:56',
-        orderId: 'KB20171001',
-        orderType: '融资租赁',
-        belongFirm: '群泰西安',
-        approvalStatus: '待审批'
-      }]
-
     }
 
     repaySum(row) {}
@@ -180,7 +157,9 @@
 
     }
 
+    getOrderInfoByTime() {
 
+    }
   }
 
 </script>

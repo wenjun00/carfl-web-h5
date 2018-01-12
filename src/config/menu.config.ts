@@ -139,7 +139,7 @@ export default [
         title: '审核记录表',
         path: 'approval/synthesize-query/approval-record-table'
       }, {
-        title: '合同监控',
+        title: '合同下载监控',
         path: 'approval/synthesize-query/compact-monitor'
       }]
     }]

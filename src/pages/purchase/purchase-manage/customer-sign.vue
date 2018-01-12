@@ -54,7 +54,7 @@
           <i-table :columns="columns3" :data="data3"></i-table>
         </i-row>
         <div slot="footer">
-          <i-button class="blueButton">确认打印</i-button>
+          <i-button class="blueButton" @click="openCreateCompact=false">确认打印</i-button>
         </div>
       </i-modal>
     </template>

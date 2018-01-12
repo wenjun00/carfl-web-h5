@@ -86,7 +86,6 @@
 
     <template>
       <i-modal title="查看附件" v-model="checkAttachmentModal">
-     
         <check-attachment></check-attachment>
       </i-modal>
     </template>

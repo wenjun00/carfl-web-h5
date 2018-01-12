@@ -15,7 +15,7 @@
       <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
-    <i-row v-if="searchOptions" style="margin:6px;">
+    <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
       <span style="margin-left:10px">日期：</span>
       <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
@@ -45,6 +45,24 @@
       <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
+
+    <template>
+      <i-modal title="订单详情" width="800" v-model="purchaseInfoModal" class="purchase_info_modal">
+        <purchase-information></purchase-information>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="openColumnsConfig" title="列配置">
+        <i-table :columns="columns3" :data="data3"></i-table>
+        <div slot="footer">
+          <i-button>上移</i-button>
+          <i-button>下移</i-button>
+          <i-button>恢复默认</i-button>
+          <i-button @click="openColumnsConfig=false">关闭</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -75,16 +93,81 @@
     private data2: Array < Object > = [];
     private orderModal: Boolean = false;
     private searchOptions: Boolean = false;
-
+    private purchaseInfoModal: Boolean = false;
+    private openColumnsConfig: Boolean = false;
+    private columns3: any;
+    private data3: Array < Object > = [];
+    
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     created() {
+       this.columns3 = [{
+        title: '序号',
+        type: 'index',
+        width: 80,
+        align: 'center'
+      }, {
+        title: '列名',
+        key: 'columnsName',
+        align: 'center'
+      }, {
+        type: 'selection',
+        width: 80,
+        align: 'center'
+      }]
+
+      this.data3 = [{
+        columnsName: '申请类型'
+      }, {
+        columnsName: '环节'
+      }, {
+        columnsName: '订单状态'
+      }, {
+        columnsName: '订单创建时间'
+      }, {
+        columnsName: '进入资源池时间'
+      }, {
+        columnsName: '省份'
+      }, {
+        columnsName: '城市'
+      }, {
+        columnsName: '订单类型'
+      }, {
+        columnsName: '客户姓名'
+      }, {
+        columnsName: '证件号'
+      }, {
+        columnsName: '手机号'
+      }]
       this.columns1 = [{
-          align: "center",
-          type: "index",
-          width: 60,
-          title: '序号'
+          align: 'center',
+          width: 90,
+          type: 'index',
+          renderHeader: (h, {
+            column,
+            index
+          }) => {
+            return h(
+              "div", {
+                on: {
+                  click: () => {
+                    this.columnsConfig();
+                  }
+                },
+                style: {
+                  cursor: "pointer"
+                }
+              }, [
+                h("Icon", {
+                  props: {
+                    type: "gear-b",
+                    size: "20"
+                  }
+                })
+              ]
+            );
+          }
         },
         {
           title: "操作",
@@ -106,12 +189,7 @@
                   },
                   on: {
                     click: () => {
-                      // this.getOrder(row);
-                      this.$Modal.info({
-                        title: '灰名单详情',
-                        width: '900',
-                        render: h => h(PurchaseInformation)
-                      })
+                      this.purchaseInfoModal = true
                     }
                   }
                 },
@@ -261,7 +339,7 @@
         city: '宝鸡',
         orderType: '直租',
         customerName: '刘佳',
-        orderId:20170816,
+        orderId: 20170816,
         idCard: '610303199111142564',
         prdName: '直租',
         phone: '15094156575'
@@ -274,7 +352,7 @@
         orderType: '直租',
         step: '终审',
         customerName: '刘陇刚',
-        orderId:20170817,
+        orderId: 20170817,
         prdName: '直租',
         idCard: '610303198911041564',
         phone: '13096133575'
@@ -284,7 +362,7 @@
         orderPoolTime: '2017-12-02 11:36:26',
         province: '陕西',
         city: '渭南',
-        orderId:20170818,
+        orderId: 20170818,
         orderType: '直租',
         step: '终审',
         prdName: '直租',
@@ -326,6 +404,12 @@
      */
     getOrder(row) {
       this.orderModal = true
+    }
+    /**
+     * 列配置
+     */
+    columnsConfig() {
+      this.openColumnsConfig = true
     }
   }
 
