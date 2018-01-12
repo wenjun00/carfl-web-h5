@@ -16,13 +16,13 @@
       <span>高级搜索</span>
     </i-button>
 
-    <i-row v-if="searchOptions" style="margin:6px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码"></i-input>
-      <i-select style="margin-left:10px" placeholder="全部还款状态">
+    <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
+      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码"></i-input>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态">
         <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
         <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
       </i-select>
-      <i-select style="margin-left:10px" placeholder="全部结算通道">
+      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道">
         <i-option value="汇付" key="汇付" label="汇付"></i-option>
         <i-option value="富友" key="富友" label="富友"></i-option>
         <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
@@ -51,7 +51,7 @@
     </template>
 
     <template>
-      <i-modal v-model="repayInfoModal" title="还款详情" width="900">
+      <i-modal v-model="repayInfoModal" title="还款详情" width="900" :transfer="false">
         <repay-info></repay-info>
       </i-modal>
     </template>

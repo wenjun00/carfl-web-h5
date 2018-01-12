@@ -15,13 +15,13 @@
       <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
-    <i-row v-if="searchOptions" style="margin:6px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码"></i-input>
-      <i-select style="margin-left:10px;" placeholder="全部还款状态">
+    <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
+      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码"></i-input>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态">
         <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
         <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
       </i-select>
-      <i-select style="margin-left:10px">
+      <i-select style="margin-left:10px;width:10%">
         <i-option value="汇付" key="汇付" label="汇付"></i-option>
         <i-option value="富友" key="富友" label="富友"></i-option>
         <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
@@ -46,11 +46,15 @@
     <template>
       <i-modal v-model="confirmRepaymentModal" title="确认还款" width="900">
         <confirm-repayment></confirm-repayment>
+        <div slot="footer">
+          <i-button @click="saveDraft" class="highDefaultButton">保存草稿</i-button>
+          <i-button @click="confirmRepaymentModal=false" class="highButton">确认</i-button>
+        </div>
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="repayInfoModal" title="还款详情" width="900">
+      <i-modal v-model="repayInfoModal" :transfer="false" title="还款详情" width="1200">
         <repay-info></repay-info>
       </i-modal>
     </template>
@@ -77,13 +81,13 @@
   import {
     Dependencies
   } from "~/core/decorator";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       ConfirmRepayment,
@@ -105,12 +109,15 @@ import {
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
-
+    saveDraft() {
+      this.$Message.info('保存草稿成功！')
+      this.confirmRepaymentModal = false
+    }
     created() {
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           renderHeader: (h, {
             column,
             index
@@ -138,7 +145,7 @@ import {
         },
         {
           title: "操作",
-          width: "320",
+          width: 320,
           align: "center",
           render: (h, {
             row,
@@ -183,11 +190,6 @@ import {
                 },
                 on: {
                   click: () => {
-                    // this.$Modal.info({
-                    //   width: '1300',
-                    //   title: '划扣记录',
-                    //   render: h => h(DeductRecord)
-                    // })
                     this.deductRecordModal = true
                   }
                 },
@@ -387,8 +389,10 @@ import {
      */
     confirm() {}
   }
+
 </script>
 
 <style>
+
 
 </style>

@@ -2,6 +2,21 @@
 <template>
   <section class="component repay-info">
     <data-box :columns="columns1" :data="data1"></data-box>
+
+    <template>
+      <i-modal title="还款记录" v-model="repayRecordModal" width="1000">
+        <repay-record></repay-record>
+        <div slot="footer">
+          <i-button @click="repayRecordModal=false" class="highDefaultButton">关闭</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="addAttachmentModal" title="补传凭证" width="900">
+        <add-attachment></add-attachment>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -9,15 +24,20 @@
   import Vue from "vue";
   import Component from "vue-class-component";
   import DataBox from "~/components/common/data-box.vue";
-
+  import RepayRecord from '~/components/finance-manage/repay-record.vue'
+  import AddAttachment from '~/components/finance-manage/add-attachment.vue'
   @Component({
     components: {
-      DataBox
+      DataBox,
+      RepayRecord,
+      AddAttachment
     }
   })
   export default class RepayInfo extends Vue {
     private columns1: any;
     private data1: Array < Object >= [];
+    private repayRecordModal: Boolean = false;
+    private addAttachmentModal: Boolean = false;
 
     created() {
       this.columns1 = [{
@@ -28,22 +48,59 @@
           width: 60
         },
         {
+          title: "操作",
+          width: 280,
+          align: "center",
+          fixed: "left",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('div', [
+              h('i-button', {
+                props: {
+                  type: 'text'
+                },
+                on: {
+                  click: () => {
+                    this.addAttachmentModal = true
+                  }
+                },
+                style: {
+                  color: '#265EA2'
+                }
+              }, '补传凭证'),
+              h('i-button', {
+                props: {
+                  type: 'text'
+                },
+                on: {
+                  click: () => {
+                    this.repayRecordModal = true
+                  }
+                },
+                style: {
+                  color: '#265EA2'
+                }
+              }, '还款记录')
+            ])
+          }
+        },
+        {
           title: '还款状态',
-          fixed: 'left',
           key: 'repayStatus',
           align: 'center',
           width: 90
         },
         {
           title: '应付款日',
-          fixed: 'left',
           key: 'shouldPayDate',
           align: 'center',
           width: 120
         },
         {
           title: '实际付款日',
-          fixed: 'left',
           key: 'actualPayDate',
           align: 'center',
           width: 120

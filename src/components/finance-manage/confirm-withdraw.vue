@@ -38,7 +38,7 @@
         </template>
       </data-grid-item>
     </data-grid>
-    <data-box :columns="columns3" :data="data3"></data-box>
+    <i-table :columns="columns3" :data="data3" width="880" style="margin-top:10px"></i-table>
 
     <div>
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>附件</span>
@@ -54,12 +54,12 @@
     <!--<div>
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>收款明细</span>
     </div>
-    <data-box :columns="columns1" :data="data1"></data-box>-->
+    <i-table :columns="columns1" :data="data1"></i-table>-->
 
     <div>
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>收款方式</span>
     </div>
-    <table border="1" width="870" style="margin-top:10px;text-align:center">
+    <!--<table border="1" width="870" style="margin-top:10px;text-align:center">
       <tr height="40">
         <td bgcolor="#F2F2F2" colspan="2">收款方式</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
@@ -85,13 +85,60 @@
           <i-icon type="loop" size="20" color="#199ED8" style="margin-left:6px;cursor:pointer"></i-icon>
         </td>
       </tr>
+    </table>-->
+    <table border="1" width="880" class="gather_type_table" style="margin-top:10px;text-align:center">
+      <tr height="40">
+        <td bgcolor="#F2F2F2">
+          <div style="display:inline-block;padding:0 10px;cursor:pointer" @click="addRow">
+            <i-icon type="plus"></i-icon>
+          </div>
+        </td>
+        <td bgcolor="#F2F2F2">
+          <span>项目名称</span>
+        </td>
+        <td bgcolor="#F2F2F2">
+          <span>收款项</span>
+        </td>
+        <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
+        <td bgcolor="#F2F2F2" colspan="1">状态</td>
+      </tr>
+      <tr height="40">
+        <td>
+          <i-icon type="loop" style="color:#199ED8;font-size:16px;padding:0 10px;cursor:pointer"></i-icon>
+        </td>
+        <td>
+          <i-select v-model="payType" placeholder="选择收款方式" style="display:inline-block;width:110px">
+            <i-option label="汇付" value="汇付" key="汇付"></i-option>
+            <i-option label="支付宝" value="支付宝" key="支付宝"></i-option>
+            <i-option label="现金" value="现金" key="现金"></i-option>
+          </i-select>
+        </td>
+        <td>
+          <i-select v-model="payType" placeholder="选择收款项目" style="display:inline-block;width:110px">
+            <i-option label="首付金额" value="首付金额" key="首付金额"></i-option>
+            <i-option label="路桥费" value="路桥费" key="路桥费"></i-option>
+            <i-option label="GPS费" value="GPS费" key="GPS费"></i-option>
+          </i-select>
+        </td>
+        <td>
+          <i-input style="display:inline-block;width:30%;margin-right:10px"></i-input>
+          <i-button class="blueButton" v-show="payType==='汇付'">确认划扣</i-button>
+        </td>
+        <td><span>已处理</span>
+          <i-icon type="loop" size="20" color="#199ED8" style="margin-left:6px;cursor:pointer"></i-icon>
+        </td>
+      </tr>
     </table>
-
+    <i-form>
+      <i-form-item label="备注">
+        <i-input type="textarea" v-model="remark"></i-input>
+      </i-form-item>
+    </i-form>
 
     <div>
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;margin-top:10px;"></div><span>账户信息</span>
     </div>
-    <data-box :columns="columns2" :data="data2"></data-box>
+    <i-table :columns="columns2" :data="data2" width="880"></i-table>
 
     <div>
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;margin-top:10px;"></div><span>收款凭证</span>
@@ -101,7 +148,7 @@
       <i-col :span="12">
         <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;"
           @click="addAttachment">
-          <Icon type="plus-circled" style="display:block;margin-top:53px;" size="40"></Icon>
+          <Icon type="plus-circled" style="display:block;margin-top:53px;" size="40" color="#265ea2"></Icon>
           <div>点击添加附件</div>
           <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
         </div>
@@ -140,10 +187,10 @@
     private data3: Array < Object > = [];
     private gatherModal: Object = {
       gatherType: '销售收款',
-      remarks: '首付款减免8700元'
+      remarks: ''
     }
     private invoiceList: Array < any > = []
-
+    private remark: String = ''
     addAttachment() {}
     created() {
       this.invoiceList = [{

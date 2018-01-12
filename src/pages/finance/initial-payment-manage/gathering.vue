@@ -15,11 +15,11 @@
       <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
-    <i-row v-if="searchOptions" style="margin:6px;">
+    <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入收款账户名查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-input style="display:inline-block;width:10%"></i-input>~
-      <i-input style="display:inline-block;width:10%"></i-input>
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
       <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
@@ -40,9 +40,9 @@
       <i-modal v-model="confirmGatherModal" title="确认收款" width="900" class="confirmGather">
         <confirm-gather></confirm-gather>
         <div slot="footer">
-          <i-button class="highDefaultButton">保存草稿</i-button>
-          <i-button class="highButton">退回</i-button>
-          <i-button class="highButton">确认</i-button>
+          <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
+          <i-button class="highButton" @click="confirmGatherModal=false">退回</i-button>
+          <i-button class="highButton" @click="confirmGatherModal=false">确认</i-button>
         </div>
       </i-modal>
     </template>
@@ -84,12 +84,15 @@
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
-
+    saveDraft() {
+      this.$Message.success('保存草稿成功！')
+      this.confirmGatherModal = false
+    }
     created() {
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           renderHeader: (h, {
             column,
             index
@@ -117,7 +120,7 @@
         },
         {
           title: "操作",
-          width: "120",
+          width: 120,
           align: "center",
           render: (h, {
             row,
@@ -153,7 +156,7 @@
           align: "center",
           title: "处理时间",
           key: "handleTime",
-          width: '160'
+          width: 180
         },
         {
           align: "center",

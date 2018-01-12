@@ -15,13 +15,13 @@
       <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
-    <i-row v-if="searchOptions" style="margin:6px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码"></i-input>
-      <i-select style="margin-left:10px" placeholder="全部还款状态">
+    <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
+      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码"></i-input>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态">
         <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
         <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
       </i-select>
-      <i-select style="margin-left:10px" placeholder="全部结算通道">
+      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道">
         <i-option value="汇付" key="汇付" label="汇付"></i-option>
         <i-option value="富友" key="富友" label="富友"></i-option>
         <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
@@ -36,15 +36,15 @@
       <i-modal title="确认收回" width="930" v-model="confirmWithdrawModal" class="confirmWithdraw">
         <confirm-withdraw></confirm-withdraw>
         <div slot="footer">
-          <i-button class="highDefaultButton">保存草稿</i-button>
-          <i-button class="highButton">确认</i-button>
+          <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
+          <i-button class="highButton" @click="confirmWithdrawModal=false">确认</i-button>
         </div>
       </i-modal>
     </template>
 
     <!--还款详情-->
     <template>
-      <i-modal title="还款详情" width="900" v-model="repayInfoModal">
+      <i-modal title="还款详情" width="900" :transfer="false" v-model="repayInfoModal">
         <repay-info></repay-info>
       </i-modal>
     </template>
@@ -92,7 +92,10 @@
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
-
+    saveDraft() {
+      this.$Message.info('保存草稿成功！')
+      this.confirmWithdrawModal = false
+    }
     created() {
       this.columns1 = [{
           align: "center",

@@ -1,6 +1,6 @@
 <!--划扣记录-->
 <template>
-  <section class="component deduct-record">
+  <section class="component repay-record">
     <span>支付日期：</span>
     <i-input style="width:10%;display:inline-block"></i-input>~
     <i-input style="width:10%;display:inline-block"></i-input>
@@ -13,13 +13,13 @@
       <i-option label="失败" value="失败" key="失败"></i-option>
     </i-select>
     <i-button class="blueButton">搜索</i-button>
-    <div style="float:right;margin-right:10px;margin-top:10px;">
+    <!--<div style="float:right;margin-right:10px;margin-top:10px;">
       <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
         <svg-icon iconClass="daochu"></svg-icon>
         <span style="font-size: 12px;">导出</span>
       </div>
-    </div>
-    <div style="position:relative;top:10px;left:16px;"><span>客户姓名：王泽杰</span><span style="float:right;">出账客户号：666600000000565656</span></div>
+    </div>-->
+    <div style="position:relative;top:10px;left:16px;"><span>客户姓名：王泽杰</span><span style="float:right;margin-right:22px">出账客户号：666600000000565656</span></div>
     <data-box :columns="columns1" :data="data1"></data-box>
   </section>
 </template>
@@ -36,42 +36,36 @@
       SvgIcon
     }
   })
-  export default class DeductRecord extends Vue {
+  export default class RepayRecord extends Vue {
     private columns1: any;
     private data1: Array < Object >= [];
 
     created() {
       this.columns1 = [{
-          title: '序号',
+          title: '期数',
           type: 'index',
           width: 60,
           align: 'center'
         },
         {
-          title: '期数',
-          key: 'periods',
-          width: 70,
-          align: 'center'
-        },
-        {
-          title: '支付日期',
+          title: '还款日期',
           width: 120,
           key: 'payDate',
           align: 'center'
         },
         {
-          title: '出账卡号',
+          title: '还款渠道',
           width: 165,
-          key: 'outAccountId',
+          key: 'payChannel',
           align: 'center'
         },
         {
-          title: '支付银行',
-          key: 'payBank',
+          title: '还款方式',
+          key: 'payWay',
           align: 'center'
         },
         {
-          title: '支付金额',
+          title: '还款金额',
           key: 'payAmt',
           align: 'center'
         },
@@ -81,11 +75,12 @@
           key: 'huifuId',
           align: 'center'
         },
-        {
-          title: '交易状态',
-          key: 'dealStatus',
-          align: 'center'
-        },
+        // ,
+        // {
+        //   title: '交易状态',
+        //   key: 'dealStatus',
+        //   align: 'center'
+        // },
         {
           title: '失败原因',
           key: 'failReason',
@@ -100,6 +95,7 @@
 
       this.data1 = [{
         periods: '1期',
+        payChannel: '汇付',
         payDate: '2017-12-01',
         outAccountId: '6227001454452014325',
         payBank: '建行',
@@ -109,6 +105,7 @@
         failReason: '',
         operator: '胡开甲'
       }, {
+        payChannel: '汇付',
         periods: '2期',
         payDate: '2017-12-01',
         outAccountId: '6227001454452014325',
@@ -120,6 +117,7 @@
         operator: '胡开甲'
       }, {
         periods: '3期',
+        payChannel: '汇付',
         payDate: '2017-12-01',
         outAccountId: '6227001454452014325',
         payBank: '建行',
@@ -134,7 +132,8 @@
         outAccountId: '6227001454452014325',
         payBank: '建行',
         payAmt: '1500.00',
-        huifuId: 'QC000000000000002155',
+        payChannel: '支付宝',
+        huifuId: '',
         dealStatus: '成功',
         failReason: '',
         operator: '胡开甲'
@@ -143,8 +142,9 @@
         payDate: '2017-12-01',
         outAccountId: '6227001454452014325',
         payBank: '建行',
+        payChannel: '微信',
         payAmt: '1500.00',
-        huifuId: 'QC000000000000002155',
+        huifuId: '',
         dealStatus: '成功',
         failReason: '',
         operator: '胡开甲'
