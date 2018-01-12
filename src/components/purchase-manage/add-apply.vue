@@ -85,7 +85,9 @@
   import Vue from "vue";
   import Component from "vue-class-component";
   import DataBox from "~/components/common/data-box.vue";
-
+  import {
+    Prop
+  } from "vue-property-decorator";
   @Component({
 
     components: {
@@ -93,6 +95,11 @@
     }
   })
   export default class AddApply extends Vue {
+    @Prop({
+      // default: true
+    })
+    addAttachmentShow: Boolean;
+
     private applyType: String = '销售收款申请'
     private data1: Array < Object > = [];
     private columns1: any;
@@ -101,11 +108,15 @@
     private data2: Array < Object > = [];
     private columns3: any;
     private data3: Array < Object > = [];
-    private addNewApplyModal: Object = {}
+    private addNewApplyModal: Object = {};
+
     /**
      * 添加附件
      */
     addAttachment() {}
+    mounted() {
+      // console.log(this.addAttachmentShow, 123123)
+    }
     created() {
       this.addNewApplyModal = {
         customerName: '李良琛',

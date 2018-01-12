@@ -47,12 +47,6 @@
         </div>
       </i-modal>
     </template>
-    <!--申请收款-->
-    <!--<template>
-      <i-modal width="700" v-model="openPurchaseInformation">
-        <purchase-information></purchase-information>
-      </i-modal>
-    </template>-->
     <!--客户chaxun-->
     <template>
       <i-modal v-model="openCustomerInformation">
@@ -82,8 +76,8 @@
     </template>
 
     <!--订单详情-->
-    <template class="purchase_information">
-      <i-modal v-model="purchaseInfoModal" title="订单详情" width="800">
+    <template >
+      <i-modal v-model="purchaseInfoModal" title="订单详情" width="800" class="purchase_info_modal">
         <purchase-information></purchase-information>
       </i-modal>
     </template>
@@ -386,7 +380,7 @@
     padding: 10px;
   }
 
-  .order-query {
+  .purchase_info_modal {
     .ivu-modal-body {
       height: 600px;
       overflow-y: auto;

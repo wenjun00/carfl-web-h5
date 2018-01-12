@@ -30,7 +30,17 @@
 
     <template>
       <i-modal title="审批" width="500" v-model="approvalModal">
-        <approval></approval>
+        <approval :addAttachmentShow="addAttachmentShow"></approval>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="checkApplyModal" class="addApply" title="销售收款申请" width="800">
+        <add-apply></add-apply>
+        <div slot="footer">
+          <i-button class="highDefaultButton" style="width:80px" @click="checkApplyModal=false">退回</i-button>
+          <i-button class="highButton" style="width:80px" @click="checkApplyModal=false">通过</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -66,6 +76,8 @@
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false
     private approvalModal: Boolean = false
+    private checkApplyModal: Boolean = false;
+    private addAttachmentShow: Boolean = false;
 
     addNewApply() {
       this.$Modal.info({
@@ -105,7 +117,7 @@
       }, {
         title: '操作',
         align: 'center',
-        width: 180,
+        width: 100,
         render: (h, {
           row,
           columns,
@@ -122,8 +134,7 @@
                 },
                 on: {
                   click: () => {
-                    // this.approvalModal = true
-                    this.$Message.info('审批成功！')
+                    this.checkApplyModal = true
                   }
                 }
               }, '审批')
@@ -144,18 +155,15 @@
       }, {
         title: '处理状态',
         key: 'handleStatus',
-        align: 'center',
-        width: 160
+        align: 'center'
       }, {
         title: '处理时间',
         key: 'handleTime',
-        align: 'center',
-        width: 160
+        align: 'center'
       }, {
         title: '处理人',
         key: 'handlePerson',
-        align: 'center',
-        width: 90
+        align: 'center'
       }, {
         title: '收款类型',
         key: 'gatheringType',
@@ -163,23 +171,19 @@
       }, {
         title: '收款金额',
         key: 'gatheringAmt',
-        align: 'center',
-        width: 120
+        align: 'center'
       }, {
         title: '收款账户名',
         key: 'gatheringAccountName',
-        align: 'center',
-        width: 120
+        align: 'center'
       }, {
         title: '申请日期',
         key: 'applyDate',
-        align: 'center',
-        width: 160
+        align: 'center'
       }, {
         title: '申请人',
         key: 'applyPerson',
-        align: 'center',
-        width: 120
+        align: 'center'
       }]
       this.data1 = [{
         handleStatus: '已处理',
@@ -262,3 +266,13 @@
   }
 
 </script>
+
+<style lang="less">
+  .addApply {
+    .ivu-modal-body {
+      height: 600px;
+      overflow: auto;
+    }
+  }
+
+</style>

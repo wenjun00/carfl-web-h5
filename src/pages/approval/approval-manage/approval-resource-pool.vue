@@ -169,11 +169,41 @@
           },
           fixed: 'left'
         },
+
+        {
+          title: "订单编号",
+          key: "orderId",
+          align: "center",
+          width: 150,
+          render: (h, params) => {
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.$Modal.info({
+                    width: '900',
+                    title: '订单详情',
+                    render: h => h(PurchaseInformation)
+                  })
+                }
+              }
+            }, '2017101001')
+          },
+          fixed: 'left'
+        },
+        {
+          title: "订单状态",
+          align: "center",
+          key: "orderStatus",
+          width: 100,
+          fixed: 'left'
+        },
         {
           key: 'step',
           title: '环节',
           align: 'center',
-          fixed: 'left',
           width: 186,
           render: (h, {
             row,
@@ -221,35 +251,6 @@
               ])
             }
           }
-        },
-        {
-          title: "订单编号",
-          key: "orderId",
-          align: "center",
-          width: 150,
-          render: (h, params) => {
-            return h('i-button', {
-              props: {
-                type: 'text'
-              },
-              on: {
-                click: () => {
-                  this.$Modal.info({
-                    width: '900',
-                    title: '订单详情',
-                    render: h => h(PurchaseInformation)
-                  })
-                }
-              }
-            }, '2017101001')
-          },
-          fixed: 'left'
-        },
-        {
-          title: "订单状态",
-          align: "center",
-          key: "orderStatus",
-          width: 100
         },
         {
           align: "center",
@@ -464,10 +465,6 @@
     }
     confirmGetOrder() {
       this.orderModal = false
-      this.openPage({
-        title: '我的审核',
-        path: 'approval/approval-manage/my-approval'
-      })
     }
   }
 

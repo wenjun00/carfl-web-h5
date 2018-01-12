@@ -55,8 +55,8 @@
           <i-button class="defaultButton" @click="submitToblack">黑名单</i-button>
           <i-button class="defaultButton" @click="submitToGray">灰名单</i-button>
           <i-button class="bigButtonErr" @click="rejectOrder">拒绝</i-button>
-          <i-button class="bigButtonDefault">退件</i-button>
-          <i-button class="bigButtonDefault">通过</i-button>
+          <i-button class="bigButtonDefault" @click="rebackModal=true">退件</i-button>
+          <i-button class="bigButtonDefault" @click="approvePassedModal=true">通过</i-button>
         </div>
       </i-modal>
     </template>
@@ -96,7 +96,7 @@
     </template>
 
     <template>
-      <i-modal title="拒绝" v-model="rejectModal">
+      <i-modal title="拒绝" v-model="rejectModal" @on-ok="approveModal=false">
         <i-form>
           <i-form-item>
             <i-select placeholder="请选择结果" style="width:30%">
@@ -120,12 +120,64 @@
     </template>
 
     <template>
+      <i-modal title="订单详情" width="800" v-model="purchaseInfoModal" class="purchase_info_modal">
+        <purchase-information></purchase-information>
+      </i-modal>
+    </template>
+
+    <template>
       <i-modal title="灰名单" v-model="grayListModal">
         <i-form>
           <i-form-item label="详细原因">
             <i-input type="textarea"></i-input>
           </i-form-item>
         </i-form>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="退回申请" v-model="rebackModal" @on-ok="approveModal=false">
+        <i-form>
+          <i-form-item>
+            <i-select placeholder="请选择结果" style="width:30%">
+              <i-option label="拒绝" value="拒绝" key="拒绝"></i-option>
+            </i-select>
+            <i-select placeholder="请选择结果类型" style="width:30%">
+              <i-option label="进件条件不足" value="进件条件不足" key="进件条件不足"></i-option>
+            </i-select>
+            <i-select placeholder="请选择拒绝原因" style="width:30%">
+              <i-option label="逾期比例超30%" value="逾期比例超30%" key="逾期比例超30%"></i-option>
+              <i-option label="风控限制区域" value="风控限制区域" key="风控限制区域"></i-option>
+              <i-option label="社保公积金不满6个月" value="社保公积金不满6个月" key="社保公积金不满6个月"></i-option>
+              <i-option label="户籍、年龄限制" value="户籍、年龄限制" key="户籍、年龄限制"></i-option>
+            </i-select>
+          </i-form-item>
+          <i-form-item>
+            <i-input type="textarea"></i-input>
+          </i-form-item>
+        </i-form>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="审批通过" v-model="approvePassedModal" @on-ok="approveModal=false">
+        <i-form>
+          <i-form-item label="备注说明">
+            <i-input type="textarea"></i-input>
+          </i-form-item>
+        </i-form>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="openColumnsConfig" title="列配置">
+        <i-table :columns="columns3" :data="data3"></i-table>
+        <div slot="footer">
+          <i-button>上移</i-button>
+          <i-button>下移</i-button>
+          <i-button>恢复默认</i-button>
+          <i-button @click="openColumnsConfig=false">关闭</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -164,7 +216,13 @@
     private blackListModal: Boolean = false;
     private grayListModal: Boolean = false;
     private rejectModal: Boolean = false;
-
+    private purchaseInfoModal: Boolean = false;
+    private openColumnsConfig: Boolean = false;
+    private rebackModal: Boolean = false;
+    private approvePassedModal: Boolean = false;
+    private columns3: any;
+    private data3: Array < Object > = [];
+    
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
@@ -187,11 +245,72 @@
       this.grayListModal = true
     }
     created() {
+
+      this.columns3 = [{
+        title: '序号',
+        type: 'index',
+        width: 80,
+        align: 'center'
+      }, {
+        title: '列名',
+        key: 'columnsName',
+        align: 'center'
+      }, {
+        type: 'selection',
+        width: 80,
+        align: 'center'
+      }]
+      this.data3 = [{
+        columnsName: '申请类型'
+      }, {
+        columnsName: '环节'
+      }, {
+        columnsName: '订单状态'
+      }, {
+        columnsName: '订单创建时间'
+      }, {
+        columnsName: '进入资源池时间'
+      }, {
+        columnsName: '省份'
+      }, {
+        columnsName: '城市'
+      }, {
+        columnsName: '订单类型'
+      }, {
+        columnsName: '客户姓名'
+      }, {
+        columnsName: '证件号'
+      }, {
+        columnsName: '手机号'
+      }]
       this.columns1 = [{
-          align: "center",
-          type: "index",
-          width: "60",
-          title: '序号'
+          align: 'center',
+          width: 90,
+          type: 'index',
+          renderHeader: (h, {
+            column,
+            index
+          }) => {
+            return h(
+              "div", {
+                on: {
+                  click: () => {
+                    this.columnsConfig();
+                  }
+                },
+                style: {
+                  cursor: "pointer"
+                }
+              }, [
+                h("Icon", {
+                  props: {
+                    type: "gear-b",
+                    size: "20"
+                  }
+                })
+              ]
+            );
+          }
         },
         {
           title: "操作",
@@ -239,11 +358,7 @@
               },
               on: {
                 click: () => {
-                  this.$Modal.info({
-                    width: 900,
-                    title: '订单详情',
-                    render: h => h(PurchaseInformation)
-                  })
+                  this.purchaseInfoModal = true
                 }
               }
             }, row.orderId)
@@ -450,13 +565,18 @@
     getOrder(row) {
       // this.orderModal = true
     }
+    /**
+     * 列配置
+     */
+    columnsConfig() {
+      this.openColumnsConfig = true
+    }
   }
 
 </script>
 
 <style lang="less">
   .approve {
-    .defaultButton {}
     .bigButtonErr {
       height: 46px;
       width: 80px;
