@@ -64,7 +64,7 @@
           </i-row>
           <i-col :span="24">
             <i-form-item label="备注" prop="worker">
-              <i-input></i-input>
+              <i-input style="width:77%"></i-input>
             </i-form-item>
           </i-col>
         </i-form>
@@ -76,10 +76,13 @@
     </i-row>
     <i-tabs value="purchaseItem" type="card" style="height:76%;overflow-y:auto;background:white">
       <i-tab-pane name="purchaseItem" label="收款明细">
-        <i-table :columns="columns1" :data="data1"></i-table>
-        <i-button class="blueButton" style="margin-top:10px;" @click="changeGatherItem">添加收款项</i-button>
+        <i-table :columns="columns1" :data="data1" width="1100"></i-table>
+        <div>
+          <Icon type="plus" style="position:relative;left:16px;top:5px;color:#265ea2"></Icon>
+          <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">添加收款项</i-button>
+        </div>
         <div class="form-title">账户信息</div>
-        <i-table :columns="columns3" :data="data3"></i-table>
+        <i-table :columns="columns3" :data="data3" width="1100"></i-table>
       </i-tab-pane>
       <i-tab-pane name="customerItem" label="上传素材">
         <upload-the-material></upload-the-material>
@@ -202,7 +205,7 @@
     created() {
       this.columns1 = [{
         title: "操作",
-        width: 340,
+        width: 240,
         align: "center",
         render: (h, {
           row,
@@ -494,13 +497,11 @@
       border-style: none;
       border-bottom-style: solid;
       border-radius: 0;
-      width: 240%;
     }
   }
 
   .bigSelect {
     .ivu-select-selection {
-      width: 240%;
       display: inline-block;
       border-style: none;
       border-bottom-style: solid;
@@ -510,7 +511,6 @@
 
   .early-recover-apply {
     .ivu-select-selection {
-      width: 240%;
       border-style: none;
       border-bottom-style: solid;
       border-radius: 0;

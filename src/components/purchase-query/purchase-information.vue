@@ -315,8 +315,8 @@
       <i-row style="margin-top:10px">
         <i-col :span="12">
           <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;">
-            <Icon type="plus-circled" style="display:block;margin-top:53px;" size="40"></Icon>
-            <div>点击添加附件</div>
+            <Icon type="plus-circled" style="display:block;margin-top:53px;" size="40" color="#256ea2"></Icon>
+            <div style="font-weight:bold">点击添加附件</div>
             <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
           </div>
         </i-col>

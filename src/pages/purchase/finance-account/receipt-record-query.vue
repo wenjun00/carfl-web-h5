@@ -149,12 +149,12 @@
         align: 'center'
       }]
       this.data1 = [{
-        gatheringType: '理赔收款',
+        gatheringType: '销售收款',
         applyStatus: '待审核',
         gatheringAccountName: '李兵强',
         gatheringMoney: '8000',
         applyTime: '2017-12-01 13:56:56',
-        applyPerson: '胡开甲'
+        applyPerson: '李良琛'
       }]
       this.columns2 = [{
         title: '序号',

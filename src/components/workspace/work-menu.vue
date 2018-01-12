@@ -8,7 +8,7 @@
         <div v-if="menu_lv1.children" class="menu-popue row" slot="content">
           <div v-for="menu_lv2 in menu_lv1.children" :key="menu_lv2.path" class="menu-level-2 row">
             <div>
-              <div style="position:relative;right:20px;">
+              <div style="position:relative;right:32px;">
                 <div class="iconfont_container" :style="{background:menu_lv2.color}">
                   <svg-icon :iconClass="menu_lv2.icon" class="work_menu_iconfont"></svg-icon>
                 </div>

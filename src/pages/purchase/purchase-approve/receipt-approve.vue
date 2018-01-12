@@ -186,7 +186,7 @@
         handleTime: '2017-12-01 13:56:56',
         handlePerson: '李健',
         gatheringAmt: '8000.00',
-        gatheringType: '理赔收款',
+        gatheringType: '销售收款',
         gatheringAccountName: '中国人寿',
         applyDate: '2017-12-01 13:56:45',
         applyPerson: '大壮'
@@ -195,7 +195,7 @@
         handleTime: '2017-12-01 13:56:56',
         handlePerson: '李群',
         gatheringAmt: '8000.00',
-        gatheringType: '理赔收款',
+        gatheringType: '销售收款',
         gatheringAccountName: '中国人寿',
         applyDate: '2017-12-01 13:56:45',
         applyPerson: '大壮'

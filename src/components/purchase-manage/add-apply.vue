@@ -3,30 +3,36 @@
   <section class="component add-apply">
     <!--销售收款申请-->
     <i-row>
-      <i-form :label-width="110" style="margin-top:20px;">
+      <i-form :label-width="110" style="margin-top:20px;position:relative;right:20px;">
         <i-col :span="12">
           <i-form-item label="客户姓名">
-            <i-input></i-input>
+            <i-input v-model="addNewApplyModal.customerName" disabled></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
           <i-form-item label="收款类型">
-            <i-input></i-input>
+            <i-select v-model="addNewApplyModal.gatherType" disabled>
+              <i-option label="销售收款" value="销售收款" key="销售收款"></i-option>
+            </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="12">
           <i-form-item label="身份证号">
-            <i-input></i-input>
+            <i-input v-model="addNewApplyModal.idCard" disabled></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
           <i-form-item label="选择订单">
-            <i-input></i-input>
+            <i-select v-model="addNewApplyModal.chooseOrder" disabled>
+              <i-option label="kb20171001" value="kb20171001" key="kb20171001"></i-option>
+              <i-option label="kb20171002" value="kb20171002" key="kb20171002"></i-option>
+              <i-option label="kb20171003" value="kb20171003" key="kb20171003"></i-option>
+            </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="24">
           <i-form-item label="备注">
-            <i-input type="textarea"></i-input>
+            <i-input type="textarea" v-model="addNewApplyModal.remark" disabled></i-input>
           </i-form-item>
         </i-col>
       </i-form>
@@ -38,15 +44,15 @@
       <span class="title">附件</span>
       <i-row>
         <i-col :span="12">
-          <div style="height:300px;width:300px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;"
+          <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;"
             @click="addAttachment">
-            <Icon type="plus-circled" style="display:block;margin-top:100px;" size="40"></Icon>
+            <Icon type="plus-circled" style="display:block;margin-top:60px;" size="40"></Icon>
             <div>点击添加附件</div>
             <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
           </div>
         </i-col>
         <i-col :span="12">
-          <div style="height:300px;width:300px;border:1px solid #C2C2C2;background:url();position:relative;left:40px;">
+          <div style="height:200px;width:200px;border:1px solid #C2C2C2;background:url('/static/images/common/invoice2.png');background-repeat:no-repeat;position:relative;right:50px;">
 
           </div>
         </i-col>
@@ -81,7 +87,7 @@
   import DataBox from "~/components/common/data-box.vue";
 
   @Component({
-    
+
     components: {
       DataBox
     }
@@ -95,12 +101,19 @@
     private data2: Array < Object > = [];
     private columns3: any;
     private data3: Array < Object > = [];
-
+    private addNewApplyModal: Object = {}
     /**
      * 添加附件
      */
     addAttachment() {}
     created() {
+      this.addNewApplyModal = {
+        customerName: '李良琛',
+        gatherType: '销售收款',
+        idCard: '610303199111142416',
+        chooseOrder: 'kb20171001',
+        remark: ''
+      }
       this.columns1 = [{
         align: 'center',
         width: 60,
@@ -211,10 +224,12 @@
       this.openColumnsConfig = true
     }
   }
+
 </script>
 <style lang="less" scope>
   .title {
     font-size: 14px;
     font-weight: bold;
   }
+
 </style>

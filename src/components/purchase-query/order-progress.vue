@@ -1,7 +1,7 @@
 <template>
   <div class="component order-progress">
     <i-row style="margin-top:20px">
-      <Steps :current="2" size="small">
+      <Steps :current="2" size="small" style="position:relative;left:30px;">
         <Step title="用户进件"></Step>
         <Step title="风控引擎"></Step>
         <Step title="面审"></Step>

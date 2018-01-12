@@ -1,16 +1,16 @@
 <!--产品包查询-->
 <template>
   <section class="page product-package-query">
-      <span class="form-title">产品包查询</span>
-      <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
-      <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
-      <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
-      <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
-      <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
-      <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
-      <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
-      <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
-      <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">关闭</span>高级搜索</i-button>
+    <span class="form-title">产品包查询</span>
+    <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
+    <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
+    <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
+    <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
+    <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
+    <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
+    <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
+    <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
+    <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">关闭</span>高级搜索</i-button>
     <i-row v-if="searchOptions" style="margin-top:20px;">
       <i-input v-model="customName" style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
       <i-button class="blueButton">搜索</i-button>
@@ -22,12 +22,19 @@
     <template>
       <i-modal v-model="columnsManage" title="列配置">
         <i-table :columns="columns2" :data="data2" border stripe></i-table>
-         <div slot="footer">
+        <div slot="footer">
           <i-button>上移</i-button>
           <i-button>下移</i-button>
           <i-button>恢复默认</i-button>
           <i-button @click="openColumnsConfig=false">关闭</i-button>
         </div>
+      </i-modal>
+    </template>
+
+    <!--预览-->
+    <template>
+      <i-modal v-model="previewModal" title="查看" width="800">
+        <div style="width:760px;height:500px;background-image:url('/static/images/common/previewImg.png');background-repeat:no-repeat"></div>
       </i-modal>
     </template>
   </section>
@@ -44,7 +51,7 @@
     OrderQueryService
   } from "~/services/business-service/order-query.service";
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
-   import {
+  import {
     Layout
   } from "~/core/decorator";
 
@@ -62,6 +69,7 @@
     private columns2: any;
     private columnsManage: Boolean = false;
     private searchOptions: Boolean = false;
+    private previewModal: Boolean = false;
 
     created() {
       this.queryColumns = [{
@@ -98,35 +106,32 @@
           render: (h, params) => {
 
             return h('div', [
-              h('Icon', {
+              h('i-button', {
                 props: {
-                  type: 'archive',
-                  size: '20'
+                  type: 'text'
                 },
                 style: {
-                  cursor: 'pointer',
-                  marginRight: '15px'
+                  color: '#265ea2'
                 },
                 on: {
                   click: () => {
 
                   }
                 }
-              }),
-              h('Icon', {
+              }, '下载'),
+              h('i-button', {
                 props: {
-                  type: 'eye',
-                  size: '20'
+                  type: 'text'
                 },
                 style: {
-                  cursor: 'pointer'
+                  color: '#265ea2'
                 },
                 on: {
                   click: () => {
-
+                    this.previewModal = true
                   }
                 }
-              })
+              }, '查看')
             ])
 
           }
@@ -192,8 +197,10 @@
       this.searchOptions = !this.searchOptions
     }
   }
+
 </script>
 
 <style lang="less" scope>
+
 
 </style>

@@ -1,7 +1,7 @@
 <!--确认收款-->
 <template>
   <section class="component confirm-gather">
-    <i-form :label-width="110">
+    <i-form :label-width="110" label-position="left">
       <i-row style="background:#F5F5F5">
         <i-col :span="24" style="padding:6px;">
           <span>收款类型：</span><span style="margin-left:10px;">销售收款</span>

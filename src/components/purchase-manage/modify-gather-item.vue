@@ -29,3 +29,13 @@
   }
 
 </script>
+
+<style lang="less">
+  .modify-gather-item{
+    .ivu-form{
+      position: relative;
+      right:20px;
+    }
+  }
+</style>
+

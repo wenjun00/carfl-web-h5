@@ -13,7 +13,7 @@
       <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
       <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">关闭</span>高级搜索</i-button>
     </i-row>
-    <i-row v-if="searchOptions" style="margin-top:20px;">
+    <i-row v-if="searchOptions" style="margin-top:20px;margin-left:10px;">
       <i-input v-model="customName" style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
       <i-button class="blueButton">搜索</i-button>
     </i-row>
@@ -75,9 +75,16 @@
 
     <!--进度查询-->
     <template>
-      <i-modal v-model="orderProgressModal" title="审核进度" width="1200">
+      <i-modal v-model="orderProgressModal" title="审核进度" width="1000">
         <order-progress></order-progress>
         <div slot="footer"></div>
+      </i-modal>
+    </template>
+
+    <!--订单详情-->
+    <template class="purchase_information">
+      <i-modal v-model="purchaseInfoModal" title="订单详情" width="800">
+        <purchase-information></purchase-information>
       </i-modal>
     </template>
   </section>
@@ -133,6 +140,7 @@
     private modal2: Boolean = false;
     private openCustomerInformation: Boolean = false;
     private orderProgressModal: Boolean = false;
+    private purchaseInfoModal: Boolean = false;
 
     confirm() {
       this.modal2 = false
@@ -251,12 +259,7 @@
                         render: h => h(PurchaseInformationTotal)
                       })
                     } else {
-                      this.$Modal.info({
-                        width: 800,
-                        closable: true,
-                        // scrollable:true,
-                        render: h => h(PurchaseInformation)
-                      })
+                      this.purchaseInfoModal = true
                     }
                   }
                 }
@@ -378,9 +381,16 @@
 
 </script>
 
-<style>
+<style lang="less">
   td {
     padding: 10px;
+  }
+
+  .order-query {
+    .ivu-modal-body {
+      height: 600px;
+      overflow-y: auto;
+    }
   }
 
 </style>
