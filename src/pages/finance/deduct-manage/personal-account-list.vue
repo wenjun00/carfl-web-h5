@@ -17,7 +17,7 @@
         <span>高级搜索</span>
       </i-button>
       <i-button class="blueButton" style="margin-left:10px;" @click="createAccount">客户开户</i-button>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
         <svg-icon iconClass="daochu"></svg-icon>
         <span style="font-size: 12px;">导出</span>
       </div>
@@ -123,8 +123,11 @@
     </template>
 
     <template>
-      <i-modal v-model="bankCardInfoModal" title="银行卡信息">
+      <i-modal v-model="bankCardInfoModal" :transfer="false" title="银行卡信息">
         <bank-card-info></bank-card-info>
+        <div slot="footer">
+          <i-button></i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -380,21 +383,21 @@
         customerName: '胡开甲',
         IdCard: '610303199110054516',
         phone: '18899245146'
-      },{
+      }, {
         openAccountDate: '2017-12-01',
         openAccountType: '汇付',
         customerId: '62103526456',
         customerName: '胡开甲',
         IdCard: '610303199110054516',
         phone: '18899245146'
-      },{
+      }, {
         openAccountDate: '2017-12-01',
         openAccountType: '汇付',
         customerId: '62103526456',
         customerName: '胡开甲',
         IdCard: '610303199110054516',
         phone: '18899245146'
-      },{
+      }, {
         openAccountDate: '2017-12-01',
         openAccountType: '汇付',
         customerId: '62103526456',

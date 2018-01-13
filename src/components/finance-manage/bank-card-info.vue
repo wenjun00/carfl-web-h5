@@ -18,6 +18,12 @@
       <span style="margin-left:6px;">验证状态：</span><span style="color:green">通过</span>
       <span style="float:right;margin-right:6px;">绑卡日期：2017-12-01</span>
     </div>
+
+    <template>
+      <i-modal title="换卡" v-model="changeBankCardModal" width="480">
+        <change-card></change-card>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -31,20 +37,18 @@
     }
   })
   export default class BankCardInfo extends Vue {
-
+    private changeBankCardModal: Boolean = false
     created() {
 
     }
     changeBankCard() {
-      this.$Modal.info({
-        title: '换卡',
-        width:'480',
-        render: h => h(ChangeCard)
-      })
+      this.changeBankCardModal = true
     }
   }
+
 </script>
 
 <style>
+
 
 </style>
