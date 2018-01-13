@@ -31,7 +31,7 @@
         </template>
       </data-grid-item>
     </data-grid>
-    <table border="1" width="870" style="margin-top:10px;text-align:center">
+    <table border="1" width="900" style="margin-top:10px;text-align:center">
       <tr height="40">
         <td bgcolor="#F2F2F2" colspan="2">收款方式</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
@@ -52,7 +52,7 @@
     <div>
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>划扣记录</span>
     </div>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="data1" width="900" style="position:relative;right:10px;"></data-box>
   </section>
 </template>
 
@@ -88,7 +88,7 @@
         title: '支付日期',
         key: 'payDate',
         align: 'center',
-        width:180
+        width: 180
       }, {
         title: '支付金额',
         key: 'payMoney',
@@ -97,7 +97,7 @@
         title: '订单号',
         key: 'orderId',
         align: 'center',
-        width:180
+        width: 180
       }, {
         title: '交易状态',
         key: 'dealStatus',
@@ -119,14 +119,14 @@
         dealStatus: '成功',
         failReason: '',
         operator: '张三疯'
-      },{
+      }, {
         payDate: '2017-12-01 13:56:60',
         payMoney: '80000',
         orderId: 'QC000000000000002155',
         dealStatus: '成功',
         failReason: '',
         operator: '张三疯'
-      },{
+      }, {
         payDate: '2017-12-01 13:59:46',
         payMoney: '80000',
         orderId: 'QC000000000000002155',

@@ -44,13 +44,13 @@
       <i-form-item label="银行预留手机号">
         <i-input style="width:160px;"></i-input>
       </i-form-item>
-      <i-form-item label="验证码" v-if="current===1">
+      <i-form-item label="验证码" v-if="current===0">
         <i-input style="width:160px;"></i-input>
         <i-button style="display:inline-block;margin-left:8px;" class="blueButton" size="small">发送验证码<span>60</span></i-button>
       </i-form-item>
     </i-form>
-    <i-button @click="confirmUnBindCard" v-if="current===1" style="position:relative;left:340px;">确认解绑</i-button>
-    <i-button @click="confirmBindCard" v-if="current===2" style="position:relative;left:340px;">确认绑卡</i-button>
+    <i-button @click="confirmUnBindCard" v-if="current===0" style="position:relative;left:340px;">确认解绑</i-button>
+    <i-button @click="confirmBindCard" v-if="current===1" style="position:relative;left:340px;">确认绑卡</i-button>
   </section>
 </template>
 
@@ -70,7 +70,7 @@
     components: {}
   })
   export default class ChangeCard extends Vue {
-    private current: any = 1;
+    private current: any = 0;
     private openChangeBankCard: Boolean = false;
 
     @Prop() row: Object;
@@ -81,7 +81,7 @@
      * 确认解绑
      */
     confirmUnBindCard() {
-      if (this.current === 2) {
+      if (this.current === 1) {
         this.current = 0;
       } else {
         this.current += 1;
@@ -91,12 +91,14 @@
      * 确认绑卡
      */
     confirmBindCard() {
-      this.current = 1
+      this.current = 0
       this.openChangeBankCard = false
-      this.$Modal.remove()
+      // this.$Modal.remove()
     }
   }
+
 </script>
 <style lang="less" scope>
+
 
 </style>

@@ -5,7 +5,7 @@
       <span style="margin-left:6px;">招商银行</span>
       <div style="float:right">
         <i-button class="blueButton" size="small" style="margin-right:10px;" @click="changeBankCard">更换</i-button>
-        <i-button class="blueButton" size="small" style="margin-right:4px;">解绑</i-button>
+        <i-button class="blueButton" size="small" style="margin-right:4px;" @click="unbindBankCard">解绑</i-button>
       </div>
     </div>
     <div style="text-align:center;border-left:1px solid black;border-right:1px solid black;height:100px;">
@@ -24,6 +24,16 @@
         <change-card></change-card>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="解绑银行卡" width="480" v-model="unbindBankCardModal">
+        <unbind-bank-card></unbind-bank-card>
+        <div slot="footer">
+          <i-button @click="unbindBankCardModal=false" class="defaultButton">取消</i-button>
+          <i-button @click="unbindBankCardModal=false" class="blueButton">确认解绑</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -31,18 +41,27 @@
   import Vue from "vue";
   import Component from "vue-class-component";
   import ChangeCard from "~/components/purchase-manage/change-card.vue"
+  import UnbindBankCard from "~/components/purchase-manage/unbind-bank-card.vue"
   @Component({
     components: {
-      ChangeCard
+      ChangeCard,
+      UnbindBankCard
     }
   })
   export default class BankCardInfo extends Vue {
     private changeBankCardModal: Boolean = false
+    private unbindBankCardModal: Boolean = false
     created() {
 
     }
     changeBankCard() {
       this.changeBankCardModal = true
+    }
+    /**
+     * 解绑银行卡
+     */
+    unbindBankCard() {
+      this.unbindBankCardModal = true
     }
   }
 

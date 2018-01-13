@@ -16,13 +16,14 @@
         <span v-if="searchOptions">关闭</span>
         <span>高级搜索</span>
       </i-button>
-      <i-button class="blueButton" style="margin-left:10px;" @click="createAccount">客户开户</i-button>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size: 12px;">导出</span>
+      <div style="float:right;margin-right:10px;margin-top:10px;">
+        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+          <svg-icon iconClass="daochu"></svg-icon>
+          <span style="font-size: 12px;">导出</span>
+        </div>
       </div>
     </i-row>
-    <i-row v-if="searchOptions" style="margin:6px;">
+    <i-row v-if="searchOptions" style="margin:6px;position:relative;right:6px;">
       <i-select style="display:inline-block;width:10%;margin-left:10px;" placeholder="全部状态">
         <i-option value="拒绝" label="拒绝" key="拒绝"></i-option>
         <i-option value="退单" label="退单" key="退单"></i-option>
@@ -49,6 +50,20 @@
     </i-row>
     <!--<i-table :columns="columns1" :data="data1" border stripe></i-table>-->
     <data-box :columns="columns1" :data="data1"></data-box>
+
+    <div class="submitBar">
+      <i-row type="flex" align="middle" style="padding:5px">
+        <i-col :span="8" push="1">
+          <span>申请人：胡开甲</span>
+        </i-col>
+        <i-col :span="10" pull="4">
+          <span>申请时间： 2017-12-01 13:56:45</span>
+        </i-col>
+        <i-col :span="6" style="text-align:right;">
+          <i-button class="highButton" style="margin-left:10px;" @click="createAccount">客户开户</i-button>
+        </i-col>
+      </i-row>
+    </div>
     <!--弹出框-->
     <template>
 
@@ -119,15 +134,16 @@
             <i-button style="display:inline-block;margin-left:8px;" class="blueButton" size="small">发送验证码<span>60</span></i-button>
           </i-form-item>-->
         </i-form>
+        <div slot="footer">
+          <i-button @click="openCreateAccount=false">取消</i-button>
+          <i-button class="blueButton" @click="openCreateAccount=false">确认开户</i-button>
+        </div>
       </i-modal>
     </template>
 
     <template>
       <i-modal v-model="bankCardInfoModal" :transfer="false" title="银行卡信息">
         <bank-card-info></bank-card-info>
-        <div slot="footer">
-          <i-button></i-button>
-        </div>
       </i-modal>
     </template>
 

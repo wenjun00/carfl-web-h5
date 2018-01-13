@@ -16,15 +16,12 @@
         <span v-if="searchOptions">关闭</span>
         <span>高级搜索</span>
       </i-button>
+    </i-row>
+    <i-row v-if="searchOptions" style="margin:6px;">
       <i-input placeholder="请录入门店\员工姓名查询" style="display:inline-block;width:16%;margin-left:10px;"></i-input>
       <span style="margin-left:10px;">下载日期：</span>
       <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
-      <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;" @click="addCompany">新增企业</i-button>
-      <i-button class="blueButton" style="margin-left:10px;" @click="transferAccount">转账</i-button>
-    </i-row>
-    <i-row v-if="searchOptions" style="margin:6px;">
       <i-select style="display:inline-block;width:10%;margin-left:10px;" placeholder="全部状态">
         <i-option value="拒绝" label="拒绝" key="拒绝"></i-option>
         <i-option value="退单" label="退单" key="退单"></i-option>
@@ -51,6 +48,20 @@
     </i-row>
     <!--<i-table :columns="columns1" :data="data1" border stripe></i-table>-->
     <data-box :columns="columns1" :data="data1"></data-box>
+    <div class="submitBar">
+      <i-row type="flex" align="middle" style="padding:5px">
+        <i-col :span="8" push="1">
+          <span>申请人：胡开甲</span>
+        </i-col>
+        <i-col :span="10" pull="4">
+          <span>申请时间： 2017-12-01 13:56:45</span>
+        </i-col>
+        <i-col :span="6" style="text-align:right;">
+          <i-button class="highButton" style="margin-left:10px;" @click="addCompany">新增企业</i-button>
+          <i-button class="highButton" style="margin-left:10px;" @click="transferAccount">转账</i-button>
+        </i-col>
+      </i-row>
+    </div>
     <!--弹出框-->
     <template>
 
@@ -355,7 +366,30 @@
           align: "center",
           type: "index",
           width: 60,
-          title: '序号'
+          renderHeader: (h, {
+            column,
+            index
+          }) => {
+            return h(
+              "div", {
+                on: {
+                  click: () => {
+                    this.columnsConfig();
+                  }
+                },
+                style: {
+                  cursor: "pointer"
+                }
+              }, [
+                h("Icon", {
+                  props: {
+                    type: "gear-b",
+                    size: "20"
+                  }
+                })
+              ]
+            );
+          }
         },
         {
           title: "操作",
