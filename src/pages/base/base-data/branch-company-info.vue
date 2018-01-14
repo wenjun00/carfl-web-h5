@@ -1,10 +1,12 @@
 <!--分公司信息-->
 <template>
   <section class="page branch-company-info">
-    <span style="font-size:18px;font-weight:bold">分公司信息</span>
-    <span style="margin-left:10px;">关键字搜索：</span>
-    <i-input style="width:15%" placeholder="请输入公司名称、户名、开户银行、银行卡号搜索"></i-input>
-    <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+    <i-row style="margin-top:10px;">
+      <span style="font-size:18px;font-weight:bold">分公司信息</span>
+      <span style="margin-left:10px;">关键字搜索：</span>
+      <i-input style="width:15%" placeholder="请输入公司名称、户名、开户银行、银行卡号搜索"></i-input>
+      <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+    </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
   </section>
 </template>
@@ -20,13 +22,13 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       SvgIcon
@@ -73,13 +75,13 @@ import {
                   style: {
                     color: '#265EA2'
                   },
-                  on:{
-                      click:()=>{
-                          this.$Modal.success({
-                              title:'提示',
-                              content:'停用成功！'
-                          })
-                      }
+                  on: {
+                    click: () => {
+                      this.$Modal.success({
+                        title: '提示',
+                        content: '停用成功！'
+                      })
+                    }
                   }
                 }, '停用')
               ])
@@ -92,13 +94,13 @@ import {
                   style: {
                     color: '#265EA2'
                   },
-                  on:{
-                      click:()=>{
-                          this.$Modal.success({
-                              title:'提示',
-                              content:'启用成功！'
-                          })
-                      }
+                  on: {
+                    click: () => {
+                      this.$Modal.success({
+                        title: '提示',
+                        content: '启用成功！'
+                      })
+                    }
                   }
                 }, '启用')
               ])
@@ -165,7 +167,7 @@ import {
         bankCardId: '6227004171150138360',
         branchBankName: '闵行分行',
         status: '启用'
-      },{
+      }, {
         firmShortName: '群泰西安',
         belongProvince: '陕西',
         belongCity: '西安',
@@ -184,4 +186,5 @@ import {
       console.log(12314)
     }
   }
+
 </script>

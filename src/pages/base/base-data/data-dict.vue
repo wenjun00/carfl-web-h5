@@ -1,38 +1,40 @@
 <!--数据字典-->
 <template>
   <section class="page data-dict">
-    <span style="font-size:18px;font-weight:bold;">数据字典</span>
-    <i-row>
-      <i-col :span="6" style="margin-left:10px;">
-        <div style="background:#D8D8D8;width:250px;height:30px;text-align:center;border:1px solid black;line-height:30px;font-size:16px;">
-          <span>数据类型</span>
-        </div>
-        <div style="width:250px;height:600px;border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black">
-          <div v-for="item in dataType" :key="item.id" :value="item.name" :class="{'dataTypeCss':checkId===item.id}" style="cursor:pointer;width:228px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto"
-            @click="checkDataType(item)"><span style="">{{item.name}}</span></div>
-        </div>
-      </i-col>
-      <i-col :span="17">
-        <span>素材名称：</span>
-        <i-input></i-input>
-        <i-button class="blueButton" style="margin-left:10px">搜索</i-button>
-        <i-button class="blueButton" style="margin-left:10px" @click="addData">新增数据</i-button>
-        <table border="1" width="100%" style="margin-top:10px;" id="tb">
-          <tr align="center" height="40">
-            <td bgcolor="#F2F2F2" width="100">序号</td>
-            <td bgcolor="#F2F2F2">操作</td>
-            <td bgcolor="#F2F2F2">名称</td>
-          </tr>
-          <tr v-for="item in dataNames" :key="item.id" :value="item.name" align="center">
-            <td>{{item.id}}</td>
-            <td width="360">
-              <i-button type="text" style="color:blue">编辑</i-button>
-              <i-button type="text" style="color:blue" @click="deleteDataDict">删除</i-button>
-            </td>
-            <td>{{item.name}}</td>
-          </tr>
-        </table>
-      </i-col>
+    <i-row style="margin-top:20px;">
+      <span style="font-size:18px;font-weight:bold;margin-left:2px;">数据字典</span>
+      <i-row>
+        <i-col :span="6">
+          <div style="background:#D8D8D8;width:250px;height:30px;text-align:center;border:1px solid black;line-height:30px;font-size:16px;">
+            <span>数据类型</span>
+          </div>
+          <div style="width:250px;height:600px;border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black">
+            <div v-for="item in dataType" :key="item.id" :value="item.name" :class="{'dataTypeCss':checkId===item.id}" style="cursor:pointer;width:228px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto"
+              @click="checkDataType(item)"><span style="">{{item.name}}</span></div>
+          </div>
+        </i-col>
+        <i-col :span="17" style="position:relative;bottom:30px;" :pull="1">
+          <span>数据名称：</span>
+          <i-input style="width:10%;"></i-input>
+          <i-button class="blueButton" style="margin-left:10px">搜索</i-button>
+          <i-button class="blueButton" style="margin-left:10px" @click="addData">新增数据</i-button>
+          <table border="1" width="100%" style="margin-top:10px;" id="tb">
+            <tr align="center" height="40">
+              <td bgcolor="#F2F2F2" width="100">序号</td>
+              <td bgcolor="#F2F2F2">操作</td>
+              <td bgcolor="#F2F2F2">名称</td>
+            </tr>
+            <tr v-for="item in dataNames" :key="item.id" :value="item.name" align="center">
+              <td>{{item.id}}</td>
+              <td width="360">
+                <i-button type="text" style="color:blue">编辑</i-button>
+                <i-button type="text" style="color:blue" @click="deleteDataDict">删除</i-button>
+              </td>
+              <td>{{item.name}}</td>
+            </tr>
+          </table>
+        </i-col>
+      </i-row>
     </i-row>
   </section>
 </template>

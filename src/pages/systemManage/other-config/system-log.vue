@@ -2,12 +2,18 @@
 <template>
   <section class="page system-log">
     <i-row>
-      <div class="form-title">系统日志</div>
+      <span class="form-title">系统日志</span>
       <span style="margin-left:10px;">操作人</span>
       <i-input v-model="customName" style="display:inline-block;width:8%;" placeholder="请输入操作人"></i-input>
       <span>操作时间</span>
       <DatePicker placeholder="请选操作时间"></DatePicker>
       <i-button style="margin-left:10px;" class="blueButton">搜索</i-button>
+      <div style="float:right;margin-right:10px;margin-top:10px;">
+        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+          <svg-icon iconClass="xiazai"></svg-icon>
+          <span style="font-size: 12px;">日志下载</span>
+        </div>
+      </div>
     </i-row>
     <data-box :columns="columns1" :data="data1" :page="pageService"></data-box>
 
@@ -165,21 +171,21 @@
         clientIP: '192.168.3.94',
         operatorTime: '2018-01-08 14:23:23',
         requestTime: '0.025',
-        executeWay:'cn.fintecher.web.DepartmentController.queryAllDepartment'
+        executeWay: 'cn.fintecher.web.DepartmentController.queryAllDepartment'
       }, {
         desc: '获取所有委托方信息',
         operator: 'liujia',
         clientIP: '192.168.3.94',
         operatorTime: '2018-01-08 14:23:23',
         requestTime: '0.027',
-        executeWay:'cn.fintecher.web.DepartmentController.queryAllDepartment'
+        executeWay: 'cn.fintecher.web.DepartmentController.queryAllDepartment'
       }, {
         desc: '查询所属公司的部门',
         operator: 'liujia',
         clientIP: '192.168.3.94',
         operatorTime: '2018-01-08 14:23:23',
         requestTime: '0.021',
-        executeWay:'cn.fintecher.web.DepartmentController.queryAllDepartment'
+        executeWay: 'cn.fintecher.web.DepartmentController.queryAllDepartment'
       }]
 
       // this.orderService.getTreeDatabox().subscribe(({

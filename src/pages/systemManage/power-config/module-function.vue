@@ -4,12 +4,12 @@
     <span class="form-title">模块功能</span>
     <i-row style="margin-bottom:10px;margin-left:25px;">
       <span>菜单名称：</span>
-      <i-input placeholder="请输入菜单名称" style="display:inline-block"></i-input>
+      <i-input placeholder="请输入菜单名称" style="display:inline-block;width:10%;"></i-input>
       <span style="margin-left:10px;">菜单编号：</span>
-      <i-input placeholder="请输入菜单编号" style="display:inline-block"></i-input>
+      <i-input placeholder="请输入菜单编号" style="display:inline-block;width:10%;"></i-input>
       <span style="margin-left:10px;">所属系统：</span>
-      <i-input placeholder="请输入所属系统" style="display:inline-block"></i-input>
-      <i-select placeholder="全部状态" style="margin-left:10px;">
+      <i-input placeholder="请输入所属系统" style="display:inline-block;width:10%;"></i-input>
+      <i-select placeholder="全部状态" style="margin-left:10px;width:10%;">
         <i-option label="已启用" value="已启用" key="已启用"></i-option>
         <i-option label="未启用" value="未启用" key="未启用"></i-option>
       </i-select>
@@ -18,13 +18,12 @@
     </i-row>
     <i-row :gutter="20">
       <!--树-->
-      <i-col :span="3" style="border:1px solid #F2F2F2;height:500px;margin-left:30px;">
-        <span class="title">模块名称</span>
+      <i-col :span="3" style="border:1px solid #DDDEE1;height:500px;margin-left:30px;margin-top:9px">
+        <div style="text-align:center;font-size: 14px;font-weight: bold;width: 109%;background: #F8F8F9;height: 41px; position: relative;right: 10px;top: 1px;"><span>模块名称</span></div>
         <i-tree :data="treeData"></i-tree>
       </i-col>
       <!--表格-->
       <i-col :span="20">
-        <span class="title">模块功能</span>
         <data-box :columns="treeColumns" :data="treeDatabox"></data-box>
       </i-col>
     </i-row>
@@ -174,7 +173,7 @@
       this.treeColumns = [{
         align: 'center',
         type: 'index',
-        title: '选择',
+        title: '排序',
         width: 60,
         fixed: 'left'
       }, {
@@ -237,8 +236,7 @@
       }, {
         align: 'center',
         key: 'powerIcon',
-        title: '权限图标',
-        width: 120
+        title: '权限图标'
       }, {
         align: 'center',
         key: 'createTime',
@@ -262,13 +260,11 @@
       }, {
         align: 'center',
         key: 'moduleId',
-        title: '模块编号',
-        width: 132
+        title: '模块编号'
       }, {
         align: 'center',
         key: 'belongSystem',
-        title: '所属系统',
-        width: 120
+        title: '所属系统'
       }]
 
       this.treeDatabox = [{
@@ -286,11 +282,6 @@
 </script>
 
 <style>
-  .title {
-    font-size: 14px;
-    font-weight: bold;
-  }
-
   .input {
     width: 60%;
   }

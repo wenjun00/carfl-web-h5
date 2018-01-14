@@ -1,26 +1,33 @@
 <!--审批原因管理-->
 <template>
   <section class="page approval-reason-manage">
-    <span style="font-size:18px;font-weight:bold">审批原因管理</span>
-    <i-select style="margin-left:10px;width:10%;" placeholder="全部">
-      <i-option label="退回" value="退回" key="退回"></i-option>
-      <i-option label="拒绝" value="拒绝" key="拒绝"></i-option>
-    </i-select>
-    <span style="margin-left:10px;">一级：</span>
-    <i-input></i-input>
-    <span style="margin-left:10px;">二级：</span>
-    <i-input></i-input>
-    <span style="margin-left:10px;">详细内容：</span>
-    <i-input></i-input>
-    <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
-    <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
-      <svg-icon iconClass="daoru"></svg-icon>
-      <span>导入</span>
-    </div>
-    <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
-      <svg-icon iconClass="xiazai"></svg-icon>
-      <span>模版下载</span>
-    </div>
+    <i-row style="margin-top:10px">
+      <span style="font-size:18px;font-weight:bold">审批原因管理</span>
+      <i-select style="margin-left:10px;width:10%;" placeholder="全部">
+        <i-option label="退回" value="退回" key="退回"></i-option>
+        <i-option label="拒绝" value="拒绝" key="拒绝"></i-option>
+      </i-select>
+      <span style="margin-left:10px;">一级：</span>
+      <i-input style="width:10%;"></i-input>
+      <span style="margin-left:10px;">二级：</span>
+      <i-input style="width:10%;"></i-input>
+      <span style="margin-left:10px;">详细内容：</span>
+      <i-input style="width:10%;"></i-input>
+      <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
+        <span></span>
+      </div>
+      <div style="float:right;margin-right:10px;margin-top:10px;">
+        <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+          <svg-icon iconClass="daoru" style="font-size:16px;"></svg-icon>
+          <span style="font-size:12px;">导入</span>
+        </div>
+        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+          <svg-icon iconClass="xiazai"></svg-icon>
+          <span>模版下载</span>
+        </div>
+      </div>
+    </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
 
     <template>
@@ -48,13 +55,13 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       SvgIcon
@@ -187,4 +194,5 @@ import {
       this.fileDataOpen = true
     }
   }
+
 </script>

@@ -1,35 +1,37 @@
 <!--客户素材维护-->
 <template>
   <section class="page customer-fodder-maintain">
-    <span style="font-size:18px;font-weight:bold;">客户素材维护</span>
-    <i-row>
-      <i-col :span="6" style="margin-left:10px;">
-        <div style="background:#D8D8D8;width:250px;height:30px;border:1px solid black;line-height:30px;font-size:16px;">
-          <span style="position:relative;left:10px;">素材类型</span>
-          <div style="float:right;display:inline-block;font-weight:bold">
-            <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
-              <svg-icon iconClass="tianjiawenjian"></svg-icon>
-            </div>
-            <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
-              <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
-            </div>
-            <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
-              <svg-icon iconClass="sousuo"></svg-icon>
+    <i-row style="margin-top:20px;">
+      <span style="font-size:18px;font-weight:bold;margin-left:8px;">客户素材维护</span>
+      <i-row>
+        <i-col :span="6" style="margin-left:10px;">
+          <div style="background:#D8D8D8;width:250px;height:30px;border:1px solid black;line-height:30px;font-size:16px;">
+            <span style="position:relative;left:10px;">素材类型</span>
+            <div style="float:right;display:inline-block;font-weight:bold">
+              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
+                <svg-icon iconClass="tianjiawenjian"></svg-icon>
+              </div>
+              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
+                <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
+              </div>
+              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
+                <svg-icon iconClass="sousuo"></svg-icon>
+              </div>
             </div>
           </div>
-        </div>
-        <div style="width:250px;height:600px;border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black">
-          <div v-for="item in maintains" :key="item.id" :value="item.name" :class="{'maintainCss':checkId===item.id}" style="cursor:pointer;width:228px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto"
-            @click="checkMaintain(item)"><span>{{item.name}}</span></div>
-        </div>
-      </i-col>
-      <i-col :span="17">
-        <span>素材名称：</span>
-        <i-input></i-input>
-        <i-button class="blueButton" style="margin-left:10px">搜索</i-button>
-        <i-button class="blueButton" style="margin-left:10px">新增素材</i-button>
-        <data-box :columns="columns1" :data="data1"></data-box>
-      </i-col>
+          <div style="width:250px;height:600px;border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black">
+            <div v-for="item in maintains" :key="item.id" :value="item.name" :class="{'maintainCss':checkId===item.id}" style="cursor:pointer;width:228px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto"
+              @click="checkMaintain(item)"><span>{{item.name}}</span></div>
+          </div>
+        </i-col>
+        <i-col :span="17" style="position:relative;bottom:30px;" :pull="1">
+          <span>素材名称：</span>
+          <i-input style="width:10%"></i-input>
+          <i-button class="blueButton" style="margin-left:10px">搜索</i-button>
+          <i-button class="blueButton" style="margin-left:10px">新增素材</i-button>
+          <data-box :columns="columns1" :data="data1"></data-box>
+        </i-col>
+      </i-row>
     </i-row>
   </section>
 </template>
@@ -45,13 +47,13 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       SvgIcon
@@ -167,9 +169,11 @@ import {
       this.checkId = item.id
     }
   }
+
 </script>
 <style>
   .maintainCss {
     background: #E4F4FA;
   }
+
 </style>

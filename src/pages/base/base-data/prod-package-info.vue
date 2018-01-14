@@ -4,11 +4,10 @@
     <i-row style="margin-top:10px;">
       <span style="font-size:18px;font-weight:bold">产品包信息</span>
       <span style="margin-left:10px;">文件名：</span>
-      <i-input></i-input>~
-      <i-input></i-input>
+      <i-input style="width:10%"></i-input>
       <span style="margin-left:10px;">上传时间：</span>
-      <i-input></i-input>~
-      <i-input></i-input>
+      <i-date-picker></i-date-picker>~
+      <i-date-picker></i-date-picker>
       <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
@@ -83,13 +82,13 @@
                 style: {
                   color: '#265EA2'
                 },
-                on:{
-                    click:()=>{
-                        this.$Modal.confirm({
-                            title:'提示',
-                            content:'确定删除吗？'
-                        })
-                    }
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: '提示',
+                      content: '确定删除吗？'
+                    })
+                  }
                 }
               }, '删除')
             ])

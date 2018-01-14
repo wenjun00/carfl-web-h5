@@ -2,11 +2,31 @@
 <template>
   <section class="page clear-account-report">
     <span class="form-title">清结算日报表</span>
-    <i-select style="margin-left:10px;width:10%;">
+    <i-select style="margin-left:10px;width:10%;" placeholder="统计机构">
       <i-option label="订单信息" value="订单信息" key="订单信息"></i-option>
       <i-option label="车辆信息" value="车辆信息" key="车辆信息"></i-option>
     </i-select>
     <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+    <i-button @click="openSearch" style="color:#265EA2">
+      <span v-if="!searchOptions">展开</span>
+      <span v-if="searchOptions">关闭</span>
+      <span>高级搜索</span>
+    </i-button>
+    <div style="float:right;margin-right:10px;margin-top:10px;">
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size: 12px;">导出</span>
+      </div>
+    </div>
+    <i-row v-if="searchOptions" style="margin-top:6px;">
+      <i-select placeholder="统计通道" style="margin-left:10px;width:10%;">
+        <i-option label="汇付" value="汇付" key="汇付"></i-option>
+        <i-option label="富友" value="富友" key="富友"></i-option>
+      </i-select>
+      <span style="margin-left:10px;">结算日期：</span>
+      <i-date-picker></i-date-picker>~
+      <i-date-picker></i-date-picker>
+    </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
 
     <template>
@@ -34,13 +54,13 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       SvgIcon
@@ -58,6 +78,7 @@ import {
     private dataFuyou: Array < Object > = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
+
 
     created() {
       this.columns1 = [{
@@ -98,12 +119,12 @@ import {
         {
           title: "汇付",
           align: 'center',
-          width: 780,
+          width: 890,
           render: (h, params) => {
             return h('i-table', {
               props: {
                 columns: this.columnsHuifu,
-                width: 780,
+                width: 890,
                 data: this.dataHuifu,
                 // border: true,
                 stripe: true
@@ -113,13 +134,13 @@ import {
         },
         {
           title: "富友",
-          width: 780,
+          width: 890,
           align: 'center',
           render: (h, params) => {
             return h('i-table', {
               props: {
                 columns: this.columnsFuyou,
-                width: 780,
+                width: 890,
                 data: this.dataFuyou,
                 // border: true,
                 stripe: true
@@ -146,29 +167,38 @@ import {
         }
       ];
       this.data2 = [{
-          columnsName: "开户日期"
+          columnsName: "保证金"
         },
         {
-          columnsName: "开户类型"
+          columnsName: "首付"
         },
         {
-          columnsName: "客户号"
+          columnsName: "购置税"
         },
         {
-          columnsName: "客户姓名"
+          columnsName: "保险"
         },
         {
-          columnsName: "证件号码"
+          columnsName: "杂费"
         },
         {
-          columnsName: "预留手机"
+          columnsName: "月租本金"
+        },
+        {
+          columnsName: "月租利息"
+        },
+        {
+          columnsName: "罚息"
+        },
+        {
+          columnsName: "手续费"
         }
       ];
       this.data1 = [{
         companyProfile: '群泰西安'
-      },{
+      }, {
         companyProfile: '群泰上海'
-      },{
+      }, {
         companyProfile: '群泰武汉'
       }]
 
@@ -297,6 +327,7 @@ import {
       this.openColumnsConfig = true;
     }
   }
+
 </script>
 
 <style>
@@ -304,4 +335,5 @@ import {
     padding-left: 0;
     padding-right: 0;
   }
+
 </style>

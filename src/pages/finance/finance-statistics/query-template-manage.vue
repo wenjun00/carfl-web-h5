@@ -1,12 +1,14 @@
 <!--查询模版管理-->
 <template>
   <section class="page query-template-manage">
-    <span style="font-size:18px;font-weight:bold">查询模版管理</span>
-    <i-select style="margin-left:10px;width:10%;">
-      <i-option label="订单信息" value="订单信息" key="订单信息"></i-option>
-      <i-option label="车辆信息" value="车辆信息" key="车辆信息"></i-option>
-    </i-select>
-    <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+    <i-row style="margin-top:10px;">
+      <span style="font-size:18px;font-weight:bold">查询模版管理</span>
+      <i-select style="margin-left:10px;width:10%;">
+        <i-option label="订单信息" value="订单信息" key="订单信息"></i-option>
+        <i-option label="车辆信息" value="车辆信息" key="车辆信息"></i-option>
+      </i-select>
+      <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+    </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
   </section>
 </template>
@@ -22,13 +24,13 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       SvgIcon
@@ -63,7 +65,7 @@ import {
                 style: {
                   color: '#265EA2'
                 }
-              },'查看'),
+              }, '查看'),
               h('i-button', {
                 props: {
                   type: 'text'
@@ -71,15 +73,15 @@ import {
                 style: {
                   color: '#265EA2'
                 },
-                on:{
-                  click:()=>{
+                on: {
+                  click: () => {
                     this.$Modal.confirm({
-                      title:'提示',
-                      content:'确定删除吗？'
+                      title: '提示',
+                      content: '确定删除吗？'
                     })
                   }
                 }
-              },'删除')
+              }, '删除')
             ])
           }
         },
@@ -101,9 +103,9 @@ import {
       ]
 
       this.data1 = [{
-       templateType:'订单信息',
-       templateName:'左拉的常用查询模板1',
-       creator:'左拉'
+        templateType: '订单信息',
+        templateName: '左拉的常用查询模板1',
+        creator: '左拉'
       }]
     }
     getOrderInfoByTime() {}
@@ -114,4 +116,5 @@ import {
       console.log(12314)
     }
   }
+
 </script>

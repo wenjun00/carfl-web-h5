@@ -1,7 +1,7 @@
 <template>
   <section class="page role-maintenance">
-    <span class="form-title">角色维护</span>
-    <i-row style="margin-bottom:10px;margin-left:25px;">
+    <i-row style="margin-bottom:10px;">
+      <span class="form-title">角色维护</span>
       <span style="margin-left:20px;">角色名称：</span>
       <i-input v-model="roleName" style="display:inline-block;width:10%;" placeholder="请输入角色姓名"></i-input>
       <span style="margin-left:10px;">状态：</span>
@@ -64,7 +64,7 @@
 
   @Layout("workspace")
   @Component({
-    
+
     components: {
       DataBox,
       ModifyRole,
@@ -95,14 +95,14 @@
     private waitHandleCaseModal: Boolean = false; // 待办事项配置
 
     created() {
-     this.data1=[{
-         roleName:'管理员',
-         belongSystem:'指旺上海',
-         operator:'刘佳',
-         createTime:'2017-12-01 10:16:32',
-         updateTime:'2017-12-01 13:56:21',
-         desc:''
-     }]
+      this.data1 = [{
+        roleName: '管理员',
+        belongSystem: '指旺上海',
+        operator: '刘佳',
+        createTime: '2017-12-01 10:16:32',
+        updateTime: '2017-12-01 13:56:21',
+        desc: ''
+      }]
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -221,13 +221,13 @@
           align: "center",
           title: "创建时间",
           key: "createTime",
-          width:160
+          width: 160
         },
         {
           align: "center",
           title: "修改时间",
           key: "updateTime",
-          width:160
+          width: 160
         },
         {
           align: "center",

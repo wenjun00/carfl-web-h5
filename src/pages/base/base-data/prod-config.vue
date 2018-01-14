@@ -1,116 +1,119 @@
 <!--产品配置-->
 <template>
   <section class="page prod-config">
-    <span style="font-size:18px;font-weight:bold;">产品配置</span>
-    <i-row>
-      <i-col :span="5" style="margin-left:10px;">
-        <div style="background:#D8D8D8;width:250px;height:30px;border:1px solid #999999;line-height:30px;font-size:16px;">
-          <span style="position:relative;left:10px;">产品类目</span>
-          <div style="float:right;display:inline-block;font-weight:bold">
-            <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
-              <svg-icon iconClass="tianjiawenjian"></svg-icon>
-            </div>
-            <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
-              <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
-            </div>
-            <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
-              <svg-icon iconClass="sousuo"></svg-icon>
+    <i-row style="margin-top:20px;">
+      <span style="font-size:18px;font-weight:bold;margin-left:8px;">产品配置</span>
+      <i-row>
+        <i-col :span="5" style="margin-left:10px;">
+          <div style="background:#D8D8D8;width:250px;height:30px;border:1px solid #999999;line-height:30px;font-size:16px;">
+            <span style="position:relative;left:10px;">产品类目</span>
+            <div style="float:right;display:inline-block;font-weight:bold">
+              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
+                <svg-icon iconClass="tianjiawenjian"></svg-icon>
+              </div>
+              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
+                <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
+              </div>
+              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
+                <svg-icon iconClass="sousuo"></svg-icon>
+              </div>
             </div>
           </div>
-        </div>
-        <div style="width:250px;height:600px;border-left:1px solid #999999;border-right:1px solid #999999;border-bottom:1px solid #999999;position:relative;bottom:8px;">
-          <i-tree :data="treeData"></i-tree>
-        </div>
-      </i-col>
-      <i-col :span="18" style="overflow:auto">
-        <i-row>
-          <i-col :span="12">
-            <data-grid :labelWidth="100" labelAlign="left" contentAlign="left">
-              <data-grid-item label="产品名称" :span="12">
-                <span>群泰融资</span>
-              </data-grid-item>
-              <data-grid-item label="产品序号" :span="12">
-                <span>QTP0001</span>
-              </data-grid-item>
-            </data-grid>
-          </i-col>
-          <i-col :span="12">
-            <span style="margin-left:20px;font-size:14px;">租金渠道选择：</span>
-            <RadioGroup v-model="rentCheck">
-              <Radio label="自有资金"></Radio>
-              <Radio label="第三方"></Radio>
-            </RadioGroup>
-            <i-button class="blueButton" @click="customerFodderConfig">客户素材配置</i-button>
-            <i-button class="blueButton" @click="chargeAgainstOrderConfig">冲抵顺序配置</i-button>
-          </i-col>
-        </i-row>
-        <i-row :gutter="10" style="margin-top:20px;min-width:1366px">
-          <i-col :span="7">
-            <div style="width:300px;height:450px;border:1px solid #999999;cursor:pointer">
-              <div style="position:absolute;top:50%;left:35%" @click="addPeriods">
-                <i-icon type="plus" style="font-size:50px;"></i-icon>
-              </div>
-            </div>
-          </i-col>
-          <i-col :span="7" v-for="item in prdConfig" :key="item.id" style="margin-bottom:10px;">
-            <div>
-              <div style="width:300px;height:50px;border:1px solid #999999;line-height:50px;">
-                <div style="background:#F2F2F2;height:48px;display:inline-block;position:relative;bottom:2px;">{{item.number}}</div>
-                <div style="position:relative;left:40px;display:inline-block">
-                  <span style="font-size:18px;font-weight:bold;">{{item.month}}</span><span>月/期</span>
-                </div>
-                <div style="width:90px;height:90px;border-radius:50%;border:1px solid #999999;position:relative;left:197px;bottom:47px;z-index:999"
-                  :class="{'pulishCss':item.publishStatus==='未发布'}">
-                  <div style="font-size:16px;position:relative;left:16px;top:30px;transform:rotate(45deg)">{{item.publishStatus}}</div>
+          <div style="width:250px;height:600px;border-left:1px solid #999999;border-right:1px solid #999999;border-bottom:1px solid #999999;position:relative;bottom:8px;">
+            <i-tree :data="treeData"></i-tree>
+          </div>
+        </i-col>
+        <i-col :span="18" style="overflow:auto">
+          <i-row>
+            <i-col :span="12">
+              <data-grid :labelWidth="100" labelAlign="left" contentAlign="left">
+                <data-grid-item label="产品名称" :span="12">
+                  <span>群泰融资</span>
+                </data-grid-item>
+                <data-grid-item label="产品序号" :span="12">
+                  <span>QTP0001</span>
+                </data-grid-item>
+              </data-grid>
+            </i-col>
+            <i-col :span="12">
+              <span style="margin-left:20px;font-size:14px;">租金渠道选择：</span>
+              <RadioGroup v-model="rentCheck">
+                <Radio label="自有资金"></Radio>
+                <Radio label="第三方"></Radio>
+              </RadioGroup>
+              <i-button class="blueButton" @click="customerFodderConfig" v-if="customerFodderConfigFlag"><span></span>客户素材配置</i-button>
+              <i-button class="blueButton" @click="customerFodderConfig" v-if="alreadyConfigFlag">已配置</i-button>
+              <!--<i-button class="blueButton" @click="chargeAgainstOrderConfig">冲抵顺序配置</i-button>-->
+            </i-col>
+          </i-row>
+          <i-row :gutter="10" style="margin-top:20px;min-width:1366px">
+            <i-col :span="7">
+              <div style="width:300px;height:450px;border:1px solid #999999;cursor:pointer" @click="addPeriods">
+                <div style="position:absolute;top:50%;left:35%">
+                  <i-icon type="plus" style="font-size:50px;"></i-icon>
                 </div>
               </div>
-              <div style="width:300px;height:350px;border-left:1px solid #999999;border-right:1px solid #999999;position:relative;bottom:20px;">
-                <div class="itemContainer">
-                  <span class="itemName">账期类型</span><span class="item">{{item.accountType}}</span>
-                </div>
-                <div class="itemContainer">
-                  <span class="itemName">产品利率</span><span class="item">{{item.prdInterest}}</span>
-                </div>
-                <div class="itemContainer">
-                  <span class="itemName">还款方式</span><span class="item">{{item.payType}}</span>
-                </div>
-                <div class="itemContainer">
-                  <span class="itemName">融资金额</span><span class="item">{{item.financeMoney}}</span>
-                </div>
-                <div class="itemContainer">
-                  <span class="itemName">首付款</span><span class="item">{{item.initialMoney}}</span>
-                </div>
-                <div class="itemContainer">
-                  <span class="itemName">保证金</span><span class="item">{{item.promiseMoney}}</span>
-                </div>
-                <div class="itemContainer">
-                  <span class="itemName">尾付款</span><span class="item">{{item.resuideMoney}}</span>
-                </div>
-                <div class="itemContainer">
-                  <span class="itemName">管理费</span><span class="item">{{item.manageMoney}}</span>
-                </div>
-                <div v-if="item.publishStatus==='已发布'" class="itemContainer">
-                  <span class="itemName">停用/启用</span>
-                  <i-switch class="item"></i-switch>
-                </div>
-                <div v-if="item.publishStatus==='未发布'" class="itemContainer">
-                  <span class="itemName">操作</span>
-                  <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
-                    <svg-icon iconClass="tianxie" class="item"></svg-icon>
+            </i-col>
+            <i-col :span="7" v-for="item in prdConfig" :key="item.id" style="margin-bottom:10px;">
+              <div>
+                <div style="width:300px;height:50px;border:1px solid #999999;line-height:50px;">
+                  <div style="background:#F2F2F2;height:48px;display:inline-block;position:relative;bottom:2px;">{{item.number}}</div>
+                  <div style="position:relative;left:40px;display:inline-block">
+                    <span style="font-size:18px;font-weight:bold;">{{item.month}}</span><span>月/期</span>
+                  </div>
+                  <div style="width:90px;height:90px;border-radius:50%;border:1px solid #999999;position:relative;left:197px;bottom:47px;z-index:999"
+                    :class="{'pulishCss':item.publishStatus==='未发布'}">
+                    <div style="font-size:16px;position:relative;left:16px;top:30px;transform:rotate(45deg)">{{item.publishStatus}}</div>
                   </div>
                 </div>
+                <div style="width:300px;height:350px;border-left:1px solid #999999;border-right:1px solid #999999;position:relative;bottom:20px;">
+                  <div class="itemContainer">
+                    <span class="itemName">账期类型</span><span class="item">{{item.accountType}}</span>
+                  </div>
+                  <div class="itemContainer">
+                    <span class="itemName">产品利率</span><span class="item">{{item.prdInterest}}</span>
+                  </div>
+                  <div class="itemContainer">
+                    <span class="itemName">还款方式</span><span class="item">{{item.payType}}</span>
+                  </div>
+                  <div class="itemContainer">
+                    <span class="itemName">融资金额</span><span class="item">{{item.financeMoney}}</span>
+                  </div>
+                  <div class="itemContainer">
+                    <span class="itemName">首付款</span><span class="item">{{item.initialMoney}}</span>
+                  </div>
+                  <div class="itemContainer">
+                    <span class="itemName">保证金</span><span class="item">{{item.promiseMoney}}</span>
+                  </div>
+                  <div class="itemContainer">
+                    <span class="itemName">尾付款</span><span class="item">{{item.resuideMoney}}</span>
+                  </div>
+                  <div class="itemContainer">
+                    <span class="itemName">管理费</span><span class="item">{{item.manageMoney}}</span>
+                  </div>
+                  <div v-if="item.publishStatus==='已发布'" class="itemContainer">
+                    <span class="itemName">停用/启用</span>
+                    <i-switch class="item"></i-switch>
+                  </div>
+                  <div v-if="item.publishStatus==='未发布'" class="itemContainer">
+                    <span class="itemName">操作</span>
+                    <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
+                      <svg-icon iconClass="tianxie" class="item"></svg-icon>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="item.publishStatus==='未发布'" style="width:300px;height:50px;border:1px solid #999999;text-align:center;cursor:pointer;position:relative;bottom:20px;background:#A1A1A1"
+                  @click="publish">
+                  <span style="line-height:50px;font-size:18px;">发布</span>
+                </div>
+                <div v-if="item.publishStatus==='已发布'" style="width:300px;height:50px;border:1px solid #999999;text-align:center;cursor:pointer;position:relative;bottom:20px;background:#F2F2F2">
+                  <span style="line-height:50px;font-size:18px;">查看</span>
+                </div>
               </div>
-              <div v-if="item.publishStatus==='未发布'" style="width:300px;height:50px;border:1px solid #999999;text-align:center;cursor:pointer;position:relative;bottom:20px;background:#A1A1A1"
-                @click="publish">
-                <span style="line-height:50px;font-size:18px;">发布</span>
-              </div>
-              <div v-if="item.publishStatus==='已发布'" style="width:300px;height:50px;border:1px solid #999999;text-align:center;cursor:pointer;position:relative;bottom:20px;background:#F2F2F2">
-                <span style="line-height:50px;font-size:18px;">查看</span>
-              </div>
-            </div>
-          </i-col>
-        </i-row>
-      </i-col>
+            </i-col>
+          </i-row>
+        </i-col>
+      </i-row>
     </i-row>
 
     <template>
@@ -120,7 +123,7 @@
     </template>
 
     <template>
-      <i-modal title="发布" :width="200" v-model="confirmPublishModal">
+      <i-modal title="发布" :width="350" v-model="confirmPublishModal">
         <span>是否确定发布？</span>
       </i-modal>
     </template>
@@ -186,6 +189,8 @@
     private addPeriodsModal: Boolean = false;
     private checkId: Number = 1
     private chargeAgainstOrderConfigModal: Boolean = false;
+    private customerFodderConfigFlag: Boolean = true;
+    private alreadyConfigFlag: Boolean = false;
 
     /**
      * 新增期数
@@ -202,6 +207,8 @@
      * 客户素材配置
      */
     customerFodderConfig() {
+      this.customerFodderConfigFlag = false
+      this.alreadyConfigFlag = true
       this.customerFodderConfigModal = true
     }
     created() {

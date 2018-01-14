@@ -1,15 +1,19 @@
 <!--收款信息导出-->
 <template>
   <section class="page gathering-info-export">
-    <span style="font-size:18px;font-weight:bold">收款信息导出</span>
-    <span style="margin-left:10px;">处理日期：</span>
-    <i-input></i-input>~
-    <i-input></i-input>
-    <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
-    <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-      <svg-icon iconClass="daochu"></svg-icon>
-      <span style="font-size: 12px;">导出</span>
-    </div>
+    <i-row style="margin-top:10px;">
+      <span style="font-size:18px;font-weight:bold">收款信息导出</span>
+      <span style="margin-left:10px;">处理日期：</span>
+      <i-date-picker></i-date-picker>~
+      <i-date-picker></i-date-picker>
+      <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+      <div style="float:right;margin-right:10px;margin-top:10px;">
+        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+          <svg-icon iconClass="daochu"></svg-icon>
+          <span style="font-size: 12px;">导出</span>
+        </div>
+      </div>
+    </i-row>
     <i-row v-if="searchOptions" style="margin:6px;">
       <i-input style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
       <i-button class="blueButton">搜索</i-button>
@@ -42,13 +46,13 @@
   import {
     OrderService
   } from "~/services/business-service/order.service";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       SvgIcon
@@ -214,4 +218,5 @@ import {
       this.openColumnsConfig = true;
     }
   }
+
 </script>

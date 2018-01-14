@@ -4,8 +4,8 @@
     <i-row style="margin-top:10px">
       <span style="font-size:18px;font-weight:bold">订单信息导出</span>
       <span style="margin-left:10px;">订单创建日期：</span>
-      <i-input></i-input>~
-      <i-input></i-input>
+      <i-date-picker></i-date-picker>~
+      <i-date-picker></i-date-picker>
       <i-select style="margin-left:10px;width:10%;">
         <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
         <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
