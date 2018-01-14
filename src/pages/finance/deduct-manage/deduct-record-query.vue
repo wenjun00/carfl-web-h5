@@ -27,6 +27,18 @@
         </div>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal v-model="openColumnsConfig" title="列配置">
+        <i-table :columns="columns3" :data="data3" highlightRow></i-table>
+        <div slot="footer">
+          <i-button>上移</i-button>
+          <i-button>下移</i-button>
+          <i-button>恢复默认</i-button>
+          <i-button>关闭</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -42,13 +54,13 @@
   import {
     Dependencies
   } from "~/core/decorator";
-import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-   
+
     components: {
       DataBox,
       PurchaseInformation
@@ -59,25 +71,91 @@ import {
     private data1: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
+    private columns3: any;
+    private data3: Array < Object > = [];
     private orderModal: Boolean = false;
     private searchOptions: Boolean = false;
+    private openColumnsConfig: Boolean = false;
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
-
+    columnsConfig() {
+      this.openColumnsConfig = true;
+    }
     created() {
+      this.columns3 = [{
+          title: "序号",
+          type: "index",
+          width: 80,
+          align: "center"
+        },
+        {
+          title: "列名",
+          key: "columnsName",
+          align: "center"
+        },
+        {
+          type: "selection",
+          width: 80,
+          align: "center"
+        }
+      ]
+      this.data3 = [{
+        columnsName: '出账日期'
+      }, {
+        columnsName: '出账客户号'
+      }, {
+        columnsName: '出账卡号'
+      }, {
+        columnsName: '客户姓名'
+      }, {
+        columnsName: '支付银行'
+      }, {
+        columnsName: '支付金额'
+      }, {
+        columnsName: '订单号'
+      }, {
+        columnsName: '交易状态'
+      }, {
+        columnsName: '失败原因'
+      }, {
+        columnsName: '操作人'
+      }]
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
-          title: '序号'
+          width: 60,
+          renderHeader: (h, {
+            column,
+            index
+          }) => {
+            return h(
+              "div", {
+                on: {
+                  click: () => {
+                    this.columnsConfig();
+                  }
+                },
+                style: {
+                  cursor: "pointer"
+                }
+              }, [
+                h("Icon", {
+                  props: {
+                    type: "gear-b",
+                    size: "20"
+                  }
+                })
+              ]
+            );
+          }
         },
         {
           title: "出账日期",
           align: "center",
           key: "outAccountDate",
-          width:'160'
+          width: 160
         },
         {
           title: "出账客户号",
@@ -100,13 +178,13 @@ import {
           align: "center",
           title: "出账卡号",
           key: "outAccountCardId",
-          width: '160'
+          width: 160
         },
         {
           align: "center",
           title: "客户姓名",
           key: "customerName",
-          width: '160'
+          width: 160
         },
         {
           align: "center",
@@ -127,7 +205,7 @@ import {
           key: 'step',
           title: '交易状态',
           align: 'center',
-          width: '120',
+          width: 120,
           render: (h, {
             row,
             column,
@@ -189,7 +267,7 @@ import {
         orderId: 'KB65014546455',
         failReason: '未知',
         operator: '胡开甲'
-      },{
+      }, {
         outAccountDate: '2017-12-01 13:56:03',
         outAccountCardId: '622700417115654152',
         customerName: '陈丽',
@@ -235,8 +313,10 @@ import {
       this.orderModal = true
     }
   }
+
 </script>
 
 <style>
+
 
 </style>

@@ -142,7 +142,7 @@
     </template>
 
     <template>
-      <i-modal v-model="bankCardInfoModal" :transfer="false" title="银行卡信息">
+      <i-modal v-model="bankCardInfoModal" :transfer="false" class="bankCardInfo" title="银行卡信息" width="400">
         <bank-card-info></bank-card-info>
       </i-modal>
     </template>
@@ -547,3 +547,12 @@
   }
 
 </script>
+
+<style lang="less">
+  .bankCardInfo {
+    .ivu-modal-footer {
+      display: none;
+    }
+  }
+
+</style>

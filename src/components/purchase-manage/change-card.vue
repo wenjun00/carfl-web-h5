@@ -46,11 +46,14 @@
       </i-form-item>
       <i-form-item label="验证码" v-if="current===0">
         <i-input style="width:160px;"></i-input>
-        <i-button style="display:inline-block;margin-left:8px;" class="blueButton" size="small">发送验证码<span>60</span></i-button>
+        <i-button style="display:inline-block;margin-left:8px;" class="blueButton">发送验证码<span>60</span></i-button>
       </i-form-item>
     </i-form>
-    <i-button @click="confirmUnBindCard" v-if="current===0" style="position:relative;left:340px;">确认解绑</i-button>
-    <i-button @click="confirmBindCard" v-if="current===1" style="position:relative;left:340px;">确认绑卡</i-button>
+    <div style="text-align:center">
+      <i-button @click="cancelChangeCard" class="blueButton">取消</i-button>
+      <i-button @click="confirmUnBindCard" v-if="current===0" class="blueButton">确认解绑</i-button>
+      <i-button @click="confirmBindCard" v-if="current===1" class="blueButton">确认绑卡</i-button>
+    </div>
   </section>
 </template>
 
@@ -77,6 +80,10 @@
     created() {
 
     }
+    cancelChangeCard() {
+      this.$Modal.remove()
+      this.$emit('close')
+    }
     /**
      * 确认解绑
      */
@@ -92,8 +99,7 @@
      */
     confirmBindCard() {
       this.current = 0
-      this.openChangeBankCard = false
-      // this.$Modal.remove()
+      this.$emit('close')
     }
   }
 

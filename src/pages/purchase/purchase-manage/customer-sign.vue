@@ -60,7 +60,6 @@
     </template>
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
-        <!--<i-table :columns="columns2" :data="data2" border stripe @on-select="multipleSelect"></i-table>-->
         <i-table :columns="columns2" :data="data2" highlightRow @currentChange="currentChange"></i-table>
         <div slot="footer">
           <i-button>上移</i-button>
@@ -136,7 +135,7 @@
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           renderHeader: (h, {
             column,
             index
@@ -164,7 +163,7 @@
         },
         {
           title: "操作",
-          width: "200",
+          width: 200,
           align: "center",
           render: (h, {
             row,
@@ -251,7 +250,7 @@
       this.columns2 = [{
           title: "序号",
           type: "index",
-          width: "80",
+          width: 80,
           align: "center"
         },
         {
@@ -261,7 +260,7 @@
         },
         {
           type: "selection",
-          width: "80",
+          width: 80,
           align: "center"
         }
       ];
@@ -273,7 +272,7 @@
         {
           type: "selection",
           align: "center",
-          width: "80"
+          width: 80
         }
       ];
       this.data2 = [{

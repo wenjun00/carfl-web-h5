@@ -1,4 +1,4 @@
-<!--划扣记录-->
+<!--个人银行卡详情-->
 <template>
   <section class="component bank-card-info">
     <div style="width:100%;height:40px;border:1px solid black;line-height:40px;background:#F2F2F2">
@@ -9,7 +9,7 @@
       </div>
     </div>
     <div style="text-align:center;border-left:1px solid black;border-right:1px solid black;height:100px;">
-      <span>5719******0829</span>
+      <span style="margin-left:97px">5719******0829</span>
       <p>户名：开呗（上海）汽车租赁有限公司陕西分公司</p>
       <p>8888888</p><span>城市：西安</span>
       <p>开户行：招商银行</p>
@@ -20,8 +20,12 @@
     </div>
 
     <template>
-      <i-modal title="换卡" v-model="changeBankCardModal" width="480">
-        <change-card></change-card>
+      <i-modal title="换卡" v-model="changeBankCardModal" width="480" class="changeCard">
+        <change-card @close="close"></change-card>
+        <div slot="footer">
+          <i-button>取消</i-button>
+          <i-button>确认解绑</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -63,11 +67,18 @@
     unbindBankCard() {
       this.unbindBankCardModal = true
     }
+    close() {
+      this.changeBankCardModal = false
+    }
   }
 
 </script>
 
-<style>
-
+<style lang="less">
+  .changeCard {
+    .ivu-modal-footer {
+      display: none;
+    }
+  }
 
 </style>

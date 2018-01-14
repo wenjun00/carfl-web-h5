@@ -75,7 +75,7 @@
       this.queryColumns = [{
           align: 'center',
           type: 'index',
-          width: '80',
+          width: 80,
           renderHeader: (h, {
             row,
             column,
@@ -101,7 +101,7 @@
           }
         }, {
           title: '操作',
-          width: '200',
+          width: 200,
           align: 'center',
           render: (h, params) => {
 
@@ -161,7 +161,7 @@
       this.columns2 = [{
         title: '序号',
         type: 'index',
-        width: '80',
+        width: 80,
         align: 'center'
       }, {
         title: '列名',
@@ -169,7 +169,7 @@
         align: 'center'
       }, {
         type: 'selection',
-        width: '80',
+        width: 80,
         align: 'center'
       }]
       this.data2 = [{

@@ -9,7 +9,6 @@
       <i-option label="未开票" value="未开票" key="未开票"></i-option>
     </i-select>
     <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
-    <i-button style="margin-left:10px" class="blueButton" @click="confirmMakeInvoice">确认开票</i-button>
     <i-button @click="openSearch" style="margin-left:10px;color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">关闭</span>
@@ -35,52 +34,27 @@
         <i-option value="现金" key="现金" label="现金"></i-option>
       </i-select>
       <span>付款日期：</span>
-      <i-input style="width:10%"></i-input>~
-      <i-input style="width:10%"></i-input>
+      <i-date-picker style="width:10%"></i-date-picker>~
+      <i-date-picker style="width:10%"></i-date-picker>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
-
+    <div class="submitBar">
+      <i-row type="flex" align="middle" style="padding:5px">
+        <i-col :span="8" push="1">
+          <span>申请人：胡开甲</span>
+        </i-col>
+        <i-col :span="10" pull="4">
+          <span>申请时间： 2017-12-01 13:56:45</span>
+        </i-col>
+        <i-col :span="6" style="text-align:right;">
+          <!--<i-button @click="oneKeyToConnect" class="highButton">一键交接</i-button>-->
+          <i-button class="highButton" @click="confirmMakeInvoice">确认开票</i-button>
+        </i-col>
+      </i-row>
+    </div>
     <template>
-      <i-modal v-model="makeInvoiceModal" title="确认开票" width="600">
-        <table border="1" width="550" align="center">
-          <tr height="40" align="center">
-            <td bgcolor="#F2F2F2">开票金额</td>
-            <td>35662</td>
-          </tr>
-          <tr height="40" align="center">
-            <td bgcolor="#F2F2F2">开票抬头</td>
-            <td>
-              <i-input style="width:90%"></i-input>
-            </td>
-          </tr>
-          <tr height="40" align="center">
-            <td bgcolor="#F2F2F2">发票号</td>
-            <td>
-              <i-input style="width:90%"></i-input>
-            </td>
-          </tr>
-          <tr height="40" align="center">
-            <td bgcolor="#F2F2F2">开票日期</td>
-            <td>
-              <i-input style="width:90%"></i-input>
-            </td>
-          </tr>
-          <tr height="40" align="center">
-            <td bgcolor="#F2F2F2">备注</td>
-            <td>
-              <i-input type="textarea" style="width:90%"></i-input>
-            </td>
-          </tr>
-        </table>
-
-        <div style="margin-top:6px;margin-left:10px;">
-          <Upload style="display:inline-block" action="">
-            <Button class="blueButton">上传发票</Button>
-          </Upload>
-          <i-button class="blueButton" style="margin-left:10px;">全部下载</i-button>
-        </div>
-        <data-box :columns="invoiceColumns" :data="invoiceData"></data-box>
-
+      <i-modal v-model="makeInvoiceModal" title="确认开票" width="600" class="confirmMakeInvoice">
+        <confirm-make-invoice></confirm-make-invoice>
       </i-modal>
     </template>
 
@@ -100,6 +74,7 @@
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import CheckAttachment from '~/components/finance-manage/check-attachment.vue'
+  import ConfirmMakeInvoice from '~/components/finance-manage/confirm-make-invoice.vue'
   import {
     Tooltip
   } from 'iview'
@@ -118,7 +93,8 @@
       ConfirmRepayment,
       DeductRecord,
       RepayInfo,
-      CheckAttachment
+      CheckAttachment,
+      ConfirmMakeInvoice
     }
   })
   export default class FinanceMakeInvoice extends Page {
@@ -506,7 +482,7 @@
 
 </script>
 
-<style>
+<style lang="less">
 
 
 </style>
