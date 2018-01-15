@@ -1,6 +1,6 @@
 <!--全款销售申请-->
 <template>
-  <section class="page full-payment-apply specialInput">
+  <section class="page full-payment-apply">
     <div class="header">
       <span class="form-title">全款销售申请</span>
       <div style="float:right;margin-top: 10px;margin-right:10px">
@@ -45,7 +45,7 @@
         <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
       </i-col>
     </i-row>
-    <i-tabs value="purchaseItem" type="card" style="height:76%;overflow-y:auto;background:white" v-show="tabShow">
+    <i-tabs value="purchaseItem" type="card" style="height:73%;overflow-y:auto;background:white" v-show="tabShow">
       <i-tab-pane name="purchaseItem" label="选购资料">
         <div class="form-title">选购信息</div>
         <i-row class="proCity">
@@ -126,20 +126,20 @@
               </i-col>
             </i-row>
             <i-row>
-              <i-col span="12">
-                <i-form-item label="联系地址" prop="phone">
-                  <i-row type="flex">
-                    <i-col>
+              <i-col :span="12">
+                <i-form-item label="联系地址">
+                  <i-row>
+                    <i-col :span="8">
                       <i-select>
                         <i-option label="陕西" value="陕西" key="陕西"></i-option>
                       </i-select>
                     </i-col>
-                    <i-col>
+                    <i-col :span="8">
                       <i-select>
                         <i-option label="西安" value="西安" key="西安"></i-option>
                       </i-select>
                     </i-col>
-                    <i-col>
+                    <i-col :span="8">
                       <i-select>
                         <i-option label="雁塔" value="雁塔" key="雁塔"></i-option>
                         <i-option label="碑林" value="碑林" key="碑林"></i-option>
@@ -154,7 +154,7 @@
                 </i-row>-->
                 </i-form-item>
               </i-col>
-              <i-col span="12" pull="3">
+              <i-col :span="12" pull="3">
                 <i-form-item label="邮政编码" prop="phone">
                   <i-input type="text" v-model="purchaseData.company">
                   </i-input>
@@ -602,6 +602,13 @@
       border-style: none;
       border-bottom-style: solid;
       border-radius: 0;
+    }
+  }
+
+  .full-payment-apply {
+    .ivu-select,
+    .ivu-select-single {
+      width: 100px;
     }
   }
 

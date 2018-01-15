@@ -28,15 +28,16 @@
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="公司名称">
-            <i-select>
-              <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
-            </i-select>
+          <i-form-item label="所属机构">
+            <i-input v-model="addUserModel.belongOrg"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="所属机构">
-            <i-input></i-input>
+          <i-form-item label="公司名称">
+            <i-select v-model="addUserModel.firmName">
+              <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
+              <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
+            </i-select>
           </i-form-item>
         </i-col>
       </i-row>
@@ -65,6 +66,17 @@
         </i-col>
       </i-row>
       <i-row>
+        <i-col :span="12">
+          <i-form-item label="数据权限">
+            <i-select>
+              <i-option value="个人" label="个人" key="个人"></i-option>
+              <i-option value="组织" label="组织" key="组织"></i-option>
+              <i-option value="公司" label="公司" key="公司"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
         <i-col :span="24">
           <i-form-item label="备注">
             <i-input type="textarea"></i-input>
@@ -86,7 +98,13 @@
     components: {}
   })
   export default class AddUser extends Vue {
-    created() {}
+    private addUserModel: Object
+    created() {
+      this.addUserModel = {
+        belongOrg: '指旺西安',
+        firmName: '群泰西安'
+      }
+    }
     cancel() {
 
     }

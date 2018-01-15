@@ -3,7 +3,8 @@
   <section class="component choose-buy-materials">
     <i-col span="24" style="line-height:30px" class="form-title">选购信息</i-col>
     <i-row>
-      <i-form ref="customer-form" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;position:relative;left:16px;" label-position="left">
+      <i-form ref="customer-form" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;position:relative;left:16px;"
+        label-position="left">
         <i-row>
           <i-col span="12">
             <i-form-item label="申请省份" prop="province">
@@ -98,14 +99,10 @@
       <span>产品信息</span>
       <div style="font-size:14px;cursor:pointer;display:inline-block;color:#3367A7;position:absolute;z-index:999;left:52%;" @click="openSimulateCalculate">
         <svg-icon iconClass="jisuanqi"></svg-icon>
-        <span>月供模拟计算器</span>
+        <span style="font-size:12px;">月供模拟计算器</span>
       </div>
     </i-col>
-    <!--<div>
-      <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
-      <i-button style="display:block;margin-left:10px;color:#265ea2" type="text" @click="addNewPrd" v-show="buttonShow">添加产品</i-button>
-    </div>-->
-    <div>
+    <div v-show="addPrdShow">
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
       <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
     </div>
@@ -213,6 +210,12 @@
             </i-input>
           </i-form-item>
         </i-col>
+        <i-col :span="24">
+          <div v-show="changePrdShow">
+            <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
+            <i-button @click="changePrd" style="margin-left:10px;color:#265ea2" type="text">更改产品</i-button>
+          </div>
+        </i-col>
         <i-col span="24">
           <div style="height:60px;">
             <!--<input type="text" style="border:none;border-bottom-style:solid;outline:none">-->
@@ -280,6 +283,8 @@
     private prdInfoShow: Boolean = false;
     private buttonShow: Boolean = true;
     private addProductModal: Boolean = false;
+    private addPrdShow: Boolean = true;
+    private changePrdShow: Boolean = false;
 
 
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
@@ -290,7 +295,12 @@
     openSimulateCalculate() {
       this.simulateCalculateModal = true
     }
-
+    /**
+     * 更改产品
+     */
+    changePrd() {
+      this.addProductModal = true
+    }
     created() {
       // 设置表单数据
       this.chooseBuyModel = {
@@ -437,9 +447,30 @@
       this.addProductModal = true
       this.prdInfoShow = true
       this.buttonShow = false
+      this.addPrdShow = false
+      this.changePrdShow = true
     }
     confirmAndBackPrd() {
       this.addProductModal = false
+      this.chooseBuyModel = {
+        prdSeriods: '直租',
+        prdName: '群泰融租',
+        prdPeriods: '12期',
+        prdInterestRate: '1.25',
+        payWay: '等本等息',
+        financeTotalMoney: '18122',
+        moneyPay: '5584',
+        downPayMoney: '20252',
+        promiseMoney: '0',
+        lastPayMoney: '0',
+        manageMoney: '0',
+        insuranceMoney: '0',
+        purchaseMoney: '0',
+        licenseMoney: '0',
+        GpsMoney: '0',
+        otherMoney: '0',
+        remark: '无'
+      }
     }
   }
 

@@ -56,7 +56,7 @@
         <i-button class="blueButton">清空</i-button>
       </i-col>
     </i-row>
-    <i-tabs value="purchaseItem" type="card" style="height:76%;overflow-y:auto;background:white">
+    <i-tabs value="purchaseItem" type="card" style="height:73%;overflow-y:auto;background:white">
       <i-tab-pane name="purchaseItem" label="收款明细">
         <i-table :columns="columns1" :data="data1" width="1100"></i-table>
         <div>

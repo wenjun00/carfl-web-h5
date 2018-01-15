@@ -276,7 +276,7 @@ export default [
         title: '角色维护',
         path: 'systemManage/power-config/role-maintenance'
       }, {
-        title: '机构用户与管理',
+        title: '机构与用户管理',
         path: 'systemManage/power-config/org-user-manage'
       }
       ]

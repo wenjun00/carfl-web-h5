@@ -1,7 +1,7 @@
 <!--还款总览-->
 <template>
   <section class="component repay-sum">
-    <div style="margin-left:690px;">
+    <div style="text-align:right">
       <i-button @click="applyDerate" class="blueButton" size="small" style="margin:10px;">申请减免</i-button>
       <i-button @click="applyFrozen" class="blueButton" size="small">申请冻结</i-button>
     </div>
@@ -129,7 +129,9 @@
       this.applyFrozenOpen = true
     }
   }
+
 </script>
 <style>
+
 
 </style>

@@ -46,27 +46,23 @@
           <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
         </i-col>
       </i-row>
-      <i-tabs value="选购材料" type="card" v-show="tabShow" v-model="materialTabs" style="height:76%;overflow-y:auto;">
-        <i-tab-pane label="选购资料" name="选购资料">
-          <choose-buy-materials></choose-buy-materials>
+      <i-tabs value="choose-buy-materials" type="card" v-show="tabShow" v-model="materialTabs" class="finance-lease-tabs">
+        <i-tab-pane label="选购资料" name="choose-buy-materials">
         </i-tab-pane>
-        <i-tab-pane label="客户资料" name="客户资料">
-          <customer-materials></customer-materials>
+        <i-tab-pane label="客户资料" name="customer-materials">
         </i-tab-pane>
-        <i-tab-pane label="客户职业" name="客户职业">
-          <customer-job-message></customer-job-message>
+        <i-tab-pane label="客户职业" name="customer-job-message">
         </i-tab-pane>
-        <i-tab-pane label="客户联系人" name="客户联系人">
-          <customer-contacts></customer-contacts>
+        <i-tab-pane label="客户联系人" name="customer-contacts">
         </i-tab-pane>
-        <i-tab-pane label="客户来源" name="客户来源">
-          <customer-origin></customer-origin>
+        <i-tab-pane label="客户来源" name="customer-origin">
         </i-tab-pane>
-        <i-tab-pane label="上传素材" name="上传素材">
-          <upload-the-material></upload-the-material>
+        <i-tab-pane label="上传素材" name="upload-the-material">
         </i-tab-pane>
-
       </i-tabs>
+      <div style="height:535px;overflow-y:auto;overflow-x:hidden">
+        <component :is="materialTabs"></component>
+      </div>
       <div class="submitBar">
         <i-row type="flex" align="middle" style="padding:5px">
           <i-col :span="8" push="1">
@@ -172,8 +168,7 @@
     .ivu-input {
       border-style: none;
       border-bottom-style: solid;
-      border-radius: 0;
-      // width: 257%;
+      border-radius: 0; // width: 257%;
     }
   }
 
@@ -184,6 +179,21 @@
       border-style: none;
       border-bottom-style: solid;
       border-radius: 0;
+    }
+  }
+
+  .finance-lease-tabs {
+    .ivu-tabs-bar {
+      border-bottom: 1px solid #DDDEE1;
+      .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
+        margin: 0;
+        margin-right: 4px;
+        padding: 5px 16px 4px;
+        border: 1px solid #dddee1;
+        border-bottom: 0;
+        border-radius: 4px 4px 0 0;
+        transition: all .3s ease-in-out;
+      }
     }
   }
 

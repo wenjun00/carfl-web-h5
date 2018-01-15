@@ -115,15 +115,15 @@
     // .ivu-tabs-nav-scroll {
     //   width: 93%;
     // }
-    .ivu-tabs-nav-container {
-      background: #fff;
-      width: 98%;
-    }
     .ivu-tabs-bar {
       background: #fff;
       border-bottom: 1px solid #fff;
       height: 43px;
       padding: 10px 0;
+      .ivu-tabs-nav-container {
+        background: #fff;
+        width: 98%;
+      }
     }
   }
 

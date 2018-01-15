@@ -16,7 +16,7 @@
             </div>
           </i-col>
           <i-col span="22" style="overflow:auto">
-            <div>
+            <div style="position:relative;bottom:10px">
               <data-box :columns="carColumns" :data="carData" border stripe></data-box>
             </div>
           </i-col>

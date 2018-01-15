@@ -10,6 +10,7 @@
         <i-option label="停用" value="停用" key="停用"></i-option>
       </i-select>
       <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:20px;" @click="addNewRole">新增角色</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
 
@@ -36,6 +37,12 @@
         <wait-handle-case></wait-handle-case>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="新增角色" v-model="addRoleModal">
+        <add-role></add-role>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -47,7 +54,7 @@
   import UserList from "~/components/system-manage/user-list.vue"
   import WaitHandleCase from "~/components/system-manage/wait-handle-case.vue"
   import ModulePower from "~/components/system-manage/module-power.vue"
-
+  import AddRole from "~/components/system-manage/add-role.vue"
 
   import {
     Dependencies
@@ -70,7 +77,8 @@
       ModifyRole,
       UserList,
       WaitHandleCase,
-      ModulePower
+      ModulePower,
+      AddRole
     }
   })
   export default class RoleMaintenance extends Page {
@@ -93,7 +101,11 @@
     private modulePowerModal: Boolean = false; // 模块权限
     private userListModal: Boolean = false; // 用户列表
     private waitHandleCaseModal: Boolean = false; // 待办事项配置
+    private addRoleModal: Boolean = false; // 新增角色
 
+    addNewRole() {
+      this.addRoleModal = true
+    }
     created() {
       this.data1 = [{
         roleName: '管理员',
