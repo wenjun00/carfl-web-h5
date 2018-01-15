@@ -2,7 +2,7 @@
   <div class="">
     <Tabs v-model="currentPage" type="card" closable :animated="false" @on-tab-remove="closePage" class="workTabs">
       <TabPane v-for="page in pageList" :key="page.path" :label="page.title" :name="page.path" :closable="page.path !== 'home'">
-        <component ref="pages" :is="getComponentName(page.path)"></component>
+        <component ref="pages" :is="getComponentName(page)"></component>
       </TabPane>
     </Tabs>
     <div @click="closeAllTabs" style="position:absolute;top:70px;right:10px;border-bottom-style:none;font-size:14px;cursor:pointer;"
@@ -40,8 +40,7 @@
           item.children.forEach(importComponents);
         }
         if (item.path) {
-          let componentName = CommonService.getComponentName(item.path);
-          console.log(componentName)
+          let componentName = CommonService.getComponentName(item);
           let components = this.$options.components;
           if (components) {
             components[componentName] = () =>

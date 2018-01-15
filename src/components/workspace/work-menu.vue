@@ -1,8 +1,8 @@
 <template>
   <div class="component work-menu text-left row middle-span">
-    <div v-for="menu_lv1 in menuConfig" :key="menu_lv1.path" class="menu-level-1" @click="redirect(menu_lv1,menu_lv1)">
+    <div v-for="menu_lv1 in menuConfig" :key="menu_lv1.path" class="menu-level-1">
       <Poptip v-model="menu_lv1.popue" placement="bottom" trigger="hover">
-        <div class="menu-level-1-title row middle-span center-span" style="height:100%">
+        <div class="menu-level-1-title row middle-span center-span" style="height:100%" @click="redirect(menu_lv1,menu_lv1)">
           <span>{{menu_lv1.title}}</span>
         </div>
         <div v-if="menu_lv1.children" class="menu-popue row" slot="content">
@@ -15,7 +15,7 @@
                 <div class="menu2" :style="{color:menu_lv2.color}">{{menu_lv2.title}}</div>
               </div>
               <div v-if="menu_lv2.children">
-                <div v-for="menu_lv3 in menu_lv2.children" :key="menu_lv3.path" @click="redirect(menu_lv3,menu_lv1)" class="menu3">
+                <div v-for="menu_lv3 in menu_lv2.children" :key="menu_lv3.path" @click="redirect(menu_lv3,menu_lv1,$event)" class="menu3">
                   <span>{{menu_lv3.title}}</span>
                 </div>
               </div>
@@ -60,10 +60,16 @@
       });
     }
 
-    private redirect(page, menu) {
-      console.log(page)
+    private redirect(page, menu, event) {
+      console.log(2)
+      if (event) {
+        event.stopPropagation()
+        event.preventDefault()
+      }
       menu.popue = false;
-      this.openPage(page);
+      if (page.path) {
+        this.openPage(page);
+      }
     }
   }
 
