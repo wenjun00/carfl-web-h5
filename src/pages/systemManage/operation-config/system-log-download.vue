@@ -4,13 +4,22 @@
     <span class="form-title">系统日志下载</span>
     <i-row style="margin:6px;">
       <span>公司名称：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
+      <i-select style="display:inline-block;width:10%;" placeholder="请选择公司">
+        <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
+        <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
+        <i-option label="群泰武汉" value="群泰武汉" key="群泰武汉"></i-option>
+      </i-select>
       <span style="margin-left:10px;">操作人：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入证件号码"></i-input>
+      <i-input style="display:inline-block;width:10%;" placeholder="请输入操作人"></i-input>
       <span style="margin-left:10px;">操作时间：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入联系号码"></i-input>
+      <i-date-picker style="display:inline-block;width:10%;" placeholder="请选择操作时间"></i-date-picker>
       <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;">下载</i-button>
+      <div style="float:right;margin-right:10px;margin-top:10px;">
+        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+          <svg-icon iconClass="xiazai"></svg-icon>
+          <span style="font-size: 12px;">下载</span>
+        </div>
+      </div>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
     <!--Model-->
@@ -45,6 +54,7 @@
   import Page from "~/core/page";
   import Component from "vue-class-component";
   import DataBox from "~/components/common/data-box.vue"
+  import SvgIcon from '~/components/common/svg-icon.vue'
   import {
     Dependencies
   } from "~/core/decorator";
@@ -57,7 +67,8 @@
   @Component({
 
     components: {
-      DataBox
+      DataBox,
+      SvgIcon
     }
   })
   export default class SystemLogDownload extends Page {
@@ -67,12 +78,13 @@
     private openColumnsConfig: Boolean = false;
     private columns2: any;
     private data2: Array < Object > ;
+    private test: String = ''
 
     created() {
       this.columns1 = [{
           align: 'center',
           type: 'index',
-          width: '60',
+          width: 60,
           renderHeader: (h, {
             column,
             index
@@ -100,7 +112,7 @@
           title: '操作时间',
           key: 'operateTime',
           align: 'center',
-          width: '160'
+          width: 160
         },
         {
           title: '操作人',
@@ -131,7 +143,7 @@
       this.columns2 = [{
         title: '序号',
         type: 'index',
-        width: '80',
+        width: 80,
         align: 'center'
       }, {
         title: '列名',
@@ -139,7 +151,7 @@
         align: 'center'
       }, {
         type: 'selection',
-        width: '80',
+        width: 80,
         align: 'center'
       }]
 
@@ -158,6 +170,34 @@
       }]
       // 获取数据
       this.data1 = [{
+        operateTime: '2017-12-01',
+        operator: '刘琛',
+        clientIP: '192.168.3.94',
+        requestTime: '50',
+        desc: '获取所有分公司信息',
+        executeWay: 'report-service/api/CaseInfoInquiryController/getInfoByConditio'
+      }, {
+        operateTime: '2017-12-01',
+        operator: '刘琛',
+        clientIP: '192.168.3.94',
+        requestTime: '50',
+        desc: '获取所有分公司信息',
+        executeWay: 'report-service/api/CaseInfoInquiryController/getInfoByConditio'
+      }, {
+        operateTime: '2017-12-01',
+        operator: '刘琛',
+        clientIP: '192.168.3.94',
+        requestTime: '50',
+        desc: '获取所有分公司信息',
+        executeWay: 'report-service/api/CaseInfoInquiryController/getInfoByConditio'
+      }, {
+        operateTime: '2017-12-01',
+        operator: '刘琛',
+        clientIP: '192.168.3.94',
+        requestTime: '50',
+        desc: '获取所有分公司信息',
+        executeWay: 'report-service/api/CaseInfoInquiryController/getInfoByConditio'
+      }, {
         operateTime: '2017-12-01',
         operator: '刘琛',
         clientIP: '192.168.3.94',

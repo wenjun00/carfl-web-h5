@@ -3,10 +3,10 @@
   <section class="component deduct-record">
     <i-row style="margin:6px;">
       <span>支付日期：</span>
-      <i-input size="small" style="display:inline-block;width:10%;" placeholder="请输入日期"></i-input>~
-      <i-input size="small" style="display:inline-block;width:10%;" placeholder="请输入日期"></i-input>
+      <i-input style="display:inline-block;width:10%;" placeholder="请输入日期"></i-input>~
+      <i-input style="display:inline-block;width:10%;" placeholder="请输入日期"></i-input>
       <span style="margin-left:10px;">期数：</span>
-      <i-input size="small" style="display:inline-block;width:10%;" placeholder="请输入证件号码"></i-input>
+      <i-input style="display:inline-block;width:10%;" placeholder="请输入证件号码"></i-input>
       <i-select placeholder="全部交易状态" style="margin-left:10px;width:16%;">
         <i-option label="初始" value="初始" key="初始"></i-option>
         <i-option label="失败" value="失败" key="失败"></i-option>
@@ -14,27 +14,17 @@
         <i-option label="处理中" value="处理中" key="处理中"></i-option>
       </i-select>
       <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size: 12px;">导出</span>
+      <div style="float:right;margin-right:10px;margin-top:10px;">
+        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+          <svg-icon iconClass="daochu"></svg-icon>
+          <span style="font-size: 12px;">导出</span>
+        </div>
       </div>
     </i-row>
-    <data-grid :labelWidth="100" labelAlign="left" contentAlign="left">
-      <data-grid-item label="客户姓名" :span="6">
-        <template>
-          <div>
-            陈丽
-          </div>
-        </template>
-      </data-grid-item>
-      <data-grid-item label="出账客户号" :span="6">
-        <template>
-          <div>
-            2017101001
-          </div>
-        </template>
-      </data-grid-item>
-    </data-grid>
+    <div>
+      <span style="margin-left:10px">客户姓名：陈丽</span>
+      <span style="float:right;margin-right:10px;">出账客户号：2017101001</span>
+    </div>
     <data-box :columns="columns1" :data="data1"></data-box>
   </section>
 </template>
@@ -72,22 +62,22 @@
         type: 'index',
         title: '序号',
         align: 'center',
-        width: '60'
+        width: 60
       }, {
         title: '期数',
         key: 'periods',
         align: 'center',
-        width: '60'
+        width: 60
       }, {
         title: '支付日期',
         key: 'payDate',
         align: 'center',
-        width: '120'
+        width: 120
       }, {
         title: '出账卡号',
         key: 'outAccountId',
         align: 'center',
-        width: '170'
+        width: 170
       }, {
         title: '支付银行',
         key: 'payBank',

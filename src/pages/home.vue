@@ -51,7 +51,7 @@
           <div v-for="item in waitToHandle" :key="item.index" style="width:96%;height:42px;margin-top:10px;background:#F5F5F5;text-align:center;line-height:12px;">
             <div style="padding-top:6px;">
               <div style="font-size:12px;color:#666666;margin-right:118px;display:inline-block">{{item.name}}</div>
-              <i-button type="text" style="color:#265EA2;font-size:14px;text-align:right">{{item.number}}</i-button>
+              <i-button type="text" style="color:#265EA2;font-size:14px;text-align:right" @click="pageToOrderQuery">{{item.number}}</i-button>
             </div>
           </div>
         </div>
@@ -100,6 +100,12 @@
         name: '退回的销售申请',
         number: 8
       }]
+    }
+    pageToOrderQuery() {
+      this.openPage({
+        title: '订单查询',
+        path: 'purchase/purchase-query/order-query',
+      })
     }
     financeLeaseApply() {
       this.openPage({

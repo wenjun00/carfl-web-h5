@@ -3,10 +3,21 @@
   <section class="page system-backups">
     <i-row>
       <div class="form-title">批量管理</div>
-      <i-button style="margin-left:10px;" class="blueButton" @click="batchManage">批量管理</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
-
+    <div class="submitBar">
+      <i-row type="flex" align="middle" style="padding:5px">
+        <i-col :span="8" push="1">
+          <span>申请人：胡开甲</span>
+        </i-col>
+        <i-col :span="10" pull="4">
+          <span>申请时间： 2017-12-01 13:56:45</span>
+        </i-col>
+        <i-col :span="6" style="text-align:right;">
+          <i-button class="highButton" @click="batchManage">批量管理</i-button>
+        </i-col>
+      </i-row>
+    </div>
   </section>
 </template>
 

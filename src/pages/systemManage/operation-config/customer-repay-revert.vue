@@ -20,6 +20,12 @@
         <data-box :columns="columns2" :data="data2"></data-box>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal v-model="deductRecordModal" title="划扣记录" width="1200">
+        <deduct-record></deduct-record>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -33,14 +39,14 @@
   import {
     Dependencies
   } from "~/core/decorator";
- import {
+  import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
 
   @Component({
-    
+
     components: {
       DataBox,
       DeductRecord,
@@ -51,6 +57,7 @@
     private columns1: any;
     private data1: Array < Object > = [];
     private openColumnsConfig: Boolean = false;
+    private deductRecordModal: Boolean = false;
     private columns2: any;
     private data2: Array < Object > ;
 
@@ -58,7 +65,7 @@
       this.columns1 = [{
           align: 'center',
           type: 'index',
-          width: '60',
+          width: 60,
           renderHeader: (h, {
             column,
             index
@@ -83,7 +90,7 @@
           }
         }, {
           title: '操作',
-          width: '120',
+          width: 120,
           align: 'center',
           render: (h, {
             row,
@@ -99,11 +106,12 @@
               },
               on: {
                 click: () => {
-                  this.$Modal.info({
-                    title: '划扣记录',
-                    width: '1600',
-                    render: h => h(DeductRecord)
-                  })
+                  // this.$Modal.info({
+                  //   title: '划扣记录',
+                  //   width: '1600',
+                  //   render: h => h(DeductRecord)
+                  // })
+                  this.deductRecordModal = true
                 }
               }
             }, '划扣记录')
@@ -118,7 +126,7 @@
           title: '证件号码',
           key: 'idCard',
           align: 'center',
-          width: '160'
+          width: 160
         },
         {
           title: '联系号码',
@@ -129,7 +137,7 @@
           title: '订单编号',
           key: 'orderId',
           align: 'center',
-          width: '180',
+          width: 180,
           render: (h, params) => {
             return h('i-button', {
               props: {
@@ -151,7 +159,7 @@
           title: '客户结算号',
           key: 'customerSettleAccountId',
           align: 'center',
-          width: '120'
+          width: 120
         },
         {
           title: '合同生效日',
@@ -167,12 +175,12 @@
           title: '代还本金',
           key: 'expectMajorMoney',
           align: 'center',
-          width: '90',
+          width: 90,
         },
         {
           title: '待还利息',
           key: 'expectInterest',
-          width: '90',
+          width: 90,
           align: 'center'
         },
         {
@@ -271,8 +279,10 @@
       this.openColumnsConfig = true
     }
   }
+
 </script>
 
 <style lang="less" scope>
+
 
 </style>

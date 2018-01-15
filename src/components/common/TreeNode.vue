@@ -1,8 +1,9 @@
 <template>
-  <li draggable="true" @dragstart.stop="handleDragStart($event)" @dragenter="handleDragEnter" @dragleave="handleDragLeave" @dragover.prevent="handleDragOver" @drop.stop="handleDrop($event)" @dragend.prevent="handleDragEnd" id="tree-node">
+  <li draggable="true" @dragstart.stop="handleDragStart($event)" @dragenter="handleDragEnter" @dragleave="handleDragLeave"
+    @dragover.prevent="handleDragOver" @drop.stop="handleDrop($event)" @dragend.prevent="handleDragEnd" id="tree-node">
     <span @mouseenter="showOprators" @mouseleave="hideOprators">
       <span class="el-tree-node__expand-icon"></span>
-    <a @click="">{{node.name}}</a>
+    <a>{{node.name}}</a>
     <small v-if="show_oprators" class="icon-box">
         <a @click="editNode" href="#" class="el-icon-edit"></a>
         <a @click="addNode" href="#" class="el-icon-plus"></a>
@@ -52,17 +53,28 @@
         window.__drop_node__ = this
         this.$el.style.backgroundColor = 'grey'
       },
-      handleDragEnter() { if (!this.is_draged) this.$el.style.backgroundColor = '' },
-      handleDragLeave() { if (!this.is_draged) this.$el.style.backgroundColor = '' },
+      handleDragEnter() {
+        if (!this.is_draged) this.$el.style.backgroundColor = ''
+      },
+      handleDragLeave() {
+        if (!this.is_draged) this.$el.style.backgroundColor = ''
+      },
       handleDragOver() {},
 
-      showOprators() { this.show_oprators = true },
-      hideOprators() { this.show_oprators = false },
+      showOprators() {
+        this.show_oprators = true
+      },
+      hideOprators() {
+        this.show_oprators = false
+      },
 
       addNode() {
         const name = prompt('Input the name of new node', 'new node')
         if (!!name && !!name.trim()) {
-          this.node.children.push({ name: name.trim(), children: [] })
+          this.node.children.push({
+            name: name.trim(),
+            children: []
+          })
         }
       },
       removeNode() {
@@ -87,18 +99,18 @@
     list-style: none;
     padding: 0;
   }
-  
+
   .node-ul {
     padding-left: 10px;
   }
-  
+
   .icon-box a {
     text-decoration: none;
     color: #999;
     font-size: 14px;
     letter-spacing: 0.5em;
   }
-  
+
   #tree-node {
     text-align: left;
   }

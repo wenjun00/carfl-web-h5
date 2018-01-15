@@ -1,7 +1,7 @@
 export default [
   {
     title: '进件',
-    path: "purchase",
+    path: "purchase/purchase-manage/purchase-common-use",
     children: [
       {
         title: '进件管理',
@@ -279,10 +279,6 @@ export default [
         title: '机构用户与管理',
         path: 'systemManage/power-config/org-user-manage'
       }
-        // , {
-        //   title: '分配角色',
-        //   path: 'systemManage/power-config/allot-role'
-        // }
       ]
     }, {
       title: '运维设置',
@@ -293,20 +289,8 @@ export default [
         title: '订单状态变更',
         path: 'systemManage/operation-config/order-status-change'
       }, {
-        title: '系统日志下载',
-        path: 'systemManage/operation-config/system-log-download'
-      }, {
         title: '客户还款撤销',
         path: 'systemManage/operation-config/customer-repay-revert'
-      }, {
-        title: '系统参数管理',
-        path: 'systemManage/operation-config/system-param-manage'
-      }, {
-        title: '系统备份',
-        path: 'systemManage/operation-config/system-backups'
-      }, {
-        title: '批量管理',
-        path: 'systemManage/operation-config/batch-manage'
       }
       ]
     },
@@ -315,10 +299,24 @@ export default [
       icon: 'qitashezhi',
       color: '#47AAB6',
       path: 'systemManage/other-config',
-      children: [{
-        title: '系统日志',
-        path: 'systemManage/other-config/system-log'
-      }]
+      children: [
+        //   {
+        //   title: '系统日志',
+        //   path: 'systemManage/other-config/system-log'
+        // }, 
+        {
+          title: '系统参数管理',
+          path: 'systemManage/operation-config/system-param-manage'
+        }, {
+          title: '系统备份',
+          path: 'systemManage/operation-config/system-backups'
+        }, {
+          title: '批量管理',
+          path: 'systemManage/operation-config/batch-manage'
+        }, {
+          title: '系统日志',
+          path: 'systemManage/operation-config/system-log-download'
+        }]
     }]
   }
 ]

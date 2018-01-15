@@ -6,7 +6,7 @@
       <span style="margin-left:10px;">参数名称</span>
       <i-input v-model="customName" style="display:inline-block;width:8%;" placeholder="请输入参数名称"></i-input>
       <span>是否启用</span>
-      <i-select>
+      <i-select style="width:10%;">
         <i-option label="启用" value="启用" key="启用"></i-option>
         <i-option label="停用" value="停用" key="停用"></i-option>
       </i-select>

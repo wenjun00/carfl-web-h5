@@ -123,6 +123,8 @@
     .ivu-tabs-bar {
       background: #fff;
       border-bottom: 1px solid #fff;
+      height: 43px;
+      padding: 10px 0;
     }
   }
 
