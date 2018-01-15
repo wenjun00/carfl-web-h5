@@ -41,7 +41,7 @@
         }
         if (item.path) {
           let componentName = CommonService.getComponentName(item.path);
-
+          console.log(componentName)
           let components = this.$options.components;
           if (components) {
             components[componentName] = () =>

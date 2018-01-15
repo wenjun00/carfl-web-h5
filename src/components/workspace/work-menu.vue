@@ -1,6 +1,6 @@
 <template>
   <div class="component work-menu text-left row middle-span">
-    <div v-for="menu_lv1 in menuConfig" :key="menu_lv1.path" class="menu-level-1">
+    <div v-for="menu_lv1 in menuConfig" :key="menu_lv1.path" class="menu-level-1" @click="redirect(menu_lv1,menu_lv1)">
       <Poptip v-model="menu_lv1.popue" placement="bottom" trigger="hover">
         <div class="menu-level-1-title row middle-span center-span" style="height:100%">
           <span>{{menu_lv1.title}}</span>
@@ -61,6 +61,7 @@
     }
 
     private redirect(page, menu) {
+      console.log(page)
       menu.popue = false;
       this.openPage(page);
     }
@@ -139,7 +140,7 @@
       color: #1D4F8B;
       margin-bottom: 20px;
       padding-top: 30px; // text-align: left;
-      padding-left:4px;
+      padding-left: 4px;
     }
     .menu3 {
       margin: 12px 0;

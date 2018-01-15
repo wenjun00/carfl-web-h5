@@ -1,7 +1,7 @@
 export default [
   {
     title: '进件',
-    path: "purchase/purchase-manage/purchase-common-use",
+    path: "purchase/purchase-index",
     children: [
       {
         title: '进件管理',
@@ -70,7 +70,7 @@ export default [
   },
   {
     title: '审批',
-    path: 'approval',
+    path: 'approval/approval-index',
     children: [{
       title: '审核管理',
       color: '#598AC5',
@@ -146,7 +146,7 @@ export default [
   },
   {
     title: '财务',
-    path: 'finance',
+    path: 'finance/finance-index',
     children: [{
       title: '首付款管理',
       icon: 'shoufukuanguanli',
@@ -228,7 +228,7 @@ export default [
   },
   {
     title: '基础数据',
-    path: 'base',
+    path: 'base/base-index',
     children: [{
       title: '基础数据',
       icon: 'jichushuju',
@@ -263,7 +263,7 @@ export default [
   },
   {
     title: '系统设置',
-    path: 'systemManage',
+    path: 'systemManage/systemManage-index',
     children: [{
       title: '权限设置',
       color: '#598AC5',
@@ -300,10 +300,6 @@ export default [
       color: '#47AAB6',
       path: 'systemManage/other-config',
       children: [
-        //   {
-        //   title: '系统日志',
-        //   path: 'systemManage/other-config/system-log'
-        // }, 
         {
           title: '系统参数管理',
           path: 'systemManage/operation-config/system-param-manage'
