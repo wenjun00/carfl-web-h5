@@ -5,7 +5,7 @@
       <i-row style="background:#F5F5F5">
         <i-col :span="24" style="padding:6px;">
           <span>收款类型：</span><span style="margin-left:10px;">销售收款</span>
-          <div style="float:right;color:#265ea2">销售申请详情</div>
+          <i-button style="float:right;color:#265ea2" type="text" @click="saleApplyInfo">销售申请详情</i-button>
         </i-col>
         <i-col :span="24" :pull="3" style="margin-top:10px;margin-left:10px">
           <i-form-item>
@@ -84,7 +84,7 @@
     <div>
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;margin-top:10px;"></div><span>账户信息</span>
     </div>
-    <data-box :columns="columns2" :data="data2"></data-box>
+    <i-table :columns="columns2" :data="data2"></i-table>
 
     <div>
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;margin-top:10px;"></div><span>收款凭证</span>
@@ -104,6 +104,12 @@
         </div>
       </i-col>
     </i-row>
+
+    <template>
+      <i-modal title="申请单详情" v-model="purchaseInfoModel" width="800">
+        <purchase-information></purchase-information>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -112,11 +118,13 @@
   import Component from "vue-class-component";
   import ChangeCard from "~/components/purchase-manage/change-card.vue"
   import DataBox from "~/components/common/data-box.vue";
+  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
 
   @Component({
     components: {
       ChangeCard,
-      DataBox
+      DataBox,
+      PurchaseInformation
     }
   })
   export default class ConfirmGather extends Vue {
@@ -126,6 +134,7 @@
     private data2: Array < Object > = [];
     private columns3: any;
     private data3: Array < Object > = [];
+    private purchaseInfoModel: Boolean = false;
     private gatherModal: Object = {
       gatherType: '销售收款',
       remarks: ''
@@ -340,6 +349,9 @@
       //   tr.appendChild(td);
       // }
       // tb.tBodies[0].appendChild(tr);
+    }
+    saleApplyInfo() {
+      this.purchaseInfoModel = true
     }
   }
 

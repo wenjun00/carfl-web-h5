@@ -45,142 +45,18 @@
         <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
       </i-col>
     </i-row>
-    <i-tabs value="purchaseItem" type="card" style="height:73%;overflow-y:auto;background:white" v-show="tabShow">
-      <i-tab-pane name="purchaseItem" label="选购资料">
-        <div class="form-title">选购信息</div>
-        <i-row class="proCity">
-          <i-form ref="parchase-form" :model="applyData" :rules="applyRule" :label-width="110">
-            <i-col span="12">
-              <i-form-item label="申请省份" prop="">
-                <i-select style="width:80px;">
-                  <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
-                </i-select>
-              </i-form-item>
-            </i-col>
-            <i-col span="12" pull="3">
-              <i-form-item label="申请城市" prop="">
-                <i-select style="width:80px;">
-                  <i-option label="西安市" value="西安市" key="西安市"></i-option>
-                  <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
-                  <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
-                  <i-option label="渭南市" value="渭南市" key="渭南市"></i-option>
-                  <i-option label="铜川市" value="铜川市" key="铜川市"></i-option>
-                  <i-option label="榆林市" value="榆林市" key="榆林市"></i-option>
-                  <i-option label="延安市" value="延安市" key="延安市"></i-option>
-                  <i-option label="汉中市" value="汉中市" key="汉中市"></i-option>
-                  <i-option label="安康市" value="安康市" key="安康市"></i-option>
-                  <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
-                </i-select>
-              </i-form-item>
-            </i-col>
-            <i-col span="12">
-              <i-form-item label="所属公司" prop="">
-                <i-select style="width:80px;">
-                  <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
-                  <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
-                </i-select>
-              </i-form-item>
-            </i-col>
-          </i-form>
-        </i-row>
-        <i-table :columns="columns1" :data="data1" :width="1100"></i-table>
-        <!--<i-button @click="addModalOpen" class="blueButton" style="margin:10px 0;">添加车辆</i-button>-->
-        <div>
-          <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
-          <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
-        </div>
-        <div style="height:60px;width:100%;">
-        </div>
+    <i-tabs v-model="materialTabs" type="card">
+      <i-tab-pane name="choose-buy-materials-all" label="选购资料">
       </i-tab-pane>
-      <i-tab-pane name="customerItem" label="客户资料">
-        <span class="form-title">个人信息</span>
-        <i-row>
-          <i-form ref="parchase-form" :model="applyData" :rules="applyRule" :label-width="110">
-            <i-row>
-              <i-col span="12" class="bigSelect">
-                <i-form-item label="购车方" prop="idCard">
-                  <i-select v-model="purchaseData.province">
-                    <i-option label="中国人寿" value="中国人寿" key="中国人寿"></i-option>
-                    <i-option label="中国平安" value="中国平安" key="中国平安"></i-option>
-                  </i-select>
-                </i-form-item>
-              </i-col>
-              <i-col span="12" pull="3" class="bigSelect">
-                <i-form-item label="联系电话" prop="userName">
-                  <i-input></i-input>
-                </i-form-item>
-              </i-col>
-            </i-row>
-            <i-row>
-              <i-col span="12">
-                <i-form-item label="证件类型" prop="phone">
-                  <i-input type="text" v-model="purchaseData.company">
-                  </i-input>
-                </i-form-item>
-              </i-col>
-              <i-col span="12" pull="3">
-                <i-form-item label="证件号码" prop="phone">
-                  <i-input type="text" v-model="purchaseData.company">
-                  </i-input>
-                </i-form-item>
-              </i-col>
-            </i-row>
-            <i-row>
-              <i-col :span="12">
-                <i-form-item label="联系地址">
-                  <i-row>
-                    <i-col :span="8">
-                      <i-select>
-                        <i-option label="陕西" value="陕西" key="陕西"></i-option>
-                      </i-select>
-                    </i-col>
-                    <i-col :span="8">
-                      <i-select>
-                        <i-option label="西安" value="西安" key="西安"></i-option>
-                      </i-select>
-                    </i-col>
-                    <i-col :span="8">
-                      <i-select>
-                        <i-option label="雁塔" value="雁塔" key="雁塔"></i-option>
-                        <i-option label="碑林" value="碑林" key="碑林"></i-option>
-                        <i-option label="未央" value="未央" key="未央"></i-option>
-                        <i-option label="长安" value="长安" key="长安"></i-option>
-                        <i-option label="临潼" value="临潼" key="临潼"></i-option>
-                      </i-select>
-                    </i-col>
-                  </i-row>
-                  <!--<i-row>
-                  <i-input placeholder="请具体到门牌号"></i-input>
-                </i-row>-->
-                </i-form-item>
-              </i-col>
-              <i-col :span="12" pull="3">
-                <i-form-item label="邮政编码" prop="phone">
-                  <i-input type="text" v-model="purchaseData.company">
-                  </i-input>
-                </i-form-item>
-              </i-col>
-            </i-row>
-            <i-row>
-              <i-col span="12">
-                <i-form-item label="代办服务" prop="phone">
-                  <i-checkbox-group>
-                    <i-checkbox label="上牌"></i-checkbox>
-                    <i-checkbox label="办理保险"></i-checkbox>
-                    <i-checkbox label="代缴购置税"></i-checkbox>
-                    <i-checkbox label="代缴车船税"></i-checkbox>
-                    <i-checkbox label="按揭贷款"></i-checkbox>
-                    <i-checkbox label="车辆装潢"></i-checkbox>
-                    <i-checkbox label="代缴其他费用"></i-checkbox>
-                    <i-checkbox label="其他"></i-checkbox>
-                  </i-checkbox-group>
-                </i-form-item>
-              </i-col>
-            </i-row>
-          </i-form>
-        </i-row>
+      <i-tab-pane name="customer-materials-all" label="客户资料">
       </i-tab-pane>
     </i-tabs>
+    <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
+      <div class="shade" :style="{display:disabledStatus}">
+      </div>
+      <component :is="materialTabs" :disabledStatus="disabledStatus"></component>
+    </div>
+
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="8" push="1">
@@ -196,7 +72,7 @@
       </i-row>
     </div>
     <template>
-      <i-modal v-model="addCar" title="添加车辆" width="1100">
+      <i-modal v-model="addCar" title="添加车辆" width="1100" class="customer-lease-tabs">
         <i-row>
           <i-input size="small" style="display:inline-block;width:20%;margin-right:10px" placeholder="请输入关键字"></i-input>
           <i-button class="blueButton">搜索</i-button>
@@ -249,6 +125,8 @@
     Layout
   } from "~/core/decorator";
   import AddCar from "~/components/purchase-manage/add-car.vue"
+  import ChooseBuyMaterialsAll from "~/components/purchase-manage/choose-buy-materials-all.vue";
+  import CustomerMaterialsAll from "~/components/purchase-manage/customer-materials-all.vue";
 
   @Layout("workspace")
 
@@ -256,7 +134,9 @@
     components: {
       DataBox,
       SvgIcon,
-      AddCar
+      AddCar,
+      ChooseBuyMaterialsAll,
+      CustomerMaterialsAll
     }
   })
   export default class FullPaymentApply extends Page {
@@ -264,11 +144,7 @@
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
     private applyData: any;
     applyRule: Object = {};
-    private purchaseData: Object = {
-      province: '',
-      city: '',
-      company: ''
-    };
+
     private columns1: any;
     private columns2: any;
     private data1: Array < Object > = [];
@@ -279,7 +155,8 @@
     private isShown: Boolean = true;
     private editCarModal: Boolean = false;
     private addOrEditFlag: Boolean = false;
-    private tabShow: Boolean = false;
+    private materialTabs: String = 'choose-buy-materials-all'
+    private disabledStatus: String = ''; // 子组件中输入框禁用flag
 
     addNewApply() {
       this.$Modal.confirm({
@@ -494,7 +371,7 @@
     }
     showTab() {
       if (this.applyData.idCard.length === 18) {
-        this.tabShow = true
+        this.disabledStatus = 'none'
       }
     }
     confirmAndBack() {
@@ -609,6 +486,30 @@
     .ivu-select,
     .ivu-select-single {
       width: 100px;
+    }
+    .shade {
+      width: 98%;
+      height: 666px;
+      background: rgba(250, 250, 250, 0.4);
+      position: absolute;
+      left: 21px;
+      top: 257px;
+      z-index: 999;
+    }
+  }
+
+  .customer-lease-tabs {
+    .ivu-tabs-bar {
+      border-bottom: 1px solid #DDDEE1;
+      .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
+        margin: 0;
+        margin-right: 4px;
+        padding: 5px 16px 4px;
+        border: 1px solid #dddee1;
+        border-bottom: 0;
+        border-radius: 4px 4px 0 0;
+        transition: all .3s ease-in-out;
+      }
     }
   }
 

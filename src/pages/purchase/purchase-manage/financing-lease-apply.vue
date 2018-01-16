@@ -61,7 +61,9 @@
         </i-tab-pane>
       </i-tabs>
       <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
-        <component :is="materialTabs" :disabled="disabled"></component>
+        <div class="shade" :style="{display:disabledStatus}">
+        </div>
+        <component :is="materialTabs" :disabledStatus="disabledStatus"></component>
       </div>
       <div class="submitBar">
         <i-row type="flex" align="middle" style="padding:5px">
@@ -71,7 +73,7 @@
           <i-col :span="10" pull="4">
             <span>申请时间： 2017-12-01 13:56:45</span>
           </i-col>
-          <i-col :span="6" style="text-align:right;">
+          <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
             <i-button size="large" class="highDefaultButton">保存草稿</i-button>
             <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit">保存并提交</i-button>
           </i-col>
@@ -112,7 +114,7 @@
     private customerRule: Object = {};
     private customerModel: any;
     private addCar: Boolean = false;
-    private disabled: Boolean = true; // 子组件中输入框禁用flag
+    private disabledStatus: String = ''; // 子组件中输入框禁用flag
     private materialTabs: String = 'choose-buy-materials'
     print() {
       window.print()
@@ -139,7 +141,7 @@
     }
     showTab() {
       if (this.customerModel.idCard.length === 18) {
-        this.disabled = false
+        this.disabledStatus = 'none'
       }
     }
   }
@@ -161,6 +163,7 @@
     left: 0;
     border: 1px solid #ddd;
     box-shadow: -3px 2px 20px #dddddd;
+    padding-right: 24px;
   }
 
   .specialInput {
@@ -173,11 +176,19 @@
 
   .financing-lease-apply {
     .ivu-select-selection {
-      // width: 240%;
       display: inline-block;
       border-style: none;
       border-bottom-style: solid;
       border-radius: 0;
+    }
+    .shade {
+      width: 98%;
+      height: 666px;
+      background: rgba(250, 250, 250, 0.4);
+      position: absolute;
+      left: 21px;
+      top: 257px;
+      z-index: 999;
     }
   }
 

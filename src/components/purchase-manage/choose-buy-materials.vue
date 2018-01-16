@@ -8,14 +8,14 @@
         <i-row>
           <i-col span="12">
             <i-form-item label="申请省份" prop="province">
-              <i-select :disabled="disabled">
+              <i-select>
                 <i-option label="陕西" key="陕西" value="陕西"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="申请城市" prop="city">
-              <i-select :disabled="disabled">
+              <i-select>
                 <i-option label="西安市" value="西安市" key="西安市"></i-option>
                 <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
                 <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
@@ -33,7 +33,7 @@
         <i-row>
           <i-col span="12">
             <i-form-item label="所属公司" prop="company">
-              <i-select :disabled="disabled">
+              <i-select>
                 <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
                 <i-option label="群泰武汉" value="群泰武汉" key="群泰武汉"></i-option>
               </i-select>
@@ -42,12 +42,12 @@
           <i-col span="12" pull="3">
             <i-form-item label="自缴费用" prop="freeMoney">
               <i-checkbox-group>
-                <i-checkbox label="无" :disabled="disabled"></i-checkbox>
-                <i-checkbox label="购置税" :disabled="disabled"></i-checkbox>
-                <i-checkbox label="保险费" :disabled="disabled"></i-checkbox>
-                <i-checkbox label="上牌费" :disabled="disabled"></i-checkbox>
-                <i-checkbox label="路桥费" :disabled="disabled"></i-checkbox>
-                <i-checkbox label="首期租金" :disabled="disabled"></i-checkbox>
+                <i-checkbox label="无"></i-checkbox>
+                <i-checkbox label="购置税"></i-checkbox>
+                <i-checkbox label="保险费"></i-checkbox>
+                <i-checkbox label="上牌费"></i-checkbox>
+                <i-checkbox label="路桥费"></i-checkbox>
+                <i-checkbox label="首期租金"></i-checkbox>
               </i-checkbox-group>
             </i-form-item>
           </i-col>
@@ -55,13 +55,13 @@
         <i-row>
           <i-col span="12">
             <i-form-item label="融资租赁用途" prop="usedMode">
-              <i-input type="text" v-model="chooseBuyModel.usedMode" placeholder="请输入融资租赁用途" :disabled="disabled">
+              <i-input type="text" v-model="chooseBuyModel.usedMode" placeholder="请输入融资租赁用途">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="意向融资金额" prop="hopeMoney">
-              <i-input type="text" v-model="chooseBuyModel.hopeMoney" placeholder="请输入意向融资金额" :disabled="disabled">
+              <i-input type="text" v-model="chooseBuyModel.hopeMoney" placeholder="请输入意向融资金额">
               </i-input>
             </i-form-item>
           </i-col>
@@ -69,7 +69,7 @@
         <i-row>
           <i-col span="12">
             <i-form-item label="意向期限" prop="hopeTime">
-              <i-select v-model="chooseBuyModel.hopeTime" :disabled="disabled">
+              <i-select v-model="chooseBuyModel.hopeTime">
                 <i-option label="1年" value="1年" key="1年"></i-option>
                 <i-option label="2年" value="2年" key="2年"></i-option>
               </i-select>
@@ -77,14 +77,14 @@
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="租金支付" prop="rentPay">
-              <i-input type="text" v-model="chooseBuyModel.rentPay" placeholder="请输入租金支付" :disabled="disabled">
+              <i-input type="text" v-model="chooseBuyModel.rentPay" placeholder="请输入租金支付">
               </i-input>
             </i-form-item>
           </i-col>
         </i-row>
         <i-col span="12">
           <i-form-item label="意向首付比例" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入意向首付比例" :disabled="disabled">
+            <i-input type="text" v-model="chooseBuyModel.hopeProportion" placeholder="请输入意向首付比例">
             </i-input>
           </i-form-item>
         </i-col>
@@ -93,7 +93,7 @@
     <i-table :columns="carColumns" :data="carData" stripe style="margin:10px;" width="1100"></i-table>
     <div>
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
-      <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text" :disabled="disabled">添加车辆</i-button>
+      <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
     </div>
     <i-col span="24" style="line-height:30px;margin-top:20px;" class="form-title">
       <span>产品信息</span>
@@ -104,7 +104,7 @@
     </i-col>
     <div v-show="addPrdShow">
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
-      <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text" :disabled="disabled">添加产品</i-button>
+      <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
     </div>
     <i-row v-show="prdInfoShow">
       <i-form ref="customer-form" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;">
@@ -289,7 +289,7 @@
     private addPrdShow: Boolean = true;
     private changePrdShow: Boolean = false;
     @Prop()
-    disabled: Boolean;
+    disabledStatus: String;
 
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
 
@@ -297,7 +297,7 @@
      * 打开月供模拟计算器
      */
     openSimulateCalculate() {
-      if (!this.disabled) {
+      if (this.disabledStatus === 'none') {
         this.simulateCalculateModal = true
       }
     }
@@ -308,7 +308,7 @@
       this.addProductModal = true
     }
     mounted() {
-      console.log(888, this.disabled)
+      console.log(888, this.disabledStatus)
     }
     created() {
       // 设置表单数据

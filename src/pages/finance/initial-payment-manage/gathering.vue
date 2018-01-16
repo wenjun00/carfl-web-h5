@@ -37,7 +37,7 @@
     </template>
 
     <template>
-      <i-modal v-model="confirmGatherModal" title="确认收款" width="900" class="confirmGather">
+      <i-modal v-model="confirmGatherModal" title="确认收款" width="900" class="confirmGather" :transfer="false">
         <confirm-gather></confirm-gather>
         <div slot="footer">
           <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
