@@ -49,7 +49,7 @@
         <i-button class="blueButton">清空</i-button>
       </i-col>
     </i-row>
-    <i-tabs v-model="materialTabs" type="card">
+    <i-tabs v-model="materialTabs" type="card" class="sale-gather-tabs">
       <i-tab-pane name="gather-detail" label="收款明细">
       </i-tab-pane>
       <i-tab-pane name="upload-the-material" label="上传素材">
@@ -347,6 +347,21 @@
       border-style: none;
       border-bottom-style: solid;
       border-radius: 0;
+    }
+  }
+
+  .sale-gather-tabs {
+    .ivu-tabs-bar {
+      border-bottom: 1px solid #DDDEE1;
+      .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
+        margin: 0;
+        margin-right: 4px;
+        padding: 5px 16px 4px;
+        border: 1px solid #dddee1;
+        border-bottom: 0;
+        border-radius: 4px 4px 0 0;
+        transition: all .3s ease-in-out;
+      }
     }
   }
 

@@ -15,6 +15,12 @@
       <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
+    <div style="float:right;margin-right:10px;margin-top:10px;">
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size: 12px;">导出</span>
+      </div>
+    </div>
     <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
       <span style="margin-left:10px">日期：</span>
@@ -77,13 +83,14 @@
     Layout
   } from "~/core/decorator";
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+  import SvgIcon from '~/components/common/svg-icon.vue'
 
   @Layout("workspace")
   @Component({
-
     components: {
       DataBox,
-      PurchaseInformation
+      PurchaseInformation,
+      SvgIcon
     }
   })
   export default class GrayList extends Page {
@@ -97,12 +104,12 @@
     private openColumnsConfig: Boolean = false;
     private columns3: any;
     private data3: Array < Object > = [];
-    
+
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     created() {
-       this.columns3 = [{
+      this.columns3 = [{
         title: '序号',
         type: 'index',
         width: 80,

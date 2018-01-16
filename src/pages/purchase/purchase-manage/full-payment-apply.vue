@@ -45,7 +45,7 @@
         <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
       </i-col>
     </i-row>
-    <i-tabs v-model="materialTabs" type="card">
+    <i-tabs v-model="materialTabs" type="card" class="full-pay-tabs">
       <i-tab-pane name="choose-buy-materials-all" label="选购资料">
       </i-tab-pane>
       <i-tab-pane name="customer-materials-all" label="客户资料">
@@ -495,6 +495,21 @@
       left: 21px;
       top: 257px;
       z-index: 999;
+    }
+  }
+
+  .full-pay-tabs {
+    .ivu-tabs-bar {
+      border-bottom: 1px solid #DDDEE1;
+      .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
+        margin: 0;
+        margin-right: 4px;
+        padding: 5px 16px 4px;
+        border: 1px solid #dddee1;
+        border-bottom: 0;
+        border-radius: 4px 4px 0 0;
+        transition: all .3s ease-in-out;
+      }
     }
   }
 
