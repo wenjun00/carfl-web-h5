@@ -8,9 +8,9 @@
         <data-grid-item label="申请城市：" :span="4">上海</data-grid-item>
         <data-grid-item label="所属公司：" :span="4">开呗上海</data-grid-item>
       </data-grid>
-     </i-row> 
-     <i-row>
-      <table width="760" class="ziliao" border="1">
+    </i-row>
+    <i-row>
+      <table width="760" class="ziliao" border="1" style="border:1px solid #DDDEE1">
         <tr>
           <td>序号</td>
           <td>品牌 型号</td>
@@ -21,7 +21,7 @@
         </tr>
         <tr>
           <td>1</td>
-          <td>别克 君越  16年改款</td>
+          <td>别克 君越 16年改款</td>
           <td>紫檀红</td>
           <td>198,983.00</td>
           <td>1</td>
@@ -29,7 +29,7 @@
         </tr>
         <tr>
           <td>2</td>
-          <td>别克 君越  16年改款</td>
+          <td>别克 君越 16年改款</td>
           <td>黑</td>
           <td>198,983.00</td>
           <td>1</td>
@@ -65,7 +65,7 @@
             <i-checkbox label="代缴保险税"></i-checkbox>
           </i-checkbox-group>
         </data-grid-item>
-    </data-grid>
+      </data-grid>
     </i-row>
   </div>
 </template>
@@ -73,7 +73,10 @@
 <script lang="ts">
   import Vue from "vue";
   import Component from "vue-class-component";
-  import { DataGrid, DataGridItem } from "fintech-vue-component";
+  import {
+    DataGrid,
+    DataGridItem
+  } from "fintech-vue-component";
 
   import {
     Prop
@@ -89,17 +92,19 @@
     }
   })
   export default class PurchaseInformationTotal extends Vue {
-    private fruit: Array<String> = ['购置费'];
+    private fruit: Array < String > = ['购置费'];
     private single: Boolean = false;
-    
+
     @Prop() person;
     @Action select;
   }
+
 </script>
 
 <style scoped>
- .ziliao td{
-  font-size:14px;
-  padding: 5px;
-}
+  .ziliao td {
+    font-size: 14px;
+    padding: 5px;
+  }
+
 </style>

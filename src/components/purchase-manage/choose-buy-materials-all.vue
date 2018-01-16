@@ -42,8 +42,6 @@
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
       <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
     </div>
-    <div style="height:60px;width:100%;">
-    </div>
   </section>
 </template>
 

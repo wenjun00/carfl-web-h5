@@ -1,6 +1,6 @@
 <!--全款销售申请-->
 <template>
-  <section class="page full-payment-apply">
+  <section class="page full-payment-apply specialInput">
     <div class="header">
       <span class="form-title">全款销售申请</span>
       <div style="float:right;margin-top: 10px;margin-right:10px">
@@ -12,10 +12,10 @@
     </div>
     <i-row type="flex">
       <i-col span="18">
-        <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="110" style="margin-top:20px;">
+        <i-form ref="customer-form" :model="applyData" :rules="applyRule" label-position="left" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
           <i-col span="12">
             <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab">
+              <i-input type="text" v-model="applyData.idCard" autofocus placeholder="请输入证件号码" @on-change="showTab">
               </i-input>
             </i-form-item>
           </i-col>
@@ -65,7 +65,7 @@
         <i-col :span="10" pull="4">
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
-        <i-col :span="6" style="text-align:right">
+        <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
           <i-button size="large" class="highDefaultButton">保存草稿</i-button>
           <i-button class="highButton" @click="saveAndSubmit">保存并提交</i-button>
         </i-col>

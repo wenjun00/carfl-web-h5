@@ -31,7 +31,7 @@
         </template>
       </data-grid-item>
     </data-grid>
-    <table border="1" width="900" style="margin-top:10px;text-align:center">
+    <table border="1" width="900" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
         <td bgcolor="#F2F2F2" colspan="2">收款方式</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>

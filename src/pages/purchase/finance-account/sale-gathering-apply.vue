@@ -19,7 +19,7 @@
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80" style="margin-top:20px;">
           <i-col span="12">
             <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码">
+              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab">
               </i-input>
             </i-form-item>
           </i-col>
@@ -49,20 +49,17 @@
         <i-button class="blueButton">清空</i-button>
       </i-col>
     </i-row>
-    <i-tabs value="purchaseItem" type="card" style="height:73%;overflow-y:auto;background:white">
-      <i-tab-pane name="purchaseItem" label="收款明细">
-        <i-table :columns="columns1" :data="data1" width="1100"></i-table>
-        <div>
-          <Icon type="plus" style="position:relative;left:16px;top:5px;color:#265ea2"></Icon>
-          <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">变更收款项</i-button>
-        </div>
-        <div class="form-title">账户信息</div>
-        <i-table :columns="columns3" :data="data3" width="1100"></i-table>
+    <i-tabs v-model="materialTabs" type="card">
+      <i-tab-pane name="gather-detail" label="收款明细">
       </i-tab-pane>
-      <i-tab-pane name="customerItem" label="上传素材">
-        <upload-the-material></upload-the-material>
+      <i-tab-pane name="upload-the-material" label="上传素材">
       </i-tab-pane>
     </i-tabs>
+    <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
+      <div class="shade" :style="{display:disabledStatus}">
+      </div>
+      <component :is="materialTabs" :disabledStatus="disabledStatus"></component>
+    </div>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="8" push="1">
@@ -71,7 +68,7 @@
         <i-col :span="10" pull="4">
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
-        <i-col :span="6" style="text-align:right">
+        <i-col :span="6" style="text-align:right;position:relative;top:6px;">
           <i-button class="highDefaultButton">保存草稿</i-button>
           <i-button class="highButton">保存并提交</i-button>
         </i-col>
@@ -103,19 +100,6 @@
       </i-modal>
     </template>
 
-    <!--变更收款项-->
-    <template>
-      <i-modal v-model="changeGatherItemModal" title="变更收款项">
-        <change-gather-item></change-gather-item>
-      </i-modal>
-    </template>
-
-    <!--编辑收款项-->
-    <template>
-      <i-modal v-model="modifyGatherItemModal" title="编辑收款项" width="300">
-        <modify-gather-item></modify-gather-item>
-      </i-modal>
-    </template>
   </section>
 </template>
 <script lang="ts">
@@ -136,8 +120,7 @@
     Layout
   } from "~/core/decorator";
   import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
-  import ChangeGatherItem from "~/components/purchase-manage/change-gather-item.vue";
-  import ModifyGatherItem from "~/components/purchase-manage/modify-gather-item.vue";
+  import GatherDetail from "~/components/purchase-manage/gather-detail.vue";
 
 
   @Layout("workspace")
@@ -147,145 +130,38 @@
       DataBox,
       SvgIcon,
       UploadTheMaterial,
-      ChangeGatherItem,
-      ModifyGatherItem
+      GatherDetail
     }
   })
   export default class SaleGatheringApply extends Page {
     @Dependencies() private pageService: PageService;
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
-    private applyData: Object = {
-      idNumber: '',
-      customerName: '',
-      phone: '',
-      salesManName: ''
-    };
+    private applyData: any;
     applyRule: Object = {};
     private purchaseData: Object = {
       province: '',
       city: '',
       company: ''
     };
-    private columns1: any;
     private columns2: any;
-    private columns3: any;
-    private data1: Array < Object > = [];
+
     private data2: Array < Object > = [];
-    private data3: Array < Object > = [];
     private categoryData: Array < Object > ;
     private loading: Boolean = false;
     private addCar: Boolean = false;
     private isShown: Boolean = true;
-    private changeGatherItemModal: Boolean = false;
     private modifyGatherItemModal: Boolean = false;
+    private materialTabs: String = 'gather-detail'
+    private disabledStatus: String = ''; // 子组件中输入框禁用flag
 
     created() {
-      this.columns1 = [{
-        title: "操作",
-        width: 340,
-        align: "center",
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          if (row.itemName !== '合计') {
-            return h("div", [
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.modifyGatherItem();
-                    }
-                  }
-                },
-                "编辑"
-              ),
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.$Modal.confirm({
-                        title: '提示',
-                        content: '确定删除吗？',
-                        onOk: () => {
-                          this.data1.forEach((x, i) => {
-                            if (i === index) {
-                              this.data1.splice(i, 1)
-                            }
-                          })
-                        }
-                      })
-                    }
-                  }
-                },
-                "删除"
-              )
-            ])
-          }
-        }
-      }, {
-        key: 'itemName',
-        title: '项目名称',
-        align: 'center'
-      }, {
-        key: 'itemMoney',
-        title: '金额',
-        align: 'center'
-      }]
+      this.applyData = {
+        idCard: '',
+        customerName: '',
+        phone: '',
+        salesManName: ''
+      }
 
-      this.columns3 = [{
-        key: 'accountName',
-        align: 'center',
-        title: '户名'
-      }, {
-        key: 'openAccountBank',
-        align: 'center',
-        title: '开户银行'
-      }, {
-        key: 'bankCardId',
-        align: 'center',
-        title: '银行卡号'
-      }, {
-        key: 'branchBankName',
-        align: 'center',
-        title: '支行名称'
-      }, {
-        key: 'thirdCustomId',
-        align: 'center',
-        title: '第三方客户号'
-      }]
-
-      this.data3 = [{
-        accountName: '李兵强',
-        openAccountBank: '中国建设银行',
-        bankCardId: '6227004171150315789',
-        branchBankName: '丈八六路支行',
-        thirdCustomId: '3456878774154'
-      }]
-
-      this.data1 = [{
-        itemName: '首付金额',
-        itemMoney: '9000'
-      }, {
-        itemName: '首付月供',
-        itemMoney: '9000'
-      }, {
-        itemName: '合计',
-        itemMoney: '18000'
-      }]
       this.columns2 = [{
         type: 'selection',
         align: 'center'
@@ -396,15 +272,12 @@
     showCategory() {
       this.isShown = !this.isShown
     }
-    /**
-     * 变更收款项
-     */
-    changeGatherItem() {
-      this.changeGatherItemModal = true
+    showTab() {
+      if (this.applyData.idCard.length === 18) {
+        this.disabledStatus = 'none'
+      }
     }
-    modifyGatherItem() {
-      this.modifyGatherItemModal = true
-    }
+
   }
 
 </script>
@@ -466,19 +339,11 @@
     bottom: 0;
     left: 0;
     border: 1px solid #ddd;
+    padding-right: 24px;
   }
 
   .specialInput {
     .ivu-input {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-
-  .bigSelect {
-    .ivu-select-selection {
-      display: inline-block;
       border-style: none;
       border-bottom-style: solid;
       border-radius: 0;
@@ -490,6 +355,15 @@
       border-style: none;
       border-bottom-style: solid;
       border-radius: 0;
+    }
+    .shade {
+      width: 98%;
+      height: 666px;
+      background: rgba(250, 250, 250, 0.4);
+      position: absolute;
+      left: 21px;
+      top: 257px;
+      z-index: 999;
     }
   }
 

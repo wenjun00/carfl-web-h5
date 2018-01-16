@@ -36,7 +36,7 @@
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>收款方式</span>
     </div>
 
-    <table border="1" width="840" class="gather_type_table" style="margin-top:10px;text-align:center">
+    <table border="1" width="840" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
         <td bgcolor="#F2F2F2">
           <div style="display:inline-block;padding:0 10px;cursor:pointer" @click="addRow">

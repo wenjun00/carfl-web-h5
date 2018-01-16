@@ -33,7 +33,7 @@
       </data-grid-item>
     </data-grid>
 
-    <table border="1" width="868" style="margin-top:10px;text-align:center">
+    <table border="1" width="868" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
         <td bgcolor="#F2F2F2" colspan="3">还款</td>
         <td bgcolor="#F2F2F2" colspan="4">明细</td>

@@ -17,7 +17,7 @@
           <i-form ref="customer-form" :model="customerModel" label-position="left" :rules="customerRule" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
             <i-col span="12">
               <i-form-item label="证件号码" prop="idCard">
-                <i-input type="text" v-model="customerModel.idCard" placeholder="请输入证件号码" @on-change="showTab">
+                <i-input type="text" v-model="customerModel.idCard" placeholder="请输入证件号码" autofocus @on-change="showTab">
                 </i-input>
               </i-form-item>
             </i-col>

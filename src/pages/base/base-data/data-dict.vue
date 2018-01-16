@@ -18,7 +18,7 @@
           <i-input style="width:10%;"></i-input>
           <i-button class="blueButton" style="margin-left:10px">搜索</i-button>
           <i-button class="blueButton" style="margin-left:10px" @click="addData">新增数据</i-button>
-          <table border="1" width="100%" style="margin-top:10px;" id="tb">
+          <table border="1" width="100%" style="margin-top:10px;border:1px solid #DDDEE1" id="tb">
             <tr align="center" height="40">
               <td bgcolor="#F2F2F2" width="100">序号</td>
               <td bgcolor="#F2F2F2">操作</td>

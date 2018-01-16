@@ -21,7 +21,7 @@
 
             <i-col :span="12">
               <i-form-item label="证件号码" prop="idCard">
-                <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码">
+                <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -74,20 +74,17 @@
         <i-button class="blueButton">清空</i-button>
       </i-col>
     </i-row>
-    <i-tabs value="purchaseItem" type="card" style="height:73%;overflow-y:auto;background:white">
-      <i-tab-pane name="purchaseItem" label="收款明细">
-        <i-table :columns="columns1" :data="data1" width="1100"></i-table>
-        <div>
-          <Icon type="plus" style="position:relative;left:16px;top:5px;color:#265ea2"></Icon>
-          <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">添加收款项</i-button>
-        </div>
-        <div class="form-title">账户信息</div>
-        <i-table :columns="columns3" :data="data3" width="1100"></i-table>
+    <i-tabs v-model="materialTabs" type="card">
+      <i-tab-pane name="gather-detail-early-pay" label="收款明细">
       </i-tab-pane>
-      <i-tab-pane name="customerItem" label="上传素材">
-        <upload-the-material></upload-the-material>
+      <i-tab-pane name="upload-the-material" label="上传素材">
       </i-tab-pane>
     </i-tabs>
+    <div style="height:479px;overflow-y:auto;overflow-x:hidden;">
+      <div class="shade" :style="{display:disabledStatus}">
+      </div>
+      <component :is="materialTabs" :disabledStatus="disabledStatus"></component>
+    </div>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="8" push="1">
@@ -96,7 +93,7 @@
         <i-col :span="10" pull="4">
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
-        <i-col :span="6" style="text-align:right">
+        <i-col :span="6" style="text-align:right;position:relative;top:6px;">
           <i-button class="highDefaultButton">保存草稿</i-button>
           <i-button class="highButton">保存并提交</i-button>
         </i-col>
@@ -162,6 +159,7 @@
   import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
   import ChangeGatherItem from "~/components/purchase-manage/change-gather-item.vue";
   import ModifyGatherItem from "~/components/purchase-manage/modify-gather-item.vue";
+  import GatherDetailEarlyPay from "~/components/purchase-manage/gather-detail-early-pay.vue";
 
   @Layout("workspace")
 
@@ -171,18 +169,14 @@
       SvgIcon,
       UploadTheMaterial,
       ChangeGatherItem,
-      ModifyGatherItem
+      ModifyGatherItem,
+      GatherDetailEarlyPay
     }
   })
   export default class EarlyRecoverApply extends Page {
     @Dependencies() private pageService: PageService;
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
-    private applyData: Object = {
-      idNumber: '',
-      customerName: '',
-      phone: '',
-      salesManName: ''
-    };
+    private applyData: any
     applyRule: Object = {};
     private purchaseData: Object = {
       province: '',
@@ -201,8 +195,16 @@
     private isShown: Boolean = true;
     private changeGatherItemModal: Boolean = false;
     private modifyGatherItemModal: Boolean = false;
+    private materialTabs: String = 'gather-detail-early-pay'
+    private disabledStatus: String = ''; // 子组件中输入框禁用flag
 
     created() {
+      this.applyData = {
+        idNumber: '',
+        customerName: '',
+        phone: '',
+        salesManName: ''
+      }
       this.columns1 = [{
         title: "操作",
         width: 240,
@@ -429,6 +431,11 @@
     modifyGatherItem() {
       this.modifyGatherItemModal = true
     }
+    showTab() {
+      if (this.applyData.idCard.length === 18) {
+        this.disabledStatus = 'none'
+      }
+    }
   }
 
 </script>
@@ -514,6 +521,15 @@
       border-style: none;
       border-bottom-style: solid;
       border-radius: 0;
+    }
+    .shade {
+      width: 98%;
+      height: 666px;
+      background: rgba(250, 250, 250, 0.4);
+      position: absolute;
+      left: 21px;
+      top: 368px;
+      z-index: 999;
     }
   }
 

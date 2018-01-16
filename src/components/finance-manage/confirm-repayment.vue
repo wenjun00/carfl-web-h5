@@ -32,7 +32,7 @@
       </data-grid-item>
     </data-grid>
 
-    <table border="1" width="868" style="margin-top:10px;text-align:center">
+    <table border="1" width="868" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
         <td bgcolor="#F2F2F2" colspan="3">还款</td>
         <td bgcolor="#F2F2F2" colspan="4">明细</td>
@@ -83,7 +83,7 @@
     <div>
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>收款方式</span>
     </div>
-    <table border="1" width="868" style="margin-top:10px;text-align:center">
+    <table border="1" width="868" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
         <td bgcolor="#F2F2F2" colspan="2">收款方式</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
