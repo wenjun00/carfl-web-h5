@@ -46,7 +46,7 @@
           <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
         </i-col>
       </i-row>
-      <i-tabs value="choose-buy-materials" type="card" v-show="tabShow" v-model="materialTabs" class="finance-lease-tabs">
+      <i-tabs type="card" v-model="materialTabs" class="finance-lease-tabs">
         <i-tab-pane label="选购资料" name="choose-buy-materials">
         </i-tab-pane>
         <i-tab-pane label="客户资料" name="customer-materials">
@@ -60,8 +60,8 @@
         <i-tab-pane label="上传素材" name="upload-the-material">
         </i-tab-pane>
       </i-tabs>
-      <div style="height:535px;overflow-y:auto;overflow-x:hidden">
-        <component :is="materialTabs"></component>
+      <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
+        <component :is="materialTabs" :disabled="disabled"></component>
       </div>
       <div class="submitBar">
         <i-row type="flex" align="middle" style="padding:5px">
@@ -112,8 +112,8 @@
     private customerRule: Object = {};
     private customerModel: any;
     private addCar: Boolean = false;
-    private tabShow: Boolean = false;
-    private materialTabs: String = '选购资料'
+    private disabled: Boolean = true; // 子组件中输入框禁用flag
+    private materialTabs: String = 'choose-buy-materials'
     print() {
       window.print()
     }
@@ -139,8 +139,7 @@
     }
     showTab() {
       if (this.customerModel.idCard.length === 18) {
-        console.log('18位')
-        this.tabShow = true
+        this.disabled = false
       }
     }
   }

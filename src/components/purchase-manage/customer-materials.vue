@@ -94,7 +94,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12" pull="4">
+        <i-col span="12" pull="3">
           <i-form-item label="发证机关">
             <i-input type="text" placeholder="请输入发证机关">
             </i-input>
@@ -108,7 +108,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12" pull="4">
+        <i-col span="12" pull="3">
           <i-form-item label="身份证有效期">
             <i-input type="text" placeholder="请输入身份证有效期">
             </i-input>
@@ -129,7 +129,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12" pull="4">
+        <i-col span="12" pull="3">
           <i-form-item label="居住地址家庭座机">
             <i-input type="text" placeholder="请输入居住地址家庭座机">
             </i-input>
@@ -143,7 +143,7 @@
             </i-input>
           </i-form-item>
         </i-col>
-        <i-col span="12" pull="4">
+        <i-col span="12" pull="3">
           <i-form-item label="现居住地生活时长">
             <i-input type="text" placeholder="请输入现居住地生活时长">
             </i-input>
@@ -167,10 +167,19 @@
 <script lang="ts">
   import Vue from "vue";
   import Component from "vue-class-component";
+  import {
+    Prop
+  } from "vue-property-decorator";
 
   export default class CustomerMaterials extends Vue {
     private checkRadio: String = "是";
-    checkRadioChange(val) {}
+    @Prop()
+    disabled: Boolean;
+
+
+    mounted() {
+      console.log(999, this.disabled)
+    }
   }
 
 </script>
