@@ -35,7 +35,7 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>产品信息</span>
       </div>
-      <table border="1" width="760" style="margin-top:10px;">
+      <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>产品系列</td>
           <td>直租</td>
@@ -87,7 +87,7 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>个人资料</span>
       </div>
-      <table border="1" width="760" style="margin-top:10px;">
+      <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>姓名</td>
           <td>左拉</td>
@@ -170,7 +170,7 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>职业信息</span>
       </div>
-      <table border="1" width="760" style="margin-top:10px;">
+      <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>单位名称</td>
           <td>中资联</td>
@@ -223,7 +223,7 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>联系人信息</span>
       </div>
-      <table border="1" width="760" style="margin-top:10px;">
+      <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>姓名</td>
           <td>与本人关系</td>
@@ -290,7 +290,7 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>客户来源</span>
       </div>
-      <table border="1" width="760" style="margin-top:10px;">
+      <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>通过宣传</td>
           <td colspan="4">
@@ -316,7 +316,7 @@
       <i-row style="margin-top:10px">
         <i-col :span="12">
           <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;">
-            <Icon type="plus-circled" style="display:block;margin-top:53px;" size="40"></Icon>
+            <Icon type="plus-circled" style="display:block;margin-top:53px;color:#265ea2" size="40"></Icon>
             <div>点击添加附件</div>
             <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
           </div>

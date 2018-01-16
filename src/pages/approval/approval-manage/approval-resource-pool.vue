@@ -64,8 +64,11 @@
     </template>
 
     <template>
-      <i-modal title="订单详情" width="800" v-model="purchaseInformationModal">
+      <i-modal title="订单详情" width="800" v-model="purchaseInformationModal" class="purchaseInformation">
         <purchase-information></purchase-information>
+        <div slot="footer">
+          <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -189,11 +192,6 @@
               },
               on: {
                 click: () => {
-                  // this.$Modal.info({
-                  //   width: '900',
-                  //   title: '订单详情',
-                  //   render: h => h(PurchaseInformation)
-                  // })
                   this.purchaseInformationModal = true
                 }
               }

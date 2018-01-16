@@ -50,13 +50,15 @@
       <i-modal v-model="approveModal" title="审批" width="800" class="approve">
         <approve></approve>
         <div slot="footer">
-          <i-button class="defaultButton" @click="backToResource">退回资源池</i-button>
-          <i-button class="defaultButton" @click="submitToInternal">提交内审</i-button>
-          <i-button class="defaultButton" @click="submitToblack">黑名单</i-button>
-          <i-button class="defaultButton" @click="submitToGray">灰名单</i-button>
-          <i-button class="bigButtonErr" @click="rejectOrder">拒绝</i-button>
-          <i-button class="bigButtonDefault" @click="rebackModal=true">退件</i-button>
-          <i-button class="bigButtonDefault" @click="approvePassedModal=true">通过</i-button>
+          <i-button style="background:##E7EBEE;color:#666666" @click="backToResource">退回资源池</i-button>
+          <div style="height:32px;background-color:#dddddd;width:1px;display:inline-block;margin:0 10px;position:relative;top:10px;"></div>
+          <i-button style="background:##E7EBEE;color:#666666" @click="submitToGray">灰名单</i-button>
+          <i-button style="background:##E7EBEE;color:#666666" @click="submitToblack">黑名单</i-button>
+          <i-button style="background:##E7EBEE;color:#666666" @click="submitToInternal">提交内审</i-button>
+          <div style="height:32px;background-color:#dddddd;width:1px;display:inline-block;margin:0 10px;position:relative;top:10px;"></div>
+          <i-button size="large" style="background:#265ea2;color:#fff" @click="rejectOrder">拒绝</i-button>
+          <i-button size="large" style="background:#265ea2;color:#fff" @click="rebackModal=true">退件</i-button>
+          <i-button size="large" style="background:#265ea2;color:#fff" @click="approvePassedModal=true">通过</i-button>
         </div>
       </i-modal>
     </template>
@@ -120,8 +122,11 @@
     </template>
 
     <template>
-      <i-modal title="订单详情" width="800" v-model="purchaseInfoModal" class="purchase_info_modal">
+      <i-modal title="订单详情" width="800" v-model="purchaseInfoModal" class="purchaseInformation">
         <purchase-information></purchase-information>
+        <div slot="footer">
+          <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -222,7 +227,7 @@
     private approvePassedModal: Boolean = false;
     private columns3: any;
     private data3: Array < Object > = [];
-    
+
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
@@ -579,14 +584,18 @@
     .bigButtonErr {
       height: 46px;
       width: 80px;
-      background: red;
+      background: #265ea2;
       color: #fff;
     }
     .bigButtonDefault {
       height: 46px;
       width: 80px;
-      background: green;
+      background: #265ea2;
       color: #fff;
+    }
+    .ivu-modal-body {
+      height: 600px;
+      overflow: auto;
     }
   }
 

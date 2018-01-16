@@ -53,8 +53,11 @@
     <data-box :columns="columns1" :data="data1"></data-box>
 
     <template>
-      <i-modal title="订单详情" width="800" v-model="purchaseInfoModal" class="purchase_info_modal">
+      <i-modal title="订单详情" width="800" v-model="purchaseInfoModal" class="purchaseInformation">
         <purchase-information></purchase-information>
+         <div slot="footer">
+          <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -276,11 +279,7 @@
               },
               on: {
                 click: () => {
-                  this.$Modal.info({
-                    width: 900,
-                    title: '订单查询',
-                    render: h => h(PurchaseInformation)
-                  })
+                  this.purchaseInfoModal = true
                 }
               }
             }, row.orderId)

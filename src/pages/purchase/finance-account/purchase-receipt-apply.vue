@@ -24,6 +24,15 @@
         </div>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="订单详情" width="800" v-model="purchaseInfoModal" class="purchaseInformation">
+        <purchase-information></purchase-information>
+        <div slot="footer">
+          <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -54,13 +63,15 @@
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false
+    private purchaseInfoModal: Boolean = false;
 
     addNewApply() {
-      this.$Modal.info({
-        title: '新增申请',
-        width: 800,
-        render: h => h(AddApply)
-      })
+      // this.$Modal.info({
+      //   title: '新增申请',
+      //   width: 800,
+      //   render: h => h(AddApply)
+      // })
+
     }
     created() {
       this.columns1 = [{
@@ -149,10 +160,7 @@
             },
             on: {
               click: () => {
-                this.$Modal.info({
-                  width: 800,
-                  render: h => h(PurchaseInformation)
-                })
+                this.purchaseInfoModal = true
               }
             }
           }, '07241700071512')

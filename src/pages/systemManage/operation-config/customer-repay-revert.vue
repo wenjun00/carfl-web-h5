@@ -26,6 +26,15 @@
         <deduct-record></deduct-record>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="订单详情" width="800" v-model="purchaseInfoModal" class="purchaseInformation">
+        <purchase-information></purchase-information>
+        <div slot="footer">
+          <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -60,6 +69,7 @@
     private deductRecordModal: Boolean = false;
     private columns2: any;
     private data2: Array < Object > ;
+    private purchaseInfoModal: Boolean = false;
 
     created() {
       this.columns1 = [{
@@ -106,11 +116,6 @@
               },
               on: {
                 click: () => {
-                  // this.$Modal.info({
-                  //   title: '划扣记录',
-                  //   width: '1600',
-                  //   render: h => h(DeductRecord)
-                  // })
                   this.deductRecordModal = true
                 }
               }
@@ -145,11 +150,7 @@
               },
               on: {
                 click: () => {
-                  this.$Modal.info({
-                    width: 900,
-                    title: '订单查询',
-                    render: h => h(PurchaseInformation)
-                  })
+                  this.purchaseInfoModal = true
                 }
               }
             }, 'KB2017101001')
@@ -269,8 +270,7 @@
       }]
 
     }
-    rowClick(row) {
-    }
+    rowClick(row) {}
     /**
      * 列配置
      */
