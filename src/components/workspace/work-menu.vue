@@ -61,7 +61,6 @@
     }
 
     private redirect(page, menu, event) {
-      console.log(2)
       if (event) {
         event.stopPropagation()
         event.preventDefault()

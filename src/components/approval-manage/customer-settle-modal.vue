@@ -98,7 +98,6 @@
      * 关闭
      */
     closeModal() {
-      console.log(11)
       this.closeCustomerModal()
     }
   }

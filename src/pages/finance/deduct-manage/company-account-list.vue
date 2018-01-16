@@ -734,9 +734,7 @@
       this.openColumnsConfig = true;
     }
     changeGetCashWay(val) {
-      console.log(val, 8989)
       if (val === "(T+0)即时到账") {
-        console.log(123)
         this.cashModel.serviceCharge = '2'
       }
     }

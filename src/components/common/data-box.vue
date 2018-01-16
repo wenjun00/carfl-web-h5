@@ -74,7 +74,6 @@
     }
 
     pageChange() {
-      console.log(333)
       this.pageConfigChange(this.page);
     }
     rowClick(row) {

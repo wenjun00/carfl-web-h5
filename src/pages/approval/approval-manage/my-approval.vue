@@ -332,7 +332,6 @@
                   },
                   on: {
                     click: () => {
-                      console.log(1111)
                       this.approveModal = true
                     }
                   }

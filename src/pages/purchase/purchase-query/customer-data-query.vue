@@ -252,7 +252,6 @@
       this.orderService.getClientInfo().subscribe(({
         val
       }) => {
-        console.log(222, val)
         this.data1 = val
       })
     }

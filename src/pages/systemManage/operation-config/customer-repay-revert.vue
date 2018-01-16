@@ -270,7 +270,6 @@
 
     }
     rowClick(row) {
-      console.log(888, row)
     }
     /**
      * 列配置

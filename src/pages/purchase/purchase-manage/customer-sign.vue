@@ -129,7 +129,6 @@
     private columns3: any;
 
     currentChange(currentRow, oldRow) {
-      console.log(123134, currentRow, oldRow)
     }
     created() {
       this.columns1 = [{
@@ -362,7 +361,6 @@
      * 多选
      */
     multipleSelect(selection) {
-      console.log(888, selection);
     }
     /**
      * 切换合同种类

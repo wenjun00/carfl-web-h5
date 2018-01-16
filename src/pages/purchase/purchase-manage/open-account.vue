@@ -550,7 +550,6 @@
         val
       }) => {
         this.dataHelp = val
-        console.log(this.dataHelp)
       })
     }
     getOrderInfoByTime() {}
@@ -570,7 +569,6 @@
      * 多选
      */
     multipleSelect(selection) {
-      console.log(888, selection)
     }
     /**
      * 确认解绑

@@ -264,7 +264,6 @@
      * 多选
      */
     multipleSelect(selection) {
-      console.log(888, selection)
     }
     /**
     是否显示汽车分类

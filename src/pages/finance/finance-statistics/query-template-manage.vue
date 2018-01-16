@@ -113,7 +113,6 @@
       this.searchOptions = !this.searchOptions;
     }
     exportMonthReport() {
-      console.log(12314)
     }
   }
 

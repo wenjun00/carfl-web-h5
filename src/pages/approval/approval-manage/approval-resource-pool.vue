@@ -62,6 +62,12 @@
         </div>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="订单详情" width="800" v-model="purchaseInformationModal">
+        <purchase-information></purchase-information>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -102,6 +108,7 @@
     private openColumnsConfig: Boolean = false;
     private columns3: any;
     private data3: Array < Object > = [];
+    private purchaseInformationModal: Boolean = false;
     @Mutation("openPage") openPage;
 
     openSearch() {
@@ -182,11 +189,12 @@
               },
               on: {
                 click: () => {
-                  this.$Modal.info({
-                    width: '900',
-                    title: '订单详情',
-                    render: h => h(PurchaseInformation)
-                  })
+                  // this.$Modal.info({
+                  //   width: '900',
+                  //   title: '订单详情',
+                  //   render: h => h(PurchaseInformation)
+                  // })
+                  this.purchaseInformationModal = true
                 }
               }
             }, '2017101001')

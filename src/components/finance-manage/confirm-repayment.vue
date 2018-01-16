@@ -178,7 +178,6 @@
 
 
     checkDeductRecord() {
-      console.log(123)
       this.deductRecordModal = true
     }
     created() {

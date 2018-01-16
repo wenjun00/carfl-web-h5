@@ -40,7 +40,6 @@
     row: Object;
 
     created() {
-      console.log(this.row,999999)
     }
   }
 </script>

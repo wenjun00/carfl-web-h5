@@ -105,7 +105,6 @@ export default class Test1 extends Vue {
                   },
                   on: {
                     click: () => {
-                      console.log(333);
                     }
                   }
                 },

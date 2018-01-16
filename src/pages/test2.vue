@@ -17,16 +17,13 @@ import { Layout } from "~/core/decorator";
 export default class Test2 extends Vue {
   constructor() {
     super();
-    console.log(1);
   }
   @Prop()
   ttt:String;
 
   created() {
-    console.log("bbb");
   }
   destroyed() {
-    console.log("ccc");
   }
 }
 </script>

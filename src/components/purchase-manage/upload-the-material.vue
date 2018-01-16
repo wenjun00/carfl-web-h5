@@ -65,7 +65,6 @@
       this.openUpload = true
     }
     hhh(response, file, fileList) {
-      console.log(response, file, fileList)
       this.dataList = fileList
     }
     created() {

@@ -307,9 +307,7 @@
     changePrd() {
       this.addProductModal = true
     }
-    mounted() {
-      console.log(888, this.disabledStatus)
-    }
+    mounted() {}
     created() {
       // 设置表单数据
       this.chooseBuyModel = {

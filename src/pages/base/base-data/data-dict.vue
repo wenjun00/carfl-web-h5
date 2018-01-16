@@ -186,7 +186,6 @@
     }
     addData() {
       let tb = document.getElementById('tb')
-      console.log(tb, 999)
     }
     deleteDataDict() {
       this.$Modal.confirm({

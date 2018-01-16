@@ -319,7 +319,6 @@
      * 多选
      */
     multipleSelect(selection) {
-      console.log(888, selection);
     }
     /**
      * 切换合同种类

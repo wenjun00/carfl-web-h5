@@ -138,11 +138,9 @@
         val
       }) => {
         this.carData = val
-        console.log('val', val)
       })
     }
     showCategory() {
-      console.log('0000')
       this.isShown = !this.isShown
     }
   }

@@ -347,7 +347,6 @@
         val
       }) => {
         this.data2 = val
-        console.log('val', val)
       })
       this.categoryData = [{
         title: '所有品牌',
@@ -397,7 +396,6 @@
      * 多选
      */
     multipleSelect(selection) {
-      console.log(888, selection)
     }
     /**
     是否显示汽车分类

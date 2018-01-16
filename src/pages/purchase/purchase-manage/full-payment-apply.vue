@@ -211,8 +211,6 @@
                         this.data1.splice(i, 1)
                       }
                     })
-                    console.log(this.data1.find((x, i) => i === index))
-                    console.log(index)
                   }
                 }
               },
@@ -297,7 +295,6 @@
         val
       }) => {
         this.data2 = val
-        console.log('val', val)
       })
       this.categoryData = [{
         title: '所有品牌',
@@ -347,7 +344,6 @@
      * 多选
      */
     multipleSelect(selection) {
-      console.log(888, selection)
     }
     addModalOpen() {
       this.addOrEditFlag = true
