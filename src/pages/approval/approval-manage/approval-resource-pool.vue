@@ -64,8 +64,8 @@
     </template>
 
     <template>
-      <i-modal title="订单详情" width="800" v-model="purchaseInformationModal" class="purchaseInformation">
-        <purchase-information></purchase-information>
+      <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation">
+        <purchase-information :scrollTopHeight="scrollTopHeight"></purchase-information>
         <div slot="footer">
           <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
         </div>
@@ -112,12 +112,25 @@
     private columns3: any;
     private data3: Array < Object > = [];
     private purchaseInformationModal: Boolean = false;
+    private scrollTopHeight = 0
     @Mutation("openPage") openPage;
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
+    mounted() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
+      if (target) {
+        target.addEventListener('scroll', this.monitorScorll)
+      }
+    }
+    monitorScorll() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
+      if (target) {
+        this.scrollTopHeight = target.scrollTop
+      }
 
+    }
     created() {
       this.columns1 = [{
           align: 'center',

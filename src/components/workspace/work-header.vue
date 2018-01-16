@@ -12,7 +12,7 @@
       <i-poptip trigger="hover" placement="bottom">
         <div class="headPortrait"></div>
         <div slot="content" style="text-align:left">
-          <div style="font-size:18px;border-bottom:1px solid #F5F5F5;padding-bottom:6px;">莎莎</div>
+          <div style="font-size:18px;border-bottom:1px solid #F5F5F5;padding-bottom:6px;">刘佳</div>
           <div style="padding:10px 0">上次登录时间</div>
           <div style="padding:10px 0;border-bottom:1px solid #F5F5F5">2018-01-10 15:30:56</div>
           <div style="position:relative;right:16px;">
@@ -21,7 +21,7 @@
           </div>
         </div>
       </i-poptip>
-      <span style="color:#fff;font-size:12px;margin-left:6px;margin-right:50px;position:relative;top:2px;">莎莎</span>
+      <span style="color:#fff;font-size:12px;margin-left:6px;margin-right:50px;position:relative;top:2px;">刘佳</span>
     </div>
 
 

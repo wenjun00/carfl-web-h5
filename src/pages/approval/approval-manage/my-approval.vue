@@ -58,7 +58,7 @@
           <div style="height:32px;background-color:#dddddd;width:1px;display:inline-block;margin:0 10px;position:relative;top:10px;"></div>
           <i-button size="large" style="background:#265ea2;color:#fff" @click="rejectOrder">拒绝</i-button>
           <i-button size="large" style="background:#265ea2;color:#fff" @click="rebackModal=true">退件</i-button>
-          <i-button size="large" style="background:#265ea2;color:#fff" @click="approvePassedModal=true">通过</i-button>
+          <i-button size="large" style="background:#265ea2;color:#fff" @click="pass">通过</i-button>
         </div>
       </i-modal>
     </template>
@@ -227,6 +227,7 @@
     private approvePassedModal: Boolean = false;
     private columns3: any;
     private data3: Array < Object > = [];
+    private approveStatue: String = ''
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -236,6 +237,15 @@
         title: '退回资源池',
         content: '确定停止并放弃审核此订单？'
       })
+    }
+    pass() {
+      if (this.approveStatue === '面审') {
+        this.approvePassedModal = true
+      } else if (this.approveStatue === '终审' || this.approveStatue === '复审') {
+        // TODO
+      } else if (this.approveStatue === '合规') {
+        // TODO
+      }
     }
     rejectOrder() {
       this.rejectModal = true
@@ -337,7 +347,7 @@
                   },
                   on: {
                     click: () => {
-                      this.approveModal = true
+                      this.approveClick(row)
                     }
                   }
                 },
@@ -515,7 +525,7 @@
         orderType: '直租',
         customerName: '刘佳',
         content: '通过',
-        status: '复审',
+        status: '终审',
         idCard: '610303199111142564',
         prdName: '直租',
         phone: '15094156575'
@@ -574,6 +584,14 @@
      */
     columnsConfig() {
       this.openColumnsConfig = true
+    }
+    /**
+     * 审核
+     */
+    approveClick(row) {
+      this.approveModal = true
+      this.approveStatue = row.status
+      console.log(this.approveStatue)
     }
   }
 

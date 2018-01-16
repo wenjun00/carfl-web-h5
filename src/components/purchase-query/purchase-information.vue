@@ -3,9 +3,9 @@
     <!--选购信息-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>选购信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="xuangouxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">选购信息</a>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;">
+      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px">
         <data-grid-item label="申请省份：" :span="3">上海</data-grid-item>
         <data-grid-item label="申请城市：" :span="3">上海</data-grid-item>
         <data-grid-item label="所属公司：" :span="6">开呗上海</data-grid-item>
@@ -32,7 +32,7 @@
     <!--产品信息-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>产品信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="chanpinxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">产品信息</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
@@ -84,7 +84,7 @@
     <!--个人资料-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>个人资料</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="gerenziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">个人资料</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
@@ -167,7 +167,7 @@
     <!--职业信息-->
     <i-row>
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>职业信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="zhiyexinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">职业信息</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
@@ -219,7 +219,7 @@
     <!--联系人信息-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>联系人信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="lianxirenxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">联系人信息</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
@@ -286,7 +286,7 @@
     <!--客户来源-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>客户来源</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="kehulaiyuan" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">客户来源</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
@@ -309,7 +309,7 @@
     <!--素材资料-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>素材资料</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="sucaiziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">素材资料</a>
       </div>
       <i-row style="margin-top:10px">
         <i-col :span="12">
@@ -325,6 +325,20 @@
         </i-col>
       </i-row>
     </i-row>
+    <div style="position:absolute;top:122px;right:153px">
+      <!--<div style="width:2px;height:280px;background-color:#dddddd">
+      </div>-->
+      <div style="width: 65px;height: 260px;display: flex;align-items: center;flex-wrap: wrap; position: absolute;top: 10px;left: 30px;">
+        <a href="#xuangouxinxi" class="quick-link" :class="{color:getClassName.a1}">选购信息</a>
+        <a href="#chanpinxinxi" class="quick-link" :class="{color:getClassName.a2}">产品信息</a>
+        <a href="#gerenziliao" class="quick-link" :class="{color:getClassName.a3}">个人资料</a>
+        <a href="#zhiyexinxi" class="quick-link" :class="{color:getClassName.a4}">职业信息</a>
+        <a href="#lianxirenxinxi" class="quick-link" :class="{color:getClassName.a5}">联系人信息</a>
+        <a href="#kehulaiyuan" class="quick-link" :class="{color:getClassName.a6}">客户来源</a>
+        <a href="#sucaiziliao" class="quick-link" :class="{color:getClassName.a7}">素材资料</a>
+      </div>+
+    </div>
+    <!--<Slider v-model="sliderStep" :step="1" show-stops :min="2" :max="7" style="transform: rotate(90deg);position: absolute;top: 242px;right: 15px;width:280px"></Slider>-->
   </div>
 </template>
 
@@ -352,17 +366,60 @@
   export default class PurchaseInformation extends Vue {
     private fruit: Array < String > = ['购置费'];
     private single: Boolean = false;
+    private sliderStep: Number;
+    private c = {
+      a1: false,
+      a2: false,
+      a3: false,
+      a4: false,
+      a5: false,
+      a6: false,
+      a7: false
+    }
+    @Prop({
+      default: 0
+    })
+    scrollTopHeight: Number;
 
-    @Prop() person;
-    @Action select;
+    get getClassName() {
+      this.c.a1 = this.scrollTopHeight >= 0 && this.scrollTopHeight < 170
+      this.c.a2 = this.scrollTopHeight >= 170 && this.scrollTopHeight < 350
+      this.c.a3 = this.scrollTopHeight >= 350 && this.scrollTopHeight < 707
+      this.c.a4 = this.scrollTopHeight >= 707 && this.scrollTopHeight < 1034
+      this.c.a5 = this.scrollTopHeight >= 1034 && this.scrollTopHeight < 1386
+      this.c.a6 = this.scrollTopHeight >= 1386 && this.scrollTopHeight < 1407
+      this.c.a7 = this.scrollTopHeight >= 1407
+      return this.c
+    }
+
+    activated() {
+      document.getElementsByClassName('purchase-information')[0].addEventListener('scroll', this.handleScroll)
+    }
+    handleScroll() {}
+    created() {
+      this.sliderStep = 2
+    }
   }
 
 </script>
 
 <style scoped>
+  .color {
+    color: #333333!important;
+  }
+
+
   td {
     font-size: 14px;
     padding: 5px;
+  }
+
+  .quick-link {
+    color: #999999;
+  }
+
+  .quick-link:active {
+    color: #333333;
   }
 
 </style>
