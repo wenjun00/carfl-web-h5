@@ -71,7 +71,10 @@
     logOut() {
       this.$Modal.confirm({
         title: '提示',
-        content: '确认退出系统吗？'
+        content: '确认退出系统吗？',
+        onOk: () => {
+          this.$router.push('/')
+        }
       })
     }
   }

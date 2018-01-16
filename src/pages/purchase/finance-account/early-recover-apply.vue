@@ -93,7 +93,7 @@
         <i-col :span="10" pull="4">
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
-        <i-col :span="6" style="text-align:right;position:relative;top:6px;">
+        <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
           <i-button class="highDefaultButton">保存草稿</i-button>
           <i-button class="highButton">保存并提交</i-button>
         </i-col>

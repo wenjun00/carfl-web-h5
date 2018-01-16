@@ -107,7 +107,7 @@
         itemName: '剩余未还总额',
         itemMoney: '8000'
       }, {
-        index: 1,
+        index: 2,
         itemName: '提前结清手续费',
         itemMoney: '1000'
       }]

@@ -291,7 +291,7 @@
       </div>
       <table border="1" width="760" style="margin-top:10px;">
         <tr>
-          <td>通过传销</td>
+          <td>通过宣传</td>
           <td colspan="4">
             <i-radio value="true">其他</i-radio>
           </td>

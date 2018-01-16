@@ -23,7 +23,7 @@
           </i-form-item>-->
             <i-form-item>
               <i-checkbox><span>记住用户名与密码</span></i-checkbox>
-              <i-button type="text" style="float:right;color:#1D4F8B">注册</i-button>
+              <i-button type="text" style="float:right;color:#1D4F8B" @click="register">注册</i-button>
             </i-form-item>
             <i-form-item :label-width="0" style="text-align:center">
               <i-button class="submit_btn blueButton" @click="submitForm">登录</i-button>
@@ -33,6 +33,12 @@
       </div>
     </i-row>
     <div style="width:100%;color:#999999;position:absolute;bottom:20px;text-align:center">© 2018 Zhiwang All Rights Reserved. For Internal Use Only</div>
+
+    <template>
+      <i-modal title="新用户注册" v-model="registerModal" class="register-modal">
+        <register @close="registerModal=false"></register>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -49,8 +55,13 @@
     Mutation
   } from "vuex-class";
   import AppConfig from '~/config/app.config'
+  import Register from '~/components/common/register.vue'
 
-  @Component({})
+  @Component({
+    components: {
+      Register
+    }
+  })
   export default class Login extends Vue {
     @Dependencies(LoginService) private loginService: LoginService;
     @Mutation("updateUserToken") updateUserToken;
@@ -58,7 +69,7 @@
 
     private loginRule: Object = {};
     private loginModel: any;
-
+    private registerModal: Boolean = false;
     created() {
       // 设置表单数据
       this.loginModel = {
@@ -119,6 +130,9 @@
           );
       });
     }
+    register() {
+      this.registerModal = true
+    }
   }
 
 </script>
@@ -143,7 +157,7 @@
     right: 23px;
   }
 
-  
+
   .submit_btn {
     width: 270px;
     height: 40px;
@@ -165,6 +179,12 @@
     position: relative;
     left: 350px;
     bottom: 20px;
+  }
+
+  .register-modal {
+    .ivu-modal-footer {
+      display: none;
+    }
   }
 
 </style>
