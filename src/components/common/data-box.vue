@@ -70,6 +70,7 @@
      */
     @Watch("data")
     onDataChanged(newVal: string, oldVal: string) {
+      // console.log('newVal', newVal)
       this.page.total = newVal.length
     }
 

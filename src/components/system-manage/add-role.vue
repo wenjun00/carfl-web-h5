@@ -69,6 +69,9 @@
     cancel() {
 
     }
+    addRole() {
+
+    }
     confirm() {
 
     }

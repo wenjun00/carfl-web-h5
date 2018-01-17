@@ -3,7 +3,7 @@
     <i-row style="margin-bottom:10px;">
       <span class="form-title">角色维护</span>
       <span style="margin-left:20px;">角色名称：</span>
-      <i-input v-model="roleName" style="display:inline-block;width:10%;" placeholder="请输入角色姓名"></i-input>
+      <i-input style="display:inline-block;width:10%;" placeholder="请输入角色姓名"></i-input>
       <span style="margin-left:10px;">状态：</span>
       <i-select style="display:inline-block;width:10%">
         <i-option label="启用" value="启用" key="启用"></i-option>
@@ -12,7 +12,7 @@
       <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
       <i-button class="blueButton" style="margin-left:20px;" @click="addNewRole">新增角色</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="roleList"></data-box>
 
     <template>
       <i-modal v-model="modifyRoleModal" title="修改角色">
@@ -39,8 +39,8 @@
     </template>
 
     <template>
-      <i-modal title="新增角色" v-model="addRoleModal">
-        <add-role></add-role>
+      <i-modal title="新增角色" v-model="addRoleModal" @on-ok="addRole">
+        <add-role ref="add-role"></add-role>
       </i-modal>
     </template>
   </section>
@@ -68,10 +68,17 @@
   import {
     Layout
   } from "~/core/decorator";
-
+  import {
+    ManageService
+  } from "~/services/manage-service/manage.service";
+  import {
+    Modal
+  } from 'iview'
+  import {
+    PageService
+  } from "~/utils/page.service";
   @Layout("workspace")
   @Component({
-
     components: {
       DataBox,
       ModifyRole,
@@ -84,11 +91,12 @@
   export default class RoleMaintenance extends Page {
     @Dependencies(OrderService) private orderService: OrderService;
     @Dependencies(RoleService) private roleService: RoleService;
+    @Dependencies(ManageService) private manageService: ManageService;
+    @Dependencies(PageService) private pageService: PageService;
 
     private columns1: any;
-    private data1: Array < Object > = [];
+    private roleList: Array < Object > = [];
     private searchOptions: Boolean = false;
-    private roleName: String = "";
     private openCreateCompact: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private openCompact: Boolean = false;
@@ -102,19 +110,38 @@
     private userListModal: Boolean = false; // 用户列表
     private waitHandleCaseModal: Boolean = false; // 待办事项配置
     private addRoleModal: Boolean = false; // 新增角色
+    private roleModel: any
 
     addNewRole() {
       this.addRoleModal = true
     }
+    /**
+     * 新增角色弹窗的确定
+     */
+    addRole() {
+      let aaa = < Modal > this.$refs["add-role"]
+      aaa.addRole()
+    }
     created() {
-      this.data1 = [{
-        roleName: '管理员',
-        belongSystem: '指旺上海',
-        operator: '刘佳',
-        createTime: '2017-12-01 10:16:32',
-        updateTime: '2017-12-01 13:56:21',
-        desc: ''
-      }]
+      this.roleModel = {
+        roleName: '',
+        roleStatus: ''
+      }
+      this.manageService.queryRolePage({
+        roleName: this.roleModel.roleName,
+        roleStatus: this.roleModel.roleStatus
+      }).subscribe(val => {
+        this.roleList = val.object.list
+        console.log(123, this.roleList)
+      })
+
+      // this.roleList = [{
+      //   roleName: '管理员',
+      //   belongSystem: '指旺上海',
+      //   operator: '刘佳',
+      //   operatorTime: '2017-12-01 10:16:32',
+      //   desc: ''
+      // }]
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -221,30 +248,19 @@
         },
         {
           align: "center",
-          title: "所属系统",
-          key: "belongSystem"
-        },
-        {
-          align: "center",
           title: "操作人",
           key: "operator"
         },
         {
           align: "center",
           title: "创建时间",
-          key: "createTime",
-          width: 160
-        },
-        {
-          align: "center",
-          title: "修改时间",
-          key: "updateTime",
+          key: "operateTime",
           width: 160
         },
         {
           align: "center",
           title: "描述",
-          key: "desc"
+          key: "roleRemark"
         }
       ];
       this.columns2 = [{
@@ -335,11 +351,6 @@
           fileName: "补充协议（减免）"
         }
       ];
-      // this.orderService.getRoleList().subscribe(({
-      //   val
-      // }) => {
-      //   this.data1 = val;
-      // });
     }
     openSearch() {
       this.searchOptions = !this.searchOptions;

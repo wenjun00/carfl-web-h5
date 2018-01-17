@@ -97,12 +97,12 @@
      */
     submitForm() {
       let loginForm: any = this.$refs["login-form"];
-      if (this.loginModel.username === 'liujia' && this.loginModel.password === 'liujia') {
-        this.$Message.info('登录成功！')
-      } else {
-        this.$Message.error('账号或密码不正确!')
-        return
-      }
+      // if (this.loginModel.username === 'liujia' && this.loginModel.password === 'liujia') {
+      //   this.$Message.info('登录成功！')
+      // } else {
+      //   this.$Message.error('账号或密码不正确!')
+      //   return
+      // }
       loginForm.validate(success => {
         if (!success) {
           return;
@@ -111,7 +111,9 @@
         this.loginService
           .login({
             username: this.loginModel.username,
-            password: this.loginModel.password
+            password: this.loginModel.password,
+            loginDevice: 414,
+            loginType: 411
           })
           .subscribe(
             ({

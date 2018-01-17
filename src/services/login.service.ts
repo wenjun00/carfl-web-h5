@@ -12,12 +12,14 @@ export class LoginService {
    * 登录
    */
   @Debounce()
-  login({ username, password }) {
+  login({ username, password, loginDevice, loginType }) {
     return this.netService.send({
       server: loginController.login,
       data: {
         userPassword: username,
-        userUsername: md5(password)
+        userUsername: md5(password),
+        loginDevice: loginDevice,
+        loginType: loginType
       }
     })
   }

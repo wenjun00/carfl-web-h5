@@ -1,4 +1,4 @@
 module.exports = {
-  MOCK: true,
-  URL_SERVER:  JSON.stringify("http://117.36.75.166:7007")
+  MOCK: false,
+  URL_SERVER: JSON.stringify("http://192.168.3.125:9002")
 }

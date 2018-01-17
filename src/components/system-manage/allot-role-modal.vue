@@ -6,7 +6,7 @@
       <i-input style="display:inline-block;width:20%;"></i-input>
       <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
     </i-form>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="roleList"></data-box>
   </section>
 </template>
 
@@ -17,6 +17,12 @@
   import {
     Prop
   } from "vue-property-decorator";
+  import {
+    ManageService
+  } from "~/services/manage-service/manage.service";
+  import {
+    Dependencies
+  } from "~/core/decorator";
 
   @Component({
     components: {
@@ -24,8 +30,10 @@
     }
   })
   export default class AllotRoleModal extends Vue {
+    @Dependencies(ManageService) private manageService: ManageService;
+
     private columns1: any;
-    private data1: Array < Object > = [];
+    private roleList: Array < Object > = [];
     @Prop()
     row: Object;
 
@@ -33,7 +41,7 @@
       this.columns1 = [{
         align: 'center',
         type: 'selection',
-        width: '60'
+        width: 60
       }, {
         align: 'center',
         title: '角色名称',
@@ -44,19 +52,25 @@
         key: 'desc'
       }]
 
-      this.data1 = [{
-        roleName:'采购专员',
-        desc:'采购计算机'
-      },{
-        roleName:'门店车务',
-        desc:'负责门店四'
-      },{
-        roleName:'风控专员',
-        desc:'负责订单风控'
-      },{
-        roleName:'风控主管',
-        desc:'负责风控一部'
-      }]
+      // this.roleList = [{
+      //   roleName: '采购专员',
+      //   desc: '采购计算机'
+      // }, {
+      //   roleName: '门店车务',
+      //   desc: '负责门店四'
+      // }, {
+      //   roleName: '风控专员',
+      //   desc: '负责订单风控'
+      // }, {
+      //   roleName: '风控主管',
+      //   desc: '负责风控一部'
+      // }]
+    }
+
+    mounted() {
+      // this.manageService.queryRolePage({
+
+      // })
     }
     cancel() {
 
@@ -65,4 +79,5 @@
 
     }
   }
+
 </script>

@@ -12,6 +12,7 @@ export class NetService {
   private userToken
 
   constructor() {
+    console.log(app.url.server)
     this.axiosInstance = axios.create({
       baseURL: app.url.server,
       timeout: app.timeout,
@@ -20,11 +21,11 @@ export class NetService {
         'Accept': 'application/json'
       }
     })
-    if (true) {
+    if (app.mock) {
       let MockAdapter = require('axios-mock-adapter')
       let mock = new MockAdapter(this.axiosInstance, { delayResponse: 300 });
       this.createMock(mock)
-    } 
+    }
   }
 
 
@@ -53,7 +54,6 @@ export class NetService {
     // 进行url拼接
     if (controller) {
       let targetUrl = [
-        'api',
         controller,
         action,
         ...append].filter(x => x).join('/')
