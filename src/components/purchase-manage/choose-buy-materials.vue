@@ -97,7 +97,7 @@
     </div>
     <i-col span="24" style="line-height:30px;margin-top:20px;" class="form-title">
       <span>产品信息</span>
-      <div style="font-size:14px;cursor:pointer;display:inline-block;color:#3367A7;position:absolute;z-index:999;left:52%;" @click="openSimulateCalculate">
+      <div style="font-size:14px;cursor:pointer;display:inline-block;color:#3367A7;position:absolute;left:52%;" @click="openSimulateCalculate">
         <svg-icon iconClass="jisuanqi"></svg-icon>
         <span style="font-size:12px;">月供模拟计算器</span>
       </div>
