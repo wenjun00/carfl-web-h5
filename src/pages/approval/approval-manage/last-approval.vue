@@ -58,7 +58,7 @@
     </template>
 
     <template>
-      <i-modal title="订单详情" width="800" v-model="purchaseInfoModal" class="purchaseInformation">
+      <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
         <purchase-information></purchase-information>
         <div slot="footer">
           <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
@@ -253,7 +253,7 @@
                   props: {
                     type: 'ios-information',
                     size: '20',
-                    color: 'red'
+                    color: '#F9435D'
                   },
                   style: {
                     position: 'relative',
@@ -272,7 +272,8 @@
                 h('Icon', {
                   props: {
                     type: 'ios-information',
-                    size: '20'
+                    size: '20',
+                    color: '#666666'
                   },
                   style: {
                     position: 'relative',

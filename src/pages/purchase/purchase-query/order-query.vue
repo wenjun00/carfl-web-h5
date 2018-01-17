@@ -72,9 +72,12 @@
     </template>
 
     <!--订单详情-->
-    <template >
-      <i-modal v-model="purchaseInfoModal" title="订单详情" width="800" class="purchase_info_modal">
+    <template>
+      <i-modal v-model="purchaseInfoModal" title="订单详情" width="1000" class="purchaseInformation">
         <purchase-information></purchase-information>
+        <div slot="footer">
+          <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -374,13 +377,6 @@
 <style lang="less">
   td {
     padding: 10px;
-  }
-
-  .purchase_info_modal {
-    .ivu-modal-body {
-      height: 600px;
-      overflow-y: auto;
-    }
   }
 
 </style>

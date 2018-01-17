@@ -289,7 +289,7 @@
                   props: {
                     type: 'ios-information',
                     size: '20',
-                    color: 'red'
+                    color: '#F9435D'
                   },
                   style: {
                     position: 'relative',
@@ -308,7 +308,8 @@
                 h('Icon', {
                   props: {
                     type: 'ios-information',
-                    size: '20'
+                    size: '20',
+                    color: '#666666'
                   },
                   style: {
                     position: 'relative',

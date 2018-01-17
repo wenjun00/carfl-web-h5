@@ -54,7 +54,7 @@
     <data-box :columns="columns1" :data="data1"></data-box>
 
     <template>
-      <i-modal title="订单详情" width="800" v-model="purchaseInfoModal" class="purchase_info_modal">
+      <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
         <purchase-information></purchase-information>
       </i-modal>
     </template>

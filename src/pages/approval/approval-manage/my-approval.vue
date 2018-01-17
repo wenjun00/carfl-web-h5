@@ -122,7 +122,7 @@
     </template>
 
     <template>
-      <i-modal title="订单详情" width="800" v-model="purchaseInfoModal" class="purchaseInformation">
+      <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
         <purchase-information></purchase-information>
         <div slot="footer">
           <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
@@ -185,6 +185,43 @@
         </div>
       </i-modal>
     </template>
+
+    <!--复审终审-->
+    <template>
+      <i-modal title="审批通过" v-model="secendLastApproval" width="800">
+        <second-last-approve></second-last-approve>
+      </i-modal>
+    </template>
+
+    <!--合规通过-->
+    <template>
+      <i-modal title="审批通过" v-model="meetConditionApproval">
+        <i-form :label-width="100">
+          <i-row>
+            <i-col :span="12">
+              <i-form-item label="合同生效开始日">
+                <i-date-picker placeholder="请选择"></i-date-picker>
+              </i-form-item>
+            </i-col>
+            <i-col :span="12">
+              <i-form-item>
+                <i-radio-group v-model="compactEffect">
+                  <i-radio label="当月"></i-radio>
+                  <i-radio label="次月"></i-radio>
+                </i-radio-group>
+              </i-form-item>
+            </i-col>
+          </i-row>
+          <i-row>
+            <i-col :span="24">
+              <i-form-item label="备注">
+                <i-input type="textarea" :rows="4"></i-input>
+              </i-form-item>
+            </i-col>
+          </i-row>
+        </i-form>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -200,13 +237,16 @@
   } from "~/core/decorator";
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
   import Approve from '~/components/approval-manage/approve.vue'
+  import SecondLastApprove from '~/components/approval-manage/second-last-approve.vue' // 复审终审通过
+
   @Layout("workspace")
   @Component({
 
     components: {
       DataBox,
       PurchaseInformation,
-      Approve
+      Approve,
+      SecondLastApprove
     }
   })
   export default class MyApproval extends Page {
@@ -225,9 +265,12 @@
     private openColumnsConfig: Boolean = false;
     private rebackModal: Boolean = false;
     private approvePassedModal: Boolean = false;
+    private secendLastApproval: Boolean = false; // 复审终审通过弹窗
+    private meetConditionApproval: Boolean = false; // 合规通过弹窗
     private columns3: any;
     private data3: Array < Object > = [];
     private approveStatue: String = ''
+    private compactEffect: String = '当月'
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -243,8 +286,10 @@
         this.approvePassedModal = true
       } else if (this.approveStatue === '终审' || this.approveStatue === '复审') {
         // TODO
+        this.secendLastApproval = true
       } else if (this.approveStatue === '合规') {
         // TODO
+        this.meetConditionApproval = true
       }
     }
     rejectOrder() {
@@ -398,7 +443,7 @@
                   props: {
                     type: 'ios-information',
                     size: '20',
-                    color: 'red'
+                    color: '#F9435D'
                   },
                   style: {
                     position: 'relative',
@@ -417,7 +462,8 @@
                 h('Icon', {
                   props: {
                     type: 'ios-information',
-                    size: '20'
+                    size: '20',
+                    color: '#666666'
                   },
                   style: {
                     position: 'relative',
@@ -488,7 +534,7 @@
       ];
 
       this.data1 = [{
-        orderStatus: '待复审',
+        orderStatus: '待面审',
         orderCreateTime: '2017-12-01 13:56:03',
         myGetTime: '2017-12-02 11:36:26',
         province: '陕西',
@@ -496,13 +542,13 @@
         city: '宝鸡',
         orderType: '直租',
         content: '通过',
-        status: '复审',
+        status: '面审',
         customerName: '刘佳',
         idCard: '610303199111142564',
         prdName: '直租',
         phone: '15094156575'
       }, {
-        orderStatus: '待合规',
+        orderStatus: '待复审',
         orderCreateTime: '2017-12-01 13:56:03',
         orderId: 20170815,
         myGetTime: '2017-12-02 11:36:26',
@@ -530,13 +576,13 @@
         prdName: '直租',
         phone: '15094156575'
       }, {
-        orderStatus: '拒绝',
+        orderStatus: '待合规',
         orderCreateTime: '2017-12-01 13:56:03',
         orderId: 20170817,
         myGetTime: '2017-12-02 11:36:26',
         province: '陕西',
         content: '征信评价不高',
-        status: '复审',
+        status: '合规',
         city: '宝鸡',
         orderType: '直租',
         customerName: '刘佳',
@@ -591,7 +637,6 @@
     approveClick(row) {
       this.approveModal = true
       this.approveStatue = row.status
-      console.log(this.approveStatue)
     }
   }
 

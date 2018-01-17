@@ -106,8 +106,11 @@
     </i-row>
 
     <template>
-      <i-modal title="申请单详情" v-model="purchaseInfoModel" width="800">
-        <purchase-information></purchase-information>
+      <i-modal title="订单详情" v-model="purchaseInfoModel" width="1000" class="purchaseInformation">
+        <purchase-information :scrollTopHeight="scrollTopHeight"></purchase-information>
+        <div slot="footer">
+          <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -141,8 +144,22 @@
     }
     private invoiceList: Array < any > = []
     private payType = ''
+    private scrollTopHeight = 0
 
     addAttachment() {}
+    mounted() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
+      if (target) {
+        target.addEventListener('scroll', this.monitorScorll)
+      }
+    }
+    monitorScorll() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
+      if (target) {
+        this.scrollTopHeight = target.scrollTop
+        console.log(this.scrollTopHeight)
+      }
+    }
     created() {
       this.columns3 = [{
         align: "center",

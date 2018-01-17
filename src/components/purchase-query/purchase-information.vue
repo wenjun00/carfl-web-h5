@@ -336,7 +336,7 @@
         <a href="#lianxirenxinxi" class="quick-link" :class="{color:getClassName.a5}">联系人信息</a>
         <a href="#kehulaiyuan" class="quick-link" :class="{color:getClassName.a6}">客户来源</a>
         <a href="#sucaiziliao" class="quick-link" :class="{color:getClassName.a7}">素材资料</a>
-      </div>+
+      </div>
     </div>
     <!--<Slider v-model="sliderStep" :step="1" show-stops :min="2" :max="7" style="transform: rotate(90deg);position: absolute;top: 242px;right: 15px;width:280px"></Slider>-->
   </div>
