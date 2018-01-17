@@ -6,14 +6,14 @@
       <i-form ref="parchase-form" :rules="applyRule" :label-width="110">
         <i-col span="12">
           <i-form-item label="申请省份" prop="">
-            <i-select style="width:80px;">
+            <i-select>
               <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="申请城市" prop="">
-            <i-select style="width:80px;">
+            <i-select>
               <i-option label="西安市" value="西安市" key="西安市"></i-option>
               <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
               <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
@@ -157,19 +157,18 @@
 </script>
 
 <style lang="less" scope>
-  .choose-buy-materials {
-    .ivu-select-selection {
-      display: inline-block;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-
-  .calculate {
-    .ivu-modal-footer {
-      display: none!important;
-    }
-  }
+  // .choose-buy-materials {
+  //   .ivu-select-selection {
+  //     display: inline-block;
+  //     border-style: none;
+  //     border-bottom-style: solid;
+  //     border-radius: 0;
+  //   }
+  // }
+  // .calculate {
+  //   .ivu-modal-footer {
+  //     display: none!important;
+  //   }
+  // }
 
 </style>
