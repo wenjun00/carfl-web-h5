@@ -1,18 +1,18 @@
 <!--新增角色-->
 <template>
   <section class="component add-role">
-    <i-form :label-width="110" style="margin-top:20px;">
-      <i-form-item label="角色名称">
-        <i-input style="width:180px;"></i-input>
+    <i-form :label-width="110" style="margin-top:20px;" ref="add-role" :model="addRoleModel" :rules="rules">
+      <i-form-item label="角色名称" prop="roleName">
+        <i-input style="width:260px;" v-model="addRoleModel.roleName"></i-input>
       </i-form-item>
-      <i-form-item label="状态">
-        <i-select style="width:180px;">
-          <i-option label="启用" value="启用" key="启用"></i-option>
-          <i-option label="停用" value="停用" key="停用"></i-option>
+      <i-form-item label="状态" prop="roleStatus">
+        <i-select style="width:260px;" v-model="addRoleModel.roleStatus">
+          <i-option label="启用" :value="0" :key="0"></i-option>
+          <i-option label="停用" :value="1" :key="1"></i-option>
         </i-select>
       </i-form-item>
-      <i-form-item label="描述">
-        <i-input type="textarea"></i-input>
+      <i-form-item label="备注" prop="roleRemark">
+        <i-input type="textarea" style="width:260px;" v-model="addRoleModel.roleRemark"></i-input>
       </i-form-item>
     </i-form>
   </section>
@@ -25,54 +25,68 @@
   import {
     Prop
   } from "vue-property-decorator";
-
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    ManageService
+  } from "~/services/manage-service/manage.service";
+  import {
+    Form
+  } from "iview"
   @Component({
     components: {
       DataBox
     }
   })
   export default class AddRole extends Vue {
-    private columns1: any;
-    private data1: Array < Object > = [];
+    @Dependencies(ManageService) private manageService: ManageService;
+    private addRoleModel: any;
+    private rules: any;
     @Prop()
     row: Object;
 
     created() {
-      this.columns1 = [{
-        align: 'center',
-        type: 'selection',
-        width: 60
-      }, {
-        align: 'center',
-        title: '角色名称',
-        key: 'roleName'
-      }, {
-        align: 'center',
-        title: '描述',
-        key: 'desc'
-      }]
-
-      this.data1 = [{
-        roleName: '采购专员',
-        desc: '采购计算机'
-      }, {
-        roleName: '门店车务',
-        desc: '负责门店四'
-      }, {
-        roleName: '风控专员',
-        desc: '负责订单风控'
-      }, {
-        roleName: '风控主管',
-        desc: '负责风控一部'
-      }]
-    }
-    cancel() {
-
+      this.addRoleModel = {
+        roleName: '',
+        roleStatus: '',
+        roleRemark: ''
+      }
+      this.rules = {
+        roleName: [{
+          trigger: 'blur',
+          message: '请输入角色名称',
+          required: true,
+        }],
+        roleStatus: [{
+          trigger: 'change',
+          message: '请选择角色状态',
+          required: true,
+          type: 'number'
+        }]
+      }
     }
     addRole() {
-
+      let registerForm = < Form > this.$refs['add-role']
+      registerForm.validate(valid => {
+        if (valid) {
+          this.manageService.createRole(this.addRoleModel).subscribe(val => {
+            this.$Message.success('新增成功')
+            this.$emit('refreshRoleList')
+          })
+        }
+      })
     }
-    confirm() {
+    reset() {
+      console.log(123)
+      this.$nextTick(() => {
+        console.log(344324)
+        let _addRole = < Form > this.$refs['add-role']
+        _addRole.resetFields()
+        this.addRoleModel.roleName = ''
+        this.addRoleModel.roleStatus = ''
+        this.addRoleModel.roleRemark = ''
+      })
 
     }
   }

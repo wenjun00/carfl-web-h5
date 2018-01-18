@@ -12,5 +12,23 @@ export default {
     controller: CONTROLLER,
     action: 'getUsersByDeptPage',
     type: requestType.Get
+  },
+  /**
+   * 新增用户
+   */
+  createUser: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'createUser',
+    type: requestType.Post
+  },
+  /**
+   * 修改用户
+   */
+  updateUser: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateUser',
+    type: requestType.Post
   }
 }

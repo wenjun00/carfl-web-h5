@@ -3,27 +3,18 @@
   <section class="component modify-role">
     <i-form :label-width="110" style="margin-top:20px;">
       <i-form-item label="角色名称">
-        <i-input></i-input>
-      </i-form-item>
-      <i-form-item label="所属系统">
-        <i-select>
-          <i-option label="进销存系统" value="进销存系统" key="进销存系统"></i-option>
-          <i-option label="汽车金融系统" value="汽车金融系统" key="汽车金融系统"></i-option>
-        </i-select>
+        <i-input v-model="modifyRoleModel.roleName"></i-input>
       </i-form-item>
       <i-form-item label="状态">
-        <i-select>
-          <i-option label="启用" value="启用" key="启用"></i-option>
-          <i-option label="停用" value="停用" key="停用"></i-option>
+        <i-select v-model="modifyRoleModel.roleStatus">
+          <i-option label="启用" :value="0" :key="0"></i-option>
+          <i-option label="停用" :value="1" :key="1"></i-option>
         </i-select>
       </i-form-item>
-      <i-form-item label="描述">
-        <i-input type="textarea"></i-input>
+      <i-form-item label="备注">
+        <i-input type="textarea" v-model="modifyRoleModel.roleRemark"></i-input>
       </i-form-item>
-      <!--<div slot="footer">
-      <i-button @click="cancel">取消</i-button>
-      <i-button class="blueButton" @click="confirm">确定</i-button>
-    </div>-->
+
     </i-form>
   </section>
 </template>
@@ -34,19 +25,24 @@
   import {
     Prop
   } from "vue-property-decorator";
-
+  import {
+    ManageService
+  } from "~/services/manage-service/manage.service";
+  import {
+    Dependencies
+  } from "~/core/decorator";
   @Component({})
   export default class ModifyRole extends Vue {
-    @Prop()
-    row: Object;
+    @Dependencies(ManageService) private manageService: ManageService;
+    @Prop() modifyRoleModel
 
-    created() {
-    }
-    cancel() {
 
-    }
-    confirm() {
-
+    created() {}
+    updateRole() {
+      this.manageService.updateRole(this.modifyRoleModel).subscribe(val => {
+        this.$Message.success('修改成功！')
+      })
     }
   }
+
 </script>

@@ -15,11 +15,11 @@
           <span style="margin-left:20px;">姓名：</span>
           <i-input style="display:inline-block;width:10%;" v-model="userListModel.realName" placeholder="请输入用户名"></i-input>
           <span style="margin-left:10px;">状态：</span>
-          <i-select style="display:inline-block;width:10%">
-            <i-option label="启用" value="启用" key="启用"></i-option>
-            <i-option label="停用" value="停用" key="停用"></i-option>
+          <i-select style="display:inline-block;width:10%" v-model="userListModel.status">
+            <i-option label="启用" :value="0" :key="0"></i-option>
+            <i-option label="停用" :value="1" :key="1"></i-option>
           </i-select>
-          <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+          <i-button class="blueButton" style="margin-left:20px;" @click="getUserListByCondition">搜索</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="addNewUser">新增用户</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="batchAllotRole">批量分配角色</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="batchManageDevice">批量管理设备</i-button>
@@ -36,14 +36,14 @@
 
     <template>
       <i-modal v-model="modifyUserModal" title="修改用户" width="600">
-        <modify-user></modify-user>
+        <modify-user :modifyUserModel="modifyUserModel" @close="modifyUserModal=false"></modify-user>
       </i-modal>
     </template>
 
 
     <template>
-      <i-modal v-model="addNewUserModal" title="新增用户" width="600">
-        <add-user></add-user>
+      <i-modal v-model="addNewUserModal" title="新增用户" width="600" class="addUser">
+        <add-user :deptObject="deptObject" @close="closeAdd"></add-user>
       </i-modal>
     </template>
 
@@ -89,10 +89,17 @@
   import {
     Layout
   } from "~/core/decorator";
-
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
+  import {
+    LoginService
+  } from "~/services/login.service";
   @Layout("workspace")
   @Component({
-
     components: {
       DataBox,
       allotRoleModal,
@@ -110,7 +117,8 @@
     @Dependencies(OrderService) private orderService: OrderService;
     @Dependencies(RoleService) private roleService: RoleService;
     @Dependencies(ManageService) private manageService: ManageService;
-
+    @Dependencies(PageService) private pageService: PageService;
+    @Dependencies(LoginService) private loginService: LoginService;
     private columns1: any;
     private userList: Array < Object > = [];
     private columns2: any;
@@ -124,15 +132,30 @@
     private userName: String = '';
     private userListModel: any;
     public databox;
-
+    private deptObject: any;
+    private modifyUserModel: any
     created() {
+      this.deptObject = {
+        deptName: '',
+        deptId: '',
+        company: ''
+      }
+      this.modifyUserModel = {
+        userName: '',
+        realName: '',
+        companyName: '',
+        status: '',
+        phone: ''
+      }
       this.manageService.getAllDepartment().subscribe(val => {
+        this.deptObject = val.object[0]
         this.dataList = val.object
       })
       this.userListModel = {
         userName: '',
         realName: '',
-        status: ''
+        status: '',
+        deptId: 1
       }
       this.columns1 = [{
           align: "center",
@@ -219,34 +242,61 @@
         {
           align: "center",
           title: "用户名",
-          key: "userName"
+          key: "userUsername"
         },
         {
           align: "center",
           title: "姓名",
-          key: "actualName"
+          key: "userRealname"
         },
         {
           align: "center",
           title: "所属机构",
-          key: "belongOrg"
+          key: "deptName"
         },
         {
           align: "center",
           title: "状态",
-          key: "status"
+          key: "status",
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.userStatus === 0) {
+              return h('span', {}, '启用')
+            } else if (row.userStatus === 1) {
+              return h('span', {}, '停用')
+            }
+          }
         },
         {
           align: "center",
           title: "电话",
-          key: "phone",
+          key: "userPhone",
           width: 160
         },
         {
           align: "center",
+          title: "备注",
+          key: "userRemark"
+        }, {
+          align: "center",
+          title: "创建人",
+          key: "operatorName"
+        },
+        {
+          align: "center",
           title: "创建时间",
-          key: "createTime",
-          width: 180
+          key: "operateTime",
+          width: 180,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.operateTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         }
       ];
       this.columns2 = [{
@@ -290,7 +340,10 @@
         }
       ]
     }
-
+    closeAdd() {
+      this.addNewUserModal = false
+      this.getUserListByCondition()
+    }
     allotRole(row) {
       this.allotRoleModal = true
     }
@@ -305,12 +358,16 @@
      */
     modifyUser(row) {
       this.modifyUserModal = true
+      this.modifyUserModel = row
+      console.log(7899, this.modifyUserModel)
     }
     resetPwd(row) {
-      this.$Modal.success({
-        title: '提示',
-        content: '重置成功！'
+      this.loginService.resetPassword({
+        userId: row.id
+      }).subscribe(val => {
+        this.$Message.success('重置成功')
       })
+
     }
     deviceManageOpen(row) {
       this.deviceManageModal = true
@@ -334,34 +391,36 @@
     batchManageDevice() {
       this.deviceManageModal = true
     }
+    getUserListByCondition() {
+      this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
+        this.userList = val.object.list
+      })
+    }
     /**
      * 树change
      */
     onChange(value) {
-      this.manageService.getUsersByDeptPage({
-        userName: this.userListModel.userName,
-        realName: this.userListModel.realName,
-        status: this.userListModel.status,
-        deptId: value.id,
-        page: 1,
-        size: 10
-      }).subscribe(val => {
+      this.userListModel.deptId = value.id
+      this.deptObject = value
+      this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
         this.userList = val.object.list
       })
     }
 
     mounted() {
-      this.manageService.getUsersByDeptPage({
-        userName: this.userListModel.userName,
-        realName: this.userListModel.realName,
-        status: this.userListModel.status,
-        deptId: 1,
-        page: 1,
-        size: 10
-      }).subscribe(val => {
+      this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
         this.userList = val.object.list
       })
     }
   }
 
 </script>
+
+<style lang="less">
+  .addUser {
+    .ivu-modal-footer {
+      display: none;
+    }
+  }
+
+</style>

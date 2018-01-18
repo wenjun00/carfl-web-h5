@@ -77,7 +77,7 @@ export class NetService {
     let token = StorageService.getItem('userToken') || ''
     if (token) {
       return Object.assign({
-        'X-OperatorToken': token
+        'authorization': token
       }, headers)
     } else {
       return headers || {}

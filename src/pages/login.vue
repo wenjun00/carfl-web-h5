@@ -116,12 +116,9 @@
             loginType: 411
           })
           .subscribe(
-            ({
-              token,
-              user
-            }) => {
-              this.updateUserToken(token);
-              this.updateUserData(user);
+            (data) => {
+              this.updateUserToken(data.object.token);
+              this.updateUserData(data.object.user);
               this.$router.push('/home')
             },
             ({

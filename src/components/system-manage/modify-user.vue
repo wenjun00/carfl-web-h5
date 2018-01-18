@@ -5,70 +5,73 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="用户名">
-            <i-input v-model="modifyUserModal.accountName"></i-input>
+            <i-input v-model="modifyUserModel.userUsername"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
           <i-form-item label="姓名">
-            <i-input v-model="modifyUserModal.userName"></i-input>
+            <i-input v-model="modifyUserModel.userRealname"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="12">
           <i-form-item label="电话">
-            <i-input v-model="modifyUserModal.phone"></i-input>
+            <i-input v-model="modifyUserModel.userPhone"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
           <i-form-item label="邮箱">
-            <i-input></i-input>
+            <i-input v-model="modifyUserModel.userEmail"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="12">
           <i-form-item label="公司名称">
-            <i-select disabled>
-              <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
+            <i-select v-model="modifyUserModel.companyName" disabled>
+              <i-option label="指旺金科" value="指旺金科" key="指旺金科"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="12">
           <i-form-item label="所属机构">
-            <i-input v-model="modifyUserModal.belongOrg"></i-input>
+            <i-input v-model="modifyUserModel.deptName" disabled></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
-        <i-col :span="12">
-          <i-form-item label="年龄">
-            <i-input></i-input>
-          </i-form-item>
-        </i-col>
         <i-col :span="12">
           <i-form-item label="性别">
-            <i-input></i-input>
+            <i-select v-model="modifyUserModel.userSex">
+              <i-option label="男" :value="419" :key="419"></i-option>
+              <i-option label="女" :value="420" :key="420"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="数据权限" prop="userManager">
+            <i-select v-model="modifyUserModel.userManager">
+              <i-option :value="416" label="个人" :key="416"></i-option>
+              <i-option :value="417" label="组织" :key="417"></i-option>
+              <i-option :value="418" label="公司" :key="418"></i-option>
+            </i-select>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
-        <i-col :span="12">
-          <i-form-item label="民族">
-            <i-input></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="绑定主叫号码">
-            <i-input></i-input>
-          </i-form-item>
-        </i-col>
       </i-row>
       <i-row>
         <i-col :span="24">
-          <i-form-item label="备注">
-            <i-input type="textarea"></i-input>
+          <i-form-item label="备注" prop="userRemark">
+            <i-input type="textarea" v-model="modifyUserModel.userRemark"></i-input>
           </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="24" style="text-align:center">
+          <i-button @click="cancelUpdate" class="defalutButton">取消</i-button>
+          <i-button @click="updateUser" class="blueButton">修改</i-button>
         </i-col>
       </i-row>
     </i-form>
@@ -79,33 +82,40 @@
   import Vue from 'vue';
   import Component from 'vue-class-component'
   import {
-    Prop
+    Prop,
+    Watch
   } from "vue-property-decorator";
-
+  import {
+    ManageService
+  } from "~/services/manage-service/manage.service";
+  import {
+    Dependencies
+  } from "~/core/decorator";
   @Component({
     components: {}
   })
   export default class ModifyUser extends Vue {
-    private modifyUserModal: Object = {
-      accountName: 'dianguan',
-      userName: '胡开甲',
-      belongOrg: '指旺西安',
-      phone: '13565757815'
-    }
-
+    @Dependencies(ManageService) private manageService: ManageService;
+    @Prop() modifyUserModel: any
     created() {}
     cancel() {
 
     }
-    confirm() {
-
+    cancelUpdate() {
+      this.$emit('close')
+    }
+    updateUser() {
+      this.manageService.updateUser(this.modifyUserModel).subscribe(val => {
+        this.$Message.success('修改成功！')
+      })
     }
   }
 
 </script>
 <style lang="less">
-  .modifyUserForm{
+  .modifyUserForm {
     position: relative;
-    right:30px;
+    right: 30px;
   }
+
 </style>

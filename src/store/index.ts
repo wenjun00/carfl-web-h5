@@ -49,6 +49,7 @@ const store = new Vuex.Store({
     },
     updateUserToken(state, token) {
       state.userToken = token
+      StorageService.setItem("userToken", token)
     },
     updateUserData(state, user) {
       state.userData = user

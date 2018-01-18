@@ -1,8 +1,7 @@
 import Vue from 'vue'
-import { DictService } from '~/utils/dict.service'
-
+import { CityService } from '~/utils/city.service'
 export default {
   install() {
-    Vue.prototype.$city = DictService
+    Vue.prototype.$city = CityService
   }
 }

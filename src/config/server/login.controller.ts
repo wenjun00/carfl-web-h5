@@ -10,5 +10,13 @@ export const loginController = {
     controller: CONTROLLER,
     action: 'login',
     type: requestType.Post
+  },
+  /**
+   * 重置密码
+   */
+  resetPassword: {
+    controller: CONTROLLER,
+    action: 'resetPassword',
+    type: requestType.Post
   }
 }

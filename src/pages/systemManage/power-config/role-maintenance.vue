@@ -3,20 +3,20 @@
     <i-row style="margin-bottom:10px;">
       <span class="form-title">角色维护</span>
       <span style="margin-left:20px;">角色名称：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入角色姓名"></i-input>
+      <i-input style="display:inline-block;width:10%;" placeholder="请输入角色姓名" v-model="roleModel.roleName"></i-input>
       <span style="margin-left:10px;">状态：</span>
-      <i-select style="display:inline-block;width:10%">
-        <i-option label="启用" value="启用" key="启用"></i-option>
-        <i-option label="停用" value="停用" key="停用"></i-option>
+      <i-select style="display:inline-block;width:10%" v-model="roleModel.roleStatus" clearable>
+        <i-option label="启用" :value="0" :key="0"></i-option>
+        <i-option label="停用" :value="1" :key="1"></i-option>
       </i-select>
-      <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:20px;" @click="getRoleListByCondition">搜索</i-button>
       <i-button class="blueButton" style="margin-left:20px;" @click="addNewRole">新增角色</i-button>
     </i-row>
     <data-box :columns="columns1" :data="roleList"></data-box>
 
     <template>
-      <i-modal v-model="modifyRoleModal" title="修改角色">
-        <modify-role></modify-role>
+      <i-modal v-model="modifyRoleModal" title="修改角色" class="modify-role" @on-ok="modifyRoleClick">
+        <modify-role :modifyRoleModel="modifyRoleModel" ref="modify-role"></modify-role>
       </i-modal>
     </template>
 
@@ -27,8 +27,8 @@
     </template>
 
     <template>
-      <i-modal v-model="userListModal" title="用户列表" width="800">
-        <user-list></user-list>
+      <i-modal v-model="userListModal" title="用户列表" width="800" class="user-list">
+        <user-list ref="user-list"></user-list>
       </i-modal>
     </template>
 
@@ -39,8 +39,12 @@
     </template>
 
     <template>
-      <i-modal title="新增角色" v-model="addRoleModal" @on-ok="addRole">
-        <add-role ref="add-role"></add-role>
+      <i-modal title="新增角色" v-model="addRoleModal">
+        <add-role ref="add-role" @refreshRoleList="refreshRoleList"></add-role>
+        <template slot="footer">
+          <i-button @click="addRoleCancel">取消</i-button>
+          <i-button @click="addRole" class="blueButton">确定</i-button>
+        </template>
       </i-modal>
     </template>
   </section>
@@ -60,6 +64,9 @@
     Dependencies
   } from "~/core/decorator";
   import {
+    ManageService
+  } from "~/services/manage-service/manage.service";
+  import {
     OrderService
   } from "~/services/business-service/order.service";
   import {
@@ -69,14 +76,15 @@
     Layout
   } from "~/core/decorator";
   import {
-    ManageService
-  } from "~/services/manage-service/manage.service";
-  import {
     Modal
   } from 'iview'
   import {
     PageService
   } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
+
   @Layout("workspace")
   @Component({
     components: {
@@ -111,16 +119,35 @@
     private waitHandleCaseModal: Boolean = false; // 待办事项配置
     private addRoleModal: Boolean = false; // 新增角色
     private roleModel: any
-
+    private modifyRoleModel: any
     addNewRole() {
       this.addRoleModal = true
+    }
+    /**
+     * 取消新增
+     */
+    addRoleCancel() {
+      this.addRoleModal = false
+      let _addRole = < Modal > this.$refs['add-role']
+      _addRole.reset()
+    }
+    getRoleListByCondition() {
+      this.manageService.queryRolePage({
+        roleName: this.roleModel.roleName,
+        roleStatus: this.roleModel.roleStatus
+      }, this.pageService).subscribe(val => {
+        this.roleList = val.object.list
+      })
+    }
+    refreshRoleList() {
+      this.getRoleListByCondition()
     }
     /**
      * 新增角色弹窗的确定
      */
     addRole() {
-      let aaa = < Modal > this.$refs["add-role"]
-      aaa.addRole()
+      let _addRole = < Modal > this.$refs['add-role']
+      _addRole.addRole()
     }
     created() {
       this.roleModel = {
@@ -130,18 +157,14 @@
       this.manageService.queryRolePage({
         roleName: this.roleModel.roleName,
         roleStatus: this.roleModel.roleStatus
-      }).subscribe(val => {
+      }, this.pageService).subscribe(val => {
         this.roleList = val.object.list
-        console.log(123, this.roleList)
       })
-
-      // this.roleList = [{
-      //   roleName: '管理员',
-      //   belongSystem: '指旺上海',
-      //   operator: '刘佳',
-      //   operatorTime: '2017-12-01 10:16:32',
-      //   desc: ''
-      // }]
+      this.modifyRoleModel = {
+        roleName: '',
+        roleStatus: '',
+        roleRemark: ''
+      }
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -243,24 +266,47 @@
         },
         {
           align: "center",
+          title: "状态",
+          key: "roleStatus",
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.roleStatus === 0) {
+              return h('span', {}, '启用')
+            } else if (row.roleStatus === 1) {
+              return h('span', {}, '停用')
+            }
+          }
+        },
+        {
+          align: "center",
           title: "角色名称",
           key: "roleName"
         },
         {
           align: "center",
+          title: '备注',
+          key: "roleRemark"
+        },
+        {
+          align: "center",
           title: "操作人",
-          key: "operator"
+          key: "realName"
         },
         {
           align: "center",
           title: "创建时间",
           key: "operateTime",
-          width: 160
-        },
-        {
-          align: "center",
-          title: "描述",
-          key: "roleRemark"
+          width: 160,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.operateTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         }
       ];
       this.columns2 = [{
@@ -356,54 +402,54 @@
       this.searchOptions = !this.searchOptions;
     }
     modifyRole(row) {
-      // this.$Modal.info({
-      //   title: '修改角色',
-      //   render: h => h(ModifyRole, {
-      //     props: {
-      //       row
-      //     }
-      //   })
-      // })
       this.modifyRoleModal = true
+      this.modifyRoleModel = row
     }
     deleteRole(row) {
-
+      this.$Modal.confirm({
+        title: '提示',
+        content: '确定删除此角色吗？',
+        onOk: () => {
+          this.manageService.deleteRole({
+            roleId: row.id
+          }).subscribe(val => {
+            this.$Message.success('删除成功！')
+            this.getRoleListByCondition()
+          })
+        }
+      })
+    }
+    modifyRoleClick() {
+      let modifyRole = < Modal > this.$refs['modify-role']
+      modifyRole.updateRole()
     }
     modulePower(row) {
-      // this.$Modal.info({
-      //   title: '模块权限',
-      //   width: '600',
-      //   render: h => h(ModulePower, {
-      //     props: {
-      //       row
-      //     }
-      //   })
-      // })
       this.modulePowerModal = true
     }
     userList(row) {
-      // this.$Modal.info({
-      //   title: '用户列表',
-      //   width: '800',
-      //   render: h => h(UserList, {
-      //     props: {
-      //       row
-      //     }
-      //   })
-      // })
       this.userListModal = true
+      let _userList = < Modal > this.$refs['user-list']
+      _userList.getUserListByRole(row.id)
     }
     waitHandleCaseConfig(row) {
-      // this.$Modal.info({
-      //   title: '待办事项配置',
-      //   render: h => h(WaitHandleCase, {
-      //     props: {
-      //       row
-      //     }
-      //   })
-      // })
       this.waitHandleCaseModal = true
     }
   }
 
 </script>
+
+<style lang="less">
+  .modify-role {
+    .ivu-form {
+      position: relative;
+      right: 16px;
+    }
+  }
+
+  .user-list {
+    .ivu-modal-footer {
+      display: none;
+    }
+  }
+
+</style>

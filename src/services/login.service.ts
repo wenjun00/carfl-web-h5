@@ -16,10 +16,21 @@ export class LoginService {
     return this.netService.send({
       server: loginController.login,
       data: {
-        userPassword: username,
-        userUsername: md5(password),
+        userUsername: username,
+        userPassword: md5(password),
         loginDevice: loginDevice,
         loginType: loginType
+      }
+    })
+  }
+  /**
+   *  重置密码
+   */
+  resetPassword({ userId }) {
+    return this.netService.send({
+      server: loginController.resetPassword,
+      data: {
+        userId: userId
       }
     })
   }
