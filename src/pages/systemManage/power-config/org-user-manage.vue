@@ -5,7 +5,6 @@
     <i-row>
       <i-col :span="4">
         <i-button class="blueButton" @click="addNewOrg">添加机构</i-button>
-        <!--<i-tree :data="treeData"></i-tree>-->
         <organize-tree :dataList="dataList" @change="onChange"></organize-tree>
       </i-col>
       <i-col :span="20">
@@ -24,13 +23,17 @@
           <i-button class="blueButton" style="margin-left:20px;" @click="batchAllotRole">批量分配角色</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="batchManageDevice">批量管理设备</i-button>
         </i-row>
-        <data-box :columns="columns1" :data="userList"></data-box>
+        <data-box :columns="columns1" :data="userList" ref="databox"></data-box>
       </i-col>
     </i-row>
 
     <template>
-      <i-modal v-model="allotRoleModal" title="分配角色">
-        <allot-role-modal></allot-role-modal>
+      <i-modal v-model="allotRoleModal" :title="batchAllotFlag?'批量分配角色':'分配角色'">
+        <allot-role-modal :userId="userId" :batchAllotFlag="batchAllotFlag" :userIds="userIds" ref="allot-role-modal" @close="allotRoleModal=false"></allot-role-modal>
+        <div slot="footer">
+          <i-button @click="allotRoleModal=false">取消</i-button>
+          <i-button @click="allotRoleClick" class="blueButton">确定分配</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -98,6 +101,9 @@
   import {
     LoginService
   } from "~/services/login.service";
+  import {
+    Modal
+  } from "iview"
   @Layout("workspace")
   @Component({
     components: {
@@ -131,9 +137,12 @@
     private addNewOrgModal: Boolean = false;
     private userName: String = '';
     private userListModel: any;
-    public databox;
     private deptObject: any;
-    private modifyUserModel: any
+    private modifyUserModel: any;
+    private userId: number | null = null;
+    private userIds: Array < any >= [];
+    private multipleUserId: any;
+    private batchAllotFlag: Boolean = false;
     created() {
       this.deptObject = {
         deptName: '',
@@ -346,6 +355,7 @@
     }
     allotRole(row) {
       this.allotRoleModal = true
+      this.userId = row.id
     }
     /**
      * 添加机构
@@ -359,7 +369,6 @@
     modifyUser(row) {
       this.modifyUserModal = true
       this.modifyUserModel = row
-      console.log(7899, this.modifyUserModel)
     }
     resetPwd(row) {
       this.loginService.resetPassword({
@@ -383,7 +392,15 @@
      * 批量分配角色
      */
     batchAllotRole() {
-      this.allotRoleModal = true
+      this.multipleUserId = this.$refs['databox']
+      this.multipleUserId = this.multipleUserId.getCurrentSelection()
+      if (!this.multipleUserId) {
+        this.$Message.info('请选择用户')
+      } else {
+        this.allotRoleModal = true
+        this.batchAllotFlag = true
+        this.userIds = this.multipleUserId.map(v => v.id)
+      }
     }
     /**
      * 批量管理设备
@@ -406,7 +423,10 @@
         this.userList = val.object.list
       })
     }
-
+    allotRoleClick() {
+      let _addRole = < Modal > this.$refs['allot-role-modal']
+      _addRole.allotRole()
+    }
     mounted() {
       this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
         this.userList = val.object.list

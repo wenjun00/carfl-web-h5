@@ -30,5 +30,23 @@ export default {
     controller: CONTROLLER,
     action: 'updateUser',
     type: requestType.Post
+  },
+  /**
+   * 给用户分配角色
+   */
+  userAllocateRoles: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'userAllocateRoles',
+    type: requestType.Post
+  },
+  /**
+   * 批量分配用户角色
+   */
+  userBatchAllocateRoles: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'userBatchAllocateRoles',
+    type: requestType.Post
   }
 }

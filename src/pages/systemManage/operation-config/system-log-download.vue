@@ -3,17 +3,17 @@
   <section class="page system-log-download">
     <span class="form-title">系统日志下载</span>
     <i-row style="margin:6px;">
-      <span>公司名称：</span>
-      <i-select style="display:inline-block;width:10%;" placeholder="请选择公司">
-        <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
-        <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
-        <i-option label="群泰武汉" value="群泰武汉" key="群泰武汉"></i-option>
-      </i-select>
-      <span style="margin-left:10px;">操作人：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入操作人"></i-input>
-      <span style="margin-left:10px;">操作时间：</span>
-      <i-date-picker style="display:inline-block;width:10%;" placeholder="请选择操作时间"></i-date-picker>
-      <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+      <span style="margin-left:10px;">用户姓名：</span>
+      <i-input style="display:inline-block;width:10%;" v-model="systemLogModel.realName"></i-input>
+      <span style="margin-left:10px;">用户端IP：</span>
+      <i-input style="display:inline-block;width:10%;" v-model="systemLogModel.clientIp"></i-input>
+      <span style="margin-left:10px;">执行参数：</span>
+      <i-input style="display:inline-block;width:10%;" v-model="systemLogModel.exeParams"></i-input>
+      <span style="margin-left:10px;">执行类型：</span>
+      <i-input style="display:inline-block;width:10%;" v-model="systemLogModel.exeType"></i-input>
+      <span style="margin-left:10px;">执行时间：</span>
+      <i-input style="display:inline-block;width:10%;" v-model="systemLogModel.exeTime"></i-input>
+      <i-button class="blueButton" style="margin-left:10px;" @click="search">搜索</i-button>
       <div style="float:right;margin-right:10px;margin-top:10px;">
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon iconClass="xiazai"></svg-icon>
@@ -21,7 +21,7 @@
         </div>
       </div>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="systemLogsList"></data-box>
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
@@ -61,7 +61,15 @@
   import {
     Layout
   } from "~/core/decorator";
-
+  import {
+    ManageService
+  } from "~/services/manage-service/manage.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   @Layout("workspace")
 
   @Component({
@@ -72,15 +80,26 @@
     }
   })
   export default class SystemLogDownload extends Page {
+    @Dependencies(ManageService) private manageService: ManageService;
+    @Dependencies(PageService) private pageService: PageService;
+
     private changeStatusOpen: Boolean = false;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private systemLogsList: Array < Object > = [];
     private openColumnsConfig: Boolean = false;
     private columns2: any;
     private data2: Array < Object > ;
     private test: String = ''
+    private systemLogModel: any;
 
     created() {
+      this.systemLogModel = {
+        clientIp: '',
+        exeType: '',
+        exeTime: ''
+      }
+      this.search()
+
       this.columns1 = [{
           align: 'center',
           type: 'index',
@@ -112,31 +131,45 @@
           title: '操作时间',
           key: 'operateTime',
           align: 'center',
-          width: 160
+          width: 160,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            return h('span',
+              FilterService.dateFormat(row.operateTime, 'yyyy-MM-dd hh:mm:ss')
+            )
+          }
         },
         {
           title: '操作人',
-          key: 'operator',
+          key: 'realName',
           align: 'center'
         },
         {
           title: '客户端IP',
-          key: 'clientIP',
+          key: 'clientIp',
+          align: 'center'
+        },
+        {
+          title: '执行参数',
+          key: 'exeParams',
+          align: 'center'
+        },
+        {
+          title: '备注',
+          key: 'logRemark',
           align: 'center'
         },
         {
           title: '请求执行时长（秒）',
-          key: 'requestTime',
+          key: 'exeTime',
           align: 'center'
         },
         {
-          title: '描述',
-          key: 'desc',
-          align: 'center'
-        },
-        {
-          title: '执行方法',
-          key: 'executeWay',
+          title: '执行类型',
+          key: 'exeType',
           align: 'center'
         }
       ]
@@ -168,43 +201,12 @@
       }, {
         columnsName: '执行方法'
       }]
-      // 获取数据
-      this.data1 = [{
-        operateTime: '2017-12-01',
-        operator: '刘琛',
-        clientIP: '192.168.3.94',
-        requestTime: '50',
-        desc: '获取所有分公司信息',
-        executeWay: 'report-service/api/CaseInfoInquiryController/getInfoByConditio'
-      }, {
-        operateTime: '2017-12-01',
-        operator: '刘琛',
-        clientIP: '192.168.3.94',
-        requestTime: '50',
-        desc: '获取所有分公司信息',
-        executeWay: 'report-service/api/CaseInfoInquiryController/getInfoByConditio'
-      }, {
-        operateTime: '2017-12-01',
-        operator: '刘琛',
-        clientIP: '192.168.3.94',
-        requestTime: '50',
-        desc: '获取所有分公司信息',
-        executeWay: 'report-service/api/CaseInfoInquiryController/getInfoByConditio'
-      }, {
-        operateTime: '2017-12-01',
-        operator: '刘琛',
-        clientIP: '192.168.3.94',
-        requestTime: '50',
-        desc: '获取所有分公司信息',
-        executeWay: 'report-service/api/CaseInfoInquiryController/getInfoByConditio'
-      }, {
-        operateTime: '2017-12-01',
-        operator: '刘琛',
-        clientIP: '192.168.3.94',
-        requestTime: '50',
-        desc: '获取所有分公司信息',
-        executeWay: 'report-service/api/CaseInfoInquiryController/getInfoByConditio'
-      }]
+    }
+    search() {
+      this.manageService.querySystemLogsPage(this.systemLogModel, this.pageService).subscribe(val => {
+        this.systemLogsList = val.object.list
+      })
+
     }
     /**
      * 列配置

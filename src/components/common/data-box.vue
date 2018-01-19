@@ -2,7 +2,7 @@
   <div class="component data-box">
     <div class="table">
       <i-table ref="table" :columns="columns" :data="data" :stripe="stripe" :highlight-row="highlightRow" @on-row-click="rowClick"
-        :width="width" @on-current-change="currentChange"></i-table>
+        :width="width" @on-current-change="currentChange" @on-selection-change="currentSelect"></i-table>
     </div>
     <div class="row end-span" :style="{'width':`${width}px`}">
       <i-page class="pagination" size="small" show-total show-sizer :show-elevator="page.showElevator" :total="page.total" @on-change="pageChange"
@@ -61,7 +61,7 @@
     // height:Number;
 
     public table;
-
+    private multipleSelection;
     mounted() {
       this.table = this.$refs["table"];
     }
@@ -70,7 +70,6 @@
      */
     @Watch("data")
     onDataChanged(newVal: string, oldVal: string) {
-      // console.log('newVal', newVal)
       this.page.total = newVal.length
     }
 
@@ -83,11 +82,17 @@
     currentChange(currentRow, oldRow) {
       this.getRowInfo(currentRow, oldRow)
     }
+    currentSelect(selection) {
+      this.multipleSelection = selection
+    }
     exportDatabox() {
       this.table = this.$refs["table"]
       this.table.exportCsv({
         filename: '客户开户'
       })
+    }
+    getCurrentSelection() {
+      return this.multipleSelection
     }
   }
 

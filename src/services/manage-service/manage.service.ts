@@ -97,4 +97,78 @@ export class ManageService {
       page: page
     })
   }
+  /**
+   * 系统日志分页查询
+   * @param data 
+   * @param page 
+   */
+  querySystemLogsPage(data, page) {
+    return this.netService.send({
+      server: manageService.systemLogsController.querySystemLogsPage,
+      data: data,
+      page: page
+    })
+  }
+  /**
+   * 系统备份分页查询
+   */
+  querySystemBackupPage(data, page) {
+    return this.netService.send({
+      server: manageService.systemBackupController.querySystemBackupPage,
+      data: data,
+      page: page
+    })
+  }
+
+  /**
+   * 删除系统备份
+   */
+  deleteSystemBackup({ id }) {
+    return this.netService.send({
+      server: manageService.systemBackupController.deleteSystemBackup,
+      data: {
+        id: id
+      }
+    })
+  }
+
+  /**
+   * 新增系统备份
+   */
+  createSystemBackup() {
+    return this.netService.send({
+      server: manageService.systemBackupController.createSystemBackup,
+    })
+  }
+
+  /**
+   * 系统参数分页查询
+   */
+  querySystemParameterPage(data, page) {
+    return this.netService.send({
+      server: manageService.systemParameterController.querySystemParameterPage,
+      data: data,
+      page: page
+    })
+  }
+  /**
+   *  用户角色分配
+   */
+  userAllocateRoles(data) {
+    return this.netService.send({
+      server: manageService.userController.userAllocateRoles,
+      data: data
+    })
+  }
+
+  /**
+   * 用户批量分配角色
+   * @param data 
+   */
+  userBatchAllocateRoles(data) {
+    return this.netService.send({
+      server: manageService.userController.userBatchAllocateRoles,
+      data: data
+    })
+  }
 }
