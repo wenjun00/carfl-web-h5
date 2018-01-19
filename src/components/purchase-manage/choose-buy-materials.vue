@@ -231,10 +231,10 @@
     </template>
 
     <template>
-      <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="1200" v-model="editCarModal" :trandfer="false">
+      <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="80" v-model="editCarModal" :trandfer="false">
         <add-car></add-car>
         <div slot="footer">
-          <i-button @click="confirmAndBack">确认并返回</i-button>
+          <i-button @click="confirmAndBack" class="blueButton">确认并返回</i-button>
         </div>
       </i-modal>
     </template>

@@ -24,7 +24,7 @@
         <change-card @close="close"></change-card>
         <div slot="footer">
           <i-button>取消</i-button>
-          <i-button>确认解绑</i-button>
+          <i-button class="blueButton">确认解绑</i-button>
         </div>
       </i-modal>
     </template>

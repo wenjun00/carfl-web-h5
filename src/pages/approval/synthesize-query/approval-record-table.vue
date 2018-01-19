@@ -61,7 +61,7 @@
     <template>
       <i-modal v-model="orderProgressModal" title="审核进度" width="1000">
         <order-progress></order-progress>
-        <div slot="footer"></div>
+        <!--<div slot="footer"></div>-->
       </i-modal>
     </template>
   </section>

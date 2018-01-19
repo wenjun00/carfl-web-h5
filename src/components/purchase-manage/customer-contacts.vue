@@ -43,7 +43,7 @@
           </i-form-item>
         </i-form>
         <div slot="footer">
-          <i-button @click="saveAndBack">保存并返回</i-button>
+          <i-button @click="saveAndBack" class="blueButton">保存并返回</i-button>
         </div>
       </i-modal>
     </template>
@@ -74,7 +74,7 @@
           </i-form-item>
         </i-form>
         <div slot="footer">
-          <i-button @click="saveAndBack2">保存并返回</i-button>
+          <i-button @click="saveAndBack2" class="blueButton">保存并返回</i-button>
         </div>
       </i-modal>
     </template>

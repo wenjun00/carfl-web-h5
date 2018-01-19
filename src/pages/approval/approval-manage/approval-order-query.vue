@@ -34,7 +34,7 @@
       <i-modal @on-visible-change="visibleChange" title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
         <purchase-information :scrollTopHeight="scrollTopHeight"></purchase-information>
         <div slot="footer">
-          <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
+          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
         </div>
       </i-modal>
     </template>
