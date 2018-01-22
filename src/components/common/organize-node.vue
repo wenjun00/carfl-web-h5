@@ -3,12 +3,12 @@
     <div draggable="true" @dragstart.stop="handleDragStart($event)" @dragenter="handleDragEnter" @dragleave="handleDragLeave"
       @dragover.prevent="handleDragOver" @drop.stop="handleDrop($event)" @dragend.prevent="handleDragEnd" id="tree-node" :style="getSubTreeStyle()">
       <div>
-        <span @click="expanedItemHandle" v-show="!data.isLeaf" class="el-tree-node__expand-icon" :class="{expanded:expanded}">1</span>
+        <span @click="expanedItemHandle" v-show="!data.isLeaf" class="el-tree-node__expand-icon" :class="{expanded:expanded}"><Icon v-show="!this.expanded" type="arrow-right-b"></Icon><Icon v-show="this.expanded" type="arrow-down-b"></Icon></span>
         <a @click="selectItemHandle">{{data.deptName}}</a>
         <small v-show="root&&root.selected === data" class="icon-box">
-            <a @click="editItemHandle" href="#" class="el-icon-edit">1</a>
-            <a @click="addItemHandle" href="#" class="el-icon-plus">2</a>
-            <a @click="removeItemHandle" href="#" class="el-icon-minus">3</a>
+            <a @click="editItemHandle" href="#" class="el-icon-edit"><div style="display:inline-block"><Icon type="edit"></Icon></div></a>
+            <a @click="addItemHandle" href="#" class="el-icon-plus"><div style="display:inline-block"><Icon type="plus"></Icon></div></a>
+            <a @click="removeItemHandle" href="#" class="el-icon-minus"><div style="display:inline-block"><Icon type="minus"></Icon></div></a>
          </small>
       </div>
       <div v-show="expanded" class="sub-node" v-if="data.children">

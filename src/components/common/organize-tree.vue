@@ -84,7 +84,7 @@
      * 更新当前选择项
      */
     updateSelected(value) {
-      console.log(value, this.selected)
+      console.log(value, this.selected, 8989)
       if (this.selected !== value) {
         this.selected = value
         // 发送change事件

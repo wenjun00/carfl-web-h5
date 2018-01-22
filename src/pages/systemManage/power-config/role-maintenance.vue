@@ -141,6 +141,7 @@
     }
     refreshRoleList() {
       this.getRoleListByCondition()
+      this.addRoleModal = false
     }
     /**
      * 新增角色弹窗的确定

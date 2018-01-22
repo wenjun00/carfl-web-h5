@@ -68,9 +68,6 @@
       }]
     }
 
-    mounted() {
-      this.getRoleList()
-    }
     getRoleList() {
       this.manageService.queryRolePage(this.roleListModel, this.pageService).subscribe(val => {
         this.roleList = val.object.list
@@ -98,8 +95,7 @@
         this.$Message.info('请选择角色！')
       } else {
         if (this.batchAllotFlag) {
-          this.batchAllotModel.userIds = this.userIds
-          console.log(this.batchAllotModel, 888, this.userIds)
+          this.batchAllotModel.usersId = this.userIds
           this.manageService.userBatchAllocateRoles(this.batchAllotModel).subscribe(val => {
             this.$Message.success('批量分配成功！')
             this.$emit('close')

@@ -1,11 +1,11 @@
-<!--机构用户与管理-->
+<!--机构与用户管理-->
 <template>
   <section class="page org-user-manage">
     <span class="form-title">机构与用户管理</span>
     <i-row>
       <i-col :span="4">
         <i-button class="blueButton" @click="addNewOrg">添加机构</i-button>
-        <organize-tree :dataList="dataList" @change="onChange"></organize-tree>
+        <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept"></organize-tree>
       </i-col>
       <i-col :span="20">
         <i-row style="margin-bottom:10px;margin-left:25px;">
@@ -58,7 +58,11 @@
 
     <template>
       <i-modal v-model="addNewOrgModal" title="添加机构" width="400">
-        <add-org></add-org>
+        <add-org ref="add-org" :deptLevel="deptLevel"></add-org>
+        <div slot="footer">
+          <i-button>取消</i-button>
+          <i-button class="blueButton" @click="confirmAddOrg">确定</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -81,14 +85,14 @@
     Dependencies
   } from "~/core/decorator";
   import {
-    OrderService
-  } from "~/services/business-service/order.service";
-  import {
     RoleService
   } from "~/services/role-service/role.service";
   import {
     ManageService
   } from "~/services/manage-service/manage.service";
+  import {
+    DepartmentService
+  } from "~/services/manage-service/department.service";
   import {
     Layout
   } from "~/core/decorator";
@@ -120,9 +124,9 @@
     }
   })
   export default class OrgUserManage extends Page {
-    @Dependencies(OrderService) private orderService: OrderService;
     @Dependencies(RoleService) private roleService: RoleService;
     @Dependencies(ManageService) private manageService: ManageService;
+    @Dependencies(DepartmentService) private departmentService: DepartmentService;
     @Dependencies(PageService) private pageService: PageService;
     @Dependencies(LoginService) private loginService: LoginService;
     private columns1: any;
@@ -143,6 +147,7 @@
     private userIds: Array < any >= [];
     private multipleUserId: any;
     private batchAllotFlag: Boolean = false;
+    private deptLevel: number;
     created() {
       this.deptObject = {
         deptName: '',
@@ -355,6 +360,8 @@
     }
     allotRole(row) {
       this.allotRoleModal = true
+      let _allotRole = < Modal > this.$refs['allot-role-modal']
+      _allotRole.getRoleList()
       this.userId = row.id
     }
     /**
@@ -398,6 +405,9 @@
         this.$Message.info('请选择用户')
       } else {
         this.allotRoleModal = true
+        let _allotRole = < Modal > this.$refs['allot-role-modal']
+        _allotRole.getRoleList()
+        this.allotRoleModal = true
         this.batchAllotFlag = true
         this.userIds = this.multipleUserId.map(v => v.id)
       }
@@ -419,6 +429,8 @@
     onChange(value) {
       this.userListModel.deptId = value.id
       this.deptObject = value
+      // 获取组织机构等级
+      this.deptLevel = value.deptLevel
       this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
         this.userList = val.object.list
       })
@@ -426,6 +438,32 @@
     allotRoleClick() {
       let _addRole = < Modal > this.$refs['allot-role-modal']
       _addRole.allotRole()
+    }
+    removeDept(value) {
+      this.$Modal.confirm({
+        title: '提示',
+        content: '确定删除此组织机构吗？',
+        onOk: () => {
+          this.departmentService.deleteDept({
+            deptId: value.id
+          }).subscribe(val => {
+            this.$Message.success('删除成功！')
+          })
+        }
+      })
+    }
+    /**
+     * 添加机构
+     */
+    addDept() {
+      this.addNewOrgModal = true
+    }
+    /**
+     * 确定添加机构
+     */
+    confirmAddOrg() {
+      let _addOrg = < Modal > this.$refs['add-org']
+      _addOrg.addOrg()
     }
     mounted() {
       this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
