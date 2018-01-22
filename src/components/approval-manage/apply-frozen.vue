@@ -40,7 +40,7 @@
   import {
     DataGrid,
     DataGridItem
-  } from "fintech-vue-component";
+  } from "vue-fintech-component";
   
   @Component({
     components: {

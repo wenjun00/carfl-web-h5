@@ -2339,9 +2339,9 @@ find-up@^2.0.0, find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-"fintech-vue-component@git+http://git:123456@117.36.75.166:3000/web_dev/fintech-vue-component.git":
+"vue-fintech-component@git+http://git:123456@117.36.75.166:3000/web_dev/vue-fintech-component.git":
   version "0.0.2"
-  resolved "git+http://git:123456@117.36.75.166:3000/web_dev/fintech-vue-component.git#4af0ecfce85266eb9ad45f2deaf5ce8fb38bdd3b"
+  resolved "git+http://git:123456@117.36.75.166:3000/web_dev/vue-fintech-component.git#4af0ecfce85266eb9ad45f2deaf5ce8fb38bdd3b"
   dependencies:
     autoprefixer-loader "^3.2.0"
     html-loader "^0.5.1"

@@ -99,7 +99,7 @@
   import {
     DataGrid,
     DataGridItem
-  } from "fintech-vue-component";
+  } from "vue-fintech-component";
   import {
     Prop
   } from "vue-property-decorator";

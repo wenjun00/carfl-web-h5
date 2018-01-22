@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "fintech-vue-component": "git+http://git:123456@117.36.75.166:3000/web_dev/fintech-vue-component.git",
+    "vue-fintech-component": "git+http://git:123456@117.36.75.166:3000/web_dev/vue-fintech-component.git",
     "iview": "^2.8.0",
     "md5": "^2.2.1",
     "normalize-css": "^2.3.1",

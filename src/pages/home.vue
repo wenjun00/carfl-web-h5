@@ -69,7 +69,7 @@
   import {
     DataGrid,
     DataGridItem
-  } from "fintech-vue-component";
+  } from "vue-fintech-component";
   import {
     Layout
   } from "~/core/decorator";
