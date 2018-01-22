@@ -11,13 +11,6 @@
       </i-row>
       <i-row>
         <i-col :span="24">
-          <i-form-item label="组织机构类型" prop="deptType">
-            <i-input v-model="addOrgModel.deptType"></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row>
-        <i-col :span="24">
           <i-form-item label="组织机构等级" prop="deptLevel">
             <i-select v-model="addOrgModel.deptLevel">
               <i-option label="一级" :value="401" :key="401"></i-option>
@@ -41,7 +34,7 @@
         <i-col :span="24">
           <i-form-item label="公司名称" v-model="addOrgModel.companyName" prop="companyId">
             <i-select v-model="addOrgModel.companyId">
-              <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
+              <i-option label="群泰西安" :value="10" :key="10"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
@@ -63,12 +56,19 @@
   import {
     Prop
   } from "vue-property-decorator";
-
+  import {
+    DepartmentService
+  } from "~/services/manage-service/department.service";
+  import {
+    Dependencies
+  } from "~/core/decorator";
   @Component({
     components: {}
   })
   export default class AddUser extends Vue {
-    @Prop() deptLevel;
+    @Dependencies(DepartmentService) private departmentService: DepartmentService;
+
+    // @Prop() deptLevel;
     private addOrgModel: any;
     private rules: any;
     created() {
@@ -77,8 +77,8 @@
         deptStatus: 0,
         companyName: '',
         deptRemark: '',
-        deptType: '',
-        deptLevel: ''
+        deptLevel: '',
+        deptCode: ''
       }
       this.rules = {
         deptName: [{
@@ -91,12 +91,17 @@
     /**
      * 添加组织机构
      */
-    addOrg() {
-      this.addOrgModel.deptLevel = this.deptLevel
+    addOrg(val) {
+      this.addOrgModel.deptLevel = val
+      console.log(333, this.addOrgModel.deptLevel)
+    }
+    confirmAddOrg() {
       let _addOrg: any = this.$refs['add-org-form']
       _addOrg.validate(valid => {
         if (valid) {
-
+          this.departmentService.createDepartment(this.addOrgModel).subscribe(val => {
+            this.$Message.success('添加成功！')
+          })
         }
       })
     }
@@ -104,13 +109,6 @@
 
 </script>
 <style lang="less">
-  // .modifyUserForm {
-  //   .ivu-input,
-  //   .ivu-select,
-  //   .ivu-select-single {
-  //     width: 85%;
-  //   }
-  // }
   .addOrg {
     position: relative;
     right: 30px;

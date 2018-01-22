@@ -147,7 +147,7 @@
     private userIds: Array < any >= [];
     private multipleUserId: any;
     private batchAllotFlag: Boolean = false;
-    private deptLevel: number;
+    private deptLevel: number | null = null;
     created() {
       this.deptObject = {
         deptName: '',
@@ -431,6 +431,9 @@
       this.deptObject = value
       // 获取组织机构等级
       this.deptLevel = value.deptLevel
+      // 获取deptCode
+      // this.deptCode = value.deptCode
+      console.log(111, this.deptLevel)
       this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
         this.userList = val.object.list
       })
@@ -457,13 +460,15 @@
      */
     addDept() {
       this.addNewOrgModal = true
+      let _addOrg = < Modal > this.$refs['add-org']
+      _addOrg.addOrg(this.deptLevel)
     }
     /**
      * 确定添加机构
      */
     confirmAddOrg() {
-      let _addOrg = < Modal > this.$refs['add-org']
-      _addOrg.addOrg()
+      let _confirmAdd: any = this.$refs['add-org']
+      _confirmAdd.confirmAddOrg()
     }
     mounted() {
       this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {

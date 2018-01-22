@@ -10,9 +10,10 @@ export class DepartmentService {
   /**
    * 新增组织机构
    */
-  createDepartment() {
+  createDepartment(data) {
     return this.netService.send({
-      server: manageService.departmentController.createDepartment
+      server: manageService.departmentController.createDepartment,
+      data: data
     })
   }
   /**
