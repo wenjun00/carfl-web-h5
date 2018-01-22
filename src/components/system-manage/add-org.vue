@@ -61,6 +61,9 @@
     DepartmentService
   } from "~/services/manage-service/department.service";
   import {
+    CompanyService
+  } from "~/services/manage-service/company.service";
+  import {
     Dependencies
   } from "~/core/decorator";
   @Component({
@@ -68,26 +71,11 @@
   })
   export default class AddOrg extends Vue {
     @Dependencies(DepartmentService) private departmentService: DepartmentService;
-
-    @Prop() deptObject;
-    @Watch("deptObject")
-    updateDeptObject() {}
-    private addOrgModel: any;
-    @Prop({
-      default: 1
-    }) deptPid;
-    // @Prop() deptObject;
+    @Dependencies(CompanyService) private companyService: CompanyService;
+    @Prop() addOrgModel: any;
     private rules: any;
+    private getAllCompany: any
     created() {
-      this.addOrgModel = {
-        deptName: '',
-        deptStatus: 0,
-        companyName: '',
-        deptRemark: '',
-        deptLevel: '',
-        deptCode: '',
-        deptPid: ''
-      }
       this.rules = {
         deptName: [{
           required: true,
@@ -95,14 +83,11 @@
           message: '请输入机构名称'
         }]
       }
-    }
-    /**
-     * 添加组织机构
-     */
-    addOrg(val) {
-      this.addOrgModel.deptLevel = val
-      this.addOrgModel.deptCode = this.deptObject.deptCode
-      this.addOrgModel.deptPid = this.deptPid
+
+      // 获取公司名称
+      this.companyService.getAllCompany(this.getAllCompany).subscribe(val => {
+        console.log(7899, val)
+      })
     }
     confirmAddOrg() {
       let _addOrg: any = this.$refs['add-org-form']
@@ -114,18 +99,6 @@
           })
         }
       })
-    }
-    /**
-     * 获取dept
-     */
-    getDeptInfo(val) {
-      console.log(666555, val)
-      console.log(this.deptObject.deptName, 8888)
-      this.addOrgModel.deptName = this.deptObject.deptName
-      this.addOrgModel.companyId = this.deptObject.companyId
-      this.addOrgModel.deptStatus = this.deptObject.deptStatus
-      this.addOrgModel.deptLevel = this.deptObject.deptLevel
-      console.log(this.addOrgModel, 999)
     }
   }
 

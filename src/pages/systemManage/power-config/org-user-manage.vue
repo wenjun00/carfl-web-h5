@@ -62,7 +62,7 @@
 
     <template>
       <i-modal v-model="addNewOrgModal" title="添加机构" width="400">
-        <add-org ref="add-org" :deptPid="deptPid" :deptObject="deptObject" @close="addNewOrgModal=false"></add-org>
+        <add-org ref="add-org" :addOrgModel="addOrgModel" @close="addNewOrgModal=false"></add-org>
         <div slot="footer">
           <i-button @click="cancelAddOrg">取消</i-button>
           <i-button class="blueButton" @click="confirmAddOrg">确定</i-button>
@@ -167,8 +167,18 @@
     private deptCode: String = '';
     private deptPid: number | null = null;
     private editNewOrgModal: Boolean = false;
+    private addOrgModel: any;
     created() {
       this.getTree()
+      this.addOrgModel = {
+        deptName: '',
+        deptStatus: 0,
+        companyName: '',
+        deptRemark: '',
+        deptLevel: '',
+        deptCode: '',
+        deptPid: ''
+      }
       this.deptObject = {
         deptName: '',
         deptId: '',
@@ -455,6 +465,8 @@
       this.deptCode = value.deptCode
       // 获取Pid
       this.deptPid = value.deptPid
+      this.addOrgModel.deptPid = value.deptPid
+      this.addOrgModel.deptCode = value.deptCode
       this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
         this.userList = val.object.list
       })
@@ -488,8 +500,11 @@
      */
     addDept() {
       this.addNewOrgModal = true
-      let _addOrg = < Modal > this.$refs['add-org']
-      _addOrg.addOrg(this.deptLevel)
+      let deptLevel
+      if (this.deptLevel) {
+        this.addOrgModel.deptLevel = this.deptLevel + 1
+      }
+      console.log(8989, this.addOrgModel)
     }
     /**
      * 确定添加机构
@@ -529,6 +544,7 @@
         this.deptObject = val.object[0]
         this.dataList = val.object
       })
+      this.getUserListByCondition()
     }
   }
 

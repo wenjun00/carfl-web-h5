@@ -12,7 +12,7 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="组织机构等级" prop="deptLevel">
-            <i-select v-model="deptObject.deptLevel">
+            <i-select v-model="deptObject.deptLevel" disabled>
               <i-option label="一级" :value="401" :key="401"></i-option>
               <i-option label="二级" :value="402" :key="402"></i-option>
               <i-option label="三级" :value="403" :key="403"></i-option>

@@ -16,7 +16,7 @@
         <div :style="{color:item.color}" class="iconName">{{item.iconName}}</div>
         <div class="verticalLine"></div>
         <div v-for="val in item.pageList" :key="val.pageName" style="margin-left:100px;">
-          <div class="pageList_pageName">{{val.pageName}}</div>
+          <div class="pageList_pageName" @click="redirectToPage(val)">{{val.pageName}}</div>
           <div @click="val.isAttention=!val.isAttention" style="display:inline-block;cursor:pointer">
             <svg-icon iconClass="yiguanzhu" style="font-size:16px;color:#F8B551" v-show="val.isAttention"></svg-icon>
             <svg-icon iconClass="weiguanzhu" style="font-size:16px;" v-show="!val.isAttention"></svg-icon>
@@ -31,7 +31,9 @@
   import Vue from "vue";
   import Component from "vue-class-component";
   import SvgIcon from '~/components/common/svg-icon.vue'
-
+  import {
+    Mutation
+  } from "vuex-class";
   @Component({
     components: {
       SvgIcon
@@ -39,6 +41,13 @@
   })
   export default class FinanceIndex extends Vue {
     private finance: Array < Object > = []
+    @Mutation("openPage") openPage;
+    redirectToPage(val) {
+      this.openPage({
+        title: val.pageName,
+        path: val.path
+      })
+    }
     created() {
       this.finance = [{
         index: 1,
@@ -47,7 +56,8 @@
         icon: 'shoufukuanguanli',
         pageList: [{
           pageName: '收款',
-          isAttention: true
+          isAttention: true,
+          path: 'finance/initial-payment-manage/gathering'
         }]
       }, {
         index: 2,
@@ -56,16 +66,20 @@
         icon: 'huankuanguanli',
         pageList: [{
           pageName: '客户还款',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/repay-manage/customer-repay'
         }, {
           pageName: '提前结清',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/repay-manage/early-pay'
         }, {
           pageName: '提前收回',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/repay-manage/early-withdraw'
         }, {
           pageName: '已结清订单查询',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/repay-manage/closed-order-query'
         }]
       }, {
         index: 3,
@@ -74,13 +88,16 @@
         icon: 'huakouguanli',
         pageList: [{
           pageName: '个人开户列表',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/deduct-manage/personal-account-list'
         }, {
           pageName: '企业开户列表',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/deduct-manage/company-account-list'
         }, {
           pageName: '划扣记录查询',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/deduct-manage/deduct-record-query'
         }]
       }, {
         index: 4,
@@ -89,13 +106,8 @@
         icon: 'fapiaoguanli',
         pageList: [{
           pageName: '财务开票',
-          isAttention: false
-        }, {
-          pageName: '企业开户列表',
-          isAttention: false
-        }, {
-          pageName: '划扣记录查询',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/invoice-manage/finance-make-invoice'
         }]
       }, {
         index: 5,
@@ -104,19 +116,24 @@
         icon: 'fapiaoguanli',
         pageList: [{
           pageName: '清结算日报表',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/finance-statistics/clear-account-report'
         }, {
           pageName: '月还款报表',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/finance-statistics/month-repay-report'
         }, {
           pageName: '收款信息导出',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/finance-statistics/gathering-info-export'
         }, {
           pageName: '订单信息导出',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/finance-statistics/order-info-export'
         }, {
           pageName: '查询模版管理',
-          isAttention: false
+          isAttention: false,
+          path: 'finance/finance-statistics/query-template-manage'
         }]
       }]
     }

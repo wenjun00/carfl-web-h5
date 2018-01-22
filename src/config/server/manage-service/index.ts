@@ -4,6 +4,7 @@ import userController from './user.controller'
 import systemLogsController from './system.logs.controller'
 import systemBackupController from './system.backup.controller'
 import systemParameterController from './system.parameter.controller'
+import companyController from './company.controller'
 
 export const manageService = {
   departmentController,
@@ -11,5 +12,5 @@ export const manageService = {
   userController,
   systemLogsController,
   systemBackupController,
-  systemParameterController
+  systemParameterController, companyController
 }

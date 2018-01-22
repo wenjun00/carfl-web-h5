@@ -63,7 +63,7 @@
 
       // 生成数据树
       this.dataTree = fun(0)
-      console.log(this.dataTree)
+      // console.log(this.dataTree)
     }
     private dataTree: Array < any > = [] // 数据树
     private selected: String = '' // 当前选择项
@@ -84,7 +84,7 @@
      * 更新当前选择项
      */
     updateSelected(value) {
-      console.log(value, this.selected, 8989)
+      // console.log(value, this.selected, 8989)
       if (this.selected !== value) {
         this.selected = value
         // 发送change事件
