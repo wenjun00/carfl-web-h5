@@ -5,10 +5,10 @@
     <i-row>
       <i-col :span="4">
         <i-button class="blueButton" @click="addNewOrg">添加机构</i-button>
-        <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept"></organize-tree>
+        <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
       </i-col>
       <i-col :span="20">
-        <i-row style="margin-bottom:10px;margin-left:25px;">
+        <i-row style="margin-bottom:10px;">
           <span style="margin-left:20px;">用户名：</span>
           <i-input style="display:inline-block;width:10%;" v-model="userListModel.userName" placeholder="请输入用户名"></i-input>
           <span style="margin-left:20px;">姓名：</span>
@@ -29,7 +29,7 @@
 
     <template>
       <i-modal v-model="allotRoleModal" :title="batchAllotFlag?'批量分配角色':'分配角色'">
-        <allot-role-modal :userId="userId" :batchAllotFlag="batchAllotFlag" :userIds="userIds" ref="allot-role-modal" @close="allotRoleModal=false"></allot-role-modal>
+        <allot-role-modal :userId="userId" :batchAllotFlag="batchAllotFlag" :userIds="userIds" ref="allot-role-modal" @closeAndRefreshTree="closeAndRefreshTree"></allot-role-modal>
         <div slot="footer">
           <i-button @click="allotRoleModal=false">取消</i-button>
           <i-button @click="allotRoleClick" class="blueButton">确定分配</i-button>
@@ -39,7 +39,11 @@
 
     <template>
       <i-modal v-model="modifyUserModal" title="修改用户" width="600">
-        <modify-user :modifyUserModel="modifyUserModel" @close="modifyUserModal=false"></modify-user>
+        <modify-user :modifyUserModel="modifyUserModel" @close="modifyUserModal=false" ref="modify-user"></modify-user>
+        <div slot="footer">
+          <i-button>取消</i-button>
+          <i-button class="blueButton" @click="confirmModifyUser">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -58,10 +62,20 @@
 
     <template>
       <i-modal v-model="addNewOrgModal" title="添加机构" width="400">
-        <add-org ref="add-org" :deptLevel="deptLevel"></add-org>
+        <add-org ref="add-org" :deptPid="deptPid" :deptObject="deptObject" @close="addNewOrgModal=false"></add-org>
         <div slot="footer">
-          <i-button>取消</i-button>
+          <i-button @click="cancelAddOrg">取消</i-button>
           <i-button class="blueButton" @click="confirmAddOrg">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="editNewOrgModal" title="编辑机构" width="400">
+        <edit-org ref="edit-org" :deptPid="deptPid" :deptObject="deptObject" @close="editNewOrgModal=false"></edit-org>
+        <div slot="footer">
+          <i-button @click="cancelEditOrg">取消</i-button>
+          <i-button class="blueButton" @click="confirmEditOrg">确定</i-button>
         </div>
       </i-modal>
     </template>
@@ -80,6 +94,7 @@
   import AddUser from "~/components/system-manage/add-user.vue"
   import DeviceManage from '~/components/system-manage/device-manage.vue'
   import AddOrg from '~/components/system-manage/add-org.vue'
+  import EditOrg from '~/components/system-manage/edit-org.vue'
   import OrganizeTree from '~/components/common/organize-tree.vue'
   import {
     Dependencies
@@ -120,6 +135,7 @@
       AddUser,
       DeviceManage,
       AddOrg,
+      EditOrg,
       OrganizeTree
     }
   })
@@ -148,7 +164,11 @@
     private multipleUserId: any;
     private batchAllotFlag: Boolean = false;
     private deptLevel: number | null = null;
+    private deptCode: String = '';
+    private deptPid: number | null = null;
+    private editNewOrgModal: Boolean = false;
     created() {
+      this.getTree()
       this.deptObject = {
         deptName: '',
         deptId: '',
@@ -432,8 +452,9 @@
       // 获取组织机构等级
       this.deptLevel = value.deptLevel
       // 获取deptCode
-      // this.deptCode = value.deptCode
-      console.log(111, this.deptLevel)
+      this.deptCode = value.deptCode
+      // 获取Pid
+      this.deptPid = value.deptPid
       this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
         this.userList = val.object.list
       })
@@ -451,8 +472,15 @@
             deptId: value.id
           }).subscribe(val => {
             this.$Message.success('删除成功！')
+            this.getTree()
           })
         }
+      })
+    }
+    getTree() {
+      this.manageService.getAllDepartment().subscribe(val => {
+        this.deptObject = val.object[0]
+        this.dataList = val.object
       })
     }
     /**
@@ -470,9 +498,36 @@
       let _confirmAdd: any = this.$refs['add-org']
       _confirmAdd.confirmAddOrg()
     }
+    /**
+     * 确定编辑机构
+     */
+    confirmEditOrg() {
+      let _confirmEdit: any = this.$refs['edit-org']
+      _confirmEdit.confirmEditOrg()
+    }
+    closeAndRefreshTree() {
+      this.allotRoleModal = false
+      this.getTree()
+    }
+    editDept() {
+      this.editNewOrgModal = true
+      let _edit: any = this.$refs['edit-org']
+      _edit.getDeptInfo(this.deptObject)
+    }
+    cancelAddOrg() {
+      this.addNewOrgModal = false
+    }
+    cancelEditOrg() {
+      this.editNewOrgModal = false
+    }
+    confirmModifyUser() {
+      let _modifyUser: any = this.$refs['modify-user']
+      _modifyUser.confirmModify()
+    }
     mounted() {
-      this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
-        this.userList = val.object.list
+      this.manageService.getAllDepartment().subscribe(val => {
+        this.deptObject = val.object[0]
+        this.dataList = val.object
       })
     }
   }
