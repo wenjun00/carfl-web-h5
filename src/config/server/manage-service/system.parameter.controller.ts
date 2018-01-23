@@ -2,7 +2,7 @@
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'manage-service'
-const CONTROLLER = 'systemLogs'
+const CONTROLLER = 'systemParameter'
 
 export default {
   /**
@@ -13,5 +13,14 @@ export default {
     controller: CONTROLLER,
     action: 'querySystemParameterPage',
     type: requestType.Get
+  },
+  /**
+   * 创建修改系统参数
+   */
+  createSystemParameter: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'createSystemParameter',
+    type: requestType.Post
   }
 }

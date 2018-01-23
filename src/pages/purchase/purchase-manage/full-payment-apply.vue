@@ -60,7 +60,7 @@
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="8" push="1">
-          <span style="height:40px;display:inline-block;line-height:3">申请人：胡开甲</span>
+          <span style="height:40px;display:inline-block;line-height:3">申请人：administrator</span>
         </i-col>
         <i-col :span="10" pull="4">
           <span>申请时间：2017-12-01 13:56:56</span>
