@@ -98,13 +98,13 @@
           this.batchAllotModel.usersId = this.userIds
           this.manageService.userBatchAllocateRoles(this.batchAllotModel).subscribe(val => {
             this.$Message.success('批量分配成功！')
-            this.$emit('close')
+            this.$emit('closeAndRefreshTree')
           })
         } else {
           this.allotRoleModel.userId = this.userId
           this.manageService.userAllocateRoles(this.allotRoleModel).subscribe(val => {
             this.$Message.success('分配成功！')
-            this.$emit('close')
+            this.$emit('closeAndRefreshTree')
           })
         }
       }

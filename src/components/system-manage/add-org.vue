@@ -12,7 +12,7 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="组织机构等级" prop="deptLevel">
-            <i-select v-model="addOrgModel.deptLevel">
+            <i-select v-model="addOrgModel.deptLevel" disabled>
               <i-option label="一级" :value="401" :key="401"></i-option>
               <i-option label="二级" :value="402" :key="402"></i-option>
               <i-option label="三级" :value="403" :key="403"></i-option>
@@ -23,7 +23,7 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="状态" prop="deptStatus">
-            <i-select v-model="addOrgModel.deptStatus">
+            <i-select v-model="addOrgModel.deptStatus" clearable>
               <i-option label="启用" :value="0" :key="0"></i-option>
               <i-option label="停用" :value="1" :key="1"></i-option>
             </i-select>
@@ -33,8 +33,8 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="公司名称" prop="companyId">
-            <i-select v-model="addOrgModel.companyId">
-              <i-option label="群泰西安" :value="10" :key="10"></i-option>
+            <i-select v-model="addOrgModel.companyId" disabled>
+              <i-option v-for="item in companyObject" :key="item.id" :value="item.id" :label="item.companyChinaname"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
@@ -74,7 +74,8 @@
     @Dependencies(CompanyService) private companyService: CompanyService;
     @Prop() addOrgModel: any;
     private rules: any;
-    private getAllCompany: any
+    private getAllCompany: any;
+    private companyObject: Array < Object >= []; // 公司信息
     created() {
       this.rules = {
         deptName: [{
@@ -84,10 +85,7 @@
         }]
       }
 
-      // 获取公司名称
-      this.companyService.getAllCompany(this.getAllCompany).subscribe(val => {
-        console.log(7899, val)
-      })
+
     }
     confirmAddOrg() {
       let _addOrg: any = this.$refs['add-org-form']
@@ -98,6 +96,13 @@
             this.$emit('close')
           })
         }
+      })
+    }
+    addDept() {
+      console.log('子组件', this.addOrgModel)
+      // 获取公司名称
+      this.companyService.getAllCompany(this.getAllCompany).subscribe(val => {
+        this.companyObject = val.object
       })
     }
   }

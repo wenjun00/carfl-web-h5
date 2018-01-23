@@ -72,7 +72,7 @@
 
     <template>
       <i-modal v-model="editNewOrgModal" title="编辑机构" width="400">
-        <edit-org ref="edit-org" :deptPid="deptPid" :deptObject="deptObject" @close="editNewOrgModal=false"></edit-org>
+        <edit-org ref="edit-org" :deptObject="deptObject" @close="editNewOrgModal=false"></edit-org>
         <div slot="footer">
           <i-button @click="cancelEditOrg">取消</i-button>
           <i-button class="blueButton" @click="confirmEditOrg">确定</i-button>
@@ -165,9 +165,10 @@
     private batchAllotFlag: Boolean = false;
     private deptLevel: number | null = null;
     private deptCode: String = '';
-    private deptPid: number | null = null;
+    // private deptPid: number | null = null;
     private editNewOrgModal: Boolean = false;
     private addOrgModel: any;
+    private companyId: any = 0;
     created() {
       this.getTree()
       this.addOrgModel = {
@@ -177,7 +178,8 @@
         deptRemark: '',
         deptLevel: '',
         deptCode: '',
-        deptPid: ''
+        deptPid: '',
+        companyId: ''
       }
       this.deptObject = {
         deptName: '',
@@ -457,16 +459,19 @@
      * 树change
      */
     onChange(value) {
+      console.log('树change', value)
       this.userListModel.deptId = value.id
       this.deptObject = value
-      // 获取组织机构等级
-      this.deptLevel = value.deptLevel
-      // 获取deptCode
-      this.deptCode = value.deptCode
-      // 获取Pid
-      this.deptPid = value.deptPid
-      this.addOrgModel.deptPid = value.deptPid
-      this.addOrgModel.deptCode = value.deptCode
+      // // 获取组织机构等级
+      // this.deptLevel = value.deptLevel
+      // // 获取deptCode
+      // this.deptCode = value.deptCode
+      // this.companyId = value.companyId
+      // this.addOrgModel.deptPid = value.deptPid
+      // this.addOrgModel.deptCode = value.deptCode
+      // this.addOrgModel.companyId = value.companyId
+      this.addOrgModel = value
+      console.log(123, this.addOrgModel.companyId)
       this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
         this.userList = val.object.list
       })
@@ -504,7 +509,8 @@
       if (this.deptLevel) {
         this.addOrgModel.deptLevel = this.deptLevel + 1
       }
-      console.log(8989, this.addOrgModel)
+      let _add: any = this.$refs['add-org']
+      _add.addDept()
     }
     /**
      * 确定添加机构
