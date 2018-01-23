@@ -10,6 +10,7 @@ import companyController from './company.controller'
 import dataDictTypeController from './dataDictType.controller'
 import dataDictController from './dataDIct.controller'
 import personalMaterialController from './personalMaterial.controller'
+import approvalController from './approval.controller'
 
 export const manageService = {
     departmentController,
@@ -23,5 +24,6 @@ export const manageService = {
     companyController,
     dataDictTypeController,
     dataDictController,
+    approvalController,
     personalMaterialController
 }

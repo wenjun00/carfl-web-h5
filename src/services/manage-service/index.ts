@@ -7,6 +7,7 @@ import systemParameterService from './system.parameter.service'
 import dataDictTypeService from './dataDictType.service'
 import dataDictService from './dataDict.service'
 import personalMaterialService from './personalMaterial.service'
+import approvalService from './approval.service'
 
 
 export const aaa = {

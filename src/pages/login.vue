@@ -119,6 +119,7 @@
             (data) => {
               this.updateUserToken(data.object.token);
               this.updateUserData(data.object.user);
+              console.log('login', data.object.user)
               this.$router.push('/home')
             },
             ({
