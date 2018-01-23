@@ -7,6 +7,7 @@ import systemParameterController from './system.parameter.controller'
 import productPackageController from './productPackage.controller'
 import approveReeasonController from './approve.reason.controller'
 import companyController from './company.controller'
+import approvalController from './approval.controller'
 
 export const manageService = {
   departmentController,
@@ -17,5 +18,6 @@ export const manageService = {
   systemParameterController,
   productPackageController,
   approveReeasonController,
-   companyController
+  companyController,
+  approvalController
 }

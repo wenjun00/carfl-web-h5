@@ -4,7 +4,7 @@ import departmentService from './manage.service'
 import approveReasonService from './approve.reason.service'
 import companyService from './manage.service'
 import systemParameterService from './system.parameter.service'
-
+import approvalService from './approval.service'
 
 export const aaa = {
   manageService,
@@ -12,5 +12,6 @@ export const aaa = {
   departmentService,
   approveReasonService,
   companyService,
-  systemParameterService
+  systemParameterService,
+  approvalService
 }

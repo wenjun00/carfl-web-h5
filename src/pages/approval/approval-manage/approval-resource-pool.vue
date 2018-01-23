@@ -35,9 +35,9 @@
         <i-option label="安康市" value="安康市" key="安康市"></i-option>
         <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
       </i-select>
-      <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+      <i-button style="margin-left:10px" class="blueButton" @click="getApprovalListByCondition">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="resourcePoolList"></data-box>
 
     <!--Modal-->
     <template>
@@ -79,7 +79,9 @@
   import Page from "~/core/page";
   import Component from "vue-class-component";
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
-
+  import {
+    ApprovalService
+  } from "~/services/manage-service/approval.service";
   import {
     Tooltip
   } from 'iview'
@@ -92,7 +94,12 @@
   import {
     Mutation,
   } from "vuex-class";
-
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   @Layout("workspace")
   @Component({
 
@@ -102,8 +109,10 @@
     }
   })
   export default class ApprovalResourcePool extends Page {
+    @Dependencies(ApprovalService) private approvalService: ApprovalService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private resourcePoolList: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
     private orderModal: Boolean = false;
@@ -113,26 +122,16 @@
     private data3: Array < Object > = [];
     private purchaseInformationModal: Boolean = false;
     private scrollTopHeight = 0
+    private resourcePoolModel: any;
     @Mutation("openPage") openPage;
 
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
-    }
-    visibleChange() {
-      console.log('资源池modal')
-      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
-      if (target) {
-        target.addEventListener('scroll', this.monitorScorll)
-      }
-    }
-    monitorScorll() {
-      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
-      if (target) {
-        this.scrollTopHeight = target.scrollTop
-      }
 
-    }
+
     created() {
+      this.getApprovalListByCondition()
+      this.resourcePoolModel = {
+
+      }
       this.columns1 = [{
           align: 'center',
           width: 90,
@@ -199,7 +198,11 @@
           key: "orderId",
           align: "center",
           width: 150,
-          render: (h, params) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('i-button', {
               props: {
                 type: 'text'
@@ -209,19 +212,12 @@
                   this.purchaseInformationModal = true
                 }
               }
-            }, '2017101001')
+            }, row.orderId)
           },
           fixed: 'left'
         },
         {
-          title: "订单状态",
-          align: "center",
-          key: "orderStatus",
-          width: 100,
-          fixed: 'left'
-        },
-        {
-          key: 'step',
+          key: 'orderLink',
           title: '环节',
           align: 'center',
           width: 186,
@@ -230,60 +226,42 @@
             columns,
             index
           }) => {
-            if (row.orderStatus === '拒绝') {
-              return h('Tooltip', {
-                props: {
-                  content: row.content
-                },
-              }, [h('span', {}, row.status),
-                h('Icon', {
-                  props: {
-                    type: 'ios-information',
-                    size: '20',
-                    color: '#F9435D'
-                  },
-                  style: {
-                    position: 'relative',
-                    top: '2px',
-                    left: '6px',
-                    cursor: 'pointer'
-                  }
-                })
-              ])
-            } else {
-              return h('Tooltip', {
-                props: {
-                  content: row.content
-                },
-              }, [h('span', {}, row.status),
-                h('Icon', {
-                  props: {
-                    type: 'ios-information',
-                    size: '20',
-                    color: '#666666'
-                  },
-                  style: {
-                    position: 'relative',
-                    top: '2px',
-                    left: '6px',
-                    cursor: 'pointer'
-                  }
-                })
-              ])
+            if (row.orderLink === 332) {
+              return h('span', {}, '面审')
+            } else if (row.orderLink === 333) {
+              return h('span', {}, '复审')
+            } else if (row.orderLink === 334) {
+              return h('span', {}, '终审')
+            } else if (row.orderLink === 337) {
+              return h('span', {}, '合规')
             }
           }
         },
         {
           align: "center",
           title: "订单创建时间",
-          key: "orderCreateTime",
-          width: 260
+          key: "createTime",
+          width: 260,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: "进入资源池时间",
-          key: "orderPoolTime",
-          width: 260
+          key: "intoPoolDate",
+          width: 260,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.intoPoolDate, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
@@ -306,7 +284,7 @@
         {
           align: "center",
           title: "客户姓名",
-          key: "customerName",
+          key: "personalName",
           width: 100
         },
         {
@@ -318,93 +296,10 @@
         {
           align: "center",
           title: "手机号",
-          key: "phone",
+          key: "mobileMain",
           width: 160
         }
       ];
-
-      this.data1 = [{
-        orderStatus: '面审通过',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '宝鸡',
-        orderType: '直租',
-        customerName: '刘佳',
-        idCard: '610303199111142564',
-        orderId: 20170805,
-        phone: '15094156575',
-        content: '通过',
-        status: '复审'
-      }, {
-        orderStatus: '面审通过',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '宝鸡',
-        orderType: '直租',
-        customerName: '刘陇刚',
-        idCard: '610303198911041564',
-        orderId: 20170806,
-        phone: '13096133575',
-        content: '通过',
-        status: '复审'
-      }, {
-        orderStatus: '面审通过',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '渭南',
-        orderType: '直租',
-        customerName: '王泽杰',
-        orderId: 20170807,
-        idCard: '610303199111142564',
-        phone: '15989756575',
-        content: '通过',
-        status: '复审'
-      }, {
-        orderStatus: '面审通过',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        orderId: 20170806,
-        province: '陕西',
-        city: '宝鸡',
-        orderType: '直租',
-        customerName: '刘佳',
-        idCard: '610303199111142564',
-        prdName: '直租',
-        phone: '15094156575',
-        content: '通过',
-        status: '复审'
-      }, {
-        orderStatus: '拒绝',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '宝鸡',
-        orderType: '直租',
-        customerName: '刘陇刚',
-        orderId: 20170807,
-        idCard: '610303198911041564',
-        prdName: '直租',
-        phone: '13096133575',
-        content: '终审资料不全',
-        status: '终审'
-      }, {
-        orderStatus: '拒绝',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '渭南',
-        orderType: '直租',
-        customerName: '王泽杰',
-        orderId: 20170808,
-        idCard: '610303199111142564',
-        prdName: '直租',
-        phone: '15989756575',
-        content: '复审资料造假',
-        status: '复审'
-      }]
 
       this.columns2 = [{
         align: 'center',
@@ -486,6 +381,30 @@
     }
     confirmGetOrder() {
       this.orderModal = false
+    }
+    /**
+     * 获取审核资源池列表
+     */
+    getApprovalListByCondition() {
+      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
+        this.resourcePoolList = val.object.list
+      })
+    }
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
+    visibleChange() {
+      console.log('资源池modal')
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
+      if (target) {
+        target.addEventListener('scroll', this.monitorScorll)
+      }
+    }
+    monitorScorll() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
+      if (target) {
+        this.scrollTopHeight = target.scrollTop
+      }
     }
   }
 
