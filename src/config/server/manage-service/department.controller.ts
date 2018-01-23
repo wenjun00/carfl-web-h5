@@ -30,5 +30,14 @@ export default {
     controller: CONTROLLER,
     action: 'deleteDept',
     type: requestType.Delete
+  },
+  /**
+   * 更新组织机构
+   */
+  updateDepartment: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateDepartment',
+    type: requestType.Post
   }
 }

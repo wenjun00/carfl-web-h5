@@ -27,4 +27,14 @@ export class DepartmentService {
       }
     })
   }
+
+  /**
+   * 更新组织机构
+   */
+  updateDepartment(data) {
+    return this.netService.send({
+      server: manageService.departmentController.updateDepartment,
+      data: data
+    })
+  }
 }

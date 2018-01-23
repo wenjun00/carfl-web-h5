@@ -16,7 +16,7 @@
         <div :style="{color:item.color}" class="iconName">{{item.iconName}}</div>
         <div class="verticalLine"></div>
         <div v-for="val in item.pageList" :key="val.pageName" style="margin-left:100px;">
-          <div class="pageList_pageName">{{val.pageName}}</div>
+          <div class="pageList_pageName" @click="redirectToPage(val)">{{val.pageName}}</div>
           <div @click="val.isAttention=!val.isAttention" style="display:inline-block;cursor:pointer">
             <svg-icon iconClass="yiguanzhu" style="font-size:16px;color:#F8B551" v-show="val.isAttention"></svg-icon>
             <svg-icon iconClass="weiguanzhu" style="font-size:16px;" v-show="!val.isAttention"></svg-icon>
@@ -31,7 +31,9 @@
   import Vue from "vue";
   import Component from "vue-class-component";
   import SvgIcon from '~/components/common/svg-icon.vue'
-
+  import {
+    Mutation
+  } from "vuex-class";
   @Component({
     components: {
       SvgIcon
@@ -39,6 +41,13 @@
   })
   export default class PurchaseIndex extends Vue {
     private purchase: Array < Object > = []
+    @Mutation("openPage") openPage;
+    redirectToPage(val) {
+      this.openPage({
+        title: val.pageName,
+        path: val.path
+      })
+    }
     created() {
       this.purchase = [{
         index: 1,
@@ -47,19 +56,24 @@
         icon: 'jinjianguanli',
         pageList: [{
           pageName: '融资租赁申请',
-          isAttention: true
+          isAttention: true,
+          path: 'purchase/purchase-manage/financing-lease-apply'
         }, {
           pageName: '全额付款申请',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/purchase-manage/full-payment-apply'
         }, {
           pageName: '客户开户',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/purchase-manage/open-account'
         }, {
           pageName: '客户签约',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/purchase-manage/customer-sign'
         }, {
           pageName: '订单交接',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/purchase-manage/order-transfer'
         }]
       }, {
         index: 2,
@@ -68,13 +82,16 @@
         icon: 'jinjianchaxun',
         pageList: [{
           pageName: '订单查询',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/purchase-query/order-query'
         }, {
           pageName: '客户资料查询',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/purchase-query/customer-data-query'
         }, {
           pageName: '产品包查询',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/purchase-query/product-package-query'
         }]
       }, {
         index: 3,
@@ -83,16 +100,20 @@
         icon: 'caiwujizhang',
         pageList: [{
           pageName: '销售收款申请',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/finance-account/sale-gathering-apply'
         }, {
           pageName: '提前结清申请',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/finance-account/early-payment-apply'
         }, {
           pageName: '提前收回申请',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/finance-account/early-recover-apply'
         }, {
           pageName: '收款记录查询',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/finance-account/receipt-record-query'
         }]
       }, {
         index: 4,
@@ -101,7 +122,8 @@
         icon: 'shenpiguanli',
         pageList: [{
           pageName: '收款审批',
-          isAttention: false
+          isAttention: false,
+          path: 'purchase/purchase-approve/receipt-approve'
         }]
       }]
     }

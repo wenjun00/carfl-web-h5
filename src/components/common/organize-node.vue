@@ -153,7 +153,7 @@
       // 父节点强制刷新
       let targetParent: any = this.parent()
       targetParent.forceRefresh()
-      console.log(currentNode, vm.$parent.data)
+      // console.log(currentNode, vm.$parent.data)
       targetParent.$emit('drag', currentNode, vm.$parent.data, this.data)
     }
     handleDragEnd() {

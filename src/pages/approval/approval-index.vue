@@ -16,7 +16,7 @@
         <div :style="{color:item.color}" class="iconName">{{item.iconName}}</div>
         <div class="verticalLine"></div>
         <div v-for="val in item.pageList" :key="val.pageName" style="margin-left:100px;">
-          <div class="pageList_pageName">{{val.pageName}}</div>
+          <div class="pageList_pageName" @click="redirectToPage(val)">{{val.pageName}}</div>
           <div @click="val.isAttention=!val.isAttention" style="display:inline-block;cursor:pointer">
             <svg-icon iconClass="yiguanzhu" style="font-size:16px;color:#F8B551" v-show="val.isAttention"></svg-icon>
             <svg-icon iconClass="weiguanzhu" style="font-size:16px;" v-show="!val.isAttention"></svg-icon>
@@ -31,7 +31,9 @@
   import Vue from "vue";
   import Component from "vue-class-component";
   import SvgIcon from '~/components/common/svg-icon.vue'
-
+  import {
+    Mutation
+  } from "vuex-class";
   @Component({
     components: {
       SvgIcon
@@ -39,6 +41,13 @@
   })
   export default class ApprovalIndex extends Vue {
     private approval: Array < Object > = []
+    @Mutation("openPage") openPage;
+    redirectToPage(val) {
+      this.openPage({
+        title: val.pageName,
+        path: val.path
+      })
+    }
     created() {
       this.approval = [{
         index: 1,
@@ -47,25 +56,32 @@
         icon: 'shenheguanli',
         pageList: [{
           pageName: '审核资源池',
-          isAttention: true
+          isAttention: true,
+          path: 'approval/approval-manage/approval-resource-pool'
         }, {
           pageName: '面审',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/approval-manage/face-approval'
         }, {
           pageName: '复审',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/approval-manage/second-approval'
         }, {
           pageName: '终审',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/approval-manage/last-approval'
         }, {
           pageName: '合规检查',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/approval-manage/meet-condition-check'
         }, {
           pageName: '我的审核',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/approval-manage/my-approval'
         }, {
           pageName: '流程配置',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/approval-manage/flow-config'
         }]
       }, {
         index: 2,
@@ -74,16 +90,20 @@
         icon: 'shenhechaxun',
         pageList: [{
           pageName: '内审管理',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/approval-manage/internal-audit-manage'
         }, {
           pageName: '灰名单',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/approval-manage/gray-list'
         }, {
           pageName: '黑名单',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/approval-manage/black-list'
         }, {
           pageName: '订单查询',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/approval-manage/approval-order-query'
         }]
       }, {
         index: 3,
@@ -92,13 +112,16 @@
         icon: 'huankuanguanli',
         pageList: [{
           pageName: '客户还款查询',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/repay-manage/customer-repay-query'
         }, {
           pageName: '减免申请记录',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/repay-manage/derate-apply-record'
         }, {
           pageName: '冻结申请记录',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/repay-manage/frozen-apply-record'
         }]
       }, {
         index: 4,
@@ -107,10 +130,12 @@
         icon: 'zonghechaxun',
         pageList: [{
           pageName: '审核记录表',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/synthesize-query/approval-record-table'
         }, {
           pageName: '合同下载监控',
-          isAttention: false
+          isAttention: false,
+          path: 'approval/synthesize-query/compact-monitor'
         }]
       }]
     }
