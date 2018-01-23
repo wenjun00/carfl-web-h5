@@ -4,13 +4,12 @@
         <i-row style="margin-top:10px;">
             <span style="font-size:18px;font-weight:bold">产品包信息</span>
             <span style="margin-left:10px;">文件名：</span>
-            <i-input style="width:10%" v-model="fileName"></i-input>
+            <i-input style="width:10%" v-model="productModel.fileName"></i-input>
             <span style="margin-left:10px;">上传时间：</span>
-            <i-date-picker></i-date-picker>
-            <i-date-picker></i-date-picker>
+            <i-date-picker type="datetimerange" v-model="backupTimeRange" @on-change="changeBackupTime" @on-clear="clearDateTime"></i-date-picker>
             <i-button class="blueButton" style="margin-left:10px;" @click="getProductPackage">搜索</i-button>
         </i-row>
-        <data-box :columns="columns1" :data="prdPackage"></data-box>
+        <data-box :columns="columns" :data="prdPackageList"></data-box>
     </section>
 </template>
 
@@ -35,14 +34,16 @@ export default class ProdPackageInfo extends Page {
   @Dependencies(ProductPackageService)
   private productPackageService: ProductPackageService;
   @Dependencies(PageService) private pageService: PageService;
-  private columns1: any;
-  private prdPackage: Array<Object> = [];
+  private columns: any;
+  private prdPackageList: Array<Object> = [];
   private searchOptions: Boolean = false;
   private productPackageModel: any;
-  private fileName: any = null;
+  private productModel: any;
+  private backupTimeRange: Array<any> = [];
 
   created() {
-    this.columns1 = [
+    this.getProductPackage();
+    this.columns = [
       {
         title: "序号",
         width: 60,
@@ -122,25 +123,41 @@ export default class ProdPackageInfo extends Page {
         align: "center"
       }
     ];
-
-    //   this.prdPackage = [{
-    //     fileName: '20170901报价.xls',
-    //     uploadTime: '2017-09-01 17:39:00',
-    //     operator: '胡开甲',
-    //     remark: '新增车型报价'
-    //   }]
+    this.productModel = {
+      fileName: "",
+      startTime: "",
+      endTime: ""
+    };
   }
   getOrderInfoByTime() {}
   openSearch() {
     this.searchOptions = !this.searchOptions;
   }
   exportMonthReport() {}
+  /**
+   * 多条件分页查询产品包信息
+   */
   getProductPackage() {
     this.productPackageService
-      .getAllProductPackage(this.fileName, this.pageService)
+      .getAllProductPackage(this.productModel, this.pageService)
       .subscribe(val => {
-        this.prdPackage = val;
+        this.prdPackageList = val.object.list;
       });
+  }
+  /**
+   * dateTimeRange的Change事件
+   */
+  changeBackupTime(val) {
+    let startTime, endTime;
+    startTime = new Date(val[0]);
+    endTime = new Date(val[1]);
+    this.productModel.startTime = Date.parse(startTime) / 1000;
+    this.productModel.endTime = Date.parse(endTime) / 1000;
+    console.log(1234, this.productModel.startTime, this.productModel.endTime);
+  }
+  clearDateTime() {
+    this.productModel.startTime = "";
+    this.productModel.endTime = "";
   }
 }
 </script>
