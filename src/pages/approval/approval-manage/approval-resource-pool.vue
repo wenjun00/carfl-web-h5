@@ -2,38 +2,32 @@
 <template>
   <section class="page approval-resource-pool">
     <span class="form-title">审核资源池</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
-    <i-row v-if="searchOptions" style="margin:6px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
+    <i-row v-if="searchOptions" style="position:relative;right:10px;">
+      <i-input style="display:inline-block;width:18%;margin-left:20px;" v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择省">
-        <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
+      <i-date-picker style="display:inline-block;width:21%" type="datetimerange" @on-change="timeRangeChange" @on-clear="clearTime"></i-date-picker>
+      <i-select style="width:80px;margin-left:10px;" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
+        <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择市">
-        <i-option label="西安市" value="西安市" key="西安市"></i-option>
-        <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
-        <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
-        <i-option label="渭南市" value="渭南市" key="渭南市"></i-option>
-        <i-option label="铜川市" value="铜川市" key="铜川市"></i-option>
-        <i-option label="榆林市" value="榆林市" key="榆林市"></i-option>
-        <i-option label="延安市" value="延安市" key="延安市"></i-option>
-        <i-option label="汉中市" value="汉中市" key="汉中市"></i-option>
-        <i-option label="安康市" value="安康市" key="安康市"></i-option>
-        <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
+      <i-select style="width:80px;margin-left:10px;" placeholder="选择市" v-model="resourcePoolModel.city" clearable>
+        <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []"
+          :key="value" :label="label" :value="value"></i-option>
+      </i-select>
+      <i-select placeholder="产品类型" style="width:120px;" v-model="resourcePoolModel.productType">
+        <i-option label="直租" :value="398" :key="398"></i-option>
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getApprovalListByCondition">搜索</i-button>
     </i-row>
@@ -100,6 +94,9 @@
   import {
     FilterService
   } from "~/utils/filter.service"
+  import {
+    CityService
+  } from "~/utils/city.service"
   @Layout("workspace")
   @Component({
 
@@ -123,14 +120,23 @@
     private purchaseInformationModal: Boolean = false;
     private scrollTopHeight = 0
     private resourcePoolModel: any;
+    private getOrderModel: any;
     @Mutation("openPage") openPage;
-
-
 
     created() {
       this.getApprovalListByCondition()
       this.resourcePoolModel = {
-
+        startTime: '',
+        endTime: '',
+        province: '',
+        city: '',
+        personalInfo: '',
+        timeSearch: '',
+        productType: ''
+      }
+      this.getOrderModel = {
+        userId: '',
+        orderIds: []
       }
       this.columns1 = [{
           align: 'center',
@@ -164,7 +170,6 @@
         },
         {
           title: "操作",
-          width: 90,
           align: "center",
           render: (h, {
             row,
@@ -195,26 +200,29 @@
 
         {
           title: "订单编号",
-          key: "orderId",
+          key: "orderNumber",
           align: "center",
-          width: 150,
           render: (h, {
             row,
             column,
             index
           }) => {
-            return h('i-button', {
-              props: {
-                type: 'text'
-              },
-              on: {
-                click: () => {
-                  this.purchaseInformationModal = true
+            if (row && row.orderNumber) {
+              console.log(1122, row.orderNumber)
+              return h('i-button', {
+                props: {
+                  type: 'text'
+                },
+                on: {
+                  click: () => {
+                    this.purchaseInformationModal = true
+                  }
                 }
-              }
-            }, row.orderId)
-          },
-          fixed: 'left'
+              }, row.orderNumber)
+            } else if (!row) {
+              return h('span', {}, '')
+            }
+          }
         },
         {
           key: 'orderLink',
@@ -241,7 +249,6 @@
           align: "center",
           title: "订单创建时间",
           key: "createTime",
-          width: 260,
           render: (h, {
             row,
             column,
@@ -254,7 +261,6 @@
           align: "center",
           title: "进入资源池时间",
           key: "intoPoolDate",
-          width: 260,
           render: (h, {
             row,
             column,
@@ -267,19 +273,44 @@
           align: "center",
           title: "省份",
           key: "province",
-          width: 100
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', CityService.getCityName(row.province))
+          }
         },
         {
           align: "center",
           title: "城市",
           key: "city",
-          width: 100
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', CityService.getCityName(row.city))
+          }
         },
         {
           align: "center",
           title: "订单类型",
           key: "orderType",
-          width: 100
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            if (row.orderType == 301) {
+              return h('span', {}, '融资租赁')
+            } else if (row.orderType == 302) {
+              return h('span', {}, '全额付款')
+            }
+          }
         },
         {
           align: "center",
@@ -372,6 +403,8 @@
      */
     getOrder(row) {
       this.orderModal = true
+      this.getOrderModel.orderIds = row.orderId
+      this.getOrderModel.userId = this.$store.state.userData.id
     }
     /**
      * 列配置
@@ -380,6 +413,10 @@
       this.openColumnsConfig = true
     }
     confirmGetOrder() {
+      this.approvalService.batchReceiveApproval(this.getOrderModel).subscribe(val => {
+        this.$Message.success('领取成功！')
+        this.getApprovalListByCondition()
+      })
       this.orderModal = false
     }
     /**
@@ -390,11 +427,16 @@
         this.resourcePoolList = val.object.list
       })
     }
+    getTimeSearch(val) {
+      this.resourcePoolModel.startTime = ''
+      this.resourcePoolModel.endTime = ''
+      this.resourcePoolModel.timeSearch = val
+      this.getApprovalListByCondition()
+    }
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     visibleChange() {
-      console.log('资源池modal')
       let target = document.querySelector(".purchaseInformation .ivu-modal-body")
       if (target) {
         target.addEventListener('scroll', this.monitorScorll)
@@ -405,6 +447,19 @@
       if (target) {
         this.scrollTopHeight = target.scrollTop
       }
+    }
+    timeRangeChange(val) {
+      let startTime, endTime
+      startTime = new Date(val[0])
+      endTime = new Date(val[1])
+      this.resourcePoolModel.startTime = startTime
+      this.resourcePoolModel.endTime = endTime
+      this.resourcePoolModel.timeSearch = ''
+    }
+    clearTime() {
+      console.log(123)
+      // this.resourcePoolModel.startTime = ''
+      // this.resourcePoolModel.endTime = ''
     }
   }
 

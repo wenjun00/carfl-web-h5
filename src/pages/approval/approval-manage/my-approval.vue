@@ -42,9 +42,9 @@
         <i-option label="车贷" value="车贷" key="车贷"></i-option>
       </i-select>
       <!--<i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>-->
-      <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+      <i-button style="margin-left:10px" class="blueButton" @click="getMyOrderList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="myOrderList"></data-box>
     <!--Modal-->
     <template>
       <i-modal v-model="approveModal" title="审批" width="800" class="approve">
@@ -237,8 +237,13 @@
   } from "~/core/decorator";
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
   import Approve from '~/components/approval-manage/approve.vue'
-  import SecondLastApprove from '~/components/approval-manage/second-last-approve.vue' // 复审终审通过
-
+  import SecondLastApprove from '~/components/approval-manage/second-last-approve.vue'; // 复审终审通过
+  import {
+    ApprovalService
+  } from "~/services/manage-service/approval.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
   @Layout("workspace")
   @Component({
 
@@ -250,8 +255,11 @@
     }
   })
   export default class MyApproval extends Page {
+    @Dependencies(ApprovalService) private approvalService: ApprovalService;
+    @Dependencies(PageService) private pageService: PageService;
+
     private columns1: any;
-    private data1: Array < Object > = [];
+    private myOrderList: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
     private orderModal: Boolean = false;
@@ -271,41 +279,13 @@
     private data3: Array < Object > = [];
     private approveStatue: String = ''
     private compactEffect: String = '当月'
+    private myOrderModel: any
 
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
-    }
-    backToResource() {
-      this.$Modal.confirm({
-        title: '退回资源池',
-        content: '确定停止并放弃审核此订单？'
-      })
-    }
-    pass() {
-      if (this.approveStatue === '面审') {
-        this.approvePassedModal = true
-      } else if (this.approveStatue === '终审' || this.approveStatue === '复审') {
-        // TODO
-        this.secendLastApproval = true
-      } else if (this.approveStatue === '合规') {
-        // TODO
-        this.meetConditionApproval = true
-      }
-    }
-    rejectOrder() {
-      this.rejectModal = true
-    }
-    submitToblack() {
-      this.blackListModal = true
-    }
-    submitToInternal() {
-      this.submitToInternalModal = true
-    }
-    submitToGray() {
-      this.grayListModal = true
-    }
     created() {
+      this.getMyOrderList()
+      this.myOrderModel = {
 
+      }
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -401,9 +381,46 @@
             ]);
           }
         },
+
+        {
+          key: 'orderLink',
+          title: '环节',
+          align: 'center',
+          width: 100,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.orderLink === 332) {
+              return h('span', {}, '面审')
+            } else if (row.orderLink === 333) {
+              return h('span', {}, '复审')
+            } else if (row.orderLink === 334) {
+              return h('span', {}, '终审')
+            } else if (row.orderLink === 337) {
+              return h('span', {}, '合规')
+            }
+          }
+        },
+        {
+          title: "订单状态",
+          align: "center",
+          key: "orderStatus",
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            if (row.orderStatus === 309) {
+              return h('span', {}, '审核中')
+            }
+          }
+        },
         {
           title: '订单编号',
-          key: 'orderId',
+          key: 'orderNumber',
           align: 'center',
           width: 180,
           render: (h, {
@@ -420,78 +437,25 @@
                   this.purchaseInfoModal = true
                 }
               }
-            }, row.orderId)
+            }, row.orderNumber)
           }
-        },
-        {
-          key: 'step',
-          title: '环节',
-          align: 'center',
-          width: 100,
-          render: (h, {
-            row,
-            columns,
-            index
-          }) => {
-            if (row.orderStatus === '拒绝') {
-              return h('Tooltip', {
-                props: {
-                  content: row.content
-                },
-              }, [h('span', {}, row.status),
-                h('Icon', {
-                  props: {
-                    type: 'ios-information',
-                    size: '20',
-                    color: '#F9435D'
-                  },
-                  style: {
-                    position: 'relative',
-                    top: '2px',
-                    left: '6px',
-                    cursor: 'pointer'
-                  }
-                })
-              ])
-            } else {
-              return h('Tooltip', {
-                props: {
-                  content: row.content
-                },
-              }, [h('span', {}, row.status),
-                h('Icon', {
-                  props: {
-                    type: 'ios-information',
-                    size: '20',
-                    color: '#666666'
-                  },
-                  style: {
-                    position: 'relative',
-                    top: '2px',
-                    left: '6px',
-                    cursor: 'pointer'
-                  }
-                })
-              ])
-            }
-          }
-        },
-        {
-          title: "订单状态",
-          align: "center",
-          key: "orderStatus",
-          width: 100
         },
         {
           align: "center",
           title: "订单创建时间",
-          key: "orderCreateTime",
+          key: "createTime",
           width: 180
         },
         {
           align: "center",
-          title: "我的领取时间",
-          key: "myGetTime",
+          title: "领取时间",
+          key: "receiveDate",
+          width: 180
+        },
+        {
+          align: "center",
+          title: "处理时间",
+          key: "approvalDate",
           width: 180
         },
         {
@@ -517,7 +481,7 @@
         {
           align: "center",
           title: "客户姓名",
-          key: "customerName"
+          key: "personalName"
         },
         {
           align: "center",
@@ -528,68 +492,10 @@
         {
           align: "center",
           title: "手机号",
-          key: "phone",
+          key: "mobileMain",
           width: 120
         }
       ];
-
-      this.data1 = [{
-        orderStatus: '待面审',
-        orderCreateTime: '2017-12-01 13:56:03',
-        myGetTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        orderId: 20170814,
-        city: '宝鸡',
-        orderType: '直租',
-        content: '通过',
-        status: '面审',
-        customerName: '刘佳',
-        idCard: '610303199111142564',
-        prdName: '直租',
-        phone: '15094156575'
-      }, {
-        orderStatus: '待复审',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderId: 20170815,
-        myGetTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '宝鸡',
-        content: '通过',
-        status: '复审',
-        orderType: '直租',
-        customerName: '刘佳',
-        idCard: '610303199111142564',
-        prdName: '直租',
-        phone: '15094156575'
-      }, {
-        orderStatus: '待终审',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderId: 20170816,
-        myGetTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '宝鸡',
-        orderType: '直租',
-        customerName: '刘佳',
-        content: '通过',
-        status: '终审',
-        idCard: '610303199111142564',
-        prdName: '直租',
-        phone: '15094156575'
-      }, {
-        orderStatus: '待合规',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderId: 20170817,
-        myGetTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        content: '征信评价不高',
-        status: '合规',
-        city: '宝鸡',
-        orderType: '直租',
-        customerName: '刘佳',
-        idCard: '610303199111142564',
-        prdName: '直租',
-        phone: '15094156575'
-      }]
 
       this.columns2 = [{
         align: 'center',
@@ -619,6 +525,39 @@
         step: '提交审批'
       }]
     }
+
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
+    backToResource() {
+      this.$Modal.confirm({
+        title: '退回资源池',
+        content: '确定停止并放弃审核此订单？'
+      })
+    }
+    pass() {
+      if (this.approveStatue === '面审') {
+        this.approvePassedModal = true
+      } else if (this.approveStatue === '终审' || this.approveStatue === '复审') {
+        // TODO
+        this.secendLastApproval = true
+      } else if (this.approveStatue === '合规') {
+        // TODO
+        this.meetConditionApproval = true
+      }
+    }
+    rejectOrder() {
+      this.rejectModal = true
+    }
+    submitToblack() {
+      this.blackListModal = true
+    }
+    submitToInternal() {
+      this.submitToInternalModal = true
+    }
+    submitToGray() {
+      this.grayListModal = true
+    }
     /**
      * 领取
      */
@@ -637,6 +576,11 @@
     approveClick(row) {
       this.approveModal = true
       this.approveStatue = row.status
+    }
+    getMyOrderList() {
+      this.approvalService.getMyApprovalOrder(this.myOrderModel, this.pageService).subscribe(val => {
+        this.myOrderList = val.object.list
+      })
     }
   }
 

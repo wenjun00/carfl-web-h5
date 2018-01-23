@@ -18,4 +18,34 @@ export class ApprovalService {
       page: page
     })
   }
+  /**
+   * 
+   * @param data 领取订单到我的审核
+   */
+  batchReceiveApproval(data) {
+    return this.netService.send({
+      server: manageService.approvalController.batchReceiveApproval,
+      data: data
+    })
+  }
+  /**
+   * 我的审核
+   */
+  getMyApprovalOrder(data, page) {
+    return this.netService.send({
+      server: manageService.approvalController.getMyApprovalOrder,
+      data: data,
+      page: page
+    })
+  }
+  /**
+   * 订单查询、内审、黑名单、灰名单
+   */
+  approvalOrderSearch(data, page) {
+    return this.netService.send({
+      server: manageService.approvalController.approvalOrderSearch,
+      data: data,
+      page: page
+    })
+  }
 }
