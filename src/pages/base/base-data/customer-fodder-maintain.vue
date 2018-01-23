@@ -20,16 +20,18 @@
             </div>
           </div>
           <div style="width:250px;height:600px;border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black">
-            <div v-for="item in maintains" :key="item.id" :value="item.name" :class="{'maintainCss':checkId===item.id}" style="cursor:pointer;width:228px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto"
-              @click="checkMaintain(item)"><span>{{item.name}}</span></div>
+            <div v-for="item in maintains" :key="item.id" :value="item.name" :class="{'maintainCss':item.id===checkId}" style="cursor:pointer;width:228px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto"
+              @click="checkMaintain(item)">
+              <span>{{item.name}}</span>
+            </div>
           </div>
         </i-col>
         <i-col :span="17" style="position:relative;bottom:30px;" :pull="1">
           <span>素材名称：</span>
-          <i-input style="width:10%"></i-input>
-          <i-button class="blueButton" style="margin-left:10px">搜索</i-button>
+          <i-input style="width:10%" v-model="personalModel.name"></i-input>
+          <i-button class="blueButton" style="margin-left:10px" @click="search">搜索</i-button>
           <i-button class="blueButton" style="margin-left:10px">新增素材</i-button>
-          <data-box :columns="columns1" :data="data1"></data-box>
+          <data-box :columns="columns" :data="data1"></data-box>
         </i-col>
       </i-row>
     </i-row>
@@ -40,140 +42,185 @@
   import Page from "~/core/page";
   import DataBox from "~/components/common/data-box.vue";
   import Component from "vue-class-component";
-  import SvgIcon from '~/components/common/svg-icon.vue'
+  import SvgIcon from "~/components/common/svg-icon.vue";
   import {
     Dependencies
   } from "~/core/decorator";
   import {
-    OrderService
-  } from "~/services/business-service/order.service";
+    DataDictService
+  } from "~/services/manage-service/dataDict.service";
+  import {
+    PersonalMaterialService
+  } from "~/services/manage-service/personalMaterial.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
   import {
     Layout
   } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
-
     components: {
       DataBox,
       SvgIcon
     }
   })
   export default class CustomerFodderMaintain extends Page {
-    @Dependencies(OrderService) private orderService: OrderService;
-    private columns1: any;
+    @Dependencies(DataDictService) private dataDictService: DataDictService;
+    @Dependencies(PersonalMaterialService)
+    private personalMaterialService: PersonalMaterialService;
+    @Dependencies(PageService) private pageService: PageService;
+    private columns: any;
     private data1: Array < Object > = [];
     private maintains: Array < any > = [];
     private searchOptions: Boolean = false;
-    private checkId: Number = 1
+    private checkId: number = 0;
+    private item: any;
+    private personalModel: any;
     created() {
-      this.maintains = [{
-        id: 1,
-        name: '个人基本资料'
-      }, {
-        id: 2,
-        name: '资产证明'
-      }, {
-        id: 3,
-        name: '银行流水'
-      }, {
-        id: 4,
-        name: '征信'
-      }, {
-        id: 5,
-        name: '职业证明'
-      }, {
-        id: 6,
-        name: '其他'
-      }]
-      this.columns1 = [{
+      this.maintains = [];
+      this.item = {
+        id: "376"
+      };
+      this.getCustomerList();
+      this.checkMaintain(this.item);
+      this.personalModel = {
+        type: 0,
+        name: ''
+      }
+      console.log(this.personalModel, 123)
+      this.columns = [{
           title: "序号",
           width: 60,
-          type: 'index',
-          align: 'center'
+          type: "index",
+          align: "center"
         },
         {
           title: "操作",
-          align: 'center',
+          align: "center",
           render: (h, {
             row,
             column,
             index
           }) => {
-            return h('div', [
-              h('i-button', {
-                props: {
-                  type: 'text'
+            return h("div", [
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  }
                 },
-                style: {
-                  color: '#265EA2'
-                }
-              }, '编辑'),
-              h('i-button', {
-                props: {
-                  type: 'text'
+                "编辑"
+              ),
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  }
                 },
-                style: {
-                  color: '#265EA2'
-                }
-              }, '删除')
-            ])
+                "删除"
+              )
+            ]);
           }
         },
         {
           title: "名称",
-          key: "maintainName",
-          align: 'center'
+          key: "name",
+          align: "center"
         },
         {
           title: "是否上传",
-          key: "isUpload",
-          align: 'center',
+          key: "isNecessary",
+          align: "center",
           render: (h, {
             row,
             columns,
             index
           }) => {
-            return h('RadioGroup', {
-              props: {
-                value: 1
-              }
-            }, [
-              h('Radio', {
+            return h(
+              "RadioGroup", {
                 props: {
-                  label: '是',
                   value: 1
                 }
-              }),
-              h('Radio', {
-                props: {
-                  label: '否',
-                  value: 2
-                }
-              })
-            ])
+              }, [
+                h("Radio", {
+                  props: {
+                    label: "是",
+                    value: 1
+                  }
+                }),
+                h("Radio", {
+                  props: {
+                    label: "否",
+                    value: 2
+                  }
+                })
+              ]
+            );
           }
         }
-      ]
+      ];
 
       this.data1 = [{
-        maintainName: '身份证'
-      }]
+        maintainName: "身份证"
+      }];
     }
     getOrderInfoByTime() {}
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     exportMonthReport() {}
+
+    /**
+     * 获取客户素材列表
+     */
+    getCustomerList() {
+      this.dataDictService
+        .getDataDictByTypeCode({
+          typeCode: "0309"
+        })
+        .subscribe(val => {
+          this.maintains = val.object;
+        });
+    }
+    /**
+     * 分页查询客户素材
+     *
+     */
     checkMaintain(item) {
-      this.checkId = item.id
+      console.log(item)
+      this.checkId = item.id;
+      this.personalModel = {
+        type: item.id
+      }
+      this.search()
+    }
+    /**@
+     * 根据条件搜索
+     */
+    search() {
+      this.personalMaterialService
+        .getAllPersonalMaterial(this.personalModel, this.pageService)
+        .subscribe(val => {
+          this.data1 = val.object.list;
+        });
+    }
+    mounted() {
+      this.checkId = 376
     }
   }
 
 </script>
 <style>
   .maintainCss {
-    background: #E4F4FA;
+    background: #e4f4fa;
   }
 
 </style>

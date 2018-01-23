@@ -12,5 +12,32 @@ export default {
         action: 'getAllProductPackage',
         type: requestType.Get
     },
+    /**
+     * 删除产品包信息
+     */
+    deleteProductPackage: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'deleteProductPackage',
+        type: requestType.Delete
+    },
+    /**
+     * 下载产品包信息
+     */
+    downloadProductPackage: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'downloadProductPackage',
+        type: requestType.Get
+    },
+    /**
+     * 新增产品包信息
+     */
+    createProductPackage: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'createProductPackage',
+        type: requestType.Post
+    }
 
 }

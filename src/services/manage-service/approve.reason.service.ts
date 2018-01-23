@@ -17,4 +17,30 @@ export class ApproveReasonService {
             page: page
         })
     }
+    /**
+     * 审批原因模板下载
+     */
+    downloadApproveReasonTemplate() {
+        return this.netService.send({
+            server: manageService.approveReeasonController.downloadApproveReasonTemplate,
+        })
+    }
+    /**
+     * 新增审批原因
+     */
+    createApproveReason(data) {
+        return this.netService.send({
+            server: manageService.approveReeasonController.createApproveReason,
+            data: data
+        })
+    }
+    /**
+     * 导入审批原因
+     */
+    ImportApproveReason(data) {
+        return this.netService.send({
+            server: manageService.approveReeasonController.ImportApproveReason,
+            data: data
+        })
+    }
 }

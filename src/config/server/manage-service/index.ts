@@ -7,15 +7,21 @@ import systemParameterController from './system.parameter.controller'
 import productPackageController from './productPackage.controller'
 import approveReeasonController from './approve.reason.controller'
 import companyController from './company.controller'
+import dataDictTypeController from './dataDictType.controller'
+import dataDictController from './dataDIct.controller'
+import personalMaterialController from './personalMaterial.controller'
 
 export const manageService = {
-  departmentController,
-  roleController,
-  userController,
-  systemLogsController,
-  systemBackupController,
-  systemParameterController,
-  productPackageController,
-  approveReeasonController,
-   companyController
+    departmentController,
+    roleController,
+    userController,
+    systemLogsController,
+    systemBackupController,
+    systemParameterController,
+    productPackageController,
+    approveReeasonController,
+    companyController,
+    dataDictTypeController,
+    dataDictController,
+    personalMaterialController
 }

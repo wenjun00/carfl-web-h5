@@ -38,7 +38,6 @@ import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import { Dependencies } from "~/core/decorator";
-import { OrderService } from "~/services/business-service/order.service";
 import { Layout } from "~/core/decorator";
 import { ApproveReasonService } from "~/services/manage-service/approve.reason.service";
 import { PageService } from "~/utils/page.service";
@@ -54,7 +53,6 @@ export default class ApprovalReasonManage extends Page {
   @Dependencies(ApproveReasonService)
   private approveReasonService: ApproveReasonService;
   @Dependencies(PageService) private pageService: PageService;
-  @Dependencies(OrderService) private orderService: OrderService;
   private columns: any;
   private columns2: any;
   private appReasonModel: any;
@@ -158,7 +156,6 @@ export default class ApprovalReasonManage extends Page {
       .getAllApproveReason(this.appReasonModel, this.pageService)
       .subscribe(val => {
         this.AppRoveReasonList = val.object.list;
-        console.log(this.AppRoveReasonList);
       });
   }
 }

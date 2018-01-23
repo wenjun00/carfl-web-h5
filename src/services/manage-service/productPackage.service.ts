@@ -17,4 +17,34 @@ export class ProductPackageService {
             page
         })
     }
+    /**
+     * 删除产品包信息
+     */
+    @Debounce()
+    deleteProductPackage({ id }) {
+        return this.netService.send({
+            server: manageService.productPackageController.deleteProductPackage,
+            id: id
+        })
+    }
+    /**
+     * 下载产品包信息
+     */
+    @Debounce()
+    downloadProductPackage({ fileId }) {
+        return this.netService.send({
+            server: manageService.productPackageController.downloadProductPackage,
+            fileId: fileId
+        })
+    }
+    /**
+     * 新增产品包信息
+     */
+    @Debounce()
+    createProductPackage(data) {
+        return this.netService.send({
+            server: manageService.productPackageController.createProductPackage,
+            data: data
+        })
+    }
 }

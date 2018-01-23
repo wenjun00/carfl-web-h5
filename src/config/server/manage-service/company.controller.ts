@@ -5,13 +5,22 @@ const SERVICE = 'manage-service'
 const CONTROLLER = 'company'
 
 export default {
-  /**
-   * 获取所有公司
+    /**
+     * 获取所有公司
+     */
+    getAllCompany: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getAllCompany',
+        type: requestType.Get
+    },
+    /**
+   * 查询分公司信息
    */
-  getAllCompany: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'getAllCompany',
-    type: requestType.Get
-  }
+    getAllCompanyWithPage: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getAllCompanyWithPage',
+        type: requestType.Get
+    }
 }

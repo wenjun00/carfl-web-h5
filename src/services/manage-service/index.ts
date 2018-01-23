@@ -4,13 +4,18 @@ import departmentService from './manage.service'
 import approveReasonService from './approve.reason.service'
 import companyService from './manage.service'
 import systemParameterService from './system.parameter.service'
+import dataDictTypeService from './dataDictType.service'
+import dataDictService from './dataDict.service'
+import personalMaterialService from './personalMaterial.service'
 
 
 export const aaa = {
-  manageService,
-  productPackageService,
-  departmentService,
-  approveReasonService,
-  companyService,
-  systemParameterService
+    manageService,
+    productPackageService,
+    departmentService,
+    approveReasonService,
+    companyService,
+    systemParameterService,
+    dataDictTypeService,
+    personalMaterialService
 }
