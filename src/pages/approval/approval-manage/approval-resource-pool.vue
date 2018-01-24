@@ -432,6 +432,7 @@
       this.resourcePoolModel.endTime = ''
       this.resourcePoolModel.timeSearch = val
       this.getApprovalListByCondition()
+      this.resourcePoolModel.timeSearch = ''
     }
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -454,7 +455,6 @@
       endTime = new Date(val[1])
       this.resourcePoolModel.startTime = startTime
       this.resourcePoolModel.endTime = endTime
-      this.resourcePoolModel.timeSearch = ''
     }
     clearTime() {
       console.log(123)

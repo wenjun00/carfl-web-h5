@@ -2,14 +2,14 @@
 <template>
   <section class="page gray-list">
     <span class="form-title">灰名单</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">关闭</span>
@@ -27,20 +27,12 @@
       <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
       <span style="margin-left:10px;">省市：</span>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择省">
-        <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
+      <i-select style="width:80px;margin-left:10px;" placeholder="选择省" v-model="approvalModel.province" clearable>
+        <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择市">
-        <i-option label="西安市" value="西安市" key="西安市"></i-option>
-        <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
-        <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
-        <i-option label="渭南市" value="渭南市" key="渭南市"></i-option>
-        <i-option label="铜川市" value="铜川市" key="铜川市"></i-option>
-        <i-option label="榆林市" value="榆林市" key="榆林市"></i-option>
-        <i-option label="延安市" value="延安市" key="延安市"></i-option>
-        <i-option label="汉中市" value="汉中市" key="汉中市"></i-option>
-        <i-option label="安康市" value="安康市" key="安康市"></i-option>
-        <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
+      <i-select style="width:80px;margin-left:10px;" placeholder="选择市" v-model="approvalModel.city" clearable>
+        <i-option v-for="{value,label} in this.approvalModel.province ? this.$city.getCityData({ level: 1, id: this.approvalModel.province }) : []"
+          :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <span style="margin-left:10px;">产品类型</span>
       <i-select style="width:10%;">
@@ -48,9 +40,9 @@
         <i-option label="车贷" value="车贷" key="车贷"></i-option>
       </i-select>
       <!--<i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>-->
-      <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+      <i-button style="margin-left:10px" class="blueButton" @click="getGrayList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="grayList"></data-box>
 
     <template>
       <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
@@ -87,6 +79,18 @@
   } from "~/core/decorator";
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
   import SvgIcon from '~/components/common/svg-icon.vue'
+  import {
+    ApprovalService
+  } from "~/services/manage-service/approval.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    CityService
+  } from "~/utils/city.service"
+  import {
+    FilterService
+  } from "~/utils/filter.service"
 
   @Layout("workspace")
   @Component({
@@ -97,8 +101,10 @@
     }
   })
   export default class GrayList extends Page {
+    @Dependencies(ApprovalService) private approvalService: ApprovalService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private grayList: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
     private orderModal: Boolean = false;
@@ -107,11 +113,15 @@
     private openColumnsConfig: Boolean = false;
     private columns3: any;
     private data3: Array < Object > = [];
-
+    private approvalModel: any = {
+      riskStatus: 1,
+      timeSearch: ''
+    }
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     created() {
+      this.getGrayList()
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -217,13 +227,9 @@
                     click: () => {
                       this.$Modal.confirm({
                         title: '提示',
-                        content: '确定移出吗？',
+                        content: '确定移出此订单吗？',
                         onOk: () => {
-                          this.data1.forEach((x, i) => {
-                            if (i === index) {
-                              this.data1.splice(i, 1)
-                            }
-                          })
+                          this.moveOut(row)
                         }
                       })
                     }
@@ -235,9 +241,24 @@
           }
         },
         {
-          key: 'step',
+          key: 'orderLink',
           align: 'center',
-          title: '环节'
+          title: '环节',
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.orderLink === 332) {
+              return h('span', {}, '面审')
+            } else if (row.orderLink === 333) {
+              return h('span', {}, '复审')
+            } else if (row.orderLink === 334) {
+              return h('span', {}, '终审')
+            } else if (row.orderLink === 337) {
+              return h('span', {}, '合规')
+            }
+          }
         },
         {
           title: "订单状态",
@@ -248,6 +269,7 @@
             columns,
             index
           }) => {
+            // TODO 有多种订单状态可能，未加判断
             if (row.orderStatus === '拒绝') {
               return h('span', {
                 style: {
@@ -265,7 +287,7 @@
         },
         {
           title: '订单编号',
-          key: 'orderId',
+          key: 'orderNumber',
           align: 'center',
           width: 180,
           render: (h, {
@@ -282,45 +304,85 @@
                   this.purchaseInfoModal = true
                 }
               }
-            }, row.orderId)
+            }, row.orderNumber)
           }
         },
         {
           align: "center",
           title: "订单创建时间",
-          key: "orderCreateTime",
-          width: 180
+          key: "createTime",
+          width: 180,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: "进入资源池时间",
-          key: "orderPoolTime",
-          width: 180
+          key: "intoPoolDate",
+          width: 180,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.intoPoolDate, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: "省份",
-          key: "province"
+          key: "province",
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', CityService.getCityName(row.province))
+          }
         },
         {
           align: "center",
           title: "城市",
-          key: "city"
+          key: "city",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', CityService.getCityName(row.city))
+          }
         },
         {
           align: "center",
           title: "订单类型",
-          key: "orderType"
+          key: "orderType",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            if (row.orderType == 301) {
+              return h('span', {}, '融资租赁')
+            } else if (row.orderType == 302) {
+              return h('span', {}, '全额付款')
+            }
+          }
         },
         {
           align: "center",
           title: "产品名称",
-          key: "prdName"
+          key: "productName"
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customerName"
+          key: "personalName"
         },
         {
           align: "center",
@@ -331,51 +393,10 @@
         {
           align: "center",
           title: "手机号",
-          key: "phone",
+          key: "mobileMain",
           width: 120
         }
       ];
-
-      this.data1 = [{
-        orderStatus: '待领取',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        step: '终审',
-        province: '陕西',
-        city: '宝鸡',
-        orderType: '直租',
-        customerName: '刘佳',
-        orderId: 20170816,
-        idCard: '610303199111142564',
-        prdName: '直租',
-        phone: '15094156575'
-      }, {
-        orderStatus: '待领取',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '宝鸡',
-        orderType: '直租',
-        step: '终审',
-        customerName: '刘陇刚',
-        orderId: 20170817,
-        prdName: '直租',
-        idCard: '610303198911041564',
-        phone: '13096133575'
-      }, {
-        orderStatus: '拒绝',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '渭南',
-        orderId: 20170818,
-        orderType: '直租',
-        step: '终审',
-        prdName: '直租',
-        customerName: '王泽杰',
-        idCard: '610303199111142564',
-        phone: '15989756575'
-      }]
 
       this.columns2 = [{
         align: 'center',
@@ -416,6 +437,33 @@
      */
     columnsConfig() {
       this.openColumnsConfig = true
+    }
+    getGrayList() {
+      this.approvalService.approvalOrderSearch(this.approvalModel, this.pageService).subscribe(val => {
+        this.grayList = val.object.list
+      })
+    }
+    timeRangeChange(val) {
+      let startTime, endTime
+      startTime = new Date(val[0])
+      endTime = new Date(val[1])
+      this.approvalModel.startTime = startTime
+      this.approvalModel.endTime = endTime
+    }
+    getTimeSearch(val) {
+      this.approvalModel.startTime = ''
+      this.approvalModel.endTime = ''
+      this.approvalModel.timeSearch = val
+      this.getGrayList()
+      this.approvalModel.timeSearch = ''
+    }
+    moveOut(row) {
+      this.approvalService.removeRiskStatus({
+        orderIds: row.orderId
+      }).subscribe(val => {
+        this.$Message.success('移出成功')
+        this.getGrayList()
+      })
     }
   }
 
