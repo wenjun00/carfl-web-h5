@@ -1,5 +1,6 @@
 import { Observable } from "rxjs";
 import axios from 'axios'
+import Qs from 'qs'
 import app from '~/config/app.config'
 import { StorageService } from '~/utils/storage.service'
 // import cookie from 'js-cookie'
@@ -12,7 +13,6 @@ export class NetService {
   private userToken
 
   constructor() {
-    console.log(app.url.server)
     this.axiosInstance = axios.create({
       baseURL: app.url.server,
       timeout: app.timeout,
@@ -21,7 +21,7 @@ export class NetService {
         'Accept': 'application/json'
       }
     })
-    if (app.mock) {
+    if (true) {
       let MockAdapter = require('axios-mock-adapter')
       let mock = new MockAdapter(this.axiosInstance, { delayResponse: 300 });
       this.createMock(mock)
@@ -54,6 +54,7 @@ export class NetService {
     // 进行url拼接
     if (controller) {
       let targetUrl = [
+        'api',
         controller,
         action,
         ...append].filter(x => x).join('/')
@@ -77,11 +78,35 @@ export class NetService {
     let token = StorageService.getItem('userToken') || ''
     if (token) {
       return Object.assign({
-        'authorization': token
+        'X-OperatorToken': token
       }, headers)
     } else {
       return headers || {}
     }
+  }
+
+
+  /**
+   * 过滤空数据
+   * @param data
+   */
+  private filterEmptyData(data) {
+    Object.entries(data)
+      .filter(([key, value]) => {
+        // 过滤空字符串
+        if (value === undefined || value === "") {
+          return true
+        }
+
+        // 过滤空数组
+        if (value instanceof Array && (value.length === 0 || value.every(x => x === ''))) {
+          return true
+        }
+      })
+      .forEach(([key, value]) => {
+        delete data[key]
+      });
+    return data
   }
 
   /**
@@ -102,7 +127,7 @@ export class NetService {
     }
 
     // 判断参数类型
-    getType.indexOf(method) > -1 ? (getData = data) : (postData = data)
+    getType.indexOf(method) > -1 ? (getData = this.filterEmptyData(data)) : (postData = data)
 
     // 创建待观察对象
     var observable = Observable.create((observer) => {
@@ -111,7 +136,13 @@ export class NetService {
         url,
         headers,
         data: postData,
-        params: getData
+        params: getData,
+        paramsSerializer: (params) =>
+          Qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true,
+            allowDots: true
+          })
       }).then(({ data }) => {
         if (options.page && data.content) {
           options.page.update(data)
