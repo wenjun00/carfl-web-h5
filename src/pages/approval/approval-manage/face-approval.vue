@@ -2,39 +2,31 @@
 <template>
   <section class="page face-approval">
     <span class="form-title">面审</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
+      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="resourcePoolModel.personalInfo"></i-input>
       <span style="margin-left:10px">日期：</span>
       <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
       <span style="margin-left:10px;">省市：</span>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择省">
-        <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
+      <i-select style="width:100px;margin-left:10px;" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
+        <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择市">
-        <i-option label="西安市" value="西安市" key="西安市"></i-option>
-        <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
-        <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
-        <i-option label="渭南市" value="渭南市" key="渭南市"></i-option>
-        <i-option label="铜川市" value="铜川市" key="铜川市"></i-option>
-        <i-option label="榆林市" value="榆林市" key="榆林市"></i-option>
-        <i-option label="延安市" value="延安市" key="延安市"></i-option>
-        <i-option label="汉中市" value="汉中市" key="汉中市"></i-option>
-        <i-option label="安康市" value="安康市" key="安康市"></i-option>
-        <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
+      <i-select style="width:100px;margin-left:10px;" placeholder="选择市" v-model="resourcePoolModel.city" clearable>
+        <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []"
+          :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <span style="margin-left:10px;">产品类型</span>
       <i-select style="width:10%;">
@@ -42,7 +34,7 @@
         <i-option label="车贷" value="车贷" key="车贷"></i-option>
       </i-select>
       <!--<i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>-->
-      <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+      <i-button style="margin-left:10px" class="blueButton" @click="getFaceApprovalList">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
     <!--Modal-->
@@ -90,6 +82,15 @@
     Layout
   } from "~/core/decorator";
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
+  import {
+    CityService
+  } from "~/utils/city.service"
 
   @Layout("workspace")
   @Component({
@@ -100,6 +101,8 @@
     }
   })
   export default class FaceApproval extends Page {
+    // @Dependencies(ApprovalService) private approvalService: ApprovalService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
     private data1: Array < Object > = [];
     private orderModal: Boolean = false;
@@ -110,7 +113,15 @@
     private data3: Array < Object > = [];
     private openColumnsConfig: Boolean = false;
     private purchaseInfoModal: Boolean = false;
-
+    private resourcePoolModel: any = {
+      startTime: '',
+      endTime: '',
+      province: '',
+      city: '',
+      personalInfo: '',
+      timeSearch: '',
+      productType: ''
+    };
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
@@ -351,6 +362,18 @@
      */
     columnsConfig() {
       this.openColumnsConfig = true
+    }
+    getTimeSearch(val) {
+      this.resourcePoolModel.startTime = ''
+      this.resourcePoolModel.endTime = ''
+      this.resourcePoolModel.timeSearch = val
+      this.getFaceApprovalList()
+      this.resourcePoolModel.timeSearch = ''
+    }
+    getFaceApprovalList() {
+      // this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
+      //   this.resourcePoolList = val.object.list
+      // })
     }
   }
 

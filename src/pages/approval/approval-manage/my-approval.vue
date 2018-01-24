@@ -18,17 +18,17 @@
     <i-row v-if="searchOptions" style="position:relative;right:10px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:21%" type="datetimerange" placeholder="请选择日期" @on-change="timeRangeChange"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:16%" type="datetimerange" placeholder="请选择日期" @on-change="timeRangeChange"></i-date-picker>
       <span style="margin-left:10px;">省市：</span>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择省" v-model="myOrderModel.province" clearable>
+      <i-select style="width:100px;margin-left:10px;" placeholder="选择省" v-model="myOrderModel.province" clearable>
         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择市" v-model="myOrderModel.city" clearable>
+      <i-select style="width:100px;margin-left:10px;" placeholder="选择市" v-model="myOrderModel.city" clearable>
         <i-option v-for="{value,label} in this.myOrderModel.province ? this.$city.getCityData({ level: 1, id: this.myOrderModel.province }) : []"
           :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <span style="margin-left:10px;">产品类型：</span>
-      <i-select placeholder="产品类型" style="width:120px;" v-model="myOrderModel.productType">
+      <i-select placeholder="产品类型" style="width:120px;" v-model="myOrderModel.productType" clearable>
         <i-option label="直租" :value="398" :key="398"></i-option>
       </i-select>
       <!--<i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>-->
@@ -276,20 +276,17 @@
     private approveStatue: String = ''
     private compactEffect: String = '当月'
     private myOrderModel: any = {
-      timeSearch: ''
+      startTime: '',
+      endTime: '',
+      province: '',
+      city: '',
+      personalInfo: '',
+      timeSearch: '',
+      productType: ''
     }
 
     created() {
       this.getMyOrderList()
-      this.myOrderModel = {
-        startTime: '',
-        endTime: '',
-        province: '',
-        city: '',
-        personalInfo: '',
-        timeSearch: '',
-        productType: ''
-      }
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -645,6 +642,7 @@
       this.myOrderModel.endTime = ''
       this.myOrderModel.timeSearch = val
       this.getMyOrderList()
+      this.myOrderModel.timeSearch = ''
     }
   }
 

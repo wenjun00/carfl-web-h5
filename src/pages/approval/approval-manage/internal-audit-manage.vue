@@ -34,7 +34,7 @@
           :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <span style="margin-left:10px;">产品类型</span>
-      <i-select placeholder="产品类型" style="width:120px;" v-model="approvalModel.productType">
+      <i-select placeholder="产品类型" style="width:120px;" v-model="approvalModel.productType" clearable>
         <i-option label="直租" :value="398" :key="398"></i-option>
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getInternalAuditList">搜索</i-button>
@@ -239,6 +239,26 @@
                 "移出"
               )
             ]);
+          }
+        },
+        {
+          key: 'orderLink',
+          align: 'center',
+          title: '环节',
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.orderLink === 332) {
+              return h('span', {}, '面审')
+            } else if (row.orderLink === 333) {
+              return h('span', {}, '复审')
+            } else if (row.orderLink === 334) {
+              return h('span', {}, '终审')
+            } else if (row.orderLink === 337) {
+              return h('span', {}, '合规')
+            }
           }
         },
         {

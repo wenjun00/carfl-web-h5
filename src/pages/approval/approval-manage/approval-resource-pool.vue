@@ -18,15 +18,15 @@
     <i-row v-if="searchOptions" style="position:relative;right:10px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:21%" type="datetimerange" @on-change="timeRangeChange" @on-clear="clearTime"></i-date-picker>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
+      <i-date-picker style="display:inline-block;width:16%" type="datetimerange" @on-change="timeRangeChange" @on-clear="clearTime"></i-date-picker>
+      <i-select style="width:100px;margin-left:10px;" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择市" v-model="resourcePoolModel.city" clearable>
+      <i-select style="width:100px;margin-left:10px;" placeholder="选择市" v-model="resourcePoolModel.city" clearable>
         <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []"
           :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-select placeholder="产品类型" style="width:120px;" v-model="resourcePoolModel.productType">
+      <i-select placeholder="产品类型" style="width:120px;" v-model="resourcePoolModel.productType" clearable>
         <i-option label="直租" :value="398" :key="398"></i-option>
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getApprovalListByCondition">搜索</i-button>
@@ -119,21 +119,20 @@
     private data3: Array < Object > = [];
     private purchaseInformationModal: Boolean = false;
     private scrollTopHeight = 0
-    private resourcePoolModel: any;
+    private resourcePoolModel: any = {
+      startTime: '',
+      endTime: '',
+      province: '',
+      city: '',
+      personalInfo: '',
+      timeSearch: '',
+      productType: ''
+    };
     private getOrderModel: any;
     @Mutation("openPage") openPage;
 
     created() {
       this.getApprovalListByCondition()
-      this.resourcePoolModel = {
-        startTime: '',
-        endTime: '',
-        province: '',
-        city: '',
-        personalInfo: '',
-        timeSearch: '',
-        productType: ''
-      }
       this.getOrderModel = {
         userId: '',
         orderIds: []
@@ -142,7 +141,6 @@
           align: 'center',
           width: 90,
           type: 'index',
-          fixed: 'left',
           renderHeader: (h, {
             column,
             index
@@ -194,10 +192,29 @@
                 "领取"
               )
             ]);
-          },
-          fixed: 'left'
+          }
         },
-
+        {
+          key: 'orderLink',
+          title: '环节',
+          align: 'center',
+          width: 186,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.orderLink === 332) {
+              return h('span', {}, '面审')
+            } else if (row.orderLink === 333) {
+              return h('span', {}, '复审')
+            } else if (row.orderLink === 334) {
+              return h('span', {}, '终审')
+            } else if (row.orderLink === 337) {
+              return h('span', {}, '合规')
+            }
+          }
+        },
         {
           title: "订单编号",
           key: "orderNumber",
@@ -221,27 +238,6 @@
               }, row.orderNumber)
             } else if (!row) {
               return h('span', {}, '')
-            }
-          }
-        },
-        {
-          key: 'orderLink',
-          title: '环节',
-          align: 'center',
-          width: 186,
-          render: (h, {
-            row,
-            columns,
-            index
-          }) => {
-            if (row.orderLink === 332) {
-              return h('span', {}, '面审')
-            } else if (row.orderLink === 333) {
-              return h('span', {}, '复审')
-            } else if (row.orderLink === 334) {
-              return h('span', {}, '终审')
-            } else if (row.orderLink === 337) {
-              return h('span', {}, '合规')
             }
           }
         },
@@ -311,6 +307,12 @@
               return h('span', {}, '全额付款')
             }
           }
+        },
+        {
+          align: "center",
+          title: "产品名称",
+          key: "productName",
+          width: 100
         },
         {
           align: "center",
@@ -458,8 +460,6 @@
     }
     clearTime() {
       console.log(123)
-      // this.resourcePoolModel.startTime = ''
-      // this.resourcePoolModel.endTime = ''
     }
   }
 

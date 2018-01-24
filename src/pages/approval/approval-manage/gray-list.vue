@@ -35,9 +35,8 @@
           :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <span style="margin-left:10px;">产品类型</span>
-      <i-select style="width:10%;">
-        <i-option label="直租" value="直租" key="直租"></i-option>
-        <i-option label="车贷" value="车贷" key="车贷"></i-option>
+      <i-select style="width:10%;" v-model="approvalModel.productType" clearable>
+        <i-option label="直租" :value="398" :key="398"></i-option>
       </i-select>
       <!--<i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>-->
       <i-button style="margin-left:10px" class="blueButton" @click="getGrayList">搜索</i-button>
@@ -115,7 +114,13 @@
     private data3: Array < Object > = [];
     private approvalModel: any = {
       riskStatus: 1,
-      timeSearch: ''
+      timeSearch: '',
+      personalInfo: '',
+      province: '',
+      city: '',
+      startTime: '',
+      endTime: '',
+      productType: ''
     }
     openSearch() {
       this.searchOptions = !this.searchOptions;

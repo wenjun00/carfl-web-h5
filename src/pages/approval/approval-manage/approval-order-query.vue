@@ -2,14 +2,14 @@
 <template>
   <section class="page approval-order-query">
     <span class="form-title">订单查询</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">关闭</span>
@@ -26,9 +26,9 @@
       <span style="margin-left:10px">日期：</span>
       <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
-      <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+      <i-button style="margin-left:10px" class="blueButton" @click="getAllOrderList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="allOrderList"></data-box>
 
     <template>
       <i-modal @on-visible-change="visibleChange" title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
@@ -65,7 +65,18 @@
     Layout
   } from "~/core/decorator";
   import SvgIcon from '~/components/common/svg-icon.vue'
-
+  import {
+    ApprovalService
+  } from "~/services/manage-service/approval.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    CityService
+  } from "~/utils/city.service"
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   @Layout("workspace")
   @Component({
 
@@ -76,8 +87,10 @@
     }
   })
   export default class ApprovalOrderQuery extends Page {
+    @Dependencies(ApprovalService) private approvalService: ApprovalService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private allOrderList: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
     private orderModal: Boolean = false;
@@ -87,9 +100,11 @@
     private columns3: any;
     private data3: Array < Object > = [];
     private scrollTopHeight = 0
+    private approvalModel: any = {
+      timeSearch: ''
+    }
 
     visibleChange() {
-      console.log('订单查询modal')
       let target = document.querySelector(".purchaseInformation .ivu-modal-body")
       if (target) {
         target.addEventListener('scroll', this.monitorScorll)
@@ -106,6 +121,7 @@
       this.searchOptions = !this.searchOptions;
     }
     created() {
+      this.getAllOrderList()
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -197,109 +213,137 @@
                     }
                   }
                 },
-                "查看订单"
+                "查看"
               )
             ]);
           }
         },
         {
+          key: 'orderLink',
+          align: 'center',
+          title: '环节',
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.orderLink === 332) {
+              return h('span', {}, '面审')
+            } else if (row.orderLink === 333) {
+              return h('span', {}, '复审')
+            } else if (row.orderLink === 334) {
+              return h('span', {}, '终审')
+            } else if (row.orderLink === 337) {
+              return h('span', {}, '合规')
+            }
+          }
+        },
+        {
           title: "订单状态",
           align: "center",
-          key: "orderStatus"
+          key: "orderStatus",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            if (row.orderStatus === 309) {
+              // TODO 好多种判断未写
+              return h('span', {}, '审核中')
+            } else {
+              return h('span', {}, row.orderStatus)
+            }
+          }
         },
         {
           align: "center",
           title: "订单创建时间",
-          key: "orderCreateTime"
+          key: "createTime",
+          width: 180,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
-          align: "center",
-          title: "进入资源池时间",
-          key: "orderPoolTime"
-        },
-        {
-          align: "center",
-          title: "省份",
-          key: "province"
-        },
-        {
-          align: "center",
-          title: "城市",
-          key: "city"
-        },
-        {
-          align: "center",
-          title: "订单类型",
-          key: "orderType"
+          title: '订单编号',
+          key: 'orderNumber',
+          align: 'center',
+          width: 180,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.purchaseInfoModal = true
+                }
+              }
+            }, row.orderNumber)
+          }
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customerName"
+          key: "personalName"
         },
         {
           align: "center",
           title: "证件号",
-          key: "idCard"
+          key: "idCard",
+          width: 180
         },
         {
           align: "center",
           title: "手机号",
-          key: "phone"
+          key: "mobileMain",
+          width: 120
+        },
+        {
+          align: "center",
+          title: "订单类型",
+          key: "orderType",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            if (row.orderType == 301) {
+              return h('span', {}, '融资租赁')
+            } else if (row.orderType == 302) {
+              return h('span', {}, '全额付款')
+            }
+          }
+        },
+        {
+          align: "center",
+          title: "订单归属公司",
+          key: "productName"
+        },
+        {
+          align: "center",
+          title: "订单归属公司",
+          key: "productName"
+        },
+        {
+          align: "center",
+          title: "订单归属公司",
+          key: "productName"
+        },
+        {
+          align: "center",
+          title: "订单归属公司",
+          key: "productName"
         }
       ];
-
-      this.data1 = [{
-        orderStatus: '待面审',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '宝鸡',
-        orderType: '直租',
-        customerName: '刘佳',
-        idCard: '610303199111142564',
-        phone: '15094156575'
-      }, {
-        orderStatus: '待面审',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '宝鸡',
-        orderType: '直租',
-        customerName: '刘陇刚',
-        idCard: '610303198911041564',
-        phone: '13096133575'
-      }, {
-        orderStatus: '待终审',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '渭南',
-        orderType: '直租',
-        customerName: '王泽杰',
-        idCard: '610303199111142564',
-        phone: '15989756575'
-      }, {
-        orderStatus: '待复审',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '咸阳',
-        orderType: '直租',
-        customerName: '刘佳',
-        idCard: '610303199111142564',
-        phone: '15168156575'
-      }, {
-        orderStatus: '待终审',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '西安',
-        orderType: '直租',
-        customerName: '刘佳',
-        idCard: '610303199111142564',
-        phone: '18294156575'
-      }]
 
       this.columns2 = [{
         align: 'center',
@@ -384,6 +428,19 @@
      */
     columnsConfig() {
       this.openColumnsConfig = true
+    }
+
+    getAllOrderList() {
+      this.approvalService.auditResourcePool(this.approvalModel, this.pageService).subscribe(val => {
+        this.allOrderList = val.object.list
+      })
+    }
+    getTimeSearch(val) {
+      this.approvalModel.startTime = ''
+      this.approvalModel.endTime = ''
+      this.approvalModel.timeSearch = val
+      this.getAllOrderList()
+      this.approvalModel.timeSearch = ''
     }
   }
 
