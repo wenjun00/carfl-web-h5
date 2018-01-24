@@ -32,7 +32,6 @@
       <i-select placeholder="产品类型" style="width:120px;" v-model="resourcePoolModel.productType" clearable>
         <i-option label="直租" :value="398" :key="398"></i-option>
       </i-select>
-      <!--<i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>-->
       <i-button style="margin-left:10px" class="blueButton" @click="getLastList">搜索</i-button>
     </i-row>
 

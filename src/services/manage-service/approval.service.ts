@@ -59,4 +59,14 @@ export class ApprovalService {
       }
     })
   }
+  /**
+   * 审核记录表查询
+   */
+  getAuditRecord(data, page) {
+    return this.netService.send({
+      server: manageService.approvalController.getAuditRecord,
+      data: data,
+      page: page
+    })
+  }
 }
