@@ -100,7 +100,6 @@ export default class DataDict extends Page {
   getAllDictType() {
     this.dataDictTypeService.getAllDictType().subscribe(val => {
       this.dataType = val.object;
-      console.log(val);
     });
   }
   /**

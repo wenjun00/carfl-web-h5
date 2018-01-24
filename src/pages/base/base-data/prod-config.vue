@@ -484,15 +484,59 @@ export default class ProdConfig extends Page {
     });
   }
   getTreeDate() {
-    let series = this.allData.filter(t => t.seriesId !== "");
-    let arr: Array<Object> = [];
-    console.log(series + "ddddddddd");
-    let num = 1;
-    this.allData.forEach(v => {
-      if (v.seriesName === num) {
-        arr.push(v.seriesId);
-      }
-    });
+    // let series = this.allData.filter(t => t.seriesId !== "");
+    // console.log(series + "ddddddddd");
+    // this.treeData = [
+    //   {
+    //     title: series
+    //   }
+    // ];
+    // let arr: Array<Object> = [];
+    // let num = 1;
+    // this.allData.forEach(v => {
+    //   if (v.seriesName === num) {
+    //     arr.push(v.seriesId);
+    //   }
+    // });
+    // let arr = [];
+    // for (let a = 0; a < this.allData.length; a++) {
+    //   if (a == 0) {
+    //     let json = {
+    //       title: this.allData[a].seriesName,
+    //       expand: true,
+    //       seriesId: this.allData[a].seriesId,
+    //       children: [
+    //         {
+    //           title: this.allData[a].productName
+    //         }
+    //       ]
+    //     };
+    //     arr = arr.concat(json);
+    //   } else {
+    //     for (let b = 0; b < arr.length; b++) {
+    //       if (this.allData[a].seriesId == arr[b].seriesId) {
+    //         let children = {
+    //           title: this.allData[a].productName
+    //         };
+    //         arr[b].children.push(children);
+    //         return false;
+    //       }
+    //     }
+    //     let json = [
+    //         {
+    //       title: this.allData[a].seriesName,
+    //       expand: true,
+    //       seriesId: this.allData[a].seriesId,
+    //       children: [
+    //         {
+    //           title: this.allData[a].productName
+    //         }
+    //       ]
+    //     }]
+    //     arr.push(json);
+    //   }
+    // }
+    // this.treeData.concat(arr);
   }
 }
 </script>

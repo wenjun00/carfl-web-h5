@@ -24,7 +24,9 @@ export class ProductPackageService {
     deleteProductPackage({ id }) {
         return this.netService.send({
             server: manageService.productPackageController.deleteProductPackage,
-            id: id
+            data: {
+                id: id
+            }
         })
     }
     /**
@@ -34,7 +36,9 @@ export class ProductPackageService {
     downloadProductPackage({ fileId }) {
         return this.netService.send({
             server: manageService.productPackageController.downloadProductPackage,
-            fileId: fileId
+            data: {
+                fileId: fileId
+            }
         })
     }
     /**

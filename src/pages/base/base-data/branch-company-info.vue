@@ -2,12 +2,44 @@
 <template>
     <section class="page branch-company-info">
         <i-row style="margin-top:10px;">
-            <span style="font-size:18px;font-weight:bold">分公司信息</span>
+            <span style="font-size:18px;font-weight:bold;margin-left:10px;">分公司信息</span>
             <span style="margin-left:10px;">关键字搜索：</span>
             <i-input style="width:15%" placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyword"></i-input>
             <i-button class="blueButton" style="margin-left:10px;" @click="seachCompany">搜索</i-button>
         </i-row>
         <data-box :columns="columns" :data="companyList"></data-box>
+        <Modal title="修改分公司信息" v-model="modal" :mask-closable="false" @on-ok="sureButton">
+            <Form :model="formItem" :label-width="80">
+                <FormItem label="公司简称：">
+                    <Input v-model="formItem.companyChinaname" placeholder="请输入公司简称"></Input>
+                </FormItem>
+                <FormItem label="所在省份：">
+                    <Input v-model="formItem.companyProvince" placeholder="请输入所在省份"></Input>
+                </FormItem>
+                <FormItem label="所在城市：">
+                    <Input v-model="formItem.companyCity" placeholder="请输入所在城市"></Input>
+                </FormItem>
+                <FormItem label="银行户名：">
+                    <Input v-model="formItem.bankAccount" placeholder="请输入银行户名"></Input>
+                </FormItem>
+                <FormItem label="开户银行：">
+                    <Input v-model="formItem.depositBank" placeholder="请输入开户银行"></Input>
+                </FormItem>
+                <FormItem label="银行卡号：">
+                    <Input v-model="formItem.cardNumber" placeholder="请输入银行卡号"></Input>
+                </FormItem>
+                <FormItem label="支行名称：">
+                    <Input v-model="formItem.branchName" placeholder="请输入支行名称"></Input>
+                </FormItem>
+                <FormItem label="状态：">
+                    <Switch size="large" v-model="formItem.companyStatus">
+                        <span slot="open">启用</span>
+                        <span slot="close">停用</span>
+                    </Switch>
+                </FormItem>
+            </form>
+        </Modal>
+
     </section>
 </template>
 
@@ -36,6 +68,9 @@ export default class BranchCompanyInfo extends Page {
   private searchOptions: Boolean = false;
   private companyModel: any;
   private companyList: Array<Object> = [];
+  private sasStatus: any;
+  private modal: Boolean = false;
+  private formItem: any;
   created() {
     this.seachCompany();
     this.columns = [
@@ -52,7 +87,7 @@ export default class BranchCompanyInfo extends Page {
         fixed: "left",
         width: 250,
         render: (h, { row, column, index }) => {
-          if (row.firmShortName === "群泰上海") {
+          if (row.companyStatus === 0) {
             return h("div", [
               h(
                 "i-button",
@@ -62,6 +97,11 @@ export default class BranchCompanyInfo extends Page {
                   },
                   style: {
                     color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.editInformation(row);
+                    }
                   }
                 },
                 "修改"
@@ -77,9 +117,12 @@ export default class BranchCompanyInfo extends Page {
                   },
                   on: {
                     click: () => {
-                      this.$Modal.success({
+                      this.$Modal.confirm({
                         title: "提示",
-                        content: "停用成功！"
+                        content: "您确定停用吗？",
+                        onOk: () => {
+                          this.startAndStop(row);
+                        }
                       });
                     }
                   }
@@ -87,7 +130,7 @@ export default class BranchCompanyInfo extends Page {
                 "停用"
               )
             ]);
-          } else if (row.firmShortName === "群泰西安") {
+          } else if (row.companyStatus === 1) {
             return h("div", [
               h(
                 "i-button",
@@ -100,9 +143,12 @@ export default class BranchCompanyInfo extends Page {
                   },
                   on: {
                     click: () => {
-                      this.$Modal.success({
+                      this.$Modal.confirm({
                         title: "提示",
-                        content: "启用成功！"
+                        content: "您确定启用吗？",
+                        onOk: () => {
+                          this.startAndStop(row);
+                        }
                       });
                     }
                   }
@@ -160,9 +206,26 @@ export default class BranchCompanyInfo extends Page {
         title: "状态",
         key: "companyStatus",
         align: "center",
-        width: 90
+        width: 90,
+        render: (h, { row, column, index }) => {
+          if (row.companyStatus === 0) {
+            return h("span", {}, "已启用");
+          } else if (row.companyStatus === 1) {
+            return h("span", {}, "已停用");
+          }
+        }
       }
     ];
+    this.formItem = {
+      companyChinaname: "",
+      companyProvince: "",
+      companyCity: "",
+      bankAccount: "",
+      depositBank: "",
+      cardNumber: "",
+      branchName: "",
+      companyStatus: ""
+    };
     this.companyModel = {
       keyword: ""
     };
@@ -181,6 +244,46 @@ export default class BranchCompanyInfo extends Page {
       .subscribe(val => {
         this.companyList = val.object.list;
       });
+  }
+  /**
+   * 停用/启用
+   */
+  startAndStop(row) {
+    this.sasStatus = {
+      id: row.id,
+      status: row.companyStatus === 0 ? 1 : 0
+    };
+    this.companyService.disableOrEnable(this.sasStatus).subscribe(val => {
+      this.$Message.success(
+        row.companyStatus === 0 ? "停用成功！" : "启用成功！"
+      );
+      this.seachCompany();
+    });
+  }
+  /**
+   * 修改信息 传递参数
+   */
+  editInformation(row) {
+    this.modal = true;
+    this.formItem = {
+      companyChinaname: row.companyChinaname,
+      companyProvince: row.companyProvince,
+      companyCity: row.companyCity,
+      bankAccount: row.bankAccount,
+      depositBank: row.depositBank,
+      cardNumber: row.cardNumber,
+      branchName: row.branchName,
+      companyStatus: row.companyStatus
+    };
+  }
+  /**
+   * 修改信息 并提交数据
+   */
+  sureButton() {
+    this.companyService.createOrModifyCompany(this.formItem).subscribe(val => {
+      this.$Message.success(val.msg);
+      this.seachCompany();
+    });
   }
 }
 </script>

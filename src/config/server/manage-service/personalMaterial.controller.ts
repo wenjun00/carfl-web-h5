@@ -40,5 +40,14 @@ export default {
         controller: CONTROLLER,
         action: 'select',
         type: requestType.Put
+    },
+    /**
+     * 删除客户素材
+     */
+    deletePersonalMaterial: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'deletePersonalMaterial',
+        type: requestType.Delete
     }
 }

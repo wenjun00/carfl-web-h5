@@ -26,4 +26,23 @@ export class CompanyService {
             page: page
         })
     }
+
+    /**
+    * 停用/启用
+    */
+    disableOrEnable(data) {
+        return this.netService.send({
+            server: manageService.companyController.disableOrEnable,
+            data: data
+        })
+    }
+    /**
+    * 新增/修改公司信息
+    */
+    createOrModifyCompany(data) {
+        return this.netService.send({
+            server: manageService.companyController.createOrModifyCompany,
+            data: data
+        })
+    }
 }

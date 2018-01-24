@@ -8,7 +8,7 @@ export class PersonalMaterialService {
     private netService: NetService
 
     /**
-     * 查询所有数据字典类型
+     * 分页查询客户素材
      */
     getAllPersonalMaterial(data, page) {
         return this.netService.send({
@@ -41,6 +41,18 @@ export class PersonalMaterialService {
     select() {
         return this.netService.send({
             server: manageService.personalMaterialController.select,
+        })
+    }
+
+    /**
+     * 删除客户素材
+     */
+    deletePersonalMaterial({ id }) {
+        return this.netService.send({
+            server: manageService.personalMaterialController.deletePersonalMaterial,
+            data: {
+                id: id
+            }
         })
     }
 }

@@ -1,7 +1,7 @@
 <!--审批原因管理-->
 <template>
     <section class="page approval-reason-manage">
-        <i-row style="margin-top:10px">
+        <i-row style="margin-top:10px;margin-left:10px;">
             <span style="font-size:18px;font-weight:bold">审批原因管理</span>
             <i-select style="margin-left:10px;width:10%;" placeholder="全部" v-model="appReasonModel.type">
                 <i-option label="退件" :value="374" :key="374"></i-option>
@@ -17,7 +17,7 @@
             <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
                 <span></span>
             </div>
-            <div style="float:right;margin-right:10px;margin-top:10px;">
+            <div style="float:right;margin-right:12px;margin-top:10px;">
                 <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
                     <svg-icon iconClass="daoru" style="font-size:16px;"></svg-icon>
                     <span style="font-size:14px;">导入</span>
