@@ -326,22 +326,17 @@
         {
           align: "center",
           title: "订单归属公司",
-          key: "productName"
+          key: "orderCompany"
         },
         {
           align: "center",
-          title: "订单归属公司",
-          key: "productName"
+          title: "归属部门",
+          key: "orderDept"
         },
         {
           align: "center",
-          title: "订单归属公司",
-          key: "productName"
-        },
-        {
-          align: "center",
-          title: "订单归属公司",
-          key: "productName"
+          title: "制单人",
+          key: "recorder"
         }
       ];
 
@@ -431,7 +426,7 @@
     }
 
     getAllOrderList() {
-      this.approvalService.auditResourcePool(this.approvalModel, this.pageService).subscribe(val => {
+      this.approvalService.approvalOrderSearch(this.approvalModel, this.pageService).subscribe(val => {
         this.allOrderList = val.object.list
       })
     }

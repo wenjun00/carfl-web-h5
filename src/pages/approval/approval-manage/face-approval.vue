@@ -29,21 +29,20 @@
           :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <span style="margin-left:10px;">产品类型</span>
-      <i-select style="width:10%;">
-        <i-option label="直租" value="直租" key="直租"></i-option>
-        <i-option label="车贷" value="车贷" key="车贷"></i-option>
+      <i-select placeholder="产品类型" style="width:120px;" v-model="resourcePoolModel.productType" clearable>
+        <i-option label="直租" :value="398" :key="398"></i-option>
       </i-select>
       <!--<i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>-->
       <i-button style="margin-left:10px" class="blueButton" @click="getFaceApprovalList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="faceList"></data-box>
     <!--Modal-->
     <template>
       <i-modal title="订单领取" v-model="orderModal" width="300">
         <span>确定将所选订单领取到我的审核？</span>
         <div slot="footer">
           <i-button @click="orderModal=false">取消</i-button>
-          <i-button @click="orderModal=false" class="blueButton">确定</i-button>
+          <i-button @click="confirmGetOrder" class="blueButton">确定</i-button>
         </div>
       </i-modal>
     </template>
@@ -91,6 +90,9 @@
   import {
     CityService
   } from "~/utils/city.service"
+  import {
+    ApprovalService
+  } from "~/services/manage-service/approval.service";
 
   @Layout("workspace")
   @Component({
@@ -101,10 +103,10 @@
     }
   })
   export default class FaceApproval extends Page {
-    // @Dependencies(ApprovalService) private approvalService: ApprovalService;
+    @Dependencies(ApprovalService) private approvalService: ApprovalService;
     @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private faceList: Array < Object > = [];
     private orderModal: Boolean = false;
     private columns2: any;
     private data2: Array < Object > = [];
@@ -114,6 +116,7 @@
     private openColumnsConfig: Boolean = false;
     private purchaseInfoModal: Boolean = false;
     private resourcePoolModel: any = {
+      orderLink: 332,
       startTime: '',
       endTime: '',
       province: '',
@@ -122,10 +125,16 @@
       timeSearch: '',
       productType: ''
     };
+    private getOrderModel: any = {
+      userId: '',
+      orderIds: []
+    }
+
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     created() {
+      this.getFaceApprovalList()
       this.columns1 = [{
           align: 'center',
           width: 90,
@@ -183,105 +192,144 @@
               )
             ]);
           }
-        },
-        {
-          title: '订单编号',
-          key: 'orderId',
+        }, {
+          key: 'orderLink',
+          title: '环节',
           align: 'center',
-          width: 180,
+          width: 186,
           render: (h, {
             row,
             columns,
             index
           }) => {
-            return h('i-button', {
-              props: {
-                type: 'text'
-              },
-              on: {
-                click: () => {
-                  this.purchaseInfoModal = true
+            if (row.orderLink === 332) {
+              return h('span', {}, '面审')
+            } else if (row.orderLink === 333) {
+              return h('span', {}, '复审')
+            } else if (row.orderLink === 334) {
+              return h('span', {}, '终审')
+            } else if (row.orderLink === 337) {
+              return h('span', {}, '合规')
+            }
+          }
+        },
+        {
+          title: "订单编号",
+          key: "orderNumber",
+          align: "center",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            if (row && row.orderNumber) {
+              return h('i-button', {
+                props: {
+                  type: 'text'
+                },
+                on: {
+                  click: () => {
+                    this.purchaseInfoModal = true
+                  }
                 }
-              }
-            }, row.orderId)
+              }, row.orderNumber)
+            } else if (!row) {
+              return h('span', {}, '')
+            }
           }
         },
         {
           align: "center",
           title: "订单创建时间",
-          key: "orderCreateTime"
+          key: "createTime",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: "进入资源池时间",
-          key: "orderPoolTime"
+          key: "intoPoolDate",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.intoPoolDate, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: "省份",
-          key: "province"
+          key: "province",
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', CityService.getCityName(row.province))
+          }
         },
         {
           align: "center",
           title: "城市",
-          key: "city"
+          key: "city",
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', CityService.getCityName(row.city))
+          }
         },
         {
           align: "center",
           title: "订单类型",
-          key: "orderType"
+          key: "orderType",
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            if (row.orderType == 301) {
+              return h('span', {}, '融资租赁')
+            } else if (row.orderType == 302) {
+              return h('span', {}, '全额付款')
+            }
+          }
+        },
+        {
+          align: "center",
+          title: "产品名称",
+          key: "productName",
+          width: 100
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customerName"
+          key: "personalName",
+          width: 100
         },
         {
           align: "center",
           title: "证件号",
-          key: "idCard"
+          key: "idCard",
+          width: 180
         },
         {
           align: "center",
           title: "手机号",
-          key: "phone"
+          key: "mobileMain",
+          width: 160
         }
       ];
-
-      this.data1 = [{
-        orderStatus: '面审通过',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '宝鸡',
-        orderType: '直租',
-        customerName: '刘佳',
-        idCard: '610303199111142564',
-        orderId: 20170805,
-        phone: '15094156575'
-      }, {
-        orderStatus: '面审通过',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '宝鸡',
-        orderType: '直租',
-        customerName: '刘陇刚',
-        idCard: '610303198911041564',
-        orderId: 20170806,
-        phone: '13096133575'
-      }, {
-        orderStatus: '面审通过',
-        orderCreateTime: '2017-12-01 13:56:03',
-        orderPoolTime: '2017-12-02 11:36:26',
-        province: '陕西',
-        city: '渭南',
-        orderType: '直租',
-        customerName: '王泽杰',
-        orderId: 20170807,
-        idCard: '610303199111142564',
-        phone: '15989756575'
-      }]
 
       this.columns2 = [{
         align: 'center',
@@ -355,8 +403,16 @@
      */
     getOrder(row) {
       this.orderModal = true
+      this.getOrderModel.orderIds = row.orderId
+      this.getOrderModel.userId = this.$store.state.userData.id
     }
-
+    confirmGetOrder() {
+      this.approvalService.batchReceiveApproval(this.getOrderModel).subscribe(val => {
+        this.$Message.success('领取成功！')
+        this.getFaceApprovalList()
+      })
+      this.orderModal = false
+    }
     /**
      * 列配置
      */
@@ -371,9 +427,9 @@
       this.resourcePoolModel.timeSearch = ''
     }
     getFaceApprovalList() {
-      // this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
-      //   this.resourcePoolList = val.object.list
-      // })
+      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
+        this.faceList = val.object.list
+      })
     }
   }
 

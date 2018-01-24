@@ -21,5 +21,14 @@ export default {
         controller: CONTROLLER,
         action: 'findOrderHandoverHistory',
         type: requestType.Get
+    },
+    /**
+     * 进件模块-订单交接
+     */
+    orderTransfer: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'orderTransfer',
+        type: requestType.Get
     }
 }

@@ -3,7 +3,7 @@
   <section class="page org-user-manage">
     <span class="form-title">机构与用户管理</span>
     <i-row>
-      <i-col :span="4">
+      <i-col :span="4" style="border:1px solid #dddddd;padding:10px;height:500px;">
         <i-button class="blueButton" @click="addNewOrg">添加机构</i-button>
         <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
       </i-col>
@@ -392,6 +392,7 @@
     }
     allotRole(row) {
       this.allotRoleModal = true
+      this.batchAllotFlag = false
       let _allotRole = < Modal > this.$refs['allot-role-modal']
       _allotRole.getRoleList()
       this.userId = row.id

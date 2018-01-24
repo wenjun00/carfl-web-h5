@@ -46,5 +46,14 @@ export default {
     controller: CONTROLLER,
     action: 'removeRiskStatus',
     type: requestType.Get
+  },
+  /**
+   * 审核记录表查询
+   */
+  getAuditRecord: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getAuditRecord',
+    type: requestType.Get
   }
 }

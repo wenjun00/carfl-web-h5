@@ -225,7 +225,6 @@
             index
           }) => {
             if (row && row.orderNumber) {
-              console.log(1122, row.orderNumber)
               return h('i-button', {
                 props: {
                   type: 'text'
@@ -458,9 +457,7 @@
       this.resourcePoolModel.startTime = startTime
       this.resourcePoolModel.endTime = endTime
     }
-    clearTime() {
-      console.log(123)
-    }
+    clearTime() {}
   }
 
 </script>

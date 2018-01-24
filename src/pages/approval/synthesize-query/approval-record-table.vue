@@ -19,9 +19,9 @@
     </i-row>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:16px;">
       <i-select placeholder="全部状态" style="margin-left:20px;width:10%">
-        <i-option label="拒绝" value="拒绝" key="拒绝"></i-option>
-        <i-option label="退单" value="退单" key="退单"></i-option>
-        <i-option label="通过" value="通过" key="通过"></i-option>
+        <i-option label="通过" :value="0" :key="0"></i-option>
+        <i-option label="退件" :value="1" :key="1"></i-option>
+        <i-option label="拒绝" :value="2" :key="2"></i-option>
       </i-select>
       <i-select placeholder="全部拒单原因" style="margin-left:20px;width:12%">
         <i-option label="不符合进件条件" value="不符合进件条件" key="不符合进件条件"></i-option>
@@ -41,9 +41,9 @@
       <span style="margin-left:10px;">日期：</span>
       <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>
-      <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:20px;" @click="getApprovaRecordList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="approvalRecordList"></data-box>
 
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
@@ -76,12 +76,20 @@
     Dependencies
   } from "~/core/decorator";
   import {
-    OrderService
-  } from "~/services/business-service/order.service";
-  import {
     Layout
   } from "~/core/decorator";
-
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
+  import {
+    CityService
+  } from "~/utils/city.service"
+  import {
+    ApprovalService
+  } from "~/services/manage-service/approval.service";
   @Layout("workspace")
   @Component({
 
@@ -91,9 +99,10 @@
     }
   })
   export default class ApprovalRecordTable extends Page {
-    @Dependencies(OrderService) private orderService: OrderService;
+    @Dependencies(ApprovalService) private approvalService: ApprovalService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private approvalRecordList: Array < Object > = [];
     private searchOptions: Boolean = false;
     private roleName: String = "";
     private openCreateCompact: Boolean = false;
@@ -105,6 +114,9 @@
     private checkRadio: String = "融资租赁合同";
     private columns3: any;
     private orderProgressModal: Boolean = false;
+    private approvalRecordModel: any = {
+
+    }
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -348,68 +360,6 @@
           width: 160
         }
       ];
-      this.data1 = [{
-        approvalTime: '2017-12-01 15:36:45',
-        province: '陕西',
-        city: '西安',
-        branchAddress: '大雁塔门店',
-        salesman: '吴小川',
-        customerName: '韩冰',
-        idCard: '610101199006052416',
-        approvalStatus: '拒绝',
-        isDeliveryCar: '未提车',
-        content: '提车失败',
-        refuseReason: '风控不过',
-        refuseDetail: '',
-        remark: '未提车',
-        approvalMan: '李蓓'
-      }, {
-        approvalTime: '2017-12-01 15:36:45',
-        province: '陕西',
-        city: '西安',
-        branchAddress: '大雁塔门店',
-        salesman: '吴小川',
-        customerName: '韩冰',
-        idCard: '610101199006052416',
-        approvalStatus: '通过',
-        content: '成功提车',
-        isDeliveryCar: '已提车',
-        refuseReason: '',
-        refuseDetail: '',
-        remark: '成功提车',
-        approvalMan: '李蓓'
-      }, {
-        approvalTime: '2017-12-01 15:36:45',
-        province: '陕西',
-        city: '西安',
-        branchAddress: '大雁塔门店',
-        salesman: '吴小川',
-        customerName: '韩冰',
-        idCard: '610101199006052416',
-        content: '逾期了',
-        approvalStatus: '拒绝',
-        isDeliveryCar: '未提车',
-        refuseReason: '逾期',
-        refuseDetail: '银行贷款逾期',
-        remark: '',
-        approvalMan: '李蓓'
-      }, {
-        approvalTime: '2017-12-01 15:36:45',
-        province: '陕西',
-        city: '西安',
-        branchAddress: '大雁塔门店',
-        salesman: '吴小川',
-        customerName: '韩冰',
-        idCard: '610101199006052416',
-        content: '逾期了',
-        approvalStatus: '拒绝',
-        isDeliveryCar: '未提车',
-        refuseReason: '逾期',
-        refuseDetail: '银行贷款逾期',
-        remark: '',
-        approvalMan: '李蓓'
-      }]
-
     }
 
     deleteRole(row) {
@@ -426,6 +376,11 @@
      */
     columnsConfig() {
       this.openColumnsConfig = true
+    }
+    getApprovaRecordList() {
+      this.approvalService.getAuditRecord(this.approvalRecordModel, this.pageService).subscribe(val => {
+        this.approvalRecordList = val.object.list
+      })
     }
 
   }
