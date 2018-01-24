@@ -24,15 +24,16 @@
         </div>
       </div>
     </i-row>
+    <!--搜索项-->
     <i-row v-if="searchOptions" style="margin:6px;">
-      <!--<no-ssr>
-        <DatePicker type="date" placeholder="Select date" style="width: 200px"></DatePicker>
-        <i-date-picker type="date" placeholder="Select date" style="width: 200px"></i-date-picker>
-      </no-ssr>-->
-      <i-input v-model="customName" style="display:inline-block;width:20%;" placeholder="请输入客户姓名/证件号码/联系号码/订单所属人查询"></i-input>
-      <i-button style="margin-left:10px;" class="blueButton">搜索</i-button>
+      <i-date-picker v-model="startTime" type="date" placeholder="起始日期(始)" style="width: 200px"></i-date-picker>
+      <i-date-picker v-model="endTime" type="date" placeholder="终止日期(止)" style="width: 200px"></i-date-picker>
+      <i-input v-model="orderInfo" style="display:inline-block;width:20%;" placeholder="请输入客户姓名/证件号码/联系号码/订单所属人查询"></i-input>
+      <i-button style="margin-left:10px;" class="blueButton" @click="refreshData">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1" :page="pageService"></data-box>
+    <!--列表-->
+    <data-box :columns="columns1" :data="ordertransferDataSet" :page="pageService"></data-box>
+    <!--一键交接-->
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="8" push="1">
@@ -47,6 +48,7 @@
       </i-row>
     </div>
     <!--Model-->
+    <!--列配置-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
         <!--<i-table :columns="columns2" :data="data2" border stripe @on-select="multipleSelect"></i-table>-->
@@ -59,7 +61,7 @@
         </div>
       </i-modal>
     </template>
-
+    <!--一键交接弹框-->
     <template>
       <i-modal v-model="openOneKeyToConnect" title="一键交接" width="800">
         <i-row>
@@ -84,9 +86,10 @@
       </i-modal>
     </template>
 
+    <!--转交记录-->
     <template>
-      <i-modal title="转交记录" v-model="transferRecordModal">
-        <transfer-record :customerName="customerName" :orderId="orderId"></transfer-record>
+      <i-modal title="转交记录" v-model="transferRecordModal" class="transfer-record">
+        <transfer-record ref="transfer" :customerName="customerName" :orderId="orderId"></transfer-record>
       </i-modal>
     </template>
   </section>
@@ -111,6 +114,16 @@
   } from "~/core/decorator";
   import TransferRecord from '~/components/purchase-manage/transfer-record.vue'
 
+
+  import {
+    ProductOrderService
+  } from "~/services/manage-service/product.order.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
+
+
+
   @Layout("workspace")
   @Component({
     components: {
@@ -122,15 +135,18 @@
   export default class OrderTransfer extends Page {
     @Dependencies() private pageService: PageService;
     @Dependencies(OrderService) private orderService: OrderService;
+    @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
     private columns1: any;
     private columns2: any;
     private treeColumns: any;
-    private data1: Array < Object > = [];
+    private ordertransferDataSet: Array < Object > = [];
     private treeData: Array < Object > = [];
     private treeDatabox: Array < Object > = [];
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
-    private customName: String = '';
+    private orderInfo: String = ''; // 请输入客户姓名/证件号码/联系号码/订单所属人查询
+    private startTime: String = ''; // 起始日期
+    private endTime: String = ''; // 终止日期
     private openColumnsConfig: Boolean = false
     private openOneKeyToConnect: Boolean = false
     private transferRecordModal: Boolean = false
@@ -260,75 +276,82 @@
           }
         }, {
           title: '订单编号',
-          key: 'orderId',
+          key: 'orderNumber',
           align: 'center',
-          render: (h, row) => {
-            return h('i-button', {
-              props: {
-                type: 'text'
-              },
-              on: {
-                click: () => {
+          //   render: (h, row) => {
+          //     return h('i-button', {
+          //       props: {
+          //         type: 'text'
+          //       },
+          //       on: {
+          //         click: () => {
 
-                }
-              }
-            }, 'kb20154575')
-          }
+          //         }
+          //       }
+          //     }, row.orderNumber)
+          //   }
         },
         {
-          title: '订单所属人',
-          key: 'orderOwner',
+          title: '制单人',
+          key: 'recorderName',
           align: 'center'
         },
         {
           title: '所属部门',
-          key: 'orderDept',
+          key: 'deptName',
           align: 'center'
         },
         {
           title: '转交人',
-          key: 'orderTransferPerson',
+          key: 'transferName',
           align: 'center'
         },
         {
           title: '订单创建时间',
-          key: 'orderCreateTime',
-          align: 'center'
+          key: 'createTime',
+          align: 'center',
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd'))
+          }
         },
         {
           title: '客户姓名',
-          key: 'customName',
+          key: 'personalName',
           align: 'center'
         },
         {
           title: '证件号码',
-          key: 'IdCard',
+          key: 'idCard',
           align: 'center',
           width: 160
         },
         {
           title: '联系号码',
-          key: 'phone',
+          key: 'mobileMain',
           align: 'center'
         },
         {
           title: '产品名称',
-          key: 'prdName',
+          key: 'productName',
           align: 'center'
         },
         {
           title: '产品期数',
-          key: 'prdPeriods',
+          key: 'periods',
           align: 'center'
         },
         {
           title: '环节',
-          key: 'stage',
+          key: 'orderLink',
           align: 'center'
         },
         {
           title: '审批状态',
-          key: 'approvalStatus',
+          key: 'orderStatus',
           align: 'center'
         }
       ]
@@ -369,11 +392,11 @@
       }, {
         columnsName: '审批状态'
       }]
-      this.orderService.getOrderConnect().subscribe(({
-        val
-      }) => {
-        this.data1 = val
-      })
+      //   this.orderService.getOrderConnect().subscribe(({
+      //     val
+      //   }) => {
+      //     this.data1 = val
+      //   })
 
       // this.orderService.getTreeDatabox().subscribe(({
       //   val
@@ -387,6 +410,23 @@
         workId: '002',
         personalName: '张四丰'
       }]
+    }
+    mounted() {
+      this.refreshData()
+    }
+    refreshData() {
+      let ordertransfer: any = {
+        orderInfo: this.orderInfo,
+        startTime: FilterService.dateFormat(this.startTime),
+        endTime: FilterService.dateFormat(this.endTime)
+      }
+      this.productOrderService.getOrderHandover(ordertransfer, this.pageService).subscribe(data => {
+        this.ordertransferDataSet = data.object.list;
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg);
+      });
     }
     getOrderInfoByTime() {}
     openSearch() {
@@ -412,11 +452,20 @@
 
     }
     transferRecord(row) {
-      this.customerName = row.customName
+      this.customerName = row.personalName
       this.orderId = row.orderId
+      let _transfer: any = this.$refs['transfer']
+      _transfer.refreshData(row.orderId)
     }
   }
 
 </script>
 
+<style lang="less" scope>
+  .transfer-record {
+    .ivu-modal-footer {
+      display: none!important;
+    }
+  }
 
+</style>
