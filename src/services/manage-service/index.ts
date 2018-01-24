@@ -8,6 +8,8 @@ import dataDictTypeService from './dataDictType.service'
 import dataDictService from './dataDict.service'
 import personalMaterialService from './personalMaterial.service'
 import approvalService from './approval.service'
+import productlService from './product.service'
+import productPlanIssueService from './productPlanIssue.service'
 
 
 export const aaa = {
@@ -18,5 +20,8 @@ export const aaa = {
     companyService,
     systemParameterService,
     dataDictTypeService,
-    personalMaterialService
+    personalMaterialService,
+    approvalService,
+    productlService,
+    productPlanIssueService
 }

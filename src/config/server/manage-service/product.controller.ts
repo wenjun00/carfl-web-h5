@@ -47,6 +47,15 @@ export default {
         controller: CONTROLLER,
         action: 'deleteProduct',
         type: requestType.Delete
+    },
+    /**
+     * 查询所有产品 ---树形结构
+     */
+    getAllProduct: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getAllProduct',
+        type: requestType.Get
     }
 
 }

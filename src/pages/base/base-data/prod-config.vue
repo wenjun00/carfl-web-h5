@@ -161,9 +161,9 @@ import SvgIcon from "~/components/common/svg-icon.vue";
 import AddPeriods from "~/components/base-data/add-periods.vue";
 import ChargeAgainstOrder from "~/components/base-data/charge-against-order.vue";
 import { Dependencies } from "~/core/decorator";
-import { OrderService } from "~/services/business-service/order.service";
 import { DataGrid, DataGridItem } from "vue-fintech-component";
 import { Layout } from "~/core/decorator";
+import { ProductService } from "~/services/manage-service/product.service";
 
 @Layout("workspace")
 @Component({
@@ -177,7 +177,7 @@ import { Layout } from "~/core/decorator";
   }
 })
 export default class ProdConfig extends Page {
-  @Dependencies(OrderService) private orderService: OrderService;
+  @Dependencies(ProductService) private productService: ProductService;
   private columns1: any;
   private data1: Array<Object> = [];
   private maintains: Array<any> = [];
@@ -193,6 +193,7 @@ export default class ProdConfig extends Page {
   private chargeAgainstOrderConfigModal: Boolean = false;
   private customerFodderConfigFlag: Boolean = true;
   private alreadyConfigFlag: Boolean = false;
+  private allDate: any;
 
   /**
    * 新增期数
@@ -214,6 +215,7 @@ export default class ProdConfig extends Page {
     this.customerFodderConfigModal = true;
   }
   created() {
+    this.treeList();
     this.customerFodderTree = [
       {
         title: "全选",
@@ -471,6 +473,21 @@ export default class ProdConfig extends Page {
   }
   chargeAgainstOrderConfig() {
     this.chargeAgainstOrderConfigModal = true;
+  }
+  /**
+   * 获取树形结构
+   */
+  treeList() {
+    this.productService.getAllProduct().subscribe(val => {
+      this.allDate = val.object;
+      this.getTreeDate();
+    });
+  }
+  getTreeDate() {
+    this.allDate.map(v => {
+      console.log(v);
+    });
+
   }
 }
 </script>
