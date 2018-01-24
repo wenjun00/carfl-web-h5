@@ -26,4 +26,13 @@ export class ProductOrderService {
             data
         })
     }
+    /**
+     * 进件模块-订单交接
+     */
+    orderTransfer(data) {
+        return this.netService.send({
+            server: manageService.productOrderController.orderTransfer,
+            data
+        })
+    }
 }
