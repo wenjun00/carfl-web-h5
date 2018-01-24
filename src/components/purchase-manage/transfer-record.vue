@@ -4,10 +4,10 @@
     <div>
       <span style="margin-left:10px;">客户姓名：</span><span>{{customerName}}</span>
       <div style="float:right;display:inline-block;margin-right:10px;">
-        <span >订单编号：</span><span>{{orderId}}</span>
+        <span>订单编号：</span><span>{{orderId}}</span>
       </div>
     </div>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="transferrecordDataSet"></data-box>
   </section>
 </template>
 
@@ -21,6 +21,12 @@
   import DataBox from "~/components/common/data-box.vue"
   import SimulateCalculate from "~/components/common/simulate-calculate.vue"
   import {
+    ProductOrderService
+  } from "~/services/manage-service/product.order.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service";
+  import {
     Prop
   } from "vue-property-decorator";
   @Component({
@@ -30,8 +36,9 @@
     }
   })
   export default class TransferRecord extends Vue {
+    @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
     private columns1: any;
-    private data1: Array < Object >= [];
+    private transferrecordDataSet: Array < Object >= [];
     private transferModel: Object = {
       customerName: '',
       orderId: ''
@@ -56,28 +63,47 @@
         width: 60
       }, {
         title: '转交日期',
-        key: 'transferDate',
+        key: 'handoverDate',
         align: 'center',
-        width: 160
+        width: 160,
+        render: (h, {
+          row,
+          columns,
+          index
+        }) => {
+          return h('span', FilterService.dateFormat(row.handoverDate, 'yyyy-MM-dd'))
+        }
       }, {
         title: '制单人',
-        key: 'makePerson',
+        key: 'recoderName',
         align: 'center'
       }, {
         title: '转交人',
-        key: 'transferPerson',
+        key: 'transferName',
         align: 'center'
       }]
 
-      this.data1 = [{
-        transferDate: '2017-07-24 15:12:35',
-        makePerson: '胡开甲',
-        transferPerson: '朱晨通'
-      }, {
-        transferDate: '2017-07-24 15:12:35',
-        makePerson: '李驰',
-        transferPerson: '李楠'
-      }]
+      //   this.data1 = [{
+      //     transferDate: '2017-07-24 15:12:35',
+      //     makePerson: '胡开甲',
+      //     transferPerson: '朱晨通'
+      //   }, {
+      //     transferDate: '2017-07-24 15:12:35',
+      //     makePerson: '李驰',
+      //     transferPerson: '李楠'
+      //   }]
+    }
+    refreshData(id) {
+      let transferrecord: any = {
+        orderId: id
+      }
+      this.productOrderService.findOrderHandoverHistory(transferrecord).subscribe(data => {
+        this.transferrecordDataSet = data.object.handoverHistoryVos;
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg);
+      });
     }
 
   }
@@ -94,7 +120,7 @@
       border-radius: 0;
     }
   }
-
+  
   .calculate {
     .ivu-modal-footer {
       display: none!important;
