@@ -2,44 +2,34 @@
 <template>
   <section class="page my-approval">
     <span class="form-title">我的审核</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
-    <i-row v-if="searchOptions" style="margin:6px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
+    <i-row v-if="searchOptions" style="position:relative;right:10px;">
+      <i-input style="display:inline-block;width:18%;margin-left:20px;" v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:21%" type="datetimerange" placeholder="请选择日期" @on-change="timeRangeChange"></i-date-picker>
       <span style="margin-left:10px;">省市：</span>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择省">
-        <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
+      <i-select style="width:80px;margin-left:10px;" placeholder="选择省" v-model="myOrderModel.province" clearable>
+        <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-select style="width:80px;margin-left:10px;" placeholder="选择市">
-        <i-option label="西安市" value="西安市" key="西安市"></i-option>
-        <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
-        <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
-        <i-option label="渭南市" value="渭南市" key="渭南市"></i-option>
-        <i-option label="铜川市" value="铜川市" key="铜川市"></i-option>
-        <i-option label="榆林市" value="榆林市" key="榆林市"></i-option>
-        <i-option label="延安市" value="延安市" key="延安市"></i-option>
-        <i-option label="汉中市" value="汉中市" key="汉中市"></i-option>
-        <i-option label="安康市" value="安康市" key="安康市"></i-option>
-        <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
+      <i-select style="width:80px;margin-left:10px;" placeholder="选择市" v-model="myOrderModel.city" clearable>
+        <i-option v-for="{value,label} in this.myOrderModel.province ? this.$city.getCityData({ level: 1, id: this.myOrderModel.province }) : []"
+          :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <span style="margin-left:10px;">产品类型：</span>
-      <i-select style="width:10%;">
-        <i-option label="直租" value="直租" key="直租"></i-option>
-        <i-option label="车贷" value="车贷" key="车贷"></i-option>
+      <i-select placeholder="产品类型" style="width:120px;" v-model="myOrderModel.productType">
+        <i-option label="直租" :value="398" :key="398"></i-option>
       </i-select>
       <!--<i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>-->
       <i-button style="margin-left:10px" class="blueButton" @click="getMyOrderList">搜索</i-button>
@@ -244,6 +234,12 @@
   import {
     PageService
   } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
+  import {
+    CityService
+  } from "~/utils/city.service"
   @Layout("workspace")
   @Component({
 
@@ -279,12 +275,20 @@
     private data3: Array < Object > = [];
     private approveStatue: String = ''
     private compactEffect: String = '当月'
-    private myOrderModel: any
+    private myOrderModel: any = {
+      timeSearch: ''
+    }
 
     created() {
       this.getMyOrderList()
       this.myOrderModel = {
-
+        startTime: '',
+        endTime: '',
+        province: '',
+        city: '',
+        personalInfo: '',
+        timeSearch: '',
+        productType: ''
       }
       this.columns3 = [{
         title: '序号',
@@ -354,7 +358,7 @@
         },
         {
           title: "操作",
-          width: "100",
+          width: 100,
           align: "center",
           render: (h, {
             row,
@@ -444,39 +448,85 @@
           align: "center",
           title: "订单创建时间",
           key: "createTime",
-          width: 180
+          width: 180,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: "领取时间",
           key: "receiveDate",
-          width: 180
+          width: 180,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.receiveDate, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: "处理时间",
           key: "approvalDate",
-          width: 180
+          width: 180,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.approvalDate, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: "省份",
-          key: "province"
+          key: "province",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', CityService.getCityName(row.province))
+          }
         },
         {
           align: "center",
           title: "城市",
-          key: "city"
+          key: "city",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', CityService.getCityName(row.city))
+          }
         },
         {
           align: "center",
           title: "订单类型",
-          key: "orderType"
+          key: "orderType",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            if (row.orderType == 301) {
+              return h('span', {}, '融资租赁')
+            } else if (row.orderType == 302) {
+              return h('span', {}, '全额付款')
+            }
+          }
         },
         {
           align: "center",
           title: "产品名称",
-          key: "prdName"
+          key: "productName"
         },
         {
           align: "center",
@@ -581,6 +631,20 @@
       this.approvalService.getMyApprovalOrder(this.myOrderModel, this.pageService).subscribe(val => {
         this.myOrderList = val.object.list
       })
+    }
+    timeRangeChange(val) {
+      let startTime, endTime
+      startTime = new Date(val[0])
+      endTime = new Date(val[1])
+      this.myOrderModel.startTime = startTime
+      this.myOrderModel.endTime = endTime
+      this.myOrderModel.timeSearch = ''
+    }
+    getTimeSearch(val) {
+      this.myOrderModel.startTime = ''
+      this.myOrderModel.endTime = ''
+      this.myOrderModel.timeSearch = val
+      this.getMyOrderList()
     }
   }
 

@@ -37,5 +37,14 @@ export default {
     controller: CONTROLLER,
     action: 'approvalOrderSearch',
     type: requestType.Get
+  },
+  /**
+   * 内审、黑名单、灰名单移出
+   */
+  removeRiskStatus: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'removeRiskStatus',
+    type: requestType.Get
   }
 }

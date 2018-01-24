@@ -48,4 +48,15 @@ export class ApprovalService {
       page: page
     })
   }
+  /**
+   * 内审、黑名单、灰名单移出
+   */
+  removeRiskStatus({ orderIds }) {
+    return this.netService.send({
+      server: manageService.approvalController.removeRiskStatus,
+      data: {
+        orderIds: orderIds
+      }
+    })
+  }
 }
