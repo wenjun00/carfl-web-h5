@@ -193,7 +193,7 @@ export default class ProdConfig extends Page {
   private chargeAgainstOrderConfigModal: Boolean = false;
   private customerFodderConfigFlag: Boolean = true;
   private alreadyConfigFlag: Boolean = false;
-  private allDate: any;
+  private allData: any;
 
   /**
    * 新增期数
@@ -479,15 +479,20 @@ export default class ProdConfig extends Page {
    */
   treeList() {
     this.productService.getAllProduct().subscribe(val => {
-      this.allDate = val.object;
+      this.allData = val.object;
       this.getTreeDate();
     });
   }
   getTreeDate() {
-    this.allDate.map(v => {
-      console.log(v);
+    let series = this.allData.filter(t => t.seriesId !== "");
+    let arr: Array<Object> = [];
+    console.log(series + "ddddddddd");
+    let num = 1;
+    this.allData.forEach(v => {
+      if (v.seriesName === num) {
+        arr.push(v.seriesId);
+      }
     });
-
   }
 }
 </script>
