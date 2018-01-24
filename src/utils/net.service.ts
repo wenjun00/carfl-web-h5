@@ -21,7 +21,7 @@ export class NetService {
         'Accept': 'application/json'
       }
     })
-    if (true) {
+    if (app.mock) {
       let MockAdapter = require('axios-mock-adapter')
       let mock = new MockAdapter(this.axiosInstance, { delayResponse: 300 });
       this.createMock(mock)
@@ -54,7 +54,6 @@ export class NetService {
     // 进行url拼接
     if (controller) {
       let targetUrl = [
-        'api',
         controller,
         action,
         ...append].filter(x => x).join('/')
@@ -78,7 +77,7 @@ export class NetService {
     let token = StorageService.getItem('userToken') || ''
     if (token) {
       return Object.assign({
-        'X-OperatorToken': token
+        'authorization': token
       }, headers)
     } else {
       return headers || {}
