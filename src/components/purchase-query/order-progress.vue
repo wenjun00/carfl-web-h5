@@ -84,11 +84,11 @@
       this.updateData()
     }
     updateData() {
-      this.orderQueryService.getOrderProgress().subscribe(({
-        val
-      }) => {
-        this.progressData = val;
-      })
+      // this.orderQueryService.getOrderProgress().subscribe(({
+      //   val
+      // }) => {
+      //   this.progressData = val;
+      // })
     }
   }
 

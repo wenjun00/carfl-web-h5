@@ -45,7 +45,7 @@
         <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
       </i-col>
     </i-row>
-    <i-tabs v-model="materialTabs" type="card" class="full-pay-tabs">
+    <i-tabs v-model="materials" type="card" class="fulls-pay-tabs">
       <i-tab-pane name="choose-buy-materials-all" label="选购资料">
       </i-tab-pane>
       <i-tab-pane name="customer-materials-all" label="客户资料">
@@ -54,9 +54,8 @@
     <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
       <div class="shade" :style="{display:disabledStatus}">
       </div>
-      <component :is="materialTabs" :disabledStatus="disabledStatus"></component>
+      <component :is="materials"></component>
     </div>
-
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="8" push="1">
@@ -161,7 +160,7 @@
     private isShown: Boolean = true;
     private editCarModal: Boolean = false;
     private addOrEditFlag: Boolean = false;
-    private materialTabs: String = 'choose-buy-materials-all'
+    private materials: String = 'choose-buy-materials-all'
     private disabledStatus: String = ''; // 子组件中输入框禁用flag
 
     addNewApply() {
@@ -297,11 +296,11 @@
         align: 'center',
         width: 86
       }]
-      this.applyQueryService.addCarQueryData().subscribe(({
-        val
-      }) => {
-        this.data2 = val
-      })
+      // this.applyQueryService.addCarQueryData().subscribe(({
+      //   val
+      // }) => {
+      //   this.data2 = val
+      // })
       this.categoryData = [{
         title: '所有品牌',
         expand: true,
@@ -404,18 +403,18 @@
   .header {
     border-bottom: 1px solid #cccccc;
   }
-  
+
   .open {
     max-width: auto;
     overflow: hidden;
   }
-  
+
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-  
+
   .case-list {
     position: fixed;
     right: 0px;
@@ -426,21 +425,21 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     height: 100%;
   }
-  
+
   .case-list.flag {
     right: -348px;
     box-shadow: none;
     background: none;
   }
-  
+
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowButton {
     line-height: 570px;
     height: 100%;
@@ -448,7 +447,7 @@
     text-align: center;
     width: 30px;
   }
-  
+
   .submitBar {
     height: 70px;
     width: 100%;
@@ -459,7 +458,7 @@
     border: 1px solid #ddd;
     box-shadow: -3px 2px 20px #dddddd;
   }
-  
+
   .specialInput {
     .ivu-input {
       border-style: none;
@@ -467,7 +466,7 @@
       border-radius: 0; // width: 240%;
     }
   }
-  
+
   .bigSelect {
     .ivu-select-selection {
       width: 240%;
@@ -477,7 +476,7 @@
       border-radius: 0;
     }
   }
-  
+
   .proCity .ivu-select-selection {
     width: 358%;
     display: inline-block;
@@ -485,7 +484,7 @@
     border-bottom-style: solid;
     border-radius: 0;
   }
-  
+
   .belongSalers {
     .ivu-select-selection {
       width: 240%;
@@ -495,7 +494,7 @@
       border-radius: 0;
     }
   }
-  
+
   .full-payment-apply {
     .ivu-select,
     .ivu-select-single {
@@ -511,8 +510,8 @@
       z-index: 999;
     }
   }
-  
-  .full-pay-tabs {
+
+  .fulls-pay-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #DDDEE1;
       .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
@@ -526,7 +525,7 @@
       }
     }
   }
-  
+
   .customer-lease-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #DDDEE1;

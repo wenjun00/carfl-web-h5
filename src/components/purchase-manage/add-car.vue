@@ -43,7 +43,7 @@
     ApplyQueryService
   } from "~/services/business-service/apply-query.service";
   @Component({
-    
+
     components: {
       DataBox
     }
@@ -134,16 +134,17 @@
         key: 'status',
         align: 'center'
       }]
-      this.applyQueryService.addCarQueryData().subscribe(({
-        val
-      }) => {
-        this.carData = val
-      })
+      // this.applyQueryService.addCarQueryData().subscribe(({
+      //   val
+      // }) => {
+      //   this.carData = val
+      // })
     }
     showCategory() {
       this.isShown = !this.isShown
     }
   }
+
 </script>
 <style lang="less" scope>
   .open {
@@ -174,4 +175,5 @@
     text-align: center;
     width: 20px;
   }
+
 </style>

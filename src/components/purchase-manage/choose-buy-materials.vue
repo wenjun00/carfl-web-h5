@@ -444,11 +444,11 @@
     }
     confirmAndBack() {
       this.editCarModal = false
-      this.applyQueryService.addCarQueryData().subscribe(({
-        val
-      }) => {
-        this.carData = val
-      })
+      // this.applyQueryService.addCarQueryData().subscribe(({
+      //   val
+      // }) => {
+      //   this.carData = val
+      // })
     }
     addNewPrd() {
       this.addProductModal = true

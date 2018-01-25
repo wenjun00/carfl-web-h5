@@ -17,26 +17,17 @@
         <span>高级搜索</span>
       </i-button>
     </i-row>
-    <i-row v-if="searchOptions" style="margin:6px;position;relative;right:16px;">
-      <i-select placeholder="全部状态" style="margin-left:20px;width:10%">
+    <i-row v-if="searchOptions" style="margin:6px;position;relative;left:6px;">
+      <i-select placeholder="全部状态" style="margin-left:20px;width:10%" v-model="approvalRecordModel" @on-change="changeSelectOne">
         <i-option label="通过" :value="0" :key="0"></i-option>
         <i-option label="退件" :value="1" :key="1"></i-option>
         <i-option label="拒绝" :value="2" :key="2"></i-option>
       </i-select>
-      <i-select placeholder="全部拒单原因" style="margin-left:20px;width:12%">
-        <i-option label="不符合进件条件" value="不符合进件条件" key="不符合进件条件"></i-option>
-        <i-option label="欺诈" value="欺诈" key="欺诈"></i-option>
-        <i-option label="外部风险" value="外部风险" key="外部风险"></i-option>
-        <i-option label="黑名单" value="黑名单" key="黑名单"></i-option>
-        <i-option label="法院执行" value="法院执行" key="法院执行"></i-option>
-        <i-option label="还款能力不足" value="还款能力不足" key="还款能力不足"></i-option>
-        <i-option label="其他" value="其他" key="其他"></i-option>
+      <i-select placeholder="全部拒单原因" style="margin-left:20px;width:12%" v-model="approvalRecordModel" @on-change="changeSelectTwo">
+        <i-option label="" value="" key=""></i-option>
       </i-select>
-      <i-select placeholder="全部拒单细节" style="margin-left:20px;width:15%">
-        <i-option label="行业限制" value="行业限制" key="行业限制"></i-option>
-        <i-option label="信用卡开户超标" value="信用卡开户超标" key="信用卡开户超标"></i-option>
-        <i-option label="话单非本人名下且不满两年" value="话单非本人名下且不满两年" key="话单非本人名下且不满两年"></i-option>
-        <i-option label="话单本人明下但不满半年" value="话单本人明下但不满半年" key="话单本人明下但不满半年"></i-option>
+      <i-select placeholder="全部拒单细节" style="margin-left:20px;width:15%" v-model="approvalRecordModel">
+        <i-option label="" value="" key=""></i-option>
       </i-select>
       <span style="margin-left:10px;">日期：</span>
       <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>~
@@ -116,12 +107,14 @@
     private orderProgressModal: Boolean = false;
     private approvalRecordModel: any = {
 
+
     }
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     created() {
+      this.getApprovaRecordList()
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -221,37 +214,58 @@
         {
           align: "center",
           title: "审核时间",
-          key: "approvalTime",
-          width: 180
+          key: "approvalDate",
+          width: 180,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.approvalDate, 'yyyy-MM-dd'))
+          }
         },
         {
           align: "center",
           title: "省份",
+          width: 100,
           key: "province",
-          width: 160
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', CityService.getCityName(row.province))
+          }
         },
         {
           align: "center",
           title: "城市",
+          width: 100,
           key: "city",
-          width: 160
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', CityService.getCityName(row.city))
+          }
         },
         {
           align: "center",
           title: "网点",
-          key: "branchAddress",
+          key: "dot",
           width: 160
         },
         {
           align: "center",
           title: "业务员",
-          key: "salesman",
+          key: "salesmanName",
           width: 160
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customerName",
+          key: "personalName",
           width: 160
         },
         {
@@ -263,21 +277,27 @@
         {
           align: "center",
           title: "审核状态",
-          key: "approvalStatus",
+          key: "approveStatus",
           width: 160,
           render: (h, {
             row,
             columns,
             index
           }) => {
-            if (row.approvalStatus === '拒绝') {
-              return h('span', {
-                style: {
-                  color: 'red'
-                }
-              }, row.approvalStatus)
-            } else {
-              return h('span', {}, row.approvalStatus)
+            if (row.approveStatus === 320) {
+              return h('span', {}, '退回资源池')
+            } else if (row.approveStatus === 321) {
+              return h('span', {}, '提交内审/通过')
+            } else if (row.approveStatus === 321) {
+              return h('span', {}, '黑名单')
+            } else if (row.approveStatus === 313) {
+              return h('span', {}, '灰名单/通过')
+            } else if (row.approveStatus === 312) {
+              return h('span', {}, '拒绝')
+            } else if (row.approveStatus === 311) {
+              return h('span', {}, '退件')
+            } else if (row.approveStatus === 310) {
+              return h('span', {}, '通过')
             }
           }
         },
@@ -285,66 +305,66 @@
           align: "center",
           title: "是否提车",
           key: "isDeliveryCar",
-          width: 180,
-          render: (h, {
-            row,
-            columns,
-            index
-          }) => {
-            if (row.approvalStatus === '拒绝') {
-              return h('Tooltip', {
-                props: {
-                  content: row.content
-                },
-              }, [h('span', {}, row.isDeliveryCar),
-                h('Icon', {
-                  props: {
-                    type: 'ios-information',
-                    size: '20',
-                    color: '#F9435D'
-                  },
-                  style: {
-                    position: 'relative',
-                    top: '2px',
-                    left: '6px',
-                    cursor: 'pointer'
-                  }
-                })
-              ])
-            } else {
-              return h('Tooltip', {
-                props: {
-                  content: row.content
-                },
-              }, [h('span', {}, row.isDeliveryCar),
-                h('Icon', {
-                  props: {
-                    type: 'ios-information',
-                    size: '20',
-                    color: '#666666'
-                  },
-                  style: {
-                    position: 'relative',
-                    top: '2px',
-                    left: '6px',
-                    cursor: 'pointer'
-                  }
-                })
-              ])
-            }
-          }
-
+          width: 180
+          // ,
+          // render: (h, {
+          //   row,
+          //   columns,
+          //   index
+          // }) => {
+          //   if (row.approvalStatus === '拒绝') {
+          //     return h('Tooltip', {
+          //       props: {
+          //         content: row.content
+          //       },
+          //     }, [h('span', {}, row.isDeliveryCar),
+          //       h('Icon', {
+          //         props: {
+          //           type: 'ios-information',
+          //           size: '20',
+          //           color: '#F9435D'
+          //         },
+          //         style: {
+          //           position: 'relative',
+          //           top: '2px',
+          //           left: '6px',
+          //           cursor: 'pointer'
+          //         }
+          //       })
+          //     ])
+          //   } else {
+          //     return h('Tooltip', {
+          //       props: {
+          //         content: row.content
+          //       },
+          //     }, [h('span', {}, row.isDeliveryCar),
+          //       h('Icon', {
+          //         props: {
+          //           type: 'ios-information',
+          //           size: '20',
+          //           color: '#666666'
+          //         },
+          //         style: {
+          //           position: 'relative',
+          //           top: '2px',
+          //           left: '6px',
+          //           cursor: 'pointer'
+          //         }
+          //       })
+          //     ])
+          //   }
+          // }
         },
         {
           align: "center",
           title: "拒单原因",
-          key: "refuseReason",
+          key: "refuseResource",
           width: 160
         },
         {
           align: "center",
           title: "拒单细节",
-          key: "refuseDetail",
+          key: "refuseDetails",
           width: 160
         },
         {
@@ -356,7 +376,7 @@
         {
           align: "center",
           title: "审核人员",
-          key: "approvalMan",
+          key: "approvalPersonal",
           width: 160
         }
       ];
@@ -369,6 +389,12 @@
 
     }
     dataPower(row) {
+
+    }
+    changeSelectOne(val) {
+
+    }
+    changeSelectTwo(val) {
 
     }
     /**

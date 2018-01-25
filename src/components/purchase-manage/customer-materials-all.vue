@@ -8,7 +8,7 @@
           <i-row>
             <i-col span="12" class="bigSelect">
               <i-form-item label="购车方" prop="idCard">
-                <i-select v-model="purchaseData.province">
+                <i-select>
                   <i-option label="中国人寿" value="中国人寿" key="中国人寿"></i-option>
                   <i-option label="中国平安" value="中国平安" key="中国平安"></i-option>
                 </i-select>
@@ -23,13 +23,13 @@
           <i-row>
             <i-col span="12">
               <i-form-item label="证件类型" prop="phone">
-                <i-input type="text" v-model="purchaseData.company">
+                <i-input type="text">
                 </i-input>
               </i-form-item>
             </i-col>
             <i-col span="12" pull="3">
               <i-form-item label="证件号码" prop="phone">
-                <i-input type="text" v-model="purchaseData.company">
+                <i-input type="text">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -62,7 +62,7 @@
             </i-col>
             <i-col :span="12" pull="3">
               <i-form-item label="邮政编码" prop="phone">
-                <i-input type="text" v-model="purchaseData.company">
+                <i-input type="text">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -96,12 +96,8 @@
   //   Prop
   // } from "vue-property-decorator";
 
+  @Component({})
   export default class CustomerMaterialsAll extends Vue {
-    private purchaseData: Object = {
-      province: '',
-      city: '',
-      company: ''
-    }
     mounted() {}
   }
 
