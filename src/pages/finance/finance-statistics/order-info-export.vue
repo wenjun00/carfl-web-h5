@@ -18,7 +18,7 @@
       <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
       <i-button @click="openSearch" style="margin-left:10px">
         <span v-if="!searchOptions">展开</span>
-        <span v-if="searchOptions">关闭</span>
+        <span v-if="searchOptions">收起</span>
         <span>导出配置</span>
       </i-button>
       <div style="font-size:16px;cursor:pointer;display:inline-block;color:#3367A7;float:right;margin:10px" @click="exportTemplate">

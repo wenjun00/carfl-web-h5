@@ -11,7 +11,7 @@
       <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
       <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
       <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
-      <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">关闭</span>高级搜索</i-button>
+      <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">收起</span>高级搜索</i-button>
     </i-row>
     <i-row v-if="searchOptions" style="margin-top:20px;margin-left:10px;">
       <i-input v-model="customName" style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>

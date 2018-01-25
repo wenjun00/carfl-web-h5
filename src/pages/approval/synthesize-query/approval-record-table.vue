@@ -2,7 +2,7 @@
 <template>
   <section class="page approval-record-table">
     <i-row style="margin-top:10px;">
-      <span style="font-size:18px;font-weight:bold">审核记录表</span>
+      <span style="font-size:18px;font-weight:bold;position:relative;left:10px;">审核记录表</span>
       <i-button type="text">昨日</i-button>
       <i-button type="text">今日</i-button>
       <i-button type="text">本周</i-button>
@@ -13,11 +13,11 @@
       <i-button type="text">本年</i-button>
       <i-button @click="openSearch" style="color:#265EA2">
         <span v-if="!searchOptions">展开</span>
-        <span v-if="searchOptions">关闭</span>
+        <span v-if="searchOptions">收起</span>
         <span>高级搜索</span>
       </i-button>
     </i-row>
-    <i-row v-if="searchOptions" style="margin:6px;position;relative;left:6px;">
+    <i-row v-if="searchOptions" style="margin:6px;position;relative;right:16px;">
       <i-select placeholder="全部状态" style="margin-left:20px;width:10%" v-model="approvalRecordModel" @on-change="changeSelectOne">
         <i-option label="通过" :value="0" :key="0"></i-option>
         <i-option label="退件" :value="1" :key="1"></i-option>

@@ -12,7 +12,7 @@
     <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">关闭</span>
+      <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="position:relative;right:10px;">

@@ -10,7 +10,7 @@
     <i-button type="text">最近三月</i-button>
     <i-button type="text">本季度</i-button>
     <i-button type="text">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">关闭</span>高级搜索</i-button>
+    <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">收起</span>高级搜索</i-button>
     <i-row v-if="searchOptions" style="margin:6px;">
       <i-input v-model="customName" style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
       <i-button class="blueButton">搜索</i-button>
