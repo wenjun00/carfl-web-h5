@@ -59,7 +59,7 @@
 
     <template>
       <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
-        <purchase-information :scrollTopHeight="scrollTopHeight"></purchase-information>
+        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
         </div>
@@ -231,7 +231,7 @@
                 },
                 on: {
                   click: () => {
-                    this.purchaseInformationModal = true
+                    this.checkOrderInfo(row)
                   }
                 }
               }, row.orderNumber)
@@ -458,6 +458,11 @@
       this.resourcePoolModel.endTime = endTime
     }
     clearTime() {}
+    checkOrderInfo(row) {
+      this.purchaseInformationModal = true
+      let _purchaseInfo: any = this.$refs['purchase-info']
+      _purchaseInfo.getOrderDetail(row)
+    }
   }
 
 </script>

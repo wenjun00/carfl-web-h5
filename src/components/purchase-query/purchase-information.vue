@@ -349,14 +349,18 @@
     DataGrid,
     DataGridItem
   } from "vue-fintech-component";
-
+  import {
+    Dependencies
+  } from "~/core/decorator";
   import {
     Prop
   } from "vue-property-decorator";
   import {
     Action
   } from "vuex-class";
-
+  import {
+    ProductOrderService
+  } from "~/services/manage-service/product.order.service";
   @Component({
     components: {
       DataGrid,
@@ -364,6 +368,7 @@
     }
   })
   export default class PurchaseInformation extends Vue {
+    @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
     private fruit: Array < String > = ['购置费'];
     private single: Boolean = false;
     private sliderStep: Number;
@@ -398,6 +403,16 @@
     handleScroll() {}
     created() {
       this.sliderStep = 2
+    }
+    /**
+     * 获取弹窗内所有订单信息
+     */
+    getOrderDetail(row) {
+      this.productOrderService.findOrderInfoByOrderNumber({
+        orderNumber: row.orderNumber
+      }).subscribe(val => {
+        console.log(666, val)
+      })
     }
   }
 

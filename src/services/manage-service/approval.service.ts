@@ -72,11 +72,12 @@ export class ApprovalService {
   /**
    * 订单查询、进度查询
    */
-  findOrderApproveRecord(data, page) {
+  findOrderApproveRecord({ orderId }) {
     return this.netService.send({
       server: manageService.approvalController.findOrderApproveRecord,
-      data: data,
-      page: page
+      data: {
+        orderId: orderId
+      }
     })
   }
 }

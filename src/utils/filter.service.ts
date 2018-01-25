@@ -139,4 +139,9 @@ export class FilterService {
     // return value.substr(0, 3).padEnd(value.length - 4, '*') + value.substr(-4)
     return value.substr(0, 14) + '****'
   }
+  static getOrderStatus(value) {
+    if (value === 320) {
+      return 'asdf'
+    }
+  }
 }

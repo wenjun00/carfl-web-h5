@@ -50,9 +50,8 @@
 
     <!--进度查询-->
     <template>
-      <i-modal v-model="orderProgressModal" title="审核进度" width="1000">
-        <order-progress></order-progress>
-        <!--<div slot="footer"></div>-->
+      <i-modal v-model="orderProgressModal" title="审核进度" width="76" class="order-progress">
+        <order-progress ref="order-progress"></order-progress>
       </i-modal>
     </template>
   </section>
@@ -202,7 +201,7 @@
                   },
                   on: {
                     click: () => {
-                      this.orderProgressModal = true
+                      this.checkOrderProgress(row)
                     }
                   }
                 },
@@ -397,6 +396,11 @@
     changeSelectTwo(val) {
 
     }
+    checkOrderProgress(row) {
+      this.orderProgressModal = true
+      let _orderProgress: any = this.$refs['order-progress']
+      _orderProgress.getOrderProgressInfo(row)
+    }
     /**
      * 列配置
      */
@@ -412,3 +416,12 @@
   }
 
 </script>
+
+<style lang="less">
+  .order-progress {
+    .ivu-modal-footer {
+      display: none;
+    }
+  }
+
+</style>
