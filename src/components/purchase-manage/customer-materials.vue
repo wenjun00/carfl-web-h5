@@ -170,15 +170,14 @@
   import {
     Prop
   } from "vue-property-decorator";
-
+  @Component({})
   export default class CustomerMaterials extends Vue {
     private checkRadio: String = "是";
     @Prop()
     disabled: Boolean;
 
 
-    mounted() {
-    }
+    mounted() {}
   }
 
 </script>

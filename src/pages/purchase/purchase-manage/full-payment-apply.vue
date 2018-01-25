@@ -14,20 +14,20 @@
       <i-col span="18">
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" label-position="left" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
           <i-col span="12">
-            <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" v-model="applyData.idCard" autofocus placeholder="请输入证件号码" @on-change="showTab">
+            <i-form-item label="证件号码" prop="certificateNumber">
+              <i-input type="text" v-model="applyData.certificateNumber" autofocus placeholder="请输入证件号码" @on-change="showTab" @on-blur="checkcustomerinfo">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="客户姓名" prop="userName">
-              <i-input type="text" v-model="applyData.userName" placeholder="请输入客户姓名">
+            <i-form-item label="客户姓名" prop="customerName">
+              <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名" @on-blur="checkcustomerinfo">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="客户电话" prop="phone">
-              <i-input type="text" v-model="applyData.phone" placeholder="请输入客户电话">
+            <i-form-item label="客户电话" prop="customerPhone">
+              <i-input type="text" v-model="applyData.customerPhone" placeholder="请输入客户电话" @on-blur="checkcustomerinfo">
               </i-input>
             </i-form-item>
           </i-col>
@@ -45,7 +45,7 @@
         <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
       </i-col>
     </i-row>
-    <i-tabs v-model="materialTabs" type="card" class="full-pay-tabs">
+    <i-tabs v-model="materials" type="card" class="fulls-pay-tabs">
       <i-tab-pane name="choose-buy-materials-all" label="选购资料">
       </i-tab-pane>
       <i-tab-pane name="customer-materials-all" label="客户资料">
@@ -54,9 +54,8 @@
     <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
       <div class="shade" :style="{display:disabledStatus}">
       </div>
-      <component :is="materialTabs" :disabledStatus="disabledStatus"></component>
+      <component :is="materials"></component>
     </div>
-
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="8" push="1">
@@ -116,6 +115,9 @@
   import {
     ApplyQueryService
   } from "~/services/business-service/apply-query.service";
+  import {
+    PersonalService
+  } from "~/services/manage-service/personal.service";
   import DataBox from "~/components/common/data-box.vue";
   import {
     PageService
@@ -127,6 +129,7 @@
   import AddCar from "~/components/purchase-manage/add-car.vue"
   import ChooseBuyMaterialsAll from "~/components/purchase-manage/choose-buy-materials-all.vue";
   import CustomerMaterialsAll from "~/components/purchase-manage/customer-materials-all.vue";
+
 
   @Layout("workspace")
 
@@ -142,6 +145,8 @@
   export default class FullPaymentApply extends Page {
     @Dependencies() private pageService: PageService;
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
+    @Dependencies(PersonalService) private personalService: PersonalService;
+
     private applyData: any;
     applyRule: Object = {};
 
@@ -155,7 +160,7 @@
     private isShown: Boolean = true;
     private editCarModal: Boolean = false;
     private addOrEditFlag: Boolean = false;
-    private materialTabs: String = 'choose-buy-materials-all'
+    private materials: String = 'choose-buy-materials-all'
     private disabledStatus: String = ''; // 子组件中输入框禁用flag
 
     addNewApply() {
@@ -166,9 +171,9 @@
     }
     created() {
       this.applyData = {
-        idCard: '',
+        certificateNumber: '',
         customerName: '',
-        phone: '',
+        customerPhone: '',
         salesManName: ''
       }
       this.columns1 = [{
@@ -291,11 +296,11 @@
         align: 'center',
         width: 86
       }]
-      this.applyQueryService.addCarQueryData().subscribe(({
-        val
-      }) => {
-        this.data2 = val
-      })
+      // this.applyQueryService.addCarQueryData().subscribe(({
+      //   val
+      // }) => {
+      //   this.data2 = val
+      // })
       this.categoryData = [{
         title: '所有品牌',
         expand: true,
@@ -341,10 +346,22 @@
       }]
     }
     /**
+     * 根据客户三项查询历史订单
+     */
+    checkcustomerinfo() {
+      this.personalService.getCustomerHistoryFinanceInfo(this.applyData).subscribe(data => {
+        // this.ordertransferDataSet = data;
+        console.log(data, 88888)
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg);
+      });
+    }
+    /**
      * 多选
      */
-    multipleSelect(selection) {
-    }
+    multipleSelect(selection) {}
     addModalOpen() {
       this.addOrEditFlag = true
       this.editCarModal = true
@@ -366,7 +383,7 @@
 
     }
     showTab() {
-      if (this.applyData.idCard.length === 18) {
+      if (this.applyData.certificateNumber.length === 18) {
         this.disabledStatus = 'none'
       }
     }
@@ -494,7 +511,7 @@
     }
   }
 
-  .full-pay-tabs {
+  .fulls-pay-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #DDDEE1;
       .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {

@@ -5,39 +5,30 @@
     <i-row class="proCity">
       <i-form ref="parchase-form" :rules="applyRule" :label-width="110">
         <i-col span="12">
-          <i-form-item label="申请省份" prop="">
-            <i-select>
-              <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
+          <i-form-item label="申请省份" prop="province">
+            <i-select placeholder="选择省" v-model="choosebusyData.province" clearable>
+              <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
-          <i-form-item label="申请城市" prop="">
-            <i-select>
-              <i-option label="西安市" value="西安市" key="西安市"></i-option>
-              <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
-              <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
-              <i-option label="渭南市" value="渭南市" key="渭南市"></i-option>
-              <i-option label="铜川市" value="铜川市" key="铜川市"></i-option>
-              <i-option label="榆林市" value="榆林市" key="榆林市"></i-option>
-              <i-option label="延安市" value="延安市" key="延安市"></i-option>
-              <i-option label="汉中市" value="汉中市" key="汉中市"></i-option>
-              <i-option label="安康市" value="安康市" key="安康市"></i-option>
-              <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
+          <i-form-item label="申请城市" prop="city">
+            <i-select v-model="choosebusyData.city" placeholder="选择市" clearable>
+              <i-option v-for="{value,label} in this.choosebusyData.province ? this.$city.getCityData({ level: 1, id: this.choosebusyData.province }) : []"
+                :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="所属公司" prop="">
-            <i-select style="width:80px;">
-              <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
-              <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
+            <i-select v-model="choosebusyData.companyId" clearable>
+              <i-option v-for="item in companyObject" :key="item.id" :value="item.id" :label="item.companyChinaname"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
       </i-form>
     </i-row>
-    <i-table :columns="columns1" :data="data1" :width="1100"></i-table>
+    <i-table :columns="columns1" :data="carDataModal" :width="1100"></i-table>
     <div>
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
       <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
@@ -57,6 +48,12 @@
     ApplyQueryService
   } from "~/services/business-service/apply-query.service";
   import {
+    CompanyService
+  } from "~/services/manage-service/company.service";
+  import {
+    CarService
+  } from "~/services/manage-service/car.service";
+  import {
     Prop
   } from "vue-property-decorator";
   @Component({
@@ -67,11 +64,20 @@
   })
   export default class ChooseBuyMaterialsAll extends Vue {
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
+    @Dependencies(CompanyService) private companyService: CompanyService;
+    @Dependencies(CarService) private carService: CarService;
     private columns1: any;
     private data1: Array < Object > = [];
     private editCarModal: Boolean = false;
     private addOrEditFlag: Boolean = false;
     private addCar: Boolean = false;
+    private carDataModal: Array < Object > = []; // 车辆信息
+    private choosebusyData: any = {
+      province: '', // 省份
+      city: '', // 城市
+      companyId: '' // 所属公司
+    };
+    private companyObject: Array < Object >= []; // 公司信息
 
     applyRule: Object = {};
     @Prop()
@@ -79,6 +85,14 @@
 
 
     created() {
+      // 获取公司名称
+      this.companyService.getAllCompany().subscribe(val => {
+        this.companyObject = val.object
+      })
+      this.carService.findAllCarSeries().subscribe(val => {
+        this.carDataModal = val.object
+      })
+
       this.columns1 = [{
         title: '操作',
         align: 'center',
@@ -157,7 +171,7 @@
 </script>
 
 <style lang="less" scope>
-  // .choose-buy-materials {
+// .choose-buy-materials {
   //   .ivu-select-selection {
   //     display: inline-block;
   //     border-style: none;

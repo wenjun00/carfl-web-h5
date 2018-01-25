@@ -15,6 +15,9 @@ import productOrderController from './product.order.controller'
 import productController from './product.controller'
 import productPlanIssueController from './productPlanIssue.controller'
 import productSeriesController from './productSeries.controller'
+import carController from './car.controller'
+import personalController from './personal.controller'
+
 
 export const manageService = {
     departmentController,
@@ -33,5 +36,7 @@ export const manageService = {
     productOrderController,
     productController,
     productPlanIssueController,
-    productSeriesController
+    productSeriesController,
+    carController,
+    personalController
 }

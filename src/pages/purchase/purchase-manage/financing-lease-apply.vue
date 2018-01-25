@@ -49,7 +49,7 @@
       <i-tabs type="card" v-model="materialTabs" class="finance-lease-tabs">
         <i-tab-pane label="选购资料" name="choose-buy-materials">
         </i-tab-pane>
-        <i-tab-pane label="客户资料" name="customer-materials">
+        <i-tab-pane label="客户资料s" name="customer-materials">
         </i-tab-pane>
         <i-tab-pane label="客户职业" name="customer-job-message">
         </i-tab-pane>
@@ -63,7 +63,7 @@
       <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
         <div class="shade" :style="{display:disabledStatus}">
         </div>
-        <component :is="materialTabs" :disabledStatus="disabledStatus"></component>
+        <component :is="materialTabs"></component>
       </div>
       <div class="submitBar">
         <i-row type="flex" align="middle" style="padding:5px">
