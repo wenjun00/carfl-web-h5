@@ -14,20 +14,20 @@
       <i-col span="18">
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" label-position="left" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
           <i-col span="12">
-            <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" v-model="applyData.idCard" autofocus placeholder="请输入证件号码" @on-change="showTab">
+            <i-form-item label="证件号码" prop="certificateNumber">
+              <i-input type="text" v-model="applyData.certificateNumber" autofocus placeholder="请输入证件号码" @on-change="showTab" @on-blur="checkcustomerinfo">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="客户姓名" prop="userName">
-              <i-input type="text" v-model="applyData.userName" placeholder="请输入客户姓名">
+            <i-form-item label="客户姓名" prop="customerName">
+              <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名" @on-blur="checkcustomerinfo">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="客户电话" prop="phone">
-              <i-input type="text" v-model="applyData.phone" placeholder="请输入客户电话">
+            <i-form-item label="客户电话" prop="customerPhone">
+              <i-input type="text" v-model="applyData.customerPhone" placeholder="请输入客户电话" @on-blur="checkcustomerinfo">
               </i-input>
             </i-form-item>
           </i-col>
@@ -116,6 +116,9 @@
   import {
     ApplyQueryService
   } from "~/services/business-service/apply-query.service";
+  import {
+    PersonalService
+  } from "~/services/manage-service/personal.service";
   import DataBox from "~/components/common/data-box.vue";
   import {
     PageService
@@ -127,6 +130,7 @@
   import AddCar from "~/components/purchase-manage/add-car.vue"
   import ChooseBuyMaterialsAll from "~/components/purchase-manage/choose-buy-materials-all.vue";
   import CustomerMaterialsAll from "~/components/purchase-manage/customer-materials-all.vue";
+
 
   @Layout("workspace")
 
@@ -142,6 +146,8 @@
   export default class FullPaymentApply extends Page {
     @Dependencies() private pageService: PageService;
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
+    @Dependencies(PersonalService) private personalService: PersonalService;
+
     private applyData: any;
     applyRule: Object = {};
 
@@ -166,9 +172,9 @@
     }
     created() {
       this.applyData = {
-        idCard: '',
+        certificateNumber: '',
         customerName: '',
-        phone: '',
+        customerPhone: '',
         salesManName: ''
       }
       this.columns1 = [{
@@ -341,10 +347,22 @@
       }]
     }
     /**
+     * 根据客户三项查询历史订单
+     */
+    checkcustomerinfo() {
+      this.personalService.getCustomerHistoryFinanceInfo(this.applyData).subscribe(data => {
+        // this.ordertransferDataSet = data;
+        console.log(data, 88888)
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg);
+      });
+    }
+    /**
      * 多选
      */
-    multipleSelect(selection) {
-    }
+    multipleSelect(selection) {}
     addModalOpen() {
       this.addOrEditFlag = true
       this.editCarModal = true
@@ -366,7 +384,7 @@
 
     }
     showTab() {
-      if (this.applyData.idCard.length === 18) {
+      if (this.applyData.certificateNumber.length === 18) {
         this.disabledStatus = 'none'
       }
     }
@@ -386,18 +404,18 @@
   .header {
     border-bottom: 1px solid #cccccc;
   }
-
+  
   .open {
     max-width: auto;
     overflow: hidden;
   }
-
+  
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-
+  
   .case-list {
     position: fixed;
     right: 0px;
@@ -408,21 +426,21 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     height: 100%;
   }
-
+  
   .case-list.flag {
     right: -348px;
     box-shadow: none;
     background: none;
   }
-
+  
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
   }
-
+  
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
   }
-
+  
   .arrowButton {
     line-height: 570px;
     height: 100%;
@@ -430,7 +448,7 @@
     text-align: center;
     width: 30px;
   }
-
+  
   .submitBar {
     height: 70px;
     width: 100%;
@@ -441,7 +459,7 @@
     border: 1px solid #ddd;
     box-shadow: -3px 2px 20px #dddddd;
   }
-
+  
   .specialInput {
     .ivu-input {
       border-style: none;
@@ -449,7 +467,7 @@
       border-radius: 0; // width: 240%;
     }
   }
-
+  
   .bigSelect {
     .ivu-select-selection {
       width: 240%;
@@ -459,7 +477,7 @@
       border-radius: 0;
     }
   }
-
+  
   .proCity .ivu-select-selection {
     width: 358%;
     display: inline-block;
@@ -467,7 +485,7 @@
     border-bottom-style: solid;
     border-radius: 0;
   }
-
+  
   .belongSalers {
     .ivu-select-selection {
       width: 240%;
@@ -477,7 +495,7 @@
       border-radius: 0;
     }
   }
-
+  
   .full-payment-apply {
     .ivu-select,
     .ivu-select-single {
@@ -493,7 +511,7 @@
       z-index: 999;
     }
   }
-
+  
   .full-pay-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #DDDEE1;
@@ -508,7 +526,7 @@
       }
     }
   }
-
+  
   .customer-lease-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #DDDEE1;
