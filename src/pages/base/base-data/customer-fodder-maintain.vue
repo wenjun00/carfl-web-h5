@@ -29,7 +29,7 @@
                     <span>素材名称：</span>
                     <i-input style="width:10%" v-model="personalModel.name"></i-input>
                     <i-button class="blueButton" style="margin-left:10px" @click="search">搜索</i-button>
-                    <i-button class="blueButton" style="margin-left:10px">新增素材</i-button>
+                    <i-button class="blueButton" style="margin-left:10px;position:absolute;right:11px;" disabled>新增素材</i-button>
                     <data-box :columns="columns" :data="data1"></data-box>
                 </i-col>
             </i-row>

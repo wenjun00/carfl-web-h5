@@ -38,7 +38,7 @@
                         </i-col>
                         <i-col :span="12">
                             <span style="margin-left:20px;font-size:14px;">租金渠道选择：</span>
-                            <RadioGroup v-model="rentCheck" @on-change="radioSelect">
+                            <RadioGroup v-model="productMessage.capitaChannels" @on-change="radioSelect">
                                 <Radio label="自有资金"></Radio>
                                 <Radio label="第三方"></Radio>
                             </RadioGroup>
@@ -49,7 +49,7 @@
                         </i-col>
                     </i-row>
                     <i-row :gutter="10" style="margin-top:20px;min-width:1366px">
-                        <i-col :span="7">
+                        <i-col :span="7" v-show="addPeriodsBox">
                             <div class="addPeriods" @click="addPeriods">
                                 <div>
                                     <i-icon type="plus" style="font-size:50px;"></i-icon>
@@ -71,7 +71,8 @@
                                 <div class="boxContainerContent">
                                     <div class="itemContainer">
                                         <span class="itemName">账期类型</span>
-                                        <span class="item">{{item.paymentType="387" ? "固定账期" : "正常账期"}}</span>
+                                        <!-- item.paymentType="387" ? "固定账期" : "正常账期" -->
+                                        <span class="item">{{getPaymentType(item)}}</span>
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">产品利率</span>
@@ -79,7 +80,7 @@
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">还款方式</span>
-                                        <span class="item">{{item.payWay="384" ? "等本等息" : "等额本息"}}</span>
+                                        <span class="item">{{getPayWay(item)}}</span>
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">融资金额</span>
@@ -102,8 +103,12 @@
                                         <span class="item">{{item.manageCost}}元</span>
                                     </div>
                                     <div v-if="item.isPublish===361" class="itemContainer">
-                                        <span class="itemName">停用/启用</span>
-                                        <i-switch class="item"></i-switch>
+                                        <span class="itemName">启用/停用</span>
+                                        <i-switch class="item" v-model="item.productStatus" size="large" @on-change="switchStatus(item)">
+                                            <span slot="open">启用</span>
+                                            <span slot="close">停用</span>
+
+                                        </i-switch>
                                     </div>
                                     <div v-if="item.isPublish===360" class="itemContainer">
                                         <span class="itemName">操作</span>
@@ -140,6 +145,10 @@
         <template>
             <i-modal v-model="addPeriodsModal" title="新增期数" width="900">
                 <add-periods></add-periods>
+                <div slot="footer">
+                    <i-button type="ghost">取消</i-button>
+                    <i-button type="primary">确定</i-button>
+                </div>
             </i-modal>
         </template>
 
@@ -166,6 +175,7 @@ import { ProductPlanIssueService } from "~/services/manage-service/productPlanIs
 import { PageService } from "~/utils/page.service";
 import { constants } from "zlib";
 import { Set } from "core-js/library/web/timers";
+import { retry } from "rxjs/operator/retry";
 
 @Layout("workspace")
 @Component({
@@ -187,7 +197,6 @@ export default class ProdConfig extends Page {
   private data1: Array<Object> = [];
   private maintains: Array<any> = [];
   private treeData: Array<any> = [];
-  private rentCheck: String = "自有资金";
   private prdConfig: Array<any> = [];
   private customerFodderTree: Array<any> = [];
   private searchOptions: Boolean = false;
@@ -202,15 +211,30 @@ export default class ProdConfig extends Page {
   private productShow: Boolean = false;
   private productMessage: any;
   private publishItem: any;
-  /**
-   * 新增期数
-   */
-  addPeriods() {
-    this.addPeriodsModal = true;
-  }
+  private addPeriodsBox: Boolean = false;
+
   /**
    * 客户素材配置
    */
+  data() {
+    return {
+      treeData: [
+        {
+          lev1Node: ""
+        }
+      ],
+      lev1Node: {
+        title: "",
+        seriesId: "",
+        expand: true,
+        lev2Node: []
+      },
+      lev2Node: {
+        title: "",
+        productId: ""
+      }
+    };
+  }
   customerFodderConfig() {
     this.customerFodderConfigFlag = false;
     this.alreadyConfigFlag = true;
@@ -413,11 +437,18 @@ export default class ProdConfig extends Page {
    */
   publish(item) {
     this.confirmPublishModal = true;
-    console.log(item);
     this.publishItem = item;
+    this.publishItem.isPublish = 360;
+    if (this.prdConfig[0].productStatus === true) {
+      return (this.prdConfig[0].productStatus = 0);
+    } else {
+      return (this.prdConfig[0].productStatus = 1);
+    }
   }
   publishNext() {
-    this.ProductPlanIssueService.publish(this.publishItem).subscribe(val => {});
+    this.ProductPlanIssueService.publish(this.publishItem).subscribe(val => {
+      this.$Message.success("发布成功！");
+    });
   }
   chargeAgainstOrderConfig() {
     this.chargeAgainstOrderConfigModal = true;
@@ -433,7 +464,7 @@ export default class ProdConfig extends Page {
     });
   }
   getTreeDate() {
-    let series: Map<string, any> = new Map();
+    let series: Map<number, any> = new Map();
     this.allData.map(t => {
       if (t.seriesId) {
         series.set(t.seriesId, t);
@@ -445,39 +476,23 @@ export default class ProdConfig extends Page {
         title: item.seriesName,
         seriesId: item.seriesId,
         expand: true,
-        render: (h, { root, node, data }) => {
-          return h("span", [
-            h("span", [
-              h("Icon", {
-                props: {
-                  type: "ios-folder-outline"
-                },
-                style: {
-                  marginRight: "8px",
-                  color: "#265ea2"
-                }
-              }),
-              h("span", data.title)
-            ]),
-            h("span", {
-              style: {
-                display: "inline-block",
-                float: "right",
-                marginRight: "32px"
-              }
-            })
-          ]);
-        },
-        children: [
-          {
-            title: item.productName,
-            productId: item.productId
-          }
-        ]
+        children: this.getChilds(item.seriesId)
       };
       this.treeData.push(lv1Node);
     });
   }
+
+  getChilds(id) {
+    let prods = this.allData.filter(t => t.seriesId === id);
+    let Lv2Nodes = prods.map(t => {
+      return {
+        title: t.productName,
+        productId: t.productId
+      };
+    });
+    return Lv2Nodes;
+  }
+
   /**
    * 查询产品列表详情
    */
@@ -488,9 +503,22 @@ export default class ProdConfig extends Page {
       },
       this.pageService
     ).subscribe(val => {
+      this.addPeriodsBox = true;
       if (val.object.list.length > 0) {
         this.productShow = true;
         this.prdConfig = val.object.list;
+        //初始化启用/停用状态
+        if (this.prdConfig[0].productStatus === 0) {
+          this.prdConfig[0].productStatus = true;
+        } else if (this.prdConfig[0].productStatus === 1) {
+          this.prdConfig[0].productStatus = false;
+        }
+        //初始化
+        if ((this.productMessage.capitaChannels = 382)) {
+          this.productMessage.capitaChannels = "自有资金";
+        } else {
+          this.productMessage.capitaChannels = "第三方";
+        }
       }
     });
     this.checkProduct(scope);
@@ -512,8 +540,55 @@ export default class ProdConfig extends Page {
    */
   radioSelect(scope) {
     scope === "自有资金"
-      ? (this.productMessage.capitaChannels = "382")
-      : (this.productMessage.capitaChannels = "383");
+      ? (this.productMessage.capitaChannels = 382)
+      : (this.productMessage.capitaChannels = 383);
+    this.saveProductConfig();
+  }
+  /**
+   * 保存产品
+   */
+  saveProductConfig() {
+    this.productService
+      .createOrModifyProduct(this.productMessage)
+      .subscribe(val => {
+        this.$Message.success("数据保存成功！");
+      });
+  }
+  getPaymentType(item) {
+    if (item.paymentType === 387) {
+      return "固定账期";
+    } else {
+      return "正常账期";
+    }
+  }
+  getPayWay(item) {
+    if (item.paymentType === 384) {
+      return "等本等息";
+    } else {
+      return "等额本息";
+    }
+  }
+  /**
+   * 停用启用状态
+   */
+  switchStatus(item) {
+    if (item.productStatus === true) {
+      return (item.productStatus = 0);
+    } else {
+      return (item.productStatus = 1);
+    }
+  }
+
+  /**
+   * 新增/修改产品计划期数管理
+   */
+  addPeriods() {
+    this.addPeriodsModal = true;
+    this.ProductPlanIssueService.createOrModifyProductPlan(
+      this.prdConfig
+    ).subscribe(val => {
+      console.log(this.prdConfig, 3434343);
+    });
   }
 }
 </script>

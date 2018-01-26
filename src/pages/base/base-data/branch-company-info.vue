@@ -9,10 +9,10 @@
         </i-row>
         <data-box :columns="columns" :data="companyList"></data-box>
         <i-modal title="修改分公司信息" v-model="modal" :mask-closable="false">
-            <modify-branch-info ref="modify-branch" @close="closeModifyBrach"></modify-branch-info>
+            <modify-branch-info ref="modify-branch" @close="closeModifyBrach" :formItem="formItem"></modify-branch-info>
             <div slot="footer">
                 <i-button type="ghost" @click="this.modal==false">取消</i-button>
-                <i-button type="primary" @click="sureButton">确定</i-button>
+                <i-button class="blueButton" @click="sureButton">确定</i-button>
             </div>
         </i-modal>
 
@@ -49,7 +49,6 @@ export default class BranchCompanyInfo extends Page {
   private sasStatus: any;
   private modal: Boolean = false;
   private formItem: any;
-  private formRules: any;
   created() {
     this.seachCompany();
     this.columns = [
@@ -235,6 +234,7 @@ export default class BranchCompanyInfo extends Page {
    */
   editInformation(row) {
     this.modal = true;
+    // this.branchInfo = row;
     this.formItem = {
       id: row.id,
       companyChinaname: row.companyChinaname,

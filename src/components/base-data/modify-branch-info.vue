@@ -1,15 +1,21 @@
 <!--冲抵顺序配置-->
 <template>
     <section class="component modify-branch-info">
-        <i-form ref="formItem" :model="formItem" :rules="formRules" :label-width="80">
+        <i-form ref="branch-form" :model="formItem" :rules="formRules" :label-width="100">
             <i-form-item label="公司简称：" prop="companyChinaname">
                 <i-input v-model="formItem.companyChinaname" placeholder="请输入公司简称"></i-input>
             </i-form-item>
             <i-form-item label="所在省份：" prop="companyProvince">
-                <i-input v-model="formItem.companyProvince" placeholder="请输入所在省份"></i-input>
+                <!-- <i-input v-model="formItem.companyProvince" placeholder="请输入所在省份"></i-input> -->
+                <i-select style="width:100%" placeholder="选择省" v-model="formItem.companyProvince" clearable>
+                    <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+                </i-select>
             </i-form-item>
             <i-form-item label="所在城市：" prop="companyCity">
-                <i-input v-model="formItem.companyCity" placeholder="请输入所在城市"></i-input>
+                <!-- <i-input v-model="formItem.companyCity" placeholder="请输入所在城市"></i-input> -->
+                <i-select style="width:100%" placeholder="选择市" v-model="formItem.companyCity" clearable>
+                    <i-option v-for="{value,label} in this.formItem.province ? this.$city.getCityData({ level: 1, id: this.formItem.province }) : []" :key="value" :label="label" :value="value"></i-option>
+                </i-select>
             </i-form-item>
             <i-form-item label="银行户名：" prop="bankAccount">
                 <i-input v-model="formItem.bankAccount" placeholder="请输入银行户名"></i-input>
@@ -40,6 +46,7 @@ import { DataGrid, DataGridItem } from "vue-fintech-component";
 import { Form } from "iview";
 import { CompanyService } from "~/services/manage-service/company.service";
 import { Dependencies } from "~/core/decorator";
+import { Prop } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -49,8 +56,10 @@ import { Dependencies } from "~/core/decorator";
 })
 export default class ModifyBranchInfo extends Vue {
   @Dependencies(CompanyService) private companyService: CompanyService;
-  private formItem: any;
+  //   @Prop() branchInfo: any;
+  @Prop() formItem: any;
   private formRules: any;
+
   created() {
     this.formItem = {
       companyChinaname: "",
@@ -77,14 +86,16 @@ export default class ModifyBranchInfo extends Vue {
         {
           required: true,
           message: "您输入的内容不能为空",
-          trigger: "blur"
+          trigger: "change",
+          type: "number"
         }
       ],
       companyCity: [
         {
           required: true,
           message: "您输入的内容不能为空",
-          trigger: "blur"
+          trigger: "change",
+          type: "number"
         }
       ],
       bankAccount: [
@@ -118,7 +129,8 @@ export default class ModifyBranchInfo extends Vue {
     };
   }
   confirmModify() {
-    let formVal = <Form>this.$refs["formItem"];
+    console.log(this.formItem, 77777);
+    let formVal = <Form>this.$refs["branch-form"];
     formVal.validate(valid => {
       if (valid) {
         this.$emit("close");
