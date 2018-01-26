@@ -548,7 +548,7 @@
     }
     confirmModifyUser() {
       let _modifyUser: any = this.$refs['modify-user']
-      _modifyUser.confirmModify()
+      _modifyUser.updateUser()
     }
     visiableChange(val) {
       if (!val) {
