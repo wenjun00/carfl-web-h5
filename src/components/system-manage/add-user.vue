@@ -68,12 +68,12 @@
           </i-form-item>
         </i-col>
       </i-row>
-      <i-row>
+      <!--<i-row>
         <i-col :span="24" style="text-align:center">
           <i-button @click="cancelAddUser" class="defalutButton">取消</i-button>
           <i-button @click="confirmAddUser" class="blueButton">确定</i-button>
         </i-col>
-      </i-row>
+      </i-row>-->
     </i-form>
   </section>
 </template>
@@ -103,25 +103,24 @@
     deptObject
     @Watch("deptObject")
     updateDeptObject() {}
-    private addUserModel: any
+    private addUserModel: any = {
+      userPhone: '',
+      companyName: '',
+      deptId: 1,
+      deptName: '',
+      userUsername: '',
+      userRealname: '',
+      userEmail: '',
+      userSex: '',
+      userManager: '',
+      userRemark: '',
+      loginDevice: 414,
+      loginType: 411,
+      userType: 409
+    }
     private rules: any
 
     created() {
-      this.addUserModel = {
-        userPhone: '',
-        companyName: '',
-        deptId: 1,
-        deptName: '',
-        userUsername: '',
-        userRealname: '',
-        userEmail: '',
-        userSex: '',
-        userManager: '',
-        userRemark: '',
-        loginDevice: 414,
-        loginType: 411,
-        userType: 409
-      }
       this.rules = {
         userUsername: [{
           required: true,
@@ -193,8 +192,9 @@
     cancelAddUser() {
 
     }
-    confirm() {
-
+    resetForm() {
+      let _addUserForm: any = this.$refs['add-user']
+      _addUserForm.resetFields()
     }
     mounted() {}
   }
