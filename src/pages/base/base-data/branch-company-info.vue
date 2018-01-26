@@ -8,37 +8,13 @@
             <i-button class="blueButton" style="margin-left:10px;" @click="seachCompany">搜索</i-button>
         </i-row>
         <data-box :columns="columns" :data="companyList"></data-box>
-        <Modal title="修改分公司信息" v-model="modal" :mask-closable="false" @on-ok="sureButton">
-            <Form :model="formItem" :label-width="80">
-                <FormItem label="公司简称：">
-                    <Input v-model="formItem.companyChinaname" placeholder="请输入公司简称"></Input>
-                </FormItem>
-                <FormItem label="所在省份：">
-                    <Input v-model="formItem.companyProvince" placeholder="请输入所在省份"></Input>
-                </FormItem>
-                <FormItem label="所在城市：">
-                    <Input v-model="formItem.companyCity" placeholder="请输入所在城市"></Input>
-                </FormItem>
-                <FormItem label="银行户名：">
-                    <Input v-model="formItem.bankAccount" placeholder="请输入银行户名"></Input>
-                </FormItem>
-                <FormItem label="开户银行：">
-                    <Input v-model="formItem.depositBank" placeholder="请输入开户银行"></Input>
-                </FormItem>
-                <FormItem label="银行卡号：">
-                    <Input v-model="formItem.cardNumber" placeholder="请输入银行卡号"></Input>
-                </FormItem>
-                <FormItem label="支行名称：">
-                    <Input v-model="formItem.branchName" placeholder="请输入支行名称"></Input>
-                </FormItem>
-                <FormItem label="状态：">
-                    <Switch size="large" v-model="formItem.companyStatus">
-                        <span slot="open">启用</span>
-                        <span slot="close">停用</span>
-                    </Switch>
-                </FormItem>
-            </form>
-        </Modal>
+        <i-modal title="修改分公司信息" v-model="modal" :mask-closable="false">
+            <modify-branch-info ref="modify-branch" @close="closeModifyBrach"></modify-branch-info>
+            <div slot="footer">
+                <i-button type="ghost" @click="this.modal==false">取消</i-button>
+                <i-button type="primary" @click="sureButton">确定</i-button>
+            </div>
+        </i-modal>
 
     </section>
 </template>
@@ -52,12 +28,14 @@ import { CompanyService } from "~/services/manage-service/company.service";
 import { Dependencies } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
 import { Layout } from "~/core/decorator";
+import ModifyBranchInfo from "~/components/base-data/modify-branch-info.vue";
 
 @Layout("workspace")
 @Component({
   components: {
     DataBox,
-    SvgIcon
+    SvgIcon,
+    ModifyBranchInfo
   }
 })
 export default class BranchCompanyInfo extends Page {
@@ -71,6 +49,7 @@ export default class BranchCompanyInfo extends Page {
   private sasStatus: any;
   private modal: Boolean = false;
   private formItem: any;
+  private formRules: any;
   created() {
     this.seachCompany();
     this.columns = [
@@ -216,16 +195,7 @@ export default class BranchCompanyInfo extends Page {
         }
       }
     ];
-    this.formItem = {
-      companyChinaname: "",
-      companyProvince: "",
-      companyCity: "",
-      bankAccount: "",
-      depositBank: "",
-      cardNumber: "",
-      branchName: "",
-      companyStatus: ""
-    };
+
     this.companyModel = {
       keyword: ""
     };
@@ -266,6 +236,7 @@ export default class BranchCompanyInfo extends Page {
   editInformation(row) {
     this.modal = true;
     this.formItem = {
+      id: row.id,
       companyChinaname: row.companyChinaname,
       companyProvince: row.companyProvince,
       companyCity: row.companyCity,
@@ -273,17 +244,26 @@ export default class BranchCompanyInfo extends Page {
       depositBank: row.depositBank,
       cardNumber: row.cardNumber,
       branchName: row.branchName,
-      companyStatus: row.companyStatus
+      companyAddress: row.companyAddress,
+      companyEngname: row.companyEngname,
+      companyFax: row.companyFax,
+      companyLegperson: row.companyLegperson,
+      companyLinkman: row.companyLinkman,
+      companyPhone: row.companyPhone,
+      companyRemark: row.companyRemark,
+      companyStatus: row.companyStatus == true ? 1 : 0
     };
   }
   /**
    * 修改信息 并提交数据
    */
-  sureButton() {
-    this.companyService.createOrModifyCompany(this.formItem).subscribe(val => {
-      this.$Message.success(val.msg);
-      this.seachCompany();
-    });
+  sureButton(formItem) {
+    let _modifyBranch: any = this.$refs["modify-branch"];
+    _modifyBranch.confirmModify();
+  }
+  closeModifyBrach() {
+    this.modal = false;
+    this.seachCompany();
   }
 }
 </script>

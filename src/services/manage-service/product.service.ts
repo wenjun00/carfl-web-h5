@@ -62,4 +62,15 @@ export class ProductService {
             server: manageService.productController.getAllProduct,
         })
     }
+    /**
+     * 查询产品名称及序列号 租金渠道
+     */
+    getProductById({ id }) {
+        return this.netService.send({
+            server: manageService.productController.getProductById,
+            data: {
+                id: id
+            }
+        })
+    }
 }

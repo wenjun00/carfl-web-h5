@@ -9,14 +9,14 @@
             <i-date-picker type="datetimerange" v-model="backupTimeRange" @on-change="changeBackupTime" @on-clear="clearDateTime"></i-date-picker>
             <i-button class="blueButton" style="margin-left:10px;" @click="getProductPackage">搜索</i-button>
             <div style="float:right;margin-right:12px;margin-top:10px;">
-                <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+                <i-button type="text" style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" disabled>
                     <svg-icon iconClass="daoru" style="font-size:16px;"></svg-icon>
                     <span style="font-size:14px;">导入</span>
-                </div>
-                <div style="font-size:14px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+                </i-button>
+                <i-button type="text" style="font-size:14px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" disabled>
                     <svg-icon iconClass="xiazai"></svg-icon>
                     <span>模版下载</span>
-                </div>
+                </i-button>
             </div>
         </i-row>
         <data-box :columns="columns" :data="prdPackageList"></data-box>
@@ -86,6 +86,17 @@ export default class ProdPackageInfo extends Page {
                 },
                 style: {
                   color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: "提示",
+                      content: "您确定是否下载？",
+                      onOk: () => {
+                        this.downLoadTemplate(row);
+                      }
+                    });
+                  }
                 }
               },
               "下载"
@@ -178,6 +189,9 @@ export default class ProdPackageInfo extends Page {
     this.productModel.startTime = "";
     this.productModel.endTime = "";
   }
+  /**
+   * 删除产品
+   */
   deleteProductPackage(row) {
     this.productPackageService
       .deleteProductPackage({
@@ -186,6 +200,18 @@ export default class ProdPackageInfo extends Page {
       .subscribe(val => {
         this.$Message.success("删除成功！");
         this.getProductPackage();
+      });
+  }
+  /**
+   * 产品包信息下载
+   */
+  downLoadTemplate(row) {
+    this.productPackageService
+      .downloadProductPackage({
+        fileId: row.fileId
+      })
+      .subscribe(val => {
+        this.$Message.success("下载成功！");
       });
   }
 }

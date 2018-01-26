@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div style="width:250px;height:600px;border-left:1px solid #999999;border-right:1px solid #999999;border-bottom:1px solid #999999;position:relative;bottom:8px;">
-                        <i-tree :data="treeData"></i-tree>
+                        <i-tree :data="treeData" @on-select-change="productNameDetail"></i-tree>
                     </div>
                 </i-col>
                 <i-col :span="18" style="overflow:auto">
@@ -29,16 +29,16 @@
                         <i-col :span="12">
                             <data-grid :labelWidth="100" labelAlign="left" contentAlign="left;">
                                 <data-grid-item label="产品名称" :span="12">
-                                    <span>群泰融资</span>
+                                    <span>{{productMessage.name ? productMessage.name : "产品名称"}}</span>
                                 </data-grid-item>
                                 <data-grid-item label="产品序号" :span="12">
-                                    <span>QTP0001</span>
+                                    <span>{{productMessage.number ? productMessage.number : "23434343"}}</span>
                                 </data-grid-item>
                             </data-grid>
                         </i-col>
                         <i-col :span="12">
                             <span style="margin-left:20px;font-size:14px;">租金渠道选择：</span>
-                            <RadioGroup v-model="rentCheck">
+                            <RadioGroup v-model="rentCheck" @on-change="radioSelect">
                                 <Radio label="自有资金"></Radio>
                                 <Radio label="第三方"></Radio>
                             </RadioGroup>
@@ -57,68 +57,66 @@
                                 </div>
                             </div>
                         </i-col>
-                        <i-col :span="7" v-for="item in prdConfig" :key="item.id" style="margin-bottom:10px;">
+                        <i-col :span="7" v-for="item in prdConfig" :key="item.productId" style="margin-bottom:10px;" v-show="productShow">
                             <div>
                                 <div class="boxContainerTitle">
-                                    <div style="height:48px;display:inline-block;position:relative;bottom:2px;font-size:12px;margin-left:10px;">No.{{item.number}}</div>
+                                    <div style="height:48px;display:inline-block;position:relative;bottom:2px;font-size:12px;margin-left:10px;">No.{{item.id}}</div>
                                     <div style="position:relative;left:63px;display:inline-block">
-                                        <span style="font-size:18px;font-weight:bold;">{{item.month}}</span>
+                                        <span style="font-size:18px;font-weight:bold;">{{item.periods}}</span>
                                         <span>月/期</span>
                                     </div>
-                                    <div :class="[item.publishStatus==='未发布'?'pulishCss':'Publish']">
+                                    <div :class="[item.isPublish===361 ?'pulishCss':'Publish']">
                                     </div>
                                 </div>
                                 <div class="boxContainerContent">
                                     <div class="itemContainer">
                                         <span class="itemName">账期类型</span>
-                                        <span class="item">{{item.accountType}}</span>
+                                        <span class="item">{{item.paymentType="387" ? "固定账期" : "正常账期"}}</span>
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">产品利率</span>
-                                        <span class="item">{{item.prdInterest}}</span>
+                                        <span class="item">{{item.productRate}} %/月</span>
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">还款方式</span>
-                                        <span class="item">{{item.payType}}</span>
+                                        <span class="item">{{item.payWay="384" ? "等本等息" : "等额本息"}}</span>
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">融资金额</span>
-                                        <span class="item">{{item.financeMoney}}</span>
+                                        <span class="item">{{item.financingAmount}}元</span>
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">首付款</span>
-                                        <span class="item">{{item.initialMoney}}</span>
+                                        <span class="item">{{item.initialPayment}} %</span>
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">保证金</span>
-                                        <span class="item">{{item.promiseMoney}}</span>
+                                        <span class="item">{{item.depositCash}}元</span>
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">尾付款</span>
-                                        <span class="item">{{item.resuideMoney}}</span>
+                                        <span class="item">{{item.finalCash}}元</span>
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">管理费</span>
-                                        <span class="item">{{item.manageMoney}}</span>
+                                        <span class="item">{{item.manageCost}}元</span>
                                     </div>
-                                    <div v-if="item.publishStatus==='已发布'" class="itemContainer">
+                                    <div v-if="item.isPublish===361" class="itemContainer">
                                         <span class="itemName">停用/启用</span>
                                         <i-switch class="item"></i-switch>
                                     </div>
-                                    <div v-if="item.publishStatus==='未发布'" class="itemContainer">
+                                    <div v-if="item.isPublish===360" class="itemContainer">
                                         <span class="itemName">操作</span>
                                         <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
                                             <svg-icon iconClass="tianxie" class="item"></svg-icon>
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="item.publishStatus==='未发布'" style="width:300px;height:50px;border: 1px solid rgb(221, 221, 222);background:rgb(245,245,245);text-align:center;cursor:pointer;position:relative;bottom:20px;border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;" @click="publish">
-                                    <span style="line-height:50px;font-size:14px;color:rgb(104, 138, 188);">发布</span>
+                                <div v-if="item.isPublish===361" class="PublishContent">
+                                    <span class="PublishButton" @click="publish(item)">发布</span>
                                 </div>
-                                <div v-if="item.publishStatus==='已发布'" style="width:300px;height:50px;border: 1px solid rgb(221, 221, 222);background:rgb(245,245,245);text-align:center;cursor:pointer;position:relative;bottom:20px;border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;">
-                                    <span style="line-height:50px;font-size:14px;color:rgb(104, 138, 188);">查看</span>
+                                <div v-if="item.isPublish===360" class="PublishContent">
+                                    <span class="PublishButton">查看</span>
                                 </div>
                             </div>
                         </i-col>
@@ -134,7 +132,7 @@
         </template>
 
         <template>
-            <i-modal title="发布" :width="350" v-model="confirmPublishModal">
+            <i-modal title="发布" :width="350" v-model="confirmPublishModal" @on-ok="publishNext">
                 <span>是否确定发布？</span>
             </i-modal>
         </template>
@@ -164,6 +162,10 @@ import { Dependencies } from "~/core/decorator";
 import { DataGrid, DataGridItem } from "vue-fintech-component";
 import { Layout } from "~/core/decorator";
 import { ProductService } from "~/services/manage-service/product.service";
+import { ProductPlanIssueService } from "~/services/manage-service/productPlanIssue.service";
+import { PageService } from "~/utils/page.service";
+import { constants } from "zlib";
+import { Set } from "core-js/library/web/timers";
 
 @Layout("workspace")
 @Component({
@@ -178,6 +180,9 @@ import { ProductService } from "~/services/manage-service/product.service";
 })
 export default class ProdConfig extends Page {
   @Dependencies(ProductService) private productService: ProductService;
+  @Dependencies(ProductPlanIssueService)
+  private ProductPlanIssueService: ProductPlanIssueService;
+  @Dependencies(PageService) private pageService: PageService;
   private columns1: any;
   private data1: Array<Object> = [];
   private maintains: Array<any> = [];
@@ -193,17 +198,14 @@ export default class ProdConfig extends Page {
   private chargeAgainstOrderConfigModal: Boolean = false;
   private customerFodderConfigFlag: Boolean = true;
   private alreadyConfigFlag: Boolean = false;
-  private allData: any;
-
+  private allData: Array<any> = [];
+  private productShow: Boolean = false;
+  private productMessage: any;
+  private publishItem: any;
   /**
    * 新增期数
    */
   addPeriods() {
-    // this.$Modal.info({
-    //   title: '新增期数',
-    //   width: '900',
-    //   render: h => h(AddPeriods)
-    // })
     this.addPeriodsModal = true;
   }
   /**
@@ -256,103 +258,41 @@ export default class ProdConfig extends Page {
     ];
     this.prdConfig = [
       {
-        id: 1,
-        number: "001",
-        month: "12",
-        accountType: "固定账期（5日）",
-        prdInterest: "0.99%/月",
-        payType: "等本等息",
-        financeMoney: "100000~200000",
-        initialMoney: "0%~25%",
-        promiseMoney: "0",
-        resuideMoney: "0",
-        manageMoney: "0",
-        publishStatus: "已发布"
-      },
-      {
-        id: 2,
-        number: "002",
-        month: "12",
-        accountType: "固定账期（5日）",
-        prdInterest: "0.99%/月",
-        payType: "等本等息",
-        financeMoney: "100000~200000",
-        initialMoney: "0%~25%",
-        promiseMoney: "0",
-        resuideMoney: "0",
-        manageMoney: "0",
-        publishStatus: "已发布"
-      },
-      {
-        id: 3,
-        number: "003",
-        month: "12",
-        accountType: "固定账期（5日）",
-        prdInterest: "0.99%/月",
-        payType: "等本等息",
-        financeMoney: "100000~200000",
-        initialMoney: "0%~25%",
-        promiseMoney: "0",
-        resuideMoney: "0",
-        manageMoney: "0",
-        publishStatus: "未发布"
-      },
-      {
-        id: 4,
-        number: "004",
-        month: "12",
-        accountType: "固定账期（5日）",
-        prdInterest: "0.99%/月",
-        payType: "等本等息",
-        financeMoney: "100000~200000",
-        initialMoney: "0%~25%",
-        promiseMoney: "0",
-        resuideMoney: "0",
-        manageMoney: "0",
-        publishStatus: "未发布"
+        productId: "",
+        periods: "",
+        periodType: "",
+        paymentType: "",
+        productRate: "",
+        payWay: "",
+        financingAmount: "",
+        initialPayment: "",
+        depositCash: "",
+        finalCash: "",
+        manageCost: "",
+        creditProtectDays: "",
+        overdueProtectDays: "",
+        penaltyRate: "",
+        contractBreakRate: "",
+        prepaymentRate: "",
+        productStatus: "",
+        isPublish: "",
+        operator: "",
+        operatorTime: "",
+        id: ""
       }
     ];
-
-    this.treeData = [
-      {
-        title: "直租",
-        expand: true,
-        render: (h, { root, node, data }) => {
-          return h("span", [
-            h("span", [
-              h("Icon", {
-                props: {
-                  type: "ios-folder-outline"
-                },
-                style: {
-                  marginRight: "8px",
-                  color: "#265ea2"
-                }
-              }),
-              h("span", data.title)
-            ]),
-            h("span", {
-              style: {
-                display: "inline-block",
-                float: "right",
-                marginRight: "32px"
-              }
-            })
-          ]);
-        },
-        children: [
-          {
-            title: "群泰融租"
-          },
-          {
-            title: "开呗长租"
-          },
-          {
-            title: "龙江"
-          }
-        ]
-      }
-    ];
+    this.productMessage = {
+      number: "",
+      name: "",
+      capitaChannels: "",
+      seriesId: "",
+      type: "",
+      status: "",
+      isConfig: "",
+      operator: "",
+      operatorTime: "",
+      id: ""
+    };
     this.maintains = [
       {
         id: 1,
@@ -468,8 +408,16 @@ export default class ProdConfig extends Page {
   checkMaintain(item) {
     this.checkId = item.id;
   }
-  publish() {
+  /**
+   * 发布产品
+   */
+  publish(item) {
     this.confirmPublishModal = true;
+    console.log(item);
+    this.publishItem = item;
+  }
+  publishNext() {
+    this.ProductPlanIssueService.publish(this.publishItem).subscribe(val => {});
   }
   chargeAgainstOrderConfig() {
     this.chargeAgainstOrderConfigModal = true;
@@ -480,63 +428,92 @@ export default class ProdConfig extends Page {
   treeList() {
     this.productService.getAllProduct().subscribe(val => {
       this.allData = val.object;
+      console.log(this.allData);
       this.getTreeDate();
     });
   }
   getTreeDate() {
-    // let series = this.allData.filter(t => t.seriesId !== "");
-    // console.log(series + "ddddddddd");
-    // this.treeData = [
-    //   {
-    //     title: series
-    //   }
-    // ];
-    // let arr: Array<Object> = [];
-    // let num = 1;
-    // this.allData.forEach(v => {
-    //   if (v.seriesName === num) {
-    //     arr.push(v.seriesId);
-    //   }
-    // });
-    // let arr = [];
-    // for (let a = 0; a < this.allData.length; a++) {
-    //   if (a == 0) {
-    //     let json = {
-    //       title: this.allData[a].seriesName,
-    //       expand: true,
-    //       seriesId: this.allData[a].seriesId,
-    //       children: [
-    //         {
-    //           title: this.allData[a].productName
-    //         }
-    //       ]
-    //     };
-    //     arr = arr.concat(json);
-    //   } else {
-    //     for (let b = 0; b < arr.length; b++) {
-    //       if (this.allData[a].seriesId == arr[b].seriesId) {
-    //         let children = {
-    //           title: this.allData[a].productName
-    //         };
-    //         arr[b].children.push(children);
-    //         return false;
-    //       }
-    //     }
-    //     let json = [
-    //         {
-    //       title: this.allData[a].seriesName,
-    //       expand: true,
-    //       seriesId: this.allData[a].seriesId,
-    //       children: [
-    //         {
-    //           title: this.allData[a].productName
-    //         }
-    //       ]
-    //     }]
-    //     arr.push(json);
-    //   }
-    // }
-    // this.treeData.concat(arr);
+    let series: Map<string, any> = new Map();
+    this.allData.map(t => {
+      if (t.seriesId) {
+        series.set(t.seriesId, t);
+      }
+    });
+    this.treeData = [];
+    series.forEach(item => {
+      let lv1Node = {
+        title: item.seriesName,
+        seriesId: item.seriesId,
+        expand: true,
+        render: (h, { root, node, data }) => {
+          return h("span", [
+            h("span", [
+              h("Icon", {
+                props: {
+                  type: "ios-folder-outline"
+                },
+                style: {
+                  marginRight: "8px",
+                  color: "#265ea2"
+                }
+              }),
+              h("span", data.title)
+            ]),
+            h("span", {
+              style: {
+                display: "inline-block",
+                float: "right",
+                marginRight: "32px"
+              }
+            })
+          ]);
+        },
+        children: [
+          {
+            title: item.productName,
+            productId: item.productId
+          }
+        ]
+      };
+      this.treeData.push(lv1Node);
+    });
+  }
+  /**
+   * 查询产品列表详情
+   */
+  productNameDetail(scope) {
+    this.ProductPlanIssueService.getAllProductPlan(
+      {
+        productId: scope[0].productId
+      },
+      this.pageService
+    ).subscribe(val => {
+      if (val.object.list.length > 0) {
+        this.productShow = true;
+        this.prdConfig = val.object.list;
+      }
+    });
+    this.checkProduct(scope);
+  }
+  /**@
+   * 查询产品名称、序列号、租金渠道
+   */
+  checkProduct(scope) {
+    this.productService
+      .getProductById({
+        id: scope[0].productId
+      })
+      .subscribe(val => {
+        this.productMessage = val.object;
+      });
+  }
+  /**
+   * 资金渠道选择
+   */
+  radioSelect(scope) {
+    scope === "自有资金"
+      ? (this.productMessage.capitaChannels = "382")
+      : (this.productMessage.capitaChannels = "383");
   }
 }
 </script>
@@ -612,7 +589,23 @@ export default class ProdConfig extends Page {
   bottom: 39px;
   z-index: 999;
 }
-
+.PublishContent {
+  width: 300px;
+  height: 50px;
+  border: 1px solid rgb(221, 221, 222);
+  background: rgb(245, 245, 245);
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  bottom: 20px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+.PublishButton {
+  line-height: 50px;
+  font-size: 14px;
+  color: rgb(104, 138, 188);
+}
 .boxContainerTitle {
   width: 300px;
   height: 50px;
