@@ -55,6 +55,9 @@
   import {
     Layout
   } from "~/core/decorator";
+  import {
+    ProductService
+  } from "~/services/manage-service/product.service";
 
   @Layout("workspace")
   @Component({
@@ -64,31 +67,15 @@
     }
   })
   export default class FlowConfig extends Page {
+    @Dependencies(ProductService) private productService: ProductService;
     private treeData: Array < Object > = [];
     private columns1: any;
     private data1: Array < Object > = [];
     private addFlowOpen: Boolean = false;
     private approvaFlowList: any;
+    private allData: Array < any > = [];
+
     created() {
-      // this.treeData = [{
-      //     title: '融资租赁',
-      //     expand: true,
-      //     children: [{
-      //       title: '车贷'
-      //     }]
-      //   },
-      //   {
-      //     title: '直租',
-      //     expand: true,
-      //     children: [{
-      //         title: '群泰融租'
-      //       },
-      //       {
-      //         title: '开呗长租'
-      //       }
-      //     ]
-      //   }
-      // ]
       this.approvaFlowList = [{
         index: 1,
         approvalName: '面审'
@@ -198,6 +185,68 @@
     }
     approvalDelete() {
 
+    }
+    mounted() {
+      this.productService.getAllProduct().subscribe(val => {
+        this.allData = val.object;
+        this.getTreeDate(this.allData);
+      });
+    }
+    getTreeDate(data) {
+      // this.treeData = [{
+      //     title: '融资租赁',
+      //     expand: true,
+      //     children: [{
+      //       title: '车贷'
+      //     }]
+      //   },
+      //   {
+      //     title: '直租',
+      //     expand: true,
+      //     children: [{
+      //         title: '群泰融租'
+      //       },
+      //       {
+      //         title: '开呗长租'
+      //       }
+      //     ]
+      //   }
+      // ]
+      let treeData: any = [{
+        title: '',
+        children: []
+      }]
+      // data.forEach(v => {
+      //   if (v.seriesId) {
+      //     treeData.push({
+      //       title: v.seriesName,
+      //       id: v.seriesId,
+      //       expand: true,
+      //       children: [{
+      //         title: v.productName,
+      //         id: v.productId
+      //       }]
+      //     })
+      //   }
+      // })
+      let map: Map < string, any > = new Map()
+      data.forEach(v => {
+        if (v.seriesId) {
+          map.set(v.seriesId, v)
+          if (v.productId) {
+            treeData.push({
+              title: v.seriesName,
+              id: v.seriesId,
+              expand: true,
+              children: [{
+                title: v.productName,
+                id: v.productId
+              }]
+            })
+          }
+        }
+      })
+      this.treeData = treeData
     }
   }
 

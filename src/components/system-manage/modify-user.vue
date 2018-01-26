@@ -68,12 +68,6 @@
           </i-form-item>
         </i-col>
       </i-row>
-      <i-row>
-        <i-col :span="24" style="text-align:center">
-          <i-button @click="cancelUpdate" class="defalutButton">取消</i-button>
-          <i-button @click="updateUser" class="blueButton">修改</i-button>
-        </i-col>
-      </i-row>
     </i-form>
   </section>
 </template>
@@ -108,9 +102,6 @@
       this.manageService.updateUser(this.modifyUserModel).subscribe(val => {
         this.$Message.success('修改成功！')
       })
-    }
-    confirmModify() {
-
     }
   }
 

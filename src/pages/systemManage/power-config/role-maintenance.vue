@@ -27,7 +27,7 @@
     </template>
 
     <template>
-      <i-modal v-model="userListModal" title="用户列表" width="800" class="user-list">
+      <i-modal v-model="userListModal" title="用户列表" width="800" class="user-list" @on-visible-change="visibleChange">
         <user-list ref="user-list"></user-list>
       </i-modal>
     </template>
@@ -434,6 +434,12 @@
     }
     waitHandleCaseConfig(row) {
       this.waitHandleCaseModal = true
+    }
+    visibleChange(val) {
+      if (!val) {
+        let _userList = < Modal > this.$refs['user-list']
+        _userList.resetFrom()
+      }
     }
   }
 

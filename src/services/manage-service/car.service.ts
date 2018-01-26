@@ -8,11 +8,29 @@ export class CarService {
     private netService: NetService
 
     /**
-     * 获取所有公司
+     * 获取所有车辆系列
      */
     findAllCarSeries(data?) {
         return this.netService.send({
             server: manageService.carController.findAllCarSeries,
+            data: data
+        })
+    }
+    /**
+     * 查询车辆系列下所有车辆
+     */
+    findAllCarBySeries(data) {
+        return this.netService.send({
+            server: manageService.carController.findAllCarBySeries,
+            data: data
+        })
+    }
+    /**
+     * 新增车辆
+     */
+    addVehicle(data) {
+        return this.netService.send({
+            server: manageService.carController.addVehicle,
             data: data
         })
     }

@@ -28,11 +28,20 @@
         </i-col>
       </i-form>
     </i-row>
-    <i-table :columns="columns1" :data="carDataModal" :width="1100"></i-table>
+    <i-table :columns="columns1" :data="addcarData" :width="1100"></i-table>
     <div>
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
       <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
     </div>
+    <!--添加车辆弹框-->
+    <template>
+      <i-modal title="添加车辆" width="1200" v-model="editCarModal" :trandfer="false" class="add-car">
+        <add-car @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
+        <!--<div slot="footer">
+          <i-button @click="confirmAndBack">确认并返回</i-button>
+        </div>-->
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -56,10 +65,12 @@
   import {
     Prop
   } from "vue-property-decorator";
+  import AddCar from "~/components/purchase-manage/add-car.vue";
   @Component({
     components: {
       SvgIcon,
-      DataBox
+      DataBox,
+      AddCar
     }
   })
   export default class ChooseBuyMaterialsAll extends Vue {
@@ -78,6 +89,8 @@
       companyId: '' // 所属公司
     };
     private companyObject: Array < Object >= []; // 公司信息
+    private addcarData: any = [];
+    private rowData: any = null;
 
     applyRule: Object = {};
     @Prop()
@@ -112,7 +125,9 @@
                 },
                 on: {
                   click: () => {
-                    this.addCar = true;
+                    this.editCarModal = true;
+                    this.rowData = row
+                    console.log(this.rowData, 88777)
                   }
                 }
               },
@@ -128,11 +143,12 @@
                 },
                 on: {
                   click: () => {
-                    this.data1.forEach((x, i) => {
-                      if (i === index) {
-                        this.data1.splice(i, 1)
-                      }
-                    })
+                    // this.data1.forEach((x, i) => {
+                    //   if (i === index) {
+                    //     this.data1.splice(i, 1)
+                    //   }
+                    // })
+                    this.addcarData.splice(index, 1);
                   }
                 }
               },
@@ -142,29 +158,58 @@
         }
       }, {
         title: '品牌/型号',
-        key: 'columnsName',
+        key: 'modelName',
         align: 'center'
       }, {
         title: '车身颜色',
-        key: 'color',
+        key: 'vehicleColour',
         align: 'center'
       }, {
         title: '单价（元）',
-        key: 'price',
+        key: 'vehicleAmount',
         align: 'center'
       }, {
         title: '数量',
-        key: 'amount',
-        align: 'center'
+        key: '1',
+        align: 'center',
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h("div", [
+            h(
+              "i-input", {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.editCarModal = true;
+                    this.rowData = row
+                    console.log(this.rowData, 88777)
+                  }
+                }
+              },
+              "amount"
+            ),
+          ]);
+        }
       }, {
         title: '车牌号码',
-        key: 'carNumber',
+        key: 'vehicleLicence',
         align: 'center'
       }]
     }
     addModalOpen() {
       this.addOrEditFlag = true
       this.editCarModal = true
+    }
+    distributionData(data) {
+      this.addcarData = data
     }
   }
 
@@ -184,5 +229,10 @@
   //     display: none!important;
   //   }
   // }
+  .add-car {
+    .ivu-modal-footer {
+      display: none!important;
+    }
+  }
 
 </style>
