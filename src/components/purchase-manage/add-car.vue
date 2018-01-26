@@ -2,11 +2,15 @@
   <section class="component add-car">
     <i-row>
       <i-input style="display:inline-block;width:20%;margin-right:10px" placeholder="请输入关键字"></i-input>
+      <i-select placeholder="门店" style="margin-left:10px;width:10%;">
+        <i-option label="已启用" value="已启用" key="已启用"></i-option>
+        <i-option label="未启用" value="未启用" key="未启用"></i-option>
+      </i-select>
       <i-button class="blueButton">搜索</i-button>
     </i-row>
     <i-row style="margin-top:10px;">
       <i-col :span="4" style="border:1px solid #DDDDDD;height:570px;overflow:auto" :class="{open:isShown,close:!isShown}">
-        <i-tree :data="categoryData" style="padding:10px;"></i-tree>
+        <i-tree :data="treeData" style="padding:10px;" @on-select-change="cartreeChange"></i-tree>
       </i-col>
       <i-col :span="20">
         <i-row type="flex" justify="start">
@@ -17,15 +21,15 @@
           </i-col>
           <i-col span="22" style="overflow:auto">
             <div>
-              <data-box :columns="carColumns" :data="carData" border stripe></data-box>
+              <data-box ref="databox" :columns="carColumns" :data="carDataModel" border stripe></data-box>
             </div>
           </i-col>
         </i-row>
       </i-col>
     </i-row>
-    <!--<i-row style="margin-top:20px;">
-      <i-button class="blueButton" style="float:right">确认并返回</i-button>
-    </i-row>-->
+    <i-row style="margin-top:20px;">
+      <i-button class="blueButton" style="float:right" @click="chooseback">选择并返回</i-button>
+    </i-row>
   </section>
 </template>
 
@@ -42,6 +46,13 @@
   import {
     ApplyQueryService
   } from "~/services/business-service/apply-query.service";
+  import {
+    CarService
+  } from "~/services/manage-service/car.service";
+  import {
+    Emit
+  } from "vue-property-decorator";
+
   @Component({
 
     components: {
@@ -49,81 +60,60 @@
     }
   })
   export default class AddCar extends Vue {
+    @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
+    @Dependencies(CarService) private carService: CarService;
     private isShown: Boolean = true;
     private carColumns: any;
-    private carData: Array < Object > = [];
-    private categoryData: Array < Object > ;
-    @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
+    private carDataModel: Array < Object > = [];
+    private dataList: any = [];
+    private treeData: any = [];
+    private treeId: any;
+    private multipleSelection: any = [];
+
+    @Emit('distributionData')
+    distributionData(multipleSelection) {}
+    @Emit('close')
+    close() {}
+    @Prop() rowData: any;
+    @Emit('update:rowData')
+    updateRowData(row) {}
+    @Prop() addcarData: any;
+
+
     @Prop() row: Object;
     created() {
-      this.categoryData = [{
-        title: '所有品牌',
-        expand: true,
-        children: [{
-            title: '别克',
-            expand: true,
-            children: [{
-                title: '君越'
-              },
-              {
-                title: '昂克赛拉',
-                expand: true,
-
-              }
-            ]
-          },
-          {
-            title: '大众',
-            expand: true,
-            children: [{
-                title: '英朗'
-              },
-              {
-                title: '帕萨特',
-                expand: true,
-                children: [{
-                    title: '英朗'
-                  },
-                  {
-                    title: '帕萨特'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }]
+      this.getCarseries()
       this.carColumns = [{
         type: 'selection',
         align: 'center',
         width: 100
       }, {
         title: '车辆品牌',
-        key: 'brand',
+        key: 'brandName',
         align: 'center'
       }, {
         title: '车辆型号',
-        key: 'model',
+        key: 'modelName',
         align: 'center'
       }, {
         title: '车身颜色',
-        key: 'color',
+        key: 'vehicleColour',
         align: 'center'
       }, {
         title: '车辆排量',
-        key: 'output',
+        key: 'vehicleEmissions',
         align: 'center'
       }, {
         title: '车辆配置',
-        key: 'configuration',
+        key: 'vehicleConfiguration',
         align: 'center'
       }, {
         title: '上牌地区',
-        key: 'area',
+        key: 'registrationArea',
         align: 'center'
       }, {
         title: '车辆牌照',
-        key: 'license',
+        key: 'vehicleLicence',
         align: 'center'
       }, {
         title: '所在门店',
@@ -143,6 +133,101 @@
     showCategory() {
       this.isShown = !this.isShown
     }
+    /**
+     * 选择并返回
+     */
+    chooseback() {
+      this.multipleSelection = this.$refs['databox']
+      this.multipleSelection = this.multipleSelection.getCurrentSelection()
+      //   console.log(this.rowData)
+      if (this.rowData) {
+        //   this.rowData.s = s
+        Object.assign(this.rowData, this.multipleSelection[0])
+      } else {
+        this.distributionData(this.addcarData.concat(this.multipleSelection))
+        this.multipleSelection = []
+      }
+      //   if (this.rowData) {
+      //     this.rowData = this.multipleSelection[0]
+      //   } else {
+      //   let multipleSelectionData=
+      //   }
+      this.close()
+    }
+    /**
+     * 根据车系列树获取车列表
+     */
+    cartreeChange(data) {
+      console.log(data[0], 88)
+      if (data[0].seriesId) {
+        this.treeId = data[0].seriesId
+      }
+      if (data[0].brandId) {
+        this.treeId = data[0].brandId
+      }
+      if (data[0].carId) {
+        this.treeId = data[0].carId
+      }
+      this.carService.findAllCarBySeries(this.treeId).subscribe(data => {
+        this.carDataModel = data.object
+        console.log(this.carDataModel, 988)
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg);
+      });
+    }
+    /**
+     * 获取所有车辆系列
+     */
+    getCarseries() {
+      this.carService.findAllCarSeries().subscribe(data => {
+        this.dataList = data.object
+        this.getTreeDate()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg);
+      });
+    }
+    /**
+     * 车系列树遍历
+     */
+    getTreeDate() {
+      let series: Map < string, any > = new Map();
+      this.dataList.map(t => {
+        if (t.id) {
+          series.set(t.id, t);
+        }
+      });
+      this.treeData = [];
+      series.forEach(item => {
+        let lv1Node = {
+          title: '所有品牌',
+          expand: true,
+          children: [{
+            title: item.carBrand,
+            seriesId: item.id,
+            expand: true,
+            children: item.series.map(v => {
+              return {
+                title: v.seriesName,
+                brandId: v.id,
+                expand: true,
+                children: v.cars.map(m => {
+                  return {
+                    title: m.modelName,
+                    carId: m.id
+                  }
+                })
+              }
+            }),
+          }]
+
+        };
+        this.treeData.push(lv1Node);
+      });
+    }
   }
 
 </script>
@@ -151,23 +236,23 @@
     max-width: auto;
     overflow: hidden;
   }
-
+  
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-
+  
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-
+  
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-
+  
   .arrowButton {
     line-height: 570px;
     height: 100%;

@@ -15,7 +15,8 @@
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" label-position="left" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
           <i-col span="12">
             <i-form-item label="证件号码" prop="certificateNumber">
-              <i-input type="text" v-model="applyData.certificateNumber" autofocus placeholder="请输入证件号码" @on-change="showTab" @on-blur="checkcustomerinfo">
+              <i-input type="text" :maxlength="18" v-model="applyData.certificateNumber" autofocus placeholder="请输入证件号码" @on-change="showTab"
+                @on-blur="checkcustomerinfo">
               </i-input>
             </i-form-item>
           </i-col>
@@ -147,7 +148,13 @@
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
     @Dependencies(PersonalService) private personalService: PersonalService;
 
-    private applyData: any;
+    private applyData: any = {
+      certificateNumber: '',
+      customerName: '',
+      customerPhone: '',
+      salesManName: ''
+    };
+
     applyRule: Object = {};
 
     private columns1: any;
@@ -166,16 +173,21 @@
     addNewApply() {
       this.$Modal.confirm({
         title: '提示',
-        content: '有未提交的申请，确定创建新申请吗？'
+        content: '有未提交的申请，确定创建新申请吗？',
+        onOk: () => {
+          this.applyData.certificateNumber = ''
+          this.$Message.info('点击了确定');
+          //   let  : any = this.$refs['customer-form']
+          //   dd.resetFields()
+          //   console.log(this.applyData.certificateNumber)
+        },
+        onCancel: () => {
+          this.$Message.info('点击了取消');
+        }
       })
+
     }
     created() {
-      this.applyData = {
-        certificateNumber: '',
-        customerName: '',
-        customerPhone: '',
-        salesManName: ''
-      }
       this.columns1 = [{
         title: '操作',
         align: 'center',
@@ -403,18 +415,18 @@
   .header {
     border-bottom: 1px solid #cccccc;
   }
-
+  
   .open {
     max-width: auto;
     overflow: hidden;
   }
-
+  
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-
+  
   .case-list {
     position: fixed;
     right: 0px;
@@ -425,21 +437,21 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     height: 100%;
   }
-
+  
   .case-list.flag {
     right: -348px;
     box-shadow: none;
     background: none;
   }
-
+  
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
   }
-
+  
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
   }
-
+  
   .arrowButton {
     line-height: 570px;
     height: 100%;
@@ -447,7 +459,7 @@
     text-align: center;
     width: 30px;
   }
-
+  
   .submitBar {
     height: 70px;
     width: 100%;
@@ -458,7 +470,7 @@
     border: 1px solid #ddd;
     box-shadow: -3px 2px 20px #dddddd;
   }
-
+  
   .specialInput {
     .ivu-input {
       border-style: none;
@@ -466,7 +478,7 @@
       border-radius: 0; // width: 240%;
     }
   }
-
+  
   .bigSelect {
     .ivu-select-selection {
       width: 240%;
@@ -476,7 +488,7 @@
       border-radius: 0;
     }
   }
-
+  
   .proCity .ivu-select-selection {
     width: 358%;
     display: inline-block;
@@ -484,7 +496,7 @@
     border-bottom-style: solid;
     border-radius: 0;
   }
-
+  
   .belongSalers {
     .ivu-select-selection {
       width: 240%;
@@ -494,7 +506,7 @@
       border-radius: 0;
     }
   }
-
+  
   .full-payment-apply {
     .ivu-select,
     .ivu-select-single {
@@ -510,7 +522,7 @@
       z-index: 999;
     }
   }
-
+  
   .fulls-pay-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #DDDEE1;
@@ -525,7 +537,7 @@
       }
     }
   }
-
+  
   .customer-lease-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #DDDEE1;

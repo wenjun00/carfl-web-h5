@@ -49,7 +49,7 @@
       <i-tabs type="card" v-model="materialTabs" class="finance-lease-tabs">
         <i-tab-pane label="选购资料" name="choose-buy-materials">
         </i-tab-pane>
-        <i-tab-pane label="客户资料s" name="customer-materials">
+        <i-tab-pane label="客户资料" name="customer-materials">
         </i-tab-pane>
         <i-tab-pane label="客户职业" name="customer-job-message">
         </i-tab-pane>
@@ -152,7 +152,7 @@
   .header {
     border-bottom: 1px solid #cccccc;
   }
-
+  
   .submitBar {
     line-height: 70px;
     height: 70px;
@@ -165,7 +165,7 @@
     box-shadow: -3px 2px 20px #dddddd;
     padding-right: 24px;
   }
-
+  
   .specialInput {
     .ivu-input {
       border-style: none;
@@ -173,7 +173,7 @@
       border-radius: 0; // width: 257%;
     }
   }
-
+  
   .financing-lease-apply {
     .ivu-select-selection {
       display: inline-block;
@@ -191,7 +191,7 @@
       z-index: 999;
     }
   }
-
+  
   .finance-lease-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #DDDEE1;

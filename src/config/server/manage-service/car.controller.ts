@@ -6,12 +6,30 @@ const CONTROLLER = 'carManagement'
 
 export default {
     /**
-     * 查询所有车辆系列
+     * 查询所有车辆
      */
     findAllCarSeries: {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'findAllCarSeries',
         type: requestType.Get
+    },
+    /**
+   * 查询车辆系列下所有车辆
+   */
+    findAllCarBySeries: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'findAllCarBySeries',
+        type: requestType.Get
+    },
+    /**
+   * 新增车辆
+   */
+    addVehicle: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'addVehicle',
+        type: requestType.Post
     }
 }
