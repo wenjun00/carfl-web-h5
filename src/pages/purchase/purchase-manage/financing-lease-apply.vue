@@ -48,23 +48,29 @@
       </i-row>
       <i-tabs type="card" v-model="materialTabs" class="finance-lease-tabs">
         <i-tab-pane label="选购资料" name="choose-buy-materials">
+          <choose-buy-materials></choose-buy-materials>
         </i-tab-pane>
         <i-tab-pane label="客户资料" name="customer-materials">
+          <customer-materials></customer-materials>
         </i-tab-pane>
         <i-tab-pane label="客户职业" name="customer-job-message">
+          <customer-job-message></customer-job-message>
         </i-tab-pane>
         <i-tab-pane label="客户联系人" name="customer-contacts">
+          <customer-contacts></customer-contacts>
         </i-tab-pane>
         <i-tab-pane label="客户来源" name="customer-origin">
+          <customer-origin></customer-origin>
         </i-tab-pane>
         <i-tab-pane label="上传素材" name="upload-the-material">
+          <upload-the-material></upload-the-material>
         </i-tab-pane>
       </i-tabs>
-      <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
+      <!--<div style="height:535px;overflow-y:auto;overflow-x:hidden;">
         <div class="shade" :style="{display:disabledStatus}">
         </div>
         <component :is="materialTabs"></component>
-      </div>
+      </div>-->
       <div class="submitBar">
         <i-row type="flex" align="middle" style="padding:5px">
           <i-col :span="8" push="1">

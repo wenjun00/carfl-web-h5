@@ -37,9 +37,6 @@
     <template>
       <i-modal title="添加车辆" width="1200" v-model="editCarModal" :trandfer="false" class="add-car">
         <add-car @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
-        <!--<div slot="footer">
-          <i-button @click="confirmAndBack">确认并返回</i-button>
-        </div>-->
       </i-modal>
     </template>
   </section>
@@ -91,6 +88,7 @@
     private companyObject: Array < Object >= []; // 公司信息
     private addcarData: any = [];
     private rowData: any = null;
+    private saveData: any = null;
 
     applyRule: Object = {};
     @Prop()
@@ -170,7 +168,7 @@
         align: 'center'
       }, {
         title: '数量',
-        key: '1',
+        key: 'carNumber',
         align: 'center',
         render: (h, {
           row,
