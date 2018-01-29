@@ -2,29 +2,34 @@
 <template>
   <section class="page customer-repay-query">
     <span class="form-title">客户还款查询</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:10px;">
-      <span style="margin-left:20px;">工号：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入工号"></i-input>
-      <span style="margin-left:10px;">姓名：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入姓名"></i-input>
-      <span style="margin-left:10px;">所属部门：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入所属部门"></i-input>
-      <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码"></i-input>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus">
+        <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
+        <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
+      </i-select>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel">
+        <i-option value="汇付" key="汇付" label="汇付"></i-option>
+        <i-option value="富友" key="富友" label="富友"></i-option>
+        <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
+        <i-option value="现金" key="现金" label="现金"></i-option>
+      </i-select>
+      <i-button class="blueButton" style="margin-left:20px;" @click="getCustomerRepayList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="customerRepayList"></data-box>
     <div>
     </div>
 
@@ -58,13 +63,15 @@
     Dependencies
   } from "~/core/decorator";
   import {
-    OrderService
-  } from "~/services/business-service/order.service";
+    PaymentScheduleService
+  } from "~/services/manage-service/paymentSchedule.service";
   import {
     Layout
   } from "~/core/decorator";
   import RepayInfo from '~/components/approval-manage/repay-info.vue'
-
+  import {
+    PageService
+  } from "~/utils/page.service";
   @Layout("workspace")
   @Component({
 
@@ -78,9 +85,10 @@
     }
   })
   export default class CustomerRepayQuery extends Page {
-    @Dependencies(OrderService) private orderService: OrderService;
+    @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private customerRepayList: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
     private repayInfoModal: Boolean = false;
@@ -88,11 +96,16 @@
     private searchOptions: Boolean = false;
     private repaySumModal: Boolean = false;
     private customerSettleModal: Boolean = false;
-
+    private customerRepayModel: any = {
+      settlementChannel: '',
+      paymentStatus: '',
+      dynamicParam: ''
+    }
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     created() {
+      this.getCustomerRepayList()
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -119,12 +132,6 @@
                   },
                   on: {
                     click: () => {
-                      // this.$Modal.info({
-                      //   title: '还款总览',
-                      //   width: '900',
-                      //   transfer: false,
-                      //   render: h => h(RepaySum)
-                      // })
                       this.repaySumModal = true
                     }
                   }
@@ -168,11 +175,6 @@
               },
               on: {
                 click: () => {
-                  // this.$Modal.info({
-                  //   title: '客户当前结算号',
-                  //   render: h => h(CustomerSettleModal),
-                  //   okText: '关闭'
-                  // })
                   this.customerSettleModal = true
                 }
               }
@@ -243,22 +245,6 @@
           key: "belongFirm"
         }
       ];
-      this.data1 = [{
-        customerSettleId: '622820190001',
-        customerName: '韩冰',
-        orderId: 'kb20171001',
-        idCard: '610525199312061245',
-        phone: '18292465893',
-        orderCreateTime: '2017-07-07 14:45:36',
-        contractDate: '2017-07-08 14:45:36',
-        noPayMajorMoney: '1000.00',
-        noPayInterest: '120.00',
-        noPayPunishInterest: '45.55',
-        interestRate: '4.35%',
-        windAccountChannel: '汇付',
-        belongFirm: '群泰西安'
-      }]
-
     }
 
     repaySum(row) {}
@@ -271,8 +257,14 @@
     checkProof(row) {
 
     }
+    getCustomerRepayList() {
+      this.paymentScheduleService.getCustomerPayments(this.customerRepayModel, this.pageService).subscribe(val => {
+        this.customerRepayList = val.object
+      })
+    }
+    getTimeSearch(val) {
 
-
+    }
   }
 
 </script>
