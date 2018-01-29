@@ -46,4 +46,14 @@ export class ProductOrderService {
       }
     })
   }
+  /**
+   * 进件模块--订单查询
+   */
+  orderSearch(data, page) {
+    return this.netService.send({
+      server: manageService.productOrderController.orderSearch,
+      data: data,
+      page: page
+    })
+  }
 }

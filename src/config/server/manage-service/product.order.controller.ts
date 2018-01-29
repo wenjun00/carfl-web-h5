@@ -39,5 +39,14 @@ export default {
     controller: CONTROLLER,
     action: 'findOrderInfoByOrderNumber',
     type: requestType.Get
+  },
+  /**
+   * 进件模块--订单查询
+   */
+  orderSearch: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'orderSearch',
+    type: requestType.Get
   }
 }
