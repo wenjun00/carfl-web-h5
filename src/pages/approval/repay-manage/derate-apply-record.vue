@@ -33,9 +33,9 @@
         <i-option label="微信" value="微信" key="微信"></i-option>
         <i-option label="对公转账" value="对公转账" key="对公转账"></i-option>
       </i-select>
-      <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:20px;" @click="getDerateList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="derateList"></data-box>
   </section>
 </template>
 
@@ -50,12 +50,14 @@
     Dependencies
   } from "~/core/decorator";
   import {
-    OrderService
-  } from "~/services/business-service/order.service";
+    RemitApplicationService
+  } from "~/services/manage-service/remitApplication.service";
   import {
     Layout
   } from "~/core/decorator";
-
+  import {
+    PageService
+  } from "~/utils/page.service";
   @Layout("workspace")
   @Component({
 
@@ -66,14 +68,17 @@
     }
   })
   export default class DerateApplyRecord extends Page {
-    @Dependencies(OrderService) private orderService: OrderService;
+    @Dependencies(RemitApplicationService) private remitApplicationService: RemitApplicationService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private derateList: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
     private repayInfo: Boolean = false;
     private searchOptions: Boolean = false;
+    private derateModel: any = {
 
+    }
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
@@ -81,12 +86,12 @@
       this.columns1 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           title: '序号'
         },
         {
           title: "操作",
-          width: "100",
+          width: 100,
           align: "center",
           render: (h, {
             row,
@@ -153,18 +158,18 @@
           align: "center",
           title: " 手机号",
           key: "phone",
-          width: '160'
+          width: 160
         },
         {
           align: "center",
           title: " 订单创建时间",
           key: "orderCreateTime",
-          width: '120'
+          width: 120
         },
         {
           align: "center",
           title: " 订单号",
-          width: '160',
+          width: 160,
           render: (h, params) => {
             return h('i-button', {
               props: {
@@ -185,28 +190,15 @@
           align: "center",
           title: " 合同生效日期",
           key: "compactBeginDate",
-          width: '120'
+          width: 120
         },
         {
           align: "center",
           title: " 减免备注",
           key: "derateRemark",
-          width: '90'
+          width: 90
         }
       ];
-      this.data1 = [{
-        supposedInterest: '1000',
-        applyDerateInterest: '500',
-        restInterest: '500',
-        derateApplyDate: '2017-12-01',
-        customerName: '祁吉贵',
-        idCard: '610303199111142454',
-        phone: '18292536540',
-        orderCreateTime: '2017-12-01',
-        orderId: 'KB2017100102',
-        compactBeginDate: '2017-12-01',
-        derateRemark: '同意减免'
-      }]
 
       this.columns2 = [{
           align: "center",
@@ -359,7 +351,11 @@
     checkProof(row) {
 
     }
-
+    getDerateList() {
+      this.remitApplicationService.selectApplyForReliefHistory(this.derateModel, this.pageService).subscribe(val => {
+        this.derateList = val.object
+      })
+    }
 
   }
 

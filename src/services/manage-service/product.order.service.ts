@@ -7,6 +7,7 @@ export class ProductOrderService {
   @Inject(NetService)
   private netService: NetService
 
+
   /**
    * 获取组织
    */
@@ -54,6 +55,15 @@ export class ProductOrderService {
       server: manageService.productOrderController.orderSearch,
       data: data,
       page: page
+    })
+  }
+  /**
+     * 创建全额付款订单
+     */
+  createFullPaymentOrder(data) {
+    return this.netService.send({
+      server: manageService.productOrderController.createFullPaymentOrder,
+      data
     })
   }
 }

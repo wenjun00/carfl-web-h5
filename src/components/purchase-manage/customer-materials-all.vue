@@ -70,15 +70,15 @@
           <i-row>
             <i-col :span="12">
               <i-form-item label="代办服务" prop="phone">
-                <i-checkbox-group>
-                  <i-checkbox label="上牌"></i-checkbox>
-                  <i-checkbox label="办理保险"></i-checkbox>
-                  <i-checkbox label="代缴购置税"></i-checkbox>
-                  <i-checkbox label="代缴车船税"></i-checkbox>
-                  <i-checkbox label="按揭贷款"></i-checkbox>
-                  <i-checkbox label="车辆装潢"></i-checkbox>
-                  <i-checkbox label="代缴其他费用"></i-checkbox>
-                  <i-checkbox label="其他"></i-checkbox>
+                <i-checkbox-group v-model="customerData.orderServiceList">
+                  <i-checkbox label="上牌" :value="200"></i-checkbox>
+                  <i-checkbox label="办理保险" :value="201"></i-checkbox>
+                  <i-checkbox label="代缴购置税" :value="202"></i-checkbox>
+                  <i-checkbox label="代缴车船税" :value="203"></i-checkbox>
+                  <i-checkbox label="按揭贷款" :value="204"></i-checkbox>
+                  <i-checkbox label="车辆装潢" :value="205"></i-checkbox>
+                  <i-checkbox label="代缴其他费用" :value="206"></i-checkbox>
+                  <i-checkbox label="其他" :value="207"></i-checkbox>
                 </i-checkbox-group>
               </i-form-item>
             </i-col>
@@ -107,7 +107,8 @@
       city: '', // 市
       area: '', // 区
       postalCode: '', // 邮政编码
-      idCardAddressDetail: '' // 箱子地址
+      idCardAddressDetail: '', // 箱子地址
+      orderServiceList: ''
     }
     mounted() {}
   }

@@ -36,9 +36,9 @@
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>产品系列</td>
-          <td>{{orderInfo.productSeries.name}}</td>
+          <td>{{productSeries.name}}</td>
           <td>产品名称</td>
-          <td>{{orderInfo.product.name}}</td>
+          <td>{{product.name}}</td>
           <td>产品期数</td>
           <td>{{}}</td>
           <td>产品利率</td>
@@ -88,19 +88,19 @@
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>姓名</td>
-          <td>{{orderInfo.personal.name}}</td>
+          <td>{{personal.name}}</td>
           <td>性别</td>
-          <td>{{orderInfo.personal.sex}}</td>
+          <td>{{personal.sex}}</td>
           <td>出生日期</td>
-          <td>{{orderInfo.personal.birthTime}}</td>
+          <td>{{personal.birthTime}}</td>
           <td>微信号码</td>
-          <td>{{orderInfo.personal.wechat}}</td>
+          <td>{{personal.wechat}}</td>
         </tr>
         <tr>
           <td>手机号码(主)</td>
-          <td>{{orderInfo.personal.mobileMain}}</td>
+          <td>{{personal.mobileMain}}</td>
           <td>手机号码(次)</td>
-          <td>{{orderInfo.personal.mobileMinor}}</td>
+          <td>{{personal.mobileMinor}}</td>
           <td></td>
           <td></td>
           <td></td>
@@ -108,43 +108,43 @@
         </tr>
         <tr>
           <td>身份证号码</td>
-          <td>{{orderInfo.personal.idCard}}</td>
+          <td>{{personal.idCard}}</td>
           <td>婚属状况</td>
-          <td colspan="5">{{orderInfo.personal.marital}}</td>
+          <td colspan="5">{{personal.marital}}</td>
         </tr>
         <tr>
           <td>身份证有效期</td>
-          <td colspan="3">{{orderInfo.personal.idCardValidityPeriodSection}}</td>
+          <td colspan="3">{{personal.idCardValidityPeriodSection}}</td>
           <td>发证机关</td>
-          <td colspan="3">{{orderInfo.personal.issuer}}</td>
+          <td colspan="3">{{personal.issuer}}</td>
         </tr>
         <tr>
           <td>身份证地址</td>
-          <td colspan="7">{{orderInfo.personal.idCardAddress}}</td>
+          <td colspan="7">{{personal.idCardAddress}}</td>
         </tr>
         <tr>
           <td>现居住地址</td>
-          <td colspan="7">{{orderInfo.personal.localHomeAddr}}</td>
+          <td colspan="7">{{personal.localHomeAddr}}</td>
         </tr>
         <tr>
           <td>居住地址家庭座机</td>
-          <td>{{orderInfo.personal.localHomePhone}}</td>
+          <td>{{personal.localHomePhone}}</td>
           <td>本市生活时长</td>
-          <td>{{orderInfo.personal.cityLiveTime}}</td>
+          <td>{{personal.cityLiveTime}}</td>
           <td>现居住地生活时常</td>
-          <td colspan="3">{{orderInfo.personal.localLiveTime}}</td>
+          <td colspan="3">{{personal.localLiveTime}}</td>
         </tr>
         <tr>
           <td>现居住地房产归属</td>
-          <td colspan="7">{{orderInfo.personal.localLiveHouseOwner}}</td>
+          <td colspan="7">{{personal.localLiveHouseOwner}}</td>
         </tr>
         <tr>
           <td>本市自有房产状况及归属</td>
-          <td colspan="3">{{orderInfo.personal.cityOwnhouseCondition}}</td>
+          <td colspan="3">{{personal.cityOwnhouseCondition}}</td>
           <td>电费账号</td>
-          <td>{{orderInfo.personal.electricityAccount}}</td>
+          <td>{{personal.electricityAccount}}</td>
           <td>电费密码</td>
-          <td>{{orderInfo.personal.electricityPassword}}</td>
+          <td>{{personal.electricityPassword}}</td>
         </tr>
         <tr>
           <td>本市房产地址</td>
@@ -152,12 +152,15 @@
         </tr>
         <tr>
           <td>教育程度</td>
-          <td colspan="2">{{orderInfo.personal.education}}</td>
+          <td colspan="2">{{personal.education}}</td>
           <td>毕业院校</td>
-          <td colspan="2">{{orderInfo.personal.school}}</td>
+          <td colspan="2">{{personal.school}}</td>
           <td>是否接受现场勘查</td>
           <td>
-            <i-radio :checked.sync="single">{{orderInfo.personal.houseProspecting}}</i-radio>
+            <i-radio-group v-model="personal.houseProspecting">
+              <i-radio label="是"></i-radio>
+              <i-radio label="否"></i-radio>
+            </i-radio-group>
           </td>
         </tr>
       </table>
@@ -232,7 +235,7 @@
           <td>家庭住址</td>
         </tr>
         <tr v-for="item in contactsInfo" :key="item.id">
-          <td>{{item.name}}</td>
+          <!--<td>{{item.name}}</td>-->
           <td>{{item.relation}}</td>
           <td>{{}}</td>
           <td>{{}}</td>
@@ -384,7 +387,10 @@
       a7: false
     }
     private orderInfo: any = {}
-    private contactsInfo: any = {}
+    private personal: any = {} // 个人资料
+    private productSeries: any = {} // 产品系列
+    private product: any = {} // 产品
+    private contactsInfo: any = {} // 联系人信息
     @Prop({
       default: 0
     })
@@ -415,10 +421,13 @@
       this.productOrderService.findOrderInfoByOrderNumber({
         orderNumber: row.orderNumber
       }).subscribe(val => {
-        this.contactsInfo = JSON.stringify(val)
-        console.log(8989, this.contactsInfo)
-        this.orderInfo = val.object
-        // this.contactsInfo = val.object.personalContacts
+        let allData = JSON.stringify(val.object)
+        this.orderInfo = JSON.parse(allData)
+        this.personal = this.orderInfo.personal // 个人资料
+        this.productSeries = this.orderInfo.productSeries // 产品系列
+        this.product = this.orderInfo.product // 产品
+        this.contactsInfo = this.orderInfo.personal.personalContacts
+        console.log(this.personal, 321)
       })
     }
   }
@@ -427,7 +436,7 @@
 
 <style scoped>
   .color {
-    color: #333333!important;
+    color: #333333 !important;
   }
 
 

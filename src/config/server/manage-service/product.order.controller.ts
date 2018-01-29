@@ -4,6 +4,7 @@ const SERVICE = 'manage-service'
 const CONTROLLER = 'productOrder'
 
 export default {
+
   /**
    * 进件模块 --订单交接查询
    */
@@ -48,5 +49,14 @@ export default {
     controller: CONTROLLER,
     action: 'orderSearch',
     type: requestType.Get
+  },
+  /**
+  * 创建全额付款订单
+  */
+  createFullPaymentOrder: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'createFullPaymentOrder',
+    type: requestType.Post
   }
 }
