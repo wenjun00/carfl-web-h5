@@ -16,14 +16,14 @@
         <i-col span="18">
           <i-form ref="customer-form" :model="customerModel" label-position="left" :rules="customerRule" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
             <i-col span="12">
-              <i-form-item label="证件号码" prop="idCard">
-                <i-input type="text" v-model="customerModel.idCard" autofocus @on-change="showTab">
+              <i-form-item label="证件号码" prop="certificateNumber">
+                <i-input type="text" :maxlength="18" v-model="customerModel.certificateNumber" autofocus @on-change="showTab">
                 </i-input>
               </i-form-item>
             </i-col>
             <i-col span="12">
-              <i-form-item label="客户姓名" prop="userName">
-                <i-input type="text" v-model="customerModel.userName">
+              <i-form-item label="客户姓名" prop="customerName">
+                <i-input type="text" v-model="customerModel.customerName">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -34,10 +34,9 @@
               </i-form-item>
             </i-col>
             <i-col span="12">
-              <i-form-item label="归属业务员" prop="worker">
-                <i-select>
-                  <i-option label="吴小川" value="吴小川" key="吴小川"></i-option>
-                </i-select>
+              <i-form-item label="归属业务员" prop="salesmanName">
+                <i-input type="text" v-model="customerModel.salesmanName">
+                </i-input>
               </i-form-item>
             </i-col>
           </i-form>
@@ -46,6 +45,8 @@
           <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
         </i-col>
       </i-row>
+      <div class="shade" :style="{display:disabledStatus}">
+      </div>
       <i-tabs type="card" v-model="materialTabs" class="finance-lease-tabs">
         <i-tab-pane label="选购资料" name="choose-buy-materials">
           <choose-buy-materials></choose-buy-materials>
@@ -118,20 +119,19 @@
   export default class FinancingLeaseApply extends Page {
 
     private customerRule: Object = {};
-    private customerModel: any;
+    private customerModel: any = {
+      certificateNumber: '', // 证件号码 
+      customerName: '', // 客户姓名
+      phone: '', // 客户电话
+      salesmanName: '' // 归属业务员
+    };
     private addCar: Boolean = false;
     private disabledStatus: String = ''; // 子组件中输入框禁用flag
     private materialTabs: String = 'choose-buy-materials'
     print() {
       window.print()
     }
-    created() {
-      // 设置表单数据
-      this.customerModel = {
-        idCard: "",
-        userName: ""
-      };
-    }
+    created() {}
     addNewApply() {
       this.$Modal.confirm({
         title: '提示',
@@ -146,7 +146,7 @@
       this.customerModel.worker = ''
     }
     showTab() {
-      if (this.customerModel.idCard.length === 18) {
+      if (this.customerModel.certificateNumber.length === 18) {
         this.disabledStatus = 'none'
       }
     }

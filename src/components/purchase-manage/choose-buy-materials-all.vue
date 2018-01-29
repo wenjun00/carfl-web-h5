@@ -35,7 +35,7 @@
     </div>
     <!--添加车辆弹框-->
     <template>
-      <i-modal title="添加车辆" width="1200" v-model="editCarModal" :trandfer="false" class="add-car">
+      <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="1200" v-model="editCarModal" :trandfer="false" class="add-car">
         <add-car @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
       </i-modal>
     </template>
@@ -141,12 +141,13 @@
                 },
                 on: {
                   click: () => {
-                    // this.data1.forEach((x, i) => {
-                    //   if (i === index) {
-                    //     this.data1.splice(i, 1)
-                    //   }
-                    // })
-                    this.addcarData.splice(index, 1);
+                    this.$Modal.confirm({
+                      title: '提示',
+                      content: '确定删除吗？',
+                      onOk: () => {
+                        this.addcarData.splice(index, 1);
+                      }
+                    })
                   }
                 }
               },
