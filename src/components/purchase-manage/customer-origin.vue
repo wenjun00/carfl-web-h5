@@ -25,15 +25,15 @@
         <div style="margin-left:58px;">
           <i-checkbox v-model="ischecked" @on-change="checked">同行推荐</i-checkbox>
           <div v-if="ischecked" style="position:relative;left:105px;width:300px;">
-            <i-form ref="job-form" :model="job" label-position="left" :label-width="110">
-              <i-form-item label="同行姓名">
-                <i-input type="text"></i-input>
+            <i-form ref="job-form" :model="customerOriginModel" label-position="left" :label-width="110">
+              <i-form-item label="同行姓名" prop="peerName">
+                <i-input type="text" v-model="customerOriginModel.peerName"></i-input>
               </i-form-item>
-              <i-form-item label="同行公司">
-                <i-input type="text"></i-input>
+              <i-form-item label="同行公司" prop="peerCompany">
+                <i-input type="text" v-model="customerOriginModel.peerCompany"></i-input>
               </i-form-item>
-              <i-form-item label="同行联系方式">
-                <i-input type="text"></i-input>
+              <i-form-item label="同行联系方式" prop="peerPhone">
+                <i-input type="text" v-model="customerOriginModel.peerPhone"></i-input>
               </i-form-item>
             </i-form>
           </div>
@@ -41,16 +41,16 @@
         <div style="margin-left:58px;margin-top:15px">
           <i-checkbox v-model="isShow" @on-change="checked1">客户转介绍</i-checkbox>
           <div v-if="isShow" style="position:relative;left:105px;width:300px;">
-            <i-form ref="job-form" :model="job" label-position="left" :label-width="110">
-              <i-form-item label="客户姓名">
-                <i-input type="text"></i-input>
+            <i-form ref="job-form" label-position="left" :label-width="110">
+              <i-form-item label="客户姓名" prop="customerName">
+                <i-input type="text" v-model="customerOriginModel.customerName"></i-input>
               </i-form-item>
-              <i-form-item label="联系方式">
-                <i-input type="text"></i-input>
+              <i-form-item label="联系方式" prop="customerPhone">
+                <i-input type="text" v-model="customerOriginModel.customerPhone"></i-input>
               </i-form-item>
-              <i-form-item label="在我司是否成功购车">
+              <i-form-item label="在我司是否成功购车" prop="isBuyCar">
                 <!--<i-input type="text"></i-input>-->
-                <RadioGroup v-model="isBuyCar">
+                <RadioGroup v-model="customerOriginModel.isBuyCar">
                   <Radio label="是"></Radio>
                   <Radio label="否"></Radio>
                 </RadioGroup>
@@ -61,12 +61,12 @@
         <div style="margin-left:58px;margin-top:15px">
           <i-checkbox v-model="isTrue" @on-change="checked2">分支机构推荐</i-checkbox>
           <div v-if="isTrue" style="position:relative;left:105px;width:300px;">
-            <i-form ref="job-form" :model="job" label-position="left" :label-width="110">
-              <i-form-item label="机构名称">
-                <i-input type="text"></i-input>
+            <i-form ref="job-form" label-position="left" :label-width="110">
+              <i-form-item label="机构名称" prop="organizationNames">
+                <i-input type="text" v-model="customerOriginModel.organizationNames"></i-input>
               </i-form-item>
-              <i-form-item label="推荐人">
-                <i-input type="text"></i-input>
+              <i-form-item label="推荐人" prop="referrer">
+                <i-input type="text" v-model="customerOriginModel.referrer"></i-input>
               </i-form-item>
             </i-form>
           </div>
@@ -84,8 +84,23 @@
 
   @Component({})
   export default class CustomerOrigin extends Vue {
-    private job: any;
-    private revenue: any;
+    private customerOriginModel: any = {
+      peerName: '', // 同行姓名
+      peerCompany: '', // 同行公司
+      peerPhone: '', // 同行联系方式
+
+      customerName: '', // 客户姓名
+      customerPhone: '', // 联系方式
+      isBuyCar: '', // 在我司是否成功购车
+
+      organizationNames: '', // 机构名称
+      referrer: '', // 推荐人
+    };
+    // private customerOriginModel: any = {
+    //   customerName: '', // 客户姓名
+    //   customerPhone: '', // 联系方式
+    //   isBuyCar: '', // 在我司是否成功购车
+    // };
     private company: any = {
       identity: "",
       year: "",
@@ -114,25 +129,6 @@
       return !this.isTrue
     }
     created() {
-      // 设置表单数据
-      this.job = {
-        name: "",
-        group: "",
-        type: "",
-        duty: "",
-        rank: "",
-        joinTime: "",
-        address: "",
-        phone: ""
-      };
-      this.revenue = {
-        wages: "",
-        day: "",
-        way: "",
-        year: "",
-        other: "",
-        otherWay: ""
-      };
       this.typeList = ["机关事业", "国有企业", "社会团体", "外资", "合资", "私营有限公司", "个体户"]
     }
 

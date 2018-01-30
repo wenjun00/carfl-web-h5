@@ -32,13 +32,13 @@
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="自缴费用" prop="orderServiceList">
-              <i-checkbox-group v-model="chooseBuyModel.orderServiceList">
-                <i-checkbox label="无" :value="368"></i-checkbox>
-                <i-checkbox label="购置税" :value="369"></i-checkbox>
-                <i-checkbox label="保险费" :value="370"></i-checkbox>
-                <i-checkbox label="上牌费" :value="371"></i-checkbox>
-                <i-checkbox label="路桥费" :value="372"></i-checkbox>
-                <i-checkbox label="首期租金" :value="373"></i-checkbox>
+              <i-checkbox-group v-model="chooseBuyModel.orderServiceList" @on-change="dsdsdsd">
+                <i-checkbox :value="368" :label="368">无</i-checkbox>
+                <i-checkbox :value="369" :label="369">购置税</i-checkbox>
+                <i-checkbox :value="370" :label="370">保险费</i-checkbox>
+                <i-checkbox :value="371" :label="371">上牌费</i-checkbox>
+                <i-checkbox :value="372" :label="372">路桥费</i-checkbox>
+                <i-checkbox :value="373" :label="373">首期租金</i-checkbox>
               </i-checkbox-group>
             </i-form-item>
           </i-col>
@@ -290,7 +290,7 @@
       intentionPeriods: '', // 意向期限
       rentPayable: '', // 租金支付
       intentionPaymentRatio: '', // 意向首付比例
-      orderServiceList: '', // 自缴费用
+      orderServiceList: [], // 自缴费用
       financingUse: '' // 融资租赁用途
     };
 
@@ -301,6 +301,11 @@
      */
     distributionData(data) {
       this.addcarData = data
+    }
+    dsdsdsd(data) {
+      console.log(57567576465456356)
+      console.log(this.chooseBuyModel.orderServiceList, 7878676786875875)
+      console.log(data, 800)
     }
     /**
      * 打开月供模拟计算器
@@ -323,29 +328,29 @@
         this.companyObject = val.object
       })
       // 设置表单数据
-      this.chooseBuyModel = {
-        usedMode: '',
-        hopeMoney: '',
-        hopeTime: '',
-        rentPay: '',
-        hopeProportion: '',
-        prdSeriods: '',
-        prdName: '',
-        periods: '',
-        prdInterestRate: '',
-        payWay: '',
-        financeTotalMoney: '',
-        moneyPay: '',
-        downPayMoney: '',
-        depositCash: '',
-        finalCash: '',
-        manageCost: '',
-        purchaseMoney: '',
-        licenseMoney: '',
-        GpsMoney: '',
-        otherMoney: '',
-        remark: ''
-      }
+      //   this.chooseBuyModel = {
+      //     usedMode: '',
+      //     hopeMoney: '',
+      //     hopeTime: '',
+      //     rentPay: '',
+      //     hopeProportion: '',
+      //     prdSeriods: '',
+      //     prdName: '',
+      //     periods: '',
+      //     prdInterestRate: '',
+      //     payWay: '',
+      //     financeTotalMoney: '',
+      //     moneyPay: '',
+      //     downPayMoney: '',
+      //     depositCash: '',
+      //     finalCash: '',
+      //     manageCost: '',
+      //     purchaseMoney: '',
+      //     licenseMoney: '',
+      //     GpsMoney: '',
+      //     otherMoney: '',
+      //     remark: ''
+      //   }
       this.carColumns = [{
           title: '操作',
           align: 'center',
