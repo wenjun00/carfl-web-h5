@@ -19,7 +19,6 @@ import carController from './car.controller'
 import personalController from './personal.controller'
 import paymentScheduleController from './paymentSchedule.controller'
 import remitApplicationController from './remitApplication.controller'
-
 export const manageService = {
   departmentController,
   roleController,

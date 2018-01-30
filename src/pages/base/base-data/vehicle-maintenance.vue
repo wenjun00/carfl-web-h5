@@ -44,7 +44,7 @@
                             <td>{{item.cc}}</td>
                         </tr>
                     </table> -->
-                    <i-table border :no-data-text="true" :align="center" :columns="columns" :data="carInfo" :loading="false"></i-table>
+                    <i-table border :columns="columns" :data="carInfo" :loading="false"></i-table>
                 </i-col>
             </i-row>
         </i-row>
@@ -191,5 +191,9 @@ export default class ProdConfig extends Page {
     });
     return Lv2Nodes;
   }
+  /**
+   * 查询车辆
+   */
+  seach() {}
 }
 </script>
