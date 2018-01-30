@@ -103,7 +103,8 @@
     private approvalModel: any = {
       timeSearch: '',
       startTime: '',
-      endTime: ''
+      endTime: '',
+      personalInfo: ''
     }
 
     visibleChange() {
@@ -428,6 +429,8 @@
     }
 
     getAllOrderList() {
+      this.approvalModel.startTime = FilterService.dateFormat(this.approvalModel.startTime, "yyyy-MM-dd")
+      this.approvalModel.endTime = FilterService.dateFormat(this.approvalModel.endTime, "yyyy-MM-dd")
       this.approvalService.approvalOrderSearch(this.approvalModel, this.pageService).subscribe(val => {
         this.allOrderList = val.object.list
       })
