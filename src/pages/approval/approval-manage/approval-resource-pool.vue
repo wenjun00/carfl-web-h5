@@ -18,7 +18,9 @@
     <i-row v-if="searchOptions" style="position:relative;right:10px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:16%" type="datetimerange" @on-change="timeRangeChange" @on-clear="clearTime"></i-date-picker>
+      <!--<i-date-picker style="display:inline-block;width:16%" type="datetimerange" @on-change="timeRangeChange" @on-clear="clearTime"></i-date-picker>-->
+      <i-date-picker style="display:inline-block;width:10%;" v-model="resourcePoolModel.startTime"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%;" v-model="resourcePoolModel.endTime"></i-date-picker>
       <i-select style="width:100px;margin-left:10px;" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
       </i-select>
@@ -58,7 +60,7 @@
     </template>
 
     <template>
-      <i-modal title="订单详情"  width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
+      <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
         <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
@@ -424,6 +426,8 @@
      * 获取审核资源池列表
      */
     getApprovalListByCondition() {
+      this.resourcePoolModel.startTime = FilterService.dateFormat(this.resourcePoolModel.startTime, "yyyy-MM-dd")
+      this.resourcePoolModel.endTime = FilterService.dateFormat(this.resourcePoolModel.endTime, "yyyy-MM-dd")
       this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
         this.resourcePoolList = val.object.list
       })
@@ -431,6 +435,10 @@
     getTimeSearch(val) {
       this.resourcePoolModel.startTime = ''
       this.resourcePoolModel.endTime = ''
+      this.resourcePoolModel.city = ''
+      this.resourcePoolModel.province = ''
+      this.resourcePoolModel.personalInfo = ''
+      this.resourcePoolModel.productType = ''
       this.resourcePoolModel.timeSearch = val
       this.getApprovalListByCondition()
       this.resourcePoolModel.timeSearch = ''

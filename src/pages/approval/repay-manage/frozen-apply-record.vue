@@ -2,14 +2,14 @@
 <template>
   <section class="page frozen-apply-record">
     <span class="form-title">冻结申请记录</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
@@ -22,16 +22,14 @@
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:6px;">
-      <i-input style="display:inline-block;width:10%;margin-left:10px;" placeholder="请输入客户姓名\证件号码"></i-input>
+      <i-input style="display:inline-block;width:14%;margin-left:10px;" v-model="frozenModel.orderInfo" placeholder="请输入客户姓名\证件号码\订单号\手机号(主)"></i-input>
       <span style="margin-left:10px;">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>
-      <i-select style="width:10%;margin-left:10px" placeholder="全部结算通道">
-        <i-option label="汇付" value="汇付" key="汇付"></i-option>
-        <i-option label="现金" value="现金" key="现金"></i-option>
-        <i-option label="支付宝" value="支付宝" key="支付宝"></i-option>
-        <i-option label="微信" value="微信" key="微信"></i-option>
-        <i-option label="对公转账" value="对公转账" key="对公转账"></i-option>
+      <i-date-picker style="display:inline-block;width:10%;" v-model="frozenModel.applyDateStart"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%;" v-model="frozenModel.applyDateEnd"></i-date-picker>
+      <i-select style="width:10%;margin-left:10px" placeholder="全部结算通道" v-model="frozenModel.collectMoneyMethod" clearable>
+        <i-option label="汇付" :value="162" :key="162"></i-option>
+        <i-option label="富友" :value="163" :key="163"></i-option>
+        <i-option label="对公转账" :value="164" :key="164"></i-option>
       </i-select>
       <i-button class="blueButton" style="margin-left:20px;" @click="getFrozenList">搜索</i-button>
     </i-row>
@@ -79,8 +77,13 @@
     private data2: Array < Object > = [];
     private repayInfo: Boolean = false;
     private searchOptions: Boolean = false;
-    private derateModel: any = {
-      remitItem: 1122
+    private frozenModel: any = {
+      remitItem: 1122,
+      applyDateStart: '',
+      applyDateEnd: '',
+      timeSearch: '',
+      collectMoneyMethod: '',
+      orderInfo: ''
     }
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -131,22 +134,26 @@
         {
           align: "center",
           title: "应还罚息",
-          key: 'penaltyReceivable'
+          key: 'penaltyReceivable',
+          width: 100
         },
         {
           align: "center",
           title: "申请冻结罚息",
-          key: "penaltyFreeze"
+          key: "penaltyFreeze",
+          width: 120
         },
         {
           align: "center",
           title: "剩余罚息",
-          key: "leftPenalty"
+          key: "leftPenalty",
+          width: 100
         },
         {
           align: "center",
           title: " 冻结还款状态",
-          key: "paymentStatus"
+          key: "paymentStatus",
+          width: 110
         },
         {
           align: "center",
@@ -164,18 +171,20 @@
         {
           align: "center",
           title: " 客户姓名",
-          key: "name"
+          key: "name",
+          width: 100
         },
         {
           align: "center",
           title: " 证件号",
-          key: "idCard"
+          key: "idCard",
+          width: 180
         },
         {
           align: "center",
           title: " 手机号",
           key: "mobileNumber",
-          width: '160'
+          width: 160
         },
         {
           align: "center",
@@ -214,7 +223,7 @@
           align: "center",
           title: " 冻结备注",
           key: "remitRemark",
-          width: 90
+          width: 200
         }
       ];
 
@@ -370,7 +379,9 @@
 
     }
     getFrozenList() {
-      this.remitApplicationService.selectApplyForReliefHistory(this.derateModel, this.pageService).subscribe(val => {
+      this.frozenModel.applyDateStart = FilterService.dateFormat(this.frozenModel.applyDateStart, "yyyy-MM-dd")
+      this.frozenModel.applyDateEnd = FilterService.dateFormat(this.frozenModel.applyDateEnd, "yyyy-MM-dd")
+      this.remitApplicationService.selectApplyForReliefHistory(this.frozenModel, this.pageService).subscribe(val => {
         this.frozenList = val.object.list
       })
     }
@@ -384,6 +395,15 @@
         this.$Message.success('撤销成功！')
         this.getFrozenList()
       })
+    }
+    getTimeSearch(val) {
+      this.frozenModel.applyDateStart = ''
+      this.frozenModel.applyDateEnd = ''
+      this.frozenModel.collectMoneyMethod = ''
+      this.frozenModel.orderInfo = ''
+      this.frozenModel.timeSearch = val
+      this.getFrozenList()
+      this.frozenModel.timeSearch = ''
     }
   }
 

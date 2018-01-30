@@ -55,13 +55,10 @@
      * 获取附件列表
      */
     getAttachmentList(row) {
-      console.log(row, 9988)
       let businessId = row.id
       this.paymentScheduleService.checkTheVoucher({
         businessId: businessId
-      }).subscribe(val => {
-        console.log(435, val)
-      })
+      }).subscribe(val => {})
     }
   }
 
