@@ -25,8 +25,8 @@
               </i-form-item>
             </i-col>
             <i-col span="12" pull="3">
-              <i-form-item label="证件号码" prop="certificateNumber">
-                <i-input type="text" v-model="customerData.certificateNumber">
+              <i-form-item label="证件号码" prop="idCard">
+                <i-input type="text" v-model="customerData.idCard">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -69,7 +69,7 @@
           </i-row>
           <i-row>
             <i-col :span="12">
-              <i-form-item label="代办服务" prop="phone">
+              <i-form-item label="代办服务" prop="orderServiceList">
                 <i-checkbox-group v-model="customerData.orderServiceList">
                   <i-checkbox label="上牌" :value="200"></i-checkbox>
                   <i-checkbox label="办理保险" :value="201"></i-checkbox>
@@ -102,13 +102,13 @@
       customerName: '', // 购车方
       customerPhone: '', // 联系电话
       certificateType: '', // 证件类型
-      certificateNumber: '', // 证件号码
+      idCard: '', // 证件号码
       province: '', // 省
       city: '', // 市
       area: '', // 区
       postalCode: '', // 邮政编码
       idCardAddressDetail: '', // 箱子地址
-      orderServiceList: ''
+      orderServiceList: '' // 代办服务
     }
     mounted() {}
   }

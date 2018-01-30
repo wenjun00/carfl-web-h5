@@ -58,6 +58,9 @@
   import {
     PageService
   } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   @Layout("workspace")
   @Component({
 
@@ -77,12 +80,13 @@
     private repayInfo: Boolean = false;
     private searchOptions: Boolean = false;
     private derateModel: any = {
-
+      remitItem: 1121
     }
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     created() {
+      this.getDerateList()
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -113,7 +117,7 @@
                         title: '提示',
                         content: '确定撤销吗？',
                         onOk: () => {
-                          this.$Message.info('撤销成功')
+                          this.revertDerate(row)
                         }
                       })
                     }
@@ -127,27 +131,35 @@
         {
           align: "center",
           title: "应还罚息",
-          key: 'supposedInterest'
+          key: 'penaltyReceivable'
         },
         {
           align: "center",
           title: "申请减免罚息",
-          key: "applyDerateInterest"
+          key: "penaltyDerate"
         },
         {
           align: "center",
           title: "剩余罚息",
-          key: "restInterest"
+          key: "leftPenalty"
         },
         {
           align: "center",
           title: " 减免申请日期",
-          key: "derateApplyDate"
+          key: "applyDate",
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.applyDate, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: " 客户姓名",
-          key: "customerName"
+          key: "name"
         },
         {
           align: "center",
@@ -157,14 +169,21 @@
         {
           align: "center",
           title: " 手机号",
-          key: "phone",
+          key: "mobileNumber",
           width: 160
         },
         {
           align: "center",
           title: " 订单创建时间",
           key: "orderCreateTime",
-          width: 120
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.orderCreateTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
@@ -183,19 +202,26 @@
                   })
                 }
               }
-            }, 'KB2017100102')
+            }, params.row.orderNumber)
           }
         },
         {
           align: "center",
           title: " 合同生效日期",
-          key: "compactBeginDate",
-          width: 120
+          key: "contractDate",
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: " 减免备注",
-          key: "derateRemark",
+          key: "remitRemark",
           width: 90
         }
       ];
@@ -203,12 +229,12 @@
       this.columns2 = [{
           align: "center",
           type: "index",
-          width: "60",
+          width: 60,
           title: '期数'
         },
         {
           title: "操作",
-          width: "120",
+          width: 120,
           align: "center",
           render: (h, {
             row,
@@ -244,13 +270,13 @@
           align: "center",
           title: "应付款日",
           key: "supposedPayDate",
-          width: '110'
+          width: 110
         },
         {
           align: "center",
           title: "实际付款日",
           key: "actualPayDate",
-          width: '110'
+          width: 110
         },
         {
           align: "center",
@@ -276,7 +302,7 @@
           align: "center",
           title: " 开票日",
           key: "invoiceDate",
-          width: '110'
+          width: 110
         },
         {
           align: "center",
@@ -353,7 +379,18 @@
     }
     getDerateList() {
       this.remitApplicationService.selectApplyForReliefHistory(this.derateModel, this.pageService).subscribe(val => {
-        this.derateList = val.object
+        this.derateList = val.object.list
+      })
+    }
+    /**
+     * 撤销
+     */
+    revertDerate(row) {
+      this.remitApplicationService.remitCanceled({
+        applyId: row.applyId
+      }).subscribe(val => {
+        this.$Message.success('撤销成功！')
+        this.getDerateList()
       })
     }
 

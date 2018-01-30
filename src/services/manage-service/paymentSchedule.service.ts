@@ -17,4 +17,27 @@ export class PaymentScheduleService {
       page: page
     })
   }
+  /**
+   * 还款详情
+   */
+  getPaymentRecordDetail({ personalId, businessId }) {
+    return this.netService.send({
+      server: manageService.paymentScheduleController.getPaymentRecordDetail,
+      data: {
+        personalId: personalId,
+        businessId: businessId
+      }
+    })
+  }
+  /**
+   * 还款总揽
+   */
+  getRepaymentOverview({ orderId }) {
+    return this.netService.send({
+      server: manageService.paymentScheduleController.getRepaymentOverview,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
 }

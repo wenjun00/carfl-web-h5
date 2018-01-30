@@ -16,4 +16,26 @@ export class RemitApplicationService {
       page: page
     })
   }
+  /**
+   * 减免撤销
+   */
+  remitCanceled({ applyId }) {
+    return this.netService.send({
+      server: manageService.remitApplicationController.remitCanceled,
+      data: {
+        applyId: applyId
+      }
+    })
+  }
+  /**
+   * 解冻
+   */
+  freezeCancel({ applyId }) {
+    return this.netService.send({
+      server: manageService.remitApplicationController.freezeCancel,
+      data: {
+        applyId: applyId
+      }
+    })
+  }
 }

@@ -1,36 +1,34 @@
 <!--冲抵顺序配置-->
 <template>
     <section class="component modify-branch-info">
-        <i-form ref="branch-form" :model="formItem" :rules="formRules" :label-width="100">
+        <i-form ref="branch-form" :model="formItemParent" :rules="formRules" :label-width="100">
             <i-form-item label="公司简称：" prop="companyChinaname">
-                <i-input v-model="formItem.companyChinaname" placeholder="请输入公司简称"></i-input>
+                <i-input v-model="formItemParent.companyChinaname" placeholder="请输入公司简称"></i-input>
             </i-form-item>
             <i-form-item label="所在省份：" prop="companyProvince">
-                <!-- <i-input v-model="formItem.companyProvince" placeholder="请输入所在省份"></i-input> -->
-                <i-select style="width:100%" placeholder="选择省" v-model="formItem.companyProvince" clearable>
+                <i-select style="width:100%" placeholder="选择省" v-model="formItemParent.companyProvince" clearable>
                     <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
             </i-form-item>
             <i-form-item label="所在城市：" prop="companyCity">
-                <!-- <i-input v-model="formItem.companyCity" placeholder="请输入所在城市"></i-input> -->
-                <i-select style="width:100%" placeholder="选择市" v-model="formItem.companyCity" clearable>
-                    <i-option v-for="{value,label} in this.formItem.province ? this.$city.getCityData({ level: 1, id: this.formItem.province }) : []" :key="value" :label="label" :value="value"></i-option>
+                <i-select style="width:100%" placeholder="选择市" v-model="formItemParent.companyCity" clearable>
+                    <i-option v-for="{value,label} in this.formItemParent.province ? this.$city.getCityData({ level: 1, id: this.formItemParent.province }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
             </i-form-item>
             <i-form-item label="银行户名：" prop="bankAccount">
-                <i-input v-model="formItem.bankAccount" placeholder="请输入银行户名"></i-input>
+                <i-input v-model="formItemParent.bankAccount" placeholder="请输入银行户名"></i-input>
             </i-form-item>
             <i-form-item label="开户银行：" prop="depositBank">
-                <i-input v-model="formItem.depositBank" placeholder="请输入开户银行"></i-input>
+                <i-input v-model="formItemParent.depositBank" placeholder="请输入开户银行"></i-input>
             </i-form-item>
             <i-form-item label="银行卡号：" prop="cardNumber">
-                <i-input v-model="formItem.cardNumber" placeholder="请输入银行卡号"></i-input>
+                <i-input v-model="formItemParent.cardNumber" placeholder="请输入银行卡号"></i-input>
             </i-form-item>
             <i-form-item label="支行名称：" prop="branchName">
-                <i-input v-model="formItem.branchName" placeholder="请输入支行名称"></i-input>
+                <i-input v-model="formItemParent.branchName" placeholder="请输入支行名称"></i-input>
             </i-form-item>
             <i-form-item label="状态：">
-                <i-switch size="large" v-model="formItem.companyStatus">
+                <i-switch size="large" @on-change="change">
                     <span slot="open">启用</span>
                     <span slot="close">停用</span>
                 </i-switch>
@@ -47,6 +45,7 @@ import { Form } from "iview";
 import { CompanyService } from "~/services/manage-service/company.service";
 import { Dependencies } from "~/core/decorator";
 import { Prop } from "vue-property-decorator";
+import { ifError } from "assert";
 
 @Component({
   components: {
@@ -56,12 +55,12 @@ import { Prop } from "vue-property-decorator";
 })
 export default class ModifyBranchInfo extends Vue {
   @Dependencies(CompanyService) private companyService: CompanyService;
-  //   @Prop() branchInfo: any;
-  @Prop() formItem: any;
+  @Prop() formItemParent: any;
   private formRules: any;
+  private formItem: any;
 
   created() {
-    this.formItem = {
+    this.formItemParent = {
       companyChinaname: "",
       companyProvince: "",
       companyCity: "",
@@ -69,7 +68,7 @@ export default class ModifyBranchInfo extends Vue {
       depositBank: "",
       cardNumber: "",
       branchName: "",
-      companyStatus: false
+      companyStatus: ""
     };
     /**
      *验证
@@ -85,7 +84,7 @@ export default class ModifyBranchInfo extends Vue {
       companyProvince: [
         {
           required: true,
-          message: "您输入的内容不能为空",
+          message: "请选择省份",
           trigger: "change",
           type: "number"
         }
@@ -93,7 +92,7 @@ export default class ModifyBranchInfo extends Vue {
       companyCity: [
         {
           required: true,
-          message: "您输入的内容不能为空",
+          message: "请选择城市",
           trigger: "change",
           type: "number"
         }
@@ -128,14 +127,17 @@ export default class ModifyBranchInfo extends Vue {
       ]
     };
   }
+  /**@
+   * 点击确定按钮
+   */
   confirmModify() {
-    console.log(this.formItem, 77777);
     let formVal = <Form>this.$refs["branch-form"];
+    console.log(this.formItemParent);
     formVal.validate(valid => {
       if (valid) {
         this.$emit("close");
         this.companyService
-          .createOrModifyCompany(this.formItem)
+          .createOrModifyCompany(this.formItemParent)
           .subscribe(val => {
             this.$Message.success(val.msg == "" ? "修改成功！" : val.msg);
           });
@@ -143,6 +145,17 @@ export default class ModifyBranchInfo extends Vue {
         this.$Message.error("Fail!");
       }
     });
+  }
+  /**
+   * 修改器用/停用
+   */
+  change(status) {
+    this.formItemParent.companyStatus = status;
+    if (this.formItemParent.companyStatus === true) {
+      return (this.formItemParent.companyStatus = 1);
+    } else {
+      return (this.formItemParent.companyStatus = 0);
+    }
   }
 }
 </script>

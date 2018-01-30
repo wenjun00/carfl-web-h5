@@ -13,5 +13,23 @@ export default {
     controller: CONTROLLER,
     action: 'getCustomerPayments',
     type: requestType.Get
+  },
+  /**
+   * 还款详情
+   */
+  getPaymentRecordDetail: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getPaymentRecordDetail',
+    type: requestType.Get
+  },
+  /**
+   * 还款总揽
+   */
+  getRepaymentOverview: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getRepaymentOverview',
+    type: requestType.Get
   }
 }

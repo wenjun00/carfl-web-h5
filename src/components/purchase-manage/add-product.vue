@@ -6,7 +6,7 @@
     </i-row>
     <i-row style="margin-top:10px;">
       <i-col :span="4" style="border:1px solid #DDDDDD;height:570px;overflow:auto" :class="{open:isShown,close:!isShown}">
-        <i-tree :data="categoryData" style="padding:10px;"></i-tree>
+        <i-tree :data="categoryData" @on-select-change="productPlanissueDetail" style="padding:10px;"></i-tree>
       </i-col>
       <i-col :span="20">
         <i-row type="flex" justify="start">
@@ -17,11 +17,14 @@
           </i-col>
           <i-col span="22" style="overflow:auto">
             <div style="position:relative;bottom:10px">
-              <data-box :columns="carColumns" :data="carData" border stripe></data-box>
+              <i-table highlight-row @on-current-change="currenttrablerowdata" :columns="carColumns" :data="carData" :page="pageService"></i-table>
             </div>
           </i-col>
         </i-row>
       </i-col>
+    </i-row>
+    <i-row style="margin-top:20px;">
+      <i-button style="float:right" @click="confirmAndBackPrd" class="blueButton">确认并返回</i-button>
     </i-row>
   </section>
 </template>
@@ -39,6 +42,19 @@
   import {
     ApplyQueryService
   } from "~/services/business-service/apply-query.service";
+  import {
+    ProductService
+  } from "~/services/manage-service/product.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    ProductPlanIssueService
+  } from "~/services/manage-service/productPlanIssue.service";
+  import {
+    Emit
+  } from "vue-property-decorator";
+
   @Component({
 
     components: {
@@ -46,39 +62,52 @@
     }
   })
   export default class AddProduct extends Vue {
+    @Dependencies(PageService) private pageService: PageService;
+    @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
+    @Dependencies(ProductService) private productService: ProductService;
+    @Dependencies(ProductPlanIssueService) private productPlanIssueService: ProductPlanIssueService;
     private isShown: Boolean = true;
     private carColumns: any;
     private carData: Array < Object > = [];
     private checkRadio: String = ""
-    private categoryData: Array < Object > ;
-    @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
+    private categoryData: Array < any >= [];
+    private allData: Array < any > = [];
+    private productId: any = '';
+    private AddProductData: any = {};
+    private currentRow: any = {};
+    private productPlanissueData: any = {};
+
     @Prop() row: Object;
+    @Emit('currentRowData')
+    currentRowData(currentRow) {}
+    @Emit('productPlanissue')
+    productPlanissue(productPlanissueData) {}
+    @Emit('close')
+    close() {}
+
     created() {
-      this.categoryData = [{
-        title: '开呗融资租赁',
-        expand: true,
-        children: [{
-          title: '直租',
-          expand: true,
-          children: [{
-              title: '群泰融资'
-            },
-            {
-              title: '开呗长租',
-            },
-            {
-              title: '龙江',
-            },
-            {
-              title: '中金',
-            }
-          ]
-        }]
-      }]
+      this.treeList()
       this.carColumns = [{
         align: 'center',
-        width: 60,
-        type: 'selection'
+        title: '选择',
+        width: 180,
+        render: (h, {
+          row,
+          columns,
+          index
+        }) => {
+          return h('Radio', {
+            props: {
+              label: row.workId
+            },
+            on: {
+              click: () => {
+                this.AddProductData = row
+                console.log(this.AddProductData)
+              }
+            }
+          })
+        }
       }, {
         title: '期数(月)',
         key: 'periods',
@@ -86,101 +115,120 @@
         width: 100
       }, {
         title: '账期类型',
-        key: 'paymentType',
+        key: 'periodType',
         align: 'center',
         width: 120
       }, {
         title: '产品利率',
-        key: 'prdInterestRate',
+        key: 'productRate',
         align: 'center',
         width: 100
       }, {
         title: '还款方式',
-        key: 'repayType',
+        key: 'payWay',
         align: 'center',
         width: 100
       }, {
         title: '融资金额(元)',
-        key: 'financeMoney',
+        key: 'financingAmount',
         align: 'center',
         width: 110
       }, {
         title: '首付款',
-        key: 'initialPay',
+        key: 'initialPayment',
         align: 'center',
         width: 100
       }, {
         title: '保证金',
-        key: 'promisePay',
+        key: 'depositCash',
         align: 'center',
         width: 100
       }, {
         title: '尾付款',
-        key: 'lastPay',
+        key: 'finalCash',
         align: 'center',
         width: 100
       }, {
         title: '管理费',
-        key: 'managePay',
+        key: 'manageCost',
         align: 'center',
         width: 100
       }, {
         title: '状态',
-        key: 'status',
+        key: 'productStatus',
         align: 'center'
       }]
-
-      this.carData = [{
-        periods: '12期',
-        paymentType: '固定账期(5日)',
-        prdInterestRate: '0.99',
-        repayType: '等本等息',
-        financeMoney: '10000~30000',
-        initialPay: '0%~25%',
-        promisePay: '1000',
-        lastPay: '',
-        managePay: '',
-        status: '已发布'
-      }, {
-        periods: '12期',
-        paymentType: '固定账期(5日)',
-        prdInterestRate: '0.99',
-        repayType: '等本等息',
-        financeMoney: '10000~30000',
-        initialPay: '0%~30%',
-        promisePay: '1200',
-        lastPay: '5000',
-        managePay: '',
-        status: '已发布'
-      }, {
-        periods: '12期',
-        paymentType: '固定账期(5日)',
-        prdInterestRate: '1.05',
-        repayType: '等本等息',
-        financeMoney: '10000~30000',
-        initialPay: '0%~25%',
-        promisePay: '500',
-        lastPay: '',
-        managePay: '',
-        status: '已发布'
-      }, {
-        periods: '12期',
-        paymentType: '固定账期(5日)',
-        prdInterestRate: '1.23',
-        repayType: '等本等息',
-        financeMoney: '10000~30000',
-        initialPay: '0%~25%',
-        promisePay: '1000',
-        lastPay: '',
-        managePay: '120',
-        status: '已发布'
-      }]
-
     }
 
 
     showCategory() {
       this.isShown = !this.isShown
+    }
+    /**
+     * 获取树形结构
+     */
+    treeList() {
+      this.productService.getAllProduct().subscribe(val => {
+        this.allData = val.object;
+        console.log(this.allData, 888888887777777)
+        this.getTreeDate();
+      });
+    }
+    currenttrablerowdata(currentRow) {
+      this.currentRow = currentRow
+    }
+    getTreeDate() {
+      let series: Map < number, any > = new Map();
+      this.allData.map(t => {
+        if (t.seriesId) {
+          series.set(t.seriesId, t);
+        }
+      });
+      this.categoryData = [];
+      series.forEach(item => {
+        let lv1Node = {
+          title: item.seriesName,
+          seriesId: item.seriesId,
+          expand: true,
+          children: this.getChilds(item.seriesId)
+        };
+        this.categoryData.push(lv1Node);
+      });
+    }
+    getChilds(id) {
+      let prods = this.allData.filter(t => t.seriesId === id);
+      let Lv2Nodes = prods.map(t => {
+        return {
+          title: t.productName,
+          productId: t.productId
+        };
+      });
+      return Lv2Nodes;
+    }
+    /**
+     * 根据产品树获取期数列表
+     */
+    productPlanissueDetail(data) {
+      if (data[0].seriesId) {
+        this.productId = data[0].seriesId
+      }
+      if (data[0].productId) {
+        this.productId = data[0].productId
+      }
+      this.productPlanissue(data)
+      console.log(data, 555)
+      this.productPlanIssueService.getAllProductPlan({
+        productId: this.productId
+      }, this.pageService).subscribe(data => {
+        this.carData = data.object.list
+      });
+    }
+    /**
+     * 确定并返回
+     */
+    confirmAndBackPrd() {
+      this.currentRowData(this.currentRow)
+      this.close()
     }
   }
 
@@ -190,23 +238,23 @@
     max-width: auto;
     overflow: hidden;
   }
-
+  
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-
+  
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-
+  
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-
+  
   .arrowButton {
     line-height: 570px;
     height: 100%;

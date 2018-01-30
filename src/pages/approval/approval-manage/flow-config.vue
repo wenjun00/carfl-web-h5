@@ -26,7 +26,7 @@
             <div style="display:inline-block;margin-left:40px;">{{item.processOrderNumber}}</div>
             <div style="display:inline-block;margin-left:40px;">{{item.processName}}</div>
             <div class="verticalLine"></div>
-            <div class="shangyi">
+            <div class="moveUp" style="margin-left:800px">
               <div style="margin-left:40px;" v-if="item.processOrderNumber===1||item.processName==='合规' ||item.processName==='终审'">
                 <Icon type="arrow-up-b" size="20" color="gray"></Icon>
               </div>
@@ -34,7 +34,7 @@
                 <Icon type="arrow-up-b" size="20"></Icon>
               </div>
             </div>
-            <div>
+            <div class="moveDown">
               <div style="margin-left:40px;" v-if="item.processOrderNumber===2||item.processName==='合规' ||item.processName==='终审'">
                 <Icon type="arrow-down-b" size="20" color="gray"></Icon>
               </div>
@@ -42,7 +42,7 @@
                 <Icon type="arrow-down-b" size="20"></Icon>
               </div>
             </div>
-            <div>
+            <div class="delete">
               <div v-if="item.processName==='合规' ||item.processName==='终审'" style="margin-left:40px;">
                 <Icon type="trash-a" size="20" color='gray'></Icon>
               </div>

@@ -16,16 +16,17 @@
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:10px;">
-      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码"></i-input>
-      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus">
-        <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
-        <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
+      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
+        <i-option :value="178" :key="178" label="结清"></i-option>
+        <i-option :value="179" :key="179" label="逾期"></i-option>
+        <i-option :value="180" :key="180" label="待还"></i-option>
+        <i-option :value="181" :key="181" label="部分还款"></i-option>
       </i-select>
-      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel">
-        <i-option value="汇付" key="汇付" label="汇付"></i-option>
-        <i-option value="富友" key="富友" label="富友"></i-option>
-        <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
-        <i-option value="现金" key="现金" label="现金"></i-option>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
+        <i-option :value="162" :key="162" label="汇付"></i-option>
+        <i-option :value="163" :key="163" label="富友"></i-option>
+        <i-option :value="164" :key="164" label="对公转账"></i-option>
       </i-select>
       <i-button class="blueButton" style="margin-left:20px;" @click="getCustomerRepayList">搜索</i-button>
     </i-row>
@@ -35,19 +36,22 @@
 
     <template>
       <i-modal title="还款详情" :transfer="false" v-model="repayInfoModal" width="1300">
-        <repay-info></repay-info>
+        <repay-info ref="repay-info" :personalId="personalId" :businessId="businessId"></repay-info>
       </i-modal>
     </template>
 
     <template>
-      <i-modal title="还款总揽" :transfer="false" width="900" v-model="repaySumModal">
-        <repay-sum></repay-sum>
+      <i-modal title="还款总览" :transfer="false" width="900" v-model="repaySumModal" class="repay-sum">
+        <repay-sum ref="repay-sum"></repay-sum>
       </i-modal>
     </template>
 
     <template>
       <i-modal title="客户当前结算号" :transfer="false" v-model="customerSettleModal">
         <customer-settle-modal></customer-settle-modal>
+        <div slot="footer">
+          <i-button @click="customerSettleModal=false" class="blueButton">关闭</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -72,6 +76,9 @@
   import {
     PageService
   } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   @Layout("workspace")
   @Component({
 
@@ -101,6 +108,8 @@
       paymentStatus: '',
       dynamicParam: ''
     }
+    private personalId: any = '';
+    private businessId: any = '';
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
@@ -132,7 +141,7 @@
                   },
                   on: {
                     click: () => {
-                      this.repaySumModal = true
+                      this.repaySumClick(row)
                     }
                   }
                 },
@@ -148,7 +157,7 @@
                   },
                   on: {
                     click: () => {
-                      this.repayInfoModal = true
+                      this.repayInfoClick(row)
                     }
                   }
                 },
@@ -161,12 +170,12 @@
           align: "center",
           title: "订单编号",
           width: 150,
-          key: 'orderId'
+          key: 'orderNumber'
         },
         {
           align: "center",
           title: "客户结算号",
-          key: "customerSettleId",
+          key: "clientNumber",
           width: 150,
           render: (h, params) => {
             return h('i-button', {
@@ -178,13 +187,13 @@
                   this.customerSettleModal = true
                 }
               }
-            }, 'LSK13902344')
+            }, params.row.clientNumber)
           }
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customerName"
+          key: "name"
         },
         {
           align: "center",
@@ -195,54 +204,81 @@
         {
           align: "center",
           title: " 手机号",
-          key: "phone",
+          key: "mobileMain",
           width: 120
         },
         {
           align: "center",
           title: " 订单创建时间",
-          key: "orderCreateTime",
-          width: 160
+          key: "createTime",
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: " 合同生效日",
           key: "contractDate",
-          width: 160
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: " 待还本金",
-          key: "noPayMajorMoney",
+          key: "principalReceivable",
           width: 90
         },
         {
           align: "center",
           title: " 待还利息",
-          key: "noPayInterest",
+          key: "interestReceivable",
           width: 90
         },
         {
           align: "center",
           title: " 待还罚息",
-          key: "noPayPunishInterest",
+          key: "penaltyReceivable",
           width: 90
         },
         {
           align: "center",
           title: " 利率%/月",
-          key: "interestRate",
+          key: "productRate",
           width: 90
         },
         {
           align: "center",
           title: " 结算通道",
-          key: "windAccountChannel"
+          key: "settlementChannel",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            if (row.settlementChannel === 162) {
+              return h('span', {}, '汇付')
+            } else if (row.settlementChannel === 163) {
+              return h('span', {}, '富友')
+            } else if (row.settlementChannel === 164) {
+              return h('span', {}, '对公转账')
+            }
+          }
         },
         {
           align: "center",
           title: " 归属公司",
-          key: "belongFirm"
+          key: "companyChinaName"
         }
       ];
     }
@@ -257,18 +293,44 @@
     checkProof(row) {
 
     }
+    /**
+     * 获取客户还款查询
+     */
     getCustomerRepayList() {
       this.paymentScheduleService.getCustomerPayments(this.customerRepayModel, this.pageService).subscribe(val => {
-        this.customerRepayList = val.object
+        this.customerRepayList = val.object.list
       })
     }
     getTimeSearch(val) {
 
     }
+    /**
+     * 还款详情
+     */
+    repayInfoClick(row) {
+      this.repayInfoModal = true
+      this.personalId = row.personalId
+      this.businessId = row.businessId
+      let _repayInfo: any = this.$refs['repay-info']
+      _repayInfo.getRepayInfo(this.personalId, this.businessId)
+    }
+    /**
+     * 还款总揽
+     */
+    repaySumClick(row) {
+      this.repaySumModal = true
+      let orderId = row.orderId
+      let _repaySum: any = this.$refs['repay-sum']
+      _repaySum.getRepaySum(orderId)
+    }
   }
 
 </script>
-<style>
-
+<style lang="less">
+  .repay-sum {
+    .ivu-modal-footer {
+      display: none;
+    }
+  }
 
 </style>
