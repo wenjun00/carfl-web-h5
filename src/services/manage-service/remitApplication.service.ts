@@ -38,4 +38,22 @@ export class RemitApplicationService {
       }
     })
   }
+  /**
+   * 申请减免
+   */
+  applyForRelief(data) {
+    return this.netService.send({
+      server: manageService.remitApplicationController.applyForRelief,
+      data: data
+    })
+  }
+  /**
+   * 申请冻结
+   */
+  applyToFreeze(data) {
+    return this.netService.send({
+      server: manageService.remitApplicationController.applyToFreeze,
+      data: data
+    })
+  }
 }

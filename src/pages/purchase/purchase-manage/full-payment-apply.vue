@@ -14,8 +14,8 @@
       <i-col span="18">
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" label-position="left" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
           <i-col span="12">
-            <i-form-item label="证件号码" prop="certificateNumber">
-              <i-input type="text" :maxlength="18" v-model="applyData.certificateNumber" autofocus placeholder="请输入证件号码" @on-change="showTab"
+            <i-form-item label="证件号码" prop="idCard">
+              <i-input type="text" :maxlength="18" v-model="applyData.idCard" autofocus placeholder="请输入证件号码" @on-change="showTab"
                 @on-blur="checkcustomerinfo">
               </i-input>
             </i-form-item>
@@ -130,7 +130,7 @@
 
 
     private applyData: any = {
-      certificateNumber: '',
+      idCard: '',
       customerName: '',
       customerPhone: '',
       salesmanName: ''
@@ -298,7 +298,7 @@
      * 根据客户三项查询历史订单
      */
     checkcustomerinfo() {
-      if (this.applyData.certificateNumber) {
+      if (this.applyData.idCard) {
         this.personalService.getCustomerHistoryFinanceInfo(this.applyData).subscribe(data => {
           this.historicalDataset = data.object
           this.historicalModal = true
@@ -311,7 +311,7 @@
     }
     distributionData(data) {
       console.log(data, 666)
-      this.applyData.certificateNumber = data[0].idCard
+      this.applyData.idCard = data[0].idCard
       this.applyData.customerName = data[0].personalName
       this.applyData.customerPhone = data[0].mobileMain
       //   this.applyData.salesmanName = data[0].salesmanName
@@ -354,7 +354,7 @@
         this.orderStatus = 304
       }
       let savesubmitDataset: any = {
-        certificateNumber: this.applyData.certificateNumber,
+        idCard: this.applyData.idCard,
         customerName: this.applyData.customerName,
         customerPhone: this.applyData.customerPhone,
         salesmanName: this.applyData.salesmanName,
@@ -376,7 +376,7 @@
       });
     }
     showTab() {
-      if (this.applyData.certificateNumber.length === 18) {
+      if (this.applyData.idCard.length === 18) {
         this.disabledStatus = 'none'
       }
     }

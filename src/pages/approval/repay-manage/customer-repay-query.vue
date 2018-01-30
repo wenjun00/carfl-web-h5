@@ -35,13 +35,13 @@
     </div>
 
     <template>
-      <i-modal title="还款详情" :transfer="false" v-model="repayInfoModal" width="1300">
-        <repay-info ref="repay-info" :personalId="personalId" :businessId="businessId"></repay-info>
+      <i-modal title="还款详情" :transfer="false" v-model="repayInfoModal" width="1300" class="repay-info">
+        <repay-info ref="repay-info"></repay-info>
       </i-modal>
     </template>
 
     <template>
-      <i-modal title="还款总览" :transfer="false" width="900" v-model="repaySumModal" class="repay-sum">
+      <i-modal title="还款总览" :transfer="false" width="1050" v-model="repaySumModal" class="repay-sum">
         <repay-sum ref="repay-sum"></repay-sum>
       </i-modal>
     </template>
@@ -54,6 +54,16 @@
         </div>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
+        <purchase-information></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
+
   </section>
 </template>
 
@@ -79,6 +89,8 @@
   import {
     FilterService
   } from "~/utils/filter.service"
+  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+
   @Layout("workspace")
   @Component({
 
@@ -88,7 +100,8 @@
       // 客户结算号弹窗
       CustomerSettleModal,
       // 还款详情
-      RepayInfo
+      RepayInfo,
+      PurchaseInformation
     }
   })
   export default class CustomerRepayQuery extends Page {
@@ -103,6 +116,7 @@
     private searchOptions: Boolean = false;
     private repaySumModal: Boolean = false;
     private customerSettleModal: Boolean = false;
+    private purchaseInfoModal: Boolean = false;
     private customerRepayModel: any = {
       settlementChannel: '',
       paymentStatus: '',
@@ -169,31 +183,52 @@
         {
           align: "center",
           title: "订单编号",
-          width: 150,
-          key: 'orderNumber'
-        },
-        {
-          align: "center",
-          title: "客户结算号",
-          key: "clientNumber",
-          width: 150,
-          render: (h, params) => {
+          width: 160,
+          key: 'orderNumber',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('i-button', {
               props: {
                 type: 'text'
               },
               on: {
                 click: () => {
-                  this.customerSettleModal = true
+                  this.purchaseInfoModal = true
                 }
               }
-            }, params.row.clientNumber)
+            }, row.orderNumber)
+          }
+        },
+        {
+          align: "center",
+          title: "客户结算号",
+          key: "clientNumber",
+          width: 150,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.customerSettleClick(row)
+                }
+              }
+            }, row.clientNumber)
           }
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "name"
+          key: "name",
+          width: 100
         },
         {
           align: "center",
@@ -261,6 +296,7 @@
           align: "center",
           title: " 结算通道",
           key: "settlementChannel",
+          width: 100,
           render: (h, {
             row,
             column,
@@ -278,6 +314,7 @@
         {
           align: "center",
           title: " 归属公司",
+          width: 100,
           key: "companyChinaName"
         }
       ];
@@ -309,10 +346,9 @@
      */
     repayInfoClick(row) {
       this.repayInfoModal = true
-      this.personalId = row.personalId
-      this.businessId = row.businessId
+      let orderId = row.orderId
       let _repayInfo: any = this.$refs['repay-info']
-      _repayInfo.getRepayInfo(this.personalId, this.businessId)
+      _repayInfo.getRepayInfo(orderId)
     }
     /**
      * 还款总揽
@@ -323,11 +359,17 @@
       let _repaySum: any = this.$refs['repay-sum']
       _repaySum.getRepaySum(orderId)
     }
+    customerSettleClick(row) {
+      this.customerSettleModal = true
+      let _customerSettle: any = this.$refs['customer-settle']
+      _customerSettle.getCustomerSettleObj(row)
+    }
   }
 
 </script>
 <style lang="less">
-  .repay-sum {
+  .repay-sum,
+  .repay-info {
     .ivu-modal-footer {
       display: none;
     }

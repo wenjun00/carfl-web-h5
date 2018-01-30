@@ -1,12 +1,12 @@
 <!--还款详情-->
 <template>
   <section class="component repay-info">
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <i-table :columns="columns1" :data="repayDetailList"></i-table>
 
     <!--查看附件-->
     <template>
       <i-modal title="查看凭证" v-model="checkAttachmentModal">
-        <check-attachment></check-attachment>
+        <check-attachment ref="check-attach"></check-attachment>
       </i-modal>
     </template>
   </section>
@@ -26,6 +26,9 @@
   import {
     PaymentScheduleService
   } from "~/services/manage-service/paymentSchedule.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   @Component({
     components: {
       DataBox,
@@ -35,18 +38,18 @@
   export default class RepayInfo extends Vue {
     @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
 
-    @Prop() personalId;
-    @Prop() businessId;
+    // @Prop() personalId;
+    // @Prop() businessId;
     private applyDerateOpen: Boolean = false
     private applyFrozenOpen: Boolean = false
     private checkAttachmentModal: Boolean = false
     private columns1: any;
-    private data1: Array < Object > = [];
+    private repayDetailList: Array < Object > = [];
     created() {
 
       this.columns1 = [{
           align: "center",
-          type: "index",
+          key: "periods",
           width: 60,
           title: '期数',
           fixed: 'left'
@@ -84,201 +87,136 @@
         {
           align: "center",
           title: "还款状态",
-          key: 'payStatus',
+          key: 'paymentStatus',
           width: 110
         },
         {
           align: "center",
           title: "应付款日",
-          key: "supposedPayDate",
-          width: 110
+          key: "paymentDay",
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.paymentDay, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: "实际付款日",
-          key: "actualPayDate",
-          width: 110
+          key: "actualPaymentDay",
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.actualPaymentDay, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: " 逾期天数",
-          key: "overPeriodsDay",
+          key: "overdueDay",
           width: 110
         },
         {
           align: "center",
           title: " 每日罚息",
-          key: "interestEachDay",
+          key: "penaltyDay",
           width: 110
         },
         {
           align: "center",
           title: " 金额",
-          key: "money",
+          key: "sum",
           width: 110
         },
         {
           align: "center",
           title: " 罚金",
-          key: "punishMoney",
+          key: "penalSum",
           width: 110
         },
         {
           align: "center",
           title: " 开票日",
-          key: "invoiceDate",
-          width: 110
+          key: "invoiceDay",
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.invoiceDay, 'yyyy-MM-dd'))
+          }
         },
         {
           align: "center",
           title: " 应收租金",
-          key: "supposedRentMoney",
+          key: "rentReceivable",
           width: 110
         },
         {
           align: "center",
           title: " 应收本金",
-          key: "supposedPrincipalMoney",
+          key: "principalReceivable",
           width: 110
         },
         {
           align: "center",
           title: "应收利息",
-          key: "supposedInterest",
+          key: "interestReceivable",
           width: 110
         },
         {
           align: "center",
           title: " 应收罚息",
-          key: "supposedPunishInterest",
+          key: "penaltyReceivable",
           width: 110
         },
         {
           align: "center",
           title: " 减免罚息",
-          key: "derateInterest",
+          key: "penaltyDerate",
           width: 110
         },
         {
           align: "center",
           title: " 冻结罚息",
-          key: "frozenInterest",
+          key: "penaltyFreeze",
           width: 110
         },
         {
           align: "center",
           title: " 实收本金",
-          key: "actualPrincipalMoney",
+          key: "principalReceived",
           width: 110
         },
         {
           align: "center",
           title: " 实收利息",
-          key: "actualInterest",
+          key: "interestReceived",
           width: 110
         }
       ];
 
-      this.data1 = [{
-        payStatus: '结清',
-        supposedPayDate: '2017-12-01',
-        actualPayDate: '2017-12-01',
-        overPeriodsDay: '0',
-        interestEachDay: '0',
-        money: '1600',
-        punishMoney: '0',
-        invoiceDate: '2017-12-01',
-        supposedRentMoney: '500',
-        supposedPrincipalMoney: '950',
-        supposedInterest: '150',
-        supposedPunishInterest: '0',
-        derateInterest: '0',
-        frozenInterest: '0',
-        actualPrincipalMoney: '1100',
-        actualInterest: '150'
-      }, {
-        payStatus: '结清',
-        supposedPayDate: '2017-12-01',
-        actualPayDate: '2017-12-01',
-        overPeriodsDay: '0',
-        interestEachDay: '0',
-        money: '1600',
-        punishMoney: '0',
-        invoiceDate: '2017-12-01',
-        supposedRentMoney: '500',
-        supposedPrincipalMoney: '950',
-        supposedInterest: '150',
-        supposedPunishInterest: '0',
-        derateInterest: '0',
-        frozenInterest: '0',
-        actualPrincipalMoney: '1100',
-        actualInterest: '150'
-      }, {
-        payStatus: '结清',
-        supposedPayDate: '2017-12-01',
-        actualPayDate: '2017-12-01',
-        overPeriodsDay: '0',
-        interestEachDay: '0',
-        money: '1600',
-        punishMoney: '0',
-        invoiceDate: '2017-12-01',
-        supposedRentMoney: '500',
-        supposedPrincipalMoney: '950',
-        supposedInterest: '150',
-        supposedPunishInterest: '0',
-        derateInterest: '0',
-        frozenInterest: '0',
-        actualPrincipalMoney: '1100',
-        actualInterest: '150'
-      }, {
-        payStatus: '结清',
-        supposedPayDate: '2017-12-01',
-        actualPayDate: '2017-12-01',
-        overPeriodsDay: '0',
-        interestEachDay: '0',
-        money: '1600',
-        punishMoney: '0',
-        invoiceDate: '2017-12-01',
-        supposedRentMoney: '500',
-        supposedPrincipalMoney: '950',
-        supposedInterest: '150',
-        supposedPunishInterest: '0',
-        derateInterest: '0',
-        frozenInterest: '0',
-        actualPrincipalMoney: '1100',
-        actualInterest: '150'
-      }, {
-        payStatus: '结清',
-        supposedPayDate: '2017-12-01',
-        actualPayDate: '2017-12-01',
-        overPeriodsDay: '0',
-        interestEachDay: '0',
-        money: '1600',
-        punishMoney: '0',
-        invoiceDate: '2017-12-01',
-        supposedRentMoney: '500',
-        supposedPrincipalMoney: '950',
-        supposedInterest: '150',
-        supposedPunishInterest: '0',
-        derateInterest: '0',
-        frozenInterest: '0',
-        actualPrincipalMoney: '1100',
-        actualInterest: '150'
-      }]
     }
     /**
      * 查看凭证
      */
     checkProof(row) {
       this.checkAttachmentModal = true
+      let _checkAttach: any = this.$refs['check-attach']
+      _checkAttach.getAttachmentList(row)
     }
-    getRepayInfo(personalId, businessId) {
-      console.log(this.personalId, this.businessId)
-      this.paymentScheduleService.getPaymentRecordDetail({
-        personalId: personalId,
-        businessId: businessId
+    getRepayInfo(orderId) {
+      this.paymentScheduleService.getPaymentDetail({
+        orderId: orderId
       }).subscribe(val => {
-        console.log(val, 999)
+        this.repayDetailList = val.object
       })
     }
   }
