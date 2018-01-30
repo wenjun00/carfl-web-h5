@@ -25,8 +25,8 @@
               </i-form-item>
             </i-col>
             <i-col span="12" pull="3">
-              <i-form-item label="证件号码" prop="certificateNumber">
-                <i-input type="text" v-model="customerData.certificateNumber">
+              <i-form-item label="证件号码" prop="idCard">
+                <i-input type="text" v-model="customerData.idCard">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -102,7 +102,7 @@
       customerName: '', // 购车方
       customerPhone: '', // 联系电话
       certificateType: '', // 证件类型
-      certificateNumber: '', // 证件号码
+      idCard: '', // 证件号码
       province: '', // 省
       city: '', // 市
       area: '', // 区

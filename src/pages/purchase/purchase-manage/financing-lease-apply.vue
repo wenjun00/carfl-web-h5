@@ -16,8 +16,8 @@
         <i-col span="18">
           <i-form ref="customer-form" :model="customerModel" label-position="left" :rules="customerRule" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
             <i-col span="12">
-              <i-form-item label="证件号码" prop="certificateNumber">
-                <i-input type="text" :maxlength="18" v-model="customerModel.certificateNumber" autofocus @on-change="showTab">
+              <i-form-item label="证件号码" prop="idCard">
+                <i-input type="text" :maxlength="18" v-model="customerModel.idCard" autofocus @on-change="showTab">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -41,7 +41,7 @@
             </i-col>
           </i-form>
         </i-col>
-        <i-col span="6" style="display: flex;justify-content: center;align-items: center;position:absolute;top:20%;right:18%;" pull="6">
+        <i-col span="6" style="display: flex;justify-content: center;align-items: center;position:absolute;top:12%;right:18%;" pull="6">
           <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
         </i-col>
       </i-row>
@@ -120,7 +120,7 @@
 
     private customerRule: Object = {};
     private customerModel: any = {
-      certificateNumber: '', // 证件号码 
+      idCard: '', // 证件号码 
       customerName: '', // 客户姓名
       phone: '', // 客户电话
       salesmanName: '' // 归属业务员
@@ -146,7 +146,7 @@
       this.customerModel.worker = ''
     }
     showTab() {
-      if (this.customerModel.certificateNumber.length === 18) {
+      if (this.customerModel.idCard.length === 18) {
         this.disabledStatus = 'none'
       }
     }
