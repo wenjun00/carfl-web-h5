@@ -29,7 +29,7 @@
                     <span>素材名称：</span>
                     <i-input style="width:10%" v-model="personalModel.name"></i-input>
                     <i-button class="blueButton" style="margin-left:10px" @click="search">搜索</i-button>
-                    <i-button class="blueButton" style="margin-left:10px;position:absolute;right:11px;" disabled>新增素材</i-button>
+                    <i-button class="blueButton" style="margin-left:10px;position:absolute;right:11px;" @click="addMaterial">新增素材</i-button>
                     <data-box :columns="columns" :data="data1"></data-box>
                 </i-col>
             </i-row>
@@ -67,7 +67,15 @@ export default class CustomerFodderMaintain extends Page {
   private checkId: number = 0;
   private item: any;
   private personalModel: any;
+  private addMaterialInfo: any;
   created() {
+    this.addMaterialInfo = [
+      {
+        id: "",
+        isNecessary: "",
+        type: ""
+      }
+    ];
     this.maintains = [];
     this.item = {
       id: "376"
@@ -78,7 +86,6 @@ export default class CustomerFodderMaintain extends Page {
       type: 0,
       name: ""
     };
-    console.log(this.personalModel, 123);
     this.columns = [
       {
         title: "序号",
@@ -139,26 +146,36 @@ export default class CustomerFodderMaintain extends Page {
         key: "isNecessary",
         align: "center",
         render: (h, { row, columns, index }) => {
-          return h("i-switch", [
-            h(
-              "span",
-              {
-                props: {
-                  slot: "open"
+          return h(
+            "i-switch",
+            {
+              on: {
+                "on-change": val => {
+                  console.log(val, 9999);
                 }
-              },
-              "是"
-            ),
-            h(
-              "span",
-              {
-                props: {
-                  slot: "close"
-                }
-              },
-              "否"
-            )
-          ]);
+              }
+            },
+            [
+              h(
+                "span",
+                {
+                  props: {
+                    slot: "open"
+                  }
+                },
+                "是"
+              ),
+              h(
+                "span",
+                {
+                  props: {
+                    slot: "close"
+                  }
+                },
+                "否"
+              )
+            ]
+          );
         }
       }
     ];
@@ -216,8 +233,17 @@ export default class CustomerFodderMaintain extends Page {
         this.checkMaintain(this.item);
       });
   }
+  /**
+   *新增素材
+   */
+  addMaterial() {
+    this.addMaterialInfo = this.checkId;
+    this.personalMaterialService
+      .createOrModifyPersonalMaterial(this.addMaterialInfo)
+      .subscribe(val => {});
+  }
   mounted() {
-    this.checkId = 376;
+    this.checkId = 376; //checkId 保存了点击素材类型时的id
   }
 }
 </script>

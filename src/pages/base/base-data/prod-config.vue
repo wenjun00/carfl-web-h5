@@ -37,11 +37,11 @@
                             </data-grid>
                         </i-col>
                         <i-col :span="12">
-                            <span style="margin-left:20px;font-size:14px;">租金渠道选择：</span>
+                            <!-- <span style="margin-left:20px;font-size:14px;">租金渠道选择：</span>
                             <RadioGroup v-model="productMessage.capitaChannels" @on-change="radioSelect">
                                 <Radio label="自有资金"></Radio>
                                 <Radio label="第三方"></Radio>
-                            </RadioGroup>
+                            </RadioGroup> -->
                             <i-button class="blueButton" @click="customerFodderConfig" v-if="customerFodderConfigFlag">
                                 <span></span>客户素材配置</i-button>
                             <i-button class="blueButton" @click="customerFodderConfig" v-if="alreadyConfigFlag">已配置</i-button>
@@ -112,7 +112,7 @@
                                     </div>
                                     <div v-if="item.isPublish===360" class="itemContainer">
                                         <span class="itemName">操作</span>
-                                        <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
+                                        <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;" @click="showDetail(item)">
                                             <svg-icon iconClass="tianxie" class="item"></svg-icon>
                                         </div>
                                     </div>
@@ -144,10 +144,19 @@
 
         <template>
             <i-modal v-model="addPeriodsModal" title="新增期数" width="900">
-                <add-periods></add-periods>
+                <add-periods :pNameTitle="productMessage" ref="add-periods-ref" @close="closeModal"></add-periods>
                 <div slot="footer">
                     <i-button type="ghost">取消</i-button>
-                    <i-button type="primary">确定</i-button>
+                    <i-button type="primary" @click="submiteButton">确定</i-button>
+                </div>
+            </i-modal>
+        </template>
+        <template>
+            <i-modal v-model="editModal" title="修改期数" width="900">
+                <edit-periods :productDetail="productDetails" :pNameTitle="productMessage"></edit-periods>
+                <div slot="footer">
+                    <i-button type="ghost">取消</i-button>
+                    <i-button type="primary" @click="submiteButton">确定</i-button>
                 </div>
             </i-modal>
         </template>
@@ -166,6 +175,8 @@ import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import AddPeriods from "~/components/base-data/add-periods.vue";
+import EditPeriods from "~/components/base-data/edit-product.vue";
+
 import ChargeAgainstOrder from "~/components/base-data/charge-against-order.vue";
 import { Dependencies } from "~/core/decorator";
 import { DataGrid, DataGridItem } from "vue-fintech-component";
@@ -185,7 +196,8 @@ import { retry } from "rxjs/operator/retry";
     DataGrid,
     DataGridItem,
     AddPeriods,
-    ChargeAgainstOrder
+    ChargeAgainstOrder,
+    EditPeriods
   }
 })
 export default class ProdConfig extends Page {
@@ -212,7 +224,8 @@ export default class ProdConfig extends Page {
   private productMessage: any;
   private publishItem: any;
   private addPeriodsBox: Boolean = false;
-
+  private editModal: Boolean = false;
+  private productDetails: Object = {};
   /**
    * 客户素材配置
    */
@@ -283,7 +296,7 @@ export default class ProdConfig extends Page {
     this.prdConfig = [
       {
         productId: "",
-        periods: "",
+        periods: "", // 产品期数
         periodType: "",
         paymentType: "",
         productRate: "",
@@ -459,7 +472,6 @@ export default class ProdConfig extends Page {
   treeList() {
     this.productService.getAllProduct().subscribe(val => {
       this.allData = val.object;
-      console.log(this.allData);
       this.getTreeDate();
     });
   }
@@ -584,11 +596,23 @@ export default class ProdConfig extends Page {
    */
   addPeriods() {
     this.addPeriodsModal = true;
-    this.ProductPlanIssueService.createOrModifyProductPlan(
-      this.prdConfig
-    ).subscribe(val => {
-      console.log(this.prdConfig, 3434343);
-    });
+  }
+  /**
+   * 新增提交按钮
+   */
+  submiteButton() {
+    let periodsModal: any = this.$refs["add-periods-ref"];
+    periodsModal.confirmPeriods();
+  }
+  /**
+   * 关闭弹窗
+   */
+  closeModal() {
+    this.addPeriodsModal = false;
+  }
+  showDetail(item) {
+    this.editModal = true;
+    this.productDetails = item;
   }
 }
 </script>
