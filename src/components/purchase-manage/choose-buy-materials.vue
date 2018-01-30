@@ -8,76 +8,65 @@
         <i-row>
           <i-col span="12">
             <i-form-item label="申请省份" prop="province">
-              <i-select>
-                <i-option label="陕西" key="陕西" value="陕西"></i-option>
+              <i-select placeholder="选择省" v-model="chooseBuyModel.province" clearable>
+                <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="申请城市" prop="city">
-              <i-select>
-                <i-option label="西安市" value="西安市" key="西安市"></i-option>
-                <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
-                <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
-                <i-option label="渭南市" value="渭南市" key="渭南市"></i-option>
-                <i-option label="铜川市" value="铜川市" key="铜川市"></i-option>
-                <i-option label="榆林市" value="榆林市" key="榆林市"></i-option>
-                <i-option label="延安市" value="延安市" key="延安市"></i-option>
-                <i-option label="汉中市" value="汉中市" key="汉中市"></i-option>
-                <i-option label="安康市" value="安康市" key="安康市"></i-option>
-                <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
+              <i-select v-model="chooseBuyModel.city" placeholder="选择市" clearable>
+                <i-option v-for="{value,label} in this.chooseBuyModel.province ? this.$city.getCityData({ level: 1, id: this.chooseBuyModel.province }) : []"
+                  :key="value" :label="label" :value="value"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
         </i-row>
         <i-row>
           <i-col span="12">
-            <i-form-item label="所属公司" prop="company">
-              <i-select>
-                <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
-                <i-option label="群泰武汉" value="群泰武汉" key="群泰武汉"></i-option>
+            <i-form-item label="所属公司" prop="companyId">
+              <i-select v-model="chooseBuyModel.companyId" clearable>
+                <i-option v-for="item in companyObject" :key="item.id" :value="item.id" :label="item.companyChinaname"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
           <i-col span="12" pull="3">
-            <i-form-item label="自缴费用" prop="freeMoney">
-              <i-checkbox-group>
-                <i-checkbox label="无"></i-checkbox>
-                <i-checkbox label="购置税"></i-checkbox>
-                <i-checkbox label="保险费"></i-checkbox>
-                <i-checkbox label="上牌费"></i-checkbox>
-                <i-checkbox label="路桥费"></i-checkbox>
-                <i-checkbox label="首期租金"></i-checkbox>
+            <i-form-item label="自缴费用" prop="orderServiceList">
+              <i-checkbox-group v-model="chooseBuyModel.orderServiceList">
+                <i-checkbox label="无" :value="368"></i-checkbox>
+                <i-checkbox label="购置税" :value="369"></i-checkbox>
+                <i-checkbox label="保险费" :value="370"></i-checkbox>
+                <i-checkbox label="上牌费" :value="371"></i-checkbox>
+                <i-checkbox label="路桥费" :value="372"></i-checkbox>
+                <i-checkbox label="首期租金" :value="373"></i-checkbox>
               </i-checkbox-group>
             </i-form-item>
           </i-col>
         </i-row>
         <i-row>
           <i-col span="12">
-            <i-form-item label="融资租赁用途" prop="usedMode">
-              <i-input type="text" v-model="chooseBuyModel.usedMode">
+            <i-form-item label="融资租赁用途" prop="financingUse">
+              <i-input type="text" v-model="chooseBuyModel.financingUse">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12" pull="3">
-            <i-form-item label="意向融资金额" prop="hopeMoney">
-              <i-input type="text" v-model="chooseBuyModel.hopeMoney">
+            <i-form-item label="意向融资金额" prop="intentionFinancingAmount">
+              <i-input type="text" v-model="chooseBuyModel.intentionFinancingAmount">
               </i-input>
             </i-form-item>
           </i-col>
         </i-row>
         <i-row>
           <i-col span="12">
-            <i-form-item label="意向期限" prop="hopeTime">
-              <i-select v-model="chooseBuyModel.hopeTime">
-                <i-option label="1年" value="1年" key="1年"></i-option>
-                <i-option label="2年" value="2年" key="2年"></i-option>
-              </i-select>
+            <i-form-item label="意向期限" prop="intentionPeriods">
+              <i-input type="text" v-model="chooseBuyModel.intentionPeriods">
+              </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12" pull="3">
-            <i-form-item label="租金支付" prop="rentPay">
-              <i-input type="text" v-model="chooseBuyModel.rentPay">
+            <i-form-item label="租金支付" prop="rentPayable">
+              <i-input type="text" v-model="chooseBuyModel.rentPayable">
               </i-input>
             </i-form-item>
           </i-col>
@@ -90,7 +79,7 @@
         </i-col>
       </i-form>
     </i-row>
-    <i-table :columns="carColumns" :data="carData" stripe style="margin:10px;" width="1100"></i-table>
+    <i-table :columns="carColumns" :data="addcarData" stripe style="margin:10px;" width="1100"></i-table>
     <div>
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
       <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
@@ -102,10 +91,10 @@
         <span style="font-size:12px;">月供模拟计算器</span>
       </div>
     </i-col>
-    <div v-show="addPrdShow">
-      <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
-      <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
-    </div>
+    <!--<div v-show="addPrdShow">-->
+    <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
+    <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
+    <!--</div>-->
     <i-row v-show="prdInfoShow">
       <i-form ref="customer-form" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;">
         <i-col span="12">
@@ -115,14 +104,14 @@
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
-          <i-form-item label="产品名称" prop="prdName">
-            <i-input type="text" v-model="chooseBuyModel.prdName">
+          <i-form-item label="产品名称" prop="name">
+            <i-input type="text" v-model="chooseBuyModel.name">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
-          <i-form-item label="产品期数" prop="prdPeriods">
-            <i-input type="text" v-model="chooseBuyModel.prdPeriods">
+          <i-form-item label="产品期数" prop="periods">
+            <i-input type="text" v-model="chooseBuyModel.periods">
             </i-input>
           </i-form-item>
         </i-col>
@@ -157,20 +146,20 @@
           </i-form-item>
         </i-col>
         <i-col span="12">
-          <i-form-item label="保证金金额" prop="promiseMoney">
-            <i-input type="text" v-model="chooseBuyModel.promiseMoney">
+          <i-form-item label="保证金金额" prop="depositCash">
+            <i-input type="text" v-model="chooseBuyModel.depositCash">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
-          <i-form-item label="尾付金额" prop="lastPayMoney">
-            <i-input type="text" v-model="chooseBuyModel.lastPayMoney">
+          <i-form-item label="尾付金额" prop="finalCash">
+            <i-input type="text" v-model="chooseBuyModel.finalCash">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
-          <i-form-item label="管理费" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.manageMoney">
+          <i-form-item label="管理费" prop="manageCost">
+            <i-input type="text" v-model="chooseBuyModel.manageCost">
             </i-input>
           </i-form-item>
         </i-col>
@@ -231,20 +220,17 @@
     </template>
 
     <template>
-      <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="80" v-model="editCarModal" :trandfer="false">
-        <add-car></add-car>
-        <div slot="footer">
-          <i-button @click="confirmAndBack" class="blueButton">确认并返回</i-button>
-        </div>
+      <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="80" v-model="editCarModal" :trandfer="false" class="add-car">
+        <add-car @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="addProductModal" title="添加产品" width="1500">
-        <add-product></add-product>
-        <div slot="footer">
+      <i-modal v-model="addProductModal" title="添加产品" width="1000" class="add-car">
+        <add-product @currentRowData="currentRowData" @close="addProductModal=false" @productPlanissue="productPlanissue"></add-product>
+        <!--<div slot="footer">
           <i-button @click="confirmAndBackPrd" class="blueButton">确认并返回</i-button>
-        </div>
+        </div>-->
       </i-modal>
     </template>
   </section>
@@ -265,6 +251,9 @@
   import SimulateCalculate from "~/components/common/simulate-calculate.vue"
   import AddProduct from '~/components/purchase-manage/add-product.vue'
   import {
+    CompanyService
+  } from "~/services/manage-service/company.service";
+  import {
     Prop
   } from "vue-property-decorator";
   @Component({
@@ -277,7 +266,9 @@
     }
   })
   export default class ChooseBuyMaterials extends Vue {
-    private chooseBuyModel: any;
+    @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
+    @Dependencies(CompanyService) private companyService: CompanyService;
+
     private carColumns: any;
     private carData: Array < Object > = [];
     private simulateCalculateModal: Boolean = false;
@@ -288,11 +279,29 @@
     private addProductModal: Boolean = false;
     private addPrdShow: Boolean = true;
     private changePrdShow: Boolean = false;
+    private companyObject: Array < Object >= []; // 公司信息
+    private addcarData: any = [];
+    private rowData: any = null;
+    private chooseBuyModel: any = {
+      province: '', // 省份
+      city: '', // 城市
+      companyId: '', // 所属公司
+      intentionFinancingAmount: '', // 意向融资金额
+      intentionPeriods: '', // 意向期限
+      rentPayable: '', // 租金支付
+      intentionPaymentRatio: '', // 意向首付比例
+      orderServiceList: '', // 自缴费用
+      financingUse: '' // 融资租赁用途
+    };
+
     @Prop()
     disabledStatus: String;
-
-    @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
-
+    /**
+     * 添加车辆信息
+     */
+    distributionData(data) {
+      this.addcarData = data
+    }
     /**
      * 打开月供模拟计算器
      */
@@ -309,6 +318,10 @@
     }
     mounted() {}
     created() {
+      // 获取公司名称
+      this.companyService.getAllCompany().subscribe(val => {
+        this.companyObject = val.object
+      })
       // 设置表单数据
       this.chooseBuyModel = {
         usedMode: '',
@@ -318,15 +331,15 @@
         hopeProportion: '',
         prdSeriods: '',
         prdName: '',
-        prdPeriods: '',
+        periods: '',
         prdInterestRate: '',
         payWay: '',
         financeTotalMoney: '',
         moneyPay: '',
         downPayMoney: '',
-        promiseMoney: '',
-        lastPayMoney: '',
-        manageMoney: '',
+        depositCash: '',
+        finalCash: '',
+        manageCost: '',
         purchaseMoney: '',
         licenseMoney: '',
         GpsMoney: '',
@@ -353,8 +366,8 @@
                   },
                   on: {
                     click: () => {
-                      this.editModalOpen(row)
-                      this.addOrEditFlag = false
+                      this.editCarModal = true
+                      this.rowData = row
                     }
                   }
                 },
@@ -374,11 +387,7 @@
                         title: '提示',
                         content: '确定删除吗？',
                         onOk: () => {
-                          this.carData.forEach((x, i) => {
-                            if (i === index) {
-                              this.carData.splice(i, 1)
-                            }
-                          })
+                          this.addcarData.splice(index, 1);
                         }
                       })
 
@@ -392,39 +401,35 @@
         },
         {
           title: '车辆品牌',
-          key: 'brand',
+          key: 'brandName',
           align: 'center'
         }, {
           title: '车辆型号',
-          key: 'model',
+          key: 'modelName',
           align: 'center'
         }, {
           title: '车身颜色',
-          key: 'color',
+          key: 'vehicleColour',
           align: 'center'
         }, {
           title: '车辆排量',
-          key: 'output',
+          key: 'vehicleEmissions',
           align: 'center'
         }, {
           title: '车辆配置',
-          key: 'configuration',
+          key: 'vehicleConfiguration',
           align: 'center'
         }, {
           title: '上牌地区',
-          key: 'area',
+          key: 'registrationArea',
           align: 'center'
         }, {
           title: '车辆牌照',
-          key: 'license',
+          key: 'vehicleLicence',
           align: 'center'
         }, {
           title: '所在门店',
           key: 'store',
-          align: 'center'
-        }, {
-          title: '是否出库',
-          key: 'isOutStore',
           align: 'center'
         }, {
           title: '状态',
@@ -435,9 +440,9 @@
 
       this.carData = []
     }
-    editModalOpen(row) {
-      this.editCarModal = true
-    }
+    // editModalOpen(row) {
+    //   this.editCarModal = true
+    // }
     addModalOpen() {
       this.addOrEditFlag = true
       this.editCarModal = true
@@ -457,20 +462,49 @@
       this.addPrdShow = false
       this.changePrdShow = true
     }
+    /**
+     * 获取添加产品信息
+     */
+    currentRowData(data) {
+      this.chooseBuyModel = {
+        // prdSeriods: data.prdSeriods,
+        periods: data.periods,
+        prdInterestRate: data.prdInterestRate,
+        payWay: data.payWay,
+        financeTotalMoney: data.financeTotalMoney,
+        moneyPay: data.moneyPay,
+        downPayMoney: data.downPayMoney,
+        depositCash: data.depositCash,
+        finalCash: data.finalCash,
+        manageCost: data.manageCost,
+        insuranceMoney: data.insuranceMoney,
+        purchaseMoney: data.purchaseMoney,
+        licenseMoney: data.licenseMoney,
+        GpsMoney: data.GpsMoney,
+        otherMoney: data.otherMoney,
+        remark: data.remark
+      }
+    }
+    productPlanissue(data) {
+      this.chooseBuyModel = {
+        name: data.title // 产品名称
+        // prdSeriods:
+      }
+    }
     confirmAndBackPrd() {
       this.addProductModal = false
       this.chooseBuyModel = {
         prdSeriods: '直租',
         prdName: '群泰融租',
-        prdPeriods: '12期',
+        periods: '12期',
         prdInterestRate: '1.25',
         payWay: '等本等息',
         financeTotalMoney: '18122',
         moneyPay: '5584',
         downPayMoney: '20252',
-        promiseMoney: '0',
-        lastPayMoney: '0',
-        manageMoney: '0',
+        depositCash: '0',
+        finalCash: '0',
+        manageCost: '0',
         insuranceMoney: '0',
         purchaseMoney: '0',
         licenseMoney: '0',
@@ -493,8 +527,14 @@
       border-radius: 0;
     }
   }
-
+  
   .calculate {
+    .ivu-modal-footer {
+      display: none!important;
+    }
+  }
+  
+  .add-car {
     .ivu-modal-footer {
       display: none!important;
     }

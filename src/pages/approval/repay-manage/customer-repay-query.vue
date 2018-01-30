@@ -2,47 +2,56 @@
 <template>
   <section class="page customer-repay-query">
     <span class="form-title">客户还款查询</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:10px;">
-      <span style="margin-left:20px;">工号：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入工号"></i-input>
-      <span style="margin-left:10px;">姓名：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入姓名"></i-input>
-      <span style="margin-left:10px;">所属部门：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入所属部门"></i-input>
-      <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
+        <i-option :value="178" :key="178" label="结清"></i-option>
+        <i-option :value="179" :key="179" label="逾期"></i-option>
+        <i-option :value="180" :key="180" label="待还"></i-option>
+        <i-option :value="181" :key="181" label="部分还款"></i-option>
+      </i-select>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
+        <i-option :value="162" :key="162" label="汇付"></i-option>
+        <i-option :value="163" :key="163" label="富友"></i-option>
+        <i-option :value="164" :key="164" label="对公转账"></i-option>
+      </i-select>
+      <i-button class="blueButton" style="margin-left:20px;" @click="getCustomerRepayList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="customerRepayList"></data-box>
     <div>
     </div>
 
     <template>
       <i-modal title="还款详情" :transfer="false" v-model="repayInfoModal" width="1300">
-        <repay-info></repay-info>
+        <repay-info ref="repay-info" :personalId="personalId" :businessId="businessId"></repay-info>
       </i-modal>
     </template>
 
     <template>
-      <i-modal title="还款总揽" :transfer="false" width="900" v-model="repaySumModal">
-        <repay-sum></repay-sum>
+      <i-modal title="还款总览" :transfer="false" width="900" v-model="repaySumModal" class="repay-sum">
+        <repay-sum ref="repay-sum"></repay-sum>
       </i-modal>
     </template>
 
     <template>
       <i-modal title="客户当前结算号" :transfer="false" v-model="customerSettleModal">
         <customer-settle-modal></customer-settle-modal>
+        <div slot="footer">
+          <i-button @click="customerSettleModal=false" class="blueButton">关闭</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -58,13 +67,18 @@
     Dependencies
   } from "~/core/decorator";
   import {
-    OrderService
-  } from "~/services/business-service/order.service";
+    PaymentScheduleService
+  } from "~/services/manage-service/paymentSchedule.service";
   import {
     Layout
   } from "~/core/decorator";
   import RepayInfo from '~/components/approval-manage/repay-info.vue'
-
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   @Layout("workspace")
   @Component({
 
@@ -78,9 +92,10 @@
     }
   })
   export default class CustomerRepayQuery extends Page {
-    @Dependencies(OrderService) private orderService: OrderService;
+    @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private customerRepayList: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
     private repayInfoModal: Boolean = false;
@@ -88,11 +103,18 @@
     private searchOptions: Boolean = false;
     private repaySumModal: Boolean = false;
     private customerSettleModal: Boolean = false;
-
+    private customerRepayModel: any = {
+      settlementChannel: '',
+      paymentStatus: '',
+      dynamicParam: ''
+    }
+    private personalId: any = '';
+    private businessId: any = '';
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     created() {
+      this.getCustomerRepayList()
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -119,13 +141,7 @@
                   },
                   on: {
                     click: () => {
-                      // this.$Modal.info({
-                      //   title: '还款总览',
-                      //   width: '900',
-                      //   transfer: false,
-                      //   render: h => h(RepaySum)
-                      // })
-                      this.repaySumModal = true
+                      this.repaySumClick(row)
                     }
                   }
                 },
@@ -141,7 +157,7 @@
                   },
                   on: {
                     click: () => {
-                      this.repayInfoModal = true
+                      this.repayInfoClick(row)
                     }
                   }
                 },
@@ -154,12 +170,12 @@
           align: "center",
           title: "订单编号",
           width: 150,
-          key: 'orderId'
+          key: 'orderNumber'
         },
         {
           align: "center",
           title: "客户结算号",
-          key: "customerSettleId",
+          key: "clientNumber",
           width: 150,
           render: (h, params) => {
             return h('i-button', {
@@ -168,21 +184,16 @@
               },
               on: {
                 click: () => {
-                  // this.$Modal.info({
-                  //   title: '客户当前结算号',
-                  //   render: h => h(CustomerSettleModal),
-                  //   okText: '关闭'
-                  // })
                   this.customerSettleModal = true
                 }
               }
-            }, 'LSK13902344')
+            }, params.row.clientNumber)
           }
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customerName"
+          key: "name"
         },
         {
           align: "center",
@@ -193,72 +204,83 @@
         {
           align: "center",
           title: " 手机号",
-          key: "phone",
+          key: "mobileMain",
           width: 120
         },
         {
           align: "center",
           title: " 订单创建时间",
-          key: "orderCreateTime",
-          width: 160
+          key: "createTime",
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: " 合同生效日",
           key: "contractDate",
-          width: 160
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: " 待还本金",
-          key: "noPayMajorMoney",
+          key: "principalReceivable",
           width: 90
         },
         {
           align: "center",
           title: " 待还利息",
-          key: "noPayInterest",
+          key: "interestReceivable",
           width: 90
         },
         {
           align: "center",
           title: " 待还罚息",
-          key: "noPayPunishInterest",
+          key: "penaltyReceivable",
           width: 90
         },
         {
           align: "center",
           title: " 利率%/月",
-          key: "interestRate",
+          key: "productRate",
           width: 90
         },
         {
           align: "center",
           title: " 结算通道",
-          key: "windAccountChannel"
+          key: "settlementChannel",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            if (row.settlementChannel === 162) {
+              return h('span', {}, '汇付')
+            } else if (row.settlementChannel === 163) {
+              return h('span', {}, '富友')
+            } else if (row.settlementChannel === 164) {
+              return h('span', {}, '对公转账')
+            }
+          }
         },
         {
           align: "center",
           title: " 归属公司",
-          key: "belongFirm"
+          key: "companyChinaName"
         }
       ];
-      this.data1 = [{
-        customerSettleId: '622820190001',
-        customerName: '韩冰',
-        orderId: 'kb20171001',
-        idCard: '610525199312061245',
-        phone: '18292465893',
-        orderCreateTime: '2017-07-07 14:45:36',
-        contractDate: '2017-07-08 14:45:36',
-        noPayMajorMoney: '1000.00',
-        noPayInterest: '120.00',
-        noPayPunishInterest: '45.55',
-        interestRate: '4.35%',
-        windAccountChannel: '汇付',
-        belongFirm: '群泰西安'
-      }]
-
     }
 
     repaySum(row) {}
@@ -271,12 +293,44 @@
     checkProof(row) {
 
     }
+    /**
+     * 获取客户还款查询
+     */
+    getCustomerRepayList() {
+      this.paymentScheduleService.getCustomerPayments(this.customerRepayModel, this.pageService).subscribe(val => {
+        this.customerRepayList = val.object.list
+      })
+    }
+    getTimeSearch(val) {
 
-
+    }
+    /**
+     * 还款详情
+     */
+    repayInfoClick(row) {
+      this.repayInfoModal = true
+      this.personalId = row.personalId
+      this.businessId = row.businessId
+      let _repayInfo: any = this.$refs['repay-info']
+      _repayInfo.getRepayInfo(this.personalId, this.businessId)
+    }
+    /**
+     * 还款总揽
+     */
+    repaySumClick(row) {
+      this.repaySumModal = true
+      let orderId = row.orderId
+      let _repaySum: any = this.$refs['repay-sum']
+      _repaySum.getRepaySum(orderId)
+    }
   }
 
 </script>
-<style>
-
+<style lang="less">
+  .repay-sum {
+    .ivu-modal-footer {
+      display: none;
+    }
+  }
 
 </style>
