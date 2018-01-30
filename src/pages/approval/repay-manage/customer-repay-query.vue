@@ -54,6 +54,16 @@
         </div>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
+        <purchase-information></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
+
   </section>
 </template>
 
@@ -79,6 +89,8 @@
   import {
     FilterService
   } from "~/utils/filter.service"
+  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+
   @Layout("workspace")
   @Component({
 
@@ -88,7 +100,8 @@
       // 客户结算号弹窗
       CustomerSettleModal,
       // 还款详情
-      RepayInfo
+      RepayInfo,
+      PurchaseInformation
     }
   })
   export default class CustomerRepayQuery extends Page {
@@ -103,6 +116,7 @@
     private searchOptions: Boolean = false;
     private repaySumModal: Boolean = false;
     private customerSettleModal: Boolean = false;
+    private purchaseInfoModal: Boolean = false;
     private customerRepayModel: any = {
       settlementChannel: '',
       paymentStatus: '',
@@ -170,24 +184,44 @@
           align: "center",
           title: "订单编号",
           width: 160,
-          key: 'orderNumber'
-        },
-        {
-          align: "center",
-          title: "客户结算号",
-          key: "clientNumber",
-          width: 150,
-          render: (h, params) => {
+          key: 'orderNumber',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('i-button', {
               props: {
                 type: 'text'
               },
               on: {
                 click: () => {
-                  this.customerSettleModal = true
+                  this.purchaseInfoModal = true
                 }
               }
-            }, params.row.clientNumber)
+            }, row.orderNumber)
+          }
+        },
+        {
+          align: "center",
+          title: "客户结算号",
+          key: "clientNumber",
+          width: 150,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.customerSettleClick(row)
+                }
+              }
+            }, row.clientNumber)
           }
         },
         {
@@ -324,6 +358,11 @@
       let orderId = row.orderId
       let _repaySum: any = this.$refs['repay-sum']
       _repaySum.getRepaySum(orderId)
+    }
+    customerSettleClick(row) {
+      this.customerSettleModal = true
+      let _customerSettle: any = this.$refs['customer-settle']
+      _customerSettle.getCustomerSettleObj(row)
     }
   }
 

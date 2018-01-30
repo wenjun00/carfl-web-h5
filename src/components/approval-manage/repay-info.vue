@@ -6,7 +6,7 @@
     <!--查看附件-->
     <template>
       <i-modal title="查看凭证" v-model="checkAttachmentModal">
-        <check-attachment></check-attachment>
+        <check-attachment ref="check-attach"></check-attachment>
       </i-modal>
     </template>
   </section>
@@ -209,6 +209,8 @@
      */
     checkProof(row) {
       this.checkAttachmentModal = true
+      let _checkAttach: any = this.$refs['check-attach']
+      _checkAttach.getAttachmentList(row)
     }
     getRepayInfo(orderId) {
       this.paymentScheduleService.getPaymentDetail({

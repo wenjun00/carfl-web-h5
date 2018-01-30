@@ -69,16 +69,21 @@
 </template>
 
 <script lang="ts">
-  import Page from "~/core/page";
   import Component from 'vue-class-component'
   import {
     Emit
   } from "vue-property-decorator";
-
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    PersonalService
+  } from "~/services/manage-service/personal.service";
   import {
     DataGrid,
     DataGridItem
   } from "vue-fintech-component";
+  import Vue from "vue";
 
   @Component({
     components: {
@@ -86,7 +91,9 @@
       DataGridItem
     }
   })
-  export default class CustomerSettleModal extends Page {
+  export default class CustomerSettleModal extends Vue {
+    @Dependencies(PersonalService) private personalService: PersonalService;
+
     @Emit("closeModal")
     closeCustomerModal() {}
 
@@ -100,8 +107,16 @@
     closeModal() {
       this.closeCustomerModal()
     }
+    /**
+     * 客户结算号
+     */
+    getCustomerSettleObj(row) {
+
+    }
   }
+
 </script>
 <style>
+
 
 </style>
