@@ -1,8 +1,8 @@
 <!--待办事项配置-->
 <template>
     <section class="component wait-handle-case">
-        <i-checkbox-group>
-            <i-checkbox v-for="item in checkboxList" :key="item.id" :label="item.name" :value="item.name" style="width:180px;"></i-checkbox>
+        <i-checkbox-group v-model="social" @on-change="checkFun">
+            <i-checkbox v-for="item in checkboxList" :key="item.id" :label="item.id" :value="item.id" style="width:180px;">{{item.name}}</i-checkbox>
         </i-checkbox-group>
     </section>
 </template>
@@ -29,10 +29,10 @@ export default class WaitHandleCase extends Vue {
   private columns1: any;
   private data1: Array<Object> = [];
   private checkboxList: Array<Object> = [];
+  private social: Array<Object> = [];
 
   created() {
-    // this.getDate();
-    this.checkboxList = [];
+    this.social = [];
   }
   cancel() {}
   confirm() {}
@@ -49,5 +49,9 @@ export default class WaitHandleCase extends Vue {
         this.checkboxList = val.object;
       });
   }
+  checkFun() {
+    this.$emit("configData",this.social)
+  }
+
 }
 </script>

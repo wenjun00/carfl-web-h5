@@ -13,20 +13,22 @@ import productPlanIssueService from './productPlanIssue.service'
 import paymentScheduleService from './paymentSchedule.service'
 import remitApplicationService from './remitApplication.service'
 import refundApplicationService from './refund.application.service'
+import backLogService from './backLog.service'
 
 export const aaa = {
-  manageService,
-  productPackageService,
-  departmentService,
-  approveReasonService,
-  companyService,
-  systemParameterService,
-  dataDictTypeService,
-  personalMaterialService,
-  approvalService,
-  productlService,
-  productPlanIssueService,
-  paymentScheduleService,
-  remitApplicationService,
-  refundApplicationService
+    manageService,
+    productPackageService,
+    departmentService,
+    approveReasonService,
+    companyService,
+    systemParameterService,
+    dataDictTypeService,
+    personalMaterialService,
+    approvalService,
+    productlService,
+    productPlanIssueService,
+    paymentScheduleService,
+    remitApplicationService,
+    refundApplicationService,
+    backLogService
 }

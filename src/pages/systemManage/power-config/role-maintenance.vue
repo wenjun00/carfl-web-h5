@@ -34,7 +34,11 @@
 
         <template>
             <i-modal v-model="waitHandleCaseModal" title="待办事项配置">
-                <wait-handle-case ref="wait-handle"></wait-handle-case>
+                <wait-handle-case ref="wait-handle" @configData="configData"></wait-handle-case>
+                <div slot="footer">
+                    <i-button type="ghost" @click="waitHandleCaseModal=false">取消</i-button>
+                    <i-button class="blueButton" @click="submitRole">确定</i-button>
+                </div>
             </i-modal>
         </template>
 
@@ -64,6 +68,7 @@ import { Dependencies } from "~/core/decorator";
 import { ManageService } from "~/services/manage-service/manage.service";
 import { OrderService } from "~/services/business-service/order.service";
 import { RoleService } from "~/services/role-service/role.service";
+import { BackLogService } from "~/services/manage-service/backLog.service";
 import { Layout } from "~/core/decorator";
 import { Modal } from "iview";
 import { PageService } from "~/utils/page.service";
@@ -85,6 +90,7 @@ export default class RoleMaintenance extends Page {
   @Dependencies(RoleService) private roleService: RoleService;
   @Dependencies(ManageService) private manageService: ManageService;
   @Dependencies(PageService) private pageService: PageService;
+  @Dependencies(BackLogService) private backLogService: BackLogService;
 
   private columns1: any;
   private roleList: Array<Object> = [];
@@ -104,6 +110,8 @@ export default class RoleMaintenance extends Page {
   private addRoleModal: Boolean = false; // 新增角色
   private roleModel: any;
   private modifyRoleModel: any;
+  private roleConfig: Object = {};
+  protected roleID: Number;
   addNewRole() {
     this.addRoleModal = true;
   }
@@ -433,12 +441,27 @@ export default class RoleMaintenance extends Page {
     this.waitHandleCaseModal = true;
     let waitHandle: any = this.$refs["wait-handle"];
     waitHandle.getDate();
+    this.roleID = row.id;
   }
   visibleChange(val) {
     if (!val) {
       let _userList = <Modal>this.$refs["user-list"];
       _userList.resetFrom();
     }
+  }
+  /**
+   * 代办事项配置确定提交
+   */
+  configData(data) {
+    this.roleConfig = {
+      backlogIds: data,
+      roleld: this.roleID
+    };
+  }
+  submitRole() {
+    this.backLogService.roleAllocateBacklogs(this.roleConfig).subscribe(val => {
+      this.$Message.success(val.msg);
+    });
   }
 }
 </script>

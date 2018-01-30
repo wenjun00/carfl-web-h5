@@ -20,6 +20,8 @@ import personalController from './personal.controller'
 import paymentScheduleController from './paymentSchedule.controller'
 import remitApplicationController from './remitApplication.controller'
 import refundApplicationController from './refund.application.controller'
+import backLogController from './backLog.controller'
+
 
 export const manageService = {
     departmentController,
@@ -43,5 +45,6 @@ export const manageService = {
     personalController,
     paymentScheduleController,
     remitApplicationController,
-    refundApplicationController
+    refundApplicationController,
+    backLogController
 }
