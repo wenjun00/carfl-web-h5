@@ -51,4 +51,13 @@ export class RefundApplicationService {
       }
     })
   }
+  /**
+   * 证件号、订单号、客户姓名查询订单/账户/付款信息
+   */
+  getAllMessageByParams(data) {
+    return this.netService.send({
+      server: manageService.refundApplicationController.getAllMessageByParams,
+      data
+    })
+  }
 }

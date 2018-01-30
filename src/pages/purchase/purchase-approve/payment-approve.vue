@@ -194,7 +194,7 @@
                 }
               }, '审批')
             ])
-          } else if (row.processStatus === 1131) {
+          } else if (row.processStatus !== 1131) {
             return h('div', [
               h('i-button', {
                 props: {
