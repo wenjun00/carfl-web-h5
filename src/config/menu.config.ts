@@ -55,6 +55,9 @@ export default [
         }, {
           title: '收款记录查询',
           path: 'purchase/finance-account/receipt-record-query',
+        }, {
+          title: '付款申请',
+          path: 'purchase/finance-account/pay-apply',
         }]
       },
       {
