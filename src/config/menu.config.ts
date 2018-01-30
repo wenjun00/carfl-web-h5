@@ -64,6 +64,9 @@ export default [
         children: [{
           title: '收款审批',
           path: 'purchase/purchase-approve/receipt-approve',
+        }, {
+          title: '付款审批',
+          path: 'purchase/purchase-approve/payment-approve',
         }]
       }
     ]

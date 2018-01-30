@@ -12,6 +12,7 @@ import productlService from './product.service'
 import productPlanIssueService from './productPlanIssue.service'
 import paymentScheduleService from './paymentSchedule.service'
 import remitApplicationService from './remitApplication.service'
+import refundApplicationService from './refund.application.service'
 
 export const aaa = {
   manageService,
@@ -26,5 +27,6 @@ export const aaa = {
   productlService,
   productPlanIssueService,
   paymentScheduleService,
-  remitApplicationService
+  remitApplicationService,
+  refundApplicationService
 }

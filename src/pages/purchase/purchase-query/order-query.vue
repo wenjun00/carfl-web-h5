@@ -19,8 +19,8 @@
     <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.orderInfo"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker type="date"  style="display:inline-block;width:10%" v-model="approvalModel.startTime"></i-date-picker>~
-      <i-date-picker type="date"  style="display:inline-block;width:10%" v-model="approvalModel.endTime"></i-date-picker>
+      <i-date-picker type="date" style="display:inline-block;width:10%" v-model="approvalModel.startTime"></i-date-picker>~
+      <i-date-picker type="date" style="display:inline-block;width:10%" v-model="approvalModel.endTime"></i-date-picker>
       <i-button style="margin-left:10px" class="blueButton" @click="getOrderQuery">搜索</i-button>
     </i-row>
     <i-row style="margin-top:20px">
@@ -51,8 +51,8 @@
     </template>
     <!--客户chaxun-->
     <template>
-      <i-modal v-model="openCustomerInformation" title="客户查询" width="500">
-         <customer-query :row="customerInformation"></customer-query>
+      <i-modal v-model="openCustomerInformation" title="客户查询" width="600">
+        <customer-query :row="customerInformation"></customer-query>
       </i-modal>
     </template>
 
@@ -97,6 +97,9 @@
     ProductOrderService
   } from "~/services/manage-service/product.order.service";
   import {
+    PersonalService
+  } from "~/services/manage-service/personal.service";
+  import {
     PageService
   } from "~/utils/page.service";
   import {
@@ -121,11 +124,12 @@
   })
   export default class OrderQuery extends Page {
     @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
+    @Dependencies(PersonalService) private personalService: PersonalService;
     @Dependencies(PageService) private pageService: PageService;
     private queryColumns: any;
     @Mutation openPage
     private columns2: any;
-    private customerInformation: Array <Object> = [];
+    private customerInformation: Array < Object > = [];
     private queryData: Array < Object > = [];
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
@@ -299,6 +303,12 @@
                 on: {
                   click: () => {
                     this.openCustomerInformation = true
+                    this.personalService.getPersonalMessage({
+                      personalId: params.row.personalId
+                    }).subscribe(
+                      val => {
+                        this.customerInformation = val.object
+                      })
                   }
                 }
               }, params.row.personalName)

@@ -19,6 +19,7 @@ import carController from './car.controller'
 import personalController from './personal.controller'
 import paymentScheduleController from './paymentSchedule.controller'
 import remitApplicationController from './remitApplication.controller'
+import refundApplicationController from './refund.application.controller'
 
 export const manageService = {
   departmentController,
@@ -41,5 +42,6 @@ export const manageService = {
   carController,
   personalController,
   paymentScheduleController,
-  remitApplicationController
+  remitApplicationController,
+  refundApplicationController
 }
