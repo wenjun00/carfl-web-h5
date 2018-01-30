@@ -152,7 +152,7 @@
             </i-modal>
         </template>
         <template>
-            <i-modal v-model="editModal" title="修改期数" width="900">
+            <i-modal v-model="editModal" title="编辑期数" width="900">
                 <edit-periods :productDetail="productDetails" :pNameTitle="productMessage"></edit-periods>
                 <div slot="footer">
                     <i-button type="ghost">取消</i-button>
@@ -613,6 +613,8 @@ export default class ProdConfig extends Page {
   showDetail(item) {
     this.editModal = true;
     this.productDetails = item;
+    console.log(this.productDetails, 7766);
+    // this.productDetails.payWay="等本等息"
   }
 }
 </script>

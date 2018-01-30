@@ -450,7 +450,7 @@ export default class RoleMaintenance extends Page {
     }
   }
   /**
-   * 代办事项配置确定提交
+   * 代办事项配置选择/子组件向父组件传
    */
   configData(data) {
     this.roleConfig = {
@@ -458,6 +458,9 @@ export default class RoleMaintenance extends Page {
       roleld: this.roleID
     };
   }
+  /**
+   * 代办事项配置确定提交
+   */
   submitRole() {
     this.backLogService.roleAllocateBacklogs(this.roleConfig).subscribe(val => {
       this.$Message.success(val.msg);
