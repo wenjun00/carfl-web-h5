@@ -19,11 +19,23 @@ export class PersonalService {
   /**
    * 客户信息查询
    */
-  getPersonalMessage({personalId}) {
+  getPersonalMessage({ personalId }) {
     return this.netService.send({
       server: manageService.personalController.getPersonalMessage,
       data: {
         personalId: personalId
+      }
+    })
+  }
+  /**
+  * 客户号获取开户信息
+  */
+  getBankByClientNumber({ clientNumber, settleChannel }) {
+    return this.netService.send({
+      server: manageService.personalController.getCustomerHistoryFinanceInfo,
+      data: {
+        clientNumber: clientNumber,
+        settleChannel: settleChannel
       }
     })
   }

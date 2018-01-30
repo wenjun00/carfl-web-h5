@@ -51,4 +51,15 @@ export class PaymentScheduleService {
       }
     })
   }
+  /**
+   * 查看凭证
+   */
+  checkTheVoucher({ businessId }) {
+    return this.netService.send({
+      server: manageService.paymentScheduleController.checkTheVoucher,
+      data: {
+        businessId: businessId
+      }
+    })
+  }
 }

@@ -40,5 +40,14 @@ export default {
     controller: CONTROLLER,
     action: 'getPaymentDetail',
     type: requestType.Get
+  },
+  /**
+   * 查看凭证
+   */
+  checkTheVoucher: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'checkTheVoucher',
+    type: requestType.Get
   }
 }

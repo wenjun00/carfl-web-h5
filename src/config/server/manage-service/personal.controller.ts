@@ -22,5 +22,14 @@ export default {
     controller: CONTROLLER,
     action: 'getPersonMessage',
     type: requestType.Get
+  },
+  /**
+   * 客户号获取开户信息
+   */
+  getBankByClientNumber: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getBankByClientNumber',
+    type: requestType.Get
   }
 }
