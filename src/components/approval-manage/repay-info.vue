@@ -17,7 +17,15 @@
   import Component from 'vue-class-component'
   import DataBox from "~/components/common/data-box.vue";
   import CheckAttachment from '~/components/finance-manage/check-attachment.vue'
-
+  import {
+    Prop
+  } from "vue-property-decorator";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    PaymentScheduleService
+  } from "~/services/manage-service/paymentSchedule.service";
   @Component({
     components: {
       DataBox,
@@ -25,12 +33,15 @@
     }
   })
   export default class RepayInfo extends Vue {
+    @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
+
+    @Prop() personalId;
+    @Prop() businessId;
     private applyDerateOpen: Boolean = false
     private applyFrozenOpen: Boolean = false
     private checkAttachmentModal: Boolean = false
     private columns1: any;
     private data1: Array < Object > = [];
-
     created() {
 
       this.columns1 = [{
@@ -261,7 +272,15 @@
     checkProof(row) {
       this.checkAttachmentModal = true
     }
-
+    getRepayInfo(personalId, businessId) {
+      console.log(this.personalId, this.businessId)
+      this.paymentScheduleService.getPaymentRecordDetail({
+        personalId: personalId,
+        businessId: businessId
+      }).subscribe(val => {
+        console.log(val, 999)
+      })
+    }
   }
 
 </script>

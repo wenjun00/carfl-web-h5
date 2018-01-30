@@ -11,5 +11,23 @@ export default {
     controller: CONTROLLER,
     action: 'selectApplyForReliefHistory',
     type: requestType.Get
+  },
+  /**
+   * 减免撤销
+   */
+  remitCanceled: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'remitCanceled',
+    type: requestType.Delete
+  },
+  /**
+   * 解冻
+   */
+  freezeCancel: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'freezeCancel',
+    type: requestType.Delete
   }
 }

@@ -8,27 +8,27 @@
     <data-grid :labelWidth="90" labelAlign="left" contentAlign="left">
       <data-grid-item label="客户姓名" :span="2">
         <template>
-          <div>韩冰</div>
+          <div>{{repaySumObj.personal?repaySumObj.personal.name:''}}</div>
         </template>
       </data-grid-item>
       <data-grid-item label="身份证号" :span="4">
         <template>
-          <div>610525199312061245</div>
+          <div>{{repaySumObj.personal?repaySumObj.personal.idCard:''}}</div>
         </template>
       </data-grid-item>
       <data-grid-item label="融资金额（元）" :span="2">
         <template>
-          <div>1500</div>
+          <div>{{repaySumObj.productOrder?repaySumObj.productOrder.financingAmount:''}}</div>
         </template>
       </data-grid-item>
       <data-grid-item label="期数" :span="2">
         <template>
-          <div>12期</div>
+          <div>{{repaySumObj.productOrder?repaySumObj.productOrder.periods:''}}</div>
         </template>
       </data-grid-item>
       <data-grid-item label="利率%/月" :span="2">
         <template>
-          <div>4.35</div>
+          <div>{{repaySumObj.productOrder?repaySumObj.productOrder.productRate:''}}</div>
         </template>
       </data-grid-item>
     </data-grid>
@@ -41,38 +41,38 @@
       <tr height="40">
         <td bgcolor="#F2F2F2">本金</td>
         <td>应付本金</td>
-        <td>800</td>
+        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceivable:''}}</td>
         <td>已还本金</td>
-        <td>0</td>
+        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceived:''}}</td>
         <td>剩余本金</td>
-        <td>800</td>
+        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalSurplus:''}}</td>
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">利息</td>
         <td>应还利息</td>
-        <td>200</td>
+        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.interestReceivable:''}}</td>
         <td>已还利息</td>
-        <td>0</td>
+        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.interestReceived:''}}</td>
         <td>剩余利息</td>
-        <td>200</td>
+        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.interestSurplus:''}}</td>
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">罚息</td>
         <td>应付罚息</td>
-        <td>10</td>
+        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.penaltyReceivable:''}}</td>
         <td>已还罚息</td>
-        <td>0</td>
+        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.penaltyReceived:''}}</td>
         <td>剩余罚息</td>
-        <td><span style="color:red;text-decoration:line-through;margin-right:6px">10</span><span>0</span></td>
+        <td><span style="color:red;text-decoration:line-through;margin-right:6px">{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceivable:''}}</span><span>{{repaySumObj.productOrder?repaySumObj.productOrder.penaltySurplus:''}}</span></td>
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">合计</td>
         <td>应付</td>
-        <td>1010</td>
+        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceivable:''}}</td>
         <td>已还本金</td>
-        <td>0</td>
+        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceivable:''}}</td>
         <td>剩余本金</td>
-        <td>1010</td>
+        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceivable:''}}</td>
       </tr>
     </table>
 
@@ -95,7 +95,9 @@
   import Component from 'vue-class-component'
   import ApplyDerate from '~/components/approval-manage/apply-derate.vue'
   import ApplyFrozen from '~/components/approval-manage/apply-frozen.vue'
-
+  import {
+    PaymentScheduleService
+  } from "~/services/manage-service/paymentSchedule.service";
   import {
     DataGrid,
     DataGridItem
@@ -103,7 +105,9 @@
   import {
     Prop
   } from "vue-property-decorator";
-
+  import {
+    Dependencies
+  } from "~/core/decorator";
   @Component({
     components: {
       DataGrid,
@@ -113,8 +117,10 @@
     }
   })
   export default class RepaySum extends Vue {
+    @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
     private applyDerateOpen: Boolean = false
     private applyFrozenOpen: Boolean = false
+    private repaySumObj: any = {}
 
     @Prop()
     row: Object;
@@ -127,6 +133,14 @@
     }
     applyFrozen() {
       this.applyFrozenOpen = true
+    }
+    getRepaySum(orderId) {
+      this.paymentScheduleService.getRepaymentOverview({
+        orderId: orderId
+      }).subscribe(val => {
+        console.log('val', val)
+        this.repaySumObj = val.object
+      })
     }
   }
 
