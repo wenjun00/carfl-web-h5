@@ -3,14 +3,14 @@
   <section class="page approval-record-table">
     <i-row style="margin-top:10px;">
       <span style="font-size:18px;font-weight:bold;position:relative;left:10px;">审核记录表</span>
-      <i-button type="text">昨日</i-button>
-      <i-button type="text">今日</i-button>
-      <i-button type="text">本周</i-button>
-      <i-button type="text">本月</i-button>
-      <i-button type="text">上月</i-button>
-      <i-button type="text">最近三月</i-button>
-      <i-button type="text">本季度</i-button>
-      <i-button type="text">本年</i-button>
+      <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+      <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+      <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+      <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+      <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+      <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+      <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+      <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
       <i-button @click="openSearch" style="color:#265EA2">
         <span v-if="!searchOptions">展开</span>
         <span v-if="searchOptions">收起</span>
@@ -18,20 +18,20 @@
       </i-button>
     </i-row>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:16px;">
-      <i-select placeholder="全部状态" style="margin-left:20px;width:10%" v-model="approvalRecordModel" @on-change="changeSelectOne">
+      <i-select placeholder="全部状态" style="margin-left:20px;width:10%" v-model="approvalRecordModel.first" @on-change="changeSelectOne">
         <i-option label="通过" :value="0" :key="0"></i-option>
         <i-option label="退件" :value="1" :key="1"></i-option>
         <i-option label="拒绝" :value="2" :key="2"></i-option>
       </i-select>
-      <i-select placeholder="全部拒单原因" style="margin-left:20px;width:12%" v-model="approvalRecordModel" @on-change="changeSelectTwo">
-        <i-option label="" value="" key=""></i-option>
+      <i-select placeholder="全部拒单原因" style="margin-left:20px;width:12%" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
+        <i-option v-for="item in refuseReason" :key="item.id" :label="item.name" :value="item.id"></i-option>
       </i-select>
-      <i-select placeholder="全部拒单细节" style="margin-left:20px;width:15%" v-model="approvalRecordModel">
-        <i-option label="" value="" key=""></i-option>
+      <i-select placeholder="全部拒单细节" style="margin-left:20px;width:15%" v-model="approvalRecordModel.detail">
+        <i-option v-for="item in refuseDetail" :key="item.id" :label="item.name" :value="item.id"></i-option>
       </i-select>
       <span style="margin-left:10px;">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:10%;" v-model="approvalRecordModel.startTime"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%;" v-model="approvalRecordModel.endTime"></i-date-picker>
       <i-button class="blueButton" style="margin-left:20px;" @click="getApprovaRecordList">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="approvalRecordList"></data-box>
@@ -104,9 +104,15 @@
     private checkRadio: String = "融资租赁合同";
     private columns3: any;
     private orderProgressModal: Boolean = false;
+    private refuseReason: Array < Object >= [] // 拒单原因
+    private refuseDetail: Array < Object >= [] // 拒单细节
     private approvalRecordModel: any = {
-
-
+      timeSearch: '',
+      startTime: '',
+      endTime: '',
+      first: '',
+      second: '',
+      detail: ''
     }
 
     openSearch() {
@@ -408,11 +414,22 @@
       this.openColumnsConfig = true
     }
     getApprovaRecordList() {
+      this.approvalRecordModel.startTime = FilterService.dateFormat(this.approvalRecordModel.startTime, "yyyy-MM-dd")
+      this.approvalRecordModel.endTime = FilterService.dateFormat(this.approvalRecordModel.endTime, "yyyy-MM-dd")
       this.approvalService.getAuditRecord(this.approvalRecordModel, this.pageService).subscribe(val => {
         this.approvalRecordList = val.object.list
       })
     }
-
+    getTimeSearch(val) {
+      this.approvalRecordModel.startTime = ''
+      this.approvalRecordModel.endTime = ''
+      this.approvalRecordModel.first = ''
+      this.approvalRecordModel.second = ''
+      this.approvalRecordModel.detail = ''
+      this.approvalRecordModel.timeSearch = val
+      this.getApprovaRecordList()
+      this.approvalRecordModel.timeSearch = ''
+    }
   }
 
 </script>
