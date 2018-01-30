@@ -22,11 +22,11 @@
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:6px;">
-      <i-input style="display:inline-block;width:10%;margin-left:10px;" placeholder="请输入客户姓名\证件号码"></i-input>
+      <i-input style="display:inline-block;width:10%;margin-left:10px;" v-model="derateModel.orderInfo" placeholder="请输入客户姓名\证件号码"></i-input>
       <span style="margin-left:10px;">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>
-      <i-select style="width:10%;margin-left:10px" placeholder="全部结算通道">
+      <i-date-picker style="display:inline-block;width:10%;" v-model="derateModel.applyDateStart"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%;" v-model="derateModel.applyDateEnd"></i-date-picker>
+      <i-select style="width:10%;margin-left:10px" placeholder="全部结算通道" v-model="derateModel.collectMoneyMethod">
         <i-option label="汇付" value="汇付" key="汇付"></i-option>
         <i-option label="现金" value="现金" key="现金"></i-option>
         <i-option label="支付宝" value="支付宝" key="支付宝"></i-option>
@@ -80,7 +80,12 @@
     private repayInfo: Boolean = false;
     private searchOptions: Boolean = false;
     private derateModel: any = {
-      remitItem: 1121
+      remitItem: 1121,
+      applyDateStart: '',
+      applyDateEnd: '',
+      timeSearch: '',
+      collectMoneyMethod: '',
+      orderInfo: ''
     }
     openSearch() {
       this.searchOptions = !this.searchOptions;
