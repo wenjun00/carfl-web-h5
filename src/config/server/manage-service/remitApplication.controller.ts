@@ -29,5 +29,23 @@ export default {
     controller: CONTROLLER,
     action: 'freezeCancel',
     type: requestType.Delete
+  },
+  /**
+   * 申请减免
+   */
+  applyForRelief: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'applyForRelief',
+    type: requestType.Post
+  },
+  /**
+   * 申请冻结
+   */
+  applyToFreeze: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'applyToFreeze',
+    type: requestType.Post
   }
 }

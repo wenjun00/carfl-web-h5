@@ -15,7 +15,7 @@ export default {
     type: requestType.Get
   },
   /**
-   * 还款详情
+   * 还款详情(彭长须接口)
    */
   getPaymentRecordDetail: {
     service: SERVICE,
@@ -30,6 +30,15 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'getRepaymentOverview',
+    type: requestType.Get
+  },
+  /**
+   * 还款详情（吴小川接口）
+   */
+  getPaymentDetail: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getPaymentDetail',
     type: requestType.Get
   }
 }

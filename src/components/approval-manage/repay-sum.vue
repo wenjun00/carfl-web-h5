@@ -5,18 +5,18 @@
       <i-button @click="applyDerate" class="blueButton" size="small" style="margin:10px;">申请减免</i-button>
       <i-button @click="applyFrozen" class="blueButton" size="small">申请冻结</i-button>
     </div>
-    <data-grid :labelWidth="90" labelAlign="left" contentAlign="left">
+    <data-grid :labelWidth="110" labelAlign="left" contentAlign="left">
       <data-grid-item label="客户姓名" :span="2">
         <template>
           <div>{{repaySumObj.personal?repaySumObj.personal.name:''}}</div>
         </template>
       </data-grid-item>
-      <data-grid-item label="身份证号" :span="4">
+      <data-grid-item label="身份证号" :span="3">
         <template>
           <div>{{repaySumObj.personal?repaySumObj.personal.idCard:''}}</div>
         </template>
       </data-grid-item>
-      <data-grid-item label="融资金额（元）" :span="2">
+      <data-grid-item label="融资金额(元)" :span="3">
         <template>
           <div>{{repaySumObj.productOrder?repaySumObj.productOrder.financingAmount:''}}</div>
         </template>
@@ -33,7 +33,7 @@
       </data-grid-item>
     </data-grid>
 
-    <table border="1" width="868" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
+    <table border="1" width="1018" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
         <td bgcolor="#F2F2F2" colspan="3">还款</td>
         <td bgcolor="#F2F2F2" colspan="4">明细</td>
@@ -41,50 +41,58 @@
       <tr height="40">
         <td bgcolor="#F2F2F2">本金</td>
         <td>应付本金</td>
-        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceivable:''}}</td>
+        <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.principalReceivable:0}}</td>
         <td>已还本金</td>
-        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceived:''}}</td>
+        <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.principalReceived:0}}</td>
         <td>剩余本金</td>
-        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalSurplus:''}}</td>
+        <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.principalSurplus:0}}</td>
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">利息</td>
         <td>应还利息</td>
-        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.interestReceivable:''}}</td>
+        <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.interestReceivable:0}}</td>
         <td>已还利息</td>
-        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.interestReceived:''}}</td>
+        <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.interestReceived:0}}</td>
         <td>剩余利息</td>
-        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.interestSurplus:''}}</td>
+        <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.interestSurplus:0}}</td>
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">罚息</td>
-        <td>应付罚息</td>
-        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.penaltyReceivable:''}}</td>
+        <td>应还罚息</td>
+        <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltyReceivable:0}}</td>
         <td>已还罚息</td>
-        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.penaltyReceived:''}}</td>
+        <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltyReceived:0}}</td>
         <td>剩余罚息</td>
-        <td><span style="color:red;text-decoration:line-through;margin-right:6px">{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceivable:''}}</span><span>{{repaySumObj.productOrder?repaySumObj.productOrder.penaltySurplus:''}}</span></td>
+        <td><span style="color:red;text-decoration:line-through;margin-right:6px">{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltyDerate:''}}</span><span>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltySurplus:''}}</span></td>
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">合计</td>
         <td>应付</td>
-        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceivable:''}}</td>
-        <td>已还本金</td>
-        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceivable:''}}</td>
-        <td>剩余本金</td>
-        <td>{{repaySumObj.productOrder?repaySumObj.productOrder.principalReceivable:''}}</td>
+        <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.amountReceivable:0}}</td>
+        <td>已还</td>
+        <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.amountReceived:0}}</td>
+        <td>剩余</td>
+        <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.amountSurplus:0}}</td>
       </tr>
     </table>
 
     <template>
-      <i-modal title="申请减免" v-model="applyDerateOpen">
-        <apply-derate></apply-derate>
+      <i-modal title="申请减免" v-model="applyDerateOpen" @on-visible-change="applyDerateModalOpen">
+        <apply-derate ref="apply-derate" @close="closeAndRefreshDerate"></apply-derate>
+        <div slot="footer">
+          <i-button @click="cancelApplyDerate">取消</i-button>
+          <i-button @click="confirmApplyDerate" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
     <template>
-      <i-modal title="申请冻结" v-model="applyFrozenOpen">
-        <apply-frozen></apply-frozen>
+      <i-modal title="申请冻结" v-model="applyFrozenOpen" @on-visible-change="applyFrozenModalOpen">
+        <apply-frozen ref="apply-frozen" @close="closeAndRefreshFrozen"></apply-frozen>
+        <div slot="footer">
+          <i-button @click="cancelApplyFrozen">取消</i-button>
+          <i-button @click="confirmApplyFrozen" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -121,7 +129,7 @@
     private applyDerateOpen: Boolean = false
     private applyFrozenOpen: Boolean = false
     private repaySumObj: any = {}
-
+    private orderId: number = 0
     @Prop()
     row: Object;
 
@@ -135,12 +143,55 @@
       this.applyFrozenOpen = true
     }
     getRepaySum(orderId) {
+      this.orderId = orderId
       this.paymentScheduleService.getRepaymentOverview({
         orderId: orderId
       }).subscribe(val => {
-        console.log('val', val)
         this.repaySumObj = val.object
       })
+    }
+    applyDerateModalOpen(val) {
+      if (val) {
+        let _applyDerate: any = this.$refs['apply-derate']
+        _applyDerate.getInterestInfo(this.repaySumObj, this.orderId)
+      }
+    }
+    applyFrozenModalOpen(val) {
+      if (val) {
+        let _applyFrozen: any = this.$refs['apply-frozen']
+        _applyFrozen.getInterestInfo(this.repaySumObj, this.orderId)
+      }
+    }
+    /**
+     * 取消申请减免
+     */
+    cancelApplyDerate() {
+      this.applyDerateOpen = false
+    }
+    /**
+     * 确定申请减免
+     */
+    confirmApplyDerate() {
+      let _applyDerate: any = this.$refs['apply-derate']
+      _applyDerate.confirmApplyDerate()
+    }
+    closeAndRefreshDerate() {
+      this.applyDerateOpen = false
+      this.getRepaySum(this.orderId)
+    }
+    cancelApplyFrozen() {
+      this.applyFrozenOpen = false
+    }
+    /**
+     * 确定申请冻结
+     */
+    confirmApplyFrozen() {
+      let _applyFrozen: any = this.$refs['apply-frozen']
+      _applyFrozen.confirmApplyFrozen()
+    }
+    closeAndRefreshFrozen() {
+      this.applyFrozenOpen = false
+      this.getRepaySum(this.orderId)
     }
   }
 

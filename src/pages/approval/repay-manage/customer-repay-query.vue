@@ -35,13 +35,13 @@
     </div>
 
     <template>
-      <i-modal title="还款详情" :transfer="false" v-model="repayInfoModal" width="1300">
-        <repay-info ref="repay-info" :personalId="personalId" :businessId="businessId"></repay-info>
+      <i-modal title="还款详情" :transfer="false" v-model="repayInfoModal" width="1300" class="repay-info">
+        <repay-info ref="repay-info"></repay-info>
       </i-modal>
     </template>
 
     <template>
-      <i-modal title="还款总览" :transfer="false" width="900" v-model="repaySumModal" class="repay-sum">
+      <i-modal title="还款总览" :transfer="false" width="1050" v-model="repaySumModal" class="repay-sum">
         <repay-sum ref="repay-sum"></repay-sum>
       </i-modal>
     </template>
@@ -169,7 +169,7 @@
         {
           align: "center",
           title: "订单编号",
-          width: 150,
+          width: 160,
           key: 'orderNumber'
         },
         {
@@ -193,7 +193,8 @@
         {
           align: "center",
           title: "客户姓名",
-          key: "name"
+          key: "name",
+          width: 100
         },
         {
           align: "center",
@@ -261,6 +262,7 @@
           align: "center",
           title: " 结算通道",
           key: "settlementChannel",
+          width: 100,
           render: (h, {
             row,
             column,
@@ -278,6 +280,7 @@
         {
           align: "center",
           title: " 归属公司",
+          width: 100,
           key: "companyChinaName"
         }
       ];
@@ -309,10 +312,9 @@
      */
     repayInfoClick(row) {
       this.repayInfoModal = true
-      this.personalId = row.personalId
-      this.businessId = row.businessId
+      let orderId = row.orderId
       let _repayInfo: any = this.$refs['repay-info']
-      _repayInfo.getRepayInfo(this.personalId, this.businessId)
+      _repayInfo.getRepayInfo(orderId)
     }
     /**
      * 还款总揽
@@ -327,7 +329,8 @@
 
 </script>
 <style lang="less">
-  .repay-sum {
+  .repay-sum,
+  .repay-info {
     .ivu-modal-footer {
       display: none;
     }
