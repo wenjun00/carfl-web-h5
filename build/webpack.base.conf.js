@@ -3,6 +3,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
@@ -24,8 +25,8 @@ module.exports = {
     extensions: ['.ts', '.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '~': resolve('src'),
       '@': resolve('src'),
+      '~': resolve('src')
     }
   },
   module: {
@@ -36,17 +37,11 @@ module.exports = {
         options: vueLoaderConfig
       },
       {
-        test: /\.vue$/,
-        loader: 'iview-loader',
-        options: {
-          prefix: true
-        }
-      },
-      {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         exclude: /node_modules/,
         options: {
+          transpileOnly: true,
           appendTsSuffixTo: [/\.vue$/],
         }
       },
@@ -90,6 +85,12 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new ForkTsCheckerWebpackPlugin({
+      vue: true,
+      workers: ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE
+    })
+  ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).
