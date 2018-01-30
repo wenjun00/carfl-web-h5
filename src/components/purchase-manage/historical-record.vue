@@ -1,6 +1,6 @@
 <template>
   <section class="component historical-record">
-    <data-box ref="databox" :columns="carColumns" :data="historicalDataset" border stripe></data-box>
+    <i-table highlight-row @on-current-change="getCurrentSelectionData" ref="databox" :columns="carColumns" :data="historicalDataset"></i-table>
     <i-row style="margin-top:20px;">
       <i-button class="blueButton" style="float:right" @click="chooseback">选择并返回</i-button>
     </i-row>
@@ -26,6 +26,9 @@
   import {
     Emit
   } from "vue-property-decorator";
+  import {
+    ProductOrderService
+  } from "~/services/manage-service/product.order.service";
 
   @Component({
 
@@ -34,6 +37,7 @@
     }
   })
   export default class AddCar extends Vue {
+    @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
     @Dependencies(CarService) private carService: CarService;
     private isShown: Boolean = true;
@@ -58,29 +62,28 @@
     @Prop() row: Object;
     created() {
       this.carColumns = [{
-        type: 'selection',
-        align: 'center',
-        width: 100
-      }, {
-        title: '证件号码',
-        key: 'idCard',
+        title: '订单号',
+        key: 'orderNumber',
         align: 'center'
       }, {
-        title: '客户姓名',
-        key: 'personalName',
+        title: '订单类型',
+        key: 'orderType',
         align: 'center'
       }, {
-        title: '客户电话',
-        key: 'mobileMain',
-        align: 'center'
-      }, {
-        title: '归属业务员',
-        key: 'vehicleEmissions',
+        title: '订单创建时间',
+        key: 'createTime',
         align: 'center'
       }]
     }
     showCategory() {
       this.isShown = !this.isShown
+    }
+    getCurrentSelectionData(currentRow) {
+      this.productOrderService.findOrderInfoByOrderNumber({
+        orderNumber: currentRow.orderNumber
+      }).subscribe(data => {
+        console.log(data, 8999)
+      })
     }
     /**
      * 选择并返回

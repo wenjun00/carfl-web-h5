@@ -15,14 +15,13 @@
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" label-position="left" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
           <i-col span="12">
             <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" :maxlength="18" v-model="applyData.idCard" autofocus placeholder="请输入证件号码" @on-change="showTab"
-                @on-blur="checkcustomerinfo">
+              <i-input type="text" :maxlength="18" v-model="applyData.idCard" autofocus placeholder="请输入证件号码" @on-change="showTab" @on-blur="checkcustomerinfo">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="客户姓名" prop="customerName">
-              <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名">
+            <i-form-item label="客户姓名" prop="name">
+              <i-input type="text" v-model="applyData.name" placeholder="请输入客户姓名">
               </i-input>
             </i-form-item>
           </i-col>
@@ -43,7 +42,7 @@
           </i-col>
         </i-form>
       </i-col>
-      <i-col span="6" type="flex" justify="center" style="display: flex;justify-content: center;align-items: center;position:absolute;top:20%;right:18%;"
+      <i-col span="6" type="flex" justify="center" style="display: flex;justify-content: center;align-items: center;position:absolute;top:12%;right:18%;"
         pull="6">
         <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
       </i-col>
@@ -131,7 +130,7 @@
 
     private applyData: any = {
       idCard: '',
-      customerName: '',
+      name: '',
       customerPhone: '',
       salesmanName: ''
     };
@@ -171,7 +170,7 @@
           resetData.resetFields()
         },
         onCancel: () => {
-          this.$Message.info('点击了取消');
+          this.$Message.info('取消成功！');
         }
       })
 
@@ -312,7 +311,7 @@
     distributionData(data) {
       console.log(data, 666)
       this.applyData.idCard = data[0].idCard
-      this.applyData.customerName = data[0].personalName
+      this.applyData.name = data[0].personalName
       this.applyData.customerPhone = data[0].mobileMain
       //   this.applyData.salesmanName = data[0].salesmanName
     }
@@ -348,6 +347,7 @@
       //   客户资料
       let materials: any = this.$refs['materials']
       let customerData: any = materials.customerData
+      console.log(customerData, 900000000000000)
       if (type) {
         this.orderStatus = 303
       } else {
@@ -355,8 +355,8 @@
       }
       let savesubmitDataset: any = {
         idCard: this.applyData.idCard,
-        customerName: this.applyData.customerName,
-        customerPhone: this.applyData.customerPhone,
+        name: this.applyData.name,
+        mobileMain: this.applyData.customerPhone,
         salesmanName: this.applyData.salesmanName,
         city: choosebusyData.city,
         companyId: choosebusyData.companyId,
