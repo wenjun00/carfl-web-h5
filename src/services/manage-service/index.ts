@@ -14,6 +14,7 @@ import paymentScheduleService from './paymentSchedule.service'
 import remitApplicationService from './remitApplication.service'
 import refundApplicationService from './refund.application.service'
 import backLogService from './backLog.service'
+import carQuotationService from './carQuotation.service'
 
 export const aaa = {
     manageService,
@@ -30,5 +31,6 @@ export const aaa = {
     paymentScheduleService,
     remitApplicationService,
     refundApplicationService,
-    backLogService
+    backLogService,
+    carQuotationService
 }

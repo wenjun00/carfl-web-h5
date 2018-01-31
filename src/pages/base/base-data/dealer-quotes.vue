@@ -3,15 +3,13 @@
         <div style="margin-top:10px;display: flex;align-items: baseline;justify-content: space-between;">
             <div style="margin-top:10px;display: flex;align-items: baseline;">
                 <span style="font-size:18px;font-weight:bold;margin-right:5px;">经销商报价</span>
-                <Select style="width:200px">
-                    <Option v-for="item in businessAll" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
+                <i-input style="width:14%" placeholder="请输入产品包名称" v-model="busModal.productPackageName"></i-input>
                 <span style="margin-left:20px;margin-right:5px;">品牌</span>
-                <i-input style="width:12%" placeholder=""></i-input>
+                <i-input style="width:12%" placeholder="请输入品牌" v-model="busModal.carBrandName"></i-input>
                 <span style="margin-left:20px;margin-right:5px;">系列</span>
-                <i-input style="width:12%" placeholder=""></i-input>
+                <i-input style="width:12%" placeholder="请输入系列" v-model="busModal.carSeriesName"></i-input>
                 <span style="margin-left:20px;margin-right:5px;">型号</span>
-                <i-input style="width:12%" placeholder=""></i-input>
+                <i-input style="width:12%" placeholder="请输入型号" v-model="busModal.carName"></i-input>
                 <i-button class="blueButton" style="margin-left:10px;" @click="seachBusiness">查询</i-button>
             </div>
             <div>
@@ -26,6 +24,15 @@
             </div>
         </div>
         <data-box :columns="columns" :data="carList"></data-box>
+        <template>
+            <i-modal v-model="editModal" title="编辑">
+                <edit-car></edit-car>
+                <div slot="footer">
+                    <i-button class="Ghost" @click="editModal=false">取消</i-button>
+                    <i-button class="blueButton">确定</i-button>
+                </div>
+            </i-modal>
+        </template>
     </section>
 </template>
 <script lang="ts">
@@ -34,39 +41,58 @@ import Page from "~/core/page";
 import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import SvgIcon from "~/components/common/svg-icon.vue";
+import EditCar from "~/components/base-data/edit-car.vue";
+
 import { Dependencies } from "~/core/decorator";
+import { CarQuotationService } from "~/services/manage-service/carQuotation.service";
+import { PageService } from "~/utils/page.service";
 
 @Component({
   components: {
     DataBox,
-    SvgIcon
+    SvgIcon,
+    EditCar
   }
 })
 export default class AddPeriods extends Vue {
-  private businessAll: Array<Object> = [];
+  @Dependencies(CarQuotationService)
+  private carQuotationService: CarQuotationService;
+  @Dependencies(PageService) private pageService: PageService;
   private columns: any;
   private status: Number = 0;
   private carList: Array<Object> = [];
+  private busModal: Object = {};
+  private editModal: Boolean = false;
+  private carInfo: Object = {};
 
   created() {
-    this.businessAll = [
-      {
-        value: "New York",
-        label: "New York"
-      },
-      {
-        value: "London",
-        label: "London"
-      },
-      {
-        value: "Sydney",
-        label: "Sydney"
-      },
-      {
-        value: "Ottawa",
-        label: "Ottawa"
-      }
-    ];
+    this.seachBusiness();
+    this.busModal = {
+      productPackageName: "",
+      carBrandName: "",
+      carSeriesName: "",
+      carName: ""
+    };
+    this.carInfo = {
+      id: "",
+      productPackageName: "",
+      carBrandId: "",
+      carSeriesId: "",
+      carName: "",
+      carRemark: "",
+      marketGuidingPrice: "",
+      dealerGuidingPrice: "",
+      firstPayment: "",
+      financeAmount: "",
+      periods: "",
+      monthPay: "",
+      purchaseTaxMoney: "",
+      roadBridgeFee: "",
+      annualAmount: "",
+      gpsFee: "",
+      otherFee: "",
+      status: ""
+    };
     this.columns = [
       {
         title: "序号",
@@ -92,10 +118,28 @@ export default class AddPeriods extends Vue {
                   color: "#265EA2"
                 },
                 on: {
-                  click: () => {}
+                  click: row => {
+                    if (row.status === 0) {
+                      this.$Modal.confirm({
+                        title: "提示",
+                        content: "您确定停用吗？",
+                        onOk: () => {
+                          this.stopCar(row);
+                        }
+                      });
+                    } else if (row.status === 0) {
+                      this.$Modal.confirm({
+                        title: "提示",
+                        content: "您确定启用吗？",
+                        onOk: () => {
+                          this.startCar(row);
+                        }
+                      });
+                    }
+                  }
                 }
               },
-              "启用"
+              row.status === 0 ? "停用" : "启用"
             ),
             h(
               "i-button",
@@ -107,112 +151,136 @@ export default class AddPeriods extends Vue {
                   color: "#265EA2"
                 },
                 on: {
-                  click: () => {}
+                  click: () => {
+                    this.editCarFun();
+                  }
                 }
               },
               "编辑"
+            ),
+            h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: "提示",
+                      content: "您确定要删除吗？",
+                      onOk: () => {
+                        this.deleteCar(row);
+                      }
+                    });
+                  }
+                }
+              },
+              "删除"
             )
           ]);
         }
       },
       {
-        title: "经销商",
-        key: "jxs",
+        title: "产品包名称",
+        key: "productPackageName",
         align: "center",
         fixed: "left",
         width: 160
       },
       {
         title: "品牌",
-        key: "logo",
+        key: "carBrandId",
         align: "center",
         width: 160
       },
       {
         title: "系列",
-        key: "sersice",
+        key: "carSeriesId",
         align: "center",
         width: 160
       },
       {
         title: "型号",
-        key: "type",
+        key: "carName",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "颜色",
-        key: "color",
+        key: "carRemark",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "市场指导价",
-        key: "sszdj",
+        key: "marketGuidingPrice",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "经销商价格",
-        key: "jxsjg",
+        key: "dealerGuidingPrice",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "首期金额",
-        key: "sqje",
+        key: "firstPayment",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "融资金额",
-        key: "rzje",
+        key: "financeAmount",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "融资期数",
-        key: "rzqs",
+        key: "periods",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "租金（月）",
-        key: "zj",
+        key: "monthPay",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "购置税",
-        key: "gzs",
+        key: "purchaseTaxMoney",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "路桥费",
-        key: "lqf",
+        key: "roadBridgeFee",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "保险费",
-        key: "bxf",
+        key: "annualAmount",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "GPS费",
-        key: "gps",
+        key: "gpsFee",
         align: "center",
-        width: 260
+        width: 160
       },
       {
         title: "其他费用",
-        key: "other",
+        key: "otherFee",
         align: "center",
-        width: 260
+        width: 160
       },
-
       {
         title: "状态",
         key: "status",
@@ -222,32 +290,70 @@ export default class AddPeriods extends Vue {
           if (row.status === 0) {
             return h("span", {}, "已启用");
           } else if (row.status === 1) {
-            return h("span", {}, "已停用");
+            return h("span", {}, "未启用");
           }
         }
       }
     ];
-    this.carList = [
-      {
-        jxs: "阿里巴巴",
-        sersice: "type",
-        logo: "奔驰",
-        type: "奔驰",
-        color: "奔驰",
-        sszdj: "奔驰",
-        jxsjg: "奔驰"
-        // sqje: "奔驰",
-        // logo: "奔驰",
-        // logo: "奔驰",
-        // logo: "奔驰",
-        // logo: "奔驰",
-        // logo: "奔驰",
-        // logo: "奔驰",
-        // logo: "奔驰",
-        // logo: "奔驰"
-      }
-    ];
   }
-  seachBusiness() {}
+  /**
+   * 查询经销商报价
+   */
+  seachBusiness() {
+    this.carQuotationService
+      .getCarQuotationByConditionPage(this.busModal, this.pageService)
+      .subscribe(val => {
+        this.carList = val.object.list;
+      });
+  }
+  /**
+   * 停用
+   */
+  stopCar(row) {
+    this.carInfo = {
+      id: row.id,
+      status: 1
+    };
+    console.log(row, 999);
+    this.carQuotationService.updateCarQuotation(this.carInfo).subscribe(val => {
+      this.$Message.success("已停用");
+      this.seachBusiness();
+    });
+  }
+  /**
+   * 启用 start
+   */
+  startCar(row) {
+    this.carInfo = {
+      id: row.id,
+      status: 0
+    };
+    this.carQuotationService.updateCarQuotation(this.carInfo).subscribe(val => {
+      this.$Message.success("已启用!");
+      this.seachBusiness();
+    });
+  }
+  /**@augments
+   *删除
+   */
+  deleteCar(row) {
+    this.carQuotationService
+      .deleteCarQuotation({
+        id: row.id
+      })
+      .subscribe(val => {
+        this.$Message.success("删除成功！");
+        this.seachBusiness();
+      });
+  }
+  /**@augments
+   * 修改
+   */
+  editCarFun() {
+    this.editModal = true;
+    this.carQuotationService
+      .updateCarQuotation(this.carInfo)
+      .subscribe(val => {});
+  }
 }
 </script>

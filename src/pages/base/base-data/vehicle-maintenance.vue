@@ -189,19 +189,19 @@ export default class ProdConfig extends Page {
   /**
    * 查询车辆
    */
-  //   seach() {
-  //     this.carService
-  //       .seachCar({
-  //         carParam: this.carParam
-  //       })
-  //       .subscribe(
-  //         data => {
-  //           this.carDataModel = data.object;
-  //         },
-  //         ({ msg }) => {
-  //           this.$Message.error(msg);
-  //         }
-  //       );
-  //   }
+  seach() {
+    this.carService
+      .seachCar({
+        carParam: this.carParam
+      })
+      .subscribe(
+        data => {
+          this.carDataModel = data.object;
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
 }
 </script>

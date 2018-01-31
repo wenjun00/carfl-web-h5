@@ -34,4 +34,24 @@ export class CarService {
             data: data
         })
     }
+    /**
+     * 搜索
+     */
+    seachCar({ carParam }) {
+        return this.netService.send({
+            server: manageService.carController.seachCar,
+            data: {
+                carParam: carParam
+            }
+        })
+    }
+    /**
+     * 修改车辆信息
+     */
+    updateVehicle(data) {
+        return this.netService.send({
+            server: manageService.carController.updateVehicle,
+            data: data
+        })
+    }
 }
