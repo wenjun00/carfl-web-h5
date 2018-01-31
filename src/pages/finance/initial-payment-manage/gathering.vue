@@ -69,6 +69,9 @@
   import {
     PageService
   } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   @Layout("workspace")
   @Component({
 
@@ -162,44 +165,58 @@
         },
         {
           title: "处理状态",
-          key: "handleStatus",
+          key: "collectMoneyDealStatus",
           align: "center"
         },
         {
           align: "center",
           title: "处理时间",
-          key: "handleTime",
-          width: 180
+          key: "dealTime",
+          width: 180,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.dealTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: "处理人",
-          key: "handlePerson"
+          key: "dealerName"
         },
         {
           align: "center",
           title: "收款类型",
-          key: "gatheringType"
+          key: "totalPayment"
         },
         {
           align: "center",
           title: "收款总金额",
-          key: "gatheringTotalAmt"
+          key: "totalPayment"
         },
         {
           align: "center",
           title: "收款账户名",
-          key: "gatheringAccountName"
+          key: "accountName"
         },
         {
           align: "center",
           title: "申请日期",
-          key: "applyDate"
+          key: "operatorTime",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
           title: "申请人",
-          key: "applyPerson"
+          key: "operatorName"
         }
       ];
 
@@ -257,6 +274,8 @@
      * 获取收款列表
      */
     getGatherListByCondition() {
+      this.gatherModel.queryStartDate = FilterService.dateFormat(this.gatherModel.queryStartDate, "yyyy-MM-dd")
+      this.gatherModel.queryEndDate = FilterService.dateFormat(this.gatherModel.queryEndDate, "yyyy-MM-dd")
       this.collectMoneyHistoryService.collectMoneyHistoryList(this.gatherModel, this.pageService).subscribe(val => {
         this.gatherList = val.object.list
       })
