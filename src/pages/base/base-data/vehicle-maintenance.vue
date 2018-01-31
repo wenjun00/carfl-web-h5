@@ -20,13 +20,13 @@
                         </div>
                     </div>
                     <div style="width:250px;height:600px;border-left:1px solid #999999;border-right:1px solid #999999;border-bottom:1px solid #999999;position:relative;bottom:8px;">
-                        <i-tree :data="treeData"></i-tree>
+                        <i-tree :data="treeData" style="padding:10px;" @on-select-change="cartreeChange"></i-tree>
                     </div>
                 </i-col>
                 <i-col :span="17" style="position:relative;bottom:30px;" :pull="1">
                     <i-input style="width:30%;"></i-input>
-                    <i-button class="blueButton" style="margin-left:10px" @click="seach">查询</i-button>
-                    <i-table border :columns="columns" :data="carInfo" :loading="false"></i-table>
+                    <i-button class="blueButton" style="margin-left:10px" v-model="carParam" placeholder="输入品牌型号进行查询" @click="seach">查询</i-button>
+                    <i-table border :columns="carColumns" :data="carDataModel" style="margin-top:20px;"></i-table>
                 </i-col>
             </i-row>
         </i-row>
@@ -40,7 +40,7 @@ import { Dependencies } from "~/core/decorator";
 import { Layout } from "~/core/decorator";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import { PageService } from "~/utils/page.service";
-import { ProductService } from "~/services/manage-service/product.service";
+import { CarService } from "~/services/manage-service/car.service";
 
 @Layout("workspace")
 @Component({
@@ -50,57 +50,36 @@ import { ProductService } from "~/services/manage-service/product.service";
   }
 })
 export default class ProdConfig extends Page {
-  @Dependencies(ProductService) private productService: ProductService;
+  @Dependencies(CarService) private carService: CarService;
   @Dependencies(PageService) private pageService: PageService;
   private treeData: Array<any> = [];
-  private allData: Array<any> = [];
-  private carInfo: Array<any> = [];
-  private columns: Array<any> = [];
+  private dataList: any = [];
+  private treeId: any;
+  private carDataModel: Array<any> = [];
+  private carColumns: Array<any> = [];
+  private carParam: String = "";
 
   /**
    * 客户素材配置
    */
-  data() {
-    return {
-      treeData: [
-        {
-          lev1Node: ""
-        }
-      ],
-      lev1Node: {
-        title: "",
-        seriesId: "",
-        expand: true,
-        lev2Node: []
-      },
-      lev2Node: {
-        title: "",
-        productId: ""
-      }
-    };
-  }
+
   created() {
-    this.treeList();
-    this.columns = [
+    this.getCarseries();
+    this.carColumns = [
       {
         title: "操作",
-        key: "option",
-        render: (h, params) => {
+        align: "center",
+        width: 100,
+        render: (h, { row, index, column }) => {
           return h("div", [
             h(
               "i-button",
               {
                 props: {
-                  type: "primary",
-                  size: "small"
+                  type: "text"
                 },
                 style: {
-                  margin: "auto"
-                },
-                on: {
-                  click: () => {
-                    alert(1);
-                  }
+                  color: "#265EA2"
                 }
               },
               "修改"
@@ -110,72 +89,119 @@ export default class ProdConfig extends Page {
       },
       {
         title: "车辆品牌",
-        key: "brand"
+        key: "brandName",
+        align: "center"
       },
       {
         title: "车辆型号",
-        key: "type"
+        key: "modelName",
+        align: "center"
       },
       {
         title: "车身颜色",
-        key: "color"
+        key: "carColour",
+        align: "center"
       },
       {
         title: "车辆排量",
-        key: "cc"
-      }
-    ];
-    this.carInfo = [
-      {
-        brand: "卡迪拉克",
-        type: "2017款尊享版",
-        color: "浩银",
-        cc: "2.5T"
+        key: "carEmissions",
+        align: "center"
       }
     ];
   }
   /**
-   * 获取树形结构
+   * 根据车系列树获取车列表
    */
-  treeList() {
-    this.productService.getAllProduct().subscribe(val => {
-      this.allData = val.object;
-      console.log(this.allData);
-      this.getTreeDate();
-    });
+  cartreeChange(data) {
+    if (data[0].seriesId) {
+      this.treeId = data[0].seriesId;
+    }
+    if (data[0].brandId) {
+      this.treeId = data[0].brandId;
+    }
+    if (data[0].carId) {
+      this.treeId = data[0].carId;
+    }
+    this.carService.findAllCarBySeries(this.treeId).subscribe(
+      data => {
+        this.carDataModel = data.object;
+        console.log(this.carDataModel, 988);
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
+    );
   }
+  /**
+   * 获取所有车辆系列
+   */
+  getCarseries() {
+    this.carService.findAllCarSeries().subscribe(
+      data => {
+        this.dataList = data.object;
+        this.getTreeDate();
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
+    );
+  }
+  /**
+   * 车系列树遍历
+   */
   getTreeDate() {
-    let series: Map<number, any> = new Map();
-    this.allData.map(t => {
-      if (t.seriesId) {
-        series.set(t.seriesId, t);
+    let series: Map<string, any> = new Map();
+    this.dataList.map(t => {
+      if (t.id) {
+        series.set(t.id, t);
       }
     });
     this.treeData = [];
     series.forEach(item => {
       let lv1Node = {
-        title: item.seriesName,
-        seriesId: item.seriesId,
+        title: "所有品牌",
         expand: true,
-        children: this.getChilds(item.seriesId)
+        children: [
+          {
+            title: item.carBrand,
+            seriesId: item.id,
+            expand: true,
+            children: item.series.map(v => {
+              return {
+                title: v.seriesName,
+                brandId: v.id,
+                expand: true,
+                children: v.cars.map(m => {
+                  return {
+                    title: m.modelName,
+                    carId: m.id
+                  };
+                })
+              };
+            })
+          }
+        ]
       };
       this.treeData.push(lv1Node);
     });
   }
 
-  getChilds(id) {
-    let prods = this.allData.filter(t => t.seriesId === id);
-    let Lv2Nodes = prods.map(t => {
-      return {
-        title: t.productName,
-        productId: t.productId
-      };
-    });
-    return Lv2Nodes;
-  }
   /**
    * 查询车辆
    */
-  seach() {}
+  //   seach() {
+  //     this.carService
+  //       .seachCar({
+  //         carParam: this.carParam
+  //       })
+  //       .subscribe(
+  //         data => {
+  //           this.carDataModel = data.object;
+  //         },
+  //         ({ msg }) => {
+  //           this.$Message.error(msg);
+  //         }
+  //       );
+  //   }
 }
 </script>

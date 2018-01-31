@@ -2,17 +2,17 @@
 <template>
   <section class="component customer-origin">
     <h2>客户来源</h2>
-    <i-form ref="job-form" :model="job" :label-width="110">
+    <i-form ref="job-form" :model="customerOriginModel" :label-width="110">
       <i-row>
         <i-form-item label="通过宣传" prop="name">
-          <i-checkbox-group v-model="fruit">
-            <i-checkbox label="宣传页"></i-checkbox>
-            <i-checkbox label="网络推广"></i-checkbox>
-            <i-checkbox label="电销"></i-checkbox>
-            <i-checkbox label="营销活动"></i-checkbox>
-            <i-checkbox label="到店经营"></i-checkbox>
-            <i-checkbox label="总部推荐"></i-checkbox>
-            <i-checkbox label="其他"></i-checkbox>
+          <i-checkbox-group v-model="customerOriginModel.resourceType">
+            <i-checkbox :label="65">宣传页</i-checkbox>
+            <i-checkbox :label="66">网络推广</i-checkbox>
+            <i-checkbox :label="67">电销</i-checkbox>
+            <i-checkbox :label="68">营销活动</i-checkbox>
+            <i-checkbox :label="69">到店经营</i-checkbox>
+            <i-checkbox :label="70">总部推荐</i-checkbox>
+            <i-checkbox :label="80">其他</i-checkbox>
           </i-checkbox-group>
 
         </i-form-item>
@@ -95,6 +95,8 @@
 
       organizationNames: '', // 机构名称
       referrer: '', // 推荐人
+
+      resourceType: [], // 来源
     };
     // private customerOriginModel: any = {
     //   customerName: '', // 客户姓名
@@ -113,11 +115,11 @@
     };
     private jobType: String = "工薪者";
     private typeList: Array < String > ;
-    private fruit: Array < String > = [];
     private ischecked: Boolean = false;
     private isTrue: Boolean = false;
     private isShow: Boolean = false;
     private isBuyCar: String = '是';
+
 
     checked() {
       return !this.ischecked

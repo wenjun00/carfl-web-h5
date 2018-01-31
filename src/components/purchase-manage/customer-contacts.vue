@@ -10,7 +10,7 @@
       <i-button @click="addNewContacts" style="margin-left:10px;color:#265ea2" type="text">添加联系人</i-button>
     </div>
     <div style="margin-left:10px;margin-top:20px;">其他联系人（提示：必填3个其他联系人）</div>
-    <i-table :columns="columns1" :data="data2" width="1100"></i-table>
+    <i-table :columns="columns2" :data="data2" width="1100"></i-table>
     <!--<i-button @click="addNewContacts2" style="margin:10px 0" class="blueButton">添加联系人</i-button>-->
     <div>
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
@@ -19,14 +19,12 @@
 
     <template>
       <i-modal :title="addNew?'添加联系人':'编辑联系人'" v-model="editOrAddContactsModal">
-        <i-form :label-width="110">
+        <i-form :label-width="110" ref="contacts" :model="contactsModel">
           <i-form-item label="与本人关系">
-            <i-select v-model="contactsModel.relation">
-              <i-option label="配偶" value="配偶" key="配偶"></i-option>
-              <i-option label="父母" value="父母" key="父母"></i-option>
-              <i-option label="子女" value="子女" key="子女"></i-option>
-              <i-option label="朋友" value="朋友" key="朋友"></i-option>
-              <i-option label="同事" value="同事" key="同事"></i-option>
+            <i-select v-model="contactsModel.relation" clearable>
+              <i-option label="配偶" :value="56"></i-option>
+              <i-option label="父母" :value="57"></i-option>
+              <i-option label="子女" :value="58"></i-option>
             </i-select>
           </i-form-item>
           <i-form-item label="姓名">
@@ -36,7 +34,7 @@
             <i-input v-model="contactsModel.phone"></i-input>
           </i-form-item>
           <i-form-item label="单位名称">
-            <i-input v-model="contactsModel.companyName"></i-input>
+            <i-input v-model="contactsModel.employer"></i-input>
           </i-form-item>
           <i-form-item label="家庭地址">
             <i-input v-model="contactsModel.address"></i-input>
@@ -50,27 +48,26 @@
 
     <template>
       <i-modal :title="addNew?'添加联系人':'编辑联系人'" v-model="editOrAddContactsModal2">
-        <i-form :label-width="110">
+        <i-form :label-width="110" ref="other-contacts" :model="othercontactsModel">
           <i-form-item label="与本人关系">
-            <i-select v-model="contactsModel.relation">
-              <i-option label="配偶" value="配偶" key="配偶"></i-option>
-              <i-option label="父母" value="父母" key="父母"></i-option>
-              <i-option label="子女" value="子女" key="子女"></i-option>
-              <i-option label="朋友" value="朋友" key="朋友"></i-option>
-              <i-option label="同事" value="同事" key="同事"></i-option>
+            <i-select v-model="othercontactsModel.relation">
+              <i-option label="亲属" :value="59"></i-option>
+              <i-option label="同事" :value="60"></i-option>
+              <i-option label="朋友" :value="61"></i-option>
+              <i-option label="其他" :value="62"></i-option>
             </i-select>
           </i-form-item>
           <i-form-item label="姓名">
-            <i-input v-model="contactsModel.name"></i-input>
+            <i-input v-model="othercontactsModel.name"></i-input>
           </i-form-item>
           <i-form-item label="联系方式">
-            <i-input v-model="contactsModel.phone"></i-input>
+            <i-input v-model="othercontactsModel.phone"></i-input>
           </i-form-item>
           <i-form-item label="单位名称">
-            <i-input v-model="contactsModel.companyName"></i-input>
+            <i-input v-model="othercontactsModel.employer"></i-input>
           </i-form-item>
           <i-form-item label="家庭地址">
-            <i-input v-model="contactsModel.address"></i-input>
+            <i-input v-model="othercontactsModel.address"></i-input>
           </i-form-item>
         </i-form>
         <div slot="footer">
@@ -106,12 +103,20 @@
     private data2: Array < Object >= [];
     private editOrAddContactsModal: Boolean = false;
     private editOrAddContactsModal2: Boolean = false;
+    private rowData: any;
     private addNew: Boolean = false; //根据此判断是编辑还是新增
     private contactsModel: Object = {
       relation: '',
       name: '',
       phone: '',
-      companyName: '',
+      employer: '',
+      address: ''
+    };
+    private othercontactsModel: any = {
+      relation: '',
+      name: '',
+      phone: '',
+      employer: '',
       address: ''
     }
 
@@ -124,21 +129,48 @@
           columns,
           index
         }) => {
-          return h('i-button', {
-            props: {
-              type: 'text'
-            },
-            style: {
-              color: "#265EA2"
-            },
-            on: {
-              click: () => {
-                this.editContacts(row)
-                this.addNew = false
-                this.editOrAddContactsModal = true
-              }
-            }
-          }, '编辑')
+          return h("div", [
+            h(
+              "i-button", {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.editContacts(row)
+                    this.addNew = false
+                    this.editOrAddContactsModal = true
+                  }
+                }
+              },
+              "编辑"
+            ),
+            h(
+              "i-button", {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: '提示',
+                      content: '确定删除吗？',
+                      onOk: () => {
+                        this.data1.splice(index, 1);
+                      }
+                    })
+                  }
+                }
+              },
+              "删除"
+            )
+          ]);
         }
       }, {
         title: '与本人关系',
@@ -146,7 +178,7 @@
         align: 'center'
       }, {
         title: '姓名',
-        key: 'relationName',
+        key: 'name',
         align: 'center'
       }, {
         title: '联系方式',
@@ -154,58 +186,144 @@
         align: 'center'
       }, {
         title: '单位名称',
-        key: 'firmName',
+        key: 'employer',
         align: 'center'
       }, {
         title: '家庭住址',
         key: 'address',
         align: 'center'
       }]
-      // 获取客户联系人直系亲属
-      // this.orderService.getContactsInfo().subscribe(({
-      //   val
-      // }) => {
-      //   this.data1 = val
-      // })
-
+      this.columns2 = [{
+        title: '操作',
+        align: 'center',
+        render: (h, {
+          row,
+          columns,
+          index
+        }) => {
+          return h("div", [
+            h(
+              "i-button", {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.editContacts(row)
+                    this.addNew = false
+                    this.editOrAddContactsModal2 = true
+                  }
+                }
+              },
+              "编辑"
+            ),
+            h(
+              "i-button", {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: '提示',
+                      content: '确定删除吗？',
+                      onOk: () => {
+                        this.data2.splice(index, 1);
+                      }
+                    })
+                  }
+                }
+              },
+              "删除"
+            )
+          ]);
+        }
+      }, {
+        title: '与本人关系',
+        key: 'relation',
+        align: 'center'
+      }, {
+        title: '姓名',
+        key: 'name',
+        align: 'center'
+      }, {
+        title: '联系方式',
+        key: 'phone',
+        align: 'center'
+      }, {
+        title: '单位名称',
+        key: 'employer',
+        align: 'center'
+      }, {
+        title: '家庭住址',
+        key: 'address',
+        align: 'center'
+      }]
       this.data1 = []
       this.data2 = []
-      // 获取客户联系人其他联系人
-      // this.orderService.getContactsRelationInfo().subscribe(({
-      //   val
-      // }) => {
-      //   this.data2 = val
-      // })
-
     }
     editContacts(row) {
+      this.rowData = row
       this.contactsModel = {
         relation: row.relation,
-        name: row.relationName,
+        name: row.name,
         phone: row.phone,
-        companyName: row.firmName,
+        employer: row.employer,
         address: row.address
       }
     }
     deleteRelation(row) {
 
     }
+    /**
+     * 添加直系联系人
+     */
     saveAndBack() {
+      if (this.addNew) {
+        this.data1.push({
+          relation: this.contactsModel.relation,
+          name: this.contactsModel.name,
+          phone: this.contactsModel.phone,
+          employer: this.contactsModel.employer,
+          address: this.contactsModel.address
+        })
+      } else {
+        this.rowData.relation = this.contactsModel.relation
+        this.rowData.name = this.contactsModel.name
+        this.rowData.phone = this.contactsModel.phone
+        this.rowData.employer = this.contactsModel.employer
+        this.rowData.address = this.contactsModel.address
+      }
+      this.$refs['contacts'].resetFields()
       this.editOrAddContactsModal = false
-      this.orderService.getContactsInfo().subscribe(({
-        val
-      }) => {
-        this.data1 = val
-      })
     }
+    /**
+     * 添加其他联系人
+     */
     saveAndBack2() {
+      if (this.addNew) {
+        this.data2.push({
+          relation: this.othercontactsModel.relation,
+          name: this.othercontactsModel.name,
+          phone: this.othercontactsModel.phone,
+          employer: this.othercontactsModel.employer,
+          address: this.othercontactsModel.address
+        })
+      } else {
+        this.rowData.relation = this.othercontactsModel.relation
+        this.rowData.name = this.othercontactsModel.name
+        this.rowData.phone = this.othercontactsModel.phone
+        this.rowData.employer = this.othercontactsModel.employer
+        this.rowData.address = this.othercontactsModel.address
+      }
+      this.$refs['other-contacts'].resetFields()
       this.editOrAddContactsModal2 = false
-      // 获取客户联系人其他联系人
-      this.orderService.getContactsRelationInfo().subscribe(({
-        val
-      }) => {
-        this.data2 = val
-      })
     }
     addNewContacts() {
       this.addNew = true

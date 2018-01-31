@@ -151,7 +151,8 @@
     private historicalDataset: any = [];
     private addcarData: any = [];
     private type: Boolean = false;
-    private orderStatus: any = ''
+    private orderStatus: any = '';
+    // private currentRowData: any = {};
 
     /**
      * 添加新申请
@@ -309,11 +310,24 @@
       }
     }
     distributionData(data) {
-      console.log(data, 666)
-      this.applyData.idCard = data[0].idCard
-      this.applyData.name = data[0].personalName
-      this.applyData.customerPhone = data[0].mobileMain
-      //   this.applyData.salesmanName = data[0].salesmanName
+      //   this.currentRowData = data
+      console.log(data, 80800)
+      this.applyData.name = data.personal.name
+      this.applyData.customerPhone = data.personal.mobileMain
+      this.applyData.salesmanName = data.salesmanName
+      let component: any = this.$refs['materials-all']
+      //   for (let item of data.addcarData) {
+      //     component.addcarData.push({
+      //       brandId: item.brandId,
+      //       brandName: item.brandName,
+      //       carSeriesId: item.carSeriesId,
+      //       modelName: item.modelName,
+      //       otherExpenses: item.otherExpenses,
+      //       vehicleAmount: item.vehicleAmount,
+      //       vehicleColour: item.vehicleColour
+      //     })
+      //   }
+      console.log(component, 666)
     }
     /**
      * 多选

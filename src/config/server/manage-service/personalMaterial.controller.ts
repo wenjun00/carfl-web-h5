@@ -49,5 +49,14 @@ export default {
         controller: CONTROLLER,
         action: 'deletePersonalMaterial',
         type: requestType.Delete
+    },
+    /**
+    * 展示全部客户素材
+    */
+    getAllPersonalMaterialNoPage: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getAllPersonalMaterialNoPage',
+        type: requestType.Get
     }
 }

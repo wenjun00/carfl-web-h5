@@ -93,9 +93,12 @@
     applyRule: Object = {};
     @Prop()
     disabledStatus: String;
+    @Prop() currentRowData: any;
 
 
     created() {
+      //   console.log(this.currentRowData.addcarData, 800)
+      //   this.addcarData = this.currentRowData.addcarData
       // 获取公司名称
       this.companyService.getAllCompany().subscribe(val => {
         this.companyObject = val.object

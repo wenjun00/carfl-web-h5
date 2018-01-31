@@ -3,14 +3,14 @@
   <section class="component customer-job-message">
     <i-col span="24" style="line-height:30px" class="form-title">职业信息</i-col>
     <div span="24" style="line-height:30px">
-      <i-radio-group v-model="jobType">
-        <i-radio label="工薪者"></i-radio>
-        <i-radio label="企业经营者"></i-radio>
+      <i-radio-group v-model="jobType" @on-change="jfhdfdf">
+        <i-radio :label="37" :value="37">工薪者</i-radio>
+        <i-radio :label="38" :value="38">企业经营者</i-radio>
       </i-radio-group>
     </div>
 
     <!--工薪者-->
-    <div v-if="jobType === '工薪者'">
+    <div v-if="jobType === 37">
       <!--单位信息 Start-->
       <i-col span="24" style="line-height:30px;background:#ddd"></i-col>
       <div>
@@ -37,7 +37,13 @@
           <i-col :span="12">
             <i-form-item label="单位性质" prop="companyNature">
               <i-select v-model="job.companyNature">
-                <i-option v-for="item in typeList" :value="item" :key="item">{{ item }}</i-option>
+                <i-option label="机关事业" :value="39"></i-option>
+                <i-option label="国有企业" :value="40"></i-option>
+                <i-option label="社会团体" :value="41"></i-option>
+                <i-option label="外资" :value="42"></i-option>
+                <i-option label="合资" :value="43"></i-option>
+                <i-option label="私营有限公司" :value="44"></i-option>
+                <i-option label="个体户" :value="45"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
@@ -52,7 +58,14 @@
           <i-col :span="12">
             <i-form-item label="职级" prop="rank">
               <i-select v-model="job.rank">
-                <i-option v-for="item in typeList" :value="item" :key="item">{{ item }}</i-option>
+                <i-option label="负责人" :value="46"></i-option>
+                <i-option label="高级管理人员" :value="47"></i-option>
+                <i-option label="中级管理人员" :value="48"></i-option>
+                <i-option label="一般管理人员" :value="49"></i-option>
+                <i-option label="一般正式员工" :value="50"></i-option>
+                <i-option label="劳务派遣员工" :value="51"></i-option>
+                <i-option label="非正式员工" :value="52"></i-option>
+                <i-option label="退休人员" :value="53"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
@@ -129,7 +142,7 @@
     </div>
 
     <!--企业经营者-->
-    <div v-if="jobType === '企业经营者'">
+    <div v-if="jobType ===38">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">公司信息</span>
       </div>
@@ -237,8 +250,12 @@
       pastyearIncome: '', // 过去一年营业收入
       pastyearProfit: '', // 过去一年利润
     };
-    private jobType: String = "工薪者";
+    private jobType: any = 37;
     private typeList: Array < String > ;
+
+    jfhdfdf() {
+      console.log(this.jobType)
+    }
 
     created() {
       this.typeList = ["机关事业", "国有企业", "社会团体", "外资", "合资", "私营有限公司", "个体户"]

@@ -55,4 +55,13 @@ export class PersonalMaterialService {
             }
         })
     }
+    /**
+     * 展示全部客户素材
+     */
+    getAllPersonalMaterialNoPage(data) {
+        return this.netService.send({
+            server: manageService.personalMaterialController.getAllPersonalMaterialNoPage,
+            data
+        })
+    }
 }
