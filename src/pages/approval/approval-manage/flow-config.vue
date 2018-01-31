@@ -105,7 +105,7 @@
       root.forEach(item => {
         let node1 = {
           title: item.name,
-          productId: item.id,
+          seriesId: item.id,
           expand: true,
           children: this.getChild(item)
         }
@@ -116,11 +116,19 @@
       let child: any = []
       this.allData.map(val => {
         if (item.id === val.parent) {
-          let node2 = {
-            title: val.name,
-            productId: val.id
+          if (val.flag === '产品') {
+            let node2 = {
+              title: val.name,
+              productId: val.id
+            }
+            child.push(node2)
+          } else if (val.flag === '产品系列') {
+            let node2 = {
+              title: val.name,
+              seriesId: val.id
+            }
+            child.push(node2)
           }
-          child.push(node2)
         }
       })
       return child
@@ -169,11 +177,11 @@
      * 获取页面加载时的产品审批流程
      */
     getDefaultProcess() {
-      // this.productService.getProductConfigProcess({
-      //   productId: this.productId
-      // }).subscribe(val => {
-      //   this.approvaFlowList = val.object
-      // })
+      this.productService.getProductConfigProcess({
+        productId: this.productId
+      }).subscribe(val => {
+        this.approvaFlowList = val.object
+      })
     }
     createPrdTree(data) {
       let series: Map < number, any > = new Map();
@@ -207,12 +215,15 @@
      * 树change事件
      */
     prdTreeChange(val) {
-      // this.productId = val[0].productId
-      // this.productService.getProductConfigProcess({
-      //   productId: val[0].productId
-      // }).subscribe(val => {
-      //   this.approvaFlowList = val.object
-      // })
+      console.log(val, 1090)
+      if (val[0].productId) {
+        this.productId = val[0].productId
+        this.productService.getProductConfigProcess({
+          productId: val[0].productId
+        }).subscribe(val => {
+          this.approvaFlowList = val.object
+        })
+      }
     }
     /**
      * 下拉框change

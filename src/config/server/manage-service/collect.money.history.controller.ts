@@ -10,6 +10,6 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'collectMoneyHistoryList',
-    type: requestType.Post
+    type: requestType.Get
   }
 }
