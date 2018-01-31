@@ -8,10 +8,10 @@
       <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px">
         <data-grid-item label="申请省份：" :span="3">{{orderInfo.province}}</data-grid-item>
         <data-grid-item label="申请城市：" :span="3">{{orderInfo.city}}</data-grid-item>
-        <data-grid-item label="所属公司：" :span="6">{{}}</data-grid-item>
+        <data-grid-item label="所属公司：" :span="6">{{orderInfo.company?orderInfo.company.companyChinaname:''}}</data-grid-item>
         <data-grid-item label="融资租赁用途" :span="3">{{orderInfo.financingUse}} </data-grid-item>
         <data-grid-item label="自缴费用" :span="9">
-          <i-checkbox-group v-model="fruit">
+          <i-checkbox-group v-model="fee">
             <i-checkbox label="保险费"></i-checkbox>
             <i-checkbox label="购置费"></i-checkbox>
           </i-checkbox-group>
@@ -36,11 +36,11 @@
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>产品系列</td>
-          <td>{{productSeries.name}}</td>
+          <td>{{orderInfo.productSeries?orderInfo.productSeries.name:''}}</td>
           <td>产品名称</td>
-          <td>{{product.name}}</td>
+          <td>{{orderInfo.product?orderInfo.product.name:''}}</td>
           <td>产品期数</td>
-          <td>{{}}</td>
+          <td>{{orderInfo.periods}}</td>
           <td>产品利率</td>
           <td>{{orderInfo.productRate}}</td>
         </tr>
@@ -76,7 +76,7 @@
         </tr>
         <tr>
           <td>备注</td>
-          <td colspan="7">{{}}</td>
+          <td colspan="7">{{orderInfo.remark}}</td>
         </tr>
       </table>
     </i-row>
@@ -88,19 +88,19 @@
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>姓名</td>
-          <td>{{personal.name}}</td>
+          <td>{{orderInfo.personal?orderInfo.personal.name:''}}</td>
           <td>性别</td>
-          <td>{{personal.sex}}</td>
+          <td>{{orderInfo.personal?orderInfo.personal.sex:''}}</td>
           <td>出生日期</td>
-          <td>{{personal.birthTime}}</td>
+          <td>{{orderInfo.personal?orderInfo.personal.birthTime:''}}</td>
           <td>微信号码</td>
-          <td>{{personal.wechat}}</td>
+          <td>{{orderInfo.personal?orderInfo.personal.wechat:''}}</td>
         </tr>
         <tr>
           <td>手机号码(主)</td>
-          <td>{{personal.mobileMain}}</td>
+          <td>{{orderInfo.personal?orderInfo.personal.mobileMain:''}}</td>
           <td>手机号码(次)</td>
-          <td>{{personal.mobileMinor}}</td>
+          <td>{{orderInfo.personal?orderInfo.personal.mobileMinor:''}}</td>
           <td></td>
           <td></td>
           <td></td>
@@ -108,47 +108,47 @@
         </tr>
         <tr>
           <td>身份证号码</td>
-          <td>{{personal.idCard}}</td>
+          <td>{{orderInfo.personal?orderInfo.personal.idCard:''}}</td>
           <td>婚属状况</td>
-          <td colspan="5">{{personal.marital}}</td>
+          <td colspan="5">{{orderInfo.personal?orderInfo.personal.marital:''}}</td>
         </tr>
         <tr>
           <td>身份证有效期</td>
-          <td colspan="3">{{personal.idCardValidityPeriodSection}}</td>
+          <td colspan="3">{{orderInfo.personal?orderInfo.personal.idCardValidityPeriodSection:''}}</td>
           <td>发证机关</td>
-          <td colspan="3">{{personal.issuer}}</td>
+          <td colspan="3">{{orderInfo.personal?orderInfo.personal.issuer:''}}</td>
         </tr>
         <tr>
           <td>身份证地址</td>
-          <td colspan="7">{{personal.idCardAddress}}</td>
+          <td colspan="7">{{orderInfo.personal?orderInfo.personal.idCardAddress:''}}</td>
         </tr>
         <tr>
           <td>现居住地址</td>
-          <td colspan="7">{{personal.localHomeAddr}}</td>
+          <td colspan="7">{{orderInfo.personal?orderInfo.personal.localHomeAddr:''}}</td>
         </tr>
         <tr>
           <td>居住地址家庭座机</td>
-          <td>{{personal.localHomePhone}}</td>
+          <td>{{orderInfo.personal?orderInfo.personal.localHomePhone:''}}</td>
           <td>本市生活时长</td>
-          <td>{{personal.cityLiveTime}}</td>
+          <td>{{orderInfo.personal?orderInfo.personal.cityLiveTime:''}}</td>
           <td>现居住地生活时常</td>
-          <td colspan="3">{{personal.localLiveTime}}</td>
+          <td colspan="3">{{orderInfo.personal?orderInfo.personal.localLiveTime:''}}</td>
         </tr>
         <tr>
           <td>现居住地房产归属</td>
-          <td colspan="7">{{personal.localLiveHouseOwner}}</td>
+          <td colspan="7">{{orderInfo.personal?orderInfo.personal.localLiveHouseOwner:''}}</td>
         </tr>
         <tr>
           <td>本市自有房产状况及归属</td>
-          <td colspan="3">{{personal.cityOwnhouseCondition}}</td>
+          <td colspan="3">{{orderInfo.personal?orderInfo.personal.cityOwnhouseCondition:''}}</td>
           <td>电费账号</td>
-          <td>{{personal.electricityAccount}}</td>
+          <td>{{orderInfo.personal?orderInfo.personal.electricityAccount:''}}</td>
           <td>电费密码</td>
-          <td>{{personal.electricityPassword}}</td>
+          <td>{{orderInfo.personal?orderInfo.personal.electricityPassword:''}}</td>
         </tr>
         <tr>
           <td>本市房产地址</td>
-          <td colspan="7">{{orderInfo.cityOwnhouseAddress}}</td>
+          <td colspan="7">{{orderInfo.personal?orderInfo.orderInfo.cityOwnhouseAddress:''}}</td>
         </tr>
         <tr>
           <td>教育程度</td>
@@ -374,7 +374,7 @@
   })
   export default class PurchaseInformation extends Vue {
     @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
-    private fruit: Array < String > = ['购置费'];
+    private fee: Array < String > = [];
     private single: Boolean = false;
     private sliderStep: Number;
     private c = {
@@ -423,11 +423,12 @@
       }).subscribe(val => {
         let allData = JSON.stringify(val.object)
         this.orderInfo = JSON.parse(allData)
-        this.personal = this.orderInfo.personal // 个人资料
-        this.productSeries = this.orderInfo.productSeries // 产品系列
-        this.product = this.orderInfo.product // 产品
-        this.contactsInfo = this.orderInfo.personal.personalContacts
-        console.log(this.personal, 321)
+        // this.personal = this.orderInfo.personal // 个人资料
+        // this.productSeries = this.orderInfo.productSeries // 产品系列
+        // this.product = this.orderInfo.product // 产品
+        // this.contactsInfo = this.orderInfo.personal.personalContacts
+        // 获取购置费、保险费
+        console.log(this.orderInfo, 321)
       })
     }
   }
