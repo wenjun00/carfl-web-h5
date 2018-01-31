@@ -18,16 +18,22 @@
       </i-button>
     </i-row>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:16px;">
-      <i-select placeholder="全部状态" style="margin-left:20px;width:10%" v-model="approvalRecordModel.first" @on-change="changeSelectOne">
+      <i-select placeholder="全部状态" style="margin-left:20px;width:10%" v-model="approvalRecordModel.type" @on-change="changeSelectOne">
         <i-option label="通过" :value="0" :key="0"></i-option>
-        <i-option label="退件" :value="1" :key="1"></i-option>
-        <i-option label="拒绝" :value="2" :key="2"></i-option>
+        <i-option label="退件" :value="374" :key="374"></i-option>
+        <i-option label="拒绝" :value="375" :key="375"></i-option>
       </i-select>
-      <i-select placeholder="全部拒单原因" style="margin-left:20px;width:12%" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
-        <i-option v-for="item in refuseReason" :key="item.id" :label="item.name" :value="item.id"></i-option>
+      <i-select placeholder="通过类型" v-if="passSelect" style="margin-left:20px;width:12%" v-model="approvalRecordModel.second">
+        <i-option label="通过" :key="310" :value="310"></i-option>
+        <i-option label="提交内审/通过" :key="321" :value="321"></i-option>
+        <i-option label="灰名单/通过" :key="322" :value="322"></i-option>
       </i-select>
-      <i-select placeholder="全部拒单细节" style="margin-left:20px;width:15%" v-model="approvalRecordModel.detail">
-        <i-option v-for="item in refuseDetail" :key="item.id" :label="item.name" :value="item.id"></i-option>
+      <i-select placeholder="全部拒单原因" v-if="!passSelect" style="margin-left:20px;width:12%;display:inline-block" v-model="approvalRecordModel.second"
+        @on-change="changeSelectTwo">
+        <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
+      </i-select>
+      <i-select placeholder="全部拒单细节" v-if="!passSelect" style="margin-left:20px;width:12%;display:inline-block" v-model="approvalRecordModel.detail">
+        <i-option v-for="item in refuseDetail" :key="item.detail" :label="item.detail" :value="item.detail"></i-option>
       </i-select>
       <span style="margin-left:10px;">日期：</span>
       <i-date-picker style="display:inline-block;width:10%;" v-model="approvalRecordModel.startTime"></i-date-picker>~
@@ -80,6 +86,10 @@
   import {
     ApprovalService
   } from "~/services/manage-service/approval.service";
+  import {
+    ApproveReasonService
+  } from "~/services/manage-service/approve.reason.service";
+
   @Layout("workspace")
   @Component({
 
@@ -91,6 +101,7 @@
   export default class ApprovalRecordTable extends Page {
     @Dependencies(ApprovalService) private approvalService: ApprovalService;
     @Dependencies(PageService) private pageService: PageService;
+    @Dependencies(ApproveReasonService) private approveReasonService: ApproveReasonService;
     private columns1: any;
     private approvalRecordList: Array < Object > = [];
     private searchOptions: Boolean = false;
@@ -104,13 +115,14 @@
     private checkRadio: String = "融资租赁合同";
     private columns3: any;
     private orderProgressModal: Boolean = false;
+    private passSelect: Boolean = false; // 通过下拉框flag
     private refuseReason: Array < Object >= [] // 拒单原因
     private refuseDetail: Array < Object >= [] // 拒单细节
     private approvalRecordModel: any = {
       timeSearch: '',
       startTime: '',
       endTime: '',
-      first: '',
+      type: '',
       second: '',
       detail: ''
     }
@@ -397,10 +409,27 @@
 
     }
     changeSelectOne(val) {
-
+      // this.approvalRecordModel.detail = ''
+      if (val === 0) {
+        // TODO
+        this.passSelect = true
+      } else {
+        this.passSelect = false
+        this.approvalRecordModel.detail = ''
+        this.approvalRecordModel.second = ''
+        this.approvalRecordModel.type = val
+        this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(val => {
+          this.refuseReason = val.object
+        })
+      }
     }
     changeSelectTwo(val) {
-
+      this.approvalRecordModel.second = val
+      this.approvalRecordModel.detail = ''
+      this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(val => {
+        // console.log(6767, val)
+        this.refuseDetail = val.object
+      })
     }
     checkOrderProgress(row) {
       this.orderProgressModal = true
@@ -423,9 +452,9 @@
     getTimeSearch(val) {
       this.approvalRecordModel.startTime = ''
       this.approvalRecordModel.endTime = ''
-      this.approvalRecordModel.first = ''
       this.approvalRecordModel.second = ''
       this.approvalRecordModel.detail = ''
+      this.approvalRecordModel.type = ''
       this.approvalRecordModel.timeSearch = val
       this.getApprovaRecordList()
       this.approvalRecordModel.timeSearch = ''
