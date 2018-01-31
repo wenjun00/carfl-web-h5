@@ -24,7 +24,9 @@
     <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.personalInfo"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:21%" type="datetimerange" placeholder="请选择日期" @on-change="timeRangeChange"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:10%" v-model="approvalModel.startTime"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%" v-model="approvalModel.endTime"></i-date-picker>
+      <!--<i-date-picker style="display:inline-block;width:21%" type="datetimerange" placeholder="请选择日期" @on-change="timeRangeChange"></i-date-picker>-->
       <span style="margin-left:10px;">省市：</span>
       <i-select style="width:80px;margin-left:10px;" placeholder="选择省" v-model="approvalModel.province" clearable>
         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
@@ -113,15 +115,16 @@
     private data3: Array < Object > = [];
     private approvalModel: any = {
       riskStatus: 0,
-      timeSearch: ''
+      timeSearch: '',
+      province: '',
+      city: '',
+      personalInfo: '',
+      productType: ''
     }
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     created() {
-      // this.approvalModel = {
-      //   riskStatus: 0,
-      // }
       this.getInternalAuditList()
       this.columns3 = [{
         title: '序号',
@@ -420,6 +423,8 @@
       this.openColumnsConfig = true
     }
     getInternalAuditList() {
+      this.approvalModel.startTime = FilterService.dateFormat(this.approvalModel.startTime, "yyyy-MM-dd")
+      this.approvalModel.endTime = FilterService.dateFormat(this.approvalModel.endTime, "yyyy-MM-dd")
       this.approvalService.approvalOrderSearch(this.approvalModel, this.pageService).subscribe(val => {
         this.internalList = val.object.list
       })
@@ -435,8 +440,15 @@
     getTimeSearch(val) {
       this.approvalModel.startTime = ''
       this.approvalModel.endTime = ''
+      this.approvalModel.city = ''
+      this.approvalModel.province = ''
+      this.approvalModel.endTime = ''
+      this.approvalModel.productType = ''
+      this.approvalModel.personalInfo = ''
       this.approvalModel.timeSearch = val
       this.getInternalAuditList()
+      this.approvalModel.timeSearch = ''
+
     }
     moveOut(row) {
       this.approvalService.removeRiskStatus({

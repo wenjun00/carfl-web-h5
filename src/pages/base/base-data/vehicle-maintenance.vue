@@ -26,24 +26,6 @@
                 <i-col :span="17" style="position:relative;bottom:30px;" :pull="1">
                     <i-input style="width:30%;"></i-input>
                     <i-button class="blueButton" style="margin-left:10px" @click="seach">查询</i-button>
-                    <!-- <table border="1" width="100%" style="margin-top:10px;border:1px solid #DDDEE1" id="tb">
-                        <tr align="center" height="40">
-                            <td bgcolor="#F2F2F2" width="100">操作</td>
-                            <td bgcolor="#F2F2F2">车辆品牌</td>
-                            <td bgcolor="#F2F2F2">车辆型号</td>
-                            <td bgcolor="#F2F2F2">车身颜色</td>
-                            <td bgcolor="#F2F2F2">车辆排量</td>
-                        </tr>
-                        <tr v-for="item in carInfo" :key="item.id" :value="item.name" align="center">
-                            <td>
-                                <i-button type="text" style="color:blue" @click="editDict"></i-button>
-                            </td>
-                            <td width="360">{{item.name}}</td>
-                            <td>{{item.type}}</td>
-                            <td>{{item.color}}</td>
-                            <td>{{item.cc}}</td>
-                        </tr>
-                    </table> -->
                     <i-table border :columns="columns" :data="carInfo" :loading="false"></i-table>
                 </i-col>
             </i-row>

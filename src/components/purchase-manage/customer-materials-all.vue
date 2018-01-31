@@ -7,13 +7,13 @@
         <i-form ref="parchase-form" :model="customerData" :label-width="110">
           <i-row>
             <i-col span="12" class="bigSelect">
-              <i-form-item label="购车方" prop="customerName">
-                <i-input v-model="customerData.customerName"></i-input>
+              <i-form-item label="购车方" prop="name">
+                <i-input v-model="customerData.name"></i-input>
               </i-form-item>
             </i-col>
             <i-col span="12" pull="3" class="bigSelect">
-              <i-form-item label="联系电话" prop="customerPhone">
-                <i-input v-model="customerData.customerPhone"></i-input>
+              <i-form-item label="联系电话" prop="mobileMain">
+                <i-input v-model="customerData.mobileMain"></i-input>
               </i-form-item>
             </i-col>
           </i-row>
@@ -48,7 +48,7 @@
                       </i-select>
                     </i-col>
                     <i-col :span="4">
-                      <i-select placeholder="区" v-model="customerData.area">
+                      <i-select placeholder="区" v-model="customerData.localHomeAddr">
                         <i-option v-for="{value,label} in this.customerData.city ? this.$city.getCityData({ level: 1, id: this.customerData.city }) : []"
                           :key="value" :label="label" :value="value"></i-option>
                       </i-select>
@@ -70,15 +70,15 @@
           <i-row>
             <i-col :span="12">
               <i-form-item label="代办服务" prop="orderServiceList">
-                <i-checkbox-group v-model="customerData.orderServiceList">
-                  <i-checkbox label="上牌" :value="200"></i-checkbox>
-                  <i-checkbox label="办理保险" :value="201"></i-checkbox>
-                  <i-checkbox label="代缴购置税" :value="202"></i-checkbox>
-                  <i-checkbox label="代缴车船税" :value="203"></i-checkbox>
-                  <i-checkbox label="按揭贷款" :value="204"></i-checkbox>
-                  <i-checkbox label="车辆装潢" :value="205"></i-checkbox>
-                  <i-checkbox label="代缴其他费用" :value="206"></i-checkbox>
-                  <i-checkbox label="其他" :value="207"></i-checkbox>
+                <i-checkbox-group v-model="customerData.orderServiceList" @on-change="whgwgdhwgdh">
+                  <i-checkbox :label="200" :value="200">上牌</i-checkbox>
+                  <i-checkbox :label="201" :value="201">办理保险</i-checkbox>
+                  <i-checkbox :label="202" :value="202">代缴购置税</i-checkbox>
+                  <i-checkbox :label="203" :value="203">代缴车船税</i-checkbox>
+                  <i-checkbox :label="204" :value="204">按揭贷款</i-checkbox>
+                  <i-checkbox :label="205" :value="205">车辆装潢</i-checkbox>
+                  <i-checkbox :label="206" :value="206">代缴其他费用</i-checkbox>
+                  <i-checkbox :label="207" :value="207">其他</i-checkbox>
                 </i-checkbox-group>
               </i-form-item>
             </i-col>
@@ -99,18 +99,21 @@
   @Component({})
   export default class CustomerMaterialsAll extends Vue {
     private customerData: any = {
-      customerName: '', // 购车方
-      customerPhone: '', // 联系电话
+      name: '', // 购车方
+      mobileMain: '', // 联系电话
       certificateType: '', // 证件类型
       idCard: '', // 证件号码
       province: '', // 省
       city: '', // 市
-      area: '', // 区
+      localHomeAddr: '', // 区
       postalCode: '', // 邮政编码
       idCardAddressDetail: '', // 箱子地址
-      orderServiceList: '' // 代办服务
+      orderServiceList: [] // 代办服务
     }
     mounted() {}
+    whgwgdhwgdh() {
+      console.log(this.customerData.orderServiceList, 700)
+    }
   }
 
 </script>

@@ -1,65 +1,65 @@
 <!--客户还款查询（客户结算号）-->
 <template>
   <section class="component customer-settle-modal">
-    <i-select style="margin-top:10px;">
-      <i-option label="汇付" key="汇付" value="汇付"></i-option>
-      <i-option label="支付宝" key="支付宝" value="支付宝"></i-option>
-      <i-option label="微信" key="微信" value="微信"></i-option>
+    <i-select style="margin-top:10px;" v-model="settleChannel" @on-change="changeSettle">
+      <i-option label="汇付" :key="162" :value="162"></i-option>
+      <i-option label="富友" :key="163" :value="163"></i-option>
+      <i-option label="对公转账" :key="164" :value="164"></i-option>
     </i-select>
     <data-grid style="margin-top:10px;" :labelWidth="120">
       <data-grid-item label="账户类型" :span="12">
         <template>
           <div>
-            <span>个人用户</span>
+            <span>{{customerSettleModel.personalBank?customerSettleModel.personalBank.accountType:''}}</span>
           </div>
         </template>
       </data-grid-item>
       <data-grid-item label="客户姓名" :span="12">
         <template>
           <div>
-            <span>韩冰</span>
+            <span>{{customerSettleModel.personalName?customerSettleModel.personalName:''}}</span>
           </div>
         </template>
       </data-grid-item>
       <data-grid-item label="客户联系电话" :span="12">
         <template>
           <div>
-            <span>18292465893</span>
+            <span>{{customerSettleModel.personalName?customerSettleModel.mobilePhone:''}}</span>
           </div>
         </template>
       </data-grid-item>
       <data-grid-item label="身份证号码" :span="12">
         <template>
           <div>
-            <span>610525199312061245</span>
+            <span>{{customerSettleModel.personalName?customerSettleModel.idCard:''}}</span>
           </div>
         </template>
       </data-grid-item>
       <data-grid-item label="开户银行" :span="12">
         <template>
           <div>
-            <span>建设银行</span>
+            <span>{{customerSettleModel.personalBank?customerSettleModel.personalBank.depositBank:''}}</span>
           </div>
         </template>
       </data-grid-item>
       <data-grid-item label="开户省市" :span="12">
         <template>
           <div>
-            <span>陕西西安</span>
+            <span>{{customerSettleModel.personalBank?customerSettleModel.personalBank.depositCity:''}}</span>
           </div>
         </template>
       </data-grid-item>
       <data-grid-item label="银行卡号" :span="12">
         <template>
           <div>
-            <span>6227004171150138360</span>
+            <span>{{customerSettleModel.personalBank?customerSettleModel.personalBank.cardNumber:''}}</span>
           </div>
         </template>
       </data-grid-item>
       <data-grid-item label="银行预留手机号" :span="12">
         <template>
           <div>
-            <span>18292465893</span>
+            <span>{{customerSettleModel.personalBank?customerSettleModel.personalBank.reservedPhoneNumber:''}}</span>
           </div>
         </template>
       </data-grid-item>
@@ -96,7 +96,13 @@
 
     @Emit("closeModal")
     closeCustomerModal() {}
-
+    private customerSettleModel: any = {
+      personalBank: {
+        settleChannel: ''
+      }
+    }
+    private clientNumber: number = 0
+    private settleChannel: number = 0
     activated() {}
     created() {
 
@@ -111,7 +117,25 @@
      * 客户结算号
      */
     getCustomerSettleObj(row) {
-
+      this.clientNumber = row.clientNumber
+      this.settleChannel = row.settlementChannel
+      this.personalService.getBankByClientNumber({
+        clientNumber: this.clientNumber,
+        settleChannel: this.settleChannel
+      }).subscribe(val => {
+        this.customerSettleModel = val.object
+      })
+    }
+    /**
+     * select的Change事件
+     */
+    changeSettle(val) {
+      this.personalService.getBankByClientNumber({
+        clientNumber: this.clientNumber,
+        settleChannel: this.settleChannel
+      }).subscribe(val => {
+        this.customerSettleModel = val.object
+      })
     }
   }
 

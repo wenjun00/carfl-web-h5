@@ -49,12 +49,21 @@ export default {
     type: requestType.Delete
   },
   /**
-   * 查询所有产品 ---树形结构
+   * 查询所有产品 ---树形结构（废弃）
    */
   getAllProduct: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'getAllProduct',
+    type: requestType.Get
+  },
+  /**
+   * 查询所有产品 ---树形结构 新接口
+   */
+  getProductTree: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getProductTree',
     type: requestType.Get
   },
   /**

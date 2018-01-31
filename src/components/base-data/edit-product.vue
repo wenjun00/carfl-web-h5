@@ -27,15 +27,15 @@
                 <data-grid-item label="还款方式" :span="4">
                     <i-form-item prop="payWay">
                         <i-select v-model="productDetail.payWay">
-                            <i-option label="等本等息" value="384" key="等本等息"></i-option>
-                            <i-option label="等额等息" value="385" key="等额等息"></i-option>
+                            <i-option label="等本等息" :value="384" :key="384"></i-option>
+                            <i-option label="等额等息" :value="385" :key="385"></i-option>
                         </i-select>
                     </i-form-item>
                 </data-grid-item>
                 <data-grid-item label="周期类型" :span="4">
                     <i-form-item prop="periodType">
                         <i-select v-model="productDetail.periodType">
-                            <i-option label="月" value="388" key="月"></i-option>
+                            <i-option label="月" :value="388" :key="388"></i-option>
                         </i-select>
                     </i-form-item>
                 </data-grid-item>
@@ -48,7 +48,7 @@
                 <data-grid-item label="账期类型" :span="12">
                     <i-form-item prop="paymentType">
                         <i-radio-group style="float:left;margin-top:6px;" v-model="productDetail.paymentType">
-                            <i-radio label="正常账期" style="margin-right:40px;"></i-radio>
+                            <i-radio label="正常账期"></i-radio>
                             <i-radio label="固定账期"></i-radio>
                         </i-radio-group>
                         <i-select v-model="productDetail.paymentDay">

@@ -22,14 +22,14 @@
               </i-form-item>
             </i-col>
             <i-col span="12">
-              <i-form-item label="客户姓名" prop="customerName">
-                <i-input type="text" v-model="customerModel.customerName">
+              <i-form-item label="客户姓名" prop="name">
+                <i-input type="text" v-model="customerModel.name">
                 </i-input>
               </i-form-item>
             </i-col>
             <i-col span="12">
-              <i-form-item label="客户电话" prop="phone">
-                <i-input type="text" v-model="customerModel.phone">
+              <i-form-item label="客户电话" prop="mobileMain">
+                <i-input type="text" v-model="customerModel.mobileMain">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -121,8 +121,8 @@
     private customerRule: Object = {};
     private customerModel: any = {
       idCard: '', // 证件号码 
-      customerName: '', // 客户姓名
-      phone: '', // 客户电话
+      name: '', // 客户姓名
+      mobileMain: '', // 客户电话
       salesmanName: '' // 归属业务员
     };
     private addCar: Boolean = false;
@@ -135,14 +135,27 @@
     addNewApply() {
       this.$Modal.confirm({
         title: '提示',
-        content: '有未提交的申请，确定创建新申请吗？'
+        content: '有未提交的申请，确定创建新申请吗？',
+        onOk: () => {
+          let resetData: any = this.$refs['customer-form']
+          //   let component: any = this.$refs['materials-all']
+          //   let materials: any = this.$refs['materials']
+          //   component.choosebusyData = {}
+          //   component.addcarData = []
+          //   materials.customerData = {}
+          resetData.resetFields()
+        },
+        onCancel: () => {
+          this.$Message.info('取消成功！');
+        }
       })
+
     }
     saveAndSubmit() {
       this.customerModel.idCard = ''
       this.customerModel.userName = ''
       this.customerModel.userName = ''
-      this.customerModel.phone = ''
+      this.customerModel.mobileMain = ''
       this.customerModel.worker = ''
     }
     showTab() {
