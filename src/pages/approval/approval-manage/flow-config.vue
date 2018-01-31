@@ -26,7 +26,7 @@
             <div style="display:inline-block;margin-left:40px;">{{item.processOrderNumber}}</div>
             <div style="display:inline-block;margin-left:40px;">{{item.processName}}</div>
             <div class="verticalLine"></div>
-            <div class="moveUp" style="margin-left:800px">
+            <div class="moveUp">
               <div style="margin-left:40px;" v-if="item.processOrderNumber===1||item.processName==='合规' ||item.processName==='终审'">
                 <Icon type="arrow-up-b" size="20" color="gray"></Icon>
               </div>
@@ -81,25 +81,52 @@
   })
   export default class FlowConfig extends Page {
     @Dependencies(ProductService) private productService: ProductService;
-    private treeData: Array < Object > = [];
+    private treeData: Array < any > = [];
     private approvaFlowList: Array < Object >= [];
     private allData: Array < any > = [];
     private processNumber: number = 0;
     private productId: number = 0;
     private upOrDown: number = 0;
     private processId: number = 0;
+    private root: Array < any >= []
     created() {
-      this.productService.getAllProduct().subscribe(val => {
+      this.productService.getProductTree().subscribe(val => {
         this.allData = val.object;
         this.productId = val.object[0].productId
         this.getDefaultProcess()
         // 生成树
-        this.createPrdTree(this.allData);
+        // this.createPrdTree(this.allData);
+        this.createNewTree(this.allData)
       });
+    }
+    createNewTree(allData) {
+      let root = allData.filter(v => !v.parent)
+      this.treeData = []
+      root.forEach(item => {
+        let node1 = {
+          title: item.name,
+          productId: item.id,
+          expand: true,
+          children: this.getChild(item)
+        }
+        this.treeData.push(node1)
+      })
+    }
+    getChild(item) {
+      let child: any = []
+      this.allData.map(val => {
+        if (item.id === val.parent) {
+          let node2 = {
+            title: val.name,
+            productId: val.id
+          }
+          child.push(node2)
+        }
+      })
+      return child
     }
     approvalMoveUp(item) {
       this.processId = item.id
-      console.log(898, item)
       this.upOrDown = 0
       this.processMove()
     }
@@ -142,11 +169,11 @@
      * 获取页面加载时的产品审批流程
      */
     getDefaultProcess() {
-      this.productService.getProductConfigProcess({
-        productId: this.productId
-      }).subscribe(val => {
-        this.approvaFlowList = val.object
-      })
+      // this.productService.getProductConfigProcess({
+      //   productId: this.productId
+      // }).subscribe(val => {
+      //   this.approvaFlowList = val.object
+      // })
     }
     createPrdTree(data) {
       let series: Map < number, any > = new Map();
@@ -180,12 +207,12 @@
      * 树change事件
      */
     prdTreeChange(val) {
-      this.productId = val[0].productId
-      this.productService.getProductConfigProcess({
-        productId: val[0].productId
-      }).subscribe(val => {
-        this.approvaFlowList = val.object
-      })
+      // this.productId = val[0].productId
+      // this.productService.getProductConfigProcess({
+      //   productId: val[0].productId
+      // }).subscribe(val => {
+      //   this.approvaFlowList = val.object
+      // })
     }
     /**
      * 下拉框change

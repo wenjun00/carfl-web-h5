@@ -21,30 +21,31 @@ import paymentScheduleController from './paymentSchedule.controller'
 import remitApplicationController from './remitApplication.controller'
 import refundApplicationController from './refund.application.controller'
 import backLogController from './backLog.controller'
-
+import collectMoneyHistoryController from './collect.money.history.controller'
 
 export const manageService = {
-    departmentController,
-    roleController,
-    userController,
-    systemLogsController,
-    systemBackupController,
-    systemParameterController,
-    productPackageController,
-    approveReeasonController,
-    companyController,
-    dataDictTypeController,
-    dataDictController,
-    approvalController,
-    personalMaterialController,
-    productOrderController,
-    productController,
-    productPlanIssueController,
-    productSeriesController,
-    carController,
-    personalController,
-    paymentScheduleController,
-    remitApplicationController,
-    refundApplicationController,
-    backLogController
+  departmentController,
+  roleController,
+  userController,
+  systemLogsController,
+  systemBackupController,
+  systemParameterController,
+  productPackageController,
+  approveReeasonController,
+  companyController,
+  dataDictTypeController,
+  dataDictController,
+  approvalController,
+  personalMaterialController,
+  productOrderController,
+  productController,
+  productPlanIssueController,
+  productSeriesController,
+  carController,
+  personalController,
+  paymentScheduleController,
+  remitApplicationController,
+  refundApplicationController,
+  backLogController,
+  collectMoneyHistoryController
 }
