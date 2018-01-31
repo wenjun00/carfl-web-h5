@@ -268,6 +268,10 @@ export default [
             }, {
                 title: '客户素材维护',
                 path: 'base/base-data/customer-fodder-maintain'
+            },
+            {
+                title: '经销商报价',
+                path: 'base/base-data/dealer-quotes'
             }]
         }]
     },

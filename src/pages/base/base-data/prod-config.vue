@@ -231,21 +231,21 @@ export default class ProdConfig extends Page {
    */
   data() {
     return {
-      treeData: [
-        {
-          lev1Node: ""
-        }
-      ],
-      lev1Node: {
-        title: "",
-        seriesId: "",
-        expand: true,
-        lev2Node: []
-      },
-      lev2Node: {
-        title: "",
-        productId: ""
-      }
+      //   treeData: [
+      //     {
+      //       lev1Node: ""
+      //     }
+      //   ],
+      //   lev1Node: {
+      //     title: "",
+      //     seriesId: "",
+      //     expand: true,
+      //     lev2Node: []
+      //   },
+      //   lev2Node: {
+      //     title: "",
+      //     productId: ""
+      //   }
     };
   }
   customerFodderConfig() {
@@ -470,40 +470,98 @@ export default class ProdConfig extends Page {
    * 获取树形结构
    */
   treeList() {
-    this.productService.getAllProduct().subscribe(val => {
+    this.productService.getProductTree().subscribe(val => {
       this.allData = val.object;
-      this.getTreeDate();
+      this.getTreeData();
     });
   }
-  getTreeDate() {
-    let series: Map<number, any> = new Map();
-    this.allData.map(t => {
-      if (t.seriesId) {
-        series.set(t.seriesId, t);
+  getTreeData() {
+    let arr = [
+      //   {
+      //     id: 0,
+      //     title: "产品配置",
+      //     parent: 1,
+      //     flag: "",
+      //     children: [
+      //       {
+      //         title: "",
+      //         type: "",
+      //         status: "",
+      //         children: [
+      //           {
+      //             title: "",
+      //             type: "",
+      //             status: ""
+      //           }
+      //         ]
+      //       }
+      //     ]
+      //   }
+    ];
+    let num = 0;
+    this.allData.map(v => {
+      if (v.parent === null) {
+        let node1: any = arr[0];
+        node1.push({
+          id: parseInt(v.id),
+          title: v.name,
+          parent: null,
+          children: []
+        });
+
+        // let funNum = 0;
+        // this.allData.map(val => {
+        //   if (val.parent && val.parent === v.id) {
+        //     let arrChild: any = arr[0].children[num];
+        //     arrChild.children.push({
+        //       id: parseInt(val.id),
+        //       title: val.name,
+        //       parent: parseInt(val.parent),
+        //       function: []
+        //     });
+        //     this.allData.map(value => {
+        //       if (value.parent && value.parent === val.id) {
+        //         let arrChildren: any = arr[0].children[num];
+        //         arrChildren.children[funNum].function.push(value);
+        //       }
+        //     });
+        //     funNum++;
+        //   }
+        // });
+        // num++;
       }
     });
-    this.treeData = [];
-    series.forEach(item => {
-      let lv1Node = {
-        title: item.seriesName,
-        seriesId: item.seriesId,
-        expand: true,
-        children: this.getChilds(item.seriesId)
-      };
-      this.treeData.push(lv1Node);
-    });
+    this.treeData = arr;
   }
+  //   getTreeDate() {
+  //     let series: Map<number, any> = new Map();
+  //     this.allData.map(t => {
+  //       if (t.parent === t.id) {
+  //         series.set(t.seriesId, t);
+  //       }
+  //     });
+  //     this.treeData = [];
+  //     series.forEach(item => {
+  //       let lv1Node = {
+  //         title: item.seriesName,
+  //         seriesId: item.seriesId,
+  //         expand: true,
+  //         children: this.getChilds(item.seriesId)
+  //       };
+  //       this.treeData.push(lv1Node);
+  //     });
+  //   }
 
-  getChilds(id) {
-    let prods = this.allData.filter(t => t.seriesId === id);
-    let Lv2Nodes = prods.map(t => {
-      return {
-        title: t.productName,
-        productId: t.productId
-      };
-    });
-    return Lv2Nodes;
-  }
+  //   getChilds(id) {
+  //     let prods = this.allData.filter(t => t.seriesId === id);
+  //     let Lv2Nodes = prods.map(t => {
+  //       return {
+  //         title: t.productName,
+  //         productId: t.productId
+  //       };
+  //     });
+  //     return Lv2Nodes;
+  //   }
 
   /**
    * 查询产品列表详情

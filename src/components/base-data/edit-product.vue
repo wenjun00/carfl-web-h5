@@ -48,8 +48,8 @@
                 <data-grid-item label="账期类型" :span="12">
                     <i-form-item prop="paymentType">
                         <i-radio-group style="float:left;margin-top:6px;" v-model="productDetail.paymentType">
-                            <i-radio :label="正常账期"></i-radio>
-                            <i-radio :label="固定账期"></i-radio>
+                            <i-radio label="正常账期"></i-radio>
+                            <i-radio label="固定账期"></i-radio>
                         </i-radio-group>
                         <i-select v-model="productDetail.paymentDay">
                             <i-option :label="item.day" :key="item.key" :value="item.value" v-for="item in monthDay"></i-option>

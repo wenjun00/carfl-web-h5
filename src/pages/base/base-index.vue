@@ -96,6 +96,11 @@ export default class BaseIndex extends Vue {
             pageName: "客户素材维护",
             isAttention: false,
             path: "base/base-data/customer-fodder-maintain"
+          },
+          {
+            pageName: "经销商报价",
+            isAttention: false,
+            path: "base/base-data/dealer-quotes"
           }
         ]
       }
