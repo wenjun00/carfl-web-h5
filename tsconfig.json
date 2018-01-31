@@ -1,13 +1,12 @@
 {
-  "files": [
-    "index.d.ts"
-  ],
   "include": [
-    "./src/**/*"
+    "typings/*.d.ts",
+    "src/**/*",
   ],
   "exclude": [
     "node_modules"
   ],
+  "compileOnSave": true,
   "compilerOptions": {
     "strict": true,
     "module": "esnext",
@@ -16,6 +15,7 @@
     "noImplicitAny": false,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "strictFunctionTypes": false,
     "lib": [
       "es2017",
       "dom"

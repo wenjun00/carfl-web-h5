@@ -16,13 +16,13 @@
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入收款账户名查询"></i-input>
+      <i-input style="display:inline-block;width:18%;margin-left:20px;" v-model="gatherModel.accountName" placeholder="请录入收款账户名查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
-      <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+      <i-date-picker style="display:inline-block;width:10%" v-model="gatherModel.queryStartDate"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%" v-model="gatherModel.queryEndDate"></i-date-picker>
+      <i-button style="margin-left:10px" class="blueButton" @click="getGatherListByCondition">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="gatherList"></data-box>
 
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
@@ -63,7 +63,12 @@
   import {
     Layout
   } from "~/core/decorator";
-
+  import {
+    CollectMoneyHistoryService
+  } from "~/services/manage-service/collect.money.history.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
   @Layout("workspace")
   @Component({
 
@@ -73,13 +78,20 @@
     }
   })
   export default class Gathering extends Page {
+    @Dependencies(CollectMoneyHistoryService) private collectMoneyHistoryService: CollectMoneyHistoryService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private gatherList: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private confirmGatherModal: Boolean = false;
+    private gatherModel: any = {
+      accountName: '',
+      queryStartDate: '',
+      queryEndDate: ''
+    }
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -89,6 +101,7 @@
       this.confirmGatherModal = false
     }
     created() {
+      this.getGatherListByCondition()
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -190,17 +203,6 @@
         }
       ];
 
-      this.data1 = [{
-        handleStatus: '未处理',
-        handleTime: '2017-12-01 13:56:03',
-        handlePerson: '胡开甲',
-        gatheringType: '销售收款',
-        gatheringTotalAmt: '79450.00',
-        gatheringAccountName: '泰康人寿',
-        applyDate: '2017-12-03 13:56:03',
-        applyPerson: '刘佳'
-      }]
-
       this.columns2 = [{
           title: "序号",
           type: "index",
@@ -251,6 +253,14 @@
      * 确定
      */
     confirm() {}
+    /**
+     * 获取收款列表
+     */
+    getGatherListByCondition() {
+      this.collectMoneyHistoryService.collectMoneyHistoryList(this.gatherModel, this.pageService).subscribe(val => {
+        this.gatherList = val.object.list
+      })
+    }
   }
 
 </script>
