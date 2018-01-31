@@ -7,13 +7,13 @@
         <i-form ref="parchase-form" :model="customerData" :label-width="110">
           <i-row>
             <i-col span="12" class="bigSelect">
-              <i-form-item label="购车方" prop="customerName">
-                <i-input v-model="customerData.customerName"></i-input>
+              <i-form-item label="购车方" prop="name">
+                <i-input v-model="customerData.name"></i-input>
               </i-form-item>
             </i-col>
             <i-col span="12" pull="3" class="bigSelect">
-              <i-form-item label="联系电话" prop="customerPhone">
-                <i-input v-model="customerData.customerPhone"></i-input>
+              <i-form-item label="联系电话" prop="mobileMain">
+                <i-input v-model="customerData.mobileMain"></i-input>
               </i-form-item>
             </i-col>
           </i-row>
@@ -99,8 +99,8 @@
   @Component({})
   export default class CustomerMaterialsAll extends Vue {
     private customerData: any = {
-      customerName: '', // 购车方
-      customerPhone: '', // 联系电话
+      name: '', // 购车方
+      mobileMain: '', // 联系电话
       certificateType: '', // 证件类型
       idCard: '', // 证件号码
       province: '', // 省

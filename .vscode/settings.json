@@ -59,7 +59,7 @@
   "files.associations": {
     "*.vue": "vue"
   },
-  "files.autoSave": "afterDelay"
+  "files.autoSave": "off"
   // "emmet.syntaxProfiles": {
   //     "javascript": "jsx",
   //     "vue": "html",

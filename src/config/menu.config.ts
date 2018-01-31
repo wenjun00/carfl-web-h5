@@ -68,8 +68,26 @@ export default [
                     title: '收款审批',
                     path: 'purchase/purchase-approve/receipt-approve',
                 }, {
-                    title: '付款审批',
-                    path: 'purchase/purchase-approve/payment-approve',
+                    title: '配置管理',
+                    icon: 'peizhiguanli',
+                    color: '#36B48C',
+                    path: 'base/config-manage',
+                    children: [{
+                        title: '产品配置',
+                        path: 'base/base-data/prod-config'
+                    }, {
+                        title: '客户素材维护',
+                        path: 'base/base-data/customer-fodder-maintain'
+                    },
+                    {
+                        title: '经销商报价',
+                        path: 'base/base-data/dealer-quotes'
+                    },
+                    {
+                        title: '付款审批',
+                        path: 'purchase/purchase-approve/payment-approve',
+                    }]
+
                 }]
             }
         ]
@@ -161,6 +179,9 @@ export default [
             children: [{
                 title: '收款',
                 path: 'finance/initial-payment-manage/gathering'
+            }, {
+                title: '付款',
+                path: 'finance/initial-payment-manage/payment'
             }]
         },
         {
@@ -268,10 +289,6 @@ export default [
             }, {
                 title: '客户素材维护',
                 path: 'base/base-data/customer-fodder-maintain'
-            },
-            {
-                title: '经销商报价',
-                path: 'base/base-data/dealer-quotes'
             }]
         }]
     },

@@ -32,7 +32,7 @@ export class PersonalService {
   */
   getBankByClientNumber({ clientNumber, settleChannel }) {
     return this.netService.send({
-      server: manageService.personalController.getCustomerHistoryFinanceInfo,
+      server: manageService.personalController.getBankByClientNumber,
       data: {
         clientNumber: clientNumber,
         settleChannel: settleChannel

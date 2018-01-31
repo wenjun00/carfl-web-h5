@@ -48,7 +48,7 @@
 
     <template>
       <i-modal title="客户当前结算号" :transfer="false" v-model="customerSettleModal">
-        <customer-settle-modal></customer-settle-modal>
+        <customer-settle-modal ref="customer-settle"></customer-settle-modal>
         <div slot="footer">
           <i-button @click="customerSettleModal=false" class="blueButton">关闭</i-button>
         </div>

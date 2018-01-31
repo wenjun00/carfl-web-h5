@@ -2,14 +2,14 @@
 <template>
   <section class="page derate-apply-record">
     <span class="form-title">减免申请记录</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
@@ -22,20 +22,18 @@
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:6px;">
-      <i-input style="display:inline-block;width:10%;margin-left:10px;" v-model="derateModel.orderInfo" placeholder="请输入客户姓名\证件号码"></i-input>
+      <i-input style="display:inline-block;width:14%;margin-left:10px;" v-model="derateModel.orderInfo" placeholder="请输入客户姓名\证件号码\订单号\手机号(主)"></i-input>
       <span style="margin-left:10px;">日期：</span>
       <i-date-picker style="display:inline-block;width:10%;" v-model="derateModel.applyDateStart"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%;" v-model="derateModel.applyDateEnd"></i-date-picker>
-      <i-select style="width:10%;margin-left:10px" placeholder="全部结算通道" v-model="derateModel.collectMoneyMethod">
-        <i-option label="汇付" value="汇付" key="汇付"></i-option>
-        <i-option label="现金" value="现金" key="现金"></i-option>
-        <i-option label="支付宝" value="支付宝" key="支付宝"></i-option>
-        <i-option label="微信" value="微信" key="微信"></i-option>
-        <i-option label="对公转账" value="对公转账" key="对公转账"></i-option>
+      <i-select style="width:10%;margin-left:10px" placeholder="全部结算通道" v-model="derateModel.collectMoneyMethod" clearable>
+        <i-option label="汇付" :value="162" :key="162"></i-option>
+        <i-option label="富友" :value="163" :key="163"></i-option>
+        <i-option label="对公转账" :value="164" :key="164"></i-option>
       </i-select>
       <i-button class="blueButton" style="margin-left:20px;" @click="getDerateList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="derateList"></data-box>
+    <data-box :columns="columns1" :data="derateList" :page="pageService"></data-box>
   </section>
 </template>
 
@@ -136,17 +134,20 @@
         {
           align: "center",
           title: "应还罚息",
-          key: 'penaltyReceivable'
+          key: 'penaltyReceivable',
+          width: 100
         },
         {
           align: "center",
           title: "申请减免罚息",
-          key: "penaltyDerate"
+          key: "penaltyDerate",
+          width: 110
         },
         {
           align: "center",
           title: "剩余罚息",
-          key: "leftPenalty"
+          key: "leftPenalty",
+          width: 100
         },
         {
           align: "center",
@@ -164,12 +165,14 @@
         {
           align: "center",
           title: " 客户姓名",
-          key: "name"
+          key: "name",
+          width: 100
         },
         {
           align: "center",
           title: " 证件号",
-          key: "idCard"
+          key: "idCard",
+          width: 180
         },
         {
           align: "center",
@@ -227,7 +230,7 @@
           align: "center",
           title: " 减免备注",
           key: "remitRemark",
-          width: 90
+          width: 280
         }
       ];
 
@@ -383,6 +386,8 @@
 
     }
     getDerateList() {
+      this.derateModel.applyDateStart = FilterService.dateFormat(this.derateModel.applyDateStart, "yyyy-MM-dd")
+      this.derateModel.applyDateEnd = FilterService.dateFormat(this.derateModel.applyDateEnd, "yyyy-MM-dd")
       this.remitApplicationService.selectApplyForReliefHistory(this.derateModel, this.pageService).subscribe(val => {
         this.derateList = val.object.list
       })
@@ -398,7 +403,15 @@
         this.getDerateList()
       })
     }
-
+    getTimeSearch(val) {
+      this.derateModel.applyDateStart = ''
+      this.derateModel.applyDateEnd = ''
+      this.derateModel.collectMoneyMethod = ''
+      this.derateModel.orderInfo = ''
+      this.derateModel.timeSearch = val
+      this.getDerateList()
+      this.derateModel.timeSearch = ''
+    }
   }
 
 </script>
