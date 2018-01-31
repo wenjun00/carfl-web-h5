@@ -47,6 +47,7 @@
     private treeData: any = [];
     private treeId: any;
     private multipleSelection: any = [];
+    private currentRow: any = {};
 
     @Emit('distributionData')
     distributionData(multipleSelection) {}
@@ -79,19 +80,17 @@
       this.isShown = !this.isShown
     }
     getCurrentSelectionData(currentRow) {
-      this.productOrderService.findOrderInfoByOrderNumber({
-        orderNumber: currentRow.orderNumber
-      }).subscribe(data => {
-        console.log(data, 8999)
-      })
+      this.currentRow = currentRow
     }
     /**
      * 选择并返回
      */
     chooseback() {
-      this.multipleSelection = this.$refs['databox']
-      this.multipleSelection = this.multipleSelection.getCurrentSelection()
-      this.distributionData(this.multipleSelection)
+      this.productOrderService.findOrderInfoByOrderNumber({
+        orderNumber: this.currentRow.orderNumber
+      }).subscribe(data => {
+        this.distributionData(data.object)
+      })
       this.close()
     }
     /**

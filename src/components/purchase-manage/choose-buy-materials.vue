@@ -86,10 +86,10 @@
     </div>
     <i-col span="24" style="line-height:30px;margin-top:20px;" class="form-title">
       <span>产品信息</span>
-      <div style="font-size:14px;cursor:pointer;display:inline-block;color:#3367A7;position:absolute;left:52%;" @click="openSimulateCalculate">
+      <!--<div style="font-size:14px;cursor:pointer;display:inline-block;color:#3367A7;position:absolute;left:52%;" @click="openSimulateCalculate">
         <svg-icon iconClass="jisuanqi"></svg-icon>
         <span style="font-size:12px;">月供模拟计算器</span>
-      </div>
+      </div>-->
     </i-col>
     <!--<div v-show="addPrdShow">-->
     <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
@@ -256,6 +256,9 @@
   import {
     Prop
   } from "vue-property-decorator";
+  import {
+    Emit
+  } from "vue-property-decorator";
   @Component({
     components: {
       SvgIcon,
@@ -294,6 +297,8 @@
       financingUse: '' // 融资租赁用途
     };
 
+    // @Emit('productData')
+    // productData(productId) {}
     @Prop()
     disabledStatus: String;
     /**
@@ -471,6 +476,7 @@
      * 获取添加产品信息
      */
     currentRowData(data) {
+      //   this.productData(data.productId)
       this.chooseBuyModel = {
         // prdSeriods: data.prdSeriods,
         periods: data.periods,

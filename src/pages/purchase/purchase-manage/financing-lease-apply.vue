@@ -127,10 +127,17 @@
     };
     private addCar: Boolean = false;
     private disabledStatus: String = ''; // 子组件中输入框禁用flag
-    private materialTabs: String = 'choose-buy-materials'
+    private materialTabs: String = 'choose-buy-materials';
+    // private productId: any;
     print() {
       window.print()
     }
+    /**
+     * 获取productId
+     */
+    // productData(productId) {
+    //   this.productId = productId
+    // }
     created() {}
     addNewApply() {
       this.$Modal.confirm({
