@@ -262,7 +262,6 @@ export default class AddPeriods extends Vue {
     this.monthDay = [];
     this.monthDayFun();
     this.formRules = {};
-    console.log(this.productDetail, 999);
     this.productDetail.payWay = 384
       ? (this.productDetail.payWay = "等本等息")
       : (this.productDetail.payWay = "等额等息");
