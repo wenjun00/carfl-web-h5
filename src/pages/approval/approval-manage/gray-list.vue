@@ -12,7 +12,7 @@
     <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">关闭</span>
+      <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
     <div style="float:right;margin-right:10px;margin-top:10px;">
@@ -22,10 +22,10 @@
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
+      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.personalInfo"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:10%" v-model="approvalModel.startTime"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%" v-model="approvalModel.endTime"></i-date-picker>
       <span style="margin-left:10px;">省市：</span>
       <i-select style="width:80px;margin-left:10px;" placeholder="选择省" v-model="approvalModel.province" clearable>
         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
@@ -444,20 +444,20 @@
       this.openColumnsConfig = true
     }
     getGrayList() {
+      this.approvalModel.startTime = FilterService.dateFormat(this.approvalModel.startTime, "yyyy-MM-dd")
+      this.approvalModel.endTime = FilterService.dateFormat(this.approvalModel.endTime, "yyyy-MM-dd")
       this.approvalService.approvalOrderSearch(this.approvalModel, this.pageService).subscribe(val => {
         this.grayList = val.object.list
       })
     }
-    timeRangeChange(val) {
-      let startTime, endTime
-      startTime = new Date(val[0])
-      endTime = new Date(val[1])
-      this.approvalModel.startTime = startTime
-      this.approvalModel.endTime = endTime
-    }
     getTimeSearch(val) {
       this.approvalModel.startTime = ''
       this.approvalModel.endTime = ''
+      this.approvalModel.city = ''
+      this.approvalModel.province = ''
+      this.approvalModel.endTime = ''
+      this.approvalModel.productType = ''
+      this.approvalModel.personalInfo = ''
       this.approvalModel.timeSearch = val
       this.getGrayList()
       this.approvalModel.timeSearch = ''

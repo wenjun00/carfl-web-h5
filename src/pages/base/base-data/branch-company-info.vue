@@ -9,10 +9,10 @@
         </i-row>
         <data-box :columns="columns" :data="companyList"></data-box>
         <i-modal title="修改分公司信息" v-model="modal" :mask-closable="false">
-            <modify-branch-info ref="modify-branch" @close="closeModifyBrach"></modify-branch-info>
+            <modify-branch-info ref="modify-branch" @close="closeModifyBrach" v-bind:formItemParent="formItem"></modify-branch-info>
             <div slot="footer">
-                <i-button type="ghost" @click="this.modal==false">取消</i-button>
-                <i-button type="primary" @click="sureButton">确定</i-button>
+                <i-button type="ghost" @click="modal=false">取消</i-button>
+                <i-button class="blueButton" @click="sureButton">确定</i-button>
             </div>
         </i-modal>
 
@@ -49,9 +49,26 @@ export default class BranchCompanyInfo extends Page {
   private sasStatus: any;
   private modal: Boolean = false;
   private formItem: any;
-  private formRules: any;
   created() {
     this.seachCompany();
+    this.formItem = {
+      id: "",
+      companyChinaname: "",
+      companyProvince: "",
+      companyCity: "",
+      bankAccount: "",
+      depositBank: "",
+      cardNumber: "",
+      branchName: "",
+      companyAddress: "",
+      companyEngname: "",
+      companyFax: "",
+      companyLegperson: "",
+      companyLinkman: "",
+      companyPhone: "",
+      companyRemark: "",
+      companyStatus: ""
+    };
     this.columns = [
       {
         title: "序号",
@@ -260,10 +277,10 @@ export default class BranchCompanyInfo extends Page {
   sureButton(formItem) {
     let _modifyBranch: any = this.$refs["modify-branch"];
     _modifyBranch.confirmModify();
+    this.seachCompany();
   }
   closeModifyBrach() {
     this.modal = false;
-    this.seachCompany();
   }
 }
 </script>

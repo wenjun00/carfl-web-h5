@@ -10,7 +10,11 @@ import personalMaterialService from './personalMaterial.service'
 import approvalService from './approval.service'
 import productlService from './product.service'
 import productPlanIssueService from './productPlanIssue.service'
-
+import paymentScheduleService from './paymentSchedule.service'
+import remitApplicationService from './remitApplication.service'
+import refundApplicationService from './refund.application.service'
+import backLogService from './backLog.service'
+import carQuotationService from './carQuotation.service'
 
 export const aaa = {
     manageService,
@@ -23,5 +27,10 @@ export const aaa = {
     personalMaterialService,
     approvalService,
     productlService,
-    productPlanIssueService
+    productPlanIssueService,
+    paymentScheduleService,
+    remitApplicationService,
+    refundApplicationService,
+    backLogService,
+    carQuotationService
 }

@@ -12,7 +12,7 @@
     <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">关闭</span>
+      <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
     <div style="float:right;margin-right:10px;margin-top:10px;">
@@ -22,10 +22,10 @@
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
+      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.personalInfo"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:10%" v-model="approvalModel.startTime"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%" v-model="approvalModel.endTime"></i-date-picker>
       <i-button style="margin-left:10px" class="blueButton" @click="getAllOrderList">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="allOrderList"></data-box>
@@ -101,7 +101,10 @@
     private data3: Array < Object > = [];
     private scrollTopHeight = 0
     private approvalModel: any = {
-      timeSearch: ''
+      timeSearch: '',
+      startTime: '',
+      endTime: '',
+      personalInfo: ''
     }
 
     visibleChange() {
@@ -426,6 +429,8 @@
     }
 
     getAllOrderList() {
+      this.approvalModel.startTime = FilterService.dateFormat(this.approvalModel.startTime, "yyyy-MM-dd")
+      this.approvalModel.endTime = FilterService.dateFormat(this.approvalModel.endTime, "yyyy-MM-dd")
       this.approvalService.approvalOrderSearch(this.approvalModel, this.pageService).subscribe(val => {
         this.allOrderList = val.object.list
       })
@@ -433,6 +438,7 @@
     getTimeSearch(val) {
       this.approvalModel.startTime = ''
       this.approvalModel.endTime = ''
+      this.approvalModel.personalInfo = ''
       this.approvalModel.timeSearch = val
       this.getAllOrderList()
       this.approvalModel.timeSearch = ''

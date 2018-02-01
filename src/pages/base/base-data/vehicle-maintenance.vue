@@ -30,23 +30,12 @@
                 </i-col>
             </i-row>
         </i-row>
-        <template>
-            <i-modal v-model="editModal" title="修改车辆信息" style="width:800px;">
-                <edit-car-maintenance :editMessage="editmessage" ref="edit-car-maintenance" @close="closeFun"></edit-car-maintenance>
-                <div slot="footer">
-                    <i-button class="Ghost" @click="closeFun">取消</i-button>
-                    <i-button class="blueButton" @click="submitButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-
     </section>
 </template>
 <script lang="ts">
 import Page from "~/core/page";
 import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
-import EditCarMaintenance from "~/components/base-data/edit-car-maintenance.vue";
 import { Dependencies } from "~/core/decorator";
 import { Layout } from "~/core/decorator";
 import SvgIcon from "~/components/common/svg-icon.vue";
@@ -57,8 +46,7 @@ import { CarService } from "~/services/manage-service/car.service";
 @Component({
   components: {
     DataBox,
-    SvgIcon,
-    EditCarMaintenance
+    SvgIcon
   }
 })
 export default class ProdConfig extends Page {
@@ -70,8 +58,6 @@ export default class ProdConfig extends Page {
   private carDataModel: Array<any> = [];
   private carColumns: Array<any> = [];
   private carParam: String = "";
-  private editmessage: any = {};
-  private editModal: Boolean = false;
 
   /**
    * 客户素材配置
@@ -94,11 +80,6 @@ export default class ProdConfig extends Page {
                 },
                 style: {
                   color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    this.editFun(row);
-                  }
                 }
               },
               "修改"
@@ -221,21 +202,6 @@ export default class ProdConfig extends Page {
           this.$Message.error(msg);
         }
       );
-  }
-  /**@augments
-   * 编辑
-   */
-  editFun(row) {
-    this.editModal = true;
-    this.editmessage = row;
-  }
-  closeFun() {
-    this.editModal = false;
-  }
-  submitButton() {
-    let editOpen: any = this.$refs["edit-car-maintenance"];
-    editOpen.vaildFun();
-    this.seach();
   }
 }
 </script>

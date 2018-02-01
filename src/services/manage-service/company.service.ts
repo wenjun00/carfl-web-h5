@@ -10,7 +10,7 @@ export class CompanyService {
     /**
      * 获取所有公司
      */
-    getAllCompany(data) {
+    getAllCompany(data?) {
         return this.netService.send({
             server: manageService.companyController.getAllCompany,
             data: data

@@ -37,11 +37,11 @@
                             </data-grid>
                         </i-col>
                         <i-col :span="12">
-                            <span style="margin-left:20px;font-size:14px;">租金渠道选择：</span>
-                            <RadioGroup v-model="rentCheck" @on-change="radioSelect">
+                            <!-- <span style="margin-left:20px;font-size:14px;">租金渠道选择：</span>
+                            <RadioGroup v-model="productMessage.capitaChannels" @on-change="radioSelect">
                                 <Radio label="自有资金"></Radio>
                                 <Radio label="第三方"></Radio>
-                            </RadioGroup>
+                            </RadioGroup> -->
                             <i-button class="blueButton" @click="customerFodderConfig" v-if="customerFodderConfigFlag">
                                 <span></span>客户素材配置</i-button>
                             <i-button class="blueButton" @click="customerFodderConfig" v-if="alreadyConfigFlag">已配置</i-button>
@@ -49,7 +49,7 @@
                         </i-col>
                     </i-row>
                     <i-row :gutter="10" style="margin-top:20px;min-width:1366px">
-                        <i-col :span="7">
+                        <i-col :span="7" v-show="addPeriodsBox">
                             <div class="addPeriods" @click="addPeriods">
                                 <div>
                                     <i-icon type="plus" style="font-size:50px;"></i-icon>
@@ -71,7 +71,8 @@
                                 <div class="boxContainerContent">
                                     <div class="itemContainer">
                                         <span class="itemName">账期类型</span>
-                                        <span class="item">{{item.paymentType="387" ? "固定账期" : "正常账期"}}</span>
+                                        <!-- item.paymentType="387" ? "固定账期" : "正常账期" -->
+                                        <span class="item">{{getPaymentType(item)}}</span>
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">产品利率</span>
@@ -79,7 +80,7 @@
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">还款方式</span>
-                                        <span class="item">{{item.payWay="384" ? "等本等息" : "等额本息"}}</span>
+                                        <span class="item">{{getPayWay(item)}}</span>
                                     </div>
                                     <div class="itemContainer">
                                         <span class="itemName">融资金额</span>
@@ -102,12 +103,16 @@
                                         <span class="item">{{item.manageCost}}元</span>
                                     </div>
                                     <div v-if="item.isPublish===361" class="itemContainer">
-                                        <span class="itemName">停用/启用</span>
-                                        <i-switch class="item"></i-switch>
+                                        <span class="itemName">启用/停用</span>
+                                        <i-switch class="item" v-model="item.productStatus" size="large" @on-change="switchStatus(item)">
+                                            <span slot="open">启用</span>
+                                            <span slot="close">停用</span>
+
+                                        </i-switch>
                                     </div>
                                     <div v-if="item.isPublish===360" class="itemContainer">
                                         <span class="itemName">操作</span>
-                                        <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;">
+                                        <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;" @click="showDetail(item)">
                                             <svg-icon iconClass="tianxie" class="item"></svg-icon>
                                         </div>
                                     </div>
@@ -139,7 +144,20 @@
 
         <template>
             <i-modal v-model="addPeriodsModal" title="新增期数" width="900">
-                <add-periods></add-periods>
+                <add-periods :pNameTitle="productMessage" ref="add-periods-ref" @close="closeModal"></add-periods>
+                <div slot="footer">
+                    <i-button type="ghost">取消</i-button>
+                    <i-button type="primary" @click="submiteButton">确定</i-button>
+                </div>
+            </i-modal>
+        </template>
+        <template>
+            <i-modal v-model="editModal" title="编辑期数" width="900">
+                <edit-periods :productDetail="productDetails" :pNameTitle="productMessage"></edit-periods>
+                <div slot="footer">
+                    <i-button type="ghost">取消</i-button>
+                    <i-button type="primary" @click="submiteButton">确定</i-button>
+                </div>
             </i-modal>
         </template>
 
@@ -157,6 +175,8 @@ import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import AddPeriods from "~/components/base-data/add-periods.vue";
+import EditPeriods from "~/components/base-data/edit-product.vue";
+
 import ChargeAgainstOrder from "~/components/base-data/charge-against-order.vue";
 import { Dependencies } from "~/core/decorator";
 import { DataGrid, DataGridItem } from "vue-fintech-component";
@@ -166,6 +186,7 @@ import { ProductPlanIssueService } from "~/services/manage-service/productPlanIs
 import { PageService } from "~/utils/page.service";
 import { constants } from "zlib";
 import { Set } from "core-js/library/web/timers";
+import { retry } from "rxjs/operator/retry";
 
 @Layout("workspace")
 @Component({
@@ -175,7 +196,8 @@ import { Set } from "core-js/library/web/timers";
     DataGrid,
     DataGridItem,
     AddPeriods,
-    ChargeAgainstOrder
+    ChargeAgainstOrder,
+    EditPeriods
   }
 })
 export default class ProdConfig extends Page {
@@ -187,7 +209,6 @@ export default class ProdConfig extends Page {
   private data1: Array<Object> = [];
   private maintains: Array<any> = [];
   private treeData: Array<any> = [];
-  private rentCheck: String = "自有资金";
   private prdConfig: Array<any> = [];
   private customerFodderTree: Array<any> = [];
   private searchOptions: Boolean = false;
@@ -202,15 +223,31 @@ export default class ProdConfig extends Page {
   private productShow: Boolean = false;
   private productMessage: any;
   private publishItem: any;
-  /**
-   * 新增期数
-   */
-  addPeriods() {
-    this.addPeriodsModal = true;
-  }
+  private addPeriodsBox: Boolean = false;
+  private editModal: Boolean = false;
+  private productDetails: Object = {};
   /**
    * 客户素材配置
    */
+  data() {
+    return {
+      //   treeData: [
+      //     {
+      //       lev1Node: ""
+      //     }
+      //   ],
+      //   lev1Node: {
+      //     title: "",
+      //     seriesId: "",
+      //     expand: true,
+      //     lev2Node: []
+      //   },
+      //   lev2Node: {
+      //     title: "",
+      //     productId: ""
+      //   }
+    };
+  }
   customerFodderConfig() {
     this.customerFodderConfigFlag = false;
     this.alreadyConfigFlag = true;
@@ -259,7 +296,7 @@ export default class ProdConfig extends Page {
     this.prdConfig = [
       {
         productId: "",
-        periods: "",
+        periods: "", // 产品期数
         periodType: "",
         paymentType: "",
         productRate: "",
@@ -413,11 +450,18 @@ export default class ProdConfig extends Page {
    */
   publish(item) {
     this.confirmPublishModal = true;
-    console.log(item);
     this.publishItem = item;
+    this.publishItem.isPublish = 360;
+    if (this.prdConfig[0].productStatus === true) {
+      return (this.prdConfig[0].productStatus = 0);
+    } else {
+      return (this.prdConfig[0].productStatus = 1);
+    }
   }
   publishNext() {
-    this.ProductPlanIssueService.publish(this.publishItem).subscribe(val => {});
+    this.ProductPlanIssueService.publish(this.publishItem).subscribe(val => {
+      this.$Message.success("发布成功！");
+    });
   }
   chargeAgainstOrderConfig() {
     this.chargeAgainstOrderConfigModal = true;
@@ -426,58 +470,99 @@ export default class ProdConfig extends Page {
    * 获取树形结构
    */
   treeList() {
-    this.productService.getAllProduct().subscribe(val => {
+    this.productService.getProductTree().subscribe(val => {
       this.allData = val.object;
-      console.log(this.allData);
-      this.getTreeDate();
+      this.getTreeData();
     });
   }
-  getTreeDate() {
-    let series: Map<string, any> = new Map();
-    this.allData.map(t => {
-      if (t.seriesId) {
-        series.set(t.seriesId, t);
+  getTreeData() {
+    let arr = [
+      //   {
+      //     id: 0,
+      //     title: "产品配置",
+      //     parent: 1,
+      //     flag: "",
+      //     children: [
+      //       {
+      //         title: "",
+      //         type: "",
+      //         status: "",
+      //         children: [
+      //           {
+      //             title: "",
+      //             type: "",
+      //             status: ""
+      //           }
+      //         ]
+      //       }
+      //     ]
+      //   }
+    ];
+    let num = 0;
+    this.allData.map(v => {
+      if (v.parent === null) {
+        let node1: any = arr[0];
+        node1.push({
+          id: parseInt(v.id),
+          title: v.name,
+          parent: null,
+          children: []
+        });
+
+        // let funNum = 0;
+        // this.allData.map(val => {
+        //   if (val.parent && val.parent === v.id) {
+        //     let arrChild: any = arr[0].children[num];
+        //     arrChild.children.push({
+        //       id: parseInt(val.id),
+        //       title: val.name,
+        //       parent: parseInt(val.parent),
+        //       function: []
+        //     });
+        //     this.allData.map(value => {
+        //       if (value.parent && value.parent === val.id) {
+        //         let arrChildren: any = arr[0].children[num];
+        //         arrChildren.children[funNum].function.push(value);
+        //       }
+        //     });
+        //     funNum++;
+        //   }
+        // });
+        // num++;
       }
     });
-    this.treeData = [];
-    series.forEach(item => {
-      let lv1Node = {
-        title: item.seriesName,
-        seriesId: item.seriesId,
-        expand: true,
-        render: (h, { root, node, data }) => {
-          return h("span", [
-            h("span", [
-              h("Icon", {
-                props: {
-                  type: "ios-folder-outline"
-                },
-                style: {
-                  marginRight: "8px",
-                  color: "#265ea2"
-                }
-              }),
-              h("span", data.title)
-            ]),
-            h("span", {
-              style: {
-                display: "inline-block",
-                float: "right",
-                marginRight: "32px"
-              }
-            })
-          ]);
-        },
-        children: [
-          {
-            title: item.productName,
-            productId: item.productId
-          }
-        ]
-      };
-      this.treeData.push(lv1Node);
-    });
+    this.treeData = arr;
   }
+  //   getTreeDate() {
+  //     let series: Map<number, any> = new Map();
+  //     this.allData.map(t => {
+  //       if (t.parent === t.id) {
+  //         series.set(t.seriesId, t);
+  //       }
+  //     });
+  //     this.treeData = [];
+  //     series.forEach(item => {
+  //       let lv1Node = {
+  //         title: item.seriesName,
+  //         seriesId: item.seriesId,
+  //         expand: true,
+  //         children: this.getChilds(item.seriesId)
+  //       };
+  //       this.treeData.push(lv1Node);
+  //     });
+  //   }
+
+  //   getChilds(id) {
+  //     let prods = this.allData.filter(t => t.seriesId === id);
+  //     let Lv2Nodes = prods.map(t => {
+  //       return {
+  //         title: t.productName,
+  //         productId: t.productId
+  //       };
+  //     });
+  //     return Lv2Nodes;
+  //   }
+
   /**
    * 查询产品列表详情
    */
@@ -488,9 +573,22 @@ export default class ProdConfig extends Page {
       },
       this.pageService
     ).subscribe(val => {
+      this.addPeriodsBox = true;
       if (val.object.list.length > 0) {
         this.productShow = true;
         this.prdConfig = val.object.list;
+        //初始化启用/停用状态
+        if (this.prdConfig[0].productStatus === 0) {
+          this.prdConfig[0].productStatus = true;
+        } else if (this.prdConfig[0].productStatus === 1) {
+          this.prdConfig[0].productStatus = false;
+        }
+        //初始化
+        if ((this.productMessage.capitaChannels = 382)) {
+          this.productMessage.capitaChannels = "自有资金";
+        } else {
+          this.productMessage.capitaChannels = "第三方";
+        }
       }
     });
     this.checkProduct(scope);
@@ -512,8 +610,69 @@ export default class ProdConfig extends Page {
    */
   radioSelect(scope) {
     scope === "自有资金"
-      ? (this.productMessage.capitaChannels = "382")
-      : (this.productMessage.capitaChannels = "383");
+      ? (this.productMessage.capitaChannels = 382)
+      : (this.productMessage.capitaChannels = 383);
+    this.saveProductConfig();
+  }
+  /**
+   * 保存产品
+   */
+  saveProductConfig() {
+    this.productService
+      .createOrModifyProduct(this.productMessage)
+      .subscribe(val => {
+        this.$Message.success("数据保存成功！");
+      });
+  }
+  getPaymentType(item) {
+    if (item.paymentType === 387) {
+      return "固定账期";
+    } else {
+      return "正常账期";
+    }
+  }
+  getPayWay(item) {
+    if (item.paymentType === 384) {
+      return "等本等息";
+    } else {
+      return "等额本息";
+    }
+  }
+  /**
+   * 停用启用状态
+   */
+  switchStatus(item) {
+    if (item.productStatus === true) {
+      return (item.productStatus = 0);
+    } else {
+      return (item.productStatus = 1);
+    }
+  }
+
+  /**
+   * 新增/修改产品计划期数管理
+   */
+  addPeriods() {
+    this.addPeriodsModal = true;
+  }
+  /**
+   * 新增提交按钮
+   */
+  submiteButton() {
+    let periodsModal: any = this.$refs["add-periods-ref"];
+    periodsModal.confirmPeriods();
+  }
+  /**
+   * 关闭弹窗
+   */
+  closeModal() {
+    this.addPeriodsModal = false;
+  }
+  showDetail(item) {
+    this.editModal = true;
+    this.productDetails = item;
+    console.log(this.productDetails, 7766);
+    // this.productDetails.payWay="等本等息"
   }
 }
 </script>

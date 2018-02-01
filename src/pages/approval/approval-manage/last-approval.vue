@@ -12,14 +12,14 @@
     <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">关闭</span>
+      <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="resourcePoolModel.resourcePoolModel"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:10%" v-model="resourcePoolModel.startTime"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%" v-model="resourcePoolModel.endTime"></i-date-picker>
       <span style="margin-left:10px;">省市：</span>
       <i-select style="width:100px;margin-left:10px;" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
@@ -433,6 +433,8 @@
       this.orderModal = false
     }
     getLastList() {
+      this.resourcePoolModel.startTime = FilterService.dateFormat(this.resourcePoolModel.startTime, "yyyy-MM-dd")
+      this.resourcePoolModel.endTime = FilterService.dateFormat(this.resourcePoolModel.endTime, "yyyy-MM-dd")
       this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
         this.lastList = val.object.list
       })
@@ -446,6 +448,10 @@
     getTimeSearch(val) {
       this.resourcePoolModel.startTime = ''
       this.resourcePoolModel.endTime = ''
+      this.resourcePoolModel.city = ''
+      this.resourcePoolModel.province = ''
+      this.resourcePoolModel.personalInfo = ''
+      this.resourcePoolModel.productType = ''
       this.resourcePoolModel.timeSearch = val
       this.getLastList()
       this.resourcePoolModel.timeSearch = ''
