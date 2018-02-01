@@ -12,15 +12,13 @@
     <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">收起</span>
+      <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="position:relative;right:10px;">
       <i-input style="display:inline-block;width:18%;margin-left:20px;" v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <!--<i-date-picker style="display:inline-block;width:16%" type="datetimerange" @on-change="timeRangeChange" @on-clear="clearTime"></i-date-picker>-->
-      <i-date-picker style="display:inline-block;width:10%;" v-model="resourcePoolModel.startTime"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%;" v-model="resourcePoolModel.endTime"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:16%" type="datetimerange" @on-change="timeRangeChange" @on-clear="clearTime"></i-date-picker>
       <i-select style="width:100px;margin-left:10px;" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
       </i-select>
@@ -61,7 +59,7 @@
 
     <template>
       <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
-        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
+        <purchase-information :scrollTopHeight="scrollTopHeight"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
         </div>
@@ -233,7 +231,7 @@
                 },
                 on: {
                   click: () => {
-                    this.checkOrderInfo(row)
+                    this.purchaseInformationModal = true
                   }
                 }
               }, row.orderNumber)
@@ -426,8 +424,6 @@
      * 获取审核资源池列表
      */
     getApprovalListByCondition() {
-      this.resourcePoolModel.startTime = FilterService.dateFormat(this.resourcePoolModel.startTime, "yyyy-MM-dd")
-      this.resourcePoolModel.endTime = FilterService.dateFormat(this.resourcePoolModel.endTime, "yyyy-MM-dd")
       this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
         this.resourcePoolList = val.object.list
       })
@@ -435,10 +431,6 @@
     getTimeSearch(val) {
       this.resourcePoolModel.startTime = ''
       this.resourcePoolModel.endTime = ''
-      this.resourcePoolModel.city = ''
-      this.resourcePoolModel.province = ''
-      this.resourcePoolModel.personalInfo = ''
-      this.resourcePoolModel.productType = ''
       this.resourcePoolModel.timeSearch = val
       this.getApprovalListByCondition()
       this.resourcePoolModel.timeSearch = ''
@@ -466,11 +458,6 @@
       this.resourcePoolModel.endTime = endTime
     }
     clearTime() {}
-    checkOrderInfo(row) {
-      this.purchaseInformationModal = true
-      let _purchaseInfo: any = this.$refs['purchase-info']
-      _purchaseInfo.getOrderDetail(row)
-    }
   }
 
 </script>

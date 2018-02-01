@@ -6,7 +6,7 @@
     </i-row>
     <i-row style="margin-top:10px;">
       <i-col :span="4" style="border:1px solid #DDDDDD;height:570px;overflow:auto" :class="{open:isShown,close:!isShown}">
-        <i-tree :data="categoryData" @on-select-change="productPlanissueDetail" style="padding:10px;"></i-tree>
+        <i-tree :data="treeData" @on-select-change="productPlanissueDetail" style="padding:10px;"></i-tree>
       </i-col>
       <i-col :span="20">
         <i-row type="flex" justify="start">
@@ -70,7 +70,7 @@
     private carColumns: any;
     private carData: Array < Object > = [];
     private checkRadio: String = ""
-    private categoryData: Array < any >= [];
+    private treeData: Array < any >= [];
     private allData: Array < any > = [];
     private productId: any = '';
     private AddProductData: any = {};
@@ -168,42 +168,64 @@
      * 获取树形结构
      */
     treeList() {
-      this.productService.getAllProduct().subscribe(val => {
+      this.productService.getProductTree().subscribe(val => {
         this.allData = val.object;
         console.log(this.allData, 888888887777777)
-        this.getTreeDate();
+        this.getTreeDate(this.allData);
       });
     }
     currenttrablerowdata(currentRow) {
       this.currentRow = currentRow
     }
-    getTreeDate() {
-      let series: Map < number, any > = new Map();
-      this.allData.map(t => {
-        if (t.seriesId) {
-          series.set(t.seriesId, t);
-        }
-      });
-      this.categoryData = [];
-      series.forEach(item => {
-        let lv1Node = {
-          title: item.seriesName,
-          seriesId: item.seriesId,
+    getTreeDate(allData) {
+      //   let series: Map < number, any > = new Map();
+      //   this.allData.map(t => {
+      //     if (t.seriesId) {
+      //       series.set(t.seriesId, t);
+      //     }
+      //   });
+      //   this.categoryData = [];
+      //   series.forEach(item => {
+      //     let lv1Node = {
+      //       title: item.seriesName,
+      //       seriesId: item.seriesId,
+      //       expand: true,
+      //       children: this.getChilds(item.seriesId)
+      //     };
+      //     this.categoryData.push(lv1Node);
+      //   });
+      let root = allData.filter(v => !v.parent)
+      this.treeData = []
+      root.forEach(item => {
+        let node1 = {
+          title: item.name,
+          productId: item.id,
           expand: true,
-          children: this.getChilds(item.seriesId)
-        };
-        this.categoryData.push(lv1Node);
-      });
+          children: this.getChild(item)
+        }
+        this.treeData.push(node1)
+      })
     }
-    getChilds(id) {
-      let prods = this.allData.filter(t => t.seriesId === id);
-      let Lv2Nodes = prods.map(t => {
-        return {
-          title: t.productName,
-          productId: t.productId
-        };
-      });
-      return Lv2Nodes;
+    getChild(item) {
+      //   let prods = this.allData.filter(t => t.seriesId === id);
+      //   let Lv2Nodes = prods.map(t => {
+      //     return {
+      //       title: t.productName,
+      //       productId: t.productId
+      //     };
+      //   });
+      //   return Lv2Nodes;
+      let child: any = []
+      this.allData.map(val => {
+        if (item.id === val.parent) {
+          let node2 = {
+            title: val.name,
+            productId: val.id
+          }
+          child.push(node2)
+        }
+      })
+      return child
     }
     /**
      * 根据产品树获取期数列表

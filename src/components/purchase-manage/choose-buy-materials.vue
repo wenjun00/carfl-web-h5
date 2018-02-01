@@ -240,6 +240,11 @@
   import Vue from "vue";
   import Component from "vue-class-component";
   import {
+    State,
+    Mutation,
+    namespace
+  } from "vuex-class";
+  import {
     ApplyQueryService
   } from "~/services/business-service/apply-query.service";
   import {
@@ -259,6 +264,7 @@
   import {
     Emit
   } from "vue-property-decorator";
+  const ModuleMutation = namespace('purchaseManage', Mutation)
   @Component({
     components: {
       SvgIcon,
@@ -271,7 +277,7 @@
   export default class ChooseBuyMaterials extends Vue {
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
     @Dependencies(CompanyService) private companyService: CompanyService;
-
+    @ModuleMutation('updateProductId') updateProductId
     private carColumns: any;
     private carData: Array < Object > = [];
     private simulateCalculateModal: Boolean = false;
@@ -476,13 +482,15 @@
      * 获取添加产品信息
      */
     currentRowData(data) {
+      console.log(data, 999)
       //   this.productData(data.productId)
+      this.updateProductId(data.productId)
       this.chooseBuyModel = {
         // prdSeriods: data.prdSeriods,
         periods: data.periods,
-        prdInterestRate: data.prdInterestRate,
+        prdInterestRate: data.productRate, // 产品利率
         payWay: data.payWay,
-        financeTotalMoney: data.financeTotalMoney,
+        financeTotalMoney: data.financingAmount, // 融资总额
         moneyPay: data.moneyPay,
         downPayMoney: data.downPayMoney,
         depositCash: data.depositCash,

@@ -41,16 +41,17 @@
   })
   export default class AddRole extends Vue {
     @Dependencies(ManageService) private manageService: ManageService;
-    private addRoleModel = {
-      roleName: '',
-      roleStatus: '',
-      roleRemark: ''
-    };
+    private addRoleModel: any;
     private rules: any;
     @Prop()
     row: Object;
 
     created() {
+      this.addRoleModel = {
+        roleName: '',
+        roleStatus: '',
+        roleRemark: ''
+      }
       this.rules = {
         roleName: [{
           trigger: 'blur',
@@ -72,14 +73,21 @@
           this.manageService.createRole(this.addRoleModel).subscribe(val => {
             this.$Message.success('新增成功')
             this.$emit('refreshRoleList')
-            this.reset()
           })
         }
       })
     }
     reset() {
-      let _addRole = < Form > this.$refs['add-role']
-      _addRole.resetFields()
+      console.log(123)
+      this.$nextTick(() => {
+        console.log(344324)
+        let _addRole = < Form > this.$refs['add-role']
+        _addRole.resetFields()
+        this.addRoleModel.roleName = ''
+        this.addRoleModel.roleStatus = ''
+        this.addRoleModel.roleRemark = ''
+      })
+
     }
   }
 

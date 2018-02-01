@@ -99,13 +99,14 @@
   export default class CustomerContacts extends Vue {
     @Dependencies(OrderService) private orderService: OrderService;
     private columns1: any;
+    private columns2: any;
     private data1: Array < Object >= [];
     private data2: Array < Object >= [];
     private editOrAddContactsModal: Boolean = false;
     private editOrAddContactsModal2: Boolean = false;
     private rowData: any;
     private addNew: Boolean = false; //根据此判断是编辑还是新增
-    private contactsModel: Object = {
+    private contactsModel: any = {
       relation: '',
       name: '',
       phone: '',
@@ -300,7 +301,8 @@
         this.rowData.employer = this.contactsModel.employer
         this.rowData.address = this.contactsModel.address
       }
-      this.$refs['contacts'].resetFields()
+      //   let contacts_ref = this.$refs['contacts']
+      //   contacts_ref.resetFields()
       this.editOrAddContactsModal = false
     }
     /**
@@ -322,7 +324,8 @@
         this.rowData.employer = this.othercontactsModel.employer
         this.rowData.address = this.othercontactsModel.address
       }
-      this.$refs['other-contacts'].resetFields()
+      //   let other_ref = this.$refs['other-contacts']
+      //   other_ref.resetFields()
       this.editOrAddContactsModal2 = false
     }
     addNewContacts() {

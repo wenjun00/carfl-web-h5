@@ -55,9 +55,6 @@ export default [
         }, {
           title: '收款记录查询',
           path: 'purchase/finance-account/receipt-record-query',
-        }, {
-          title: '付款申请',
-          path: 'purchase/finance-account/pay-apply',
         }]
       },
       {
@@ -67,9 +64,6 @@ export default [
         children: [{
           title: '收款审批',
           path: 'purchase/purchase-approve/receipt-approve',
-        }, {
-          title: '付款审批',
-          path: 'purchase/purchase-approve/payment-approve',
         }]
       }
     ]
@@ -161,9 +155,6 @@ export default [
       children: [{
         title: '收款',
         path: 'finance/initial-payment-manage/gathering'
-      }, {
-        title: '付款',
-        path: 'finance/initial-payment-manage/payment'
       }]
     },
     {
@@ -246,10 +237,6 @@ export default [
       children: [{
         title: '产品包信息',
         path: 'base/base-data/prod-package-info'
-      },
-      {
-        title: '车辆维护',
-        path: 'base/base-data/vehicle-maintenance'
       }, {
         title: '数据字典',
         path: 'base/base-data/data-dict'

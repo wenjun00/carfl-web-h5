@@ -11,7 +11,7 @@
       <i-button @click="getOrderInfoByTime(5)" type="text">最近三月</i-button>
       <i-button @click="getOrderInfoByTime(6)" type="text">本季度</i-button>
       <i-button @click="getOrderInfoByTime(7)" type="text">本年</i-button>
-      <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">收起</span>高级搜索</i-button>
+      <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">关闭</span>高级搜索</i-button>
       <div style="float:right;margin-right:10px;margin-top:10px;">
         <!--<i-button @click="oneKeyToConnect" class="blueButton">一键交接</i-button>-->
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">

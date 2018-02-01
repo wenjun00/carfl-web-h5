@@ -17,12 +17,9 @@
         <span>高级搜索</span>
       </i-button>
     </i-row>
-    <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.orderInfo"></i-input>
-      <span style="margin-left:10px">日期：</span>
-      <i-date-picker type="date" style="display:inline-block;width:10%" v-model="approvalModel.startTime"></i-date-picker>~
-      <i-date-picker type="date" style="display:inline-block;width:10%" v-model="approvalModel.endTime"></i-date-picker>
-      <i-button style="margin-left:10px" class="blueButton" @click="getOrderQuery">搜索</i-button>
+    <i-row v-if="searchOptions" style="margin-top:20px;margin-left:10px;">
+      <i-input v-model="customName" style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
+      <i-button class="blueButton">搜索</i-button>
     </i-row>
     <i-row style="margin-top:20px">
       <data-box :columns="queryColumns" :data="queryData"></data-box>
@@ -52,8 +49,21 @@
     </template>
     <!--客户chaxun-->
     <template>
-      <i-modal v-model="openCustomerInformation" title="客户查询" width="600">
-        <customer-query :row="customerInformation"></customer-query>
+      <i-modal v-model="openCustomerInformation">
+
+        <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top: 15px;">
+          <data-grid-item label="客户姓名" :span="6">王泽杰</data-grid-item>
+          <data-grid-item label="订单数" :span="6">3</data-grid-item>
+
+          <data-grid-item label="创建时间" :span="6">2017-12-5</data-grid-item>
+          <data-grid-item label="归属公司" :span="6">开呗</data-grid-item>
+
+          <data-grid-item label="证件号码" :span="6">310****9878</data-grid-item>
+          <data-grid-item label="归属部门" :span="6">西安营业部</data-grid-item>
+
+          <data-grid-item label="联系号码" :span="6">135****9878</data-grid-item>
+          <data-grid-item label="归属人" :span="6">吴丽丽</data-grid-item>
+        </data-grid>
       </i-modal>
     </template>
 
@@ -82,7 +92,6 @@
   import Page from "~/core/page";
   import Component from "vue-class-component";
   import OrderProgress from "~/components/purchase-query/order-progress.vue";
-  import CustomerQuery from "~/components/purchase-manage/customer-query.vue";
   import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
   import PurchaseInformationTotal from "~/components/purchase-query/purchase-information-total.vue";
 
@@ -95,20 +104,11 @@
     Dependencies
   } from "~/core/decorator";
   import {
-    ProductOrderService
-  } from "~/services/manage-service/product.order.service";
-  import {
-    PersonalService
-  } from "~/services/manage-service/personal.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
+    OrderQueryService
+  } from "~/services/business-service/order-query.service";
   import {
     Layout
   } from "~/core/decorator";
-  import {
-    FilterService
-  } from "~/utils/filter.service"
   import {
     Mutation
   } from 'vuex-class'
@@ -119,18 +119,14 @@
       PurchaseInformation,
       DataBox,
       DataGrid,
-      DataGridItem,
-      CustomerQuery
+      DataGridItem
     }
   })
   export default class OrderQuery extends Page {
-    @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
-    @Dependencies(PersonalService) private personalService: PersonalService;
-    @Dependencies(PageService) private pageService: PageService;
+    @Dependencies(OrderQueryService) private orderQueryService: OrderQueryService;
     private queryColumns: any;
     @Mutation openPage
     private columns2: any;
-    private customerInformation: Array < Object > = [];
     private queryData: Array < Object > = [];
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
@@ -142,15 +138,7 @@
     private openCustomerInformation: Boolean = false;
     private orderProgressModal: Boolean = false;
     private purchaseInfoModal: Boolean = false;
-    private orderInfo: any;
-    private startTime: any;
-    private endTime: any;
-    private approvalModel: any = {
-      timeSearch: '',
-      orderInfo: '',
-      startTime: '',
-      endTime: ''
-    }
+
     confirm() {
       this.modal2 = false
       this.openPage({
@@ -162,7 +150,6 @@
       this.modal2 = false
     }
     created() {
-      this.getOrderQuery()
       this.queryColumns = [{
           align: 'center',
           type: 'index',
@@ -253,7 +240,6 @@
         {
           title: '销售单号',
           align: 'center',
-          width: 180,
           render: (h, params) => {
             return h('div', [
               h('i-button', {
@@ -279,22 +265,13 @@
           }
         },
         {
-          align: "center",
-          title: "订单创建时间",
-          key: "createTime",
-          width: 180,
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
-          }
+          align: 'center',
+          title: '订单创建时间',
+          key: 'orderCreateTime'
         },
         {
           align: 'center',
           title: '客户',
-          width: 140,
           render: (h, params) => {
             return h('div', [
               h('i-button', {
@@ -304,54 +281,46 @@
                 on: {
                   click: () => {
                     this.openCustomerInformation = true
-                    this.personalService.getPersonalMessage({
-                      personalId: params.row.personalId
-                    }).subscribe(
-                      val => {
-                        this.customerInformation = val.object
-                      })
                   }
                 }
-              }, params.row.personalName)
+              }, params.row.customName)
             ])
           }
         },
         {
           align: 'center',
           title: '订单类型',
-          width: 100,
           key: 'orderType'
         },
         {
           align: 'center',
-          width: 180,
           title: '产品名称',
-          key: 'productName'
+          key: 'prdName'
         },
         {
           align: 'center',
           title: '产品期数',
-          key: 'periods'
+          key: 'prdPeriod'
         },
         {
           align: 'center',
           title: '利率(月)',
-          key: 'productRate'
+          key: 'prdInterest'
         },
         {
           align: 'center',
           title: '还款方式',
-          key: 'payWay'
+          key: 'repaymentMethod'
         },
         {
           align: 'center',
           title: '融资总额',
-          key: 'financingAmount'
+          key: 'totalFinancing'
         },
         {
           align: 'center',
           title: '环节',
-          key: 'orderLink'
+          key: 'link'
         },
         {
           align: 'center',
@@ -389,21 +358,13 @@
       }, {
         columnsName: '最近合同生成日期'
       }]
-    }
-    getOrderQuery() {
-      this.approvalModel.startTime = FilterService.dateFormat(this.approvalModel.startTime, "yyyy-MM-dd")
-      this.approvalModel.endTime = FilterService.dateFormat(this.approvalModel.endTime, "yyyy-MM-dd")
-      this.productOrderService.orderSearch(this.approvalModel, this.pageService).subscribe(val => {
-        this.queryData = val.object.list
+      this.orderQueryService.getOrderQueryData().subscribe(({
+        val
+      }) => {
+        this.queryData = val
       })
     }
-    getTimeSearch(val) {
-      this.approvalModel.startTime = ''
-      this.approvalModel.endTime = ''
-      this.approvalModel.timeSearch = val
-      this.getOrderQuery()
-      this.approvalModel.timeSearch = ''
-    }
+    getOrderInfoByTime() {}
     openSearch() {
       this.searchOptions = !this.searchOptions
     }

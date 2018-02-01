@@ -211,11 +211,11 @@
         align: 'center',
         width: 86
       }]
-      // this.applyQueryService.addCarQueryData().subscribe(({
-      //   val
-      // }) => {
-      //   this.data2 = val
-      // })
+      this.applyQueryService.addCarQueryData().subscribe(({
+        val
+      }) => {
+        this.data2 = val
+      })
       this.categoryData = [{
         title: '所有品牌',
         expand: true,

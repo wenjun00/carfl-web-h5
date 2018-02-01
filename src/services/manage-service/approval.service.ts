@@ -69,15 +69,4 @@ export class ApprovalService {
       page: page
     })
   }
-  /**
-   * 订单查询、进度查询
-   */
-  findOrderApproveRecord({ orderId }) {
-    return this.netService.send({
-      server: manageService.approvalController.findOrderApproveRecord,
-      data: {
-        orderId: orderId
-      }
-    })
-  }
 }

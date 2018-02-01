@@ -31,5 +31,23 @@ export default {
         controller: CONTROLLER,
         action: 'addVehicle',
         type: requestType.Post
+    },
+    /**
+     * 搜索
+     */
+    seachCar: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'findAllCarBySeries',
+        type: requestType.Get
+    },
+    /**
+    * 修改车辆信息
+    */
+    updateVehicle: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'updateVehicle',
+        type: requestType.Post
     }
 }

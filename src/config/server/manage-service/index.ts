@@ -15,37 +15,23 @@ import productOrderController from './product.order.controller'
 import productController from './product.controller'
 import productPlanIssueController from './productPlanIssue.controller'
 import productSeriesController from './productSeries.controller'
-import carController from './car.controller'
-import personalController from './personal.controller'
-import paymentScheduleController from './paymentSchedule.controller'
-import remitApplicationController from './remitApplication.controller'
-import refundApplicationController from './refund.application.controller'
-import backLogController from './backLog.controller'
-import collectMoneyHistoryController from './collect.money.history.controller'
 
 export const manageService = {
-  departmentController,
-  roleController,
-  userController,
-  systemLogsController,
-  systemBackupController,
-  systemParameterController,
-  productPackageController,
-  approveReeasonController,
-  companyController,
-  dataDictTypeController,
-  dataDictController,
-  approvalController,
-  personalMaterialController,
-  productOrderController,
-  productController,
-  productPlanIssueController,
-  productSeriesController,
-  carController,
-  personalController,
-  paymentScheduleController,
-  remitApplicationController,
-  refundApplicationController,
-  backLogController,
-  collectMoneyHistoryController
+    departmentController,
+    roleController,
+    userController,
+    systemLogsController,
+    systemBackupController,
+    systemParameterController,
+    productPackageController,
+    approveReeasonController,
+    companyController,
+    dataDictTypeController,
+    dataDictController,
+    approvalController,
+    personalMaterialController,
+    productOrderController,
+    productController,
+    productPlanIssueController,
+    productSeriesController
 }

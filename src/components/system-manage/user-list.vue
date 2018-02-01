@@ -38,13 +38,14 @@
     @Prop() roleId
     private columns1: any;
     private userList: Array < Object > = [];
-    private userListModel: any = {
-      username: '',
-      realname: '',
-      roleId: ''
-    }
+    private userListModel: any
 
     created() {
+      this.userListModel = {
+        username: '',
+        realName: '',
+        roleId: this.roleId
+      }
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -80,15 +81,13 @@
     }
     getUserListByRole(roleId) {
       this.userListModel.roleId = roleId
+      console.log(this.userListModel.roleId, 9090)
       this.manageService.getUserByRoleIdPage(this.userListModel, this.pageService).subscribe(val => {
         this.userList = val.object.list
       })
     }
-    resetFrom() {
-      this.userListModel.username = ''
-      this.userListModel.realname = ''
-    }
     search() {
+      console.log(this.userListModel.roleId, 9090)
       this.manageService.getUserByRoleIdPage(this.userListModel, this.pageService).subscribe(val => {
         this.userList = val.object.list
       })

@@ -55,14 +55,5 @@ export default {
     controller: CONTROLLER,
     action: 'getAuditRecord',
     type: requestType.Get
-  },
-  /**
-   * 订单查询、进度查询
-   */
-  findOrderApproveRecord: {
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'findOrderApproveRecord',
-    type: requestType.Get
   }
 }
