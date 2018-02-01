@@ -82,5 +82,32 @@ export default {
     controller: CONTROLLER,
     action: 'submitInternalAuditOrGreyList',
     type: requestType.Get
+  },
+  /**
+   * 提交黑名单&拒绝
+   */
+  submitBlackListOrRefuse: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'submitBlackListOrRefuse',
+    type: requestType.Get
+  },
+  /**
+   * 退件
+   */
+  goBackInComing: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'goBackInComing',
+    type: requestType.Get
+  },
+  /**
+   * 审批通过
+   */
+  passApproval: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'passApproval',
+    type: requestType.Get
   }
 }
