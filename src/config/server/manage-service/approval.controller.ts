@@ -73,5 +73,14 @@ export default {
     controller: CONTROLLER,
     action: 'goBackResourcePool',
     type: requestType.Get
+  },
+  /**
+   * 提交内审&灰名单
+   */
+  submitInternalAuditOrGreyList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'submitInternalAuditOrGreyList',
+    type: requestType.Get
   }
 }

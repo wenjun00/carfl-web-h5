@@ -29,12 +29,12 @@
       </div>
       <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px" v-for="item in carOrderInfo"
         :key="item.id">
-        <data-grid-item label="车辆型号" :span="6">{{item.vehicleModels?item.vehicleModels:''}}</data-grid-item>
+        <data-grid-item label="车辆型号" :span="6">{{item.modelName?item.modelName:''}}</data-grid-item>
         <data-grid-item label="上牌地区" :span="3">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>
         <data-grid-item label="车身颜色" :span="3">{{item.vehicleColour?item.vehicleColour:''}}</data-grid-item>
         <data-grid-item label="购车排量" :span="4">{{item.vehicleEmissions?item.vehicleEmissions:''}}</data-grid-item>
         <data-grid-item label="购车配置" :span="4">{{item.vehicleConfiguration?item.vehicleConfiguration:''}}</data-grid-item>
-        <data-grid-item label="车辆牌照" :span="4">{{item.vehicleLicence?item.vehicleLicence:''}}</data-grid-item>
+        <data-grid-item label="车辆牌照" :span="4">{{item.carLicence?item.carLicence:''}}</data-grid-item>
       </data-grid>
     </i-row>
     <!--产品信息-->

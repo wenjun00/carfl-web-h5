@@ -91,4 +91,13 @@ export class ApprovalService {
       }
     })
   }
+  /**
+   * 提交内审&灰名单
+   */
+  submitInternalAuditOrGreyList(data) {
+    return this.netService.send({
+      server: manageService.approvalController.submitInternalAuditOrGreyList,
+      data: data
+    })
+  }
 }
