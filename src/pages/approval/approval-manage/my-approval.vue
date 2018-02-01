@@ -623,6 +623,9 @@
     approveClick(row) {
       this.approveModal = true
       this.approveStatue = row.status
+      let _approve: any = this.$refs['approve']
+      _approve.getOrderDetail(row)
+
     }
     getMyOrderList() {
       this.approvalService.getMyApprovalOrder(this.myOrderModel, this.pageService).subscribe(val => {

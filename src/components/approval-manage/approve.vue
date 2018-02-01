@@ -5,108 +5,111 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>选购信息</span>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;">
-        <data-grid-item label="申请省份：" :span="3">上海</data-grid-item>
-        <data-grid-item label="申请城市：" :span="3">上海</data-grid-item>
-        <data-grid-item label="所属公司：" :span="6">开呗上海</data-grid-item>
-        <data-grid-item label="融资租赁用途" :span="3">个人使用</data-grid-item>
+      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px">
+        <data-grid-item label="申请省份：" :span="3">{{orderInfo.province}}</data-grid-item>
+        <data-grid-item label="申请城市：" :span="3">{{orderInfo.city}}</data-grid-item>
+        <data-grid-item label="所属公司：" :span="6">{{orderInfo.company?orderInfo.company.companyChinaname:''}}</data-grid-item>
+        <data-grid-item label="融资租赁用途" :span="3">{{orderInfo.financingUse}} </data-grid-item>
         <data-grid-item label="自缴费用" :span="9">
-          <i-checkbox-group v-model="fruit">
+          <i-checkbox-group v-model="fee">
             <i-checkbox label="保险费"></i-checkbox>
             <i-checkbox label="购置费"></i-checkbox>
           </i-checkbox-group>
         </data-grid-item>
-        <data-grid-item label="意向融资金额" :span="3">128,000.00</data-grid-item>
-        <data-grid-item label="租金支付" :span="3">4,560.00</data-grid-item>
-        <data-grid-item label="意向期限" :span="3">12期</data-grid-item>
-        <data-grid-item label="意向首付比例" :span="3">10%</data-grid-item>
-        <data-grid-item label="车辆型号" :span="6">别克 君越 2016改款</data-grid-item>
-        <data-grid-item label="上牌地区" :span="3">上海</data-grid-item>
-        <data-grid-item label="车身颜色" :span="3">紫檀红</data-grid-item>
-        <data-grid-item label="购车排量" :span="3">1.8t</data-grid-item>
-        <data-grid-item label="购车配置" :span="3"></data-grid-item>
-        <data-grid-item label="车辆牌照" :span="3">沪XXXXX</data-grid-item>
-        <data-grid-item label="" :span="3"></data-grid-item>
+        <data-grid-item label="意向融资金额" :span="3">{{orderInfo.intentionFinancingAmount}}</data-grid-item>
+        <data-grid-item label="租金支付" :span="3">{{orderInfo.rentPayable}}</data-grid-item>
+        <data-grid-item label="意向期限" :span="3">{{orderInfo.intentionPeriods}}</data-grid-item>
+        <data-grid-item label="意向首付比例" :span="3">{{orderInfo.intentionPaymentRatio}}</data-grid-item>
       </data-grid>
     </i-row>
-    <div style="margin-top:20px;">
+    <!--车辆信息-->
+    <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>车辆信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="xuangouxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">车辆信息</a>
       </div>
-    </div>
+      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px" v-for="item in carOrderInfo"
+        :key="item.id">
+        <data-grid-item label="车辆型号" :span="6">{{item.vehicleModels?item.vehicleModels:''}}</data-grid-item>
+        <data-grid-item label="上牌地区" :span="3">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>
+        <data-grid-item label="车身颜色" :span="3">{{item.vehicleColour?item.vehicleColour:''}}</data-grid-item>
+        <data-grid-item label="购车排量" :span="4">{{item.vehicleEmissions?item.vehicleEmissions:''}}</data-grid-item>
+        <data-grid-item label="购车配置" :span="4">{{item.vehicleConfiguration?item.vehicleConfiguration:''}}</data-grid-item>
+        <data-grid-item label="车辆牌照" :span="4">{{item.vehicleLicence?item.vehicleLicence:''}}</data-grid-item>
+      </data-grid>
+    </i-row>
     <!--产品信息-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>产品信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="chanpinxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">产品信息</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>产品系列</td>
-          <td>直租</td>
+          <td>{{orderInfo.productSeries?orderInfo.productSeries.name:''}}</td>
           <td>产品名称</td>
-          <td>群泰融资</td>
+          <td>{{orderInfo.product?orderInfo.product.name:''}}</td>
           <td>产品期数</td>
-          <td>24期</td>
+          <td>{{orderInfo.periods}}</td>
           <td>产品利率</td>
-          <td>0.99/月</td>
+          <td>{{orderInfo.productRate}}</td>
         </tr>
         <tr>
           <td>还款方式</td>
-          <td>等本等息</td>
+          <td>{{orderInfo.payWay}}</td>
           <td>融资总额</td>
-          <td>182270</td>
+          <td>{{orderInfo.financingAmount}}</td>
           <td>月供金额</td>
-          <td>5584</td>
+          <td>{{orderInfo.monthlySupply}}</td>
           <td></td>
           <td></td>
         </tr>
         <tr>
           <td>首付金额</td>
-          <td>20252</td>
+          <td>{{orderInfo.initialPayment}}</td>
           <td>保证金金额</td>
-          <td>0</td>
+          <td>{{orderInfo.depositCash}}</td>
           <td>尾付金额</td>
-          <td>0</td>
+          <td>{{orderInfo.finalCash}}</td>
           <td>管理费</td>
-          <td>0</td>
+          <td>{{orderInfo.manageCost}}</td>
         </tr>
         <tr>
           <td>保险费</td>
-          <td>0</td>
+          <td>{{orderInfo.insuranceExpenses}}</td>
           <td>购置税</td>
-          <td>0</td>
+          <td>{{orderInfo.purchaseTax}}</td>
           <td>上牌费</td>
-          <td>0</td>
+          <td>{{orderInfo.installLicenseFee}}</td>
           <td>GPS</td>
-          <td>0</td>
+          <td>{{orderInfo.gpsFee}}</td>
         </tr>
         <tr>
           <td>备注</td>
-          <td colspan="7"></td>
+          <td colspan="7">{{orderInfo.remark}}</td>
         </tr>
       </table>
     </i-row>
     <!--个人资料-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>个人资料</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="gerenziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">个人资料</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>姓名</td>
-          <td>左拉</td>
+          <td>{{orderInfo.personal?orderInfo.personal.name:''}}</td>
           <td>性别</td>
-          <td>女</td>
+          <td>{{orderInfo.personal?orderInfo.personal.sex:''}}</td>
           <td>出生日期</td>
-          <td>92-03-09</td>
+          <td>{{orderInfo.personal?orderInfo.personal.birthTime:''}}</td>
           <td>微信号码</td>
-          <td>dgadget</td>
+          <td>{{orderInfo.personal?orderInfo.personal.wechat:''}}</td>
         </tr>
         <tr>
-          <td>手机号码</td>
-          <td>139****2432</td>
-          <td>手机号码（次）</td>
-          <td>139****2453</td>
+          <td>手机号码(主)</td>
+          <td>{{orderInfo.personal?orderInfo.personal.mobileMain:''}}</td>
+          <td>手机号码(次)</td>
+          <td>{{orderInfo.personal?orderInfo.personal.mobileMinor:''}}</td>
           <td></td>
           <td></td>
           <td></td>
@@ -114,56 +117,59 @@
         </tr>
         <tr>
           <td>身份证号码</td>
-          <td>213****3521</td>
+          <td>{{orderInfo.personal?orderInfo.personal.idCard:''}}</td>
           <td>婚属状况</td>
-          <td colspan="5">已婚</td>
+          <td colspan="5">{{orderInfo.personal?orderInfo.personal.marital:''}}</td>
         </tr>
         <tr>
           <td>身份证有效期</td>
-          <td colspan="3">2035-02-30</td>
+          <td colspan="3">{{orderInfo.personal?orderInfo.personal.idCardValidityPeriodSection:''}}</td>
           <td>发证机关</td>
-          <td colspan="3">上海宝山政府</td>
+          <td colspan="3">{{orderInfo.personal?orderInfo.personal.issuer:''}}</td>
         </tr>
         <tr>
           <td>身份证地址</td>
-          <td colspan="7">上海市上海市宝山区中山北路2687号</td>
+          <td colspan="7">{{orderInfo.personal?orderInfo.personal.idCardAddress:''}}</td>
         </tr>
         <tr>
           <td>现居住地址</td>
-          <td colspan="7">上海市上海市宝山区中山北路</td>
+          <td colspan="7">{{orderInfo.personal?orderInfo.personal.localHomeAddr:''}}</td>
         </tr>
         <tr>
           <td>居住地址家庭座机</td>
-          <td></td>
+          <td>{{orderInfo.personal?orderInfo.personal.localHomePhone:''}}</td>
           <td>本市生活时长</td>
-          <td>12年</td>
-          <td>现居驻地生活时常</td>
-          <td colspan="3"></td>
+          <td>{{orderInfo.personal?orderInfo.personal.cityLiveTime:''}}</td>
+          <td>现居住地生活时常</td>
+          <td colspan="3">{{orderInfo.personal?orderInfo.personal.localLiveTime:''}}</td>
         </tr>
         <tr>
           <td>现居住地房产归属</td>
-          <td colspan="7">本人名下</td>
+          <td colspan="7">{{orderInfo.personal?orderInfo.personal.localLiveHouseOwner:''}}</td>
         </tr>
         <tr>
           <td>本市自有房产状况及归属</td>
-          <td colspan="3">商品房</td>
+          <td colspan="3">{{orderInfo.personal?orderInfo.personal.cityOwnhouseCondition:''}}</td>
           <td>电费账号</td>
-          <td></td>
+          <td>{{orderInfo.personal?orderInfo.personal.electricityAccount:''}}</td>
           <td>电费密码</td>
-          <td></td>
+          <td>{{orderInfo.personal?orderInfo.personal.electricityPassword:''}}</td>
         </tr>
         <tr>
           <td>本市房产地址</td>
-          <td colspan="7">上海市上海市宝山区中山北路</td>
+          <td colspan="7">{{orderInfo.personal?orderInfo.personal.cityOwnhouseAddressDetail:''}}</td>
         </tr>
         <tr>
           <td>教育程度</td>
-          <td colspan="2">本科</td>
+          <td colspan="2">{{orderInfo.personal?orderInfo.personal.education:''}}</td>
           <td>毕业院校</td>
-          <td colspan="2"></td>
+          <td colspan="2">{{orderInfo.personal?orderInfo.personal.school:''}}</td>
           <td>是否接受现场勘查</td>
           <td>
-            <i-radio :checked.sync="single">是</i-radio>
+            <i-radio-group v-model="personal.houseProspecting">
+              <i-radio :label="0" :value="0" :key="0">是</i-radio>
+              <i-radio :label="1" :value="1" :key="1">否</i-radio>
+            </i-radio-group>
           </td>
         </tr>
       </table>
@@ -172,60 +178,59 @@
     <!--职业信息-->
     <i-row>
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>职业信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="zhiyexinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">职业信息</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>单位名称</td>
-          <td>中资联</td>
+          <td>{{personalJobInfo.companyName}}</td>
           <td>部门</td>
-          <td>产品部</td>
+          <td>{{personalJobInfo.department}}</td>
         </tr>
         <tr>
           <td>单位性质</td>
-          <td>私营有限企业</td>
+          <td>{{personalJobInfo.companyNature}}</td>
           <td>职务</td>
-          <td>产品经理</td>
+          <td>{{personalJobInfo.duty}}</td>
         </tr>
         <tr>
           <td>职级</td>
-          <td colspan="8">负责人</td>
+          <td colspan="8">{{personalJobInfo.rank}}</td>
         </tr>
         <tr>
           <td>单位地址</td>
-          <td colspan="8">上海市上海市宝山区中山北路2687号</td>
+          <td colspan="8">{{personalJobInfo.companyAddress}}</td>
         </tr>
         <tr>
           <td>单位固定电话</td>
-          <td>021-43452342</td>
+          <td>{{personalJobInfo.companyPhone}}</td>
           <td>何时进入公司</td>
-          <td>2017-3</td>
+          <td>{{personalJobInfo.accessCompanyTime}}</td>
         </tr>
         <tr>
           <td>基本月薪(元)</td>
-          <td>10000</td>
+          <td>{{personalJobInfo.basicSalary}}</td>
           <td>每月发薪日(元)</td>
-          <td></td>
+          <td>{{personalJobInfo.payDay}}</td>
         </tr>
         <tr>
           <td>发薪方式</td>
-          <td>公司转账</td>
+          <td>{{personalJobInfo.payWay}}</td>
           <td>年收入(万元)</td>
-          <td>10</td>
+          <td>{{personalJobInfo.yearlySalaries}}</td>
         </tr>
         <tr>
           <td>每月其他收入(元)</td>
-          <td>10000</td>
+          <td>{{personalJobInfo.monthOtherIncome}}</td>
           <td>其他收入来源</td>
-          <td>10000</td>
+          <td>{{personalJobInfo.otherIncomeSource}}</td>
         </tr>
       </table>
-
     </i-row>
     <!--联系人信息-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>联系人信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="lianxirenxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">联系人信息</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
@@ -235,26 +240,12 @@
           <td>单位名称</td>
           <td>家庭住址</td>
         </tr>
-        <tr>
-          <td></td>
-          <td>配偶</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>父母</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>子女</td>
-          <td></td>
-          <td></td>
-          <td></td>
+        <tr v-for="item in immediateContacts" :key="item.id">
+          <td>{{item.name?item.name:''}}</td>
+          <td>{{item.relation?item.relation:''}}</td>
+          <td>{{item.relation?item.phone:''}}</td>
+          <td>{{item.employer?item.employer:''}}</td>
+          <td>{{item.address?item.address:''}}</td>
         </tr>
         <tr>
           <td colspan="5">其他联系人（提示：必填3个其他联系人）</td>
@@ -266,47 +257,36 @@
           <td>单位名称</td>
           <td>家庭住址</td>
         </tr>
-        <tr>
-          <td></td>
-          <td>配偶</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>父母</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>子女</td>
-          <td></td>
-          <td></td>
-          <td></td>
+        <tr v-for="item in otherContactsInfo" :key="item.id">
+          <td>{{item.name?item.name:''}}</td>
+          <td>{{item.relation?item.relation:''}}</td>
+          <td>{{item.relation?item.phone:''}}</td>
+          <td>{{item.employer?item.employer:''}}</td>
+          <td>{{item.address?item.address:''}}</td>
         </tr>
       </table>
     </i-row>
     <!--客户来源-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>客户来源</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="kehulaiyuan" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">客户来源</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
           <td>通过宣传</td>
           <td colspan="4">
-            <i-radio value="true">其他</i-radio>
+            <span>{{personalResourcePublicity.resourceContent}}</span>
           </td>
         </tr>
         <tr>
           <td>通过介绍</td>
           <td>
-            <i-radio>同行推荐</i-radio>
             <span>同行姓名：</span>
-            <input type="text" style="border:0px;border-bottom:1px ;">
+            <span>{{personalResourceIntroduce.peerName}}</span>
+            <span>同行公司：</span>
+            <span>{{personalResourceIntroduce.peerCompany}}</span>
+            <span>同行联系方式：</span>
+            <span>{{personalResourceIntroduce.peerPhone}}</span>
           </td>
         </tr>
       </table>
@@ -315,18 +295,12 @@
     <!--素材资料-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>素材资料</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="sucaiziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">素材资料</a>
       </div>
       <i-row style="margin-top:10px">
         <i-col :span="12">
-          <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;">
-            <Icon type="plus-circled" style="display:block;margin-top:53px;color:#265ea2" size="40"></Icon>
-            <div>点击添加附件</div>
-            <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
-          </div>
-        </i-col>
-        <i-col :span="12">
-          <div style="height:200px;width:200px;border:1px solid #C2C2C2;background-image:url('/static/images/common/invoice2.png');background-repeat:no-repeat;position:relative;left:72px;">
+          <div v-for="item in materialInfo" :key="item.id" class="material" :style="getMaterialUrl(item)" @click="ceshi(item)">
+            <span>123123</span>
           </div>
         </i-col>
       </i-row>
@@ -341,14 +315,18 @@
     DataGrid,
     DataGridItem
   } from "vue-fintech-component";
-
+  import {
+    ProductOrderService
+  } from "~/services/manage-service/product.order.service";
   import {
     Prop
   } from "vue-property-decorator";
   import {
     Action
   } from "vuex-class";
-
+  import {
+    Dependencies
+  } from "~/core/decorator";
   @Component({
     components: {
       DataGrid,
@@ -356,11 +334,49 @@
     }
   })
   export default class Approve extends Vue {
+    @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
+    private fee: Array < String > = [];
     private fruit: Array < String > = ['购置费'];
     private single: Boolean = false;
-
+    private orderInfo: any = {}
+    private personal: any = {} // 个人资料
+    private productSeries: any = {} // 产品系列
+    private contactsInfo: any = {} // 联系人信息
+    private immediateContacts: any = {} // 直系联系人信息
+    private otherContactsInfo: any = {} // 其他联系人信息
+    private carOrderInfo: any = {} // 选购车辆
+    private personalJobInfo: any = {} // 职业信息
+    private personalResourcePublicity: any = {} // 客户来源相关信息
+    private personalResourceIntroduce: any = {} // 客户来源介绍相关信息
+    private materialInfo: any = {} // 素材资料相关信息
     @Prop() person;
     @Action select;
+
+    /**
+     * 获取弹窗内所有订单信息
+     */
+    getOrderDetail(row) {
+      this.productOrderService.findOrderInfoByOrderNumber({
+        orderNumber: row.orderNumber
+      }).subscribe(val => {
+        let allData = JSON.stringify(val.object)
+        this.orderInfo = JSON.parse(allData)
+        this.personal = this.orderInfo.personal // 个人资料
+        this.personalJobInfo = this.personal.personalJob // 职业信息
+        this.contactsInfo = this.orderInfo.personal.personalContacts // 联系人信息
+        this.carOrderInfo = this.orderInfo.orderCars // 选购车辆
+        this.personalResourcePublicity = this.personal.personalResourcePublicity // 客户来源相关信息
+        this.personalResourceIntroduce = this.personal.personalResourceIntroduce // 客户来源介绍
+        this.materialInfo = this.personal.personalDatas // 素材相关信息
+        // console.log(this.orderInfo.personalJob, 1234)
+        this.immediateContacts = this.contactsInfo.filter(v => v.relation === 56 || v.relation === 57 || v.relation ===
+          58)
+
+        // console.log(this.immediateContacts, 8987)
+        this.otherContactsInfo = this.contactsInfo.filter(v => v.relation === 59 || v.relation === 60 || v.relation ===
+          61 || v.relation === 62)
+      })
+    }
   }
 
 </script>

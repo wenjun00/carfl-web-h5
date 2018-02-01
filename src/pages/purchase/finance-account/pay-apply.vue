@@ -164,7 +164,7 @@
     private changeGatherItemModal: Boolean = false;
     private materialTabs: String = 'pay-detail'
     private disabledStatus: String = ''; // 子组件中输入框禁用flag
-    private orderList: Array < Object > = [];
+    private orderList: Array < any > = [];
 
     created() {
       this.applyData = {
@@ -207,7 +207,7 @@
     saveSubmit() {
       this.paramsData.recordStatus = 1129
       let _message: any = this.$refs['payDetail']
-          _message.submit()
+      _message.submit()
     }
     /**
      * 输入姓名搜索

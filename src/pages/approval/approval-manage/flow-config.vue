@@ -119,13 +119,15 @@
           if (val.flag === '产品') {
             let node2 = {
               title: val.name,
-              productId: val.id
+              productId: val.id,
+              children: this.getChild(val)
             }
             child.push(node2)
           } else if (val.flag === '产品系列') {
             let node2 = {
               title: val.name,
-              seriesId: val.id
+              seriesId: val.id,
+              children: this.getChild(val)
             }
             child.push(node2)
           }
