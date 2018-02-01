@@ -25,11 +25,11 @@
         </div>
         <data-box :columns="columns" :data="carList"></data-box>
         <template>
-            <i-modal v-model="editModal" title="编辑">
-                <edit-car></edit-car>
+            <i-modal v-model="editModal" title="编辑" style="width:900px;">
+                <edit-car v-bind:carFormItem="carformitem" ref="edit-car"></edit-car>
                 <div slot="footer">
                     <i-button class="Ghost" @click="editModal=false">取消</i-button>
-                    <i-button class="blueButton">确定</i-button>
+                    <i-button class="blueButton" @click="submitButton">确定</i-button>
                 </div>
             </i-modal>
         </template>
@@ -63,7 +63,8 @@ export default class AddPeriods extends Vue {
   private carList: Array<Object> = [];
   private busModal: Object = {};
   private editModal: Boolean = false;
-  private carInfo: Object = {};
+  private carInfo: any = {};
+  private carformitem: any = {};
 
   created() {
     this.seachBusiness();
@@ -118,7 +119,7 @@ export default class AddPeriods extends Vue {
                   color: "#265EA2"
                 },
                 on: {
-                  click: row => {
+                  click: () => {
                     if (row.status === 0) {
                       this.$Modal.confirm({
                         title: "提示",
@@ -127,7 +128,7 @@ export default class AddPeriods extends Vue {
                           this.stopCar(row);
                         }
                       });
-                    } else if (row.status === 0) {
+                    } else if (row.status === 1) {
                       this.$Modal.confirm({
                         title: "提示",
                         content: "您确定启用吗？",
@@ -152,7 +153,7 @@ export default class AddPeriods extends Vue {
                 },
                 on: {
                   click: () => {
-                    this.editCarFun();
+                    this.editCarFun(row);
                   }
                 }
               },
@@ -287,9 +288,9 @@ export default class AddPeriods extends Vue {
         align: "center",
         width: 90,
         render: (h, { row, column, index }) => {
-          if (row.status === 0) {
+          if (row.status == "0") {
             return h("span", {}, "已启用");
-          } else if (row.status === 1) {
+          } else if (row.status == "1") {
             return h("span", {}, "未启用");
           }
         }
@@ -347,13 +348,17 @@ export default class AddPeriods extends Vue {
       });
   }
   /**@augments
-   * 修改
+   * 编辑
    */
-  editCarFun() {
+  editCarFun(row) {
     this.editModal = true;
-    this.carQuotationService
-      .updateCarQuotation(this.carInfo)
-      .subscribe(val => {});
+    this.carformitem = row;
+  }
+  submitButton() {
+    let openCar: any = this.$refs["edit-car"];
+    openCar.validForm();
+    this.seachBusiness();
+    this.editModal = false;
   }
 }
 </script>

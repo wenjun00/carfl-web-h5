@@ -221,8 +221,8 @@ export default class ProdConfig extends Page {
   private alreadyConfigFlag: Boolean = false;
   private allData: Array<any> = [];
   private productShow: Boolean = false;
-  private productMessage: any;
-  private publishItem: any;
+  private productMessage: any = {};
+  private publishItem: any = {};
   private addPeriodsBox: Boolean = false;
   private editModal: Boolean = false;
   private productDetails: Object = {};
@@ -231,20 +231,23 @@ export default class ProdConfig extends Page {
    */
   data() {
     return {
-      //   treeData: [
-      //     {
-      //       lev1Node: ""
-      //     }
-      //   ],
       //   lev1Node: {
       //     title: "",
-      //     seriesId: "",
+      //     number: "",
       //     expand: true,
-      //     lev2Node: []
+      //     lev2Node: [
+      //       {
+      //         lev3Node: []
+      //       }
+      //     ]
       //   },
       //   lev2Node: {
       //     title: "",
-      //     productId: ""
+      //     number: ""
+      //   },
+      //   lev3Node: {
+      //     title: "",
+      //     number: ""
       //   }
     };
   }
@@ -254,6 +257,7 @@ export default class ProdConfig extends Page {
     this.customerFodderConfigModal = true;
   }
   created() {
+    this.treeData = [];
     this.treeList();
     this.customerFodderTree = [
       {
@@ -475,93 +479,7 @@ export default class ProdConfig extends Page {
       this.getTreeData();
     });
   }
-  getTreeData() {
-    let arr = [
-      //   {
-      //     id: 0,
-      //     title: "产品配置",
-      //     parent: 1,
-      //     flag: "",
-      //     children: [
-      //       {
-      //         title: "",
-      //         type: "",
-      //         status: "",
-      //         children: [
-      //           {
-      //             title: "",
-      //             type: "",
-      //             status: ""
-      //           }
-      //         ]
-      //       }
-      //     ]
-      //   }
-    ];
-    let num = 0;
-    this.allData.map(v => {
-      if (v.parent === null) {
-        let node1: any = arr[0];
-        node1.push({
-          id: parseInt(v.id),
-          title: v.name,
-          parent: null,
-          children: []
-        });
-
-        // let funNum = 0;
-        // this.allData.map(val => {
-        //   if (val.parent && val.parent === v.id) {
-        //     let arrChild: any = arr[0].children[num];
-        //     arrChild.children.push({
-        //       id: parseInt(val.id),
-        //       title: val.name,
-        //       parent: parseInt(val.parent),
-        //       function: []
-        //     });
-        //     this.allData.map(value => {
-        //       if (value.parent && value.parent === val.id) {
-        //         let arrChildren: any = arr[0].children[num];
-        //         arrChildren.children[funNum].function.push(value);
-        //       }
-        //     });
-        //     funNum++;
-        //   }
-        // });
-        // num++;
-      }
-    });
-    this.treeData = arr;
-  }
-  //   getTreeDate() {
-  //     let series: Map<number, any> = new Map();
-  //     this.allData.map(t => {
-  //       if (t.parent === t.id) {
-  //         series.set(t.seriesId, t);
-  //       }
-  //     });
-  //     this.treeData = [];
-  //     series.forEach(item => {
-  //       let lv1Node = {
-  //         title: item.seriesName,
-  //         seriesId: item.seriesId,
-  //         expand: true,
-  //         children: this.getChilds(item.seriesId)
-  //       };
-  //       this.treeData.push(lv1Node);
-  //     });
-  //   }
-
-  //   getChilds(id) {
-  //     let prods = this.allData.filter(t => t.seriesId === id);
-  //     let Lv2Nodes = prods.map(t => {
-  //       return {
-  //         title: t.productName,
-  //         productId: t.productId
-  //       };
-  //     });
-  //     return Lv2Nodes;
-  //   }
+  getTreeData() {}
 
   /**
    * 查询产品列表详情
@@ -671,7 +589,6 @@ export default class ProdConfig extends Page {
   showDetail(item) {
     this.editModal = true;
     this.productDetails = item;
-    console.log(this.productDetails, 7766);
     // this.productDetails.payWay="等本等息"
   }
 }
@@ -748,6 +665,7 @@ export default class ProdConfig extends Page {
   bottom: 39px;
   z-index: 999;
 }
+
 .PublishContent {
   width: 300px;
   height: 50px;
@@ -760,11 +678,13 @@ export default class ProdConfig extends Page {
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 }
+
 .PublishButton {
   line-height: 50px;
   font-size: 14px;
   color: rgb(104, 138, 188);
 }
+
 .boxContainerTitle {
   width: 300px;
   height: 50px;
