@@ -124,9 +124,13 @@
       <i-modal title="灰名单" v-model="grayListModal">
         <i-form>
           <i-form-item label="详细原因">
-            <i-input type="textarea"></i-input>
+            <i-input type="textarea" v-model="grayModel.remark"></i-input>
           </i-form-item>
         </i-form>
+        <div slot="footer">
+          <i-button @click="cancelAddGray">取消</i-button>
+          <i-button @click="confirmAddGray" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -285,7 +289,11 @@
       timeSearch: '',
       productType: ''
     }
-
+    private grayModel: any = {
+      remark: '',
+      orderId: '',
+      operateType: 1
+    }
     created() {
       this.getMyOrderList()
       this.columns3 = [{
@@ -577,12 +585,38 @@
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
+    /**
+     * 取消放入灰名单
+     */
+    cancelAddGray() {
+      this.grayListModal = false
+      this.grayModel.remark = ''
+    }
+    /**
+     * 确定放入灰名单
+     */
+    confirmAddGray() {
+      this.grayModel.orderId = this.approvalOrderId
+      this.approvalService.submitInternalAuditOrGreyList(this.grayModel).subscribe(val => {
+        this.$Message.success('提交灰名单成功！')
+        this.grayModel.remark = ''
+        this.grayListModal = false
+        this.approveModal = false
+        this.getMyOrderList()
+      })
+    }
     backToResource() {
       this.$Modal.confirm({
         title: '退回资源池',
         content: '确定停止并放弃审核此订单？',
         onOk: () => {
-
+          this.approvalService.goBackResourcePool({
+            orderId: this.approvalOrderId
+          }).subscribe(val => {
+            this.$Message.success('退回资源池成功！')
+            this.approveModal = false
+            this.getMyOrderList()
+          })
         }
       })
     }
