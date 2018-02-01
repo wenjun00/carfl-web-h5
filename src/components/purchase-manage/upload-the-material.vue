@@ -33,7 +33,7 @@
           </i-col>
           <i-col span="6">
             <i-select v-model="model1">
-              <i-option v-for="item in cityList" :label="item.name" :value="item.id" :key="item.id"></i-option>
+              <i-option v-for="item in cityList" :value="item.label" :key="item.value">{{ item.label }}</i-option>
             </i-select>
           </i-col>
           <i-col span="4">
@@ -53,22 +53,15 @@
   import Vue from "vue";
   import Component from "vue-class-component";
   import {
-    State,
-    Mutation,
-    namespace
-  } from "vuex-class";
-  import {
     Dependencies
   } from "~/core/decorator";
   import {
     PersonalMaterialService
   } from "~/services/manage-service/personalMaterial.service";
-  const ModuleState = namespace('purchaseManage', State)
 
   @Component({})
   export default class UploadTheMaterial extends Vue {
     @Dependencies(PersonalMaterialService) private personalMaterialService: PersonalMaterialService;
-    @ModuleState('productId') productId
     private model1: String = '';
     private cityList: Array < object > = [];
     private dataList: Array < any > = [];
@@ -78,20 +71,41 @@
     // @Prop() productId: any
 
     openClick() {
-      console.log(this.productId, 70)
-      this.personalMaterialService.getAllPersonalMaterialNoPage({
-        productId: this.productId
-      }).subscribe(data => {
-        console.log(data.object)
-        this.cityList = data.object
-        console.log(this.cityList, 45455)
-      })
       this.openUpload = true
     }
     hhh(response, file, fileList) {
       this.dataList = fileList
     }
-    created() {}
+    created() {
+      //   this.personalMaterialService.getAllPersonalMaterialNoPage(this.productId).subscribe(data => {
+      //     console.log(data)
+      //   })
+      this.cityList = [{
+          value: 'New York',
+          label: '身份证'
+        },
+        {
+          value: 'London',
+          label: '驾照'
+        },
+        {
+          value: 'Sydney',
+          label: '学历'
+        },
+        {
+          value: 'Ottawa',
+          label: '户口本'
+        },
+        {
+          value: 'Paris',
+          label: 'Paris'
+        },
+        {
+          value: 'Canberra',
+          label: 'Canberra'
+        }
+      ]
+    }
   }
 
 </script>

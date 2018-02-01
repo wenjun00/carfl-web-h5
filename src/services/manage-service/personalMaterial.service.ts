@@ -58,12 +58,10 @@ export class PersonalMaterialService {
     /**
      * 展示全部客户素材
      */
-    getAllPersonalMaterialNoPage({ productId }) {
+    getAllPersonalMaterialNoPage(data) {
         return this.netService.send({
             server: manageService.personalMaterialController.getAllPersonalMaterialNoPage,
-            data: {
-                productId: productId
-            }
+            data
         })
     }
 }
