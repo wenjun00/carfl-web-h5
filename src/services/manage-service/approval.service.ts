@@ -80,4 +80,15 @@ export class ApprovalService {
       }
     })
   }
+  /**
+   * 退回资源池
+   */
+  goBackResourcePool({ orderId }) {
+    return this.netService.send({
+      server: manageService.approvalController.goBackResourcePool,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
 }

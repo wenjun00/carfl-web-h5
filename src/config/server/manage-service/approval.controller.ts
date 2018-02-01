@@ -64,5 +64,14 @@ export default {
     controller: CONTROLLER,
     action: 'findOrderApproveRecord',
     type: requestType.Get
+  },
+  /**
+   * 退回资源池
+   */
+  goBackResourcePool: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'goBackResourcePool',
+    type: requestType.Get
   }
 }

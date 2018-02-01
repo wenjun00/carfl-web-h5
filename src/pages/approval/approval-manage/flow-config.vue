@@ -99,9 +99,13 @@
         this.createNewTree(this.allData)
       });
     }
+    /**
+     * 生成树
+     */
     createNewTree(allData) {
-      let root = allData.filter(v => !v.parent)
+      let root = allData.filter(v => !v.parent) // 获取树根
       this.treeData = []
+      // 遍历根对象push进树中
       root.forEach(item => {
         let node1 = {
           title: item.name,
@@ -112,21 +116,27 @@
         this.treeData.push(node1)
       })
     }
+    /**
+     * 获取相对根元素的子元素
+     */
     getChild(item) {
       let child: any = []
+      // 判断子的父id与全部数据的id相等
       this.allData.map(val => {
         if (item.id === val.parent) {
           if (val.flag === '产品') {
             let node2 = {
               title: val.name,
               productId: val.id,
-              children: this.getChild(val)
+              expand: true,
+              children: this.getChild(val) // 迭代产生根
             }
             child.push(node2)
           } else if (val.flag === '产品系列') {
             let node2 = {
               title: val.name,
               seriesId: val.id,
+              expand: true,
               children: this.getChild(val)
             }
             child.push(node2)
@@ -184,34 +194,6 @@
       }).subscribe(val => {
         this.approvaFlowList = val.object
       })
-    }
-    createPrdTree(data) {
-      let series: Map < number, any > = new Map();
-      this.allData.map(t => {
-        if (t.seriesId) {
-          series.set(t.seriesId, t);
-        }
-      });
-      this.treeData = [];
-      series.forEach(item => {
-        let lv1Node = {
-          title: item.seriesName,
-          seriesId: item.seriesId,
-          expand: true,
-          children: this.getChilds(item.seriesId)
-        };
-        this.treeData.push(lv1Node);
-      });
-    }
-    getChilds(id) {
-      let prods = this.allData.filter(t => t.seriesId === id);
-      let Lv2Nodes = prods.map(t => {
-        return {
-          title: t.productName,
-          productId: t.productId
-        };
-      });
-      return Lv2Nodes;
     }
     /**
      * 树change事件

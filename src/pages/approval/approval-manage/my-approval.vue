@@ -38,7 +38,7 @@
     <!--Modal-->
     <template>
       <i-modal v-model="approveModal" title="审批" width="800" class="approve">
-        <approve></approve>
+        <approve ref="approve"></approve>
         <div slot="footer">
           <i-button style="background:##E7EBEE;color:#666666" @click="backToResource">退回资源池</i-button>
           <div style="height:32px;background-color:#dddddd;width:1px;display:inline-block;margin:0 10px;position:relative;top:10px;"></div>
@@ -275,6 +275,7 @@
     private data3: Array < Object > = [];
     private approveStatue: String = ''
     private compactEffect: String = '当月'
+    private approvalOrderId: number = 0;
     private myOrderModel: any = {
       startTime: '',
       endTime: '',
@@ -579,7 +580,10 @@
     backToResource() {
       this.$Modal.confirm({
         title: '退回资源池',
-        content: '确定停止并放弃审核此订单？'
+        content: '确定停止并放弃审核此订单？',
+        onOk: () => {
+
+        }
       })
     }
     pass() {
@@ -625,6 +629,8 @@
       this.approveStatue = row.status
       let _approve: any = this.$refs['approve']
       _approve.getOrderDetail(row)
+      this.approvalOrderId = row.orderId //拿到审核的orderId
+      console.log(this.approvalOrderId, row, 777)
 
     }
     getMyOrderList() {
