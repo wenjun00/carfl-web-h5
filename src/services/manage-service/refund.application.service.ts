@@ -60,4 +60,13 @@ export class RefundApplicationService {
       data
     })
   }
+  /**
+   * 保存/保存并提交付款申请
+   */
+  saveSubmitApplication(data) {
+    return this.netService.send({
+      server: manageService.refundApplicationController.getAllMessageByParams,
+      data
+    })
+  }
 }

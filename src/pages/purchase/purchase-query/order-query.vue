@@ -2,6 +2,10 @@
 <template>
   <section class="page order-query">
     <i-row>
+<<<<<<< HEAD
+=======
+      <span class="form-title">订单查询</span>
+>>>>>>> 6970d5e99148d0365e5a10798ba22e39fec731dc
       <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
       <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
       <i-button type="text" @click="getTimeSearch(2)">本周</i-button>

@@ -43,7 +43,7 @@
       <tr height="40">
         <td></td>
         <td>合计（元）</td>
-        <td>9000</td>
+        <td><span>{{totleAccount}}</span></td>
       </tr>
     </table>
     <div>
@@ -57,8 +57,12 @@
       <i-modal v-model="modifyGatherItemModal" title="编辑付款项" width="300">
         <modify-gather-item></modify-gather-item>
       </i-modal>
-    </template>
 
+      <!--添加付款项-->
+      <i-modal v-model="payItems" title="付款项目" width="600">
+        <i-table :columns="columns2" :data="personalInfo"></i-table>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -92,17 +96,42 @@
     private columns1: any;
     private data1: Array < Object > = [];
     private columns3: any;
+    private columns2: any;
+    private totleAccount: any;
+    private payItems: Boolean = false;
     private bankList: Array < Object > = [];
     private modifyGatherItemModal: Boolean = false;
     private changeGatherItemModal: Boolean = false;
     private personalInfo: Array < Object >= []
     private gatherItemModel: any;
     created() {
+      this.totleAccount = 8989
       this.gatherItemModel = {
-        refundAmount : '',
+        refundAmount: '',
         refundItem: ''
       }
-      
+      this.columns2 = [{
+        title: "全选",
+        width: 60,
+        type: 'selection',
+        align: "center"
+      }, {
+        key: 'refundItem',
+        title: '项目名称',
+        align: 'center'
+      }, {
+        key: 'refundAmount',
+        title: '金额',
+        align: 'center',
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          console.log(index)
+        }
+      }]
+
       this.columns1 = [{
         title: "操作",
         width: 340,
@@ -114,22 +143,6 @@
         }) => {
           if (row.itemName !== '合计') {
             return h("div", [
-              // h(
-              //   "i-button", {
-              //     props: {
-              //       type: "text"
-              //     },
-              //     style: {
-              //       color: "#265EA2"
-              //     },
-              //     on: {
-              //       click: () => {
-              //         this.modifyGatherItem();
-              //       }
-              //     }
-              //   },
-              //   "编辑"
-              // ),
               h(
                 "i-button", {
                   props: {
@@ -189,9 +202,10 @@
         key: 'clientNumber',
         align: 'center',
         title: '第三方客户号'
-      }] 
+      }]
     }
     refresh(childMessage) {
+      console.log(childMessage.itemList)
       this.bankList = childMessage.bankList
       this.personalInfo = childMessage.itemList
     }
@@ -199,10 +213,16 @@
       this.modifyGatherItemModal = true
     }
     /**
+     * 父组件方法
+     */
+    submit() {
+      console.log(this.gatherItemModel, 789257349)
+    }
+    /**
      * 变更付款项
      */
     changeGatherItem() {
-      this.changeGatherItemModal = true
+      this.payItems = true
     }
     addGatherItem() {
       this.changeGatherItemModal = false
@@ -233,7 +253,7 @@
 
   .calculate {
     .ivu-modal-footer {
-      display: none!important;
+      display: none !important;
     }
   }
 
