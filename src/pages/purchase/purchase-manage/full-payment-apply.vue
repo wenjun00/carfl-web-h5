@@ -301,7 +301,9 @@
       if (this.applyData.idCard) {
         this.personalService.getCustomerHistoryFinanceInfo(this.applyData).subscribe(data => {
           this.historicalDataset = data.object
-          this.historicalModal = true
+          if (this.historicalDataset.length) {
+            this.historicalModal = true
+          }
         }, ({
           msg
         }) => {

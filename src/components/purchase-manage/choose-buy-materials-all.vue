@@ -168,7 +168,7 @@
         align: 'center'
       }, {
         title: '单价（元）',
-        key: 'vehicleAmount',
+        key: 'carAmount',
         align: 'center'
       }, {
         title: '数量',
