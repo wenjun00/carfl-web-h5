@@ -17,61 +17,54 @@
           <i-form ref="customer-form" :model="customerModel" label-position="left" :rules="customerRule" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
             <i-col span="12">
               <i-form-item label="证件号码" prop="idCard">
-                <i-input type="text" :maxlength="18" v-model="customerModel.idCard" autofocus @on-change="showTab">
+                <i-input type="text" v-model="customerModel.idCard" autofocus @on-change="showTab">
                 </i-input>
               </i-form-item>
             </i-col>
             <i-col span="12">
-              <i-form-item label="客户姓名" prop="name">
-                <i-input type="text" v-model="customerModel.name">
+              <i-form-item label="客户姓名" prop="userName">
+                <i-input type="text" v-model="customerModel.userName">
                 </i-input>
               </i-form-item>
             </i-col>
             <i-col span="12">
-              <i-form-item label="客户电话" prop="mobileMain">
-                <i-input type="text" v-model="customerModel.mobileMain">
+              <i-form-item label="客户电话" prop="phone">
+                <i-input type="text" v-model="customerModel.phone">
                 </i-input>
               </i-form-item>
             </i-col>
             <i-col span="12">
-              <i-form-item label="归属业务员" prop="salesmanName">
-                <i-input type="text" v-model="customerModel.salesmanName">
-                </i-input>
+              <i-form-item label="归属业务员" prop="worker">
+                <i-select>
+                  <i-option label="吴小川" value="吴小川" key="吴小川"></i-option>
+                </i-select>
               </i-form-item>
             </i-col>
           </i-form>
         </i-col>
-        <i-col span="6" style="display: flex;justify-content: center;align-items: center;position:absolute;top:12%;right:18%;" pull="6">
+        <i-col span="6" style="display: flex;justify-content: center;align-items: center;position:absolute;top:20%;right:18%;" pull="6">
           <i-button class="blueButton" @click="addNewApply">添加新申请</i-button>
         </i-col>
       </i-row>
-      <div class="shade" :style="{display:disabledStatus}">
-      </div>
       <i-tabs type="card" v-model="materialTabs" class="finance-lease-tabs">
         <i-tab-pane label="选购资料" name="choose-buy-materials">
-          <choose-buy-materials></choose-buy-materials>
         </i-tab-pane>
         <i-tab-pane label="客户资料" name="customer-materials">
-          <customer-materials></customer-materials>
         </i-tab-pane>
         <i-tab-pane label="客户职业" name="customer-job-message">
-          <customer-job-message></customer-job-message>
         </i-tab-pane>
         <i-tab-pane label="客户联系人" name="customer-contacts">
-          <customer-contacts></customer-contacts>
         </i-tab-pane>
         <i-tab-pane label="客户来源" name="customer-origin">
-          <customer-origin></customer-origin>
         </i-tab-pane>
         <i-tab-pane label="上传素材" name="upload-the-material">
-          <upload-the-material></upload-the-material>
         </i-tab-pane>
       </i-tabs>
-      <!--<div style="height:535px;overflow-y:auto;overflow-x:hidden;">
+      <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
         <div class="shade" :style="{display:disabledStatus}">
         </div>
-        <component :is="materialTabs"></component>
-      </div>-->
+        <component :is="materialTabs" :disabledStatus="disabledStatus"></component>
+      </div>
       <div class="submitBar">
         <i-row type="flex" align="middle" style="padding:5px">
           <i-col :span="8" push="1">
@@ -119,50 +112,31 @@
   export default class FinancingLeaseApply extends Page {
 
     private customerRule: Object = {};
-    private customerModel: any = {
-      idCard: '', // 证件号码 
-      name: '', // 客户姓名
-      mobileMain: '', // 客户电话
-      salesmanName: '' // 归属业务员
-    };
+    private customerModel: any;
     private addCar: Boolean = false;
     private disabledStatus: String = ''; // 子组件中输入框禁用flag
-    private materialTabs: String = 'choose-buy-materials';
-    // private productId: any;
+    private materialTabs: String = 'choose-buy-materials'
     print() {
       window.print()
     }
-    /**
-     * 获取productId
-     */
-    // productData(productId) {
-    //   this.productId = productId
-    // }
-    created() {}
+    created() {
+      // 设置表单数据
+      this.customerModel = {
+        idCard: "",
+        userName: ""
+      };
+    }
     addNewApply() {
       this.$Modal.confirm({
         title: '提示',
-        content: '有未提交的申请，确定创建新申请吗？',
-        onOk: () => {
-          let resetData: any = this.$refs['customer-form']
-          //   let component: any = this.$refs['materials-all']
-          //   let materials: any = this.$refs['materials']
-          //   component.choosebusyData = {}
-          //   component.addcarData = []
-          //   materials.customerData = {}
-          resetData.resetFields()
-        },
-        onCancel: () => {
-          this.$Message.info('取消成功！');
-        }
+        content: '有未提交的申请，确定创建新申请吗？'
       })
-
     }
     saveAndSubmit() {
       this.customerModel.idCard = ''
       this.customerModel.userName = ''
       this.customerModel.userName = ''
-      this.customerModel.mobileMain = ''
+      this.customerModel.phone = ''
       this.customerModel.worker = ''
     }
     showTab() {
@@ -178,7 +152,7 @@
   .header {
     border-bottom: 1px solid #cccccc;
   }
-  
+
   .submitBar {
     line-height: 70px;
     height: 70px;
@@ -191,7 +165,7 @@
     box-shadow: -3px 2px 20px #dddddd;
     padding-right: 24px;
   }
-  
+
   .specialInput {
     .ivu-input {
       border-style: none;
@@ -199,7 +173,7 @@
       border-radius: 0; // width: 257%;
     }
   }
-  
+
   .financing-lease-apply {
     .ivu-select-selection {
       display: inline-block;
@@ -217,7 +191,7 @@
       z-index: 999;
     }
   }
-  
+
   .finance-lease-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #DDDEE1;

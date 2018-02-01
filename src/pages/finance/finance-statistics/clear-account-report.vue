@@ -9,7 +9,7 @@
     <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">收起</span>
+      <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
     <div style="float:right;margin-right:10px;margin-top:10px;">

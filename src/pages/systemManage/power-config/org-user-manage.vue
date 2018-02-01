@@ -28,7 +28,7 @@
     </i-row>
 
     <template>
-      <i-modal v-model="allotRoleModal" :title="batchAllotFlag?'批量分配角色':'分配角色'" @on-visible-change="visiableChange">
+      <i-modal v-model="allotRoleModal" :title="batchAllotFlag?'批量分配角色':'分配角色'">
         <allot-role-modal :userId="userId" :batchAllotFlag="batchAllotFlag" :userIds="userIds" ref="allot-role-modal" @closeAndRefreshTree="closeAndRefreshTree"></allot-role-modal>
         <div slot="footer">
           <i-button @click="allotRoleModal=false">取消</i-button>
@@ -41,7 +41,7 @@
       <i-modal v-model="modifyUserModal" title="修改用户" width="600">
         <modify-user :modifyUserModel="modifyUserModel" @close="modifyUserModal=false" ref="modify-user"></modify-user>
         <div slot="footer">
-          <i-button @click="modifyUserModal=false">取消</i-button>
+          <i-button>取消</i-button>
           <i-button class="blueButton" @click="confirmModifyUser">确定</i-button>
         </div>
       </i-modal>
@@ -49,12 +49,8 @@
 
 
     <template>
-      <i-modal v-model="addNewUserModal" title="新增用户" width="600" class="addUser" @on-visible-change="newUserModalChange">
-        <add-user :deptObject="deptObject" @close="closeAdd" ref="add-user"></add-user>
-        <div slot="footer">
-          <i-button @click="addNewUserModal=false">取消</i-button>
-          <i-button class="blueButton" @click="confirmAddUser">确定</i-button>
-        </div>
+      <i-modal v-model="addNewUserModal" title="新增用户" width="600" class="addUser">
+        <add-user :deptObject="deptObject" @close="closeAdd"></add-user>
       </i-modal>
     </template>
 
@@ -548,23 +544,7 @@
     }
     confirmModifyUser() {
       let _modifyUser: any = this.$refs['modify-user']
-      _modifyUser.updateUser()
-    }
-    visiableChange(val) {
-      if (!val) {
-        let _allotRole = < Modal > this.$refs['allot-role-modal']
-        _allotRole.resetForm()
-      }
-    }
-    newUserModalChange(val) {
-      if (!val) {
-        let _addUser = < Modal > this.$refs['add-user']
-        _addUser.resetForm()
-      }
-    }
-    confirmAddUser() {
-      let _addUser = < Modal > this.$refs['add-user']
-      _addUser.confirmAddUser()
+      _modifyUser.confirmModify()
     }
     mounted() {
       this.manageService.getAllDepartment().subscribe(val => {
@@ -578,6 +558,10 @@
 </script>
 
 <style lang="less">
-
+  .addUser {
+    .ivu-modal-footer {
+      display: none;
+    }
+  }
 
 </style>

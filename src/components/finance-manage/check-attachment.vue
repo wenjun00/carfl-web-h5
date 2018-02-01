@@ -16,19 +16,12 @@
   import Vue from "vue";
   import Component from "vue-class-component";
   import ChangeCard from "~/components/purchase-manage/change-card.vue"
-  import {
-    PaymentScheduleService
-  } from "~/services/manage-service/paymentSchedule.service";
-  import {
-    Dependencies
-  } from "~/core/decorator";
   @Component({
     components: {
       ChangeCard
     }
   })
   export default class CheckAttachment extends Vue {
-    @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
     private attachmentList: Array < Object > = []
     created() {
       this.attachmentList = [{
@@ -50,15 +43,6 @@
         index: 6,
         attachmentName: '附件6'
       }]
-    }
-    /**
-     * 获取附件列表
-     */
-    getAttachmentList(row) {
-      let businessId = row.id
-      this.paymentScheduleService.checkTheVoucher({
-        businessId: businessId
-      }).subscribe(val => {})
     }
   }
 

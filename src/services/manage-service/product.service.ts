@@ -62,15 +62,6 @@ export class ProductService {
             server: manageService.productController.getAllProduct,
         })
     }
-
-    /**
-     * 查询所有产品 ---树形结构 （新接口）
-     */
-    getProductTree() {
-        return this.netService.send({
-            server: manageService.productController.getProductTree,
-        })
-    }
     /**
      * 查询产品名称及序列号 租金渠道
      */
@@ -79,18 +70,6 @@ export class ProductService {
             server: manageService.productController.getProductById,
             data: {
                 id: id
-            }
-        })
-    }
-    /**
-     * 
-     * @param param0 获取产品审批流程
-     */
-    getProductConfigProcess({ productId }) {
-        return this.netService.send({
-            server: manageService.productController.getProductConfigProcess,
-            data: {
-                productId: productId
             }
         })
     }

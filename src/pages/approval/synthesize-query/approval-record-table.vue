@@ -2,42 +2,45 @@
 <template>
   <section class="page approval-record-table">
     <i-row style="margin-top:10px;">
-      <span style="font-size:18px;font-weight:bold;position:relative;left:10px;">审核记录表</span>
-      <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-      <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-      <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-      <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-      <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-      <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-      <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-      <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
+      <span style="font-size:18px;font-weight:bold">审核记录表</span>
+      <i-button type="text">昨日</i-button>
+      <i-button type="text">今日</i-button>
+      <i-button type="text">本周</i-button>
+      <i-button type="text">本月</i-button>
+      <i-button type="text">上月</i-button>
+      <i-button type="text">最近三月</i-button>
+      <i-button type="text">本季度</i-button>
+      <i-button type="text">本年</i-button>
       <i-button @click="openSearch" style="color:#265EA2">
         <span v-if="!searchOptions">展开</span>
-        <span v-if="searchOptions">收起</span>
+        <span v-if="searchOptions">关闭</span>
         <span>高级搜索</span>
       </i-button>
     </i-row>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:16px;">
-      <i-select placeholder="全部状态" style="margin-left:20px;width:10%" v-model="approvalRecordModel.type" @on-change="changeSelectOne">
+      <i-select placeholder="全部状态" style="margin-left:20px;width:10%">
         <i-option label="通过" :value="0" :key="0"></i-option>
-        <i-option label="退件" :value="374" :key="374"></i-option>
-        <i-option label="拒绝" :value="375" :key="375"></i-option>
+        <i-option label="退件" :value="1" :key="1"></i-option>
+        <i-option label="拒绝" :value="2" :key="2"></i-option>
       </i-select>
-      <i-select placeholder="通过类型" v-if="passSelect" style="margin-left:20px;width:12%" v-model="approvalRecordModel.second">
-        <i-option label="通过" :key="310" :value="310"></i-option>
-        <i-option label="提交内审/通过" :key="321" :value="321"></i-option>
-        <i-option label="灰名单/通过" :key="322" :value="322"></i-option>
+      <i-select placeholder="全部拒单原因" style="margin-left:20px;width:12%">
+        <i-option label="不符合进件条件" value="不符合进件条件" key="不符合进件条件"></i-option>
+        <i-option label="欺诈" value="欺诈" key="欺诈"></i-option>
+        <i-option label="外部风险" value="外部风险" key="外部风险"></i-option>
+        <i-option label="黑名单" value="黑名单" key="黑名单"></i-option>
+        <i-option label="法院执行" value="法院执行" key="法院执行"></i-option>
+        <i-option label="还款能力不足" value="还款能力不足" key="还款能力不足"></i-option>
+        <i-option label="其他" value="其他" key="其他"></i-option>
       </i-select>
-      <i-select placeholder="全部拒单原因" v-if="!passSelect" style="margin-left:20px;width:12%;display:inline-block" v-model="approvalRecordModel.second"
-        @on-change="changeSelectTwo">
-        <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
-      </i-select>
-      <i-select placeholder="全部拒单细节" v-if="!passSelect" style="margin-left:20px;width:12%;display:inline-block" v-model="approvalRecordModel.detail">
-        <i-option v-for="item in refuseDetail" :key="item.detail" :label="item.detail" :value="item.detail"></i-option>
+      <i-select placeholder="全部拒单细节" style="margin-left:20px;width:15%">
+        <i-option label="行业限制" value="行业限制" key="行业限制"></i-option>
+        <i-option label="信用卡开户超标" value="信用卡开户超标" key="信用卡开户超标"></i-option>
+        <i-option label="话单非本人名下且不满两年" value="话单非本人名下且不满两年" key="话单非本人名下且不满两年"></i-option>
+        <i-option label="话单本人明下但不满半年" value="话单本人明下但不满半年" key="话单本人明下但不满半年"></i-option>
       </i-select>
       <span style="margin-left:10px;">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%;" v-model="approvalRecordModel.startTime"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%;" v-model="approvalRecordModel.endTime"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%;"></i-date-picker>
       <i-button class="blueButton" style="margin-left:20px;" @click="getApprovaRecordList">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="approvalRecordList"></data-box>
@@ -56,8 +59,9 @@
 
     <!--进度查询-->
     <template>
-      <i-modal v-model="orderProgressModal" title="审核进度" width="76" class="order-progress">
-        <order-progress ref="order-progress"></order-progress>
+      <i-modal v-model="orderProgressModal" title="审核进度" width="1000">
+        <order-progress></order-progress>
+        <!--<div slot="footer"></div>-->
       </i-modal>
     </template>
   </section>
@@ -86,10 +90,6 @@
   import {
     ApprovalService
   } from "~/services/manage-service/approval.service";
-  import {
-    ApproveReasonService
-  } from "~/services/manage-service/approve.reason.service";
-
   @Layout("workspace")
   @Component({
 
@@ -101,7 +101,6 @@
   export default class ApprovalRecordTable extends Page {
     @Dependencies(ApprovalService) private approvalService: ApprovalService;
     @Dependencies(PageService) private pageService: PageService;
-    @Dependencies(ApproveReasonService) private approveReasonService: ApproveReasonService;
     private columns1: any;
     private approvalRecordList: Array < Object > = [];
     private searchOptions: Boolean = false;
@@ -115,23 +114,14 @@
     private checkRadio: String = "融资租赁合同";
     private columns3: any;
     private orderProgressModal: Boolean = false;
-    private passSelect: Boolean = false; // 通过下拉框flag
-    private refuseReason: Array < Object >= [] // 拒单原因
-    private refuseDetail: Array < Object >= [] // 拒单细节
     private approvalRecordModel: any = {
-      timeSearch: '',
-      startTime: '',
-      endTime: '',
-      type: '',
-      second: '',
-      detail: ''
+
     }
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
     created() {
-      this.getApprovaRecordList()
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -219,7 +209,7 @@
                   },
                   on: {
                     click: () => {
-                      this.checkOrderProgress(row)
+                      this.orderProgressModal = true
                     }
                   }
                 },
@@ -231,58 +221,37 @@
         {
           align: "center",
           title: "审核时间",
-          key: "approvalDate",
-          width: 180,
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h('span', FilterService.dateFormat(row.approvalDate, 'yyyy-MM-dd'))
-          }
+          key: "approvalTime",
+          width: 180
         },
         {
           align: "center",
           title: "省份",
-          width: 100,
           key: "province",
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h('span', CityService.getCityName(row.province))
-          }
+          width: 160
         },
         {
           align: "center",
           title: "城市",
-          width: 100,
           key: "city",
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h('span', CityService.getCityName(row.city))
-          }
+          width: 160
         },
         {
           align: "center",
           title: "网点",
-          key: "dot",
+          key: "branchAddress",
           width: 160
         },
         {
           align: "center",
           title: "业务员",
-          key: "salesmanName",
+          key: "salesman",
           width: 160
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "personalName",
+          key: "customerName",
           width: 160
         },
         {
@@ -294,27 +263,21 @@
         {
           align: "center",
           title: "审核状态",
-          key: "approveStatus",
+          key: "approvalStatus",
           width: 160,
           render: (h, {
             row,
             columns,
             index
           }) => {
-            if (row.approveStatus === 320) {
-              return h('span', {}, '退回资源池')
-            } else if (row.approveStatus === 321) {
-              return h('span', {}, '提交内审/通过')
-            } else if (row.approveStatus === 321) {
-              return h('span', {}, '黑名单')
-            } else if (row.approveStatus === 313) {
-              return h('span', {}, '灰名单/通过')
-            } else if (row.approveStatus === 312) {
-              return h('span', {}, '拒绝')
-            } else if (row.approveStatus === 311) {
-              return h('span', {}, '退件')
-            } else if (row.approveStatus === 310) {
-              return h('span', {}, '通过')
+            if (row.approvalStatus === '拒绝') {
+              return h('span', {
+                style: {
+                  color: 'red'
+                }
+              }, row.approvalStatus)
+            } else {
+              return h('span', {}, row.approvalStatus)
             }
           }
         },
@@ -322,66 +285,66 @@
           align: "center",
           title: "是否提车",
           key: "isDeliveryCar",
-          width: 180
-          // ,
-          // render: (h, {
-          //   row,
-          //   columns,
-          //   index
-          // }) => {
-          //   if (row.approvalStatus === '拒绝') {
-          //     return h('Tooltip', {
-          //       props: {
-          //         content: row.content
-          //       },
-          //     }, [h('span', {}, row.isDeliveryCar),
-          //       h('Icon', {
-          //         props: {
-          //           type: 'ios-information',
-          //           size: '20',
-          //           color: '#F9435D'
-          //         },
-          //         style: {
-          //           position: 'relative',
-          //           top: '2px',
-          //           left: '6px',
-          //           cursor: 'pointer'
-          //         }
-          //       })
-          //     ])
-          //   } else {
-          //     return h('Tooltip', {
-          //       props: {
-          //         content: row.content
-          //       },
-          //     }, [h('span', {}, row.isDeliveryCar),
-          //       h('Icon', {
-          //         props: {
-          //           type: 'ios-information',
-          //           size: '20',
-          //           color: '#666666'
-          //         },
-          //         style: {
-          //           position: 'relative',
-          //           top: '2px',
-          //           left: '6px',
-          //           cursor: 'pointer'
-          //         }
-          //       })
-          //     ])
-          //   }
-          // }
+          width: 180,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.approvalStatus === '拒绝') {
+              return h('Tooltip', {
+                props: {
+                  content: row.content
+                },
+              }, [h('span', {}, row.isDeliveryCar),
+                h('Icon', {
+                  props: {
+                    type: 'ios-information',
+                    size: '20',
+                    color: '#F9435D'
+                  },
+                  style: {
+                    position: 'relative',
+                    top: '2px',
+                    left: '6px',
+                    cursor: 'pointer'
+                  }
+                })
+              ])
+            } else {
+              return h('Tooltip', {
+                props: {
+                  content: row.content
+                },
+              }, [h('span', {}, row.isDeliveryCar),
+                h('Icon', {
+                  props: {
+                    type: 'ios-information',
+                    size: '20',
+                    color: '#666666'
+                  },
+                  style: {
+                    position: 'relative',
+                    top: '2px',
+                    left: '6px',
+                    cursor: 'pointer'
+                  }
+                })
+              ])
+            }
+          }
+
         },
         {
           align: "center",
           title: "拒单原因",
-          key: "refuseResource",
+          key: "refuseReason",
           width: 160
         },
         {
           align: "center",
           title: "拒单细节",
-          key: "refuseDetails",
+          key: "refuseDetail",
           width: 160
         },
         {
@@ -393,7 +356,7 @@
         {
           align: "center",
           title: "审核人员",
-          key: "approvalPersonal",
+          key: "approvalMan",
           width: 160
         }
       ];
@@ -408,34 +371,6 @@
     dataPower(row) {
 
     }
-    changeSelectOne(val) {
-      // this.approvalRecordModel.detail = ''
-      if (val === 0) {
-        // TODO
-        this.passSelect = true
-      } else {
-        this.passSelect = false
-        this.approvalRecordModel.detail = ''
-        this.approvalRecordModel.second = ''
-        this.approvalRecordModel.type = val
-        this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(val => {
-          this.refuseReason = val.object
-        })
-      }
-    }
-    changeSelectTwo(val) {
-      this.approvalRecordModel.second = val
-      this.approvalRecordModel.detail = ''
-      this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(val => {
-        // console.log(6767, val)
-        this.refuseDetail = val.object
-      })
-    }
-    checkOrderProgress(row) {
-      this.orderProgressModal = true
-      let _orderProgress: any = this.$refs['order-progress']
-      _orderProgress.getOrderProgressInfo(row)
-    }
     /**
      * 列配置
      */
@@ -443,31 +378,11 @@
       this.openColumnsConfig = true
     }
     getApprovaRecordList() {
-      this.approvalRecordModel.startTime = FilterService.dateFormat(this.approvalRecordModel.startTime, "yyyy-MM-dd")
-      this.approvalRecordModel.endTime = FilterService.dateFormat(this.approvalRecordModel.endTime, "yyyy-MM-dd")
       this.approvalService.getAuditRecord(this.approvalRecordModel, this.pageService).subscribe(val => {
         this.approvalRecordList = val.object.list
       })
     }
-    getTimeSearch(val) {
-      this.approvalRecordModel.startTime = ''
-      this.approvalRecordModel.endTime = ''
-      this.approvalRecordModel.second = ''
-      this.approvalRecordModel.detail = ''
-      this.approvalRecordModel.type = ''
-      this.approvalRecordModel.timeSearch = val
-      this.getApprovaRecordList()
-      this.approvalRecordModel.timeSearch = ''
-    }
+
   }
 
 </script>
-
-<style lang="less">
-  .order-progress {
-    .ivu-modal-footer {
-      display: none;
-    }
-  }
-
-</style>

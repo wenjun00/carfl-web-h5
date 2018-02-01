@@ -12,17 +12,17 @@
     <i-button type="text">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">收起</span>
+      <span v-if="searchOptions">关闭</span>
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" v-model="gatherModel.accountName" placeholder="请录入收款账户名查询"></i-input>
+      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入收款账户名查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%" v-model="gatherModel.queryStartDate"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%" v-model="gatherModel.queryEndDate"></i-date-picker>
-      <i-button style="margin-left:10px" class="blueButton" @click="getGatherListByCondition">搜索</i-button>
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
+      <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="gatherList"></data-box>
+    <data-box :columns="columns1" :data="data1"></data-box>
 
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
@@ -63,15 +63,7 @@
   import {
     Layout
   } from "~/core/decorator";
-  import {
-    CollectMoneyHistoryService
-  } from "~/services/manage-service/collect.money.history.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  import {
-    FilterService
-  } from "~/utils/filter.service"
+
   @Layout("workspace")
   @Component({
 
@@ -81,20 +73,13 @@
     }
   })
   export default class Gathering extends Page {
-    @Dependencies(CollectMoneyHistoryService) private collectMoneyHistoryService: CollectMoneyHistoryService;
-    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private gatherList: Array < Object > = [];
+    private data1: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private confirmGatherModal: Boolean = false;
-    private gatherModel: any = {
-      accountName: '',
-      queryStartDate: '',
-      queryEndDate: ''
-    }
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -104,7 +89,6 @@
       this.confirmGatherModal = false
     }
     created() {
-      this.getGatherListByCondition()
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -165,60 +149,57 @@
         },
         {
           title: "处理状态",
-          key: "collectMoneyDealStatus",
+          key: "handleStatus",
           align: "center"
         },
         {
           align: "center",
           title: "处理时间",
-          key: "dealTime",
-          width: 180,
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h('span', FilterService.dateFormat(row.dealTime, 'yyyy-MM-dd hh:mm:ss'))
-          }
+          key: "handleTime",
+          width: 180
         },
         {
           align: "center",
           title: "处理人",
-          key: "dealerName"
+          key: "handlePerson"
         },
         {
           align: "center",
           title: "收款类型",
-          key: "totalPayment"
+          key: "gatheringType"
         },
         {
           align: "center",
           title: "收款总金额",
-          key: "totalPayment"
+          key: "gatheringTotalAmt"
         },
         {
           align: "center",
           title: "收款账户名",
-          key: "accountName"
+          key: "gatheringAccountName"
         },
         {
           align: "center",
           title: "申请日期",
-          key: "operatorTime",
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h('span', FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss'))
-          }
+          key: "applyDate"
         },
         {
           align: "center",
           title: "申请人",
-          key: "operatorName"
+          key: "applyPerson"
         }
       ];
+
+      this.data1 = [{
+        handleStatus: '未处理',
+        handleTime: '2017-12-01 13:56:03',
+        handlePerson: '胡开甲',
+        gatheringType: '销售收款',
+        gatheringTotalAmt: '79450.00',
+        gatheringAccountName: '泰康人寿',
+        applyDate: '2017-12-03 13:56:03',
+        applyPerson: '刘佳'
+      }]
 
       this.columns2 = [{
           title: "序号",
@@ -270,16 +251,6 @@
      * 确定
      */
     confirm() {}
-    /**
-     * 获取收款列表
-     */
-    getGatherListByCondition() {
-      this.gatherModel.queryStartDate = FilterService.dateFormat(this.gatherModel.queryStartDate, "yyyy-MM-dd")
-      this.gatherModel.queryEndDate = FilterService.dateFormat(this.gatherModel.queryEndDate, "yyyy-MM-dd")
-      this.collectMoneyHistoryService.collectMoneyHistoryList(this.gatherModel, this.pageService).subscribe(val => {
-        this.gatherList = val.object.list
-      })
-    }
   }
 
 </script>

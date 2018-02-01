@@ -34,9 +34,7 @@
     @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
     private roleList: Array < Object > = [];
-    private roleListModel: any = {
-      roleName: ''
-    };
+    private roleListModel: any;
     private allotRoleModel: any; // 单个分配角色model
     private batchAllotModel: any; // 批量分配角色model
     private multipleRoleId; // 所选角色array
@@ -51,6 +49,9 @@
       this.batchAllotModel = {
         usersId: [],
         rolesId: []
+      }
+      this.roleListModel = {
+        roleName: ''
       }
       this.columns1 = [{
         align: 'center',
@@ -107,10 +108,6 @@
           })
         }
       }
-    }
-    resetForm() {
-      console.log(76767)
-      this.roleListModel.roleName = ''
     }
   }
 
