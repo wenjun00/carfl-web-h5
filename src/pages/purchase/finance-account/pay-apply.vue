@@ -65,7 +65,7 @@
     </i-row>
     <i-tabs v-model="materialTabs" type="card" class="early-pay-tabs">
       <i-tab-pane name="pay-detail" label="付款明细">
-        <pay-detail ref="payDetail"></pay-detail>
+        <pay-detail @submitData="submitData" ref="payDetail"></pay-detail>
       </i-tab-pane>
       <i-tab-pane name="upload-the-material" label="上传素材">
       </i-tab-pane>
@@ -85,7 +85,7 @@
         </i-col>
         <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
           <i-button class="highDefaultButton">保存草稿</i-button>
-          <i-button class="highButton">保存并提交</i-button>
+          <i-button class="saveSubmit">保存并提交</i-button>
         </i-col>
       </i-row>
     </div>
@@ -145,7 +145,8 @@
     @Dependencies(RefundApplicationService) private refundApplicationService: RefundApplicationService;
     @Dependencies(PageService) private pageService: PageService;
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
-    private applyData: any
+    private applyData: any;
+    private paramsData: any;
     applyRule: Object = {};
     private purchaseData: Object = {
       province: '',
@@ -164,12 +165,18 @@
     private materialTabs: String = 'pay-detail'
     private disabledStatus: String = ''; // 子组件中输入框禁用flag
     private orderList: Array < Object > = [];
+
     created() {
       this.applyData = {
         orderNumber: '',
         name: '',
         certificateNumber: '',
         mobileNumber: ''
+      }
+      this.paramsData = {
+        itemList: [],
+        remark: '',
+        recordStatus: ''
       }
     }
     /**
@@ -187,6 +194,20 @@
           }
         }
       })
+    }
+
+    submitData(item) {
+      this.refundApplicationService.saveSubmitApplication(this.paramsData).subscribe(val => {
+        console.log(val)
+      })
+    }
+    /**
+     * 保存并提交
+     */
+    saveSubmit() {
+      this.paramsData.recordStatus = 1129
+      let _message: any = this.$refs['payDetail']
+          _message.submit()
     }
     /**
      * 输入姓名搜索

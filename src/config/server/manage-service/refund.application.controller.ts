@@ -48,6 +48,14 @@ export default {
     controller: CONTROLLER,
     action: 'getAllMessageByParams',
     type: requestType.Get
+  },
+  /**
+   * 保存/保存并提交付款申请
+   */
+  saveSubmitApplication: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveSubmitApplication',
+    type: requestType.Get
   }
-
 }
