@@ -49,5 +49,32 @@ export default {
         controller: CONTROLLER,
         action: 'updateVehicle',
         type: requestType.Post
+    },
+    /**
+     * 所有品牌
+     */
+    getAllBrand: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getAllBrand',
+        type: requestType.Get
+    },
+    /**
+     * 所有型号
+     */
+    getAllModel: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getAllModel',
+        type: requestType.Get
+    },
+    /**
+    * 所有系列
+    */
+    getAllSeries: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getAllSeries',
+        type: requestType.Get
     }
 }

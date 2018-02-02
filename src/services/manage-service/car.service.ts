@@ -54,4 +54,28 @@ export class CarService {
             data: data
         })
     }
+    /**
+     * 所有品牌
+     */
+    getAllBrand() {
+        return this.netService.send({
+            server: manageService.carController.getAllBrand,
+        })
+    }
+    /**
+     * 所有型号
+     */
+    getAllModel() {
+        return this.netService.send({
+            server: manageService.carController.getAllModel,
+        })
+    }
+    /**
+     * 所有系列
+     */
+    getAllSeries() {
+        return this.netService.send({
+            server: manageService.carController.getAllSeries,
+        })
+    }
 }
