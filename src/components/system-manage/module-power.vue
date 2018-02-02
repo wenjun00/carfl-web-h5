@@ -17,99 +17,146 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import DataBox from "~/components/common/data-box.vue";
+import Vue from 'vue';
+import DataBox from '~/components/common/data-box.vue';
+import Component from 'vue-class-component';
+import { RoleService } from '~/services/manage-service/role.service';
+import { Prop } from 'vue-property-decorator';
+import { Dependencies } from '~/core/decorator';
+import { RoleResoService } from '~/services/manage-service/role.reso.service';
+@Component({
+	components: {
+		DataBox,
+	},
+})
+export default class ModulePower extends Vue {
+	@Dependencies(RoleService) private roleService: RoleService;
+	@Dependencies(RoleResoService) private roleResoService: RoleResoService;
 
-  import Component from 'vue-class-component'
-  import {
-    Prop
-  } from "vue-property-decorator";
+	private treeData: Array<Object> = [];
+	private treeColumns: any;
+	private treeDatabox: Array<Object> = [];
+	private allData: Array<any> = [];
+	private resoPid: number = 0;
+	@Prop() rowId: Object;
 
-  @Component({
-    components: {
-      DataBox
-    }
-  })
-  export default class ModulePower extends Vue {
-    private treeData: Array < Object > = [];
-    private treeColumns: any;
-    private treeDatabox: Array < Object > = [];
+	created() {
+		this.treeData = [];
+		this.getTreeDate();
+		this.treeColumns = [
+			{
+				align: 'center',
+				type: 'selection',
+				title: '选择',
+				width: '60',
+			},
+			{
+				align: 'center',
+				key: 'functionName',
+				title: '功能名称',
+				width: '90',
+			},
+			{
+				align: 'center',
+				key: 'desc',
+				title: '描述',
+			},
+		];
 
-    @Prop()
-    row: Object;
+		this.treeDatabox = [
+			{
+				functionName: '查询',
+				desc: '基础查询',
+			},
+			{
+				functionName: '一件交接',
+				desc: '交接功能',
+			},
+			{
+				functionName: '签约',
+				desc: '',
+			},
+			{
+				functionName: '编辑',
+				desc: '编辑',
+			},
+		];
+	}
 
-    created() {
-      this.treeData = [{
-          title: '进件管理',
-          expand: true,
-          children: [{
-              title: '融资租赁申请'
-            },
-            {
-              title: '全额付款申请'
-            },
-            {
-              title: '订单交接'
-            },
-            {
-              title: '客户签约'
-            },
-            {
-              title: '客户开户'
-            }
-          ]
-        },
-        {
-          title: '系统设置',
-          expand: true,
-          children: [{
-              title: '权限设置',
-              expand: true,
-              children: [{
-                title: '角色维护'
-              }, {
-                title: '分配角色'
-              }]
-            }
-          ]
-        }
-      ]
-
-      this.treeColumns = [{
-        align: 'center',
-        type: 'selection',
-        title: '选择',
-        width: '60'
-      }, {
-        align: 'center',
-        key: 'functionName',
-        title: '功能名称',
-        width: '90'
-      }, {
-        align: 'center',
-        key: 'desc',
-        title: '描述'
-      }]
-
-      this.treeDatabox=[{
-        functionName:'查询',
-        desc:'基础查询'
-      },{
-        functionName:'一件交接',
-        desc:'交接功能'
-      },{
-        functionName:'签约',
-        desc:''
-      },{
-        functionName:'编辑',
-        desc:'编辑'
-      }]
-    }
-    cancel() {
-
-    }
-    confirm() {
-
-    }
-  }
+	/**
+	 * 获取树接口
+	 */
+	getTreeDate() {
+		this.roleResoService.getAllResource().subscribe(val => {
+			console.log(val, 999);
+			this.allData = val;
+			this.resoPid = val.resoPid;
+			this.createNewTree(this.allData);
+		});
+	}
+	/**
+	 * 生成树
+	 */
+	createNewTree(allData) {
+		let root = allData.filter(v => !v.resoPid); // 获取树根
+		this.treeData = [];
+		// 遍历根对象push进树中
+		root.forEach(item => {
+			let node1 = {
+				title: item.resoName,
+				id: item.id,
+				expand: true,
+				children: this.getChild(item),
+			};
+			this.treeData.push(node1);
+		});
+		this.findRoleResource();
+		// console.log(this.treeData, 666);
+	}
+	/**
+	 * 获取相对根元素的子元素
+	 */
+	getChild(item) {
+		let child: any = [];
+		// 判断子的父id与全部数据的id相等
+		this.allData.map(val => {
+			if (item.id === val.resoPid) {
+				if (val.resoPid) {
+					let node2 = {
+						title: val.resoName,
+						resoName: val.resoName,
+						id: val.id,
+						checked: this.findRoleResource(),
+						expand: true,
+						children: this.getChild(val), // 迭代产生根
+					};
+					child.push(node2);
+				}
+			}
+		});
+		return child;
+	}
+	/**
+	 * 通过角色id查询资源 (获取该角色已配置过的模块)
+	 */
+	findRoleResource() {
+		this.roleService
+			.findResourceByRoleId({
+				roleId: this.rowId,
+			})
+			.subscribe(val => {
+				let checkedId: any = val.map(v => v.id);
+				let treeId: any = this.allData.map(v => v.id);
+				this.allData.forEach(v => {
+					checkedId.forEach(checkVal => {
+						if (v.id === checkVal) {
+							return true;
+						} else {
+							return false;
+						}
+					});
+				});
+			});
+	}
+}
 </script>
