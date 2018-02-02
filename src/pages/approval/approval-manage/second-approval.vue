@@ -35,7 +35,7 @@
       <i-button style="margin-left:10px" class="blueButton" @click="getSecondList">搜索</i-button>
     </i-row>
 
-    <data-box :columns="columns1" :data="secondList"></data-box>
+    <data-box :columns="columns1" :data="secondList" @onPageChange="getSecondList" :page="pageService"></data-box>
     <!--Modal-->
     <template>
       <i-modal title="订单领取" v-model="orderModal" width="300">
@@ -128,11 +128,11 @@
       userId: '',
       orderIds: []
     }
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
+
+    mounted() {
+      this.getSecondList()
     }
     created() {
-      this.getSecondList()
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -394,6 +394,9 @@
         step: '提交审批'
       }]
     }
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
     /**
      * 领取
      */
@@ -406,6 +409,10 @@
       this.approvalService.batchReceiveApproval(this.getOrderModel).subscribe(val => {
         this.$Message.success('领取成功！')
         this.getSecondList()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
       this.orderModal = false
     }
@@ -429,8 +436,12 @@
     getSecondList() {
       this.resourcePoolModel.startTime = FilterService.dateFormat(this.resourcePoolModel.startTime, "yyyy-MM-dd")
       this.resourcePoolModel.endTime = FilterService.dateFormat(this.resourcePoolModel.endTime, "yyyy-MM-dd")
-      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
-        this.secondList = val.object.list
+      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(data => {
+        this.secondList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
   }

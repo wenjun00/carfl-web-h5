@@ -35,7 +35,7 @@
       <i-button style="margin-left:10px" class="blueButton" @click="getLastList">搜索</i-button>
     </i-row>
 
-    <data-box :columns="columns1" :data="lastList"></data-box>
+    <data-box :columns="columns1" :data="lastList" @onPageChange="getLastList" :page="pageService"></data-box>
     <!--Modal-->
     <template>
       <i-modal title="订单领取" v-model="orderModal" width="300">
@@ -128,11 +128,11 @@
       userId: '',
       orderIds: []
     }
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
+
+    mounted() {
+      this.getLastList()
     }
     created() {
-
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -417,6 +417,9 @@
         step: '提交审批'
       }]
     }
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
     /**
      * 领取
      */
@@ -429,14 +432,22 @@
       this.approvalService.batchReceiveApproval(this.getOrderModel).subscribe(val => {
         this.$Message.success('领取成功！')
         this.getLastList()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
       this.orderModal = false
     }
     getLastList() {
       this.resourcePoolModel.startTime = FilterService.dateFormat(this.resourcePoolModel.startTime, "yyyy-MM-dd")
       this.resourcePoolModel.endTime = FilterService.dateFormat(this.resourcePoolModel.endTime, "yyyy-MM-dd")
-      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
-        this.lastList = val.object.list
+      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(data => {
+        this.lastList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     /**

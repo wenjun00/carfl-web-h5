@@ -28,7 +28,7 @@
       <i-date-picker style="display:inline-block;width:10%" v-model="approvalModel.endTime"></i-date-picker>
       <i-button style="margin-left:10px" class="blueButton" @click="getAllOrderList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="allOrderList"></data-box>
+    <data-box :columns="columns1" :data="allOrderList" @onPageChange="getAllOrderList" :page="pageService"></data-box>
 
     <template>
       <i-modal @on-visible-change="visibleChange" title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
@@ -106,25 +106,10 @@
       endTime: '',
       personalInfo: ''
     }
-
-    visibleChange() {
-      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
-      if (target) {
-        target.addEventListener('scroll', this.monitorScorll)
-      }
-    }
-    monitorScorll() {
-      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
-      if (target) {
-        this.scrollTopHeight = target.scrollTop
-        // console.log(this.scrollTopHeight)
-      }
-    }
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
+    mounted() {
+      this.getAllOrderList()
     }
     created() {
-      this.getAllOrderList()
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -414,6 +399,22 @@
         approvalStatus: '待面审'
       }]
     }
+
+    visibleChange() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
+      if (target) {
+        target.addEventListener('scroll', this.monitorScorll)
+      }
+    }
+    monitorScorll() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
+      if (target) {
+        this.scrollTopHeight = target.scrollTop
+      }
+    }
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
     /**
      * 领取
      */
@@ -433,6 +434,10 @@
       this.approvalModel.endTime = FilterService.dateFormat(this.approvalModel.endTime, "yyyy-MM-dd")
       this.approvalService.approvalOrderSearch(this.approvalModel, this.pageService).subscribe(val => {
         this.allOrderList = val.object.list
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     getTimeSearch(val) {

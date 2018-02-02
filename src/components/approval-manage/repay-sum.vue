@@ -146,8 +146,12 @@
       this.orderId = orderId
       this.paymentScheduleService.getRepaymentOverview({
         orderId: orderId
-      }).subscribe(val => {
-        this.repaySumObj = val.object
+      }).subscribe(data => {
+        this.repaySumObj = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     applyDerateModalOpen(val) {

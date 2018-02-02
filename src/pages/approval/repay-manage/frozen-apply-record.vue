@@ -33,7 +33,7 @@
       </i-select>
       <i-button class="blueButton" style="margin-left:20px;" @click="getFrozenList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="frozenList"></data-box>
+    <data-box :columns="columns1" :data="frozenList" @onPageChange="getFrozenList" :page="pageService"></data-box>
   </section>
 </template>
 
@@ -85,11 +85,11 @@
       collectMoneyMethod: '',
       orderInfo: ''
     }
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
+
+    mounted() {
+      this.getFrozenList()
     }
     created() {
-      this.getFrozenList()
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -367,7 +367,9 @@
       }]
 
     }
-
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
     repaySum(row) {}
     trailerCar(row) {
 
@@ -381,8 +383,12 @@
     getFrozenList() {
       this.frozenModel.applyDateStart = FilterService.dateFormat(this.frozenModel.applyDateStart, "yyyy-MM-dd")
       this.frozenModel.applyDateEnd = FilterService.dateFormat(this.frozenModel.applyDateEnd, "yyyy-MM-dd")
-      this.remitApplicationService.selectApplyForReliefHistory(this.frozenModel, this.pageService).subscribe(val => {
-        this.frozenList = val.object.list
+      this.remitApplicationService.selectApplyForReliefHistory(this.frozenModel, this.pageService).subscribe(data => {
+        this.frozenList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     /**
@@ -394,6 +400,10 @@
       }).subscribe(val => {
         this.$Message.success('撤销成功！')
         this.getFrozenList()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     getTimeSearch(val) {

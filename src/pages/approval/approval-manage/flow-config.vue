@@ -90,9 +90,9 @@
     private processId: number = 0;
     private root: Array < any >= []
     created() {
-      this.productService.getProductTree().subscribe(val => {
-        this.allData = val.object;
-        this.productId = val.object[0].productId
+      this.productService.getProductTree().subscribe(data => {
+        this.allData = data;
+        // this.productId = val.object[0].productId
         this.getDefaultProcess()
         // 生成树
         // this.createPrdTree(this.allData);
@@ -167,6 +167,10 @@
       this.productService.configureProductProcessMove(moveModel).subscribe(val => {
         this.$Message.success('移动成功')
         this.getDefaultProcess()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     approvalDelete(item) {
@@ -191,8 +195,12 @@
     getDefaultProcess() {
       this.productService.getProductConfigProcess({
         productId: this.productId
-      }).subscribe(val => {
-        this.approvaFlowList = val.object
+      }).subscribe(data => {
+        this.approvaFlowList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     /**
@@ -204,8 +212,12 @@
         this.productId = val[0].productId
         this.productService.getProductConfigProcess({
           productId: val[0].productId
-        }).subscribe(val => {
-          this.approvaFlowList = val.object
+        }).subscribe(data => {
+          this.approvaFlowList = data
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg)
         })
       }
     }

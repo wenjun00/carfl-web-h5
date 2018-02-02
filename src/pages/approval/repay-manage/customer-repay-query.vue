@@ -30,7 +30,7 @@
       </i-select>
       <i-button class="blueButton" style="margin-left:20px;" @click="getCustomerRepayList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="customerRepayList"></data-box>
+    <data-box :columns="columns1" :data="customerRepayList" @onPageChange="getCustomerRepayList" :page="pageService"></data-box>
     <div>
     </div>
 
@@ -124,11 +124,11 @@
     }
     private personalId: any = '';
     private businessId: any = '';
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
+
+    mounted() {
+      this.getCustomerRepayList()
     }
     created() {
-      this.getCustomerRepayList()
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -319,7 +319,9 @@
         }
       ];
     }
-
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
     repaySum(row) {}
     trailerCar(row) {
 
@@ -334,8 +336,12 @@
      * 获取客户还款查询
      */
     getCustomerRepayList() {
-      this.paymentScheduleService.getCustomerPayments(this.customerRepayModel, this.pageService).subscribe(val => {
-        this.customerRepayList = val.object.list
+      this.paymentScheduleService.getCustomerPayments(this.customerRepayModel, this.pageService).subscribe(data => {
+        this.customerRepayList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     getTimeSearch(val) {

@@ -34,7 +34,7 @@
       <!--<i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>-->
       <i-button style="margin-left:10px" class="blueButton" @click="getMyOrderList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="myOrderList"></data-box>
+    <data-box :columns="columns1" :data="myOrderList" @onPageChange="getMyOrderList" :page="pageService"></data-box>
     <!--Modal-->
     <template>
       <i-modal v-model="approveModal" title="审批" width="800" class="approve">
@@ -303,8 +303,10 @@
     }
     private refuseReason: Array < Object >= [] // 拒单原因
     private refuseDetail: Array < Object >= [] // 拒单细节
-    created() {
+    mounted() {
       this.getMyOrderList()
+    }
+    created() {
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -598,15 +600,23 @@
       this.approvalRecordModel.approveReasonId = ''
       this.approvalRecordModel.second = ''
       this.approvalRecordModel.type = val
-      this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(val => {
-        this.refuseReason = val.object
+      this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(data => {
+        this.refuseReason = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     changeSelectTwo(val) {
       this.approvalRecordModel.second = val
       this.approvalRecordModel.approveReasonId = ''
-      this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(val => {
-        this.refuseDetail = val.object
+      this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(data => {
+        this.refuseDetail = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     /**
@@ -629,6 +639,10 @@
           this.cancelBackToComing()
           this.getMyOrderList()
           this.approveModal = false
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg)
         })
       } else {
         this.$Message.error('拒单原因和拒单细节必须选择！')
@@ -652,6 +666,10 @@
         this.grayListModal = false
         this.approveModal = false
         this.getMyOrderList()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     /**
@@ -665,6 +683,10 @@
         this.approveModal = false
         this.submitToInternalModal = false
         this.getMyOrderList()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     /**
@@ -700,6 +722,10 @@
           this.blackListModal = false
           this.cancelAddBlack()
           this.getMyOrderList()
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg)
         })
       } else {
         this.$Message.error('拒单原因和拒单细节必须选择！')
@@ -716,6 +742,10 @@
             this.$Message.success('退回资源池成功！')
             this.approveModal = false
             this.getMyOrderList()
+          }, ({
+            msg
+          }) => {
+            this.$Message.error(msg)
           })
         }
       })
@@ -779,8 +809,12 @@
 
     }
     getMyOrderList() {
-      this.approvalService.getMyApprovalOrder(this.myOrderModel, this.pageService).subscribe(val => {
-        this.myOrderList = val.object.list
+      this.approvalService.getMyApprovalOrder(this.myOrderModel, this.pageService).subscribe(data => {
+        this.myOrderList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     timeRangeChange(val) {

@@ -41,7 +41,7 @@
       <!--<i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>-->
       <i-button style="margin-left:10px" class="blueButton" @click="getGrayList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="grayList"></data-box>
+    <data-box :columns="columns1" :data="grayList" @onPageChange="getGrayList" :page="pageService"></data-box>
 
     <template>
       <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
@@ -122,11 +122,11 @@
       endTime: '',
       productType: ''
     }
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
+
+    mounted() {
+      this.getGrayList()
     }
     created() {
-      this.getGrayList()
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -431,6 +431,9 @@
         step: '提交审批'
       }]
     }
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
     /**
      * 领取
      */
@@ -446,8 +449,12 @@
     getGrayList() {
       this.approvalModel.startTime = FilterService.dateFormat(this.approvalModel.startTime, "yyyy-MM-dd")
       this.approvalModel.endTime = FilterService.dateFormat(this.approvalModel.endTime, "yyyy-MM-dd")
-      this.approvalService.approvalOrderSearch(this.approvalModel, this.pageService).subscribe(val => {
-        this.grayList = val.object.list
+      this.approvalService.approvalOrderSearch(this.approvalModel, this.pageService).subscribe(data => {
+        this.grayList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     getTimeSearch(val) {
@@ -468,6 +475,10 @@
       }).subscribe(val => {
         this.$Message.success('移出成功')
         this.getGrayList()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
   }

@@ -42,7 +42,7 @@
       <i-button style="margin-left:10px" class="blueButton" @click="getBlackList">搜索</i-button>
     </i-row>
 
-    <data-box :columns="columns1" :data="blackList"></data-box>
+    <data-box :columns="columns1" :data="blackList" @onPageChange="getBlackList" :page="pageService"></data-box>
 
     <template>
       <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
@@ -122,8 +122,10 @@
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
-    created() {
+    mounted() {
       this.getBlackList()
+    }
+    created() {
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -442,8 +444,12 @@
     getBlackList() {
       this.approvalModel.startTime = FilterService.dateFormat(this.approvalModel.startTime, "yyyy-MM-dd")
       this.approvalModel.endTime = FilterService.dateFormat(this.approvalModel.endTime, "yyyy-MM-dd")
-      this.approvalService.approvalOrderSearch(this.approvalModel, this.pageService).subscribe(val => {
-        this.blackList = val.object.list
+      this.approvalService.approvalOrderSearch(this.approvalModel, this.pageService).subscribe(data => {
+        this.blackList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     getTimeSearch(val) {
@@ -459,6 +465,10 @@
       }).subscribe(val => {
         this.$Message.success('移出成功')
         this.getBlackList()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
   }

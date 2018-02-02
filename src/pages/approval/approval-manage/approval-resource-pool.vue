@@ -33,7 +33,7 @@
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getApprovalListByCondition">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="resourcePoolList"></data-box>
+    <data-box :columns="columns1" :data="resourcePoolList" @onPageChange="getApprovalListByCondition" :page="pageService"></data-box>
 
     <!--Modal-->
     <template>
@@ -132,9 +132,10 @@
     };
     private getOrderModel: any;
     @Mutation("openPage") openPage;
-
-    created() {
+    mounted() {
       this.getApprovalListByCondition()
+    }
+    created() {
       this.getOrderModel = {
         userId: '',
         orderIds: []
@@ -416,9 +417,13 @@
       this.openColumnsConfig = true
     }
     confirmGetOrder() {
-      this.approvalService.batchReceiveApproval(this.getOrderModel).subscribe(val => {
+      this.approvalService.batchReceiveApproval(this.getOrderModel).subscribe(data => {
         this.$Message.success('领取成功！')
         this.getApprovalListByCondition()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
       this.orderModal = false
     }
@@ -428,8 +433,12 @@
     getApprovalListByCondition() {
       this.resourcePoolModel.startTime = FilterService.dateFormat(this.resourcePoolModel.startTime, "yyyy-MM-dd")
       this.resourcePoolModel.endTime = FilterService.dateFormat(this.resourcePoolModel.endTime, "yyyy-MM-dd")
-      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
-        this.resourcePoolList = val.object.list
+      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(data => {
+        this.resourcePoolList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     getTimeSearch(val) {

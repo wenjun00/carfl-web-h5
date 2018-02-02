@@ -76,7 +76,7 @@
         belongFirm: '开呗西安',
         orderId: 'kb20171001',
         prdName: '群泰融资'
-      },{
+      }, {
         downloadTime: '2017-12-01 15:50:56',
         customerName: '孙丹',
         idCard: '610303199111142616',
@@ -84,7 +84,7 @@
         belongFirm: '开呗西安',
         orderId: 'kb20171001',
         prdName: '群泰融资'
-      },{
+      }, {
         downloadTime: '2017-12-01 13:26:45',
         customerName: '孙丹',
         idCard: '610303199111142616',
@@ -92,7 +92,7 @@
         belongFirm: '开呗西安',
         orderId: 'kb20171001',
         prdName: '开呗长租'
-      },{
+      }, {
         downloadTime: '2017-12-01 18:16:56',
         customerName: '孙丹',
         idCard: '610303199111142616',

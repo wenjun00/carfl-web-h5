@@ -98,6 +98,10 @@
           this.$Message.success('申请减免成功！')
           this.$emit('close')
           this.resetInput()
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg)
         })
       }
     }

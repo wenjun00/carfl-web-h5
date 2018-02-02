@@ -33,7 +33,7 @@
       </i-select>
       <i-button class="blueButton" style="margin-left:20px;" @click="getDerateList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="derateList" :page="pageService"></data-box>
+    <data-box :columns="columns1" :data="derateList" :page="pageService" @onPageChange="getDerateList"></data-box>
   </section>
 </template>
 
@@ -85,11 +85,11 @@
       collectMoneyMethod: '',
       orderInfo: ''
     }
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
+
+    mounted() {
+      this.getDerateList()
     }
     created() {
-      this.getDerateList()
       this.columns1 = [{
           align: "center",
           type: "index",
@@ -374,7 +374,9 @@
       }]
 
     }
-
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
     repaySum(row) {}
     trailerCar(row) {
 
@@ -388,8 +390,12 @@
     getDerateList() {
       this.derateModel.applyDateStart = FilterService.dateFormat(this.derateModel.applyDateStart, "yyyy-MM-dd")
       this.derateModel.applyDateEnd = FilterService.dateFormat(this.derateModel.applyDateEnd, "yyyy-MM-dd")
-      this.remitApplicationService.selectApplyForReliefHistory(this.derateModel, this.pageService).subscribe(val => {
-        this.derateList = val.object.list
+      this.remitApplicationService.selectApplyForReliefHistory(this.derateModel, this.pageService).subscribe(data => {
+        this.derateList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     /**
@@ -401,6 +407,10 @@
       }).subscribe(val => {
         this.$Message.success('撤销成功！')
         this.getDerateList()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     getTimeSearch(val) {

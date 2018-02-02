@@ -35,7 +35,7 @@
       <i-button style="margin-left:10px" class="blueButton" @click="getMeetConditionList">搜索</i-button>
     </i-row>
 
-    <data-box :columns="columns1" :data="meetConditionList"></data-box>
+    <data-box :columns="columns1" :data="meetConditionList" @onPageChange="getMeetConditionList" :page="pageService"></data-box>
     <!--Modal-->
     <template>
       <i-modal title="订单领取" v-model="orderModal" width="300">
@@ -129,11 +129,11 @@
       userId: '',
       orderIds: []
     }
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
+
+    mounted() {
+      this.getMeetConditionList()
     }
     created() {
-      this.getMeetConditionList()
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -393,6 +393,9 @@
         step: '提交审批'
       }]
     }
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
     /**
      * 领取
      */
@@ -408,14 +411,22 @@
     getMeetConditionList() {
       this.resourcePoolModel.startTime = FilterService.dateFormat(this.resourcePoolModel.startTime, "yyyy-MM-dd")
       this.resourcePoolModel.endTime = FilterService.dateFormat(this.resourcePoolModel.endTime, "yyyy-MM-dd")
-      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
-        this.meetConditionList = val.object.list
+      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(data => {
+        this.meetConditionList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     confirmGetOrder() {
       this.approvalService.batchReceiveApproval(this.getOrderModel).subscribe(val => {
         this.$Message.success('领取成功！')
         this.getMeetConditionList()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
       this.orderModal = false
     }

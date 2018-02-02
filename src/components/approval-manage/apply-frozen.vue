@@ -94,6 +94,10 @@
         this.remitApplicationService.applyToFreeze(this.applyFrozenModel).subscribe(val => {
           this.$Message.success('申请冻结成功！')
           this.$emit('close')
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg)
         })
       }
     }

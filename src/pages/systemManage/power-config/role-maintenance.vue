@@ -130,44 +130,7 @@
     private modifyRoleModel: any;
     private roleConfig: Object = {};
     protected roleID: Number;
-    addNewRole() {
-      this.addRoleModal = true;
-    }
-    /**
-     * 取消新增
-     */
-    addRoleCancel() {
-      this.addRoleModal = false;
-      let _addRole = < Modal > this.$refs["add-role"];
-      _addRole.reset();
-    }
-    getRoleListByCondition() {
-      this.manageService
-        .queryRolePage({
-            roleName: this.roleModel.roleName,
-            roleStatus: this.roleModel.roleStatus
-          },
-          this.pageService
-        )
-        .subscribe(data => {
-          this.roleList = data;
-        }, ({
-          msg
-        }) => {
-          this.$Message.error(msg);
-        });
-    }
-    refreshRoleList() {
-      this.getRoleListByCondition();
-      this.addRoleModal = false;
-    }
-    /**
-     * 新增角色弹窗的确定
-     */
-    addRole() {
-      let _addRole = < Modal > this.$refs["add-role"];
-      _addRole.addRole();
-    }
+
     mounted() {
       this.getRoleListByCondition()
     }
@@ -416,6 +379,44 @@
           fileName: "补充协议（减免）"
         }
       ];
+    }
+    addNewRole() {
+      this.addRoleModal = true;
+    }
+    /**
+     * 取消新增
+     */
+    addRoleCancel() {
+      this.addRoleModal = false;
+      let _addRole = < Modal > this.$refs["add-role"];
+      _addRole.reset();
+    }
+    getRoleListByCondition() {
+      this.manageService
+        .queryRolePage({
+            roleName: this.roleModel.roleName,
+            roleStatus: this.roleModel.roleStatus
+          },
+          this.pageService
+        )
+        .subscribe(data => {
+          this.roleList = data;
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        });
+    }
+    refreshRoleList() {
+      this.getRoleListByCondition();
+      this.addRoleModal = false;
+    }
+    /**
+     * 新增角色弹窗的确定
+     */
+    addRole() {
+      let _addRole = < Modal > this.$refs["add-role"];
+      _addRole.addRole();
     }
     openSearch() {
       this.searchOptions = !this.searchOptions;

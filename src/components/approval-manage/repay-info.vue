@@ -215,8 +215,12 @@
     getRepayInfo(orderId) {
       this.paymentScheduleService.getPaymentDetail({
         orderId: orderId
-      }).subscribe(val => {
-        this.repayDetailList = val.object
+      }).subscribe(data => {
+        this.repayDetailList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
   }

@@ -122,8 +122,12 @@
       this.personalService.getBankByClientNumber({
         clientNumber: this.clientNumber,
         settleChannel: this.settleChannel
-      }).subscribe(val => {
-        this.customerSettleModel = val.object
+      }).subscribe(data => {
+        this.customerSettleModel = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     /**
@@ -133,8 +137,12 @@
       this.personalService.getBankByClientNumber({
         clientNumber: this.clientNumber,
         settleChannel: this.settleChannel
-      }).subscribe(val => {
-        this.customerSettleModel = val.object
+      }).subscribe(data => {
+        this.customerSettleModel = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
   }

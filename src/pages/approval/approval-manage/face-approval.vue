@@ -35,7 +35,7 @@
       <!--<i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>-->
       <i-button style="margin-left:10px" class="blueButton" @click="getFaceApprovalList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="faceList"></data-box>
+    <data-box :columns="columns1" :data="faceList" @onPageChange="getFaceApprovalList" :page="pageService"></data-box>
     <!--Modal-->
     <template>
       <i-modal title="订单领取" v-model="orderModal" width="300">
@@ -130,11 +130,11 @@
       orderIds: []
     }
 
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
+
+    mounted() {
+      this.getFaceApprovalList()
     }
     created() {
-      this.getFaceApprovalList()
       this.columns1 = [{
           align: 'center',
           width: 90,
@@ -413,6 +413,9 @@
       })
       this.orderModal = false
     }
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
     /**
      * 列配置
      */
@@ -434,6 +437,10 @@
       this.resourcePoolModel.endTime = FilterService.dateFormat(this.resourcePoolModel.endTime, "yyyy-MM-dd")
       this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(data => {
         this.faceList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
   }

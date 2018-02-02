@@ -25,9 +25,9 @@
         <i-option label="黄瑞" value="黄瑞" key="黄瑞"></i-option>
         <i-option label="祁吉贵" value="祁吉贵" key="祁吉贵"></i-option>
       </i-select>
-      <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:20px;" @click="getCompactMonitorList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="data1" @onPageChange="getCompactMonitorList" :page="pageService"></data-box>
 
     <template>
       <i-modal title="合同下载详情" v-model="compactDownloadInfoModal" width="1300">
@@ -75,10 +75,10 @@
     private searchOptions: Boolean = false;
     private compactDownloadInfoModal: Boolean = false;
 
-    activated() {}
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
+    mounted() {
+      this.getCompactMonitorList()
     }
+
     created() {
       this.columns1 = [{
           align: "center",
@@ -88,7 +88,7 @@
         },
         {
           title: "操作",
-          width: "200",
+          width: 200,
           align: "center",
           render: (h, {
             row,
@@ -134,18 +134,21 @@
       this.data1 = [{
         branchAddress: '大雁塔门店',
         employeeName: '吴小川',
-        downloadNum: '80'
+        downloadNum: 80
       }, {
         branchAddress: '钟楼门店',
         employeeName: '黄瑞',
-        downloadNum: '90'
+        downloadNum: 90
       }, {
         branchAddress: '曲江门店',
         employeeName: '祁吉贵',
-        downloadNum: '180'
+        downloadNum: 180
       }]
     }
-
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
+    getCompactMonitorList() {}
     repaySum(row) {}
     trailerCar(row) {
 

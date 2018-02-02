@@ -40,7 +40,7 @@
       <i-date-picker style="display:inline-block;width:10%;" v-model="approvalRecordModel.endTime"></i-date-picker>
       <i-button class="blueButton" style="margin-left:20px;" @click="getApprovaRecordList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="approvalRecordList"></data-box>
+    <data-box :columns="columns1" :data="approvalRecordList" @onPageChange="getApprovaRecordList" :page="pageService"></data-box>
 
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
@@ -127,11 +127,11 @@
       detail: ''
     }
 
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
+
+    mounted() {
+      this.getApprovaRecordList()
     }
     created() {
-      this.getApprovaRecordList()
       this.columns3 = [{
         title: '序号',
         type: 'index',
@@ -398,7 +398,9 @@
         }
       ];
     }
-
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
     deleteRole(row) {
 
     }
@@ -409,7 +411,6 @@
 
     }
     changeSelectOne(val) {
-      // this.approvalRecordModel.detail = ''
       if (val === 0) {
         // TODO
         this.passSelect = true
@@ -418,17 +419,24 @@
         this.approvalRecordModel.detail = ''
         this.approvalRecordModel.second = ''
         this.approvalRecordModel.type = val
-        this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(val => {
-          this.refuseReason = val.object
+        this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(data => {
+          this.refuseReason = data
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg)
         })
       }
     }
     changeSelectTwo(val) {
       this.approvalRecordModel.second = val
       this.approvalRecordModel.detail = ''
-      this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(val => {
-        // console.log(6767, val)
-        this.refuseDetail = val.object
+      this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(data => {
+        this.refuseDetail = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     checkOrderProgress(row) {
@@ -445,8 +453,12 @@
     getApprovaRecordList() {
       this.approvalRecordModel.startTime = FilterService.dateFormat(this.approvalRecordModel.startTime, "yyyy-MM-dd")
       this.approvalRecordModel.endTime = FilterService.dateFormat(this.approvalRecordModel.endTime, "yyyy-MM-dd")
-      this.approvalService.getAuditRecord(this.approvalRecordModel, this.pageService).subscribe(val => {
-        this.approvalRecordList = val.object.list
+      this.approvalService.getAuditRecord(this.approvalRecordModel, this.pageService).subscribe(data => {
+        this.approvalRecordList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     getTimeSearch(val) {
