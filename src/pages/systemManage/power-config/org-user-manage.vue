@@ -39,7 +39,7 @@
 
     <template>
       <i-modal v-model="modifyUserModal" title="修改用户" width="600">
-        <modify-user :modifyUserModel="modifyUserModel" @close="modifyUserModal=false" ref="modify-user"></modify-user>
+        <modify-user :modifyUserModel="modifyUserModel" @close="modifyUserClose" ref="modify-user"></modify-user>
         <div slot="footer">
           <i-button @click="modifyUserModal=false">取消</i-button>
           <i-button class="blueButton" @click="confirmModifyUser">确定</i-button>
@@ -390,6 +390,10 @@
         }
       ]
     }
+    modifyUserClose() {
+      this.modifyUserModal = false
+      this.getUserListByCondition()
+    }
     closeAdd() {
       this.addNewUserModal = false
       this.getUserListByCondition()
@@ -413,6 +417,8 @@
     modifyUser(row) {
       this.modifyUserModal = true
       this.modifyUserModel = row
+      let _modifyUser: any = this.$refs['modify-user']
+      _modifyUser.getData(this.modifyUserModel)
     }
     resetPwd(row) {
       this.loginService.resetPassword({

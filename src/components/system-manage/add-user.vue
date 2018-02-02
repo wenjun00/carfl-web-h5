@@ -164,7 +164,12 @@
         }]
       }
     }
-    cancel() {}
+    checkUserName() {
+      console.log(123)
+      if (this.addUserModel.userUsername.length < 6 || this.addUserModel.userUsername > 50) {
+        this.$Message.error('用户名长度不能小于6位大于50位')
+      }
+    }
     confirmAddUser() {
       // 获取相关数据
       this.addUserModel.deptId = this.deptObject.id

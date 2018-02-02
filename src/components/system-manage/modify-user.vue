@@ -107,22 +107,29 @@
       this.$emit('close')
     }
     updateUser() {
-      this.modifyModel.userUsername = this.modifyUserModel.userUsername
-      this.modifyModel.userRealname = this.modifyUserModel.userRealname
-      this.modifyModel.userPhone = this.modifyUserModel.userPhone
-      this.modifyModel.userEmail = this.modifyUserModel.userEmail
-      this.modifyModel.companyName = this.modifyUserModel.companyName
-      this.modifyModel.deptName = this.modifyUserModel.deptName
-      this.modifyModel.userSex = this.modifyUserModel.userSex
-      this.modifyModel.userManager = this.modifyUserModel.userManager
-      this.modifyModel.userRemark = this.modifyUserModel.userRemark
-      this.manageService.updateUser(this.modifyUserModel).subscribe(val => {
+      this.manageService.updateUser(this.modifyModel).subscribe(val => {
         this.$Message.success('修改成功！')
+        this.$emit('close')
       }, ({
         msg
       }) => {
         this.$Message.error(msg)
       })
+    }
+    getData(data) {
+      console.log(432, data)
+      this.modifyModel.userUsername = data.userUsername
+      this.modifyModel.id = data.id
+      this.modifyModel.deptId = data.deptId
+      console.log(432, this.modifyModel.userUsername)
+      this.modifyModel.userRealname = data.userRealname
+      this.modifyModel.userPhone = data.userPhone
+      this.modifyModel.userEmail = data.userEmail
+      this.modifyModel.companyName = data.companyName
+      this.modifyModel.deptName = data.deptName
+      this.modifyModel.userSex = data.userSex
+      this.modifyModel.userManager = data.userManager
+      this.modifyModel.userRemark = data.userRemark
     }
   }
 
