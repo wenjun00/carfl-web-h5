@@ -300,7 +300,7 @@
     checkcustomerinfo() {
       if (this.applyData.idCard) {
         this.personalService.getCustomerHistoryFinanceInfo(this.applyData).subscribe(data => {
-          this.historicalDataset = data.object
+          this.historicalDataset = data
           if (this.historicalDataset.length) {
             this.historicalModal = true
           }

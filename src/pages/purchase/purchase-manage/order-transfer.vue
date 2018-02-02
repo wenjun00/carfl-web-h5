@@ -436,7 +436,7 @@
       this.ordertransferModel.startTime = FilterService.dateFormat(this.ordertransferModel.startTime)
       this.ordertransferModel.endTime = FilterService.dateFormat(this.ordertransferModel.endTime)
       this.productOrderService.getOrderHandover(this.ordertransferModel, this.pageService).subscribe(data => {
-        this.ordertransferDataSet = data.object.list;
+        this.ordertransferDataSet = data;
       }, ({
         msg
       }) => {
@@ -453,7 +453,7 @@
     getTree() {
       this.manageService.getAllDepartment().subscribe(val => {
         // this.deptObject = val.object[0]
-        this.dataList = val.object
+        this.dataList = val
       })
     }
     /**
@@ -462,7 +462,7 @@
     organizetreeChange(value) {
       this.userListModel.deptId = value.id
       this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(data => {
-        this.userList = data.object.list
+        this.userList = data
       }, ({
         msg
       }) => {

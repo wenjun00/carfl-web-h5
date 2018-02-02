@@ -169,7 +169,7 @@
         this.treeId = data[0].carId
       }
       this.carService.findAllCarBySeries(this.treeId).subscribe(data => {
-        this.carDataModel = data.object
+        this.carDataModel = data
         console.log(this.carDataModel, 988)
       }, ({
         msg
@@ -182,7 +182,7 @@
      */
     getCarseries() {
       this.carService.findAllCarSeries().subscribe(data => {
-        this.dataList = data.object
+        this.dataList = data
         this.getTreeDate()
       }, ({
         msg

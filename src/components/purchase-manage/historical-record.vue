@@ -89,7 +89,7 @@
       this.productOrderService.findOrderInfoByOrderNumber({
         orderNumber: this.currentRow.orderNumber
       }).subscribe(data => {
-        this.distributionData(data.object)
+        this.distributionData(data)
       })
       this.close()
     }
@@ -98,7 +98,7 @@
      */
     cartreeChange(data) {
       this.carService.findAllCarBySeries(this.treeId).subscribe(data => {
-        this.carDataModel = data.object
+        this.carDataModel = data
         console.log(this.carDataModel, 988)
       }, ({
         msg
