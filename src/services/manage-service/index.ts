@@ -17,21 +17,21 @@ import backLogService from './backLog.service'
 import carQuotationService from './carQuotation.service'
 import roleResoService from './roleReso.service'
 export const aaa = {
-    manageService,
-    productPackageService,
-    departmentService,
-    approveReasonService,
-    companyService,
-    systemParameterService,
-    dataDictTypeService,
-    personalMaterialService,
-    approvalService,
-    productlService,
-    productPlanIssueService,
-    paymentScheduleService,
-    remitApplicationService,
-    refundApplicationService,
-    backLogService,
-    carQuotationService,
-    RoleResoService
+  manageService,
+  productPackageService,
+  departmentService,
+  approveReasonService,
+  companyService,
+  systemParameterService,
+  dataDictTypeService,
+  personalMaterialService,
+  approvalService,
+  productlService,
+  productPlanIssueService,
+  paymentScheduleService,
+  remitApplicationService,
+  refundApplicationService,
+  backLogService,
+  carQuotationService,
+  roleResoService
 }
