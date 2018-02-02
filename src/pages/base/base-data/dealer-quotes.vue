@@ -23,7 +23,7 @@
                 </i-button>
             </div>
         </div>
-        <data-box :columns="columns" :data="carList"></data-box>
+        <data-box :columns="columns" :data="carList" @onPageChange="seachBusiness" :page="pageService"></data-box>
         <template>
             <i-modal v-model="editModal" title="编辑" style="width:900px;">
                 <edit-car v-bind:carFormItem="carformitem" ref="edit-car"></edit-car>
@@ -67,7 +67,7 @@ export default class AddPeriods extends Vue {
   private carformitem: any = {};
 
   created() {
-    this.seachBusiness();
+    
     this.busModal = {
       productPackageName: "",
       carBrandName: "",
@@ -297,6 +297,9 @@ export default class AddPeriods extends Vue {
       }
     ];
   }
+  mounted () {
+      this.seachBusiness();
+  }
   /**
    * 查询经销商报价
    */
@@ -304,8 +307,13 @@ export default class AddPeriods extends Vue {
     this.carQuotationService
       .getCarQuotationByConditionPage(this.busModal, this.pageService)
       .subscribe(val => {
-        this.carList = val.object.list;
-      });
+        this.carList = val;
+      },({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+      );
   }
   /**
    * 停用
@@ -315,7 +323,6 @@ export default class AddPeriods extends Vue {
       id: row.id,
       status: 1
     };
-    console.log(row, 999);
     this.carQuotationService.updateCarQuotation(this.carInfo).subscribe(val => {
       this.$Message.success("已停用");
       this.seachBusiness();
@@ -345,7 +352,12 @@ export default class AddPeriods extends Vue {
       .subscribe(val => {
         this.$Message.success("删除成功！");
         this.seachBusiness();
-      });
+      },({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+      );
   }
   /**@augments
    * 编辑

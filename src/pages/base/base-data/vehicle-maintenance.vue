@@ -143,8 +143,7 @@ export default class ProdConfig extends Page {
     }
     this.carService.findAllCarBySeries(this.treeId).subscribe(
       data => {
-        this.carDataModel = data.object;
-        console.log(this.carDataModel, 988);
+        this.carDataModel = data;
       },
       ({ msg }) => {
         this.$Message.error(msg);
@@ -157,7 +156,7 @@ export default class ProdConfig extends Page {
   getCarseries() {
     this.carService.findAllCarSeries().subscribe(
       data => {
-        this.dataList = data.object;
+        this.dataList = data;
         this.getTreeDate();
       },
       ({ msg }) => {
@@ -215,7 +214,7 @@ export default class ProdConfig extends Page {
       })
       .subscribe(
         data => {
-          this.carDataModel = data.object;
+          this.carDataModel = data;
         },
         ({ msg }) => {
           this.$Message.error(msg);

@@ -99,7 +99,7 @@ export default class DataDict extends Page {
    */
   getAllDictType() {
     this.dataDictTypeService.getAllDictType().subscribe(val => {
-      this.dataType = val.object;
+      this.dataType = val;
     });
   }
   /**
@@ -113,7 +113,7 @@ export default class DataDict extends Page {
         typeCode: item.code
       })
       .subscribe(val => {
-        this.dataNames = val.object;
+        this.dataNames = val;
       });
   }
   /**
@@ -139,7 +139,7 @@ export default class DataDict extends Page {
     this.dataDictService
       .getAllDataDict(this.dictAguments, this.pageService)
       .subscribe(val => {
-        this.dataNames = val.object.list;
+        this.dataNames = val;
       });
   }
   /**

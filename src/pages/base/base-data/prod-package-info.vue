@@ -19,7 +19,7 @@
                 </i-button>
             </div>
         </i-row>
-        <data-box :columns="columns" :data="prdPackageList"></data-box>
+        <data-box :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService"></data-box>
     </section>
 </template>
 
@@ -53,7 +53,7 @@ export default class ProdPackageInfo extends Page {
   private backupTimeRange: Array<any> = [];
   private productId: any;
   created() {
-    this.getProductPackage();
+    
     this.columns = [
       {
         title: "序号",
@@ -160,6 +160,9 @@ export default class ProdPackageInfo extends Page {
       endTime: ""
     };
   }
+  mounted () {
+      this.getProductPackage();
+  }
   getOrderInfoByTime() {}
   openSearch() {
     this.searchOptions = !this.searchOptions;
@@ -172,8 +175,13 @@ export default class ProdPackageInfo extends Page {
     this.productPackageService
       .getAllProductPackage(this.productModel, this.pageService)
       .subscribe(val => {
-        this.prdPackageList = val.object.list;
-      });
+        this.prdPackageList = val;
+      },({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+      );
   }
   /**
    * dateTimeRange的Change事件
@@ -200,7 +208,12 @@ export default class ProdPackageInfo extends Page {
       .subscribe(val => {
         this.$Message.success("删除成功！");
         this.getProductPackage();
-      });
+      },({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+      );
   }
   /**
    * 产品包信息下载
@@ -212,7 +225,12 @@ export default class ProdPackageInfo extends Page {
       })
       .subscribe(val => {
         this.$Message.success("下载成功！");
-      });
+      },({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+      );
   }
 }
 </script>
