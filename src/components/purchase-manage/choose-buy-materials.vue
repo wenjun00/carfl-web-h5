@@ -227,8 +227,8 @@
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
-          <i-form-item label="其他费用" prop="otherMoney">
-            <i-input type="text" v-model="chooseBuyModel.otherMoney">
+          <i-form-item label="其他费用" prop="otherFee">
+            <i-input type="text" v-model="chooseBuyModel.otherFee">
             </i-input>
           </i-form-item>
         </i-col>
@@ -337,6 +337,8 @@
     private totalPrice: any = '';
     private DataSet: any = '';
     private chooseBuyModel: any = {
+      name: '', // 产品名称
+      prdSeriods: '', // 产品系列
       province: '', // 省份
       city: '', // 城市
       companyId: '', // 所属公司
@@ -353,6 +355,7 @@
       vehicleAmount: '', // 车辆参考总价
       finalprincipal: '', // 尾付本金
       initialPayment: '', // 首付金额
+      otherFee: '', // 其他费用
     };
 
     // @Emit('productData')
@@ -614,8 +617,8 @@
     /**
      * 获取添加产品信息
      */
-    currentRowData(data) {
-      console.log(data, 999)
+    currentRowData(data, productDataModel) {
+      console.log(data, productDataModel, 999)
       this.DataSet = data
       this.depositCashData = data.depositCash.split(';')
       this.finalCashData = data.finalCash.split(';')
@@ -632,9 +635,12 @@
         purchaseMoney: data.purchaseMoney,
         licenseMoney: data.licenseMoney,
         GpsMoney: data.GpsMoney,
-        otherMoney: data.otherMoney,
+        otherFee: data.otherFee,
         remark: data.remark,
-        vehicleAmount: this.totalPrice
+        vehicleAmount: this.totalPrice,
+        name: productDataModel.title, // 产品名称
+        prdSeriods: productDataModel.series, // 产品系列
+
       }
     }
     productPlanissue(data) {

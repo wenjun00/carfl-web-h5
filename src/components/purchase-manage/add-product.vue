@@ -16,6 +16,10 @@
             </div>
           </i-col>
           <i-col span="22" style="overflow:auto">
+            <div style="margin-left:50px;font-size:16px;margin-bottom:10px"><span style="margin-right:200px;"><span style="color:#ccc">产品名称：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].title:''):''}}</span>
+              <span><span style="color:#ccc">资金渠道：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].capitaChannels:''):''}}</span>
+            </div>
+            <div style="margin-bottom:20px;margin-left:50px;font-size:16px"><span style="color:#ccc">产品序号：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].productNumber:''):''}}</div>
             <div style="position:relative;bottom:10px">
               <i-table highlight-row @on-current-change="currenttrablerowdata" :columns="carColumns" :data="carData" :page="pageService"></i-table>
             </div>
@@ -76,6 +80,7 @@
     private AddProductData: any = {};
     private currentRow: any = {};
     private productPlanissueData: any = {};
+    private productDataModel: any = [];
 
     @Prop() row: Object;
     @Emit('currentRowData')
@@ -201,6 +206,8 @@
           title: item.name,
           productId: item.id,
           expand: true,
+          productNumber: item.productNumber,
+          capitaChannels: item.capitaChannels,
           children: this.getChild(item)
         }
         this.treeData.push(node1)
@@ -223,6 +230,9 @@
               title: val.name,
               productId: val.id,
               expand: true,
+              series: item.name,
+              productNumber: val.productNumber,
+              capitaChannels: val.capitaChannels,
               children: this.getChild(val) // 迭代产生根
             }
             child.push(node2)
@@ -231,6 +241,9 @@
               title: val.name,
               seriesId: val.id,
               expand: true,
+              series: item.name,
+              productNumber: val.productNumber,
+              capitaChannels: val.capitaChannels,
               children: this.getChild(val)
             }
             child.push(node2)
@@ -251,6 +264,7 @@
       }
       this.productPlanissue(data)
       console.log(data, 555)
+      this.productDataModel = data
       this.productPlanIssueService.getAllProductPlan({
         productId: this.productId
       }, this.pageService).subscribe(data => {
@@ -261,7 +275,7 @@
      * 确定并返回
      */
     confirmAndBackPrd() {
-      this.currentRowData(this.currentRow)
+      this.currentRowData(this.currentRow, this.productDataModel[0])
       this.close()
     }
   }
