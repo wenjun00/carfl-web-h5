@@ -49,22 +49,22 @@
       </div>
       <i-tabs type="card" v-model="materialTabs" class="finance-lease-tabs">
         <i-tab-pane label="选购资料" name="choose-buy-materials">
-          <choose-buy-materials></choose-buy-materials>
+          <choose-buy-materials ref="choose-buy-materials"></choose-buy-materials>
         </i-tab-pane>
         <i-tab-pane label="客户资料" name="customer-materials">
-          <customer-materials></customer-materials>
+          <customer-materials ref="customer-materials"></customer-materials>
         </i-tab-pane>
         <i-tab-pane label="客户职业" name="customer-job-message">
-          <customer-job-message></customer-job-message>
+          <customer-job-message ref="customer-job-message"></customer-job-message>
         </i-tab-pane>
         <i-tab-pane label="客户联系人" name="customer-contacts">
-          <customer-contacts></customer-contacts>
+          <customer-contacts ref="customer-contacts"></customer-contacts>
         </i-tab-pane>
         <i-tab-pane label="客户来源" name="customer-origin">
-          <customer-origin></customer-origin>
+          <customer-origin ref="customer-origin"></customer-origin>
         </i-tab-pane>
         <i-tab-pane label="上传素材" name="upload-the-material">
-          <upload-the-material></upload-the-material>
+          <upload-the-material ref="upload-the-material"></upload-the-material>
         </i-tab-pane>
       </i-tabs>
       <!--<div style="height:535px;overflow-y:auto;overflow-x:hidden;">
@@ -113,6 +113,10 @@
     PersonalService
   } from "~/services/manage-service/personal.service";
   import {
+    ProductOrderService
+  } from "~/services/manage-service/product.order.service";
+
+  import {
     Layout
   } from "~/core/decorator";
 
@@ -131,6 +135,8 @@
   })
   export default class FinancingLeaseApply extends Page {
     @Dependencies(PersonalService) private personalService: PersonalService;
+    @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
+
 
     private customerRule: Object = {};
     private customerModel: any = {
@@ -196,12 +202,46 @@
       })
 
     }
+    /**
+     * 保存并提交
+     */
     saveAndSubmit() {
-      this.customerModel.idCard = ''
-      this.customerModel.userName = ''
-      this.customerModel.userName = ''
-      this.customerModel.mobileMain = ''
-      this.customerModel.worker = ''
+      let choosebuymaterials = this.$refs['choose-buy-materials']
+      console.log(choosebuymaterials)
+      let savesubmitDataset: any = {
+        idCard: this.customerModel.idCard,
+        name: this.customerModel.name,
+        mobileMain: this.customerModel.customerPhone,
+        salesmanName: this.customerModel.salesmanName,
+        // 选购资料
+        orderCars: choosebuymaterials.addcarData,
+        province: choosebuymaterials.chooseBuyModel.province,
+        city: choosebuymaterials.chooseBuyModel.city,
+        companyId: choosebuymaterials.chooseBuyModel.companyId,
+        orderService: choosebuymaterials.chooseBuyModel.orderServiceList,
+        financingUse: choosebuymaterials.chooseBuyModel.financingUse,
+        intentionFinancingAmount: choosebuymaterials.chooseBuyModel.intentionFinancingAmount,
+        intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods,
+        rentPayable: choosebuymaterials.chooseBuyModel.rentPayable,
+        hopeProportion: choosebuymaterials.chooseBuyModel.hopeProportion,
+        otherFee: choosebuymaterials.chooseBuyModel.otherFee,
+
+      }
+      //   this.productOrderService.saveFinanceApplyInfo(this.customerModel).subscribe(data => {
+      //     this.historicalDataset = data.object
+      //     if (this.historicalDataset.length) {
+      //       this.historicalModal = true
+      //     }
+      //   }, ({
+      //     msg
+      //   }) => {
+      //     this.$Message.error(msg);
+      //   });
+      //   this.customerModel.idCard = ''
+      //   this.customerModel.userName = ''
+      //   this.customerModel.userName = ''
+      //   this.customerModel.mobileMain = ''
+      //   this.customerModel.worker = ''
     }
     showTab() {
       if (this.customerModel.idCard.length === 18) {
