@@ -140,7 +140,7 @@
                 </data-grid-item>
                 <data-grid-item label="管理费收取方式" :span="12">
                     <i-form-item prop="manageCostType">
-                        <i-radio-group v-model="productDetail.manageCostType" @on-change="stagingPeriod">
+                        <i-radio-group v-model="costType" @on-change="stagingPeriod">
                             <i-radio label="一次性收取"></i-radio>
                             <i-radio label="分期数收取"></i-radio>
                         </i-radio-group>
@@ -209,13 +209,14 @@ import { ProductPlanIssueService } from "~/services/manage-service/productPlanIs
 export default class AddPeriods extends Vue {
   @Dependencies(ProductPlanIssueService)
   private ProductPlanIssueService: ProductPlanIssueService;
-  @Prop() productDetail: any;
-  @Prop() pNameTitle: any;
+  @Prop() productDetail: any = {};
+  @Prop() pNameTitle: any = {};
   private accountPeriodsList: String = "正常账期";
   private initialParams: String = "无";
   private promiseMoenyParams: String = "无";
   private residueParams: String = "无";
   private manageMoneyParams: String = "无";
+  private costType: String = "无";
   private disabled: Boolean = false;
   private initialParamsShow: Boolean = false;
   private changePromiseMoenyShow: Boolean = false;
@@ -250,21 +251,42 @@ export default class AddPeriods extends Vue {
   //     operatorTime: "",
   //     id: ""
   //   };
-  private amount: any;
-  private monthDay: any;
+  private amount: any = {};
+  private monthDay: any = [];
   private stagingPeriodShow: Boolean = false;
+  private moneyArray: any = [];
 
   created() {
-    this.amount = {
-      financingAmount1: "",
-      financingAmount2: ""
-    };
-    this.monthDay = [];
+    // this.monthDay = [];
     this.monthDayFun();
     this.formRules = {};
     this.productDetail.payWay = 384
       ? (this.productDetail.payWay = "等本等息")
       : (this.productDetail.payWay = "等额等息");
+    this.productDetail.payWay === 386
+      ? (this.productDetail.paymentType = "正常账期")
+      : (this.productDetail.paymentType = "固定账期");
+    this.moneyFun();
+    if (this.productDetail.initialPayment != " ") {
+      this.initialParams = "有";
+      this.initialParamsShow = true;
+    }
+    if (this.productDetail.depositCash != " ") {
+      this.promiseMoenyParams = "有";
+      this.promiseMoneyShow = true;
+    }
+    if (this.productDetail.finalCash != " ") {
+      this.residueParams = "有";
+      this.residueParamsShow = true;
+    }
+    if (this.productDetail.manageCost != " ") {
+      this.manageMoneyParams = "有";
+      this.manageParamsShow = true;
+    }
+    if (this.productDetail.stagingPeriods != " ") {
+      this.costType = "有";
+      this.stagingPeriodShow = true;
+    }
   }
 
   /**
@@ -315,7 +337,14 @@ export default class AddPeriods extends Vue {
       this.stagingPeriodShow = true;
     }
   }
-
+  moneyFun() {
+    this.moneyArray = this.productDetail.financingAmount.split(/[~]*/);
+    this.amount = {
+      financingAmount1: this.moneyArray[0],
+      financingAmount2: this.moneyArray[1]
+    };
+    console.log(this.amount, 9090);
+  }
   /**@
    * 点击确定按钮
    */

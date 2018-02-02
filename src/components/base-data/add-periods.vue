@@ -332,7 +332,7 @@ export default class AddPeriods extends Vue {
           ? (this.formItems.isPublish = 361)
           : (this.formItems.isPublish = 360);
         this.formItems.financingAmount =
-          this.amount.financingAmount1 + "~" + this.amount.financingAmount2;
+          this.amount.financingAmount1 + "-" + this.amount.financingAmount2;
         this.formItems.productId = this.pNameTitle.id;
         this.formItems.productStatus = this.pNameTitle.status;
         this.ProductPlanIssueService.createOrModifyProductPlan(

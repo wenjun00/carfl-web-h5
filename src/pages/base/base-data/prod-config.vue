@@ -121,7 +121,7 @@
                                     <span class="PublishButton" @click="publish(item)">发布</span>
                                 </div>
                                 <div v-if="item.isPublish===360" class="PublishContent">
-                                    <span class="PublishButton">查看</span>
+                                    <span class="PublishButton" @click="viewButton(item)">查看</span>
                                 </div>
                             </div>
                         </i-col>
@@ -162,6 +162,15 @@
         </template>
 
         <template>
+            <i-modal v-model="viewModal" title="查看期数" width="900">
+                <preview-product :productDetailView="productDetails" :pNameTitleView="productMessage"></preview-product>
+                <div slot="footer">
+                    <i-button type="primary" @click="viewModal=false">关闭</i-button>
+                </div>
+            </i-modal>
+        </template>
+
+        <template>
             <i-modal v-model="chargeAgainstOrderConfigModal" title="冲抵顺序配置" width="900">
                 <charge-against-order></charge-against-order>
             </i-modal>
@@ -176,6 +185,7 @@ import Component from "vue-class-component";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import AddPeriods from "~/components/base-data/add-periods.vue";
 import EditPeriods from "~/components/base-data/edit-product.vue";
+import PreviewProduct from "~/components/base-data/preview-product.vue";
 
 import ChargeAgainstOrder from "~/components/base-data/charge-against-order.vue";
 import { Dependencies } from "~/core/decorator";
@@ -197,7 +207,8 @@ import { retry } from "rxjs/operator/retry";
     DataGridItem,
     AddPeriods,
     ChargeAgainstOrder,
-    EditPeriods
+    EditPeriods,
+    PreviewProduct
   }
 })
 export default class ProdConfig extends Page {
@@ -205,10 +216,11 @@ export default class ProdConfig extends Page {
   @Dependencies(ProductPlanIssueService)
   private ProductPlanIssueService: ProductPlanIssueService;
   @Dependencies(PageService) private pageService: PageService;
-  private columns1: any;
+  private columns1: any = [];
   private data1: Array<Object> = [];
   private maintains: Array<any> = [];
   private treeData: Array<any> = [];
+  private productId: number = 0;
   private prdConfig: Array<any> = [];
   private customerFodderTree: Array<any> = [];
   private searchOptions: Boolean = false;
@@ -225,39 +237,18 @@ export default class ProdConfig extends Page {
   private publishItem: any = {};
   private addPeriodsBox: Boolean = false;
   private editModal: Boolean = false;
+  private viewModal: Boolean = false;
   private productDetails: Object = {};
+  private productDe: Object = {};
   /**
    * 客户素材配置
    */
-  data() {
-    return {
-      //   lev1Node: {
-      //     title: "",
-      //     number: "",
-      //     expand: true,
-      //     lev2Node: [
-      //       {
-      //         lev3Node: []
-      //       }
-      //     ]
-      //   },
-      //   lev2Node: {
-      //     title: "",
-      //     number: ""
-      //   },
-      //   lev3Node: {
-      //     title: "",
-      //     number: ""
-      //   }
-    };
-  }
   customerFodderConfig() {
     this.customerFodderConfigFlag = false;
     this.alreadyConfigFlag = true;
     this.customerFodderConfigModal = true;
   }
   created() {
-    this.treeData = [];
     this.treeList();
     this.customerFodderTree = [
       {
@@ -476,40 +467,83 @@ export default class ProdConfig extends Page {
   treeList() {
     this.productService.getProductTree().subscribe(val => {
       this.allData = val.object;
-      this.getTreeData();
+      this.productId = val.object[0].productId;
+      this.createNewTree(this.allData);
     });
   }
-  getTreeData() {}
-
-  /**
-   * 查询产品列表详情
-   */
-  productNameDetail(scope) {
-    this.ProductPlanIssueService.getAllProductPlan(
-      {
-        productId: scope[0].productId
-      },
-      this.pageService
-    ).subscribe(val => {
-      this.addPeriodsBox = true;
-      if (val.object.list.length > 0) {
-        this.productShow = true;
-        this.prdConfig = val.object.list;
-        //初始化启用/停用状态
-        if (this.prdConfig[0].productStatus === 0) {
-          this.prdConfig[0].productStatus = true;
-        } else if (this.prdConfig[0].productStatus === 1) {
-          this.prdConfig[0].productStatus = false;
-        }
-        //初始化
-        if ((this.productMessage.capitaChannels = 382)) {
-          this.productMessage.capitaChannels = "自有资金";
-        } else {
-          this.productMessage.capitaChannels = "第三方";
+  createNewTree(allData) {
+    let root = allData.filter(v => !v.parent);
+    console.log(root, 32423);
+    this.treeData = [];
+    root.forEach(item => {
+      let node1 = {
+        title: item.name,
+        seriesId: item.id,
+        expand: true,
+        children: this.getChild(item)
+      };
+      this.treeData.push(node1);
+    });
+    console.log(this.treeData, 87);
+  }
+  getChild(item) {
+    let child: any = [];
+    // 判断子的父id与全部数据的id相等
+    this.allData.map(val => {
+      if (item.id === val.parent) {
+        if (val.flag === "产品") {
+          let node2 = {
+            title: val.name,
+            productId: val.id,
+            expand: true,
+            children: this.getChild(val) // 迭代产生根
+          };
+          child.push(node2);
+        } else if (val.flag === "产品系列") {
+          let node2 = {
+            title: val.name,
+            seriesId: val.id,
+            expand: true,
+            children: this.getChild(val)
+          };
+          child.push(node2);
         }
       }
     });
-    this.checkProduct(scope);
+    return child;
+  }
+
+  /**
+   *  树change事件 查询产品列表详情
+   */
+  productNameDetail(scope) {
+    if (scope[0].productId) {
+      this.ProductPlanIssueService.getAllProductPlan(
+        {
+          productId: scope[0].productId
+        },
+        this.pageService
+      ).subscribe(val => {
+        this.addPeriodsBox = true;
+        if (val.object.list.length > 0) {
+          this.productShow = true;
+          this.prdConfig = val.object.list;
+          //初始化启用/停用状态
+          if (this.prdConfig[0].productStatus === 0) {
+            this.prdConfig[0].productStatus = true;
+          } else if (this.prdConfig[0].productStatus === 1) {
+            this.prdConfig[0].productStatus = false;
+          }
+          //初始化
+          if ((this.productMessage.capitaChannels = 382)) {
+            this.productMessage.capitaChannels = "自有资金";
+          } else {
+            this.productMessage.capitaChannels = "第三方";
+          }
+        }
+      });
+      this.checkProduct(scope);
+    }
   }
   /**@
    * 查询产品名称、序列号、租金渠道
@@ -589,7 +623,10 @@ export default class ProdConfig extends Page {
   showDetail(item) {
     this.editModal = true;
     this.productDetails = item;
-    // this.productDetails.payWay="等本等息"
+  }
+  viewButton(item) {
+    this.viewModal = true;
+    this.productDetails = item;
   }
 }
 </script>

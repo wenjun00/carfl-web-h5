@@ -15,7 +15,7 @@ import remitApplicationService from './remitApplication.service'
 import refundApplicationService from './refund.application.service'
 import backLogService from './backLog.service'
 import carQuotationService from './carQuotation.service'
-
+import roleResoService from './roleReso.service'
 export const aaa = {
     manageService,
     productPackageService,
@@ -32,5 +32,6 @@ export const aaa = {
     remitApplicationService,
     refundApplicationService,
     backLogService,
-    carQuotationService
+    carQuotationService,
+    RoleResoService
 }

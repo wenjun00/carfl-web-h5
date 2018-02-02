@@ -10,8 +10,8 @@
             <span style="margin-left:10px;">所属系统：</span>
             <i-input placeholder="请输入所属系统" style="display:inline-block;width:10%;"></i-input>
             <i-select placeholder="全部状态" style="margin-left:10px;width:10%;">
-                <i-option label="已启用" value="已启用" key="已启用"></i-option>
-                <i-option label="未启用" value="未启用" key="未启用"></i-option>
+                <i-option label="已启用" value="0" key="已启用"></i-option>
+                <i-option label="未启用" value="1" key="未启用"></i-option>
             </i-select>
             <i-button style="margin-left:10px;" class="blueButton">搜索</i-button>
             <i-button style="margin-left:10px;" class="blueButton" @click="addModuleFunction">添加</i-button>
@@ -22,7 +22,7 @@
                 <div style="text-align:center;font-size: 14px;font-weight: bold;width: 109%;background: #F8F8F9;height: 41px; position: relative;right: 10px;top: 1px;">
                     <span>模块名称</span>
                 </div>
-                <i-tree :data="treeData"></i-tree>
+                <i-tree :data="treeData" @on-select-change="prdTreeChange"></i-tree>
             </i-col>
             <!--表格-->
             <i-col :span="20">
@@ -100,6 +100,7 @@ import Component from "vue-class-component";
 import FunctionModule from "~/components/system-manage/function-module.vue";
 import { Dependencies } from "~/core/decorator";
 import { Layout } from "~/core/decorator";
+import { RoleResoService } from "~/services/manage-service/roleReso.service";
 
 @Layout("workspace")
 @Component({
@@ -109,11 +110,15 @@ import { Layout } from "~/core/decorator";
   }
 })
 export default class ModuleFunction extends Page {
-  private treeData: Array<Object> = [];
+  @Dependencies(RoleResoService) private roleResoService: RoleResoService;
+
+  private treeData: Array<any> = [];
   private treeColumns: any;
   private treeDatabox: Array<Object> = [];
   private addModuleFunctionModal: Boolean = false;
   private functionModuleModal: Boolean = false;
+  private resoPid: number = 0;
+  private allData: Array<any> = [];
 
   /**
    * 添加
@@ -122,59 +127,9 @@ export default class ModuleFunction extends Page {
     this.addModuleFunctionModal = true;
   }
   created() {
-    this.treeData = [
-      {
-        title: "采购",
-        expand: true,
-        children: [
-          {
-            title: "采购管理",
-            expand: true,
-            children: [
-              {
-                title: "市场行情查询"
-              },
-              {
-                title: "门店需求查询"
-              },
-              {
-                title: "采购单填报"
-              },
-              {
-                title: "采购单查询"
-              },
-              {
-                title: "采购分配车库"
-              }
-            ]
-          },
-          {
-            title: "审批管理"
-          },
-          {
-            title: "财务记账"
-          }
-        ]
-      },
-      {
-        title: "库存"
-      },
-      {
-        title: "销售"
-      },
-      {
-        title: "财务"
-      },
-      {
-        title: "基础数据"
-      },
-      {
-        title: "综合查询"
-      },
-      {
-        title: "系统设置"
-      }
-    ];
+    this.getTreeDate();
+    this.treeData = [];
+
     this.treeColumns = [
       {
         align: "center",
@@ -247,56 +202,138 @@ export default class ModuleFunction extends Page {
       },
       {
         align: "center",
-        key: "powerIcon",
-        title: "权限图标"
+        key: "resoInitName",
+        title: "资源初始化名称"
       },
       {
         align: "center",
-        key: "createTime",
-        title: "创建时间",
-        width: 220
+        key: "resoName",
+        title: "资源名称"
       },
       {
         align: "center",
-        key: "operator",
-        title: "操作人",
-        width: 120
+        key: "resoInitIcon",
+        title: "资源初始化图标"
       },
       {
         align: "center",
-        key: "modifyTime",
-        title: "修改时间",
-        width: 220
+        key: "resoIcon",
+        title: "资源图标"
       },
-      {
-        align: "center",
-        key: "status",
-        title: "状态",
-        width: 120
-      },
+
       {
         align: "center",
         key: "moduleId",
-        title: "模块编号"
+        title: "重置"
       },
       {
         align: "center",
-        key: "belongSystem",
-        title: "所属系统"
+        key: "resoStatus",
+        title: "状态"
+      },
+      {
+        align: "center",
+        key: "resoRemark",
+        title: "备注"
       }
     ];
 
-    this.treeDatabox = [
-      {
-        powerIcon: "leftico01.png",
-        createTime: "2017-12-01 13:56:56",
-        operator: "管理员",
-        modifyTime: "2017-12-01 15:36:21",
-        status: "启用",
-        moduleId: "010506",
-        belongSystem: "进销存"
+    this.treeDatabox = []; //表格数据存储
+  }
+  /**
+   * 获取树接口
+   */
+  getTreeDate() {
+    this.roleResoService.getAllResource().subscribe(val => {
+      this.allData = val.object;
+      this.resoPid = val.object[0].resoPid;
+      this.createNewTree(this.allData);
+    });
+  }
+  /**
+   * 生成树
+   */
+  createNewTree(allData) {
+    let root = allData.filter(v => !v.resoPid); // 获取树根
+    this.treeData = [];
+    // 遍历根对象push进树中
+    root.forEach(item => {
+      let node1 = {
+        title: item.resoName,
+        id: item.id,
+        resoSysname: item.resoSysname,
+        resoInitName: item.resoInitName,
+        resoCode: item.resoCode,
+        resoLevel: item.resoLevel,
+        resoStatus: item.resoStatus,
+        resoPath: item.resoPath,
+        resoInitIcon: item.resoInitIcon,
+        resoIcon: item.resoIcon,
+        resoType: item.resoType,
+        resoFiletype: item.resoFiletype,
+        resoRemark: item.resoRemark,
+        expand: true,
+        children: this.getChild(item)
+      };
+      this.treeData.push(node1);
+    });
+    console.log(this.treeData, 222);
+  }
+  /**
+   * 获取相对根元素的子元素
+   */
+  getChild(item) {
+    let child: any = [];
+    // 判断子的父id与全部数据的id相等
+    this.allData.map(val => {
+      if (item.id === val.resoPid) {
+        if (val.resoPid) {
+          let node2 = {
+            title: val.resoName,
+            resoName: val.resoName,
+            resoPid: val.id,
+            resoSysname: val.resoSysname,
+            resoInitName: val.resoInitName,
+            resoCode: val.resoCode,
+            resoLevel: val.resoLevel,
+            resoStatus: val.resoStatus,
+            resoPath: val.resoPath,
+            resoInitIcon: val.resoInitIcon,
+            resoIcon: val.resoIcon,
+            resoType: val.resoType,
+            resoFiletype: val.resoFiletype,
+            resoRemark: val.resoRemark,
+            expand: true,
+            children: this.getChild(val) // 迭代产生根
+          };
+          child.push(node2);
+        } else if (val.resoPid === null) {
+          let node2 = {
+            title: val.resoName,
+            id: val.id,
+            resoName: val.resoName,
+            resoSysname: val.resoSysname,
+            resoInitName: val.resoInitName,
+            resoCode: val.resoCode,
+            resoLevel: val.resoLevel,
+            resoStatus: val.resoStatus,
+            resoPath: val.resoPath,
+            resoInitIcon: val.resoInitIcon,
+            resoIcon: val.resoIcon,
+            resoType: val.resoType,
+            resoFiletype: val.resoFiletype,
+            resoRemark: val.resoRemark,
+            expand: true,
+            children: this.getChild(val)
+          };
+          child.push(node2);
+        }
       }
-    ];
+    });
+    return child;
+  }
+  prdTreeChange(val) {
+    this.treeDatabox = val;
   }
 }
 </script>
