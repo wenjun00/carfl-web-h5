@@ -66,7 +66,7 @@
 
     <template>
       <i-modal v-model="addNewOrgModal" title="添加机构" width="400">
-        <add-org ref="add-org" :addOrgModel="addOrgModel" @close="addNewOrgModal=false"></add-org>
+        <add-org ref="add-org" :addOrgModel="addOrgModel" @close="closeOrg"></add-org>
         <div slot="footer">
           <i-button @click="cancelAddOrg">取消</i-button>
           <i-button class="blueButton" @click="confirmAddOrg">确定</i-button>
@@ -76,7 +76,7 @@
 
     <template>
       <i-modal v-model="editNewOrgModal" title="编辑机构" width="400">
-        <edit-org ref="edit-org" :deptObject="deptObject" @close="editNewOrgModal=false"></edit-org>
+        <edit-org ref="edit-org" :deptObject="deptObject" @close="closeEditOrg"></edit-org>
         <div slot="footer">
           <i-button @click="cancelEditOrg">取消</i-button>
           <i-button class="blueButton" @click="confirmEditOrg">确定</i-button>
@@ -449,6 +449,14 @@
         this.userIds = this.multipleUserId.map(v => v.id)
       }
     }
+    closeEditOrg() {
+      this.editNewOrgModal = false
+      this.getTree()
+    }
+    closeOrg() {
+      this.addNewOrgModal = false
+      this.getTree()
+    }
     /**
      * 批量管理设备
      */
@@ -466,17 +474,9 @@
     onChange(value) {
       console.log('树change', value)
       this.userListModel.deptId = value.id
+      this.deptLevel = value.deptLevel
       this.deptObject = value
-      // // 获取组织机构等级
-      // this.deptLevel = value.deptLevel
-      // // 获取deptCode
-      // this.deptCode = value.deptCode
-      // this.companyId = value.companyId
-      // this.addOrgModel.deptPid = value.deptPid
-      // this.addOrgModel.deptCode = value.deptCode
-      // this.addOrgModel.companyId = value.companyId
       this.addOrgModel = value
-      console.log(123, this.addOrgModel.companyId)
       this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
         this.userList = val.object.list
       })
@@ -510,7 +510,7 @@
      */
     addDept() {
       this.addNewOrgModal = true
-      let deptLevel
+      console.log(this.deptLevel, 888, this.addOrgModel.deptLevel)
       if (this.deptLevel) {
         this.addOrgModel.deptLevel = this.deptLevel + 1
       }
@@ -538,7 +538,7 @@
     editDept() {
       this.editNewOrgModal = true
       let _edit: any = this.$refs['edit-org']
-      _edit.getDeptInfo(this.deptObject)
+      _edit.getDeptInfo()
     }
     cancelAddOrg() {
       this.addNewOrgModal = false

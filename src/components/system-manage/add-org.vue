@@ -5,14 +5,14 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="机构名称" prop="deptName">
-            <i-input v-model="addOrgModel.deptName"></i-input>
+            <i-input v-model="addModel.deptName"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="24">
           <i-form-item label="组织机构等级" prop="deptLevel">
-            <i-select v-model="addOrgModel.deptLevel" disabled>
+            <i-select v-model="addModel.deptLevel" disabled>
               <i-option label="一级" :value="401" :key="401"></i-option>
               <i-option label="二级" :value="402" :key="402"></i-option>
               <i-option label="三级" :value="403" :key="403"></i-option>
@@ -23,7 +23,7 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="状态" prop="deptStatus">
-            <i-select v-model="addOrgModel.deptStatus" clearable>
+            <i-select v-model="addModel.deptStatus" clearable>
               <i-option label="启用" :value="0" :key="0"></i-option>
               <i-option label="停用" :value="1" :key="1"></i-option>
             </i-select>
@@ -33,7 +33,7 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="公司名称" prop="companyId">
-            <i-select v-model="addOrgModel.companyId" disabled>
+            <i-select v-model="addModel.companyId">
               <i-option v-for="item in companyObject" :key="item.id" :value="item.id" :label="item.companyChinaname"></i-option>
             </i-select>
           </i-form-item>
@@ -42,7 +42,7 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="备注" prop="deptRemark">
-            <i-input v-model="addOrgModel.deptRemark" type="textarea"></i-input>
+            <i-input v-model="addModel.deptRemark" type="textarea"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -76,6 +76,13 @@
     private rules: any;
     private getAllCompany: any;
     private companyObject: Array < Object >= []; // 公司信息
+    private addModel: any = {
+      deptName: '',
+      deptLevel: '',
+      deptStatus: '',
+      companyId: '',
+      deptRemark: ''
+    }
     created() {
       this.rules = {
         deptName: [{
@@ -91,7 +98,9 @@
       let _addOrg: any = this.$refs['add-org-form']
       _addOrg.validate(valid => {
         if (valid) {
-          this.departmentService.createDepartment(this.addOrgModel).subscribe(val => {
+          this.addModel.deptPid = this.addOrgModel.id
+          this.addModel.deptCode = this.addOrgModel.deptCode
+          this.departmentService.createDepartment(this.addModel).subscribe(val => {
             this.$Message.success('添加成功！')
             this.$emit('close')
           })
@@ -100,6 +109,7 @@
     }
     addDept() {
       console.log('子组件', this.addOrgModel)
+      this.addModel.deptLevel = this.addOrgModel.deptLevel
       // 获取公司名称
       this.companyService.getAllCompany(this.getAllCompany).subscribe(val => {
         this.companyObject = val.object
