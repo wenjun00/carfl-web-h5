@@ -163,7 +163,7 @@
 
         <template>
             <i-modal v-model="viewModal" title="查看期数" width="900">
-                <preview-product :productDetailView="productDetails" :pNameTitleView="productMessage"></preview-product>
+                <preview-product :productDetailView="productDetails" :dpNameTitleView="productMessage"></preview-product>
                 <div slot="footer">
                     <i-button type="primary" @click="viewModal=false">关闭</i-button>
                 </div>
@@ -473,7 +473,6 @@ export default class ProdConfig extends Page {
   }
   createNewTree(allData) {
     let root = allData.filter(v => !v.parent);
-    console.log(root, 32423);
     this.treeData = [];
     root.forEach(item => {
       let node1 = {
@@ -484,7 +483,6 @@ export default class ProdConfig extends Page {
       };
       this.treeData.push(node1);
     });
-    console.log(this.treeData, 87);
   }
   getChild(item) {
     let child: any = [];
@@ -623,6 +621,7 @@ export default class ProdConfig extends Page {
   showDetail(item) {
     this.editModal = true;
     this.productDetails = item;
+    console.log(item, 9900);
   }
   viewButton(item) {
     this.viewModal = true;

@@ -166,8 +166,8 @@ import { Layout } from "~/core/decorator";
   }
 })
 export default class AddPeriods extends Vue {
-  @Prop() productDetailView: any = {};
-  @Prop() dpNameTitleView: any = {};
+  @Prop() productDetailView: any;
+  @Prop() dpNameTitleView: any;
   private accountPeriodsList: String = "正常账期";
   private initialParams: String = "无";
   private promiseMoenyParams: String = "无";

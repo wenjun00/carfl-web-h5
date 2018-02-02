@@ -209,8 +209,8 @@ import { ProductPlanIssueService } from "~/services/manage-service/productPlanIs
 export default class AddPeriods extends Vue {
   @Dependencies(ProductPlanIssueService)
   private ProductPlanIssueService: ProductPlanIssueService;
-  @Prop() productDetail: any = {};
-  @Prop() pNameTitle: any = {};
+  @Prop() productDetail: any;
+  @Prop() pNameTitle: any;
   private accountPeriodsList: String = "正常账期";
   private initialParams: String = "无";
   private promiseMoenyParams: String = "无";
@@ -338,47 +338,48 @@ export default class AddPeriods extends Vue {
     }
   }
   moneyFun() {
-    this.moneyArray = this.productDetail.financingAmount.split(/[~]*/);
+    this.moneyArray = this.productDetail.financingAmount.split("~");
     this.amount = {
       financingAmount1: this.moneyArray[0],
       financingAmount2: this.moneyArray[1]
     };
-    console.log(this.amount, 9090);
+    console.log(this.amount, 90901);
   }
   /**@
    * 点击确定按钮
    */
   confirmPeriods() {
-    // let formVal = <Form>this.$refs["formItems"];
-    // console.log(this.formItems);
-    // formVal.validate(valid => {
-    //   if (valid) {
-    //     this.$emit("close", this.formItems);
-    //     this.formItems.paymentType === "固定账期"
-    //       ? (this.formItems.paymentType = 387)
-    //       : (this.formItems.paymentType = 386);
-    //     this.formItems.manageCostType === "一次性收取"
-    //       ? (this.formItems.manageCostType = 394)
-    //       : (this.formItems.manageCostType = 395);
-    //     this.formItems.depositCashType === "退还"
-    //       ? (this.formItems.depositCashType = 396)
-    //       : (this.formItems.depositCashType = 397);
-    //     this.formItems.isPublish === "未发布"
-    //       ? (this.formItems.isPublish = 361)
-    //       : (this.formItems.isPublish = 360);
-    //     this.formItems.financingAmount =
-    //       this.amount.financingAmount1 + "~" + this.amount.financingAmount2;
-    //     this.formItems.productId = this.productDetail.id;
-    //     this.formItems.productStatus = this.productDetail.status;
-    //     this.ProductPlanIssueService.createOrModifyProductPlan(
-    //       this.formItems
-    //     ).subscribe(val => {
-    //       this.$Message.success(val.msg == "" ? "新增成功！" : val.msg);
-    //     });
-    //   } else {
-    //     this.$Message.error("Fail!");
-    //   }
-    // });
+    console.log(this.productDetail);
+
+    let formVal = <Form>this.$refs["productDetail"];
+    formVal.validate(valid => {
+      if (valid) {
+        this.$emit("close", this.productDetail);
+        // this.productDetail.paymentType === "固定账期"
+        //   ? (this.productDetail.paymentType = 387)
+        //   : (this.productDetail.paymentType = 386);
+        // this.productDetail.manageCostType === "一次性收取"
+        //   ? (this.productDetail.manageCostType = 394)
+        //   : (this.productDetail.manageCostType = 395);
+        // this.productDetail.depositCashType === "退还"
+        //   ? (this.productDetail.depositCashType = 396)
+        //   : (this.productDetail.depositCashType = 397);
+        // this.productDetail.isPublish === "未发布"
+        //   ? (this.productDetail.isPublish = 361)
+        //   : (this.productDetail.isPublish = 360);
+        // this.productDetail.financingAmount =
+        //   this.amount.financingAmount1 + "~" + this.amount.financingAmount2;
+        // this.productDetail.productId = this.productDetail.id;
+        // this.productDetail.productStatus = this.productDetail.status;
+        this.ProductPlanIssueService.createOrModifyProductPlan(
+          this.productDetail
+        ).subscribe(val => {
+          this.$Message.success(val.msg == "" ? "新增成功！" : val.msg);
+        });
+      } else {
+        this.$Message.error("Fail!");
+      }
+    });
   }
 }
 </script>
