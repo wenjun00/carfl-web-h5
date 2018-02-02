@@ -143,17 +143,42 @@ export class NetService {
             allowDots: true
           })
       }).then(({ data }) => {
-        if (options.page && data.content) {
-          options.page.update(data)
-          data = data.content
-        }
-
-        observer.next(data)
-      }).catch((ex, { response }) => {
         if (options.loading && options.loading.state) {
           options.loading.state = false
         }
-        console.log(ex)
+
+        if (data.status === "SUCCESS") {
+          let { object } = data
+
+          if (options.page && data.list) {
+            options.page.update(data)
+            object = data.list
+          }
+
+          observer.next(object)
+        } else {
+          observer.error({
+            msg: data.msg
+          })
+        }
+      }).catch((ex, { response }) => {
+        // 错误信息
+        let error: any = {
+          msg: "",
+          params: ""
+        }
+
+        if (options.loading && options.loading.state) {
+          options.loading.state = false
+        }
+
+        // 逻辑异常检测
+        if (!ex.response && !ex.request) {
+          error.msg = ex.message
+          error.params = ex.stack
+          console.error(ex.stack)
+          return Observable.empty()
+        }
 
         // 通讯状态检测
         if (!response) {
@@ -167,18 +192,6 @@ export class NetService {
 
         // 错误类型检测
         switch (response.status) {
-          case 400:
-            {
-              // 错误信息获取
-              let error = {
-                msg: decodeURIComponent(response.headers['x-alert']),
-                params: response.headers['x-params']
-              }
-
-              console.error(error)
-              observer.error(error)
-              break;
-            }
           case 403:
             {
               //

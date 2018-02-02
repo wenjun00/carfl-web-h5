@@ -15,14 +15,14 @@ export class PageService {
     this.pageSizeOpts = [10, 20, 30, 40]
     this.layout = 'total, sizes, prev, pager, next, jumper'
   }
-  
+
   /**
    * 获取分页配置信息
    */
   getConfig() {
     return {
-      page: this.pageIndex - 1,
-      size: this.pageSize
+      pageNum: this.pageIndex - 1,
+      pageSize: this.pageSize
     }
   }
 
@@ -30,8 +30,8 @@ export class PageService {
    * 更新分页配置信息
    * @param param
    */
-  update({ totalElements, totalPages }) {
-    this.total = parseInt(totalElements)
-    this.totalPage = parseInt(totalPages)
+  update({ total, pages }) {
+    this.total = parseInt(total)
+    this.totalPage = parseInt(pages)
   }
 }
