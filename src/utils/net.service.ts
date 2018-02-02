@@ -150,9 +150,9 @@ export class NetService {
         if (data.status === "SUCCESS") {
           let { object } = data
 
-          if (options.page && data.list) {
-            options.page.update(data)
-            object = data.list
+          if (options.page && object.list) {
+            options.page.update(object)
+            object = object.list
           }
 
           observer.next(object)
@@ -161,7 +161,7 @@ export class NetService {
             msg: data.msg
           })
         }
-      }).catch((ex, { response }) => {
+      }).catch((ex) => {
         // 错误信息
         let error: any = {
           msg: "",
@@ -181,7 +181,7 @@ export class NetService {
         }
 
         // 通讯状态检测
-        if (!response) {
+        if (!ex.response) {
           let error = {
             msg: "服务端连接异常，请检查服务端状态.",
           }
@@ -191,7 +191,7 @@ export class NetService {
         }
 
         // 错误类型检测
-        switch (response.status) {
+        switch (ex.response.status) {
           case 403:
             {
               //

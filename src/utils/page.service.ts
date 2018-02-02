@@ -21,8 +21,8 @@ export class PageService {
    */
   getConfig() {
     return {
-      pageNum: this.pageIndex - 1,
-      pageSize: this.pageSize
+      page: this.pageIndex,
+      size: this.pageSize
     }
   }
 
@@ -31,6 +31,7 @@ export class PageService {
    * @param param
    */
   update({ total, pages }) {
+    console.log(total, pages)
     this.total = parseInt(total)
     this.totalPage = parseInt(pages)
   }

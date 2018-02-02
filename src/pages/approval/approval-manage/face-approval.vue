@@ -432,8 +432,8 @@
     getFaceApprovalList() {
       this.resourcePoolModel.startTime = FilterService.dateFormat(this.resourcePoolModel.startTime, "yyyy-MM-dd")
       this.resourcePoolModel.endTime = FilterService.dateFormat(this.resourcePoolModel.endTime, "yyyy-MM-dd")
-      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(val => {
-        this.faceList = val.object.list
+      this.approvalService.auditResourcePool(this.resourcePoolModel, this.pageService).subscribe(data => {
+        this.faceList = data
       })
     }
   }

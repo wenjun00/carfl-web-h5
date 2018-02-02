@@ -5,8 +5,8 @@
         :width="width" @on-current-change="currentChange" @on-selection-change="currentSelect"></i-table>
     </div>
     <div class="row end-span" :style="{'width':`${width}px`}">
-      <i-page class="pagination" size="small" show-total show-sizer :show-elevator="page.showElevator" :total="page.total" @on-change="pageChange"
-        @on-page-size-change="pageChange"></i-page>
+      <i-page class="pagination" size="small" show-total show-sizer :show-elevator="page.showElevator" :current.sync="page.pageIndex"
+        :total="page.total" :page-size.sync="page.pageSize" @on-change="pageChange" @on-page-size-change="pageSizeChange"></i-page>
     </div>
   </div>
 </template>
@@ -49,12 +49,14 @@
       default: () => new PageService()
     })
     page: PageService;
-    @Emit("pageChange")
+
+    @Emit("onPageChange")
     pageConfigChange(page) {}
     @Emit("rowClick")
     getRowByClick(row) {}
     @Emit("currentChange") // 行单击高亮后change事件
     getRowInfo(currentRow, oldRow) {}
+
     @Prop()
     width: Number;
     // @Prop({default:500})
@@ -69,13 +71,20 @@
      * 监听绑定数据变化
      */
     @Watch("data")
-    onDataChanged(newVal: string, oldVal: string) {
-      this.page.total = newVal.length
-    }
+    onDataChanged(newVal: string, oldVal: string) {}
 
-    pageChange() {
+    pageChange(value) {
+      // this.page.pageIndex = 1;
+      // this.page.pageSize = 1;
       this.pageConfigChange(this.page);
     }
+
+    pageSizeChange(value) {
+      this.page.pageIndex = 1
+      this.page.pageSize = value
+      this.pageConfigChange(this.page);
+    }
+
     rowClick(row) {
       this.getRowByClick(row)
     }
