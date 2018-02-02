@@ -7,7 +7,7 @@
             <i-input style="width:15%" placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyword"></i-input>
             <i-button class="blueButton" style="margin-left:10px;" @click="seachCompany">搜索</i-button>
         </i-row>
-        <data-box :columns="columns" :data="companyList"></data-box>
+        <data-box :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
         <i-modal title="修改分公司信息" v-model="modal" :mask-closable="false">
             <modify-branch-info ref="modify-branch" @close="closeModifyBrach" v-bind:formItemParent="formItem"></modify-branch-info>
             <div slot="footer">
@@ -49,8 +49,8 @@ export default class BranchCompanyInfo extends Page {
   private sasStatus: any;
   private modal: Boolean = false;
   private formItem: any;
+  
   created() {
-    this.seachCompany();
     this.formItem = {
       id: "",
       companyChinaname: "",
@@ -217,6 +217,10 @@ export default class BranchCompanyInfo extends Page {
       keyword: ""
     };
   }
+  mounted () {
+    this.seachCompany();
+      
+  }
   getOrderInfoByTime() {}
   openSearch() {
     this.searchOptions = !this.searchOptions;
@@ -229,8 +233,13 @@ export default class BranchCompanyInfo extends Page {
     this.companyService
       .getAllCompanyWithPage(this.companyModel, this.pageService)
       .subscribe(val => {
-        this.companyList = val.object.list;
-      });
+        this.companyList = val;
+      }, ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+      );
   }
   /**
    * 停用/启用

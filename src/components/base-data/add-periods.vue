@@ -343,7 +343,12 @@ export default class AddPeriods extends Vue {
       } else {
         this.$Message.error("Fail!");
       }
-    });
+    },({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+    );
   }
 }
 </script>

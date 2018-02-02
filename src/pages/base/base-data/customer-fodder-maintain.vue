@@ -30,7 +30,7 @@
                     <i-input style="width:10%" v-model="personalModel.name"></i-input>
                     <i-button class="blueButton" style="margin-left:10px" @click="search">搜索</i-button>
                     <i-button class="blueButton" style="margin-left:10px;position:absolute;right:11px;" @click="addMaterial">新增素材</i-button>
-                    <data-box :columns="columns" :data="data1"></data-box>
+                    <data-box :columns="columns" :data="data1" @onPageChange="search" :page="pageService"></data-box>
                 </i-col>
             </i-row>
         </i-row>
@@ -197,7 +197,7 @@ export default class CustomerFodderMaintain extends Page {
         typeCode: "0309"
       })
       .subscribe(val => {
-        this.maintains = val.object;
+        this.maintains = val;
       });
   }
   /**
@@ -218,8 +218,13 @@ export default class CustomerFodderMaintain extends Page {
     this.personalMaterialService
       .getAllPersonalMaterial(this.personalModel, this.pageService)
       .subscribe(val => {
-        this.data1 = val.object.list;
-      });
+        this.data1 = val;
+      }, ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+      );
   }
   /**
    * 删除客户素材
@@ -231,7 +236,12 @@ export default class CustomerFodderMaintain extends Page {
       })
       .subscribe(val => {
         this.checkMaintain(this.item);
-      });
+      },({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+      );
   }
   /**
    *新增素材
@@ -240,7 +250,13 @@ export default class CustomerFodderMaintain extends Page {
     this.addMaterialInfo = this.checkId;
     this.personalMaterialService
       .createOrModifyPersonalMaterial(this.addMaterialInfo)
-      .subscribe(val => {});
+      .subscribe(val => {
+      },({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+      );
   }
   mounted() {
     this.checkId = 376; //checkId 保存了点击素材类型时的id

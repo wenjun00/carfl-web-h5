@@ -144,7 +144,12 @@
         } else {
           this.$Message.error("Fail!");
         }
-      });
+      },({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+      );
     }
     /**
      * 修改器用/停用

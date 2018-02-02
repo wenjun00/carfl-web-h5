@@ -456,7 +456,12 @@ export default class ProdConfig extends Page {
   publishNext() {
     this.ProductPlanIssueService.publish(this.publishItem).subscribe(val => {
       this.$Message.success("发布成功！");
-    });
+    },({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+    );
   }
   chargeAgainstOrderConfig() {
     this.chargeAgainstOrderConfigModal = true;
@@ -466,8 +471,8 @@ export default class ProdConfig extends Page {
    */
   treeList() {
     this.productService.getProductTree().subscribe(val => {
-      this.allData = val.object;
-      this.productId = val.object[0].productId;
+      this.allData = val;
+      this.productId = val.productId;
       this.createNewTree(this.allData);
     });
   }
@@ -515,6 +520,7 @@ export default class ProdConfig extends Page {
    *  树change事件 查询产品列表详情
    */
   productNameDetail(scope) {
+      console.log(scope,909000)
     if (scope[0].productId) {
       this.ProductPlanIssueService.getAllProductPlan(
         {
@@ -523,9 +529,9 @@ export default class ProdConfig extends Page {
         this.pageService
       ).subscribe(val => {
         this.addPeriodsBox = true;
-        if (val.object.list.length > 0) {
+        if (val.length > 0) {
           this.productShow = true;
-          this.prdConfig = val.object.list;
+          this.prdConfig = val;
           //初始化启用/停用状态
           if (this.prdConfig[0].productStatus === 0) {
             this.prdConfig[0].productStatus = true;
@@ -552,7 +558,7 @@ export default class ProdConfig extends Page {
         id: scope[0].productId
       })
       .subscribe(val => {
-        this.productMessage = val.object;
+        this.productMessage = val;
       });
   }
   /**
@@ -572,7 +578,12 @@ export default class ProdConfig extends Page {
       .createOrModifyProduct(this.productMessage)
       .subscribe(val => {
         this.$Message.success("数据保存成功！");
-      });
+      },({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
+      );
   }
   getPaymentType(item) {
     if (item.paymentType === 387) {
