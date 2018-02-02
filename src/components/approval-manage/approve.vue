@@ -29,12 +29,12 @@
       </div>
       <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px" v-for="item in carOrderInfo"
         :key="item.id">
-        <data-grid-item label="车辆型号" :span="6">{{item.vehicleModels?item.vehicleModels:''}}</data-grid-item>
+        <data-grid-item label="车辆型号" :span="6">{{item.modelName?item.modelName:''}}</data-grid-item>
         <data-grid-item label="上牌地区" :span="3">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>
         <data-grid-item label="车身颜色" :span="3">{{item.vehicleColour?item.vehicleColour:''}}</data-grid-item>
         <data-grid-item label="购车排量" :span="4">{{item.vehicleEmissions?item.vehicleEmissions:''}}</data-grid-item>
         <data-grid-item label="购车配置" :span="4">{{item.vehicleConfiguration?item.vehicleConfiguration:''}}</data-grid-item>
-        <data-grid-item label="车辆牌照" :span="4">{{item.vehicleLicence?item.vehicleLicence:''}}</data-grid-item>
+        <data-grid-item label="车辆牌照" :span="4">{{item.carLicence?item.carLicence:''}}</data-grid-item>
       </data-grid>
     </i-row>
     <!--产品信息-->
@@ -275,18 +275,18 @@
         <tr>
           <td>通过宣传</td>
           <td colspan="4">
-            <span>{{personalResourcePublicity.resourceContent}}</span>
+            <span>{{personalResourcePublicity.resourceContent?personalResourcePublicity.resourceContent:''}}</span>
           </td>
         </tr>
         <tr>
           <td>通过介绍</td>
           <td>
             <span>同行姓名：</span>
-            <span>{{personalResourceIntroduce.peerName}}</span>
+            <span>{{personalResourceIntroduce.peerName?personalResourceIntroduce.peerName:''}}</span>
             <span>同行公司：</span>
-            <span>{{personalResourceIntroduce.peerCompany}}</span>
+            <span>{{personalResourceIntroduce.peerCompany?personalResourceIntroduce.peerCompany:''}}</span>
             <span>同行联系方式：</span>
-            <span>{{personalResourceIntroduce.peerPhone}}</span>
+            <span>{{personalResourceIntroduce.peerPhone?personalResourceIntroduce.peerPhone:''}}</span>
           </td>
         </tr>
       </table>
@@ -299,7 +299,7 @@
       </div>
       <i-row style="margin-top:10px">
         <i-col :span="12">
-          <div v-for="item in materialInfo" :key="item.id" class="material" :style="getMaterialUrl(item)" @click="ceshi(item)">
+          <div v-for="item in materialInfo" :key="item.id" class="material">
             <span>123123</span>
           </div>
         </i-col>

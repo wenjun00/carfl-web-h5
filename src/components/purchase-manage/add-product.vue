@@ -5,10 +5,10 @@
       <i-button class="blueButton">搜索</i-button>
     </i-row>
     <i-row style="margin-top:10px;">
-      <i-col :span="4" style="border:1px solid #DDDDDD;height:570px;overflow:auto" :class="{open:isShown,close:!isShown}">
+      <i-col :span="5" style="border:1px solid #DDDDDD;height:570px;overflow:auto" :class="{open:isShown,close:!isShown}">
         <i-tree :data="treeData" @on-select-change="productPlanissueDetail" style="padding:10px;"></i-tree>
       </i-col>
-      <i-col :span="20">
+      <i-col :span="19">
         <i-row type="flex" justify="start">
           <i-col class="arrowButton" :span="2">
             <div :class="{arrowDown:!isShown,arrowUp:isShown}" @click="showCategory">
@@ -218,11 +218,23 @@
       let child: any = []
       this.allData.map(val => {
         if (item.id === val.parent) {
-          let node2 = {
-            title: val.name,
-            productId: val.id
+          if (val.flag === '产品') {
+            let node2 = {
+              title: val.name,
+              productId: val.id,
+              expand: true,
+              children: this.getChild(val) // 迭代产生根
+            }
+            child.push(node2)
+          } else if (val.flag === '产品系列') {
+            let node2 = {
+              title: val.name,
+              seriesId: val.id,
+              expand: true,
+              children: this.getChild(val)
+            }
+            child.push(node2)
           }
-          child.push(node2)
         }
       })
       return child

@@ -57,57 +57,39 @@
       <i-modal title="提交内审" v-model="submitToInternalModal">
         <i-form>
           <i-form-item label="详细原因">
-            <i-input type="textarea"></i-input>
+            <i-input type="textarea" v-model="internalModel.remark"></i-input>
           </i-form-item>
         </i-form>
+        <div slot="footer">
+          <i-button @click="cancelAddInternal">取消</i-button>
+          <i-button @click="confirmAddInternal" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
     <template>
-      <i-modal title="黑名单" v-model="blackListModal">
+      <i-modal :title="rejectOrBlackFlag?'拒绝':'黑名单'" v-model="blackListModal">
         <i-form>
           <i-form-item>
-            <i-select placeholder="请选择结果" style="width:30%">
-              <i-option label="拒绝" value="拒绝" key="拒绝"></i-option>
+            <i-select placeholder="请选择结果" style="width:20%" @on-change="changeSelectOne">
+              <i-option label="拒绝" :value="375" :key="375"></i-option>
             </i-select>
-            <i-select placeholder="请选择结果类型" style="width:30%">
-              <i-option label="进件条件不足" value="进件条件不足" key="进件条件不足"></i-option>
+            <i-select placeholder="全部拒单原因" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.second"
+              @on-change="changeSelectTwo">
+              <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
             </i-select>
-            <i-select placeholder="请选择拒绝原因" style="width:30%">
-              <i-option label="逾期比例超30%" value="逾期比例超30%" key="逾期比例超30%"></i-option>
-              <i-option label="风控限制区域" value="风控限制区域" key="风控限制区域"></i-option>
-              <i-option label="社保公积金不满6个月" value="社保公积金不满6个月" key="社保公积金不满6个月"></i-option>
-              <i-option label="户籍、年龄限制" value="户籍、年龄限制" key="户籍、年龄限制"></i-option>
+            <i-select placeholder="全部拒单细节" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.approveReasonId">
+              <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id"></i-option>
             </i-select>
           </i-form-item>
           <i-form-item>
-            <i-input type="textarea"></i-input>
+            <i-input type="textarea" v-model="approvalRecordModel.remark" placeholder="请录入详细原因（非必填，限制1000字以内）" :maxlength="1000"></i-input>
           </i-form-item>
         </i-form>
-      </i-modal>
-    </template>
-
-    <template>
-      <i-modal title="拒绝" v-model="rejectModal" @on-ok="approveModal=false">
-        <i-form>
-          <i-form-item>
-            <i-select placeholder="请选择结果" style="width:30%">
-              <i-option label="拒绝" value="拒绝" key="拒绝"></i-option>
-            </i-select>
-            <i-select placeholder="请选择结果类型" style="width:30%">
-              <i-option label="进件条件不足" value="进件条件不足" key="进件条件不足"></i-option>
-            </i-select>
-            <i-select placeholder="请选择拒绝原因" style="width:30%">
-              <i-option label="逾期比例超30%" value="逾期比例超30%" key="逾期比例超30%"></i-option>
-              <i-option label="风控限制区域" value="风控限制区域" key="风控限制区域"></i-option>
-              <i-option label="社保公积金不满6个月" value="社保公积金不满6个月" key="社保公积金不满6个月"></i-option>
-              <i-option label="户籍、年龄限制" value="户籍、年龄限制" key="户籍、年龄限制"></i-option>
-            </i-select>
-          </i-form-item>
-          <i-form-item>
-            <i-input type="textarea"></i-input>
-          </i-form-item>
-        </i-form>
+        <div slot="footer">
+          <i-button @click="cancelAddBlack">取消</i-button>
+          <i-button @click="confirmAddBlackOrIntenal" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -124,9 +106,13 @@
       <i-modal title="灰名单" v-model="grayListModal">
         <i-form>
           <i-form-item label="详细原因">
-            <i-input type="textarea"></i-input>
+            <i-input type="textarea" v-model="grayModel.remark"></i-input>
           </i-form-item>
         </i-form>
+        <div slot="footer">
+          <i-button @click="cancelAddGray">取消</i-button>
+          <i-button @click="confirmAddGray" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -134,23 +120,25 @@
       <i-modal title="退回申请" v-model="rebackModal" @on-ok="approveModal=false">
         <i-form>
           <i-form-item>
-            <i-select placeholder="请选择结果" style="width:30%">
-              <i-option label="拒绝" value="拒绝" key="拒绝"></i-option>
+            <i-select placeholder="请选择结果" style="width:20%" @on-change="changeSelectOne">
+              <i-option label="退件" :value="374" :key="374"></i-option>
             </i-select>
-            <i-select placeholder="请选择结果类型" style="width:30%">
-              <i-option label="进件条件不足" value="进件条件不足" key="进件条件不足"></i-option>
+            <i-select placeholder="全部拒单原因" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.second"
+              @on-change="changeSelectTwo">
+              <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
             </i-select>
-            <i-select placeholder="请选择拒绝原因" style="width:30%">
-              <i-option label="逾期比例超30%" value="逾期比例超30%" key="逾期比例超30%"></i-option>
-              <i-option label="风控限制区域" value="风控限制区域" key="风控限制区域"></i-option>
-              <i-option label="社保公积金不满6个月" value="社保公积金不满6个月" key="社保公积金不满6个月"></i-option>
-              <i-option label="户籍、年龄限制" value="户籍、年龄限制" key="户籍、年龄限制"></i-option>
+            <i-select placeholder="全部拒单细节" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.approveReasonId">
+              <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id"></i-option>
             </i-select>
           </i-form-item>
           <i-form-item>
-            <i-input type="textarea"></i-input>
+            <i-input type="textarea" v-model="approvalRecordModel.remark"></i-input>
           </i-form-item>
         </i-form>
+        <div slot="footer">
+          <i-button @click="cancelBackToComing">取消</i-button>
+          <i-button @click="confirmBackToComing" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -158,7 +146,7 @@
       <i-modal title="审批通过" v-model="approvePassedModal" @on-ok="approveModal=false">
         <i-form>
           <i-form-item label="备注说明">
-            <i-input type="textarea"></i-input>
+            <i-input type="textarea" v-model="facePassModel.remark"></i-input>
           </i-form-item>
         </i-form>
       </i-modal>
@@ -240,6 +228,9 @@
   import {
     CityService
   } from "~/utils/city.service"
+  import {
+    ApproveReasonService
+  } from "~/services/manage-service/approve.reason.service";
   @Layout("workspace")
   @Component({
 
@@ -253,6 +244,7 @@
   export default class MyApproval extends Page {
     @Dependencies(ApprovalService) private approvalService: ApprovalService;
     @Dependencies(PageService) private pageService: PageService;
+    @Dependencies(ApproveReasonService) private approveReasonService: ApproveReasonService;
 
     private columns1: any;
     private myOrderList: Array < Object > = [];
@@ -273,9 +265,10 @@
     private meetConditionApproval: Boolean = false; // 合规通过弹窗
     private columns3: any;
     private data3: Array < Object > = [];
-    private approveStatue: String = ''
+    private approveStatue: number = 0
     private compactEffect: String = '当月'
     private approvalOrderId: number = 0;
+    private rejectOrBlackFlag: Boolean = false;
     private myOrderModel: any = {
       startTime: '',
       endTime: '',
@@ -285,7 +278,31 @@
       timeSearch: '',
       productType: ''
     }
-
+    // 灰名单
+    private grayModel: any = {
+      remark: '',
+      orderId: '',
+      operateType: 1
+    }
+    // 黑名单
+    private approvalRecordModel: any = {
+      type: '',
+      second: '',
+      approveReasonId: '',
+      remark: '',
+      operateType: 2
+    }
+    // 内审
+    private internalModel: any = {
+      remark: '',
+      operateType: 0
+    }
+    // 面审通过model
+    private facePassModel: any = {
+      remark: ''
+    }
+    private refuseReason: Array < Object >= [] // 拒单原因
+    private refuseDetail: Array < Object >= [] // 拒单细节
     created() {
       this.getMyOrderList()
       this.columns3 = [{
@@ -577,32 +594,160 @@
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
+    changeSelectOne(val) {
+      this.approvalRecordModel.approveReasonId = ''
+      this.approvalRecordModel.second = ''
+      this.approvalRecordModel.type = val
+      this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(val => {
+        this.refuseReason = val.object
+      })
+    }
+    changeSelectTwo(val) {
+      this.approvalRecordModel.second = val
+      this.approvalRecordModel.approveReasonId = ''
+      this.approveReasonService.getApproveReasonByCondition(this.approvalRecordModel).subscribe(val => {
+        this.refuseDetail = val.object
+      })
+    }
+    /**
+     * 取消退件
+     */
+    cancelBackToComing() {
+      this.rebackModal = false
+      this.approvalRecordModel.remark = ''
+      this.approvalRecordModel.approveReasonId = ''
+      this.approvalRecordModel.second = ''
+    }
+    /**
+     * 确定退件
+     */
+    confirmBackToComing() {
+      this.approvalRecordModel.orderId = this.approvalOrderId
+      if (this.approvalRecordModel.approveReasonId) {
+        this.approvalService.goBackInComing(this.approvalRecordModel).subscribe(val => {
+          this.$Message.success('退件成功！')
+          this.cancelBackToComing()
+          this.getMyOrderList()
+          this.approveModal = false
+        })
+      } else {
+        this.$Message.error('拒单原因和拒单细节必须选择！')
+      }
+    }
+    /**
+     * 取消放入灰名单
+     */
+    cancelAddGray() {
+      this.grayListModal = false
+      this.grayModel.remark = ''
+    }
+    /**
+     * 确定放入灰名单
+     */
+    confirmAddGray() {
+      this.grayModel.orderId = this.approvalOrderId
+      this.approvalService.submitInternalAuditOrGreyList(this.grayModel).subscribe(val => {
+        this.$Message.success('提交灰名单成功！')
+        this.grayModel.remark = ''
+        this.grayListModal = false
+        this.approveModal = false
+        this.getMyOrderList()
+      })
+    }
+    /**
+     * 确认提交内审
+     */
+    confirmAddInternal() {
+      this.internalModel.orderId = this.approvalOrderId
+      this.approvalService.submitInternalAuditOrGreyList(this.internalModel).subscribe(val => {
+        this.$Message.success('提交内审成功！')
+        this.internalModel.remark = ''
+        this.approveModal = false
+        this.submitToInternalModal = false
+        this.getMyOrderList()
+      })
+    }
+    /**
+     * 取消提交内审
+     */
+    cancelAddInternal() {
+      this.internalModel.remark = ''
+    }
+    /**
+     * 取消加入黑名单
+     */
+    cancelAddBlack() {
+      this.approvalRecordModel.second = ''
+      this.approvalRecordModel.approveReasonId = ''
+      this.approvalRecordModel.remark = ''
+      this.blackListModal = false
+    }
+    /**
+     * 确定加入黑名单或者拒绝
+     */
+    confirmAddBlackOrIntenal() {
+      this.approvalRecordModel.orderId = this.approvalOrderId
+      if (this.approvalRecordModel.approveReasonId) {
+        // 黑名单
+        if (!this.rejectOrBlackFlag) {
+          this.approvalRecordModel.operateType = 2
+        } else {
+          // 拒绝
+          this.approvalRecordModel.operateType = 3
+        }
+        this.approvalService.submitBlackListOrRefuse(this.approvalRecordModel).subscribe(val => {
+          this.$Message.success('提交黑名单成功！')
+          this.blackListModal = false
+          this.cancelAddBlack()
+          this.getMyOrderList()
+        })
+      } else {
+        this.$Message.error('拒单原因和拒单细节必须选择！')
+      }
+    }
     backToResource() {
       this.$Modal.confirm({
         title: '退回资源池',
         content: '确定停止并放弃审核此订单？',
         onOk: () => {
-
+          this.approvalService.goBackResourcePool({
+            orderId: this.approvalOrderId
+          }).subscribe(val => {
+            this.$Message.success('退回资源池成功！')
+            this.approveModal = false
+            this.getMyOrderList()
+          })
         }
       })
     }
     pass() {
-      if (this.approveStatue === '面审') {
+      console.log(this.approveStatue, 89883)
+      if (this.approveStatue === 332) {
+        // 面审TODO
         this.approvePassedModal = true
-      } else if (this.approveStatue === '终审' || this.approveStatue === '复审') {
-        // TODO
+      } else if (this.approveStatue === 333 || this.approveStatue === 334) {
+        // 复审&终审TODO
         this.secendLastApproval = true
-      } else if (this.approveStatue === '合规') {
-        // TODO
+      } else if (this.approveStatue === 337) {
+        // 合规TODO
         this.meetConditionApproval = true
       }
     }
     rejectOrder() {
-      this.rejectModal = true
+      // this.rejectModal = true
+      this.blackListModal = true
+      this.rejectOrBlackFlag = true // 拒绝或者黑名单判断标识
     }
+    /**
+     * 提交黑名单
+     */
     submitToblack() {
       this.blackListModal = true
+      this.rejectOrBlackFlag = false // 拒绝或者黑名单判断标识
     }
+    /**
+     * 提交内审
+     */
     submitToInternal() {
       this.submitToInternalModal = true
     }

@@ -2,14 +2,14 @@
 <template>
   <section class="page payment-approve">
     <span class="form-title">付款审批</span>
-    <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" style="display:inline-block;width:10%;margin-left:10px;"></i-input>
+    <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="approvalModel.dynamicParams" style="display:inline-block;width:10%;margin-left:10px;"></i-input>
     <i-select placeholder="全部申请类型" style="width:10%;margin-left:10px;">
       <i-option label="销售收款申请" value="销售收款申请" key="销售收款申请"></i-option>
       <i-option label="提前结清申请" value="提前结清申请" key="提前结清申请"></i-option>
       <i-option label="销售收回申请" value="销售收回申请" key="销售收回申请"></i-option>
     </i-select>
     <i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>
-    <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+    <i-button style="margin-left:10px" @click="openSearch" class="blueButton">搜索</i-button>
     <div style="font-size:16px;cursor:pointer;display:inline-block;color:#3367A7;float:right;margin-right:10px;margin-top:10px;">
       <svg-icon iconClass="daochu"></svg-icon>
       <span style="font-size: 12px;">导出</span>
@@ -93,9 +93,10 @@
     private approvalModal: Boolean = false
     private checkApplyModal: Boolean = false;
     private addAttachmentShow: Boolean = false;
+    private dynamicParams: String = '';
     private refundId: String = '';
     private approvalModel: any = {
-
+      dynamicParams: ''
     }
     addNewApply() {
       this.$Modal.info({
@@ -107,6 +108,12 @@
       this.refundApplicationService.getApprovalRecord(this.approvalModel, this.pageService).subscribe(val => {
         this.refundApproval = val.object.list
       })
+    }
+    /**
+     * 搜索
+     */
+    openSearch() {
+      this.getApproval()
     }
     /**
      * 通过申请
@@ -292,9 +299,6 @@
     }
 
     getOrderInfoByTime() {}
-    openSearch() {
-      this.searchOptions = !this.searchOptions
-    }
     /**
      * 列配置
      */

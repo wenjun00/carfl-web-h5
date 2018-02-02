@@ -16,6 +16,7 @@
       </tr>
       <tr height="40" v-for="item in personalInfo" :key="item.index">
         <td width="40">
+          <i-button  v-show="item.refundItem===125" type="text" style="color:#265ea2" @click="deleteGatherItem(item)">删除</i-button>
         </td>
         <td>
           <span>{{item.refundItem}}</span>
@@ -25,9 +26,7 @@
         </td>
       </tr>
       <tr height="40" v-show="changeGatherItemModal">
-        <td>
-          <i-button type="text" style="color:#265ea2" @click="deleteGatherItem">删除</i-button>
-        </td>
+        <td></td>
         <td>
           <i-input v-model="gatherItemModel.refundItem"></i-input>
         </td>
@@ -43,7 +42,7 @@
       <tr height="40">
         <td></td>
         <td>合计（元）</td>
-        <td><span>{{totleAccount}}</span></td>
+        <td><span>{{this.totleAccount}}</span></td>
       </tr>
     </table>
     <div>
@@ -59,8 +58,8 @@
       </i-modal>
 
       <!--添加付款项-->
-      <i-modal v-model="payItems" title="付款项目" width="600">
-        <i-table :columns="columns2" :data="personalInfo"></i-table>
+      <i-modal v-model="payItems" title="付款项目" width="600" @on-ok="confirChoose">
+        <data-box  border stripe ref="payItemDialog" :columns="columns2" :data="itemInfos"></data-box>
       </i-modal>
     </template>
   </section>
@@ -97,15 +96,16 @@
     private data1: Array < Object > = [];
     private columns3: any;
     private columns2: any;
-    private totleAccount: any;
+    private totleAccount: String = '';
     private payItems: Boolean = false;
     private bankList: Array < Object > = [];
     private modifyGatherItemModal: Boolean = false;
     private changeGatherItemModal: Boolean = false;
-    private personalInfo: Array < Object >= []
+    private personalInfo: Array < any >= []
+    private itemInfos: Array < any >= []
     private gatherItemModel: any;
+    private multipleSelection: any = [];
     created() {
-      this.totleAccount = 8989
       this.gatherItemModel = {
         refundAmount: '',
         refundItem: ''
@@ -128,7 +128,11 @@
           column,
           index
         }) => {
-          console.log(index)
+          if (index === 1) {
+            return row.refundAmount = 0
+          } else {
+            return row.refundAmount
+          }
         }
       }]
 
@@ -205,18 +209,12 @@
       }]
     }
     refresh(childMessage) {
-      console.log(childMessage.itemList)
       this.bankList = childMessage.bankList
       this.personalInfo = childMessage.itemList
+      this.itemInfos = childMessage.itemList
     }
     modifyGatherItem() {
       this.modifyGatherItemModal = true
-    }
-    /**
-     * 父组件方法
-     */
-    submit() {
-      console.log(this.gatherItemModel, 789257349)
     }
     /**
      * 变更付款项
@@ -227,16 +225,23 @@
     addGatherItem() {
       this.changeGatherItemModal = false
     }
-    deleteGatherItem() {
+    deleteGatherItem(item) {
+      console.log(item)
       this.$Modal.confirm({
         title: '提示',
         content: '确定删除吗？',
         onOk: () => {
-          this.changeGatherItemModal = false
+          this.personalInfo.splice(0, 1);
         }
       })
     }
-  }
+    confirChoose() {
+      this.multipleSelection = this.$refs['payItemDialog']
+      this.multipleSelection = this.multipleSelection.getCurrentSelection()
+      this.personalInfo.push(this.multipleSelection[0])
+      console.log(this.itemInfos, 666666)
+    }
+   }
 
 </script>
 

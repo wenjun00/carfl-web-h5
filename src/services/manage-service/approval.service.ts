@@ -91,4 +91,40 @@ export class ApprovalService {
       }
     })
   }
+  /**
+   * 提交内审&灰名单
+   */
+  submitInternalAuditOrGreyList(data) {
+    return this.netService.send({
+      server: manageService.approvalController.submitInternalAuditOrGreyList,
+      data: data
+    })
+  }
+  /**
+   * 提交黑名单&拒绝
+   */
+  submitBlackListOrRefuse(data) {
+    return this.netService.send({
+      server: manageService.approvalController.submitBlackListOrRefuse,
+      data: data
+    })
+  }
+  /**
+   * 退件
+   */
+  goBackInComing(data) {
+    return this.netService.send({
+      server: manageService.approvalController.goBackInComing,
+      data: data
+    })
+  }
+  /**
+   * 审批通过
+   */
+  passApproval(data) {
+    return this.netService.send({
+      server: manageService.approvalController.passApproval,
+      data: data
+    })
+  }
 }

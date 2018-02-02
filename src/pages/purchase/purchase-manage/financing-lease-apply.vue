@@ -17,7 +17,7 @@
           <i-form ref="customer-form" :model="customerModel" label-position="left" :rules="customerRule" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
             <i-col span="12">
               <i-form-item label="证件号码" prop="idCard">
-                <i-input type="text" :maxlength="18" v-model="customerModel.idCard" autofocus @on-change="showTab">
+                <i-input type="text" :maxlength="18" v-model="customerModel.idCard" autofocus @on-change="showTab" @on-blur="checkcustomerinfo">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -87,19 +87,31 @@
         </i-row>
       </div>
     </div>
+    <template>
+      <i-modal title="历史记录" width="1200" v-model="historicalModal" :trandfer="false" class="historical">
+        <historical-record @close="historicalModal=false" :historicalDataset="historicalDataset" @distributionData="distributionData"></historical-record>
+      </i-modal>
+    </template>
   </section>
 </template>
 
 <script lang="ts">
   import Page from "~/core/page";
   import Component from "vue-class-component";
+  import {
+    Dependencies
+  } from "~/core/decorator";
   import ChooseBuyMaterials from "~/components/purchase-manage/choose-buy-materials.vue";
   import CustomerMaterials from "~/components/purchase-manage/customer-materials.vue";
   import CustomerJobMessage from "~/components/purchase-manage/customer-job-message.vue";
   import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
   import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue";
   import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue";
-  import SvgIcon from '~/components/common/svg-icon.vue'
+  import SvgIcon from '~/components/common/svg-icon.vue';
+  import HistoricalRecord from "~/components/purchase-manage/historical-record.vue";
+  import {
+    PersonalService
+  } from "~/services/manage-service/personal.service";
   import {
     Layout
   } from "~/core/decorator";
@@ -113,10 +125,12 @@
       CustomerOrigin,
       UploadTheMaterial,
       CustomerContacts,
-      SvgIcon
+      SvgIcon,
+      HistoricalRecord
     }
   })
   export default class FinancingLeaseApply extends Page {
+    @Dependencies(PersonalService) private personalService: PersonalService;
 
     private customerRule: Object = {};
     private customerModel: any = {
@@ -128,9 +142,33 @@
     private addCar: Boolean = false;
     private disabledStatus: String = ''; // 子组件中输入框禁用flag
     private materialTabs: String = 'choose-buy-materials';
+    private historicalModal: Boolean = false;
+    private historicalDataset: any = [];
     // private productId: any;
     print() {
       window.print()
+    }
+    /**
+     * 根据客户三项查询历史订单
+     */
+    checkcustomerinfo() {
+      if (this.customerModel.idCard) {
+        this.personalService.getCustomerHistoryFinanceInfo(this.customerModel).subscribe(data => {
+          this.historicalDataset = data.object
+          if (this.historicalDataset.length) {
+            this.historicalModal = true
+          }
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        });
+      }
+    }
+    distributionData(data) {
+      this.customerModel.name = data.personal.name
+      this.customerModel.customerPhone = data.personal.mobileMain
+      this.customerModel.salesmanName = data.salesmanName
     }
     /**
      * 获取productId
@@ -230,6 +268,12 @@
         border-radius: 4px 4px 0 0;
         transition: all .3s ease-in-out;
       }
+    }
+  }
+  
+  .historical {
+    .ivu-modal-footer {
+      display: none!important;
     }
   }
 

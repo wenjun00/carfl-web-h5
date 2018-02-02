@@ -176,7 +176,8 @@
       this.paramsData = {
         itemList: [],
         remark: '',
-        recordStatus: ''
+        recordStatus: '',
+        refundTotalAmount: ''
       }
     }
     /**
