@@ -48,5 +48,14 @@ export default {
         controller: CONTROLLER,
         action: 'getAllResource',
         type: requestType.Post
+    },
+    /**
+    * 根据父id查询子类
+    */
+    getSonReso: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getSonReso',
+        type: requestType.Get
     }
 }

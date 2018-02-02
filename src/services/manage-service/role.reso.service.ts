@@ -49,5 +49,16 @@ export class RoleResoService {
             server: manageService.roleResoController.getAllResource
         })
     }
+    /**
+     * 根据父id查询子类
+     */
+    getSonReso({ id }) {
+        return this.netService.send({
+            server: manageService.roleResoController.getSonReso,
+            data: {
+                id: id
+            }
+        })
+    }
 
 }

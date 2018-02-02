@@ -210,27 +210,6 @@
                   },
                   on: {
                     click: () => {
-                      // this.$Modal.info({
-                      //   render:h=>h(FunctionModule),
-                      //   title:'功能模块',
-                      //   width:1200
-                      // })
-                      this.functionModuleModal = true;
-                    }
-                  }
-                },
-                "功能模块"
-              ),
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
                       this.modifyIconData.resoIcon = row.resoIcon
                       this.modifyIconData.id = row.id
                       this.modifyIconModal = true
@@ -475,7 +454,17 @@
       return child;
     }
     prdTreeChange(val) {
-      this.treeDatabox = val;
+      //   this.treeDatabox = val;
+      let id: any = val[0].id
+      this.roleResoService.getSonReso({
+        id: id
+      }).subscribe(data => {
+        this.treeDatabox = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg);
+      });
     }
   }
 
