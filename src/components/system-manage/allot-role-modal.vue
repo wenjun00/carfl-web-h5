@@ -4,7 +4,7 @@
     <span>角色名称：</span>
     <i-input style="display:inline-block;width:20%;" v-model="roleListModel.roleName"></i-input>
     <i-button class="blueButton" style="margin-left:10px;" @click="getRoleList">搜索</i-button>
-    <data-box :columns="columns1" :data="roleList" ref="databox"></data-box>
+    <data-box :columns="columns1" :data="roleList" ref="databox" @onPageChange="getRoleList" :page="pageService"></data-box>
   </section>
 </template>
 
@@ -68,15 +68,13 @@
     }
 
     getRoleList() {
-      this.manageService.queryRolePage(this.roleListModel, this.pageService).subscribe(val => {
-        this.roleList = val.object.list
+      this.manageService.queryRolePage(this.roleListModel, this.pageService).subscribe(data => {
+        this.roleList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
-    }
-    cancel() {
-
-    }
-    confirm() {
-
     }
     allotRole() {
       this.multipleRoleId = this.$refs['databox']
@@ -98,18 +96,25 @@
           this.manageService.userBatchAllocateRoles(this.batchAllotModel).subscribe(val => {
             this.$Message.success('批量分配成功！')
             this.$emit('closeAndRefreshTree')
+          }, ({
+            msg
+          }) => {
+            this.$Message.error(msg)
           })
         } else {
           this.allotRoleModel.userId = this.userId
           this.manageService.userAllocateRoles(this.allotRoleModel).subscribe(val => {
             this.$Message.success('分配成功！')
             this.$emit('closeAndRefreshTree')
+          }, ({
+            msg
+          }) => {
+            this.$Message.error(msg)
           })
         }
       }
     }
     resetForm() {
-      console.log(76767)
       this.roleListModel.roleName = ''
     }
   }

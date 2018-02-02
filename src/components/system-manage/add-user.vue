@@ -180,7 +180,6 @@
           }, ({
             msg
           }) => {
-            console.log(msg, 'msg')
             this.$Message.error(msg)
           })
         }

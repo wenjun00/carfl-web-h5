@@ -23,7 +23,7 @@
           <i-button class="blueButton" style="margin-left:20px;" @click="batchAllotRole">批量分配角色</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="batchManageDevice">批量管理设备</i-button>
         </i-row>
-        <data-box :columns="columns1" :data="userList" ref="databox"></data-box>
+        <data-box :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService"></data-box>
       </i-col>
     </i-row>
 
@@ -144,7 +144,7 @@
     }
   })
   export default class OrgUserManage extends Page {
-    @Dependencies(RoleService) private roleService: RoleService;
+    // @Dependencies(RoleService) private roleService: RoleService;
     @Dependencies(ManageService) private manageService: ManageService;
     @Dependencies(DepartmentService) private departmentService: DepartmentService;
     @Dependencies(PageService) private pageService: PageService;
@@ -197,9 +197,9 @@
         status: '',
         phone: ''
       }
-      this.manageService.getAllDepartment().subscribe(val => {
-        this.deptObject = val.object[0]
-        this.dataList = val.object
+      this.manageService.getAllDepartment().subscribe(data => {
+        this.deptObject = data[0] // TODO
+        this.dataList = data
       })
       this.userListModel = {
         userName: '',
@@ -464,8 +464,12 @@
       this.deviceManageModal = true
     }
     getUserListByCondition() {
-      this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
-        this.userList = val.object.list
+      this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(data => {
+        this.userList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     /**
@@ -477,8 +481,12 @@
       this.deptLevel = value.deptLevel
       this.deptObject = value
       this.addOrgModel = value
-      this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(val => {
-        this.userList = val.object.list
+      this.manageService.getUsersByDeptPage(this.userListModel, this.pageService).subscribe(data => {
+        this.userList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     allotRoleClick() {
@@ -500,9 +508,13 @@
       })
     }
     getTree() {
-      this.manageService.getAllDepartment().subscribe(val => {
-        this.deptObject = val.object[0]
-        this.dataList = val.object
+      this.manageService.getAllDepartment().subscribe(data => {
+        this.deptObject = data[0] // TODO
+        this.dataList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     /**
@@ -567,9 +579,13 @@
       _addUser.confirmAddUser()
     }
     mounted() {
-      this.manageService.getAllDepartment().subscribe(val => {
-        this.deptObject = val.object[0]
-        this.dataList = val.object
+      this.manageService.getAllDepartment().subscribe(data => {
+        this.deptObject = data[0] // TODO
+        this.dataList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
       this.getUserListByCondition()
     }
