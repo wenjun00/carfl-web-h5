@@ -2,8 +2,8 @@
 <template>
   <section class="page module-function">
     <span class="form-title">模块功能</span>
-    <i-row style="margin-bottom:10px;margin-left:25px;">
-      <span>菜单名称：</span>
+    <i-row style="margin-bottom:10px;text-align:right;margin-right:35px">
+      <!--<span>菜单名称：</span>
       <i-input placeholder="请输入菜单名称" style="display:inline-block;width:10%;"></i-input>
       <span style="margin-left:10px;">菜单编号：</span>
       <i-input placeholder="请输入菜单编号" style="display:inline-block;width:10%;"></i-input>
@@ -13,7 +13,7 @@
         <i-option label="已启用" value="0" key="已启用"></i-option>
         <i-option label="未启用" value="1" key="未启用"></i-option>
       </i-select>
-      <i-button style="margin-left:10px;" class="blueButton">搜索</i-button>
+      <i-button style="margin-left:10px;" class="blueButton">搜索</i-button>-->
       <!--<i-button style="margin-left:10px;" class="blueButton" @click="addModuleFunction">添加</i-button>-->
       <i-button style="margin-left:10px;" class="blueButton" @click="ResetNameClick">重置名称</i-button>
       <i-button style="margin-left:10px;" class="blueButton" @click="ResetIconClick">重置图标</i-button>
