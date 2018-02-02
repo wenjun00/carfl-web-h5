@@ -113,7 +113,7 @@
       <i-modal v-model="modifyIconModal" width="500" title="修改资源图标" class="toViewModalClass">
         <i-form :label-width="110" style="margin-top:20px;">
           <i-form-item label="资源图标" prop="resoIcon">
-            <i-input v-model="modifyIconData.resoIcon" readonly></i-input>
+            <i-input v-model="modifyIconData.resoIcon"></i-input>
           </i-form-item>
         </i-form>
         <div style="text-align:right;">
@@ -139,7 +139,7 @@
   } from "~/core/decorator";
   import {
     RoleResoService
-  } from "~/services/manage-service/roleReso.service";
+  } from "~/services/manage-service/role.reso.service";
 
   @Layout("workspace")
   @Component({
@@ -386,8 +386,9 @@
      */
     getTreeDate() {
       this.roleResoService.getAllResource().subscribe(val => {
-        this.allData = val.object;
-        this.resoPid = val.object[0].resoPid;
+        console.log(val, 999)
+        this.allData = val;
+        this.resoPid = val.resoPid;
         this.createNewTree(this.allData);
       });
     }

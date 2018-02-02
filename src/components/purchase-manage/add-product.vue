@@ -174,7 +174,7 @@
      */
     treeList() {
       this.productService.getProductTree().subscribe(val => {
-        this.allData = val.object;
+        this.allData = val;
         console.log(this.allData, 888888887777777)
         this.getTreeDate(this.allData);
       });
@@ -268,7 +268,7 @@
       this.productPlanIssueService.getAllProductPlan({
         productId: this.productId
       }, this.pageService).subscribe(data => {
-        this.carData = data.object.list
+        this.carData = data.list
       });
     }
     /**

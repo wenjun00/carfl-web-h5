@@ -101,10 +101,10 @@
       //   this.addcarData = this.currentRowData.addcarData
       // 获取公司名称
       this.companyService.getAllCompany().subscribe(val => {
-        this.companyObject = val.object
+        this.companyObject = val
       })
       this.carService.findAllCarSeries().subscribe(val => {
-        this.carDataModal = val.object
+        this.carDataModal = val
       })
 
       this.columns1 = [{

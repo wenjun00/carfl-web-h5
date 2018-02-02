@@ -500,7 +500,7 @@
     created() {
       // 获取公司名称
       this.companyService.getAllCompany().subscribe(val => {
-        this.companyObject = val.object
+        this.companyObject = val
       })
       this.carColumns = [{
           title: '操作',

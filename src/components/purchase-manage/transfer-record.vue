@@ -98,7 +98,8 @@
         orderId: id
       }
       this.productOrderService.findOrderHandoverHistory(transferrecord).subscribe(data => {
-        this.transferrecordDataSet = data.object.handoverHistoryVos;
+        console.log(data, 98)
+        this.transferrecordDataSet = data.handoverHistoryVos;
       }, ({
         msg
       }) => {
