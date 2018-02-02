@@ -259,6 +259,7 @@ export default class AddPeriods extends Vue {
   created() {
     // this.monthDay = [];
     this.monthDayFun();
+    this.moneyFun();
     this.formRules = {};
     this.productDetail.payWay = 384
       ? (this.productDetail.payWay = "等本等息")
@@ -266,7 +267,6 @@ export default class AddPeriods extends Vue {
     this.productDetail.payWay === 386
       ? (this.productDetail.paymentType = "正常账期")
       : (this.productDetail.paymentType = "固定账期");
-    this.moneyFun();
     if (this.productDetail.initialPayment != " ") {
       this.initialParams = "有";
       this.initialParamsShow = true;
@@ -338,7 +338,7 @@ export default class AddPeriods extends Vue {
     }
   }
   moneyFun() {
-    this.moneyArray = this.productDetail.financingAmount.split("~");
+    this.moneyArray = this.productDetail.financingAmount.split('~');
     this.amount = {
       financingAmount1: this.moneyArray[0],
       financingAmount2: this.moneyArray[1]
