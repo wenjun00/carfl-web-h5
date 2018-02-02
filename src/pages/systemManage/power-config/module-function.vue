@@ -170,7 +170,8 @@
     private modifyIconData: any = {
       id: '',
       resoIcon: ''
-    }
+    };
+    private id: any = '';
 
     /**
      * 添加
@@ -455,9 +456,9 @@
     }
     prdTreeChange(val) {
       //   this.treeDatabox = val;
-      let id: any = val[0].id
+      this.id = val[0].id
       this.roleResoService.getSonReso({
-        id: id
+        id: this.id
       }).subscribe(data => {
         this.treeDatabox = data
       }, ({
