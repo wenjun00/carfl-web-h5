@@ -23,7 +23,7 @@ import refundApplicationController from './refund.application.controller'
 import backLogController from './backLog.controller'
 import collectMoneyHistoryController from './collect.money.history.controller'
 import carQuotationController from './carQuotation.controller'
-import roleResoController from './roleReso.controller'
+import roleResoController from './role.reso.controller'
 export const manageService = {
     departmentController,
     roleController,
