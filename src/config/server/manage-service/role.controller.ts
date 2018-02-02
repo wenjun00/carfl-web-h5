@@ -48,5 +48,14 @@ export default {
     controller: CONTROLLER,
     action: 'getUserByRoleIdPage',
     type: requestType.Get
+  },
+  /**
+   * 根据角色ID 查询角色对应的权限资源
+   */
+  findResourceByRoleId: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findResourceByRoleId',
+    type: requestType.Get
   }
 }
