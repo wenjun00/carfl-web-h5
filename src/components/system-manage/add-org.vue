@@ -16,6 +16,11 @@
               <i-option label="一级" :value="401" :key="401"></i-option>
               <i-option label="二级" :value="402" :key="402"></i-option>
               <i-option label="三级" :value="403" :key="403"></i-option>
+              <i-option label="四级" :value="404" :key="404"></i-option>
+              <i-option label="五级" :value="405" :key="405"></i-option>
+              <i-option label="六级" :value="406" :key="406"></i-option>
+              <i-option label="七级" :value="407" :key="407"></i-option>
+              <i-option label="八级" :value="408" :key="408"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
@@ -23,7 +28,7 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="状态" prop="deptStatus">
-            <i-select v-model="addModel.deptStatus" clearable>
+            <i-select v-model="addModel.deptStatus">
               <i-option label="启用" :value="0" :key="0"></i-option>
               <i-option label="停用" :value="1" :key="1"></i-option>
             </i-select>
@@ -79,7 +84,7 @@
     private addModel: any = {
       deptName: '',
       deptLevel: '',
-      deptStatus: '',
+      deptStatus: 0,
       companyId: '',
       deptRemark: ''
     }
@@ -102,17 +107,25 @@
           this.addModel.deptCode = this.addOrgModel.deptCode
           this.departmentService.createDepartment(this.addModel).subscribe(val => {
             this.$Message.success('添加成功！')
+            this.resetInput()
             this.$emit('close')
           })
         }
       })
     }
+    resetInput() {
+      this.addModel.deptName = ''
+      this.addModel.deptLevel = ''
+      this.addModel.companyId = ''
+      this.addModel.deptRemark = ''
+      this.addModel.deptStatus = ''
+    }
     addDept() {
       console.log('子组件', this.addOrgModel)
       this.addModel.deptLevel = this.addOrgModel.deptLevel
       // 获取公司名称
-      this.companyService.getAllCompany(this.getAllCompany).subscribe(val => {
-        this.companyObject = val.object
+      this.companyService.getAllCompany(this.getAllCompany).subscribe(data => {
+        this.companyObject = data
       })
     }
   }

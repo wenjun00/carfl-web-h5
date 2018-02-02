@@ -113,6 +113,10 @@
           this.departmentService.updateDepartment(this.deptObj).subscribe(val => {
             this.$Message.success('编辑成功！')
             this.$emit('close')
+          }, ({
+            msg
+          }) => {
+            this.$Message.error(msg)
           })
         }
       })
@@ -131,8 +135,12 @@
       this.deptObj.id = this.deptObject.id
 
       // 获取所有公司
-      this.companyService.getAllCompany(this.getAllCompany).subscribe(val => {
-        this.companyObject = val.object
+      this.companyService.getAllCompany().subscribe(data => {
+        this.companyObject = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
   }
