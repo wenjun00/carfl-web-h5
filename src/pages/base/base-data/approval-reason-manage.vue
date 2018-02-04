@@ -33,148 +33,137 @@
 </template>
 
 <script lang="ts">
-  import Page from "~/core/page";
-  import DataBox from "~/components/common/data-box.vue";
-  import Component from "vue-class-component";
-  import SvgIcon from "~/components/common/svg-icon.vue";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    ApproveReasonService
-  } from "~/services/manage-service/approve.reason.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  import {
-    FilterService
-  } from "~/utils/filter.service";
-  @Layout("workspace")
-  @Component({
-    components: {
-      DataBox,
-      SvgIcon
-    }
-  })
-  export default class ApprovalReasonManage extends Page {
-    @Dependencies(ApproveReasonService)
-    private approveReasonService: ApproveReasonService;
-    @Dependencies(PageService) private pageService: PageService;
-    private columns: any;
-    private columns2: any;
-    private appReasonModel: any;
-    private data2: Array < Object > = [];
-    private searchOptions: Boolean = false;
-    private approvalReasonModal: Boolean = false;
-    private isDisabled: Boolean = true;
-    private fileDataOpen: Boolean = false;
-    private AppRoveReasonList: Array < Object > = [];
+import Page from '~/core/page';
+import DataBox from '~/components/common/data-box.vue';
+import Component from 'vue-class-component';
+import SvgIcon from '~/components/common/svg-icon.vue';
+import { Dependencies } from '~/core/decorator';
+import { Layout } from '~/core/decorator';
+import { ApproveReasonService } from '~/services/manage-service/approve.reason.service';
+import { PageService } from '~/utils/page.service';
+import { FilterService } from '~/utils/filter.service';
+@Layout('workspace')
+@Component({
+	components: {
+		DataBox,
+		SvgIcon,
+	},
+})
+export default class ApprovalReasonManage extends Page {
+	@Dependencies(ApproveReasonService) private approveReasonService: ApproveReasonService;
+	@Dependencies(PageService) private pageService: PageService;
+	private columns: any;
+	private columns2: any;
+	private appReasonModel: any;
+	private data2: Array<Object> = [];
+	private searchOptions: Boolean = false;
+	private approvalReasonModal: Boolean = false;
+	private isDisabled: Boolean = true;
+	private fileDataOpen: Boolean = false;
+	private AppRoveReasonList: Array<Object> = [];
 
-    created() {
-      this.seach();
-      this.columns = [{
-          title: "序号",
-          width: 60,
-          type: "index",
-          align: "center"
-        },
-        {
-          title: "类型",
-          key: "type",
-          align: "center"
-        },
-        {
-          title: "一级",
-          key: "first",
-          align: "center"
-        },
-        {
-          title: "二级",
-          key: "second",
-          align: "center"
-        },
-        {
-          title: "CRC编码",
-          key: "crc",
-          align: "center"
-        },
-        {
-          title: "详细内容",
-          key: "detail",
-          align: "center"
-        },
-        {
-          title: "创建人",
-          key: "operator",
-          align: "center"
-        },
-        {
-          title: "创建时间",
-          key: "operatorTime",
-          align: "center",
-          render: (h, {
-            row,
-            columns,
-            index
-          }) => {
-            return h(
-              "span",
-              FilterService.dateFormat(row.operatorTime, "yyyy-MM-dd hh:mm:ss")
-            );
-          }
-        }
-      ];
-      this.appReasonModel = {
-        first: "",
-        second: "",
-        detail: "",
-        type: ""
-      };
-    }
-    getOrderInfoByTime() {}
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
-    }
-    exportMonthReport() {}
-    /**
-     * 导入审批原因
-     */
-    importApprovalReason() {
-      this.approvalReasonModal = true;
-    }
-    /**
-     * selectChange
-     */
-    changeOption(val) {
-      if (val) {
-        this.isDisabled = false;
-      } else {
-        this.isDisabled = true;
-      }
-    }
-    /**
-     * 文件选择按钮点击
-     */
-    checkFile() {
-      this.fileDataOpen = true;
-    }
-    /**@augments
-     * 分页查询审批原因
-     */
-    seach() {
-      this.approveReasonService
-        .getAllApproveReason(this.appReasonModel, this.pageService)
-        .subscribe(data => {
-          this.AppRoveReasonList = data
-        }, ({
-          msg
-        }) => {
-          this.$Message.error(msg)
-        });
-    }
-  }
-
+	created() {
+		this.seach();
+		this.columns = [
+			{
+				title: '序号',
+				width: 60,
+				type: 'index',
+				align: 'center',
+			},
+			{
+				title: '类型',
+				key: 'type',
+				align: 'center',
+			},
+			{
+				title: '一级',
+				key: 'first',
+				align: 'center',
+			},
+			{
+				title: '二级',
+				key: 'second',
+				align: 'center',
+			},
+			{
+				title: 'CRC编码',
+				key: 'crc',
+				align: 'center',
+			},
+			{
+				title: '详细内容',
+				key: 'detail',
+				align: 'center',
+			},
+			{
+				title: '创建人',
+				key: 'operator',
+				align: 'center',
+			},
+			{
+				title: '创建时间',
+				key: 'operatorTime',
+				align: 'center',
+				render: (h, { row, columns, index }) => {
+					return h('span', FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss'));
+				},
+			},
+		];
+		this.AppRoveReasonList = [];
+		this.appReasonModel = {
+			first: '',
+			second: '',
+			detail: '',
+			type: '',
+		};
+	}
+	getOrderInfoByTime() {}
+	openSearch() {
+		this.searchOptions = !this.searchOptions;
+	}
+	exportMonthReport() {}
+	/**
+	 * 导入审批原因
+	 */
+	importApprovalReason() {
+		this.approvalReasonModal = true;
+	}
+	/**
+	 * selectChange
+	 */
+	changeOption(val) {
+		if (val) {
+			this.isDisabled = false;
+		} else {
+			this.isDisabled = true;
+		}
+	}
+	/**
+	 * 文件选择按钮点击
+	 */
+	checkFile() {
+		this.fileDataOpen = true;
+	}
+	/**@augments
+	 * 分页查询审批原因
+	 */
+	seach() {
+		this.approveReasonService.getAllApproveReason(this.appReasonModel, this.pageService).subscribe(
+			data => {
+				this.AppRoveReasonList = data;
+				this.AppRoveReasonList.map(v => {
+					if (v.type === 374) {
+						v.type = '退回';
+					} else {
+						v.type = '拒绝';
+					}
+				});
+			},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+	}
+}
 </script>

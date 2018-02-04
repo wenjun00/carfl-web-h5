@@ -118,204 +118,228 @@
   </section>
 </template>
 <script lang="ts">
-  import Vue from "vue";
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import Component from "vue-class-component";
-  import {
-    Form
-  } from "iview";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    CarQuotationService
-  } from "~/services/manage-service/carQuotation.service";
-  import {
-    CarService
-  } from "~/services/manage-service/car.service";
+import Vue from 'vue';
+import { Prop } from 'vue-property-decorator';
+import Component from 'vue-class-component';
+import { Form } from 'iview';
+import { Dependencies } from '~/core/decorator';
+import { CarQuotationService } from '~/services/manage-service/carQuotation.service';
+import { CarService } from '~/services/manage-service/car.service';
 
-  import {
-    Emit
-  } from "vue-property-decorator";
+import { Emit } from 'vue-property-decorator';
 
-  @Component({
-    components: {}
-  })
-  export default class AddPeriods extends Vue {
-    @Dependencies(CarQuotationService) private carQuotationService: CarQuotationService;
-    @Dependencies(CarService) private carService: CarService;
+@Component({
+	components: {},
+})
+export default class AddPeriods extends Vue {
+	@Dependencies(CarQuotationService) private carQuotationService: CarQuotationService;
+	@Dependencies(CarService) private carService: CarService;
 
-    @Prop() carFormItem: any;
+	@Prop() carFormItem: any;
 
-    @Emit('close')
-    close() {}
-    @Emit('seachBusiness')
-    seachBusiness() {}
+	@Emit('close')
+	close() {}
+	@Emit('seachBusiness')
+	seachBusiness() {}
 
-    private brandList: any = []; // 品牌
-    private SeriesList: any = []; // 系列
-    private carList: any = []; // 型号
-    private ruleValidate: any = {
-      productPackageName: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur"
-      }],
-      carBrandId: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "change",
-        type: 'number'
-      }],
-      carSeriesName: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "change"
-        // type: 'number'
-      }],
-      carName: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "change"
-        // type: 'number'
-      }],
-      carRemark: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur"
-      }],
-      marketGuidingPrice: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }],
-      dealerGuidingPrice: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }],
-      firstPayment: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }],
-      financeAmount: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }],
-      periods: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }],
-      monthPay: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }],
-      purchaseTaxMoney: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }],
-      roadBridgeFee: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }],
-      annualAmount: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }],
-      gpsFee: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }],
-      otherFee: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }],
-      status: [{
-        required: true,
-        message: "您输入的内容不能为空",
-        trigger: "blur",
-        type: 'number'
-      }]
-    };
+	private brandList: any = []; // 品牌
+	private SeriesList: any = []; // 系列
+	private carList: any = []; // 型号
+	private ruleValidate: any = {
+		productPackageName: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+			},
+		],
+		carBrandId: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'change',
+				type: 'number',
+			},
+		],
+		carSeriesName: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'change',
+				// type: 'number'
+			},
+		],
+		carName: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'change',
+				// type: 'number'
+			},
+		],
+		carRemark: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+			},
+		],
+		marketGuidingPrice: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+		dealerGuidingPrice: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+		firstPayment: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+		financeAmount: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+		periods: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+		monthPay: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+		purchaseTaxMoney: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+		roadBridgeFee: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+		annualAmount: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+		gpsFee: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+		otherFee: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+		status: [
+			{
+				required: true,
+				message: '您输入的内容不能为空',
+				trigger: 'blur',
+				type: 'number',
+			},
+		],
+	};
 
-    created() {
-      console.log(this.carFormItem, 90)
-      // 获取品牌
-      this.carService.getAllBrand().subscribe(data => {
-        this.brandList = data
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg);
-      });
-      //   获取系列
-      this.carService.getAllSeries().subscribe(data => {
-        this.SeriesList = data
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg);
-      });
-      // 获取型号
-      this.carService.getAllModel().subscribe(data => {
-        this.carList = data
-        console.log(data, 666)
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg);
-      });
-    }
+	created() {
+		console.log(this.carFormItem, 90);
+		// 获取品牌
+		this.carService.getAllBrand().subscribe(
+			data => {
+				this.brandList = data;
+			},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+		//   获取系列
+		this.carService.getAllSeries().subscribe(
+			data => {
+				this.SeriesList = data;
+			},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+		// 获取型号
+		this.carService.getAllModel().subscribe(
+			data => {
+				this.carList = data;
+				console.log(data, 666);
+			},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+	}
 
-    /**
-     * 确定
-     */
-    submitButton() {
-      let formVal: any = this.$refs["form"];
-      formVal.validate(valid => {
-        if (!valid) return false
-        this.carQuotationService.updateCarQuotation(this.carFormItem).subscribe(data => {
-          this.$Message.success("修改成功！")
-          //   关闭弹框
-          this.close()
-          //   刷新databox
-          this.seachBusiness()
-        }, ({
-          msg
-        }) => {
-          this.$Message.error(msg);
-        });
-      });
-    }
-  }
-
+	/**
+	 * 确定
+	 */
+	submitButton() {
+		let formVal: any = this.$refs['form'];
+		formVal.validate(valid => {
+			if (!valid) return false;
+			this.carQuotationService.updateCarQuotation(this.carFormItem).subscribe(
+				data => {
+					this.$Message.success('修改成功！');
+					//   关闭弹框
+					this.close();
+					//   刷新databox
+					this.seachBusiness();
+				},
+				({ msg }) => {
+					this.$Message.error(msg);
+				}
+			);
+		});
+	}
+}
 </script>
 <style lang="less">
-  .editcar {
-    position: relative;
-    right: 15px;
-  }
-
+.editcar {
+	position: relative;
+	right: 15px;
+}
 </style>

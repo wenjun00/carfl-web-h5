@@ -2,7 +2,7 @@
 <template>
   <section class="page module-function">
     <span class="form-title">模块功能</span>
-    <i-row style="margin-bottom:10px;text-align:right;margin-right:35px">
+    <i-row style="margin-bottom:10px;text-align:right;margin-right:42px">
       <!--<span>菜单名称：</span>
       <i-input placeholder="请输入菜单名称" style="display:inline-block;width:10%;"></i-input>
       <span style="margin-left:10px;">菜单编号：</span>
@@ -98,7 +98,7 @@
     </template>
     <template>
       <i-modal v-model="modifyNameModal" width="500" title="修改资源名称" class="toViewModalClass">
-        <i-form :label-width="110" style="margin-top:20px;">
+        <i-form :label-width="60" style="margin-top:20px;">
           <i-form-item label="资源名称" prop="resoName">
             <i-input v-model="modifyNameDataset.resoName"></i-input>
           </i-form-item>
@@ -111,7 +111,7 @@
     </template>
     <template>
       <i-modal v-model="modifyIconModal" width="500" title="修改资源图标" class="toViewModalClass">
-        <i-form :label-width="110" style="margin-top:20px;">
+        <i-form :label-width="60" style="margin-top:20px;">
           <i-form-item label="资源图标" prop="resoIcon">
             <i-input v-model="modifyIconData.resoIcon"></i-input>
           </i-form-item>
@@ -126,360 +126,359 @@
 </template>
 
 <script lang="ts">
-  import DataBox from "~/components/common/data-box.vue";
-  import Page from "~/core/page";
-  import Component from "vue-class-component";
-  import FunctionModule from "~/components/system-manage/function-module.vue";
-  import ToView from "~/components/system-manage/to-view.vue";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    RoleResoService
-  } from "~/services/manage-service/role.reso.service";
+import DataBox from '~/components/common/data-box.vue';
+import Page from '~/core/page';
+import Component from 'vue-class-component';
+import FunctionModule from '~/components/system-manage/function-module.vue';
+import ToView from '~/components/system-manage/to-view.vue';
+import { Dependencies } from '~/core/decorator';
+import { Layout } from '~/core/decorator';
+import { RoleResoService } from '~/services/manage-service/role.reso.service';
 
-  @Layout("workspace")
-  @Component({
-    components: {
-      DataBox,
-      FunctionModule,
-      ToView
-    }
-  })
-  export default class ModuleFunction extends Page {
-    @Dependencies(RoleResoService) private roleResoService: RoleResoService;
+@Layout('workspace')
+@Component({
+	components: {
+		DataBox,
+		FunctionModule,
+		ToView,
+	},
+})
+export default class ModuleFunction extends Page {
+	@Dependencies(RoleResoService) private roleResoService: RoleResoService;
 
-    private treeData: Array < any > = [];
-    private treeColumns: any;
-    private treeDatabox: Array < Object > = [];
-    private addModuleFunctionModal: Boolean = false;
-    private functionModuleModal: Boolean = false;
-    private modifyNameModal: Boolean = false;
-    private toViewModal: Boolean = false;
-    private modifyIconModal: Boolean = false;
-    private resoPid: number = 0;
-    private allData: Array < any > = [];
-    private ToviewrowData: any = '';
-    private modifyNameDataset: any = {
-      resoName: '',
-      id: ''
-    };
-    private modifyIconData: any = {
-      id: '',
-      resoIcon: ''
-    };
-    private id: any = '';
+	private treeData: Array<any> = [];
+	private treeColumns: any;
+	private treeDatabox: Array<Object> = [];
+	private addModuleFunctionModal: Boolean = false;
+	private functionModuleModal: Boolean = false;
+	private modifyNameModal: Boolean = false;
+	private toViewModal: Boolean = false;
+	private modifyIconModal: Boolean = false;
+	private resoPid: number = 0;
+	private allData: Array<any> = [];
+	private ToviewrowData: any = '';
+	private modifyNameDataset: any = {
+		resoName: '',
+		id: '',
+	};
+	private modifyIconData: any = {
+		id: '',
+		resoIcon: '',
+	};
+	private id: any = '';
 
-    /**
-     * 添加
-     */
-    addModuleFunction() {
-      this.addModuleFunctionModal = true;
-    }
-    created() {
-      this.getTreeDate();
-      this.treeData = [];
+	/**
+	 * 添加
+	 */
+	addModuleFunction() {
+		this.addModuleFunctionModal = true;
+	}
+	created() {
+		this.getTreeDate();
+		this.treeData = [];
 
-      this.treeColumns = [{
-          align: "center",
-          type: "index",
-          title: "排序",
-          width: 60,
-          fixed: "left"
-        },
-        {
-          align: "center",
-          title: "操作",
-          width: 260,
-          fixed: "left",
-          render: (h, {
-            row,
-            columns,
-            index
-          }) => {
-            return [
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.modifyIconData.resoIcon = row.resoIcon
-                      this.modifyIconData.id = row.id
-                      this.modifyIconModal = true
-                    }
-                  }
-                },
-                "修改图标"
-              ),
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.modifyNameDataset.resoName = row.resoName
-                      this.modifyNameDataset.id = row.id
-                      this.modifyNameModal = true
-                    }
-                  }
-                },
-                "修改名称"
-              ),
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  on: {
-                    click: () => {
-                      this.ToviewrowData = row
-                      console.log(this.ToviewrowData, 777)
-                      this.toViewModal = true
-                    }
-                  },
-                  style: {
-                    color: "#265EA2"
-                  }
-                },
-                "查看"
-              )
-            ];
-          }
-        },
-        {
-          align: "center",
-          key: "resoInitName",
-          title: "资源初始化名称"
-        },
-        {
-          align: "center",
-          key: "resoName",
-          title: "资源名称"
-        },
-        {
-          align: "center",
-          key: "resoInitIcon",
-          title: "资源初始化图标"
-        },
-        {
-          align: "center",
-          key: "resoIcon",
-          title: "资源图标"
-        },
+		this.treeColumns = [
+			{
+				align: 'center',
+				type: 'index',
+				title: '排序',
+				width: 60,
+				fixed: 'left',
+			},
+			{
+				align: 'center',
+				title: '操作',
+				width: 260,
+				fixed: 'left',
+				render: (h, { row, columns, index }) => {
+					return [
+						h(
+							'i-button',
+							{
+								props: {
+									type: 'text',
+								},
+								style: {
+									color: '#265EA2',
+								},
+								on: {
+									click: () => {
+										this.modifyIconData.resoIcon = row.resoIcon;
+										this.modifyIconData.id = row.id;
+										this.modifyIconModal = true;
+									},
+								},
+							},
+							'修改图标'
+						),
+						h(
+							'i-button',
+							{
+								props: {
+									type: 'text',
+								},
+								style: {
+									color: '#265EA2',
+								},
+								on: {
+									click: () => {
+										this.modifyNameDataset.resoName = row.resoName;
+										this.modifyNameDataset.id = row.id;
+										this.modifyNameModal = true;
+									},
+								},
+							},
+							'修改名称'
+						),
+						h(
+							'i-button',
+							{
+								props: {
+									type: 'text',
+								},
+								on: {
+									click: () => {
+										this.ToviewrowData = row;
+										console.log(this.ToviewrowData, 777);
+										this.toViewModal = true;
+									},
+								},
+								style: {
+									color: '#265EA2',
+								},
+							},
+							'查看'
+						),
+					];
+				},
+			},
+			{
+				align: 'center',
+				key: 'resoInitName',
+				title: '资源初始化名称',
+			},
+			{
+				align: 'center',
+				key: 'resoName',
+				title: '资源名称',
+			},
+			{
+				align: 'center',
+				key: 'resoInitIcon',
+				title: '资源初始化图标',
+			},
+			{
+				align: 'center',
+				key: 'resoIcon',
+				title: '资源图标',
+			},
 
-        {
-          align: "center",
-          key: "moduleId",
-          title: "重置"
-        },
-        {
-          align: "center",
-          key: "resoStatus",
-          title: "状态"
-        },
-        {
-          align: "center",
-          key: "resoRemark",
-          title: "备注"
-        }
-      ];
+			{
+				align: 'center',
+				key: 'moduleId',
+				title: '重置',
+			},
+			{
+				align: 'center',
+				key: 'resoStatus',
+				title: '状态',
+			},
+			{
+				align: 'center',
+				key: 'resoRemark',
+				title: '备注',
+			},
+		];
 
-      this.treeDatabox = []; //表格数据存储
-    }
-    /**
-     * 重置名称
-     */
-    ResetNameClick() {
-      this.roleResoService.resetResoName().subscribe(data => {
-        this.$Message.success('重置名称成功！')
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg);
-      });
-    }
-    /**
-     * 重置图标
-     */
-    ResetIconClick() {
-      this.roleResoService.resetResoIcon().subscribe(data => {
-        this.$Message.success('重置图标成功！')
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg);
-      });
-    }
-    /**
-     * 取消修改资源名称
-     */
-    cancelmodifyName() {
-      this.modifyNameModal = false
-    }
-    /**
-     * 确定修改资源名称
-     */
-    confirmmodifyName() {
-      this.roleResoService.modifyResoName(this.modifyNameDataset).subscribe(data => {
-        this.$Message.success('修改成功！')
-        this.modifyNameModal = false
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg);
-      });
-    }
-    /**
-     * 取消修改资源图标
-     */
-    cancelmodifyIcon() {
-      this.modifyIconModal = false
-    }
-    /**
-     * 确定修改资源图标
-     */
-    confirmmodifyIcon() {
-      this.roleResoService.modifyResoIcon(this.modifyIconData).subscribe(data => {
-        this.$Message.success('修改成功！')
-        this.modifyIconModal = false
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg);
-      });
-    }
+		this.treeDatabox = []; //表格数据存储
+	}
+	/**
+	 * 重置名称
+	 */
+	ResetNameClick() {
+		this.roleResoService.resetResoName().subscribe(
+			data => {
+				this.$Message.success('重置名称成功！');
+			},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+	}
+	/**
+	 * 重置图标
+	 */
+	ResetIconClick() {
+		this.roleResoService.resetResoIcon().subscribe(
+			data => {
+				this.$Message.success('重置图标成功！');
+			},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+	}
+	/**
+	 * 取消修改资源名称
+	 */
+	cancelmodifyName() {
+		this.modifyNameModal = false;
+	}
+	/**
+	 * 确定修改资源名称
+	 */
+	confirmmodifyName() {
+		this.roleResoService.modifyResoName(this.modifyNameDataset).subscribe(
+			data => {
+				this.$Message.success('修改成功！');
+				this.modifyNameModal = false;
+			},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+	}
+	/**
+	 * 取消修改资源图标
+	 */
+	cancelmodifyIcon() {
+		this.modifyIconModal = false;
+	}
+	/**
+	 * 确定修改资源图标
+	 */
+	confirmmodifyIcon() {
+		this.roleResoService.modifyResoIcon(this.modifyIconData).subscribe(
+			data => {
+				this.$Message.success('修改成功！');
+				this.modifyIconModal = false;
+			},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+	}
 
-    /**
-     * 获取树接口
-     */
-    getTreeDate() {
-      this.roleResoService.getAllResource().subscribe(val => {
-        console.log(val, 999)
-        this.allData = val;
-        this.resoPid = val.resoPid;
-        this.createNewTree(this.allData);
-      });
-    }
-    /**
-     * 生成树
-     */
-    createNewTree(allData) {
-      let root = allData.filter(v => !v.resoPid); // 获取树根
-      this.treeData = [];
-      // 遍历根对象push进树中
-      root.forEach(item => {
-        let node1 = {
-          title: item.resoName,
-          id: item.id,
-          resoSysname: item.resoSysname,
-          resoInitName: item.resoInitName,
-          resoCode: item.resoCode,
-          resoLevel: item.resoLevel,
-          resoStatus: item.resoStatus,
-          resoPath: item.resoPath,
-          resoInitIcon: item.resoInitIcon,
-          resoIcon: item.resoIcon,
-          resoType: item.resoType,
-          resoFiletype: item.resoFiletype,
-          resoRemark: item.resoRemark,
-          expand: true,
-          children: this.getChild(item)
-        };
-        this.treeData.push(node1);
-      });
-      console.log(this.treeData, 222);
-    }
-    /**
-     * 获取相对根元素的子元素
-     */
-    getChild(item) {
-      let child: any = [];
-      // 判断子的父id与全部数据的id相等
-      this.allData.map(val => {
-        if (item.id === val.resoPid) {
-          if (val.resoPid) {
-            let node2 = {
-              title: val.resoName,
-              resoName: val.resoName,
-              id: val.id,
-              resoSysname: val.resoSysname,
-              resoInitName: val.resoInitName,
-              resoCode: val.resoCode,
-              resoLevel: val.resoLevel,
-              resoStatus: val.resoStatus,
-              resoPath: val.resoPath,
-              resoInitIcon: val.resoInitIcon,
-              resoIcon: val.resoIcon,
-              resoType: val.resoType,
-              resoFiletype: val.resoFiletype,
-              resoRemark: val.resoRemark,
-              expand: true,
-              children: this.getChild(val) // 迭代产生根
-            };
-            child.push(node2);
-          } else if (val.resoPid === null) {
-            let node2 = {
-              title: val.resoName,
-              id: val.id,
-              resoName: val.resoName,
-              resoSysname: val.resoSysname,
-              resoInitName: val.resoInitName,
-              resoCode: val.resoCode,
-              resoLevel: val.resoLevel,
-              resoStatus: val.resoStatus,
-              resoPath: val.resoPath,
-              resoInitIcon: val.resoInitIcon,
-              resoIcon: val.resoIcon,
-              resoType: val.resoType,
-              resoFiletype: val.resoFiletype,
-              resoRemark: val.resoRemark,
-              expand: true,
-              children: this.getChild(val)
-            };
-            child.push(node2);
-          }
-        }
-      });
-      return child;
-    }
-    prdTreeChange(val) {
-      //   this.treeDatabox = val;
-      this.id = val[0].id
-      this.roleResoService.getSonReso({
-        id: this.id
-      }).subscribe(data => {
-        this.treeDatabox = data
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg);
-      });
-    }
-  }
-
+	/**
+	 * 获取树接口
+	 */
+	getTreeDate() {
+		this.roleResoService.getAllResource().subscribe(val => {
+			console.log(val, 999);
+			this.allData = val;
+			this.resoPid = val.resoPid;
+			this.createNewTree(this.allData);
+		});
+	}
+	/**
+	 * 生成树
+	 */
+	createNewTree(allData) {
+		let root = allData.filter(v => !v.resoPid); // 获取树根
+		this.treeData = [];
+		// 遍历根对象push进树中
+		root.forEach(item => {
+			let node1 = {
+				title: item.resoName,
+				id: item.id,
+				resoSysname: item.resoSysname,
+				resoInitName: item.resoInitName,
+				resoCode: item.resoCode,
+				resoLevel: item.resoLevel,
+				resoStatus: item.resoStatus,
+				resoPath: item.resoPath,
+				resoInitIcon: item.resoInitIcon,
+				resoIcon: item.resoIcon,
+				resoType: item.resoType,
+				resoFiletype: item.resoFiletype,
+				resoRemark: item.resoRemark,
+				expand: true,
+				children: this.getChild(item),
+			};
+			this.treeData.push(node1);
+		});
+		console.log(this.treeData, 222);
+	}
+	/**
+	 * 获取相对根元素的子元素
+	 */
+	getChild(item) {
+		let child: any = [];
+		// 判断子的父id与全部数据的id相等
+		this.allData.map(val => {
+			if (item.id === val.resoPid) {
+				if (val.resoPid) {
+					let node2 = {
+						title: val.resoName,
+						resoName: val.resoName,
+						id: val.id,
+						resoSysname: val.resoSysname,
+						resoInitName: val.resoInitName,
+						resoCode: val.resoCode,
+						resoLevel: val.resoLevel,
+						resoStatus: val.resoStatus,
+						resoPath: val.resoPath,
+						resoInitIcon: val.resoInitIcon,
+						resoIcon: val.resoIcon,
+						resoType: val.resoType,
+						resoFiletype: val.resoFiletype,
+						resoRemark: val.resoRemark,
+						expand: true,
+						children: this.getChild(val), // 迭代产生根
+					};
+					child.push(node2);
+				} else if (val.resoPid === null) {
+					let node2 = {
+						title: val.resoName,
+						id: val.id,
+						resoName: val.resoName,
+						resoSysname: val.resoSysname,
+						resoInitName: val.resoInitName,
+						resoCode: val.resoCode,
+						resoLevel: val.resoLevel,
+						resoStatus: val.resoStatus,
+						resoPath: val.resoPath,
+						resoInitIcon: val.resoInitIcon,
+						resoIcon: val.resoIcon,
+						resoType: val.resoType,
+						resoFiletype: val.resoFiletype,
+						resoRemark: val.resoRemark,
+						expand: true,
+						children: this.getChild(val),
+					};
+					child.push(node2);
+				}
+			}
+		});
+		return child;
+	}
+	prdTreeChange(val) {
+		//   this.treeDatabox = val;
+		this.id = val[0].id;
+		this.roleResoService
+			.getSonReso({
+				id: this.id,
+			})
+			.subscribe(
+				data => {
+					this.treeDatabox = data;
+				},
+				({ msg }) => {
+					this.$Message.error(msg);
+				}
+			);
+	}
+}
 </script>
 
 <style lang="less" scope>
-  .input {
-    width: 60%;
-  }
-  
-  .toViewModalClass {
-    .ivu-modal-footer {
-      display: none!important;
-    }
-  }
+.input {
+	width: 60%;
+}
 
+.toViewModalClass {
+	.ivu-modal-footer {
+		display: none !important;
+	}
+}
 </style>

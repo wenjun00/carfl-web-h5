@@ -15,8 +15,12 @@
     <data-box :columns="columns1" :data="roleList" @onPageChange="getRoleListByCondition" :page="pageService"></data-box>
 
     <template>
-      <i-modal v-model="modifyRoleModal" title="修改角色" class="modify-role" @on-ok="modifyRoleClick">
+      <i-modal v-model="modifyRoleModal" title="修改角色" class="modify-role">
         <modify-role :modifyRoleModel="modifyRoleModel" ref="modify-role"></modify-role>
+        <div slot="footer">
+          <i-button class="Ghost" @click="modifyRoleModal=false">取消</i-button>
+          <i-button class="blueButton" @click="submitEditRole">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -426,7 +430,10 @@ export default class RoleMaintenance extends Page {
 			},
 		});
 	}
-	modifyRoleClick() {
+	/**
+	 * 修改角色确定按钮
+	 */
+	submitEditRole() {
 		let modifyRole = <Modal>this.$refs['modify-role'];
 		modifyRole.updateRole();
 	}

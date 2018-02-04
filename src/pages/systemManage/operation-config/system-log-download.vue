@@ -51,180 +51,172 @@
 </template>
 
 <script lang="ts">
-  import Page from "~/core/page";
-  import Component from "vue-class-component";
-  import DataBox from "~/components/common/data-box.vue"
-  import SvgIcon from '~/components/common/svg-icon.vue'
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    ManageService
-  } from "~/services/manage-service/manage.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  import {
-    FilterService
-  } from "~/utils/filter.service"
-  @Layout("workspace")
+import Page from '~/core/page';
+import Component from 'vue-class-component';
+import DataBox from '~/components/common/data-box.vue';
+import SvgIcon from '~/components/common/svg-icon.vue';
+import { Dependencies } from '~/core/decorator';
+import { Layout } from '~/core/decorator';
+import { ManageService } from '~/services/manage-service/manage.service';
+import { PageService } from '~/utils/page.service';
+import { FilterService } from '~/utils/filter.service';
+@Layout('workspace')
+@Component({
+	components: {
+		DataBox,
+		SvgIcon,
+	},
+})
+export default class SystemLogDownload extends Page {
+	@Dependencies(ManageService) private manageService: ManageService;
+	@Dependencies(PageService) private pageService: PageService;
 
-  @Component({
+	private changeStatusOpen: Boolean = false;
+	private columns1: any;
+	private systemLogsList: Array<Object> = [];
+	private openColumnsConfig: Boolean = false;
+	private columns2: any;
+	private data2: Array<Object>;
+	private test: String = '';
+	private systemLogModel: any;
 
-    components: {
-      DataBox,
-      SvgIcon
-    }
-  })
-  export default class SystemLogDownload extends Page {
-    @Dependencies(ManageService) private manageService: ManageService;
-    @Dependencies(PageService) private pageService: PageService;
+	created() {
+		this.systemLogModel = {
+			clientIp: '',
+			exeType: '',
+			exeTime: '',
+		};
+		this.search();
 
-    private changeStatusOpen: Boolean = false;
-    private columns1: any;
-    private systemLogsList: Array < Object > = [];
-    private openColumnsConfig: Boolean = false;
-    private columns2: any;
-    private data2: Array < Object > ;
-    private test: String = ''
-    private systemLogModel: any;
+		this.columns1 = [
+			{
+				align: 'center',
+				type: 'index',
+				width: 60,
+				renderHeader: (h, { column, index }) => {
+					return h(
+						'div',
+						{
+							on: {
+								click: () => {
+									this.columnsConfig();
+								},
+							},
+							style: {
+								cursor: 'pointer',
+							},
+						},
+						[
+							h('Icon', {
+								props: {
+									type: 'gear-b',
+									size: '20',
+								},
+							}),
+						]
+					);
+				},
+			},
+			{
+				title: '操作时间',
+				key: 'operateTime',
+				align: 'center',
+				width: 160,
+				render: (h, { row, columns, index }) => {
+					return h('span', FilterService.dateFormat(row.operateTime, 'yyyy-MM-dd hh:mm:ss'));
+				},
+			},
+			{
+				title: '操作人',
+				key: 'realName',
+				align: 'center',
+			},
+			{
+				title: '客户端IP',
+				key: 'clientIp',
+				align: 'center',
+			},
+			{
+				title: '执行参数',
+				key: 'exeParams',
+				align: 'center',
+			},
+			{
+				title: '备注',
+				key: 'logRemark',
+				align: 'center',
+			},
+			{
+				title: '请求执行时长（秒）',
+				key: 'exeTime',
+				align: 'center',
+			},
+			{
+				title: '执行类型',
+				key: 'exeType',
+				align: 'center',
+			},
+		];
+		this.columns2 = [
+			{
+				title: '序号',
+				type: 'index',
+				width: 80,
+				align: 'center',
+			},
+			{
+				title: '列名',
+				key: 'columnsName',
+				align: 'center',
+			},
+			{
+				type: 'selection',
+				width: 80,
+				align: 'center',
+			},
+		];
 
-    created() {
-      this.systemLogModel = {
-        clientIp: '',
-        exeType: '',
-        exeTime: ''
-      }
-      this.search()
-
-      this.columns1 = [{
-          align: 'center',
-          type: 'index',
-          width: 60,
-          renderHeader: (h, {
-            column,
-            index
-          }) => {
-            return h('div', {
-              on: {
-                click: () => {
-                  this.columnsConfig()
-                }
-              },
-              style: {
-                cursor: 'pointer'
-              }
-            }, [
-              h('Icon', {
-                props: {
-                  type: 'gear-b',
-                  size: '20'
-                }
-              })
-            ])
-          }
-        },
-        {
-          title: '操作时间',
-          key: 'operateTime',
-          align: 'center',
-          width: 160,
-          render: (h, {
-            row,
-            columns,
-            index
-          }) => {
-            return h('span',
-              FilterService.dateFormat(row.operateTime, 'yyyy-MM-dd hh:mm:ss')
-            )
-          }
-        },
-        {
-          title: '操作人',
-          key: 'realName',
-          align: 'center'
-        },
-        {
-          title: '客户端IP',
-          key: 'clientIp',
-          align: 'center'
-        },
-        {
-          title: '执行参数',
-          key: 'exeParams',
-          align: 'center'
-        },
-        {
-          title: '备注',
-          key: 'logRemark',
-          align: 'center'
-        },
-        {
-          title: '请求执行时长（秒）',
-          key: 'exeTime',
-          align: 'center'
-        },
-        {
-          title: '执行类型',
-          key: 'exeType',
-          align: 'center'
-        }
-      ]
-      this.columns2 = [{
-        title: '序号',
-        type: 'index',
-        width: 80,
-        align: 'center'
-      }, {
-        title: '列名',
-        key: 'columnsName',
-        align: 'center'
-      }, {
-        type: 'selection',
-        width: 80,
-        align: 'center'
-      }]
-
-      this.data2 = [{
-        columnsName: '操作时间'
-      }, {
-        columnsName: '操作人'
-      }, {
-        columnsName: '客户端IP'
-      }, {
-        columnsName: '请求执行时长（秒）'
-      }, {
-        columnsName: '描述'
-      }, {
-        columnsName: '执行方法'
-      }]
-    }
-    search() {
-      this.manageService.querySystemLogsPage(this.systemLogModel, this.pageService).subscribe(val => {
-        this.systemLogsList = val.object.list
-      })
-
-    }
-    /**
-     * 列配置
-     */
-    columnsConfig() {
-      this.openColumnsConfig = true
-    }
-    /**
-     * 更改状态
-     */
-    changeStatus(row) {
-      this.changeStatusOpen = true
-    }
-  }
-
+		this.data2 = [
+			{
+				columnsName: '操作时间',
+			},
+			{
+				columnsName: '操作人',
+			},
+			{
+				columnsName: '客户端IP',
+			},
+			{
+				columnsName: '请求执行时长（秒）',
+			},
+			{
+				columnsName: '描述',
+			},
+			{
+				columnsName: '执行方法',
+			},
+		];
+	}
+	search() {
+		this.manageService.querySystemLogsPage(this.systemLogModel, this.pageService).subscribe(val => {
+			this.systemLogsList = val;
+		});
+	}
+	/**
+	 * 列配置
+	 */
+	columnsConfig() {
+		this.openColumnsConfig = true;
+	}
+	/**
+	 * 更改状态
+	 */
+	changeStatus(row) {
+		this.changeStatusOpen = true;
+	}
+}
 </script>
 
 <style lang="less" scope>
-
 
 </style>

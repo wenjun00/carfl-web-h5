@@ -5,12 +5,12 @@
       <!--树-->
       <i-col :span="10">
         <span>模块名</span>
-        <i-tree show-checkbox :data="treeData"></i-tree>
+        <i-tree show-checkbox :data="treeData" @on-select-change="showdesi"></i-tree>
       </i-col>
       <!--表格-->
       <i-col :span="14">
         <span>模块功能</span>
-        <data-box :columns="treeColumns" :data="treeDatabox"></data-box>
+        <data-box :columns="treeColumns" :data="treeDatabox" @on-select="selectFun"></data-box>
       </i-col>
     </i-row>
   </section>
@@ -38,7 +38,11 @@ export default class ModulePower extends Vue {
 	private treeDatabox: Array<Object> = [];
 	private allData: Array<any> = [];
 	private resoPid: number = 0;
-	@Prop() rowId: Object;
+	private checkBoolen: Boolean = false;
+	private checkedId: any = [];
+	private treeId: any = [];
+
+	@Prop() rowId: Number;
 
 	created() {
 		this.treeData = [];
@@ -52,7 +56,7 @@ export default class ModulePower extends Vue {
 			},
 			{
 				align: 'center',
-				key: 'functionName',
+				key: 'resoName',
 				title: '功能名称',
 				width: '90',
 			},
@@ -60,25 +64,6 @@ export default class ModulePower extends Vue {
 				align: 'center',
 				key: 'desc',
 				title: '描述',
-			},
-		];
-
-		this.treeDatabox = [
-			{
-				functionName: '查询',
-				desc: '基础查询',
-			},
-			{
-				functionName: '一件交接',
-				desc: '交接功能',
-			},
-			{
-				functionName: '签约',
-				desc: '',
-			},
-			{
-				functionName: '编辑',
-				desc: '编辑',
 			},
 		];
 	}
@@ -105,12 +90,13 @@ export default class ModulePower extends Vue {
 			let node1 = {
 				title: item.resoName,
 				id: item.id,
+				resoName: item.resoName,
 				expand: true,
 				children: this.getChild(item),
 			};
 			this.treeData.push(node1);
 		});
-		this.findRoleResource();
+		// this.findRoleResource();
 		// console.log(this.treeData, 666);
 	}
 	/**
@@ -126,7 +112,7 @@ export default class ModulePower extends Vue {
 						title: val.resoName,
 						resoName: val.resoName,
 						id: val.id,
-						checked: this.findRoleResource(),
+						checked: false,
 						expand: true,
 						children: this.getChild(val), // 迭代产生根
 					};
@@ -137,26 +123,40 @@ export default class ModulePower extends Vue {
 		return child;
 	}
 	/**
+	 * 点击模块权限节点 显示模块功能
+	 */
+	showdesi(item) {
+		if (item[0].nodeKey === 3) {
+			this.treeDatabox = item[0].children;
+		} else {
+			this.treeDatabox = [];
+		}
+	}
+	selectFun(row) {
+		console.log(row, 222);
+	}
+	/**
 	 * 通过角色id查询资源 (获取该角色已配置过的模块)
 	 */
-	findRoleResource() {
-		this.roleService
-			.findResourceByRoleId({
-				roleId: this.rowId,
-			})
-			.subscribe(val => {
-				let checkedId: any = val.map(v => v.id);
-				let treeId: any = this.allData.map(v => v.id);
-				this.allData.forEach(v => {
-					checkedId.forEach(checkVal => {
-						if (v.id === checkVal) {
-							return true;
-						} else {
-							return false;
-						}
-					});
-				});
-			});
-	}
+	// findRoleResource() {
+	// 	this.roleService
+	// 		.findResourceByRoleId({
+	// 			roleId: this.rowId,
+	// 		})
+	// 		.subscribe(val => {
+	// 			this.checkedId = val.map(v => v.id);
+	// 			this.treeId = this.allData.map(v => v.id);
+	// 			this.allData.forEach(v => {
+	// 				this.checkedId.forEach(checkVal => {
+	// 					if (v.id === checkVal) {
+	// 						this.checkBoolen = true;
+	// 					} else {
+	// 						this.checkBoolen = false;
+	// 					}
+	// 				});
+	// 			});
+	// 		});
+	// 	console.log(this.treeData, 222);
+	// }
 }
 </script>
