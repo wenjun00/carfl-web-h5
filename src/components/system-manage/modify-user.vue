@@ -1,48 +1,48 @@
 <!--修改用户-->
 <template>
   <section class="component modify-user">
-    <i-form :label-width="110" class="modifyUserForm">
+    <i-form :label-width="110" class="modifyUserForm" :model="modifyModel" ref="modify-user" :rules="rules">
       <i-row>
         <i-col :span="12">
-          <i-form-item label="用户名">
+          <i-form-item label="用户名" prop="userUsername">
             <i-input v-model="modifyModel.userUsername"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="姓名">
+          <i-form-item label="姓名" prop="userUsername">
             <i-input v-model="modifyModel.userRealname"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="电话">
+          <i-form-item label="电话" prop="userPhone">
             <i-input v-model="modifyModel.userPhone"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="邮箱">
+          <i-form-item label="邮箱" prop="userEmail">
             <i-input v-model="modifyModel.userEmail"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="公司名称">
+          <i-form-item label="公司名称" prop="companyName">
             <i-select v-model="modifyModel.companyName" disabled>
               <i-option label="指旺金科" value="指旺金科" key="指旺金科"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="所属机构">
+          <i-form-item label="所属机构" prop="deptName">
             <i-input v-model="modifyModel.deptName" disabled></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="性别">
+          <i-form-item label="性别" prop="userSex">
             <i-select v-model="modifyModel.userSex">
               <i-option label="男" :value="419" :key="419"></i-option>
               <i-option label="女" :value="420" :key="420"></i-option>
@@ -102,7 +102,52 @@
       userManager: '',
       userRemark: ''
     }
-    created() {}
+    private rules: any
+
+    created() {
+      this.rules = {
+        userUsername: [{
+          required: true,
+          message: '用户名不能为空',
+          trigger: 'blur'
+        }],
+        userRealname: [{
+          required: true,
+          message: '姓名不能为空',
+          trigger: 'blur'
+        }],
+        userPhone: [{
+          required: true,
+          message: '电话号码不能为空',
+          trigger: 'blur'
+        }, {
+          message: '请输入正确的电话号码',
+          trigger: 'blur',
+          pattern: /^1(3|4|5|7|8)\d{9}$/
+        }],
+        userEmail: [{
+          required: true,
+          message: '邮箱不能为空',
+          trigger: 'blur'
+        }, {
+          message: '请输入正确的邮箱',
+          trigger: 'blur',
+          type: 'email'
+        }],
+        userSex: [{
+          required: true,
+          message: '请选择性别',
+          type: 'number',
+          trigger: 'change'
+        }],
+        userManager: [{
+          required: true,
+          type: 'number',
+          message: '请选择数据权限',
+          trigger: 'change'
+        }]
+      }
+    }
     cancelUpdate() {
       this.$emit('close')
     }

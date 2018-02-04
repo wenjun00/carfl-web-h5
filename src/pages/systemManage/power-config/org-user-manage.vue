@@ -4,7 +4,7 @@
     <span class="form-title">机构与用户管理</span>
     <i-row>
       <i-col :span="4" style="border:1px solid #dddddd;padding:10px;height:500px;">
-        <i-button class="blueButton" @click="addNewOrg">添加机构</i-button>
+        <i-button class="blueButton" @click="addDept">添加机构</i-button>
         <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
       </i-col>
       <i-col :span="20">
@@ -410,6 +410,8 @@
      */
     addNewOrg() {
       this.addNewOrgModal = true
+      let _add: any = this.$refs['add-org']
+      _add.getCompanys()
     }
     /**
      * 修改用户
@@ -482,7 +484,6 @@
      * 树change
      */
     onChange(value) {
-      console.log('树change', value)
       this.userListModel.deptId = value.id
       this.deptLevel = value.deptLevel
       this.deptObject = value
@@ -528,7 +529,7 @@
      */
     addDept() {
       this.addNewOrgModal = true
-      console.log(this.deptLevel, 888, this.addOrgModel.deptLevel)
+      // console.log(this.deptLevel, 888, this.addOrgModel.deptLevel)
       if (this.deptLevel) {
         this.addOrgModel.deptLevel = this.deptLevel + 1
       }
@@ -560,6 +561,8 @@
     }
     cancelAddOrg() {
       this.addNewOrgModal = false
+      let _confirmAdd: any = this.$refs['add-org']
+      _confirmAdd.resetInput()
     }
     cancelEditOrg() {
       this.editNewOrgModal = false

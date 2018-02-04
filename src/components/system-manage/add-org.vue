@@ -1,7 +1,7 @@
 <!--新增组织-->
 <template>
   <section class="component add-org">
-    <i-form :label-width="110" class="addOrg" ref="add-org-form" :model="addOrgModel" :rules="rules">
+    <i-form :label-width="110" class="addOrg" ref="add-org-form" :model="addModel" :rules="rules">
       <i-row>
         <i-col :span="24">
           <i-form-item label="机构名称" prop="deptName">
@@ -78,54 +78,62 @@
     @Dependencies(DepartmentService) private departmentService: DepartmentService;
     @Dependencies(CompanyService) private companyService: CompanyService;
     @Prop() addOrgModel: any;
-    private rules: any;
+    private rules: any = {
+      deptName: [{
+        required: true,
+        trigger: 'blur',
+        message: '请输入机构名称'
+      }]
+    };
     private getAllCompany: any;
     private companyObject: Array < Object >= []; // 公司信息
     private addModel: any = {
       deptName: '',
-      deptLevel: '',
+      deptLevel: 402,
       deptStatus: 0,
       companyId: '',
-      deptRemark: ''
+      deptRemark: '',
+      deptPid: 2
     }
-    created() {
-      this.rules = {
-        deptName: [{
-          required: true,
-          trigger: 'blur',
-          message: '请输入机构名称'
-        }]
-      }
-
-
-    }
+    created() {}
     confirmAddOrg() {
       let _addOrg: any = this.$refs['add-org-form']
       _addOrg.validate(valid => {
         if (valid) {
-          this.addModel.deptPid = this.addOrgModel.id
+          if (this.addOrgModel && this.addOrgModel.id) {
+            this.addModel.deptPid = this.addOrgModel.id
+          }
           this.addModel.deptCode = this.addOrgModel.deptCode
           this.departmentService.createDepartment(this.addModel).subscribe(val => {
             this.$Message.success('添加成功！')
             this.resetInput()
             this.$emit('close')
+          }, ({
+            msg
+          }) => {
+            this.$Message.error(msg)
           })
         }
       })
     }
     resetInput() {
-      this.addModel.deptName = ''
-      this.addModel.deptLevel = ''
-      this.addModel.companyId = ''
-      this.addModel.deptRemark = ''
-      this.addModel.deptStatus = ''
+      let _addOrgForm: any = this.$refs['add-org-form']
+      _addOrgForm.resetFields()
     }
     addDept() {
-      console.log('子组件', this.addOrgModel)
       this.addModel.deptLevel = this.addOrgModel.deptLevel
-      // 获取公司名称
+      this.getCompanys()
+    }
+    /**
+     * 获取所有公司
+     */
+    getCompanys() {
       this.companyService.getAllCompany(this.getAllCompany).subscribe(data => {
         this.companyObject = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
   }
