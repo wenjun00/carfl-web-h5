@@ -1,4 +1,4 @@
-<!--冲抵顺序配置-->
+<!--修改分公司信息-->
 <template>
   <section class="component modify-branch-info">
     <i-form ref="branch-form" :model="formItemParent" :rules="formRules" :label-width="100">
@@ -74,16 +74,16 @@
     private formItem: any;
 
     created() {
-      this.formItemParent = {
-        companyChinaname: "",
-        companyProvince: "",
-        companyCity: "",
-        bankAccount: "",
-        depositBank: "",
-        cardNumber: "",
-        branchName: "",
-        companyStatus: ""
-      };
+      // this.formItemParent = {
+      //   companyChinaname: "",
+      //   companyProvince: "",
+      //   companyCity: "",
+      //   bankAccount: "",
+      //   depositBank: "",
+      //   cardNumber: "",
+      //   branchName: "",
+      //   companyStatus: ""
+      // };
       /**
        *验证
        */
@@ -144,12 +144,11 @@
         } else {
           this.$Message.error("Fail!");
         }
-      },({
-          msg
-        }) => {
-          this.$Message.error(msg)
-        }
-      );
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      });
     }
     /**
      * 修改器用/停用
