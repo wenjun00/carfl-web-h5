@@ -391,28 +391,7 @@ export default class AddPeriods extends Vue {
 }
 </script>
 
-<style lang="less">
-// .addPeriodsItem {
-// 	font-size: 14px;
-// 	font-weight: bold;
-// 	margin-top: 16px;
-// }
-// .data-grid-item__content,
-// .initialPayment,
-// .ivu-form-item-content {
-// 	display: flex;
-// 	align-items: center;
-// 	width: 86%;
-// }
-
-// .ivu-form-item {
-// 	width: 26%;
-// }
-// .after_text {
-// 	line-height: 33px;
-// 	margin-left: 5px;
-// }
-
+<style lang="less" scoped>
 .addPeriodsItem {
 	font-size: 14px;
 	font-weight: bold;
