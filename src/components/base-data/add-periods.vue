@@ -359,7 +359,7 @@ export default class AddPeriods extends Vue {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .addPeriodsItem {
 	font-size: 14px;
 	font-weight: bold;

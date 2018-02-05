@@ -469,7 +469,7 @@ export default class RoleMaintenance extends Page {
 	configData(data) {
 		this.roleConfig = {
 			backlogIds: data,
-			roleld: this.roleID,
+			roleId: this.roleID,
 		};
 	}
 	/**
@@ -478,7 +478,8 @@ export default class RoleMaintenance extends Page {
 	submitRole() {
 		this.backLogService.roleAllocateBacklogs(this.roleConfig).subscribe(
 			val => {
-				this.$Message.success(val.msg);
+				this.$Message.success('配置成功!');
+				this.waitHandleCaseModal = false;
 			},
 			({ msg }) => {
 				this.$Message.error(msg);

@@ -179,8 +179,6 @@ export default class CustomerFodderMaintain extends Page {
         }
       }
     ];
-
-    this.data1 = [];
   }
   getOrderInfoByTime() {}
   openSearch() {

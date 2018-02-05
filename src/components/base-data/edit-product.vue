@@ -68,7 +68,7 @@
             <i-radio label="有"></i-radio>
           </i-radio-group>
           <div v-if="initialParamsShow" style="margin-left:10px;margin-top:21px;" class="initialPayment">
-            <i-form-item style="width:65%;" prop="initialPayment" label="比例">
+            <i-form-item style="width:35%;" prop="initialPayment" label="比例">
               <i-input v-model="productDetail.initialPayment"></i-input>
             </i-form-item>
             <div style="color:red" class="after_text">%</div>
@@ -108,8 +108,7 @@
             <i-radio label="有"></i-radio>
           </i-radio-group>
           <div v-if="residueParamsShow" class="initialPayment" style="margin-top:27px;">
-            <span class="after_text">年利率</span>
-            <i-form-item style="width:21%;" prop="finalCash">
+            <i-form-item style="width:37%;" prop="finalCash" label="年利率">
               <i-input v-model="productDetail.finalCash"></i-input>
             </i-form-item>
             <span style="color:red" class="after_text">%</span>
@@ -139,8 +138,8 @@
               <i-radio label="分期数收取"></i-radio>
             </i-radio-group>
           </i-form-item>
-          <div v-if="stagingPeriodShow" class="initialPayment" style="margin-top:15px;">
-            <i-form-item prop="stagingPeriods" label="期数">
+          <div v-if="stagingPeriodShow" class="initialPayment" style="margin-top:15px;margin-left:-30px;">
+            <i-form-item prop="stagingPeriods" label="期数" >
               <i-input v-model="productDetail.stagingPeriods"></i-input>
             </i-form-item>
           </div>

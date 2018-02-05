@@ -33,7 +33,7 @@
       <i-modal v-model="addquoteModel" title="新增报价">
         <new-quote ref="new-quote" @close="addquoteModel=false"></new-quote>
         <div slot="footer">
-          <i-button class="Ghost">取消</i-button>
+          <i-button class="Ghost" @click="addquoteModel=false">取消</i-button>
           <i-button class="blueButton" @click="submitQuote">确定</i-button>
         </div>
       </i-modal>
@@ -206,13 +206,13 @@ export default class AddPeriods extends Vue {
 			},
 			{
 				title: '品牌',
-				key: 'carBrandId',
+				key: 'carBrandName',
 				align: 'center',
 				width: 160,
 			},
 			{
 				title: '系列',
-				key: 'carSeriesId',
+				key: 'carSeriesName',
 				align: 'center',
 				width: 160,
 			},
@@ -224,7 +224,7 @@ export default class AddPeriods extends Vue {
 			},
 			{
 				title: '颜色',
-				key: 'carRemark',
+				key: 'carColor',
 				align: 'center',
 				width: 160,
 			},
@@ -387,26 +387,32 @@ export default class AddPeriods extends Vue {
 	 */
 	submitQuote() {
 		let openQuote: any = this.$refs['new-quote'];
-		openQuote.rulesFun();
+    openQuote.rulesFun();
+    this.seachBusiness();
 	}
 }
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
 .editclass {
 	.ivu-modal-footer {
 		display: none !important;
 	}
 }
 .bottom_addPrice {
-	width: 96.8%;
-	margin-left: 20px;
-	height: 50px;
-	background: #ccc;
+	width: 100%;
+	height: 80px;
+  background: rgb(255,255,255);
+  border: 1px solid rgb(221, 221, 221);
 	position: fixed;
 	bottom: 0;
 	left: 0;
 	display: flex;
-	justify-content: flex-end;
-	cursor: pointer;
+  justify-content: flex-end;
+  align-items:center;
+  cursor: pointer;
+  .blueButton{
+    height:40px;
+    margin-right:18px;
+  }
 }
 </style>

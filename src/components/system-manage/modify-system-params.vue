@@ -38,42 +38,34 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component'
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    SystemParameterService
-  } from "~/services/manage-service/system.parameter.service";
-  @Component({
-    components: {}
-  })
-  export default class ModifySystemParams extends Vue {
-    @Dependencies(SystemParameterService) private systemParameterService: SystemParameterService;
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { Prop } from 'vue-property-decorator';
+import { Dependencies } from '~/core/decorator';
+import { SystemParameterService } from '~/services/manage-service/system.parameter.service';
+@Component({
+	components: {},
+})
+export default class ModifySystemParams extends Vue {
+	@Dependencies(SystemParameterService) private systemParameterService: SystemParameterService;
 
-    @Prop() modifySysParamsModel;
-    created() {}
-    /**
-     * 确认修改
-     */
-    confirmModify() {
-      console.log(1212, this.modifySysParamsModel)
-      this.systemParameterService.createSystemParameter(this.modifySysParamsModel).subscribe(val => {
-        this.$emit('close')
-        this.$Message.success('修改成功')
-      })
-    }
-  }
-
+	@Prop() modifySysParamsModel;
+	created() {}
+	/**
+	 * 确认修改
+	 */
+	confirmModify() {
+		console.log(1212, this.modifySysParamsModel);
+		this.systemParameterService.updateSystemParameter(this.modifySysParamsModel).subscribe(val => {
+			this.$emit('close');
+			this.$Message.success('修改成功');
+		});
+	}
+}
 </script>
 <style lang="less">
-  .modifySystemParams {
-    position: relative;
-    right: 30px;
-  }
-
+.modifySystemParams {
+	position: relative;
+	right: 30px;
+}
 </style>

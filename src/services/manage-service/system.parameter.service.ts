@@ -18,11 +18,21 @@ export class SystemParameterService {
   }
   /**
    * 
-   * @param data 创建修改系统参数
+   * @param data 创建系统参数
    */
   createSystemParameter(data) {
     return this.netService.send({
       server: manageService.systemParameterController.createSystemParameter,
+      data: data
+    })
+  }
+  /**
+  * 
+  * @param data 修改系统参数
+  */
+  updateSystemParameter(data) {
+    return this.netService.send({
+      server: manageService.systemParameterController.updateSystemParameter,
       data: data
     })
   }

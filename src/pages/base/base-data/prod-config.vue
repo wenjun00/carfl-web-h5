@@ -9,7 +9,7 @@
             <div style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>
             <span style="position:relative;left:5px;">产品类目</span>
             <div style="float:right;display:inline-block;font-weight:bold">
-              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
+              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addProductFun">
                 <svg-icon iconClass="tianjiawenjian"></svg-icon>
               </div>
               <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
@@ -29,10 +29,10 @@
             <i-col :span="12">
               <data-grid :labelWidth="100" labelAlign="left" contentAlign="left;">
                 <data-grid-item label="产品名称" :span="12">
-                  <span>{{productMessage.name ? productMessage.name : "产品名称"}}</span>
+                  <span>{{productMessage.name}}</span>
                 </data-grid-item>
                 <data-grid-item label="产品序号" :span="12">
-                  <span>{{productMessage.number ? productMessage.number : "23434343"}}</span>
+                  <span>{{productMessage.number}}</span>
                 </data-grid-item>
               </data-grid>
             </i-col>
@@ -42,9 +42,7 @@
                                 <Radio label="自有资金"></Radio>
                                 <Radio label="第三方"></Radio>
                             </RadioGroup> -->
-              <i-button class="blueButton" @click="customerFodderConfig" v-if="customerFodderConfigFlag">
-                <span></span>客户素材配置</i-button>
-              <i-button class="blueButton" @click="customerFodderConfig" v-if="alreadyConfigFlag">已配置</i-button>
+              <i-button class="blueButton" @click="customerFodderConfig">{{productMessage.isConfig=0 ? "已配置" : "客户素材配置" }}</i-button>
               <!--<i-button class="blueButton" @click="chargeAgainstOrderConfig">冲抵顺序配置</i-button>-->
             </i-col>
           </i-row>
@@ -173,6 +171,16 @@
         <charge-against-order></charge-against-order>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal v-model="addProductModal" title="新增产品">
+        <add-product ref="add-product" @close="closeAddProductModal"></add-product>
+        <div slot="footer">
+          <i-button class="Ghost" @click="closeAddProductModal">取消</i-button>
+          <i-button class="blueButton" @click="submintAddProduct">确认</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -184,6 +192,7 @@ import SvgIcon from '~/components/common/svg-icon.vue';
 import AddPeriods from '~/components/base-data/add-periods.vue';
 import EditPeriods from '~/components/base-data/edit-product.vue';
 import PreviewProduct from '~/components/base-data/preview-product.vue';
+import AddProduct from '~/components/base-data/add-product.vue';
 
 import ChargeAgainstOrder from '~/components/base-data/charge-against-order.vue';
 import { Dependencies } from '~/core/decorator';
@@ -191,6 +200,7 @@ import { DataGrid, DataGridItem } from 'vue-fintech-component';
 import { Layout } from '~/core/decorator';
 import { ProductService } from '~/services/manage-service/product.service';
 import { ProductPlanIssueService } from '~/services/manage-service/productPlanIssue.service';
+import { PersonalMaterialService } from '~/services/manage-service/personalMaterial.service';
 import { PageService } from '~/utils/page.service';
 import { constants } from 'zlib';
 import { Set } from 'core-js/library/web/timers';
@@ -207,11 +217,13 @@ import { retry } from 'rxjs/operator/retry';
 		ChargeAgainstOrder,
 		EditPeriods,
 		PreviewProduct,
+		AddProduct,
 	},
 })
 export default class ProdConfig extends Page {
 	@Dependencies(ProductService) private productService: ProductService;
-	@Dependencies(ProductPlanIssueService) private ProductPlanIssueService: ProductPlanIssueService;
+	@Dependencies(ProductPlanIssueService) private productPlanIssueService: ProductPlanIssueService;
+	@Dependencies(PersonalMaterialService) private personalMaterialService: PersonalMaterialService;
 	@Dependencies(PageService) private pageService: PageService;
 	private columns1: any = [];
 	private data1: Array<Object> = [];
@@ -226,8 +238,6 @@ export default class ProdConfig extends Page {
 	private addPeriodsModal: Boolean = false;
 	private checkId: Number = 1;
 	private chargeAgainstOrderConfigModal: Boolean = false;
-	private customerFodderConfigFlag: Boolean = true;
-	private alreadyConfigFlag: Boolean = false;
 	private allData: Array<any> = [];
 	private productShow: Boolean = false;
 	private productMessage: any = {};
@@ -237,53 +247,48 @@ export default class ProdConfig extends Page {
 	private viewModal: Boolean = false;
 	private productDetails: Object = {};
 	private productDe: Object = {};
-	/**
-	 * 客户素材配置
-	 */
-	customerFodderConfig() {
-		this.customerFodderConfigFlag = false;
-		this.alreadyConfigFlag = true;
-		this.customerFodderConfigModal = true;
-	}
+	private addProductModal: Boolean = false;
+	private seriId: Number = -1;
+	private scopes: any = {};
+	private newTree: any = {};
+
 	created() {
 		this.treeList();
 		this.customerFodderTree = [
-			{
-				title: '全选',
-				expand: true,
-				children: [
-					{
-						title: '个人基本资料',
-						expand: true,
-						children: [
-							{
-								title: '身份证',
-							},
-							{
-								title: '户口本',
-							},
-							{
-								title: '结婚证',
-							},
-						],
-					},
-					{
-						title: '资产证明',
-					},
-					{
-						title: '银行流水',
-					},
-					{
-						title: '征信',
-					},
-					{
-						title: '职业证明',
-					},
-					{
-						title: '其他',
-					},
-				],
-			},
+			//   {
+			//   title: '全选',
+			//   expand: true,
+			//   children: [{
+			//       title: '个人基本资料',
+			//       expand: true,
+			//       children: [{
+			//           title: '身份证',
+			//         },
+			//         {
+			//           title: '户口本',
+			//         },
+			//         {
+			//           title: '结婚证',
+			//         },
+			//       ],
+			//     },
+			//     {
+			//       title: '资产证明',
+			//     },
+			//     {
+			//       title: '银行流水',
+			//     },
+			//     {
+			//       title: '征信',
+			//     },
+			//     {
+			//       title: '职业证明',
+			//     },
+			//     {
+			//       title: '其他',
+			//     },
+			//   ],
+			// },
 		];
 		this.prdConfig = [
 			{
@@ -451,7 +456,7 @@ export default class ProdConfig extends Page {
 		}
 	}
 	publishNext() {
-		this.ProductPlanIssueService.publish(this.publishItem).subscribe(
+		this.productPlanIssueService.publish(this.publishItem).subscribe(
 			val => {
 				this.$Message.success('发布成功！');
 			},
@@ -517,32 +522,38 @@ export default class ProdConfig extends Page {
 	 *  树change事件 查询产品列表详情
 	 */
 	productNameDetail(scope) {
+		this.seriId = scope[0].seriesId; //保存系列ID
+		this.scopes = scope;
 		if (scope[0].productId) {
-			this.ProductPlanIssueService.getAllProductPlan(
-				{
-					productId: scope[0].productId,
-				},
-				this.pageService
-			).subscribe(val => {
-				this.addPeriodsBox = true;
-				if (val.length > 0) {
-					this.productShow = true;
-					this.prdConfig = val;
-					//初始化启用/停用状态
-					if (this.prdConfig[0].productStatus === 0) {
-						this.prdConfig[0].productStatus = true;
-					} else if (this.prdConfig[0].productStatus === 1) {
-						this.prdConfig[0].productStatus = false;
-					}
-					//初始化
-					if ((this.productMessage.capitaChannels = 382)) {
-						this.productMessage.capitaChannels = '自有资金';
+			this.productPlanIssueService
+				.getAllProductPlan(
+					{
+						productId: scope[0].productId,
+					},
+					this.pageService
+				)
+				.subscribe(val => {
+					this.addPeriodsBox = true;
+					if (val.length > 0) {
+						this.productShow = true;
+						this.prdConfig = val;
+						//初始化启用/停用状态
+						if (this.prdConfig[0].productStatus === 0) {
+							this.prdConfig[0].productStatus = true;
+						} else if (this.prdConfig[0].productStatus === 1) {
+							this.prdConfig[0].productStatus = false;
+						}
+						//初始化
+						if ((this.productMessage.capitaChannels = 382)) {
+							this.productMessage.capitaChannels = '自有资金';
+						} else {
+							this.productMessage.capitaChannels = '第三方';
+						}
 					} else {
-						this.productMessage.capitaChannels = '第三方';
+						this.prdConfig = val;
 					}
-				}
-			});
-			this.checkProduct(scope);
+				});
+			this.checkProduct(scope[0].productId);
 		}
 	}
 	/**@
@@ -551,7 +562,7 @@ export default class ProdConfig extends Page {
 	checkProduct(scope) {
 		this.productService
 			.getProductById({
-				id: scope[0].productId,
+				id: scope,
 			})
 			.subscribe(val => {
 				this.productMessage = val;
@@ -614,6 +625,8 @@ export default class ProdConfig extends Page {
 	submiteButton() {
 		let periodsModal: any = this.$refs['add-periods-ref'];
 		periodsModal.confirmPeriods();
+		this.treeList();
+		this.productNameDetail(this.scopes);
 	}
 	/**
 	 * 关闭弹窗
@@ -633,6 +646,47 @@ export default class ProdConfig extends Page {
 	viewButton(item) {
 		this.viewModal = true;
 		this.productDetails = item;
+	}
+	/**
+	 * 树形结构 新增产品
+	 */
+	addProductFun() {
+		if (this.seriId !== '' && this.seriId !== undefined) {
+			console.log(this.seriId, 222);
+			this.addProductModal = true;
+		} else {
+			this.$Message.error('请先选择产品系列');
+		}
+	}
+	/**
+	 * 点击新增产品确认按钮
+	 */
+	submintAddProduct() {
+		let openAddProduct: any = this.$refs['add-product'];
+		openAddProduct.vaildFun(this.seriId);
+		this.treeList();
+		//  this.productNameDetail(this.scopes);
+	}
+	closeAddProductModal() {
+		this.addProductModal = false;
+	}
+	/**
+	 * 客户素材配置
+	 */
+	customerFodderConfig() {
+		this.customerFodderConfigModal = true;
+		this.personalMaterialService
+			.getAllPersonalMaterialNoPage({
+				productId: this.productMessage.id,
+			})
+			.subscribe(val => {
+				this.newTree = val;
+				this.newTree.map(val => {
+					let dictData = JSON.parse(localStorage.dictData); //获取所有数字字典项
+					let parent = dictData.find(v => v.id === val.type); // 找到字典项对应的父类
+					console.log(parent, 9999);
+				});
+			});
 	}
 }
 </script>

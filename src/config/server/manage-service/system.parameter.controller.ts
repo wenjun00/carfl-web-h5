@@ -15,12 +15,21 @@ export default {
     type: requestType.Get
   },
   /**
-   * 创建修改系统参数
+   * 创建系统参数
    */
   createSystemParameter: {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'createSystemParameter',
+    type: requestType.Post
+  },
+  /**
+ * 修改系统参数
+ */
+  updateSystemParameter: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateSystemParameter',
     type: requestType.Post
   }
 }

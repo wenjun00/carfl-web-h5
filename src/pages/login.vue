@@ -51,6 +51,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { LoginService } from '~/services/login.service';
+import { DataDictService } from '~/services/manage-service/dataDict.service';
 import { Dependencies } from '~/core/decorator';
 import { Mutation } from 'vuex-class';
 import AppConfig from '~/config/app.config';
@@ -63,12 +64,15 @@ import Register from '~/components/common/register.vue';
 })
 export default class Login extends Vue {
 	@Dependencies(LoginService) private loginService: LoginService;
+	@Dependencies(DataDictService) private dataDictService: DataDictService;
+
 	@Mutation('updateUserToken') updateUserToken;
 	@Mutation('updateUserData') updateUserData;
 
 	private loginRule: Object = {};
 	private loginModel: any;
 	private registerModal: Boolean = false;
+	private dictData: any = [];
 	created() {
 		// 设置表单数据
 		this.loginModel = {
@@ -118,6 +122,7 @@ export default class Login extends Vue {
 						this.updateUserData(data.user);
 						console.log('login', data.user);
 						this.$router.push('/home');
+						this.dataDict();
 					},
 					({ msg }) => {
 						this.$Message.error(msg);
@@ -127,6 +132,14 @@ export default class Login extends Vue {
 	}
 	register() {
 		this.registerModal = true;
+	}
+	dataDict() {
+		this.dataDictService.getAll().subscribe(val => {
+			let str: any = JSON.stringify(val);
+			localStorage.dictData = str;
+			console.log(val, 888);
+			// this.dictData = JSON.parse(localStorage.dictData);  取值并转换为json
+		});
 	}
 }
 </script>

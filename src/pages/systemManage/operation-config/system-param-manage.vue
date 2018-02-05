@@ -16,7 +16,7 @@
 
     <template>
       <i-modal v-model="editSysParamsModal" title="修改系统参数">
-        <modify-system-params :modifySysParamsModel="modifySysParamsModel" ref="modify-sys-param" @close="editSysParamsModal=false"></modify-system-params>
+        <modify-system-params :modifySysParamsModel="modifySysParamsModel" ref="modify-sys-param" @close="closeBtn"></modify-system-params>
         <div slot="footer">
           <i-button @click="editSysParamsModal=false">取消</i-button>
           <i-button @click="confirmModifySysParams" class="blueButton">确定</i-button>
@@ -123,11 +123,7 @@ export default class OrderTransfer extends Page {
 				key: 'paramStatus',
 				align: 'center',
 				render: (h, { row, columns, index }) => {
-					if (row.paramStatus === 0) {
-						return h('span', {}, '启用');
-					} else if (row.paramStatus === 0) {
-						return h('span', {}, '停用');
-					}
+					return h('span', {}, row.paramStatus === 0 ? '启用' : '停用');
 				},
 			},
 			{
@@ -152,7 +148,7 @@ export default class OrderTransfer extends Page {
 	 */
 	multipleSelect(selection) {}
 	/**
-	 * 确定
+	 * 修改按钮
 	 */
 	modifySysParams(row) {
 		this.editSysParamsModal = true;
@@ -171,6 +167,10 @@ export default class OrderTransfer extends Page {
 	confirmModifySysParams() {
 		let _modify: any = this.$refs['modify-sys-param'];
 		_modify.confirmModify();
+	}
+	closeBtn() {
+		this.editSysParamsModal = false;
+		this.getSystemParam();
 	}
 }
 </script>

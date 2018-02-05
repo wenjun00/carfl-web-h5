@@ -35,7 +35,7 @@
   @Component({
     components: {},
   })
-  export default class AddPeriods extends Vue {
+  export default class EditCarMaintenance extends Vue {
     @Prop() editMessage: any;
     @Dependencies(CarService) private carService: CarService;
     private ruleValidate: any;

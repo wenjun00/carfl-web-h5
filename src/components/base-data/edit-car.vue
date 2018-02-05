@@ -131,7 +131,7 @@ import { Emit } from 'vue-property-decorator';
 @Component({
 	components: {},
 })
-export default class AddPeriods extends Vue {
+export default class EditCar extends Vue {
 	@Dependencies(CarQuotationService) private carQuotationService: CarQuotationService;
 	@Dependencies(CarService) private carService: CarService;
 
