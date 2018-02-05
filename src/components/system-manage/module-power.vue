@@ -10,9 +10,13 @@
       <!--表格-->
       <i-col :span="14">
         <span>模块功能</span>
-        <data-box :columns="treeColumns" :data="treeDatabox" @on-select="selectFun"></data-box>
+        <data-box ref="databox" :columns="treeColumns" :data="treeDatabox" @on-select="selectFun"></data-box>
       </i-col>
     </i-row>
+    <div style="text-align:right">
+      <i-button type="ghost" @click="cancelClick">取消</i-button>
+      <i-button class="blueButton" @click="submitRole">确定</i-button>
+    </div>
   </section>
 </template>
 
@@ -32,6 +36,9 @@
   import {
     RoleResoService
   } from '~/services/manage-service/role.reso.service';
+  import {
+    Emit
+  } from "vue-property-decorator";
   @Component({
     components: {
       DataBox,
@@ -49,8 +56,13 @@
     private checkBoolen: Boolean = false;
     private checkedId: any = [];
     private treeId: any = [];
+    private expandData: any = [];
+    private id: any = '';
+    private multipleSelection: any = [];
 
-    @Prop() rowId: Number;
+    @Emit("close")
+    close() {}
+
 
     created() {
       this.treeData = [];
@@ -74,7 +86,54 @@
         },
       ];
     }
+    refresh(rowId) {
+      this.id = rowId
+      this.roleService
+        .findResourceByRoleId({
+          roleId: rowId,
+        })
+        .subscribe(data => {
+          console.log(data, 7700)
+          this.expandData = data
+          console.log(this.expandData, 9999990000)
+          //   this.checkedId = val.map(v => v.id);
+          //   this.treeId = this.allData.map(v => v.id);
+          //   this.allData.forEach(v => {
+          //     this.checkedId.forEach(checkVal => {
+          //       if (v.id === checkVal) {
+          //         this.checkBoolen = true;
+          //       } else {
+          //         this.checkBoolen = false;
+          //       }
+          //     });
+          //   });
+        });
 
+    }
+    /**
+     * 取消
+     */
+    cancelClick() {
+      this.close()
+    }
+    /**
+     * 确定
+     */
+    submitRole() {
+      this.multipleSelection = this.$refs['databox']
+      this.multipleSelection = this.multipleSelection.getCurrentSelection()
+      let resourcesId: any = this.multipleSelection.map(v => v.id)
+      this.roleService.roleAllocateResources({
+        roleId: this.id,
+        resourcesId: resourcesId
+      }).subscribe(data => {
+        this.close()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg);
+      });
+    }
     /**
      * 获取树接口
      */
@@ -92,13 +151,22 @@
     createNewTree(allData) {
       let root = allData.filter(v => !v.resoPid); // 获取树根
       this.treeData = [];
+
       // 遍历根对象push进树中
       root.forEach(item => {
+        let expand: any = this.expandData.find(v => v.id === item.id)
+        if (expand) {
+          expand = true
+        } else {
+          expand = false
+        }
+        console.log(expand, 'expand')
         let node1 = {
           title: item.resoName,
           id: item.id,
           resoName: item.resoName,
-          expand: true,
+          expand: expand,
+          checked: expand,
           children: this.getChild(item),
         };
         this.treeData.push(node1);
@@ -115,13 +183,20 @@
       // 判断子的父id与全部数据的id相等
       this.allData.map(val => {
         if (item.id === val.resoPid) {
+          let expand: any = this.expandData.find(v => v.id === val.id)
+          if (expand) {
+            expand = true
+          } else {
+            expand = false
+          }
+          console.log(expand, 'expand2')
           if (val.resoPid) {
             let node2 = {
               title: val.resoName,
               resoName: val.resoName,
               id: val.id,
-              checked: false,
-              expand: true,
+              checked: expand,
+              expand: expand,
               children: this.getChild(val), // 迭代产生根
             };
             child.push(node2);
@@ -134,6 +209,7 @@
      * 点击模块权限节点 显示模块功能
      */
     showdesi(item) {
+      console.log(item, 'item')
       if (item[0].nodeKey === 3) {
         this.treeDatabox = item[0].children;
       } else {
