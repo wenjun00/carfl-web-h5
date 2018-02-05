@@ -84,7 +84,7 @@
 
     @Prop() row: Object;
     @Emit('currentRowData')
-    currentRowData(currentRow) {}
+    currentRowData(currentRow, data) {}
     @Emit('productPlanissue')
     productPlanissue(productPlanissueData) {}
     @Emit('close')
@@ -286,23 +286,23 @@
     max-width: auto;
     overflow: hidden;
   }
-  
+
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-  
+
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-  
+
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-  
+
   .arrowButton {
     line-height: 570px;
     height: 100%;
