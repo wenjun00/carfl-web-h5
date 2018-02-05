@@ -244,7 +244,7 @@
     cancleAddVehicle() {
       this.addVehicleModal = false
       let _addVehicle: any = this.$refs['add-vehicle']
-      _addVehicle.resetInput()
+      _addVehicle.reset()
     }
     /**
      * 确定新增车辆

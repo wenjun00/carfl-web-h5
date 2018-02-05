@@ -1,13 +1,13 @@
 <!--新增车辆-->
 <template>
   <section class="component add-vehicle">
-    <i-form :label-width="110" style="margin-top:20px;" ref="add-vehicle" :model="addVehicleModel">
-      <i-form-item label="车辆品牌" prop="roleName">
+    <i-form :label-width="110" style="margin-top:20px;" ref="add-vehicle" :model="addVehicleModel" :rules="rules">
+      <i-form-item label="车辆品牌" prop="brandId">
         <i-select style="width:260px;" v-model="addVehicleModel.brandId" @on-change="changeBrand">
           <i-option v-for="item in allBrand" :key="item.id" :value="item.id" :label="item.brandName"></i-option>
         </i-select>
       </i-form-item>
-      <i-form-item label="车辆系列" prop="roleName">
+      <i-form-item label="车辆系列" prop="seriesId">
         <i-select style="width:260px;" v-model="addVehicleModel.seriesId">
           <i-option v-for="item in allSeries" :key="item.id" :value="item.id" :label="item.seriesName"></i-option>
         </i-select>
@@ -48,11 +48,12 @@
   })
   export default class AddVehicle extends Vue {
     @Dependencies(CarService) private carService: CarService;
-
     private addVehicleModel = {
-      roleName: '',
-      roleStatus: '',
-      roleRemark: ''
+      brandId: '',
+      seriesId: '',
+      modelName: '',
+      carColour: '',
+      carEmissions: ''
     };
     private rules: any;
     private allBrand: Array < any >= [] // 所有品牌
@@ -60,12 +61,43 @@
     @Prop()
     row: Object;
 
-    created() {}
+    created() {
+      this.rules = {
+        brandId: [{
+          trigger: 'blur',
+          message: '请选择车辆品牌',
+          required: true,
+          type: 'number'
+        }],
+        seriesId: [{
+          trigger: 'change',
+          message: '请选择车辆系列',
+          required: true,
+          type: 'number'
+        }],
+        modelName: [{
+          trigger: 'blur',
+          message: '请输入车辆型号',
+          required: true
+        }]
+      }
+    }
     addVehicle() {
-      this.carService.addVehicle(this.addVehicleModel).subscribe(data => {
-        this.$Message.success('新增车辆成功！')
-        this.$emit('close')
+      let _addVehicleForm = < Form > this.$refs['add-vehicle']
+      _addVehicleForm.validate((valid) => {
+        if (valid) {
+          this.carService.addVehicle(this.addVehicleModel).subscribe(data => {
+            this.$Message.success('新增车辆成功！')
+            this.$emit('close')
+            this.reset()
+          }, ({
+            msg
+          }) => {
+            this.$Message.error(msg)
+          })
+        }
       })
+
     }
     reset() {
       let _addRole = < Form > this.$refs['add-vehicle']
@@ -82,12 +114,13 @@
       })
     }
     changeBrand(val) {
-      this.carService.getSeriesByBrandId({
-        brandId: val
-      }).subscribe(data => {
-        console.log(data, 878)
-        this.allSeries = data
-      })
+      if (val) {
+        this.carService.getSeriesByBrandId({
+          brandId: val
+        }).subscribe(data => {
+          this.allSeries = data
+        })
+      }
     }
   }
 

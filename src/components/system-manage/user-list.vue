@@ -80,8 +80,12 @@
     }
     getUserListByRole(roleId) {
       this.userListModel.roleId = roleId
-      this.manageService.getUserByRoleIdPage(this.userListModel, this.pageService).subscribe(val => {
-        this.userList = val.object.list
+      this.manageService.getUserByRoleIdPage(this.userListModel, this.pageService).subscribe(data => {
+        this.userList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
     resetFrom() {
@@ -89,8 +93,12 @@
       this.userListModel.realname = ''
     }
     search() {
-      this.manageService.getUserByRoleIdPage(this.userListModel, this.pageService).subscribe(val => {
-        this.userList = val.object.list
+      this.manageService.getUserByRoleIdPage(this.userListModel, this.pageService).subscribe(data => {
+        this.userList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
       })
     }
   }
