@@ -1,0 +1,94 @@
+<!--新增车辆-->
+<template>
+  <section class="component add-vehicle">
+    <i-form :label-width="110" style="margin-top:20px;" ref="add-vehicle" :model="addVehicleModel">
+      <i-form-item label="车辆品牌" prop="roleName">
+        <i-select style="width:260px;" v-model="addVehicleModel.brandId" @on-change="changeBrand">
+          <i-option v-for="item in allBrand" :key="item.id" :value="item.id" :label="item.brandName"></i-option>
+        </i-select>
+      </i-form-item>
+      <i-form-item label="车辆系列" prop="roleName">
+        <i-select style="width:260px;" v-model="addVehicleModel.seriesId">
+          <i-option v-for="item in allSeries" :key="item.id" :value="item.id" :label="item.seriesName"></i-option>
+        </i-select>
+      </i-form-item>
+      <i-form-item label="车辆型号" prop="modelName">
+        <i-input style="width:260px;" v-model="addVehicleModel.modelName"></i-input>
+      </i-form-item>
+      <i-form-item label="车辆颜色" prop="carColour">
+        <i-input style="width:260px;" v-model="addVehicleModel.carColour"></i-input>
+      </i-form-item>
+      <i-form-item label="车辆排量" prop="carEmissions">
+        <i-input style="width:260px;" v-model="addVehicleModel.carEmissions"></i-input>
+      </i-form-item>
+    </i-form>
+  </section>
+</template>
+
+<script lang="ts">
+  import Vue from 'vue';
+  import Component from 'vue-class-component'
+  import DataBox from "~/components/common/data-box.vue";
+  import {
+    Prop
+  } from "vue-property-decorator";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    CarService
+  } from '~/services/manage-service/car.service';
+  import {
+    Form
+  } from "iview"
+  @Component({
+    components: {
+      DataBox
+    }
+  })
+  export default class AddVehicle extends Vue {
+    @Dependencies(CarService) private carService: CarService;
+
+    private addVehicleModel = {
+      roleName: '',
+      roleStatus: '',
+      roleRemark: ''
+    };
+    private rules: any;
+    private allBrand: Array < any >= [] // 所有品牌
+    private allSeries: Array < any >= [] // 所有系列
+    @Prop()
+    row: Object;
+
+    created() {}
+    addVehicle() {
+      this.carService.addVehicle(this.addVehicleModel).subscribe(data => {
+        this.$Message.success('新增车辆成功！')
+        this.$emit('close')
+      })
+    }
+    reset() {
+      let _addRole = < Form > this.$refs['add-vehicle']
+      _addRole.resetFields()
+    }
+    getAllBrand() {
+      this.carService.getAllBrand().subscribe(data => {
+        this.allBrand = data
+        console.log(454, data)
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+    }
+    changeBrand(val) {
+      this.carService.getSeriesByBrandId({
+        brandId: val
+      }).subscribe(data => {
+        console.log(data, 878)
+        this.allSeries = data
+      })
+    }
+  }
+
+</script>

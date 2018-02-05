@@ -532,6 +532,8 @@
       // console.log(this.deptLevel, 888, this.addOrgModel.deptLevel)
       if (this.deptLevel) {
         this.addOrgModel.deptLevel = this.deptLevel + 1
+      } else {
+        this.addOrgModel.deptLevel = 402
       }
       let _add: any = this.$refs['add-org']
       _add.addDept()

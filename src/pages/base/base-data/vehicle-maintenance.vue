@@ -8,7 +8,7 @@
             <div style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>
             <span style="position:relative;left:5px;">车辆品牌</span>
             <div style="float:right;display:inline-block;font-weight:bold">
-              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
+              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addVehicle">
                 <svg-icon iconClass="tianjiawenjian"></svg-icon>
               </div>
               <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
@@ -40,6 +40,16 @@
       </i-modal>
     </template>
 
+    <template>
+      <i-modal v-model="addVehicleModal" title="新增车辆">
+        <add-vehicle ref="add-vehicle" @close="closeAndRefreshVehicle"></add-vehicle>
+        <div slot="footer">
+          <i-button @click="cancleAddVehicle">取消</i-button>
+          <i-button class="blueButton" @click="confirmAddVehicle">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
   </section>
 </template>
 <script lang="ts">
@@ -60,14 +70,15 @@
   import {
     CarService
   } from '~/services/manage-service/car.service';
-
+  import AddVehicle from '~/components/base-data/add-vehicle.vue'
   @Layout('workspace')
   @Component({
     components: {
       DataBox,
       SvgIcon,
       EditCarMaintenance,
-    },
+      AddVehicle
+    }
   })
   export default class ProdConfig extends Page {
     @Dependencies(CarService) private carService: CarService;
@@ -80,6 +91,7 @@
     private carParam: String = '';
     private editmessage: any = {};
     private editModal: Boolean = false;
+    private addVehicleModal: Boolean = false; // 添加车辆
     private checkData: any;
     /**
      * 客户素材配置
@@ -137,6 +149,14 @@
           align: 'center',
         },
       ];
+    }
+    /**
+     * 添加车辆
+     */
+    addVehicle() {
+      this.addVehicleModal = true
+      let _addVehicle: any = this.$refs['add-vehicle']
+      _addVehicle.getAllBrand()
     }
     /**
      * 根据车系列树获取车列表
@@ -218,7 +238,21 @@
         this.treeData.push(lv1Node);
       });
     }
-
+    /**
+     * 取消新增车辆
+     */
+    cancleAddVehicle() {
+      this.addVehicleModal = false
+      let _addVehicle: any = this.$refs['add-vehicle']
+      _addVehicle.resetInput()
+    }
+    /**
+     * 确定新增车辆
+     */
+    confirmAddVehicle() {
+      let _addVehicle: any = this.$refs['add-vehicle']
+      _addVehicle.addVehicle()
+    }
     /**
      * 查询车辆
      */
@@ -256,6 +290,10 @@
     submitButton() {
       let editOpen: any = this.$refs['edit-car-maintenance'];
       editOpen.vaildFun();
+    }
+    closeAndRefreshVehicle() {
+      this.getCarseries()
+      this.addVehicleModal = false
     }
   }
 
