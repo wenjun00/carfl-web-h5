@@ -40,7 +40,7 @@
     <div style="width:100%;color:#999999;position:absolute;bottom:20px;text-align:center">© 2018 Zhiwang All Rights Reserved. For Internal Use Only</div>
 
     <template>
-      <i-modal title="新用户注册" v-model="registerModal" class="register-modal">
+      <i-modal title="新用户注册" v-model="registerModal" class="register_modal">
         <register @close="registerModal=false"></register>
       </i-modal>
     </template>
@@ -51,11 +51,11 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { LoginService } from '~/services/login.service';
-import { DataDictService } from '~/services/manage-service/dataDict.service';
 import { Dependencies } from '~/core/decorator';
 import { Mutation } from 'vuex-class';
 import AppConfig from '~/config/app.config';
 import Register from '~/components/common/register.vue';
+import { DataDictService } from '~/services/manage-service/dataDict.service';
 
 @Component({
 	components: {
@@ -65,14 +65,12 @@ import Register from '~/components/common/register.vue';
 export default class Login extends Vue {
 	@Dependencies(LoginService) private loginService: LoginService;
 	@Dependencies(DataDictService) private dataDictService: DataDictService;
-
 	@Mutation('updateUserToken') updateUserToken;
 	@Mutation('updateUserData') updateUserData;
 
 	private loginRule: Object = {};
 	private loginModel: any;
 	private registerModal: Boolean = false;
-	private dictData: any = [];
 	created() {
 		// 设置表单数据
 		this.loginModel = {
@@ -122,10 +120,10 @@ export default class Login extends Vue {
 						this.updateUserData(data.user);
 						console.log('login', data.user);
 						this.$router.push('/home');
-						this.dataDict();
 					},
 					({ msg }) => {
 						this.$Message.error(msg);
+						this.dataDict();
 					}
 				);
 		});
@@ -137,13 +135,12 @@ export default class Login extends Vue {
 		this.dataDictService.getAll().subscribe(val => {
 			let str: any = JSON.stringify(val);
 			localStorage.dictData = str;
-			console.log(val, 888);
-			// this.dictData = JSON.parse(localStorage.dictData);  取值并转换为json
+			console.log(val, 888); // this.dictData = JSON.parse(localStorage.dictData);  取值并转换为json
 		});
 	}
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .full-absolute {
 	background: #265ea3;
 }
@@ -187,7 +184,7 @@ export default class Login extends Vue {
 	bottom: 20px;
 }
 
-.register-modal {
+.register_modal {
 	.ivu-modal-footer {
 		display: none;
 	}

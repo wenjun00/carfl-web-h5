@@ -206,7 +206,7 @@
      * 保存并提交
      */
     saveAndSubmit() {
-      let choosebuymaterials = this.$refs['choose-buy-materials']
+      let choosebuymaterials: any = this.$refs['choose-buy-materials']
       console.log(choosebuymaterials)
       let savesubmitDataset: any = {
         idCard: this.customerModel.idCard,
@@ -256,7 +256,7 @@
   .header {
     border-bottom: 1px solid #cccccc;
   }
-  
+
   .submitBar {
     line-height: 70px;
     height: 70px;
@@ -269,7 +269,7 @@
     box-shadow: -3px 2px 20px #dddddd;
     padding-right: 24px;
   }
-  
+
   .specialInput {
     .ivu-input {
       border-style: none;
@@ -277,7 +277,7 @@
       border-radius: 0; // width: 257%;
     }
   }
-  
+
   .financing-lease-apply {
     .ivu-select-selection {
       display: inline-block;
@@ -295,7 +295,7 @@
       z-index: 999;
     }
   }
-  
+
   .finance-lease-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #DDDEE1;
@@ -310,10 +310,10 @@
       }
     }
   }
-  
+
   .historical {
     .ivu-modal-footer {
-      display: none!important;
+      display: none !important;
     }
   }
 

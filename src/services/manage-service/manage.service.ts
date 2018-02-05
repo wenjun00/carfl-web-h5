@@ -19,12 +19,13 @@ export class ManageService {
    * 获取分页查询角色
    * @param 
    */
-  queryRolePage({ roleName, roleStatus }, page) {
+  queryRolePage({ roleName, roleStatus, userId }, page) {
     return this.netService.send({
       server: manageService.roleController.queryRolePage,
       data: {
         roleName: roleName,
-        roleStatus: roleStatus
+        roleStatus: roleStatus,
+        userId: userId
       },
       page: page
     })

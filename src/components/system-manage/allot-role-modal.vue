@@ -19,6 +19,9 @@
     ManageService
   } from "~/services/manage-service/manage.service";
   import {
+    UserService
+  } from "~/services/manage-service/user.service";
+  import {
     Dependencies
   } from "~/core/decorator";
   import {
@@ -31,15 +34,18 @@
   })
   export default class AllotRoleModal extends Vue {
     @Dependencies(ManageService) private manageService: ManageService;
+    @Dependencies(UserService) private userService: UserService;
     @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private roleList: Array < Object > = [];
+    private roleList: Array < any > = [];
     private roleListModel: any = {
-      roleName: ''
+      roleName: '',
+      userId: ''
     };
     private allotRoleModel: any; // 单个分配角色model
     private batchAllotModel: any; // 批量分配角色model
     private multipleRoleId; // 所选角色array
+    private checkUserId: number = 0;
     @Prop() userId: any; // 单个用户id
     @Prop() batchAllotFlag: Boolean;
     @Prop() userIds: any;
@@ -68,13 +74,37 @@
     }
 
     getRoleList() {
+      // this.roleListModel.userId = this.checkUserId
+      // 获取所有角色
       this.manageService.queryRolePage(this.roleListModel, this.pageService).subscribe(data => {
         this.roleList = data
+        console.log('roleList', this.roleList)
       }, ({
         msg
       }) => {
         this.$Message.error(msg)
       })
+
+
+    }
+    makeData(row) {
+      this.roleListModel.userId = row.id
+      this.getRoleList()
+      // 根据用户id获取用户的角色
+      // this.userService.findRolesByUserId({
+      //   userId: row.id
+      // }).subscribe(data => {
+      //   let checkRoleId = data.map(val => val.id) // 反显的角色Id
+      //   console.log('checkRoleId', checkRoleId)
+      //   this.roleList.forEach(v => {
+      //     if (checkRoleId.includes(v.id)) {
+      //       v._checked = true
+      //       console.log(v, 'v')
+      //     }
+      //   })
+      // })
+      // console.log(this.roleList, 'kkk')
+      // this.getRoleList()
     }
     allotRole() {
       this.multipleRoleId = this.$refs['databox']

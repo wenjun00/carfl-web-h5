@@ -35,20 +35,28 @@
     @Dependencies(ManageService) private manageService: ManageService;
     @Prop() modifyRoleModel
 
-    private modifyModel: any = {}
+    private modifyModel: any = {
+      roleName: '',
+      roleStatus: '',
+      roleRemark: ''
+    }
 
     created() {}
     updateRole() {
-      this.modifyModel.roleName = this.modifyRoleModel.roleName
-      this.modifyModel.roleStatus = this.modifyRoleModel.roleStatus
-      this.modifyModel.roleRemark = this.modifyRoleModel.roleRemark
       this.manageService.updateRole(this.modifyModel).subscribe(val => {
         this.$Message.success('修改成功！')
+        this.$emit('close')
       }, ({
         msg
       }) => {
         this.$Message.error(msg)
       })
+    }
+    makeData(row) {
+      this.modifyModel.id = row.id
+      this.modifyModel.roleName = row.roleName
+      this.modifyModel.roleStatus = row.roleStatus
+      this.modifyModel.roleRemark = row.roleRemark
     }
   }
 

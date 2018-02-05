@@ -264,17 +264,6 @@
         }
       ]
 
-      this.data1 = [{
-        handleStatus: '未处理',
-        handleTime: '2017-12-01 13:56:03',
-        handlePerson: '胡开甲',
-        gatheringType: '销售收款',
-        gatheringTotalAmt: '79450.00',
-        gatheringAccountName: '泰康人寿',
-        applyDate: '2017-12-03 13:56:03',
-        applyPerson: '刘佳'
-      }]
-
       this.columns2 = [{
           title: "序号",
           type: "index",

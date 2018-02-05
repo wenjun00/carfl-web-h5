@@ -16,7 +16,7 @@
 
     <template>
       <i-modal v-model="modifyRoleModal" title="修改角色" class="modify-role">
-        <modify-role :modifyRoleModel="modifyRoleModel" ref="modify-role"></modify-role>
+        <modify-role :modifyRoleModel="modifyRoleModel" ref="modify-role" @close="closeAndRefresh"></modify-role>
         <div slot="footer">
           <i-button class="Ghost" @click="modifyRoleModal=false">取消</i-button>
           <i-button class="blueButton" @click="submitEditRole">确定</i-button>
@@ -25,8 +25,8 @@
     </template>
 
     <template>
-      <i-modal v-model="modulePowerModal" title="模块权限" width="600">
-        <module-power :rowId="rowIdFun" ref="module-power"></module-power>
+      <i-modal v-model="modulePowerModal" title="模块权限" width="600" @on-visible-change="modulePoweropen" class="user-list">
+        <module-power @close="modulePowerModal=false" ref="module-power"></module-power>
       </i-modal>
     </template>
 
@@ -190,6 +190,7 @@ export default class RoleMaintenance extends Page {
 								on: {
 									click: () => {
 										this.modulePower(row);
+										console.log(row, 'row');
 									},
 								},
 							},
@@ -365,6 +366,10 @@ export default class RoleMaintenance extends Page {
 	addNewRole() {
 		this.addRoleModal = true;
 	}
+	closeAndRefresh() {
+		this.modifyRoleModal = false;
+		this.getRoleListByCondition();
+	}
 	/**
 	 * 取消新增
 	 */
@@ -408,6 +413,8 @@ export default class RoleMaintenance extends Page {
 	modifyRole(row) {
 		this.modifyRoleModal = true;
 		this.modifyRoleModel = row;
+		let _modifyRole: any = this.$refs['modify-role'];
+		_modifyRole.makeData(row); // 给修改角色赋值
 	}
 	deleteRole(row) {
 		this.$Modal.confirm({
@@ -457,6 +464,12 @@ export default class RoleMaintenance extends Page {
 		waitHandle.getDate();
 		this.roleID = row.id;
 	}
+	modulePoweropen(val) {
+		if (val) {
+			let roleOpen: any = this.$refs['module-power'];
+			roleOpen.refresh(this.rowIdFun);
+		}
+	}
 	visibleChange(val) {
 		if (!val) {
 			let _userList = <Modal>this.$refs['user-list'];
@@ -478,8 +491,7 @@ export default class RoleMaintenance extends Page {
 	submitRole() {
 		this.backLogService.roleAllocateBacklogs(this.roleConfig).subscribe(
 			val => {
-				this.$Message.success('配置成功!');
-				this.waitHandleCaseModal = false;
+				this.$Message.success(val.msg);
 			},
 			({ msg }) => {
 				this.$Message.error(msg);

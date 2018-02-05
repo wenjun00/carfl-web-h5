@@ -39,5 +39,14 @@ export default {
     controller: CONTROLLER,
     action: 'updateDepartment',
     type: requestType.Post
+  },
+  /**
+   * 根据机构查公司
+   */
+  findCompanyByDeptId: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findCompanyByDeptId',
+    type: requestType.Get
   }
 }

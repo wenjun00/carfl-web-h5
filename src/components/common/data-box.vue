@@ -2,7 +2,7 @@
   <div class="component data-box">
     <div class="table">
       <i-table ref="table" :columns="columns" :data="data" :stripe="stripe" :highlight-row="highlightRow" @on-row-click="rowClick"
-        :width="width" @on-current-change="currentChange" @on-selection-change="currentSelect"></i-table>
+        :width="width" :height="height" @on-current-change="currentChange" @on-selection-change="currentSelect"></i-table>
     </div>
     <div class="row end-span" :style="{'width':`${width}px`}">
       <i-page class="pagination" size="small" show-total show-sizer :show-elevator="page.showElevator" :current.sync="page.pageIndex"
@@ -49,7 +49,10 @@
       default: () => new PageService()
     })
     page: PageService;
-
+    @Prop({
+      // default: 530
+    })
+    height: Number
     @Emit("onPageChange")
     pageConfigChange(page) {}
     @Emit("rowClick")

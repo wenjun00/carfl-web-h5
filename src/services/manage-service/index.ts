@@ -17,6 +17,8 @@ import backLogService from './backLog.service'
 import carQuotationService from './carQuotation.service'
 import roleResoService from './roleReso.service'
 import roleService from './role.service'
+import userService from './user.service'
+
 export const aaa = {
   manageService,
   productPackageService,
@@ -35,5 +37,6 @@ export const aaa = {
   backLogService,
   carQuotationService,
   roleResoService,
-  roleService
+  roleService,
+  userService
 }

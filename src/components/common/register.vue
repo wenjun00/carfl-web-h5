@@ -1,7 +1,7 @@
 <!--注册-->
 <template>
   <section class="component register">
-    <i-form :label-width="60" ref="register" :model="registerModel" class="register-form" label-position="left" :rules="rules">
+    <i-form :label-width="70" ref="register" :model="registerModel" class="register-form" label-position="right" :rules="rules">
       <i-form-item label="用户名" prop="userName">
         <i-input v-model="registerModel.userName" style="width:80%;"></i-input>
       </i-form-item>
@@ -12,10 +12,10 @@
         <i-input v-model="registerModel.phone" style="width:80%;"></i-input>
       </i-form-item>
       <i-form-item label="密码" prop="pwd">
-        <i-input v-model="registerModel.pwd" style="width:80%;"></i-input>
+        <i-input v-model="registerModel.pwd" type="password" style="width:80%;"></i-input>
       </i-form-item>
       <i-form-item label="确认密码" prop="confirmPwd">
-        <i-input v-model="registerModel.confirmPwd" style="width:80%;"></i-input>
+        <i-input v-model="registerModel.confirmPwd" type="password" style="width:80%;"></i-input>
       </i-form-item>
       <i-form-item label="所属公司" prop="belongFirm">
         <i-input v-model="registerModel.belongFirm" style="width:80%;"></i-input>
@@ -57,6 +57,11 @@
         pwd: [{
           required: true,
           message: '密码不能为空',
+          trigger: 'blur'
+        }],
+        confirmPwd: [{
+          required: true,
+          message: '确认密码不能为空',
           trigger: 'blur'
         }],
         phone: [{

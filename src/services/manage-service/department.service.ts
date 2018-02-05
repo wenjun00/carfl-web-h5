@@ -37,4 +37,15 @@ export class DepartmentService {
       data: data
     })
   }
+  /**
+   * 根据机构查询公司
+   */
+  findCompanyByDeptId({ deptId }) {
+    return this.netService.send({
+      server: manageService.departmentController.findCompanyByDeptId,
+      data: {
+        deptId: deptId
+      }
+    })
+  }
 }

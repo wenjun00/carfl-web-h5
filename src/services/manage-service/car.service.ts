@@ -80,4 +80,15 @@ export class CarService {
       server: manageService.carController.getAllSeries,
     })
   }
+  /**
+   * 根据车辆id获取车辆系列
+   */
+  getSeriesByBrandId({ brandId }) {
+    return this.netService.send({
+      data: {
+        brandId: brandId
+      },
+      server: manageService.carController.getSeriesByBrandId,
+    })
+  }
 }

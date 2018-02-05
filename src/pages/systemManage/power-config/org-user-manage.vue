@@ -3,12 +3,16 @@
   <section class="page org-user-manage">
     <span class="form-title">机构与用户管理</span>
     <i-row>
-      <i-col :span="4" style="border:1px solid #dddddd;padding:10px;height:590px;">
-        <i-button class="blueButton" @click="addDept">添加机构</i-button>
-        <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
+      <i-col :span="4" style="border:1px solid #dddddd;padding:20px 0;height:590px;">
+        <i-row style="border-bottom:1px solid #dddddd;display:flex;align-items:center;justify-content:flex-end">
+          <i-button class="blueButton" @click="addDept" style="position:relative;bottom:10px;right:8px;">添加机构</i-button>
+        </i-row>
+        <i-row>
+          <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
+        </i-row>
       </i-col>
       <i-col :span="20">
-        <i-row style="margin-bottom:10px;">
+        <i-row>
           <span style="margin-left:20px;">用户名：</span>
           <i-input style="display:inline-block;width:10%;" v-model="userListModel.userName" placeholder="请输入用户名"></i-input>
           <span style="margin-left:20px;">姓名：</span>
@@ -23,7 +27,7 @@
           <i-button class="blueButton" style="margin-left:20px;" @click="batchAllotRole">批量分配角色</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="batchManageDevice">批量管理设备</i-button>
         </i-row>
-        <data-box :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService"></data-box>
+        <data-box :columns="columns1" :height="530" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService"></data-box>
       </i-col>
     </i-row>
 
@@ -205,12 +209,18 @@
         userName: '',
         realName: '',
         status: '',
-        deptId: 1
+        deptId: 2
       }
       this.columns1 = [{
           align: "center",
           type: "selection",
           width: 60
+        },
+        {
+          align: "center",
+          type: 'index',
+          width: 60,
+          title: '序号'
         },
         {
           title: "操作",
@@ -292,22 +302,26 @@
         {
           align: "center",
           title: "用户名",
-          key: "userUsername"
+          key: "userUsername",
+          width: 90
         },
         {
           align: "center",
           title: "姓名",
-          key: "userRealname"
+          key: "userRealname",
+          width: 90
         },
         {
           align: "center",
           title: "所属机构",
-          key: "deptName"
+          key: "deptName",
+          width: 90
         },
         {
           align: "center",
           title: "状态",
           key: "status",
+          width: 90,
           render: (h, {
             row,
             columns,
@@ -324,16 +338,18 @@
           align: "center",
           title: "电话",
           key: "userPhone",
-          width: 160
+          width: 130
         },
         {
           align: "center",
           title: "备注",
-          key: "userRemark"
+          key: "userRemark",
+          width: 140
         }, {
           align: "center",
           title: "创建人",
-          key: "operatorName"
+          key: "operatorName",
+          width: 100
         },
         {
           align: "center",
@@ -402,6 +418,7 @@
       this.allotRoleModal = true
       this.batchAllotFlag = false
       let _allotRole = < Modal > this.$refs['allot-role-modal']
+      _allotRole.makeData(row)
       _allotRole.getRoleList()
       this.userId = row.id
     }
@@ -510,6 +527,10 @@
           }).subscribe(val => {
             this.$Message.success('删除成功！')
             this.getTree()
+          }, ({
+            msg
+          }) => {
+            this.$Message.error(msg)
           })
         }
       })
@@ -529,9 +550,10 @@
      */
     addDept() {
       this.addNewOrgModal = true
-      // console.log(this.deptLevel, 888, this.addOrgModel.deptLevel)
       if (this.deptLevel) {
         this.addOrgModel.deptLevel = this.deptLevel + 1
+      } else {
+        this.addOrgModel.deptLevel = 402
       }
       let _add: any = this.$refs['add-org']
       _add.addDept()
