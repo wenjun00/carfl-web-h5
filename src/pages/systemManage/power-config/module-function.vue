@@ -186,7 +186,7 @@
       this.treeColumns = [{
           align: 'center',
           type: 'index',
-          title: '排序',
+          title: '序号',
           width: 60,
           fixed: 'left',
         },

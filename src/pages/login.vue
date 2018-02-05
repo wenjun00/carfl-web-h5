@@ -40,7 +40,7 @@
     <div style="width:100%;color:#999999;position:absolute;bottom:20px;text-align:center">© 2018 Zhiwang All Rights Reserved. For Internal Use Only</div>
 
     <template>
-      <i-modal title="新用户注册" v-model="registerModal" class="register-modal">
+      <i-modal title="新用户注册" v-model="registerModal" class="register_modal">
         <register @close="registerModal=false"></register>
       </i-modal>
     </template>
@@ -48,135 +48,141 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { LoginService } from '~/services/login.service';
-import { Dependencies } from '~/core/decorator';
-import { Mutation } from 'vuex-class';
-import AppConfig from '~/config/app.config';
-import Register from '~/components/common/register.vue';
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+  import {
+    LoginService
+  } from '~/services/login.service';
+  import {
+    Dependencies
+  } from '~/core/decorator';
+  import {
+    Mutation
+  } from 'vuex-class';
+  import AppConfig from '~/config/app.config';
+  import Register from '~/components/common/register.vue';
 
-@Component({
-	components: {
-		Register,
-	},
-})
-export default class Login extends Vue {
-	@Dependencies(LoginService) private loginService: LoginService;
-	@Mutation('updateUserToken') updateUserToken;
-	@Mutation('updateUserData') updateUserData;
+  @Component({
+    components: {
+      Register,
+    },
+  })
+  export default class Login extends Vue {
+    @Dependencies(LoginService) private loginService: LoginService;
+    @Mutation('updateUserToken') updateUserToken;
+    @Mutation('updateUserData') updateUserData;
 
-	private loginRule: Object = {};
-	private loginModel: any;
-	private registerModal: Boolean = false;
-	created() {
-		// 设置表单数据
-		this.loginModel = {
-			username: '',
-			password: '',
-		};
+    private loginRule: Object = {};
+    private loginModel: any;
+    private registerModal: Boolean = false;
+    created() {
+      // 设置表单数据
+      this.loginModel = {
+        username: '',
+        password: '',
+      };
 
-		// 设置验证规则
-		this.loginRule = {
-			username: [
-				{
-					required: true,
-					message: '用户名不能为空',
-					trigger: 'blur',
-				},
-			],
-			password: [
-				{
-					required: true,
-					message: '密码不能为空',
-					trigger: 'blur',
-				},
-			],
-		};
-	}
+      // 设置验证规则
+      this.loginRule = {
+        username: [{
+          required: true,
+          message: '用户名不能为空',
+          trigger: 'blur',
+        }, ],
+        password: [{
+          required: true,
+          message: '密码不能为空',
+          trigger: 'blur',
+        }, ],
+      };
+    }
 
-	/**
-	 * 提交登录表单
-	 */
-	submitForm() {
-		let loginForm: any = this.$refs['login-form'];
-		loginForm.validate(success => {
-			if (!success) {
-				return;
-			}
+    /**
+     * 提交登录表单
+     */
+    submitForm() {
+      let loginForm: any = this.$refs['login-form'];
+      loginForm.validate(success => {
+        if (!success) {
+          return;
+        }
 
-			this.loginService
-				.login({
-					username: this.loginModel.username,
-					password: this.loginModel.password,
-					loginDevice: 414,
-					loginType: 411,
-				})
-				.subscribe(
-					data => {
-						this.updateUserToken(data.token);
-						this.updateUserData(data.user);
-						console.log('login', data.user);
-						this.$router.push('/home');
-					},
-					({ msg }) => {
-						this.$Message.error(msg);
-					}
-				);
-		});
-	}
-	register() {
-		this.registerModal = true;
-	}
-}
+        this.loginService
+          .login({
+            username: this.loginModel.username,
+            password: this.loginModel.password,
+            loginDevice: 414,
+            loginType: 411,
+          })
+          .subscribe(
+            data => {
+              this.updateUserToken(data.token);
+              this.updateUserData(data.user);
+              console.log('login', data.user);
+              this.$router.push('/home');
+            },
+            ({
+              msg
+            }) => {
+              this.$Message.error(msg);
+            }
+          );
+      });
+    }
+    register() {
+      this.registerModal = true;
+    }
+  }
+
 </script>
-<style lang="less" scoped>
-.full-absolute {
-	background: #265ea3;
-}
+<style lang="less">
+  .full-absolute {
+    background: #265ea3;
+  }
+  
+  .login-bg {
+    width: 500px;
+    height: 500px;
+    background: url('/static/images/common/login-bg.png');
+    position: absolute;
+    left: 140px;
+    background-repeat: no-repeat;
+    background-size: 500px 500px;
+  }
+  
+  .login-form {
+    width: 350px;
+    position: relative;
+    right: 23px;
+  }
+  
+  .submit_btn {
+    width: 270px;
+    height: 40px;
+    background: #265ea2;
+    color: #fff;
+  }
+  
+  .submit_btn:hover {
+    background: #1d4f8b;
+    color: #fff;
+  }
+  
+  .loginContainer {
+    border: 1px solid #dddddd;
+    background: white;
+    height: 409px;
+    width: 378px;
+    padding-top: 50px;
+    position: relative;
+    left: 350px;
+    bottom: 20px;
+  }
+  
+  .register_modal {
+    .ivu-modal-footer {
+      display: none;
+    }
+  }
 
-.login-bg {
-	width: 500px;
-	height: 500px;
-	background: url('/static/images/common/login-bg.png');
-	position: absolute;
-	left: 140px;
-	background-repeat: no-repeat;
-	background-size: 500px 500px;
-}
-
-.login-form {
-	width: 350px;
-	position: relative;
-	right: 23px;
-}
-
-.submit_btn {
-	width: 270px;
-	height: 40px;
-	background: #265ea2;
-	color: #fff;
-}
-
-.submit_btn:hover {
-	background: #1d4f8b;
-	color: #fff;
-}
-
-.loginContainer {
-	border: 1px solid #dddddd;
-	background: white;
-	height: 409px;
-	width: 378px;
-	padding-top: 50px;
-	position: relative;
-	left: 350px;
-	bottom: 20px;
-}
-
-.register-modal {
-	.ivu-modal-footer {
-		display: none;
-	}
-}
 </style>
