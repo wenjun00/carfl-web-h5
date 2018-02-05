@@ -206,7 +206,7 @@
           title: '所有品牌',
           expand: true,
           children: [{
-            title: item.carBrand,
+            title: item.brandName,
             seriesId: item.id,
             expand: true,
             children: item.series.map(v => {
