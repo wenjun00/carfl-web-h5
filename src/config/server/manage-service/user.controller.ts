@@ -48,5 +48,14 @@ export default {
     controller: CONTROLLER,
     action: 'userBatchAllocateRoles',
     type: requestType.Post
+  },
+  /**
+   * 获取用户所属角色
+   */
+  findRolesByUserId: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findRolesByUserId',
+    type: requestType.Get
   }
 }

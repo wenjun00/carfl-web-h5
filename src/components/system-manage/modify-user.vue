@@ -28,15 +28,15 @@
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="公司名称" prop="companyName">
-            <i-select v-model="modifyModel.companyName" disabled>
-              <i-option label="指旺金科" value="指旺金科" key="指旺金科"></i-option>
+          <i-form-item label="所属机构" prop="deptName">
+            <i-select v-model="modifyModel.deptId" @on-change="changeOrg">
+              <i-option v-if="item.deptName" v-for="item in allOrg" :key="item.id" :label="item.deptName" :value="item.id"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="所属机构" prop="deptName">
-            <i-input v-model="modifyModel.deptName" disabled></i-input>
+          <i-form-item label="公司名称" prop="companyName">
+            <i-input v-model="modifyModel.companyName" disabled></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -85,11 +85,15 @@
   import {
     Dependencies
   } from "~/core/decorator";
+  import {
+    DepartmentService
+  } from "~/services/manage-service/department.service";
   @Component({
     components: {}
   })
   export default class ModifyUser extends Vue {
     @Dependencies(ManageService) private manageService: ManageService;
+    @Dependencies(DepartmentService) private departmentService: DepartmentService;
     @Prop() modifyUserModel: any
     private modifyModel: any = {
       userUsername: '',
@@ -103,7 +107,7 @@
       userRemark: ''
     }
     private rules: any
-
+    private allOrg: Array < any >= []
     created() {
       this.rules = {
         userUsername: [{
@@ -162,11 +166,9 @@
       })
     }
     getData(data) {
-      console.log(432, data)
       this.modifyModel.userUsername = data.userUsername
       this.modifyModel.id = data.id
       this.modifyModel.deptId = data.deptId
-      console.log(432, this.modifyModel.userUsername)
       this.modifyModel.userRealname = data.userRealname
       this.modifyModel.userPhone = data.userPhone
       this.modifyModel.userEmail = data.userEmail
@@ -175,6 +177,34 @@
       this.modifyModel.userSex = data.userSex
       this.modifyModel.userManager = data.userManager
       this.modifyModel.userRemark = data.userRemark
+      //获取所有组织机构
+      this.manageService.getAllDepartment().subscribe(data => {
+        this.allOrg = data
+        console.log(data, 888)
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+
+      // 根据deptId获取公司名称
+      this.departmentService.findCompanyByDeptId({
+        deptId: data.deptId
+      }).subscribe(data => {
+        this.modifyModel.companyName = data.companyChinaname
+      })
+    }
+    /**
+     * 根据机构查询公司
+     */
+    changeOrg(val) {
+      console.log(val, 'val')
+      this.departmentService.findCompanyByDeptId({
+        deptId: val
+      }).subscribe(data => {
+        console.log(val, 'data')
+        this.modifyModel.companyName = data.companyChinaname
+      })
     }
   }
 
