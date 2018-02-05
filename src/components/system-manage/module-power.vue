@@ -59,6 +59,8 @@
     private expandData: any = [];
     private id: any = '';
     private multipleSelection: any = [];
+    private expand: any = [];
+    // private itemexpand: Boolean = false;
 
     @Emit("close")
     close() {}
@@ -66,7 +68,7 @@
 
     created() {
       this.treeData = [];
-      this.getTreeDate();
+      //   this.getTreeDate();
       this.treeColumns = [{
           align: 'center',
           type: 'selection',
@@ -95,21 +97,12 @@
         .subscribe(data => {
           console.log(data, 7700)
           this.expandData = data
-          console.log(this.expandData, 9999990000)
-          //   this.checkedId = val.map(v => v.id);
-          //   this.treeId = this.allData.map(v => v.id);
-          //   this.allData.forEach(v => {
-          //     this.checkedId.forEach(checkVal => {
-          //       if (v.id === checkVal) {
-          //         this.checkBoolen = true;
-          //       } else {
-          //         this.checkBoolen = false;
-          //       }
-          //     });
-          //   });
+          this.getTreeDate()
         });
-
     }
+    // handleCheckChange(data, checked, indeterminate) {
+    //   console.log(data, checked, indeterminate, 100)
+    // }
     /**
      * 取消
      */
@@ -154,20 +147,13 @@
 
       // 遍历根对象push进树中
       root.forEach(item => {
-        let expand: any = this.expandData.find(v => v.id === item.id)
-        if (expand) {
-          expand = true
-        } else {
-          expand = false
-        }
-        console.log(expand, 'expand')
+        console.log(item, 99)
         let node1 = {
           title: item.resoName,
           id: item.id,
           resoName: item.resoName,
-          expand: expand,
-          checked: expand,
-          children: this.getChild(item),
+          expand: true,
+          children: this.getChild(item, node1),
         };
         this.treeData.push(node1);
         console.log(this.treeData, 898988)
@@ -178,26 +164,20 @@
     /**
      * 获取相对根元素的子元素
      */
-    getChild(item) {
+    getChild(item, node1) {
       let child: any = [];
       // 判断子的父id与全部数据的id相等
       this.allData.map(val => {
         if (item.id === val.resoPid) {
-          let expand: any = this.expandData.find(v => v.id === val.id)
-          if (expand) {
-            expand = true
-          } else {
-            expand = false
-          }
-          console.log(expand, 'expand2')
+          this.expand = this.expandData.find((v, i) => v === val.id)
           if (val.resoPid) {
             let node2 = {
               title: val.resoName,
               resoName: val.resoName,
               id: val.id,
-              checked: expand,
-              expand: expand,
-              children: this.getChild(val), // 迭代产生根
+              checked: this.expand,
+              expand: this.expand,
+              children: this.getChild(val, node1), // 迭代产生根
             };
             child.push(node2);
           }
@@ -208,8 +188,8 @@
     /**
      * 点击模块权限节点 显示模块功能
      */
-    showdesi(item) {
-      console.log(item, 'item')
+    showdesi(item, checked, indeterminate) {
+      console.log(item, 800)
       if (item[0].nodeKey === 3) {
         this.treeDatabox = item[0].children;
       } else {
