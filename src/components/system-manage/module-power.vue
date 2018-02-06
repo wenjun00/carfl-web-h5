@@ -153,7 +153,7 @@
           id: item.id,
           resoName: item.resoName,
           expand: true,
-          children: this.getChild(item, node1),
+          children: this.getChild(item),
         };
         this.treeData.push(node1);
         console.log(this.treeData, 898988)
@@ -164,7 +164,7 @@
     /**
      * 获取相对根元素的子元素
      */
-    getChild(item, node1) {
+    getChild(item) {
       let child: any = [];
       // 判断子的父id与全部数据的id相等
       this.allData.map(val => {
@@ -177,7 +177,7 @@
               id: val.id,
               checked: this.expand,
               expand: this.expand,
-              children: this.getChild(val, node1), // 迭代产生根
+              children: this.getChild(val), // 迭代产生根
             };
             child.push(node2);
           }
