@@ -244,7 +244,7 @@ export default [
       color: '#598AC5',
       path: 'base/base-data',
       children: [{
-        title: '产品包信息',
+        title: '产品包管理',
         path: 'base/base-data/prod-package-info'
       },
       {

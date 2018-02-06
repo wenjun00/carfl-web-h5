@@ -25,6 +25,7 @@ import collectMoneyHistoryController from './collect-money-history.controller'
 import carQuotationController from './car-quotation.controller'
 import roleResoController from './role-reso.controller'
 import loginController from './login.controller'
+import fileUploadController from './file-upload-controller.controller'
 
 export const manageService = {
   departmentController,
@@ -53,5 +54,6 @@ export const manageService = {
   collectMoneyHistoryController,
   carQuotationController,
   roleResoController,
-  loginController
+  loginController,
+  fileUploadController
 }
