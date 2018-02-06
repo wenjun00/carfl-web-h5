@@ -27,12 +27,22 @@
       <i-modal title="修改分公司信息" v-model="modal" :mask-closable="false">
         <modify-branch-info ref="modify-branch" @close="closeModifyBrach" v-bind:formItemParent="formItem"></modify-branch-info>
         <div slot="footer">
-          <i-button type="ghost" @click="modal=false">取消</i-button>
+          <i-button @click="modal=false">取消</i-button>
           <i-button class="blueButton" @click="sureButton">确定</i-button>
         </div>
       </i-modal>
     </template>
 
+    <!--新增分公司-->
+    <template>
+      <i-modal title="新增分公司" v-model="addBranchCompanyModal" :mask-closable="false">
+        <add-branch-company></add-branch-company>
+        <div slot="footer">
+          <i-button @click="closeAndRefreshAddFirm">取消</i-button>
+          <i-button class="blueButton" @click="confirmAddNewFirm">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -54,15 +64,18 @@
     Layout
   } from "~/core/decorator";
   import ModifyBranchInfo from "~/components/base-data/modify-branch-info.vue";
+  import AddBranchCompany from "~/components/base-data/add-branch-company.vue";
   import {
     CityService
   } from "~/utils/city.service"
+
   @Layout("workspace")
   @Component({
     components: {
       DataBox,
       SvgIcon,
-      ModifyBranchInfo
+      ModifyBranchInfo,
+      AddBranchCompany
     }
   })
   export default class BranchCompanyInfo extends Page {
@@ -76,6 +89,7 @@
     private sasStatus: any;
     private modal: Boolean = false;
     private formItem: any;
+    private addBranchCompanyModal: Boolean = false;
 
     mounted() {
       this.seachCompany();
@@ -266,6 +280,18 @@
       };
     }
     addNewBranchFirmClick() {
+      this.addBranchCompanyModal = true
+    }
+    /**
+     * 取消新增分公司
+     */
+    closeAndRefreshAddFirm() {
+      this.addBranchCompanyModal = false
+    }
+    /**
+     * 确定新增分公司
+     */
+    confirmAddNewFirm() {
 
     }
     getOrderInfoByTime() {}

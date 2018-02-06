@@ -69,7 +69,16 @@
   })
   export default class ModifyBranchInfo extends Vue {
     @Dependencies(CompanyService) private companyService: CompanyService;
-    @Prop() formItemParent: any;
+    @Prop() formItemParent: any = {
+      companyChinaname: "",
+      companyProvince: "",
+      companyCity: "",
+      bankAccount: "",
+      depositBank: "",
+      cardNumber: "",
+      branchName: "",
+      companyStatus: ""
+    };
     private formRules: any;
     private formItem: any;
 
