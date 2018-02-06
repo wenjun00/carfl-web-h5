@@ -1,5 +1,5 @@
 <template>
-  <section class="systemManage-index">
+  <section class="system-manage-index">
     <!--#EFF3F5-->
     <div style="width:96%;height:60px;background:#F5F5F5;margin-top:10px;border:1px solid #DDDDDD;margin:0 auto">
       <div style="font-size:14px;margin-top: 18px;margin-left: 57px;">
@@ -57,15 +57,15 @@
         pageList: [{
           pageName: '模块功能',
           isAttention: true,
-          path: 'systemManage/power-config/module-function'
+          path: 'system-manage/power-config/module-function'
         }, {
           pageName: '角色维护',
           isAttention: false,
-          path: 'systemManage/power-config/role-maintenance'
+          path: 'system-manage/power-config/role-maintenance'
         }, {
           pageName: '机构与用户管理',
           isAttention: false,
-          path: 'systemManage/power-config/org-user-manage'
+          path: 'system-manage/power-config/org-user-manage'
         }]
       }, {
         index: 2,
@@ -75,11 +75,11 @@
         pageList: [{
           pageName: '订单状态变更',
           isAttention: false,
-          path: 'systemManage/operation-config/order-status-change'
+          path: 'system-manage/operation-config/order-status-change'
         }, {
           pageName: '客户还款撤销',
           isAttention: false,
-          path: 'systemManage/operation-config/customer-repay-revert'
+          path: 'system-manage/operation-config/customer-repay-revert'
         }]
       }, {
         index: 3,
@@ -89,19 +89,19 @@
         pageList: [{
           pageName: '系统参数管理',
           isAttention: false,
-          path: 'systemManage/operation-config/system-param-manage'
+          path: 'system-manage/operation-config/system-param-manage'
         }, {
           pageName: '系统备份',
           isAttention: false,
-          path: 'systemManage/operation-config/system-backups'
+          path: 'system-manage/operation-config/system-backups'
         }, {
           pageName: '批量管理',
           isAttention: false,
-          path: 'systemManage/operation-config/batch-manage'
+          path: 'system-manage/operation-config/batch-manage'
         }, {
           pageName: '系统日志',
           isAttention: false,
-          path: 'systemManage/operation-config/system-log-download'
+          path: 'system-manage/operation-config/system-log-download'
         }]
       }]
     }
@@ -151,7 +151,7 @@
     cursor: pointer;
   }
 
-  .systemManage-index {
+  .system-manage-index {
     height: 846px;
   }
 
