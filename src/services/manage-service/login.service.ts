@@ -1,4 +1,4 @@
-import { loginController } from '~/config/server'
+import { manageService } from '~/config/server'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import md5 from 'md5'
@@ -14,7 +14,7 @@ export class LoginService {
   @Debounce()
   login({ username, password, loginDevice, loginType }) {
     return this.netService.send({
-      server: loginController.login,
+      server: manageService.loginController.login,
       data: {
         userUsername: username,
         userPassword: md5(password),
@@ -29,7 +29,7 @@ export class LoginService {
    */
   getUserByToken() {
     return this.netService.send({
-      server: loginController.getUserByToken
+      server: manageService.loginController.getUserByToken
     })
   }
   /**
@@ -37,7 +37,7 @@ export class LoginService {
    */
   resetPassword({ userId }) {
     return this.netService.send({
-      server: loginController.resetPassword,
+      server: manageService.loginController.resetPassword,
       data: {
         userId: userId
       }

@@ -66,34 +66,40 @@ export default async function ({ store, router }) {
    */
   function updateDictData() {
     return new Promise((reslove, reject) => {
-      if (!store.state.dictDataHash) {
-        return getDictData(reslove, reject)
-      }
-
-      dataDictService.getDictHash().subscribe(({ dataDictHashCode }) => {
-        if (store.state.dictDataHash! == store.state.dictDataHash) {
-          getDictData(reslove, reject)
-        } else {
-          reslove()
-        }
+      dataDictService.getAll().subscribe((data) => {
+        store.commit('updateDictData', data)
+        reslove()
       }, () => {
         reject()
       })
+      // if (!store.state.dictDataHash) {
+      //   return getDictData(reslove, reject)
+      // }
+
+      // dataDictService.getDictHash().subscribe(({ dataDictHashCode }) => {
+      //   if (store.state.dictDataHash! == store.state.dictDataHash) {
+      //     getDictData(reslove, reject)
+      //   } else {
+      //     reslove()
+      //   }
+      // }, () => {
+      //   reject()
+      // })
     })
   }
 
-  /**
-   * 获取数据字典
-   * @param reslove
-   */
-  function getDictData(reslove, reject) {
-    return dataDictService.getDictData().subscribe((data) => {
-      store.commit('updateDictData', data)
-      reslove()
-    }, () => {
-      reject()
-    })
-  }
+  // /**
+  //  * 获取数据字典
+  //  * @param reslove
+  //  */
+  // function getDictData(reslove, reject) {
+  //   return dataDictService.getDictData().subscribe((data) => {
+  //     store.commit('updateDictData', data)
+  //     reslove()
+  //   }, () => {
+  //     reject()
+  //   })
+  // }
 
   /**
    * 全局业务数据

@@ -55,7 +55,7 @@ import { Dependencies } from "~/core/decorator";
 import { Mutation } from "vuex-class";
 import AppConfig from "~/config/app.config";
 import Register from "~/components/common/register.vue";
-import { DataDictService } from "~/services/manage-service/dataDict.service";
+import { DataDictService } from "~/services/manage-service/data-dict.service";
 
 @Component({
   components: {
