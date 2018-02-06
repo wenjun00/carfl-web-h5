@@ -24,6 +24,7 @@ import backLogController from './backLog.controller'
 import collectMoneyHistoryController from './collect.money.history.controller'
 import carQuotationController from './carQuotation.controller'
 import roleResoController from './role.reso.controller'
+import loginController from './login.controller'
 export const manageService = {
     departmentController,
     roleController,
@@ -50,5 +51,6 @@ export const manageService = {
     backLogController,
     collectMoneyHistoryController,
     carQuotationController,
-    roleResoController
+    roleResoController,
+    loginController
 }

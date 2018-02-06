@@ -82,7 +82,7 @@ export function Layout(layout: String) {
  */
 export function Auth(code: Number) {
   return function (target) {
-    target.auth = code;
+    target.$auth = code;
     return target;
   }
 }

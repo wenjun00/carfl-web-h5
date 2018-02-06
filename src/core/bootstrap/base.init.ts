@@ -5,9 +5,7 @@ import createFilters from '~/extension/filter'
 import createDirectives from '~/extension/directive'
 import createPlugins from '~/extension/plugin'
 
-
-
-export default function ({ store }) {
+export default async function ({ store }) {
   // 创建提供器
   if (createProvide) {
     Vue.use(injector)
@@ -23,7 +21,7 @@ export default function ({ store }) {
       }
 
       let [target] = Object.values(provide())
-      injector.service(key, target);
+      injector.service(key, target).lifecycle[lifecycle]();
     })
   }
 
@@ -41,7 +39,7 @@ export default function ({ store }) {
     })
   }
 
-
+  // 安装插件
   if (createPlugins) {
     Object.entries(createPlugins({ store })).forEach(([key, plugin]: [string, any]) => {
       Vue.use(plugin)

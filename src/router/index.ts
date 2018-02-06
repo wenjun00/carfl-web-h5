@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '~/store'
+import storeInit from '~/core/bootstrap/store.init'
 // import Login from '~/pages/login.vue'
 // import Index from '~/pages/index.vue'
 const Login = () => Promise.resolve(require('~/pages/login.vue'))
 const Index = () => Promise.resolve(require('~/pages/index.vue'))
+
 Vue.use(Router)
 
 // 生成路由配置
@@ -13,10 +15,10 @@ const routes = [
     path: '/',
     name: 'login',
     component: Login
-  },{
-      path: '/home',
-      name: 'index',
-      component: Index
+  }, {
+    path: '/home',
+    name: 'index',
+    component: Index
   }
 ]
 
@@ -38,9 +40,14 @@ const router = new Router({
 //   // setTimeout(() => tabsCheck(path, from.path), 100)
 // })
 
-router.beforeEach(({ matched, path }, from, next) => {
-  // Tab更新检测
-  // tabsCheck(path, from.path)
+router.beforeEach(async ({ matched, path }, from, next) => {
+  if (!store.state.ready) {
+    await storeInit({
+      store,
+      router
+    })
+  }
+  
   next()
 })
 /**

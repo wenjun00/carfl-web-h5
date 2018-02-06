@@ -1,5 +1,6 @@
 import { requestType } from '~/config/enum.config'
 
+const SERVICE = 'service-manage'
 const CONTROLLER = 'login'
 
 export const loginController = {
@@ -7,6 +8,7 @@ export const loginController = {
    * 用户登录
    */
   login: {
+    service:SERVICE,
     controller: CONTROLLER,
     action: 'login',
     type: requestType.Post
@@ -15,8 +17,18 @@ export const loginController = {
    * 重置密码
    */
   resetPassword: {
+    service:SERVICE,
     controller: CONTROLLER,
     action: 'resetPassword',
     type: requestType.Post
+  },
+  /**
+   * 重置密码
+   */
+  getUserByToken: {
+    service:SERVICE,
+    controller: CONTROLLER,
+    action: 'getUserByToken',
+    type: requestType.Get
   }
 }

@@ -37,10 +37,6 @@
 
 </script>
 <style lang="less" scoped>
-  // .layout{
-  //     display: grid;
-  //     grid-template-rows: 60px auto;
-  // }
   .layout {
     flex-wrap: nowrap; // background: #EFF3F5;
   }
