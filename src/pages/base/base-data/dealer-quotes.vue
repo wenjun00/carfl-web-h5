@@ -31,7 +31,7 @@
     </template>
     <template>
       <i-modal v-model="addquoteModel" title="新增报价">
-        <new-quote ref="new-quote" @close="addquoteModel=false"></new-quote>
+        <new-quote ref="new-quote" @seachBusiness="seachBusiness" @close="addquoteModel=false"></new-quote>
         <div slot="footer">
           <i-button class="Ghost" @click="addquoteModel=false">取消</i-button>
           <i-button class="blueButton" @click="submitQuote">确定</i-button>
@@ -413,7 +413,7 @@
       display: none;
     }
   }
-
+  
   .bottom_addPrice {
     width: 100%;
     height: 80px;

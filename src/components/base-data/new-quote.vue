@@ -67,10 +67,10 @@
         <i-input v-model="quoteForm.otherFee" type="number"></i-input>
       </i-form-item>
       <i-form-item label="是否启用" prop="status">
-        <i-radio-group v-model="quoteForm.status">
-          <i-radio :label="0" :value="0">启用</i-radio>
-          <i-radio :label="1" :value="1">停用</i-radio>
-        </i-radio-group>
+        <i-select v-model="quoteForm.status">
+          <i-option label="启用" :key="0" :value="0"></i-option>
+          <i-option label="停用" :key="1" :value="1"></i-option>
+        </i-select>
       </i-form-item>
     </div>
   </i-form>
@@ -92,6 +92,9 @@
     Dependencies
   } from '~/core/decorator';
   import {
+    Emit
+  } from "vue-property-decorator";
+  import {
     CarQuotationService
   } from '~/services/manage-service/car-quotation.service';
 
@@ -103,29 +106,32 @@
   })
   export default class AddPeriods extends Vue {
     @Dependencies(CarQuotationService) private carQuotationService: CarQuotationService;
-    private quoteForm: any = {};
+    private quoteForm: any = {
+      productPackageName: '',
+      carBrandName: '',
+      carName: '',
+      carSeriesName: '',
+      carRemark: '',
+      marketGuidingPrice: '',
+      monthPay: '',
+      dealerGuidingPrice: '',
+      purchaseTaxMoney: '',
+      firstPayment: '',
+      roadBridgeFee: '',
+      financeAmount: '',
+      annualAmount: '',
+      periods: '',
+      gpsFee: '',
+      otherFee: '',
+      status: 0,
+    };
     private rulesQuote: Object = {};
     private check: Boolean = true;
+
+    @Emit('seachBusiness')
+    seachBusiness() {}
+
     created() {
-      this.quoteForm = {
-        productPackageName: '',
-        carBrandName: '',
-        carName: '',
-        carSeriesName: '',
-        carRemark: '',
-        marketGuidingPrice: '',
-        monthPay: '',
-        dealerGuidingPrice: '',
-        purchaseTaxMoney: '',
-        firstPayment: '',
-        roadBridgeFee: '',
-        financeAmount: '',
-        annualAmount: '',
-        periods: '',
-        gpsFee: '',
-        otherFee: '',
-        status: '',
-      };
       this.rulesQuote = {
         productPackageName: [{
           required: true,
@@ -215,7 +221,8 @@
         status: [{
           required: true,
           message: '您输入的内容不能为空',
-          trigger: 'blur'
+          trigger: 'change',
+          type: 'number',
         }],
       };
     }
@@ -223,13 +230,13 @@
       let form: any = < Form > this.$refs['quoteForm'];
       form.validate(valid => {
         if (!valid) {
-          this.$Message.error('验证不通过');
           return false;
         } else {
-          this.check === true ? (this.quoteForm.status = 0) : (this.quoteForm.status = 1);
+          //   this.check === true ? (this.quoteForm.status = 0) : (this.quoteForm.status = 1);
           this.carQuotationService.createCarQuotation(this.quoteForm).subscribe(val => {
             this.$Message.success('新增成功！');
             this.$emit('close');
+            this.seachBusiness()
           });
         }
       });
@@ -246,7 +253,7 @@
       flex: 50%;
     }
   }
-
+  
   .title_info {
     width: 100%;
     background: rgb(236, 235, 235);
