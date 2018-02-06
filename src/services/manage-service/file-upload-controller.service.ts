@@ -3,7 +3,7 @@ import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
 
-export class fileUploadControllerService {
+export class FileUploadControllerService {
   @Inject(NetService)
   private netService: NetService
 

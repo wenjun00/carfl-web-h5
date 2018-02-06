@@ -22,7 +22,7 @@
     </i-row>
     <data-box :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService"></data-box>
     <div class="submitBar">
-      <i-row type="flex" align="end" justify="center">
+      <i-row type="flex" align="bottom" justify="center">
         <i-col :span="6" style="text-align:right;margin-top:12px;margin-right:15px;">
           <i-button @click="pPackageModel=true" class="highButton">新增产品包</i-button>
         </i-col>
@@ -192,6 +192,7 @@ export default class ProdPackageInfo extends Page {
 		this.productPackageService.getAllProductPackage(this.productModel, this.pageService).subscribe(
 			val => {
 				this.prdPackageList = val;
+				console.log(this.prdPackageList, 33);
 			},
 			({ msg }) => {
 				this.$Message.error(msg);
