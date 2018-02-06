@@ -213,7 +213,7 @@
   import {
     Layout
   } from "~/core/decorator";
-  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
   import Approve from '~/components/approval-manage/approve.vue'
   import SecondLastApprove from '~/components/approval-manage/second-last-approve.vue'; // 复审终审通过
   import {

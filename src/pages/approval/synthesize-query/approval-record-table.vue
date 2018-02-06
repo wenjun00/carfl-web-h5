@@ -67,7 +67,7 @@
   import Page from "~/core/page";
   import DataBox from "~/components/common/data-box.vue";
   import Component from "vue-class-component";
-  import OrderProgress from "~/components/purchase-query/order-progress.vue";
+  import OrderProgress from "~/components/purchase-manage/order-progress.vue";
   import {
     Dependencies
   } from "~/core/decorator";

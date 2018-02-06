@@ -50,7 +50,7 @@
   import Page from "~/core/page";
   import Component from "vue-class-component";
   import DataBox from "~/components/common/data-box.vue";
-  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
   import SvgIcon from '~/components/common/svg-icon.vue'
   // 添加新申请
   import ApplyDetail from "~/components/purchase-manage/apply-detail.vue";

@@ -48,145 +48,153 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { LoginService } from "~/services/manage-service/login.service";
-import { Dependencies } from "~/core/decorator";
-import { Mutation } from "vuex-class";
-import AppConfig from "~/config/app.config";
-import Register from "~/components/common/register.vue";
-import { DataDictService } from "~/services/manage-service/dataDict.service";
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {
+    LoginService
+  } from "~/services/manage-service/login.service";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    Mutation
+  } from "vuex-class";
+  import AppConfig from "~/config/app.config";
+  import Register from "~/components/common/register.vue";
+  import {
+    DataDictService
+  } from "~/services/manage-service/data-dict.service";
 
-@Component({
-  components: {
-    Register
-  }
-})
-export default class Login extends Vue {
-  @Dependencies(LoginService) private loginService: LoginService;
-  @Dependencies(DataDictService) private dataDictService: DataDictService;
-  @Mutation("updateUserToken") updateUserToken;
-  @Mutation("updateUserData") updateUserData;
+  @Component({
+    components: {
+      Register
+    }
+  })
+  export default class Login extends Vue {
+    @Dependencies(LoginService) private loginService: LoginService;
+    @Dependencies(DataDictService) private dataDictService: DataDictService;
+    @Mutation("updateUserToken") updateUserToken;
+    @Mutation("updateUserData") updateUserData;
 
-  private loginRule: Object = {};
-  private loginModel: any;
-  private registerModal: Boolean = false;
-  created() {
-    // 设置表单数据
-    this.loginModel = {
-      username: "",
-      password: ""
-    };
+    private loginRule: Object = {};
+    private loginModel: any;
+    private registerModal: Boolean = false;
+    created() {
+      // 设置表单数据
+      this.loginModel = {
+        username: "",
+        password: ""
+      };
 
-    // 设置验证规则
-    this.loginRule = {
-      username: [
-        {
+      // 设置验证规则
+      this.loginRule = {
+        username: [{
           required: true,
           message: "用户名不能为空",
           trigger: "blur"
-        }
-      ],
-      password: [
-        {
+        }],
+        password: [{
           required: true,
           message: "密码不能为空",
           trigger: "blur"
+        }]
+      };
+    }
+
+    /**
+     * 提交登录表单
+     */
+    submitForm() {
+      let loginForm: any = this.$refs["login-form"];
+      loginForm.validate(success => {
+        if (!success) {
+          return;
         }
-      ]
-    };
+
+        this.loginService
+          .login({
+            username: this.loginModel.username,
+            password: this.loginModel.password,
+            loginDevice: 414,
+            loginType: 411
+          })
+          .subscribe(
+            data => {
+              this.updateUserToken(data.token);
+              this.updateUserData(data.user);
+              console.log("login", data.user);
+              this.$router.push("/home");
+            },
+            ({
+              msg
+            }) => {
+              this.$Message.error(msg);
+              this.dataDict();
+            }
+          );
+      });
+    }
+    register() {
+      this.registerModal = true;
+    }
+    dataDict() {
+      this.dataDictService.getAll().subscribe(val => {
+        let str: any = JSON.stringify(val);
+        localStorage.dictData = str;
+        console.log(val, 888); // this.dictData = JSON.parse(localStorage.dictData);  取值并转换为json
+      });
+    }
   }
 
-  /**
-   * 提交登录表单
-   */
-  submitForm() {
-    let loginForm: any = this.$refs["login-form"];
-    loginForm.validate(success => {
-      if (!success) {
-        return;
-      }
-
-      this.loginService
-        .login({
-          username: this.loginModel.username,
-          password: this.loginModel.password,
-          loginDevice: 414,
-          loginType: 411
-        })
-        .subscribe(
-          data => {
-            this.updateUserToken(data.token);
-            this.updateUserData(data.user);
-            console.log("login", data.user);
-            this.$router.push("/home");
-          },
-          ({ msg }) => {
-            this.$Message.error(msg);
-            this.dataDict();
-          }
-        );
-    });
-  }
-  register() {
-    this.registerModal = true;
-  }
-  dataDict() {
-    this.dataDictService.getAll().subscribe(val => {
-      let str: any = JSON.stringify(val);
-      localStorage.dictData = str;
-      console.log(val, 888); // this.dictData = JSON.parse(localStorage.dictData);  取值并转换为json
-    });
-  }
-}
 </script>
 <style lang="less" scoped>
-.full-absolute {
-  background: #265ea3;
-}
-
-.login-bg {
-  width: 500px;
-  height: 500px;
-  background: url("/static/images/common/login-bg.png");
-  position: absolute;
-  left: 140px;
-  background-repeat: no-repeat;
-  background-size: 500px 500px;
-}
-
-.login-form {
-  width: 350px;
-  position: relative;
-  right: 23px;
-}
-
-.submit_btn {
-  width: 270px;
-  height: 40px;
-  background: #265ea2;
-  color: #fff;
-}
-
-.submit_btn:hover {
-  background: #1d4f8b;
-  color: #fff;
-}
-
-.loginContainer {
-  border: 1px solid #dddddd;
-  background: white;
-  height: 409px;
-  width: 378px;
-  padding-top: 50px;
-  position: relative;
-  left: 350px;
-  bottom: 20px;
-}
-
-.register_modal {
-  .ivu-modal-footer {
-    display: none;
+  .full-absolute {
+    background: #265ea3;
   }
-}
+
+  .login-bg {
+    width: 500px;
+    height: 500px;
+    background: url("/static/images/common/login-bg.png");
+    position: absolute;
+    left: 140px;
+    background-repeat: no-repeat;
+    background-size: 500px 500px;
+  }
+
+  .login-form {
+    width: 350px;
+    position: relative;
+    right: 23px;
+  }
+
+  .submit_btn {
+    width: 270px;
+    height: 40px;
+    background: #265ea2;
+    color: #fff;
+  }
+
+  .submit_btn:hover {
+    background: #1d4f8b;
+    color: #fff;
+  }
+
+  .loginContainer {
+    border: 1px solid #dddddd;
+    background: white;
+    height: 409px;
+    width: 378px;
+    padding-top: 50px;
+    position: relative;
+    left: 350px;
+    bottom: 20px;
+  }
+
+  .register_modal {
+    .ivu-modal-footer {
+      display: none;
+    }
+  }
+
 </style>

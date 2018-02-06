@@ -57,7 +57,7 @@
   import DataBox from "~/components/common/data-box.vue";
   import Page from "~/core/page";
   import Component from "vue-class-component";
-  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
   import {
     Dependencies
   } from "~/core/decorator";

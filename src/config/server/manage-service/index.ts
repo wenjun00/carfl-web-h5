@@ -25,6 +25,7 @@ import collectMoneyHistoryController from './collect-money-history.controller'
 import carQuotationController from './car-quotation.controller'
 import roleResoController from './role-reso.controller'
 import loginController from './login.controller'
+
 export const manageService = {
   departmentController,
   roleController,

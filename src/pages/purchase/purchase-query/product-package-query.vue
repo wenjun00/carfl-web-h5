@@ -50,7 +50,7 @@
   import {
     OrderQueryService
   } from "~/services/business-service/order-query.service";
-  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
   import {
     Layout
   } from "~/core/decorator";
