@@ -186,200 +186,283 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
-import { DataGrid, DataGridItem } from 'vue-fintech-component';
-import { Form } from 'iview';
-import { Dependencies } from '~/core/decorator';
-import { ProductPlanIssueService } from '~/services/manage-service/productPlanIssue.service';
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+  import {
+    Prop
+  } from 'vue-property-decorator';
+  import {
+    DataGrid,
+    DataGridItem
+  } from 'vue-fintech-component';
+  import {
+    Form
+  } from 'iview';
+  import {
+    Dependencies
+  } from '~/core/decorator';
+  import {
+    ProductPlanIssueService
+  } from '~/services/manage-service/productPlanIssue.service';
 
-@Component({
-	components: {
-		DataGrid,
-		DataGridItem,
-	},
-})
-export default class AddPeriods extends Vue {
-	@Dependencies(ProductPlanIssueService) private ProductPlanIssueService: ProductPlanIssueService;
-	@Prop() pNameTitle: any;
-	private accountPeriodsList: String = '正常账期';
-	private initialParams: String = '无';
-	private promiseMoenyParams: String = '无';
-	private residueParams: String = '无';
-	private manageMoneyParams: String = '无';
-	private disabled: Boolean = false;
-	private initialParamsShow: Boolean = false;
-	private changePromiseMoenyShow: Boolean = false;
-	private promiseMoneyShow: Boolean = false;
-	private residueParamsShow: Boolean = false;
-	private manageParamsShow: Boolean = false;
-	private formItems: any = {
-		productId: '',
-		periods: '', //产品期数
-		periodType: '',
-		paymentType: '',
-		paymentDay: '',
-		productRate: '',
-		payWay: '',
-		financingAmount: '',
-		initialPayment: '',
-		depositCash: '',
-		depositCashType: '',
-		finalCash: '',
-		manageCost: '',
-		manageCostType: '一次性收取',
-		stagingPeriods: '', // 期数
-		creditProtectDays: '',
-		overdueProtectDays: '',
-		penaltyRate: '',
-		contractBreakRate: '',
-		prepaymentRate: '',
-		productStatus: '',
-		isPublish: '未发布',
-		operator: '',
-		operatorTime: '',
-		id: '',
-	};
-	private amount: any;
-	private monthDay: any;
-	private stagingPeriodShow: Boolean = false;
-	private formRules: Object = {};
+  @Component({
+    components: {
+      DataGrid,
+      DataGridItem,
+    },
+  })
+  export default class AddPeriods extends Vue {
+    @Dependencies(ProductPlanIssueService) private ProductPlanIssueService: ProductPlanIssueService;
+    @Prop() pNameTitle: any;
+    private accountPeriodsList: String = '正常账期';
+    private initialParams: String = '无';
+    private promiseMoenyParams: String = '无';
+    private residueParams: String = '无';
+    private manageMoneyParams: String = '无';
+    private disabled: Boolean = false;
+    private initialParamsShow: Boolean = false;
+    private changePromiseMoenyShow: Boolean = false;
+    private promiseMoneyShow: Boolean = false;
+    private residueParamsShow: Boolean = false;
+    private manageParamsShow: Boolean = false;
+    private formItems: any = {
+      productId: '',
+      periods: '', //产品期数
+      periodType: '',
+      paymentType: '',
+      paymentDay: '',
+      productRate: '',
+      payWay: '',
+      financingAmount: '',
+      initialPayment: '',
+      depositCash: '',
+      depositCashType: '',
+      finalCash: '',
+      manageCost: '',
+      manageCostType: '一次性收取',
+      stagingPeriods: '', // 期数
+      creditProtectDays: '',
+      overdueProtectDays: '',
+      penaltyRate: '',
+      contractBreakRate: '',
+      prepaymentRate: '',
+      productStatus: '',
+      isPublish: '未发布',
+      operator: '',
+      operatorTime: '',
+      id: '',
+    };
+    private amount: any;
+    private monthDay: any;
+    private stagingPeriodShow: Boolean = false;
+    private formRules: Object = {};
 
-	created() {
-		this.amount = {
-			financingAmount1: '',
-			financingAmount2: '',
-		};
-		this.monthDay = [];
-		this.monthDayFun();
-		this.formRules = {
-			periods: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			productRate: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			payWay: [{ required: true, message: '请选择', trigger: 'change' }],
-			periodType: [{ required: true, message: '请选择', trigger: 'change' }],
-			// financingAmount: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur', type: 'number' }],
-			// financingAmount2: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur', type: 'number' }],
-			paymentDay: [{ required: true, message: '请选择', trigger: 'change' }],
-			initialPayment: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			depositCash: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			depositCashType: [{ required: true, message: '请选择', trigger: 'change' }],
-			finalCash: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			manageCost: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			stagingPeriods: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			creditProtectDays: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			overdueProtectDays: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			contractBreakRate: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			prepaymentRate: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			penaltyRate: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-		};
-	}
-	/**
-	 * 获取月份天数
-	 */
-	monthDayFun() {
-		let arr: any = 31;
-		for (let i = 1; i <= arr; i++) {
-			this.monthDay.push({
-				day: i + '日',
-				key: i + '日',
-				value: i,
-			});
-		}
-	}
-	changeInitialParams(val) {
-		if (val === '无') {
-			this.initialParamsShow = false;
-		} else {
-			this.initialParamsShow = true;
-		}
-	}
-	changePromiseMoenyParams(val) {
-		if (val === '无') {
-			this.promiseMoneyShow = false;
-		} else {
-			this.promiseMoneyShow = true;
-		}
-	}
-	changeResidueParams(val) {
-		if (val === '无') {
-			this.residueParamsShow = false;
-		} else {
-			this.residueParamsShow = true;
-		}
-	}
-	changeManageMoney(val) {
-		if (val === '无') {
-			this.manageParamsShow = false;
-		} else {
-			this.manageParamsShow = true;
-		}
-	}
-	stagingPeriod(val) {
-		if (val === '一次性收取') {
-			this.stagingPeriodShow = false;
-		} else {
-			this.stagingPeriodShow = true;
-		}
-	}
+    created() {
+      this.amount = {
+        financingAmount1: '',
+        financingAmount2: '',
+      };
+      this.monthDay = [];
+      this.monthDayFun();
+      this.formRules = {
+        periods: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        productRate: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        payWay: [{
+          required: true,
+          message: '请选择',
+          trigger: 'change'
+        }],
+        periodType: [{
+          required: true,
+          message: '请选择',
+          trigger: 'change'
+        }],
+        // financingAmount: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur', type: 'number' }],
+        // financingAmount2: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur', type: 'number' }],
+        paymentDay: [{
+          required: true,
+          message: '请选择',
+          trigger: 'change'
+        }],
+        initialPayment: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        depositCash: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        depositCashType: [{
+          required: true,
+          message: '请选择',
+          trigger: 'change'
+        }],
+        finalCash: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        manageCost: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        stagingPeriods: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        creditProtectDays: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        overdueProtectDays: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        contractBreakRate: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        prepaymentRate: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        penaltyRate: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+      };
+    }
+    /**
+     * 获取月份天数
+     */
+    monthDayFun() {
+      let arr: any = 31;
+      for (let i = 1; i <= arr; i++) {
+        this.monthDay.push({
+          day: i + '日',
+          key: i + '日',
+          value: i,
+        });
+      }
+    }
+    changeInitialParams(val) {
+      if (val === '无') {
+        this.initialParamsShow = false;
+      } else {
+        this.initialParamsShow = true;
+      }
+    }
+    changePromiseMoenyParams(val) {
+      if (val === '无') {
+        this.promiseMoneyShow = false;
+      } else {
+        this.promiseMoneyShow = true;
+      }
+    }
+    changeResidueParams(val) {
+      if (val === '无') {
+        this.residueParamsShow = false;
+      } else {
+        this.residueParamsShow = true;
+      }
+    }
+    changeManageMoney(val) {
+      if (val === '无') {
+        this.manageParamsShow = false;
+      } else {
+        this.manageParamsShow = true;
+      }
+    }
+    stagingPeriod(val) {
+      if (val === '一次性收取') {
+        this.stagingPeriodShow = false;
+      } else {
+        this.stagingPeriodShow = true;
+      }
+    }
 
-	/**@
-	 * 点击确定按钮
-	 */
-	confirmPeriods() {
-		let formVal = <Form>this.$refs['formItems'];
-		formVal.validate(
-			valid => {
-				if (!valid) return false;
-				this.$emit('close', this.formItems);
-				this.formItems.paymentType === '固定账期'
-					? (this.formItems.paymentType = 387)
-					: (this.formItems.paymentType = 386);
-				this.formItems.manageCostType === '一次性收取'
-					? (this.formItems.manageCostType = 394)
-					: (this.formItems.manageCostType = 395);
-				this.formItems.depositCashType === '退还'
-					? (this.formItems.depositCashType = 396)
-					: (this.formItems.depositCashType = 397);
-				this.formItems.isPublish === '未发布'
-					? (this.formItems.isPublish = 361)
-					: (this.formItems.isPublish = 360);
-				this.formItems.financingAmount = this.amount.financingAmount1 + '~' + this.amount.financingAmount2;
-				this.formItems.productId = this.pNameTitle.id;
-				this.formItems.productStatus = this.pNameTitle.status;
-				this.ProductPlanIssueService.createOrModifyProductPlan(this.formItems).subscribe(val => {
-					this.$Message.success('新增成功！');
-				});
-			},
-			({ msg }) => {
-				this.$Message.error(msg);
-			}
-		);
-	}
-}
+    /**@
+     * 点击确定按钮
+     */
+    confirmPeriods() {
+      let formVal = < Form > this.$refs['formItems'];
+      formVal.validate(
+        valid => {
+          if (!valid) return false;
+          this.$emit('close', this.formItems);
+          this.formItems.paymentType === '固定账期' ?
+            (this.formItems.paymentType = 387) :
+            (this.formItems.paymentType = 386);
+          this.formItems.manageCostType === '一次性收取' ?
+            (this.formItems.manageCostType = 394) :
+            (this.formItems.manageCostType = 395);
+          this.formItems.depositCashType === '退还' ?
+            (this.formItems.depositCashType = 396) :
+            (this.formItems.depositCashType = 397);
+          this.formItems.isPublish === '未发布' ?
+            (this.formItems.isPublish = 361) :
+            (this.formItems.isPublish = 360);
+          this.formItems.financingAmount = this.amount.financingAmount1 + '~' + this.amount.financingAmount2;
+          this.formItems.productId = this.pNameTitle.id;
+          this.formItems.productStatus = this.pNameTitle.status;
+          this.ProductPlanIssueService.createOrModifyProductPlan(this.formItems).subscribe(val => {
+            this.$Message.success('新增成功！');
+          });
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+    }
+  }
+
 </script>
 
-<style lang="less">
-.addPeriodsItem {
-	font-size: 14px;
-	font-weight: bold;
-	margin-top: 16px;
-}
-.ivu-form-item-content {
-	margin-left: 0 !important;
-}
-.data-grid-item__content,
-.initialPayment,
-.ivu-form-item-content {
-	display: flex;
-	align-items: center;
-}
-.ivu-form-item {
-	margin-bottom: 16px;
-}
-.after_text {
-	line-height: 33px;
-	margin-left: 5px;
-	margin-bottom: 20px;
-}
+<style lang="less" scoped>
+  .addPeriodsItem {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 16px;
+  }
+
+  .ivu-form-item-content {
+    margin-left: 0 !important;
+  }
+
+  .data-grid-item__content,
+  .initialPayment,
+  .ivu-form-item-content {
+    display: flex;
+    align-items: center;
+  }
+
+  .ivu-form-item {
+    margin-bottom: 16px;
+  }
+
+  .after_text {
+    line-height: 33px;
+    margin-left: 5px;
+    margin-bottom: 20px;
+  }
+
 </style>
