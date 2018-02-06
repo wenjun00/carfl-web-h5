@@ -23,6 +23,15 @@ export class LoginService {
       }
     })
   }
+
+  /**
+   * 通过token登录
+   */
+  getUserByToken(){
+    return this.netService.send({
+      server: loginController.getUserByToken
+    })
+  }
   /**
    *  重置密码
    */

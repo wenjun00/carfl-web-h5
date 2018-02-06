@@ -47,13 +47,14 @@ export class NetService {
     })
   }
 
-  public static generateRequestUrl({ controller, action, url }: { controller: string, action: string, url?: string }, append = [], sort?): String {
+  public static generateRequestUrl({ service, controller, action, url }: { service:string, controller: string, action: string, url?: string }, append = [], sort?): String {
     // 自定义url优先级最高
     if (url) return url
 
     // 进行url拼接
     if (controller) {
       let targetUrl = [
+        service,
         controller,
         action,
         ...append].filter(x => x).join('/')

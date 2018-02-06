@@ -15,6 +15,7 @@
     "noImplicitAny": false,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
     "strictFunctionTypes": false,
     "lib": [
       "es2017",
