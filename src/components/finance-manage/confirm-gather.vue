@@ -121,7 +121,7 @@
   import Component from "vue-class-component";
   import ChangeCard from "~/components/purchase-manage/change-card.vue"
   import DataBox from "~/components/common/data-box.vue";
-  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
 
   @Component({
     components: {

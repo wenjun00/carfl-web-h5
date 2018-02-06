@@ -81,10 +81,10 @@
   import DataBox from "~/components/common/data-box.vue";
   import Page from "~/core/page";
   import Component from "vue-class-component";
-  import OrderProgress from "~/components/purchase-query/order-progress.vue";
+  import OrderProgress from "~/components/purchase-manage/order-progress.vue";
   import CustomerQuery from "~/components/purchase-manage/customer-query.vue";
-  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
-  import PurchaseInformationTotal from "~/components/purchase-query/purchase-information-total.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
+  import PurchaseInformationTotal from "~/components/purchase-manage/purchase-information-total.vue";
 
   import {
     DataGrid,

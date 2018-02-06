@@ -42,7 +42,7 @@
   import DataBox from "~/components/common/data-box.vue";
   import Component from "vue-class-component";
   import RepaySum from "~/components/approval-manage/repay-sum.vue"
-  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
   import SvgIcon from '~/components/common/svg-icon.vue'
   import {
     Dependencies

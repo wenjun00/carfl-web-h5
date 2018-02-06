@@ -74,7 +74,7 @@
   import {
     Layout
   } from "~/core/decorator";
-  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
   import SvgIcon from '~/components/common/svg-icon.vue'
   import {
     ApprovalService

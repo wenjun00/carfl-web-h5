@@ -89,7 +89,7 @@
   import {
     FilterService
   } from "~/utils/filter.service"
-  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
 
   @Layout("workspace")
   @Component({

@@ -43,7 +43,7 @@
   import Component from "vue-class-component";
   import DataBox from "~/components/common/data-box.vue"
   import DeductRecord from "~/components/system-manage/deduct-record.vue"
-  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
 
   import {
     Dependencies
