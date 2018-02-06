@@ -30,92 +30,95 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import {
-    Dependencies
-  } from '~/core/decorator';
-  import {
-    UserService
-  } from "~/services/manage-service/user.service";
-  import {
-    Form
-  } from 'iview'
-  @Component({
-    components: {}
-  })
-  export default class Register extends Vue {
-    @Dependencies(UserService) private userService: UserService;
-    private registerModel: any = {
-      userUsername: '',
-      userRealname: '',
-      userPassword: '',
-      confirmPwd: '',
-      userPhone: '',
-      company: ''
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Dependencies } from "~/core/decorator";
+import { UserService } from "~/services/manage-service/user.service";
+import { Form } from "iview";
+@Component({
+  components: {}
+})
+export default class Register extends Vue {
+  @Dependencies(UserService) private userService: UserService;
+  private registerModel: any = {
+    userUsername: "",
+    userRealname: "",
+    userPassword: "",
+    confirmPwd: "",
+    userPhone: "",
+    company: ""
+  };
+  private rules: any;
+
+  created() {
+    this.rules = {
+      userUsername: [
+        {
+          required: true,
+          message: "用户名不能为空",
+          trigger: "blur"
+        }
+      ],
+      userRealname: [
+        {
+          required: true,
+          message: "姓名不能为空",
+          trigger: "blur"
+        }
+      ],
+      userPassword: [
+        {
+          required: true,
+          message: "密码不能为空",
+          trigger: "blur"
+        }
+      ],
+      confirmPwd: [
+        {
+          required: true,
+          message: "确认密码不能为空",
+          trigger: "blur"
+        }
+      ],
+      userPhone: [
+        {
+          required: true,
+          message: "电话不能为空",
+          trigger: "blur"
+        }
+      ]
     };
-    private rules: any
-
-    created() {
-      this.rules = {
-        userUsername: [{
-          required: true,
-          message: '用户名不能为空',
-          trigger: 'blur'
-        }],
-        userRealname: [{
-          required: true,
-          message: '姓名不能为空',
-          trigger: 'blur'
-        }],
-        userPassword: [{
-          required: true,
-          message: '密码不能为空',
-          trigger: 'blur'
-        }],
-        confirmPwd: [{
-          required: true,
-          message: '确认密码不能为空',
-          trigger: 'blur'
-        }],
-        userPhone: [{
-          required: true,
-          message: '电话不能为空',
-          trigger: 'blur'
-        }]
-      }
-    }
-    cancelClick() {
-      this.$emit('close')
-      let register = this.$refs['register']
-      register.resetFields();
-    }
-    registerClick() {
-      let registerForm = < Form > this.$refs['register']
-      registerForm.validate((valid) => {
-        if (!valid) return false;
-        this.userService.userRegister(this.registerModel).subscribe(data => {
-          this.$Message.success('注册成功!');
-          this.$emit('close')
-          let register = this.$refs['register']
-          register.resetFields();
-        }, ({
-          msg
-        }) => {
-          this.$Message.error(msg);
-        });
-      })
-    }
   }
-
+  cancelClick() {
+    this.$emit("close");
+    let register: any = this.$refs["register"];
+    register.resetFields();
+  }
+  registerClick() {
+    let registerForm: any = this.$refs["register"];
+    registerForm.validate(valid => {
+      if (!valid) return false;
+      this.userService.userRegister(this.registerModel).subscribe(
+        data => {
+          this.$Message.success("注册成功!");
+          this.$emit("close");
+          let register: any = this.$refs["register"];
+          register.resetFields();
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+    });
+  }
+}
 </script>
 
 <style lang="less">
-  .register {
-    .ivu-form {
-      position: relative;
-      left: 40px;
-    }
+.register {
+  .ivu-form {
+    position: relative;
+    left: 40px;
   }
-
+}
 </style>

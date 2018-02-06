@@ -404,7 +404,7 @@
         .queryRolePage({
             roleName: this.roleModel.roleName,
             roleStatus: this.roleModel.roleStatus,
-            userId: 1
+            userId: ''
           },
           this.pageService
         )
