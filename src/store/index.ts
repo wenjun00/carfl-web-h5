@@ -87,6 +87,13 @@ const store = new Vuex.Store({
     },
     updateTheme(state, theme) {
       state.theme = theme
+    },
+    /**
+     * 更新初始化状态
+     * @param state
+     */
+    ready(state) {
+      state.ready = true
     }
   },
   plugins: [
