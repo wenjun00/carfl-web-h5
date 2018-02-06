@@ -8,13 +8,30 @@
       <i-button class="blueButton" style="margin-left:10px;" @click="seachCompany">搜索</i-button>
     </i-row>
     <data-box :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
-    <i-modal title="修改分公司信息" v-model="modal" :mask-closable="false">
-      <modify-branch-info ref="modify-branch" @close="closeModifyBrach" v-bind:formItemParent="formItem"></modify-branch-info>
-      <div slot="footer">
-        <i-button type="ghost" @click="modal=false">取消</i-button>
-        <i-button class="blueButton" @click="sureButton">确定</i-button>
-      </div>
-    </i-modal>
+    <div class="submitBar">
+      <i-row type="flex" align="middle" style="padding:5px">
+        <i-col :span="8" push="1">
+          <span>申请人：administrator</span>
+        </i-col>
+        <i-col :span="10" pull="4">
+          <span>申请时间：2017-12-01 13:56:45</span>
+        </i-col>
+        <i-col :span="6" style="text-align:right;">
+          <i-button @click="addNewBranchFirmClick" class="highButton">新增分公司</i-button>
+        </i-col>
+      </i-row>
+    </div>
+
+    <!--修改分公司-->
+    <template>
+      <i-modal title="修改分公司信息" v-model="modal" :mask-closable="false">
+        <modify-branch-info ref="modify-branch" @close="closeModifyBrach" v-bind:formItemParent="formItem"></modify-branch-info>
+        <div slot="footer">
+          <i-button type="ghost" @click="modal=false">取消</i-button>
+          <i-button class="blueButton" @click="sureButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
   </section>
 </template>
@@ -60,6 +77,9 @@
     private modal: Boolean = false;
     private formItem: any;
 
+    mounted() {
+      this.seachCompany();
+    }
     created() {
       this.formItem = {
         id: "",
@@ -245,8 +265,7 @@
         keyword: ""
       };
     }
-    mounted() {
-      this.seachCompany();
+    addNewBranchFirmClick() {
 
     }
     getOrderInfoByTime() {}

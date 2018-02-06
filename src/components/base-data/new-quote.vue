@@ -64,107 +64,197 @@
     </div>
     <div class="flex">
       <i-form-item label="其他费用" prop="otherFee">
-        <i-input v-model="quoteForm.otherFee"></i-input>
+        <i-input v-model="quoteForm.otherFee" type="number"></i-input>
       </i-form-item>
-      <i-form-item label="是否启用">
-        <Checkbox v-model="check"></Checkbox>
+      <i-form-item label="是否启用" prop="status">
+        <i-radio-group v-model="quoteForm.status">
+          <i-radio :label="0" :value="0">启用</i-radio>
+          <i-radio :label="1" :value="1">停用</i-radio>
+        </i-radio-group>
       </i-form-item>
     </div>
   </i-form>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
-import { DataGrid, DataGridItem } from 'vue-fintech-component';
-import { Form } from 'iview';
-import { Dependencies } from '~/core/decorator';
-import { CarQuotationService } from '~/services/manage-service/carQuotation.service';
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+  import {
+    Prop
+  } from 'vue-property-decorator';
+  import {
+    DataGrid,
+    DataGridItem
+  } from 'vue-fintech-component';
+  import {
+    Form
+  } from 'iview';
+  import {
+    Dependencies
+  } from '~/core/decorator';
+  import {
+    CarQuotationService
+  } from '~/services/manage-service/carQuotation.service';
 
-@Component({
-	components: {
-		DataGrid,
-		DataGridItem,
-	},
-})
-export default class AddPeriods extends Vue {
-	@Dependencies(CarQuotationService) private carQuotationService: CarQuotationService;
-	private quoteForm: any = {};
-	private rulesQuote: Object = {};
-	private check: Boolean = true;
-	created() {
-		this.quoteForm = {
-			productPackageName: '',
-			carBrandName: '',
-			carName: '',
-			carSeriesName: '',
-			carRemark: '',
-			marketGuidingPrice: '',
-			monthPay: '',
-			dealerGuidingPrice: '',
-			purchaseTaxMoney: '',
-			firstPayment: '',
-			roadBridgeFee: '',
-			financeAmount: '',
-			annualAmount: '',
-			periods: '',
-			gpsFee: '',
-			otherFee: '',
-			status: '',
-		};
-		this.rulesQuote = {
-			productPackageName: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			carBrandName: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			carName: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			carSeriesName: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			carRemark: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			marketGuidingPrice: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			monthPay: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			dealerGuidingPrice: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			purchaseTaxMoney: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			firstPayment: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			roadBridgeFee: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			financeAmount: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			annualAmount: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			periods: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			gpsFee: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			status: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-		};
-	}
-	rulesFun() {
-		let form: any = <Form>this.$refs['quoteForm'];
-		form.validate(valid => {
-			if (!valid) {
-				this.$Message.error('验证不通过');
-				return false;
-			} else {
-				this.check === true ? (this.quoteForm.status = 0) : (this.quoteForm.status = 1);
-				this.carQuotationService.createCarQuotation(this.quoteForm).subscribe(val => {
-					this.$Message.success('新增成功！');
-					this.$emit('close');
-				});
-			}
-		});
-	}
-}
+  @Component({
+    components: {
+      DataGrid,
+      DataGridItem,
+    },
+  })
+  export default class AddPeriods extends Vue {
+    @Dependencies(CarQuotationService) private carQuotationService: CarQuotationService;
+    private quoteForm: any = {};
+    private rulesQuote: Object = {};
+    private check: Boolean = true;
+    created() {
+      this.quoteForm = {
+        productPackageName: '',
+        carBrandName: '',
+        carName: '',
+        carSeriesName: '',
+        carRemark: '',
+        marketGuidingPrice: '',
+        monthPay: '',
+        dealerGuidingPrice: '',
+        purchaseTaxMoney: '',
+        firstPayment: '',
+        roadBridgeFee: '',
+        financeAmount: '',
+        annualAmount: '',
+        periods: '',
+        gpsFee: '',
+        otherFee: '',
+        status: '',
+      };
+      this.rulesQuote = {
+        productPackageName: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        carBrandName: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        carName: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        carSeriesName: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        carRemark: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        marketGuidingPrice: [{
+          type: 'number',
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        monthPay: [{
+          type: 'number',
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        dealerGuidingPrice: [{
+          type: 'number',
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        purchaseTaxMoney: [{
+          type: 'number',
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        firstPayment: [{
+          type: 'number',
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        roadBridgeFee: [{
+          type: 'number',
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        financeAmount: [{
+          type: 'number',
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        annualAmount: [{
+          type: 'number',
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        periods: [{
+          type: 'number',
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        gpsFee: [{
+          type: 'number',
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+        status: [{
+          required: true,
+          message: '您输入的内容不能为空',
+          trigger: 'blur'
+        }],
+      };
+    }
+    rulesFun() {
+      let form: any = < Form > this.$refs['quoteForm'];
+      form.validate(valid => {
+        if (!valid) {
+          this.$Message.error('验证不通过');
+          return false;
+        } else {
+          this.check === true ? (this.quoteForm.status = 0) : (this.quoteForm.status = 1);
+          this.carQuotationService.createCarQuotation(this.quoteForm).subscribe(val => {
+            this.$Message.success('新增成功！');
+            this.$emit('close');
+          });
+        }
+      });
+    }
+  }
+
 </script>
 <style lang="less" scope>
-.flex {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	.ivu-form-item {
-		flex: 50%;
-	}
-}
-.title_info {
-	width: 100%;
-	background: rgb(236, 235, 235);
-	font-size: 14px;
-	color: white;
-	padding-left: 15px;
-	line-height: 40px;
-	margin-bottom: 20px;
-}
-</style>
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .ivu-form-item {
+      flex: 50%;
+    }
+  }
+  
+  .title_info {
+    width: 100%;
+    background: rgb(236, 235, 235);
+    font-size: 14px;
+    color: white;
+    padding-left: 15px;
+    line-height: 40px;
+    margin-bottom: 20px;
+  }
 
+</style>

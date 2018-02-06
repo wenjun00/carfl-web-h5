@@ -21,7 +21,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'deleteSystemBackup',
-    type: requestType.Post
+    type: requestType.Delete
   },
   /**
    * 新增系统备份

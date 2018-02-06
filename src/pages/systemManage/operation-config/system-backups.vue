@@ -20,7 +20,7 @@
       <i-button style="margin-left:10px;" class="blueButton" @click="getSystemBackupList">搜索</i-button>
       <i-button style="margin-left:10px;" class="blueButton" @click="addNewBackups">新增备份</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="systemBackUpList"></data-box>
+    <data-box :columns="columns1" :data="systemBackUpList" @onPageChange="getSystemBackupList" :page="pageService"></data-box>
   </section>
 </template>
 
@@ -109,7 +109,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$Message.info('恢复备份成功！');
+                      this.recoverData(row)
                     },
                   },
                 },
@@ -135,6 +135,11 @@
                             })
                             .subscribe(val => {
                               this.$Message.success('删除成功！');
+                              this.getSystemBackupList()
+                            }, ({
+                              msg
+                            }) => {
+                              this.$Message.error(msg)
                             });
                         },
                       });
@@ -199,7 +204,7 @@
       });
     }
     addNewBackups() {
-      this.manageService.createSystemBackup().subscribe(val => {
+      this.manageService.createSystemBackup().subscribe(data => {
         this.$Message.success('新增备份成功！');
         this.getSystemBackupList();
       }, ({
@@ -222,6 +227,9 @@
     clearDateTime() {
       this.systemBackUpModel.startTime = '';
       this.systemBackUpModel.endTime = '';
+    }
+    recoverData(row) {
+      this.$Message.success('恢复备份成功！');
     }
   }
 

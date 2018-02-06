@@ -6,7 +6,7 @@
       <span style="margin-left:10px;">参数名称</span>
       <i-input v-model="systemParameterModel.paramName" style="display:inline-block;width:8%;"></i-input>
       <span>是否启用</span>
-      <i-select style="width:10%;" v-model="systemParameterModel.paramStatus">
+      <i-select style="width:10%;" v-model="systemParameterModel.paramStatus" clearable>
         <i-option label="启用" :value="0" :key="0"></i-option>
         <i-option label="停用" :value="1" :key="1"></i-option>
       </i-select>
@@ -69,9 +69,10 @@
     private systemParameterModel: any;
     private checkRadio: String = '';
     private modifySysParamsModel: any;
-    activated() {}
-    created() {
+    mounted() {
       this.getSystemParam();
+    }
+    created() {
       this.systemParameterModel = {
         paramName: '',
         paramStatus: '',

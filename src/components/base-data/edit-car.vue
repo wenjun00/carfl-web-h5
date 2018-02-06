@@ -3,8 +3,8 @@
     <i-form ref="form" class="editcar" :model="carFormItem" :rules="ruleValidate" :label-width="100">
       <i-row>
         <i-col :span="12">
-          <i-form-item label="经销商" prop="productPackageName">
-            <i-input v-model="carFormItem.productPackageName"></i-input>
+          <i-form-item label="经销商" prop="quotationName">
+            <i-input v-model="carFormItem.quotationName"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -33,8 +33,8 @@
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="颜色" prop="carRemark">
-            <i-input v-model="carFormItem.carRemark"></i-input>
+          <i-form-item label="颜色" prop="carColor">
+            <i-input v-model="carFormItem.carColor"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -106,7 +106,10 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="状态" prop="status">
-            <i-input v-model="carFormItem.status"></i-input>
+            <i-select v-model="carFormItem.status">
+              <i-option label="启用" :key="0" :value="0"></i-option>
+              <i-option label="停用" :key="1" :value="1"></i-option>
+            </i-select>
           </i-form-item>
         </i-col>
       </i-row>
@@ -118,228 +121,217 @@
   </section>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import { Prop } from 'vue-property-decorator';
-import Component from 'vue-class-component';
-import { Form } from 'iview';
-import { Dependencies } from '~/core/decorator';
-import { CarQuotationService } from '~/services/manage-service/carQuotation.service';
-import { CarService } from '~/services/manage-service/car.service';
+  import Vue from 'vue';
+  import {
+    Prop
+  } from 'vue-property-decorator';
+  import Component from 'vue-class-component';
+  import {
+    Form
+  } from 'iview';
+  import {
+    Dependencies
+  } from '~/core/decorator';
+  import {
+    CarQuotationService
+  } from '~/services/manage-service/carQuotation.service';
+  import {
+    CarService
+  } from '~/services/manage-service/car.service';
 
-import { Emit } from 'vue-property-decorator';
+  import {
+    Emit
+  } from 'vue-property-decorator';
 
-@Component({
-	components: {},
-})
-export default class EditCar extends Vue {
-	@Dependencies(CarQuotationService) private carQuotationService: CarQuotationService;
-	@Dependencies(CarService) private carService: CarService;
+  @Component({
+    components: {},
+  })
+  export default class EditCar extends Vue {
+    @Dependencies(CarQuotationService) private carQuotationService: CarQuotationService;
+    @Dependencies(CarService) private carService: CarService;
 
-	@Prop() carFormItem: any;
+    @Prop() carFormItem: any;
 
-	@Emit('close')
-	close() {}
-	@Emit('seachBusiness')
-	seachBusiness() {}
+    @Emit('close')
+    close() {}
+    @Emit('seachBusiness')
+    seachBusiness() {}
 
-	private brandList: any = []; // 品牌
-	private SeriesList: any = []; // 系列
-	private carList: any = []; // 型号
-	private ruleValidate: any = {
-		productPackageName: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-			},
-		],
-		carBrandId: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'change',
-				type: 'number',
-			},
-		],
-		carSeriesName: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'change',
-				// type: 'number'
-			},
-		],
-		carName: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'change',
-				// type: 'number'
-			},
-		],
-		carRemark: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-			},
-		],
-		marketGuidingPrice: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-		dealerGuidingPrice: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-		firstPayment: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-		financeAmount: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-		periods: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-		monthPay: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-		purchaseTaxMoney: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-		roadBridgeFee: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-		annualAmount: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-		gpsFee: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-		otherFee: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-		status: [
-			{
-				required: true,
-				message: '您输入的内容不能为空',
-				trigger: 'blur',
-				type: 'number',
-			},
-		],
-	};
+    private brandList: any = []; // 品牌
+    private SeriesList: any = []; // 系列
+    private carList: any = []; // 型号
+    private ruleValidate: any = {
+      quotationName: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+      }, ],
+      carBrandId: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'change',
+        type: 'number',
+      }, ],
+      carSeriesName: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'change',
+        // type: 'number'
+      }, ],
+      carName: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'change',
+        // type: 'number'
+      }, ],
+      carColor: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+      }, ],
+      marketGuidingPrice: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+      dealerGuidingPrice: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+      firstPayment: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+      financeAmount: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+      periods: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+      monthPay: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+      purchaseTaxMoney: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+      roadBridgeFee: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+      annualAmount: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+      gpsFee: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+      otherFee: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+      status: [{
+        required: true,
+        message: '您输入的内容不能为空',
+        trigger: 'blur',
+        type: 'number',
+      }, ],
+    };
 
-	created() {
-		console.log(this.carFormItem, 90);
-		// 获取品牌
-		this.carService.getAllBrand().subscribe(
-			data => {
-				this.brandList = data;
-			},
-			({ msg }) => {
-				this.$Message.error(msg);
-			}
-		);
-		//   获取系列
-		this.carService.getAllSeries().subscribe(
-			data => {
-				this.SeriesList = data;
-			},
-			({ msg }) => {
-				this.$Message.error(msg);
-			}
-		);
-		// 获取型号
-		this.carService.getAllModel().subscribe(
-			data => {
-				this.carList = data;
-				console.log(data, 666);
-			},
-			({ msg }) => {
-				this.$Message.error(msg);
-			}
-		);
-	}
+    created() {
+      console.log(this.carFormItem, 90);
+      // 获取品牌
+      this.carService.getAllBrand().subscribe(
+        data => {
+          this.brandList = data;
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+      //   获取系列
+      this.carService.getAllSeries().subscribe(
+        data => {
+          this.SeriesList = data;
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+      // 获取型号
+      this.carService.getAllModel().subscribe(
+        data => {
+          this.carList = data;
+          console.log(data, 666);
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+    }
 
-	/**
-	 * 确定
-	 */
-	submitButton() {
-		let formVal: any = this.$refs['form'];
-		formVal.validate(valid => {
-			if (!valid) return false;
-			this.carQuotationService.updateCarQuotation(this.carFormItem).subscribe(
-				data => {
-					this.$Message.success('修改成功！');
-					//   关闭弹框
-					this.close();
-					//   刷新databox
-					this.seachBusiness();
-				},
-				({ msg }) => {
-					this.$Message.error(msg);
-				}
-			);
-		});
-	}
-}
+    /**
+     * 确定
+     */
+    submitButton() {
+      let formVal: any = this.$refs['form'];
+      formVal.validate(valid => {
+        if (!valid) return false;
+        this.carFormItem.carRemark = this.carFormItem.carColor
+        this.carQuotationService.updateCarQuotation(this.carFormItem).subscribe(
+          data => {
+            this.$Message.success('修改成功！');
+            //   关闭弹框
+            this.close();
+            //   刷新databox
+            this.seachBusiness();
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
+      });
+    }
+  }
+
 </script>
 <style lang="less">
-.editcar {
-	position: relative;
-	right: 15px;
-}
+  .editcar {
+    position: relative;
+    right: 15px;
+  }
+
 </style>
