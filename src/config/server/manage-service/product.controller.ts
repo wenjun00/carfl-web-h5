@@ -1,5 +1,5 @@
 import { requestType } from '~/config/enum.config'
-const SERVICE = 'manage-service'
+const SERVICE = 'service-manage'
 const CONTROLLER = 'product'
 
 export default {

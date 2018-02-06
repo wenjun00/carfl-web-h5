@@ -1,6 +1,6 @@
 // 收款Controller
 import { requestType } from '~/config/enum.config'
-const SERVICE = 'manage-service'
+const SERVICE = 'service-manage'
 const CONTROLLER = 'collectMoneyHistoryController'
 export default {
   /**

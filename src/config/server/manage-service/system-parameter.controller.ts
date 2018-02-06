@@ -1,7 +1,7 @@
 // 系统参数controller
 import { requestType } from '~/config/enum.config'
 
-const SERVICE = 'manage-service'
+const SERVICE = 'service-manage'
 const CONTROLLER = 'systemParameter'
 
 export default {

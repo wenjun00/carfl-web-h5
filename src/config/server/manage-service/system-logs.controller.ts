@@ -1,7 +1,7 @@
 // 系统日志controller
 import { requestType } from '~/config/enum.config'
 
-const SERVICE = 'manage-service'
+const SERVICE = 'service-manage'
 const CONTROLLER = 'systemLogs'
 
 export default {

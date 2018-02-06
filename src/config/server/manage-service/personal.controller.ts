@@ -1,7 +1,7 @@
 // 客户信息
 import { requestType } from '~/config/enum.config'
 
-const SERVICE = 'manage-service'
+const SERVICE = 'service-manage'
 const CONTROLLER = 'personal'
 
 export default {
