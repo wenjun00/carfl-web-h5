@@ -183,8 +183,4 @@
     cursor: pointer;
   }
 
-  .systemManage-index {
-    height: 846px;
-  }
-
 </style>
