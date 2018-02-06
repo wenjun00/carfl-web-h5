@@ -1,79 +1,115 @@
 // 新增报价
 <template>
-  <i-form ref="quoteForm" :model="quoteForm" :rules="rulesQuote" :label-width="85">
-    <i-form-item label="经销商" prop="productPackageName">
-      <i-input v-model="quoteForm.productPackageName"></i-input>
-    </i-form-item>
-    <div class="title_info">车辆信息</div>
-    <div class="flex">
-      <i-form-item label="品牌" prop="carBrandName">
-        <i-input v-model="quoteForm.carBrandName"></i-input>
-      </i-form-item>
-      <i-form-item label="车型" prop="carName">
-        <i-input v-model="quoteForm.carName"></i-input>
-      </i-form-item>
-    </div>
-    <div class="flex">
-      <i-form-item label="车系" prop="carSeriesName">
-        <i-input v-model="quoteForm.carSeriesName"></i-input>
-      </i-form-item>
-      <i-form-item label="颜色" prop="carRemark">
-        <i-input v-model="quoteForm.carRemark"></i-input>
-      </i-form-item>
-    </div>
-    <div class="title_info">报价信息</div>
-    <div class="flex">
-      <i-form-item label="市场指导价" prop="marketGuidingPrice">
-        <i-input v-model="quoteForm.marketGuidingPrice"></i-input>
-      </i-form-item>
-      <i-form-item label="租金(月）" prop="monthPay">
-        <i-input v-model="quoteForm.monthPay"></i-input>
-      </i-form-item>
-    </div>
-    <div class="flex">
-      <i-form-item label="经销商报价" prop="dealerGuidingPrice">
-        <i-input v-model="quoteForm.dealerGuidingPrice"></i-input>
-      </i-form-item>
-      <i-form-item label="购置税" prop="purchaseTaxMoney">
-        <i-input v-model="quoteForm.purchaseTaxMoney"></i-input>
-      </i-form-item>
-    </div>
-    <div class="flex">
-      <i-form-item label="首期金额" prop="firstPayment">
-        <i-input v-model="quoteForm.firstPayment"></i-input>
-      </i-form-item>
-      <i-form-item label="路桥费" prop="roadBridgeFee">
-        <i-input v-model="quoteForm.roadBridgeFee"></i-input>
-      </i-form-item>
-    </div>
-    <div class="flex">
-      <i-form-item label="融资金额" prop="financeAmount">
-        <i-input v-model="quoteForm.financeAmount"></i-input>
-      </i-form-item>
-      <i-form-item label="保险费" prop="annualAmount">
-        <i-input v-model="quoteForm.annualAmount"></i-input>
-      </i-form-item>
-    </div>
-    <div class="flex">
-      <i-form-item label="融资期数" prop="periods">
-        <i-input v-model="quoteForm.periods"></i-input>
-      </i-form-item>
-      <i-form-item label="GPS费" prop="gpsFee">
-        <i-input v-model="quoteForm.gpsFee"></i-input>
-      </i-form-item>
-    </div>
-    <div class="flex">
-      <i-form-item label="其他费用" prop="otherFee">
-        <i-input v-model="quoteForm.otherFee" type="number"></i-input>
-      </i-form-item>
-      <i-form-item label="是否启用" prop="status">
-        <i-select v-model="quoteForm.status">
-          <i-option label="启用" :key="0" :value="0"></i-option>
-          <i-option label="停用" :key="1" :value="1"></i-option>
-        </i-select>
-      </i-form-item>
-    </div>
-  </i-form>
+  <section>
+    <i-form ref="quoteForm" :model="quoteForm" :rules="rulesQuote" :label-width="85">
+      <i-row>
+        <i-form-item label="经销商" prop="productPackageName">
+          <i-input v-model="quoteForm.productPackageName"></i-input>
+        </i-form-item>
+      </i-row>
+      <div class="title_info">车辆信息</div>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="品牌" prop="carBrandName">
+            <i-input v-model="quoteForm.carBrandName"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="车型" prop="carName">
+            <i-input v-model="quoteForm.carName"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="车系" prop="carSeriesName">
+            <i-input v-model="quoteForm.carSeriesName"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="颜色" prop="carRemark">
+            <i-input v-model="quoteForm.carRemark"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <div class="title_info">报价信息</div>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="市场指导价" prop="marketGuidingPrice">
+            <i-input v-model="quoteForm.marketGuidingPrice"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="租金(月）" prop="monthPay">
+            <i-input v-model="quoteForm.monthPay"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="经销商报价" prop="dealerGuidingPrice">
+            <i-input v-model="quoteForm.dealerGuidingPrice"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="购置税" prop="purchaseTaxMoney">
+            <i-input v-model="quoteForm.purchaseTaxMoney"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="首期金额" prop="firstPayment">
+            <i-input v-model="quoteForm.firstPayment"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="路桥费" prop="roadBridgeFee">
+            <i-input v-model="quoteForm.roadBridgeFee"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="融资金额" prop="financeAmount">
+            <i-input v-model="quoteForm.financeAmount"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="保险费" prop="annualAmount">
+            <i-input v-model="quoteForm.annualAmount"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="融资期数" prop="periods">
+            <i-input v-model="quoteForm.periods"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="GPS费" prop="gpsFee">
+            <i-input v-model="quoteForm.gpsFee"></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="其他费用" prop="otherFee">
+            <i-input v-model="quoteForm.otherFee"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="是否启用" prop="status">
+            <i-select v-model="quoteForm.status">
+              <i-option label="启用" :key="0" :value="0"></i-option>
+              <i-option label="停用" :key="1" :value="1"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
+      </i-row>
+    </i-form>
+  </section>
 </template>
 <script lang="ts">
   import Vue from 'vue';
@@ -125,109 +161,97 @@
       otherFee: '',
       status: 0,
     };
-    private rulesQuote: Object = {};
+    private rulesQuote: any = {
+      productPackageName: [{
+        required: true,
+        message: '请输入经销商',
+        trigger: 'blur'
+      }],
+      carBrandName: [{
+        required: true,
+        message: '请输入品牌',
+        trigger: 'blur'
+      }],
+      carName: [{
+        required: true,
+        message: '请输入车型',
+        trigger: 'blur'
+      }],
+      carSeriesName: [{
+        required: true,
+        message: '请输入车系',
+        trigger: 'blur'
+      }],
+      carRemark: [{
+        required: true,
+        message: '请输入颜色',
+        trigger: 'blur'
+      }],
+      marketGuidingPrice: [{
+        required: true,
+        message: '请输入市场指导价',
+        trigger: 'blur'
+      }],
+      monthPay: [{
+        required: true,
+        message: '请输入租金',
+        trigger: 'blur'
+      }],
+      dealerGuidingPrice: [{
+        required: true,
+        message: '请输入经销商报价',
+        trigger: 'blur'
+      }],
+      purchaseTaxMoney: [{
+        required: true,
+        message: '请输入购置税',
+        trigger: 'blur'
+      }],
+      firstPayment: [{
+        required: true,
+        message: '请输入首期金额',
+        trigger: 'blur'
+      }],
+      roadBridgeFee: [{
+        required: true,
+        message: '请输入路桥费',
+        trigger: 'blur'
+      }],
+      financeAmount: [{
+        required: true,
+        message: '请输入融资金额',
+        trigger: 'blur'
+      }],
+      annualAmount: [{
+        required: true,
+        message: '请输入保险费',
+        trigger: 'blur'
+      }],
+      periods: [{
+        required: true,
+        message: '请输入融资期数',
+        trigger: 'blur'
+      }],
+      gpsFee: [{
+        required: true,
+        message: '请输入GPS费',
+        trigger: 'blur'
+      }],
+      status: [{
+        required: true,
+        message: '请选择是否启用',
+        trigger: 'change',
+        type: 'number',
+      }],
+    };
     private check: Boolean = true;
 
     @Emit('seachBusiness')
     seachBusiness() {}
 
-    created() {
-      this.rulesQuote = {
-        productPackageName: [{
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        carBrandName: [{
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        carName: [{
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        carSeriesName: [{
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        carRemark: [{
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        marketGuidingPrice: [{
-          type: 'number',
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        monthPay: [{
-          type: 'number',
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        dealerGuidingPrice: [{
-          type: 'number',
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        purchaseTaxMoney: [{
-          type: 'number',
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        firstPayment: [{
-          type: 'number',
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        roadBridgeFee: [{
-          type: 'number',
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        financeAmount: [{
-          type: 'number',
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        annualAmount: [{
-          type: 'number',
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        periods: [{
-          type: 'number',
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        gpsFee: [{
-          type: 'number',
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'blur'
-        }],
-        status: [{
-          required: true,
-          message: '您输入的内容不能为空',
-          trigger: 'change',
-          type: 'number',
-        }],
-      };
-    }
+    created() {}
     rulesFun() {
-      let form: any = < Form > this.$refs['quoteForm'];
+      let form: any = this.$refs['quoteForm'];
       form.validate(valid => {
         if (!valid) {
           return false;
