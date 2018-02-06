@@ -35,7 +35,7 @@
   } from '~/core/decorator';
   import {
     RoleResoService
-  } from '~/services/manage-service/role.reso.service';
+  } from '~/services/manage-service/role-reso.service';
   import {
     Emit
   } from "vue-property-decorator";

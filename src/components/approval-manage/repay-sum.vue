@@ -105,7 +105,7 @@
   import ApplyFrozen from '~/components/approval-manage/apply-frozen.vue'
   import {
     PaymentScheduleService
-  } from "~/services/manage-service/paymentSchedule.service";
+  } from "~/services/manage-service/payment-schedule.service";
   import {
     DataGrid,
     DataGridItem

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const creatDataDictService = () => import('~/services/manage-service/DataDict.service')
+const creatDataDictService = () => import('~/services/manage-service/data-dict.service')
 const createLoginService = () => import('~/services/manage-service/login.service')
 // import { MessageService } from '~/utils/message.service'
 

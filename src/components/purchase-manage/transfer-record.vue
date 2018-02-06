@@ -22,7 +22,7 @@
   import SimulateCalculate from "~/components/common/simulate-calculate.vue"
   import {
     ProductOrderService
-  } from "~/services/manage-service/product.order.service";
+  } from "~/services/manage-service/product-order.service";
   import {
     FilterService
   } from "~/utils/filter.service";
@@ -121,10 +121,10 @@
       border-radius: 0;
     }
   }
-  
+
   .calculate {
     .ivu-modal-footer {
-      display: none!important;
+      display: none !important;
     }
   }
 

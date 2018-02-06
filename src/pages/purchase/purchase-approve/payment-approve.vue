@@ -60,7 +60,7 @@
   } from "~/utils/filter.service";
   import {
     RefundApplicationService
-  } from "~/services/manage-service/refund.application.service";
+  } from "~/services/manage-service/refund-application.service";
   import {
     PageService
   } from "~/utils/page.service";
@@ -122,8 +122,8 @@
       this.refundApplicationService.passRefundApplication({
         refundId: this.refundId
       }).subscribe(val => {
-         this.$Message.success(val.msg);
-         this.checkApplyModal = false
+        this.$Message.success(val.msg);
+        this.checkApplyModal = false
       })
     }
     /**
@@ -133,8 +133,8 @@
       this.refundApplicationService.returnRefundApplication({
         refundId: this.refundId
       }).subscribe(val => {
-         this.$Message.success(val.msg);
-         this.checkApplyModal = false
+        this.$Message.success(val.msg);
+        this.checkApplyModal = false
       })
     }
     created() {

@@ -78,7 +78,7 @@
   } from "~/core/decorator";
   import {
     PaymentScheduleService
-  } from "~/services/manage-service/paymentSchedule.service";
+  } from "~/services/manage-service/payment-schedule.service";
   import {
     Layout
   } from "~/core/decorator";

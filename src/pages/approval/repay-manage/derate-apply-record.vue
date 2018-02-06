@@ -49,7 +49,7 @@
   } from "~/core/decorator";
   import {
     RemitApplicationService
-  } from "~/services/manage-service/remitApplication.service";
+  } from "~/services/manage-service/remit-application.service";
   import {
     Layout
   } from "~/core/decorator";

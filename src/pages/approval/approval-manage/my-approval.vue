@@ -230,7 +230,7 @@
   } from "~/utils/city.service"
   import {
     ApproveReasonService
-  } from "~/services/manage-service/approve.reason.service";
+  } from "~/services/manage-service/approve-reason.service";
   @Layout("workspace")
   @Component({
 

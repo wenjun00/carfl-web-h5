@@ -62,7 +62,7 @@
   } from "~/core/decorator";
   import {
     PersonalMaterialService
-  } from "~/services/manage-service/personalMaterial.service";
+  } from "~/services/manage-service/personal-material.service";
   const ModuleState = namespace('purchaseManage', State)
 
   @Component({})

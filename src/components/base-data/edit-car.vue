@@ -134,7 +134,7 @@
   } from '~/core/decorator';
   import {
     CarQuotationService
-  } from '~/services/manage-service/carQuotation.service';
+  } from '~/services/manage-service/car-quotation.service';
   import {
     CarService
   } from '~/services/manage-service/car.service';

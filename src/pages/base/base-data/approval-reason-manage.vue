@@ -45,7 +45,7 @@
   } from '~/core/decorator';
   import {
     ApproveReasonService
-  } from '~/services/manage-service/approve.reason.service';
+  } from '~/services/manage-service/approve-reason.service';
   import {
     PageService
   } from '~/utils/page.service';

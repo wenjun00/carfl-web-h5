@@ -203,7 +203,7 @@
   } from '~/core/decorator';
   import {
     ProductPlanIssueService
-  } from '~/services/manage-service/productPlanIssue.service';
+  } from '~/services/manage-service/product-plan-issue.service';
 
   @Component({
     components: {

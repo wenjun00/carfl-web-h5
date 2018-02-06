@@ -43,7 +43,7 @@
   } from "vue-fintech-component";
   import {
     RemitApplicationService
-  } from "~/services/manage-service/remitApplication.service";
+  } from "~/services/manage-service/remit-application.service";
   import {
     Dependencies
   } from "~/core/decorator";

@@ -118,7 +118,7 @@
 
   import {
     ProductOrderService
-  } from "~/services/manage-service/product.order.service";
+  } from "~/services/manage-service/product-order.service";
   import {
     FilterService
   } from "~/utils/filter.service";
@@ -559,7 +559,7 @@
 <style lang="less" scope>
   .transfer-record {
     .ivu-modal-footer {
-      display: none!important;
+      display: none !important;
     }
   }
 

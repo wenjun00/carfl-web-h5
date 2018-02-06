@@ -109,7 +109,7 @@
   import Component from "vue-class-component";
   import {
     RefundApplicationService
-  } from "~/services/manage-service/refund.application.service";
+  } from "~/services/manage-service/refund-application.service";
   import {
     Dependencies
   } from "~/core/decorator";

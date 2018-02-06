@@ -18,7 +18,7 @@
   import ChangeCard from "~/components/purchase-manage/change-card.vue"
   import {
     PaymentScheduleService
-  } from "~/services/manage-service/paymentSchedule.service";
+  } from "~/services/manage-service/payment-schedule.service";
   import {
     Dependencies
   } from "~/core/decorator";

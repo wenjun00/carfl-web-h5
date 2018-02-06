@@ -28,7 +28,7 @@
   } from "vue-property-decorator";
   import {
     ProductOrderService
-  } from "~/services/manage-service/product.order.service";
+  } from "~/services/manage-service/product-order.service";
 
   @Component({
 
@@ -114,23 +114,23 @@
     max-width: auto;
     overflow: hidden;
   }
-  
+
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-  
+
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-  
+
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-  
+
   .arrowButton {
     line-height: 570px;
     height: 100%;

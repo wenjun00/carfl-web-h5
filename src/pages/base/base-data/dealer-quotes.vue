@@ -57,7 +57,7 @@
   } from '~/core/decorator';
   import {
     CarQuotationService
-  } from '~/services/manage-service/carQuotation.service';
+  } from '~/services/manage-service/car-quotation.service';
   import {
     PageService
   } from '~/utils/page.service';
@@ -413,7 +413,7 @@
       display: none;
     }
   }
-  
+
   .bottom_addPrice {
     width: 100%;
     height: 80px;

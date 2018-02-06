@@ -46,7 +46,7 @@
   import ModifySystemParams from '~/components/system-manage/modify-system-params.vue';
   import {
     SystemParameterService
-  } from '~/services/manage-service/system.parameter.service';
+  } from '~/services/manage-service/system-parameter.service';
 
   @Layout('workspace')
   @Component({

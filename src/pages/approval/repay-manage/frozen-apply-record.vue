@@ -58,7 +58,7 @@
   } from "~/utils/filter.service";
   import {
     RemitApplicationService
-  } from "~/services/manage-service/remitApplication.service";
+  } from "~/services/manage-service/remit-application.service";
   @Layout("workspace")
   @Component({
 

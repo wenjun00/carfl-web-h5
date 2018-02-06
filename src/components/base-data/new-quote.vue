@@ -93,7 +93,7 @@
   } from '~/core/decorator';
   import {
     CarQuotationService
-  } from '~/services/manage-service/carQuotation.service';
+  } from '~/services/manage-service/car-quotation.service';
 
   @Component({
     components: {
@@ -246,7 +246,7 @@
       flex: 50%;
     }
   }
-  
+
   .title_info {
     width: 100%;
     background: rgb(236, 235, 235);

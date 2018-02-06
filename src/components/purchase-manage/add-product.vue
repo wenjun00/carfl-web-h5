@@ -54,7 +54,7 @@
   } from "~/utils/page.service";
   import {
     ProductPlanIssueService
-  } from "~/services/manage-service/productPlanIssue.service";
+  } from "~/services/manage-service/product-plan-issue.service";
   import {
     Emit
   } from "vue-property-decorator";

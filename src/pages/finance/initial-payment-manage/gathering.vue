@@ -65,7 +65,7 @@
   } from "~/core/decorator";
   import {
     CollectMoneyHistoryService
-  } from "~/services/manage-service/collect.money.history.service";
+  } from "~/services/manage-service/collect-money-history.service";
   import {
     PageService
   } from "~/utils/page.service";

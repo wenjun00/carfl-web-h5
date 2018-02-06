@@ -139,7 +139,7 @@
   } from '~/core/decorator';
   import {
     RoleResoService
-  } from '~/services/manage-service/role.reso.service';
+  } from '~/services/manage-service/role-reso.service';
 
   @Layout('workspace')
   @Component({
@@ -497,7 +497,7 @@
   .input {
     width: 60%;
   }
-  
+
   .toViewModalClass {
     .ivu-modal-footer {
       display: none !important;

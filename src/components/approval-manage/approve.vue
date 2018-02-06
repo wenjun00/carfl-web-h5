@@ -317,7 +317,7 @@
   } from "vue-fintech-component";
   import {
     ProductOrderService
-  } from "~/services/manage-service/product.order.service";
+  } from "~/services/manage-service/product-order.service";
   import {
     Prop
   } from "vue-property-decorator";

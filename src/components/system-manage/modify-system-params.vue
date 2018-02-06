@@ -48,7 +48,7 @@
   } from '~/core/decorator';
   import {
     SystemParameterService
-  } from '~/services/manage-service/system.parameter.service';
+  } from '~/services/manage-service/system-parameter.service';
   @Component({
     components: {},
   })

@@ -82,7 +82,7 @@
   } from '~/services/role-service/role.service';
   import {
     BackLogService
-  } from '~/services/manage-service/backLog.service';
+  } from '~/services/manage-service/back-log.service';
   import {
     Layout
   } from '~/core/decorator';
@@ -404,6 +404,7 @@
         .queryRolePage({
             roleName: this.roleModel.roleName,
             roleStatus: this.roleModel.roleStatus,
+            userId: 1
           },
           this.pageService
         )

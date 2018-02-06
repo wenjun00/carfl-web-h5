@@ -210,10 +210,10 @@
   } from '~/services/manage-service/product.service';
   import {
     ProductPlanIssueService
-  } from '~/services/manage-service/productPlanIssue.service';
+  } from '~/services/manage-service/product-plan-issue.service';
   import {
     PersonalMaterialService
-  } from '~/services/manage-service/personalMaterial.service';
+  } from '~/services/manage-service/personal-material.service';
   import {
     PageService
   } from '~/utils/page.service';

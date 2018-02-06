@@ -339,7 +339,7 @@
   } from "vuex-class";
   import {
     ProductOrderService
-  } from "~/services/manage-service/product.order.service";
+  } from "~/services/manage-service/product-order.service";
   @Component({
     components: {
       DataGrid,

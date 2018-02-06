@@ -25,195 +25,216 @@
 </template>
 
 <script lang="ts">
-import Page from '~/core/page';
-import DataBox from '~/components/common/data-box.vue';
-import Component from 'vue-class-component';
-import SvgIcon from '~/components/common/svg-icon.vue';
-import { Dependencies } from '~/core/decorator';
-import { ProductPackageService } from '~/services/manage-service/productPackage.service';
-import { Layout } from '~/core/decorator';
-import { PageService } from '~/utils/page.service';
-import { FilterService } from '~/utils/filter.service';
+  import Page from '~/core/page';
+  import DataBox from '~/components/common/data-box.vue';
+  import Component from 'vue-class-component';
+  import SvgIcon from '~/components/common/svg-icon.vue';
+  import {
+    Dependencies
+  } from '~/core/decorator';
+  import {
+    ProductPackageService
+  } from '~/services/manage-service/product-package.service';
+  import {
+    Layout
+  } from '~/core/decorator';
+  import {
+    PageService
+  } from '~/utils/page.service';
+  import {
+    FilterService
+  } from '~/utils/filter.service';
 
-@Layout('workspace')
-@Component({
-	components: {
-		DataBox,
-		SvgIcon,
-	},
-})
-export default class ProdPackageInfo extends Page {
-	@Dependencies(ProductPackageService) private productPackageService: ProductPackageService;
-	@Dependencies(PageService) private pageService: PageService;
-	private columns: any;
-	private prdPackageList: Array<Object> = [];
-	private searchOptions: Boolean = false;
-	private productPackageModel: any;
-	private productModel: any;
-	private backupTimeRange: Array<any> = [];
-	private productId: any;
-	created() {
-		this.columns = [
-			{
-				title: '序号',
-				width: 60,
-				type: 'index',
-				align: 'center',
-			},
-			{
-				title: '操作',
-				align: 'center',
-				render: (h, { row, column, index }) => {
-					return h('div', [
-						h(
-							'i-button',
-							{
-								props: {
-									type: 'text',
-								},
-								style: {
-									color: '#265EA2',
-								},
-							},
-							'预览'
-						),
-						h(
-							'i-button',
-							{
-								props: {
-									type: 'text',
-								},
-								style: {
-									color: '#265EA2',
-								},
-								on: {
-									click: () => {
-										this.$Modal.confirm({
-											title: '提示',
-											content: '您确定是否下载？',
-											onOk: () => {
-												this.downLoadTemplate(row);
-											},
-										});
-									},
-								},
-							},
-							'下载'
-						),
-						h(
-							'i-button',
-							{
-								props: {
-									type: 'text',
-								},
-								style: {
-									color: '#265EA2',
-								},
-								on: {
-									click: () => {
-										this.$Modal.confirm({
-											title: '提示',
-											content: '确定删除吗？',
-											onOk: () => {
-												this.deleteProductPackage(row);
-											},
-										});
-									},
-								},
-							},
-							'删除'
-						),
-					]);
-				},
-			},
-			{
-				title: '文件名',
-				key: 'fileName',
-				align: 'center',
-			},
-			{
-				title: '上传时间',
-				key: 'uploadTime',
-				align: 'center',
-				render: (h, { row, column, index }) => {
-					return h('span', FilterService.dateFormat(row.uploadTime, 'yyyy-MM-dd hh:mm:ss'));
-				},
-			},
-			{
-				title: '操作人',
-				key: 'operator',
-				align: 'center',
-			},
-			{
-				title: '备注',
-				key: 'remark',
-				align: 'center',
-			},
-		];
-		this.productModel = {
-			fileName: '',
-			minDate: '',
-			maxDate: '',
-		};
-	}
-	mounted() {
-		this.getProductPackage();
-	}
-	getOrderInfoByTime() {}
-	openSearch() {
-		this.searchOptions = !this.searchOptions;
-	}
-	exportMonthReport() {}
-	/**
-	 * 多条件分页查询产品包信息
-	 */
-	getProductPackage() {
-		this.productModel.minDate = FilterService.dateFormat(this.productModel.minDate, 'yyyy-MM-dd');
-		this.productModel.maxDate = FilterService.dateFormat(this.productModel.maxDate, 'yyyy-MM-dd');
-		this.productPackageService.getAllProductPackage(this.productModel, this.pageService).subscribe(
-			val => {
-				this.prdPackageList = val;
-			},
-			({ msg }) => {
-				this.$Message.error(msg);
-			}
-		);
-	}
+  @Layout('workspace')
+  @Component({
+    components: {
+      DataBox,
+      SvgIcon,
+    },
+  })
+  export default class ProdPackageInfo extends Page {
+    @Dependencies(ProductPackageService) private productPackageService: ProductPackageService;
+    @Dependencies(PageService) private pageService: PageService;
+    private columns: any;
+    private prdPackageList: Array < Object > = [];
+    private searchOptions: Boolean = false;
+    private productPackageModel: any;
+    private productModel: any;
+    private backupTimeRange: Array < any > = [];
+    private productId: any;
+    created() {
+      this.columns = [{
+          title: '序号',
+          width: 60,
+          type: 'index',
+          align: 'center',
+        },
+        {
+          title: '操作',
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('div', [
+              h(
+                'i-button', {
+                  props: {
+                    type: 'text',
+                  },
+                  style: {
+                    color: '#265EA2',
+                  },
+                },
+                '预览'
+              ),
+              h(
+                'i-button', {
+                  props: {
+                    type: 'text',
+                  },
+                  style: {
+                    color: '#265EA2',
+                  },
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '您确定是否下载？',
+                        onOk: () => {
+                          this.downLoadTemplate(row);
+                        },
+                      });
+                    },
+                  },
+                },
+                '下载'
+              ),
+              h(
+                'i-button', {
+                  props: {
+                    type: 'text',
+                  },
+                  style: {
+                    color: '#265EA2',
+                  },
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '确定删除吗？',
+                        onOk: () => {
+                          this.deleteProductPackage(row);
+                        },
+                      });
+                    },
+                  },
+                },
+                '删除'
+              ),
+            ]);
+          },
+        },
+        {
+          title: '文件名',
+          key: 'fileName',
+          align: 'center',
+        },
+        {
+          title: '上传时间',
+          key: 'uploadTime',
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.uploadTime, 'yyyy-MM-dd hh:mm:ss'));
+          },
+        },
+        {
+          title: '操作人',
+          key: 'operator',
+          align: 'center',
+        },
+        {
+          title: '备注',
+          key: 'remark',
+          align: 'center',
+        },
+      ];
+      this.productModel = {
+        fileName: '',
+        minDate: '',
+        maxDate: '',
+      };
+    }
+    mounted() {
+      this.getProductPackage();
+    }
+    getOrderInfoByTime() {}
+    openSearch() {
+      this.searchOptions = !this.searchOptions;
+    }
+    exportMonthReport() {}
+    /**
+     * 多条件分页查询产品包信息
+     */
+    getProductPackage() {
+      this.productModel.minDate = FilterService.dateFormat(this.productModel.minDate, 'yyyy-MM-dd');
+      this.productModel.maxDate = FilterService.dateFormat(this.productModel.maxDate, 'yyyy-MM-dd');
+      this.productPackageService.getAllProductPackage(this.productModel, this.pageService).subscribe(
+        val => {
+          this.prdPackageList = val;
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+    }
 
-	/**
-	 * 删除产品
-	 */
-	deleteProductPackage(row) {
-		this.productPackageService
-			.deleteProductPackage({
-				id: row.fileId,
-			})
-			.subscribe(
-				val => {
-					this.$Message.success('删除成功！');
-					this.getProductPackage();
-				},
-				({ msg }) => {
-					this.$Message.error(msg);
-				}
-			);
-	}
-	/**
-	 * 产品包信息下载
-	 */
-	downLoadTemplate(row) {
-		this.productPackageService
-			.downloadProductPackage({
-				fileId: row.fileId,
-			})
-			.subscribe(
-				val => {
-					this.$Message.success('下载成功！');
-				},
-				({ msg }) => {
-					this.$Message.error(msg);
-				}
-			);
-	}
-}
+    /**
+     * 删除产品
+     */
+    deleteProductPackage(row) {
+      this.productPackageService
+        .deleteProductPackage({
+          id: row.fileId,
+        })
+        .subscribe(
+          val => {
+            this.$Message.success('删除成功！');
+            this.getProductPackage();
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+    /**
+     * 产品包信息下载
+     */
+    downLoadTemplate(row) {
+      this.productPackageService
+        .downloadProductPackage({
+          fileId: row.fileId,
+        })
+        .subscribe(
+          val => {
+            this.$Message.success('下载成功！');
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+  }
+
 </script>
