@@ -25,6 +25,12 @@
     <template>
       <i-modal title="列配置" v-model="openColumnsConfig">
         <columns-config ref="columns-config" @close="openColumnsConfig=false"></columns-config>
+        <div slot="footer">
+          <i-button>上移</i-button>
+          <i-button>下移</i-button>
+          <i-button>恢复默认</i-button>
+          <i-button @click="openColumnsConfig=false">关闭</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -71,7 +77,6 @@ export default class SystemBackups extends Page {
     mysqlName: "",
     mongdbName: "",
     type: "",
-    // backupTimeRange: [],
     startTime: "",
     endTime: ""
   };
@@ -241,6 +246,8 @@ export default class SystemBackups extends Page {
    */
   columnsConfig() {
     this.openColumnsConfig = true;
+    let _columnsConfig: any = this.$refs["columns-config"];
+    _columnsConfig.getColumnsData();
   }
   clearDateTime() {
     this.systemBackUpModel.startTime = "";

@@ -22,7 +22,7 @@ export default class ColumnsConfig extends Vue {
   private configData: Array<any> = [];
 
   created() {}
-  getColumnsData(row) {
+  getColumnsData() {
     let userId = this.$store.state.userData.id;
     this.userService
       .findListboxByUserIdAndResoPid({
