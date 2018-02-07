@@ -15,4 +15,10 @@ export class DataDictTypeService {
             server: manageService.dataDictTypeController.getAllDictType,
         })
     }
+    createOrModifyDataDictType(data) {
+        return this.netService.send({
+            server: manageService.dataDictTypeController.createOrModifyDataDictType,
+            data
+        })
+    }
 }
