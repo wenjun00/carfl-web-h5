@@ -25,7 +25,7 @@
     </div>
     <data-box :columns="columns" :data="carList" @onPageChange="seachBusiness" :page="pageService"></data-box>
     <template>
-      <i-modal v-model="editModal" title="编辑" width="600" :mask-closable="false">
+      <i-modal v-model="editModal" title="编辑" width="600" :mask-closable="false" class="edit_class">
         <edit-car :carFormItem="carformitem" @seachBusiness="seachBusiness" @close="editModal=false" ref="edit-car"></edit-car>
       </i-modal>
     </template>
@@ -407,7 +407,7 @@
   }
 
 </script>
-<style lang="less" scoped>
+<style lang="less" scope>
   .edit_class {
     .ivu-modal-footer {
       display: none;

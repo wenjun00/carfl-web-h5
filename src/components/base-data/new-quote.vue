@@ -3,32 +3,38 @@
   <section>
     <i-form ref="quoteForm" :model="quoteForm" :rules="rulesQuote" :label-width="85">
       <i-row>
-        <i-form-item label="经销商" prop="productPackageName">
-          <i-input v-model="quoteForm.productPackageName"></i-input>
+        <i-form-item label="经销商" prop="quotationName">
+          <i-input v-model="quoteForm.quotationName"></i-input>
         </i-form-item>
       </i-row>
       <div class="title_info">车辆信息</div>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="品牌" prop="carBrandName">
-            <i-input v-model="quoteForm.carBrandName"></i-input>
+          <i-form-item label="品牌" prop="carBrandId">
+            <i-select v-model="quoteForm.carBrandId">
+              <i-option v-for="item in brandList" :value="item.id" :label="item.brandName" :key="item.id"></i-option>
+            </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="车型" prop="carName">
-            <i-input v-model="quoteForm.carName"></i-input>
+          <i-form-item label="车型" prop="carId">
+            <i-select v-model="quoteForm.carId">
+              <i-option v-for="item in carList" :value="item.modelName" :label="item.modelName" :key="item.id"></i-option>
+            </i-select>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="12">
           <i-form-item label="车系" prop="carSeriesName">
-            <i-input v-model="quoteForm.carSeriesName"></i-input>
+            <i-select v-model="quoteForm.carSeriesName">
+              <i-option v-for="item in SeriesList" :value="item.seriesName" :label="item.seriesName" :key="item.id"></i-option>
+            </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="颜色" prop="carRemark">
-            <i-input v-model="quoteForm.carRemark"></i-input>
+          <i-form-item label="颜色" prop="carColor">
+            <i-input v-model="quoteForm.carColor"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -122,6 +128,9 @@
     DataGridItem
   } from 'vue-fintech-component';
   import {
+    CarService
+  } from '~/services/manage-service/car.service';
+  import {
     Form
   } from 'iview';
   import {
@@ -141,13 +150,14 @@
     },
   })
   export default class AddPeriods extends Vue {
+    @Dependencies(CarService) private carService: CarService;
     @Dependencies(CarQuotationService) private carQuotationService: CarQuotationService;
     private quoteForm: any = {
-      productPackageName: '',
-      carBrandName: '',
-      carName: '',
+      quotationName: '',
+      carBrandId: '',
+      carId: '',
       carSeriesName: '',
-      carRemark: '',
+      carColor: '',
       marketGuidingPrice: '',
       monthPay: '',
       dealerGuidingPrice: '',
@@ -161,28 +171,32 @@
       otherFee: '',
       status: 0,
     };
+    private brandList: any = []; // 品牌
+    private SeriesList: any = []; // 系列
+    private carList: any = []; // 型号
     private rulesQuote: any = {
-      productPackageName: [{
+      quotationName: [{
         required: true,
         message: '请输入经销商',
         trigger: 'blur'
       }],
-      carBrandName: [{
+      carBrandId: [{
         required: true,
         message: '请输入品牌',
-        trigger: 'blur'
+        trigger: 'change',
+        type: 'number',
       }],
-      carName: [{
+      carId: [{
         required: true,
         message: '请输入车型',
-        trigger: 'blur'
+        trigger: 'change'
       }],
       carSeriesName: [{
         required: true,
         message: '请输入车系',
-        trigger: 'blur'
+        trigger: 'change'
       }],
-      carRemark: [{
+      carColor: [{
         required: true,
         message: '请输入颜色',
         trigger: 'blur'
@@ -249,7 +263,42 @@
     @Emit('seachBusiness')
     seachBusiness() {}
 
-    created() {}
+    created() {
+      // 获取品牌
+      this.carService.getAllBrand().subscribe(
+        data => {
+          this.brandList = data;
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+      //   获取系列
+      this.carService.getAllSeries().subscribe(
+        data => {
+          this.SeriesList = data;
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+      // 获取型号
+      this.carService.getAllModel().subscribe(
+        data => {
+          this.carList = data;
+          console.log(data, 666);
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+    }
     rulesFun() {
       let form: any = this.$refs['quoteForm'];
       form.validate(valid => {
