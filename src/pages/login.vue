@@ -40,7 +40,7 @@
     <div style="width:100%;color:#999999;position:absolute;bottom:20px;text-align:center">© 2018 Zhiwang All Rights Reserved. For Internal Use Only</div>
 
     <template>
-      <i-modal title="新用户注册" v-model="registerModal" class="register_modal">
+      <i-modal title="新用户注册" v-model="registerModal" class="calculate">
         <register @close="registerModal=false"></register>
       </i-modal>
     </template>
@@ -48,14 +48,22 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { LoginService } from "~/services/manage-service/login.service";
-import { Dependencies } from "~/core/decorator";
-import { Mutation } from "vuex-class";
-import AppConfig from "~/config/app.config";
-import Register from "~/components/common/register.vue";
-import { DataDictService } from "~/services/manage-service/data-dict.service";
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {
+    LoginService
+  } from "~/services/manage-service/login.service";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    Mutation
+  } from "vuex-class";
+  import AppConfig from "~/config/app.config";
+  import Register from "~/components/common/register.vue";
+  import {
+    DataDictService
+  } from "~/services/manage-service/data-dict.service";
   @Component({
     components: {
       Register
@@ -138,11 +146,17 @@ import { DataDictService } from "~/services/manage-service/data-dict.service";
   }
 
 </script>
-<style lang="less" scoped>
+<style lang="less" scope>
+  .calculate {
+    .ivu-modal-footer {
+      display: none!important;
+    }
+  }
+  
   .full-absolute {
     background: #265ea3;
   }
-
+  
   .login-bg {
     width: 500px;
     height: 500px;
@@ -152,25 +166,25 @@ import { DataDictService } from "~/services/manage-service/data-dict.service";
     background-repeat: no-repeat;
     background-size: 500px 500px;
   }
-
+  
   .login-form {
     width: 350px;
     position: relative;
     right: 23px;
   }
-
+  
   .submit_btn {
     width: 270px;
     height: 40px;
     background: #265ea2;
     color: #fff;
   }
-
+  
   .submit_btn:hover {
     background: #1d4f8b;
     color: #fff;
   }
-
+  
   .loginContainer {
     border: 1px solid #dddddd;
     background: white;
@@ -180,12 +194,6 @@ import { DataDictService } from "~/services/manage-service/data-dict.service";
     position: relative;
     left: 350px;
     bottom: 20px;
-  }
-
-  .register_modal {
-    .ivu-modal-footer {
-      display: none;
-    }
   }
 
 </style>
