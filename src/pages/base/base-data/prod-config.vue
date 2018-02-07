@@ -500,6 +500,7 @@ export default class ProdConfig extends Page {
 				title: item.name,
 				seriesId: item.id,
 				flag: item.flag,
+				id: item.id,
 				expand: true,
 				children: this.getChild(item),
 			};
@@ -517,6 +518,7 @@ export default class ProdConfig extends Page {
 						productId: val.id,
 						parentId: val.parent,
 						flag: val.flag,
+						id: item.id,
 						expand: true,
 						children: this.getChild(val), // 迭代产生根
 					};
@@ -709,7 +711,8 @@ export default class ProdConfig extends Page {
 	 */
 	submitAddSerice() {
 		let openAddSerice: any = this.$refs['add-series'];
-		openAddSerice.vaildFun(this.parentsId);
+		openAddSerice.vaildFun(this.seriId);
+		console.log(this.parentsId, 1111);
 	}
 	/**
 	 * 关闭新增产品系列窗口
@@ -838,5 +841,10 @@ export default class ProdConfig extends Page {
 	background: rgb(245, 245, 245);
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
+}
+.ivu-tree-empty {
+	height: 50px;
+	line-height: 50px;
+	text-indent: 14px;
 }
 </style>
