@@ -12,7 +12,7 @@
               <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addProductFun">
                 <svg-icon iconClass="tianjiawenjian"></svg-icon>
               </div>
-              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
+              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addSericeFun">
                 <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
               </div>
               <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
@@ -142,8 +142,7 @@
       <i-modal v-model="addPeriodsModal" title="新增期数" width="900">
         <add-periods :pNameTitle="productMessage" ref="add-periods-ref" @close="closeModal"></add-periods>
         <div slot="footer">
-          <i-button type="ghost">取消</i-button>
-          <i-button type="primary" @click="submiteButton">确定</i-button>
+          <i-button type="primary" @click="submiteButton">保存并退出</i-button>
         </div>
       </i-modal>
     </template>
@@ -151,8 +150,7 @@
       <i-modal v-model="editModal" title="编辑期数" width="900">
         <edit-periods :productDetail="productDetails" :pNameTitle="productMessage" ref="edit-periods"></edit-periods>
         <div slot="footer">
-          <i-button type="ghost">取消</i-button>
-          <i-button type="primary" @click="submiteButton">确定</i-button>
+          <i-button type="primary" @click="submiteButton">保存并退出</i-button>
         </div>
       </i-modal>
     </template>
@@ -176,8 +174,18 @@
       <i-modal v-model="addProductModal" title="新增产品">
         <add-product ref="add-product" @close="closeAddProductModal"></add-product>
         <div slot="footer">
-          <i-button class="Ghost" @click="closeAddProductModal">取消</i-button>
+          <i-button class="Ghost" @click="addProductModal=false">取消</i-button>
           <i-button class="blueButton" @click="submintAddProduct">确认</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="addSericeModal" title="新增产品系列">
+        <add-series ref="add-series" @close="closeSericeModal"></add-series>
+        <div slot="footer">
+          <i-button class="Ghost" @click="addSericeModal=false">取消</i-button>
+          <i-button class="blueButton" @click="submitAddSerice">确认</i-button>
         </div>
       </i-modal>
     </template>
@@ -193,6 +201,7 @@ import AddPeriods from '~/components/base-data/add-periods.vue';
 import EditPeriods from '~/components/base-data/edit-product.vue';
 import PreviewProduct from '~/components/base-data/preview-product.vue';
 import AddProduct from '~/components/base-data/add-product.vue';
+import AddSeries from '~/components/base-data/add-series.vue';
 
 import ChargeAgainstOrder from '~/components/base-data/charge-against-order.vue';
 import { Dependencies } from '~/core/decorator';
@@ -205,6 +214,7 @@ import { PageService } from '~/utils/page.service';
 import { constants } from 'zlib';
 import { Set } from 'core-js/library/web/timers';
 import { retry } from 'rxjs/operator/retry';
+import { prototype } from 'stream';
 
 @Layout('workspace')
 @Component({
@@ -218,6 +228,7 @@ import { retry } from 'rxjs/operator/retry';
 		EditPeriods,
 		PreviewProduct,
 		AddProduct,
+		AddSeries,
 	},
 })
 export default class ProdConfig extends Page {
@@ -248,9 +259,12 @@ export default class ProdConfig extends Page {
 	private productDetails: Object = {};
 	private productDe: Object = {};
 	private addProductModal: Boolean = false;
+	private addSericeModal: Boolean = false;
 	private seriId: Number = -1;
+	private parentsId: Number = -1;
 	private scopes: any = {};
 	private newTree: any = {};
+	private parent: any = {};
 
 	created() {
 		this.treeList();
@@ -485,6 +499,7 @@ export default class ProdConfig extends Page {
 			let node1 = {
 				title: item.name,
 				seriesId: item.id,
+				flag: item.flag,
 				expand: true,
 				children: this.getChild(item),
 			};
@@ -500,6 +515,8 @@ export default class ProdConfig extends Page {
 					let node2 = {
 						title: val.name,
 						productId: val.id,
+						parentId: val.parent,
+						flag: val.flag,
 						expand: true,
 						children: this.getChild(val), // 迭代产生根
 					};
@@ -508,6 +525,8 @@ export default class ProdConfig extends Page {
 					let node2 = {
 						title: val.name,
 						seriesId: val.id,
+						parentId: val.parent,
+						flag: val.flag,
 						expand: true,
 						children: this.getChild(val),
 					};
@@ -523,6 +542,8 @@ export default class ProdConfig extends Page {
 	 */
 	productNameDetail(scope) {
 		this.seriId = scope[0].seriesId; //保存系列ID
+		this.parentsId = scope[0].id; //保存ID
+		console.log(scope, 444);
 		this.scopes = scope;
 		if (scope[0].productId) {
 			this.productPlanIssueService
@@ -652,7 +673,6 @@ export default class ProdConfig extends Page {
 	 */
 	addProductFun() {
 		if (this.seriId > -1 && this.seriId !== undefined) {
-			console.log(this.seriId, 222);
 			this.addProductModal = true;
 		} else {
 			this.$Message.error('请先选择产品系列');
@@ -664,11 +684,39 @@ export default class ProdConfig extends Page {
 	submintAddProduct() {
 		let openAddProduct: any = this.$refs['add-product'];
 		openAddProduct.vaildFun(this.seriId);
-		this.treeList();
-		//  this.productNameDetail(this.scopes);
 	}
+	/**
+	 * 关闭新增产品窗口
+	 */
 	closeAddProductModal() {
 		this.addProductModal = false;
+		this.treeList();
+	}
+
+	/**
+	 * 树形结构 新增产品系列
+	 */
+	addSericeFun() {
+		console.log(this.scopes, 222);
+		if (typeof this.scopes[0].flag === 'undefined' || this.scopes[0].flag !== '产品') {
+			this.addSericeModal = true;
+		} else {
+			this.$Message.error('温馨提示：不能在产品中添加产品系列！');
+		}
+	}
+	/**
+	 * 点击新增产品系列确认按钮
+	 */
+	submitAddSerice() {
+		let openAddSerice: any = this.$refs['add-series'];
+		openAddSerice.vaildFun(this.parentsId);
+	}
+	/**
+	 * 关闭新增产品系列窗口
+	 */
+	closeSericeModal() {
+		this.addSericeModal = false;
+		this.treeList();
 	}
 	/**
 	 * 客户素材配置
@@ -683,8 +731,7 @@ export default class ProdConfig extends Page {
 				this.newTree = val;
 				this.newTree.map(val => {
 					let dictData = JSON.parse(localStorage.dictData); //获取所有数字字典项
-					let parent = dictData.find(v => v.id === val.type); // 找到字典项对应的父类
-					console.log(parent, 9999);
+					let pt = dictData.find(v => v.id === val.type); // 找到字典项对应的父类
 				});
 			});
 	}
@@ -791,10 +838,5 @@ export default class ProdConfig extends Page {
 	background: rgb(245, 245, 245);
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
-}
-.ivu-tree-empty {
-	height: 50px;
-	line-height: 50px;
-	text-indent: 25px;
 }
 </style>
