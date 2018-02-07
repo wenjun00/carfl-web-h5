@@ -62,8 +62,8 @@
     </template>
 
     <template>
-      <i-modal v-model="deviceManageModal" title="设备管理" width="600">
-        <device-manage :userName="userName"></device-manage>
+      <i-modal v-model="deviceManageModal" title="设备管理" width="660" class="device-manage">
+        <device-manage ref="device-manage"></device-manage>
       </i-modal>
     </template>
 
@@ -86,6 +86,12 @@
         </div>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="批量管理设备">
+        <batch-manage-device ref="batch-manage-device"></batch-manage-device>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -100,6 +106,7 @@ import ModulePower from "~/components/system-manage/module-power.vue";
 import ModifyUser from "~/components/system-manage/modify-user.vue";
 import AddUser from "~/components/system-manage/add-user.vue";
 import DeviceManage from "~/components/system-manage/device-manage.vue";
+import BatchManageDevice from "~/components/system-manage/batch-manage-device.vue"; // 批量管理设备
 import AddOrg from "~/components/system-manage/add-org.vue";
 import EditOrg from "~/components/system-manage/edit-org.vue";
 import OrganizeTree from "~/components/common/organize-tree.vue";
@@ -112,6 +119,7 @@ import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
 import { LoginService } from "~/services/manage-service/login.service";
 import { Modal } from "iview";
+
 @Layout("workspace")
 @Component({
   components: {
@@ -125,7 +133,8 @@ import { Modal } from "iview";
     DeviceManage,
     AddOrg,
     EditOrg,
-    OrganizeTree
+    OrganizeTree,
+    BatchManageDevice
   }
 })
 export default class OrgUserManage extends Page {
@@ -155,21 +164,34 @@ export default class OrgUserManage extends Page {
   private deptLevel: number | null = null;
   private deptCode: String = "";
   // private deptPid: number | null = null;
+  private openColumnsConfig: Boolean = false;
   private editNewOrgModal: Boolean = false;
-  private addOrgModel: any;
+  private addOrgModel: any = {
+    deptName: "",
+    deptStatus: 0,
+    companyName: "",
+    deptRemark: "",
+    deptLevel: "",
+    deptCode: "",
+    deptPid: "",
+    companyId: ""
+  };
   private companyId: any = 0;
-  created() {
+
+  mounted() {
+    this.manageService.getAllDepartment().subscribe(
+      data => {
+        this.deptObject = data[0]; // TODO
+        this.dataList = data;
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
+    );
+    this.getUserListByCondition();
     this.getTree();
-    this.addOrgModel = {
-      deptName: "",
-      deptStatus: 0,
-      companyName: "",
-      deptRemark: "",
-      deptLevel: "",
-      deptCode: "",
-      deptPid: "",
-      companyId: ""
-    };
+  }
+  created() {
     this.deptObject = {
       deptName: "",
       deptId: "",
@@ -200,9 +222,31 @@ export default class OrgUserManage extends Page {
       },
       {
         align: "center",
+        width: 90,
         type: "index",
-        width: 60,
-        title: "序号"
+        renderHeader: (h, { column, index }) => {
+          return h(
+            "div",
+            {
+              on: {
+                click: () => {
+                  this.columnsConfig();
+                }
+              },
+              style: {
+                cursor: "pointer"
+              }
+            },
+            [
+              h("Icon", {
+                props: {
+                  type: "gear-b",
+                  size: "20"
+                }
+              })
+            ]
+          );
+        }
       },
       {
         title: "操作",
@@ -431,12 +475,16 @@ export default class OrgUserManage extends Page {
   deviceManageOpen(row) {
     this.deviceManageModal = true;
     this.userName = row.userName;
+    let _deviceManage: any = this.$refs["device-manage"];
+    _deviceManage.makeData(row);
   }
   /**
    * 新增用户
    */
   addNewUser() {
     this.addNewUserModal = true;
+    let _addUser: any = this.$refs["add-user"];
+    _addUser.makeData(this.deptObject);
   }
   /**
    * 批量分配角色
@@ -467,6 +515,14 @@ export default class OrgUserManage extends Page {
    * 批量管理设备
    */
   batchManageDevice() {
+    let _selection: any = this.$refs["databox"];
+    let multipleSelection = _selection.getCurrentSelection().map(v => v.id);
+    console.log(multipleSelection, 89898);
+    if (multipleSelection.length) {
+    } else {
+      this.$Message.error("请选择用户");
+    }
+
     this.deviceManageModal = true;
   }
   getUserListByCondition() {
@@ -528,7 +584,7 @@ export default class OrgUserManage extends Page {
   getTree() {
     this.manageService.getAllDepartment().subscribe(
       data => {
-        this.deptObject = data[0]; // TODO
+        this.deptObject = data[0];
         this.dataList = data;
       },
       ({ msg }) => {
@@ -600,21 +656,19 @@ export default class OrgUserManage extends Page {
     let _addUser = <Modal>this.$refs["add-user"];
     _addUser.confirmAddUser();
   }
-  mounted() {
-    this.manageService.getAllDepartment().subscribe(
-      data => {
-        this.deptObject = data[0]; // TODO
-        this.dataList = data;
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
-    );
-    this.getUserListByCondition();
+  /**
+   * 列配置
+   */
+  columnsConfig() {
+    this.openColumnsConfig = true;
   }
 }
 </script>
 
 <style lang="less">
-
+.device-manage {
+  .ivu-modal-footer {
+    display: none;
+  }
+}
 </style>

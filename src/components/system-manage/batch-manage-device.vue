@@ -1,6 +1,6 @@
 <!--设备管理-->
 <template>
-  <section class="component device-manage">
+  <section class="component batch-manage-device">
     <span style="margin-left:20px;">当前用户名：{{this.userName}}</span>
     <i-table :columns="columns1" :data="deviceList"></i-table>
   </section>
@@ -19,7 +19,7 @@ import { Dependencies } from "~/core/decorator";
     DataBox
   }
 })
-export default class DeviceManage extends Vue {
+export default class BatchManageDevice extends Vue {
   @Dependencies(LoginService) private loginService: LoginService;
   private columns1: any;
   private deviceList: Array<any> = [];
