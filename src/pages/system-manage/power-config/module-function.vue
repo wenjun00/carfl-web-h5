@@ -408,7 +408,7 @@
           resoType: item.resoType,
           resoFiletype: item.resoFiletype,
           resoRemark: item.resoRemark,
-          expand: true,
+          expand: false,
           children: this.getChild(item),
         };
         this.treeData.push(node1);
@@ -439,7 +439,7 @@
               resoType: val.resoType,
               resoFiletype: val.resoFiletype,
               resoRemark: val.resoRemark,
-              expand: true,
+              expand: false,
               children: this.getChild(val), // 迭代产生根
             };
             child.push(node2);
@@ -459,7 +459,7 @@
               resoType: val.resoType,
               resoFiletype: val.resoFiletype,
               resoRemark: val.resoRemark,
-              expand: true,
+              expand: false,
               children: this.getChild(val),
             };
             child.push(node2);
@@ -497,7 +497,7 @@
   .input {
     width: 60%;
   }
-
+  
   .toViewModalClass {
     .ivu-modal-footer {
       display: none !important;
