@@ -36,13 +36,14 @@ export default class addSeries extends Vue {
 	}
 	vaildFun(seriesId) {
 		let form = <Form>this.$refs['add-series'];
-		this.addSeries.id = seriesId;
+		this.addSeries.parentId = seriesId;
+		console.log(seriesId, 345);
 		form.validate(valid => {
 			if (!valid) return false;
 			this.productSeriesService.createOrModifyProductSeries(this.addSeries).subscribe(
 				val => {
 					this.$emit('close');
-					this.$Message.success('新增产品成功！');
+					this.$Message.success('新增产品系列成功！');
 				},
 				({ msg }) => {
 					this.$Message.error(msg);
