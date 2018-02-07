@@ -15,7 +15,7 @@
         <i-input v-model="registerModel.userPassword" type="password" style="width:80%;"></i-input>
       </i-form-item>
       <i-form-item label="确认密码" prop="confirmPwd">
-        <i-input v-model="registerModel.confirmPwd" type="password" style="width:80%;"></i-input>
+        <i-input v-model="registerModel.confirmPwd" type="password" style="width:80%;" @on-blur="comfirmPw"></i-input>
       </i-form-item>
       <i-form-item label="所属公司" prop="company">
         <i-input v-model="registerModel.company" style="width:80%;"></i-input>
@@ -30,95 +30,107 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { Dependencies } from "~/core/decorator";
-import { UserService } from "~/services/manage-service/user.service";
-import { Form } from "iview";
-@Component({
-  components: {}
-})
-export default class Register extends Vue {
-  @Dependencies(UserService) private userService: UserService;
-  private registerModel: any = {
-    userUsername: "",
-    userRealname: "",
-    userPassword: "",
-    confirmPwd: "",
-    userPhone: "",
-    company: ""
-  };
-  private rules: any;
+  import Vue from "vue";
+  import md5 from 'md5';
+  import Component from "vue-class-component";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    UserService
+  } from "~/services/manage-service/user.service";
+  import {
+    Form
+  } from "iview";
+  @Component({
+    components: {}
+  })
+  export default class Register extends Vue {
+    @Dependencies(UserService) private userService: UserService;
+    private registerModel: any = {
+      userUsername: "",
+      userRealname: "",
+      userPassword: "",
+      confirmPwd: "",
+      userPhone: "",
+      company: ""
+    };
+    private rules: any;
 
-  created() {
-    this.rules = {
-      userUsername: [
-        {
+    created() {
+      this.rules = {
+        userUsername: [{
           required: true,
           message: "用户名不能为空",
           trigger: "blur"
-        }
-      ],
-      userRealname: [
-        {
+        }],
+        userRealname: [{
           required: true,
           message: "姓名不能为空",
           trigger: "blur"
-        }
-      ],
-      userPassword: [
-        {
+        }],
+        userPassword: [{
           required: true,
           message: "密码不能为空",
           trigger: "blur"
-        }
-      ],
-      confirmPwd: [
-        {
+        }],
+        confirmPwd: [{
           required: true,
           message: "确认密码不能为空",
           trigger: "blur"
-        }
-      ],
-      userPhone: [
-        {
+        }],
+        userPhone: [{
           required: true,
           message: "电话不能为空",
           trigger: "blur"
+        }]
+      };
+    }
+    comfirmPw() {
+      if (this.registerModel.confirmPwd !== this.registerModel.userPassword) {
+        this.$Message.success("两次密码输入不一致，请重新输入!");
+        return false
+      }
+    }
+    cancelClick() {
+      this.$emit("close");
+      let register: any = this.$refs["register"];
+      register.resetFields();
+    }
+    registerClick() {
+      let registerForm: any = this.$refs["register"];
+      registerForm.validate(valid => {
+        if (!valid) return false;
+        if (this.registerModel.confirmPwd !== this.registerModel.userPassword) {
+          this.$Message.success("两次密码输入不一致，请重新输入!");
+          return false
         }
-      ]
-    };
+        this.registerModel.userPassword = md5(this.registerModel.userPassword)
+        this.userService.userRegister(this.registerModel).subscribe(
+          data => {
+            this.$Message.success("注册成功!");
+            this.$emit("close");
+            let register: any = this.$refs["register"];
+            register.resetFields();
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
+      });
+    }
   }
-  cancelClick() {
-    this.$emit("close");
-    let register: any = this.$refs["register"];
-    register.resetFields();
-  }
-  registerClick() {
-    let registerForm: any = this.$refs["register"];
-    registerForm.validate(valid => {
-      if (!valid) return false;
-      this.userService.userRegister(this.registerModel).subscribe(
-        data => {
-          this.$Message.success("注册成功!");
-          this.$emit("close");
-          let register: any = this.$refs["register"];
-          register.resetFields();
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
-      );
-    });
-  }
-}
+
 </script>
 
 <style lang="less">
-.register {
-  .ivu-form {
-    position: relative;
-    left: 40px;
+  .register {
+    .ivu-form {
+      position: relative;
+      left: 40px;
+    }
   }
-}
+
 </style>
