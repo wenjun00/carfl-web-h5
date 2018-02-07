@@ -7,9 +7,9 @@
         <i-col :span="6">
           <div style="background:#D8D8D8;width:250px;height:30px;text-align:center;border:1px solid black;line-height:30px;font-size:16px;">
             <span>数据类型</span>
-            <div style="font-size:18px;cursor:pointer;display:inline-block;margin-right:10px;color:rgb(38, 94, 162)" @click="addVehicle">
+            <span @click="addVehicle">
               <svg-icon iconClass="tianjiawenjian"></svg-icon>
-            </div>
+            </span>
           </div>
           <div style="width:250px;height:600px;border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black;overflow:auto;">
             <div v-for="item in dataType" :key="item.code" :value="item.name" :class="{'dataTypeCss':checkId===item.id}" style="cursor:pointer;width:228px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto"
@@ -22,7 +22,7 @@
           <span>数据名称：</span>
           <i-input style="width:10%;" v-model="dictAguments.name"></i-input>
           <i-button class="blueButton" style="margin-left:10px" @click="seach">搜索</i-button>
-          <i-button class="blueButton" style="margin-left:10px;position:absolute;right:0;" @click="addData">新增数据</i-button>
+          <i-button class="blueButton" style="margin-left:10px;position:absolute;right:0;" @click="addData" disabled>新增数据</i-button>
           <table border="1" width="100%" style="margin-top:10px;border:1px solid #DDDEE1" id="tb">
             <!--<tr align="center" height="40">
               <td bgcolor="#F2F2F2" width="100">序号</td>
@@ -64,7 +64,7 @@
             <i-input v-model="addDataType.name"></i-input>
           </i-form-item>
           <i-form-item label="code码" prop="code">
-            <i-input v-model="addDataType.code"></i-input>
+            <i-input v-model="addDataType.type"></i-input>
           </i-form-item>
         </i-form>
         <div style="text-align:right;">
@@ -126,6 +126,8 @@
     private id: any = '';
     private addModel: any = {
       name: '',
+      sort: '',
+      typeCode: ''
     }
     private addDataType: any = {
       name: '',
@@ -157,7 +159,8 @@
               h(
                 "i-button", {
                   props: {
-                    type: "text"
+                    type: "text",
+                    disabled: true
                   },
                   style: {
                     color: "#265EA2"
@@ -176,7 +179,8 @@
               h(
                 "i-button", {
                   props: {
-                    type: "text"
+                    type: "text",
+                    disabled: true
                   },
                   style: {
                     color: "#265EA2"
@@ -210,20 +214,32 @@
      * 新增数据
      */
     addData() {
+      this.checkModal = false
       this.addNameModal = true
     }
     /**
      * 确定
      */
     confirmmadd() {
+      console.log(this.checkModal, 'this.checkModal')
       if (this.checkModal) {
         this.addModel.id = this.id;
+      } else {
+        if (this.dataNames.length) {
+          this.addModel.sort = (this.dataNames[this.dataNames.length - 1].sort) + 1
+        } else {
+          this.addModel.sort = 0
+        }
       }
-      this.addModel.code = this.dictAguments.code;
+      this.addModel.typeCode = this.dictAguments.code;
       this.dataDictService.createOrModifyDataDict(this.addModel).subscribe(
         val => {
           this.$Message.success('操作成功！');
           this.seach()
+          this.addNameModal = false
+          this.addModel.name = ''
+          this.addModel.id = ''
+          this.addModel.typeCode = ''
         },
         ({
           msg
