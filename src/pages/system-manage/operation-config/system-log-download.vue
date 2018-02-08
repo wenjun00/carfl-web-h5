@@ -10,10 +10,6 @@
       <span style="margin-left:10px;">操作时间：</span>
       <i-date-picker style="display:inline-block;width:10%;" v-model="systemLogModel.startTime"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%;" v-model="systemLogModel.endTime"></i-date-picker>
-      <!-- <span style="margin-left:10px;">执行类型：</span>
-      <i-input style="display:inline-block;width:10%;" v-model="systemLogModel.exeType"></i-input>
-      <span style="margin-left:10px;">执行时间：</span>
-      <i-input style="display:inline-block;width:10%;" v-model="systemLogModel.exeTime"></i-input> -->
       <i-button class="blueButton" style="margin-left:10px;" @click="search">搜索</i-button>
       <div style="float:right;margin-right:10px;margin-top:10px;">
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
@@ -36,18 +32,6 @@
       </i-modal>
     </template>
 
-    <template>
-      <i-modal v-model="changeStatusOpen" title="状态变更" width="300">
-        <i-select placeholder="请选择状态">
-          <i-option label="已删除" value="已删除" key="已删除"></i-option>
-          <i-option label="待提交" value="待提交" key="待提交"></i-option>
-          <i-option label="待面审" value="待面审" key="待面审"></i-option>
-          <i-option label="待复审" value="待复审" key="待复审"></i-option>
-          <i-option label="待终审" value="待终审" key="待终审"></i-option>
-          <i-option label="待合规" value="待合规" key="待合规"></i-option>
-        </i-select>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -72,7 +56,6 @@ export default class SystemLogDownload extends Page {
   @Dependencies(ManageService) private manageService: ManageService;
   @Dependencies(PageService) private pageService: PageService;
 
-  private changeStatusOpen: Boolean = false;
   private columns1: any;
   private systemLogsList: Array<Object> = [];
   private openColumnsConfig: Boolean = false;
@@ -226,12 +209,6 @@ export default class SystemLogDownload extends Page {
    */
   columnsConfig() {
     this.openColumnsConfig = true;
-  }
-  /**
-   * 更改状态
-   */
-  changeStatus(row) {
-    this.changeStatusOpen = true;
   }
 }
 </script>
