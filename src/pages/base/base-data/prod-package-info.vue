@@ -10,10 +10,6 @@
       <i-date-picker style="display:inline-block;width:10%;" v-model="productModel.maxDate"></i-date-picker>
       <i-button class="blueButton" style="margin-left:10px;" @click="getProductPackage">搜索</i-button>
       <div style="float:right;margin-right:10px;margin-top:10px;">
-        <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon style="font-size:18px;" iconClass="daoru"></svg-icon>
-          <span style="font-size:12px;">导入</span>
-        </div>
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon iconClass="xiazai"></svg-icon>
           <span style="font-size: 12px;">模版下载</span>
@@ -22,7 +18,7 @@
     </i-row>
     <data-box :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService"></data-box>
     <div class="submitBar">
-      <i-row type="flex" align="bottom" justify="center">
+      <i-row type="flex" align="bottom" justify="end">
         <i-col :span="6" style="text-align:right;margin-top:12px;margin-right:15px;">
           <i-button @click="pPackageModel=true" class="highButton">新增产品包</i-button>
         </i-col>
@@ -78,10 +74,13 @@ export default class ProdPackageInfo extends Page {
 				width: 60,
 				type: 'index',
 				align: 'center',
+				fixed: 'left',
 			},
 			{
 				title: '操作',
 				align: 'center',
+				width: 260,
+				fixed: 'left',
 				render: (h, { row, column, index }) => {
 					return h('div', [
 						h(

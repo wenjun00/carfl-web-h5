@@ -58,5 +58,14 @@ export default {
     controller: CONTROLLER,
     action: 'getAllPersonalMaterialNoPage',
     type: requestType.Get
+  },
+  /**
+ * 新增/修改客户素材类型
+ */
+  createOrModifyType: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'createOrModifyType',
+    type: requestType.Post
   }
 }

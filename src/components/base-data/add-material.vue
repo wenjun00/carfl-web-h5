@@ -34,6 +34,7 @@ export default class AddMaterial extends Vue {
 	formRules(type) {
 		let form = <Form>this.$refs['add-material'];
 		form.validate(valid => {
+			if (!valid) return false;
 			this.addMaterial.type = type;
 			this.addMaterial.isSelect == true ? (this.addMaterial.isSelect = 0) : (this.addMaterial.isSelect = 1);
 			this.personalMaterialService.createOrModifyPersonalMaterial(this.addMaterial).subscribe(

@@ -29,13 +29,12 @@ export default class AddMaterialType extends Vue {
 			name: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
 		};
 	}
-	formRules(type) {
+	formRules() {
 		let form = <Form>this.$refs['add-material-type'];
 		form.validate(valid => {
 			if (!valid) return false;
-			// this.addMaterialType.id = this.propId;
-			// this.addMaterialType.type = type;
-			this.personalMaterialService.createOrModifyPersonalMaterial(this.addMaterialType).subscribe(
+			this.addMaterialType.typeCode = '0309';
+			this.personalMaterialService.createOrModifyType(this.addMaterialType).subscribe(
 				val => {
 					this.$Message.success('新增素材类型成功！');
 					this.$emit('close');
