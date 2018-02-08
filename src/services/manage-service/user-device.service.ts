@@ -36,14 +36,13 @@ export class UserDeviceService {
   /**
   * 一键启用设备锁
   */
-  enableDeviceLock({ userIds, userValidate, userType, userStatus }) {
+  enableDeviceLock({ userIds, userValidate, userType }) {
     return this.netService.send({
       server: manageService.userDeviceController.enableDeviceLock,
       data: {
         userIds: userIds,
         userValidate: userValidate,
-        userType: userType,
-        userStatus: userStatus
+        userType: userType
       }
     })
   }
@@ -51,14 +50,13 @@ export class UserDeviceService {
   /**
  * 一键停用设备锁
  */
-  disableDeviceLock({ userIds, userValidate, userType, userStatus }) {
+  disableDeviceLock({ userIds, userValidate, userType }) {
     return this.netService.send({
       server: manageService.userDeviceController.disableDeviceLock,
       data: {
         userIds: userIds,
         userValidate: userValidate,
-        userType: userType,
-        userStatus: userStatus
+        userType: userType
       }
     })
   }
