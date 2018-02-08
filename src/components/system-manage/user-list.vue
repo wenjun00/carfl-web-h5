@@ -6,7 +6,7 @@
     <span style="margin-left:20px;">姓名：</span>
     <i-input style="display:inline-block;width:12%;" v-model="userListModel.realname"></i-input>
     <i-button class="blueButton" style="margin-left:10px;" @click="search">搜索</i-button>
-    <data-box :columns="columns1" :data="userList"></data-box>
+    <data-box :columns="columns1" :data="userList" @onPageChange="search" :page="pageService"></data-box>
   </section>
 </template>
 
