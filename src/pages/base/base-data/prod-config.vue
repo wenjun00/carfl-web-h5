@@ -15,9 +15,9 @@
               <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addSericeFun">
                 <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
               </div>
-              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
+              <!-- <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
                 <svg-icon iconClass="sousuo"></svg-icon>
-              </div>
+              </div> -->
             </div>
           </div>
           <div style="width:250px;height:600px;border-left:1px solid #999999;border-right:1px solid #999999;border-bottom:1px solid #999999;position:relative;bottom:8px;">
@@ -98,7 +98,7 @@
                     <span class="itemName">管理费</span>
                     <span class="item">{{item.manageCost}}元</span>
                   </div>
-                  <div v-if="item.isPublish===361" class="itemContainer">
+                  <div v-if="item.isPublish===360" class="itemContainer">
                     <span class="itemName">启用/停用</span>
                     <i-switch class="item" v-model="item.productStatus" size="large" @on-change="switchStatus(item)">
                       <span slot="open">启用</span>
@@ -106,7 +106,7 @@
 
                     </i-switch>
                   </div>
-                  <div v-if="item.isPublish===360" class="itemContainer">
+                  <div v-if="item.isPublish===361" class="itemContainer">
                     <span class="itemName">操作</span>
                     <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;" @click="showDetail(item)">
                       <svg-icon iconClass="tianxie" class="item"></svg-icon>
@@ -139,7 +139,7 @@
     </template>
 
     <template>
-      <i-modal v-model="addPeriodsModal" title="新增期数" width="900">
+      <i-modal v-model="addPeriodsModal" title="新增期数" width="900" class="purchaseInformation">
         <add-periods :pNameTitle="productMessage" ref="add-periods-ref" @close="closeModal"></add-periods>
         <div slot="footer">
           <i-button type="primary" @click="submiteButton">保存并退出</i-button>
@@ -147,16 +147,16 @@
       </i-modal>
     </template>
     <template>
-      <i-modal v-model="editModal" title="编辑期数" width="900">
-        <edit-periods :productDetail="productDetails" :pNameTitle="productMessage" ref="edit-periods"></edit-periods>
+      <i-modal v-model="editModal" title="编辑期数" width="900" class="purchaseInformation">
+        <edit-periods :productDetail="productDetails" :pNameTitle="productMessage" ref="edit-periods" @close="closeEditModal"></edit-periods>
         <div slot="footer">
-          <i-button type="primary" @click="submiteButton">保存并退出</i-button>
+          <i-button type="primary" @click="editSubmit">保存并退出</i-button>
         </div>
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="viewModal" title="查看期数" width="900">
+      <i-modal v-model="viewModal" title="查看期数" width="900" class="periods">
         <preview-product :productDetailView="productDetails" :dpNameTitleView="productMessage"></preview-product>
         <div slot="footer">
           <i-button type="primary" @click="viewModal=false">关闭</i-button>
@@ -648,14 +648,14 @@ export default class ProdConfig extends Page {
 	submiteButton() {
 		let periodsModal: any = this.$refs['add-periods-ref'];
 		periodsModal.confirmPeriods();
-		this.treeList();
-		this.productNameDetail(this.scopes);
 	}
 	/**
 	 * 关闭弹窗
 	 */
 	closeModal() {
 		this.addPeriodsModal = false;
+		this.treeList();
+		this.productNameDetail(this.scopes);
 	}
 	/**
 	 * 点击编辑
@@ -665,6 +665,21 @@ export default class ProdConfig extends Page {
 		this.productDetails = item;
 		let openDetails: any = this.$refs['edit-periods'];
 		openDetails.moneyFun(item);
+	}
+	/**
+	 * 编辑提交按钮
+	 */
+	editSubmit() {
+		let periodsModal: any = this.$refs['edit-periods'];
+		periodsModal.confirmPeriods();
+	}
+	/**
+	 * 编辑关闭弹窗
+	 */
+	closeEditModal() {
+		this.editModal = false;
+		this.treeList();
+		this.productNameDetail(this.scopes);
 	}
 	viewButton(item) {
 		this.viewModal = true;
@@ -740,11 +755,10 @@ export default class ProdConfig extends Page {
 	}
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .prod-config {
 	height: 100%;
 }
-
 .maintainCss {
 	background: #e4f4fa;
 }
@@ -846,5 +860,12 @@ export default class ProdConfig extends Page {
 	height: 50px;
 	line-height: 50px;
 	text-indent: 14px;
+}
+
+.periods {
+	.ivu-modal-body {
+		height: 600px !important;
+		overflow: auto !important;
+	}
 }
 </style>
