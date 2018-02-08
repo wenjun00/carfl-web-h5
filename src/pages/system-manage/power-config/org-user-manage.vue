@@ -8,7 +8,9 @@
           <i-button class="blueButton" @click="addDept" style="position:relative;bottom:10px;right:8px;">添加机构</i-button>
         </i-row>
         <i-row>
-          <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
+          <div style="overflow:auto;height:540px">
+            <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
+          </div>
         </i-row>
       </i-col>
       <i-col :span="20">

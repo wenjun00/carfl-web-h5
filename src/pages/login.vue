@@ -5,7 +5,7 @@
       </div>
       <div>
         <div style="position: relative;left: 350px;color:#fff;text-align:center;margin-bottom:28px;">
-          <img src="/static/images/common/LOGO.png" alt="">
+          <img src="/static/images/common/logo.png" alt="">
           <span style="font-size:12px;margin-left:4px;">v1.0.0</span>
         </div>
         <div class="loginContainer">

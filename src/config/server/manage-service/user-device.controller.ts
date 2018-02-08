@@ -49,5 +49,14 @@ export default {
     controller: CONTROLLER,
     action: 'resetDevice',
     type: requestType.Post
+  },
+  /**
+  * 获取所选用户的设备
+  */
+  getUserDevice: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getUserDevice',
+    type: requestType.Get
   }
 }
