@@ -17,16 +17,15 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="所在省" prop="companyProvince">
-            <i-select style="width:120px;margin-left:10px;" placeholder="选择省" v-model="addBranchModel.companyProvince" clearable>
+            <i-select style="100%" placeholder="选择省" v-model="addBranchModel.companyProvince" clearable>
               <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="11" :push="1">
           <i-form-item label="所在市" prop="companyCity">
-            <i-select style="width:120px;margin-left:10px;" placeholder="选择市" v-model="addBranchModel.companyCity" clearable>
-              <i-option v-for="{value,label} in this.addBranchModel.companyProvince ? this.$city.getCityData({ level: 1, id: this.addBranchModel.companyProvince }) : []"
-                :key="value" :label="label" :value="value"></i-option>
+            <i-select style="100%" placeholder="选择市" v-model="addBranchModel.companyCity" clearable>
+              <i-option v-for="{value,label} in this.addBranchModel.companyProvince ? this.$city.getCityData({ level: 1, id: this.addBranchModel.companyProvince }) : []" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
@@ -43,109 +42,129 @@
           </i-form-item>
         </i-col>
       </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="是否启用">
+            <i-switch v-model="status"></i-switch>
+          </i-form-item>
+        </i-col>
+      </i-row>
     </i-form>
   </section>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component'
-  import {
-    Prop,
-    Watch
-  } from "vue-property-decorator";
-  import {
-    Form
-  } from 'iview'
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    ManageService
-  } from "~/services/manage-service/manage.service";
-  import {
-    CompanyService
-  } from "~/services/manage-service/company.service";
-  @Component({
-    components: {}
-  })
-  export default class AddBranchCompany extends Vue {
-    @Dependencies(CompanyService) private companyService: CompanyService;
-    private addBranchModel: any = {
-      companyChinaname: '',
-      bankAccount: '',
-      companyProvince: '',
-      companyCity: '',
-      depositBank: '',
-      cardNumber: ''
-    }
-    private rules: any
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop, Watch } from "vue-property-decorator";
+import { Form } from "iview";
+import { Dependencies } from "~/core/decorator";
+import { ManageService } from "~/services/manage-service/manage.service";
+import { CompanyService } from "~/services/manage-service/company.service";
+@Component({
+  components: {}
+})
+export default class AddBranchCompany extends Vue {
+  @Dependencies(CompanyService) private companyService: CompanyService;
+  private addBranchModel: any = {
+    companyChinaname: "",
+    bankAccount: "",
+    companyProvince: "",
+    companyCity: "",
+    depositBank: "",
+    cardNumber: "",
+    companyStatus: true
+  };
+  private rules: any;
+  private status: any;
 
-    created() {
-      this.rules = {
-        companyChinaname: [{
+  created() {
+    this.status = true;
+    this.rules = {
+      companyChinaname: [
+        {
           required: true,
-          message: '请输入公司简称',
-          trigger: 'blur'
-        }],
-        bankAccount: [{
+          message: "请输入公司简称",
+          trigger: "blur"
+        }
+      ],
+      bankAccount: [
+        {
           required: true,
-          message: '请输入公司简称',
-          trigger: 'blur'
-        }],
-        companyProvince: [{
+          message: "请输入公司简称",
+          trigger: "blur"
+        }
+      ],
+      companyProvince: [
+        {
           required: true,
-          message: '请选择省份',
-          trigger: 'change',
-          type: 'number'
-        }],
-        companyCity: [{
+          message: "请选择省份",
+          trigger: "change",
+          type: "number"
+        }
+      ],
+      companyCity: [
+        {
           required: true,
-          message: '请选择城市',
-          trigger: 'blur',
-          type: 'number'
-        }],
-        depositBank: [{
+          message: "请选择城市",
+          trigger: "change",
+          type: "number"
+        }
+      ],
+      depositBank: [
+        {
           required: true,
-          message: '请输入开户银行',
-          trigger: 'change'
-        }],
-        cardNumber: [{
+          message: "请输入开户银行",
+          trigger: "change"
+        }
+      ],
+      cardNumber: [
+        {
           required: true,
-          message: '请输入银行卡号',
-          trigger: 'change'
-        }]
-      }
-    }
-    checkUserName() {
-      if (this.addBranchModel.userUsername.length < 6 || this.addBranchModel.userUsername > 50) {
-        this.$Message.error('用户名长度不能小于6位大于50位')
-      }
-    }
-    /**
-     * 确认新增公司
-     */
-    confirmAddCompany() {
-
-    }
-    /**
-     * 取消新增公司
-     */
-    cancelAddCompany() {
-
-    }
-    resetForm() {
-      let _addUserForm: any = this.$refs['add-company']
-      _addUserForm.resetFields()
-    }
-    mounted() {}
+          message: "请输入银行卡号",
+          trigger: "change"
+        }
+      ]
+    };
   }
-
+  /**
+   * 确认新增公司
+   */
+  confirmAddCompany() {
+    if (this.status) {
+      this.addBranchModel.companyStatus = 0;
+    } else {
+      this.addBranchModel.companyStatus = 1;
+    }
+    console.log(this.status, this.addBranchModel.companyStatus, 989);
+    let _addForm: any = this.$refs["add-company"];
+    _addForm.validate(valid => {
+      if (valid) {
+        this.companyService
+          .createOrModifyCompany(this.addBranchModel)
+          .subscribe(
+            data => {
+              this.$Message.success("新增成功！");
+              this.resetForm();
+              this.$emit("close");
+            },
+            ({ msg }) => {
+              this.$Message.error(msg);
+            }
+          );
+      }
+    });
+  }
+  resetForm() {
+    let _addUserForm: any = this.$refs["add-company"];
+    _addUserForm.resetFields();
+  }
+  mounted() {}
+}
 </script>
 <style lang="less">
-  .addCompany {
-    // position: relative;
-    // right: 10px;
-  }
-
+.addCompany {
+  // position: relative;
+  // right: 10px;
+}
 </style>
