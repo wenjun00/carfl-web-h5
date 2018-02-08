@@ -4,7 +4,7 @@
     <i-row style="margin-top:10px;">
       <span style="font-size:18px;font-weight:bold;margin-left:10px;">分公司管理</span>
       <span style="margin-left:10px;">关键字搜索：</span>
-      <i-input style="width:15%" placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyword"></i-input>
+      <i-input style="width:15%" placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyWord"></i-input>
       <i-button class="blueButton" style="margin-left:10px;" @click="seachCompany">搜索</i-button>
     </i-row>
     <data-box :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
@@ -80,6 +80,7 @@ export default class BranchCompanyInfo extends Page {
   private modal: Boolean = false;
   private formItem: any;
   private addBranchCompanyModal: Boolean = false;
+  private openColumnsConfig: Boolean = false;
 
   mounted() {
     this.seachCompany();
@@ -105,11 +106,33 @@ export default class BranchCompanyInfo extends Page {
     };
     this.columns = [
       {
-        title: "序号",
+        align: "center",
         width: 60,
         type: "index",
-        align: "center",
-        fixed: "left"
+        fixed: "left",
+        renderHeader: (h, { column, index }) => {
+          return h(
+            "div",
+            {
+              on: {
+                click: () => {
+                  this.columnsConfig();
+                }
+              },
+              style: {
+                cursor: "pointer"
+              }
+            },
+            [
+              h("Icon", {
+                props: {
+                  type: "gear-b",
+                  size: "20"
+                }
+              })
+            ]
+          );
+        }
       },
       {
         title: "操作",
@@ -254,7 +277,7 @@ export default class BranchCompanyInfo extends Page {
     ];
 
     this.companyModel = {
-      keyword: ""
+      keyWord: ""
     };
   }
   closeAndRefresh() {
@@ -271,6 +294,12 @@ export default class BranchCompanyInfo extends Page {
     this.addBranchCompanyModal = false;
     let _addFirm: any = this.$refs["add-firm"];
     _addFirm.resetForm();
+  }
+  /**
+   * 列配置
+   */
+  columnsConfig() {
+    this.openColumnsConfig = true;
   }
   /**
    * 确定新增分公司

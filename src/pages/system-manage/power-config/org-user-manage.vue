@@ -90,8 +90,8 @@
     </template>
 
     <template>
-      <i-modal title="批量管理设备">
-        <batch-manage-device ref="batch-manage-device"></batch-manage-device>
+      <i-modal title="批量管理设备" v-model="batchManageDeviceModal" :width="700" class="batch-manage-device">
+        <batch-manage-device ref="batch-manage-device" @close="closeAndRefreshBatch"></batch-manage-device>
       </i-modal>
     </template>
   </section>
@@ -168,6 +168,7 @@ export default class OrgUserManage extends Page {
   // private deptPid: number | null = null;
   private openColumnsConfig: Boolean = false;
   private editNewOrgModal: Boolean = false;
+  private batchManageDeviceModal: Boolean = false;
   private addOrgModel: any = {
     deptName: "",
     deptStatus: 0,
@@ -432,6 +433,10 @@ export default class OrgUserManage extends Page {
       }
     ];
   }
+  closeAndRefreshBatch() {
+    this.batchManageDeviceModal = false;
+    this.getUserListByCondition();
+  }
   modifyUserClose() {
     this.modifyUserModal = false;
     this.getUserListByCondition();
@@ -494,8 +499,9 @@ export default class OrgUserManage extends Page {
   batchAllotRole() {
     this.multipleUserId = this.$refs["databox"];
     this.multipleUserId = this.multipleUserId.getCurrentSelection();
-    if (!this.multipleUserId) {
-      this.$Message.info("请选择用户");
+
+    if (!this.multipleUserId.length) {
+      this.$Message.error("请选择用户");
     } else {
       this.allotRoleModal = true;
       let _allotRole = <Modal>this.$refs["allot-role-modal"];
@@ -517,15 +523,16 @@ export default class OrgUserManage extends Page {
    * 批量管理设备
    */
   batchManageDevice() {
-    let _selection: any = this.$refs["databox"];
-    let multipleSelection = _selection.getCurrentSelection().map(v => v.id);
-    console.log(multipleSelection, 89898);
-    if (multipleSelection.length) {
-    } else {
+    this.multipleUserId = this.$refs["databox"];
+    this.multipleUserId = this.multipleUserId.getCurrentSelection();
+    if (!this.multipleUserId.length) {
       this.$Message.error("请选择用户");
+    } else {
+      this.batchManageDeviceModal = true;
+      this.userIds = this.multipleUserId.map(v => v.id);
+      let _batchManage: any = this.$refs["batch-manage-device"];
+      _batchManage.makeData(this.multipleUserId);
     }
-
-    this.deviceManageModal = true;
   }
   getUserListByCondition() {
     this.manageService
@@ -659,6 +666,13 @@ export default class OrgUserManage extends Page {
     _addUser.confirmAddUser();
   }
   /**
+   * 确定批量管理设备
+   */
+  confirmBatchManageDevice() {
+    let _batchManage: any = this.$refs["batch-manage-device"];
+    _batchManage.confirmBatchMange();
+  }
+  /**
    * 列配置
    */
   columnsConfig() {
@@ -668,7 +682,7 @@ export default class OrgUserManage extends Page {
 </script>
 
 <style lang="less">
-.device-manage {
+.batch-manage-device {
   .ivu-modal-footer {
     display: none;
   }
