@@ -14,10 +14,11 @@ export default ({ store }): Object => ({
         console.error('未传入权限')
         return
       }
-      let item = store.state.userResource.find(x => x.id === authCode)
+
+      let hasAuth: boolean = (store.state.controlResource || []).includes(authCode)
 
       // 验证权限
-      if (!item) {
+      if (!hasAuth) {
         el.style.display = 'none'
       }
 

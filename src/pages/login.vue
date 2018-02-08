@@ -19,16 +19,12 @@
               <i-input type="password" size="large" v-model="loginModel.password" placeholder="密码" @on-keyup.enter="submitForm">
               </i-input>
             </i-form-item>
-            <!--<i-form-item label="验证码" prop="password">
-            <i-input type="password" v-model="loginModel.password" placeholder="请输入密码" @on-keyup.enter="submitForm">
-              <i-icon type="ios-person-outline" slot="prepend"></i-icon>
-            </i-input>
-          </i-form-item>-->
+
             <i-form-item>
               <i-checkbox>
                 <span>记住用户名与密码</span>
               </i-checkbox>
-              <i-button type="text" style="float:right;color:#1D4F8B" @click="register">注册</i-button>
+              <i-button type="text" style="float:right;color:#1D4F8B" @click="registerModal = true">注册</i-button>
             </i-form-item>
             <i-form-item :label-width="0" style="text-align:center">
               <i-button class="submit_btn blueButton" @click="submitForm">登录</i-button>
@@ -48,152 +44,134 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import {
-    LoginService
-  } from "~/services/manage-service/login.service";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    Mutation
-  } from "vuex-class";
-  import AppConfig from "~/config/app.config";
-  import Register from "~/components/common/register.vue";
-  import {
-    DataDictService
-  } from "~/services/manage-service/data-dict.service";
-  @Component({
-    components: {
-      Register
-    }
-  })
-  export default class Login extends Vue {
-    @Dependencies(LoginService) private loginService: LoginService;
-    @Dependencies(DataDictService) private dataDictService: DataDictService;
-    @Mutation("updateUserToken") updateUserToken;
-    @Mutation("updateUserData") updateUserData;
+import Vue from "vue";
+import Component from "vue-class-component";
+import { LoginService } from "~/services/manage-service/login.service";
+import { Dependencies } from "~/core/decorator";
+import { Action } from "vuex-class";
+import AppConfig from "~/config/app.config";
+import Register from "~/components/common/register.vue";
+import { DataDictService } from "~/services/manage-service/data-dict.service";
 
-    private loginRule: Object = {};
-    private loginModel: any;
-    private registerModal: Boolean = false;
-    created() {
-      // 设置表单数据
-      this.loginModel = {
-        username: "",
-        password: ""
-      };
+@Component({
+  components: {
+    Register
+  }
+})
+export default class Login extends Vue {
+  @Dependencies(LoginService) private loginService: LoginService;
+  @Dependencies(DataDictService) private dataDictService: DataDictService;
+  @Action("updateUserLoginData") updateUserLoginData;
 
-      // 设置验证规则
-      this.loginRule = {
-        username: [{
+  private loginRule: Object = {};
+  private loginModel: any;
+  private registerModal: Boolean = false;
+
+  created() {
+    // 设置表单数据
+    this.loginModel = {
+      username: "",
+      password: ""
+    };
+
+    // 设置验证规则
+    this.loginRule = {
+      username: [
+        {
           required: true,
           message: "用户名不能为空",
           trigger: "blur"
-        }],
-        password: [{
+        }
+      ],
+      password: [
+        {
           required: true,
           message: "密码不能为空",
           trigger: "blur"
-        }]
-      };
-    }
-
-    /**
-     * 提交登录表单
-     */
-    submitForm() {
-      let loginForm: any = this.$refs["login-form"];
-      loginForm.validate(success => {
-        if (!success) {
-          return;
         }
-
-        this.loginService
-          .login({
-            username: this.loginModel.username,
-            password: this.loginModel.password,
-            loginDevice: 414,
-            loginType: 411
-          })
-          .subscribe(
-            data => {
-              this.updateUserToken(data.token);
-              this.updateUserData(data.user);
-              console.log("login", data.user);
-              this.$router.push("/home");
-            },
-            ({
-              msg
-            }) => {
-              this.$Message.error(msg);
-              this.dataDict();
-            }
-          );
-      });
-    }
-    register() {
-      this.registerModal = true;
-    }
-    dataDict() {
-      this.dataDictService.getAll().subscribe(val => {
-        let str: any = JSON.stringify(val);
-        localStorage.dictData = str;
-        console.log(val, 888); // this.dictData = JSON.parse(localStorage.dictData);  取值并转换为json
-      });
-    }
+      ]
+    };
   }
 
+  /**
+   * 提交登录表单
+   */
+  submitForm() {
+    let loginForm: any = this.$refs["login-form"];
+    loginForm.validate(success => {
+      if (!success) {
+        return;
+      }
+
+      this.loginService
+        .login({
+          username: this.loginModel.username,
+          password: this.loginModel.password,
+          loginDevice: 414,
+          loginType: 411
+        })
+        .subscribe(
+          async data => {
+            // 更新基础数据
+            await this.updateUserLoginData(data);
+            // 进入首页
+            this.$router.push("/home");
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+    });
+  }
+}
 </script>
 <style lang="less" scope>
-  .calculate {
-    .ivu-modal-footer {
-      display: none!important;
-    }
+.calculate {
+  .ivu-modal-footer {
+    display: none !important;
   }
-  
-  .full-absolute {
-    background: #265ea3;
-  }
-  
-  .login-bg {
-    width: 500px;
-    height: 500px;
-    background: url("/static/images/common/login-bg.png");
-    position: absolute;
-    left: 140px;
-    background-repeat: no-repeat;
-    background-size: 500px 500px;
-  }
-  
-  .login-form {
-    width: 350px;
-    position: relative;
-    right: 23px;
-  }
-  
-  .submit_btn {
-    width: 270px;
-    height: 40px;
-    background: #265ea2;
-    color: #fff;
-  }
-  
-  .submit_btn:hover {
-    background: #1d4f8b;
-    color: #fff;
-  }
-  
-  .loginContainer {
-    border: 1px solid #dddddd;
-    background: white;
-    height: 409px;
-    width: 378px;
-    padding-top: 50px;
-    position: relative;
-    left: 350px;
-    bottom: 20px;
-  }
+}
 
+.full-absolute {
+  background: #265ea3;
+}
+
+.login-bg {
+  width: 500px;
+  height: 500px;
+  background: url("/static/images/common/login-bg.png");
+  position: absolute;
+  left: 140px;
+  background-repeat: no-repeat;
+  background-size: 500px 500px;
+}
+
+.login-form {
+  width: 350px;
+  position: relative;
+  right: 23px;
+}
+
+.submit_btn {
+  width: 270px;
+  height: 40px;
+  background: #265ea2;
+  color: #fff;
+}
+
+.submit_btn:hover {
+  background: #1d4f8b;
+  color: #fff;
+}
+
+.loginContainer {
+  border: 1px solid #dddddd;
+  background: white;
+  height: 409px;
+  width: 378px;
+  padding-top: 50px;
+  position: relative;
+  left: 350px;
+  bottom: 20px;
+}
 </style>

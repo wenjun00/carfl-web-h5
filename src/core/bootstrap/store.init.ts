@@ -2,7 +2,6 @@ import Vue from 'vue'
 
 const creatDataDictService = () => import('~/services/manage-service/data-dict.service')
 const createLoginService = () => import('~/services/manage-service/login.service')
-// import { MessageService } from '~/utils/message.service'
 
 export default async function ({ store, router }) {
   let { DataDictService } = await creatDataDictService()
@@ -48,9 +47,9 @@ export default async function ({ store, router }) {
       }
 
       // 更新用户数据
-      loginService.getUserByToken().subscribe(({ user }) => {
+      loginService.getUserByToken().subscribe((data) => {
         // 更新用户控件资源
-        store.dispatch('updateUserLoginData', { user })
+        store.dispatch('updateUserLoginData', data)
         reslove()
       }, () => {
         // 用户数据获取异常
@@ -72,34 +71,8 @@ export default async function ({ store, router }) {
       }, () => {
         reject()
       })
-      // if (!store.state.dictDataHash) {
-      //   return getDictData(reslove, reject)
-      // }
-
-      // dataDictService.getDictHash().subscribe(({ dataDictHashCode }) => {
-      //   if (store.state.dictDataHash! == store.state.dictDataHash) {
-      //     getDictData(reslove, reject)
-      //   } else {
-      //     reslove()
-      //   }
-      // }, () => {
-      //   reject()
-      // })
     })
   }
-
-  // /**
-  //  * 获取数据字典
-  //  * @param reslove
-  //  */
-  // function getDictData(reslove, reject) {
-  //   return dataDictService.getDictData().subscribe((data) => {
-  //     store.commit('updateDictData', data)
-  //     reslove()
-  //   }, () => {
-  //     reject()
-  //   })
-  // }
 
   /**
    * 全局业务数据
@@ -110,7 +83,6 @@ export default async function ({ store, router }) {
         reslove()
         return
       }
-
       // 全局业务数据 - 与用户无关
 
       reslove()
