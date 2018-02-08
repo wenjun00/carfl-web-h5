@@ -49,7 +49,9 @@
         </div>
       </i-modal>
     </template>
-
+    <div class="bottom_addPrice">
+      <i-button class="blueButton" @click="addquoteFun">新增审批原因</i-button>
+    </div>
   </section>
 </template>
 <script lang="ts">
