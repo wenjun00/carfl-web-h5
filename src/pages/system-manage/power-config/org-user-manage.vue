@@ -27,7 +27,9 @@
           <i-button class="blueButton" style="margin-left:20px;" @click="batchAllotRole">批量分配角色</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="batchManageDevice">批量管理设备</i-button>
         </i-row>
-        <data-box :columns="columns1" :height="530" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService"></data-box>
+        <!-- <div style="min-width:1000px"> -->
+        <data-box :columns="columns1" :height="436" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService"></data-box>
+        <!-- </div> -->
       </i-col>
     </i-row>
 
@@ -360,25 +362,25 @@ export default class OrgUserManage extends Page {
         align: "center",
         title: "电话",
         key: "userPhone",
-        width: 130
+        width: 146
       },
       {
         align: "center",
         title: "备注",
         key: "userRemark",
-        width: 140
+        width: 160
       },
       {
         align: "center",
         title: "创建人",
         key: "operatorName",
-        width: 100
+        width: 160
       },
       {
         align: "center",
         title: "创建时间",
         key: "operateTime",
-        width: 180,
+        width: 200,
         render: (h, { row, columns, index }) => {
           return h(
             "span",
