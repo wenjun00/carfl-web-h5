@@ -47,5 +47,14 @@ export default {
     controller: CONTROLLER,
     action: 'getAllProductPackageNoPage',
     type: requestType.Get
+  },
+  /**
+ * 下载模板
+ */
+  downloadTemplate: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'downloadTemplate',
+    type: requestType.Get
   }
 }
