@@ -757,7 +757,7 @@ export default class ProdConfig extends Page {
 </script>
 <style lang="less">
 .prod-config {
-	height: 100%;
+	// height: 100%;
 }
 .maintainCss {
 	background: #e4f4fa;
