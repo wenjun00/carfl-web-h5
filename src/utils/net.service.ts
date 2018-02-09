@@ -47,7 +47,7 @@ export class NetService {
     })
   }
 
-  public static generateRequestUrl({ service, controller, action, url }: { service:string, controller: string, action: string, url?: string }, append = [], sort?): String {
+  public static generateRequestUrl({ service, controller, action, url }: { service: string, controller: string, action: string, url?: string }, append = [], sort?): String {
     // 自定义url优先级最高
     if (url) return url
 
@@ -163,6 +163,7 @@ export class NetService {
           })
         }
       }).catch((ex) => {
+        console.log(ex, 4545)
         // 错误信息
         let error: any = {
           msg: "",

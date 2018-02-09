@@ -227,7 +227,7 @@ export default class OrgUserManage extends Page {
       },
       {
         align: "center",
-        width: 90,
+        width: 60,
         type: "index",
         renderHeader: (h, { column, index }) => {
           return h(
@@ -364,26 +364,22 @@ export default class OrgUserManage extends Page {
       {
         align: "center",
         title: "电话",
-        key: "userPhone",
-        width: 146
+        key: "userPhone"
       },
       {
         align: "center",
         title: "备注",
-        key: "userRemark",
-        width: 160
+        key: "userRemark"
       },
       {
         align: "center",
         title: "创建人",
-        key: "operatorName",
-        width: 160
+        key: "operatorName"
       },
       {
         align: "center",
         title: "创建时间",
         key: "operateTime",
-        width: 200,
         render: (h, { row, columns, index }) => {
           return h(
             "span",
