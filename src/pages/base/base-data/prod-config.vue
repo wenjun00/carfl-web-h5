@@ -4,7 +4,7 @@
     <i-row style="margin-top:20px;">
       <span style="font-size:18px;font-weight:bold;margin-left:8px;">产品配置</span>
       <i-row>
-        <i-col :span="5" style="margin-left:10px;">
+        <i-col style="margin-left:10px;width:260px;float:left;">
           <div style="width:250px;height:30px;border:1px solid #999999;line-height:30px;font-size:16px;">
             <div style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>
             <span style="position:relative;left:5px;">产品类目</span>
@@ -42,7 +42,7 @@
                                 <Radio label="自有资金"></Radio>
                                 <Radio label="第三方"></Radio>
                             </RadioGroup> -->
-              <i-button class="blueButton" @click="customerFodderConfig">{{productMessage.isConfig=0 ? "已配置" : "客户素材配置" }}</i-button>
+              <i-button class="blueButton" style="margin-left:10px;" @click="customerFodderConfig">{{productMessage.isConfig=0 ? "已配置" : "客户素材配置" }}</i-button>
               <!--<i-button class="blueButton" @click="chargeAgainstOrderConfig">冲抵顺序配置</i-button>-->
             </i-col>
           </i-row>

@@ -29,157 +29,295 @@
       </div>
     </i-row>
     <data-box :columns="columns" :data="AppRoveReasonList" @onPageChange="seach" :page="pageService"></data-box>
+    <div class="submitBar">
+      <i-row type="flex" align="middle" style="padding:5px">
+        <i-col :span="8" push="1">
+          <span> 创建人：{{userData.username}}</span>
+        </i-col>
+        <i-col :span="10" pull="4">
+          <span>创建时间:2018-02-10</span>
+        </i-col>
+        <i-col :span="6" style="text-align:right;">
+          <i-button class="highButton" @click="addapprovalReasonBtn">新增审批原因</i-button>
+        </i-col>
+      </i-row>
+    </div>
+    <template>
+      <i-modal title="新增审批原因" v-model="approvalReasonModel">
+        <add-approval-reason ref="add-approval-reason" @close="closeApproval"></add-approval-reason>
+        <div slot="footer">
+          <i-button class="Ghost" @click="MaterialTypeModel=false">取消</i-button>
+          <i-button class="blueButton" @click="submitApprovalReason">新增</i-button>
+        </div>
+      </i-modal>
+    </template>
+    <template>
+      <i-modal title="编辑审批原因" v-model="editApprovalReasonModel">
+        <edit-approval-reason ref="edit-approval-reason" @close="closeEditApproval"></edit-approval-reason>
+        <div slot="footer">
+          <i-button class="Ghost" @click="editApprovalReasonModel=false">取消</i-button>
+          <i-button class="blueButton" @click="editApproval">保存并退出</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
 <script lang="ts">
-  import Page from '~/core/page';
-  import DataBox from '~/components/common/data-box.vue';
-  import Component from 'vue-class-component';
-  import SvgIcon from '~/components/common/svg-icon.vue';
-  import {
-    Dependencies
-  } from '~/core/decorator';
-  import {
-    Layout
-  } from '~/core/decorator';
-  import {
-    ApproveReasonService
-  } from '~/services/manage-service/approve-reason.service';
-  import {
-    PageService
-  } from '~/utils/page.service';
-  import {
-    FilterService
-  } from '~/utils/filter.service';
-  @Layout('workspace')
-  @Component({
-    components: {
-      DataBox,
-      SvgIcon,
-    },
-  })
-  export default class ApprovalReasonManage extends Page {
-    @Dependencies(ApproveReasonService) private approveReasonService: ApproveReasonService;
-    @Dependencies(PageService) private pageService: PageService;
-    private columns: any;
-    private columns2: any;
-    private appReasonModel: any;
-    private data2: Array < any > = [];
-    private searchOptions: Boolean = false;
-    private approvalReasonModal: Boolean = false;
-    private isDisabled: Boolean = true;
-    private fileDataOpen: Boolean = false;
-    private AppRoveReasonList: Array < any > = [];
+import Page from '~/core/page';
+import DataBox from '~/components/common/data-box.vue';
+import Component from 'vue-class-component';
+import SvgIcon from '~/components/common/svg-icon.vue';
+import { Dependencies } from '~/core/decorator';
+import { Layout } from '~/core/decorator';
+import AddApprovalReason from '~/components/base-data/add-approval-reason.vue';
+import EditApprovalReason from '~/components/base-data/edit-approval-reason.vue';
 
-    created() {
-      this.seach();
-      this.columns = [{
-          title: '序号',
-          width: 60,
-          type: 'index',
-          align: 'center',
-        },
-        {
-          title: '类型',
-          key: 'type',
-          align: 'center',
-        },
-        {
-          title: '一级',
-          key: 'first',
-          align: 'center',
-        },
-        {
-          title: '二级',
-          key: 'second',
-          align: 'center',
-        },
-        {
-          title: 'CRC编码',
-          key: 'crc',
-          align: 'center',
-        },
-        {
-          title: '详细内容',
-          key: 'detail',
-          align: 'center',
-        },
-        {
-          title: '创建人',
-          key: 'operator',
-          align: 'center',
-        },
-        {
-          title: '创建时间',
-          key: 'operatorTime',
-          align: 'center',
-          render: (h, {
-            row,
-            columns,
-            index
-          }) => {
-            return h('span', FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss'));
-          },
-        },
-      ];
-      this.AppRoveReasonList = [];
-      this.appReasonModel = {
-        first: '',
-        second: '',
-        detail: '',
-        type: '',
-      };
-    }
-    getOrderInfoByTime() {}
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
-    }
-    exportMonthReport() {}
-    /**
-     * 导入审批原因
-     */
-    importApprovalReason() {
-      this.approvalReasonModal = true;
-    }
-    /**
-     * selectChange
-     */
-    changeOption(val) {
-      if (val) {
-        this.isDisabled = false;
-      } else {
-        this.isDisabled = true;
-      }
-    }
-    /**
-     * 文件选择按钮点击
-     */
-    checkFile() {
-      this.fileDataOpen = true;
-    }
-    /**@augments
-     * 分页查询审批原因
-     */
-    seach() {
-      this.approveReasonService.getAllApproveReason(this.appReasonModel, this.pageService).subscribe(
-        data => {
-          this.AppRoveReasonList = data;
-          this.AppRoveReasonList.map(v => {
-            if (v.type === 374) {
-              v.type = '退回';
-            } else {
-              v.type = '拒绝';
-            }
-          });
-        },
-        ({
-          msg
-        }) => {
-          this.$Message.error(msg);
-        }
-      );
-    }
-  }
+import { ApproveReasonService } from '~/services/manage-service/approve-reason.service';
+import { PageService } from '~/utils/page.service';
+import { FilterService } from '~/utils/filter.service';
+@Layout('workspace')
+@Component({
+	components: {
+		DataBox,
+		SvgIcon,
+		AddApprovalReason,
+		EditApprovalReason,
+	},
+})
+export default class ApprovalReasonManage extends Page {
+	@Dependencies(ApproveReasonService) private approveReasonService: ApproveReasonService;
+	@Dependencies(PageService) private pageService: PageService;
+	private columns: any;
+	private columns2: any;
+	private appReasonModel: any;
+	private data2: Array<any> = [];
+	private searchOptions: Boolean = false;
+	private approvalReasonModal: Boolean = false;
+	private isDisabled: Boolean = true;
+	private fileDataOpen: Boolean = false;
+	private AppRoveReasonList: Array<any> = [];
+	private approvalReasonModel: Boolean = false;
+	private editApprovalReasonModel: Boolean = false;
+	private userData: any = {};
 
+	created() {
+		this.seach();
+		this.columns = [
+			{
+				title: '序号',
+				width: 60,
+				type: 'index',
+				align: 'center',
+			},
+			{
+				align: 'center',
+				title: '操作',
+				width: 200,
+				render: (h, { row, column, index }) => {
+					return h('div', [
+						h(
+							'i-button',
+							{
+								props: {
+									type: 'text',
+								},
+								style: {
+									color: '#265EA2',
+								},
+								on: {
+									click: () => {
+										this.showEditApproval(row);
+									},
+								},
+							},
+							'编辑'
+						),
+						h(
+							'i-button',
+							{
+								props: {
+									type: 'text',
+								},
+								style: {
+									color: '#265EA2',
+								},
+								on: {
+									click: () => {
+										this.$Modal.confirm({
+											title: '提示',
+											content: '确定删除吗？',
+											onOk: () => {
+												this.deleteApproval(row);
+											},
+										});
+									},
+								},
+							},
+							'删除'
+						),
+					]);
+				},
+			},
+			{
+				title: '类型',
+				key: 'type',
+				align: 'center',
+			},
+			{
+				title: '一级',
+				key: 'first',
+				align: 'center',
+			},
+			{
+				title: '二级',
+				key: 'second',
+				align: 'center',
+			},
+			{
+				title: 'CRC编码',
+				key: 'crc',
+				align: 'center',
+			},
+			{
+				title: '详细内容',
+				key: 'detail',
+				align: 'center',
+			},
+			{
+				title: '创建人',
+				key: 'operator',
+				align: 'center',
+			},
+			{
+				title: '创建时间',
+				key: 'operatorTime',
+				align: 'center',
+				render: (h, { row, columns, index }) => {
+					return h('span', FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss'));
+				},
+			},
+		];
+		this.AppRoveReasonList = [];
+		this.appReasonModel = {
+			first: '',
+			second: '',
+			detail: '',
+			type: '',
+		};
+	}
+	getOrderInfoByTime() {}
+	openSearch() {
+		this.searchOptions = !this.searchOptions;
+	}
+	exportMonthReport() {}
+	/**
+	 * 导入审批原因
+	 */
+	importApprovalReason() {
+		this.approvalReasonModal = true;
+	}
+	/**
+	 * selectChange
+	 */
+	changeOption(val) {
+		if (val) {
+			this.isDisabled = false;
+		} else {
+			this.isDisabled = true;
+		}
+	}
+	/**
+	 * 文件选择按钮点击
+	 */
+	checkFile() {
+		this.fileDataOpen = true;
+	}
+	/**@augments
+	 * 分页查询审批原因
+	 */
+	seach() {
+		this.approveReasonService.getAllApproveReason(this.appReasonModel, this.pageService).subscribe(
+			data => {
+				this.AppRoveReasonList = data;
+				this.AppRoveReasonList.map(v => {
+					if (v.type === 374) {
+						v.type = '退回';
+					} else {
+						v.type = '拒绝';
+					}
+				});
+			},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+	}
+	/**\
+	 * 新增审批原因 按钮
+	 */
+	addapprovalReasonBtn() {
+		this.approvalReasonModel = true;
+	}
+	/**
+	 * 新增审批原因 新增按钮
+	 */
+	submitApprovalReason() {
+		let openApproval: any = this.$refs['add-approval-reason'];
+		openApproval.validFun();
+	}
+	/**
+	 * 新增审批原因成功 关闭窗口
+	 */
+	closeApproval() {
+		this.approvalReasonModel = false;
+		this.seach(); //刷新
+	}
+	/**
+	 * 获取创建人信息
+	 */
+	mounted() {
+		this.userData = this.$store.state.userData;
+	}
+	/**
+	 * 删除审批原因管理
+	 */
+	deleteApproval(row) {
+		this.approveReasonService
+			.deleteApproveReason({
+				id: row.id,
+			})
+			.subscribe(
+				val => {
+					this.$Message.success('删除成功！');
+				},
+				({ msg }) => {
+					this.$Message.error(msg);
+				}
+			);
+	}
+	/**
+	 * 编辑审批原因管理
+	 */
+	showEditApproval(row) {
+		this.editApprovalReasonModel = true;
+		let openApproval: any = this.$refs['edit-approval-reason'];
+		openApproval.rowParms(row);
+	}
+	editApproval() {
+		let openApproval: any = this.$refs['edit-approval-reason'];
+		openApproval.validFun();
+	}
+	/**
+	 * 编辑审批原因成功 关闭窗口
+	 */
+	closeEditApproval() {
+		this.editApprovalReasonModel = false;
+		this.seach(); //刷新
+	}
+}
 </script>
+<style lang="less" scoped>
+
+</style>
+

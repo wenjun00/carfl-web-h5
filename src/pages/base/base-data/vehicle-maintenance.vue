@@ -10,9 +10,9 @@
             <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addVehicle">
               <svg-icon iconClass="tianjiawenjian"></svg-icon>
             </div>
-            <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
+            <!-- <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
               <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
-            </div>
+            </div> -->
             <!-- <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
               <svg-icon iconClass="sousuo"></svg-icon>
             </div> -->
@@ -49,9 +49,6 @@
         </div>
       </i-modal>
     </template>
-    <div class="bottom_addPrice">
-      <i-button class="blueButton" @click="addquoteFun">新增审批原因</i-button>
-    </div>
   </section>
 </template>
 <script lang="ts">
@@ -87,6 +84,7 @@ export default class ProdConfig extends Page {
 	private editModal: Boolean = false;
 	private addVehicleModal: Boolean = false; // 添加车辆
 	private checkData: any;
+	private treeDatas: any = [];
 	/**
 	 * 客户素材配置
 	 */
@@ -201,34 +199,35 @@ export default class ProdConfig extends Page {
 				series.set(t.id, t);
 			}
 		});
-		this.treeData = [];
+		this.treeDatas = [];
 		series.forEach(item => {
 			let lv1Node = {
-				title: '所有品牌',
+				title: item.brandName,
+				seriesId: item.id,
 				expand: true,
-				children: [
-					{
-						title: item.brandName,
-						seriesId: item.id,
+				children: item.series.map(v => {
+					return {
+						title: v.seriesName,
+						brandId: v.id,
 						expand: true,
-						children: item.series.map(v => {
+						children: v.cars.map(m => {
 							return {
-								title: v.seriesName,
-								brandId: v.id,
-								expand: true,
-								children: v.cars.map(m => {
-									return {
-										title: m.modelName,
-										carId: m.id,
-									};
-								}),
+								title: m.modelName,
+								carId: m.id,
 							};
 						}),
-					},
-				],
+					};
+				}),
 			};
-			this.treeData.push(lv1Node);
+			this.treeDatas.push(lv1Node);
 		});
+		this.treeData = [
+			{
+				title: '所有品牌',
+				expand: true,
+				children: this.treeDatas,
+			},
+		];
 	}
 	/**
 	 * 取消新增车辆

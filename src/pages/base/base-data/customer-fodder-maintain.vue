@@ -116,6 +116,7 @@
     private MaterialTypeModel: Boolean = false;
     private editId: Number = 0;
     private config: any = {};
+    private itemData: any = {};
 
     created() {
       this.maintains = [];
@@ -256,6 +257,7 @@
      */
     checkMaintain(item) {
       this.checkId = item.id;
+      this.itemData = item;
       this.personalModel = {
         type: this.checkId,
       };
@@ -305,7 +307,7 @@
     }
     closeMaterial() {
       this.materialModel = false;
-      this.checkMaintain(this.item); //刷新
+      this.checkMaintain(this.itemData); //刷新
     }
     /**
      * 编辑素材 确定按钮
@@ -320,7 +322,7 @@
     }
     closeEditMaterial() {
       this.editMaterialModel = false;
-      this.checkMaintain(this.item); //刷新
+      this.checkMaintain(this.itemData); //刷新
     }
     /**
      * 新增素材类型  确定按钮

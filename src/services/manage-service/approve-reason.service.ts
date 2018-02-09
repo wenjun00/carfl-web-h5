@@ -52,4 +52,15 @@ export class ApproveReasonService {
       data: data
     })
   }
+  /**
+ * 删除审批原因
+ */
+  deleteApproveReason({ id }) {
+    return this.netService.send({
+      server: manageService.approveReeasonController.deleteApproveReason,
+      data: {
+        id: id
+      }
+    })
+  }
 }
