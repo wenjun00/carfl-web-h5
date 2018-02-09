@@ -219,7 +219,7 @@ export default class AddPeriods extends Vue {
 		periods: '', //产品期数
 		periodType: '',
 		paymentType: '',
-		paymentDay: '',
+		paymentDay: '正常账期',
 		productRate: '',
 		payWay: '',
 		financingAmount: '',

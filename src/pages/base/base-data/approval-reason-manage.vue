@@ -290,6 +290,7 @@ export default class ApprovalReasonManage extends Page {
 			.subscribe(
 				val => {
 					this.$Message.success('删除成功！');
+					this.seach(); //刷新
 				},
 				({ msg }) => {
 					this.$Message.error(msg);

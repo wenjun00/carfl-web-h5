@@ -265,6 +265,8 @@ export default class ProdConfig extends Page {
 	private scopes: any = {};
 	private newTree: any = {};
 	private parent: any = {};
+	private node1: any = {};
+	private childs: any = {};
 
 	created() {
 		this.treeList();
@@ -747,10 +749,28 @@ export default class ProdConfig extends Page {
 			})
 			.subscribe(val => {
 				this.newTree = val;
+				console.log(this.newTree, 9999);
 				this.newTree.map(val => {
 					let dictData = JSON.parse(localStorage.dictData); //获取所有数字字典项
 					let pt = dictData.find(v => v.id === val.type); // 找到字典项对应的父类
+
+					this.childs = {
+						title: pt.name,
+						expand: true,
+						children: [
+							{
+								title: val.name,
+								expand: true,
+							},
+						],
+					};
 				});
+				this.node1 = {
+					title: '全选',
+					expand: true,
+					children: [this.childs],
+				};
+				this.customerFodderTree.push(this.node1);
 			});
 	}
 }
