@@ -8,11 +8,7 @@
       </i-select>
     </i-form-item>
     <i-form-item label="一级" prop="first">
-      <i-select v-model="editApproval.first">
-        <i-option label="退回" value="退回" key="退回"></i-option>
-        <i-option label="拒绝" value="拒绝" key="拒绝"></i-option>
-
-      </i-select>
+      <i-input v-model="editApproval.first"></i-input>
     </i-form-item>
     <i-form-item label="二级" prop="second">
       <i-input v-model="editApproval.second"></i-input>

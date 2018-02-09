@@ -5,22 +5,19 @@
       <span style="font-size:18px;font-weight:bold;margin-left:8px;">产品配置</span>
       <i-row>
         <i-col style="margin-left:10px;width:260px;float:left;">
-          <div style="width:250px;height:30px;border:1px solid #999999;line-height:30px;font-size:16px;">
+          <div style="width:250px;height:30px;border:1px solid #dddd;line-height:30px;font-size:16px;">
             <div style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>
             <span style="position:relative;left:5px;">产品类目</span>
             <div style="float:right;display:inline-block;font-weight:bold">
               <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addProductFun">
                 <svg-icon iconClass="tianjiawenjian"></svg-icon>
               </div>
-              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addSericeFun">
+              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;margin-right:7px;color:rgb(38, 94, 162)" @click="addSericeFun">
                 <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
               </div>
-              <!-- <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
-                <svg-icon iconClass="sousuo"></svg-icon>
-              </div> -->
             </div>
           </div>
-          <div style="width:250px;height:600px;border-left:1px solid #999999;border-right:1px solid #999999;border-bottom:1px solid #999999;position:relative;bottom:8px;">
+          <div style="width:250px;height:600px;border:1px solid #dddd;border-top:0;position:relative;bottom:8px;">
             <i-tree :data="treeData" @on-select-change="productNameDetail"></i-tree>
           </div>
         </i-col>

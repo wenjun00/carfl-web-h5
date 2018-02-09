@@ -26,7 +26,10 @@ export default class EditMaterial extends Vue {
 	private rulesMaterial: any = {};
 	created() {
 		this.rulesMaterial = {
-			name: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
+			name: [
+				{ required: true, message: '请输入素材名称', trigger: 'blur' },
+				{ type: 'string', max: 20, message: '您输入的字符过长', trigger: 'blur' },
+			],
 		};
 	}
 	formRules(type) {
@@ -39,12 +42,17 @@ export default class EditMaterial extends Vue {
 				val => {
 					this.$Message.success('修改成功！');
 					this.$emit('close');
+					this.reset();
 				},
 				({ msg }) => {
 					this.$Message.error(msg);
 				}
 			);
 		});
+	}
+	reset() {
+		let formSet: any = <Form>this.$refs['add-material'];
+		formSet.resetFields();
 	}
 }
 </script>

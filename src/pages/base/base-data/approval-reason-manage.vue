@@ -3,7 +3,8 @@
   <section class="page approval-reason-manage">
     <i-row style="margin-top:10px;margin-left:10px;">
       <span style="font-size:18px;font-weight:bold">审批原因管理</span>
-      <i-select style="margin-left:10px;width:10%;" placeholder="全部" v-model="appReasonModel.type">
+      <span style="margin-left:10px;">类型：</span>
+      <i-select style="margin-left:10px;width:10%;" placeholder="全部" v-model="appReasonModel.type" clearable>
         <i-option label="退件" :value="374" :key="374"></i-option>
         <i-option label="拒绝" :value="375" :key="375"></i-option>
       </i-select>
@@ -11,9 +12,12 @@
       <i-input style="width:10%;" v-model="appReasonModel.first"></i-input>
       <span style="margin-left:10px;">二级：</span>
       <i-input style="width:10%;" v-model="appReasonModel.second"></i-input>
+      <span style="margin-left:10px;">CRC编码：</span>
+      <i-input style="width:10%;" v-model="appReasonModel.CRC"></i-input>
       <span style="margin-left:10px;">详细内容：</span>
       <i-input style="width:10%;" v-model="appReasonModel.detail"></i-input>
       <i-button class="blueButton" style="margin-left:10px;" @click="seach">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:10px;">重置</i-button>
       <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
         <span></span>
       </div>
@@ -22,7 +26,7 @@
           <svg-icon iconClass="daoru" style="font-size:16px;"></svg-icon>
           <span style="font-size:14px;">导入</span>
         </div>
-        <div style="font-size:14px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <div style="font-size:14px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" @click="downloadTemplate">
           <svg-icon iconClass="xiazai"></svg-icon>
           <span>模版下载</span>
         </div>
@@ -31,13 +35,7 @@
     <data-box :columns="columns" :data="AppRoveReasonList" @onPageChange="seach" :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
-        <i-col :span="8" push="1">
-          <span> 创建人：{{userData.username}}</span>
-        </i-col>
-        <i-col :span="10" pull="4">
-          <span>创建时间:2018-02-10</span>
-        </i-col>
-        <i-col :span="6" style="text-align:right;">
+        <i-col :span="24" style="text-align:right;">
           <i-button class="highButton" @click="addapprovalReasonBtn">新增审批原因</i-button>
         </i-col>
       </i-row>
@@ -113,7 +111,7 @@ export default class ApprovalReasonManage extends Page {
 			{
 				align: 'center',
 				title: '操作',
-				width: 200,
+				width: 170,
 				render: (h, { row, column, index }) => {
 					return h('div', [
 						h(
@@ -202,6 +200,7 @@ export default class ApprovalReasonManage extends Page {
 		this.appReasonModel = {
 			first: '',
 			second: '',
+			CRC: '',
 			detail: '',
 			type: '',
 		};
@@ -315,6 +314,12 @@ export default class ApprovalReasonManage extends Page {
 	closeEditApproval() {
 		this.editApprovalReasonModel = false;
 		this.seach(); //刷新
+	}
+	/**
+	 * 模板下载
+	 */
+	downloadTemplate() {
+		this.approveReasonService.downloadApproveReasonTemplate().subscribe(val => {});
 	}
 }
 </script>
