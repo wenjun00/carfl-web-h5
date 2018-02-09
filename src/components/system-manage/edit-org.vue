@@ -56,105 +56,100 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component'
-  import {
-    Prop,
-    Watch
-  } from "vue-property-decorator";
-  import {
-    DepartmentService
-  } from "~/services/manage-service/department.service";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    CompanyService
-  } from "~/services/manage-service/company.service";
-  @Component({
-    components: {}
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop, Watch } from "vue-property-decorator";
+import { DepartmentService } from "~/services/manage-service/department.service";
+import { Dependencies } from "~/core/decorator";
+import { CompanyService } from "~/services/manage-service/company.service";
+@Component({
+  components: {}
+})
+export default class EditOrg extends Vue {
+  @Dependencies(DepartmentService) private departmentService: DepartmentService;
+  @Dependencies(CompanyService) private companyService: CompanyService;
+  @Prop() deptObject;
+  @Watch("deptObject")
+  updateDeptObject() {}
+  @Prop({
+    default: 1
   })
-  export default class EditOrg extends Vue {
-    @Dependencies(DepartmentService) private departmentService: DepartmentService;
-    @Dependencies(CompanyService) private companyService: CompanyService;
-    @Prop() deptObject;
-    @Watch("deptObject")
-    updateDeptObject() {}
-    @Prop({
-      default: 1
-    }) deptPid;
-    private rules: any;
-    private deptObj: any = {
-      deptName: '',
-      deptLevel: '',
-      deptStatus: '',
-      companyId: '',
-      deptRemark: ''
-    }
-    private companyObject: Array < Object >= []; // 公司信息
-    private allCompany: any = {}
-    created() {
-      this.rules = {
-        deptName: [{
+  deptPid;
+  private rules: any;
+  private deptObj: any = {
+    deptName: "",
+    deptLevel: "",
+    deptStatus: "",
+    companyId: "",
+    deptRemark: ""
+  };
+  private companyObject: Array<Object> = []; // 公司信息
+  private allCompany: any = {};
+  created() {
+    this.rules = {
+      deptName: [
+        {
           required: true,
-          trigger: 'blur',
-          message: '请输入机构名称'
-        }]
-      }
-    }
-    /**
-     * 添加组织机构
-     */
-    addOrg(val) {
-      this.deptObject.deptLevel = val
-      this.deptObject.deptCode = this.deptObject.deptCode
-      this.deptObject.deptPid = this.deptPid
-    }
-
-    confirmEditOrg() {
-      let _addOrg: any = this.$refs['add-org-form']
-      _addOrg.validate(valid => {
-        if (valid) {
-          this.departmentService.updateDepartment(this.deptObj).subscribe(val => {
-            this.$Message.success('编辑成功！')
-            this.$emit('close')
-          }, ({
-            msg
-          }) => {
-            this.$Message.error(msg)
-          })
+          trigger: "blur",
+          message: "请输入机构名称"
         }
-      })
-    }
-    /**
-     * 获取dept
-     */
-    getDeptInfo() {
-      this.deptObj.deptName = this.deptObject.deptName
-      this.deptObj.deptLevel = this.deptObject.deptLevel
-      this.deptObj.deptStatus = this.deptObject.deptStatus
-      this.deptObj.companyId = this.deptObject.companyId
-      this.deptObj.deptRemark = this.deptObject.deptRemark
-      this.deptObj.deptCode = this.deptObject.deptCode
-      this.deptObj.deptPid = this.deptObject.deptPid
-      this.deptObj.id = this.deptObject.id
-
-      // 获取所有公司
-      this.companyService.getAllCompany().subscribe(data => {
-        this.companyObject = data
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
-      })
-    }
+      ]
+    };
+  }
+  /**
+   * 添加组织机构
+   */
+  addOrg(val) {
+    this.deptObject.deptLevel = val;
+    this.deptObject.deptCode = this.deptObject.deptCode;
+    this.deptObject.deptPid = this.deptPid;
   }
 
+  confirmEditOrg() {
+    let _addOrg: any = this.$refs["add-org-form"];
+    _addOrg.validate(valid => {
+      if (valid) {
+        this.departmentService.updateDepartment(this.deptObj).subscribe(
+          val => {
+            this.$Message.success("编辑成功！");
+            this.$emit("close");
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+      }
+    });
+  }
+  /**
+   * 获取dept
+   */
+  getDeptInfo() {
+    console.log(this.deptObject, 898);
+    this.deptObj.deptName = this.deptObject.deptName;
+    this.deptObj.deptLevel = this.deptObject.deptLevel;
+    this.deptObj.deptStatus = this.deptObject.deptStatus;
+    this.deptObj.companyId = this.deptObject.companyId;
+    this.deptObj.deptRemark = this.deptObject.deptRemark;
+    this.deptObj.deptCode = this.deptObject.deptCode;
+    this.deptObj.deptPid = this.deptObject.deptPid;
+    this.deptObj.id = this.deptObject.id;
+
+    // 获取所有公司
+    this.companyService.getAllCompany().subscribe(
+      data => {
+        this.companyObject = data;
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
+    );
+  }
+}
 </script>
 <style lang="less">
-  .editOrg {
-    position: relative;
-    right: 30px;
-  }
-
+.editOrg {
+  position: relative;
+  right: 30px;
+}
 </style>

@@ -210,7 +210,7 @@ export default class OrgUserManage extends Page {
       phone: ""
     };
     this.manageService.getAllDepartment().subscribe(data => {
-      this.deptObject = data[0]; // TODO
+      this.deptObject = data[0];
       this.dataList = data;
     });
     this.userListModel = {
@@ -552,6 +552,7 @@ export default class OrgUserManage extends Page {
    * 树change
    */
   onChange(value) {
+    console.log(value, 9987);
     this.userListModel.deptId = value.id;
     this.deptLevel = value.deptLevel;
     this.deptObject = value;

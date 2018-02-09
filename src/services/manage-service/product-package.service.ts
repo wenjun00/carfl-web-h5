@@ -60,4 +60,13 @@ export class ProductPackageService {
       server: manageService.productPackageController.downloadTemplate
     })
   }
+
+  /**
+ * 查询所有产品包
+ */
+  getAllProductPackageNoPage() {
+    return this.netService.send({
+      server: manageService.productPackageController.getAllProductPackageNoPage
+    })
+  }
 }

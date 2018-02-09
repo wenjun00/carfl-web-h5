@@ -12,7 +12,7 @@
           <div style="font-size:20px;color:#1D4F8B;font-weight:bold;margin-bottom:20px;margin-left:56px;font-family:AdobeHeitiStd-Regular">登录</div>
           <i-form ref="login-form" :model="loginModel" :rules="loginRule" :label-width="80" class="login-form">
             <i-form-item prop="username">
-              <i-input type="text" size="large" v-model="loginModel.username" placeholder="用户名" @on-keyup.enter="submitForm">
+              <i-input type="text" size="large" v-model="loginModel.username" placeholder="用户名" @on-keyup.enter="submitForm" @on-change="checkAccount">
               </i-input>
             </i-form-item>
             <i-form-item prop="password">
@@ -20,8 +20,8 @@
               </i-input>
             </i-form-item>
 
-            <i-form-item>
-              <i-checkbox>
+            <i-form-item class="remember">
+              <i-checkbox v-model="loginModel.remember">
                 <span>记住用户名与密码</span>
               </i-checkbox>
               <i-button type="text" style="float:right;color:#1D4F8B" @click="registerModal = true">注册</i-button>
@@ -52,6 +52,7 @@ import { Action } from "vuex-class";
 import AppConfig from "~/config/app.config";
 import Register from "~/components/common/register.vue";
 import { DataDictService } from "~/services/manage-service/data-dict.service";
+import { StorageService } from "~/utils/storage.service";
 
 @Component({
   components: {
@@ -64,15 +65,16 @@ export default class Login extends Vue {
   @Action("updateUserLoginData") updateUserLoginData;
 
   private loginRule: Object = {};
-  private loginModel: any;
+  private loginModel: any = {
+    username: "",
+    password: "",
+    remember: false
+  };
   private registerModal: Boolean = false;
 
   created() {
     // 设置表单数据
-    this.loginModel = {
-      username: "",
-      password: ""
-    };
+    // this.loginModel = {};
 
     // 设置验证规则
     this.loginRule = {
@@ -116,6 +118,17 @@ export default class Login extends Vue {
             await this.updateUserLoginData(data);
             // 进入首页
             this.$router.push("/home");
+            if (this.loginModel.remember) {
+              StorageService.setItem("account", {
+                username: this.loginModel.username,
+                password: this.loginModel.password,
+                timing: new Date(
+                  +new Date() + 1000 * 60 * 60 * 24 * 7
+                ).valueOf() // 默认七天过期
+              });
+            } else {
+              StorageService.removeItem("account");
+            }
           },
           ({ msg }) => {
             this.$Message.error(msg);
@@ -123,9 +136,20 @@ export default class Login extends Vue {
         );
     });
   }
+  /**
+   * 如果账号重新输入，密码清空、验证码刷新、记住账号取消
+   */
+  checkAccount() {
+    if (!this.loginModel.username) {
+      console.log(878);
+      this.loginModel.password = "";
+      this.loginModel.remember = false;
+      // this.$refs['verify-code'].reset()
+    }
+  }
 }
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
 .calculate {
   .ivu-modal-footer {
     display: none !important;
