@@ -1,8 +1,20 @@
 <!--设备管理-->
 <template>
   <section class="component batch-manage-device">
-    <span style="margin-left:20px;">当前用户名：{{this.userName}}</span>
-    <i-table :columns="columns1" :data="deviceList"></i-table>
+    <!-- <i-tabs @on-click="tabClick">
+      <i-tab-pane label="PC端" name="pc"></i-tab-pane>
+      <i-tab-pane label="移动端" name="app"></i-tab-pane>
+    </i-tabs> -->
+    <div style="display:flex;justify-content:space-around;margin:10px 0;">
+      <i-button @click="onKeyUserDevice" class="blueButton">一键启用设备</i-button>
+      <i-button @click="onKeyForbidDevice" class="blueButton">一键禁用设备</i-button>
+      <i-button @click="onKeyUserDeviceLock" class="blueButton">一键启用设备锁</i-button>
+      <i-button @click="onKeyForbidDeviceLock" class="blueButton">一键停用设备锁</i-button>
+      <i-button @click="onKeyResetDevice" class="blueButton">一键重置设备</i-button>
+    </div>
+    <div style="width:100%;height:400px;border:1px solid #dddddd;overflow:auto">
+      <i-table :columns="columns1" :data="deviceList" ref="table" @on-selection-change="currentSelect"></i-table>
+    </div>
   </section>
 </template>
 
@@ -11,8 +23,8 @@ import Vue from "vue";
 import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
-import { LoginService } from "~/services/manage-service/login.service";
 import { Dependencies } from "~/core/decorator";
+import { UserDeviceService } from "~/services/manage-service/user-device.service";
 
 @Component({
   components: {
@@ -20,121 +32,29 @@ import { Dependencies } from "~/core/decorator";
   }
 })
 export default class BatchManageDevice extends Vue {
-  @Dependencies(LoginService) private loginService: LoginService;
+  @Dependencies(UserDeviceService) private userDeviceService: UserDeviceService;
   private columns1: any;
   private deviceList: Array<any> = [];
   private userName: String = "";
+  private multipleSelect: Array<any> = [];
   mounted() {}
   created() {
     this.columns1 = [
       {
-        title: "操作",
+        type: "selection",
         align: "center",
-        width: 300,
-        render: (h, { row, column, index }) => {
-          return h("div", [
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265ea2"
-                },
-                on: {
-                  click: () => {
-                    //启用or禁用设备
-                    this.loginService
-                      .disableDevice({
-                        userIds: [row.userId],
-                        userType: row.type,
-                        userStatus: row.status === 0 ? 1 : 0
-                      })
-                      .subscribe(
-                        data => {
-                          this.$Message.success("操作成功！");
-                          this.getDeviceList();
-                        },
-                        ({ msg }) => {
-                          this.$Message.error(msg);
-                        }
-                      );
-                  }
-                }
-              },
-              row.status === 0 ? "禁用设备" : "启用设备"
-            ),
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265ea2"
-                },
-                on: {
-                  click: () => {
-                    //停用设备锁or启用设备锁
-                    this.loginService
-                      .enableDeviceKey({
-                        userIds: [row.userId],
-                        userType: row.type,
-                        userValidate: row.validate === 0 ? 1 : 0
-                      })
-                      .subscribe(
-                        data => {
-                          this.$Message.success("操作成功！");
-                          this.getDeviceList();
-                        },
-                        ({ msg }) => {
-                          this.$Message.error(msg);
-                        }
-                      );
-                  }
-                }
-              },
-              row.validate === 0 ? "停用设备锁" : "启用设备锁"
-            ),
-            h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265ea2"
-                },
-                on: {
-                  click: () => {
-                    // 重置设备
-                    this.loginService
-                      .resetDevice({
-                        userIds: [row.userId],
-                        userType: row.type
-                      })
-                      .subscribe(
-                        data => {
-                          this.$Message.success("重置成功！");
-                        },
-                        ({ msg }) => {
-                          this.$Message.error(msg);
-                        }
-                      );
-                  }
-                }
-              },
-              "重置设备"
-            )
-          ]);
-        }
+        width: 60
       },
       {
         align: "center",
-        title: "类型",
-        key: "name"
+        title: "用户名",
+        key: "userName"
       },
+      // {
+      //   align: "center",
+      //   title: "类型",
+      //   key: "name"
+      // },
       {
         align: "center",
         title: "是否禁用",
@@ -153,15 +73,152 @@ export default class BatchManageDevice extends Vue {
       }
     ];
   }
-  makeData(row) {
-    this.userName = row.userUsername;
-    this.getDeviceList();
+  /**
+   * tab点击事件
+   */
+  tabClick(val) {
+    console.log(val, 987);
   }
-  getDeviceList() {
-    let userId = this.$store.state.userData.id;
-    this.loginService
+  /**
+   * 一键启用设备
+   */
+  onKeyUserDevice() {
+    if (!this.multipleSelect.length) {
+      this.$Message.error("请选择设备");
+    } else {
+      let userIds = this.multipleSelect.map(v => v.userId);
+      this.userDeviceService
+        .enableDevice({
+          userIds: userIds,
+          userStatus: 0,
+          userType: 414
+        })
+        .subscribe(
+          data => {
+            this.$Message.success("一键启用设备成功！");
+            this.multipleSelect = [];
+
+            this.$emit("close");
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+  }
+  /**
+   * 一键禁用设备
+   */
+  onKeyForbidDevice() {
+    if (!this.multipleSelect.length) {
+      this.$Message.error("请选择设备");
+    } else {
+      let userIds = this.multipleSelect.map(v => v.userId);
+      this.userDeviceService
+        .disableDevice({
+          userIds: userIds,
+          userStatus: 1,
+          userType: 414
+        })
+        .subscribe(
+          data => {
+            this.$Message.success("一键禁用设备成功！");
+            this.multipleSelect = [];
+
+            this.$emit("close");
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+  }
+  /**
+   * 一键启用设备锁
+   */
+  onKeyUserDeviceLock() {
+    if (!this.multipleSelect.length) {
+      this.$Message.error("请选择设备");
+    } else {
+      let userIds = this.multipleSelect.map(v => v.userId);
+      this.userDeviceService
+        .enableDeviceLock({
+          userIds: userIds,
+          userValidate: 0,
+          userType: 414
+        })
+        .subscribe(
+          data => {
+            this.$Message.success("一键启用设备锁成功！");
+            this.multipleSelect = [];
+
+            this.$emit("close");
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+  }
+  /**
+   * 一键停用设备锁
+   */
+  onKeyForbidDeviceLock() {
+    if (!this.multipleSelect.length) {
+      this.$Message.error("请选择设备");
+    } else {
+      let userIds = this.multipleSelect.map(v => v.userId);
+      this.userDeviceService
+        .disableDeviceLock({
+          userIds: userIds,
+          userValidate: 1,
+          userType: 414
+        })
+        .subscribe(
+          data => {
+            this.$Message.success("一键停用设备锁成功！");
+            this.multipleSelect = [];
+
+            this.$emit("close");
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+  }
+  /**
+   * 一键重置设备
+   */
+  onKeyResetDevice() {
+    if (!this.multipleSelect.length) {
+      this.$Message.error("请选择设备");
+    } else {
+      let userIds = this.multipleSelect.map(v => v.userId);
+      this.userDeviceService
+        .resetDevice({
+          userIds: userIds,
+          userType: 414
+        })
+        .subscribe(
+          data => {
+            this.$Message.success("一键重置设备成功！");
+            this.multipleSelect = [];
+            this.$emit("close");
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+  }
+  makeData(row) {
+    console.log(row, 333);
+    let ids = row.map(v => v.id);
+    console.log(ids, 898988);
+    this.userDeviceService
       .getUserDevice({
-        userId: userId
+        ids: ids
       })
       .subscribe(
         data => {
@@ -172,6 +229,13 @@ export default class BatchManageDevice extends Vue {
         }
       );
   }
-  moveOut(row) {}
+  /**
+   * 批量管理设备确定
+   */
+  confirmBatchMange() {}
+  currentSelect(val) {
+    console.log(val, 7778);
+    this.multipleSelect = val;
+  }
 }
 </script>

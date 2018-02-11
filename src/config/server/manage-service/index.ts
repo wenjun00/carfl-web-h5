@@ -26,6 +26,8 @@ import carQuotationController from './car-quotation.controller'
 import roleResoController from './role-reso.controller'
 import loginController from './login.controller'
 import fileUploadController from './file-upload-controller.controller'
+import userDeviceController from './user-device.controller'
+import scheduleJobController from './schedule-job.controller'
 
 export const manageService = {
   departmentController,
@@ -55,5 +57,7 @@ export const manageService = {
   carQuotationController,
   roleResoController,
   loginController,
-  fileUploadController
+  fileUploadController,
+  userDeviceController,
+  scheduleJobController
 }

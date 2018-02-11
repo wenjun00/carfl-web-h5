@@ -38,6 +38,23 @@ export default {
     controller: CONTROLLER,
     action: 'createProductPackage',
     type: requestType.Post
+  },
+  /**
+   * 查询所有产品包
+   */
+  getAllProductPackageNoPage: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getAllProductPackageNoPage',
+    type: requestType.Get
+  },
+  /**
+ * 下载模板
+ */
+  downloadTemplate: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'downloadTemplate',
+    type: requestType.Get
   }
-
 }

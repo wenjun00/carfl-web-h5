@@ -48,7 +48,7 @@
         <div style="margin-top:20px;margin-left:20px;">
           <div style="width:7px;height:18px;background:#265EA2;display:inline-block"></div>
           <span style="margin-left:10px;font-size:16px;color:#333333;position:relative;bottom:3px;">待办事项</span>
-          <div v-for="item in waitToHandle" :key="item.index" style="width:96%;height:42px;margin-top:10px;background:#F5F5F5;text-align:center;line-height:12px;">
+          <div v-for="item in waitToHandle" :key="item.index" style="min-width:270px;width:96%;height:42px;margin-top:10px;background:#F5F5F5;text-align:center;line-height:12px;">
             <div style="padding-top:6px;">
               <div style="font-size:12px;color:#666666;margin-right:118px;display:inline-block">{{item.name}}</div>
               <i-button type="text" style="color:#265EA2;font-size:14px;text-align:right" @click="pageToOrderQuery">{{item.number}}</i-button>
@@ -61,122 +61,113 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import Test2 from "./test2.vue";
-  import SvgIcon from '~/components/common/svg-icon.vue'
-  import Map from "~/components/common/map.vue"
-  import {
+import Vue from "vue";
+import Component from "vue-class-component";
+import Test2 from "./test2.vue";
+import SvgIcon from "~/components/common/svg-icon.vue";
+import Map from "~/components/common/map.vue";
+import { DataGrid, DataGridItem } from "vue-fintech-component";
+import { Layout } from "~/core/decorator";
+import { Mutation } from "vuex-class";
+
+@Layout("workspace")
+@Component({
+  components: {
     DataGrid,
-    DataGridItem
-  } from "vue-fintech-component";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    Mutation
-  } from 'vuex-class'
-
-  @Layout("workspace")
-  @Component({
-    components: {
-      DataGrid,
-      DataGridItem,
-      SvgIcon,
-      'zmap': Map
-    }
-  })
-  export default class Home extends Vue {
-    private waitToHandle: Array < any >= []
-    @Mutation openPage
-
-    created() {
-      this.waitToHandle = [{
-        index: 1,
-        name: '待提交销售申请',
-        number: 6
-      }, {
-        index: 2,
-        name: '退回的销售申请',
-        number: 8
-      }]
-    }
-    pageToOrderQuery() {
-      this.openPage({
-        title: '订单查询',
-        path: 'purchase/purchase-query/order-query',
-      })
-    }
-    financeLeaseApply() {
-      this.openPage({
-        title: '融资租赁申请',
-        path: 'purchase/purchase-manage/financing-lease-apply'
-      })
-    }
-    fullPayClick() {
-      this.openPage({
-        title: '全额付款申请',
-        path: 'purchase/purchase-manage/full-payment-apply'
-      })
-    }
-    customerAccountClick() {
-      this.openPage({
-        title: '客户开户',
-        path: 'purchase/purchase-manage/open-account'
-      })
-
-    }
-    customerSignClick() {
-      this.openPage({
-        title: '客户签约',
-        path: 'purchase/purchase-manage/customer-sign'
-      })
-
-
-    }
+    DataGridItem,
+    SvgIcon,
+    zmap: Map
   }
+})
+export default class Home extends Vue {
+  private waitToHandle: Array<any> = [];
+  @Mutation openPage;
 
+  created() {
+    this.waitToHandle = [
+      {
+        index: 1,
+        name: "待提交销售申请",
+        number: 6
+      },
+      {
+        index: 2,
+        name: "退回的销售申请",
+        number: 8
+      }
+    ];
+  }
+  pageToOrderQuery() {
+    this.openPage({
+      title: "订单查询",
+      path: "purchase/purchase-query/order-query"
+    });
+  }
+  financeLeaseApply() {
+    this.openPage({
+      title: "融资租赁申请",
+      path: "purchase/purchase-manage/financing-lease-apply"
+    });
+  }
+  fullPayClick() {
+    this.openPage({
+      title: "全额付款申请",
+      path: "purchase/purchase-manage/full-payment-apply"
+    });
+  }
+  customerAccountClick() {
+    this.openPage({
+      title: "客户开户",
+      path: "purchase/purchase-manage/open-account"
+    });
+  }
+  customerSignClick() {
+    this.openPage({
+      title: "客户签约",
+      path: "purchase/purchase-manage/customer-sign"
+    });
+  }
+}
 </script>
 
 <style lang="less">
-  .home-page {
-    .body {
-      border: none;
+.home-page {
+  .body {
+    border: none;
+  }
+}
+
+.quickStartContainer {
+  text-align: center;
+  cursor: pointer;
+  .quickStart {
+    background: #598ac5;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .svg {
+      font-size: 30px;
+      color: #fff;
     }
   }
 
-  .quickStartContainer {
-    text-align: center;
-    cursor: pointer;
-    .quickStart {
-      background: #598AC5;
-      border-radius: 50%;
-      width: 56px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      .svg {
-        font-size: 30px;
-        color: #fff;
-      }
-    }
-
-    .quickText {
-      margin-top: 6px;
-    }
-    .quickText:hover {
-      color: #265EA2;
-    }
+  .quickText {
+    margin-top: 6px;
   }
-
-  .mapContainer {
-    margin: 10px;
-    width: 98%;
-    height: 98%;
-    background-repeat: no-repeat!important;
-    background-size: 100% 98%;
-    background-image: url('/static/images/common/china.png')
+  .quickText:hover {
+    color: #265ea2;
   }
+}
 
+.mapContainer {
+  margin: 10px;
+  width: 98%;
+  height: 98%;
+  background-repeat: no-repeat !important;
+  background-size: 100% 98%;
+  background-image: url("/static/images/common/china.png");
+}
 </style>

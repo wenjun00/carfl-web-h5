@@ -4,23 +4,20 @@
     <i-row style="margin-top:20px;">
       <span style="font-size:18px;font-weight:bold;margin-left:8px;">产品配置</span>
       <i-row>
-        <i-col :span="5" style="margin-left:10px;">
-          <div style="width:250px;height:30px;border:1px solid #999999;line-height:30px;font-size:16px;">
+        <i-col style="margin-left:10px;width:260px;float:left;">
+          <div style="width:250px;height:30px;border:1px solid #dddd;line-height:30px;font-size:16px;">
             <div style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>
             <span style="position:relative;left:5px;">产品类目</span>
             <div style="float:right;display:inline-block;font-weight:bold">
               <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addProductFun">
                 <svg-icon iconClass="tianjiawenjian"></svg-icon>
               </div>
-              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addSericeFun">
+              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;margin-right:7px;color:rgb(38, 94, 162)" @click="addSericeFun">
                 <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
-              </div>
-              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
-                <svg-icon iconClass="sousuo"></svg-icon>
               </div>
             </div>
           </div>
-          <div style="width:250px;height:600px;border-left:1px solid #999999;border-right:1px solid #999999;border-bottom:1px solid #999999;position:relative;bottom:8px;">
+          <div style="width:250px;height:600px;border:1px solid #dddd;border-top:0;position:relative;bottom:8px;">
             <i-tree :data="treeData" @on-select-change="productNameDetail"></i-tree>
           </div>
         </i-col>
@@ -42,7 +39,7 @@
                                 <Radio label="自有资金"></Radio>
                                 <Radio label="第三方"></Radio>
                             </RadioGroup> -->
-              <i-button class="blueButton" @click="customerFodderConfig">{{productMessage.isConfig=0 ? "已配置" : "客户素材配置" }}</i-button>
+              <i-button class="blueButton" style="margin-left:10px;" @click="customerFodderConfig">{{productMessage.isConfig=0 ? "已配置" : "客户素材配置" }}</i-button>
               <!--<i-button class="blueButton" @click="chargeAgainstOrderConfig">冲抵顺序配置</i-button>-->
             </i-col>
           </i-row>
@@ -98,7 +95,7 @@
                     <span class="itemName">管理费</span>
                     <span class="item">{{item.manageCost}}元</span>
                   </div>
-                  <div v-if="item.isPublish===361" class="itemContainer">
+                  <div v-if="item.isPublish===360" class="itemContainer">
                     <span class="itemName">启用/停用</span>
                     <i-switch class="item" v-model="item.productStatus" size="large" @on-change="switchStatus(item)">
                       <span slot="open">启用</span>
@@ -106,7 +103,7 @@
 
                     </i-switch>
                   </div>
-                  <div v-if="item.isPublish===360" class="itemContainer">
+                  <div v-if="item.isPublish===361" class="itemContainer">
                     <span class="itemName">操作</span>
                     <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;" @click="showDetail(item)">
                       <svg-icon iconClass="tianxie" class="item"></svg-icon>
@@ -139,7 +136,7 @@
     </template>
 
     <template>
-      <i-modal v-model="addPeriodsModal" title="新增期数" width="900">
+      <i-modal v-model="addPeriodsModal" title="新增期数" width="900" class="purchaseInformation">
         <add-periods :pNameTitle="productMessage" ref="add-periods-ref" @close="closeModal"></add-periods>
         <div slot="footer">
           <i-button type="primary" @click="submiteButton">保存并退出</i-button>
@@ -147,16 +144,16 @@
       </i-modal>
     </template>
     <template>
-      <i-modal v-model="editModal" title="编辑期数" width="900">
-        <edit-periods :productDetail="productDetails" :pNameTitle="productMessage" ref="edit-periods"></edit-periods>
+      <i-modal v-model="editModal" title="编辑期数" width="900" class="purchaseInformation">
+        <edit-periods :productDetail="productDetails" :pNameTitle="productMessage" ref="edit-periods" @close="closeEditModal"></edit-periods>
         <div slot="footer">
-          <i-button type="primary" @click="submiteButton">保存并退出</i-button>
+          <i-button type="primary" @click="editSubmit">保存并退出</i-button>
         </div>
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="viewModal" title="查看期数" width="900">
+      <i-modal v-model="viewModal" title="查看期数" width="900" class="periods">
         <preview-product :productDetailView="productDetails" :dpNameTitleView="productMessage"></preview-product>
         <div slot="footer">
           <i-button type="primary" @click="viewModal=false">关闭</i-button>
@@ -265,6 +262,8 @@ export default class ProdConfig extends Page {
 	private scopes: any = {};
 	private newTree: any = {};
 	private parent: any = {};
+	private node1: any = {};
+	private childs: any = {};
 
 	created() {
 		this.treeList();
@@ -648,14 +647,14 @@ export default class ProdConfig extends Page {
 	submiteButton() {
 		let periodsModal: any = this.$refs['add-periods-ref'];
 		periodsModal.confirmPeriods();
-		this.treeList();
-		this.productNameDetail(this.scopes);
 	}
 	/**
 	 * 关闭弹窗
 	 */
 	closeModal() {
 		this.addPeriodsModal = false;
+		this.treeList();
+		this.productNameDetail(this.scopes);
 	}
 	/**
 	 * 点击编辑
@@ -665,6 +664,21 @@ export default class ProdConfig extends Page {
 		this.productDetails = item;
 		let openDetails: any = this.$refs['edit-periods'];
 		openDetails.moneyFun(item);
+	}
+	/**
+	 * 编辑提交按钮
+	 */
+	editSubmit() {
+		let periodsModal: any = this.$refs['edit-periods'];
+		periodsModal.confirmPeriods();
+	}
+	/**
+	 * 编辑关闭弹窗
+	 */
+	closeEditModal() {
+		this.editModal = false;
+		this.treeList();
+		this.productNameDetail(this.scopes);
 	}
 	viewButton(item) {
 		this.viewModal = true;
@@ -732,19 +746,36 @@ export default class ProdConfig extends Page {
 			})
 			.subscribe(val => {
 				this.newTree = val;
+				console.log(this.newTree, 9999);
 				this.newTree.map(val => {
 					let dictData = JSON.parse(localStorage.dictData); //获取所有数字字典项
 					let pt = dictData.find(v => v.id === val.type); // 找到字典项对应的父类
+
+					this.childs = {
+						title: pt.name,
+						expand: true,
+						children: [
+							{
+								title: val.name,
+								expand: true,
+							},
+						],
+					};
 				});
+				this.node1 = {
+					title: '全选',
+					expand: true,
+					children: [this.childs],
+				};
+				this.customerFodderTree.push(this.node1);
 			});
 	}
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .prod-config {
-	height: 100%;
+	// height: 100%;
 }
-
 .maintainCss {
 	background: #e4f4fa;
 }
@@ -846,5 +877,12 @@ export default class ProdConfig extends Page {
 	height: 50px;
 	line-height: 50px;
 	text-indent: 14px;
+}
+
+.periods {
+	.ivu-modal-body {
+		height: 600px !important;
+		overflow: auto !important;
+	}
 }
 </style>

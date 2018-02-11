@@ -8,7 +8,9 @@
           <i-button class="blueButton" @click="addDept" style="position:relative;bottom:10px;right:8px;">添加机构</i-button>
         </i-row>
         <i-row>
-          <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
+          <div style="overflow:auto;height:540px">
+            <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
+          </div>
         </i-row>
       </i-col>
       <i-col :span="20">
@@ -90,8 +92,8 @@
     </template>
 
     <template>
-      <i-modal title="批量管理设备">
-        <batch-manage-device ref="batch-manage-device"></batch-manage-device>
+      <i-modal title="批量管理设备" v-model="batchManageDeviceModal" :width="700" class="batch-manage-device">
+        <batch-manage-device ref="batch-manage-device" @close="closeAndRefreshBatch"></batch-manage-device>
       </i-modal>
     </template>
   </section>
@@ -168,6 +170,7 @@ export default class OrgUserManage extends Page {
   // private deptPid: number | null = null;
   private openColumnsConfig: Boolean = false;
   private editNewOrgModal: Boolean = false;
+  private batchManageDeviceModal: Boolean = false;
   private addOrgModel: any = {
     deptName: "",
     deptStatus: 0,
@@ -207,7 +210,7 @@ export default class OrgUserManage extends Page {
       phone: ""
     };
     this.manageService.getAllDepartment().subscribe(data => {
-      this.deptObject = data[0]; // TODO
+      this.deptObject = data[0];
       this.dataList = data;
     });
     this.userListModel = {
@@ -224,7 +227,7 @@ export default class OrgUserManage extends Page {
       },
       {
         align: "center",
-        width: 90,
+        width: 60,
         type: "index",
         renderHeader: (h, { column, index }) => {
           return h(
@@ -361,26 +364,22 @@ export default class OrgUserManage extends Page {
       {
         align: "center",
         title: "电话",
-        key: "userPhone",
-        width: 146
+        key: "userPhone"
       },
       {
         align: "center",
         title: "备注",
-        key: "userRemark",
-        width: 160
+        key: "userRemark"
       },
       {
         align: "center",
         title: "创建人",
-        key: "operatorName",
-        width: 160
+        key: "operatorName"
       },
       {
         align: "center",
         title: "创建时间",
         key: "operateTime",
-        width: 200,
         render: (h, { row, columns, index }) => {
           return h(
             "span",
@@ -431,6 +430,10 @@ export default class OrgUserManage extends Page {
         columnsName: "最近合同生成日期"
       }
     ];
+  }
+  closeAndRefreshBatch() {
+    this.batchManageDeviceModal = false;
+    this.getUserListByCondition();
   }
   modifyUserClose() {
     this.modifyUserModal = false;
@@ -494,8 +497,9 @@ export default class OrgUserManage extends Page {
   batchAllotRole() {
     this.multipleUserId = this.$refs["databox"];
     this.multipleUserId = this.multipleUserId.getCurrentSelection();
-    if (!this.multipleUserId) {
-      this.$Message.info("请选择用户");
+
+    if (!this.multipleUserId.length) {
+      this.$Message.error("请选择用户");
     } else {
       this.allotRoleModal = true;
       let _allotRole = <Modal>this.$refs["allot-role-modal"];
@@ -517,15 +521,16 @@ export default class OrgUserManage extends Page {
    * 批量管理设备
    */
   batchManageDevice() {
-    let _selection: any = this.$refs["databox"];
-    let multipleSelection = _selection.getCurrentSelection().map(v => v.id);
-    console.log(multipleSelection, 89898);
-    if (multipleSelection.length) {
-    } else {
+    this.multipleUserId = this.$refs["databox"];
+    this.multipleUserId = this.multipleUserId.getCurrentSelection();
+    if (!this.multipleUserId.length) {
       this.$Message.error("请选择用户");
+    } else {
+      this.batchManageDeviceModal = true;
+      this.userIds = this.multipleUserId.map(v => v.id);
+      let _batchManage: any = this.$refs["batch-manage-device"];
+      _batchManage.makeData(this.multipleUserId);
     }
-
-    this.deviceManageModal = true;
   }
   getUserListByCondition() {
     this.manageService
@@ -543,6 +548,7 @@ export default class OrgUserManage extends Page {
    * 树change
    */
   onChange(value) {
+    console.log(value, 9987);
     this.userListModel.deptId = value.id;
     this.deptLevel = value.deptLevel;
     this.deptObject = value;
@@ -659,6 +665,13 @@ export default class OrgUserManage extends Page {
     _addUser.confirmAddUser();
   }
   /**
+   * 确定批量管理设备
+   */
+  confirmBatchManageDevice() {
+    let _batchManage: any = this.$refs["batch-manage-device"];
+    _batchManage.confirmBatchMange();
+  }
+  /**
    * 列配置
    */
   columnsConfig() {
@@ -668,7 +681,7 @@ export default class OrgUserManage extends Page {
 </script>
 
 <style lang="less">
-.device-manage {
+.batch-manage-device {
   .ivu-modal-footer {
     display: none;
   }

@@ -5,7 +5,7 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="用户名" prop="userUsername">
-            <i-input v-model="addUserModel.userUsername"></i-input>
+            <i-input v-model="addUserModel.userUsername" :maxlength="50"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -17,7 +17,7 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="电话" prop="userPhone">
-            <i-input v-model="addUserModel.userPhone"></i-input>
+            <i-input v-model="addUserModel.userPhone" :maxlength="11"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -47,6 +47,7 @@
             <i-select v-model="addUserModel.userSex">
               <i-option label="男" :value="419" :key="419"></i-option>
               <i-option label="女" :value="420" :key="420"></i-option>
+              <!-- <i-option v-for="{id,name} in this.$helper.getTypeCode('0045','0047')" :key="id" :label="name" :value="id"></i-option> -->
             </i-select>
           </i-form-item>
         </i-col>

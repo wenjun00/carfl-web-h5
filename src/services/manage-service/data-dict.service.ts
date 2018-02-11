@@ -71,4 +71,15 @@ export class DataDictService {
       server: manageService.dataDictController.getDictData,
     })
   }
+
+  /**
+  * 分页查询数据字典类型对应的数据字典项
+  */
+  getDataDictByTypeCodeWithPage(data, page) {
+    return this.netService.send({
+      server: manageService.dataDictController.getDataDictByTypeCodeWithPage,
+      data: data,
+      page: page
+    })
+  }
 }

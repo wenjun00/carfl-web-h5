@@ -4,16 +4,10 @@
     <i-row>
       <div class="form-title">批量管理</div>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="batchList"></data-box>
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:5px">
-        <i-col :span="8" push="1">
-          <span>申请人：administrator</span>
-        </i-col>
-        <i-col :span="10" pull="4">
-          <span>申请时间： 2017-12-01 13:56:45</span>
-        </i-col>
-        <i-col :span="6" style="text-align:right;">
+      <i-row type="flex" align="middle" style="padding:14px">
+        <i-col :span="24" style="text-align:right;">
           <i-button class="highButton" @click="batchManage">批量管理</i-button>
         </i-col>
       </i-row>
@@ -22,273 +16,249 @@
 </template>
 
 <script lang="ts">
-import Page from '~/core/page';
-import Component from 'vue-class-component';
-import DataBox from '~/components/common/data-box.vue';
-import { PageService } from '~/utils/page.service';
-import { Dependencies } from '~/core/decorator';
-import { OrderService } from '~/services/business-service/order.service';
-import SvgIcon from '~/components/common/svg-icon.vue';
-import { Layout } from '~/core/decorator';
+  import Page from "~/core/page";
+  import Component from "vue-class-component";
+  import DataBox from "~/components/common/data-box.vue";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    OrderService
+  } from "~/services/business-service/order.service";
+  import SvgIcon from "~/components/common/svg-icon.vue";
+  import {
+    Layout
+  } from "~/core/decorator";
+  import {
+    ScheduleJobService
+  } from "~/services/manage-service/schedule-job.service";
 
-@Layout('workspace')
-@Component({
-	components: {
-		DataBox,
-		SvgIcon,
-	},
-})
-export default class SystemBackups extends Page {
-	@Dependencies() private pageService: PageService;
-	@Dependencies(OrderService) private orderService: OrderService;
-	private columns1: any;
-	private columns2: any;
-	private treeColumns: any;
-	private data1: Array<Object> = [];
-	private treeData: Array<Object> = [];
-	private treeDatabox: Array<Object> = [];
-	private data2: Array<Object> = [];
-	private searchOptions: Boolean = false;
-	private customName: String = '';
-	private openColumnsConfig: Boolean = false;
-	private openOneKeyToConnect: Boolean = false;
-	private editSysParamsModal: Boolean = false;
+  @Layout("workspace")
+  @Component({
+    components: {
+      DataBox,
+      SvgIcon
+    }
+  })
+  export default class SystemBackups extends Page {
+    @Dependencies() private pageService: PageService;
+    @Dependencies(ScheduleJobService)
+    private scheduleJobService: ScheduleJobService;
+    private columns1: any;
+    private columns2: any;
+    private treeColumns: any;
+    private batchList: Array < Object > = [];
+    private treeData: Array < Object > = [];
+    private treeDatabox: Array < Object > = [];
+    private data2: Array < Object > = [];
+    private searchOptions: Boolean = false;
+    private customName: String = "";
+    private openColumnsConfig: Boolean = false;
+    private openOneKeyToConnect: Boolean = false;
+    private editSysParamsModal: Boolean = false;
 
-	private checkRadio: String = '';
-	created() {
-		this.columns1 = [
-			{
-				align: 'center',
-				type: 'index',
-				title: '序号',
-				width: 60,
-			},
-			{
-				title: '操作',
-				width: 220,
-				align: 'center',
-				render: (h, { row, column, index }) => {
-					if (row.status === '暂停') {
-						return h('div', [
-							h(
-								'i-button',
-								{
-									props: {
-										type: 'text',
-									},
-									style: {
-										color: '#265EA2',
-									},
-									on: {
-										click: () => {
-											this.startUse();
-										},
-									},
-								},
-								'启用'
-							),
-							h(
-								'i-button',
-								{
-									props: {
-										type: 'text',
-										disabled: true,
-									},
-									style: {
-										// color: "#265EA2"
-									},
-								},
-								'暂停'
-							),
-						]);
-					} else if (row.status === '启用') {
-						return h('div', [
-							h(
-								'i-button',
-								{
-									props: {
-										type: 'text',
-										disabled: true,
-									},
-									style: {
-										// color: "#265EA2"
-									},
-									on: {
-										click: () => {},
-									},
-								},
-								'启用'
-							),
-							h(
-								'i-button',
-								{
-									props: {
-										type: 'text',
-									},
-									style: {
-										color: '#265EA2',
-									},
-									on: {
-										click: () => {
-											this.stopUse();
-										},
-									},
-								},
-								'暂停'
-							),
-						]);
-					}
-				},
-			},
-			{
-				title: '任务名称',
-				key: 'missionName',
-				align: 'center',
-			},
-			{
-				title: '任务所在组',
-				key: 'missionGroup',
-				align: 'center',
-			},
-			{
-				title: '任务描述',
-				key: 'missionDesc',
-				align: 'center',
-			},
-			{
-				title: '任务类名',
-				key: 'missionClassName',
-				align: 'center',
-			},
-			{
-				title: '触发器名称',
-				key: 'triggerName',
-				align: 'center',
-			},
-			{
-				title: '触发器所在组',
-				key: 'triggerGroup',
-				align: 'center',
-			},
-			{
-				title: '下次执行时间',
-				key: 'nextExecuteTime',
-				align: 'center',
-			},
-			{
-				title: '表达式',
-				key: 'expression',
-				align: 'center',
-			},
-			{
-				title: '状态',
-				key: 'status',
-				align: 'center',
-			},
-			{
-				title: '时区',
-				key: 'timeZone',
-				align: 'center',
-			},
-		];
+    private checkRadio: String = "";
+    mounted() {
+      this.getBatchManageList();
+    }
+    created() {
+      this.columns1 = [{
+          align: "center",
+          width: 90,
+          type: "index",
+          renderHeader: (h, {
+            column,
+            index
+          }) => {
+            return h(
+              "div", {
+                on: {
+                  click: () => {
+                    this.columnsConfig();
+                  }
+                },
+                style: {
+                  cursor: "pointer"
+                }
+              }, [
+                h("Icon", {
+                  props: {
+                    type: "gear-b",
+                    size: "20"
+                  }
+                })
+              ]
+            );
+          }
+        },
+        {
+          title: "操作",
+          width: 100,
+          align: "center",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h(
+              "i-button", {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265ea2"
+                },
+                on: {
+                  click: () => {
+                    this.startOrStop(row);
+                  }
+                }
+              },
+              row.triggerState === "NORMAL" ? "停用" : "启用"
+            );
+          }
+        },
+        {
+          title: "任务名称",
+          key: "jobName",
+          align: "center"
+        },
+        {
+          title: "任务所在组",
+          key: "jobGroup",
+          align: "center"
+        },
+        {
+          title: "任务描述",
+          key: "jobDescribe",
+          align: "center"
+        },
+        {
+          title: "任务类名",
+          key: "jobClassName",
+          align: "center"
+        },
+        {
+          title: "触发器名称",
+          key: "triggerName",
+          align: "center"
+        },
+        {
+          title: "触发器所在组",
+          key: "triggerGroup",
+          align: "center"
+        },
+        {
+          title: "下次执行时间",
+          key: "nextExecutionTime",
+          align: "center"
+        },
+        {
+          title: "表达式",
+          key: "expression",
+          align: "center"
+        },
+        {
+          title: "状态",
+          key: "triggerState",
+          align: "center",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, row.triggerState === "NORMAL" ? "启用" : "停用");
+          }
+        },
+        {
+          title: "时区",
+          key: "timeZone",
+          align: "center"
+        }
+      ];
+    }
+    getBatchManageList() {
+      this.scheduleJobService.queryScheduleJobList(this.pageService).subscribe(
+        data => {
+          this.batchList = data;
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+    }
+    startOrStop(row) {
+      console.log(row, 134);
+      if (row.status) {
+        // 停用
+        this.scheduleJobService
+          .pauseScheduleJob({
+            jobGroup: row.jobGroup,
+            jobName: row.jobName
+          })
+          .subscribe(
+            data => {
+              this.$Message.success("停用成功！");
+              this.getBatchManageList();
+            },
+            ({
+              msg
+            }) => {
+              this.$Message.error(msg);
+            }
+          );
+      } else {
+        // 启用
+        this.scheduleJobService
+          .resumeScheduleJob({
+            jobGroup: row.jobGroup,
+            jobName: row.jobName
+          })
+          .subscribe(
+            data => {
+              this.$Message.success("启用成功！");
+              this.getBatchManageList();
+            },
+            ({
+              msg
+            }) => {
+              this.$Message.error(msg);
+            }
+          );
+      }
+    }
+    batchManage() {
+      this.$Modal.confirm({
+        title: "提示",
+        content: "确认进行批量管理？",
+        onOk: () => {
+          this.scheduleJobService.scheduleJobBatchManager().subscribe(data => {
+            this.$Message.success("批量管理成功！");
+          }, ({
+            msg
+          }) => {
+            this.$Message.error(msg)
+          })
+        }
+      });
+    }
+    /**
+     * 列配置
+     */
+    columnsConfig() {
+      this.openColumnsConfig = true;
+    }
+    /**
+     * 确定
+     */
+    confirm() {}
+    startUse() {}
+    stopUse() {}
+  }
 
-		this.data1 = [
-			{
-				missionName: 'OverNightJobName_0001',
-				missionGroup: 'OverNightJobGroup',
-				missionDesc: '晚间批量',
-				missionClassName: 'cn.fintecher.pangolin.business.job.OverNightJob',
-				triggerName: 'overNightTriggerName_0001',
-				triggerGroup: 'overNightTriggerGroup',
-				nextExecuteTime: '2018-01-09 16:48:00',
-				expression: '00 48 16 * * ?',
-				status: '暂停',
-				timeZone: 'Asia/Shanghai',
-			},
-			{
-				missionName: 'OverNightJobName_0001',
-				missionGroup: 'OverNightJobGroup',
-				missionDesc: '晚间批量',
-				missionClassName: 'cn.fintecher.pangolin.business.job.OverNightJob',
-				triggerName: 'overNightTriggerName_0001',
-				triggerGroup: 'overNightTriggerGroup',
-				nextExecuteTime: '2018-01-09 16:48:00',
-				expression: '00 48 16 * * ?',
-				status: '启用',
-				timeZone: 'Asia/Shanghai',
-			},
-		];
-	}
-	batchManage() {
-		this.$Modal.confirm({
-			title: '提示',
-			content: '确认进行批量管理？',
-			onOk: () => {
-				this.$Message.info('批量管理成功！');
-			},
-		});
-	}
-	/**
-	 * 确定
-	 */
-	confirm() {}
-	startUse() {
-		this.$Message.info('启用成功');
-		this.data1 = [
-			{
-				missionName: 'OverNightJobName_0001',
-				missionGroup: 'OverNightJobGroup',
-				missionDesc: '晚间批量',
-				missionClassName: 'cn.fintecher.pangolin.business.job.OverNightJob',
-				triggerName: 'overNightTriggerName_0001',
-				triggerGroup: 'overNightTriggerGroup',
-				nextExecuteTime: '2018-01-09 16:48:00',
-				expression: '00 48 16 * * ?',
-				status: '启用',
-				timeZone: 'Asia/Shanghai',
-			},
-			{
-				missionName: 'OverNightJobName_0001',
-				missionGroup: 'OverNightJobGroup',
-				missionDesc: '晚间批量',
-				missionClassName: 'cn.fintecher.pangolin.business.job.OverNightJob',
-				triggerName: 'overNightTriggerName_0001',
-				triggerGroup: 'overNightTriggerGroup',
-				nextExecuteTime: '2018-01-09 16:48:00',
-				expression: '00 48 16 * * ?',
-				status: '启用',
-				timeZone: 'Asia/Shanghai',
-			},
-		];
-	}
-	stopUse() {
-		this.$Message.info('暂停成功');
-		this.data1 = [
-			{
-				missionName: 'OverNightJobName_0001',
-				missionGroup: 'OverNightJobGroup',
-				missionDesc: '晚间批量',
-				missionClassName: 'cn.fintecher.pangolin.business.job.OverNightJob',
-				triggerName: 'overNightTriggerName_0001',
-				triggerGroup: 'overNightTriggerGroup',
-				nextExecuteTime: '2018-01-09 16:48:00',
-				expression: '00 48 16 * * ?',
-				status: '启用',
-				timeZone: 'Asia/Shanghai',
-			},
-			{
-				missionName: 'OverNightJobName_0001',
-				missionGroup: 'OverNightJobGroup',
-				missionDesc: '晚间批量',
-				missionClassName: 'cn.fintecher.pangolin.business.job.OverNightJob',
-				triggerName: 'overNightTriggerName_0001',
-				triggerGroup: 'overNightTriggerGroup',
-				nextExecuteTime: '2018-01-09 16:48:00',
-				expression: '00 48 16 * * ?',
-				status: '暂停',
-				timeZone: 'Asia/Shanghai',
-			},
-		];
-	}
-}
 </script>

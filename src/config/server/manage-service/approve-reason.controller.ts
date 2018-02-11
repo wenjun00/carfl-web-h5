@@ -46,5 +46,14 @@ export default {
     controller: CONTROLLER,
     action: 'getApproveReasonByCondition',
     type: requestType.Get
+  },
+  /**
+   * 删除审批原因
+   */
+  deleteApproveReason: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'deleteApproveReason',
+    type: requestType.Delete
   }
 }

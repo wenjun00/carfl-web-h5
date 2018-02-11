@@ -15,47 +15,48 @@
       </Select>
     </i-form-item>
     <i-form-item label="备注">
-      <i-input type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..." v-model="productPackage.remark"></i-input>
+      <i-input type="textarea" :autosize="{minRows: 2,maxRows: 5}" v-model="productPackage.remark"></i-input>
     </i-form-item>
   </i-form>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import { Prop } from 'vue-property-decorator';
-import Component from 'vue-class-component';
-import { Form } from 'iview';
-import { Dependencies } from '~/core/decorator';
-import { FileUploadControllerService } from '~/services/manage-service/file-upload-controller.service';
+import Vue from "vue";
+import { Prop } from "vue-property-decorator";
+import Component from "vue-class-component";
+import { Form } from "iview";
+import { Dependencies } from "~/core/decorator";
+import { FileUploadControllerService } from "~/services/manage-service/file-upload-controller.service";
 
-import { Emit } from 'vue-property-decorator';
+import { Emit } from "vue-property-decorator";
 
 @Component({
-	components: {},
+  components: {}
 })
 export default class AddProductPackage extends Vue {
-	@Dependencies(FileUploadControllerService) private fileUploadControllerService: FileUploadControllerService;
-	private productPackage: any = {};
-	private rulesProduct: any = {};
-	private files: any = {};
-	private actions: String = '0';
-	created() {
-		this.productPackage = {
-			fileId: '',
-			fileName: '',
-			remark: '',
-		};
-	}
-	/**
-	 *获取文件名称
-	 */
-	handleUpload(file) {
-		this.files = file;
-		console.log(file, 999);
-	}
-	action() {
-		this.fileUploadControllerService.uploadFileGrid().subscribe(val => {
-			console.log(val);
-		});
-	}
+  @Dependencies(FileUploadControllerService)
+  private fileUploadControllerService: FileUploadControllerService;
+  private productPackage: any = {};
+  private rulesProduct: any = {};
+  private files: any = {};
+  private actions: String = "0";
+  created() {
+    this.productPackage = {
+      fileId: "",
+      fileName: "",
+      remark: ""
+    };
+  }
+  /**
+   *获取文件名称
+   */
+  handleUpload(file) {
+    this.files = file;
+    console.log(file, 999);
+  }
+  action() {
+    this.fileUploadControllerService.uploadFileGrid().subscribe(val => {
+      console.log(val);
+    });
+  }
 }
 </script>
