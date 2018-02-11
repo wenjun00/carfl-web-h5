@@ -36,8 +36,12 @@
     <div style="width:100%;color:#999999;position:absolute;bottom:20px;text-align:center">© 2018 Zhiwang All Rights Reserved. For Internal Use Only</div>
 
     <template>
-      <i-modal title="新用户注册" v-model="registerModal" class="calculate">
-        <register @close="registerModal=false"></register>
+      <i-modal title="新用户注册" v-model="registerModal">
+        <register @close="registerModal=false" ref="register"></register>
+        <div slot="footer">
+          <i-button @click="cancelRegister">取消</i-button>
+          <i-button @click="confirmRegister" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -95,6 +99,22 @@ export default class Login extends Vue {
     };
   }
 
+  /**
+   * 取消注册
+   */
+  cancelRegister() {
+    this.registerModal = false;
+    let _register: any = this.$refs["register"];
+    _register.resetForm();
+  }
+
+  /**
+   * 确定注册
+   */
+  confirmRegister() {
+    let _register: any = this.$refs["register"];
+    _register.registerClick();
+  }
   /**
    * 提交登录表单
    */

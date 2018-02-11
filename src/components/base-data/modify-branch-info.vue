@@ -1,7 +1,7 @@
 <!--修改分公司信息-->
 <template>
   <section class="component modify-branch-info">
-    <i-form ref="branch-form" :model="formItemParent" :rules="formRules" :label-width="100">
+    <i-form ref="branch-form" :model="formItemParent" :rules="formRules" :label-width="80" label-position="left">
       <i-form-item label="公司简称：" prop="companyChinaname">
         <i-input v-model="formItemParent.companyChinaname" placeholder="请输入公司简称"></i-input>
       </i-form-item>
@@ -181,7 +181,6 @@ export default class ModifyBranchInfo extends Vue {
    * 修改器用/停用
    */
   change(status) {
-    console.log(status, 1234);
     if (status) {
       this.formItemParent.companyStatus = true;
     } else {
@@ -192,9 +191,5 @@ export default class ModifyBranchInfo extends Vue {
 </script>
 
 <style lang="less">
-.addPeriodsItem {
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 16px;
-}
+
 </style>

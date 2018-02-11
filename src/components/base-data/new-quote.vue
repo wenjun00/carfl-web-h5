@@ -9,8 +9,8 @@
           </i-form-item>
         </i-col>
         <i-col :span="12" :push="1">
-          <i-form-item label="产品包" prop="quotationName">
-            <i-select v-model="quoteForm.productPackageId">
+          <i-form-item label="产品包" prop="productPackageId">
+            <i-select v-model="quoteForm.productPackageId" clearable>
               <i-option v-for="item in allProdPackage" :key="item.id" :value="item.id" :label="item.fileName"></i-option>
             </i-select>
           </i-form-item>
@@ -23,14 +23,14 @@
       <i-row>
         <i-col :span="11">
           <i-form-item label="品牌" prop="carBrandId">
-            <i-select v-model="quoteForm.carBrandId">
+            <i-select v-model="quoteForm.carBrandId" clearable>
               <i-option v-for="item in brandList" :value="item.id" :label="item.brandName" :key="item.id"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="12" :push="1">
           <i-form-item label="车型" prop="carId">
-            <i-select v-model="quoteForm.carId">
+            <i-select v-model="quoteForm.carId" clearable>
               <i-option v-for="item in carList" :value="item.id" :label="item.modelName" :key="item.id"></i-option>
             </i-select>
           </i-form-item>
@@ -39,7 +39,7 @@
       <i-row>
         <i-col :span="11">
           <i-form-item label="车系" prop="carSeriesName">
-            <i-select v-model="quoteForm.carSeriesName">
+            <i-select v-model="quoteForm.carSeriesName" clearable>
               <i-option v-for="item in SeriesList" :value="item.id" :label="item.seriesName" :key="item.id"></i-option>
             </i-select>
           </i-form-item>
@@ -186,6 +186,14 @@ export default class AddPeriods extends Vue {
         required: true,
         message: "请输入经销商",
         trigger: "blur"
+      }
+    ],
+    productPackageId: [
+      {
+        required: true,
+        message: "请输入产品包",
+        trigger: "change",
+        type: "number"
       }
     ],
     carBrandId: [
