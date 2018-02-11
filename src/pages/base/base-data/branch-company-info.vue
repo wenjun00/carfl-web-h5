@@ -6,7 +6,7 @@
       <span style="margin-left:10px;">关键字搜索：</span>
       <i-input style="width:15%" placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyWord"></i-input>
       <i-button class="blueButton" style="margin-left:10px;" @click="seachCompany">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;">重置</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>
     </i-row>
     <data-box :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
     <div class="submitBar">

@@ -1,7 +1,7 @@
 <!--修改分公司信息-->
 <template>
   <section class="component modify-branch-info">
-    <i-form ref="branch-form" :model="formItemParent" :rules="formRules" :label-width="80" label-position="left">
+    <i-form ref="branch-form" :model="formItemParent" :rules="formRules" :label-width="85" label-position="left">
       <i-form-item label="公司简称：" prop="companyChinaname">
         <i-input v-model="formItemParent.companyChinaname" placeholder="请输入公司简称"></i-input>
       </i-form-item>

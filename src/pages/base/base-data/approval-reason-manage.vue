@@ -17,7 +17,7 @@
       <span style="margin-left:10px;">详细内容：</span>
       <i-input style="width:10%;" v-model="appReasonModel.detail"></i-input>
       <i-button class="blueButton" style="margin-left:10px;" @click="seach">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;">重置</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>
       <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
         <span></span>
       </div>
@@ -88,7 +88,7 @@ export default class ApprovalReasonManage extends Page {
 	@Dependencies(PageService) private pageService: PageService;
 	private columns: any;
 	private columns2: any;
-	private appReasonModel: any;
+	private appReasonModel: any = {};
 	private data2: Array<any> = [];
 	private searchOptions: Boolean = false;
 	private approvalReasonModal: Boolean = false;
@@ -319,7 +319,24 @@ export default class ApprovalReasonManage extends Page {
 	 * 模板下载
 	 */
 	downloadTemplate() {
-		this.approveReasonService.downloadApproveReasonTemplate().subscribe(val => {});
+		this.approveReasonService.downloadApproveReasonTemplate().subscribe(
+			val => {},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+	}
+	/**
+	 * 重置搜索
+	 */
+	resetSeach() {
+		this.appReasonModel = {
+			first: '',
+			second: '',
+			CRC: '',
+			detail: '',
+			type: '',
+		};
 	}
 }
 </script>
