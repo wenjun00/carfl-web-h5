@@ -13,6 +13,8 @@
         <span style="margin-left:20px;margin-right:5px;">型号</span>
         <i-input style="width:12%" placeholder="请输入型号" v-model="busModal.carName"></i-input>
         <i-button class="blueButton" style="margin-left:10px;" @click="seachBusiness">搜索</i-button>
+        <i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>
+        
       </div>
       <div style="float:right;margin-right:10px;margin-top:10px;">
         <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
@@ -85,7 +87,7 @@ export default class AddPeriods extends Vue {
   private columns: any;
   private status: Number = 0;
   private carList: Array<Object> = [];
-  private busModal: Object = {};
+  private busModal: any = {};
   private editModal: Boolean = false;
   private carInfo: any = {};
   private carformitem: any = {};
@@ -439,6 +441,18 @@ export default class AddPeriods extends Vue {
     let openQuote: any = this.$refs["new-quote"];
     openQuote.rulesFun();
     this.seachBusiness();
+  }
+  /**
+   * 重置搜索
+   */
+  resetSeach(){
+    this.busModal = {
+      productPackageName: "",
+      carBrandName: "",
+      carSeriesName: "",
+      carName: "",
+      quotationName: ""
+    };
   }
 }
 </script>

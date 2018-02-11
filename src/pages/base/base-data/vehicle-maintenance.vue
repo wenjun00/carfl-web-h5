@@ -6,40 +6,67 @@
         <!--<div style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>-->
         <i-row style="border-bottom:1px solid #dddddd;position:relative;bottom:10px;">
           <span style="position:relative;left:5px;">车辆品牌</span>
-          <div style="float:right;display:inline-block;font-weight:bold;position:relative;bottom:6px;">
+          <div style="float:right;display:inline-block;font-weight:bold;position:relative;bottom:6px;overflow:auto;">
             <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addVehicle">
               <svg-icon iconClass="tianjiawenjian"></svg-icon>
             </div>
-            <!-- <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
+            <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
               <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
-            </div> -->
-            <!-- <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)">
-              <svg-icon iconClass="sousuo"></svg-icon>
-            </div> -->
+            </div>
           </div>
         </i-row>
-        <div>
+        <div style="height: 540px;overflow: auto;">
           <i-tree :data="treeData" style="padding:10px;" @on-select-change="cartreeChange"></i-tree>
         </div>
       </i-col>
-      <i-col :span="20">
-        <i-row>
-          <i-input style="width:12%;margin-left:20px"></i-input>
-          <i-button class="blueButton" style="margin-left:10px" v-model="carParam" placeholder="输入品牌型号进行查询" @click="seach">搜索</i-button>
+      <i-col :span="19" style="margin-left:15px;">
+        <div>型号名称：2016款 15N 手动进取型</div>
+        <i-row type="flex" justify="space-between" style="margin:15px 0;">
+          <i-col>
+            <span>可选颜色：</span>
+            <RadioGroup>
+              <Radio label="金斑蝶"></Radio>
+              <Radio label="爪哇犀牛"></Radio>
+              <Radio label="印度黑羚"></Radio>
+            </RadioGroup>
+          </i-col>
+          <i-button class="blueButton">编辑参数</i-button>
         </i-row>
-        <data-box border :columns="carColumns" :data="carDataModel" style="margin-top:20px;" @onPageChange="seach" :page="pageService"></data-box>
+        <div>型号参数</div>
+        <i-row justify="space-between" type="flex">
+          <i-col class="parms_container">
+            <div>基本参数</div>
+            <div>发动机</div>
+            <div>变速箱</div>
+            <div>车身</div>
+            <div>安装装备</div>
+            <div>内容配置</div>
+            <i-button class="blueButton">+ 添加类别</i-button>
+          </i-col>
+          <i-col :span="22">
+            <i-table v-if="viewStatus" stripe :columns="carColumns" :page="pageService"></i-table>
+            <i-form class="table_container" ref="parms=form" :molel="parmsForm" :rules="parmsRules" v-else>
+              <i-row type="flex">
+                <i-col :span="12">参数名称</i-col>
+                <i-col :span="12">参数值</i-col>
+              </i-row>
+              <i-row>
+                <i-col :span="12">
+                  <i-form-item>
+                    <i-input></i-input>
+                  </i-form-item>
+                </i-col>
+                <i-col :span="12">
+                  <i-form-item>
+                    <i-input></i-input>
+                  </i-form-item>
+                </i-col>
+              </i-row>
+            </i-form>
+          </i-col>
+        </i-row>
       </i-col>
     </i-row>
-    <template>
-      <i-modal v-model="editModal" title="修改车辆信息" style="width:800px;">
-        <edit-car-maintenance :editMessage="editmessage" ref="edit-car-maintenance" @close="closeAndRefresh"></edit-car-maintenance>
-        <div slot="footer">
-          <i-button class="Ghost" @click="closeFun">取消</i-button>
-          <i-button class="blueButton" @click="submitButton">确定</i-button>
-        </div>
-      </i-modal>
-    </template>
-
     <template>
       <i-modal v-model="addVehicleModal" title="新增车辆">
         <add-vehicle ref="add-vehicle" @close="closeAndRefreshVehicle"></add-vehicle>
@@ -55,20 +82,16 @@
 import Page from '~/core/page';
 import DataBox from '~/components/common/data-box.vue';
 import Component from 'vue-class-component';
-import EditCarMaintenance from '~/components/base-data/edit-car-maintenance.vue';
 import { Dependencies } from '~/core/decorator';
 import { Layout } from '~/core/decorator';
 import SvgIcon from '~/components/common/svg-icon.vue';
 import { PageService } from '~/utils/page.service';
 import { CarService } from '~/services/manage-service/car.service';
-import AddVehicle from '~/components/base-data/add-vehicle.vue';
 @Layout('workspace')
 @Component({
 	components: {
 		DataBox,
 		SvgIcon,
-		EditCarMaintenance,
-		AddVehicle,
 	},
 })
 export default class ProdConfig extends Page {
@@ -85,6 +108,7 @@ export default class ProdConfig extends Page {
 	private addVehicleModal: Boolean = false; // 添加车辆
 	private checkData: any;
 	private treeDatas: any = [];
+	private viewStatus: Boolean = false;
 	/**
 	 * 客户素材配置
 	 */
@@ -93,49 +117,13 @@ export default class ProdConfig extends Page {
 		this.getCarseries();
 		this.carColumns = [
 			{
-				title: '操作',
-				align: 'center',
-				width: 100,
-				render: (h, { row, index, column }) => {
-					return h('div', [
-						h(
-							'i-button',
-							{
-								props: {
-									type: 'text',
-								},
-								style: {
-									color: '#265EA2',
-								},
-								on: {
-									click: () => {
-										this.editFun(row);
-									},
-								},
-							},
-							'修改'
-						),
-					]);
-				},
-			},
-			{
-				title: '车辆品牌',
+				title: '参数名称',
 				key: 'brandName',
 				align: 'center',
 			},
 			{
-				title: '车辆型号',
+				title: '参数值',
 				key: 'modelName',
-				align: 'center',
-			},
-			{
-				title: '车身颜色',
-				key: 'carColour',
-				align: 'center',
-			},
-			{
-				title: '车辆排量',
-				key: 'carEmissions',
 				align: 'center',
 			},
 		];
@@ -228,57 +216,19 @@ export default class ProdConfig extends Page {
 				children: this.treeDatas,
 			},
 		];
-	}
-	/**
+	} /**
 	 * 取消新增车辆
 	 */
 	cancleAddVehicle() {
 		this.addVehicleModal = false;
 		let _addVehicle: any = this.$refs['add-vehicle'];
 		_addVehicle.reset();
-	}
-	/**
+	} /**
 	 * 确定新增车辆
 	 */
 	confirmAddVehicle() {
 		let _addVehicle: any = this.$refs['add-vehicle'];
 		_addVehicle.addVehicle();
-	}
-	/**
-	 * 查询车辆
-	 */
-	seach() {
-		this.carService
-			.seachCar({
-				carParam: this.carParam,
-			})
-			.subscribe(
-				data => {
-					this.carDataModel = data;
-				},
-				({ msg }) => {
-					this.$Message.error(msg);
-				}
-			);
-	}
-	/**@augments
-	 * 编辑
-	 */
-	editFun(row) {
-		this.editModal = true;
-		let editOpen: any = this.$refs['edit-car-maintenance'];
-		editOpen.makeData(row);
-	}
-	closeFun() {
-		this.editModal = false;
-	}
-	closeAndRefresh() {
-		this.editModal = false;
-		this.cartreeChange(this.checkData);
-	}
-	submitButton() {
-		let editOpen: any = this.$refs['edit-car-maintenance'];
-		editOpen.vaildFun();
 	}
 	closeAndRefreshVehicle() {
 		this.getCarseries();
@@ -286,3 +236,21 @@ export default class ProdConfig extends Page {
 	}
 }
 </script>
+<style lang="less" scoped>
+.parms_container {
+	width: 48px;
+	div {
+		padding: 8px 0;
+		text-align: center;
+		color: rgb(212, 211, 211);
+	}
+}
+.avtive {
+	color: #000;
+}
+.table_container {
+	text-align-last: center;
+	border: 1px solid #dddd;
+}
+</style>
+

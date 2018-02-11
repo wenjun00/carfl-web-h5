@@ -5,9 +5,9 @@
       <span style="font-size:18px;font-weight:bold;margin-left:2px;">数据字典</span>
       <i-row>
         <i-col :span="6">
-          <div style="background:#D8D8D8;width:250px;height:30px;text-align:center;border:1px solid #dddd;line-height:30px;font-size:16px;">
+          <div style="width:250px;height:30px;text-align:center;border:1px solid #dddd;line-height:30px;font-size:16px;">
             <span>数据类型</span>
-            <span @click="addVehicle">
+            <span @click="addVehicle" style="float: right;margin-right: 12px;color:#265ea2;">
               <svg-icon iconClass="tianjiawenjian"></svg-icon>
             </span>
           </div>
@@ -21,23 +21,8 @@
           <span>数据名称：</span>
           <i-input style="width:10%;" v-model="dictAguments.name"></i-input>
           <i-button class="blueButton" style="margin-left:10px" @click="seach">搜索</i-button>
-          <i-button class="blueButton" style="margin-left:10px">重置</i-button>
+          <i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>
           <i-button class="blueButton" style="margin-left:10px;position:absolute;right:0;" @click="dataModal=true">新增数据</i-button>
-          <table border="1" width="100%" style="margin-top:10px;border:1px solid #DDDEE1" id="tb">
-            <!--<tr align="center" height="40">
-              <td bgcolor="#F2F2F2" width="100">序号</td>
-              <td bgcolor="#F2F2F2">操作</td>
-              <td bgcolor="#F2F2F2">名称</td>
-            </tr>
-            <tr v-for="item in dataNames" :key="item.id" :value="item.name" align="center">
-              <td>{{item.id}}</td>
-              <td width="360">
-                <i-button type="text" style="color:blue" @click="editDict">编辑</i-button>
-                <i-button type="text" style="color:blue" @click="deleteDataDict(item)">删除</i-button>
-              </td>
-              <td>{{item.name}}</td>
-            </tr>-->
-          </table>
           <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService"></data-box>
         </i-col>
       </i-row>
@@ -118,7 +103,7 @@ export default class DataDict extends Page {
 	private checkId: Number = 1;
 	private item: any;
 	private columns1: any;
-	private dictAguments: any;
+	private dictAguments: any = {};
 	private addNameModal: Boolean = false;
 	private checkModal: Boolean = false;
 	private id: any = '';
@@ -362,6 +347,15 @@ export default class DataDict extends Page {
 				}
 			);
 		});
+	}
+	/**
+	 * 重置搜索
+	 */
+	resetSeach() {
+		this.dictAguments = {
+			typeCode: '',
+			name: '',
+		};
 	}
 	mounted() {
 		this.checkId = 1;
