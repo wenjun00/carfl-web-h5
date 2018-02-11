@@ -24,28 +24,22 @@
         <i-row type="flex" justify="space-between" style="margin:15px 0;">
           <i-col>
             <span>可选颜色：</span>
-            <RadioGroup>
-              <Radio label="金斑蝶"></Radio>
-              <Radio label="爪哇犀牛"></Radio>
-              <Radio label="印度黑羚"></Radio>
+            <RadioGroup v-for="item in colorPa" :key="item.id" v-model="colorModel">
+              <Radio :label="item.name" disabled></Radio>
             </RadioGroup>
           </i-col>
-          <i-button class="blueButton">编辑参数</i-button>
+          <i-button class="blueButton" @click="editParam">编辑参数</i-button>
         </i-row>
-        <div>型号参数</div>
-        <i-row justify="space-between" type="flex">
+        <i-row>型号参数</i-row>
+        <div v-if="!dataLength" class="empty_text">空空如也，请选择车辆^_^</div>
+        <i-row justify="space-between" type="flex" v-if="dataLength">
           <i-col class="parms_container">
-            <div>基本参数</div>
-            <div>发动机</div>
-            <div>变速箱</div>
-            <div>车身</div>
-            <div>安装装备</div>
-            <div>内容配置</div>
-            <i-button class="blueButton">+ 添加类别</i-button>
+            <div v-for="item in carTypes" :key="item.id" @click="paramDetail(item)">{{item.paramName}}</div>
+            <span class="textButton">+ 添加类别</span>
           </i-col>
           <i-col :span="22">
-            <i-table v-if="viewStatus" stripe :columns="carColumns" :page="pageService"></i-table>
-            <i-form class="table_container" ref="parms=form" :molel="parmsForm" :rules="parmsRules" v-else>
+            <i-table v-if="viewStatus" stripe :columns="carColumns" :data="paramList"></i-table>
+            <i-form class="table_container" ref="parms=form" v-else>
               <i-row type="flex">
                 <i-col :span="12">参数名称</i-col>
                 <i-col :span="12">参数值</i-col>
@@ -62,6 +56,7 @@
                   </i-form-item>
                 </i-col>
               </i-row>
+
             </i-form>
           </i-col>
         </i-row>
@@ -72,7 +67,7 @@
         <add-vehicle ref="add-vehicle" @close="closeAndRefreshVehicle"></add-vehicle>
         <div slot="footer">
           <i-button @click="cancleAddVehicle">取消</i-button>
-          <i-button class="blueButton" @click="confirmAddVehicle">确定</i-button>
+          <span class="blueButton" @click="confirmAddVehicle">确定</span>
         </div>
       </i-modal>
     </template>
@@ -82,33 +77,47 @@
 import Page from '~/core/page';
 import DataBox from '~/components/common/data-box.vue';
 import Component from 'vue-class-component';
+import AddVehicle from '~/components/base-data/add-vehicle.vue';
+
 import { Dependencies } from '~/core/decorator';
 import { Layout } from '~/core/decorator';
 import SvgIcon from '~/components/common/svg-icon.vue';
 import { PageService } from '~/utils/page.service';
 import { CarService } from '~/services/manage-service/car.service';
+import { CarParamTypeControllerService } from '~/services/manage-service/car-param-type-controller.service';
+import { CarParamControllerService } from '~/services/manage-service/car-param-controller.service';
+
 @Layout('workspace')
 @Component({
 	components: {
 		DataBox,
 		SvgIcon,
+		AddVehicle,
 	},
 })
 export default class ProdConfig extends Page {
+	@Dependencies(CarParamTypeControllerService) private CarParamTypeControllerService: CarParamTypeControllerService;
+	@Dependencies(CarParamControllerService) private carParamControllerService: CarParamControllerService;
+
 	@Dependencies(CarService) private carService: CarService;
 	@Dependencies(PageService) private pageService: PageService;
 	private treeData: Array<any> = [];
 	private dataList: any = [];
-	private treeId: any;
+	private carId: any;
 	private carDataModel: Array<any> = [];
-	private carColumns: Array<any> = [];
+	private carColumns: any = [];
 	private carParam: String = '';
 	private editmessage: any = {};
 	private editModal: Boolean = false;
 	private addVehicleModal: Boolean = false; // 添加车辆
-	private checkData: any;
 	private treeDatas: any = [];
-	private viewStatus: Boolean = false;
+	private viewStatus: Boolean = true;
+	private dataLength: Boolean = false;
+	private carTypes: any = {};
+	private paramList: any = [];
+	private oneParamCode: any = {}; //基本参数
+	private colorPa: any = {}; //车身颜色
+	private colorModel: any = {};
 	/**
 	 * 客户素材配置
 	 */
@@ -118,12 +127,12 @@ export default class ProdConfig extends Page {
 		this.carColumns = [
 			{
 				title: '参数名称',
-				key: 'brandName',
+				key: 'name',
 				align: 'center',
 			},
 			{
 				title: '参数值',
-				key: 'modelName',
+				key: 'value',
 				align: 'center',
 			},
 		];
@@ -137,26 +146,38 @@ export default class ProdConfig extends Page {
 		_addVehicle.getAllBrand();
 	}
 	/**
-	 * 根据车系列树获取车列表
+	 * 根据车系列树获取车参数类型
 	 */
 	cartreeChange(data) {
-		this.checkData = data;
-		if (data[0].seriesId) {
-			this.treeId = data[0].seriesId;
-		}
-		if (data[0].brandId) {
-			this.treeId = data[0].brandId;
-		}
 		if (data[0].carId) {
-			this.treeId = data[0].carId;
+			this.carId = data[0].carId;
+			this.CarParamTypeControllerService.getCarParamTypeByCarId({
+				carId: this.carId,
+			}).subscribe(val => {
+				this.carTypes = val;
+				this.paramList = [];
+				this.oneParamCode = val[0];
+				val == '' ? (this.dataLength = false) : (this.dataLength = true);
+				let colorObject = val.filter(v => v.paramName === '车身颜色');
+				this.colorPa = colorObject[0].carParams;
+				let colorName = this.colorPa.filter(v => v.value == 0);
+				this.colorModel = colorName[0].name;
+				this.paramDetail(this.oneParamCode);
+			});
 		}
-		this.carService
-			.findAllCarBySeries({
-				seriesId: this.treeId,
+	}
+	/**
+	 * 点击基本参数类型获取参数信息
+	 */
+	paramDetail(item) {
+		this.carParamControllerService
+			.getCarParamByCode({
+				code: item.paramCode,
 			})
 			.subscribe(
-				data => {
-					this.carDataModel = data;
+				val => {
+					console.log(val);
+					this.paramList = val;
 				},
 				({ msg }) => {
 					this.$Message.error(msg);
@@ -216,14 +237,16 @@ export default class ProdConfig extends Page {
 				children: this.treeDatas,
 			},
 		];
-	} /**
+	}
+	/**
 	 * 取消新增车辆
 	 */
 	cancleAddVehicle() {
 		this.addVehicleModal = false;
 		let _addVehicle: any = this.$refs['add-vehicle'];
 		_addVehicle.reset();
-	} /**
+	}
+	/**
 	 * 确定新增车辆
 	 */
 	confirmAddVehicle() {
@@ -234,6 +257,17 @@ export default class ProdConfig extends Page {
 		this.getCarseries();
 		this.addVehicleModal = false;
 	}
+	/**
+	 * 编辑参数/保存
+	 */
+	editParam(val) {
+		console.log(val, 333);
+		if ((val.target.innerHTML = '编辑参数')) {
+			val.target.innerHTML = '保存';
+		} else if ((val.target.innerHTML = '保存')) {
+			val.target.innerHTML = '编辑参数';
+		}
+	}
 }
 </script>
 <style lang="less" scoped>
@@ -243,14 +277,27 @@ export default class ProdConfig extends Page {
 		padding: 8px 0;
 		text-align: center;
 		color: rgb(212, 211, 211);
+		cursor: pointer;
 	}
 }
+
 .avtive {
 	color: #000;
 }
+
 .table_container {
 	text-align-last: center;
 	border: 1px solid #dddd;
 }
+.textButton {
+	width: 61px;
+	color: #265ea2;
+	display: inline-block;
+	cursor: pointer;
+}
+.empty_text {
+	height: 300px;
+	text-align: center;
+	line-height: 300px;
+}
 </style>
-
