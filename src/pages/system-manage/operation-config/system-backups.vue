@@ -22,7 +22,7 @@
     </i-row>
     <data-box :id="69" :columns="columns1" :data="systemBackUpList" @onPageChange="getSystemBackupList" :page="pageService"></data-box>
 
-    <template>
+    <!-- <template>
       <i-modal title="列配置" v-model="openColumnsConfig" class-name="no-footer">
         <columns-config ref="columns-config" @close="openColumnsConfig=false"></columns-config>
         <div slot="footer">
@@ -32,7 +32,7 @@
           <i-button @click="openColumnsConfig=false">关闭</i-button>
         </div>
       </i-modal>
-    </template>
+    </template> -->
   </section>
 </template>
 
@@ -47,14 +47,14 @@ import SvgIcon from "~/components/common/svg-icon.vue";
 import { Layout } from "~/core/decorator";
 import { ManageService } from "~/services/manage-service/manage.service";
 import { FilterService } from "~/utils/filter.service";
-import ColumnsConfig from "~/components/common/columns-config.vue";
+// import ColumnsConfig from "~/components/common/columns-config.vue";
 
 @Layout("workspace")
 @Component({
   components: {
     DataBox,
-    SvgIcon,
-    ColumnsConfig
+    SvgIcon
+    // ColumnsConfig
   }
 })
 export default class SystemBackups extends Page {
