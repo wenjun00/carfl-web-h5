@@ -104,6 +104,7 @@ export default class DataBox extends Vue {
         width: 90,
         key: "index",
         type: "index",
+        fixed: "left",
         renderHeader: (h, { column, index }) => {
           return h(
             "div",

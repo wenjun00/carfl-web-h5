@@ -18,7 +18,7 @@
       </i-col>
       <!--表格-->
       <i-col :span="20">
-        <data-box :columns="treeColumns" :data="treeDatabox"></data-box>
+        <data-box :id="34" :columns="treeColumns" :data="treeDatabox" @onPageChange="roleReso" :page="pageService"></data-box>
       </i-col>
     </i-row>
 
@@ -124,6 +124,7 @@ import ToView from "~/components/system-manage/to-view.vue";
 import { Dependencies } from "~/core/decorator";
 import { Layout } from "~/core/decorator";
 import { RoleResoService } from "~/services/manage-service/role-reso.service";
+import { PageService } from "~/utils/page.service";
 
 @Layout("workspace")
 @Component({
@@ -135,6 +136,7 @@ import { RoleResoService } from "~/services/manage-service/role-reso.service";
 })
 export default class ModuleFunction extends Page {
   @Dependencies(RoleResoService) private roleResoService: RoleResoService;
+  @Dependencies(PageService) private pageService: PageService;
 
   private treeData: Array<any> = [];
   private treeColumns: any;
@@ -168,13 +170,6 @@ export default class ModuleFunction extends Page {
     this.treeData = [];
 
     this.treeColumns = [
-      {
-        align: "center",
-        type: "index",
-        title: "序号",
-        width: 60,
-        fixed: "left"
-      },
       {
         align: "center",
         title: "操作",
@@ -244,37 +239,44 @@ export default class ModuleFunction extends Page {
       },
       {
         align: "center",
+        editable: true,
         key: "resoInitName",
         title: "资源初始化名称"
       },
       {
         align: "center",
+        editable: true,
         key: "resoName",
         title: "资源名称"
       },
       {
         align: "center",
+        editable: true,
         key: "resoInitIcon",
         title: "资源初始化图标"
       },
       {
         align: "center",
+        editable: true,
         key: "resoIcon",
         title: "资源图标"
       },
 
       {
         align: "center",
+        editable: true,
         key: "moduleId",
         title: "重置"
       },
       {
         align: "center",
+        editable: true,
         key: "resoStatus",
         title: "状态"
       },
       {
         align: "center",
+        editable: true,
         key: "resoRemark",
         title: "备注"
       }

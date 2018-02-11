@@ -18,20 +18,7 @@
         </div>
       </div>
     </i-row>
-    <data-box :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService"></data-box>
-    <!--Model-->
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置">
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
-
+    <data-box :id="57" :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService"></data-box>
   </section>
 </template>
 
@@ -76,6 +63,7 @@ export default class SystemLogDownload extends Page {
       {
         title: "操作时间",
         key: "operateTime",
+        editable: true,
         align: "center",
         width: 160,
         render: (h, { row, columns, index }) => {
@@ -87,31 +75,37 @@ export default class SystemLogDownload extends Page {
       },
       {
         title: "操作人",
+        editable: true,
         key: "realName",
         align: "center"
       },
       {
         title: "客户端IP",
+        editable: true,
         key: "clientIp",
         align: "center"
       },
       {
         title: "执行参数",
+        editable: true,
         key: "exeParams",
         align: "center"
       },
       {
         title: "备注",
+        editable: true,
         key: "logRemark",
         align: "center"
       },
       {
         title: "请求执行时长（秒）",
+        editable: true,
         key: "exeTime",
         align: "center"
       },
       {
         title: "执行类型",
+        editable: true,
         key: "exeType",
         align: "center"
       }

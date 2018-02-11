@@ -4,7 +4,7 @@
     <i-row>
       <div class="form-title">批量管理</div>
     </i-row>
-    <data-box :columns="columns1" :data="batchList" @onPageChange="getBatchManageList" :page="pageService"></data-box>
+    <data-box :id="63" :columns="columns1" :data="batchList" @onPageChange="getBatchManageList" :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:14px">
         <i-col :span="24" style="text-align:right;">
@@ -57,71 +57,56 @@ export default class SystemBackups extends Page {
   created() {
     this.columns1 = [
       {
-        title: "操作",
-        width: 100,
-        align: "center",
-        render: (h, { row, column, index }) => {
-          return h(
-            "i-button",
-            {
-              props: {
-                type: "text"
-              },
-              style: {
-                color: "#265ea2"
-              },
-              on: {
-                click: () => {
-                  this.startOrStop(row);
-                }
-              }
-            },
-            row.triggerState === "NORMAL" ? "停用" : "启用"
-          );
-        }
-      },
-      {
         title: "任务名称",
+        editable: true,
         key: "jobName",
         align: "center"
       },
       {
         title: "任务所在组",
+        editable: true,
         key: "jobGroup",
         align: "center"
       },
       {
         title: "任务描述",
+        editable: true,
         key: "jobDescribe",
         align: "center"
       },
       {
         title: "任务类名",
+        editable: true,
         key: "jobClassName",
         align: "center"
       },
       {
         title: "触发器名称",
+        editable: true,
         key: "triggerName",
         align: "center"
       },
       {
         title: "触发器所在组",
+        editable: true,
         key: "triggerGroup",
         align: "center"
       },
       {
         title: "下次执行时间",
+        editable: true,
         key: "nextExecutionTime",
         align: "center"
       },
       {
         title: "表达式",
+        editable: true,
         key: "expression",
         align: "center"
       },
       {
         title: "状态",
+        editable: true,
         key: "triggerState",
         align: "center",
         render: (h, { row, column, index }) => {
@@ -130,6 +115,7 @@ export default class SystemBackups extends Page {
       },
       {
         title: "时区",
+        editable: true,
         key: "timeZone",
         align: "center"
       }

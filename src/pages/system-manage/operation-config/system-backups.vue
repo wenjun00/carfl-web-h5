@@ -21,18 +21,6 @@
       <i-button style="margin-left:10px;" class="blueButton" @click="addNewBackups">新增备份</i-button>
     </i-row>
     <data-box :id="69" :columns="columns1" :data="systemBackUpList" @onPageChange="getSystemBackupList" :page="pageService"></data-box>
-
-    <!-- <template>
-      <i-modal title="列配置" v-model="openColumnsConfig" class-name="no-footer">
-        <columns-config ref="columns-config" @close="openColumnsConfig=false"></columns-config>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template> -->
   </section>
 </template>
 
@@ -89,6 +77,7 @@ export default class SystemBackups extends Page {
       {
         title: "操作",
         width: 220,
+        fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {
           return h("div", [
