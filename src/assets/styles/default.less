@@ -1,85 +1,101 @@
-body,html,body>div#__nuxt{
-  height:100%;
-  width:100%;
+body,
+html,
+body>div#__nuxt {
+  height: 100%;
+  width: 100%;
 }
+
 // datagrid边框
-.grid-content{
+.grid-content {
   border-top: 1px solid #DCDDE0!important;
   border-left: 1px solid #DCDDE0!important;
-  .data-grid-item{
+  .data-grid-item {
     border-right: 1px solid #DCDDE0!important;
     border-bottom: 1px solid #DCDDE0!important;
-    .data-grid-item__separate{
+    .data-grid-item__separate {
       background: #DCDDE0!important;
     }
   }
 }
 
 // 订单详情设置固定高度
-.purchaseInformation{
+.purchaseInformation {
   .ivu-modal-body {
-      height: 600px;
-      overflow: auto;
-    }
+    height: 600px;
+    overflow: auto;
+  }
 }
-.main-container{
-  background: #EFF3F5;
-}
-.pageContainer{
+
+.main-container {
   background: #EFF3F5;
 }
 
- .ivu-modal-header {
-    background: #265EA2;
-    .ivu-modal-header-inner {
-      color: white;
+.pageContainer {
+  background: #EFF3F5;
+}
+
+.ivu-modal-header {
+  background: #265EA2;
+  .ivu-modal-header-inner {
+    color: white;
+  }
+}
+
+.ivu-modal-content {
+  .ivu-modal-close {
+    .ivu-icon,
+    .ivu-icon-ios-close-empty {
+      color: #fff;
+    }
+    .ivu-icon:hover,
+    .ivu-icon-ios-close-empty:hover {
+      color: #fff;
     }
   }
-  .ivu-modal-content{
-    .ivu-modal-close{
-      .ivu-icon , .ivu-icon-ios-close-empty{
-      color:#fff;
-      }
-      .ivu-icon:hover , .ivu-icon-ios-close-empty:hover{
-      color:#fff;
-      }
-    }
-  }
- .ivu-date-picker{
+}
+
+.ivu-date-picker {
   //  width:8%!important;
- } 
-.ivu-select-dropdown{
-    width: 293px;
-    transform-origin: center top 0px;
-    position: absolute;
-    left: -2px;
-    top: 32px;
-}
-.page{
-  height:822px;
-  padding-left:10px;
-  background: white;
-  margin:20px;
-  border:1px solid #DDDDDD;
-  min-width:1200px;
-  .ivu-form{
-   .ivu-input-type,.ivu-input-wrapper,.ivu-select,.ivu-select-single .ivu-select-selection{
-    width:320px;
-    display: inline-block;
-   }
-  }
-  .pagination{
-    .ivu-input-type,.ivu-input-wrapper,.ivu-select,.ivu-select-single .ivu-select-selection{
-    width:80px;
-    display: inline-block;
-  }
-  }
-  .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab-active{
-  color:black!important;
-  border-top:2px solid #265ea2!important;
 }
 
-.submitBar {
+.ivu-select-dropdown {
+  width: 293px;
+  transform-origin: center top 0px;
+  position: absolute;
+  left: -2px;
+  top: 32px;
+}
+
+.page {
+  height: 822px;
+  padding-left: 10px;
+  background: white;
+  margin: 20px;
+  border: 1px solid #DDDDDD;
+  min-width: 1200px;
+  .ivu-form {
+    .ivu-input-type,
+    .ivu-input-wrapper,
+    .ivu-select,
+    .ivu-select-single .ivu-select-selection {
+      width: 320px;
+      display: inline-block;
+    }
+  }
+  .pagination {
+    .ivu-input-type,
+    .ivu-input-wrapper,
+    .ivu-select,
+    .ivu-select-single .ivu-select-selection {
+      width: 80px;
+      display: inline-block;
+    }
+  }
+  .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab-active {
+    color: black!important;
+    border-top: 2px solid #265ea2!important;
+  }
+  .submitBar {
     height: 70px;
     width: 100%;
     background: #fff;
@@ -88,116 +104,129 @@ body,html,body>div#__nuxt{
     left: 0;
     border: 1px solid #ddd;
   }
-// 默认按钮内部文字颜色
-.defaultButton{
-  color:#265EA2;
-}
-// 蓝色按钮
-.blueButton{
-  background: #265EA2;
-  color:#fff;
-}
-.blueButton:hover{
-  background: #1D4F8B;
-  color:#fff;
-}
-// 页面底部大按钮
-.highButton{
-  height:46px;
-  border-radius: 0;
-  background: #265EA2;
-  color:#fff;
-}
-.highButton:hover{
-  background: #1D4F8B;
-  color:#fff;
-}
-
-.highDefaultButton{
-   height:46px;
-  border-radius: 0;
-  background: #E4E4E4;
-  color:#265EA2;;
-}
-
-.ivu-tabs-nav-scroll{
-  overflow: unset;
-}
-}
-  .purchase_information{
-    .ive-modal-body{
-      height:600px;
-      overflow: auto;
-    }
+  // 默认按钮内部文字颜色
+  .defaultButton {
+    color: #265EA2;
   }
-
-.ivu-modal{
-  .blueButton{
-  background: #265EA2;
-  color:#fff;
-}
-.blueButton:hover{
-  background: #1D4F8B;
-  color:#fff;
-}
-.highButton{
-  height:46px;
-  border-radius: 0;
-  background: #265EA2;
-  color:#fff;
-}
-.highButton:hover{
-  background: #1D4F8B;
-  color:#fff;
-}
-
-.highDefaultButton{
-   height:46px;
-  border-radius: 0;
-  background: #E4E4E4;
-  color:#265EA2;;
-}
-
-}
-.ivu-tree-title-selected, .ivu-tree-title-selected:hover{
-  background:#C8DFF4!important;
-}
-
-.work-menu{
-  .ivu-poptip-popper{
-    width:100%!important;
-    left:0!important;
-    top:50px!important;
- }
+  // 蓝色按钮
+  .blueButton {
+    background: #265EA2;
+    color: #fff;
+  }
+  .blueButton:hover {
+    background: #1D4F8B;
+    color: #fff;
+  }
+  // 页面底部大按钮
+  .highButton {
+    height: 46px;
+    border-radius: 0;
+    background: #265EA2;
+    color: #fff;
+  }
+  .highButton:hover {
+    background: #1D4F8B;
+    color: #fff;
+  }
+  .highDefaultButton {
+    height: 46px;
+    border-radius: 0;
+    background: #E4E4E4;
+    color: #265EA2;
+    ;
+  }
+  .ivu-tabs-nav-scroll {
+    overflow: unset;
+  }
 }
 
-body .theme-default .component.work-header .component.work-menu .ivu-poptip-inner{
+.purchase_information {
+  .ive-modal-body {
+    height: 600px;
+    overflow: auto;
+  }
+}
+
+.ivu-modal {
+  .blueButton {
+    background: #265EA2;
+    color: #fff;
+  }
+  .blueButton:hover {
+    background: #1D4F8B;
+    color: #fff;
+  }
+  .highButton {
+    height: 46px;
+    border-radius: 0;
+    background: #265EA2;
+    color: #fff;
+  }
+  .highButton:hover {
+    background: #1D4F8B;
+    color: #fff;
+  }
+  .highDefaultButton {
+    height: 46px;
+    border-radius: 0;
+    background: #E4E4E4;
+    color: #265EA2;
+    ;
+  }
+}
+
+.ivu-tree-title-selected,
+.ivu-tree-title-selected:hover {
+  background: #C8DFF4!important;
+}
+
+.work-menu {
+  .ivu-poptip-popper {
+    width: 100%!important;
+    left: 0!important;
+    top: 50px!important;
+  }
+}
+
+body .theme-default .component.work-header .component.work-menu .ivu-poptip-inner {
   border-color: #dddddd!important;
 }
 
-.ivu-tabs-nav-scroll{
+.ivu-tabs-nav-scroll {
   background: white!important;
 }
 
-.large-page{
-   .ivu-input-type,.ivu-input-wrapper,.ivu-select,.ivu-select-single{
-    width:100%;
+.large-page {
+  .ivu-input-type,
+  .ivu-input-wrapper,
+  .ivu-select,
+  .ivu-select-single {
+    width: 100%;
     display: inline-block;
   }
 }
-// 修改默认data-grid 边框颜色
-.grid-content{    
-    border-top: 1px solid rgb(221,221,222) !important;
-    border-left: 1px solid rgb(221,221,222) !important;
-}
-.data-grid-item__label{
-    border:0 !important
-}
-.data-grid-item__separate{
-    background: rgb(221,221,222) !important;
-}
-.data-grid-item{
-    border-right: 1px solid rgb(221,221,222) !important;
-    border-bottom: 1px solid rgb(221,221,222) !important;
 
+// 修改默认data-grid 边框颜色
+.grid-content {
+  border-top: 1px solid rgb(221, 221, 222) !important;
+  border-left: 1px solid rgb(221, 221, 222) !important;
+}
+
+.data-grid-item__label {
+  border: 0 !important
+}
+
+.data-grid-item__separate {
+  background: rgb(221, 221, 222) !important;
+}
+
+.data-grid-item {
+  border-right: 1px solid rgb(221, 221, 222) !important;
+  border-bottom: 1px solid rgb(221, 221, 222) !important;
+}
+
+.ivu-modal-wrap.no-footer {
+  .ivu-modal-footer {
+    display: none;
+  }
 }

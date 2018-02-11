@@ -2,6 +2,7 @@ import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
+import store from "~/store"
 
 export class UserService {
   @Inject(NetService)
@@ -18,6 +19,10 @@ export class UserService {
       }
     })
   }
+  /**
+   * 用户注册
+   * @param data 
+   */
   userRegister(data) {
     return this.netService.send({
       server: manageService.userController.userRegister,
@@ -27,14 +32,26 @@ export class UserService {
   /**
    * 查询用户列表菜单
    */
-  findListboxByUserIdAndResoPid({ userId, resoPid }) {
+  findListboxByUserIdAndResoPid(resoPid) {
     return this.netService.send({
       server: manageService.userController.findListboxByUserIdAndResoPid,
       data: {
-        userId: userId,
+        userId: store.state.userData.id,
         resoPid: resoPid
       }
     })
   }
-
+  /**
+   * 用户分配列表菜单
+   */
+  userAllocateListbox(id, data) {
+    return this.netService.send({
+      server: manageService.userController.userAllocateListbox,
+      data: {
+        userId: store.state.userData.id,
+        resoPid: id,
+        userResourceList: data
+      }
+    })
+  }
 }

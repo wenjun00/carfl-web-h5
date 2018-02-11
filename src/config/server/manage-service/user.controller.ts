@@ -75,5 +75,14 @@ export default {
     controller: CONTROLLER,
     action: 'findListboxByUserIdAndResoPid',
     type: requestType.Get
+  },
+  /**
+   * 用户分配列表菜单
+   */
+  userAllocateListbox: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'userAllocateListbox',
+    type: requestType.Post
   }
 }

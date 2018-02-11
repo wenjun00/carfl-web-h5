@@ -20,10 +20,10 @@
       <i-button style="margin-left:10px;" class="blueButton" @click="getSystemBackupList">搜索</i-button>
       <i-button style="margin-left:10px;" class="blueButton" @click="addNewBackups">新增备份</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="systemBackUpList" @onPageChange="getSystemBackupList" :page="pageService"></data-box>
+    <data-box :id="69" :columns="columns1" :data="systemBackUpList" @onPageChange="getSystemBackupList" :page="pageService"></data-box>
 
     <template>
-      <i-modal title="列配置" v-model="openColumnsConfig">
+      <i-modal title="列配置" v-model="openColumnsConfig" class-name="no-footer">
         <columns-config ref="columns-config" @close="openColumnsConfig=false"></columns-config>
         <div slot="footer">
           <i-button>上移</i-button>
@@ -86,34 +86,6 @@ export default class SystemBackups extends Page {
   }
   created() {
     this.columns1 = [
-      {
-        align: "center",
-        width: 90,
-        type: "index",
-        renderHeader: (h, { column, index }) => {
-          return h(
-            "div",
-            {
-              on: {
-                click: () => {
-                  this.columnsConfig();
-                }
-              },
-              style: {
-                cursor: "pointer"
-              }
-            },
-            [
-              h("Icon", {
-                props: {
-                  type: "gear-b",
-                  size: "20"
-                }
-              })
-            ]
-          );
-        }
-      },
       {
         title: "操作",
         width: 220,
@@ -178,11 +150,13 @@ export default class SystemBackups extends Page {
       {
         title: "操作人",
         key: "operatorName",
+        editable: true,
         align: "center"
       },
       {
         title: "操作时间",
         key: "operateTime",
+        editable: true,
         align: "center",
         render: (h, { row, columns, index }) => {
           return h(
@@ -194,16 +168,19 @@ export default class SystemBackups extends Page {
       {
         title: "mysql文件名",
         key: "mysqlName",
+        editable: true,
         align: "center"
       },
       {
         title: "mongodb文件名",
         key: "mongdbName",
+        editable: true,
         align: "center"
       },
       {
         title: "备份类型",
         key: "type",
+        editable: true,
         align: "center",
         render: (h, { row, columns, index }) => {
           if (row.type === 0) {
