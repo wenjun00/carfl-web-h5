@@ -3,19 +3,19 @@
   <section class="component register">
     <i-form :label-width="70" ref="register-form" :model="registerModel" class="register-form" label-position="left" :rules="rules">
       <i-form-item label="用户名" prop="userUsername">
-        <i-input v-model="registerModel.userUsername" style="width:80%;" :maxlength="50"></i-input>
+        <i-input v-model="registerModel.userUsername" style="width:80%;" :maxlength="50" @on-blur="checkUserName"></i-input>
       </i-form-item>
       <i-form-item label="姓名" prop="userRealname">
-        <i-input v-model="registerModel.userRealname" style="width:80%;"></i-input>
+        <i-input v-model="registerModel.userRealname" style="width:80%;" :maxlength="8"></i-input>
       </i-form-item>
       <i-form-item label="电话" prop="userPhone">
         <i-input v-model="registerModel.userPhone" style="width:80%;" :maxlength="11"></i-input>
       </i-form-item>
       <i-form-item label="密码" prop="userPassword">
-        <i-input v-model="registerModel.userPassword" type="password" style="width:80%;"></i-input>
+        <i-input v-model="registerModel.userPassword" type="password" style="width:80%;" :maxlength="20" @on-blur="checkPwd"></i-input>
       </i-form-item>
       <i-form-item label="确认密码" prop="confirmPwd">
-        <i-input v-model="registerModel.confirmPwd" type="password" style="width:80%;" @on-blur="comfirmPw"></i-input>
+        <i-input v-model="registerModel.confirmPwd" type="password" style="width:80%;" @on-blur="comfirmPw" :maxlength="20"></i-input>
       </i-form-item>
       <i-form-item label="所属公司" prop="company">
         <i-input v-model="registerModel.company" style="width:80%;"></i-input>
@@ -90,8 +90,32 @@ export default class Register extends Vue {
     };
   }
   comfirmPw() {
+    if (this.registerModel.confirmPwd.length < 6) {
+      this.$Message.error("密码长度为6到20位,请重新输入！");
+      return false;
+    }
     if (this.registerModel.confirmPwd !== this.registerModel.userPassword) {
       this.$Message.success("两次密码输入不一致，请重新输入!");
+      return false;
+    }
+  }
+  /**
+   * 检查用户名
+   */
+  checkUserName() {
+    if (this.registerModel.userUsername.length < 6) {
+      this.$Message.error("用户名长度为6到50位,请重新输入！");
+      this.registerModel.userUsername = "";
+      return false;
+    }
+  }
+  /**
+   * 检查密码长度
+   */
+  checkPwd() {
+    if (this.registerModel.userPassword.length < 6) {
+      this.$Message.error("密码长度为6到20位,请重新输入！");
+      this.registerModel.userPassword = "";
       return false;
     }
   }

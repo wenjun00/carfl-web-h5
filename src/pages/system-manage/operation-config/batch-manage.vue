@@ -57,34 +57,6 @@ export default class SystemBackups extends Page {
   created() {
     this.columns1 = [
       {
-        align: "center",
-        width: 90,
-        type: "index",
-        renderHeader: (h, { column, index }) => {
-          return h(
-            "div",
-            {
-              on: {
-                click: () => {
-                  this.columnsConfig();
-                }
-              },
-              style: {
-                cursor: "pointer"
-              }
-            },
-            [
-              h("Icon", {
-                props: {
-                  type: "gear-b",
-                  size: "20"
-                }
-              })
-            ]
-          );
-        }
-      },
-      {
         title: "操作",
         width: 100,
         align: "center",

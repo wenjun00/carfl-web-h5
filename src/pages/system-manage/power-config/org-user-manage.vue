@@ -30,7 +30,7 @@
           <i-button class="blueButton" style="margin-left:20px;" @click="batchManageDevice">批量管理设备</i-button>
         </i-row>
         <!-- <div style="min-width:1000px"> -->
-        <data-box :columns="columns1" :height="436" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService"></data-box>
+        <data-box :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService"></data-box>
         <!-- </div> -->
       </i-col>
     </i-row>
@@ -217,41 +217,13 @@ export default class OrgUserManage extends Page {
       userName: "",
       realName: "",
       status: "",
-      deptId: 2
+      deptId: 1
     };
     this.columns1 = [
       {
         align: "center",
         type: "selection",
         width: 60
-      },
-      {
-        align: "center",
-        width: 60,
-        type: "index",
-        renderHeader: (h, { column, index }) => {
-          return h(
-            "div",
-            {
-              on: {
-                click: () => {
-                  this.columnsConfig();
-                }
-              },
-              style: {
-                cursor: "pointer"
-              }
-            },
-            [
-              h("Icon", {
-                props: {
-                  type: "gear-b",
-                  size: "20"
-                }
-              })
-            ]
-          );
-        }
       },
       {
         title: "操作",
@@ -533,6 +505,7 @@ export default class OrgUserManage extends Page {
     }
   }
   getUserListByCondition() {
+    // let deptId =
     this.manageService
       .getUsersByDeptPage(this.userListModel, this.pageService)
       .subscribe(

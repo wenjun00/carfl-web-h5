@@ -28,21 +28,6 @@
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="所属机构" prop="deptName">
-            <i-input v-model="addUserModel.deptName" disabled></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="公司名称" prop="companyName">
-            <!-- <i-select v-model="addUserModel.companyName" disabled>
-              <i-option label="指旺金科" value="指旺金科" key="指旺金科"></i-option>
-            </i-select> -->
-            <i-input v-model="addUserModel.companyName" disabled></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row>
-        <i-col :span="12">
           <i-form-item label="性别" prop="userSex">
             <i-select v-model="addUserModel.userSex">
               <i-option label="男" :value="419" :key="419"></i-option>
@@ -62,20 +47,37 @@
         </i-col>
       </i-row>
       <i-row>
+        <i-col :span="12">
+          <i-form-item label="所属机构" prop="deptName">
+            <i-input v-model="addUserModel.deptName" disabled></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="公司名称" prop="companyName">
+            <!-- <i-select v-model="addUserModel.companyName" disabled>
+              <i-option label="指旺金科" value="指旺金科" key="指旺金科"></i-option>
+            </i-select> -->
+            <i-input v-model="addUserModel.companyName" disabled></i-input>
+          </i-form-item>
+        </i-col>
       </i-row>
       <i-row>
+      </i-row>
+      <i-row>
+        <i-col :span="12">
+          <i-form-item label="状态" prop="userStatus">
+            <i-select v-model="addUserModel.userStatus">
+              <i-option label="启用" :value="0" :key="0"></i-option>
+              <i-option label="停用" :value="1" :key="1"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
         <i-col :span="24">
           <i-form-item label="备注" prop="userRemark">
             <i-input type="textarea" v-model="addUserModel.userRemark"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
-      <!--<i-row>
-        <i-col :span="24" style="text-align:center">
-          <i-button @click="cancelAddUser" class="defalutButton">取消</i-button>
-          <i-button @click="confirmAddUser" class="blueButton">确定</i-button>
-        </i-col>
-      </i-row>-->
     </i-form>
   </section>
 </template>
@@ -108,7 +110,8 @@ export default class AddUser extends Vue {
     userRemark: "",
     loginDevice: 414,
     loginType: 411,
-    userType: 409
+    userType: 409,
+    userStatus: 0
   };
   private rules: any;
 
@@ -180,7 +183,6 @@ export default class AddUser extends Vue {
    * 检查用户名长度
    */
   checkUserName() {
-    console.log(this.addUserModel.userUsername.length, 98999);
     if (this.addUserModel.userUsername.length < 6) {
       this.$Message.error("用户名长度为6到50位,请重新输入！");
       this.addUserModel.userUsername = "";

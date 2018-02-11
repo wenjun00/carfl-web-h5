@@ -56,93 +56,86 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component'
-  import {
-    Prop,
-    Watch
-  } from "vue-property-decorator";
-  import {
-    DepartmentService
-  } from "~/services/manage-service/department.service";
-  import {
-    CompanyService
-  } from "~/services/manage-service/company.service";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  @Component({
-    components: {}
-  })
-  export default class AddOrg extends Vue {
-    @Dependencies(DepartmentService) private departmentService: DepartmentService;
-    @Dependencies(CompanyService) private companyService: CompanyService;
-    @Prop() addOrgModel: any;
-    private rules: any = {
-      deptName: [{
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop, Watch } from "vue-property-decorator";
+import { DepartmentService } from "~/services/manage-service/department.service";
+import { CompanyService } from "~/services/manage-service/company.service";
+import { Dependencies } from "~/core/decorator";
+@Component({
+  components: {}
+})
+export default class AddOrg extends Vue {
+  @Dependencies(DepartmentService) private departmentService: DepartmentService;
+  @Dependencies(CompanyService) private companyService: CompanyService;
+  @Prop() addOrgModel: any;
+  private rules: any = {
+    deptName: [
+      {
         required: true,
-        trigger: 'blur',
-        message: '请输入机构名称'
-      }]
-    };
-    private getAllCompany: any;
-    private companyObject: Array < Object >= []; // 公司信息
-    private addModel: any = {
-      deptName: '',
-      deptLevel: 402,
-      deptStatus: 0,
-      companyId: '',
-      deptRemark: '',
-      deptPid: 2
-    }
-    created() {}
-    confirmAddOrg() {
-      let _addOrg: any = this.$refs['add-org-form']
-      _addOrg.validate(valid => {
-        if (valid) {
-          if (this.addOrgModel && this.addOrgModel.id) {
-            this.addModel.deptPid = this.addOrgModel.id
-          }
-          this.addModel.deptCode = this.addOrgModel.deptCode
-          this.departmentService.createDepartment(this.addModel).subscribe(val => {
-            this.$Message.success('添加成功！')
-            this.resetInput()
-            this.$emit('close')
-          }, ({
-            msg
-          }) => {
-            this.$Message.error(msg)
-          })
+        trigger: "blur",
+        message: "请输入机构名称"
+      }
+    ]
+  };
+  private getAllCompany: any;
+  private companyObject: Array<Object> = []; // 公司信息
+  private addModel: any = {
+    deptName: "",
+    deptLevel: 402,
+    deptStatus: 0,
+    companyId: "",
+    deptRemark: "",
+    deptPid: 1
+  };
+  created() {}
+  confirmAddOrg() {
+    let _addOrg: any = this.$refs["add-org-form"];
+    _addOrg.validate(valid => {
+      if (valid) {
+        if (this.addOrgModel && this.addOrgModel.id) {
+          this.addModel.deptPid = this.addOrgModel.id;
         }
-      })
-    }
-    resetInput() {
-      let _addOrgForm: any = this.$refs['add-org-form']
-      _addOrgForm.resetFields()
-    }
-    addDept() {
-      this.addModel.deptLevel = this.addOrgModel.deptLevel
-      this.getCompanys()
-    }
-    /**
-     * 获取所有公司
-     */
-    getCompanys() {
-      this.companyService.getAllCompany(this.getAllCompany).subscribe(data => {
-        this.companyObject = data
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
-      })
-    }
+        this.addModel.deptCode = this.addOrgModel.deptCode;
+        this.departmentService.createDepartment(this.addModel).subscribe(
+          val => {
+            this.$Message.success("添加成功！");
+            this.resetInput();
+            this.$emit("close");
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+      }
+    });
   }
-
+  resetInput() {
+    let _addOrgForm: any = this.$refs["add-org-form"];
+    _addOrgForm.resetFields();
+  }
+  addDept() {
+    this.addModel.deptLevel = this.addOrgModel.deptLevel;
+    this.getCompanys();
+  }
+  /**
+   * 获取所有公司
+   */
+  getCompanys() {
+    this.companyService.getAllCompany(this.getAllCompany).subscribe(
+      data => {
+        this.companyObject = data;
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
+    );
+  }
+}
 </script>
 <style lang="less">
-  .addOrg {
-    position: relative;
-    right: 30px;
-  }
-
+.addOrg {
+  position: relative;
+  right: 30px;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <section class="component data-box">
     <div class="table">
-      <i-table ref="table" :columns="tableColumns" :data="data" stripe :highlight-row="highlightRow" @on-row-click="rowClick" :width="width" :height="height" @on-current-change="currentChange" @on-selection-change="currentSelect" size="small"></i-table>
+      <i-table ref="table" class="i-table" :columns="tableColumns" :data="data" stripe :highlight-row="highlightRow" @on-row-click="rowClick" :width="width" @on-current-change="currentChange" @on-selection-change="currentSelect" size="small"></i-table>
     </div>
     <div class="row end-span" :style="{'width':`${width}px`}">
       <i-page class="pagination" size="small" show-total show-sizer :show-elevator="page.showElevator" :current.sync="page.pageIndex" :total="page.total" :page-size.sync="page.pageSize" @on-change="pageChange" @on-page-size-change="pageSizeChange"></i-page>
@@ -59,11 +59,11 @@ export default class DataBox extends Vue {
   page: PageService;
 
   // 表格高度
-  @Prop({
-    type: [Boolean, Number],
-    default: 528
-  })
-  height: Number;
+  // @Prop({
+  //   type: [Boolean, Number],
+  //   default: 528
+  // })
+  // height: Number;
 
   // tableID
   @Prop({
@@ -250,7 +250,8 @@ export default class DataBox extends Vue {
     padding: 10px;
   }
 }
-
+.i-table {
+}
 .pagination {
   .ivu-select,
   .ivu-select-single .ivu-select-selection {

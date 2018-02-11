@@ -74,34 +74,6 @@ export default class SystemLogDownload extends Page {
 
     this.columns1 = [
       {
-        align: "center",
-        type: "index",
-        width: 60,
-        renderHeader: (h, { column, index }) => {
-          return h(
-            "div",
-            {
-              on: {
-                click: () => {
-                  this.columnsConfig();
-                }
-              },
-              style: {
-                cursor: "pointer"
-              }
-            },
-            [
-              h("Icon", {
-                props: {
-                  type: "gear-b",
-                  size: "20"
-                }
-              })
-            ]
-          );
-        }
-      },
-      {
         title: "操作时间",
         key: "operateTime",
         align: "center",
