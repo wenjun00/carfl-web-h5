@@ -10,6 +10,7 @@
         <i-option label="停用" :value="1" :key="1"></i-option>
       </i-select>
       <i-button class="blueButton" style="margin-left:20px;" @click="getRoleListByCondition">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
       <i-button class="blueButton" style="margin-left:20px;" @click="addNewRole">新增角色</i-button>
       <div style="float:right;margin-right:10px;margin-top:10px;">
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
@@ -120,7 +121,7 @@ export default class RoleMaintenance extends Page {
 	private userListModal: Boolean = false; // 用户列表
 	private waitHandleCaseModal: Boolean = false; // 待办事项配置
 	private addRoleModal: Boolean = false; // 新增角色
-	private roleModel: any;
+	private roleModel: any = {};
 	private modifyRoleModel: any;
 	private roleConfig: Object = {};
 	private roleID: Number;
@@ -514,7 +515,7 @@ export default class RoleMaintenance extends Page {
 	submitRole() {
 		this.backLogService.roleAllocateBacklogs(this.roleConfig).subscribe(
 			val => {
-				this.$Message.success(val.msg);
+				this.$Message.success('配置成功！');
 				this.waitHandleCaseModal = false;
 			},
 			({ msg }) => {

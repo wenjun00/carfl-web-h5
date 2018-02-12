@@ -48,7 +48,7 @@
       <i-modal title="新增审批原因" v-model="approvalReasonModel">
         <add-approval-reason ref="add-approval-reason" @close="closeApproval"></add-approval-reason>
         <div slot="footer">
-          <i-button class="Ghost" @click="MaterialTypeModel=false">取消</i-button>
+          <i-button class="Ghost" @click="approvalReasonModel=false">取消</i-button>
           <i-button class="blueButton" @click="submitApprovalReason">新增</i-button>
         </div>
       </i-modal>

@@ -44,7 +44,7 @@
 
     <template>
       <i-modal v-model="adddatatypeModal" width="500" title="新增数据字典类型" class="toViewModalClass">
-        <i-form :label-width="60" style="margin-top:20px;">
+        <i-form :label-width="60" style="margin-top:20px;" :model="addDataType" :rules="rulesAddDataType" ref="add-data-type">
           <i-form-item label="名称" prop="name">
             <i-input v-model="addDataType.name"></i-input>
           </i-form-item>
@@ -108,6 +108,7 @@ export default class DataDict extends Page {
 	private checkModal: Boolean = false;
 	private id: any = '';
 	private rulesAddDate: any = {};
+	private rulesAddDataType: any = {};
 	private dataModal: Boolean = false;
 	private typeCodes: any = 0;
 	private addModel: any = {
@@ -123,7 +124,16 @@ export default class DataDict extends Page {
 	private addDataModel: any = {};
 	created() {
 		this.rulesAddDate = {
-			name: [{ required: true, message: '请输入数据名称', trigger: 'change' }],
+			name: [
+				{ required: true, message: '请输入数据名称', trigger: 'change' },
+				{ max: 20, message: '长度不能超过20个字符', trigger: 'blur' },
+			],
+		};
+		this.rulesAddDataType = {
+			name: [
+				{ required: true, message: '请输入数据字典类型名称', trigger: 'change' },
+				{ max: 20, message: '长度不能超过20个字符', trigger: 'blur' },
+			],
 		};
 		this.dataNames = [];
 		this.item = {
@@ -264,17 +274,21 @@ export default class DataDict extends Page {
 	 * 确定
 	 */
 	confirmmaddtype() {
-		this.dataDictTypeService.createOrModifyDataDictType(this.addDataType).subscribe(
-			val => {
-				this.$Message.success('操作成功！');
-				this.getAllDictType();
-				this.adddatatypeModal = false;
-				this.addDataType.name = '';
-			},
-			({ msg }) => {
-				this.$Message.error(msg);
-			}
-		);
+		let formValid = <Form>this.$refs['add-data-type'];
+		formValid.validate(valid => {
+			if (!valid) return false;
+			this.dataDictTypeService.createOrModifyDataDictType(this.addDataType).subscribe(
+				val => {
+					this.$Message.success('操作成功！');
+					this.getAllDictType();
+					this.adddatatypeModal = false;
+					this.addDataType.name = '';
+				},
+				({ msg }) => {
+					this.$Message.error(msg);
+				}
+			);
+		});
 	}
 	/**
 	 * 查询所有数据字典类型

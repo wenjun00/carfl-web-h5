@@ -38,21 +38,21 @@
             <span class="textButton">+ 添加类别</span>
           </i-col>
           <i-col :span="22">
-            <i-table v-if="viewStatus" stripe :columns="carColumns" :data="paramList"></i-table>
-            <i-form class="table_container" ref="parms=form" v-else>
+            <i-table v-if="viewStatus" :columns="carColumns" :data="paramList"></i-table>
+            <i-form class="table_container" ref="parms=form" :model="formModel" v-else>
               <i-row type="flex">
                 <i-col :span="12">参数名称</i-col>
                 <i-col :span="12">参数值</i-col>
               </i-row>
-              <i-row>
+              <i-row v-for="item in formModel" :key="item.id">
                 <i-col :span="12">
-                  <i-form-item>
-                    <i-input></i-input>
+                  <i-form-item style="margin-top:10px;">
+                    <i-input v-model="item.name"></i-input>
                   </i-form-item>
                 </i-col>
                 <i-col :span="12">
-                  <i-form-item>
-                    <i-input></i-input>
+                  <i-form-item style="margin-top:10px;">
+                    <i-input v-model="item.value"></i-input>
                   </i-form-item>
                 </i-col>
               </i-row>
@@ -67,7 +67,7 @@
         <add-vehicle ref="add-vehicle" @close="closeAndRefreshVehicle"></add-vehicle>
         <div slot="footer">
           <i-button @click="cancleAddVehicle">取消</i-button>
-          <span class="blueButton" @click="confirmAddVehicle">确定</span>
+          <i-button class="blueButton" @click="confirmAddVehicle">确定</i-button>
         </div>
       </i-modal>
     </template>
@@ -118,6 +118,7 @@ export default class ProdConfig extends Page {
 	private oneParamCode: any = {}; //基本参数
 	private colorPa: any = {}; //车身颜色
 	private colorModel: any = {};
+	private formModel: any = [];
 	/**
 	 * 客户素材配置
 	 */
@@ -153,17 +154,24 @@ export default class ProdConfig extends Page {
 			this.carId = data[0].carId;
 			this.CarParamTypeControllerService.getCarParamTypeByCarId({
 				carId: this.carId,
-			}).subscribe(val => {
-				this.carTypes = val;
-				this.paramList = [];
-				this.oneParamCode = val[0];
-				val == '' ? (this.dataLength = false) : (this.dataLength = true);
-				let colorObject = val.filter(v => v.paramName === '车身颜色');
-				this.colorPa = colorObject[0].carParams;
-				let colorName = this.colorPa.filter(v => v.value == 0);
-				this.colorModel = colorName[0].name;
-				this.paramDetail(this.oneParamCode);
-			});
+			}).subscribe(
+				val => {
+					this.carTypes = val;
+					this.paramList = [];
+					this.oneParamCode = val[0];
+					val == '' ? (this.dataLength = false) : (this.dataLength = true);
+					if (val.length !== 0) {
+						let colorObject = val.filter(v => v.paramName === '车身颜色');
+						this.colorPa = colorObject[0].carParams;
+						let colorName = this.colorPa.filter(v => v.value == 0);
+						this.colorModel = colorName[0].name;
+						this.paramDetail(this.oneParamCode);
+					}
+				},
+				({ msg }) => {
+					this.$Message.error(msg);
+				}
+			);
 		}
 	}
 	/**
@@ -176,8 +184,9 @@ export default class ProdConfig extends Page {
 			})
 			.subscribe(
 				val => {
-					console.log(val);
 					this.paramList = val;
+					this.formModel = val;
+					console.log(this.formModel, 33);
 				},
 				({ msg }) => {
 					this.$Message.error(msg);
@@ -261,11 +270,12 @@ export default class ProdConfig extends Page {
 	 * 编辑参数/保存
 	 */
 	editParam(val) {
-		console.log(val, 333);
-		if ((val.target.innerHTML = '编辑参数')) {
+		if (val.target.innerHTML == '编辑参数') {
 			val.target.innerHTML = '保存';
-		} else if ((val.target.innerHTML = '保存')) {
+			this.viewStatus = false;
+		} else if (val.target.innerHTML == '保存') {
 			val.target.innerHTML = '编辑参数';
+			this.viewStatus = true;
 		}
 	}
 }
@@ -288,6 +298,18 @@ export default class ProdConfig extends Page {
 .table_container {
 	text-align-last: center;
 	border: 1px solid #dddd;
+	.ivu-row-flex {
+		height: 40px;
+		line-height: 40px;
+		border-bottom: 1px solid #e9eaec;
+		background: #f8f8f9;
+	}
+	.ivu-row {
+		border-bottom: 1px solid #e9eaec;
+	}
+	.ivu-form-item-content {
+		margin-top: 10px;
+	}
 }
 .textButton {
 	width: 61px;

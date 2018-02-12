@@ -28,7 +28,7 @@ export default class EditMaterial extends Vue {
 		this.rulesMaterial = {
 			name: [
 				{ required: true, message: '请输入素材名称', trigger: 'blur' },
-				{ type: 'string', max: 20, message: '您输入的字符过长', trigger: 'blur' },
+				{ type: 'string', max: 20, message: '长度不能超过20个字符', trigger: 'blur' },
 			],
 		};
 	}

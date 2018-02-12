@@ -38,155 +38,160 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { DataGrid, DataGridItem } from "vue-fintech-component";
-import { Form } from "iview";
-import { CompanyService } from "~/services/manage-service/company.service";
-import { Dependencies } from "~/core/decorator";
-import { Prop } from "vue-property-decorator";
-import { ifError } from "assert";
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { DataGrid, DataGridItem } from 'vue-fintech-component';
+import { Form } from 'iview';
+import { CompanyService } from '~/services/manage-service/company.service';
+import { Dependencies } from '~/core/decorator';
+import { Prop } from 'vue-property-decorator';
+import { ifError } from 'assert';
 
 @Component({
-  components: {
-    DataGrid,
-    DataGridItem
-  }
+	components: {
+		DataGrid,
+		DataGridItem,
+	},
 })
 export default class ModifyBranchInfo extends Vue {
-  @Dependencies(CompanyService) private companyService: CompanyService;
-  private formRules: any;
-  private formItemParent: any = {
-    id: "",
-    companyChinaname: "",
-    companyProvince: "",
-    companyCity: "",
-    bankAccount: "",
-    depositBank: "",
-    cardNumber: "",
-    branchName: "",
-    companyAddress: "",
-    companyEngname: "",
-    companyFax: "",
-    companyLegperson: "",
-    companyLinkman: "",
-    companyPhone: "",
-    companyRemark: "",
-    companyStatus: ""
-  };
+	@Dependencies(CompanyService) private companyService: CompanyService;
+	private formRules: any;
+	private formItemParent: any = {
+		id: '',
+		companyChinaname: '',
+		companyProvince: '',
+		companyCity: '',
+		bankAccount: '',
+		depositBank: '',
+		cardNumber: '',
+		branchName: '',
+		companyAddress: '',
+		companyEngname: '',
+		companyFax: '',
+		companyLegperson: '',
+		companyLinkman: '',
+		companyPhone: '',
+		companyRemark: '',
+		companyStatus: '',
+	};
 
-  created() {
-    /**
-     *验证
-     */
-    this.formRules = {
-      companyChinaname: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      companyProvince: [
-        {
-          required: true,
-          message: "请选择省份",
-          trigger: "change",
-          type: "number"
-        }
-      ],
-      companyCity: [
-        {
-          required: true,
-          message: "请选择城市",
-          trigger: "change",
-          type: "number"
-        }
-      ],
-      bankAccount: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      depositBank: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      cardNumber: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      branchName: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ]
-    };
-  }
-  /**@
-   * 点击确定按钮
-   */
-  makeData(row) {
-    this.formItemParent.id = row.id;
-    this.formItemParent.companyChinaname = row.companyChinaname;
-    this.formItemParent.companyProvince = row.companyProvince;
-    this.formItemParent.companyCity = row.companyCity;
-    this.formItemParent.bankAccount = row.bankAccount;
-    this.formItemParent.depositBank = row.depositBank;
-    this.formItemParent.cardNumber = row.cardNumber;
-    this.formItemParent.branchName = row.branchName;
-    this.formItemParent.companyAddress = row.companyAddress;
-    this.formItemParent.companyEngname = row.companyEngname;
-    this.formItemParent.companyFax = row.companyFax;
-    this.formItemParent.companyLegperson = row.companyLegperson;
-    this.formItemParent.companyLinkman = row.companyLinkman;
-    this.formItemParent.companyPhone = row.companyPhone;
-    this.formItemParent.companyRemark = row.companyRemark;
-    this.formItemParent.companyStatus = !row.companyStatus ? true : false;
-  }
-  confirmModify() {
-    if (this.formItemParent.companyStatus) {
-      this.formItemParent.companyStatus = 0;
-    } else {
-      this.formItemParent.companyStatus = 1;
-    }
-    let formVal = <Form>this.$refs["branch-form"];
-    formVal.validate(valid => {
-      if (valid) {
-        this.companyService
-          .createOrModifyCompany(this.formItemParent)
-          .subscribe(
-            val => {
-              this.$Message.success("修改成功！");
-              this.$emit("close");
-            },
-            ({ msg }) => {
-              this.$Message.error(msg);
-            }
-          );
-      }
-    });
-  }
-  /**
-   * 修改器用/停用
-   */
-  change(status) {
-    if (status) {
-      this.formItemParent.companyStatus = true;
-    } else {
-      this.formItemParent.companyStatus = false;
-    }
-  }
+	created() {
+		/**
+		 *验证
+		 */
+		this.formRules = {
+			companyChinaname: [
+				{
+					required: true,
+					message: '请输入公司简称',
+					trigger: 'blur',
+				},
+				{ max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
+			],
+			companyProvince: [
+				{
+					required: true,
+					message: '请选择省份',
+					trigger: 'change',
+					type: 'number',
+				},
+				{ max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
+			],
+			companyCity: [
+				{
+					required: true,
+					message: '请选择城市',
+					trigger: 'change',
+					type: 'number',
+				},
+				{ max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
+			],
+			bankAccount: [
+				{
+					required: true,
+					message: '请输入银行户名',
+					trigger: 'blur',
+				},
+				{ max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
+			],
+			depositBank: [
+				{
+					required: true,
+					message: '请输入开户银行',
+					trigger: 'blur',
+				},
+				{ max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
+			],
+			cardNumber: [
+				{
+					required: true,
+					message: '请输入银行卡号',
+					trigger: 'blur',
+				},
+				{ max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
+			],
+			branchName: [
+				{
+					required: true,
+					message: '请输入支行名称',
+					trigger: 'blur',
+				},
+				{ max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
+			],
+		};
+	}
+	/**@
+	 * 点击确定按钮
+	 */
+	makeData(row) {
+		this.formItemParent.id = row.id;
+		this.formItemParent.companyChinaname = row.companyChinaname;
+		this.formItemParent.companyProvince = row.companyProvince;
+		this.formItemParent.companyCity = row.companyCity;
+		this.formItemParent.bankAccount = row.bankAccount;
+		this.formItemParent.depositBank = row.depositBank;
+		this.formItemParent.cardNumber = row.cardNumber;
+		this.formItemParent.branchName = row.branchName;
+		this.formItemParent.companyAddress = row.companyAddress;
+		this.formItemParent.companyEngname = row.companyEngname;
+		this.formItemParent.companyFax = row.companyFax;
+		this.formItemParent.companyLegperson = row.companyLegperson;
+		this.formItemParent.companyLinkman = row.companyLinkman;
+		this.formItemParent.companyPhone = row.companyPhone;
+		this.formItemParent.companyRemark = row.companyRemark;
+		this.formItemParent.companyStatus = !row.companyStatus ? true : false;
+	}
+	confirmModify() {
+		if (this.formItemParent.companyStatus) {
+			this.formItemParent.companyStatus = 0;
+		} else {
+			this.formItemParent.companyStatus = 1;
+		}
+		let formVal = <Form>this.$refs['branch-form'];
+		formVal.validate(valid => {
+			if (valid) {
+				this.companyService.createOrModifyCompany(this.formItemParent).subscribe(
+					val => {
+						this.$Message.success('修改成功！');
+						this.$emit('close');
+					},
+					({ msg }) => {
+						this.$Message.error(msg);
+					}
+				);
+			}
+		});
+	}
+	/**
+	 * 修改器用/停用
+	 */
+	change(status) {
+		if (status) {
+			this.formItemParent.companyStatus = true;
+		} else {
+			this.formItemParent.companyStatus = false;
+		}
+	}
 }
 </script>
 

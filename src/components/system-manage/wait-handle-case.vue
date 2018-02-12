@@ -2,7 +2,7 @@
 <template>
   <section class="component wait-handle-case">
     <i-checkbox-group v-model="social" @on-change="checkFun">
-      <i-checkbox v-for="item in checkboxList" :key="item.id" :label="item.id" :value="item.id" style="width:180px;">{{item.name}}</i-checkbox>
+      <i-checkbox v-for="item in checkboxList" :key="item.id" :label="item.id" :value="item.id" style="width:400px;">{{item.name}}</i-checkbox>
     </i-checkbox-group>
   </section>
 </template>
