@@ -222,11 +222,13 @@ export default class OrgUserManage extends Page {
       {
         align: "center",
         type: "selection",
+        fixed: "left",
         width: 60
       },
       {
         title: "操作",
         width: 360,
+        fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {
           return h("div", [
@@ -586,7 +588,7 @@ export default class OrgUserManage extends Page {
   addDept() {
     this.addNewOrgModal = true;
     if (this.deptLevel) {
-      this.addOrgModel.deptLevel = this.deptLevel + 1;
+      this.addOrgModel.deptLevel = this.deptLevel;
     } else {
       this.addOrgModel.deptLevel = 402;
     }
@@ -611,10 +613,11 @@ export default class OrgUserManage extends Page {
     this.allotRoleModal = false;
     this.getTree();
   }
-  editDept() {
+  editDept(val) {
+    console.log(val, 778);
     this.editNewOrgModal = true;
     let _edit: any = this.$refs["edit-org"];
-    _edit.getDeptInfo();
+    _edit.getDeptInfo(val);
   }
   cancelAddOrg() {
     this.addNewOrgModal = false;

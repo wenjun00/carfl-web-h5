@@ -49,4 +49,14 @@ export class PersonalService {
       page: page
     })
   }
+  /**
+   * 获取客户签约列表
+   */
+  getCustomerSignList(data, page) {
+    return this.netService.send({
+      server: manageService.personalController.getCustomerSignList,
+      data: data,
+      page: page
+    })
+  }
 }

@@ -40,5 +40,14 @@ export default {
     controller: CONTROLLER,
     action: 'getCustomerAccountList',
     type: requestType.Get
+  },
+  /**
+   * 获取客户签约列表
+   */
+  getCustomerSignList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCustomerSignList',
+    type: requestType.Get
   }
 }

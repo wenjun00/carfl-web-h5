@@ -58,6 +58,10 @@ export default class DataBox extends Vue {
   })
   page: PageService;
 
+  // @Prop({
+  //   default: false
+  // })
+  // hideColumnsConfig: boolean; // 隐藏列配置
   // 表格高度
   // @Prop({
   //   type: [Boolean, Number],
@@ -167,7 +171,7 @@ export default class DataBox extends Vue {
           (x: any) => !x.editable || (x.editable && filterKeys.includes(x.key))
         );
     }
-
+    console.log(this.hideColumnsConfig, 988);
     this.tableColumns = this.addDefaultColumns(columnList);
   }
 

@@ -123,11 +123,6 @@ export default class AddUser extends Vue {
           required: true,
           message: "用户名不能为空",
           trigger: "blur"
-        },
-        {
-          message: "请输入汉字或英文字母",
-          trigger: "blur",
-          pattern: /^([\u4e00-\u9fa5]+|([a-zA-Z]+\s?)+)$/
         }
       ],
       userRealname: [
@@ -135,6 +130,11 @@ export default class AddUser extends Vue {
           required: true,
           message: "姓名不能为空",
           trigger: "blur"
+        },
+        {
+          message: "请输入汉字或英文字母",
+          trigger: "blur",
+          pattern: /^([\u4e00-\u9fa5]+|([a-zA-Z]+\s?)+)$/
         }
       ],
       userPhone: [

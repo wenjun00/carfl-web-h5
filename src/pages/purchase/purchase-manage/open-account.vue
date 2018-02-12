@@ -1,14 +1,14 @@
 <template>
   <section class="page open-account">
     <span class="form-title">客户开户</span>
-    <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
-    <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
-    <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
-    <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
-    <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
-    <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
-    <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
-    <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
+    <i-button @click="getOrderInfoByTime(0)" type="text">昨日</i-button>
+    <i-button @click="getOrderInfoByTime(1)" type="text">今日</i-button>
+    <i-button @click="getOrderInfoByTime(2)" type="text">本周</i-button>
+    <i-button @click="getOrderInfoByTime(3)" type="text">本月</i-button>
+    <i-button @click="getOrderInfoByTime(4)" type="text">上月</i-button>
+    <i-button @click="getOrderInfoByTime(5)" type="text">最近三月</i-button>
+    <i-button @click="getOrderInfoByTime(6)" type="text">本季度</i-button>
+    <i-button @click="getOrderInfoByTime(7)" type="text">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>高级搜索</i-button>
@@ -23,10 +23,10 @@
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin:6px;">
-      <i-input v-model="customName" style="display:inline-block;width:10%;margin-right:10px;" placeholder="请输入客户姓名"></i-input>
+      <i-input v-model="openAccountModel.personalInfo" style="display:inline-block;width:16%;margin-right:10px;" placeholder="请输入客户姓名\证件号码\联系号码查询"></i-input>
       <i-button class="blueButton" @click="getCustomerOpenAccount">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="openAccountList" ref="databox"></data-box>
+    <data-box :columns="columns1" :data="openAccountList" ref="databox" @onPageChange="getCustomerOpenAccount" :page="pageService"></data-box>
     <!--开户弹窗-->
     <template>
       <i-modal v-model="openCreateAccount" title="开户申请" width="500">
@@ -215,382 +215,382 @@
 
     <!--help-->
     <template>
-      <i-modal title="验卡失败原因" v-model="openHelp" width="600">
-        <!--<i-table :columns="columnsHelp" :data="dataHelp" border stripe></i-table>-->
-        <data-box :columns="columnsHelp" :data="dataHelp"></data-box>
+      <i-modal title="验卡失败原因" v-model="openHelp" width="600" class-name="no-footer">
+        <data-box :columns="columnsHelp" :data="dataHelp" hideColumnsConfig></data-box>
       </i-modal>
     </template>
   </section>
 </template>
 
 <script lang="ts">
-  import Page from "~/core/page";
-  import Component from "vue-class-component";
-  import DataBox from "~/components/common/data-box.vue";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import SvgIcon from "~/components/common/svg-icon.vue";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    PersonalService
-  } from "~/services/manage-service/personal.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  @Layout("workspace")
-  @Component({
-    components: {
-      DataBox,
-      SvgIcon
-    }
-  })
-  export default class OpenAccount extends Page {
-    @Dependencies(PersonalService) private personalService: PersonalService;
-    @Dependencies(PageService) private pageService: PageService;
+import Page from "~/core/page";
+import Component from "vue-class-component";
+import DataBox from "~/components/common/data-box.vue";
+import { Dependencies } from "~/core/decorator";
+import SvgIcon from "~/components/common/svg-icon.vue";
+import { Layout } from "~/core/decorator";
+import { PersonalService } from "~/services/manage-service/personal.service";
+import { PageService } from "~/utils/page.service";
+@Layout("workspace")
+@Component({
+  components: {
+    DataBox,
+    SvgIcon
+  }
+})
+export default class OpenAccount extends Page {
+  @Dependencies(PersonalService) private personalService: PersonalService;
+  @Dependencies(PageService) private pageService: PageService;
 
-    private columns1: any;
-    private columns2: any;
-    private columnsHelp: any;
-    private openAccountList: Array < Object > = [];
-    private data2: Array < Object > ;
-    private searchOptions: Boolean = false;
-    private customName: String = "";
-    private openColumnsConfig: Boolean = false;
-    private openCreateAccount: Boolean = false;
-    private accountType: String = "个人用户";
-    private customerName: String = "刘佳";
-    private customPhone: String = "18292536450";
-    private idCard: String = "610303199111142641";
-    private bank: String = "中国建设银行";
-    private bankCardId: String = "6227004171150138350";
-    private bankLeavePhone: String = "15091146267";
-    private qCode: String = "";
-    private timeout: any = 60;
-    private openAccountChannel: Boolean = false;
-    private openBindCard: Boolean = false;
-    private openChangeBankCard: Boolean = false;
-    private current: any = 0;
-    private certificateType: String = "身份证";
-    private certificateId: String = "";
-    private openHelp: Boolean = false;
-    private dataHelp: Array < Object > = [];
-    private openAccountModel: any = {};
-    mounted() {
-      this.getCustomerOpenAccount();
-    }
-    created() {
-      this.columns1 = [{
-          title: "操作",
-          width: 100,
-          align: "center",
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            if (row.customName === "王泽杰") {
-              return h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.createAccount(row);
-                    }
-                  }
-                },
-                "开户"
-              );
-            } else if (row.customName === "陈丽") {
-              return h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.changeCard(row);
-                    }
-                  }
-                },
-                "换卡"
-              );
-            } else {
-              return h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.bindCard(row);
-                    }
-                  }
-                },
-                "绑卡"
-              );
-            }
-          }
-        },
-        {
-          title: "客户姓名",
-          key: "personalName",
-          align: "center"
-        },
-        {
-          title: "证件号码",
-          key: "idCard",
-          align: "center"
-        },
-        {
-          title: "联系号码",
-          key: "mobileMain",
-          align: "center"
-        },
-        {
-          title: "是否开户",
-          key: "isAccount",
-          align: "center"
-        },
-        {
-          title: "绑卡银行",
-          key: "boundBank",
-          align: "center"
-        },
-        {
-          title: "银行卡号",
-          key: "bankCard",
-          align: "center"
-        },
-        {
-          title: "客户号",
-          key: "customId",
-          align: "center"
-        },
-        {
-          key: "faileReason",
-          width: 140,
-          renderHeader: (h, {
-            column,
-            index
-          }) => {
+  private columns1: any;
+  private columns2: any;
+  private columnsHelp: any;
+  private openAccountList: Array<Object> = [];
+  private data2: Array<Object>;
+  private searchOptions: Boolean = false;
+  private customName: String = "";
+  private openColumnsConfig: Boolean = false;
+  private openCreateAccount: Boolean = false;
+  private accountType: String = "个人用户";
+  private customerName: String = "刘佳";
+  private customPhone: String = "18292536450";
+  private idCard: String = "610303199111142641";
+  private bank: String = "中国建设银行";
+  private bankCardId: String = "6227004171150138350";
+  private bankLeavePhone: String = "15091146267";
+  private qCode: String = "";
+  private timeout: any = 60;
+  private openAccountChannel: Boolean = false;
+  private openBindCard: Boolean = false;
+  private openChangeBankCard: Boolean = false;
+  private current: any = 0;
+  private certificateType: String = "身份证";
+  private certificateId: String = "";
+  private openHelp: Boolean = false;
+  private dataHelp: Array<Object> = [];
+  private openAccountModel: any = {
+    timeSearch: "",
+    personalInfo: ""
+  };
+  mounted() {
+    this.getCustomerOpenAccount();
+  }
+  created() {
+    this.columns1 = [
+      {
+        title: "操作",
+        width: 100,
+        align: "center",
+        fixed: "left",
+        render: (h, { row, column, index }) => {
+          if (row.isAccount === 98) {
             return h(
-              "div", {
-                on: {
-                  click: () => {
-                    this.openHelpPage();
-                  }
-                },
-                style: {
-                  cursor: "pointer"
-                }
-              }, [
-                h("span", {}, "验卡失败原因"),
-                h("Icon", {
-                  props: {
-                    type: "help-circled",
-                    size: "20"
-                  }
-                })
-              ]
-            );
-          },
-          align: "center"
-        },
-        {
-          title: "结算通道",
-          width: 200,
-          key: "settlementChannel",
-          align: "center",
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h(
-              "i-button", {
+              "i-button",
+              {
                 props: {
                   type: "text"
                 },
-                on: {
-                  click: () => {}
-                },
                 style: {
-                  color: "#265ea2"
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.createAccount(row);
+                  }
                 }
               },
-              this.$dict.getDictName(row.settlementChannel)
+              "开户"
+            );
+          } else if (row.isAccount === 99) {
+            return h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.changeCard(row);
+                  }
+                }
+              },
+              "换卡"
+            );
+          } else if (row.isAccount === 100) {
+            return h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.bindCard(row);
+                  }
+                }
+              },
+              "绑卡"
             );
           }
         }
-      ];
-      this.columns2 = [{
-          title: "序号",
-          type: "index",
-          width: 80,
-          align: "center"
-        },
-        {
-          title: "列名",
-          key: "columnsName",
-          align: "center"
-        },
-        {
-          type: "selection",
-          width: 80,
-          align: "center"
+      },
+      {
+        title: "客户姓名",
+        key: "personalName",
+        align: "center"
+      },
+      {
+        title: "证件号码",
+        key: "idCard",
+        align: "center"
+      },
+      {
+        title: "联系号码",
+        key: "mobileMain",
+        align: "center"
+      },
+      {
+        title: "是否开户",
+        key: "isAccount",
+        align: "center",
+        render: (h, { row, column, index }) => {
+          return h("span", {}, this.$dict.getDictName(row.isAccount));
         }
-      ];
-      this.columnsHelp = [{
-          title: "银行",
-          key: "bankName",
-          align: "center",
-          width: 60
+      },
+      {
+        title: "绑卡银行",
+        key: "boundBank",
+        align: "center"
+      },
+      {
+        title: "银行卡号",
+        key: "bankCard",
+        align: "center"
+      },
+      {
+        title: "客户号",
+        key: "customId",
+        align: "center"
+      },
+      {
+        key: "faileReason",
+        width: 140,
+        renderHeader: (h, { column, index }) => {
+          return h(
+            "div",
+            {
+              on: {
+                click: () => {
+                  this.openHelpPage();
+                }
+              },
+              style: {
+                cursor: "pointer"
+              }
+            },
+            [
+              h("span", {}, "验卡失败原因"),
+              h("Icon", {
+                props: {
+                  type: "help-circled",
+                  size: "20"
+                }
+              })
+            ]
+          );
         },
-        {
-          title: "验卡失败原因",
-          key: "checkCardFailReason",
-          align: "center",
-          width: 400
-        },
-        {
-          title: "资讯电话",
-          key: "bankPhone",
-          align: "center"
+        align: "center"
+      },
+      {
+        title: "结算通道",
+        width: 200,
+        key: "settlementChannel",
+        align: "center",
+        render: (h, { row, column, index }) => {
+          return h(
+            "i-button",
+            {
+              props: {
+                type: "text"
+              },
+              on: {
+                click: () => {}
+              },
+              style: {
+                color: "#265ea2"
+              }
+            },
+            this.$dict.getDictName(row.settlementChannel)
+          );
         }
-      ];
-      this.data2 = [{
-          columnsName: "客户姓名"
-        },
-        {
-          columnsName: "证件号码"
-        },
-        {
-          columnsName: "联系号码"
-        },
-        {
-          columnsName: "是否开户"
-        },
-        {
-          columnsName: "绑定银行"
-        },
-        {
-          columnsName: "银行卡号"
-        },
-        {
-          columnsName: "客户号"
-        },
-        {
-          columnsName: "验卡失败原因"
-        },
-        {
-          columnsName: "结算通道"
-        }
-      ];
-    }
-    /**
-     * 获取客户开户列表
-     */
-    getCustomerOpenAccount() {
-      this.personalService
-        .getCustomerAccountList(this.openAccountModel, this.pageService)
-        .subscribe(
-          data => {
-            this.openAccountList = data;
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg);
-          }
-        );
-    }
-    /**
-     * 导出
-     */
-    exportDatabox() {}
-    /**
-     * 按时间搜索列表
-     */
-    getOrderInfoByTime() {}
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
-    }
-    /**
-     * 确认解绑
-     */
-    confirmUnBindCard() {
-      if (this.current === 2) {
-        this.current = 0;
-      } else {
-        this.current += 1;
       }
-    }
-    /**
-     * 确认绑卡
-     */
-    confirmBindCard() {
-      this.current = 0;
-      this.openChangeBankCard = false;
-    }
-    /**
-     * 发送验证码
-     */
-    sendQcode() {
-      // let a = setInterval(() => {
-      //   this.timeout--;
-      //   if (this.timeout === -1) {
-      //     this.timeout = 60;
-      //   }
-      // }, 1000);
-    }
-    /**
-     * 开户
-     */
-    createAccount(row) {
-      this.openCreateAccount = true;
-    }
-    /**
-     * 换卡
-     */
-    changeCard(row) {
-      this.openChangeBankCard = true;
-    }
-    /**
-     * 绑卡
-     */
-    bindCard(row) {
-      this.openBindCard = true;
-    }
-    /**
-     * 对公
-     */
-    faceToPuclic(row) {
-      this.openAccountChannel = true;
-    }
-    /**
-     * 打开帮助页
-     */
-    openHelpPage() {
-      this.openHelp = true;
-    }
-    /**
-     * 打印
-     */
-    printPage() {}
+    ];
+    this.columns2 = [
+      {
+        title: "序号",
+        type: "index",
+        width: 80,
+        align: "center"
+      },
+      {
+        title: "列名",
+        key: "columnsName",
+        align: "center"
+      },
+      {
+        type: "selection",
+        width: 80,
+        align: "center"
+      }
+    ];
+    this.columnsHelp = [
+      {
+        title: "银行",
+        key: "bankName",
+        align: "center",
+        width: 60
+      },
+      {
+        title: "验卡失败原因",
+        key: "checkCardFailReason",
+        align: "center",
+        width: 400
+      },
+      {
+        title: "资讯电话",
+        key: "bankPhone",
+        align: "center",
+        width: 100
+      }
+    ];
+    this.data2 = [
+      {
+        columnsName: "客户姓名"
+      },
+      {
+        columnsName: "证件号码"
+      },
+      {
+        columnsName: "联系号码"
+      },
+      {
+        columnsName: "是否开户"
+      },
+      {
+        columnsName: "绑定银行"
+      },
+      {
+        columnsName: "银行卡号"
+      },
+      {
+        columnsName: "客户号"
+      },
+      {
+        columnsName: "验卡失败原因"
+      },
+      {
+        columnsName: "结算通道"
+      }
+    ];
   }
-
+  /**
+   * 获取客户开户列表
+   */
+  getCustomerOpenAccount() {
+    this.personalService
+      .getCustomerAccountList(this.openAccountModel, this.pageService)
+      .subscribe(
+        data => {
+          this.openAccountList = data;
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+  /**
+   * 导出
+   */
+  exportDatabox() {}
+  /**
+   * 按时间搜索列表
+   */
+  getOrderInfoByTime(val) {
+    this.openAccountModel.timeSearch = val;
+    this.openAccountModel.personalInfo = "";
+    this.getCustomerOpenAccount();
+    this.openAccountModel.timeSearch = "";
+  }
+  openSearch() {
+    this.searchOptions = !this.searchOptions;
+  }
+  /**
+   * 确认解绑
+   */
+  confirmUnBindCard() {
+    if (this.current === 2) {
+      this.current = 0;
+    } else {
+      this.current += 1;
+    }
+  }
+  /**
+   * 确认绑卡
+   */
+  confirmBindCard() {
+    this.current = 0;
+    this.openChangeBankCard = false;
+  }
+  /**
+   * 发送验证码
+   */
+  sendQcode() {
+    // let a = setInterval(() => {
+    //   this.timeout--;
+    //   if (this.timeout === -1) {
+    //     this.timeout = 60;
+    //   }
+    // }, 1000);
+  }
+  /**
+   * 开户
+   */
+  createAccount(row) {
+    this.openCreateAccount = true;
+  }
+  /**
+   * 换卡
+   */
+  changeCard(row) {
+    this.openChangeBankCard = true;
+  }
+  /**
+   * 绑卡
+   */
+  bindCard(row) {
+    this.openBindCard = true;
+  }
+  /**
+   * 对公
+   */
+  faceToPuclic(row) {
+    this.openAccountChannel = true;
+  }
+  /**
+   * 打开帮助页
+   */
+  openHelpPage() {
+    this.openHelp = true;
+  }
+  /**
+   * 打印
+   */
+  printPage() {}
+}
 </script>

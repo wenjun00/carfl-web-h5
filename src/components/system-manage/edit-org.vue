@@ -124,7 +124,7 @@ export default class EditOrg extends Vue {
   /**
    * 获取dept
    */
-  getDeptInfo() {
+  getDeptInfo(val) {
     console.log(this.deptObject, 898);
     this.deptObj.deptName = this.deptObject.deptName;
     this.deptObj.deptLevel = this.deptObject.deptLevel;
