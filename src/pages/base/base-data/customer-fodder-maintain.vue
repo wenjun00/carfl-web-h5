@@ -25,7 +25,7 @@
           <i-button class="blueButton" style="margin-left:10px" @click="search">搜索</i-button>
           <i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>
           <i-button class="blueButton" style="margin-left:10px;position:absolute;right:11px;" @click="materialModel=true">新增素材</i-button>
-          <data-box :columns="columns" :data="data1" @onPageChange="search" :page="pageService"></data-box>
+          <data-box :id="144" :columns="columns" :data="data1" @onPageChange="search" :page="pageService"></data-box>
         </i-col>
       </i-row>
     </i-row>
@@ -172,11 +172,13 @@ export default class CustomerFodderMaintain extends Page {
 				title: '名称',
 				key: 'name',
 				align: 'center',
+				editable: true,
 			},
 			{
 				title: '是否必传',
 				key: 'isNecessary',
 				align: 'center',
+				editable: true,
 				render: (h, { row, columns, index }) => {
 					return h(
 						'i-switch',

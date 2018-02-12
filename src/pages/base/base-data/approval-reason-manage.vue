@@ -36,7 +36,7 @@
         </div>
       </div>
     </i-row>
-    <data-box :columns="columns" :data="AppRoveReasonList" @onPageChange="seach" :page="pageService"></data-box>
+    <data-box :id="109" :columns="columns" :data="AppRoveReasonList" @onPageChange="seach" :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="24" style="text-align:right;">
@@ -167,36 +167,43 @@ export default class ApprovalReasonManage extends Page {
 				title: '类型',
 				key: 'type',
 				align: 'center',
+				editable: true,
 			},
 			{
 				title: '一级',
 				key: 'first',
 				align: 'center',
+				editable: true,
 			},
 			{
 				title: '二级',
 				key: 'second',
 				align: 'center',
+				editable: true,
 			},
 			{
 				title: 'CRC编码',
 				key: 'crc',
 				align: 'center',
+				editable: true,
 			},
 			{
 				title: '详细内容',
 				key: 'detail',
 				align: 'center',
+				editable: true,
 			},
 			{
 				title: '创建人',
 				key: 'operator',
 				align: 'center',
+				editable: true,
 			},
 			{
 				title: '创建时间',
 				key: 'operatorTime',
 				align: 'center',
+				editable: true,
 				render: (h, { row, columns, index }) => {
 					return h('span', FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss'));
 				},

@@ -39,22 +39,24 @@
           </i-col>
           <i-col :span="22">
             <i-table v-if="viewStatus" :columns="carColumns" :data="paramList"></i-table>
-            <i-form class="table_container" ref="parms=form" :model="formModel" v-else>
+            <i-form class="table_container" ref="parms=form" :model="modifyModel" v-else>
               <i-row type="flex">
-                <i-col :span="12">参数名称</i-col>
-                <i-col :span="12">参数值</i-col>
+                <i-col :span="11">参数名称</i-col>
+                <i-col :span="11">参数值</i-col>
+                <i-col :span="2">操作</i-col>
               </i-row>
-              <i-row v-for="item in formModel" :key="item.id">
-                <i-col :span="12">
+              <i-row v-for="item in formModel" :key="item.id" type="flex" align="middle">
+                <i-col :span="11">
                   <i-form-item style="margin-top:10px;">
-                    <i-input v-model="item.name"></i-input>
+                    <i-input :value="item.name"></i-input>
                   </i-form-item>
                 </i-col>
-                <i-col :span="12">
+                <i-col :span="11">
                   <i-form-item style="margin-top:10px;">
-                    <i-input v-model="item.value"></i-input>
+                    <i-input :value="item.value"></i-input>
                   </i-form-item>
                 </i-col>
+                <i-col :span="2" @click="deleteFun(item)" class="delete">删除</i-col>
               </i-row>
 
             </i-form>
@@ -102,10 +104,10 @@ export default class ProdConfig extends Page {
 	@Dependencies(CarService) private carService: CarService;
 	@Dependencies(PageService) private pageService: PageService;
 	private treeData: Array<any> = [];
-	private dataList: any = [];
+	private dataList: Array<any> = [];
 	private carId: any;
 	private carDataModel: Array<any> = [];
-	private carColumns: any = [];
+	private carColumns: Array<any> = [];
 	private carParam: String = '';
 	private editmessage: any = {};
 	private editModal: Boolean = false;
@@ -114,11 +116,17 @@ export default class ProdConfig extends Page {
 	private viewStatus: Boolean = true;
 	private dataLength: Boolean = false;
 	private carTypes: any = {};
-	private paramList: any = [];
+	private paramList: Array<any> = [];
 	private oneParamCode: any = {}; //基本参数
 	private colorPa: any = {}; //车身颜色
 	private colorModel: any = {};
-	private formModel: any = [];
+	// private formList: Array<any> = [];
+	private formModel: Array<any> = [];
+	private modifyModel: any = {
+		name: '',
+		value: '',
+	};
+
 	/**
 	 * 客户素材配置
 	 */
@@ -184,6 +192,7 @@ export default class ProdConfig extends Page {
 			})
 			.subscribe(
 				val => {
+					console.log(val, 567);
 					this.paramList = val;
 					this.formModel = val;
 					console.log(this.formModel, 33);
@@ -276,7 +285,32 @@ export default class ProdConfig extends Page {
 		} else if (val.target.innerHTML == '保存') {
 			val.target.innerHTML = '编辑参数';
 			this.viewStatus = true;
+			this.saveFun();
 		}
+	}
+	/**
+	 * 保存 提交
+	 */
+	saveFun() {
+		this.modifyModel = this.formModel;
+		let edit = {
+			carParams: this.modifyModel,
+		};
+		this.carParamControllerService.saveOrUpdate(edit).subscribe(
+			val => {
+				this.$Message.success('修改成功！');
+			},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+	}
+	/**
+	 * 删除参数
+	 */
+	deleteFun(item) {
+		console.log(item, 666);
+		alert(1111);
 	}
 }
 </script>
@@ -321,5 +355,9 @@ export default class ProdConfig extends Page {
 	height: 300px;
 	text-align: center;
 	line-height: 300px;
+}
+.delete {
+	cursor: pointer;
+	color: #265ea2;
 }
 </style>

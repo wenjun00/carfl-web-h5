@@ -23,7 +23,7 @@
           <i-button class="blueButton" style="margin-left:10px" @click="seach">搜索</i-button>
           <i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>
           <i-button class="blueButton" style="margin-left:10px;position:absolute;right:0;" @click="dataModal=true">新增数据</i-button>
-          <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService"></data-box>
+          <data-box :id="108" :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService"></data-box>
         </i-col>
       </i-row>
     </i-row>
@@ -197,6 +197,7 @@ export default class DataDict extends Page {
 				align: 'center',
 				title: ' 名称',
 				key: 'name',
+				editable: true,
 			},
 		];
 	}

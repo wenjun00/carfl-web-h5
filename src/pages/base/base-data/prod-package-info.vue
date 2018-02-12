@@ -17,7 +17,7 @@
         </div>
       </div>
     </i-row>
-    <data-box :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService"></data-box>
+    <data-box :id="91" :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="bottom" justify="end">
         <i-col :span="6" style="text-align:right;margin-top:12px;margin-right:15px;">
@@ -69,13 +69,6 @@ export default class ProdPackageInfo extends Page {
 	private pPackageModel: Boolean = false;
 	created() {
 		this.columns = [
-			{
-				title: '序号',
-				width: 60,
-				type: 'index',
-				align: 'center',
-				fixed: 'left',
-			},
 			{
 				title: '操作',
 				align: 'center',
@@ -148,11 +141,13 @@ export default class ProdPackageInfo extends Page {
 				title: '文件名',
 				key: 'fileName',
 				align: 'center',
+				editable: true,
 			},
 			{
 				title: '上传时间',
 				key: 'uploadTime',
 				align: 'center',
+				editable: true,
 				render: (h, { row, column, index }) => {
 					return h('span', FilterService.dateFormat(row.uploadTime, 'yyyy-MM-dd hh:mm:ss'));
 				},
@@ -161,11 +156,13 @@ export default class ProdPackageInfo extends Page {
 				title: '操作人',
 				key: 'operatorName',
 				align: 'center',
+				editable: true,
 			},
 			{
 				title: '备注',
 				key: 'remark',
 				align: 'center',
+				editable: true,
 			},
 		];
 		this.productModel = {

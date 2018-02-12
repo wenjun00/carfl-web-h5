@@ -746,12 +746,10 @@ export default class ProdConfig extends Page {
 			})
 			.subscribe(val => {
 				this.newTree = val;
-				console.log(this.newTree, 9999);
 				this.newTree.map(val => {
 					let dictData = JSON.parse(localStorage.dictData); //获取所有数字字典项
-					let pt = dictData.filter(v => v.id === val.type); // 找到字典项对应的父类
-					let set = new Set(pt);
-					this.childs = Array.from(set);
+					let pt = dictData.find(v => v.id === val.type); // 找到字典项对应的父类
+					let child = Array.from(new Set(pt));
 					this.childs = {
 						title: pt.name,
 						expand: true,

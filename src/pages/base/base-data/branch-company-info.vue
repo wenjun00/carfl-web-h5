@@ -8,7 +8,7 @@
       <i-button class="blueButton" style="margin-left:10px;" @click="seachCompany">搜索</i-button>
       <i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>
     </i-row>
-    <data-box :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
+    <data-box :id="175" :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:14px">
         <i-col :span="24" style="text-align:right;">
@@ -101,35 +101,6 @@ export default class BranchCompanyInfo extends Page {
 		};
 		this.columns = [
 			{
-				align: 'center',
-				width: 60,
-				type: 'index',
-				fixed: 'left',
-				renderHeader: (h, { column, index }) => {
-					return h(
-						'div',
-						{
-							on: {
-								click: () => {
-									this.columnsConfig();
-								},
-							},
-							style: {
-								cursor: 'pointer',
-							},
-						},
-						[
-							h('Icon', {
-								props: {
-									type: 'gear-b',
-									size: '20',
-								},
-							}),
-						]
-					);
-				},
-			},
-			{
 				title: '操作',
 				align: 'center',
 				fixed: 'left',
@@ -162,12 +133,14 @@ export default class BranchCompanyInfo extends Page {
 				align: 'center',
 				fixed: 'left',
 				width: 160,
+				editable: true,
 			},
 			{
 				title: '省份',
 				key: 'companyProvince',
 				align: 'center',
 				width: 160,
+				editable: true,
 				render: (h, { row, column, index }) => {
 					return h('span', CityService.getCityName(row.companyProvince));
 				},
@@ -177,6 +150,7 @@ export default class BranchCompanyInfo extends Page {
 				key: 'companyCity',
 				align: 'center',
 				width: 160,
+				editable: true,
 				render: (h, { row, column, index }) => {
 					return h('span', CityService.getCityName(row.companyCity));
 				},
@@ -186,30 +160,35 @@ export default class BranchCompanyInfo extends Page {
 				key: 'bankAccount',
 				align: 'center',
 				width: 260,
+				editable: true,
 			},
 			{
 				title: '开户银行',
 				key: 'depositBank',
 				align: 'center',
 				width: 260,
+				editable: true,
 			},
 			{
 				title: '银行卡号',
 				key: 'cardNumber',
 				align: 'center',
 				width: 260,
+				editable: true,
 			},
 			{
 				title: '支行名称',
 				key: 'branchName',
 				align: 'center',
 				width: 260,
+				editable: true,
 			},
 			{
 				title: '状态',
 				key: 'companyStatus',
 				align: 'center',
 				width: 90,
+				editable: true,
 				render: (h, { row, column, index }) => {
 					if (row.companyStatus === 0) {
 						return h('span', {}, '已启用');
