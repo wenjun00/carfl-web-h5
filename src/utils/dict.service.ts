@@ -1,4 +1,4 @@
-const dictData = require('~/assets/json/dict.json');
+import store from '~/store'
 
 export class DictService {
   /**
@@ -10,7 +10,7 @@ export class DictService {
 
     // 获取字典项
     codes.forEach(code => {
-      let items = dictData
+      let items = store.state.dictData
         .filter(x => x.code === code)
         .map(x => ({
           value: x.id,
