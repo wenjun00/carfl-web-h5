@@ -39,4 +39,14 @@ export class PersonalService {
       }
     })
   }
+  /**
+   * 获取客户开户列表
+   */
+  getCustomerAccountList(data, page) {
+    return this.netService.send({
+      server: manageService.personalController.getCustomerAccountList,
+      data: data,
+      page: page
+    })
+  }
 }

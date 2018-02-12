@@ -31,5 +31,14 @@ export default {
     controller: CONTROLLER,
     action: 'getBankByClientNumber',
     type: requestType.Get
+  },
+  /**
+   * 获取客户开户列表
+   */
+  getCustomerAccountList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCustomerAccountList',
+    type: requestType.Get
   }
 }

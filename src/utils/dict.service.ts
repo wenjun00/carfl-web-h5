@@ -22,4 +22,11 @@ export class DictService {
 
     return results.length === 1 ? results[0] : results
   }
+
+  static getDictName(value) {
+    let data = store.state.dictData.find(x => value === x.id)
+    if (data) {
+      return data.name
+    }
+  }
 }
