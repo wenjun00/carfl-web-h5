@@ -26,12 +26,12 @@
           <span style="font-size: 12px;">导出</span>
         </div>
         <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
-          <span style="font-size:12px;">导入</span>
+          <svg-icon style="font-size:24px;" iconClass="daoru"></svg-icon>
+          <span style="font-size:8px;">导入</span>
         </div>
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon iconClass="daochu"></svg-icon>
-          <span style="font-size: 12px;">模版下载</span>
+          <svg-icon iconClass="xiazai"></svg-icon>
+          <span style="font-size: 16px;">模版下载</span>
         </div>
       </div>
     </div>
