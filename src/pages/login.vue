@@ -10,34 +10,39 @@
         </div>
         <div class="loginContainer">
           <div style="font-size:20px;color:#1D4F8B;font-weight:bold;margin-bottom:20px;margin-left:56px;font-family:AdobeHeitiStd-Regular">登录</div>
-          <i-form ref="login-form" :model="loginModel" :rules="loginRule" :label-width="80" class="login-form">
-            <i-form-item prop="username">
-              <i-input type="text" size="large" v-model="loginModel.username" placeholder="用户名" @on-keyup.enter="submitForm" @on-change="checkAccount">
-              </i-input>
-            </i-form-item>
-            <i-form-item prop="password">
-              <i-input type="password" size="large" v-model="loginModel.password" placeholder="密码" @on-keyup.enter="submitForm">
-              </i-input>
-            </i-form-item>
-
-            <i-form-item class="remember">
-              <i-checkbox v-model="loginModel.remember">
-                <span>记住用户名与密码</span>
-              </i-checkbox>
-              <i-button type="text" style="float:right;color:#1D4F8B" @click="registerModal = true">注册</i-button>
-            </i-form-item>
-            <i-form-item :label-width="0" style="text-align:center">
-              <i-button class="submit_btn blueButton" @click="submitForm">登录</i-button>
-            </i-form-item>
-          </i-form>
+          <div style="display:flex;justify-content:center">
+            <i-form ref="login-form" :model="loginModel" :rules="loginRule" :label-width="80" style="position:relative;right:0px;">
+              <i-form-item prop="username">
+                <i-input type="text" size="large" v-model="loginModel.username" placeholder="用户名" @on-keyup.enter="submitForm" @on-change="checkAccount">
+                </i-input>
+              </i-form-item>
+              <i-form-item prop="password">
+                <i-input type="password" size="large" v-model="loginModel.password" placeholder="密码" @on-keyup.enter="submitForm">
+                </i-input>
+              </i-form-item>
+              <i-form-item class="remember">
+                <i-checkbox v-model="loginModel.remember">
+                  <span>记住用户名与密码</span>
+                </i-checkbox>
+                <i-button type="text" style="float:right;color:#1D4F8B" @click="registerModal = true">注册</i-button>
+              </i-form-item>
+              <i-form-item :label-width="0" style="text-align:center">
+                <i-button class="submit_btn blueButton" @click="submitForm">登录</i-button>
+              </i-form-item>
+            </i-form>
+          </div>
         </div>
       </div>
     </i-row>
     <div style="width:100%;color:#999999;position:absolute;bottom:20px;text-align:center">© 2018 Zhiwang All Rights Reserved. For Internal Use Only</div>
 
     <template>
-      <i-modal title="新用户注册" v-model="registerModal" class="calculate">
-        <register @close="registerModal=false"></register>
+      <i-modal title="新用户注册" v-model="registerModal">
+        <register @close="registerModal=false" ref="register"></register>
+        <div slot="footer">
+          <i-button @click="cancelRegister">取消</i-button>
+          <i-button @click="confirmRegister" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -95,6 +100,22 @@ export default class Login extends Vue {
     };
   }
 
+  /**
+   * 取消注册
+   */
+  cancelRegister() {
+    this.registerModal = false;
+    let _register: any = this.$refs["register"];
+    _register.resetForm();
+  }
+
+  /**
+   * 确定注册
+   */
+  confirmRegister() {
+    let _register: any = this.$refs["register"];
+    _register.registerClick();
+  }
   /**
    * 提交登录表单
    */
@@ -170,11 +191,12 @@ export default class Login extends Vue {
   background-size: 500px 500px;
 }
 
-.login-form {
-  width: 350px;
-  position: relative;
-  right: 23px;
-}
+// .login-form {
+//   width: 270px;
+//   position: relative;
+//   left: 55px;
+//   position: absolute;
+// }
 
 .submit_btn {
   width: 270px;

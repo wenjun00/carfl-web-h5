@@ -28,6 +28,8 @@ import loginController from './login.controller'
 import fileUploadController from './file-upload-controller.controller'
 import userDeviceController from './user-device.controller'
 import scheduleJobController from './schedule-job.controller'
+import carParamTypeController from './car-param-type-controller.controller'
+import carParamController from './car-param-controller.controller'
 
 export const manageService = {
   departmentController,
@@ -59,5 +61,7 @@ export const manageService = {
   loginController,
   fileUploadController,
   userDeviceController,
-  scheduleJobController
+  scheduleJobController,
+  carParamTypeController,
+  carParamController
 }

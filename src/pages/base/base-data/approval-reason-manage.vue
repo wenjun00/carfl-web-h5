@@ -4,20 +4,24 @@
     <i-row style="margin-top:10px;margin-left:10px;">
       <span style="font-size:18px;font-weight:bold">审批原因管理</span>
       <span style="margin-left:10px;">类型：</span>
-      <i-select style="margin-left:10px;width:10%;" placeholder="全部" v-model="appReasonModel.type" clearable>
-        <i-option label="退件" :value="374" :key="374"></i-option>
+      <i-select style="margin-left:10px;width:10%;" placeholder="全部" v-model="appReasonModel.type" clearable @on-change="selectType">
+        <i-option label="退回" :value="374" :key="374"></i-option>
         <i-option label="拒绝" :value="375" :key="375"></i-option>
       </i-select>
       <span style="margin-left:10px;">一级：</span>
-      <i-input style="width:10%;" v-model="appReasonModel.first"></i-input>
+      <i-select style="margin-left:10px;width:10%;" placeholder="全部" v-model="appReasonModel.first" clearable @on-change="firstSelect">
+        <i-option :label="item" :value="item" :key="item" v-for="item in firstOption"></i-option>
+      </i-select>
       <span style="margin-left:10px;">二级：</span>
-      <i-input style="width:10%;" v-model="appReasonModel.second"></i-input>
+      <i-select style="margin-left:10px;width:10%;" placeholder="全部" v-model="appReasonModel.second" clearable @on-change="secondSelect">
+        <i-option :label="item" :value="item" :key="item" v-for="item in secondOption"></i-option>
+      </i-select>
       <span style="margin-left:10px;">CRC编码：</span>
       <i-input style="width:10%;" v-model="appReasonModel.CRC"></i-input>
       <span style="margin-left:10px;">详细内容：</span>
       <i-input style="width:10%;" v-model="appReasonModel.detail"></i-input>
       <i-button class="blueButton" style="margin-left:10px;" @click="seach">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;">重置</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>
       <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
         <span></span>
       </div>
@@ -44,7 +48,7 @@
       <i-modal title="新增审批原因" v-model="approvalReasonModel">
         <add-approval-reason ref="add-approval-reason" @close="closeApproval"></add-approval-reason>
         <div slot="footer">
-          <i-button class="Ghost" @click="MaterialTypeModel=false">取消</i-button>
+          <i-button class="Ghost" @click="approvalReasonModel=false">取消</i-button>
           <i-button class="blueButton" @click="submitApprovalReason">新增</i-button>
         </div>
       </i-modal>
@@ -88,7 +92,7 @@ export default class ApprovalReasonManage extends Page {
 	@Dependencies(PageService) private pageService: PageService;
 	private columns: any;
 	private columns2: any;
-	private appReasonModel: any;
+	private appReasonModel: any = {};
 	private data2: Array<any> = [];
 	private searchOptions: Boolean = false;
 	private approvalReasonModal: Boolean = false;
@@ -98,6 +102,8 @@ export default class ApprovalReasonManage extends Page {
 	private approvalReasonModel: Boolean = false;
 	private editApprovalReasonModel: Boolean = false;
 	private userData: any = {};
+	private firstOption: any = [];
+	private secondOption: any = [];
 
 	created() {
 		this.seach();
@@ -319,7 +325,52 @@ export default class ApprovalReasonManage extends Page {
 	 * 模板下载
 	 */
 	downloadTemplate() {
-		this.approveReasonService.downloadApproveReasonTemplate().subscribe(val => {});
+		this.approveReasonService.downloadApproveReasonTemplate().subscribe(
+			val => {},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+	}
+	/**
+	 * 重置搜索
+	 */
+	resetSeach() {
+		this.appReasonModel = {
+			first: '',
+			second: '',
+			CRC: '',
+			detail: '',
+			type: '',
+		};
+	}
+	/**
+	 * 选择类型 查询一级二级的select
+	 */
+	selectType(val) {
+		this.appReasonModel.type = val;
+		this.appReasonModel.first = '';
+		this.appReasonModel.second = '';
+		this.approveReasonService.getApproveReasonByCondition(this.appReasonModel).subscribe(val => {
+			let optionArray = val.map(v => v.first);
+			let set1 = new Set(optionArray);
+			this.firstOption = Array.from(set1);
+		});
+	}
+	firstSelect(val) {
+		this.appReasonModel.type = this.appReasonModel.type;
+		this.appReasonModel.first = val;
+		this.appReasonModel.second = '';
+		this.approveReasonService.getApproveReasonByCondition(this.appReasonModel).subscribe(val => {
+			let secondArray = val.map(v => v.second);
+			let set2 = new Set(secondArray);
+			this.secondOption = Array.from(set2);
+		});
+	}
+	secondSelect(val) {
+		this.appReasonModel.type = this.appReasonModel.type;
+		this.appReasonModel.first = this.appReasonModel.first;
+		this.appReasonModel.second = val;
 	}
 }
 </script>

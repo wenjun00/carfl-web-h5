@@ -25,13 +25,12 @@
             <i-option label="停用" :value="1" :key="1"></i-option>
           </i-select>
           <i-button class="blueButton" style="margin-left:20px;" @click="getUserListByCondition">搜索</i-button>
+          <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="addNewUser">新增用户</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="batchAllotRole">批量分配角色</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="batchManageDevice">批量管理设备</i-button>
         </i-row>
-        <!-- <div style="min-width:1000px"> -->
-        <data-box :columns="columns1" :height="436" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService"></data-box>
-        <!-- </div> -->
+        <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService"></data-box>
       </i-col>
     </i-row>
 
@@ -158,7 +157,7 @@ export default class OrgUserManage extends Page {
   private deviceManageModal: Boolean = false;
   private addNewOrgModal: Boolean = false;
   private userName: String = "";
-  private userListModel: any;
+  private userListModel: any = {};
   private deptObject: any;
   private modifyUserModel: any;
   private userId: number | null = null;
@@ -217,41 +216,13 @@ export default class OrgUserManage extends Page {
       userName: "",
       realName: "",
       status: "",
-      deptId: 2
+      deptId: 1
     };
     this.columns1 = [
       {
         align: "center",
         type: "selection",
         width: 60
-      },
-      {
-        align: "center",
-        width: 60,
-        type: "index",
-        renderHeader: (h, { column, index }) => {
-          return h(
-            "div",
-            {
-              on: {
-                click: () => {
-                  this.columnsConfig();
-                }
-              },
-              style: {
-                cursor: "pointer"
-              }
-            },
-            [
-              h("Icon", {
-                props: {
-                  type: "gear-b",
-                  size: "20"
-                }
-              })
-            ]
-          );
-        }
       },
       {
         title: "操作",
@@ -334,22 +305,26 @@ export default class OrgUserManage extends Page {
         align: "center",
         title: "用户名",
         key: "userUsername",
+        editable: true,
         width: 90
       },
       {
         align: "center",
         title: "姓名",
+        editable: true,
         key: "userRealname",
         width: 90
       },
       {
         align: "center",
         title: "所属机构",
+        editable: true,
         key: "deptName",
         width: 90
       },
       {
         align: "center",
+        editable: true,
         title: "状态",
         key: "status",
         width: 90,
@@ -363,21 +338,25 @@ export default class OrgUserManage extends Page {
       },
       {
         align: "center",
+        editable: true,
         title: "电话",
         key: "userPhone"
       },
       {
         align: "center",
+        editable: true,
         title: "备注",
         key: "userRemark"
       },
       {
         align: "center",
+        editable: true,
         title: "创建人",
         key: "operatorName"
       },
       {
         align: "center",
+        editable: true,
         title: "创建时间",
         key: "operateTime",
         render: (h, { row, columns, index }) => {
@@ -533,6 +512,7 @@ export default class OrgUserManage extends Page {
     }
   }
   getUserListByCondition() {
+    // let deptId =
     this.manageService
       .getUsersByDeptPage(this.userListModel, this.pageService)
       .subscribe(
@@ -676,6 +656,17 @@ export default class OrgUserManage extends Page {
    */
   columnsConfig() {
     this.openColumnsConfig = true;
+  }
+  /**
+   * 重置搜索
+   */
+  refreshRoleList() {
+    this.userListModel = {
+      userName: "",
+      realName: "",
+      status: "",
+      deptId: 1
+    };
   }
 }
 </script>

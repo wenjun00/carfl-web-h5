@@ -27,6 +27,7 @@ export default [
       }, {
         title: '进件查询',
         color: '#36B48C',
+        path: 'purchase/purchase-query',
         icon: 'jinjianchaxun',
         children: [{
           title: '订单查询',
@@ -42,6 +43,7 @@ export default [
       {
         title: '财务记账',
         color: '#47AAB6',
+        path: 'purchase/finance-account',
         icon: 'caiwujizhang',
         children: [{
           title: '销售收款申请',
@@ -63,6 +65,7 @@ export default [
       {
         title: '审批管理',
         color: '#6D7AD9',
+        path: 'purchase/purchase-approve',
         icon: 'shenpiguanli',
         children: [{
           title: '收款审批',

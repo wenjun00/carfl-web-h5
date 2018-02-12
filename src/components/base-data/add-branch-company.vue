@@ -2,53 +2,31 @@
 <template>
   <section class="component add-branch-company">
     <i-form :label-width="80" class="addCompany" :model="addBranchModel" ref="add-company" :rules="rules" label-position="left">
-      <i-row>
-        <i-col :span="12">
-          <i-form-item label="公司简称" prop="companyChinaname">
-            <i-input v-model="addBranchModel.companyChinaname"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="11" :push="1">
-          <i-form-item label="户名" prop="bankAccount">
-            <i-input v-model="addBranchModel.bankAccount"></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row>
-        <i-col :span="12">
-          <i-form-item label="所在省" prop="companyProvince">
-            <i-select style="100%" placeholder="选择省" v-model="addBranchModel.companyProvince" clearable>
-              <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-          </i-form-item>
-        </i-col>
-        <i-col :span="11" :push="1">
-          <i-form-item label="所在市" prop="companyCity">
-            <i-select style="100%" placeholder="选择市" v-model="addBranchModel.companyCity" clearable>
-              <i-option v-for="{value,label} in this.addBranchModel.companyProvince ? this.$city.getCityData({ level: 1, id: this.addBranchModel.companyProvince }) : []" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row>
-        <i-col :span="12">
-          <i-form-item label="开户银行" prop="depositBank">
-            <i-input v-model="addBranchModel.depositBank"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="11" :push="1">
-          <i-form-item label="银行卡号" prop="cardNumber">
-            <i-input v-model="addBranchModel.cardNumber"></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row>
-        <i-col :span="12">
-          <i-form-item label="是否启用">
-            <i-switch v-model="status"></i-switch>
-          </i-form-item>
-        </i-col>
-      </i-row>
+      <i-form-item label="公司简称" prop="companyChinaname">
+        <i-input v-model="addBranchModel.companyChinaname"></i-input>
+      </i-form-item>
+      <i-form-item label="户名" prop="bankAccount">
+        <i-input v-model="addBranchModel.bankAccount"></i-input>
+      </i-form-item>
+      <i-form-item label="所在省" prop="companyProvince">
+        <i-select style="100%" placeholder="选择省" v-model="addBranchModel.companyProvince" clearable>
+          <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+        </i-select>
+      </i-form-item>
+      <i-form-item label="所在市" prop="companyCity">
+        <i-select style="100%" placeholder="选择市" v-model="addBranchModel.companyCity" clearable>
+          <i-option v-for="{value,label} in this.addBranchModel.companyProvince ? this.$city.getCityData({ level: 1, id: this.addBranchModel.companyProvince }) : []" :key="value" :label="label" :value="value"></i-option>
+        </i-select>
+      </i-form-item>
+      <i-form-item label="开户银行" prop="depositBank">
+        <i-input v-model="addBranchModel.depositBank"></i-input>
+      </i-form-item>
+      <i-form-item label="银行卡号" prop="cardNumber">
+        <i-input v-model="addBranchModel.cardNumber"></i-input>
+      </i-form-item>
+      <i-form-item label="是否启用">
+        <i-switch v-model="status"></i-switch>
+      </i-form-item>
     </i-form>
   </section>
 </template>
@@ -87,6 +65,7 @@ export default class AddBranchCompany extends Vue {
 					message: '请输入公司简称',
 					trigger: 'blur',
 				},
+				{ max: 20, message: '长度不能超过20个字符', trigger: 'blur' },
 			],
 			bankAccount: [
 				{
@@ -94,6 +73,7 @@ export default class AddBranchCompany extends Vue {
 					message: '请输入公司简称',
 					trigger: 'blur',
 				},
+				{ max: 20, message: '长度不能超过20个字符', trigger: 'blur' },
 			],
 			companyProvince: [
 				{
@@ -102,6 +82,7 @@ export default class AddBranchCompany extends Vue {
 					trigger: 'change',
 					type: 'number',
 				},
+				{ max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
 			],
 			companyCity: [
 				{
@@ -110,6 +91,7 @@ export default class AddBranchCompany extends Vue {
 					trigger: 'change',
 					type: 'number',
 				},
+				{ max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
 			],
 			depositBank: [
 				{
@@ -117,6 +99,7 @@ export default class AddBranchCompany extends Vue {
 					message: '请输入开户银行',
 					trigger: 'change',
 				},
+				{ max: 10, message: '长度不能超过10个字符', trigger: 'blur' },
 			],
 			cardNumber: [
 				{
@@ -124,6 +107,7 @@ export default class AddBranchCompany extends Vue {
 					message: '请输入银行卡号',
 					trigger: 'change',
 				},
+				{ max: 25, message: '长度不能超过25个字符', trigger: 'blur' },
 			],
 		};
 	}
@@ -161,8 +145,5 @@ export default class AddBranchCompany extends Vue {
 }
 </script>
 <style lang="less">
-.addCompany {
-	// position: relative;
-	// right: 10px;
-}
+
 </style>

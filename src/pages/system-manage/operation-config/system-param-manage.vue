@@ -11,8 +11,9 @@
         <i-option label="停用" :value="1" :key="1"></i-option>
       </i-select>
       <i-button style="margin-left:10px;" class="blueButton" @click="getSystemParam">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="systemParamsData" @onPageChange="getSystemParam" :page="pageService"></data-box>
+    <data-box :id="77" :columns="columns1" :data="systemParamsData" @onPageChange="getSystemParam" :page="pageService"></data-box>
 
     <template>
       <i-modal v-model="editSysParamsModal" title="修改系统参数">
@@ -76,14 +77,9 @@ export default class OrderTransfer extends Page {
     };
     this.columns1 = [
       {
-        align: "center",
-        type: "index",
-        title: "序号",
-        width: 60
-      },
-      {
         title: "操作",
         align: "center",
+        fixed: "left",
         width: 120,
         render: (h, { row, columns, index }) => {
           return h(
@@ -107,21 +103,25 @@ export default class OrderTransfer extends Page {
       },
       {
         title: "参数代码",
+        editable: true,
         key: "paramCode",
         align: "center"
       },
       {
         title: "参数名称",
+        editable: true,
         key: "paramName",
         align: "center"
       },
       {
         title: "参数值",
+        editable: true,
         key: "paramValue",
         align: "center"
       },
       {
         title: "是否启用",
+        editable: true,
         key: "paramStatus",
         align: "center",
         render: (h, { row, columns, index }) => {
@@ -130,6 +130,7 @@ export default class OrderTransfer extends Page {
       },
       {
         title: "说明",
+        editable: true,
         key: "paramRemark",
         align: "center"
       }
@@ -180,6 +181,15 @@ export default class OrderTransfer extends Page {
   closeBtn() {
     this.editSysParamsModal = false;
     this.getSystemParam();
+  }
+  /**
+   * 重置搜索
+   */
+  refreshRoleList() {
+    this.systemParameterModel = {
+      paramName: "",
+      paramStatus: ""
+    };
   }
 }
 </script>

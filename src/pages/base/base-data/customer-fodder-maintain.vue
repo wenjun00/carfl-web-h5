@@ -8,7 +8,7 @@
           <div style="width:250px;height:30px;border:1px solid #dddd;line-height:30px;font-size:16px;">
             <span style="position:relative;left:10px;">素材类型</span>
             <div style="float:right;display:inline-block;font-weight:bold">
-              <div style="font-size:20px;cursor:pointer;display:inline-block;margin-right: 7px;" @click="MaterialTypeModel=true">
+              <div style="font-size:20px;cursor:pointer;display:inline-block;margin-right: 7px;color:rgb(38, 94, 162)" @click="MaterialTypeModel=true">
                 <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
               </div>
             </div>
@@ -23,7 +23,7 @@
           <span>素材名称：</span>
           <i-input style="width:10%" v-model="personalModel.name"></i-input>
           <i-button class="blueButton" style="margin-left:10px" @click="search">搜索</i-button>
-          <i-button class="blueButton" style="margin-left:10px">重置</i-button>
+          <i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>
           <i-button class="blueButton" style="margin-left:10px;position:absolute;right:11px;" @click="materialModel=true">新增素材</i-button>
           <data-box :columns="columns" :data="data1" @onPageChange="search" :page="pageService"></data-box>
         </i-col>
@@ -94,7 +94,7 @@ export default class CustomerFodderMaintain extends Page {
 	private searchOptions: Boolean = false;
 	private checkId: number = 376;
 	private item: any;
-	private personalModel: any;
+	private personalModel: any = {};
 	private materialModel: Boolean = false;
 	private editMaterialModel: Boolean = false;
 	private MaterialTypeModel: Boolean = false;
@@ -353,6 +353,14 @@ export default class CustomerFodderMaintain extends Page {
 				this.$Message.error('修改失败！');
 			}
 		);
+	}
+	/**
+	 * 重置搜索
+	 */
+	resetSeach() {
+		this.personalModel = {
+			name: '',
+		};
 	}
 }
 </script>

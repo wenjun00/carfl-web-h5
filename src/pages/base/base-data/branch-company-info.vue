@@ -6,11 +6,11 @@
       <span style="margin-left:10px;">关键字搜索：</span>
       <i-input style="width:15%" placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyWord"></i-input>
       <i-button class="blueButton" style="margin-left:10px;" @click="seachCompany">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;">重置</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>
     </i-row>
     <data-box :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:5px">
+      <i-row type="flex" align="middle" style="padding:14px">
         <i-col :span="24" style="text-align:right;">
           <i-button @click="addNewBranchFirmClick" class="highButton">新增分公司</i-button>
         </i-col>
@@ -19,7 +19,7 @@
 
     <!--修改分公司-->
     <template>
-      <i-modal title="修改分公司信息" v-model="modal" :mask-closable="false">
+      <i-modal title="修改分公司" v-model="modal" :mask-closable="false">
         <modify-branch-info ref="modify-branch" @close="closeModifyBrach"></modify-branch-info>
         <div slot="footer">
           <i-button @click="modal=false">取消</i-button>
@@ -69,7 +69,7 @@ export default class BranchCompanyInfo extends Page {
 	private columns: any;
 	private data1: Array<Object> = [];
 	private searchOptions: Boolean = false;
-	private companyModel: any;
+	private companyModel: any = {};
 	private companyList: Array<Object> = [];
 	private sasStatus: any;
 	private modal: Boolean = false;
@@ -288,24 +288,6 @@ export default class BranchCompanyInfo extends Page {
 	 */
 	editInformation(row) {
 		this.modal = true;
-		// this.formItem = {
-		//   id: row.id,
-		//   companyChinaname: row.companyChinaname,
-		//   companyProvince: row.companyProvince,
-		//   companyCity: row.companyCity,
-		//   bankAccount: row.bankAccount,
-		//   depositBank: row.depositBank,
-		//   cardNumber: row.cardNumber,
-		//   branchName: row.branchName,
-		//   companyAddress: row.companyAddress,
-		//   companyEngname: row.companyEngname,
-		//   companyFax: row.companyFax,
-		//   companyLegperson: row.companyLegperson,
-		//   companyLinkman: row.companyLinkman,
-		//   companyPhone: row.companyPhone,
-		//   companyRemark: row.companyRemark,
-		//   companyStatus: row.companyStatus == true ? 1 : 0
-		// };
 		let _modifyBranchCompany: any = this.$refs['modify-branch'];
 		_modifyBranchCompany.makeData(row);
 	}
@@ -320,6 +302,14 @@ export default class BranchCompanyInfo extends Page {
 	closeModifyBrach() {
 		this.modal = false;
 		this.seachCompany();
+	}
+	/**
+	 * 重置搜索
+	 */
+	resetSeach() {
+		this.companyModel = {
+			keyWord: '',
+		};
 	}
 }
 </script>

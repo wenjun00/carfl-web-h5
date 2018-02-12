@@ -11,6 +11,7 @@
       <i-date-picker style="display:inline-block;width:10%;" v-model="systemLogModel.startTime"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%;" v-model="systemLogModel.endTime"></i-date-picker>
       <i-button class="blueButton" style="margin-left:10px;" @click="search">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
       <div style="float:right;margin-right:10px;margin-top:10px;">
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon iconClass="xiazai"></svg-icon>
@@ -18,20 +19,7 @@
         </div>
       </div>
     </i-row>
-    <data-box :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService"></data-box>
-    <!--Model-->
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置">
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
-
+    <data-box :id="57" :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService"></data-box>
   </section>
 </template>
 
@@ -60,9 +48,8 @@ export default class SystemLogDownload extends Page {
   private systemLogsList: Array<Object> = [];
   private openColumnsConfig: Boolean = false;
   private columns2: any;
-  private data2: Array<Object>;
   private test: String = "";
-  private systemLogModel: any;
+  private systemLogModel: any = {};
 
   created() {
     this.systemLogModel = {
@@ -74,36 +61,9 @@ export default class SystemLogDownload extends Page {
 
     this.columns1 = [
       {
-        align: "center",
-        type: "index",
-        width: 60,
-        renderHeader: (h, { column, index }) => {
-          return h(
-            "div",
-            {
-              on: {
-                click: () => {
-                  this.columnsConfig();
-                }
-              },
-              style: {
-                cursor: "pointer"
-              }
-            },
-            [
-              h("Icon", {
-                props: {
-                  type: "gear-b",
-                  size: "20"
-                }
-              })
-            ]
-          );
-        }
-      },
-      {
         title: "操作时间",
         key: "operateTime",
+        editable: true,
         align: "center",
         width: 160,
         render: (h, { row, columns, index }) => {
@@ -115,72 +75,39 @@ export default class SystemLogDownload extends Page {
       },
       {
         title: "操作人",
+        editable: true,
         key: "realName",
         align: "center"
       },
       {
         title: "客户端IP",
+        editable: true,
         key: "clientIp",
         align: "center"
       },
       {
         title: "执行参数",
+        editable: true,
         key: "exeParams",
         align: "center"
       },
       {
         title: "备注",
+        editable: true,
         key: "logRemark",
         align: "center"
       },
       {
         title: "请求执行时长（秒）",
+        editable: true,
         key: "exeTime",
         align: "center"
       },
       {
         title: "执行类型",
+        editable: true,
         key: "exeType",
         align: "center"
-      }
-    ];
-    this.columns2 = [
-      {
-        title: "序号",
-        type: "index",
-        width: 80,
-        align: "center"
-      },
-      {
-        title: "列名",
-        key: "columnsName",
-        align: "center"
-      },
-      {
-        type: "selection",
-        width: 80,
-        align: "center"
-      }
-    ];
-
-    this.data2 = [
-      {
-        columnsName: "操作时间"
-      },
-      {
-        columnsName: "操作人"
-      },
-      {
-        columnsName: "客户端IP"
-      },
-      {
-        columnsName: "请求执行时长（秒）"
-      },
-      {
-        columnsName: "描述"
-      },
-      {
-        columnsName: "执行方法"
       }
     ];
   }
@@ -209,6 +136,16 @@ export default class SystemLogDownload extends Page {
    */
   columnsConfig() {
     this.openColumnsConfig = true;
+  }
+  /**
+   * 重置搜索
+   */
+  refreshRoleList() {
+    this.systemLogModel = {
+      clientIp: "",
+      exeType: "",
+      exeTime: ""
+    };
   }
 }
 </script>
