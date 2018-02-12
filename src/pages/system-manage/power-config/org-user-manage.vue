@@ -25,6 +25,7 @@
             <i-option label="停用" :value="1" :key="1"></i-option>
           </i-select>
           <i-button class="blueButton" style="margin-left:20px;" @click="getUserListByCondition">搜索</i-button>
+          <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="addNewUser">新增用户</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="batchAllotRole">批量分配角色</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="batchManageDevice">批量管理设备</i-button>
@@ -156,7 +157,7 @@ export default class OrgUserManage extends Page {
   private deviceManageModal: Boolean = false;
   private addNewOrgModal: Boolean = false;
   private userName: String = "";
-  private userListModel: any;
+  private userListModel: any = {};
   private deptObject: any;
   private modifyUserModel: any;
   private userId: number | null = null;
@@ -655,6 +656,17 @@ export default class OrgUserManage extends Page {
    */
   columnsConfig() {
     this.openColumnsConfig = true;
+  }
+  /**
+   * 重置搜索
+   */
+  refreshRoleList() {
+    this.userListModel = {
+      userName: "",
+      realName: "",
+      status: "",
+      deptId: 1
+    };
   }
 }
 </script>

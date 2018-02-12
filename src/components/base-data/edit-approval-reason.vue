@@ -43,8 +43,14 @@ export default class AddApprovalReason extends Vue {
 			type: [{ required: true, message: '请选择类型', trigger: 'change', type: 'number' }],
 			first: [{ required: true, message: '请选择一级内容', trigger: 'change' }],
 			second: [{ required: true, message: '请输入二级内容', trigger: 'blur' }],
-			crc: [{ required: true, message: '请输入CRC编码', trigger: 'blur' }],
-			detail: [{ required: true, message: '请输入详细内容', trigger: 'blur' }],
+			crc: [
+				{ required: true, message: '请输入CRC编码', trigger: 'blur' },
+				{ max: 20, message: '长度不能超过20个字符', trigger: 'blur' },
+			],
+			detail: [
+				{ required: true, message: '请输入详细内容', trigger: 'blur' },
+				{ max: 400, message: '长度不能超过400个字符', trigger: 'blur' },
+			],
 		};
 	}
 	//获取父组件的值

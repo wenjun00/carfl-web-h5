@@ -11,6 +11,7 @@
       <i-date-picker style="display:inline-block;width:10%;" v-model="systemLogModel.startTime"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%;" v-model="systemLogModel.endTime"></i-date-picker>
       <i-button class="blueButton" style="margin-left:10px;" @click="search">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
       <div style="float:right;margin-right:10px;margin-top:10px;">
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon iconClass="xiazai"></svg-icon>
@@ -47,9 +48,8 @@ export default class SystemLogDownload extends Page {
   private systemLogsList: Array<Object> = [];
   private openColumnsConfig: Boolean = false;
   private columns2: any;
-  private data2: Array<Object>;
   private test: String = "";
-  private systemLogModel: any;
+  private systemLogModel: any = {};
 
   created() {
     this.systemLogModel = {
@@ -110,45 +110,6 @@ export default class SystemLogDownload extends Page {
         align: "center"
       }
     ];
-    this.columns2 = [
-      {
-        title: "序号",
-        type: "index",
-        width: 80,
-        align: "center"
-      },
-      {
-        title: "列名",
-        key: "columnsName",
-        align: "center"
-      },
-      {
-        type: "selection",
-        width: 80,
-        align: "center"
-      }
-    ];
-
-    this.data2 = [
-      {
-        columnsName: "操作时间"
-      },
-      {
-        columnsName: "操作人"
-      },
-      {
-        columnsName: "客户端IP"
-      },
-      {
-        columnsName: "请求执行时长（秒）"
-      },
-      {
-        columnsName: "描述"
-      },
-      {
-        columnsName: "执行方法"
-      }
-    ];
   }
   search() {
     this.systemLogModel.startTime = FilterService.dateFormat(
@@ -175,6 +136,16 @@ export default class SystemLogDownload extends Page {
    */
   columnsConfig() {
     this.openColumnsConfig = true;
+  }
+  /**
+   * 重置搜索
+   */
+  refreshRoleList() {
+    this.systemLogModel = {
+      clientIp: "",
+      exeType: "",
+      exeTime: ""
+    };
   }
 }
 </script>

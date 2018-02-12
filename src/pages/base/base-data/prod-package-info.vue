@@ -246,4 +246,9 @@ export default class ProdPackageInfo extends Page {
 	}
 }
 </script>
+<style lang="less" scoped>
+.ivu-table-fixed-body {
+	height: auto !important;
+}
+</style>
 

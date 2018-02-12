@@ -11,6 +11,7 @@
         <i-option label="停用" :value="1" :key="1"></i-option>
       </i-select>
       <i-button style="margin-left:10px;" class="blueButton" @click="getSystemParam">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
     </i-row>
     <data-box :id="77" :columns="columns1" :data="systemParamsData" @onPageChange="getSystemParam" :page="pageService"></data-box>
 
@@ -180,6 +181,15 @@ export default class OrderTransfer extends Page {
   closeBtn() {
     this.editSysParamsModal = false;
     this.getSystemParam();
+  }
+  /**
+   * 重置搜索
+   */
+  refreshRoleList() {
+    this.systemParameterModel = {
+      paramName: "",
+      paramStatus: ""
+    };
   }
 }
 </script>

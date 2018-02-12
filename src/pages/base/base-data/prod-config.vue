@@ -119,6 +119,7 @@
               </div>
             </i-col>
           </i-row>
+          <div class="empty_text" v-if="noData">空空如也，请选择产品！</div>
         </i-col>
       </i-row>
     </i-row>
@@ -264,6 +265,7 @@ export default class ProdConfig extends Page {
 	private parent: any = {};
 	private node1: any = {};
 	private childs: any = {};
+	private noData: boolean = true;
 
 	created() {
 		this.treeList();
@@ -542,9 +544,9 @@ export default class ProdConfig extends Page {
 	 *  树change事件 查询产品列表详情
 	 */
 	productNameDetail(scope) {
+		this.noData = false;
 		this.seriId = scope[0].seriesId; //保存系列ID
 		this.parentsId = scope[0].id; //保存ID
-		console.log(scope, 444);
 		this.scopes = scope;
 		if (scope[0].productId) {
 			this.productPlanIssueService
@@ -713,7 +715,6 @@ export default class ProdConfig extends Page {
 	 * 树形结构 新增产品系列
 	 */
 	addSericeFun() {
-		console.log(this.scopes, 222);
 		if (typeof this.scopes[0].flag === 'undefined' || this.scopes[0].flag !== '产品') {
 			this.addSericeModal = true;
 		} else {
@@ -726,7 +727,6 @@ export default class ProdConfig extends Page {
 	submitAddSerice() {
 		let openAddSerice: any = this.$refs['add-series'];
 		openAddSerice.vaildFun(this.seriId);
-		console.log(this.parentsId, 1111);
 	}
 	/**
 	 * 关闭新增产品系列窗口
@@ -749,8 +749,9 @@ export default class ProdConfig extends Page {
 				console.log(this.newTree, 9999);
 				this.newTree.map(val => {
 					let dictData = JSON.parse(localStorage.dictData); //获取所有数字字典项
-					let pt = dictData.find(v => v.id === val.type); // 找到字典项对应的父类
-
+					let pt = dictData.filter(v => v.id === val.type); // 找到字典项对应的父类
+					let set = new Set(pt);
+					this.childs = Array.from(set);
 					this.childs = {
 						title: pt.name,
 						expand: true,
@@ -884,5 +885,10 @@ export default class ProdConfig extends Page {
 		height: 600px !important;
 		overflow: auto !important;
 	}
+}
+.empty_text {
+	height: 400px;
+	line-height: 400px;
+	text-align: center;
 }
 </style>
