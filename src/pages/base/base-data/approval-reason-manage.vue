@@ -109,12 +109,6 @@ export default class ApprovalReasonManage extends Page {
 		this.seach();
 		this.columns = [
 			{
-				title: '序号',
-				width: 60,
-				type: 'index',
-				align: 'center',
-			},
-			{
 				align: 'center',
 				title: '操作',
 				width: 170,

@@ -7,7 +7,7 @@ export class ProductPackageService {
   private netService: NetService
 
   /**
-   * 获取订单交接
+   * 多条件分页查询产品包信息  
    */
   @Debounce()
   getAllProductPackage(data, page) {
@@ -69,4 +69,5 @@ export class ProductPackageService {
       server: manageService.productPackageController.getAllProductPackageNoPage
     })
   }
+
 }

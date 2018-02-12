@@ -2,7 +2,6 @@
 <template>
   <section class="page prod-config">
     <i-row style="margin-top:20px;">
-      <span style="font-size:18px;font-weight:bold;margin-left:8px;">产品配置</span>
       <i-row>
         <i-col style="margin-left:10px;width:260px;float:left;">
           <div style="width:250px;height:30px;border:1px solid #dddd;line-height:30px;font-size:16px;">

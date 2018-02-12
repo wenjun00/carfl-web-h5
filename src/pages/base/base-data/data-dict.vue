@@ -2,27 +2,30 @@
 <template>
   <section class="page data-dict">
     <i-row style="margin-top:20px;">
-      <span style="font-size:18px;font-weight:bold;margin-left:2px;">数据字典</span>
-      <i-row>
-        <i-col :span="6">
-          <div style="width:250px;height:30px;text-align:center;border:1px solid #dddd;line-height:30px;font-size:16px;">
+      <i-col>
+        <span style="font-size:18px;font-weight:bold;margin-left:2px; margin-right:5%;">数据字典</span>
+        <span>数据名称：</span>
+        <i-input style="width:20%;" v-model="dictAguments.name"></i-input>
+        <i-button class="blueButton" style="margin-left:10px" @click="seach">搜索</i-button>
+        <i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>
+        <i-button class="blueButton" style="margin-left:10px;position:absolute;right:13px;" @click="dataModal=true">新增数据</i-button>
+      </i-col>
+      <i-row type="flex" align="start" justify="top" style="margin-top:10px;">
+        <i-col>
+          <div style="width:250px;height:30px;border:1px solid #dddd;line-height:30px;font-size:16px;">
+            <div style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>
             <span>数据类型</span>
             <span @click="addVehicle" style="float: right;margin-right: 12px;color:#265ea2;">
               <svg-icon iconClass="tianjiawenjian"></svg-icon>
             </span>
           </div>
           <div style="width:250px;height:600px;border:1px solid #dddd;border-top:0;overflow:auto;">
-            <div v-for="item in dataType" :key="item.id" :value="item.name" :class="{'dataTypeCss':checkId===item.id}" style="cursor:pointer;width:228px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto" @click="checkDataType(item)" v-model="dictAguments.id">
+            <div v-for="item in dataType" :key="item.id" :value="item.name" :class="{'dataTypeCss':checkId===item.id}" style="cursor:pointer;width:100%;padding-left:10px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto" @click="checkDataType(item)" v-model="dictAguments.id">
               <span style="">{{item.name}}</span>
             </div>
           </div>
         </i-col>
-        <i-col :span="17" style="position:relative;bottom:30px;" :pull="1">
-          <span>数据名称：</span>
-          <i-input style="width:10%;" v-model="dictAguments.name"></i-input>
-          <i-button class="blueButton" style="margin-left:10px" @click="seach">搜索</i-button>
-          <i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>
-          <i-button class="blueButton" style="margin-left:10px;position:absolute;right:0;" @click="dataModal=true">新增数据</i-button>
+        <i-col class="rightTable">
           <data-box :id="108" :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService"></data-box>
         </i-col>
       </i-row>
@@ -377,7 +380,7 @@ export default class DataDict extends Page {
 	}
 }
 </script>
-<style lang="less">
+<style lang="less" scope>
 .dataTypeCss {
 	background: #e4f4fa;
 }
@@ -386,5 +389,10 @@ export default class DataDict extends Page {
 	.ivu-modal-footer {
 		display: none !important;
 	}
+}
+.rightTable {
+	width: calc(100% - 280px);
+	margin: -10px;
+	margin-left: 20px;
 }
 </style>
