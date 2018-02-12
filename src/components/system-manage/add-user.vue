@@ -30,18 +30,14 @@
         <i-col :span="12">
           <i-form-item label="性别" prop="userSex">
             <i-select v-model="addUserModel.userSex">
-              <i-option label="男" :value="419" :key="419"></i-option>
-              <i-option label="女" :value="420" :key="420"></i-option>
-              <!-- <i-option v-for="{id,name} in this.$helper.getTypeCode('0045','0047')" :key="id" :label="name" :value="id"></i-option> -->
+              <i-option v-for="{value,label} in $dict.getDictData('0406')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="12">
           <i-form-item label="数据权限" prop="userManager">
             <i-select v-model="addUserModel.userManager">
-              <i-option :value="416" label="个人" :key="416"></i-option>
-              <i-option :value="417" label="组织" :key="417"></i-option>
-              <i-option :value="418" label="公司" :key="418"></i-option>
+              <i-option v-for="{value,label} in $dict.getDictData('0405')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
@@ -54,9 +50,6 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="公司名称" prop="companyName">
-            <!-- <i-select v-model="addUserModel.companyName" disabled>
-              <i-option label="指旺金科" value="指旺金科" key="指旺金科"></i-option>
-            </i-select> -->
             <i-input v-model="addUserModel.companyName" disabled></i-input>
           </i-form-item>
         </i-col>

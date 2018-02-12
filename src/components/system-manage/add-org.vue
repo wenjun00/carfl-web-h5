@@ -114,8 +114,10 @@ export default class AddOrg extends Vue {
     let _addOrgForm: any = this.$refs["add-org-form"];
     _addOrgForm.resetFields();
   }
-  addDept() {
+  addDept(companyId) {
+    console.log(companyId, "klk");
     this.addModel.deptLevel = this.addOrgModel.deptLevel + 1;
+    this.addModel.companyId = companyId;
     this.getCompanys();
   }
   /**

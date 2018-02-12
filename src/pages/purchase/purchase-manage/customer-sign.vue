@@ -25,10 +25,13 @@
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin:6px;">
-      <i-input v-model="customName" style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
+      <span style="margin-left:10px">日期：</span>
+      <i-date-picker style="display:inline-block;width:10%" v-model="customerSignModel.startTime"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%" v-model="customerSignModel.endTime"></i-date-picker>
+      <i-input v-model="customerSignModel.orderInfo" style="display:inline-block;width:20%;" placeholder="请输入订单编号\客户姓名\证件号码\联系号码"></i-input>
       <i-button class="blueButton" style="margin-left:10px;" @click="getSignList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="customerSignList" @onPageChange="getSignList" :page="pageService"></data-box>
+    <data-box :id="184" :columns="columns1" :data="customerSignList" @onPageChange="getSignList" :page="pageService"></data-box>
     <!--弹出框-->
     <template>
       <!--生成合同-->
@@ -115,7 +118,12 @@ export default class CustomerSign extends Page {
   private data3: Array<Object> = [];
   private checkRadio: String = "融资租赁合同";
   private columns3: any;
-  private customerSignModel: any = {};
+  private customerSignModel: any = {
+    orderInfo: "",
+    timeSearch: "",
+    startTime: "",
+    endTime: ""
+  };
 
   mounted() {
     this.getSignList();
@@ -169,11 +177,13 @@ export default class CustomerSign extends Page {
       {
         title: "订单编号",
         align: "center",
+        editable: true,
         key: "orderId"
       },
       {
         align: "center",
         title: "订单创建时间",
+        editable: true,
         key: "orderCreateTime",
         render: (h, { row, column, index }) => {
           return h(
@@ -184,6 +194,7 @@ export default class CustomerSign extends Page {
       },
       {
         align: "center",
+        editable: true,
         title: "订单类型",
         key: "orderType",
         render: (h, { row, column, index }) => {
@@ -192,26 +203,31 @@ export default class CustomerSign extends Page {
       },
       {
         align: "center",
+        editable: true,
         title: "产品名称",
         key: "productName"
       },
       {
         align: "center",
+        editable: true,
         title: "客户姓名",
         key: "personalName"
       },
       {
         align: "center",
+        editable: true,
         title: "证件号码",
         key: "idCard"
       },
       {
         align: "center",
+        editable: true,
         title: "联系号码",
         key: "mobileMain"
       },
       {
         align: "center",
+        editable: true,
         title: "最近合同生成日期",
         key: "latelyContractTime",
         render: (h, { row, column, index }) => {
@@ -322,6 +338,14 @@ export default class CustomerSign extends Page {
    * 获取客户签约列表
    */
   getSignList() {
+    this.customerSignModel.startTime = FilterService.dateFormat(
+      this.customerSignModel.startTime,
+      "yyyy-MM-dd"
+    );
+    this.customerSignModel.endTime = FilterService.dateFormat(
+      this.customerSignModel.endTime,
+      "yyyy-MM-dd"
+    );
     this.personalService
       .getCustomerSignList(this.customerSignModel, this.pageService)
       .subscribe(
@@ -333,7 +357,14 @@ export default class CustomerSign extends Page {
         }
       );
   }
-  getOrderInfoByTime() {}
+  getOrderInfoByTime(val) {
+    this.customerSignModel.timeSearch = val;
+    this.customerSignModel.orderInfo = "";
+    this.customerSignModel.startTime = "";
+    this.customerSignModel.endTime = "";
+    this.getSignList();
+    this.customerSignModel.timeSearch = "";
+  }
   openSearch() {
     this.searchOptions = !this.searchOptions;
   }

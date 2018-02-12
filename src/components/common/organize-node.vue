@@ -82,7 +82,6 @@ export default class OrganizeNode extends Vue {
   }
 
   get selected() {
-    // console.log(this.root, 333);
     if (!this.root) return;
     return this.root.selected === this.data;
   }

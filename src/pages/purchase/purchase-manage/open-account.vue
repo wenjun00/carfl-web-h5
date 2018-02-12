@@ -26,7 +26,7 @@
       <i-input v-model="openAccountModel.personalInfo" style="display:inline-block;width:16%;margin-right:10px;" placeholder="请输入客户姓名\证件号码\联系号码查询"></i-input>
       <i-button class="blueButton" @click="getCustomerOpenAccount">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="openAccountList" ref="databox" @onPageChange="getCustomerOpenAccount" :page="pageService"></data-box>
+    <data-box :id="180" :columns="columns1" :data="openAccountList" ref="databox" @onPageChange="getCustomerOpenAccount" :page="pageService"></data-box>
     <!--开户弹窗-->
     <template>
       <i-modal v-model="openCreateAccount" title="开户申请" width="500">
@@ -342,21 +342,25 @@ export default class OpenAccount extends Page {
       },
       {
         title: "客户姓名",
+        editable: true,
         key: "personalName",
         align: "center"
       },
       {
         title: "证件号码",
+        editable: true,
         key: "idCard",
         align: "center"
       },
       {
         title: "联系号码",
+        editable: true,
         key: "mobileMain",
         align: "center"
       },
       {
         title: "是否开户",
+        editable: true,
         key: "isAccount",
         align: "center",
         render: (h, { row, column, index }) => {
@@ -365,21 +369,25 @@ export default class OpenAccount extends Page {
       },
       {
         title: "绑卡银行",
+        editable: true,
         key: "boundBank",
         align: "center"
       },
       {
         title: "银行卡号",
+        editable: true,
         key: "bankCard",
         align: "center"
       },
       {
         title: "客户号",
+        editable: true,
         key: "customId",
         align: "center"
       },
       {
         key: "faileReason",
+        // editable: true,
         width: 140,
         renderHeader: (h, { column, index }) => {
           return h(
@@ -409,6 +417,7 @@ export default class OpenAccount extends Page {
       },
       {
         title: "结算通道",
+        editable: true,
         width: 200,
         key: "settlementChannel",
         align: "center",

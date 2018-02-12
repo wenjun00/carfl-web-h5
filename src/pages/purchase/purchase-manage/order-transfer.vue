@@ -15,7 +15,6 @@
         <span v-if="!searchOptions">展开</span>
         <span v-if="searchOptions">收起</span>高级搜索</i-button>
       <div style="float:right;margin-right:10px;margin-top:10px;">
-        <!--<i-button @click="oneKeyToConnect" class="blueButton">一键交接</i-button>-->
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
           <span style="font-size:12px;">打印</span>
@@ -34,10 +33,10 @@
       <i-button style="margin-left:10px;" class="blueButton" @click="refreshData">搜索</i-button>
     </i-row>
     <!--列表-->
-    <data-box ref="databox" :columns="columns1" :data="ordertransferDataSet" :page="pageService"></data-box>
+    <data-box ref="databox" :id="192" :columns="columns1" :data="ordertransferDataSet" :page="pageService"></data-box>
     <!--一键交接-->
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:5px">
+      <i-row type="flex" align="middle" style="padding:14px">
         <i-col :span="8" push="1">
           <span>申请人：administrator</span>
         </i-col>
@@ -50,19 +49,6 @@
       </i-row>
     </div>
     <!--Model-->
-    <!--列配置-->
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
-        <!--<i-table :columns="columns2" :data="data2" border stripe @on-select="multipleSelect"></i-table>-->
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
     <!--一键交接弹框-->
     <template>
       <i-modal v-model="openOneKeyToConnect" title="一键交接" width="800">
@@ -91,7 +77,7 @@
 
     <!--转交记录-->
     <template>
-      <i-modal title="转交记录" v-model="transferRecordModal" class="transfer-record">
+      <i-modal title="转交记录" v-model="transferRecordModal" class-name="no-footer">
         <transfer-record ref="transfer" :customerName="customerName" :orderId="orderId"></transfer-record>
       </i-modal>
     </template>
@@ -124,8 +110,7 @@ import OrganizeTree from "~/components/common/organize-tree.vue";
   }
 })
 export default class OrderTransfer extends Page {
-  @Dependencies() private pageService: PageService;
-  @Dependencies(OrderService) private orderService: OrderService;
+  @Dependencies(PageService) private pageService: PageService;
   @Dependencies(ProductOrderService)
   private productOrderService: ProductOrderService;
   @Dependencies(ManageService) private manageService: ManageService;
@@ -269,38 +254,31 @@ export default class OrderTransfer extends Page {
       },
       {
         title: "订单编号",
+        editable: true,
         key: "orderNumber",
         align: "center"
-        //   render: (h, row) => {
-        //     return h('i-button', {
-        //       props: {
-        //         type: 'text'
-        //       },
-        //       on: {
-        //         click: () => {
-
-        //         }
-        //       }
-        //     }, row.orderNumber)
-        //   }
       },
       {
         title: "制单人",
+        editable: true,
         key: "recorderName",
         align: "center"
       },
       {
         title: "所属部门",
+        editable: true,
         key: "deptName",
         align: "center"
       },
       {
         title: "转交人",
+        editable: true,
         key: "transferName",
         align: "center"
       },
       {
         title: "订单创建时间",
+        editable: true,
         key: "createTime",
         align: "center",
         render: (h, { row, columns, index }) => {
@@ -312,39 +290,52 @@ export default class OrderTransfer extends Page {
       },
       {
         title: "客户姓名",
+        editable: true,
         key: "personalName",
         align: "center"
       },
       {
         title: "证件号码",
         key: "idCard",
+        editable: true,
         align: "center",
         width: 160
       },
       {
         title: "联系号码",
+        editable: true,
         key: "mobileMain",
         align: "center"
       },
       {
         title: "产品名称",
+        editable: true,
         key: "productName",
         align: "center"
       },
       {
         title: "产品期数",
+        editable: true,
         key: "periods",
         align: "center"
       },
       {
         title: "环节",
+        editable: true,
         key: "orderLink",
-        align: "center"
+        align: "center",
+        render: (h, { row, column, index }) => {
+          return h("span", {}, this.$dict.getDictName(row.orderLink));
+        }
       },
       {
         title: "审批状态",
+        editable: true,
         key: "orderStatus",
-        align: "center"
+        align: "center",
+        render: (h, { row, column, index }) => {
+          return h("span", {}, this.$dict.getDictName(row.orderStatus));
+        }
       }
     ];
     this.columns2 = [
@@ -441,7 +432,6 @@ export default class OrderTransfer extends Page {
       );
   }
   currenttrablerowdata(currentRow, oldCurrentRow) {
-    console.log(currentRow, oldCurrentRow);
     this.currentRowuserId = currentRow.id;
   }
   /**
@@ -502,9 +492,8 @@ export default class OrderTransfer extends Page {
   oneKeyToConnect() {
     this.mulipleSelection = this.$refs["databox"];
     this.mulipleSelection = this.mulipleSelection.getCurrentSelection();
-    console.log(this.mulipleSelection);
     if (!this.mulipleSelection) {
-      this.$Message.info("请选择要交接的订单！");
+      this.$Message.error("请选择要交接的订单！");
     } else {
       this.openOneKeyToConnect = true;
     }
@@ -516,7 +505,6 @@ export default class OrderTransfer extends Page {
     let mulipledata = this.mulipleSelection.map(v => {
       return v.orderId;
     });
-    console.log(mulipledata, 800);
     let orderconfirmData: any = {
       orderIds: mulipledata,
       userId: this.currentRowuserId

@@ -11,7 +11,7 @@ export class DictService {
     // 获取字典项
     codes.forEach(code => {
       let items = store.state.dictData
-        .filter(x => x.code === code)
+        .filter(x => x.typeCode === code)
         .map(x => ({
           value: x.id,
           label: x.name

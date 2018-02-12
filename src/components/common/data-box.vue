@@ -171,7 +171,6 @@ export default class DataBox extends Vue {
           (x: any) => !x.editable || (x.editable && filterKeys.includes(x.key))
         );
     }
-    console.log(this.hideColumnsConfig, 988);
     this.tableColumns = this.addDefaultColumns(columnList);
   }
 

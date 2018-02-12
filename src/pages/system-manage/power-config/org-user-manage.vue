@@ -18,7 +18,7 @@
           <span style="margin-left:20px;">用户名：</span>
           <i-input style="display:inline-block;width:10%;" v-model="userListModel.userName" placeholder="请输入用户名"></i-input>
           <span style="margin-left:20px;">姓名：</span>
-          <i-input style="display:inline-block;width:10%;" v-model="userListModel.realName" placeholder="请输入用户名"></i-input>
+          <i-input style="display:inline-block;width:10%;" v-model="userListModel.realName" placeholder="请输入姓名"></i-input>
           <span style="margin-left:10px;">状态：</span>
           <i-select style="display:inline-block;width:10%" v-model="userListModel.status">
             <i-option label="启用" :value="0" :key="0"></i-option>
@@ -585,7 +585,9 @@ export default class OrgUserManage extends Page {
   /**
    * 添加机构
    */
-  addDept() {
+  addDept(val) {
+    console.log(val, 565);
+    let companyId = val.companyId;
     this.addNewOrgModal = true;
     if (this.deptLevel) {
       this.addOrgModel.deptLevel = this.deptLevel;
@@ -593,7 +595,7 @@ export default class OrgUserManage extends Page {
       this.addOrgModel.deptLevel = 402;
     }
     let _add: any = this.$refs["add-org"];
-    _add.addDept();
+    _add.addDept(companyId);
   }
   /**
    * 确定添加机构
