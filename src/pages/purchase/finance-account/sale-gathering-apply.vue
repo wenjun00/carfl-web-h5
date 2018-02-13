@@ -24,14 +24,14 @@
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="客户姓名" prop="userName">
-              <i-input type="text" v-model="applyData.userName" placeholder="请输入客户姓名">
+            <i-form-item label="客户姓名" prop="customerName">
+              <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="客户电话" prop="phone">
-              <i-input type="text" v-model="applyData.phone" placeholder="请输入客户电话">
+            <i-form-item label="客户电话" prop="mobileMain">
+              <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话">
               </i-input>
             </i-form-item>
           </i-col>
@@ -44,10 +44,7 @@
           </i-col>
         </i-form>
       </i-col>
-      <i-col span="6" type="flex" justify="center" style="display: flex;justify-content: center;align-items: center;position:absolute;top:20%;right:18%;"
-        pull="6">
-        <i-button class="blueButton">清空</i-button>
-      </i-col>
+      <i-button class="blueButton" style="height:40px;position:relative;top:60px;">清空</i-button>
     </i-row>
     <i-tabs v-model="materialTabs" type="card" class="sale-gather-tabs">
       <i-tab-pane name="gather-detail" label="收款明细">
@@ -103,282 +100,295 @@
   </section>
 </template>
 <script lang="ts">
-  import Page from "~/core/page";
-  import Component from "vue-class-component";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    ApplyQueryService
-  } from "~/services/business-service/apply-query.service";
-  import DataBox from "~/components/common/data-box.vue";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  import SvgIcon from '~/components/common/svg-icon.vue'
-  import {
-    Layout
-  } from "~/core/decorator";
-  import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
-  import GatherDetail from "~/components/purchase-manage/gather-detail.vue";
+import Page from "~/core/page";
+import Component from "vue-class-component";
+import { Dependencies } from "~/core/decorator";
+import DataBox from "~/components/common/data-box.vue";
+import { PageService } from "~/utils/page.service";
+import SvgIcon from "~/components/common/svg-icon.vue";
+import { Layout } from "~/core/decorator";
+import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
+import GatherDetail from "~/components/purchase-manage/gather-detail.vue";
+import { WithdrawApplicationService } from "~/services/manage-service/withdraw-application.service";
+@Layout("workspace")
+@Component({
+  components: {
+    DataBox,
+    SvgIcon,
+    UploadTheMaterial,
+    GatherDetail
+  }
+})
+export default class SaleGatheringApply extends Page {
+  @Dependencies() private pageService: PageService;
+  @Dependencies(WithdrawApplicationService)
+  private withdrawApplicationService: WithdrawApplicationService;
+  private applyData: any;
+  applyRule: Object = {};
+  private purchaseData: Object = {
+    province: "",
+    city: "",
+    company: ""
+  };
+  private columns2: any;
 
+  private data2: Array<Object> = [];
+  private categoryData: Array<Object>;
+  private loading: Boolean = false;
+  private addCar: Boolean = false;
+  private isShown: Boolean = true;
+  private modifyGatherItemModal: Boolean = false;
+  private materialTabs: String = "gather-detail";
+  private disabledStatus: String = ""; // 子组件中输入框禁用flag
 
-  @Layout("workspace")
-
-  @Component({
-    components: {
-      DataBox,
-      SvgIcon,
-      UploadTheMaterial,
-      GatherDetail
-    }
-  })
-  export default class SaleGatheringApply extends Page {
-    @Dependencies() private pageService: PageService;
-    @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
-    private applyData: any;
-    applyRule: Object = {};
-    private purchaseData: Object = {
-      province: '',
-      city: '',
-      company: ''
+  created() {
+    this.applyData = {
+      idCard: "",
+      customerName: "",
+      phone: "",
+      salesManName: ""
     };
-    private columns2: any;
 
-    private data2: Array < Object > = [];
-    private categoryData: Array < Object > ;
-    private loading: Boolean = false;
-    private addCar: Boolean = false;
-    private isShown: Boolean = true;
-    private modifyGatherItemModal: Boolean = false;
-    private materialTabs: String = 'gather-detail'
-    private disabledStatus: String = ''; // 子组件中输入框禁用flag
-
-    created() {
-      this.applyData = {
-        idCard: '',
-        customerName: '',
-        phone: '',
-        salesManName: ''
+    this.columns2 = [
+      {
+        type: "selection",
+        align: "center"
+      },
+      {
+        title: "车辆品牌",
+        key: "brand",
+        align: "center",
+        width: 86
+      },
+      {
+        title: "车辆型号",
+        key: "model",
+        align: "center",
+        width: 86
+      },
+      {
+        title: "车身颜色",
+        key: "color",
+        align: "center",
+        width: 86
+      },
+      {
+        title: "车辆排量",
+        key: "output",
+        align: "center",
+        width: 86
+      },
+      {
+        title: "车辆配置",
+        key: "configuration",
+        align: "center",
+        width: 86
+      },
+      {
+        title: "上牌地区",
+        key: "area",
+        align: "center",
+        width: "86"
+      },
+      {
+        title: "车辆牌照",
+        key: "license",
+        align: "center",
+        width: 86
+      },
+      {
+        title: "所在门店",
+        key: "store",
+        align: "center",
+        width: 86
+      },
+      {
+        title: "状态",
+        key: "status",
+        align: "center",
+        width: 86
       }
-
-      this.columns2 = [{
-        type: 'selection',
-        align: 'center'
-      }, {
-        title: '车辆品牌',
-        key: 'brand',
-        align: 'center',
-        width: 86
-      }, {
-        title: '车辆型号',
-        key: 'model',
-        align: 'center',
-        width: 86
-      }, {
-        title: '车身颜色',
-        key: 'color',
-        align: 'center',
-        width: 86
-      }, {
-        title: '车辆排量',
-        key: 'output',
-        align: 'center',
-        width: 86
-      }, {
-        title: '车辆配置',
-        key: 'configuration',
-        align: 'center',
-        width: 86
-      }, {
-        title: '上牌地区',
-        key: 'area',
-        align: 'center',
-        width: '86'
-      }, {
-        title: '车辆牌照',
-        key: 'license',
-        align: 'center',
-        width: 86
-      }, {
-        title: '所在门店',
-        key: 'store',
-        align: 'center',
-        width: 86
-      }, {
-        title: '状态',
-        key: 'status',
-        align: 'center',
-        width: 86
-      }]
-      // this.applyQueryService.addCarQueryData().subscribe(({
-      //   val
-      // }) => {
-      //   this.data2 = val
-      // })
-      this.categoryData = [{
-        title: '所有品牌',
+    ];
+    // this.applyQueryService.addCarQueryData().subscribe(({
+    //   val
+    // }) => {
+    //   this.data2 = val
+    // })
+    this.categoryData = [
+      {
+        title: "所有品牌",
         expand: true,
-        children: [{
-            title: '别克',
+        children: [
+          {
+            title: "别克",
             expand: true,
-            children: [{
-                title: '君越'
+            children: [
+              {
+                title: "君越"
               },
               {
-                title: '昂克赛拉',
+                title: "昂克赛拉",
                 expand: true,
-                children: [{
-                    title: '君越'
+                children: [
+                  {
+                    title: "君越"
                   },
                   {
-                    title: '昂克赛拉'
+                    title: "昂克赛拉"
                   }
                 ]
               }
             ]
           },
           {
-            title: '大众',
+            title: "大众",
             expand: true,
-            children: [{
-                title: '英朗'
+            children: [
+              {
+                title: "英朗"
               },
               {
-                title: '帕萨特',
+                title: "帕萨特",
                 expand: true,
-                children: [{
-                    title: '英朗'
+                children: [
+                  {
+                    title: "英朗"
                   },
                   {
-                    title: '帕萨特'
+                    title: "帕萨特"
                   }
                 ]
               }
             ]
           }
         ]
-      }]
-    }
-    /**
-     * 多选
-     */
-    multipleSelect(selection) {
-    }
-    /**
+      }
+    ];
+  }
+  /**
+   * 多选
+   */
+  multipleSelect(selection) {}
+  /**
     是否显示汽车分类
      */
-    showCategory() {
-      this.isShown = !this.isShown
-    }
-    showTab() {
-      if (this.applyData.idCard.length === 18) {
-        this.disabledStatus = 'none'
-      }
-    }
-
+  showCategory() {
+    this.isShown = !this.isShown;
   }
-
+  showTab() {
+    if (this.applyData.idCard.length === 18) {
+      this.disabledStatus = "none";
+      this.withdrawApplicationService
+        .getSaleCollectMoneyApplicationInfo({
+          idCard: this.applyData.idCard,
+          customerName: this.applyData.customerName,
+          mobileMain: this.applyData.mobileMain
+        })
+        .subscribe(data => {
+          console.log(data, 989767);
+        });
+    }
+  }
+}
 </script>
 
 <style lang="less" scope>
-  .header {
-    border-bottom: 1px solid #cccccc;
-  }
+.header {
+  border-bottom: 1px solid #cccccc;
+}
 
-  .open {
-    max-width: auto;
-    overflow: hidden;
-  }
+.open {
+  max-width: auto;
+  overflow: hidden;
+}
 
-  .close {
-    max-width: 0;
-    min-width: 0;
-    overflow: hidden;
-  }
+.close {
+  max-width: 0;
+  min-width: 0;
+  overflow: hidden;
+}
 
-  .case-list {
-    position: fixed;
-    right: 0px;
-    top: 0px;
-    background: #fff;
-    z-index: 2000;
-    width: 368px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    height: 100%;
-  }
+.case-list {
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  background: #fff;
+  z-index: 2000;
+  width: 368px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  height: 100%;
+}
 
-  .case-list.flag {
-    right: -348px;
-    box-shadow: none;
-    background: none;
-  }
+.case-list.flag {
+  right: -348px;
+  box-shadow: none;
+  background: none;
+}
 
-  .arrowUp {
-    transform: rotate(0deg); // transition: transform ease-in 0.2s;
-  }
+.arrowUp {
+  transform: rotate(0deg); // transition: transform ease-in 0.2s;
+}
 
-  .arrowDown {
-    transform: rotate(180deg); // transition: transform ease-in 0.2s;
-  }
+.arrowDown {
+  transform: rotate(180deg); // transition: transform ease-in 0.2s;
+}
 
-  .arrowButton {
-    line-height: 570px;
-    height: 100%;
-    background: #e4e4e4;
-    text-align: center;
-    width: 30px;
-  }
+.arrowButton {
+  line-height: 570px;
+  height: 100%;
+  background: #e4e4e4;
+  text-align: center;
+  width: 30px;
+}
 
-  .submitBar {
-    height: 70px;
-    width: 100%;
-    background: #fff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border: 1px solid #ddd;
-    padding-right: 24px;
-  }
+.submitBar {
+  height: 70px;
+  width: 100%;
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border: 1px solid #ddd;
+  padding-right: 24px;
+}
 
-  .specialInput {
-    .ivu-input {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
+.specialInput {
+  .ivu-input {
+    border-style: none;
+    border-bottom-style: solid;
+    border-radius: 0;
+  }
+}
+
+.sale-gather-tabs {
+  .ivu-tabs-bar {
+    border-bottom: 1px solid #dddee1;
+    .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
+      margin: 0;
+      margin-right: 4px;
+      padding: 5px 16px 4px;
+      border: 1px solid #dddee1;
+      border-bottom: 0;
+      border-radius: 4px 4px 0 0;
+      transition: all 0.3s ease-in-out;
     }
   }
+}
 
-  .sale-gather-tabs {
-    .ivu-tabs-bar {
-      border-bottom: 1px solid #DDDEE1;
-      .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
-        margin: 0;
-        margin-right: 4px;
-        padding: 5px 16px 4px;
-        border: 1px solid #dddee1;
-        border-bottom: 0;
-        border-radius: 4px 4px 0 0;
-        transition: all .3s ease-in-out;
-      }
-    }
+.sale-gathering-apply {
+  .ivu-select-selection {
+    border-style: none;
+    border-bottom-style: solid;
+    border-radius: 0;
   }
-
-  .sale-gathering-apply {
-    .ivu-select-selection {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-    .shade {
-      width: 98%;
-      height: 666px;
-      background: rgba(250, 250, 250, 0.4);
-      position: absolute;
-      left: 21px;
-      top: 257px;
-      z-index: 999;
-    }
+  .shade {
+    width: 98%;
+    height: 666px;
+    background: rgba(250, 250, 250, 0.4);
+    position: absolute;
+    left: 21px;
+    top: 257px;
+    z-index: 999;
   }
-
+}
 </style>

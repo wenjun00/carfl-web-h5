@@ -30,6 +30,8 @@ import userDeviceController from './user-device.controller'
 import scheduleJobController from './schedule-job.controller'
 import carParamTypeController from './car-param-type-controller.controller'
 import carParamController from './car-param-controller.controller'
+import withdrawApplicationController from './withdraw-application.controller'
+
 
 export const manageService = {
   departmentController,
@@ -63,5 +65,6 @@ export const manageService = {
   userDeviceController,
   scheduleJobController,
   carParamTypeController,
-  carParamController
+  carParamController,
+  withdrawApplicationController
 }

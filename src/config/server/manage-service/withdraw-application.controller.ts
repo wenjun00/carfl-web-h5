@@ -1,0 +1,25 @@
+import { requestType } from '~/config/enum.config'
+
+const SERVICE = 'service-manage'
+const CONTROLLER = 'withdrawApplicationController'
+
+export default {
+  /**
+   * 分页查询角色列表
+   */
+  getSaleCollectMoneyApplicationInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getSaleCollectMoneyApplicationInfo',
+    type: requestType.Get
+  },
+  /**
+   * 获取提前结清信息
+   */
+  getAdvancePayoffApplicationInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getAdvancePayoffApplicationInfo',
+    type: requestType.Get
+  }
+}
