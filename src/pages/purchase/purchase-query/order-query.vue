@@ -25,7 +25,7 @@
       <i-button style="margin-left:10px" class="blueButton" @click="getOrderQuery">搜索</i-button>
     </i-row>
     <i-row style="margin-top:20px">
-      <data-box :columns="queryColumns" :data="queryData"></data-box>
+      <data-box :columns="queryColumns" :data="queryData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
     </i-row>
     <!--列配置-->
     <template>
@@ -78,389 +78,349 @@
 </template>
 
 <script lang="ts">
-  import DataBox from "~/components/common/data-box.vue";
-  import Page from "~/core/page";
-  import Component from "vue-class-component";
-  import OrderProgress from "~/components/purchase-manage/order-progress.vue";
-  import CustomerQuery from "~/components/purchase-manage/customer-query.vue";
-  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
-  import PurchaseInformationTotal from "~/components/purchase-manage/purchase-information-total.vue";
+import DataBox from '~/components/common/data-box.vue';
+import Page from '~/core/page';
+import Component from 'vue-class-component';
+import OrderProgress from '~/components/purchase-manage/order-progress.vue';
+import CustomerQuery from '~/components/purchase-manage/customer-query.vue';
+import PurchaseInformation from '~/components/purchase-manage/purchase-information.vue';
+import PurchaseInformationTotal from '~/components/purchase-manage/purchase-information-total.vue';
 
-  import {
-    DataGrid,
-    DataGridItem
-  } from "vue-fintech-component";
+import { DataGrid, DataGridItem } from 'vue-fintech-component';
 
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    ProductOrderService
-  } from "~/services/manage-service/product-order.service";
-  import {
-    PersonalService
-  } from "~/services/manage-service/personal.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    FilterService
-  } from "~/utils/filter.service";
-  import {
-    Mutation
-  } from "vuex-class";
-  @Layout("workspace")
-  @Component({
-    components: {
-      OrderProgress,
-      PurchaseInformation,
-      DataBox,
-      DataGrid,
-      DataGridItem,
-      CustomerQuery
-    }
-  })
-  export default class OrderQuery extends Page {
-    @Dependencies(ProductOrderService)
-    private productOrderService: ProductOrderService;
-    @Dependencies(PersonalService) private personalService: PersonalService;
-    @Dependencies(PageService) private pageService: PageService;
-    private queryColumns: any;
-    @Mutation openPage;
-    private columns2: any;
-    private customerInformation: Array < Object > = [];
-    private queryData: Array < Object > = [];
-    private data2: Array < Object > = [];
-    private searchOptions: Boolean = false;
-    private customName: String = "";
-    private loading: Boolean = false;
-    private openCreateCompact: Boolean = false;
-    private columnsManage: Boolean = false;
-    private modal2: Boolean = false;
-    private openCustomerInformation: Boolean = false;
-    private orderProgressModal: Boolean = false;
-    private purchaseInfoModal: Boolean = false;
-    private orderInfo: any;
-    private startTime: any;
-    private endTime: any;
-    private approvalModel: any = {
-      timeSearch: "",
-      orderInfo: "",
-      startTime: "",
-      endTime: ""
-    };
-    confirm() {
-      this.modal2 = false;
-      this.openPage({
-        title: "融资租赁申请",
-        path: "purchase/purchase-manage/financing-lease-apply"
-      });
-    }
-    cancel() {
-      this.modal2 = false;
-    }
-    created() {
-      this.getOrderQuery();
-      this.queryColumns = [{
-          align: "center",
-          type: "index",
-          width: 60,
-          renderHeader: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h(
-              "div", {
-                on: {
-                  click: () => {
-                    this.columnsManage = true;
-                  }
-                },
-                style: {
-                  cursor: "pointer"
-                }
-              }, [
-                h("Icon", {
-                  props: {
-                    type: "gear-b",
-                    size: "20"
-                  }
-                })
-              ]
-            );
-          }
-        },
-        {
-          title: "操作",
-          width: 220,
-          align: "center",
-          render: (h, params) => {
-            if (params.row.link === "待命") {
-              return h("div", [
-                h(
-                  "i-button", {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.modal2 = true;
-                      }
-                    }
-                  },
-                  "编辑订单"
-                )
-              ]);
-            } else {
-              return h("div", [
-                h(
-                  "i-button", {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.$Modal.confirm({
-                          title: "提示",
-                          content: "确认申请收款吗？",
-                          onOk: () => {
-                            this.openPage({
-                              title: "销售收款申请",
-                              path: "purchase/finance-account/sale-gathering-apply"
-                            });
-                          }
-                        });
-                      }
-                    }
-                  },
-                  "申请收款"
-                ),
-                h(
-                  "i-button", {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.orderProgressModal = true;
-                      }
-                    }
-                  },
-                  "进度查询"
-                )
-              ]);
-            }
-          }
-        },
-        {
-          title: "销售单号",
-          align: "center",
-          width: 180,
-          render: (h, params) => {
-            return h("div", [
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  on: {
-                    click: () => {
-                      if (params.row.orderType === "全额") {
-                        this.$Modal.info({
-                          width: 800,
-                          closable: true,
-                          // scrollable:true,
-                          render: h => h(PurchaseInformationTotal)
-                        });
-                      } else {
-                        this.purchaseInfoModal = true;
-                      }
-                    }
-                  }
-                },
-                params.row.orderId
-              )
-            ]);
-          }
-        },
-        {
-          align: "center",
-          title: "订单创建时间",
-          key: "createTime",
-          width: 180,
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h(
-              "span",
-              FilterService.dateFormat(row.createTime, "yyyy-MM-dd hh:mm:ss")
-            );
-          }
-        },
-        {
-          align: "center",
-          title: "客户",
-          width: 140,
-          render: (h, params) => {
-            return h("div", [
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  on: {
-                    click: () => {
-                      this.openCustomerInformation = true;
-                      this.personalService
-                        .getPersonalMessage({
-                          personalId: params.row.personalId
-                        })
-                        .subscribe(val => {
-                          this.customerInformation = val.object;
-                        });
-                    }
-                  }
-                },
-                params.row.personalName
-              )
-            ]);
-          }
-        },
-        {
-          align: "center",
-          title: "订单类型",
-          width: 100,
-          key: "orderType"
-        },
-        {
-          align: "center",
-          width: 180,
-          title: "产品名称",
-          key: "productName"
-        },
-        {
-          align: "center",
-          title: "产品期数",
-          key: "periods"
-        },
-        {
-          align: "center",
-          title: "利率(月)",
-          key: "productRate"
-        },
-        {
-          align: "center",
-          title: "还款方式",
-          key: "payWay"
-        },
-        {
-          align: "center",
-          title: "融资总额",
-          key: "financingAmount"
-        },
-        {
-          align: "center",
-          title: "环节",
-          key: "orderLink"
-        },
-        {
-          align: "center",
-          title: "订单状态",
-          key: "orderStatus"
-        }
-      ];
-      /**@argument列配置 */
-      this.columns2 = [{
-          title: "序号",
-          type: "index",
-          width: "80",
-          align: "center"
-        },
-        {
-          title: "列名",
-          key: "columnsName",
-          align: "center"
-        },
-        {
-          type: "selection",
-          width: "80",
-          align: "center"
-        }
-      ];
-      this.data2 = [{
-          columnsName: "订单编号"
-        },
-        {
-          columnsName: "订单创建时间"
-        },
-        {
-          columnsName: "订单类型"
-        },
-        {
-          columnsName: "产品名称"
-        },
-        {
-          columnsName: "客户姓名"
-        },
-        {
-          columnsName: "证件号码"
-        },
-        {
-          columnsName: "最近合同生成日期"
-        }
-      ];
-    }
-    getOrderQuery() {
-      this.approvalModel.startTime = FilterService.dateFormat(
-        this.approvalModel.startTime,
-        "yyyy-MM-dd"
-      );
-      this.approvalModel.endTime = FilterService.dateFormat(
-        this.approvalModel.endTime,
-        "yyyy-MM-dd"
-      );
-      this.productOrderService
-        .orderSearch(this.approvalModel, this.pageService)
-        .subscribe(val => {
-          this.queryData = val.object.list;
-        });
-    }
-    getTimeSearch(val) {
-      this.approvalModel.startTime = "";
-      this.approvalModel.endTime = "";
-      this.approvalModel.timeSearch = val;
-      this.getOrderQuery();
-      this.approvalModel.timeSearch = "";
-    }
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
-    }
-    oneKeyToConnect() {}
-    changeLoading() {
-      this.loading = !this.loading;
-    }
-  }
-
+import { Dependencies } from '~/core/decorator';
+import { ProductOrderService } from '~/services/manage-service/product-order.service';
+import { PersonalService } from '~/services/manage-service/personal.service';
+import { PageService } from '~/utils/page.service';
+import { Layout } from '~/core/decorator';
+import { FilterService } from '~/utils/filter.service';
+import { Mutation } from 'vuex-class';
+@Layout('workspace')
+@Component({
+	components: {
+		OrderProgress,
+		PurchaseInformation,
+		DataBox,
+		DataGrid,
+		DataGridItem,
+		CustomerQuery,
+	},
+})
+export default class OrderQuery extends Page {
+	@Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
+	@Dependencies(PersonalService) private personalService: PersonalService;
+	@Dependencies(PageService) private pageService: PageService;
+	private queryColumns: any;
+	@Mutation openPage;
+	private columns2: any;
+	private customerInformation: Array<Object> = [];
+	private queryData: Array<Object> = [];
+	private data2: Array<Object> = [];
+	private searchOptions: Boolean = false;
+	private customName: String = '';
+	private loading: Boolean = false;
+	private openCreateCompact: Boolean = false;
+	private columnsManage: Boolean = false;
+	private modal2: Boolean = false;
+	private openCustomerInformation: Boolean = false;
+	private orderProgressModal: Boolean = false;
+	private purchaseInfoModal: Boolean = false;
+	private orderInfo: any;
+	private startTime: any;
+	private endTime: any;
+	private approvalModel: any = {
+		timeSearch: '',
+		orderInfo: '',
+		startTime: '',
+		endTime: '',
+	};
+	confirm() {
+		this.modal2 = false;
+		this.openPage({
+			title: '融资租赁申请',
+			path: 'purchase/purchase-manage/financing-lease-apply',
+		});
+	}
+	cancel() {
+		this.modal2 = false;
+	}
+	created() {
+		this.getOrderQuery();
+		this.queryColumns = [
+			{
+				title: '操作',
+				width: 220,
+				align: 'center',
+				fixed: 'left',
+				render: (h, params) => {
+					if (params.row.link === '待命') {
+						return h('div', [
+							h(
+								'i-button',
+								{
+									props: {
+										type: 'text',
+									},
+									style: {
+										color: '#265EA2',
+									},
+									on: {
+										click: () => {
+											this.modal2 = true;
+										},
+									},
+								},
+								'编辑订单'
+							),
+						]);
+					} else {
+						return h('div', [
+							h(
+								'i-button',
+								{
+									props: {
+										type: 'text',
+									},
+									style: {
+										color: '#265EA2',
+									},
+									on: {
+										click: () => {
+											this.$Modal.confirm({
+												title: '提示',
+												content: '确认申请收款吗？',
+												onOk: () => {
+													this.openPage({
+														title: '销售收款申请',
+														path: 'purchase/finance-account/sale-gathering-apply',
+													});
+												},
+											});
+										},
+									},
+								},
+								'申请收款'
+							),
+							h(
+								'i-button',
+								{
+									props: {
+										type: 'text',
+									},
+									style: {
+										color: '#265EA2',
+									},
+									on: {
+										click: () => {
+											this.orderProgressModal = true;
+										},
+									},
+								},
+								'进度查询'
+							),
+						]);
+					}
+				},
+			},
+			{
+				title: '销售单号',
+				align: 'center',
+				width: 180,
+				render: (h, params) => {
+					return h('div', [
+						h(
+							'i-button',
+							{
+								props: {
+									type: 'text',
+								},
+								on: {
+									click: () => {
+										if (params.row.orderType === '全额') {
+											this.$Modal.info({
+												width: 800,
+												closable: true,
+												// scrollable:true,
+												render: h => h(PurchaseInformationTotal),
+											});
+										} else {
+											this.purchaseInfoModal = true;
+										}
+									},
+								},
+							},
+							params.row.orderId
+						),
+					]);
+				},
+			},
+			{
+				align: 'center',
+				title: '订单创建时间',
+				key: 'createTime',
+				width: 180,
+				render: (h, { row, column, index }) => {
+					return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'));
+				},
+			},
+			{
+				align: 'center',
+				title: '客户',
+				width: 140,
+				render: (h, params) => {
+					return h('div', [
+						h(
+							'i-button',
+							{
+								props: {
+									type: 'text',
+								},
+								on: {
+									click: () => {
+										this.openCustomerInformation = true;
+										this.personalService
+											.getPersonalMessage({
+												personalId: params.row.personalId,
+											})
+											.subscribe(
+												val => {
+													this.customerInformation = val;
+												},
+												({ msg }) => {
+													this.$Message.error(msg);
+												}
+											);
+									},
+								},
+							},
+							params.row.personalName
+						),
+					]);
+				},
+			},
+			{
+				align: 'center',
+				title: '订单类型',
+				width: 100,
+				key: 'orderType',
+			},
+			{
+				align: 'center',
+				width: 180,
+				title: '产品名称',
+				key: 'productName',
+			},
+			{
+				align: 'center',
+				title: '产品期数',
+				key: 'periods',
+				width: 180,
+			},
+			{
+				align: 'center',
+				title: '利率(月)',
+				key: 'productRate',
+				width: 180,
+			},
+			{
+				align: 'center',
+				title: '还款方式',
+				key: 'payWay',
+				width: 180,
+			},
+			{
+				align: 'center',
+				title: '融资总额',
+				key: 'financingAmount',
+				width: 180,
+			},
+			{
+				align: 'center',
+				title: '环节',
+				key: 'orderLink',
+				width: 180,
+			},
+			{
+				align: 'center',
+				title: '订单状态',
+				key: 'orderStatus',
+				width: 180,
+			},
+		];
+		/**@argument列配置 */
+		this.columns2 = [
+			{
+				title: '序号',
+				type: 'index',
+				width: '80',
+				align: 'center',
+			},
+			{
+				title: '列名',
+				key: 'columnsName',
+				align: 'center',
+			},
+			{
+				type: 'selection',
+				width: '80',
+				align: 'center',
+			},
+		];
+		this.data2 = [
+			{
+				columnsName: '订单编号',
+			},
+			{
+				columnsName: '订单创建时间',
+			},
+			{
+				columnsName: '订单类型',
+			},
+			{
+				columnsName: '产品名称',
+			},
+			{
+				columnsName: '客户姓名',
+			},
+			{
+				columnsName: '证件号码',
+			},
+			{
+				columnsName: '最近合同生成日期',
+			},
+		];
+	}
+	getOrderQuery() {
+		this.approvalModel.startTime = FilterService.dateFormat(this.approvalModel.startTime, 'yyyy-MM-dd');
+		this.approvalModel.endTime = FilterService.dateFormat(this.approvalModel.endTime, 'yyyy-MM-dd');
+		this.productOrderService.orderSearch(this.approvalModel, this.pageService).subscribe(
+			val => {
+				this.queryData = val;
+			},
+			({ msg }) => {
+				this.$Message.error(msg);
+			}
+		);
+	}
+	getTimeSearch(val) {
+		this.approvalModel.startTime = '';
+		this.approvalModel.endTime = '';
+		this.approvalModel.timeSearch = val;
+		this.getOrderQuery();
+		this.approvalModel.timeSearch = '';
+	}
+	openSearch() {
+		this.searchOptions = !this.searchOptions;
+	}
+	oneKeyToConnect() {}
+	changeLoading() {
+		this.loading = !this.loading;
+	}
+}
 </script>
 
 <style lang="less">
-  td {
-    padding: 10px;
-  }
-
+td {
+	padding: 10px;
+}
 </style>
