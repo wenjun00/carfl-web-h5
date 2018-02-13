@@ -21,5 +21,14 @@ export default {
     controller: CONTROLLER,
     action: 'getAdvancePayoffApplicationInfo',
     type: requestType.Get
+  },
+  /**
+ * 获取提前收回信息
+ */
+  getAdvanceRevokeApplicationInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getAdvanceRevokeApplicationInfo',
+    type: requestType.Get
   }
 }

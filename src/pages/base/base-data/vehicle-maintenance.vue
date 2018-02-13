@@ -43,15 +43,15 @@
                 <i-col :span="12">参数名称</i-col>
                 <i-col :span="12">参数值</i-col>
               </i-row>
-              <i-row v-for="item in formModel" :key="item.id" type="flex" align="middle">
+              <i-row v-for="item in paramList" :key="item.id" type="flex" align="middle">
                 <i-col :span="12">
                   <i-form-item style="margin-top:10px;">
-                    <i-input v-model="modifyModel.name" :value="item.name" focus></i-input>
+                    <i-input v-model="paramList.name" :value="paramList.name"></i-input>
                   </i-form-item>
                 </i-col>
                 <i-col :span="12">
                   <i-form-item style="margin-top:10px;">
-                    <i-input v-model="modifyModel.value" :value="item.value"></i-input>
+                    <i-input v-model="paramList.value"></i-input>
                   </i-form-item>
                 </i-col>
               </i-row>
@@ -130,7 +130,6 @@ export default class ProdConfig extends Page {
 	private colorPa: any = {}; //车身颜色
 	private colorModel: any = {};
 	private carName: String = '';
-	private formModel: Array<any> = [];
 	private modifyModel: any = {
 		name: '',
 		value: '',
@@ -231,7 +230,6 @@ export default class ProdConfig extends Page {
 			.subscribe(
 				val => {
 					this.paramList = val;
-					this.formModel = val;
 				},
 				({ msg }) => {
 					this.$Message.error(msg);
@@ -347,9 +345,9 @@ export default class ProdConfig extends Page {
 	 * 保存 提交
 	 */
 	saveFun() {
-		this.modifyModel = this.formModel;
+		this.modifyModel = this.paramList;
 		let edit = {
-			carParams: this.formModel,
+			carParams: this.paramList,
 		};
 		this.carParamControllerService.saveOrUpdate(edit).subscribe(
 			val => {
@@ -364,7 +362,7 @@ export default class ProdConfig extends Page {
 	 * 删除参数
 	 */
 	deleteFun(row) {
-		this.formModel.splice(row, 1);
+		this.paramList.splice(row, 1);
 		this.carParamControllerService
 			.deleteCarParam({
 				id: row.id,
@@ -380,11 +378,11 @@ export default class ProdConfig extends Page {
 	 * 新增参数
 	 */
 	addItem() {
-		this.formModel.push({
+		this.paramList.push({
 			name: '',
 			value: '',
 		});
-		console.log(this.formModel, 333);
+		console.log(this.paramList, 333);
 	}
 	/**
 	 * 添加类别

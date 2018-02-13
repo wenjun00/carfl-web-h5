@@ -34,5 +34,14 @@ export class WithdrawApplicationService {
       }
     })
   }
+  /**
+ * 获取提前收回信息
+ */
+  getAdvanceRevokeApplicationInfo(data) {
+    return this.netService.send({
+      server: manageService.withdrawApplicationController.getAdvanceRevokeApplicationInfo,
+      data: data,
+    })
+  }
 
 }
