@@ -9,15 +9,14 @@ export class WithdrawApplicationService {
   private netService: NetService
 
   /**
-   * 获取用户所属角色
+   * 获取销售收款申请信息
    */
-  getSaleCollectMoneyApplicationInfo({ idCard, customerName, mobileMain }) {
+  getSaleCollectMoneyApplicationInfo({ personalId, orderId }) {
     return this.netService.send({
       server: manageService.withdrawApplicationController.getSaleCollectMoneyApplicationInfo,
       data: {
-        idCard: idCard,
-        customerName: customerName,
-        mobileMain: mobileMain
+        personalId: personalId,
+        orderId: orderId
       }
     })
   }
@@ -41,6 +40,19 @@ export class WithdrawApplicationService {
     return this.netService.send({
       server: manageService.withdrawApplicationController.getAdvanceRevokeApplicationInfo,
       data: data,
+    })
+  }
+  /**
+   * 获取客户订单信息
+   */
+  getPersonalProductOrderInfo({ idCard, customerName, mobileMain }) {
+    return this.netService.send({
+      server: manageService.withdrawApplicationController.getPersonalProductOrderInfo,
+      data: {
+        idCard: idCard,
+        customerName: customerName,
+        mobileMain: mobileMain
+      }
     })
   }
 

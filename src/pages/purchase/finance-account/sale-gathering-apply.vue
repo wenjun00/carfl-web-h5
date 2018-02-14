@@ -19,13 +19,13 @@
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80" style="margin-top:20px;">
           <i-col span="12">
             <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab">
+              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="客户姓名" prop="customerName">
-              <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名">
+              <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名" @on-blur="getOrderInfo">
               </i-input>
             </i-form-item>
           </i-col>
@@ -37,14 +37,14 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="选择订单" prop="worker">
-              <i-select v-model="applyData.worker" placeholder="请选择订单">
-                <i-option label="2841545" value="2841545" key="2841545"></i-option>
+              <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
+                <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
         </i-form>
       </i-col>
-      <i-button class="blueButton" style="height:40px;position:relative;top:60px;">清空</i-button>
+      <i-button class="blueButton" style="height:40px;position:relative;top:60px;" @click="clearAll">清空</i-button>
     </i-row>
     <i-tabs v-model="materialTabs" type="card" class="sale-gather-tabs">
       <i-tab-pane name="gather-detail" label="收款明细">
@@ -58,14 +58,14 @@
       <component :is="materialTabs" :disabledStatus="disabledStatus"></component>
     </div>
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:5px">
+      <i-row type="flex" align="middle" style="padding:14px">
         <i-col :span="8" push="1">
           <span style="height:40px;display:inline-block;line-height:3">申请人：administrator</span>
         </i-col>
         <i-col :span="10" pull="4">
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
-        <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
+        <i-col :span="6" style="text-align:right;">
           <i-button class="highDefaultButton">保存草稿</i-button>
           <i-button class="highButton">保存并提交</i-button>
         </i-col>
@@ -140,13 +140,14 @@ export default class SaleGatheringApply extends Page {
   private modifyGatherItemModal: Boolean = false;
   private materialTabs: String = "gather-detail";
   private disabledStatus: String = ""; // 子组件中输入框禁用flag
-
+  private orderNumberIdModels: Array<any> = [];
+  private personalId: Number = 0;
   created() {
     this.applyData = {
       idCard: "",
       customerName: "",
-      phone: "",
-      salesManName: ""
+      mobileMain: "",
+      orderId: ""
     };
 
     this.columns2 = [
@@ -278,16 +279,62 @@ export default class SaleGatheringApply extends Page {
   showTab() {
     if (this.applyData.idCard.length === 18) {
       this.disabledStatus = "none";
-      this.withdrawApplicationService
-        .getSaleCollectMoneyApplicationInfo({
-          idCard: this.applyData.idCard,
-          customerName: this.applyData.customerName,
-          mobileMain: this.applyData.mobileMain
-        })
-        .subscribe(data => {
-          console.log(data, 989767);
-        });
+      this.getOrderInfo();
     }
+  }
+  getOrderInfo() {
+    this.withdrawApplicationService
+      .getPersonalProductOrderInfo({
+        idCard: this.applyData.idCard,
+        customerName: this.applyData.customerName,
+        mobileMain: this.applyData.mobileMain
+      })
+      .subscribe(
+        data => {
+          this.orderNumberIdModels = data[0].orderNumberIdModels;
+          this.applyData.customerName = data[0].name;
+          this.applyData.mobileMain = data[0].mobileMain;
+          this.personalId = data[0].personalId;
+          console.log(this.orderNumberIdModels, 988);
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+  /**
+   * 通过订单id获取销售收款申请信息
+   */
+  changeOrderId(val) {
+    console.log(val, 980);
+    this.withdrawApplicationService
+      .getSaleCollectMoneyApplicationInfo({
+        personalId: this.personalId,
+        orderId: val
+      })
+      .subscribe(data => {
+        console.log(data, "kkkll");
+      });
+  }
+  /**
+   * 清空
+   */
+  clearAll() {
+    this.$Modal.confirm({
+      title: "提示",
+      content:
+        "您有未保存的销售收款申请,清空会删除页面内容，是否确认清空申请内容！",
+      onOk: () => {
+        this.resetAll();
+      }
+    });
+  }
+  /**
+   * 页面重置
+   */
+  resetAll() {
+    let _form: any = this.$refs["customer-form"];
+    _form.resetFields();
   }
 }
 </script>

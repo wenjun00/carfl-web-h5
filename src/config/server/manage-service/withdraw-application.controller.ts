@@ -30,5 +30,14 @@ export default {
     controller: CONTROLLER,
     action: 'getAdvanceRevokeApplicationInfo',
     type: requestType.Get
+  },
+  /**
+   * 获取客户订单信息
+   */
+  getPersonalProductOrderInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getPersonalProductOrderInfo',
+    type: requestType.Get
   }
 }
