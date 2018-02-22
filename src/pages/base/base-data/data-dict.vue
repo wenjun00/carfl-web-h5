@@ -380,7 +380,7 @@ export default class DataDict extends Page {
 	}
 }
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
 .dataTypeCss {
 	background: #e4f4fa;
 }
@@ -391,7 +391,7 @@ export default class DataDict extends Page {
 	}
 }
 .rightTable {
-	width: calc(100% - 280px);
+	width: calc(~ '100% - 280px');
 	margin: -10px;
 	margin-left: 20px;
 }

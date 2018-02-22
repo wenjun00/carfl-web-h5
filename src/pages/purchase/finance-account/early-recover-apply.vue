@@ -21,13 +21,13 @@
 
             <i-col :span="12">
               <i-form-item label="证件号码" prop="idCard">
-                <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab">
+                <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab1">
                 </i-input>
               </i-form-item>
             </i-col>
             <i-col :span="12">
-              <i-form-item label="客户姓名" prop="customerName">
-                <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名" @on-change="showTab">
+              <i-form-item label="客户姓名" prop="name">
+                <i-input type="text" v-model="applyData.name" placeholder="请输入客户姓名" @on-blur="showTab2">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -35,14 +35,14 @@
           <i-row>
             <i-col :span="12">
               <i-form-item label="客户电话" prop="mobileMain">
-                <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话" @on-change="showTab">
+                <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话" @on-blur="showTab3">
                 </i-input>
               </i-form-item>
             </i-col>
             <i-col :span="12">
-              <i-form-item label="选择订单" prop="order">
-                <i-select v-model="applyData.order" placeholder="请选择订单">
-                  <i-option label="2841545" value="2841545" key="2841545"></i-option>
+              <i-form-item label="选择订单" prop="orderIdModels">
+                <i-select v-model="orderIdModels" placeholder="请选择订单" @on-change="selectOrder">
+                  <i-option v-for="item in orderNumberIdModels" :label="item.orderNumber" :value="item.orderNumber" :key="item.orderId"></i-option>
                 </i-select>
               </i-form-item>
             </i-col>
@@ -52,7 +52,7 @@
             <i-col :span="12">
               <i-form-item label="收回类型" prop="RecoveryType">
                 <i-select v-model="applyData.RecoveryType" placeholder="请选择收回类型">
-                  <i-option label="强行收回" value="强行收回" key="强行收回"></i-option>
+                  <i-option v-for="{value,label} in $dict.getDictData('0117')" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-form-item>
             </i-col>
@@ -69,9 +69,7 @@
           </i-col>
         </i-form>
       </i-col>
-      <i-col span="6" type="flex" justify="center" style="display: flex;justify-content: center;align-items: center;position:absolute;top:20%;right:18%;" pull="6">
-        <i-button class="blueButton">清空</i-button>
-      </i-col>
+      <i-button class="blueButton" style="height:40px; margin-top:60px">清空</i-button>
     </i-row>
     <i-tabs v-model="materialTabs" type="card" class="early-recover-tabs">
       <i-tab-pane name="gather-detail-early-pay" label="收款明细">
@@ -169,7 +167,7 @@ export default class EarlyRecoverApply extends Page {
 	@Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
 	@Dependencies(WithdrawApplicationService) private withdrawApplicationService: WithdrawApplicationService;
 
-	private applyData: any;
+	private applyData: any = {};
 	applyRule: Object = {};
 	private purchaseData: Object = {
 		province: '',
@@ -190,13 +188,14 @@ export default class EarlyRecoverApply extends Page {
 	private modifyGatherItemModal: Boolean = false;
 	private materialTabs: String = 'gather-detail-early-pay';
 	private disabledStatus: String = ''; // 子组件中输入框禁用flag
+	private orderNumberIdModels: Array<Object> = [];
+	private orderIdModels: any = {};
 
 	created() {
 		this.applyData = {
 			idCard: '',
-			customerName: '',
+			name: '',
 			mobileMain: '',
-			order: '',
 			RecoveryType: '',
 			notes: '',
 		};
@@ -455,20 +454,28 @@ export default class EarlyRecoverApply extends Page {
 	modifyGatherItem() {
 		this.modifyGatherItemModal = true;
 	}
-	showTab() {
-		if (
-			// this.applyData.idCard.length === 18 ||
-			this.applyData.customerName.length > 2
-			// this.applyData.mobileMain.length > 10
-		) {
+	showTab1() {
+		if (this.applyData.idCard.length === 18) {
 			this.disabledStatus = 'none';
 			this.getInfo();
-			return false;
+		}
+	}
+	showTab2() {
+		if (this.applyData.name.length > 2) {
+			this.disabledStatus = 'none';
+			this.getInfo();
+		}
+	}
+	showTab3() {
+		if (this.applyData.mobileMain.length > 10) {
+			this.disabledStatus = 'none';
+			this.getInfo();
 		}
 	}
 	getInfo() {
-		this.withdrawApplicationService.getAdvanceRevokeApplicationInfo(this.applyData).subscribe(
+		this.withdrawApplicationService.getPersonalProductOrderInfo(this.applyData).subscribe(
 			val => {
+				this.orderNumberIdModels = val[0].orderNumberIdModels;
 				this.applyData = val[0];
 				console.log(this.applyData, 33);
 			},
@@ -476,6 +483,9 @@ export default class EarlyRecoverApply extends Page {
 				this.$Message.error(msg);
 			}
 		);
+	}
+	selectOrder(val) {
+		console.log(val, 111);
 	}
 }
 </script>

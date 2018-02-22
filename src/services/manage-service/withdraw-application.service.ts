@@ -44,4 +44,13 @@ export class WithdrawApplicationService {
     })
   }
 
+  /**
+ * 获取提前收回信息
+ */
+  getPersonalProductOrderInfo(data) {
+    return this.netService.send({
+      server: manageService.withdrawApplicationController.getPersonalProductOrderInfo,
+      data: data,
+    })
+  }
 }
