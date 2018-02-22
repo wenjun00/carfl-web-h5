@@ -32,11 +32,11 @@ export default {
     type: requestType.Get
   },
   /**
-* 获取提前收回信息
-*/
+  获取客户订单信息
+  *
+  */
   getPersonalProductOrderInfo: {
     service: SERVICE,
-    controller: CONTROLLER,
     action: 'getPersonalProductOrderInfo',
     type: requestType.Get
   }
