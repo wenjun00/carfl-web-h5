@@ -8,7 +8,7 @@
     </div>
     <div class="form-title">账户信息</div>
     <!-- <i-table :columns="columns3" :data="data3" width="1100"></i-table> -->
-    <data-grid style="width:1100px;margin-bottom:20px;" :labelWidth="90">
+    <!-- <data-grid style="width:1100px;margin-bottom:20px;" :labelWidth="90">
       <data-grid-item label="户名" :span="2">
         <template>
           <div>{{accountInfo.personalName}}</div>
@@ -34,7 +34,23 @@
           <div>{{accountInfo.clientNumber}}</div>
         </template>
       </data-grid-item>
-    </data-grid>
+    </data-grid> -->
+    <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
+      <tr height="40">
+        <td bgcolor="#F2F2F2">户名</td>
+        <td bgcolor="#F2F2F2">开户银行</td>
+        <td bgcolor="#F2F2F2">银行卡号</td>
+        <td bgcolor="#F2F2F2">支行名称</td>
+        <td bgcolor="#F2F2F2">第三方客户号</td>
+      </tr>
+      <tr height="40">
+        <td>{{accountInfo.personalName}}</td>
+        <td>{{accountInfo.depositBank}}</td>
+        <td>{{accountInfo.cardNumber}}</td>
+        <td>{{accountInfo.depositBranch}}</td>
+        <td>{{accountInfo.clientNumber}}</td>
+      </tr>
+    </table>
     <!--编辑收款项-->
     <!-- <template>
       <i-modal v-model="modifyGatherItemModal" title="编辑收款项" width="300">

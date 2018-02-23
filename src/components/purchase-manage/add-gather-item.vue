@@ -61,6 +61,12 @@ export default class AddGatherItem extends Vue {
               if (item.itemLabel === val.itemLabel) {
                 item._checked = true;
               }
+              if (
+                item.itemName === "surplusPrincipal" ||
+                item.itemName === "surplusPenaltyFreeze"
+              ) {
+                item._disabled = true;
+              }
             });
           });
           this.saleItemList = data;
@@ -77,12 +83,12 @@ export default class AddGatherItem extends Vue {
     let moneyList = this.multipleSelection.map(v => v.itemMoney);
     let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
     let total = {
-      itemMoney: totalPayment,
       itemLabel: "合计（元）",
+      itemMoney: totalPayment,
       itemName: "totalPayment"
     };
     this.multipleSelection.push(total);
-    this.$emit("change", this.multipleSelection);
+    this.$emit("change", this.multipleSelection, totalPayment);
   }
 }
 </script>

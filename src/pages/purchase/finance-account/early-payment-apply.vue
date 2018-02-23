@@ -26,21 +26,21 @@
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="客户电话" prop="phone">
+            <i-form-item label="客户电话" prop="mobileMain">
               <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="选择订单" prop="worker">
+            <i-form-item label="选择订单" prop="orderId">
               <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
                 <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
           <i-col span="24">
-            <i-form-item label="备注">
-              <i-input type="text" style="width:77%;" v-model="applyData.phone" placeholder="请输入备注">
+            <i-form-item label="备注" prop="remark">
+              <i-input type="text" style="width:77%;" v-model="applyData.remark" placeholder="请输入备注">
               </i-input>
             </i-form-item>
           </i-col>
@@ -56,11 +56,8 @@
         <upload-the-material></upload-the-material>
       </i-tab-pane>
     </i-tabs>
-    <!-- <div style="height:479px;overflow-y:auto;overflow-x:hidden;">
-      <div class="shade" :style="{display:disabledStatus}">
-      </div>
-      <component :is="materialTabs" :disabledStatus="disabledStatus"></component>
-    </div> -->
+    <div class="shade" :style="{display:disabledStatus}">
+    </div>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:14px">
         <i-col :span="8" push="1">
@@ -104,6 +101,7 @@ import ModifyGatherItem from "~/components/purchase-manage/modify-gather-item.vu
 import ChangeGatherItem from "~/components/purchase-manage/change-gather-item.vue";
 import GatherDetailEarlyPay from "~/components/purchase-manage/gather-detail-early-pay.vue";
 import { WithdrawApplicationService } from "~/services/manage-service/withdraw-application.service";
+import { setTimeout } from "core-js/library/web/timers";
 
 @Layout("workspace")
 @Component({
@@ -120,7 +118,14 @@ export default class EarlyPaymentApply extends Page {
   @Dependencies() private pageService: PageService;
   @Dependencies(WithdrawApplicationService)
   private withdrawApplicationService: WithdrawApplicationService;
-  private applyData: any;
+  private applyData: any = {
+    idCard: "",
+    customerName: "",
+    mobileMain: "",
+    salesManName: "",
+    orderId: "",
+    remark: ""
+  };
   applyRule: Object = {};
   private purchaseData: Object = {
     province: "",
@@ -145,12 +150,6 @@ export default class EarlyPaymentApply extends Page {
   private disabledStatus: String = ""; // 子组件中输入框禁用flag
 
   created() {
-    this.applyData = {
-      idNumber: "",
-      customerName: "",
-      phone: "",
-      salesManName: ""
-    };
     // this.columns1 = [
     //   {
     //     title: "操作",
@@ -334,8 +333,8 @@ export default class EarlyPaymentApply extends Page {
         })
         .subscribe(
           data => {
+            this.applyData.remark = data.remark;
             // 获取收款项和备注信息
-            console.log(data, "dataggh");
             let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
             _gatherDetail.makeList(data);
           },
@@ -401,7 +400,7 @@ export default class EarlyPaymentApply extends Page {
     let _form: any = this.$refs["customer-form"];
     _form.resetFields();
     this.applyData.orderId = "";
-    let _gatherDetail: any = this.$refs["gather-detail"];
+    let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
     _gatherDetail.resetTable();
   }
 }

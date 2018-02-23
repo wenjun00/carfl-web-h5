@@ -3,7 +3,7 @@
   <section class="component gather-detail-early-pay">
     <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
-        <td bgcolor="#F2F2F2" width="40">
+        <td bgcolor="#F2F2F2" width="80">
           <span>操作</span>
         </td>
         <td bgcolor="#F2F2F2">
@@ -15,28 +15,16 @@
       </tr>
       <tr height="40" v-for="item in gatherItemList" :key="item.index">
         <td width="40">
+          <div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.itemName!=='surplusPrincipal'&&item.itemName!=='surplusPenaltyFreeze'" style="cursor:pointer">
+            <Icon type="trash-a" size="18"></Icon>
+          </div>
         </td>
         <td>
           <span>{{item.itemLabel}}</span>
         </td>
         <td>
-          <span>{{item.itemMoney}}</span>
-        </td>
-      </tr>
-      <tr height="40" v-show="changeGatherItemModal">
-        <td>
-          <i-button type="text" style="color:#265ea2" @click="deleteGatherItem">删除</i-button>
-        </td>
-        <td>
-          <i-input v-model="gatherItemModel.itemName"></i-input>
-        </td>
-        <td>
-          <i-col :span="18">
-            <i-input v-model="gatherItemModel.itemMoney"></i-input>
-          </i-col>
-          <i-col :span="6">
-            <i-button style="background:#265ea2;color:#fff" @click="addGatherItem">添加</i-button>
-          </i-col>
+          <i-input v-if="item.itemName==='otherFee'" style="width:10%" :value="item.itemMoney" @on-change="changeOtherFee" :maxlength="7"></i-input>
+          <span v-else>{{item.itemMoney}}</span>
         </td>
       </tr>
     </table>
@@ -45,16 +33,26 @@
       <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">添加收款项</i-button>
     </div>
     <div class="form-title">账户信息</div>
-    <i-table :columns="columns3" :data="data3" width="1100"></i-table>
-    <!--编辑收款项-->
-    <!-- <template>
-      <i-modal v-model="modifyGatherItemModal" title="编辑收款项" width="300">
-        <modify-gather-item></modify-gather-item>
-      </i-modal>
-    </template> -->
+    <!-- <i-table :columns="columns3" :data="data3" width="1100"></i-table> -->
+    <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
+      <tr height="40">
+        <td bgcolor="#F2F2F2">户名</td>
+        <td bgcolor="#F2F2F2">开户银行</td>
+        <td bgcolor="#F2F2F2">银行卡号</td>
+        <td bgcolor="#F2F2F2">支行名称</td>
+        <td bgcolor="#F2F2F2">第三方客户号</td>
+      </tr>
+      <tr height="40">
+        <td>{{accountInfo.personalName}}</td>
+        <td>{{accountInfo.depositBank}}</td>
+        <td>{{accountInfo.cardNumber}}</td>
+        <td>{{accountInfo.depositBranch}}</td>
+        <td>{{accountInfo.clientNumber}}</td>
+      </tr>
+    </table>
     <template>
       <i-modal v-model="addGatherItemModal" title="收款项目">
-        <add-gather-item ref="add-gather-item"></add-gather-item>
+        <add-gather-item ref="add-gather-item" @change="changeItem"></add-gather-item>
         <div slot="footer">
           <i-button @click="addGatherItemModal=false">取消</i-button>
           <i-button class="blueButton" @click="confirmAddGatherItem">确定</i-button>
@@ -86,115 +84,22 @@ import AddGatherItem from "~/components/purchase-manage/add-gather-item.vue";
 export default class GatherDetailEarlyPay extends Vue {
   @Prop() checkOrderId: Number;
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
-  private columns1: any;
-  private data1: Array<Object> = [];
+  // private columns1: any;
+  // private data1: Array<Object> = [];
   private columns3: any;
   private data3: Array<Object> = [];
   private modifyGatherItemModal: Boolean = false;
   private changeGatherItemModal: Boolean = false;
   private addGatherItemModal: Boolean = false; // 添加收款项
-
+  private otherTotal: number = 0; // 除其他费用的合计
   private gatherItemList: Array<any> = [];
   private gatherItemModel: any;
+  private accountInfo: any = {}; // 账户信息
   created() {
     this.gatherItemModel = {
       itemName: "",
       itemMoney: ""
     };
-    // this.gatherItemList = [
-    //   {
-    //     index: 1,
-    //     itemName: "剩余未还总额",
-    //     itemMoney: "8000"
-    //   },
-    //   {
-    //     index: 2,
-    //     itemName: "提前结清手续费",
-    //     itemMoney: "1000"
-    //   }
-    // ];
-    this.columns1 = [
-      {
-        title: "操作",
-        width: 340,
-        align: "center",
-        render: (h, { row, column, index }) => {
-          if (row.itemName !== "合计") {
-            return h("div", [
-              // h(
-              //   "i-button", {
-              //     props: {
-              //       type: "text"
-              //     },
-              //     style: {
-              //       color: "#265EA2"
-              //     },
-              //     on: {
-              //       click: () => {
-              //         this.modifyGatherItem();
-              //       }
-              //     }
-              //   },
-              //   "编辑"
-              // ),
-              h(
-                "i-button",
-                {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.$Modal.confirm({
-                        title: "提示",
-                        content: "确定删除吗？",
-                        onOk: () => {
-                          this.data1.forEach((x, i) => {
-                            if (i === index) {
-                              this.data1.splice(i, 1);
-                            }
-                          });
-                        }
-                      });
-                    }
-                  }
-                },
-                "删除"
-              )
-            ]);
-          }
-        }
-      },
-      {
-        key: "itemName",
-        title: "项目名称",
-        align: "center"
-      },
-      {
-        key: "itemMoney",
-        title: "金额",
-        align: "center"
-      }
-    ];
-
-    this.data1 = [
-      {
-        itemName: "首付金额",
-        itemMoney: "9000"
-      },
-      {
-        itemName: "首付月供",
-        itemMoney: "9000"
-      },
-      {
-        itemName: "合计",
-        itemMoney: "18000"
-      }
-    ];
-
     this.columns3 = [
       {
         key: "accountName",
@@ -222,21 +127,22 @@ export default class GatherDetailEarlyPay extends Vue {
         title: "第三方客户号"
       }
     ];
-
-    this.data3 = [
-      {
-        accountName: "李兵强",
-        openAccountBank: "中国建设银行",
-        bankCardId: "6227004171150315789",
-        branchBankName: "丈八六路支行",
-        thirdCustomId: "3456878774154"
-      }
-    ];
   }
   /**
    * 确定添加收款项
    */
-  confirmAddGatherItem() {}
+  confirmAddGatherItem() {
+    let _addGatherItem: any = this.$refs["add-gather-item"];
+    _addGatherItem.changeItem();
+  }
+  /**
+   * 添加收款项change事件
+   */
+  changeItem(data, otherTotal) {
+    this.otherTotal = otherTotal; // 获取除其他费用的合计
+    this.gatherItemList = data;
+    this.addGatherItemModal = false;
+  }
   modifyGatherItem() {
     this.modifyGatherItemModal = true;
   }
@@ -245,6 +151,12 @@ export default class GatherDetailEarlyPay extends Vue {
    */
   makeList(data) {
     this.gatherItemList = data.payoffCollectMoneyItems;
+    this.accountInfo;
+    if (data.personalBank) {
+      this.accountInfo = data.personalBank;
+    } else {
+      this.accountInfo = {};
+    }
   }
   /**
    * 变更收款项
@@ -258,14 +170,43 @@ export default class GatherDetailEarlyPay extends Vue {
   addGatherItem() {
     this.changeGatherItemModal = false;
   }
-  deleteGatherItem() {
+  deleteGatherItem(item) {
     this.$Modal.confirm({
       title: "提示",
       content: "确定删除吗？",
       onOk: () => {
+        // 删除
         this.changeGatherItemModal = false;
+        this.gatherItemList = this.gatherItemList.filter(
+          v => v.itemName !== item.itemName
+        );
+        // 重新计算合计
+        console.log(this.gatherItemList, "ddd");
+        let oldTotalPayment = this.gatherItemList.find(
+          v => v.itemName === "totalPayment"
+        ).itemMoney;
+        let deleteFee = item.itemMoney; // 删除的金额
+        this.gatherItemList.find(v => v.itemName === "totalPayment").itemMoney =
+          oldTotalPayment - deleteFee;
       }
     });
+  }
+  resetTable() {
+    this.gatherItemList = [];
+  }
+  /**
+   * 修改其他费用重新计算合计
+   */
+  changeOtherFee(event) {
+    let otherFee = parseFloat(event.target.value); // 获取输入框输入的其他费用
+    if (otherFee) {
+      this.gatherItemList.find(v => v.itemName === "totalPayment").itemMoney =
+        this.otherTotal + otherFee;
+    } else {
+      this.gatherItemList.find(
+        v => v.itemName === "totalPayment"
+      ).itemMoney = this.otherTotal;
+    }
   }
 }
 </script>
