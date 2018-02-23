@@ -1,102 +1,81 @@
 <!--销售收款申请-->
 <template>
-  <section class="page sale-gathering-apply specialInput">
-    <div class="header">
-      <span class="form-title">销售收款申请</span>
-      <div style="float:right;margin-top: 10px;margin-right:10px">
-        <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
-          <span style="font-size:12px;">打印</span>
-        </div>
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon iconClass="daochu"></svg-icon>
-          <span style="font-size: 12px;">导出</span>
+  <section class="sale-gathering-apply specialInput">
+    <div class="page" style="height:782px;overflow:auto">
+
+      <div class="header">
+        <span class="form-title">销售收款申请</span>
+        <div style="float:right;margin-top: 10px;margin-right:10px">
+          <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+            <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
+            <span style="font-size:12px;">打印</span>
+          </div>
+          <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+            <svg-icon iconClass="daochu"></svg-icon>
+            <span style="font-size: 12px;">导出</span>
+          </div>
         </div>
       </div>
-    </div>
-    <i-row type="flex">
-      <i-col span="18">
-        <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80" style="margin-top:20px;">
-          <i-col span="12">
-            <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
-              </i-input>
-            </i-form-item>
-          </i-col>
-          <i-col span="12">
-            <i-form-item label="客户姓名" prop="customerName">
-              <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名" @on-blur="getOrderInfo">
-              </i-input>
-            </i-form-item>
-          </i-col>
-          <i-col span="12">
-            <i-form-item label="客户电话" prop="mobileMain">
-              <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话">
-              </i-input>
-            </i-form-item>
-          </i-col>
-          <i-col span="12">
-            <i-form-item label="选择订单" prop="worker">
-              <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
-                <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
-              </i-select>
-            </i-form-item>
-          </i-col>
-        </i-form>
-      </i-col>
-      <i-button class="blueButton" style="height:40px;position:relative;top:60px;" @click="clearAll">清空</i-button>
-    </i-row>
-    <i-tabs v-model="materialTabs" type="card" class="sale-gather-tabs">
-      <i-tab-pane name="gather-detail" label="收款明细">
-      </i-tab-pane>
-      <i-tab-pane name="upload-the-material" label="上传素材">
-      </i-tab-pane>
-    </i-tabs>
-    <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
+      <i-row type="flex">
+        <i-col span="18">
+          <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80" style="margin-top:20px;">
+            <i-col span="12">
+              <i-form-item label="证件号码" prop="idCard">
+                <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
+                </i-input>
+              </i-form-item>
+            </i-col>
+            <i-col span="12">
+              <i-form-item label="客户姓名" prop="customerName">
+                <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名" @on-blur="getOrderInfo">
+                </i-input>
+              </i-form-item>
+            </i-col>
+            <i-col span="12">
+              <i-form-item label="客户电话" prop="mobileMain">
+                <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话">
+                </i-input>
+              </i-form-item>
+            </i-col>
+            <i-col span="12">
+              <i-form-item label="选择订单" prop="worker">
+                <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
+                  <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
+                </i-select>
+              </i-form-item>
+            </i-col>
+          </i-form>
+        </i-col>
+        <i-button class="blueButton" style="height:40px;position:relative;top:60px;" @click="clearAll">清空</i-button>
+      </i-row>
+      <i-tabs v-model="materialTabs" type="card" class="sale-gather-tabs">
+        <i-tab-pane name="gather-detail" label="收款明细">
+          <gather-detail :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="gather-detail"></gather-detail>
+        </i-tab-pane>
+        <i-tab-pane name="upload-the-material" label="上传素材">
+          <upload-the-material :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="upload-the-material"></upload-the-material>
+        </i-tab-pane>
+      </i-tabs>
+      <!-- <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
       <div class="shade" :style="{display:disabledStatus}">
       </div>
-      <component :is="materialTabs" :disabledStatus="disabledStatus"></component>
-    </div>
-    <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:14px">
-        <i-col :span="8" push="1">
-          <span style="height:40px;display:inline-block;line-height:3">申请人：administrator</span>
-        </i-col>
-        <i-col :span="10" pull="4">
-          <span>申请时间：2017-12-01 13:56:56</span>
-        </i-col>
-        <i-col :span="6" style="text-align:right;">
-          <i-button class="highDefaultButton">保存草稿</i-button>
-          <i-button class="highButton">保存并提交</i-button>
-        </i-col>
-      </i-row>
-    </div>
-    <template>
-      <i-modal v-model="addCar" title="添加车辆" width="1100">
-        <i-row>
-          <i-input size="small" style="display:inline-block;width:20%;margin-right:10px" placeholder="请输入关键字"></i-input>
-          <i-button class="blueButton">搜索</i-button>
-        </i-row>
-        <i-row>
-          <i-col :span="4" style="border:1px solid #e4e4e4" :class="{open:isShown,close:!isShown}">
-            <i-tree :data="categoryData"></i-tree>
+      <component :is="materialTabs" :disabledStatus="disabledStatus" :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="component"></component>
+    </div> -->
+      <div class="submitBar">
+        <i-row type="flex" align="middle" style="padding:14px">
+          <i-col :span="8" push="1">
+            <span style="height:40px;display:inline-block;line-height:3">申请人：administrator</span>
           </i-col>
-          <i-col :span="20">
-            <i-row type="flex" justify="start">
-              <i-col class="arrowButton" :span="2">
-                <div :class="{arrowDown:!isShown,arrowUp:isShown}" @click="showCategory">＜</div>
-              </i-col>
-              <i-col span="22" style="overflow:auto">
-                <div>
-                  <i-table :columns="columns2" :data="data2" border stripe @on-select="multipleSelect"></i-table>
-                </div>
-              </i-col>
-            </i-row>
+          <i-col :span="10" pull="4">
+            <span>申请时间：2017-12-01 13:56:56</span>
+          </i-col>
+          <i-col :span="6" style="text-align:right;">
+            <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
+            <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
           </i-col>
         </i-row>
-      </i-modal>
-    </template>
-
+      </div>
+    </div>
   </section>
 </template>
 <script lang="ts">
@@ -123,7 +102,12 @@ export default class SaleGatheringApply extends Page {
   @Dependencies() private pageService: PageService;
   @Dependencies(WithdrawApplicationService)
   private withdrawApplicationService: WithdrawApplicationService;
-  private applyData: any;
+  private applyData: any = {
+    idCard: "",
+    customerName: "",
+    mobileMain: "",
+    orderId: ""
+  };
   applyRule: Object = {};
   private purchaseData: Object = {
     province: "",
@@ -142,14 +126,27 @@ export default class SaleGatheringApply extends Page {
   private disabledStatus: String = ""; // 子组件中输入框禁用flag
   private orderNumberIdModels: Array<any> = [];
   private personalId: Number = 0;
+  private checkOrderId: Number = 0;
+  private orderFodderInfo: Object = {}; // 获取订单下的素材等信息
+  private saveDraftModel: any = {
+    accountName: "",
+    addFinanceUploadResources: [],
+    delFinanceUploadResources: [],
+    depositCash: 0,
+    finalCash: 0,
+    firstMonthlySupply: 0,
+    gpsFee: 0,
+    id: "",
+    initialPayment: 0,
+    installLicenseFee: 0,
+    insuranceExpenses: 0,
+    manageCost: 0,
+    orderId: 0,
+    otherFee: 0,
+    purchaseTax: 0,
+    totalPayment: 0
+  };
   created() {
-    this.applyData = {
-      idCard: "",
-      customerName: "",
-      mobileMain: "",
-      orderId: ""
-    };
-
     this.columns2 = [
       {
         type: "selection",
@@ -267,15 +264,81 @@ export default class SaleGatheringApply extends Page {
     ];
   }
   /**
-   * 多选
+   * 保存草稿
    */
-  multipleSelect(selection) {}
-  /**
-    是否显示汽车分类
-     */
-  showCategory() {
-    this.isShown = !this.isShown;
+  saveDraft() {
+    let _gatherDetail: any = this.$refs["gather-detail"];
+    let itemList = _gatherDetail.getItem();
+    // console.log(itemList, "itemList");
+    let initialPayment = itemList.find(v => v.itemName === "initialPayment"); // 首付款
+    if (initialPayment) {
+      this.saveDraftModel.initialPayment = initialPayment.itemMoney;
+    }
+    let depositCash = itemList.find(v => v.itemName === "depositCash"); // 保证金
+    if (depositCash) {
+      this.saveDraftModel.depositCash = depositCash.itemMoney;
+    }
+    let finalCash = itemList.find(v => v.itemName === "finalCash"); // 尾付款
+    if (finalCash) {
+      this.saveDraftModel.finalCash = finalCash.itemMoney;
+    }
+    let firstMonthlySupply = itemList.find(
+      // 月供金额
+      v => v.itemName === "firstMonthlySupply"
+    );
+    if (firstMonthlySupply) {
+      this.saveDraftModel.firstMonthlySupply = firstMonthlySupply.itemMoney;
+    }
+    let gpsFee = itemList.find(v => v.itemName === "gpsFee"); // gps费
+    if (gpsFee) {
+      this.saveDraftModel.gpsFee = gpsFee.itemMoney;
+    }
+    let installLicenseFee = itemList.find(
+      // 安装费
+      v => v.itemName === "installLicenseFee"
+    );
+    if (installLicenseFee) {
+      this.saveDraftModel.installLicenseFee = installLicenseFee.itemMoney;
+    }
+    let insuranceExpenses = itemList.find(
+      // 保险费
+      v => v.itemName === "insuranceExpenses"
+    );
+    if (insuranceExpenses) {
+      this.saveDraftModel.insuranceExpenses = insuranceExpenses.itemMoney;
+    }
+    let manageCost = itemList.find(v => v.itemName === "manageCost"); // 管理费
+    if (manageCost) {
+      this.saveDraftModel.manageCost = manageCost.itemMoney;
+    }
+    let otherFee = itemList.find(v => v.itemName === "otherFee"); // 其他费用
+    if (otherFee) {
+      this.saveDraftModel.otherFee = otherFee.itemMoney;
+    }
+    let purchaseTax = itemList.find(v => v.itemName === "purchaseTax"); // 购置税
+    if (purchaseTax) {
+      this.saveDraftModel.purchaseTax = purchaseTax.itemMoney;
+    }
+    let totalPayment = itemList.find(v => v.itemName === "totalPayment"); // 合计
+    if (totalPayment) {
+      this.saveDraftModel.totalPayment = totalPayment.itemMoney;
+    }
+    // console.log(this.saveDraftModel, "ggg");
+    this.withdrawApplicationService
+      .saveSaleCollectMoneyApplicationAsDraft(this.saveDraftModel)
+      .subscribe(
+        data => {
+          this.$Message.success("保存草稿成功！");
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
   }
+  /**
+   * 保存并提交
+   */
+  saveAndCommit() {}
   showTab() {
     if (this.applyData.idCard.length === 18) {
       this.disabledStatus = "none";
@@ -291,11 +354,12 @@ export default class SaleGatheringApply extends Page {
       })
       .subscribe(
         data => {
-          this.orderNumberIdModels = data[0].orderNumberIdModels;
-          this.applyData.customerName = data[0].name;
-          this.applyData.mobileMain = data[0].mobileMain;
-          this.personalId = data[0].personalId;
-          console.log(this.orderNumberIdModels, 988);
+          if (data[0] && data[0].orderNumberIdModels) {
+            this.orderNumberIdModels = data[0].orderNumberIdModels;
+            this.applyData.customerName = data[0].name;
+            this.applyData.mobileMain = data[0].mobileMain;
+            this.personalId = data[0].personalId;
+          }
         },
         ({ msg }) => {
           this.$Message.error(msg);
@@ -306,15 +370,27 @@ export default class SaleGatheringApply extends Page {
    * 通过订单id获取销售收款申请信息
    */
   changeOrderId(val) {
-    console.log(val, 980);
-    this.withdrawApplicationService
-      .getSaleCollectMoneyApplicationInfo({
-        personalId: this.personalId,
-        orderId: val
-      })
-      .subscribe(data => {
-        console.log(data, "kkkll");
-      });
+    if (val) {
+      this.checkOrderId = val; // 将选择的订单号传给变更收款项按钮点击事件中
+      this.saveDraftModel.orderId = val; // 保存草稿所需orderId
+      this.withdrawApplicationService
+        .getSaleCollectMoneyApplicationInfo({
+          personalId: this.personalId,
+          orderId: val
+        })
+        .subscribe(data => {
+          this.orderFodderInfo = data;
+          if (data.withdrawId) {
+            this.saveDraftModel.id = data.withdrawId; // 获取保存草稿时需要的id
+          }
+          if (data.personalBank && data.personalBank.personalName) {
+            this.saveDraftModel.accountName = data.personalBank.personalName; // 获取保存草稿时需要的accountName
+          }
+          // 给收款明细列表赋值
+          let _component: any = this.$refs["gather-detail"];
+          _component.makeList(data);
+        });
+    }
   }
   /**
    * 清空
@@ -335,6 +411,9 @@ export default class SaleGatheringApply extends Page {
   resetAll() {
     let _form: any = this.$refs["customer-form"];
     _form.resetFields();
+    this.applyData.orderId = "";
+    let _gatherDetail: any = this.$refs["gather-detail"];
+    _gatherDetail.resetTable();
   }
 }
 </script>

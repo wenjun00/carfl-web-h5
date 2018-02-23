@@ -37,7 +37,35 @@ export default {
   */
   getPersonalProductOrderInfo: {
     service: SERVICE,
+    controller: CONTROLLER,
     action: 'getPersonalProductOrderInfo',
     type: requestType.Get
+  },
+  /**
+   * 获取销售收款项
+   */
+  getSaleCollectMoneyItems: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getSaleCollectMoneyItems',
+    type: requestType.Get
+  },
+  /**
+   * 销售收款申请保存草稿
+   */
+  saveSaleCollectMoneyApplicationAsDraft: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveSaleCollectMoneyApplicationAsDraft',
+    type: requestType.Post
+  },
+  /**
+   * 销售收款申请保存并提交
+   */
+  saveSaleCollectMoneyApplication: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveSaleCollectMoneyApplication',
+    type: requestType.Post
   }
 }

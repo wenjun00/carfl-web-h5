@@ -1,74 +1,88 @@
 <!--变更收款项-->
 <template>
   <section class="component change-gather-item">
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <i-table :columns="columns1" :data="saleItemList" ref="table" @on-selection-change="currentSelect"></i-table>
   </section>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component'
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import DataBox from "~/components/common/data-box.vue";
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop } from "vue-property-decorator";
+import DataBox from "~/components/common/data-box.vue";
+import { WithdrawApplicationService } from "~/services/manage-service/withdraw-application.service";
+import { Dependencies } from "~/core/decorator";
 
-  @Component({
-    components: {
-      DataBox
-    }
-  })
-  export default class ChangeGatherItem extends Vue {
-    private columns1: any;
-    private data1: Array < Object > = [];
-
-    created() {
-      this.columns1 = [{
-        align: 'center',
-        type: 'selection',
-        width: 60
-      }, {
-        align: 'center',
-        title: '收款项',
-        key: 'gatherItem'
-      }, {
-        align: 'center',
-        title: '金额',
-        key: 'money'
-      }]
-
-      this.data1 = [{
-        gatherItem: '首付金额',
-        money: '78901'
-      }, {
-        gatherItem: '融资额',
-        money: '10000'
-      }, {
-        gatherItem: '期供金额',
-        money: '500'
-      }, {
-        gatherItem: '尾付款',
-        money: '1800'
-      }, {
-        gatherItem: '保证金额',
-        money: '5000'
-      }, {
-        gatherItem: '上牌费',
-        money: '260'
-      }, {
-        gatherItem: '保险费',
-        money: '18000'
-      }, {
-        gatherItem: '购置税',
-        money: '5000'
-      }, {
-        gatherItem: 'GPS费',
-        money: '1500'
-      }, {
-        gatherItem: '其他费用',
-        money: '28000'
-      }]
-    }
+@Component({
+  components: {
+    DataBox
   }
+})
+export default class ChangeGatherItem extends Vue {
+  @Dependencies(WithdrawApplicationService)
+  private withdrawApplicationService: WithdrawApplicationService;
+  private columns1: any;
+  private saleItemList: Array<any> = [];
+  private multipleSelection; // 多选数据
 
+  created() {
+    this.columns1 = [
+      {
+        align: "center",
+        type: "selection",
+        width: 60
+      },
+      {
+        align: "center",
+        title: "收款项",
+        key: "itemLabel"
+      },
+      {
+        align: "center",
+        title: "金额",
+        key: "itemMoney"
+      }
+    ];
+  }
+  /**
+   * 获取所有收款项
+   * orderId:已选中的订单号
+   * checkSaleItem:要反显的收款项
+   */
+  getOrderSaleItem(orderId, checkSaleItem) {
+    this.withdrawApplicationService
+      .getSaleCollectMoneyItems({
+        orderId: orderId
+      })
+      .subscribe(
+        data => {
+          data.map(item => {
+            checkSaleItem.map(val => {
+              if (item.itemLabel === val.itemLabel) {
+                item._checked = true;
+              }
+            });
+          });
+          this.saleItemList = data;
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+  currentSelect(selection) {
+    this.multipleSelection = selection;
+  }
+  changeItem() {
+    let moneyList = this.multipleSelection.map(v => v.itemMoney);
+    let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
+    let total = {
+      itemMoney: totalPayment,
+      itemLabel: "合计（元）",
+      itemName: "totalPayment"
+    };
+    this.multipleSelection.push(total);
+    this.$emit("change", this.multipleSelection);
+  }
+}
 </script>

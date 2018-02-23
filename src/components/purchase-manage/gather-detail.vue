@@ -1,24 +1,55 @@
 <!--收款明细-->
 <template>
   <section class="component gather-detail">
-    <i-table :columns="columns1" :data="data1" width="1100"></i-table>
+    <i-table :columns="columns1" :data="saleItemList" width="1100" stripe></i-table>
     <div>
       <Icon type="plus" style="position:relative;left:16px;top:5px;color:#265ea2"></Icon>
       <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">变更收款项</i-button>
     </div>
     <div class="form-title">账户信息</div>
-    <i-table :columns="columns3" :data="data3" width="1100"></i-table>
+    <!-- <i-table :columns="columns3" :data="data3" width="1100"></i-table> -->
+    <data-grid style="width:1100px;margin-bottom:20px;" :labelWidth="90">
+      <data-grid-item label="户名" :span="2">
+        <template>
+          <div>{{accountInfo.personalName}}</div>
+        </template>
+      </data-grid-item>
+      <data-grid-item label="开户银行" :span="2">
+        <template>
+          <div>{{accountInfo.depositBank}}</div>
+        </template>
+      </data-grid-item>
+      <data-grid-item label="银行卡号" :span="3">
+        <template>
+          <div>{{accountInfo.cardNumber}}</div>
+        </template>
+      </data-grid-item>
+      <data-grid-item label="支行名称" :span="3">
+        <template>
+          <div>{{accountInfo.depositBranch}}</div>
+        </template>
+      </data-grid-item>
+      <data-grid-item label="第三方客户号" :span="2">
+        <template>
+          <div>{{accountInfo.clientNumber}}</div>
+        </template>
+      </data-grid-item>
+    </data-grid>
     <!--编辑收款项-->
-    <template>
+    <!-- <template>
       <i-modal v-model="modifyGatherItemModal" title="编辑收款项" width="300">
         <modify-gather-item></modify-gather-item>
       </i-modal>
-    </template>
+    </template> -->
 
     <!--变更收款项-->
     <template>
       <i-modal v-model="changeGatherItemModal" title="变更收款项">
-        <change-gather-item></change-gather-item>
+        <change-gather-item ref="change-item" @change="changeSaleItem"></change-gather-item>
+        <div slot="footer">
+          <i-button @click="changeGatherItemModal=false">取消</i-button>
+          <i-button @click="confirmChangeItem" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -34,85 +65,32 @@ import DataBox from "~/components/common/data-box.vue";
 import { Prop } from "vue-property-decorator";
 import ModifyGatherItem from "~/components/purchase-manage/modify-gather-item.vue";
 import ChangeGatherItem from "~/components/purchase-manage/change-gather-item.vue";
-
+import { DataGrid, DataGridItem } from "vue-fintech-component";
 @Component({
   components: {
     SvgIcon,
     DataBox,
     ModifyGatherItem,
-    ChangeGatherItem
+    ChangeGatherItem,
+    DataGrid,
+    DataGridItem
   }
 })
 export default class GatherDetail extends Vue {
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
+  @Prop() checkOrderId: Number;
+  @Prop() orderFodderInfo: any;
   private columns1: any;
-  private data1: Array<Object> = [];
+  private saleItemList: Array<Object> = [];
   private columns3: any;
   private data3: Array<Object> = [];
-  private modifyGatherItemModal: Boolean = false;
+  // private modifyGatherItemModal: Boolean = false;
   private changeGatherItemModal: Boolean = false;
-
+  private accountInfo: any = {}; // 账户信息
   created() {
     this.columns1 = [
-      //   {
-      //   title: "操作",
-      //   width: 340,
-      //   align: "center",
-      //   render: (h, {
-      //     row,
-      //     column,
-      //     index
-      //   }) => {
-      //     if (row.itemName !== '合计') {
-      //       return h("div", [
-      //         h(
-      //           "i-button", {
-      //             props: {
-      //               type: "text"
-      //             },
-      //             style: {
-      //               color: "#265EA2"
-      //             },
-      //             on: {
-      //               click: () => {
-      //                 this.modifyGatherItem();
-      //               }
-      //             }
-      //           },
-      //           "编辑"
-      //         ),
-      //         h(
-      //           "i-button", {
-      //             props: {
-      //               type: "text"
-      //             },
-      //             style: {
-      //               color: "#265EA2"
-      //             },
-      //             on: {
-      //               click: () => {
-      //                 this.$Modal.confirm({
-      //                   title: '提示',
-      //                   content: '确定删除吗？',
-      //                   onOk: () => {
-      //                     this.data1.forEach((x, i) => {
-      //                       if (i === index) {
-      //                         this.data1.splice(i, 1)
-      //                       }
-      //                     })
-      //                   }
-      //                 })
-      //               }
-      //             }
-      //           },
-      //           "删除"
-      //         )
-      //       ])
-      //     }
-      //   }
-      // },
       {
-        key: "itemName",
+        key: "itemLabel",
         title: "项目名称",
         align: "center"
       },
@@ -120,21 +98,6 @@ export default class GatherDetail extends Vue {
         key: "itemMoney",
         title: "金额",
         align: "center"
-      }
-    ];
-
-    this.data1 = [
-      {
-        itemName: "首付金额",
-        itemMoney: "9000"
-      },
-      {
-        itemName: "首付月供",
-        itemMoney: "9000"
-      },
-      {
-        itemName: "合计",
-        itemMoney: "18000"
       }
     ];
 
@@ -176,14 +139,60 @@ export default class GatherDetail extends Vue {
       }
     ];
   }
-  modifyGatherItem() {
-    this.modifyGatherItemModal = true;
-  }
+  // modifyGatherItem() {
+  //   this.modifyGatherItemModal = true;
+  // }
   /**
    * 变更收款项
    */
   changeGatherItem() {
-    this.changeGatherItemModal = true;
+    if (this.checkOrderId) {
+      this.changeGatherItemModal = true;
+      let _changeItemModal: any = this.$refs["change-item"];
+      _changeItemModal.getOrderSaleItem(this.checkOrderId, this.saleItemList);
+    } else {
+      this.$Message.info("请选择订单！");
+    }
+  }
+  /**
+   * 确定变更收款项
+   */
+  confirmChangeItem() {
+    let _changeItem: any = this.$refs["change-item"];
+    _changeItem.changeItem();
+  }
+  makeList(val) {
+    if (val.applicationCollectMoneyItems) {
+      this.saleItemList = val.applicationCollectMoneyItems.filter(
+        v => v.itemMoney
+      );
+    } else {
+      this.saleItemList = [];
+    }
+    if (val.personalBank) {
+      this.accountInfo = val.personalBank;
+    } else {
+      this.accountInfo = {};
+    }
+  }
+  changeSaleItem(val) {
+    // console.log(val, "kjg");
+    this.saleItemList = val;
+    this.changeGatherItemModal = false;
+  }
+  getItem() {
+    return this.saleItemList;
+  }
+  /**
+   * 重置表格
+   */
+  resetTable() {
+    this.saleItemList = [];
+    this.accountInfo.personalName = "";
+    this.accountInfo.depositBank = "";
+    this.accountInfo.cardNumber = "";
+    this.accountInfo.depositBranch = "";
+    this.accountInfo.clientNumber = "";
   }
 }
 </script>

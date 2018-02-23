@@ -59,10 +59,39 @@ export class WithdrawApplicationService {
   /**
  * 获取提前收回信息
  */
-  getPersonalProductOrderInfo(data) {
+  // getPersonalProductOrderInfo(data) {
+  //   return this.netService.send({
+  //     server: manageService.withdrawApplicationController.getPersonalProductOrderInfo,
+  //     data: data,
+  //   })
+  // }
+  /**
+  * 获取销售收款项
+  */
+  getSaleCollectMoneyItems({ orderId }) {
     return this.netService.send({
-      server: manageService.withdrawApplicationController.getPersonalProductOrderInfo,
-      data: data,
+      server: manageService.withdrawApplicationController.getSaleCollectMoneyItems,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
+  /**
+   * 销售收款申请保存草稿
+   */
+  saveSaleCollectMoneyApplicationAsDraft(data) {
+    return this.netService.send({
+      server: manageService.withdrawApplicationController.saveSaleCollectMoneyApplicationAsDraft,
+      data: data
+    })
+  }
+  /**
+   * 销售收款申请 保存并提交
+   */
+  saveSaleCollectMoneyApplication(data) {
+    return this.netService.send({
+      server: manageService.withdrawApplicationController.saveSaleCollectMoneyApplication,
+      data: data
     })
   }
 }
