@@ -3,7 +3,8 @@
     <!--选购信息-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>选购信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <span>选购信息</span>
       </div>
       <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px">
         <data-grid-item label="申请省份：" :span="3">{{orderInfo.province}}</data-grid-item>
@@ -25,10 +26,10 @@
     <!--车辆信息-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="xuangouxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">车辆信息</a>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <a name="xuangouxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">车辆信息</a>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px" v-for="item in carOrderInfo"
-        :key="item.id">
+      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px" v-for="item in carOrderInfo" :key="item.id">
         <data-grid-item label="车辆型号" :span="6">{{item.modelName?item.modelName:''}}</data-grid-item>
         <data-grid-item label="上牌地区" :span="3">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>
         <data-grid-item label="车身颜色" :span="3">{{item.vehicleColour?item.vehicleColour:''}}</data-grid-item>
@@ -40,7 +41,8 @@
     <!--产品信息-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="chanpinxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">产品信息</a>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <a name="chanpinxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">产品信息</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
@@ -92,7 +94,8 @@
     <!--个人资料-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="gerenziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">个人资料</a>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <a name="gerenziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">个人资料</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
@@ -178,7 +181,8 @@
     <!--职业信息-->
     <i-row>
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="zhiyexinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">职业信息</a>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <a name="zhiyexinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">职业信息</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
@@ -230,7 +234,8 @@
     <!--联系人信息-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="lianxirenxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">联系人信息</a>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <a name="lianxirenxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">联系人信息</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
@@ -269,7 +274,8 @@
     <!--客户来源-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="kehulaiyuan" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">客户来源</a>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <a name="kehulaiyuan" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">客户来源</a>
       </div>
       <table border="1" width="760" style="margin-top:10px;border:1px solid #DCDDE0">
         <tr>
@@ -295,7 +301,8 @@
     <!--素材资料-->
     <i-row style="margin-top:20px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><a name="sucaiziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">素材资料</a>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <a name="sucaiziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">素材资料</a>
       </div>
       <i-row style="margin-top:10px">
         <i-col :span="12">
@@ -309,86 +316,85 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import {
+import Vue from "vue";
+import Component from "vue-class-component";
+import { DataGrid, DataGridItem } from "vue-fintech-component";
+import { ProductOrderService } from "~/services/manage-service/product-order.service";
+import { Prop } from "vue-property-decorator";
+import { Action } from "vuex-class";
+import { Dependencies } from "~/core/decorator";
+@Component({
+  components: {
     DataGrid,
     DataGridItem
-  } from "vue-fintech-component";
-  import {
-    ProductOrderService
-  } from "~/services/manage-service/product-order.service";
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import {
-    Action
-  } from "vuex-class";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  @Component({
-    components: {
-      DataGrid,
-      DataGridItem
-    }
-  })
-  export default class Approve extends Vue {
-    @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
-    private fee: Array < String > = [];
-    private fruit: Array < String > = ['购置费'];
-    private single: Boolean = false;
-    private orderInfo: any = {}
-    private personal: any = {} // 个人资料
-    private productSeries: any = {} // 产品系列
-    private contactsInfo: any = {} // 联系人信息
-    private immediateContacts: any = {} // 直系联系人信息
-    private otherContactsInfo: any = {} // 其他联系人信息
-    private carOrderInfo: any = {} // 选购车辆
-    private personalJobInfo: any = {} // 职业信息
-    private personalResourcePublicity: any = {} // 客户来源相关信息
-    private personalResourceIntroduce: any = {} // 客户来源介绍相关信息
-    private materialInfo: any = {} // 素材资料相关信息
-    @Prop() person;
-    @Action select;
-
-    /**
-     * 获取弹窗内所有订单信息
-     */
-    getOrderDetail(row) {
-      this.productOrderService.findOrderInfoByOrderNumber({
-        orderNumber: row.orderNumber
-      }).subscribe(data => {
-        let allData = JSON.stringify(data)
-        this.orderInfo = JSON.parse(allData)
-        this.personal = this.orderInfo.personal // 个人资料
-        this.personalJobInfo = this.personal.personalJob // 职业信息
-        this.contactsInfo = this.orderInfo.personal.personalContacts // 联系人信息
-        this.carOrderInfo = this.orderInfo.orderCars // 选购车辆
-        this.personalResourcePublicity = this.personal.personalResourcePublicity // 客户来源相关信息
-        this.personalResourceIntroduce = this.personal.personalResourceIntroduce // 客户来源介绍
-        this.materialInfo = this.personal.personalDatas // 素材相关信息
-        // console.log(this.orderInfo.personalJob, 1234)
-        this.immediateContacts = this.contactsInfo.filter(v => v.relation === 56 || v.relation === 57 || v.relation ===
-          58)
-
-        // console.log(this.immediateContacts, 8987)
-        this.otherContactsInfo = this.contactsInfo.filter(v => v.relation === 59 || v.relation === 60 || v.relation ===
-          61 || v.relation === 62)
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
-      })
-    }
   }
+})
+export default class Approve extends Vue {
+  @Dependencies(ProductOrderService)
+  private productOrderService: ProductOrderService;
+  private fee: Array<String> = [];
+  private fruit: Array<String> = ["购置费"];
+  private single: Boolean = false;
+  private orderInfo: any = {};
+  private personal: any = {}; // 个人资料
+  private productSeries: any = {}; // 产品系列
+  private contactsInfo: any = {}; // 联系人信息
+  private immediateContacts: any = {}; // 直系联系人信息
+  private otherContactsInfo: any = {}; // 其他联系人信息
+  private carOrderInfo: any = {}; // 选购车辆
+  private personalJobInfo: any = {}; // 职业信息
+  private personalResourcePublicity: any = {}; // 客户来源相关信息
+  private personalResourceIntroduce: any = {}; // 客户来源介绍相关信息
+  private materialInfo: any = {}; // 素材资料相关信息
+  @Prop() person;
+  @Action select;
 
+  /**
+   * 获取弹窗内所有订单信息
+   */
+  getOrderDetail(row) {
+    this.productOrderService
+      .findOrderInfoByOrderNumber({
+        orderNumber: row.orderNumber
+      })
+      .subscribe(
+        data => {
+          let allData = JSON.stringify(data);
+          this.orderInfo = JSON.parse(allData);
+          this.personal = this.orderInfo.personal; // 个人资料
+          this.personalJobInfo = this.personal.personalJob; // 职业信息
+          this.contactsInfo = this.orderInfo.personal.personalContacts; // 联系人信息
+          this.carOrderInfo = this.orderInfo.orderCars; // 选购车辆
+          this.personalResourcePublicity = this.personal.personalResourcePublicity; // 客户来源相关信息
+          this.personalResourceIntroduce = this.personal.personalResourceIntroduce; // 客户来源介绍
+          this.materialInfo = this.personal.personalDatas; // 素材相关信息
+          // console.log(this.orderInfo.personalJob, 1234)
+          this.immediateContacts = this.contactsInfo.filter(
+            v => v.relation === 56 || v.relation === 57 || v.relation === 58
+          );
+
+          // console.log(this.immediateContacts, 8987)
+          this.otherContactsInfo = this.contactsInfo.filter(
+            v =>
+              v.relation === 59 ||
+              v.relation === 60 ||
+              v.relation === 61 ||
+              v.relation === 62
+          );
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+}
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+.approve {
   td {
     font-size: 14px;
     padding: 5px;
   }
-
+}
 </style>
