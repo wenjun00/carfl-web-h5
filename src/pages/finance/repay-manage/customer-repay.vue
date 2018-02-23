@@ -2,26 +2,25 @@
 <template>
   <section class="page customer-repay">
     <span class="form-title">客户还款</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
-      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码"></i-input>
+      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
       <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态">
-        <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
-        <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
+        <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>        
       </i-select>
-      <i-select style="margin-left:10px;width:10%">
+      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" clearable>
         <i-option v-for="{value,label} in $dict.getDictData('0105')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getCustomerRepayList">搜索</i-button>
@@ -58,7 +57,7 @@
 
     <template>
       <i-modal v-model="deductRecordModal" title="划扣记录" width="1300">
-        <deduct-record></deduct-record>
+        <deduct-record ref="deduct-record"></deduct-record>
       </i-modal>
     </template>
   </section>
@@ -87,7 +86,9 @@
   import {
     PageService
   } from "~/utils/page.service";
-
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   @Layout("workspace")
   @Component({
 
@@ -120,6 +121,9 @@
     }
     openSearch() {
       this.searchOptions = !this.searchOptions;
+    }
+    getTimeSearch(val) {
+
     }
     saveDraft() {
       this.$Message.info('保存草稿成功！')
@@ -171,6 +175,8 @@
                 on: {
                   click: () => {
                     this.deductRecordModal = true
+                    let record = this.$refs['deduct-record']
+                    record.refresh(row)
                   }
                 },
                 style: {
@@ -181,93 +187,141 @@
           }
         },
         {
-          title: "订单号",
-          key: "orderId",
           align: "center",
-          render: (h, row) => {
+          title: "订单号",
+          width: 160,
+          key: 'orderNumber',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('i-button', {
               props: {
                 type: 'text'
               },
               on: {
                 click: () => {
-
+                  // this.purchaseInfoModal = true
                 }
               }
-            }, 'kb20154575')
+            }, row.orderNumber)
           }
         },
         {
           align: "center",
           title: "客户结算号",
-          key: "customerSettleId",
-          render: (h, row) => {
+          key: "clientNumber",
+          width: 150,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('i-button', {
               props: {
                 type: 'text'
               },
               on: {
                 click: () => {
-
+                  // this.customerSettleClick(row)
                 }
               }
-            }, 'LSK3125465')
+            }, row.clientNumber)
           }
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customName"
+          key: "name",
+          width: 100
         },
         {
           align: "center",
-          title: "证件号",
-          key: "idCard"
+          title: " 证件号",
+          key: "idCard",
+          width: 160
         },
         {
           align: "center",
-          title: "手机号",
-          key: "phone"
+          title: " 手机号",
+          key: "mobileMain",
+          width: 120
         },
         {
           align: "center",
-          title: "订单创建时间",
-          key: "orderCreateTime"
+          title: " 订单创建时间",
+          key: "createTime",
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
-          title: "合同生效日",
-          key: "compactApplyDate"
+          title: " 合同生效日",
+          key: "contractDate",
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
-          title: "待还本金",
-          key: "supposedMajorMoney"
+          title: " 待还本金",
+          key: "principalReceivable",
+          width: 90
         },
         {
           align: "center",
-          title: "待还利息",
-          key: "supposedInterest"
+          title: " 待还利息",
+          key: "interestReceivable",
+          width: 90
         },
         {
           align: "center",
-          title: "待还罚息",
-          key: "supposedPunishedInterest"
+          title: " 待还罚息",
+          key: "penaltyReceivable",
+          width: 90
         },
         {
           align: "center",
-          title: "利率%/月",
-          key: "interestRate"
+          title: " 利率%/月",
+          key: "productRate",
+          width: 90
         },
         {
           align: "center",
-          title: "结算通道",
-          key: "clearAccountChannel"
+          title: " 结算通道",
+          key: "settlementChannel",
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            if (row.settlementChannel === 162) {
+              return h('span', {}, '汇付')
+            } else if (row.settlementChannel === 163) {
+              return h('span', {}, '富友')
+            } else if (row.settlementChannel === 164) {
+              return h('span', {}, '对公转账')
+            }
+          }
         },
         {
           align: "center",
-          title: "归属公司",
-          key: "belongFirm"
+          title: " 归属公司",
+          width: 100,
+          key: "companyChinaName"
         }
       ];
 

@@ -52,6 +52,12 @@ export default class DataBox extends Vue {
   })
   highlightRow: boolean;
 
+  // 关闭默认行
+  @Prop({
+    default: false
+  })
+  noDefaultRow: boolean;
+  
   // 分页服务
   @Prop({
     default: () => new PageService()
@@ -171,7 +177,7 @@ export default class DataBox extends Vue {
           (x: any) => !x.editable || (x.editable && filterKeys.includes(x.key))
         );
     }
-    this.tableColumns = this.addDefaultColumns(columnList);
+    this.tableColumns = this.noDefaultRow?columnList:this.addDefaultColumns(columnList);
   }
 
   /**

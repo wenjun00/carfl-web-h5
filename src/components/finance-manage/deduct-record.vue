@@ -20,7 +20,7 @@
       </div>
     </div>
     <div style="position:relative;top:10px;left:16px;"><span>客户姓名：王泽杰</span><span style="float:right;">出账客户号：666600000000565656</span></div>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="data1" :noDefaultRow="true"></data-box>
   </section>
 </template>
 
@@ -29,7 +29,15 @@
   import Component from "vue-class-component";
   import DataBox from "~/components/common/data-box.vue";
   import SvgIcon from '~/components/common/svg-icon.vue'
-
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    PaymentScheduleService
+  } from "~/services/manage-service/payment-schedule.service";
   @Component({
     components: {
       DataBox,
@@ -37,9 +45,22 @@
     }
   })
   export default class DeductRecord extends Vue {
+    @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object >= [];
+    private customerRepayModel: any = {
 
+    };
+    private data1: Array < Object >= [];
+    refresh(row) {
+      this.paymentScheduleService.getCustomerPayments(this.customerRepayModel, this.pageService).subscribe(data => {
+        this.data1 = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })    
+    }
     created() {
       this.columns1 = [{
           title: '序号',
