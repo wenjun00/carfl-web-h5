@@ -50,5 +50,9 @@ export default class AddApprovalReason extends Vue {
 			);
 		});
 	}
+	restForm() {
+		let form: any = this.$refs['add-category'];
+		form.resetFields();
+	}
 }
 </script>
