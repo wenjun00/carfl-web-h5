@@ -105,7 +105,7 @@ export default class DataBox extends Vue {
     return [
       {
         align: "center",
-        width: 90,
+        width: 50,
         key: "index",
         type: "index",
         fixed: "left",

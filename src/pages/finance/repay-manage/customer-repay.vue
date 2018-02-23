@@ -22,14 +22,11 @@
         <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
       </i-select>
       <i-select style="margin-left:10px;width:10%">
-        <i-option value="汇付" key="汇付" label="汇付"></i-option>
-        <i-option value="富友" key="富友" label="富友"></i-option>
-        <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
-        <i-option value="现金" key="现金" label="现金"></i-option>
+        <i-option v-for="{value,label} in $dict.getDictData('0105')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+      <i-button style="margin-left:10px" class="blueButton" @click="getCustomerRepayList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="customerRepayList"></data-box>
 
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
@@ -84,6 +81,12 @@
   import {
     Layout
   } from "~/core/decorator";
+  import {
+    PaymentScheduleService
+  } from "~/services/manage-service/payment-schedule.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
 
   @Layout("workspace")
   @Component({
@@ -96,8 +99,10 @@
     }
   })
   export default class CustomerRepay extends Page {
+    @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private customerRepayList: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
@@ -105,7 +110,11 @@
     private confirmRepaymentModal: Boolean = false;
     private repayInfoModal: Boolean = false;
     private deductRecordModal: Boolean = false;
-
+    private customerRepayModel: any = {
+      settlementChannel: '',
+      paymentStatus: '',
+      dynamicParam: ''
+    }
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
@@ -145,8 +154,9 @@
         },
         {
           title: "操作",
-          width: 320,
+          width: 210,
           align: "center",
+          fixed: "left",
           render: (h, {
             row,
             column,
@@ -172,11 +182,6 @@
                 },
                 on: {
                   click: () => {
-                    // this.$Modal.info({
-                    //   width: 1300,
-                    //   title: '还款详情',
-                    //   render: h => h(RepayInfo)
-                    // })
                     this.repayInfoModal = true
                   }
                 },
@@ -291,37 +296,7 @@
         }
       ];
 
-      this.data1 = [{
-          orderId: 'KB56481456',
-          customerSettleId: 'LSK3125465',
-          customName: '王泽杰',
-          idCard: '610303199111414245',
-          phone: '18265481548',
-          orderCreateTime: '2017-12-03 13:56:03',
-          compactApplyDate: '2017-12-03',
-          supposedMajorMoney: '800.00',
-          supposedInterest: '50.00',
-          supposedPunishedInterest: '12.2',
-          interestRate: '3.45',
-          clearAccountChannel: '支付宝',
-          belongFirm: '群泰西安'
-        },
-        {
-          orderId: 'KB56481456',
-          customerSettleId: 'LSK3125465',
-          customName: '陈丽',
-          idCard: '610303199111414245',
-          phone: '18265481548',
-          orderCreateTime: '2017-12-03 13:56:03',
-          compactApplyDate: '2017-12-03',
-          supposedMajorMoney: '800.00',
-          supposedPunishedInterest: '12.2',
-          supposedInterest: '50.00',
-          interestRate: '3.45',
-          clearAccountChannel: '支付宝',
-          belongFirm: '群泰西安'
-        }
-      ]
+      this.customerRepayList = []
 
       this.columns2 = [{
           title: "序号",
@@ -383,6 +358,18 @@
     }
     columnsConfig() {
       this.openColumnsConfig = true;
+    }
+    /**
+     * 获取客户还款查询
+     */
+    getCustomerRepayList() {
+      this.paymentScheduleService.getCustomerPayments(this.customerRepayModel, this.pageService).subscribe(data => {
+        this.customerRepayList = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
     }
     /**
      * 确定
