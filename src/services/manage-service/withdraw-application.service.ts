@@ -23,13 +23,12 @@ export class WithdrawApplicationService {
   /**
    * 获取提前结清信息
    */
-  getAdvancePayoffApplicationInfo({ idCard, customerName, mobileMain }) {
+  getAdvancePayoffApplicationInfo({ personalId, orderId }) {
     return this.netService.send({
       server: manageService.withdrawApplicationController.getAdvancePayoffApplicationInfo,
       data: {
-        idCard: idCard,
-        customerName: customerName,
-        mobileMain: mobileMain
+        personalId: personalId,
+        orderId: orderId
       }
     })
   }
@@ -92,6 +91,17 @@ export class WithdrawApplicationService {
     return this.netService.send({
       server: manageService.withdrawApplicationController.saveSaleCollectMoneyApplication,
       data: data
+    })
+  }
+  /**
+   * 获取提前结清收款项
+   */
+  getAdvancePayoffItems({ orderId }) {
+    return this.netService.send({
+      server: manageService.withdrawApplicationController.getAdvancePayoffItems,
+      data: {
+        orderId: orderId
+      }
     })
   }
 }

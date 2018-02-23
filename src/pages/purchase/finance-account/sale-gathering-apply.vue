@@ -1,7 +1,7 @@
 <!--销售收款申请-->
 <template>
   <section class="sale-gathering-apply specialInput">
-    <div class="page" style="height:782px;overflow:auto">
+    <div class="page" style="height:822px;overflow:auto">
 
       <div class="header">
         <span class="form-title">销售收款申请</span>
@@ -9,10 +9,6 @@
           <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
             <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
             <span style="font-size:12px;">打印</span>
-          </div>
-          <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-            <svg-icon iconClass="daochu"></svg-icon>
-            <span style="font-size: 12px;">导出</span>
           </div>
         </div>
       </div>
@@ -56,11 +52,7 @@
           <upload-the-material :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="upload-the-material"></upload-the-material>
         </i-tab-pane>
       </i-tabs>
-      <!-- <div style="height:535px;overflow-y:auto;overflow-x:hidden;">
-      <div class="shade" :style="{display:disabledStatus}">
-      </div>
-      <component :is="materialTabs" :disabledStatus="disabledStatus" :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="component"></component>
-    </div> -->
+
       <div class="submitBar">
         <i-row type="flex" align="middle" style="padding:14px">
           <i-col :span="8" push="1">
@@ -75,6 +67,8 @@
           </i-col>
         </i-row>
       </div>
+    </div>
+    <div class="shade" :style="{display:disabledStatus}">
     </div>
   </section>
 </template>
@@ -114,10 +108,8 @@ export default class SaleGatheringApply extends Page {
     city: "",
     company: ""
   };
-  private columns2: any;
 
   private data2: Array<Object> = [];
-  private categoryData: Array<Object>;
   private loading: Boolean = false;
   private addCar: Boolean = false;
   private isShown: Boolean = true;
@@ -146,123 +138,7 @@ export default class SaleGatheringApply extends Page {
     purchaseTax: 0,
     totalPayment: 0
   };
-  created() {
-    this.columns2 = [
-      {
-        type: "selection",
-        align: "center"
-      },
-      {
-        title: "车辆品牌",
-        key: "brand",
-        align: "center",
-        width: 86
-      },
-      {
-        title: "车辆型号",
-        key: "model",
-        align: "center",
-        width: 86
-      },
-      {
-        title: "车身颜色",
-        key: "color",
-        align: "center",
-        width: 86
-      },
-      {
-        title: "车辆排量",
-        key: "output",
-        align: "center",
-        width: 86
-      },
-      {
-        title: "车辆配置",
-        key: "configuration",
-        align: "center",
-        width: 86
-      },
-      {
-        title: "上牌地区",
-        key: "area",
-        align: "center",
-        width: "86"
-      },
-      {
-        title: "车辆牌照",
-        key: "license",
-        align: "center",
-        width: 86
-      },
-      {
-        title: "所在门店",
-        key: "store",
-        align: "center",
-        width: 86
-      },
-      {
-        title: "状态",
-        key: "status",
-        align: "center",
-        width: 86
-      }
-    ];
-    // this.applyQueryService.addCarQueryData().subscribe(({
-    //   val
-    // }) => {
-    //   this.data2 = val
-    // })
-    this.categoryData = [
-      {
-        title: "所有品牌",
-        expand: true,
-        children: [
-          {
-            title: "别克",
-            expand: true,
-            children: [
-              {
-                title: "君越"
-              },
-              {
-                title: "昂克赛拉",
-                expand: true,
-                children: [
-                  {
-                    title: "君越"
-                  },
-                  {
-                    title: "昂克赛拉"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            title: "大众",
-            expand: true,
-            children: [
-              {
-                title: "英朗"
-              },
-              {
-                title: "帕萨特",
-                expand: true,
-                children: [
-                  {
-                    title: "英朗"
-                  },
-                  {
-                    title: "帕萨特"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ];
-  }
+  created() {}
   /**
    * 保存草稿
    */
@@ -338,7 +214,19 @@ export default class SaleGatheringApply extends Page {
   /**
    * 保存并提交
    */
-  saveAndCommit() {}
+  saveAndCommit() {
+    let saveAndCommitModel = this.saveDraftModel;
+    this.withdrawApplicationService
+      .saveSaleCollectMoneyApplication(saveAndCommitModel)
+      .subscribe(
+        data => {
+          this.$Message.success("保存并提交成功！");
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
   showTab() {
     if (this.applyData.idCard.length === 18) {
       this.disabledStatus = "none";
@@ -387,8 +275,10 @@ export default class SaleGatheringApply extends Page {
             this.saveDraftModel.accountName = data.personalBank.personalName; // 获取保存草稿时需要的accountName
           }
           // 给收款明细列表赋值
-          let _component: any = this.$refs["gather-detail"];
-          _component.makeList(data);
+          let _gatherDetail: any = this.$refs["gather-detail"];
+          _gatherDetail.makeList(data);
+          let _uploadMaterial: any = this.$refs["upload-the-material"];
+          _uploadMaterial.makeList(data);
         });
     }
   }

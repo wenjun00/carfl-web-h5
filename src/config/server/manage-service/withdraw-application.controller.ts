@@ -67,5 +67,14 @@ export default {
     controller: CONTROLLER,
     action: 'saveSaleCollectMoneyApplication',
     type: requestType.Post
+  },
+  /**
+   * 获取提前结清收款项
+   */
+  getAdvancePayoffItems: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getAdvancePayoffItems',
+    type: requestType.Get
   }
 }

@@ -7,16 +7,16 @@
     </i-row>
     <i-row>
       <i-col :span="3">
-        <div style="height:200px;width:200px;border:1px solid #dddddd;cursor:pointer;text-align:center;position:relative;left:40px;" @click="addAttachment">
+        <div style="height:200px;width:200px;border:1px solid #dddddd;cursor:pointer;text-align:center;position:relative;left:40px;margin-right:20px;" @click="addAttachment">
           <Icon type="plus-circled" style="display:block;margin-top:60px;" size="40"></Icon>
           <div>点击添加附件</div>
           <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
         </div>
       </i-col>
       <i-col :span="21">
-        <div style="display:flex;justify-content:flex-start;margin-left:40px;">
+        <div style="display:flex;justify-content:flex-start;">
           <div v-for="item in fodderList" :key="item.id">
-            <div class="demo-upload-list">
+            <div class="demo-upload-list" style="margin-left:10px;">
               <img style="height:200px;width:200px;border:1px solid #dddddd;" :src="item.materialUrl">
             </div>
             <div class="demo-upload-list-cover">
