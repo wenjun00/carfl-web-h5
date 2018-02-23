@@ -420,7 +420,7 @@ export default class OrderQuery extends Page {
 </script>
 
 <style lang="less">
-td {
+.order-query td {
 	padding: 10px;
 }
 </style>

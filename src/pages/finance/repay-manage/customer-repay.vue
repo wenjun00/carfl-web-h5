@@ -26,7 +26,7 @@
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getCustomerRepayList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="customerRepayList"></data-box>
+    <data-box :columns="columns1" :data="customerRepayList" @onPageChange="getCustomerRepayList" :page="pageService"></data-box>
 
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
@@ -115,6 +115,9 @@
       paymentStatus: '',
       dynamicParam: ''
     }
+    mounted() {
+      this.getCustomerRepayList();
+    }
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
@@ -123,35 +126,7 @@
       this.confirmRepaymentModal = false
     }
     created() {
-      this.columns1 = [{
-          align: "center",
-          type: "index",
-          width: 60,
-          renderHeader: (h, {
-            column,
-            index
-          }) => {
-            return h(
-              "div", {
-                on: {
-                  click: () => {
-                    this.columnsConfig();
-                  }
-                },
-                style: {
-                  cursor: "pointer"
-                }
-              }, [
-                h("Icon", {
-                  props: {
-                    type: "gear-b",
-                    size: "20"
-                  }
-                })
-              ]
-            );
-          }
-        },
+      this.columns1 = [
         {
           title: "操作",
           width: 210,
