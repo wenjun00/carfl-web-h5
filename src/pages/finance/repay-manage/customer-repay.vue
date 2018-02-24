@@ -40,24 +40,24 @@
     </template>
 
     <template>
-      <i-modal v-model="confirmRepaymentModal" title="确认还款" width="900">
-        <confirm-repayment></confirm-repayment>
+      <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认还款" width="900">
+        <confirm-repayment ref="confirm-repayment"></confirm-repayment>
         <div slot="footer">
           <i-button @click="saveDraft" class="highDefaultButton">保存草稿</i-button>
-          <i-button @click="confirmRepaymentModal=false" class="highButton">确认</i-button>
+          <i-button @click="confirmRepayment" class="highButton">确认</i-button>
         </div>
       </i-modal>
     </template>
 
     <template>
       <i-modal v-model="repayInfoModal" :transfer="false" title="还款详情" width="1200">
-        <repay-info></repay-info>
+        <repay-info ref="repay-info"></repay-info>
       </i-modal>
     </template>
 
     <template>
       <i-modal v-model="deductRecordModal" title="划扣记录" width="1300">
-        <deduct-record ref="deduct-record"></deduct-record>
+        <deduct-record-has-search ref="deduct-record-has-search"></deduct-record-has-search>
       </i-modal>
     </template>
   </section>
@@ -68,7 +68,7 @@
   import Page from "~/core/page";
   import Component from "vue-class-component";
   import ConfirmRepayment from "~/components/finance-manage/confirm-repayment.vue";
-  import DeductRecord from "~/components/finance-manage/deduct-record.vue";
+  import DeductRecordHasSearch from "~/components/finance-manage/deduct-record-has-search.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
 
   import {
@@ -95,7 +95,7 @@
     components: {
       DataBox,
       ConfirmRepayment,
-      DeductRecord,
+      DeductRecordHasSearch,
       RepayInfo
     }
   })
@@ -125,9 +125,45 @@
     getTimeSearch(val) {
 
     }
+    /**
+     * 保存草稿
+     */
     saveDraft() {
-      this.$Message.info('保存草稿成功！')
-      this.confirmRepaymentModal = false
+      let _repayment: any = this.$refs['confirm-repayment']
+      let data: any = {}
+      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
+      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
+      data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.orderId = _repayment.rowObj.orderId
+      data.paymentScheduleId = _repayment.rowObj.orderId
+      this.paymentScheduleService.saveCustomerPaymentInfoAsDraft(data).subscribe(data => {
+        this.$Message.info('保存草稿成功！')
+        this.confirmRepaymentModal = false
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+    }
+    /**
+     * 确认还款
+     */
+    confirmRepayment() {
+      let _repayment: any = this.$refs['confirm-repayment']
+      let data: any = {}
+      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
+      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
+      data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.orderId = _repayment.rowObj.orderId
+      data.paymentScheduleId = _repayment.rowObj.orderId
+      this.paymentScheduleService.saveCustomerPaymentInfo(data).subscribe(data => {
+        this.$Message.info('还款成功！')
+        this.confirmRepaymentModal = false
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
     }
     created() {
       this.columns1 = [
@@ -141,49 +177,52 @@
             column,
             index
           }) => {
-            return h('div', [
-              h('i-button', {
+            let arr = (row.orderStatus === 316 || row.orderStatus === 319)?[h('i-button', {
                 props: {
                   type: 'text'
                 },
                 on: {
                   click: () => {
                     this.confirmRepaymentModal = true
+                    let _repayment: any = this.$refs['confirm-repayment']
+                    _repayment.refresh(row)
                   }
                 },
                 style: {
                   color: '#265EA2'
                 }
-              }, '确认还款'),
-              h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                on: {
-                  click: () => {
-                    this.repayInfoModal = true
-                  }
-                },
-                style: {
-                  color: '#265EA2'
-                }
-              }, '还款详情'),
-              h('i-button', {
+              }, '确认还款')] :
+              [h('i-button', {
                 props: {
                   type: 'text'
                 },
                 on: {
                   click: () => {
                     this.deductRecordModal = true
-                    let record = this.$refs['deduct-record']
-                    record.refresh(row)
+                    let _record: any = this.$refs['deduct-record-has-search']
+                    _record.refresh(row)
                   }
                 },
                 style: {
                   color: '#265EA2'
                 }
-              }, '划扣记录')
-            ])
+              }, '划扣记录')]
+              arr.push(h('i-button', {
+                props: {
+                  type: 'text'
+                },
+                on: {
+                  click: () => {
+                    this.repayInfoModal = true
+                    let _repay: any = this.$refs['repay-info']
+                    _repay.refresh(row)
+                  }
+                },
+                style: {
+                  color: '#265EA2'
+                }
+              }, '还款详情'))
+            return h('div', arr)
           }
         },
         {
