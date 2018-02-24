@@ -37,18 +37,18 @@
                 <i-row>
                   <i-row>
                     <i-col :span="4">
-                      <i-select placeholder="省" v-model="customerData.province">
+                      <i-select style="width:80px" placeholder="省" v-model="customerData.province">
                         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                       </i-select>
                     </i-col>
                     <i-col :span="4">
-                      <i-select placeholder="市" v-model="customerData.city">
+                      <i-select style="width:80px" placeholder="市" v-model="customerData.city">
                         <i-option v-for="{value,label} in this.customerData.province ? this.$city.getCityData({ level: 1, id: this.customerData.province }) : []"
                           :key="value" :label="label" :value="value"></i-option>
                       </i-select>
                     </i-col>
                     <i-col :span="4">
-                      <i-select placeholder="区" v-model="customerData.localHomeAddr">
+                      <i-select style="width:80px" placeholder="区" v-model="customerData.localHomeAddr">
                         <i-option v-for="{value,label} in this.customerData.city ? this.$city.getCityData({ level: 1, id: this.customerData.city }) : []"
                           :key="value" :label="label" :value="value"></i-option>
                       </i-select>
@@ -121,7 +121,7 @@
 <style lang="less" scope>
   .customer-materials-all {
     .ivu-select-selection {
-      width: 130px!important;
+      width: 100%!important;
       display: inline-block;
       border-style: none;
       border-bottom-style: solid;
