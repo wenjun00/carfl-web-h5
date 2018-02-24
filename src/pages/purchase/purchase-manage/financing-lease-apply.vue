@@ -81,8 +81,8 @@
             <span>申请时间： 2017-12-01 13:56:45</span>
           </i-col>
           <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
-            <i-button size="large" class="highDefaultButton">保存草稿</i-button>
-            <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit">保存并提交</i-button>
+            <i-button size="large" class="highDefaultButton" @click="saveAndSubmit(true)">保存草稿</i-button>
+            <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit(false)">保存并提交</i-button>
           </i-col>
         </i-row>
       </div>
@@ -155,6 +155,8 @@
     private historicalDataset: any = [];
     private PersonalData: any = [];
     private addcarData: any = [];
+    private type: Boolean = false;
+    private orderStatus: any = '';
     // private productId: any;
     print() {
       window.print();
@@ -215,7 +217,7 @@
     /**
      * 保存并提交
      */
-    saveAndSubmit() {
+    saveAndSubmit(type) {
       let choosebuymaterials: any = this.$refs["choose-buy-materials"];
       let customerMaterials: any = this.$refs['customer-materials'];
       let customerJobMessage: any = this.$refs['customer-job-message'];
@@ -229,6 +231,11 @@
       if (customerContacts.data2.length < 3) {
         this.$Message.warning('必填3个其他联系人！');
         return
+      }
+      if (type) {
+        this.orderStatus = 303;
+      } else {
+        this.orderStatus = 304;
       }
       //   customerMaterials.customerMaterialsForm.idCardAddress = CityService.getCityName(customerMaterials.customerMaterialsForm
       //       .province) +
@@ -264,6 +271,7 @@
         })
       }
       let savesubmitDataset: any = {
+        orderStatus: this.orderStatus,
         idCard: this.customerModel.idCard,
         name: this.customerModel.name,
         mobileMain: this.customerModel.customerPhone,
