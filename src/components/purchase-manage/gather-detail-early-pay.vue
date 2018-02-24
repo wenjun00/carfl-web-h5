@@ -119,12 +119,16 @@ export default class GatherDetailEarlyPay extends Vue {
    * 父组件传过来的列表数据
    */
   makeList(data) {
-    this.gatherItemList = data.payoffCollectMoneyItems.filter(v => v.itemMoney);
-    this.accountInfo;
-    if (data.personalBank) {
-      this.accountInfo = data.personalBank;
-    } else {
-      this.accountInfo = {};
+    if (data && data.payoffCollectMoneyItems) {
+      this.gatherItemList = data.payoffCollectMoneyItems.filter(
+        v => v.itemMoney
+      );
+      this.accountInfo;
+      if (data.personalBank) {
+        this.accountInfo = data.personalBank;
+      } else {
+        this.accountInfo = {};
+      }
     }
   }
   /**

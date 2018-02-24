@@ -85,5 +85,14 @@ export default {
     controller: CONTROLLER,
     action: 'saveAdvancePayoffApplicationAsDraft',
     type: requestType.Post
+  },
+  /**
+   * 保存并提交提前结清
+   */
+  saveAdvancePayoffApplication: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveAdvancePayoffApplication',
+    type: requestType.Post
   }
 }

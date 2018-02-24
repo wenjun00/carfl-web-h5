@@ -52,8 +52,8 @@
       <i-tab-pane name="gather-detail-early-pay" label="收款明细">
         <gather-detail-early-pay :checkOrderId="checkOrderId" ref="gather-detail-early-pay"></gather-detail-early-pay>
       </i-tab-pane>
-      <i-tab-pane name="upload-the-material" label="上传素材">
-        <upload-the-material></upload-the-material>
+      <i-tab-pane name="upload-the-fodder" label="上传素材">
+        <upload-the-fodder></upload-the-fodder>
       </i-tab-pane>
     </i-tabs>
     <div class="shade" :style="{display:disabledStatus}">
@@ -82,7 +82,7 @@ import DataBox from "~/components/common/data-box.vue";
 import { PageService } from "~/utils/page.service";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import { Layout } from "~/core/decorator";
-import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
+import UploadTheFodder from "~/components/purchase-manage/upload-the-fodder.vue";
 import ModifyGatherItem from "~/components/purchase-manage/modify-gather-item.vue";
 import ChangeGatherItem from "~/components/purchase-manage/change-gather-item.vue";
 import GatherDetailEarlyPay from "~/components/purchase-manage/gather-detail-early-pay.vue";
@@ -94,7 +94,7 @@ import { setTimeout } from "core-js/library/web/timers";
   components: {
     DataBox,
     SvgIcon,
-    UploadTheMaterial,
+    UploadTheFodder,
     ModifyGatherItem,
     ChangeGatherItem,
     GatherDetailEarlyPay
@@ -223,7 +223,19 @@ export default class EarlyPaymentApply extends Page {
   /**
    * 保存并提交
    */
-  saveAndCommit() {}
+  saveAndCommit() {
+    let saveAndCommitModel = this.saveDraftModel;
+    this.withdrawApplicationService
+      .saveAdvancePayoffApplication(saveAndCommitModel)
+      .subscribe(
+        data => {
+          this.$Message.success("保存并提交成功！");
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
   /**
    * 显示tab页，去掉遮罩
    */
