@@ -303,7 +303,7 @@
   import {
     Emit
   } from "vue-property-decorator";
-  const ModuleMutation = namespace('purchaseManage', Mutation)
+  const ModuleMutation = namespace('purchase', Mutation)
   @Component({
     components: {
       SvgIcon,
@@ -380,9 +380,9 @@
       if (!this.chooseBuyModel.initialPayment) {
         this.chooseBuyModel.initialPayment = 0
       }
-      if (!this.chooseBuyModel.financeTotalMoney) {
-        this.chooseBuyModel.financeTotalMoney = 0
-      }
+      //   if (!this.chooseBuyModel.financeTotalMoney) {
+      //     this.chooseBuyModel.financeTotalMoney = 0
+      //   }
       this.chooseBuyModel.finalprincipal = (Number(this.chooseBuyModel.vehicleAmount) - Number(this.chooseBuyModel.initialPayment)) -
         Number(this.chooseBuyModel.financeTotalMoney)
       // 尾付总额
@@ -624,6 +624,7 @@
       this.finalCashData = data.finalCash.split(';')
       this.initialPaymentData = data.initialPayment.split(';')
       this.manageCostData = data.manageCost.split(';')
+      console.log(data.productId, 'data.productId')
       this.updateProductId(data.productId)
       this.chooseBuyModel = {
         // prdSeriods: data.prdSeriods,

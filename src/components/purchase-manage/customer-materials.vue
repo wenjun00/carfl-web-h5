@@ -15,8 +15,10 @@
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="性别" prop="sex">
-            <i-input type="text" placeholder="请输入性别" v-model="customerMaterialsForm.sex">
-            </i-input>
+            <i-select v-model="customerMaterialsForm.sex">
+              <i-option label="男" :value="1"></i-option>
+              <i-option label="女" :value="2"></i-option>
+            </i-select>
           </i-form-item>
         </i-col>
       </i-row>
@@ -73,10 +75,10 @@
         <i-col span="12">
           <i-form-item label="婚姻状况" prop="marital">
             <i-radio-group v-model="customerMaterialsForm.marital">
-              <i-radio label="未婚" :value="10"></i-radio>
-              <i-radio label="已婚" :value="11"></i-radio>
-              <i-radio label="离婚" :value="12"></i-radio>
-              <i-radio label="丧偶" :value="13"></i-radio>
+              <i-radio :label="10" :value="10">未婚</i-radio>
+              <i-radio :label="11" :value="11">已婚</i-radio>
+              <i-radio :label="12" :value="12">离婚</i-radio>
+              <i-radio :label="13" :value="13">丧偶</i-radio>
             </i-radio-group>
           </i-form-item>
         </i-col>
@@ -303,8 +305,8 @@
       </div>
       <span>是否接受现场勘察</span>
       <i-radio-group v-model="customerMaterialsForm.houseProspecting">
-        <i-radio label="是" :value="29"></i-radio>
-        <i-radio label="否" :value="30"></i-radio>
+        <i-radio :label="29" :value="29">是</i-radio>
+        <i-radio :label="30" :value="30">否</i-radio>
       </i-radio-group>
     </i-form>
 

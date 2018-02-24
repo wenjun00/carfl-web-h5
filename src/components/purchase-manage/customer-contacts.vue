@@ -48,9 +48,9 @@
 
     <template>
       <i-modal :title="addNew?'添加联系人':'编辑联系人'" v-model="editOrAddContactsModal2">
-        <i-form :label-width="110" ref="other-contacts" :model="othercontactsModel">
+        <i-form :label-width="110" ref="other-contacts" :model="contactsModel">
           <i-form-item label="与本人关系">
-            <i-select v-model="othercontactsModel.relation">
+            <i-select v-model="contactsModel.relation">
               <i-option label="亲属" :value="59"></i-option>
               <i-option label="同事" :value="60"></i-option>
               <i-option label="朋友" :value="61"></i-option>
@@ -58,16 +58,16 @@
             </i-select>
           </i-form-item>
           <i-form-item label="姓名">
-            <i-input v-model="othercontactsModel.name"></i-input>
+            <i-input v-model="contactsModel.name"></i-input>
           </i-form-item>
           <i-form-item label="联系方式">
-            <i-input v-model="othercontactsModel.phone"></i-input>
+            <i-input v-model="contactsModel.phone"></i-input>
           </i-form-item>
           <i-form-item label="单位名称">
-            <i-input v-model="othercontactsModel.employer"></i-input>
+            <i-input v-model="contactsModel.employer"></i-input>
           </i-form-item>
           <i-form-item label="家庭地址">
-            <i-input v-model="othercontactsModel.address"></i-input>
+            <i-input v-model="contactsModel.address"></i-input>
           </i-form-item>
         </i-form>
         <div slot="footer">
@@ -113,13 +113,13 @@
       employer: '',
       address: ''
     };
-    private othercontactsModel: any = {
-      relation: '',
-      name: '',
-      phone: '',
-      employer: '',
-      address: ''
-    }
+    // private othercontactsModel: any = {
+    //   relation: '',
+    //   name: '',
+    //   phone: '',
+    //   employer: '',
+    //   address: ''
+    // }
 
     created() {
       this.columns1 = [{
@@ -311,18 +311,18 @@
     saveAndBack2() {
       if (this.addNew) {
         this.data2.push({
-          relation: this.othercontactsModel.relation,
-          name: this.othercontactsModel.name,
-          phone: this.othercontactsModel.phone,
-          employer: this.othercontactsModel.employer,
-          address: this.othercontactsModel.address
+          relation: this.contactsModel.relation,
+          name: this.contactsModel.name,
+          phone: this.contactsModel.phone,
+          employer: this.contactsModel.employer,
+          address: this.contactsModel.address
         })
       } else {
-        this.rowData.relation = this.othercontactsModel.relation
-        this.rowData.name = this.othercontactsModel.name
-        this.rowData.phone = this.othercontactsModel.phone
-        this.rowData.employer = this.othercontactsModel.employer
-        this.rowData.address = this.othercontactsModel.address
+        this.rowData.relation = this.contactsModel.relation
+        this.rowData.name = this.contactsModel.name
+        this.rowData.phone = this.contactsModel.phone
+        this.rowData.employer = this.contactsModel.employer
+        this.rowData.address = this.contactsModel.address
       }
       //   let other_ref = this.$refs['other-contacts']
       //   other_ref.resetFields()

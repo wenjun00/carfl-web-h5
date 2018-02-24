@@ -99,40 +99,40 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">收入信息</span>
       </div>
-      <i-form ref="revenue-form" :model="revenue" :label-width="110" label-position="left">
+      <i-form ref="revenue-form" :model="job" :label-width="110" label-position="left">
         <i-col span="12">
           <i-form-item label="基本月薪(元)" prop="basicSalary">
-            <i-input type="text" v-model="revenue.basicSalary" placeholder="请输入基本月薪">
+            <i-input type="text" v-model="job.basicSalary" placeholder="请输入基本月薪">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="每月发薪日" prop="payDay">
-            <i-input type="text" v-model="revenue.payDay" placeholder="请输入每月发薪日">
+            <i-input type="text" v-model="job.payDay" placeholder="请输入每月发薪日">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="发薪方式" prop="payWay">
-            <i-input type="text" v-model="revenue.payWay" placeholder="请输入发薪方式">
+            <i-input type="text" v-model="job.payWay" placeholder="请输入发薪方式">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="年收入(万元)" prop="yearlySalaries">
-            <i-input type="text" v-model="revenue.yearlySalaries" placeholder="请输入年收入">
+            <i-input type="text" v-model="job.yearlySalaries" placeholder="请输入年收入">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="每月其他收入(元)" prop="monthOtherIncome">
-            <i-input type="text" v-model="revenue.monthOtherIncome" placeholder="请输入每月其他收入">
+            <i-input type="text" v-model="job.monthOtherIncome" placeholder="请输入每月其他收入">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="其他收入来源" prop="otherIncomeSource">
-            <i-input type="text" v-model="revenue.otherIncomeSource" placeholder="请输入其他收入来源">
+            <i-input type="text" v-model="job.otherIncomeSource" placeholder="请输入其他收入来源">
             </i-input>
           </i-form-item>
         </i-col>
@@ -146,13 +146,13 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">公司信息</span>
       </div>
-      <i-form ref="company-form" :model="company" :label-width="110" label-position="left" style="position:relative;left:16px;">
+      <i-form ref="company-form" :model="job" :label-width="110" label-position="left" style="position:relative;left:16px;">
         <i-row>
 
           <i-col span="12">
             <i-form-item label="身份" prop="identity">
               <i-row>
-                <i-radio-group v-model="company.identity">
+                <i-radio-group v-model="job.identity">
                   <i-radio label="法人代表"></i-radio>
                   <i-radio label="股东"></i-radio>
                 </i-radio-group>
@@ -162,7 +162,7 @@
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="企业经营年限" prop="enterpriseManageYears">
-              <i-input type="text" v-model="company.enterpriseManageYears" placeholder="请输入企业经营年限">
+              <i-input type="text" v-model="job.enterpriseManageYears" placeholder="请输入企业经营年限">
               </i-input>
             </i-form-item>
           </i-col>
@@ -171,38 +171,38 @@
         <i-row>
           <i-col span="12">
             <i-form-item label="经营地归属" prop="enterpriseManageBelong">
-              <i-input type="text" v-model="company.enterpriseManageBelong" placeholder="请输入经营地归属">
+              <i-input type="text" v-model="job.enterpriseManageBelong" placeholder="请输入经营地归属">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="员工人数" prop="employeesNumber">
-              <i-input type="text" v-model="company.employeesNumber" placeholder="请输入员工人数">
+              <i-input type="text" v-model="job.employeesNumber" placeholder="请输入员工人数">
               </i-input>
             </i-form-item>
           </i-col>
         </i-row>
         <i-col span="12">
           <i-form-item label="注册资本(万元)" prop="registeredCapital">
-            <i-input type="text" v-model="company.registeredCapital" placeholder="请输入注册资本">
+            <i-input type="text" v-model="job.registeredCapital" placeholder="请输入注册资本">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="所属行业" prop="industry">
-            <i-input type="text" v-model="company.industry" placeholder="请输入所属行业">
+            <i-input type="text" v-model="job.industry" placeholder="请输入所属行业">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="过去一年营业收入(万元)" prop="pastyearIncome">
-            <i-input type="text" v-model="company.pastyearIncome" placeholder="请输入过去一年营业收入">
+            <i-input type="text" v-model="job.pastyearIncome" placeholder="请输入过去一年营业收入">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="过去一年利润" prop="pastyearProfit">
-            <i-input type="text" v-model="company.pastyearProfit" placeholder="请输入过去一年利润">
+            <i-input type="text" v-model="job.pastyearProfit" placeholder="请输入过去一年利润">
             </i-input>
           </i-form-item>
         </i-col>
@@ -231,16 +231,12 @@
       accessCompanyTime: '', // 何时进入公司
       companyAddress: '', // 单位地址
       companyPhone: '', // 单位固定电话
-    };
-    private revenue: any = {
       basicSalary: '', // 基本月薪
       payDay: '', // 每月发薪日
       payWay: '', // 发薪方式
       yearlySalaries: '', // 年收入
       monthOtherIncome: '', // 每月其他收入
       otherIncomeSource: '', // 其他收入来源
-    };
-    private company: any = {
       identity: "", // 身份
       enterpriseManageYears: '', // 企业经营年限
       enterpriseManageBelong: '', // 经营地归属
@@ -250,6 +246,24 @@
       pastyearIncome: '', // 过去一年营业收入
       pastyearProfit: '', // 过去一年利润
     };
+    // private revenue: any = {
+    //   basicSalary: '', // 基本月薪
+    //   payDay: '', // 每月发薪日
+    //   payWay: '', // 发薪方式
+    //   yearlySalaries: '', // 年收入
+    //   monthOtherIncome: '', // 每月其他收入
+    //   otherIncomeSource: '', // 其他收入来源
+    // };
+    // private company: any = {
+    //   identity: "", // 身份
+    //   enterpriseManageYears: '', // 企业经营年限
+    //   enterpriseManageBelong: '', // 经营地归属
+    //   employeesNumber: '', // 员工人数
+    //   registeredCapital: '', // 注册资本
+    //   industry: '', // 所属行业
+    //   pastyearIncome: '', // 过去一年营业收入
+    //   pastyearProfit: '', // 过去一年利润
+    // };
     private jobType: any = 37;
     private typeList: Array < String > ;
 

@@ -96,217 +96,293 @@
 </template>
 
 <script lang="ts">
-import Page from "~/core/page";
-import Component from "vue-class-component";
-import { Dependencies } from "~/core/decorator";
-import ChooseBuyMaterials from "~/components/purchase-manage/choose-buy-materials.vue";
-import CustomerMaterials from "~/components/purchase-manage/customer-materials.vue";
-import CustomerJobMessage from "~/components/purchase-manage/customer-job-message.vue";
-import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
-import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue";
-import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue";
-import SvgIcon from "~/components/common/svg-icon.vue";
-import HistoricalRecord from "~/components/purchase-manage/historical-record.vue";
-import { PersonalService } from "~/services/manage-service/personal.service";
-import { ProductOrderService } from "~/services/manage-service/product-order.service";
+  import Page from "~/core/page";
+  import Component from "vue-class-component";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import ChooseBuyMaterials from "~/components/purchase-manage/choose-buy-materials.vue";
+  import CustomerMaterials from "~/components/purchase-manage/customer-materials.vue";
+  import CustomerJobMessage from "~/components/purchase-manage/customer-job-message.vue";
+  import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
+  import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue";
+  import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue";
+  import SvgIcon from "~/components/common/svg-icon.vue";
+  import HistoricalRecord from "~/components/purchase-manage/historical-record.vue";
+  import {
+    PersonalService
+  } from "~/services/manage-service/personal.service";
+  import {
+    ProductOrderService
+  } from "~/services/manage-service/product-order.service";
 
-import { Layout } from "~/core/decorator";
+  import {
+    Layout
+  } from "~/core/decorator";
 
-@Layout("workspace")
-@Component({
-  components: {
-    ChooseBuyMaterials,
-    CustomerMaterials,
-    CustomerJobMessage,
-    CustomerOrigin,
-    UploadTheMaterial,
-    CustomerContacts,
-    SvgIcon,
-    HistoricalRecord
-  }
-})
-export default class FinancingLeaseApply extends Page {
-  @Dependencies(PersonalService) private personalService: PersonalService;
-  @Dependencies(ProductOrderService)
-  private productOrderService: ProductOrderService;
-
-  private customerRule: Object = {};
-  private customerModel: any = {
-    idCard: "", // 证件号码
-    name: "", // 客户姓名
-    mobileMain: "", // 客户电话
-    salesmanName: "" // 归属业务员
-  };
-  private addCar: Boolean = false;
-  private disabledStatus: String = ""; // 子组件中输入框禁用flag
-  private materialTabs: String = "choose-buy-materials";
-  private historicalModal: Boolean = false;
-  private historicalDataset: any = [];
-  // private productId: any;
-  print() {
-    window.print();
-  }
-  /**
-   * 根据客户三项查询历史订单
-   */
-  checkcustomerinfo() {
-    if (this.customerModel.idCard) {
-      this.personalService
-        .getCustomerHistoryFinanceInfo(this.customerModel)
-        .subscribe(
-          data => {
-            this.historicalDataset = data;
-            if (this.historicalDataset.length) {
-              this.historicalModal = true;
-            }
-          },
-          ({ msg }) => {
-            this.$Message.error(msg);
-          }
-        );
+  @Layout("workspace")
+  @Component({
+    components: {
+      ChooseBuyMaterials,
+      CustomerMaterials,
+      CustomerJobMessage,
+      CustomerOrigin,
+      UploadTheMaterial,
+      CustomerContacts,
+      SvgIcon,
+      HistoricalRecord
     }
-  }
-  distributionData(data) {
-    this.customerModel.name = data.personal.name;
-    this.customerModel.customerPhone = data.personal.mobileMain;
-    this.customerModel.salesmanName = data.salesmanName;
-  }
-  /**
-   * 获取productId
-   */
-  // productData(productId) {
-  //   this.productId = productId
-  // }
-  created() {}
-  addNewApply() {
-    this.$Modal.confirm({
-      title: "提示",
-      content: "有未提交的申请，确定创建新申请吗？",
-      onOk: () => {
-        let resetData: any = this.$refs["customer-form"];
-        //   let component: any = this.$refs['materials-all']
-        //   let materials: any = this.$refs['materials']
-        //   component.choosebusyData = {}
-        //   component.addcarData = []
-        //   materials.customerData = {}
-        resetData.resetFields();
-      },
-      onCancel: () => {
-        this.$Message.info("取消成功！");
-      }
-    });
-  }
-  /**
-   * 保存并提交
-   */
-  saveAndSubmit() {
-    let choosebuymaterials: any = this.$refs["choose-buy-materials"];
-    console.log(choosebuymaterials);
-    let savesubmitDataset: any = {
-      idCard: this.customerModel.idCard,
-      name: this.customerModel.name,
-      mobileMain: this.customerModel.customerPhone,
-      salesmanName: this.customerModel.salesmanName,
-      // 选购资料
-      orderCars: choosebuymaterials.addcarData,
-      province: choosebuymaterials.chooseBuyModel.province,
-      city: choosebuymaterials.chooseBuyModel.city,
-      companyId: choosebuymaterials.chooseBuyModel.companyId,
-      orderService: choosebuymaterials.chooseBuyModel.orderServiceList,
-      financingUse: choosebuymaterials.chooseBuyModel.financingUse,
-      intentionFinancingAmount:
-        choosebuymaterials.chooseBuyModel.intentionFinancingAmount,
-      intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods,
-      rentPayable: choosebuymaterials.chooseBuyModel.rentPayable,
-      hopeProportion: choosebuymaterials.chooseBuyModel.hopeProportion,
-      otherFee: choosebuymaterials.chooseBuyModel.otherFee
+  })
+  export default class FinancingLeaseApply extends Page {
+    @Dependencies(PersonalService) private personalService: PersonalService;
+    @Dependencies(ProductOrderService)
+    private productOrderService: ProductOrderService;
+
+    private customerRule: Object = {};
+    private customerModel: any = {
+      idCard: "", // 证件号码
+      name: "", // 客户姓名
+      mobileMain: "", // 客户电话
+      salesmanName: "" // 归属业务员
     };
-    //   this.productOrderService.saveFinanceApplyInfo(this.customerModel).subscribe(data => {
-    //     this.historicalDataset = data.object
-    //     if (this.historicalDataset.length) {
-    //       this.historicalModal = true
-    //     }
-    //   }, ({
-    //     msg
-    //   }) => {
-    //     this.$Message.error(msg);
-    //   });
-    //   this.customerModel.idCard = ''
-    //   this.customerModel.userName = ''
-    //   this.customerModel.userName = ''
-    //   this.customerModel.mobileMain = ''
-    //   this.customerModel.worker = ''
-  }
-  showTab() {
-    if (this.customerModel.idCard.length === 18) {
-      this.disabledStatus = "none";
+    private addCar: Boolean = false;
+    private disabledStatus: String = ""; // 子组件中输入框禁用flag
+    private materialTabs: String = "choose-buy-materials";
+    private historicalModal: Boolean = false;
+    private historicalDataset: any = [];
+    private PersonalData: any = [];
+    private addcarData: any = [];
+    // private productId: any;
+    print() {
+      window.print();
+    }
+    /**
+     * 根据客户三项查询历史订单
+     */
+    checkcustomerinfo() {
+      if (this.customerModel.idCard) {
+        this.personalService
+          .getCustomerHistoryFinanceInfo(this.customerModel)
+          .subscribe(
+            data => {
+              this.historicalDataset = data;
+              console.log(data, 'data')
+              if (this.historicalDataset.length) {
+                this.historicalModal = true;
+              }
+            },
+            ({
+              msg
+            }) => {
+              this.$Message.error(msg);
+            }
+          );
+      }
+    }
+    distributionData(data) {
+      this.customerModel.name = data.personal.name;
+      this.customerModel.customerPhone = data.personal.mobileMain;
+      this.customerModel.salesmanName = data.salesmanName;
+    }
+    /**
+     * 获取productId
+     */
+    // productData(productId) {
+    //   this.productId = productId
+    // }
+    created() {}
+    addNewApply() {
+      this.$Modal.confirm({
+        title: "提示",
+        content: "有未提交的申请，确定创建新申请吗？",
+        onOk: () => {
+          let resetData: any = this.$refs["customer-form"];
+          //   let component: any = this.$refs['materials-all']
+          //   let materials: any = this.$refs['materials']
+          //   component.choosebusyData = {}
+          //   component.addcarData = []
+          //   materials.customerData = {}
+          resetData.resetFields();
+        },
+        onCancel: () => {
+          this.$Message.info("取消成功！");
+        }
+      });
+    }
+    /**
+     * 保存并提交
+     */
+    saveAndSubmit() {
+      let choosebuymaterials: any = this.$refs["choose-buy-materials"];
+      let customerMaterials: any = this.$refs['customer-materials'];
+      let customerJobMessage: any = this.$refs['customer-job-message'];
+      let customerContacts: any = this.$refs['customer-contacts'];
+      let customerOrigin: any = this.$refs['customer-origin'];
+      let uploadTheMaterial: any = this.$refs['upload-the-material'];
+      if (customerContacts.data1.length < 2) {
+        this.$Message.warning('直系亲属必填2个！');
+        return
+      }
+      if (customerContacts.data2.length < 3) {
+        this.$Message.warning('必填3个其他联系人！');
+        return
+      }
+      console.log(choosebuymaterials);
+      for (let item of choosebuymaterials.addcarData) {
+        this.addcarData.push({
+          //   id: item.id,
+          brandId: item.brandId,
+          brandName: item.brandName,
+          carSeriesId: item.seriesId,
+          modelName: item.modelName,
+          otherExpenses: item.otherExpenses,
+          amount: item.carAmount,
+          vehicleColour: item.carColour,
+          vehicleEmissions: item.carEmissions
+        });
+      }
+      let addcarDatas = Array.from(new Set(this.addcarData))
+      for (let material of uploadTheMaterial.dataList) {
+        this.PersonalData.push({
+          materialType: uploadTheMaterial.model1, // 客户素材类型
+          uploadName: material.name, // 资料上传名称
+          //   id: material.response.id,
+        })
+      }
+      let savesubmitDataset: any = {
+        idCard: this.customerModel.idCard,
+        name: this.customerModel.name,
+        mobileMain: this.customerModel.customerPhone,
+        salesmanName: this.customerModel.salesmanName,
+        // 选购资料
+        orderCars: addcarDatas,
+        province: choosebuymaterials.chooseBuyModel.province,
+        city: choosebuymaterials.chooseBuyModel.city,
+        companyId: choosebuymaterials.chooseBuyModel.companyId,
+        orderService: choosebuymaterials.chooseBuyModel.orderServiceList, // 自缴费用
+        financingUse: choosebuymaterials.chooseBuyModel.financingUse, // 融资租赁用途
+        intentionFinancingAmount: choosebuymaterials.chooseBuyModel.intentionFinancingAmount, // 意向融资金额
+        intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods, // 意向期限
+        rentPayable: choosebuymaterials.chooseBuyModel.rentPayable, // 租金支付
+        hopeProportion: choosebuymaterials.chooseBuyModel.hopeProportion, // 意向首付比例
+        orderCar: choosebuymaterials.addcarData, // 添加车辆信息
+        // 产品信息
+        productId: choosebuymaterials.DataSet.productId,
+        productRate: choosebuymaterials.chooseBuyModel.prdInterestRate, // 产品利率
+        payWay: choosebuymaterials.chooseBuyModel.payWay, // 还款方式
+        vehicleAmount: choosebuymaterials.chooseBuyModel.vehicleAmount, // 车辆参考总价
+        financingAmount: choosebuymaterials.chooseBuyModel.financeTotalMoney, // 融资总额
+        initialPayment: choosebuymaterials.chooseBuyModel.initialPayment, // 首付金额
+        depositCash: choosebuymaterials.chooseBuyModel.depositCash, // 保证金金额
+        finalCash: choosebuymaterials.chooseBuyModel.finalCash, // 尾付金额
+        manageCost: choosebuymaterials.chooseBuyModel.manageCost, // 管理费
+        insuranceExpenses: choosebuymaterials.chooseBuyModel.insuranceExpenses, // 保险费
+        purchaseTax: choosebuymaterials.chooseBuyModel.purchaseMoney, // 购置费
+        installLicenseFee: choosebuymaterials.chooseBuyModel.licenseMoney, // 上牌费
+        gpsFee: choosebuymaterials.chooseBuyModel.gpsFee, // GPS费
+        remark: choosebuymaterials.chooseBuyModel.remark, // 备注
+        otherFee: choosebuymaterials.chooseBuyModel.otherFee, // 其他费用
+        // 客户资料
+        personal: customerMaterials.customerMaterialsForm,
+        // 客户职业
+        personalJob: customerJobMessage.job,
+        // 客户联系人
+        personalContacts: customerContacts.data1.concat(customerContacts.data2),
+        // 客户来源
+        personalResourceIntroduce: customerOrigin.customerOriginModel, // 通过介绍
+        resourceTypes: customerOrigin.OriginModel.resourceType, // 通过宣传
+        // 上传素材
+        personalDatas: this.PersonalData,
+      };
+      this.productOrderService.saveFinanceApplyInfo(savesubmitDataset).subscribe(data => {
+        this.$Message.success('保存成功！');
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg);
+      });
+      //   this.customerModel.idCard = ''
+      //   this.customerModel.userName = ''
+      //   this.customerModel.userName = ''
+      //   this.customerModel.mobileMain = ''
+      //   this.customerModel.worker = ''
+    }
+    showTab() {
+      if (this.customerModel.idCard.length === 18) {
+        this.disabledStatus = "none";
+      }
     }
   }
-}
+
 </script>
 
 <style lang="less" scope>
-.header {
-  border-bottom: 1px solid #cccccc;
-}
-
-.submitBar {
-  line-height: 70px;
-  height: 70px;
-  width: 100%;
-  background: #fff;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  border: 1px solid #ddd;
-  box-shadow: -3px 2px 20px #dddddd;
-  padding-right: 24px;
-}
-
-.specialInput {
-  .ivu-input {
-    border-style: none;
-    border-bottom-style: solid;
-    border-radius: 0; // width: 257%;
+  .header {
+    border-bottom: 1px solid #cccccc;
   }
-}
-
-.financing-lease-apply {
-  .ivu-select-selection {
-    display: inline-block;
-    border-style: none;
-    border-bottom-style: solid;
-    border-radius: 0;
+  
+  .page {
+    height: 1500px!important;
   }
-  .shade {
-    width: 98%;
-    height: 666px;
-    background: rgba(250, 250, 250, 0.4);
-    position: absolute;
-    left: 21px;
-    top: 257px;
-    z-index: 999;
+  
+  .submitBar {
+    line-height: 70px;
+    height: 70px;
+    width: 100%;
+    background: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    border: 1px solid #ddd;
+    box-shadow: -3px 2px 20px #dddddd;
+    padding-right: 24px;
   }
-}
-
-.finance-lease-tabs {
-  .ivu-tabs-bar {
-    border-bottom: 1px solid #dddee1;
-    .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
-      margin: 0;
-      margin-right: 4px;
-      padding: 5px 16px 4px;
-      border: 1px solid #dddee1;
-      border-bottom: 0;
-      border-radius: 4px 4px 0 0;
-      transition: all 0.3s ease-in-out;
+  
+  .specialInput {
+    .ivu-input {
+      border-style: none;
+      border-bottom-style: solid;
+      border-radius: 0; // width: 257%;
     }
   }
-}
-
-.historical {
-  .ivu-modal-footer {
-    display: none !important;
+  
+  .financing-lease-apply {
+    .ivu-select-selection {
+      display: inline-block;
+      border-style: none;
+      border-bottom-style: solid;
+      border-radius: 0;
+    }
+    .shade {
+      width: 98%;
+      height: 666px;
+      background: rgba(250, 250, 250, 0.4);
+      position: absolute;
+      left: 21px;
+      top: 257px;
+      z-index: 999;
+    }
   }
-}
+  
+  .finance-lease-tabs {
+    .ivu-tabs-bar {
+      border-bottom: 1px solid #dddee1;
+      .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
+        margin: 0;
+        margin-right: 4px;
+        padding: 5px 16px 4px;
+        border: 1px solid #dddee1;
+        border-bottom: 0;
+        border-radius: 4px 4px 0 0;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+  
+  .historical {
+    .ivu-modal-footer {
+      display: none !important;
+    }
+  }
+
 </style>

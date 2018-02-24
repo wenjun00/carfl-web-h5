@@ -2,10 +2,10 @@
 <template>
   <section class="component customer-origin">
     <h2>客户来源</h2>
-    <i-form ref="job-form" :model="customerOriginModel" :label-width="110">
+    <i-form ref="job-form" :model="OriginModel" :label-width="110">
       <i-row>
         <i-form-item label="通过宣传" prop="name">
-          <i-checkbox-group v-model="customerOriginModel.resourceType">
+          <i-checkbox-group v-model="OriginModel.resourceType">
             <i-checkbox :label="65">宣传页</i-checkbox>
             <i-checkbox :label="66">网络推广</i-checkbox>
             <i-checkbox :label="67">电销</i-checkbox>
@@ -96,8 +96,10 @@
       organizationNames: '', // 机构名称
       referrer: '', // 推荐人
 
-      resourceType: [], // 来源
     };
+    private OriginModel: any = {
+      resourceType: [], // 来源
+    }
     // private customerOriginModel: any = {
     //   customerName: '', // 客户姓名
     //   customerPhone: '', // 联系方式
