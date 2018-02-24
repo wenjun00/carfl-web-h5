@@ -131,9 +131,13 @@ export default class GatherDetailEarlyPay extends Vue {
    * 变更收款项
    */
   changeGatherItem() {
-    this.addGatherItemModal = true; // 添加收款项
-    let _addGatherItem: any = this.$refs["add-gather-item"];
-    _addGatherItem.getOrderSaleItem(this.checkOrderId, this.gatherItemList);
+    if (this.checkOrderId) {
+      this.addGatherItemModal = true; // 添加收款项
+      let _addGatherItem: any = this.$refs["add-gather-item"];
+      _addGatherItem.getOrderSaleItem(this.checkOrderId, this.gatherItemList);
+    } else {
+      this.$Message.info("请选择订单！");
+    }
   }
   deleteGatherItem(item) {
     this.$Modal.confirm({

@@ -476,10 +476,9 @@ export default class OrgUserManage extends Page {
    * 批量分配角色
    */
   batchAllotRole() {
-    this.multipleUserId = this.$refs["databox"];
-    this.multipleUserId = this.multipleUserId.getCurrentSelection();
-
-    if (!this.multipleUserId.length) {
+    let multiple: any = this.$refs["databox"];
+    this.multipleUserId = multiple.getCurrentSelection();
+    if (!this.multipleUserId || !this.multipleUserId.length) {
       this.$Message.error("请选择用户");
     } else {
       this.allotRoleModal = true;
@@ -502,9 +501,9 @@ export default class OrgUserManage extends Page {
    * 批量管理设备
    */
   batchManageDevice() {
-    this.multipleUserId = this.$refs["databox"];
-    this.multipleUserId = this.multipleUserId.getCurrentSelection();
-    if (!this.multipleUserId.length) {
+    let multiple: any = this.$refs["databox"];
+    this.multipleUserId = multiple.getCurrentSelection();
+    if (!this.multipleUserId || !this.multipleUserId.length) {
       this.$Message.error("请选择用户");
     } else {
       this.batchManageDeviceModal = true;

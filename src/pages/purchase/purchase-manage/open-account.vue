@@ -139,16 +139,18 @@
     </template>
     <!--结算通道-->
     <template>
-      <i-modal v-model="openAccountChannel" title="结算通道" width="240">
+      <i-modal v-model="openAccountChannel" title="结算通道" width="300">
         <i-form :label-width="60">
           <i-form-item label="结算通道">
-            <i-select style="width:150px;">
-              <i-option label="汇付" value="汇付" key="汇付"></i-option>
-              <i-option label="对公" value="对公" key="对公"></i-option>
-              <i-option label="富友" value="富友" key="富友"></i-option>
+            <i-select style="width:150px;" v-model="settleChannel">
+              <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-form>
+        <div slot="footer">
+          <i-button @click="openAccountChannel=false">取消</i-button>
+          <i-button class="blueButton" @click="confirmModifySettleChannel">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -216,7 +218,7 @@
     <!--help-->
     <template>
       <i-modal title="验卡失败原因" v-model="openHelp" width="600" class-name="no-footer">
-        <data-box :columns="columnsHelp" :data="dataHelp" hideColumnsConfig></data-box>
+        <data-box :columns="columnsHelp" :data="dataHelp" hideColumnsConfig :noDefaultRow="true"></data-box>
       </i-modal>
     </template>
   </section>
@@ -268,6 +270,8 @@ export default class OpenAccount extends Page {
   private certificateId: String = "";
   private openHelp: Boolean = false;
   private dataHelp: Array<Object> = [];
+  private settleChannel: Number = 0; // 结算通道
+  private personalBankId: Number = 0; // 用户账户id
   private openAccountModel: any = {
     timeSearch: "",
     personalInfo: ""
@@ -429,7 +433,9 @@ export default class OpenAccount extends Page {
                 type: "text"
               },
               on: {
-                click: () => {}
+                click: () => {
+                  this.settleChannelClick(row);
+                }
               },
               style: {
                 color: "#265ea2"
@@ -472,7 +478,7 @@ export default class OpenAccount extends Page {
         width: 400
       },
       {
-        title: "资讯电话",
+        title: "咨询电话",
         key: "bankPhone",
         align: "center",
         width: 100
@@ -507,6 +513,35 @@ export default class OpenAccount extends Page {
         columnsName: "结算通道"
       }
     ];
+  }
+  /**
+   * 确认修改结算通道
+   */
+  confirmModifySettleChannel() {
+    this.personalService
+      .modifySettleChannel({
+        settleChannel: this.settleChannel,
+        id: this.personalBankId
+      })
+      .subscribe(
+        data => {
+          this.$Message.success("修改成功！");
+          this.openAccountChannel = false
+          this.getCustomerOpenAccount()
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+  /**
+   * 修改结算通道
+   */
+  settleChannelClick(row) {
+    // 获取确认修改时需要的两个参数
+    this.personalBankId = row.personalBankId;
+    this.settleChannel = row.settlementChannel;
+    this.openAccountChannel = true;
   }
   /**
    * 获取客户开户列表

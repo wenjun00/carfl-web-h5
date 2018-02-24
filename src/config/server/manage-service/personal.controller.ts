@@ -49,5 +49,14 @@ export default {
     controller: CONTROLLER,
     action: 'getCustomerSignList',
     type: requestType.Get
+  },
+  /**
+   * 修改结算通道
+   */
+  modifySettleChannel: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'modifySettleChannel',
+    type: requestType.Put
   }
 }

@@ -267,6 +267,10 @@ export default class EarlyPaymentApply extends Page {
         "您有未保存的提前结清申请,清空会删除页面内容，是否确认清空申请内容！",
       onOk: () => {
         this.resetAll();
+        // 显示遮罩
+        this.disabledStatus = "block";
+        // 清空orderId
+        this.checkOrderId = 0;
       }
     });
   }

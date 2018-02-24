@@ -59,4 +59,16 @@ export class PersonalService {
       page: page
     })
   }
+  /**
+   * 修改结算通道
+   */
+  modifySettleChannel({ settleChannel, id }) {
+    return this.netService.send({
+      server: manageService.personalController.modifySettleChannel,
+      data: {
+        settleChannel: settleChannel,
+        id: id
+      }
+    })
+  }
 }
