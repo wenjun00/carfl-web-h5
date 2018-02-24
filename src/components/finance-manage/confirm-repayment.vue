@@ -116,7 +116,7 @@
       <tr height="40">
         <td></td>
         <td width="25%">合计（元）</td>
-        <td  colspan="2" style="font-weight:700">{{paymentAmount}}</td>
+        <td  colspan="2" style="font-weight:700;font-size:14px">{{paymentAmount}}</td>
       </tr>
     </table>
     <i-form>
