@@ -185,10 +185,10 @@
     private columns1: any;
     private repaymentObj: any = {};
     private rowObj: any = {};
-    private data1: Array < Object >= [];
-    private collectMoneyDetails: Array < Object >= [];
-    private financeUploadResources: Array < Object >= [];
-    private data2: Array < Object >= [];
+    private data1: any = [];
+    private collectMoneyDetails: any = [];
+    private financeUploadResources: any = [];
+    private data2: any = [];
     private deductRecordModal: Boolean = false
     private remark: String = ''
     private paymentAmount: any = 0
