@@ -399,9 +399,9 @@
      */
     choosemanageCost() {
       // 管理费=融资总额*管理费率
-      if (this.chooseBuyModel.financeTotalMoney) {
-        this.chooseBuyModel.financeTotalMoney = 0
-      }
+      //   if (this.chooseBuyModel.financeTotalMoney) {
+      //     this.chooseBuyModel.financeTotalMoney = 0
+      //   }
       this.chooseBuyModel.manageCost = Number(this.chooseBuyModel.financeTotalMoney) * (Number(this.chooseBuyModel.manageData) *
         0.01)
     }

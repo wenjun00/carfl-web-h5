@@ -43,12 +43,14 @@
                     </i-col>
                     <i-col :span="4">
                       <i-select placeholder="市" v-model="customerData.city">
-                        <i-option v-for="{value,label} in this.customerData.province ? this.$city.getCityData({ level: 1, id: this.customerData.province }) : []" :key="value" :label="label" :value="value"></i-option>
+                        <i-option v-for="{value,label} in this.customerData.province ? this.$city.getCityData({ level: 1, id: this.customerData.province }) : []"
+                          :key="value" :label="label" :value="value"></i-option>
                       </i-select>
                     </i-col>
                     <i-col :span="4">
                       <i-select placeholder="区" v-model="customerData.localHomeAddr">
-                        <i-option v-for="{value,label} in this.customerData.city ? this.$city.getCityData({ level: 1, id: this.customerData.city }) : []" :key="value" :label="label" :value="value"></i-option>
+                        <i-option v-for="{value,label} in this.customerData.city ? this.$city.getCityData({ level: 1, id: this.customerData.city }) : []"
+                          :key="value" :label="label" :value="value"></i-option>
                       </i-select>
                     </i-col>
                   </i-row>
@@ -88,33 +90,43 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-// import {
-//   Prop
-// } from "vue-property-decorator";
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+  // import {
+  //   Prop
+  // } from "vue-property-decorator";
 
-@Component({})
-export default class CustomerMaterialsAll extends Vue {
-	private customerData: any = {
-		name: '', // 购车方
-		mobileMain: '', // 联系电话
-		certificateType: '', // 证件类型
-		idCard: '', // 证件号码
-		province: '', // 省
-		city: '', // 市
-		localHomeAddr: '', // 区
-		postalCode: '', // 邮政编码
-		idCardAddressDetail: '', // 箱子地址
-		orderServiceList: [], // 代办服务
-	};
-	// mounted() {}
-	// whgwgdhwgdh() {
-	//   console.log(this.customerData.orderServiceList, 700)
-	// }
-}
+  @Component({})
+  export default class CustomerMaterialsAll extends Vue {
+    private customerData: any = {
+      name: '', // 购车方
+      mobileMain: '', // 联系电话
+      certificateType: '', // 证件类型
+      idCard: '', // 证件号码
+      province: '', // 省
+      city: '', // 市
+      localHomeAddr: '', // 区
+      postalCode: '', // 邮政编码
+      idCardAddressDetail: '', // 箱子地址
+      orderServiceList: [], // 代办服务
+    };
+    // mounted() {}
+    // whgwgdhwgdh() {
+    //   console.log(this.customerData.orderServiceList, 700)
+    // }
+  }
+
 </script>
 
 <style lang="less" scope>
+  .customer-materials-all {
+    .ivu-select-selection {
+      width: 130px!important;
+      display: inline-block;
+      border-style: none;
+      border-bottom-style: solid;
+      border-radius: 0;
+    }
+  }
 
 </style>

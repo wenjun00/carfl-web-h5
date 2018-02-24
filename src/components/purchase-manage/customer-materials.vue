@@ -112,18 +112,18 @@
           <i-form-item label="身份证地址" prop="idCardAddressDetail">
             <i-row>
               <i-col :span="3">
-                <i-select placeholder="省" v-model="customerMaterialsForm.province">
+                <i-select style="width: 80px;" placeholder="省" v-model="customerMaterialsForm.province">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="3">
-                <i-select placeholder="市" v-model="customerMaterialsForm.city">
+                <i-select style="width: 80px;" placeholder="市" v-model="customerMaterialsForm.city">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="3">
-                <i-select placeholder="区" v-model="customerMaterialsForm.idCardAddress">
+                <i-select style="width: 80px;" placeholder="区" v-model="customerMaterialsForm.idCardAddress">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
@@ -164,18 +164,18 @@
             </i-row>
             <i-row>
               <i-col :span="3">
-                <i-select placeholder="省" v-model="customerMaterialsForm.province1">
+                <i-select style="width: 80px;" placeholder="省" v-model="customerMaterialsForm.province1">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="3">
-                <i-select placeholder="市" v-model="customerMaterialsForm.city1">
+                <i-select style="width: 80px;" placeholder="市" v-model="customerMaterialsForm.city1">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province1 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="3">
-                <i-select placeholder="区" v-model="customerMaterialsForm.localHomeAddr">
+                <i-select style="width: 80px;" placeholder="区" v-model="customerMaterialsForm.localHomeAddr">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city1 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
@@ -276,18 +276,18 @@
             </i-row>
             <i-row>
               <i-col :span="3">
-                <i-select placeholder="省" v-model="customerMaterialsForm.province2">
+                <i-select style="width: 80px;" placeholder="省" v-model="customerMaterialsForm.province2">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="3">
-                <i-select placeholder="市" v-model="customerMaterialsForm.city2">
+                <i-select style="width: 80px;" placeholder="市" v-model="customerMaterialsForm.city2">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province2 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="3">
-                <i-select placeholder="区" v-model="customerMaterialsForm.cityOwnhouseAddress">
+                <i-select style="width: 80px;" placeholder="区" v-model="customerMaterialsForm.cityOwnhouseAddress">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city2 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
@@ -420,7 +420,7 @@
 <style lang="less" scope>
   .customer-materials {
     .ivu-select-selection {
-      width: 240%;
+      width: 100%!important;
       display: inline-block;
       border-style: none;
       border-bottom-style: solid;
