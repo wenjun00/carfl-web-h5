@@ -122,7 +122,14 @@
         title: '账期类型',
         key: 'periodType',
         align: 'center',
-        width: 120
+        width: 120,
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h("span", {}, this.$dict.getDictName(row.periodType));
+        }
       }, {
         title: '产品利率',
         key: 'productRate',
@@ -132,7 +139,14 @@
         title: '还款方式',
         key: 'payWay',
         align: 'center',
-        width: 100
+        width: 100,
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h("span", {}, this.$dict.getDictName(row.payWay));
+        }
       }, {
         title: '融资金额(元)',
         key: 'financingAmount',

@@ -119,6 +119,9 @@
   import {
     Layout
   } from "~/core/decorator";
+  import {
+    CityService
+  } from "~/utils/city.service"
 
   @Layout("workspace")
   @Component({
@@ -227,7 +230,18 @@
         this.$Message.warning('必填3个其他联系人！');
         return
       }
-      console.log(choosebuymaterials);
+      //   customerMaterials.customerMaterialsForm.idCardAddress = CityService.getCityName(customerMaterials.customerMaterialsForm
+      //       .province) +
+      //     CityService.getCityName(customerMaterials.customerMaterialsForm.city) + CityService.getCityName(
+      //       customerMaterials.customerMaterialsForm.idCardAddress)
+      //   customerMaterials.customerMaterialsForm.localHomeAddr = CityService.getCityName(customerMaterials.customerMaterialsForm
+      //       .province1) +
+      //     CityService.getCityName(customerMaterials.customerMaterialsForm.city1) + CityService.getCityName(
+      //       customerMaterials.customerMaterialsForm.localHomeAddr)
+      //   customerMaterials.customerMaterialsForm.cityOwnhouseAddress = CityService.getCityName(customerMaterials.customerMaterialsForm
+      //       .province2) +
+      //     CityService.getCityName(customerMaterials.customerMaterialsForm.city2) + CityService.getCityName(
+      //       customerMaterials.customerMaterialsForm.cityOwnhouseAddress)
       for (let item of choosebuymaterials.addcarData) {
         this.addcarData.push({
           //   id: item.id,
