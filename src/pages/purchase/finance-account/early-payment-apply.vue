@@ -67,31 +67,17 @@
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
         <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
-          <i-button class="highDefaultButton">保存草稿</i-button>
-          <i-button class="highButton">保存并提交</i-button>
+          <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
+          <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
         </i-col>
       </i-row>
     </div>
-    <!--编辑收款项-->
-    <!-- <template>
-      <i-modal v-model="modifyGatherItemModal" title="编辑收款项" width="300">
-        <modify-gather-item></modify-gather-item>
-      </i-modal>
-    </template> -->
-
-    <!--变更收款项-->
-    <!-- <template>
-      <i-modal v-model="changeGatherItemModal" title="变更收款项">
-        <change-gather-item></change-gather-item>
-      </i-modal>
-    </template> -->
   </section>
 </template>
 <script lang="ts">
 import Page from "~/core/page";
 import Component from "vue-class-component";
 import { Dependencies } from "~/core/decorator";
-import { ApplyQueryService } from "~/services/business-service/apply-query.service";
 import DataBox from "~/components/common/data-box.vue";
 import { PageService } from "~/utils/page.service";
 import SvgIcon from "~/components/common/svg-icon.vue";
@@ -132,200 +118,37 @@ export default class EarlyPaymentApply extends Page {
     city: "",
     company: ""
   };
-  // private columns1: any;
-  private columns2: any;
-  private columns3: any;
-  private data1: Array<Object> = [];
-  private data2: Array<Object> = [];
-  private data3: Array<Object> = [];
   private orderNumberIdModels: Array<any> = [];
   private loading: Boolean = false;
   private addCar: Boolean = false;
   private personalId: Number = 0;
   private checkOrderId: Number = 0;
   private isShown: Boolean = true;
-  private modifyGatherItemModal: Boolean = false;
-  private changeGatherItemModal: Boolean = false;
   private materialTabs: String = "gather-detail-early-pay";
   private disabledStatus: String = ""; // 子组件中输入框禁用flag
-
-  created() {
-    // this.columns1 = [
-    //   {
-    //     title: "操作",
-    //     width: 240,
-    //     align: "center",
-    //     render: (h, { row, column, index }) => {
-    //       if (row.itemName !== "合计") {
-    //         return h("div", [
-    //           h(
-    //             "i-button",
-    //             {
-    //               props: {
-    //                 type: "text"
-    //               },
-    //               style: {
-    //                 color: "#265EA2"
-    //               },
-    //               on: {
-    //                 click: () => {
-    //                   this.modifyGatherItem();
-    //                 }
-    //               }
-    //             },
-    //             "编辑"
-    //           ),
-    //           h(
-    //             "i-button",
-    //             {
-    //               props: {
-    //                 type: "text"
-    //               },
-    //               style: {
-    //                 color: "#265EA2"
-    //               },
-    //               on: {
-    //                 click: () => {
-    //                   this.$Modal.confirm({
-    //                     title: "提示",
-    //                     content: "确定删除吗？",
-    //                     onOk: () => {
-    //                       this.data1.forEach((x, i) => {
-    //                         if (i === index) {
-    //                           this.data1.splice(i, 1);
-    //                         }
-    //                       });
-    //                     }
-    //                   });
-    //                 }
-    //               }
-    //             },
-    //             "删除"
-    //           )
-    //         ]);
-    //       }
-    //     }
-    //   },
-    //   {
-    //     key: "itemName",
-    //     title: "项目名称",
-    //     align: "center"
-    //   },
-    //   {
-    //     key: "itemMoney",
-    //     title: "金额",
-    //     align: "center"
-    //   }
-    // ];
-
-    this.columns3 = [
-      {
-        key: "accountName",
-        align: "center",
-        title: "户名"
-      },
-      {
-        key: "openAccountBank",
-        align: "center",
-        title: "开户银行"
-      },
-      {
-        key: "bankCardId",
-        align: "center",
-        title: "银行卡号"
-      },
-      {
-        key: "branchBankName",
-        align: "center",
-        title: "支行名称"
-      },
-      {
-        key: "thirdCustomId",
-        align: "center",
-        title: "第三方客户号"
-      }
-    ];
-    this.data1 = [
-      {
-        itemName: "首付金额",
-        itemMoney: "9000"
-      },
-      {
-        itemName: "首付月供",
-        itemMoney: "9000"
-      },
-      {
-        itemName: "合计",
-        itemMoney: "18000"
-      }
-    ];
-    this.columns2 = [
-      {
-        type: "selection",
-        align: "center"
-      },
-      {
-        title: "车辆品牌",
-        key: "brand",
-        align: "center",
-        width: "86"
-      },
-      {
-        title: "车辆型号",
-        key: "model",
-        align: "center",
-        width: "86"
-      },
-      {
-        title: "车身颜色",
-        key: "color",
-        align: "center",
-        width: "86"
-      },
-      {
-        title: "车辆排量",
-        key: "output",
-        align: "center",
-        width: "86"
-      },
-      {
-        title: "车辆配置",
-        key: "configuration",
-        align: "center",
-        width: "86"
-      },
-      {
-        title: "上牌地区",
-        key: "area",
-        align: "center",
-        width: "86"
-      },
-      {
-        title: "车辆牌照",
-        key: "license",
-        align: "center",
-        width: "86"
-      },
-      {
-        title: "所在门店",
-        key: "store",
-        align: "center",
-        width: "86"
-      },
-      {
-        title: "状态",
-        key: "status",
-        align: "center",
-        width: "86"
-      }
-    ];
-  }
+  private saveDraftModel: any = {
+    addFinanceUploadResources: [], // 新增上传资料列表
+    delFinanceUploadResources: [], // 删除上传资料Id列表
+    accountName: "",
+    advancePayoffFee: 0, // 提前结清手续费
+    id: "", // 申请id
+    orderId: "", // 订单id
+    otherFee: 0,
+    surplusManageFee: 0, // 剩余管理费
+    surplusPenalty: 0, // 剩余罚息
+    surplusPenaltyFreeze: 0, // 剩余冻结罚金
+    surplusPrincipal: 0, // 剩余本金
+    totalPayment: 0, // 收款总额
+    remark: "" // 备注
+  };
+  created() {}
   /**
    * 订单号change
    */
   changeOrderId(val) {
     if (val) {
       this.checkOrderId = val; // 将选择的订单号传给变更收款项按钮点击事件中
+      this.saveDraftModel.orderId = val; // 保存草稿所需orderId
       this.withdrawApplicationService
         .getAdvancePayoffApplicationInfo({
           personalId: this.personalId,
@@ -337,6 +160,12 @@ export default class EarlyPaymentApply extends Page {
             // 获取收款项和备注信息
             let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
             _gatherDetail.makeList(data);
+            if (data.personalBank && data.personalBank.personalName) {
+              this.saveDraftModel.accountName = data.personalBank.personalName; // 获取保存草稿时需要的accountName
+            }
+            if (data.withdrawId) {
+              this.saveDraftModel.id = data.withdrawId; // 获取保存草稿时需要的id
+            }
           },
           ({ msg }) => {
             this.$Message.error(msg);
@@ -344,21 +173,69 @@ export default class EarlyPaymentApply extends Page {
         );
     }
   }
-  modifyGatherItem() {
-    this.modifyGatherItemModal = true;
+  /**
+   * 保存草稿
+   */
+  saveDraft() {
+    let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
+    let itemList = _gatherDetail.getItem();
+    this.saveDraftModel.otherFee = _gatherDetail.getOtherFee();
+    this.saveDraftModel.remark = this.applyData.remark;
+    // console.log(itemList, "itemList");
+    let surplusManageFee = itemList.find(
+      v => v.itemName === "surplusManageFee"
+    );
+    if (surplusManageFee) {
+      this.saveDraftModel.surplusManageFee = surplusManageFee.itemMoney;
+    }
+    let surplusPenalty = itemList.find(v => v.itemName === "surplusPenalty");
+    if (surplusPenalty) {
+      this.saveDraftModel.surplusPenalty = surplusPenalty.itemMoney;
+    }
+    let surplusPenaltyFreeze = itemList.find(
+      v => v.itemName === "surplusPenaltyFreeze"
+    );
+    if (surplusPenaltyFreeze) {
+      this.saveDraftModel.surplusPenaltyFreeze = surplusPenaltyFreeze.itemMoney;
+    }
+    let surplusPrincipal = itemList.find(
+      v => v.itemName === "surplusPrincipal"
+    );
+    if (surplusPrincipal) {
+      this.saveDraftModel.surplusPrincipal = surplusPrincipal.itemMoney;
+    }
+    let totalPayment = itemList.find(v => v.itemName === "totalPayment");
+    if (totalPayment) {
+      this.saveDraftModel.totalPayment = totalPayment.itemMoney;
+    }
+    console.log(this.saveDraftModel, "vbvbvb");
+    this.withdrawApplicationService
+      .saveAdvancePayoffApplicationAsDraft(this.saveDraftModel)
+      .subscribe(
+        data => {
+          this.$Message.success("保存草稿成功！");
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
   }
   /**
-   * 变更收款项
+   * 保存并提交
    */
-  changeGatherItem() {
-    this.changeGatherItemModal = true;
-  }
+  saveAndCommit() {}
+  /**
+   * 显示tab页，去掉遮罩
+   */
   showTab() {
     if (this.applyData.idCard.length === 18) {
       this.disabledStatus = "none";
       this.getOrderInfo();
     }
   }
+  /**
+   * 获取订单信息
+   */
   getOrderInfo() {
     this.withdrawApplicationService
       .getPersonalProductOrderInfo({
@@ -387,7 +264,7 @@ export default class EarlyPaymentApply extends Page {
     this.$Modal.confirm({
       title: "提示",
       content:
-        "您有未保存的销售收款申请,清空会删除页面内容，是否确认清空申请内容！",
+        "您有未保存的提前结清申请,清空会删除页面内容，是否确认清空申请内容！",
       onOk: () => {
         this.resetAll();
       }

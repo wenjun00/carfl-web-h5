@@ -33,8 +33,7 @@
       <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">添加收款项</i-button>
     </div>
     <div class="form-title">账户信息</div>
-    <!-- <i-table :columns="columns3" :data="data3" width="1100"></i-table> -->
-    <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
+    <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1;margin-bottom:60px;">
       <tr height="40">
         <td bgcolor="#F2F2F2">户名</td>
         <td bgcolor="#F2F2F2">开户银行</td>
@@ -84,10 +83,6 @@ import AddGatherItem from "~/components/purchase-manage/add-gather-item.vue";
 export default class GatherDetailEarlyPay extends Vue {
   @Prop() checkOrderId: Number;
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
-  // private columns1: any;
-  // private data1: Array<Object> = [];
-  private columns3: any;
-  private data3: Array<Object> = [];
   private modifyGatherItemModal: Boolean = false;
   private changeGatherItemModal: Boolean = false;
   private addGatherItemModal: Boolean = false; // 添加收款项
@@ -95,38 +90,12 @@ export default class GatherDetailEarlyPay extends Vue {
   private gatherItemList: Array<any> = [];
   private gatherItemModel: any;
   private accountInfo: any = {}; // 账户信息
+  private otherFee: number = 0; // 输入框的其他费用
   created() {
     this.gatherItemModel = {
       itemName: "",
       itemMoney: ""
     };
-    this.columns3 = [
-      {
-        key: "accountName",
-        align: "center",
-        title: "户名"
-      },
-      {
-        key: "openAccountBank",
-        align: "center",
-        title: "开户银行"
-      },
-      {
-        key: "bankCardId",
-        align: "center",
-        title: "银行卡号"
-      },
-      {
-        key: "branchBankName",
-        align: "center",
-        title: "支行名称"
-      },
-      {
-        key: "thirdCustomId",
-        align: "center",
-        title: "第三方客户号"
-      }
-    ];
   }
   /**
    * 确定添加收款项
@@ -150,7 +119,7 @@ export default class GatherDetailEarlyPay extends Vue {
    * 父组件传过来的列表数据
    */
   makeList(data) {
-    this.gatherItemList = data.payoffCollectMoneyItems;
+    this.gatherItemList = data.payoffCollectMoneyItems.filter(v => v.itemMoney);
     this.accountInfo;
     if (data.personalBank) {
       this.accountInfo = data.personalBank;
@@ -162,13 +131,9 @@ export default class GatherDetailEarlyPay extends Vue {
    * 变更收款项
    */
   changeGatherItem() {
-    // this.changeGatherItemModal = true;
     this.addGatherItemModal = true; // 添加收款项
     let _addGatherItem: any = this.$refs["add-gather-item"];
     _addGatherItem.getOrderSaleItem(this.checkOrderId, this.gatherItemList);
-  }
-  addGatherItem() {
-    this.changeGatherItemModal = false;
   }
   deleteGatherItem(item) {
     this.$Modal.confirm({
@@ -193,20 +158,37 @@ export default class GatherDetailEarlyPay extends Vue {
   }
   resetTable() {
     this.gatherItemList = [];
+    this.accountInfo.personalName = "";
+    this.accountInfo.depositBank = "";
+    this.accountInfo.cardNumber = "";
+    this.accountInfo.depositBranch = "";
+    this.accountInfo.clientNumber = "";
   }
   /**
    * 修改其他费用重新计算合计
    */
   changeOtherFee(event) {
-    let otherFee = parseFloat(event.target.value); // 获取输入框输入的其他费用
-    if (otherFee) {
+    this.otherFee = parseFloat(event.target.value); // 获取输入框输入的其他费用
+    if (this.otherFee) {
       this.gatherItemList.find(v => v.itemName === "totalPayment").itemMoney =
-        this.otherTotal + otherFee;
+        this.otherTotal + this.otherFee;
     } else {
       this.gatherItemList.find(
         v => v.itemName === "totalPayment"
       ).itemMoney = this.otherTotal;
     }
+  }
+  /**
+   * 获取列表数据
+   */
+  getItem() {
+    return this.gatherItemList;
+  }
+  /**
+   * 向父组件返回其他费用
+   */
+  getOtherFee() {
+    return this.otherFee;
   }
 }
 </script>

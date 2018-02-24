@@ -76,5 +76,14 @@ export default {
     controller: CONTROLLER,
     action: 'getAdvancePayoffItems',
     type: requestType.Get
+  },
+  /**
+   * 保存提前结清草稿
+   */
+  saveAdvancePayoffApplicationAsDraft: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveAdvancePayoffApplicationAsDraft',
+    type: requestType.Post
   }
 }

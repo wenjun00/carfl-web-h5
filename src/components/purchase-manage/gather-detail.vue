@@ -7,35 +7,7 @@
       <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">变更收款项</i-button>
     </div>
     <div class="form-title">账户信息</div>
-    <!-- <i-table :columns="columns3" :data="data3" width="1100"></i-table> -->
-    <!-- <data-grid style="width:1100px;margin-bottom:20px;" :labelWidth="90">
-      <data-grid-item label="户名" :span="2">
-        <template>
-          <div>{{accountInfo.personalName}}</div>
-        </template>
-      </data-grid-item>
-      <data-grid-item label="开户银行" :span="2">
-        <template>
-          <div>{{accountInfo.depositBank}}</div>
-        </template>
-      </data-grid-item>
-      <data-grid-item label="银行卡号" :span="3">
-        <template>
-          <div>{{accountInfo.cardNumber}}</div>
-        </template>
-      </data-grid-item>
-      <data-grid-item label="支行名称" :span="3">
-        <template>
-          <div>{{accountInfo.depositBranch}}</div>
-        </template>
-      </data-grid-item>
-      <data-grid-item label="第三方客户号" :span="2">
-        <template>
-          <div>{{accountInfo.clientNumber}}</div>
-        </template>
-      </data-grid-item>
-    </data-grid> -->
-    <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
+    <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1;margin-bottom:60px;">
       <tr height="40">
         <td bgcolor="#F2F2F2">户名</td>
         <td bgcolor="#F2F2F2">开户银行</td>
@@ -51,17 +23,10 @@
         <td>{{accountInfo.clientNumber}}</td>
       </tr>
     </table>
-    <!--编辑收款项-->
-    <!-- <template>
-      <i-modal v-model="modifyGatherItemModal" title="编辑收款项" width="300">
-        <modify-gather-item></modify-gather-item>
-      </i-modal>
-    </template> -->
-
     <!--变更收款项-->
     <template>
       <i-modal v-model="changeGatherItemModal" title="变更收款项">
-        <change-gather-item ref="change-item" @change="changeSaleItem"></change-gather-item>
+        <change-gather-item ref="change-item" @change="changeSaleItem" @close="changeGatherItemModal=false"></change-gather-item>
         <div slot="footer">
           <i-button @click="changeGatherItemModal=false">取消</i-button>
           <i-button @click="confirmChangeItem" class="blueButton">确定</i-button>
@@ -100,7 +65,6 @@ export default class GatherDetail extends Vue {
   private saleItemList: Array<Object> = [];
   private columns3: any;
   private data3: Array<Object> = [];
-  // private modifyGatherItemModal: Boolean = false;
   private changeGatherItemModal: Boolean = false;
   private accountInfo: any = {}; // 账户信息
   created() {
@@ -155,9 +119,6 @@ export default class GatherDetail extends Vue {
       }
     ];
   }
-  // modifyGatherItem() {
-  //   this.modifyGatherItemModal = true;
-  // }
   /**
    * 变更收款项
    */
@@ -192,7 +153,6 @@ export default class GatherDetail extends Vue {
     }
   }
   changeSaleItem(val) {
-    // console.log(val, "kjg");
     this.saleItemList = val;
     this.changeGatherItemModal = false;
   }

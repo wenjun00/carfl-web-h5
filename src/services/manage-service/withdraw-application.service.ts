@@ -104,4 +104,13 @@ export class WithdrawApplicationService {
       }
     })
   }
+  /**
+   * 保存提前结清草稿
+   */
+  saveAdvancePayoffApplicationAsDraft(data) {
+    return this.netService.send({
+      server: manageService.withdrawApplicationController.saveAdvancePayoffApplicationAsDraft,
+      data: data
+    })
+  }
 }

@@ -61,6 +61,9 @@ export default class ChangeGatherItem extends Vue {
               if (item.itemLabel === val.itemLabel) {
                 item._checked = true;
               }
+              if (item.itemName === "initialPayment") {
+                item._disabled = true;
+              }
             });
           });
           this.saleItemList = data;
@@ -74,15 +77,24 @@ export default class ChangeGatherItem extends Vue {
     this.multipleSelection = selection;
   }
   changeItem() {
-    let moneyList = this.multipleSelection.map(v => v.itemMoney);
-    let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
-    let total = {
-      itemMoney: totalPayment,
-      itemLabel: "合计（元）",
-      itemName: "totalPayment"
-    };
-    this.multipleSelection.push(total);
-    this.$emit("change", this.multipleSelection);
+    console.log(this.multipleSelection, 8787);
+    if (this.multipleSelection) {
+      let moneyList = this.multipleSelection.map(v => v.itemMoney);
+      let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
+      let total = {
+        itemMoney: totalPayment,
+        itemLabel: "合计（元）",
+        itemName: "totalPayment"
+      };
+      if (
+        !this.multipleSelection.map(v => v.itemName).includes("totalPayment")
+      ) {
+        this.multipleSelection.push(total);
+      }
+      this.$emit("change", this.multipleSelection);
+    } else {
+      this.$emit("close");
+    }
   }
 }
 </script>

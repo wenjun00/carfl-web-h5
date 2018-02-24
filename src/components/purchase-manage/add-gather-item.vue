@@ -87,7 +87,9 @@ export default class AddGatherItem extends Vue {
       itemMoney: totalPayment,
       itemName: "totalPayment"
     };
-    this.multipleSelection.push(total);
+    if (!this.multipleSelection.map(v => v.itemName).includes("totalPayment")) {
+      this.multipleSelection.push(total);
+    }
     this.$emit("change", this.multipleSelection, totalPayment);
   }
 }

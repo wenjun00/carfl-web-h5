@@ -133,7 +133,7 @@ export default class SaleGatheringApply extends Page {
     installLicenseFee: 0,
     insuranceExpenses: 0,
     manageCost: 0,
-    orderId: 0,
+    orderId: "",
     otherFee: 0,
     purchaseTax: 0,
     totalPayment: 0
