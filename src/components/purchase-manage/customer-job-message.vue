@@ -71,9 +71,9 @@
           </i-col>
           <i-col :span="12" :pull="3">
             <i-form-item label="何时进入公司" prop="accessCompanyTime">
-              <!--<i-date-picker type="date" placeholder="i-select date" v-model="job.joinTime"></i-date-picker>-->
-              <i-input type="text" v-model="job.accessCompanyTime" placeholder="请输入何时进入公司">
-              </i-input>
+              <i-date-picker type="month" placeholder="选择月" v-model="job.accessCompanyTime"></i-date-picker>
+              <!--<i-input type="text" v-model="job.accessCompanyTime" placeholder="请输入何时进入公司">
+              </i-input>-->
             </i-form-item>
           </i-col>
         </i-row>
