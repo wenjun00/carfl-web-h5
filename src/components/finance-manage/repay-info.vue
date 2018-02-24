@@ -1,7 +1,11 @@
 <!--还款详情-->
 <template>
   <section class="component repay-info">
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <i-row style="line-height:25px;font-size:14px;padding-bottom:10px">
+      <span>客户姓名：{{repayObj.customerName}}</span>
+      <span style="margin-left:10px">订单号：{{repayObj.orderNumber}}</span>
+    </i-row>
+    <i-table ref="table" class="i-table" :columns="columns1" :data="repayList" stripe size="small"></i-table>
 
     <template>
       <i-modal title="还款记录" v-model="repayRecordModal" width="1000">
@@ -26,6 +30,15 @@
   import DataBox from "~/components/common/data-box.vue";
   import RepayRecord from '~/components/finance-manage/repay-record.vue'
   import AddAttachment from '~/components/finance-manage/add-attachment.vue'
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    PaymentScheduleService
+  } from "~/services/manage-service/payment-schedule.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   @Component({
     components: {
       DataBox,
@@ -34,22 +47,48 @@
     }
   })
   export default class RepayInfo extends Vue {
+    @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
+    private repayObj: any = {
+      customerName: '',
+      orderNumber: ''
+    };    
+    private orderId: any;
     private columns1: any;
-    private data1: Array < Object >= [];
+    private repayList: Array < Object >= [];
     private repayRecordModal: Boolean = false;
     private addAttachmentModal: Boolean = false;
-
+    refresh(row) {
+      this.repayList = []
+      this.repayObj.customerName = ''
+      this.repayObj.orderNumber = ''
+      this.orderId = row.orderId
+      this.getRepayInfo()
+    }
+    getRepayInfo() {
+      this.paymentScheduleService.getPaymentScheduleDetail({
+        orderId: this.orderId
+      }).subscribe(data => {
+        console.log(data)
+        this.repayObj.customerName = data.customerName
+        this.repayObj.orderNumber = data.orderNumber
+        this.repayList = data.paymentDetails
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+    }
     created() {
       this.columns1 = [{
-          type: "index",
+          key: "periods",
           title: '期数',
           fixed: 'left',
           align: 'center',
-          width: 60
+          width: 50
         },
         {
           title: "操作",
-          width: 280,
+          width: 150,
           align: "center",
           fixed: "left",
           render: (h, {
@@ -89,261 +128,143 @@
         },
         {
           title: '还款状态',
-          key: 'repayStatus',
+          key: 'paymentStatus',
           align: 'center',
-          width: 90
+          width: 90,
+          render: (h, { row, column, index }) => {
+            return h("span", {}, this.$dict.getDictName(row.paymentStatus));
+          }
         },
         {
           title: '应付款日',
-          key: 'shouldPayDate',
+          key: 'paymentDay',
           align: 'center',
-          width: 120
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.paymentDay, 'yyyy-MM-dd'))
+          }
         },
         {
           title: '实际付款日',
-          key: 'actualPayDate',
+          key: 'actualPaymentDay',
           align: 'center',
-          width: 120
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.actualPaymentDay, 'yyyy-MM-dd'))
+          }
         },
         {
           title: '逾期天数',
-          key: 'overdueDays',
+          key: 'overdueDay',
           align: 'center',
           width: 90
         },
         {
           title: '每日罚息',
-          key: 'everyDayPunishedInterest',
+          key: 'penaltyDay',
           align: 'center',
           width: 90
         },
         {
           title: '金额',
-          key: 'payAmt',
+          key: 'sum',
           align: 'center',
           width: 90
         },
         {
           title: '罚金',
-          key: 'punishedAmt',
+          key: 'penalSum',
           align: 'center',
           width: 90
         },
         {
           title: '开票日',
-          key: 'invoiceDate',
+          key: 'invoiceDay',
           align: 'center',
-          width: 120
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.invoiceDay, 'yyyy-MM-dd'))
+          }
         },
         {
           title: '应收租金',
-          key: 'supposedRentAmt',
+          key: 'rentReceivable',
           align: 'center',
           width: 90
         },
         {
           title: '应收利息',
-          key: 'supposedInterest',
+          key: 'interestReceivable',
           align: 'center',
           width: 90
         },
         {
           title: '应收罚息',
-          key: 'supposedPunishedInterest',
+          key: 'penaltyReceivable',
           align: 'center',
           width: 90
         },
         {
           title: '减免罚息',
-          key: 'deratePunishedInterest',
+          key: 'penaltyDerate',
           align: 'center',
           width: 90
         },
         {
           title: '冻结罚息',
-          key: 'frozenPunishedInterest',
+          key: 'penaltyFreeze',
           align: 'center',
           width: 90
         },
         {
           title: '实收本金',
-          key: 'actualMajorAmt',
+          key: 'principalReceived',
           align: 'center',
           width: 90
         },
         {
           title: '实收利息',
-          key: 'actualInterest',
+          key: 'interestReceived',
           align: 'center',
           width: 90
         },
         {
           title: '实收罚息',
-          key: 'actualPunishInterest',
+          key: 'penaltyReceived',
           align: 'center',
           width: 90
         },
         {
           title: '剩余本金',
-          key: 'remainMajorAmt',
+          key: 'principalSurplus',
           align: 'center',
           width: 90
         },
         {
           title: '剩余利息',
-          key: 'remainInterest',
+          key: 'interestSurplus',
           align: 'center',
           width: 90
         },
         {
           title: '剩余罚息',
-          key: 'remainPunishedInterest',
+          key: 'penaltySurplus',
           align: 'center',
           width: 90
         }
       ]
-
-      this.data1 = [{
-        repayStatus: '结清',
-        shouldPayDate: '2016-03-28',
-        actualPayDate: '2016-03-28',
-        overdueDays: '0',
-        everyDayPunishedInterest: '0',
-        payAmt: '5000',
-        punishedAmt: '0',
-        invoiceDate: '2016-03-28',
-        supposedRentAmt: '5000',
-        supposedInterest: '1500',
-        supposedPunishedInterest: '500',
-        deratePunishedInterest: '0',
-        frozenPunishedInterest: '0',
-        actualMajorAmt: '5000',
-        actualInterest: '1500',
-        actualPunishInterest: '400',
-        remainMajorAmt: '0',
-        remainInterest: '50',
-        remainPunishedInterest: '100'
-      }, {
-        repayStatus: '结清',
-        shouldPayDate: '2016-04-28',
-        actualPayDate: '2016-04-28',
-        overdueDays: '0',
-        everyDayPunishedInterest: '0',
-        payAmt: '5000',
-        punishedAmt: '0',
-        invoiceDate: '2016-04-28',
-        supposedRentAmt: '5000',
-        supposedInterest: '1500',
-        supposedPunishedInterest: '500',
-        deratePunishedInterest: '0',
-        frozenPunishedInterest: '0',
-        actualMajorAmt: '5000',
-        actualInterest: '1500',
-        actualPunishInterest: '400',
-        remainMajorAmt: '0',
-        remainInterest: '50',
-        remainPunishedInterest: '100'
-      }, {
-        repayStatus: '结清',
-        shouldPayDate: '2016-05-28',
-        actualPayDate: '2016-05-28',
-        overdueDays: '0',
-        everyDayPunishedInterest: '0',
-        payAmt: '5000',
-        punishedAmt: '0',
-        invoiceDate: '2016-05-28',
-        supposedRentAmt: '5000',
-        supposedInterest: '1500',
-        supposedPunishedInterest: '500',
-        deratePunishedInterest: '0',
-        frozenPunishedInterest: '0',
-        actualMajorAmt: '5000',
-        actualInterest: '1500',
-        actualPunishInterest: '400',
-        remainMajorAmt: '0',
-        remainInterest: '50',
-        remainPunishedInterest: '100'
-      }, {
-        repayStatus: '结清',
-        shouldPayDate: '2016-06-28',
-        actualPayDate: '2016-06-28',
-        overdueDays: '0',
-        everyDayPunishedInterest: '0',
-        payAmt: '5000',
-        punishedAmt: '0',
-        invoiceDate: '2016-06-28',
-        supposedRentAmt: '5000',
-        supposedInterest: '1500',
-        supposedPunishedInterest: '500',
-        deratePunishedInterest: '0',
-        frozenPunishedInterest: '0',
-        actualMajorAmt: '5000',
-        actualInterest: '1500',
-        actualPunishInterest: '400',
-        remainMajorAmt: '0',
-        remainInterest: '50',
-        remainPunishedInterest: '100'
-      }, {
-        repayStatus: '结清',
-        shouldPayDate: '2016-07-28',
-        actualPayDate: '2016-07-28',
-        overdueDays: '0',
-        everyDayPunishedInterest: '0',
-        payAmt: '5000',
-        punishedAmt: '0',
-        invoiceDate: '2016-07-28',
-        supposedRentAmt: '5000',
-        supposedInterest: '1500',
-        supposedPunishedInterest: '500',
-        deratePunishedInterest: '0',
-        frozenPunishedInterest: '0',
-        actualMajorAmt: '5000',
-        actualInterest: '1500',
-        actualPunishInterest: '400',
-        remainMajorAmt: '0',
-        remainInterest: '50',
-        remainPunishedInterest: '100'
-      }, {
-        repayStatus: '结清',
-        shouldPayDate: '2016-08-28',
-        actualPayDate: '2016-08-28',
-        overdueDays: '0',
-        everyDayPunishedInterest: '0',
-        payAmt: '5000',
-        punishedAmt: '0',
-        invoiceDate: '2016-08-28',
-        supposedRentAmt: '5000',
-        supposedInterest: '1500',
-        supposedPunishedInterest: '500',
-        deratePunishedInterest: '0',
-        frozenPunishedInterest: '0',
-        actualMajorAmt: '5000',
-        actualInterest: '1500',
-        actualPunishInterest: '400',
-        remainMajorAmt: '0',
-        remainInterest: '50',
-        remainPunishedInterest: '100'
-      }, {
-        repayStatus: '结清',
-        shouldPayDate: '2016-08-28',
-        actualPayDate: '2016-08-28',
-        overdueDays: '0',
-        everyDayPunishedInterest: '0',
-        payAmt: '5000',
-        punishedAmt: '0',
-        invoiceDate: '2016-03-28',
-        supposedRentAmt: '5000',
-        supposedInterest: '1500',
-        supposedPunishedInterest: '500',
-        deratePunishedInterest: '0',
-        frozenPunishedInterest: '0',
-        actualMajorAmt: '5000',
-        actualInterest: '1500',
-        actualPunishInterest: '400',
-        remainMajorAmt: '0',
-        remainInterest: '50',
-        remainPunishedInterest: '100'
-      }]
     }
 
   }

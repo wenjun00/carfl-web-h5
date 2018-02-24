@@ -19,7 +19,7 @@
               <Icon type="android-arrow-dropleft-circle" color="white" size="16"></Icon>
             </div>
           </i-col>
-          <i-col span="22" style="overflow:auto">
+          <i-col span="22" style="overflow:hidden">
             <div>
               <data-box ref="databox" :columns="carColumns" :data="carDataModel" border stripe @onPageChange="cartreeChange" :page="pageService"></data-box>
             </div>
@@ -89,7 +89,7 @@
           type: 'selection',
           align: 'center',
           width: 100,
-          fixed: 'left',
+          //   fixed: 'left',
         },
         {
           title: '车辆品牌',
@@ -144,6 +144,13 @@
           key: 'status',
           align: 'center',
           width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.status));
+          }
         },
       ];
       // this.applyQueryService.addCarQueryData().subscribe(({

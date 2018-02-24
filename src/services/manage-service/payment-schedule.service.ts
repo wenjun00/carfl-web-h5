@@ -62,4 +62,56 @@ export class PaymentScheduleService {
       }
     })
   }
+  /**
+   * 财务还款详情
+   */
+  getPaymentScheduleDetail({ orderId }) {
+    return this.netService.send({
+      server: manageService.paymentScheduleController.getPaymentScheduleDetail,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
+  /**
+   * 财务确认还款信息
+   */
+  getCustomerScheduleBillDetail({ orderId }) {
+    return this.netService.send({
+      server: manageService.paymentScheduleController.getCustomerScheduleBillDetail,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
+  /**
+   * 财务带搜索的划扣记录
+   */
+  getCustomerDeductionRecord({ orderId, personalId }) {
+    return this.netService.send({
+      server: manageService.paymentScheduleController.getCustomerDeductionRecord,
+      data: {
+        orderId: orderId,
+        personalId: personalId
+      }
+    })
+  }
+  /**
+   * 保存客户还款信息
+   */
+  saveCustomerPaymentInfo(data) {
+    return this.netService.send({
+      server: manageService.paymentScheduleController.saveCustomerPaymentInfo,
+      data
+    })
+  }
+  /**
+   * 保存客户还款草稿信息
+   */
+  saveCustomerPaymentInfoAsDraft(data) {
+    return this.netService.send({
+      server: manageService.paymentScheduleController.saveCustomerPaymentInfoAsDraft,
+      data
+    })
+  }
 }

@@ -594,7 +594,14 @@
         }, {
           title: '状态',
           key: 'status',
-          align: 'center'
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.status));
+          }
         }
       ]
 

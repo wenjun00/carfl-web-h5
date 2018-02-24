@@ -19,24 +19,24 @@
 
     <template>
       <i-modal :title="addNew?'添加联系人':'编辑联系人'" v-model="editOrAddContactsModal">
-        <i-form :label-width="110" ref="contacts" :model="contactsModel">
-          <i-form-item label="与本人关系">
+        <i-form :rules="rules" :label-width="110" ref="contacts" :model="contactsModel">
+          <i-form-item label="与本人关系" prop="relation">
             <i-select v-model="contactsModel.relation" clearable>
               <i-option label="配偶" :value="56"></i-option>
               <i-option label="父母" :value="57"></i-option>
               <i-option label="子女" :value="58"></i-option>
             </i-select>
           </i-form-item>
-          <i-form-item label="姓名">
+          <i-form-item label="姓名" prop="name">
             <i-input v-model="contactsModel.name"></i-input>
           </i-form-item>
-          <i-form-item label="联系方式">
+          <i-form-item label="联系方式" prop="phone">
             <i-input v-model="contactsModel.phone"></i-input>
           </i-form-item>
-          <i-form-item label="单位名称">
+          <i-form-item label="单位名称" prop="employer">
             <i-input v-model="contactsModel.employer"></i-input>
           </i-form-item>
-          <i-form-item label="家庭地址">
+          <i-form-item label="家庭地址" prop="address">
             <i-input v-model="contactsModel.address"></i-input>
           </i-form-item>
         </i-form>
@@ -48,8 +48,8 @@
 
     <template>
       <i-modal :title="addNew?'添加联系人':'编辑联系人'" v-model="editOrAddContactsModal2">
-        <i-form :label-width="110" ref="other-contacts" :model="contactsModel">
-          <i-form-item label="与本人关系">
+        <i-form :rules="rules" :label-width="110" ref="other-contacts" :model="contactsModel">
+          <i-form-item label="与本人关系" prop="relation">
             <i-select v-model="contactsModel.relation">
               <i-option label="亲属" :value="59"></i-option>
               <i-option label="同事" :value="60"></i-option>
@@ -57,16 +57,16 @@
               <i-option label="其他" :value="62"></i-option>
             </i-select>
           </i-form-item>
-          <i-form-item label="姓名">
+          <i-form-item label="姓名" prop="name">
             <i-input v-model="contactsModel.name"></i-input>
           </i-form-item>
-          <i-form-item label="联系方式">
+          <i-form-item label="联系方式" prop="phone">
             <i-input v-model="contactsModel.phone"></i-input>
           </i-form-item>
-          <i-form-item label="单位名称">
+          <i-form-item label="单位名称" prop="employer">
             <i-input v-model="contactsModel.employer"></i-input>
           </i-form-item>
-          <i-form-item label="家庭地址">
+          <i-form-item label="家庭地址" prop="address">
             <i-input v-model="contactsModel.address"></i-input>
           </i-form-item>
         </i-form>
@@ -113,6 +113,24 @@
       employer: '',
       address: ''
     };
+    private rules: any = {
+      relation: [{
+        required: true,
+        message: "与本人关系不能为空",
+        trigger: "change",
+        type: 'number'
+      }],
+      name: [{
+        required: true,
+        message: "姓名不能为空",
+        trigger: "blur"
+      }],
+      phone: [{
+        required: true,
+        message: "电话不能为空",
+        trigger: "blur"
+      }],
+    }
     // private othercontactsModel: any = {
     //   relation: '',
     //   name: '',
@@ -176,7 +194,14 @@
       }, {
         title: '与本人关系',
         key: 'relation',
-        align: 'center'
+        align: 'center',
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h("span", {}, this.$dict.getDictName(row.relation));
+        }
       }, {
         title: '姓名',
         key: 'name',
@@ -248,7 +273,14 @@
       }, {
         title: '与本人关系',
         key: 'relation',
-        align: 'center'
+        align: 'center',
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h("span", {}, this.$dict.getDictName(row.relation));
+        }
       }, {
         title: '姓名',
         key: 'name',
@@ -286,49 +318,63 @@
      * 添加直系联系人
      */
     saveAndBack() {
-      if (this.addNew) {
-        this.data1.push({
-          relation: this.contactsModel.relation,
-          name: this.contactsModel.name,
-          phone: this.contactsModel.phone,
-          employer: this.contactsModel.employer,
-          address: this.contactsModel.address
-        })
-      } else {
-        this.rowData.relation = this.contactsModel.relation
-        this.rowData.name = this.contactsModel.name
-        this.rowData.phone = this.contactsModel.phone
-        this.rowData.employer = this.contactsModel.employer
-        this.rowData.address = this.contactsModel.address
-      }
-      //   let contacts_ref = this.$refs['contacts']
-      //   contacts_ref.resetFields()
-      this.editOrAddContactsModal = false
+      let registerForm = < Form > this.$refs["contacts"];
+      registerForm.validate(valid => {
+        if (!valid) {
+          return false
+        }
+        if (this.addNew) {
+          this.data1.push({
+            relation: this.contactsModel.relation,
+            name: this.contactsModel.name,
+            phone: this.contactsModel.phone,
+            employer: this.contactsModel.employer,
+            address: this.contactsModel.address
+          })
+        } else {
+          this.rowData.relation = this.contactsModel.relation
+          this.rowData.name = this.contactsModel.name
+          this.rowData.phone = this.contactsModel.phone
+          this.rowData.employer = this.contactsModel.employer
+          this.rowData.address = this.contactsModel.address
+        }
+        //   let contacts_ref = this.$refs['contacts']
+        //   contacts_ref.resetFields()
+        this.editOrAddContactsModal = false
+      })
     }
     /**
      * 添加其他联系人
      */
     saveAndBack2() {
-      if (this.addNew) {
-        this.data2.push({
-          relation: this.contactsModel.relation,
-          name: this.contactsModel.name,
-          phone: this.contactsModel.phone,
-          employer: this.contactsModel.employer,
-          address: this.contactsModel.address
-        })
-      } else {
-        this.rowData.relation = this.contactsModel.relation
-        this.rowData.name = this.contactsModel.name
-        this.rowData.phone = this.contactsModel.phone
-        this.rowData.employer = this.contactsModel.employer
-        this.rowData.address = this.contactsModel.address
-      }
-      //   let other_ref = this.$refs['other-contacts']
-      //   other_ref.resetFields()
-      this.editOrAddContactsModal2 = false
+      let registerForm = < Form > this.$refs["other-contacts"];
+      registerForm.validate(valid => {
+        if (!valid) {
+          return false
+        }
+        if (this.addNew) {
+          this.data2.push({
+            relation: this.contactsModel.relation,
+            name: this.contactsModel.name,
+            phone: this.contactsModel.phone,
+            employer: this.contactsModel.employer,
+            address: this.contactsModel.address
+          })
+        } else {
+          this.rowData.relation = this.contactsModel.relation
+          this.rowData.name = this.contactsModel.name
+          this.rowData.phone = this.contactsModel.phone
+          this.rowData.employer = this.contactsModel.employer
+          this.rowData.address = this.contactsModel.address
+        }
+        //   let other_ref = this.$refs['other-contacts']
+        //   other_ref.resetFields()
+        this.editOrAddContactsModal2 = false
+      })
     }
     addNewContacts() {
+      let form: any = this.$refs['contacts'];
+      form.resetFields();
       this.addNew = true
       this.editOrAddContactsModal = true
       this.contactsModel = {
@@ -341,6 +387,8 @@
     }
 
     addNewContacts2() {
+      let form: any = this.$refs['other-contacts'];
+      form.resetFields();
       this.addNew = true
       this.editOrAddContactsModal2 = true
       this.contactsModel = {

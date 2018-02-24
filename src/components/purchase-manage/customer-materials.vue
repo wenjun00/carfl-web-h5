@@ -45,7 +45,7 @@
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="手机号码（次）" prop="mobileMinor">
-            <i-input type="text" placeholder="请输入手机号码（次）" v-model="customerMaterialsForm.mobileMinor">
+            <i-input type="text" placeholder="可不填" v-model="customerMaterialsForm.mobileMinor">
             </i-input>
           </i-form-item>
         </i-col>

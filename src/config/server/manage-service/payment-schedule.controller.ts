@@ -49,5 +49,50 @@ export default {
     controller: CONTROLLER,
     action: 'checkTheVoucher',
     type: requestType.Get
+  },
+  /**
+   * 财务还款详情
+   */
+  getPaymentScheduleDetail: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getPaymentScheduleDetail',
+    type: requestType.Get
+  },
+  /**
+   * 财务确认还款信息
+   */
+  getCustomerScheduleBillDetail: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCustomerScheduleBillDetail',
+    type: requestType.Get
+  },
+  /**
+   * 财务带搜索的划扣记录
+   */
+  getCustomerDeductionRecord: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCustomerDeductionRecord',
+    type: requestType.Get
+  },
+  /**
+   * 保存客户还款信息
+   */
+  saveCustomerPaymentInfo: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveCustomerPaymentInfo',
+    type: requestType.Post
+  },
+  /**
+   * 保存客户还款草稿信息
+   */
+  saveCustomerPaymentInfoAsDraft: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveCustomerPaymentInfoAsDraft',
+    type: requestType.Post
   }
 }
