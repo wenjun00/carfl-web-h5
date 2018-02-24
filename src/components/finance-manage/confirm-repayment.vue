@@ -85,22 +85,28 @@
     </div>
     <table border="1" width="868" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
-        <td bgcolor="#F2F2F2" colspan="2">收款方式</td>
+        <td bgcolor="#F2F2F2" colspan="1" width="5%">
+          <div @click="addObj">
+            <i-icon type="plus" style="color:#199ED8;cursor:pointer"></i-icon>
+          </div>
+        </td>        
+        <td bgcolor="#F2F2F2" colspan="1" width="25%">收款方式</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
         <td bgcolor="#F2F2F2" colspan="1">状态</td>
       </tr>
       <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
         <td>
-          <i-icon type="plus" style="color:#199ED8"></i-icon>
-          <i-icon type="minus" style="margin-left:10px;color:#199ED8"></i-icon>
+          <div @click="deleteObj(i)">          
+            <i-icon type="minus" style="color:#199ED8;cursor:pointer"></i-icon>
+          </div>
         </td>
-        <td width="25%">
+        <td>
           <i-select placeholder="选择收款方式" style="display:inline-block;width:90%" v-model="v.collectMoneyMethod">
             <i-option v-for="{value,label} in $dict.getDictData('0105')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-input style="display:inline-block;width:30%;margin-right:10px" v-model="v.collectMoneyAmount"></i-input>
+          <i-input style="display:inline-block;width:30%;margin-right:10px" v-model="v.collectMoneyAmount" @on-blur="inputBlur"></i-input>
           <i-button class="blueButton">确认划扣</i-button>
         </td>
         <td><span>已处理</span>
@@ -110,12 +116,12 @@
       <tr height="40">
         <td></td>
         <td width="25%">合计（元）</td>
-        <td  colspan="2">{{paymentAmount}}</td>
+        <td  colspan="2" style="font-weight:700">{{paymentAmount}}</td>
       </tr>
     </table>
     <i-form>
       <i-form-item label="备注">
-        <i-input type="textarea" v-model="remark" style="width:auto;display:block;margin-left:40px"></i-input>
+        <i-input type="textarea" v-model="remark" style="width:auto;display:block;margin-left:43px"></i-input>
       </i-form-item>
     </i-form>
 
@@ -185,7 +191,7 @@
     private data2: Array < Object >= [];
     private deductRecordModal: Boolean = false
     private remark: String = ''
-    private paymentAmount: any = ''
+    private paymentAmount: any = 0
     private delFinanceUploadResource: any = []
     private addFinanceUploadResource: any = []
 
@@ -208,6 +214,35 @@
       this.deductRecordModal = true
       let _record: any = this.$refs['deduct-record']
       _record.refresh(this.rowObj)
+    }
+    /**
+     * 增加还款对象
+     */
+    addObj() {
+      console.log('add')
+      this.collectMoneyDetails.push({
+        collectMoneyAmount: '',
+        collectMoneyMethod: ''
+      })
+    }
+    /**
+     * 删除还款对象
+     */
+    deleteObj(index) {
+      console.log('add')
+      this.collectMoneyDetails.splice(index, 1)
+      this.inputBlur()
+    }
+    /**
+     * 计算总计
+     */
+    inputBlur() {
+      let sum: any = 0
+      this.collectMoneyDetails.forEach(v => {
+        sum = sum + (Number(v.collectMoneyAmount) || 0)
+      })
+      console.log(sum)
+      this.paymentAmount = sum 
     }
     created() {
       this.columns1 = [{
