@@ -2,20 +2,22 @@
 <template>
   <section class="page customer-data-query">
     <span class="form-title">客户资料查询</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getOrderInfoByTime(0)">昨日</i-button>
+    <i-button type="text" @click="getOrderInfoByTime(1)">今日</i-button>
+    <i-button type="text" @click="getOrderInfoByTime(2)">本周</i-button>
+    <i-button type="text" @click="getOrderInfoByTime(3)">本月</i-button>
+    <i-button type="text" @click="getOrderInfoByTime(4)">上月</i-button>
+    <i-button type="text" @click="getOrderInfoByTime(5)">最近三月</i-button>
+    <i-button type="text" @click="getOrderInfoByTime(6)">本季度</i-button>
+    <i-button type="text" @click="getOrderInfoByTime(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">收起</span>高级搜索</i-button>
     <i-row v-if="searchOptions" style="margin:6px;">
-      <i-input v-model="customName" style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
-      <i-button class="blueButton">搜索</i-button>
+      <i-date-picker v-model="ordertransferModel.startTime" type="date" @on-change="startTimeChange" placeholder="起始日期(始)" style="width: 200px"></i-date-picker>
+      <i-date-picker v-model="ordertransferModel.endTime" type="date" @on-change="endTimeChange" placeholder="终止日期(止)" style="width: 200px"></i-date-picker>
+      <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" style="display:inline-block;width:20%;" placeholder="请输入订单编号/客户姓名/证件号码/联系号码查询"></i-input>
+      <i-button style="margin-left:10px;" class="blueButton" @click="refreshData">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="customerDataSet" :page="pageService"></data-box>
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
@@ -83,8 +85,14 @@
     Dependencies
   } from "~/core/decorator";
   import {
-    OrderService
-  } from "~/services/business-service/order.service";
+    PersonalService
+  } from "~/services/manage-service/personal.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service";
   import {
     Layout
   } from "~/core/decorator";
@@ -96,47 +104,29 @@
     }
   })
   export default class CustomerDataQuery extends Page {
-    @Dependencies(OrderService) private orderService: OrderService;
+    @Dependencies(PageService) private pageService: PageService;
+    @Dependencies(PersonalService) private personalService: PersonalService;
 
     private searchOptions: Boolean = false;
     private openUpload: Boolean = false;
     private uploadList: Boolean = false;
     private customName: String = '';
     private columns1: any;
-    private data1: Array < Object > = [];
+    private customerDataSet: Array < Object > = [];
     private openColumnsConfig: Boolean = false;
     private uploadOrAddFlag: Boolean = false;
     private columns2: any;
     private data2: Array < Object > ;
+    private ordertransferModel: any = {
+      orderInfo: "", // 请输入客户姓名/证件号码/联系号码/订单所属人查询
+      startTime: "", // 起始日期
+      endTime: "", // 终止日期
+      timeSearch: ""
+    };
 
     created() {
+      this.refreshData()
       this.columns1 = [{
-          align: 'center',
-          type: 'index',
-          width: '60',
-          renderHeader: (h, {
-            column,
-            index
-          }) => {
-            return h('div', {
-              on: {
-                click: () => {
-                  this.columnsConfig()
-                }
-              },
-              style: {
-                cursor: 'pointer'
-              }
-            }, [
-              h('Icon', {
-                props: {
-                  type: 'gear-b',
-                  size: '20'
-                }
-              })
-            ])
-          }
-        }, {
           title: '操作',
           width: '100',
           align: 'center',
@@ -178,7 +168,7 @@
         },
         {
           title: '资料上传',
-          key: 'uploadStatus',
+          key: 'isUploadFile',
           align: 'center'
         },
         {
@@ -188,22 +178,39 @@
         },
         {
           title: '订单创建时间',
-          key: 'orderCreateTime',
-          align: 'center'
+          key: 'createTime',
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h(
+              "span",
+              FilterService.dateFormat(row.createTime, "yyyy-MM-dd hh:mm:ss")
+            );
+          }
         },
         {
           title: '订单类型',
           key: 'orderType',
-          align: 'center'
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.orderType));
+          }
         },
         {
           title: '产品名称',
-          key: 'prdName',
+          key: 'productName',
           align: 'center'
         },
         {
           title: '客户姓名',
-          key: 'customerName',
+          key: 'personalName',
           align: 'center'
         },
         {
@@ -213,7 +220,7 @@
         },
         {
           title: '联系号码',
-          key: 'phone',
+          key: 'mobileMain',
           align: 'center'
         }
       ]
@@ -248,15 +255,53 @@
       }, {
         columnsName: '联系号码'
       }]
-      // 获取数据
-      this.orderService.getClientInfo().subscribe(({
-        val
-      }) => {
-        this.data1 = val
-      })
+    }
+    refreshData() {
+      this.ordertransferModel.startTime = FilterService.dateFormat(
+        this.ordertransferModel.startTime
+      );
+      this.ordertransferModel.endTime = FilterService.dateFormat(
+        this.ordertransferModel.endTime
+      );
+      this.personalService
+        .getCustomerDataOrder(this.ordertransferModel, this.pageService)
+        .subscribe(
+          data => {
+            this.customerDataSet = data;
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+    /**
+     * 清空timeSearch
+     */
+    startTimeChange(val) {
+      //   this.ordertransferModel.startTime = FilterService.dateFormat(this.ordertransferModel.startTime)
+      this.ordertransferModel.timeSearch = "";
+    }
+    endTimeChange(val) {
+      //   this.ordertransferModel.endTime = FilterService.dateFormat(this.ordertransferModel.endTime)
+      this.ordertransferModel.timeSearch = "";
+    }
+    orderInfochange() {
+      this.ordertransferModel.timeSearch = "";
     }
     openSearch() {
       this.searchOptions = !this.searchOptions
+    }
+    /**
+     *根据日月年查询
+     */
+    getOrderInfoByTime(val) {
+      this.ordertransferModel.startTime = "";
+      this.ordertransferModel.endTime = "";
+      this.ordertransferModel.orderInfo = "";
+      this.ordertransferModel.timeSearch = val;
+      this.refreshData();
     }
     /**
      * 上传资料

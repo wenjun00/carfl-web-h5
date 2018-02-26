@@ -318,7 +318,7 @@
      * 添加直系联系人
      */
     saveAndBack() {
-      let registerForm = < Form > this.$refs["contacts"];
+      let registerForm: any = this.$refs["contacts"];
       registerForm.validate(valid => {
         if (!valid) {
           return false
@@ -347,7 +347,7 @@
      * 添加其他联系人
      */
     saveAndBack2() {
-      let registerForm = < Form > this.$refs["other-contacts"];
+      let registerForm: any = this.$refs["other-contacts"];
       registerForm.validate(valid => {
         if (!valid) {
           return false
