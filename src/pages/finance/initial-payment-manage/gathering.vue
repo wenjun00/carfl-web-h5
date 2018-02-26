@@ -2,14 +2,14 @@
 <template>
   <section class="page gathering">
     <span class="form-title">收款</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
@@ -93,9 +93,20 @@
     private gatherModel: any = {
       accountName: '',
       queryStartDate: '',
-      queryEndDate: ''
+      queryEndDate: '',
+      timeSearch: ''
     }
+    getEarlyPayList() {
 
+    }
+    getTimeSearch(val) {
+      this.gatherModel.settlementChannel = ''
+      this.gatherModel.paymentStatus = ''
+      this.gatherModel.dynamicParam = ''
+      this.gatherModel.timeSearch = val
+      this.getEarlyPayList()
+      this.gatherModel.timeSearch = ''
+    }
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
@@ -105,38 +116,11 @@
     }
     created() {
       this.getGatherListByCondition()
-      this.columns1 = [{
-          align: "center",
-          type: "index",
-          width: 60,
-          renderHeader: (h, {
-            column,
-            index
-          }) => {
-            return h(
-              "div", {
-                on: {
-                  click: () => {
-                    this.columnsConfig();
-                  }
-                },
-                style: {
-                  cursor: "pointer"
-                }
-              }, [
-                h("Icon", {
-                  props: {
-                    type: "gear-b",
-                    size: "20"
-                  }
-                })
-              ]
-            );
-          }
-        },
+      this.columns1 = [
         {
           title: "操作",
           width: 120,
+          fixed: "left",
           align: "center",
           render: (h, {
             row,

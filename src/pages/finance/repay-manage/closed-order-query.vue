@@ -2,14 +2,14 @@
 <template>
   <section class="page closed-order-query">
     <span class="form-title">已结清订单查询</span>
-    <i-button type="text">昨日</i-button>
-    <i-button type="text">今日</i-button>
-    <i-button type="text">本周</i-button>
-    <i-button type="text">本月</i-button>
-    <i-button type="text">上月</i-button>
-    <i-button type="text">最近三月</i-button>
-    <i-button type="text">本季度</i-button>
-    <i-button type="text">本年</i-button>
+    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
@@ -33,8 +33,8 @@
 
     <!--还款详情-->
     <template>
-      <i-modal title="还款详情" width="900" v-model="repayInfoModal">
-        <repay-info></repay-info>
+      <i-modal v-model="repayInfoModal" :transfer="false" title="还款详情" width="1200">
+        <repay-info ref="repay-info"></repay-info>
       </i-modal>
     </template>
   </section>
@@ -76,106 +76,54 @@
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private repayInfoModal: Boolean = false;
+    private customerRepayModel: any = {
+      settlementChannel: '',
+      paymentStatus: '',
+      dynamicParam: '',
+      timeSearch: ''
+    }
+    getEarlyPayList() {
 
+    }
+    getTimeSearch(val) {
+      this.customerRepayModel.settlementChannel = ''
+      this.customerRepayModel.paymentStatus = ''
+      this.customerRepayModel.dynamicParam = ''
+      this.customerRepayModel.timeSearch = val
+      this.getEarlyPayList()
+      this.customerRepayModel.timeSearch = ''
+    }
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
 
     created() {
-      this.columns1 = [{
-          align: "center",
-          type: "index",
-          width: "60",
-          renderHeader: (h, {
-            column,
-            index
-          }) => {
-            return h(
-              "div", {
-                on: {
-                  click: () => {
-                    this.columnsConfig();
-                  }
-                },
-                style: {
-                  cursor: "pointer"
-                }
-              }, [
-                h("Icon", {
-                  props: {
-                    type: "gear-b",
-                    size: "20"
-                  }
-                })
-              ]
-            );
-          }
-        },
+      this.columns1 = [
         {
           title: "操作",
           width: "220",
           align: "center",
+          fixed: "left",
           render: (h, {
             row,
             column,
             index
           }) => {
-            if (row.customName === '王泽杰') {
-              // return h('div', [
-              //   h('i-button', {
-              //     props: {
-              //       type: 'text'
-              //     },
-              //     on: {
-              //       click: () => {
-              //         this.$Modal.info({
-              //           title: "确认收回",
-              //           width: '900',
-              //           render: h => h(ConfirmRepayment)
-              //         })
-              //       }
-              //     },
-              //     style: {
-              //       color: '#265EA2'
-              //     }
-              //   }, '确认收回'),
-              //   h('i-button', {
-              //     props: {
-              //       type: 'text'
-              //     },
-              //     on: {
-              //       click: () => {
-              //         this.$Modal.info({
-              //           width: '1300',
-              //           render: h => h(RepayInfo)
-              //         })
-              //       }
-              //     },
-              //     style: {
-              //       color: '#265EA2'
-              //     }
-              //   }, '还款详情')
-              // ])
-            } else if (row.customName === '陈丽') {
-              return h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                on: {
-                  click: () => {
-                    // this.$Modal.info({
-                    //   width: '1300',
-                    //   title: '还款详情',
-                    //   render: h => h(RepayInfo)
-                    // })
-                    this.repayInfoModal = true
-                  }
-                },
-                style: {
-                  color: '#265EA2'
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.repayInfoModal = true
+                  let _repay: any = this.$refs['repay-info']
+                  _repay.refresh(row)
                 }
-              }, '还款详情')
-            }
+              },
+              style: {
+                color: '#265EA2'
+              }
+            }, '还款详情')
           }
         },
         {

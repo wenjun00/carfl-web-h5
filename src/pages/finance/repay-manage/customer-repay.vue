@@ -17,11 +17,11 @@
     </i-button>
     <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
       <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
-      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态">
+      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
         <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>        
       </i-select>
-      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0105')" :key="value" :label="label" :value="value"></i-option>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
+        <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getCustomerRepayList">搜索</i-button>
     </i-row>
@@ -114,7 +114,8 @@
     private customerRepayModel: any = {
       settlementChannel: '',
       paymentStatus: '',
-      dynamicParam: ''
+      dynamicParam: '',
+      timeSearch: ''
     }
     mounted() {
       this.getCustomerRepayList();
@@ -123,7 +124,12 @@
       this.searchOptions = !this.searchOptions;
     }
     getTimeSearch(val) {
-
+      this.customerRepayModel.settlementChannel = ''
+      this.customerRepayModel.paymentStatus = ''
+      this.customerRepayModel.dynamicParam = ''
+      this.customerRepayModel.timeSearch = val
+      this.getCustomerRepayList()
+      this.customerRepayModel.timeSearch = ''
     }
     /**
      * 保存草稿
@@ -347,13 +353,7 @@
             column,
             index
           }) => {
-            if (row.settlementChannel === 162) {
-              return h('span', {}, '汇付')
-            } else if (row.settlementChannel === 163) {
-              return h('span', {}, '富友')
-            } else if (row.settlementChannel === 164) {
-              return h('span', {}, '对公转账')
-            }
+            return h("span", {}, this.$dict.getDictName(row.settlementChannel));
           }
         },
         {

@@ -25,10 +25,10 @@
     </div>
     <i-row v-if="searchOptions" style="margin-top:20px;">
       <i-input style="display:inline-block;width:10%;" v-model="seachParams.fileName" placeholder="请输入客户姓名"></i-input>
-      <i-date-picker style="display:inline-block;width:10%;" v-model="seachParams.minDate"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%;" v-model="seachParams.maxDate"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:10%;" v-model="seachParams.minDate" placeholder="起始日期"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%;" v-model="seachParams.maxDate" placeholder="终止日期"></i-date-picker>
       <i-button class="blueButton" @click="productSeach">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>
+      <!--<i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>-->
     </i-row>
     <i-row style="margin-top:20px">
       <data-box :columns="queryColumns" :data="queryData" @onPageChange="productSeach" :page="pageService"></data-box>
@@ -98,7 +98,7 @@ export default class ProductPackageQuery extends Page {
 		this.queryColumns = [
 			{
 				title: '操作',
-				width: 200,
+				width: 180,
 				align: 'center',
 				fixed: 'left',
 				render: (h, params) => {
@@ -113,7 +113,20 @@ export default class ProductPackageQuery extends Page {
 									color: '#265ea2',
 								},
 								on: {
-									click: () => {},
+									click: () => {
+                    this.productPackageService
+                      .downloadProductPackage({
+                        fileId: params.row.fileId,
+                      })
+                      .subscribe(
+                        val => {
+                          this.$Message.success('下载成功！');
+                        },
+                        ({ msg }) => {
+                          this.$Message.error(msg);
+                        }
+                      );
+                  },
 								},
 							},
 							'下载'
@@ -141,17 +154,24 @@ export default class ProductPackageQuery extends Page {
 			{
 				title: '文件名',
 				align: 'center',
-				key: 'fileName',
+				key: 'fileName'
 			},
 			{
 				align: 'center',
 				title: '上传时间',
 				key: 'uploadTime',
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h('span', FilterService.dateFormat(row.uploadTime, 'yyyy-MM-dd hh:mm:ss'))
+        }
 			},
 			{
 				align: 'center',
 				title: '操作人',
-				key: 'operatorName',
+				key: 'operatorName'
 			},
 			{
 				align: 'center',

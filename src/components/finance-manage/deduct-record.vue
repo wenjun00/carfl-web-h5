@@ -18,6 +18,9 @@
     PageService
   } from "~/utils/page.service";
   import {
+    FilterService
+  } from "~/utils/filter.service"
+  import {
     PaymentScheduleService
   } from "~/services/manage-service/payment-schedule.service";
   @Component({
@@ -62,9 +65,16 @@
         },
         {
           title: '还款日期',
-          width: 120,
+          width: 100,
           key: 'actualCollectDate',
-          align: 'center'
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.actualCollectDate, 'yyyy-MM-dd'))
+          }
         },
         {
           title: '还款渠道',

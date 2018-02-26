@@ -134,39 +134,12 @@
     }
     created() {
       this.getApproval()
-      this.columns1 = [{
-          align: "center",
-          type: "index",
-          width: 60,
-          renderHeader: (h, {
-            column,
-            index
-          }) => {
-            return h(
-              "div", {
-                on: {
-                  click: () => {
-                    this.columnsConfig();
-                  }
-                },
-                style: {
-                  cursor: "pointer"
-                }
-              }, [
-                h("Icon", {
-                  props: {
-                    type: "gear-b",
-                    size: "20"
-                  }
-                })
-              ]
-            );
-          }
-        },
+      this.columns1 = [
         {
           title: "操作",
           width: 120,
           align: "center",
+          fixed: "left",
           render: (h, {
             row,
             column,

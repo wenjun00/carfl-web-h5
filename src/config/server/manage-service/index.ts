@@ -31,9 +31,11 @@ import scheduleJobController from './schedule-job.controller'
 import carParamTypeController from './car-param-type-controller.controller'
 import carParamController from './car-param-controller.controller'
 import withdrawApplicationController from './withdraw-application.controller'
+import advancePayoffController from './advance-payoff.controller'
 
 
 export const manageService = {
+  advancePayoffController,
   departmentController,
   roleController,
   userController,
