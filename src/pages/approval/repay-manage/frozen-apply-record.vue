@@ -24,401 +24,249 @@
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:6px;">
       <i-input style="display:inline-block;width:14%;margin-left:10px;" v-model="frozenModel.orderInfo" placeholder="请输入客户姓名\证件号码\订单号\手机号(主)"></i-input>
       <span style="margin-left:10px;">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%;" v-model="frozenModel.applyDateStart"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%;" v-model="frozenModel.applyDateEnd"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:10%;" v-model="frozenModel.applyDateStart" placeholder="起始日期"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%;" v-model="frozenModel.applyDateEnd" placeholder="终止日期"></i-date-picker>
       <i-select style="width:10%;margin-left:10px" placeholder="全部结算通道" v-model="frozenModel.collectMoneyMethod" clearable>
-        <i-option label="汇付" :value="162" :key="162"></i-option>
-        <i-option label="富友" :value="163" :key="163"></i-option>
-        <i-option label="对公转账" :value="164" :key="164"></i-option>
+        <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <i-button class="blueButton" style="margin-left:20px;" @click="getFrozenList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="frozenList" @onPageChange="getFrozenList" :page="pageService"></data-box>
+    <data-box :id="348" :columns="columns1" :data="frozenList" @onPageChange="getFrozenList" :page="pageService"></data-box>
   </section>
 </template>
 
 <script lang="ts">
-  import Page from "~/core/page";
-  import DataBox from "~/components/common/data-box.vue";
-  import Component from "vue-class-component";
-  import RepaySum from "~/components/approval-manage/repay-sum.vue"
-  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
-  import SvgIcon from '~/components/common/svg-icon.vue'
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  import {
-    FilterService
-  } from "~/utils/filter.service";
-  import {
-    RemitApplicationService
-  } from "~/services/manage-service/remit-application.service";
-  @Layout("workspace")
-  @Component({
+import Page from "~/core/page";
+import DataBox from "~/components/common/data-box.vue";
+import Component from "vue-class-component";
+import RepaySum from "~/components/approval-manage/repay-sum.vue";
+import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
+import SvgIcon from "~/components/common/svg-icon.vue";
+import { Dependencies } from "~/core/decorator";
+import { Layout } from "~/core/decorator";
+import { PageService } from "~/utils/page.service";
+import { FilterService } from "~/utils/filter.service";
+import { RemitApplicationService } from "~/services/manage-service/remit-application.service";
+@Layout("workspace")
+@Component({
+  components: {
+    DataBox,
+    RepaySum,
+    SvgIcon
+  }
+})
+export default class FrozenApplyRecord extends Page {
+  @Dependencies(RemitApplicationService)
+  private remitApplicationService: RemitApplicationService;
+  @Dependencies(PageService) private pageService: PageService;
+  private columns1: any;
+  private frozenList: Array<Object> = [];
+  private repayInfo: Boolean = false;
+  private searchOptions: Boolean = false;
+  private frozenModel: any = {
+    remitItem: 1122,
+    applyDateStart: "",
+    applyDateEnd: "",
+    timeSearch: "",
+    collectMoneyMethod: "",
+    orderInfo: ""
+  };
 
-    components: {
-      DataBox,
-      RepaySum,
-      SvgIcon
-    }
-  })
-  export default class FrozenApplyRecord extends Page {
-    @Dependencies(RemitApplicationService) private remitApplicationService: RemitApplicationService;
-    @Dependencies(PageService) private pageService: PageService;
-    private columns1: any;
-    private frozenList: Array < Object > = [];
-    private columns2: any;
-    private data2: Array < Object > = [];
-    private repayInfo: Boolean = false;
-    private searchOptions: Boolean = false;
-    private frozenModel: any = {
-      remitItem: 1122,
-      applyDateStart: '',
-      applyDateEnd: '',
-      timeSearch: '',
-      collectMoneyMethod: '',
-      orderInfo: ''
-    }
-
-    mounted() {
-      this.getFrozenList()
-    }
-    created() {
-      this.columns1 = [{
-          align: "center",
-          type: "index",
-          width: 60,
-          title: '序号'
-        },
-        {
-          title: "操作",
-          width: 100,
-          align: "center",
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h("div", [
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.$Modal.confirm({
-                        title: '提示',
-                        content: '确定解冻吗？',
-                        onOk: () => {
-                          this.unFrozen(row)
-                        }
-                      })
-                    }
-                  }
+  mounted() {
+    this.getFrozenList();
+  }
+  created() {
+    this.columns1 = [
+      {
+        title: "操作",
+        width: 100,
+        fixed: "left",
+        align: "center",
+        render: (h, { row, column, index }) => {
+          return h("div", [
+            h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
                 },
-                "解冻"
-              )
-            ]);
-          }
-        },
-        {
-          align: "center",
-          title: "应还罚息",
-          key: 'penaltyReceivable',
-          width: 100
-        },
-        {
-          align: "center",
-          title: "申请冻结罚息",
-          key: "penaltyFreeze",
-          width: 120
-        },
-        {
-          align: "center",
-          title: "剩余罚息",
-          key: "leftPenalty",
-          width: 100
-        },
-        {
-          align: "center",
-          title: " 冻结还款状态",
-          key: "paymentStatus",
-          width: 110
-        },
-        {
-          align: "center",
-          title: " 冻结申请日期",
-          key: "applyDate",
-          width: 160,
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h('span', FilterService.dateFormat(row.applyDate, 'yyyy-MM-dd hh:mm:ss'))
-          }
-        },
-        {
-          align: "center",
-          title: " 客户姓名",
-          key: "name",
-          width: 100
-        },
-        {
-          align: "center",
-          title: " 证件号",
-          key: "idCard",
-          width: 180
-        },
-        {
-          align: "center",
-          title: " 手机号",
-          key: "mobileNumber",
-          width: 160
-        },
-        {
-          align: "center",
-          title: " 订单创建时间",
-          key: "orderCreateTime",
-          width: 160
-        },
-        {
-          align: "center",
-          title: " 订单号",
-          width: 160,
-          key: 'orderNumber',
-          render: (h, params) => {
-            return h('i-button', {
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: "提示",
+                      content: "确定解冻吗？",
+                      onOk: () => {
+                        this.unFrozen(row);
+                      }
+                    });
+                  }
+                }
+              },
+              "解冻"
+            )
+          ]);
+        }
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "应还罚息",
+        key: "penaltyReceivable"
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "申请冻结罚息",
+        key: "penaltyFreeze"
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "剩余罚息",
+        key: "leftPenalty"
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "冻结还款状态",
+        key: "paymentStatus"
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "冻结申请日期",
+        key: "applyDate",
+        render: (h, { row, column, index }) => {
+          return h(
+            "span",
+            FilterService.dateFormat(row.applyDate, "yyyy-MM-dd hh:mm:ss")
+          );
+        }
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "客户姓名",
+        key: "name"
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "证件号码",
+        key: "idCard"
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "手机号",
+        key: "mobileNumber"
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "订单创建时间",
+        key: "orderCreateTime"
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "订单编号",
+        key: "orderNumber",
+        render: (h, params) => {
+          return h(
+            "i-button",
+            {
               props: {
-                type: 'text'
+                type: "text"
               },
               on: {
                 click: () => {
                   this.$Modal.info({
-                    width: '900',
+                    width: "900",
                     render: h => h(PurchaseInformation)
-                  })
+                  });
                 }
               }
-            }, params.row.orderNumber)
-          }
-        },
-        {
-          align: "center",
-          title: " 合同生效日期",
-          key: "contractDate",
-          width: 160
-        },
-        {
-          align: "center",
-          title: " 冻结备注",
-          key: "remitRemark",
-          width: 200
+            },
+            params.row.orderNumber
+          );
         }
-      ];
-
-      this.columns2 = [{
-          align: "center",
-          type: "index",
-          width: 60,
-          title: '期数'
-        },
-        {
-          title: "操作",
-          width: 120,
-          align: "center",
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h("div", [
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.checkProof(row);
-                    }
-                  }
-                },
-                "查看凭证"
-              )
-            ]);
-          }
-        },
-        {
-          align: "center",
-          title: "还款状态",
-          key: 'payStatus'
-        },
-        {
-          align: "center",
-          title: "应付款日",
-          key: "supposedPayDate",
-          width: 110
-        },
-        {
-          align: "center",
-          title: "实际付款日",
-          key: "actualPayDate",
-          width: 110
-        },
-        {
-          align: "center",
-          title: " 逾期天数",
-          key: "overPeriodsDay"
-        },
-        {
-          align: "center",
-          title: " 每日罚息",
-          key: "interestEachDay"
-        },
-        {
-          align: "center",
-          title: " 金额",
-          key: "money"
-        },
-        {
-          align: "center",
-          title: " 罚金",
-          key: "punishMoney"
-        },
-        {
-          align: "center",
-          title: " 开票日",
-          key: "invoiceDate",
-          width: 110
-        },
-        {
-          align: "center",
-          title: " 应收租金",
-          key: "supposedRentMoney"
-        },
-        {
-          align: "center",
-          title: " 应收本金",
-          key: "supposedPrincipalMoney"
-        },
-        {
-          align: "center",
-          title: "应收利息",
-          key: "supposedInterest"
-        },
-        {
-          align: "center",
-          title: " 应收罚息",
-          key: "supposedPunishInterest"
-        },
-        {
-          align: "center",
-          title: " 减免罚息",
-          key: "derateInterest"
-        },
-        {
-          align: "center",
-          title: " 冻结罚息",
-          key: "frozenInterest"
-        },
-        {
-          align: "center",
-          title: " 实收本金",
-          key: "actualPrincipalMoney"
-        },
-        {
-          align: "center",
-          title: " 实收利息",
-          key: "actualInterest"
-        }
-      ];
-
-      this.data2 = [{
-        payStatus: '结清',
-        supposedPayDate: '2017-12-01',
-        actualPayDate: '2017-12-01',
-        overPeriodsDay: '0',
-        interestEachDay: '0',
-        money: '1600',
-        punishMoney: '0',
-        invoiceDate: '2017-12-01',
-        supposedRentMoney: '500',
-        supposedPrincipalMoney: '950',
-        supposedInterest: '150',
-        supposedPunishInterest: '0',
-        derateInterest: '0',
-        frozenInterest: '0',
-        actualPrincipalMoney: '1100',
-        actualInterest: '150'
-      }]
-
-    }
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
-    }
-    repaySum(row) {}
-    trailerCar(row) {
-
-    }
-    /**
-     * 查看凭证
-     */
-    checkProof(row) {
-
-    }
-    getFrozenList() {
-      this.frozenModel.applyDateStart = FilterService.dateFormat(this.frozenModel.applyDateStart, "yyyy-MM-dd")
-      this.frozenModel.applyDateEnd = FilterService.dateFormat(this.frozenModel.applyDateEnd, "yyyy-MM-dd")
-      this.remitApplicationService.selectApplyForReliefHistory(this.frozenModel, this.pageService).subscribe(data => {
-        this.frozenList = data
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
-      })
-    }
-    /**
-     * 解冻
-     */
-    unFrozen(row) {
-      this.remitApplicationService.freezeCancel({
-        applyId: row.applyId
-      }).subscribe(val => {
-        this.$Message.success('撤销成功！')
-        this.getFrozenList()
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
-      })
-    }
-    getTimeSearch(val) {
-      this.frozenModel.applyDateStart = ''
-      this.frozenModel.applyDateEnd = ''
-      this.frozenModel.collectMoneyMethod = ''
-      this.frozenModel.orderInfo = ''
-      this.frozenModel.timeSearch = val
-      this.getFrozenList()
-      this.frozenModel.timeSearch = ''
-    }
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "合同生效日期",
+        key: "contractDate"
+      },
+      {
+        align: "center",
+        editable: true,
+        title: "冻结备注",
+        key: "remitRemark"
+      }
+    ];
   }
-
+  openSearch() {
+    this.searchOptions = !this.searchOptions;
+  }
+  repaySum(row) {}
+  trailerCar(row) {}
+  /**
+   * 查看凭证
+   */
+  checkProof(row) {}
+  getFrozenList() {
+    this.frozenModel.applyDateStart = FilterService.dateFormat(
+      this.frozenModel.applyDateStart,
+      "yyyy-MM-dd"
+    );
+    this.frozenModel.applyDateEnd = FilterService.dateFormat(
+      this.frozenModel.applyDateEnd,
+      "yyyy-MM-dd"
+    );
+    this.remitApplicationService
+      .selectApplyForReliefHistory(this.frozenModel, this.pageService)
+      .subscribe(
+        data => {
+          this.frozenList = data;
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+  /**
+   * 解冻
+   */
+  unFrozen(row) {
+    this.remitApplicationService
+      .freezeCancel({
+        applyId: row.applyId
+      })
+      .subscribe(
+        val => {
+          this.$Message.success("撤销成功！");
+          this.getFrozenList();
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+  getTimeSearch(val) {
+    this.frozenModel.applyDateStart = "";
+    this.frozenModel.applyDateEnd = "";
+    this.frozenModel.collectMoneyMethod = "";
+    this.frozenModel.orderInfo = "";
+    this.frozenModel.timeSearch = val;
+    this.getFrozenList();
+    this.frozenModel.timeSearch = "";
+  }
+}
 </script>
 <style>
-
 
 </style>

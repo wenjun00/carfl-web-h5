@@ -16,11 +16,10 @@
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="position:relative;right:10px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\联系号码查询"></i-input>
+      <i-input style="display:inline-block;width:14%;margin-left:20px;" v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
       <span style="margin-left:10px">日期：</span>
-      <!--<i-date-picker style="display:inline-block;width:16%" type="datetimerange" @on-change="timeRangeChange" @on-clear="clearTime"></i-date-picker>-->
-      <i-date-picker style="display:inline-block;width:10%;" v-model="resourcePoolModel.startTime"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%;" v-model="resourcePoolModel.endTime"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:10%;" v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker>~
+      <i-date-picker style="display:inline-block;width:10%;" v-model="resourcePoolModel.endTime" placeholder="终止日期"></i-date-picker>
       <i-select style="width:100px;margin-left:10px;" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
       </i-select>
@@ -28,11 +27,11 @@
         <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <i-select placeholder="产品类型" style="width:120px;" v-model="resourcePoolModel.productType" clearable>
-        <i-option label="直租" :value="398" :key="398"></i-option>
+        <i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getApprovalListByCondition">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="resourcePoolList" @onPageChange="getApprovalListByCondition" :page="pageService"></data-box>
+    <data-box :id="235" :columns="columns1" :data="resourcePoolList" @onPageChange="getApprovalListByCondition" ref="databox" :page="pageService"></data-box>
 
     <!--Modal-->
     <template>
@@ -46,17 +45,6 @@
     </template>
 
     <!--Model-->
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置">
-        <i-table :columns="columns3" :data="data3"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
 
     <template>
       <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
@@ -94,13 +82,8 @@ export default class ApprovalResourcePool extends Page {
   @Dependencies(PageService) private pageService: PageService;
   private columns1: any;
   private resourcePoolList: Array<Object> = [];
-  private columns2: any;
-  private data2: Array<Object> = [];
   private orderModal: Boolean = false;
   private searchOptions: Boolean = false;
-  private openColumnsConfig: Boolean = false;
-  private columns3: any;
-  private data3: Array<Object> = [];
   private purchaseInformationModal: Boolean = false;
   private scrollTopHeight = 0;
   private resourcePoolModel: any = {
@@ -127,6 +110,7 @@ export default class ApprovalResourcePool extends Page {
         title: "操作",
         align: "center",
         fixed: "left",
+        width: 100,
         render: (h, { row, column, index }) => {
           return h("div", [
             h(
@@ -152,24 +136,17 @@ export default class ApprovalResourcePool extends Page {
       {
         key: "orderLink",
         title: "环节",
+        editable: true,
         align: "center",
-        width: 186,
         render: (h, { row, columns, index }) => {
-          if (row.orderLink === 332) {
-            return h("span", {}, "面审");
-          } else if (row.orderLink === 333) {
-            return h("span", {}, "复审");
-          } else if (row.orderLink === 334) {
-            return h("span", {}, "终审");
-          } else if (row.orderLink === 337) {
-            return h("span", {}, "合规");
-          }
+          return h("span", {}, this.$dict.getDictName(row.orderLink));
         }
       },
       {
         title: "订单编号",
         key: "orderNumber",
         align: "center",
+        editable: true,
         render: (h, { row, column, index }) => {
           if (row && row.orderNumber) {
             return h(
@@ -194,6 +171,7 @@ export default class ApprovalResourcePool extends Page {
       {
         align: "center",
         title: "订单创建时间",
+        editable: true,
         key: "createTime",
         render: (h, { row, column, index }) => {
           return h(
@@ -205,6 +183,7 @@ export default class ApprovalResourcePool extends Page {
       {
         align: "center",
         title: "进入资源池时间",
+        editable: true,
         key: "intoPoolDate",
         render: (h, { row, column, index }) => {
           return h(
@@ -215,148 +194,54 @@ export default class ApprovalResourcePool extends Page {
       },
       {
         align: "center",
+        editable: true,
         title: "省份",
         key: "province",
-        width: 100,
         render: (h, { row, column, index }) => {
           return h("span", CityService.getCityName(row.province));
         }
       },
       {
         align: "center",
+        editable: true,
         title: "城市",
         key: "city",
-        width: 100,
         render: (h, { row, column, index }) => {
           return h("span", CityService.getCityName(row.city));
         }
       },
       {
         align: "center",
+        editable: true,
         title: "订单类型",
         key: "orderType",
-        width: 100,
         render: (h, { row, column, index }) => {
-          if (row.orderType == 301) {
-            return h("span", {}, "融资租赁");
-          } else if (row.orderType == 302) {
-            return h("span", {}, "全额付款");
-          }
+          return h("span", {}, this.$dict.getDictName(row.orderType));
         }
       },
       {
         align: "center",
+        editable: true,
         title: "产品名称",
-        key: "productName",
-        width: 100
+        key: "productName"
       },
       {
         align: "center",
+        editable: true,
         title: "客户姓名",
-        key: "personalName",
-        width: 100
+        key: "personalName"
       },
       {
         align: "center",
-        title: "证件号",
-        key: "idCard",
-        width: 180
+        editable: true,
+        title: "证件号码",
+        key: "idCard"
       },
       {
         align: "center",
+        editable: true,
         title: "手机号",
-        key: "mobileMain",
-        width: 160
-      }
-    ];
-
-    this.columns2 = [
-      {
-        align: "center",
-        title: "处理时间",
-        key: "handleTime"
-      },
-      {
-        align: "center",
-        key: "operator",
-        title: "操作人"
-      },
-      {
-        align: "center",
-        key: "step",
-        title: "环节"
-      }
-    ];
-
-    this.columns3 = [
-      {
-        title: "序号",
-        type: "index",
-        width: 80,
-        align: "center"
-      },
-      {
-        title: "列名",
-        key: "columnsName",
-        align: "center"
-      },
-      {
-        type: "selection",
-        width: 80,
-        align: "center"
-      }
-    ];
-
-    this.data3 = [
-      {
-        columnsName: "申请类型"
-      },
-      {
-        columnsName: "环节"
-      },
-      {
-        columnsName: "订单状态"
-      },
-      {
-        columnsName: "订单创建时间"
-      },
-      {
-        columnsName: "进入资源池时间"
-      },
-      {
-        columnsName: "省份"
-      },
-      {
-        columnsName: "城市"
-      },
-      {
-        columnsName: "订单类型"
-      },
-      {
-        columnsName: "客户姓名"
-      },
-      {
-        columnsName: "证件号"
-      },
-      {
-        columnsName: "手机号"
-      }
-    ];
-    this.data2 = [
-      {
-        handleTime: "2017-12-06 18:45:36",
-        operator: "刘佳",
-        step: "提交审批"
-      },
-      {
-        handleTime: "2017-12-06 18:45:36",
-        operator: "李健",
-        step: "面审"
-      },
-      {
-        handleTime: "2017-12-06 18:45:36",
-        operator: "吴小川",
-        step: "提交审批"
+        key: "mobileMain"
       }
     ];
   }
@@ -368,12 +253,7 @@ export default class ApprovalResourcePool extends Page {
     this.getOrderModel.orderIds = row.orderId;
     this.getOrderModel.userId = this.$store.state.userData.id;
   }
-  /**
-   * 列配置
-   */
-  columnsConfig() {
-    this.openColumnsConfig = true;
-  }
+
   confirmGetOrder() {
     this.approvalService.batchReceiveApproval(this.getOrderModel).subscribe(
       data => {

@@ -59,233 +59,234 @@
 </template>
 
 <script lang="ts">
-  import DataBox from "~/components/common/data-box.vue";
-  import Page from "~/core/page";
-  import Component from "vue-class-component";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    ProductService
-  } from "~/services/manage-service/product.service";
+import DataBox from "~/components/common/data-box.vue";
+import Page from "~/core/page";
+import Component from "vue-class-component";
+import { Dependencies } from "~/core/decorator";
+import { Layout } from "~/core/decorator";
+import { ProductService } from "~/services/manage-service/product.service";
 
-  @Layout("workspace")
-  @Component({
-
-    components: {
-      DataBox
-    }
-  })
-  export default class FlowConfig extends Page {
-    @Dependencies(ProductService) private productService: ProductService;
-    private treeData: Array < any > = [];
-    private approvaFlowList: Array < Object >= [];
-    private allData: Array < any > = [];
-    private processNumber: number = 0;
-    private productId: number = 0;
-    private upOrDown: number = 0;
-    private processId: number = 0;
-    private root: Array < any >= []
-    created() {
-      this.productService.getProductTree().subscribe(data => {
-        this.allData = data;
-        // this.productId = val.object[0].productId
-        this.getDefaultProcess()
-        // 生成树
-        // this.createPrdTree(this.allData);
-        this.createNewTree(this.allData)
-      });
-    }
-    /**
-     * 生成树
-     */
-    createNewTree(allData) {
-      let root = allData.filter(v => !v.parent) // 获取树根
-      this.treeData = []
-      // 遍历根对象push进树中
-      root.forEach(item => {
-        let node1 = {
-          title: item.name,
-          seriesId: item.id,
-          expand: true,
-          children: this.getChild(item)
+@Layout("workspace")
+@Component({
+  components: {
+    DataBox
+  }
+})
+export default class FlowConfig extends Page {
+  @Dependencies(ProductService) private productService: ProductService;
+  private treeData: Array<any> = [];
+  private approvaFlowList: Array<Object> = [];
+  private allData: Array<any> = [];
+  private processNumber: number = 0;
+  private productId: number = 0;
+  private upOrDown: number = 0;
+  private processId: number = 0;
+  private root: Array<any> = [];
+  created() {
+    this.productService.getProductTree().subscribe(data => {
+      this.allData = data;
+      // this.productId = val.object[0].productId
+      this.getDefaultProcess();
+      // 生成树
+      // this.createPrdTree(this.allData);
+      this.createNewTree(this.allData);
+    });
+  }
+  /**
+   * 生成树
+   */
+  createNewTree(allData) {
+    let root = allData.filter(v => !v.parent); // 获取树根
+    this.treeData = [];
+    // 遍历根对象push进树中
+    root.forEach(item => {
+      let node1 = {
+        title: item.name,
+        seriesId: item.id,
+        expand: true,
+        children: this.getChild(item)
+      };
+      this.treeData.push(node1);
+    });
+  }
+  /**
+   * 获取相对根元素的子元素
+   */
+  getChild(item) {
+    let child: any = [];
+    // 判断子的父id与全部数据的id相等
+    this.allData.map(val => {
+      if (item.id === val.parent) {
+        if (val.flag === "产品") {
+          let node2 = {
+            title: val.name,
+            productId: val.id,
+            expand: true,
+            children: this.getChild(val) // 迭代产生根
+          };
+          child.push(node2);
+        } else if (val.flag === "产品系列") {
+          let node2 = {
+            title: val.name,
+            seriesId: val.id,
+            expand: true,
+            children: this.getChild(val)
+          };
+          child.push(node2);
         }
-        this.treeData.push(node1)
-      })
-    }
-    /**
-     * 获取相对根元素的子元素
-     */
-    getChild(item) {
-      let child: any = []
-      // 判断子的父id与全部数据的id相等
-      this.allData.map(val => {
-        if (item.id === val.parent) {
-          if (val.flag === '产品') {
-            let node2 = {
-              title: val.name,
-              productId: val.id,
-              expand: true,
-              children: this.getChild(val) // 迭代产生根
-            }
-            child.push(node2)
-          } else if (val.flag === '产品系列') {
-            let node2 = {
-              title: val.name,
-              seriesId: val.id,
-              expand: true,
-              children: this.getChild(val)
-            }
-            child.push(node2)
-          }
-        }
-      })
-      return child
-    }
-    approvalMoveUp(item) {
-      this.processId = item.id
-      this.upOrDown = 0
-      this.processMove()
-    }
-    approvalMoveDown(item) {
-      this.processId = item.id
-      this.upOrDown = 1
-      this.processMove()
-    }
-    /**
-     * 审批流程上下移动
-     */
-    processMove() {
-      let moveModel = {
-        processId: this.processId,
-        productId: this.productId,
-        upOrDown: this.upOrDown
       }
-      this.productService.configureProductProcessMove(moveModel).subscribe(val => {
-        this.$Message.success('移动成功')
-        this.getDefaultProcess()
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
-      })
-    }
-    approvalDelete(item) {
-      let prdProcessModel = {
-        processId: item.id,
-        productId: item.productId
+    });
+    return child;
+  }
+  approvalMoveUp(item) {
+    this.processId = item.id;
+    this.upOrDown = 0;
+    this.processMove();
+  }
+  approvalMoveDown(item) {
+    this.processId = item.id;
+    this.upOrDown = 1;
+    this.processMove();
+  }
+  /**
+   * 审批流程上下移动
+   */
+  processMove() {
+    let moveModel = {
+      processId: this.processId,
+      productId: this.productId,
+      upOrDown: this.upOrDown
+    };
+    this.productService.configureProductProcessMove(moveModel).subscribe(
+      val => {
+        this.$Message.success("移动成功");
+        this.getDefaultProcess();
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
       }
-      this.$Modal.confirm({
-        title: '提示',
-        content: '确定删除吗？',
-        onOk: () => {
-          this.productService.configureProductProcessDelete(prdProcessModel).subscribe(val => {
-            this.$Message.success('删除成功！')
-            this.getDefaultProcess()
-          })
-        }
-      })
-    }
-    /**
-     * 获取页面加载时的产品审批流程
-     */
-    getDefaultProcess() {
-      this.productService.getProductConfigProcess({
+    );
+  }
+  approvalDelete(item) {
+    let prdProcessModel = {
+      processId: item.id,
+      productId: item.productId
+    };
+    this.$Modal.confirm({
+      title: "提示",
+      content: "确定删除吗？",
+      onOk: () => {
+        this.productService
+          .configureProductProcessDelete(prdProcessModel)
+          .subscribe(val => {
+            this.$Message.success("删除成功！");
+            this.getDefaultProcess();
+          });
+      }
+    });
+  }
+  /**
+   * 获取页面加载时的产品审批流程
+   */
+  getDefaultProcess() {
+    this.productService
+      .getProductConfigProcess({
         productId: this.productId
-      }).subscribe(data => {
-        this.approvaFlowList = data
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
       })
-    }
-    /**
-     * 树change事件
-     */
-    prdTreeChange(val) {
-      console.log(val, 1090)
-      if (val[0].productId) {
-        this.productId = val[0].productId
-        this.productService.getProductConfigProcess({
+      .subscribe(
+        data => {
+          this.approvaFlowList = data;
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+  /**
+   * 树change事件
+   */
+  prdTreeChange(val) {
+    if (val[0].productId) {
+      this.productId = val[0].productId;
+      this.productService
+        .getProductConfigProcess({
           productId: val[0].productId
-        }).subscribe(data => {
-          this.approvaFlowList = data
-        }, ({
-          msg
-        }) => {
-          this.$Message.error(msg)
         })
-      }
-    }
-    /**
-     * 下拉框change
-     */
-    processChange(val) {
-      this.processNumber = val
-    }
-    /**
-     * 增加流程
-     */
-    addNewProcess() {
-      let addProcessModel = {
-        processNumber: this.processNumber,
-        productId: this.productId
-      }
-      if (this.processNumber) {
-        this.productService.configureProductProcessAdd(addProcessModel).subscribe(val => {
-          this.$Message.success('添加成功')
-          this.getDefaultProcess()
-        }, ({
-          msg
-        }) => {
-          this.$Message.error(msg)
-        })
-      } else {
-        this.$Message.error('请先选择流程！')
-      }
+        .subscribe(
+          data => {
+            this.approvaFlowList = data;
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
     }
   }
-
+  /**
+   * 下拉框change
+   */
+  processChange(val) {
+    this.processNumber = val;
+  }
+  /**
+   * 增加流程
+   */
+  addNewProcess() {
+    let addProcessModel = {
+      processNumber: this.processNumber,
+      productId: this.productId
+    };
+    if (this.processNumber) {
+      this.productService.configureProductProcessAdd(addProcessModel).subscribe(
+        val => {
+          this.$Message.success("添加成功");
+          this.getDefaultProcess();
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+    } else {
+      this.$Message.error("请先选择流程！");
+    }
+  }
+}
 </script>
 
 <style lang="less">
-  .rightPageContainer {
-    // display: flex;
-  }
+.rightPageContainer {
+  // display: flex;
+}
 
-  .prdName {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: #265ea2;
-    color: #fff;
-    margin: auto 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 10px;
-  }
+.prdName {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #265ea2;
+  color: #fff;
+  margin: auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
 
-  .approvalContainer {
-    width: 80%;
-    height: 60px;
-    background: #F2F2F2;
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-  }
+.approvalContainer {
+  width: 80%;
+  height: 60px;
+  background: #f2f2f2;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
 
-  .verticalLine {
-    width: 1px;
-    height: 40px;
-    background: #fff;
-    margin-left: 40px;
-  }
+.verticalLine {
+  width: 1px;
+  height: 40px;
+  background: #fff;
+  margin-left: 40px;
+}
 
-  .forbid {}
-
+.forbid {
+}
 </style>
