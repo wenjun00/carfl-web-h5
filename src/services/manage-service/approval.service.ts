@@ -127,4 +127,15 @@ export class ApprovalService {
       data: data
     })
   }
+  /**
+   * 订单流程查询
+   */
+  getOrderProcess({ orderId }) {
+    return this.netService.send({
+      server: manageService.approvalController.getOrderProcess,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
 }

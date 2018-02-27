@@ -109,5 +109,14 @@ export default {
     controller: CONTROLLER,
     action: 'passApproval',
     type: requestType.Get
+  },
+  /**
+   * 获取订单流程
+   */
+  getOrderProcess: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getOrderProcess',
+    type: requestType.Get
   }
 }

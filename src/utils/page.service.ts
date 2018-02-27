@@ -10,7 +10,7 @@ export class PageService {
   constructor() {
     this.total = 0
     this.pageIndex = 1
-    this.pageSize = 10
+    this.pageSize = 20
     this.loading = false
     this.pageSizeOpts = [10, 20, 30, 40]
     this.layout = 'total, sizes, prev, pager, next, jumper'
