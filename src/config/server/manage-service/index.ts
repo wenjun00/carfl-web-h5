@@ -32,10 +32,13 @@ import carParamTypeController from './car-param-type-controller.controller'
 import carParamController from './car-param-controller.controller'
 import withdrawApplicationController from './withdraw-application.controller'
 import advancePayoffController from './advance-payoff.controller'
-
+import advanceRevokeController from './advance-revoke.controller'
+import payoffProductOrderController from './payoff-product-order.controller'
 
 export const manageService = {
+  payoffProductOrderController,
   advancePayoffController,
+  advanceRevokeController,
   departmentController,
   roleController,
   userController,

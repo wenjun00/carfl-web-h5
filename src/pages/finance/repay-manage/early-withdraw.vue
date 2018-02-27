@@ -27,7 +27,7 @@
         <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
         <i-option value="现金" key="现金" label="现金"></i-option>
       </i-select>
-      <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+      <i-button style="margin-left:10px" class="blueButton" @click="getEarlyPayList">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
 
@@ -58,7 +58,15 @@
   import ConfirmWithdraw from "~/components/finance-manage/confirm-withdraw.vue";
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
-
+  import {
+    AdvanceRevokeService
+  } from "~/services/manage-service/advance-revoke.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   import {
     Tooltip
   } from 'iview'
@@ -80,6 +88,9 @@
     }
   })
   export default class EarlyWithdraw extends Page {
+    @Dependencies(AdvanceRevokeService) private advanceRevokeService: AdvanceRevokeService;
+    @Dependencies(PageService) private pageService: PageService;
+
     private columns1: any;
     private data1: Array < Object > = [];
     private columns2: any;
@@ -94,8 +105,17 @@
       dynamicParam: '',
       timeSearch: ''
     }
+    mounted() {
+      this.getEarlyPayList();
+    }
     getEarlyPayList() {
-
+      this.advanceRevokeService.getAdvanceRevokeList(this.customerRepayModel, this.pageService).subscribe(data => {
+        this.data1 = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
     }
     getTimeSearch(val) {
       this.customerRepayModel.settlementChannel = ''
@@ -264,38 +284,6 @@
           key: "belongFirm"
         }
       ];
-
-      this.data1 = [{
-          orderId: 'KB56481456',
-          customerSettleId: 'LSK3125465',
-          customName: '王泽杰',
-          idCard: '610303199111414245',
-          phone: '18265481548',
-          orderCreateTime: '2017-12-03 13:56:03',
-          compactApplyDate: '2017-12-03',
-          supposedMajorMoney: '800.00',
-          supposedInterest: '50.00',
-          supposedPunishedInterest: '12.2',
-          interestRate: '3.45',
-          clearAccountChannel: '支付宝',
-          belongFirm: '群泰西安'
-        },
-        {
-          orderId: 'KB56481456',
-          customerSettleId: 'LSK3125465',
-          customName: '陈丽',
-          idCard: '610303199111414245',
-          phone: '18265481548',
-          orderCreateTime: '2017-12-03 13:56:03',
-          compactApplyDate: '2017-12-03',
-          supposedMajorMoney: '800.00',
-          supposedPunishedInterest: '12.2',
-          supposedInterest: '50.00',
-          interestRate: '3.45',
-          clearAccountChannel: '支付宝',
-          belongFirm: '群泰西安'
-        }
-      ]
 
       this.columns2 = [{
           title: "序号",

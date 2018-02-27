@@ -42,7 +42,7 @@
 
     <template>
       <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认结清" width="900">
-        <confirm-repayment ref="confirm-repayment"></confirm-repayment>
+        <confirm-early-pay ref="confirm-early-pay"></confirm-early-pay>
       </i-modal>
     </template>
 
@@ -64,7 +64,7 @@
   import DataBox from "~/components/common/data-box.vue";
   import Page from "~/core/page";
   import Component from "vue-class-component";
-  import ConfirmRepayment from "~/components/finance-manage/confirm-repayment.vue";
+  import ConfirmEarlyPay from "~/components/finance-manage/confirm-early-pay.vue";
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import DeductRecordHasSearch from "~/components/finance-manage/deduct-record-has-search.vue";
@@ -93,7 +93,7 @@
     components: {
       DeductRecordHasSearch,
       DataBox,
-      ConfirmRepayment,
+      ConfirmEarlyPay,
       DeductRecord,
       RepayInfo
     }
@@ -116,6 +116,9 @@
       paymentStatus: '',
       dynamicParam: '',
       timeSearch: ''
+    }
+    mounted() {
+      this.getEarlyPayList();
     }
     getTimeSearch(val) {
       this.customerRepayModel.settlementChannel = ''
@@ -160,6 +163,8 @@
                 on: {
                   click: () => {
                     this.confirmRepaymentModal = true
+                    let _repayment: any = this.$refs['confirm-early-pay']
+                    _repayment.refresh(row)
                   }
                 },
                 style: {

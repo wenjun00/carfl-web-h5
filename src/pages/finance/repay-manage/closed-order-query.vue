@@ -16,16 +16,12 @@
       <span>高级搜索</span>
     </i-button>
     <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
-      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码"></i-input>
-      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态">
-        <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
-        <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
+      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
+        <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>        
       </i-select>
-      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道">
-        <i-option value="汇付" key="汇付" label="汇付"></i-option>
-        <i-option value="富友" key="富友" label="富友"></i-option>
-        <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
-        <i-option value="现金" key="现金" label="现金"></i-option>
+      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
+        <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
     </i-row>

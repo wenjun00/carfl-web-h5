@@ -180,6 +180,7 @@
   })
   export default class ConfirmWithdraw extends Vue {
     private columns1: any;
+    private payType: any;
     private data1: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
@@ -189,9 +190,11 @@
       gatherType: '销售收款',
       remarks: ''
     }
+    
     private invoiceList: Array < any > = []
     private remark: String = ''
     addAttachment() {}
+    addRow() {}
     created() {
       this.invoiceList = [{
         index: 1,

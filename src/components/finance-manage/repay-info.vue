@@ -9,7 +9,7 @@
 
     <template>
       <i-modal title="还款记录" v-model="repayRecordModal" width="1000">
-        <repay-record></repay-record>
+        <repay-record ref="repay-record"></repay-record>
         <div slot="footer">
           <i-button @click="repayRecordModal=false" class="highDefaultButton">关闭</i-button>
         </div>
@@ -51,7 +51,7 @@
     private repayObj: any = {
       customerName: '',
       orderNumber: ''
-    };    
+    };
     private orderId: any;
     private columns1: any;
     private repayList: Array < Object >= [];
@@ -117,6 +117,8 @@
                 on: {
                   click: () => {
                     this.repayRecordModal = true
+                    let _record: any = this.$refs['repay-record']
+                    _record.refresh(this.orderId)
                   }
                 },
                 style: {

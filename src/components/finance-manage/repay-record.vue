@@ -1,26 +1,8 @@
 <!--划扣记录-->
 <template>
   <section class="component repay-record">
-    <span>支付日期：</span>
-    <i-input style="width:10%;display:inline-block"></i-input>~
-    <i-input style="width:10%;display:inline-block"></i-input>
-    <span style="margin-left:10px;">期数：</span>
-    <i-input style="width:10%;display:inline-block"></i-input>
-    <i-select placeholder="全部交易状态" style="width:14%;display:inline-block;margin-left:10px;">
-      <i-option label="初始" value="初始" key="初始"></i-option>
-      <i-option label="处理中" value="处理中" key="处理中"></i-option>
-      <i-option label="成功" value="成功" key="成功"></i-option>
-      <i-option label="失败" value="失败" key="失败"></i-option>
-    </i-select>
-    <i-button class="blueButton">搜索</i-button>
-    <!--<div style="float:right;margin-right:10px;margin-top:10px;">
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size: 12px;">导出</span>
-      </div>
-    </div>-->
-    <div style="position:relative;top:10px;left:16px;"><span>客户姓名：王泽杰</span><span style="float:right;margin-right:22px">出账客户号：666600000000565656</span></div>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <div style="line-height:40px;font-size:14px;height:40px"><span>客户姓名：{{repayObj.customerName}}</span><span style="float:right;">出账客户号：{{repayObj.clientNumber}}</span></div>
+    <i-table ref="table" class="i-table" :columns="columns1" :data="data1" stripe size="small"></i-table>
   </section>
 </template>
 
@@ -29,7 +11,15 @@
   import Component from "vue-class-component";
   import DataBox from "~/components/common/data-box.vue";
   import SvgIcon from '~/components/common/svg-icon.vue'
-
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    PaymentScheduleService
+  } from "~/services/manage-service/payment-schedule.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   @Component({
     components: {
       DataBox,
@@ -37,9 +27,26 @@
     }
   })
   export default class RepayRecord extends Vue {
+    @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
+    private repayObj: any = {
+      customerName: '',
+      orderNumber: ''
+    };
     private columns1: any;
     private data1: Array < Object >= [];
-
+    refresh(orderId) {
+      this.paymentScheduleService.getPaymentScheduleDetail({
+        orderId: orderId
+      }).subscribe(data => {
+        this.repayObj.customerName = data.customerName
+        this.repayObj.orderNumber = data.orderNumber
+        this.data1 = data.paymentDetails
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+    }
     created() {
       this.columns1 = [{
           title: '期数',
