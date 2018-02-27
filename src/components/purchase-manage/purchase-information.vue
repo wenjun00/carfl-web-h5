@@ -410,8 +410,8 @@
     getOrderDetail(row) {
       this.productOrderService.findOrderInfoByOrderNumber({
         orderNumber: row.orderNumber
-      }).subscribe(val => {
-        let allData = JSON.stringify(val.object)
+      }).subscribe(data => {
+        let allData = JSON.stringify(data)
         this.orderInfo = JSON.parse(allData)
         this.personal = this.orderInfo.personal // 个人资料
         this.personalJobInfo = this.personal.personalJob // 职业信息

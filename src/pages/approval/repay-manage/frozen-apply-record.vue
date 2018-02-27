@@ -22,7 +22,7 @@
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:6px;">
-      <i-input style="display:inline-block;width:14%;margin-left:10px;" v-model="frozenModel.orderInfo" placeholder="请输入客户姓名\证件号码\订单号\手机号(主)"></i-input>
+      <i-input style="display:inline-block;width:14%;margin-left:10px;" v-model="frozenModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
       <span style="margin-left:10px;">日期：</span>
       <i-date-picker style="display:inline-block;width:10%;" v-model="frozenModel.applyDateStart" placeholder="起始日期"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%;" v-model="frozenModel.applyDateEnd" placeholder="终止日期"></i-date-picker>
@@ -132,7 +132,10 @@ export default class FrozenApplyRecord extends Page {
         align: "center",
         editable: true,
         title: "冻结还款状态",
-        key: "paymentStatus"
+        key: "paymentStatus",
+        render: (h, { row, column, index }) => {
+          return h("span", {}, this.$dict.getDictName(row.paymentStatus));
+        }
       },
       {
         align: "center",

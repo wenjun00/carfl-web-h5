@@ -19,7 +19,7 @@
       <i-input style="display:inline-block;width:14%;margin-left:20px;" v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
       <span style="margin-left:10px">日期：</span>
       <i-date-picker style="display:inline-block;width:10%;" v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%;" v-model="resourcePoolModel.endTime" placeholder="终止日期"></i-date-picker>
+      <i-date-picker style="display:inline-block;width:10%;" v-model="resourcePoolModel.endTime" placeholder="终止日期" :options="endDisabeldOptions"></i-date-picker>
       <i-select style="width:100px;margin-left:10px;" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
       </i-select>
@@ -86,6 +86,7 @@ export default class ApprovalResourcePool extends Page {
   private searchOptions: Boolean = false;
   private purchaseInformationModal: Boolean = false;
   private scrollTopHeight = 0;
+  private val: Date;
   private resourcePoolModel: any = {
     startTime: "",
     endTime: "",
@@ -96,6 +97,9 @@ export default class ApprovalResourcePool extends Page {
     productType: ""
   };
   private getOrderModel: any;
+  private endDisabeldOptions: any = {
+    disabledDate(date) {}
+  };
   @Mutation("openPage") openPage;
   mounted() {
     this.getApprovalListByCondition();
@@ -245,6 +249,7 @@ export default class ApprovalResourcePool extends Page {
       }
     ];
   }
+
   /**
    * 领取
    */
