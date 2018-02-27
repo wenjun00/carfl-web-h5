@@ -2,8 +2,8 @@
 <template>
   <section class="page receipt-approve">
     <span class="form-title">收款审批</span>
-    <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" style="display:inline-block;width:10%;margin-left:10px;"></i-input>
-    <i-select placeholder="全部申请类型" style="width:10%;margin-left:10px;" v-model="receipt.applicationType">
+    <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" style="display:inline-block;width:10%;margin-left:10px;" v-model="receipt.dynamicCondition"></i-input>
+    <i-select placeholder="全部申请类型" style="width:10%;margin-left:10px;" v-model="receipt.applicationType" clearable>
       <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
     <i-checkbox style="margin-left:10px;" v-model="receipt.isIncludeDealt">包含已处理</i-checkbox>
@@ -65,6 +65,9 @@
   import {
     Layout
   } from "~/core/decorator";
+  import {
+    FilterService
+  } from '~/utils/filter.service';
 
   @Layout("workspace")
   @Component({
@@ -90,6 +93,7 @@
     private receipt: any = {
       applicationType: '', // 全部申请类型
       isIncludeDealt: '', // 包含已处理
+      dynamicCondition: ''
     }
 
     addNewApply() {
@@ -99,6 +103,7 @@
       })
     }
     created() {
+      this.searchReceiptapprove()
       this.columns1 = [{
         title: '操作',
         align: 'center',
@@ -108,7 +113,7 @@
           columns,
           index
         }) => {
-          if (row.handleStatus === '未处理') {
+          if (row.handleStatus === 1130) {
             return h('div', [
               h('i-button', {
                 props: {
@@ -124,7 +129,7 @@
                 }
               }, '审批')
             ])
-          } else if (row.handleStatus === '已处理') {
+          } else if (row.handleStatus === 1131) {
             return h('div', [
               h('i-button', {
                 props: {
@@ -140,22 +145,29 @@
       }, {
         title: '处理状态',
         key: 'approvalDealStatus',
-        align: 'center'
+        align: 'center',
+        render: (h, {
+          row,
+          columns,
+          index
+        }) => {
+          return h("span", {}, this.$dict.getDictName(row.approvalDealStatus));
+        }
       }, {
         title: '处理时间',
-        key: 'operatorTime',
+        key: 'dealDate',
         align: 'center'
       }, {
         title: '处理人',
-        key: 'operatorName',
+        key: 'dealerName',
         align: 'center'
       }, {
         title: '收款类型',
-        key: 'gatheringType',
+        key: 'applicationType',
         align: 'center'
       }, {
         title: '收款金额',
-        key: 'gatheringAmt',
+        key: 'totalPayment',
         align: 'center'
       }, {
         title: '收款账户名',
@@ -163,11 +175,18 @@
         align: 'center'
       }, {
         title: '申请日期',
-        key: 'applyDate',
-        align: 'center'
+        key: 'operatorTime',
+        align: 'center',
+        render: (h, {
+          row,
+          columns,
+          index
+        }) => {
+          return h('span', FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss'));
+        },
       }, {
         title: '申请人',
-        key: 'applyPerson',
+        key: 'operatorName',
         align: 'center'
       }]
       this.data2 = [{
@@ -206,10 +225,10 @@
      * 搜索
      */
     searchReceiptapprove() {
-      if (this.receipt.isIncludeDealt === false) {
-        this.receipt.isIncludeDealt = 0
-      } else {
+      if (this.receipt.isIncludeDealt) {
         this.receipt.isIncludeDealt = 1
+      } else {
+        this.receipt.isIncludeDealt = 0
       }
       this.financeApprovalHistoryService.getWithdrawApprovalList(this.receipt, this.pageService).subscribe(
         data => {
