@@ -3,18 +3,16 @@
   <section class="page receipt-approve">
     <span class="form-title">收款审批</span>
     <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" style="display:inline-block;width:10%;margin-left:10px;"></i-input>
-    <i-select placeholder="全部申请类型" style="width:10%;margin-left:10px;">
-      <i-option label="销售收款申请" value="销售收款申请" key="销售收款申请"></i-option>
-      <i-option label="提前结清申请" value="提前结清申请" key="提前结清申请"></i-option>
-      <i-option label="销售收回申请" value="销售收回申请" key="销售收回申请"></i-option>
+    <i-select placeholder="全部申请类型" style="width:10%;margin-left:10px;" v-model="receipt.applicationType">
+      <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
-    <i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>
-    <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+    <i-checkbox style="margin-left:10px;" v-model="receipt.isIncludeDealt">包含已处理</i-checkbox>
+    <i-button style="margin-left:10px" class="blueButton" @click="searchReceiptapprove">搜索</i-button>
     <div style="font-size:16px;cursor:pointer;display:inline-block;color:#3367A7;float:right;margin-right:10px;margin-top:10px;">
       <svg-icon iconClass="daochu"></svg-icon>
       <span style="font-size: 12px;">导出</span>
     </div>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="data1" :page="pageService"></data-box>
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
@@ -49,12 +47,21 @@
 <script lang="ts">
   import Page from "~/core/page";
   import Component from "vue-class-component";
+  import {
+    Dependencies
+  } from "~/core/decorator";
   import DataBox from "~/components/common/data-box.vue";
   import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
   import SvgIcon from '~/components/common/svg-icon.vue'
   // 添加新申请
   import AddApply from "~/components/purchase-manage/add-apply.vue";
   import Approval from "~/components/common/approval.vue"
+  import {
+    FinanceApprovalHistoryService
+  } from "~/services/manage-service/finance-approval-history.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
   import {
     Layout
   } from "~/core/decorator";
@@ -69,6 +76,8 @@
     }
   })
   export default class ReceiptApprove extends Page {
+    @Dependencies(FinanceApprovalHistoryService) private financeApprovalHistoryService: FinanceApprovalHistoryService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
     private columns2: any;
     private data1: Array < Object > = [];
@@ -78,6 +87,10 @@
     private approvalModal: Boolean = false
     private checkApplyModal: Boolean = false;
     private addAttachmentShow: Boolean = false;
+    private receipt: any = {
+      applicationType: '', // 全部申请类型
+      isIncludeDealt: '', // 包含已处理
+    }
 
     addNewApply() {
       this.$Modal.info({
@@ -87,34 +100,6 @@
     }
     created() {
       this.columns1 = [{
-        align: 'center',
-        width: 90,
-        type: 'index',
-        renderHeader: (h, {
-          column,
-          index
-        }) => {
-          return h(
-            "div", {
-              on: {
-                click: () => {
-                  this.columnsConfig();
-                }
-              },
-              style: {
-                cursor: "pointer"
-              }
-            }, [
-              h("Icon", {
-                props: {
-                  type: "gear-b",
-                  size: "20"
-                }
-              })
-            ]
-          );
-        }
-      }, {
         title: '操作',
         align: 'center',
         width: 100,
@@ -154,15 +139,15 @@
         }
       }, {
         title: '处理状态',
-        key: 'handleStatus',
+        key: 'approvalDealStatus',
         align: 'center'
       }, {
         title: '处理时间',
-        key: 'handleTime',
+        key: 'operatorTime',
         align: 'center'
       }, {
         title: '处理人',
-        key: 'handlePerson',
+        key: 'operatorName',
         align: 'center'
       }, {
         title: '收款类型',
@@ -174,7 +159,7 @@
         align: 'center'
       }, {
         title: '收款账户名',
-        key: 'gatheringAccountName',
+        key: 'accountName',
         align: 'center'
       }, {
         title: '申请日期',
@@ -183,39 +168,6 @@
       }, {
         title: '申请人',
         key: 'applyPerson',
-        align: 'center'
-      }]
-      this.data1 = [{
-        handleStatus: '已处理',
-        handleTime: '2017-12-01 13:56:56',
-        handlePerson: '李健',
-        gatheringAmt: '8000.00',
-        gatheringType: '销售收款',
-        gatheringAccountName: '中国人寿',
-        applyDate: '2017-12-01 13:56:45',
-        applyPerson: '大壮'
-      }, {
-        handleStatus: '未处理',
-        handleTime: '2017-12-01 13:56:56',
-        handlePerson: '李群',
-        gatheringAmt: '8000.00',
-        gatheringType: '销售收款',
-        gatheringAccountName: '中国人寿',
-        applyDate: '2017-12-01 13:56:45',
-        applyPerson: '大壮'
-      }]
-      this.columns2 = [{
-        title: '序号',
-        type: 'index',
-        width: '80',
-        align: 'center'
-      }, {
-        title: '列名',
-        key: 'columnsName',
-        align: 'center'
-      }, {
-        type: 'selection',
-        width: '80',
         align: 'center'
       }]
       this.data2 = [{
@@ -241,11 +193,34 @@
       }, {
         columnsName: '联系号码'
       }]
+      this.columns2 = [{
+
+      }]
     }
 
     getOrderInfoByTime() {}
     openSearch() {
       this.searchOptions = !this.searchOptions
+    }
+    /**
+     * 搜索
+     */
+    searchReceiptapprove() {
+      if (this.receipt.isIncludeDealt === false) {
+        this.receipt.isIncludeDealt = 0
+      } else {
+        this.receipt.isIncludeDealt = 1
+      }
+      this.financeApprovalHistoryService.getWithdrawApprovalList(this.receipt, this.pageService).subscribe(
+        data => {
+          this.data1 = data
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
     }
     /**
      * 列配置

@@ -1,6 +1,6 @@
 <!--付款申请-->
 <template>
-  <section class="page payt-apply specialInput">
+  <section class="page early-payment-apply specialInput">
     <div class="header">
       <span class="form-title">付款申请</span>
       <div style="float:right;margin-top: 10px;margin-right:10px">
@@ -19,7 +19,7 @@
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80" style="margin-top:20px;">
           <i-col span="12">
             <i-form-item label="证件号码" prop="certificateNumber">
-              <i-input type="text" v-model="applyData.certificateNumber" placeholder="请输入证件号码" @on-change="showTab">
+              <i-input type="text" v-model="applyData.certificateNumber" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
               </i-input>
             </i-form-item>
           </i-col>
@@ -44,36 +44,30 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="付款类型">
-              <i-select v-model="applyData.worker" placeholder="请选择订单">
-                <i-option label="2841545" value="2841545" key="2841545"></i-option>
-                <i-option label="2841546" value="2841546" key="2841546"></i-option>
+              <i-select v-model="applyData.refundType" placeholder="请选择付款类型">
+                <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="备注">
-              <i-input type="text" style="width:77%;" v-model="applyData.phone" placeholder="请输入备注">
+            <i-form-item label="备注" prop="remark">
+              <i-input type="text" style="width:77%;" v-model="applyData.remark" placeholder="请输入备注">
               </i-input>
             </i-form-item>
           </i-col>
         </i-form>
       </i-col>
-      <i-col span="6" type="flex" justify="center" style="display: flex;justify-content: center;align-items: center;position:absolute;top:20%;right:18%;"
-        pull="6">
-        <i-button class="blueButton">清空</i-button>
-      </i-col>
+      <i-button style="height:40px;position:relative;top:60px;" class="blueButton" @click="clearAll">清空</i-button>
     </i-row>
     <i-tabs v-model="materialTabs" type="card" class="early-pay-tabs">
       <i-tab-pane name="pay-detail" label="付款明细">
-        <pay-detail @submitData="submitData" ref="payDetail"></pay-detail>
+        <pay-detail :checkOrderId="checkOrderId" ref="payDetail"></pay-detail>
       </i-tab-pane>
-      <i-tab-pane name="upload-the-material" label="上传素材">
+      <i-tab-pane name="upload-the-fodder" label="上传素材">
+        <upload-the-fodder></upload-the-fodder>
       </i-tab-pane>
     </i-tabs>
-    <div style="height:479px;overflow-y:auto;overflow-x:hidden;">
-      <div class="shade" :style="{display:disabledStatus}">
-      </div>
-      <!--<component :is="materialTabs" :childMessage="childMessage" :disabledStatus="disabledStatus"></component>-->
+    <div class="shade" :style="{display:disabledStatus}">
     </div>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
@@ -84,8 +78,8 @@
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
         <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
-          <i-button class="highDefaultButton">保存草稿</i-button>
-          <i-button class="saveSubmit">保存并提交</i-button>
+          <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
+          <i-button class="highButton" @click="saveSubmit">保存并提交</i-button>
         </i-col>
       </i-row>
     </div>
@@ -128,6 +122,7 @@
   import ModifyGatherItem from "~/components/purchase-manage/modify-gather-item.vue";
   import ChangeGatherItem from "~/components/purchase-manage/change-gather-item.vue";
   import PayDetail from "~/components/purchase-manage/pay-detail.vue";
+  import UploadTheFodder from "~/components/purchase-manage/upload-the-fodder.vue";
 
   @Layout("workspace")
 
@@ -135,7 +130,7 @@
     components: {
       DataBox,
       SvgIcon,
-      UploadTheMaterial,
+      UploadTheFodder,
       ModifyGatherItem,
       ChangeGatherItem,
       PayDetail
@@ -145,8 +140,20 @@
     @Dependencies(RefundApplicationService) private refundApplicationService: RefundApplicationService;
     @Dependencies(PageService) private pageService: PageService;
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
-    private applyData: any;
-    private paramsData: any;
+    private applyData: any = {
+      orderNumber: '', // 订单号
+      name: '', // 客户姓名
+      certificateNumber: '', // 证件号
+      mobileNumber: '', // 客户电话
+      refundType: '', // 退款类型
+      remark: '' // 备注
+    };
+    private paramsData: any = {
+      itemList: [],
+      remark: '',
+      recordStatus: '',
+      refundTotalAmount: ''
+    };
     applyRule: Object = {};
     private purchaseData: Object = {
       province: '',
@@ -163,38 +170,68 @@
     private modifyGatherItemModal: Boolean = false;
     private changeGatherItemModal: Boolean = false;
     private materialTabs: String = 'pay-detail'
-    private disabledStatus: String = ''; // 子组件中输入框禁用flag
+    private disabledStatus: String = ""; // 子组件中输入框禁用flag
     private orderList: Array < any > = [];
+    private dataSet: Array < any > = [];
+    private checkOrderId: Number = 0;
+    private saveData: any = {
+      orderId: '', // 订单id
+      bankListk: [], // 客户开户信息
+      itemList: [], // 付款明细
+      refundType: '', // 付款类型
+      remark: '', // 备注
+      resourceList: [], // 上传资料
+    };
 
-    created() {
-      this.applyData = {
-        orderNumber: '',
-        name: '',
-        certificateNumber: '',
-        mobileNumber: ''
-      }
-      this.paramsData = {
-        itemList: [],
-        remark: '',
-        recordStatus: '',
-        refundTotalAmount: ''
-      }
+    created() {}
+    /**
+     * 清空
+     */
+    clearAll() {
+      this.$Modal.confirm({
+        title: "提示",
+        content: "您有未保存的提前结清申请,清空会删除页面内容，是否确认清空申请内容！",
+        onOk: () => {
+          this.resetAll();
+          // 显示遮罩
+          this.disabledStatus = "block";
+          // 清空orderId
+          this.checkOrderId = 0;
+        }
+      });
+    }
+    /**
+     * 页面重置
+     */
+    resetAll() {
+      let _form: any = this.$refs["customer-form"];
+      _form.resetFields();
+      this.applyData.orderId = "";
+      let _gatherDetail: any = this.$refs["payDetail"];
+      _gatherDetail.resetTable();
     }
     /**
      * 证件号、订单号、客户姓名查询订单/账户/付款信息
      */
     getAllMessage() {
-      this.refundApplicationService.getAllMessageByParams(this.applyData).subscribe(val => {
-        if (val.object.length === 1) {
-          console.log(val.object[0])
-          let _message: any = this.$refs['payDetail']
-          _message.refresh(val.object[0])
-        } else if (val.object.length > 1) {
-          for (let item of val.object) {
-            this.orderList.push(item)
+      this.refundApplicationService
+        .getAllMessageByParams(this.applyData)
+        .subscribe(
+          data => {
+            console.log(data, 'data')
+            this.orderList = data.filter(v => v.orderId)
+            if (data[0] && data[0].orderNumber) {
+              this.applyData.name = data[0].name;
+              this.applyData.mobileNumber = data[0].mobileNumber;
+            }
+            this.dataSet = data
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
           }
-        }
-      })
+        );
     }
 
     submitData(item) {
@@ -203,12 +240,32 @@
       })
     }
     /**
+     * 保存草稿
+     */
+    saveDraft() {
+
+    }
+    /**
      * 保存并提交
      */
     saveSubmit() {
       this.paramsData.recordStatus = 1129
       let _message: any = this.$refs['payDetail']
-      _message.submit()
+      console.log(_message, '_message')
+      this.saveData.bankListk = _message.accountInfoList
+      this.saveData.itemList = _message.gatherItemList
+      this.refundApplicationService
+        .saveSubmitApplication(this.saveData)
+        .subscribe(
+          data => {
+            this.$Message.success("保存并提交成功！");
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
     }
     /**
      * 输入姓名搜索
@@ -217,17 +274,17 @@
       this.getAllMessage()
     }
     /**
-     * 多选
+     * 订单号change
      */
     changeOrder(item) {
-      for (let i in this.orderList) {
-        console.log(i, this.orderList[i])
-        if (this.orderList[i].orderNumber == item) {
-          let _message: any = this.$refs['payDetail']
-          _message.refresh(this.orderList[i])
-        }
+      console.log(item, '890809')
+      if (item) {
+        this.saveData.orderId = item
+        this.checkOrderId = item;
+        let _message: any = this.$refs['payDetail']
+        _message.refresh(this.dataSet.find(v => v.orderNumber === item))
+        console.log(_message, '_message')
       }
-
     }
     multipleSelect(selection) {}
     modifyGatherItem() {
@@ -256,18 +313,18 @@
   .header {
     border-bottom: 1px solid #cccccc;
   }
-
+  
   .open {
     max-width: auto;
     overflow: hidden;
   }
-
+  
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-
+  
   .case-list {
     position: fixed;
     right: 0px;
@@ -278,21 +335,21 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     height: 100%;
   }
-
+  
   .case-list.flag {
     right: -348px;
     box-shadow: none;
     background: none;
   }
-
+  
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
   }
-
+  
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
   }
-
+  
   .arrowButton {
     line-height: 570px;
     height: 100%;
@@ -300,7 +357,7 @@
     text-align: center;
     width: 30px;
   }
-
+  
   .submitBar {
     height: 70px;
     width: 100%;
@@ -310,7 +367,7 @@
     left: 0;
     border: 1px solid #ddd;
   }
-
+  
   .specialInput {
     .ivu-input {
       border-style: none;
@@ -318,7 +375,7 @@
       border-radius: 0;
     }
   }
-
+  
   .bigSelect {
     .ivu-select-selection {
       display: inline-block;
@@ -327,7 +384,7 @@
       border-radius: 0;
     }
   }
-
+  
   .early-pay-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #DDDEE1;
@@ -342,7 +399,7 @@
       }
     }
   }
-
+  
   .early-payment-apply {
     .ivu-select-selection {
       border-style: none;
