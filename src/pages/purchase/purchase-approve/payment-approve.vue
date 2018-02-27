@@ -156,7 +156,7 @@
             columns,
             index
           }) => {
-            if (row.processStatus === 1131) {
+            if (row.processStatus === 1130) {
               return h('div', [
                 h('i-button', {
                   props: {
@@ -180,7 +180,7 @@
                   }
                 }, '审批')
               ])
-            } else if (row.processStatus !== 1131) {
+            } else if (row.processStatus === 1131) {
               return h('div', [
                 h('i-button', {
                   props: {
