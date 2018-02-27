@@ -32,7 +32,7 @@
 
     <template>
       <i-modal @on-visible-change="visibleChange" title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
-        <purchase-information :scrollTopHeight="scrollTopHeight"></purchase-information>
+        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
         </div>
@@ -100,7 +100,8 @@ export default class ApprovalOrderQuery extends Page {
                 },
                 on: {
                   click: () => {
-                    this.purchaseInfoModal = true;
+                    // this.purchaseInfoModal = true;
+                    this.checkOrderInfo(row);
                   }
                 }
               },
@@ -153,7 +154,8 @@ export default class ApprovalOrderQuery extends Page {
               },
               on: {
                 click: () => {
-                  this.purchaseInfoModal = true;
+                  // this.purchaseInfoModal = true;
+                  this.checkOrderInfo(row);
                 }
               }
             },
@@ -230,7 +232,11 @@ export default class ApprovalOrderQuery extends Page {
   getOrder(row) {
     this.orderModal = true;
   }
-
+  checkOrderInfo(row) {
+    this.purchaseInfoModal = true;
+    let _purchaseInfo: any = this.$refs["purchase-info"];
+    _purchaseInfo.getOrderDetail(row);
+  }
   getAllOrderList() {
     this.approvalModel.startTime = FilterService.dateFormat(
       this.approvalModel.startTime,

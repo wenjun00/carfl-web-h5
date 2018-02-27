@@ -32,6 +32,15 @@
       <i-button class="blueButton" style="margin-left:20px;" @click="getFrozenList">搜索</i-button>
     </i-row>
     <data-box :id="348" :columns="columns1" :data="frozenList" @onPageChange="getFrozenList" :page="pageService"></data-box>
+
+    <template>
+      <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
+        <purchase-information ref="purchase-info"></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -52,7 +61,8 @@ import { RemitApplicationService } from "~/services/manage-service/remit-applica
   components: {
     DataBox,
     RepaySum,
-    SvgIcon
+    SvgIcon,
+    PurchaseInformation
   }
 })
 export default class FrozenApplyRecord extends Page {
@@ -62,6 +72,7 @@ export default class FrozenApplyRecord extends Page {
   private columns1: any;
   private frozenList: Array<Object> = [];
   private repayInfo: Boolean = false;
+  private purchaseInfoModal: Boolean = false;
   private searchOptions: Boolean = false;
   private frozenModel: any = {
     remitItem: 1122,
@@ -178,7 +189,7 @@ export default class FrozenApplyRecord extends Page {
         editable: true,
         title: "订单编号",
         key: "orderNumber",
-        render: (h, params) => {
+        render: (h, { row, column, index }) => {
           return h(
             "i-button",
             {
@@ -187,14 +198,11 @@ export default class FrozenApplyRecord extends Page {
               },
               on: {
                 click: () => {
-                  this.$Modal.info({
-                    width: "900",
-                    render: h => h(PurchaseInformation)
-                  });
+                  this.checkOrderInfo(row);
                 }
               }
             },
-            params.row.orderNumber
+            row.orderNumber
           );
         }
       },
@@ -240,6 +248,11 @@ export default class FrozenApplyRecord extends Page {
           this.$Message.error(msg);
         }
       );
+  }
+  checkOrderInfo(row) {
+    this.purchaseInfoModal = true;
+    let _purchaseInfo: any = this.$refs["purchase-info"];
+    _purchaseInfo.getOrderDetail(row);
   }
   /**
    * 解冻

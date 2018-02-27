@@ -31,7 +31,6 @@ export class PageService {
    * @param param
    */
   update({ total, pages }) {
-    console.log(total, pages)
     this.total = parseInt(total)
     this.totalPage = parseInt(pages)
   }

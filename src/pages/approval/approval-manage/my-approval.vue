@@ -93,7 +93,7 @@
 
     <template>
       <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
-        <purchase-information></purchase-information>
+        <purchase-information ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
         </div>
@@ -334,7 +334,7 @@ export default class MyApproval extends Page {
               },
               on: {
                 click: () => {
-                  this.purchaseInfoModal = true;
+                  this.checkOrderInfo(row);
                 }
               }
             },
@@ -434,6 +434,11 @@ export default class MyApproval extends Page {
 
   openSearch() {
     this.searchOptions = !this.searchOptions;
+  }
+  checkOrderInfo(row) {
+    this.purchaseInfoModal = true;
+    let _purchaseInfo: any = this.$refs["purchase-info"];
+    _purchaseInfo.getOrderDetail(row);
   }
   changeSelectOne(val) {
     this.approvalRecordModel.approveReasonId = "";
@@ -658,7 +663,7 @@ export default class MyApproval extends Page {
     let _approve: any = this.$refs["approve"];
     _approve.getOrderDetail(row);
     this.approvalOrderId = row.orderId; //拿到审核的orderId
-    console.log(this.approvalOrderId, row, 777);
+    // console.log(this.approvalOrderId, row, 777);
   }
   getMyOrderList() {
     this.approvalService

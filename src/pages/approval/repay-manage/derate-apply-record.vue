@@ -32,6 +32,15 @@
       <i-button class="blueButton" style="margin-left:20px;" @click="getDerateList">搜索</i-button>
     </i-row>
     <data-box :id="340" :columns="columns1" :data="derateList" :page="pageService" @onPageChange="getDerateList"></data-box>
+
+    <template>
+      <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
+        <purchase-information ref="purchase-info"></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -47,12 +56,14 @@ import { RemitApplicationService } from "~/services/manage-service/remit-applica
 import { Layout } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
+
 @Layout("workspace")
 @Component({
   components: {
     DataBox,
     RepaySum,
-    SvgIcon
+    SvgIcon,
+    PurchaseInformation
   }
 })
 export default class DerateApplyRecord extends Page {
@@ -62,6 +73,7 @@ export default class DerateApplyRecord extends Page {
   private columns1: any;
   private derateList: Array<Object> = [];
   private repayInfo: Boolean = false;
+  private purchaseInfoModal: Boolean = false;
   private searchOptions: Boolean = false;
   private derateModel: any = {
     remitItem: 1121,
@@ -184,10 +196,7 @@ export default class DerateApplyRecord extends Page {
               },
               on: {
                 click: () => {
-                  this.$Modal.info({
-                    width: "900",
-                    render: h => h(PurchaseInformation)
-                  });
+                  this.checkOrderInfo(row);
                 }
               }
             },
@@ -224,6 +233,11 @@ export default class DerateApplyRecord extends Page {
    * 查看凭证
    */
   checkProof(row) {}
+  checkOrderInfo(row) {
+    this.purchaseInfoModal = true;
+    let _purchaseInfo: any = this.$refs["purchase-info"];
+    _purchaseInfo.getOrderDetail(row);
+  }
   getDerateList() {
     this.derateModel.applyDateStart = FilterService.dateFormat(
       this.derateModel.applyDateStart,
