@@ -127,23 +127,43 @@
      * 通过申请
      */
     passApply() {
-      this.refundApplicationService.passRefundApplication({
-        refundId: this.refundId
-      }).subscribe(val => {
-        this.$Message.success(val.msg);
-        this.checkApplyModal = false
-      })
+      this.refundApplicationService
+        .passRefundApplication({
+          refundId: this.refundId
+        })
+        .subscribe(
+          data => {
+            this.$Message.success('审批成功！');
+            this.checkApplyModal = false
+            this.getApproval()
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
     }
     /**
      * 退回申请
      */
     backApply() {
-      this.refundApplicationService.returnRefundApplication({
-        refundId: this.refundId
-      }).subscribe(val => {
-        this.$Message.success(val.msg);
-        this.checkApplyModal = false
-      })
+      this.refundApplicationService
+        .returnRefundApplication({
+          refundId: this.refundId
+        })
+        .subscribe(
+          data => {
+            this.$Message.success('退回成功！');
+            this.checkApplyModal = false
+            this.getApproval()
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
     }
     created() {
       this.getApproval()
@@ -199,7 +219,6 @@
                       this.refundApplicationService.getRefundApplicationById({
                         refundId: row.refundApplicationId
                       }).subscribe(val => {
-
                         this.applyInformation = val
                         let _applyInfo: any = this.$refs['applyDetail']
                         _applyInfo.getparent(this.applyInformation)
