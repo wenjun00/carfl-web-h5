@@ -1,10 +1,9 @@
-<!--提前结清付款明细-->
+<!--提前结清收款明细-->
 <template>
-  <section class="component pay-detail">
-    <!--<i-table :columns="columns1" :data="data1" width="1100"></i-table>-->
+  <section class="component gather-detail-early-pay">
     <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
-        <td bgcolor="#F2F2F2" width="40">
+        <td bgcolor="#F2F2F2" width="80">
           <span>操作</span>
         </td>
         <td bgcolor="#F2F2F2">
@@ -14,52 +13,50 @@
           <span>金额</span>
         </td>
       </tr>
-      <tr height="40" v-for="item in personalInfo" :key="item.index">
+      <tr height="40" v-for="item in gatherItemList" :key="item.index">
         <td width="40">
-          <i-button  v-show="item.refundItem===125" type="text" style="color:#265ea2" @click="deleteGatherItem(item)">删除</i-button>
+          <div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.itemName!=='surplusPrincipal'&&item.itemName!=='surplusPenaltyFreeze'"
+            style="cursor:pointer">
+            <Icon type="trash-a" size="18"></Icon>
+          </div>
         </td>
         <td>
           <span>{{item.refundItem}}</span>
         </td>
         <td>
-          <span>{{item.refundAmount}}</span>
+          <i-input v-if="item.itemName==='otherFee'" style="width:10%" :value="item.refundAmount" @on-change="changeOtherFee" :maxlength="7"></i-input>
+          <span v-else>{{item.refundAmount}}</span>
         </td>
-      </tr>
-      <tr height="40" v-show="changeGatherItemModal">
-        <td></td>
-        <td>
-          <i-input v-model="gatherItemModel.refundItem"></i-input>
-        </td>
-        <td>
-          <i-col :span="18">
-            <i-input v-model="gatherItemModel.refundAmount"></i-input>
-          </i-col>
-          <i-col :span="6">
-            <i-button style="background:#265ea2;color:#fff" @click="addGatherItem">添加</i-button>
-          </i-col>
-        </td>
-      </tr>
-      <tr height="40">
-        <td></td>
-        <td>合计（元）</td>
-        <td><span>{{this.totleAccount}}</span></td>
       </tr>
     </table>
     <div>
       <Icon type="plus" style="position:relative;left:16px;top:5px;color:#265ea2"></Icon>
-      <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">添加付款项</i-button>
+      <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">添加收款项</i-button>
     </div>
     <div class="form-title">账户信息</div>
-    <i-table :columns="columns3" :data="bankList" width="1100"></i-table>
-    <!--编辑付款项-->
+    <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1;margin-bottom:60px;">
+      <tr height="40">
+        <td bgcolor="#F2F2F2">户名</td>
+        <td bgcolor="#F2F2F2">开户银行</td>
+        <td bgcolor="#F2F2F2">银行卡号</td>
+        <td bgcolor="#F2F2F2">支行名称</td>
+        <td bgcolor="#F2F2F2">第三方客户号</td>
+      </tr>
+      <tr height="40" v-for="accountInfo in accountInfoList" :key="accountInfo.index">
+        <td>{{accountInfo.personalName}}</td>
+        <td>{{accountInfo.depositBank}}</td>
+        <td>{{accountInfo.cardNumber}}</td>
+        <td>{{accountInfo.depositBranch}}</td>
+        <td>{{accountInfo.clientNumber}}</td>
+      </tr>
+    </table>
     <template>
-      <i-modal v-model="modifyGatherItemModal" title="编辑付款项" width="300">
-        <modify-gather-item></modify-gather-item>
-      </i-modal>
-
-      <!--添加付款项-->
-      <i-modal v-model="payItems" title="付款项目" width="600" @on-ok="confirChoose">
-        <data-box  border stripe ref="payItemDialog" :columns="columns2" :data="itemInfos"></data-box>
+      <i-modal v-model="addGatherItemModal" title="收款项目">
+        <add-gather-item ref="add-gather-item" @change="changeItemdata"></add-gather-item>
+        <div slot="footer">
+          <i-button @click="addGatherItemModal=false">取消</i-button>
+          <i-button class="blueButton" @click="confirmAddGatherItem">确定</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -74,174 +71,144 @@
   import {
     Dependencies
   } from "~/core/decorator";
-  import SvgIcon from '~/components/common/svg-icon.vue'
-  import DataBox from "~/components/common/data-box.vue"
+  import SvgIcon from "~/components/common/svg-icon.vue";
+  import DataBox from "~/components/common/data-box.vue";
   import {
     Prop
   } from "vue-property-decorator";
   import ModifyGatherItem from "~/components/purchase-manage/modify-gather-item.vue";
-  import ChangeGatherItem from "~/components/purchase-manage/change-gather-item.vue";
+  import AddGatherItem from "~/components/purchase-manage/add-gather-item.vue";
 
   @Component({
     components: {
       SvgIcon,
       DataBox,
       ModifyGatherItem,
-      ChangeGatherItem
+      AddGatherItem
     }
   })
   export default class PayDetail extends Vue {
+    // @Prop() checkOrderId: Number;
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
-    private columns1: any;
-    private data1: Array < Object > = [];
-    private columns3: any;
-    private columns2: any;
-    private totleAccount: String = '';
-    private payItems: Boolean = false;
-    private bankList: Array < Object > = [];
     private modifyGatherItemModal: Boolean = false;
     private changeGatherItemModal: Boolean = false;
-    private personalInfo: Array < any >= []
-    private itemInfos: Array < any >= []
+    private addGatherItemModal: Boolean = false; // 添加收款项
+    private otherTotal: number = 0; // 除其他费用的合计
+    private gatherItemList: Array < any > = [];
     private gatherItemModel: any;
-    private multipleSelection: any = [];
+    private accountInfoList: any = {}; // 账户信息
+    private otherFee: number = 0; // 输入框的其他费用
+    private checkOrderId: any = '';
     created() {
       this.gatherItemModel = {
-        refundAmount: '',
-        refundItem: ''
-      }
-      this.columns2 = [{
-        title: "全选",
-        width: 60,
-        type: 'selection',
-        align: "center"
-      }, {
-        key: 'refundItem',
-        title: '项目名称',
-        align: 'center'
-      }, {
-        key: 'refundAmount',
-        title: '金额',
-        align: 'center',
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          if (index === 1) {
-            return row.refundAmount = 0
-          } else {
-            return row.refundAmount
-          }
-        }
-      }]
-
-      this.columns1 = [{
-        title: "操作",
-        width: 340,
-        align: "center",
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          if (row.itemName !== '合计') {
-            return h("div", [
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.$Modal.confirm({
-                        title: '提示',
-                        content: '确定删除吗？',
-                        onOk: () => {
-                          this.data1.forEach((x, i) => {
-                            if (i === index) {
-                              this.data1.splice(i, 1)
-                            }
-                          })
-                        }
-                      })
-                    }
-                  }
-                },
-                "删除"
-              )
-            ])
-          }
-        }
-      }, {
-        key: 'refundName',
-        title: '项目名称',
-        align: 'center'
-      }, {
-        key: 'refundAmount',
-        title: '金额',
-        align: 'center'
-      }]
-
-      this.columns3 = [{
-        key: 'personalName',
-        align: 'center',
-        title: '户名'
-      }, {
-        key: 'depositBank',
-        align: 'center',
-        title: '开户银行'
-      }, {
-        key: 'cardNumber',
-        align: 'center',
-        title: '银行卡号'
-      }, {
-        key: 'depositBranch',
-        align: 'center',
-        title: '支行名称'
-      }, {
-        key: 'clientNumber',
-        align: 'center',
-        title: '第三方客户号'
-      }]
-    }
-    refresh(childMessage) {
-      this.bankList = childMessage.bankList
-      this.personalInfo = childMessage.itemList
-      this.itemInfos = childMessage.itemList
-    }
-    modifyGatherItem() {
-      this.modifyGatherItemModal = true
+        itemName: "",
+        refundAmount: ""
+      };
     }
     /**
-     * 变更付款项
+     * 确定添加收款项
+     */
+    confirmAddGatherItem() {
+      let _addGatherItem: any = this.$refs["add-gather-item"];
+      _addGatherItem.changeItem();
+    }
+    /**
+     * 添加收款项change事件
+     */
+    changeItemdata(data, otherTotal) {
+      this.otherTotal = otherTotal; // 获取除其他费用的合计
+      //   data.refundItem = data.itemLabel;
+      //   data.refundAmount = data.itemMoney;
+      data.map(v => {
+        v.refundItem = v.itemLabel;
+        v.refundAmount = v.itemMoney
+      })
+      this.gatherItemList = data;
+      this.addGatherItemModal = false;
+    }
+    modifyGatherItem() {
+      this.modifyGatherItemModal = true;
+    }
+    refresh(data) {
+      this.checkOrderId = data.orderId
+      if (data && data.itemList.length > 0) {
+        this.gatherItemList = data.itemList
+      }
+      if (data && data.bankList.length > 0)
+        console.log(data.bankList, 'bankList')
+      this.accountInfoList = data.bankList
+    }
+    /**
+     * 变更收款项
      */
     changeGatherItem() {
-      this.payItems = true
-    }
-    addGatherItem() {
-      this.changeGatherItemModal = false
+      if (this.checkOrderId) {
+        this.addGatherItemModal = true; // 添加收款项
+        let _addGatherItem: any = this.$refs["add-gather-item"];
+        _addGatherItem.getOrderSaleItemData(this.checkOrderId, this.gatherItemList);
+      } else {
+        this.$Message.info("请选择订单！");
+      }
     }
     deleteGatherItem(item) {
-      console.log(item)
+      console.log(item, 'item')
       this.$Modal.confirm({
-        title: '提示',
-        content: '确定删除吗？',
+        title: "提示",
+        content: "确定删除吗？",
         onOk: () => {
-          this.personalInfo.splice(0, 1);
+          // 删除
+          this.changeGatherItemModal = false;
+          console.log(this.gatherItemList, 'gatherItemList')
+          this.gatherItemList = this.gatherItemList.filter(
+            v => v.itemName !== item.itemName
+          );
+          // 重新计算合计
+          console.log(this.gatherItemList, "ddd");
+          let oldTotalPayment = this.gatherItemList.find(
+            v => v.itemName === "totalPayment"
+          ).refundAmount;
+          let deleteFee = item.refundAmount; // 删除的金额
+          this.gatherItemList.find(v => v.itemName === "totalPayment").refundAmount =
+            oldTotalPayment - deleteFee;
         }
-      })
+      });
     }
-    confirChoose() {
-      this.multipleSelection = this.$refs['payItemDialog']
-      this.multipleSelection = this.multipleSelection.getCurrentSelection()
-      this.personalInfo.push(this.multipleSelection[0])
-      console.log(this.itemInfos, 666666)
+    resetTable() {
+      this.gatherItemList = [];
+      //   this.accountInfo.personalName = "";
+      //   this.accountInfo.depositBank = "";
+      //   this.accountInfo.cardNumber = "";
+      //   this.accountInfo.depositBranch = "";
+      //   this.accountInfo.clientNumber = "";
+      this.accountInfoList = [];
     }
-   }
+    /**
+     * 修改其他费用重新计算合计
+     */
+    changeOtherFee(event) {
+      this.otherFee = parseFloat(event.target.value); // 获取输入框输入的其他费用
+      if (this.otherFee) {
+        this.gatherItemList.find(v => v.itemName === "totalPayment").refundAmount =
+          this.otherTotal + this.otherFee;
+      } else {
+        this.gatherItemList.find(
+          v => v.itemName === "totalPayment"
+        ).refundAmount = this.otherTotal;
+      }
+    }
+    /**
+     * 获取列表数据
+     */
+    getItem() {
+      return this.gatherItemList;
+    }
+    /**
+     * 向父组件返回其他费用
+     */
+    getOtherFee() {
+      return this.otherFee;
+    }
+  }
 
 </script>
 
@@ -255,7 +222,7 @@
       border-radius: 0;
     }
   }
-
+  
   .calculate {
     .ivu-modal-footer {
       display: none !important;

@@ -4,9 +4,7 @@
     <span class="form-title">收款记录查询</span>
     <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" style="display:inline-block;width:10%;margin-left:10px;"></i-input>
     <i-select placeholder="全部申请类型" style="width:10%;margin-left:10px;">
-      <i-option label="销售收款申请" value="销售收款申请" key="销售收款申请"></i-option>
-      <i-option label="提前结清申请" value="提前结清申请" key="提前结清申请"></i-option>
-      <i-option label="销售收回申请" value="销售收回申请" key="销售收回申请"></i-option>
+      <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
     <i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>
     <i-button style="margin-left:10px" class="blueButton">搜索</i-button>

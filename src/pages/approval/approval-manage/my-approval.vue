@@ -93,7 +93,7 @@
 
     <template>
       <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
-        <purchase-information></purchase-information>
+        <purchase-information ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
         </div>
@@ -139,6 +139,7 @@
       </i-modal>
     </template>
 
+    <!-- 面审通过 -->
     <template>
       <i-modal title="审批通过" v-model="approvePassedModal" @on-ok="approveModal=false">
         <i-form>
@@ -146,6 +147,10 @@
             <i-input type="textarea" v-model="facePassModel.remark"></i-input>
           </i-form-item>
         </i-form>
+        <div slot="footer">
+          <i-button @click="facePassCancel">取消</i-button>
+          <i-button @click="facePassConfirm" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -161,12 +166,15 @@
       <i-modal title="审批通过" v-model="meetConditionApproval">
         <i-form :label-width="100">
           <i-row>
-            <i-col :span="12">
-              <i-form-item label="合同生效开始日">
+            <i-col :span="5">
+              <span>合同生效开始日</span>
+            </i-col>
+            <i-col :span="9">
+              <i-form-item>
                 <i-date-picker placeholder="请选择"></i-date-picker>
               </i-form-item>
             </i-col>
-            <i-col :span="12">
+            <i-col :span="10">
               <i-form-item>
                 <i-radio-group v-model="compactEffect">
                   <i-radio label="当月"></i-radio>
@@ -177,7 +185,7 @@
           </i-row>
           <i-row>
             <i-col :span="24">
-              <i-form-item label="备注">
+              <i-form-item>
                 <i-input type="textarea" :rows="4"></i-input>
               </i-form-item>
             </i-col>
@@ -334,7 +342,7 @@ export default class MyApproval extends Page {
               },
               on: {
                 click: () => {
-                  this.purchaseInfoModal = true;
+                  this.checkOrderInfo(row);
                 }
               }
             },
@@ -431,9 +439,40 @@ export default class MyApproval extends Page {
       }
     ];
   }
-
+  /**
+   * 面审通过取消
+   */
+  facePassCancel() {
+    this.approvePassedModal = false;
+    this.facePassModel.remark = "";
+  }
+  /**
+   * 面审通过确定
+   */
+  facePassConfirm() {
+    this.approvalService
+      .passApproval({
+        orderId: this.approvalOrderId,
+        remark: this.facePassModel.remark
+      })
+      .subscribe(
+        data => {
+          this.$Message.success("操作成功！");
+          this.approvePassedModal = false;
+          this.facePassModel.remark = "";
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
   openSearch() {
     this.searchOptions = !this.searchOptions;
+  }
+  checkOrderInfo(row) {
+    this.purchaseInfoModal = true;
+    let _purchaseInfo: any = this.$refs["purchase-info"];
+    _purchaseInfo.getOrderDetail(row);
   }
   changeSelectOne(val) {
     this.approvalRecordModel.approveReasonId = "";
@@ -609,7 +648,6 @@ export default class MyApproval extends Page {
     });
   }
   pass() {
-    console.log(this.approveStatue, 89883);
     if (this.approveStatue === 332) {
       // 面审TODO
       this.approvePassedModal = true;
@@ -654,11 +692,10 @@ export default class MyApproval extends Page {
    */
   approveClick(row) {
     this.approveModal = true;
-    this.approveStatue = row.status;
+    this.approveStatue = row.orderLink;
     let _approve: any = this.$refs["approve"];
     _approve.getOrderDetail(row);
     this.approvalOrderId = row.orderId; //拿到审核的orderId
-    console.log(this.approvalOrderId, row, 777);
   }
   getMyOrderList() {
     this.approvalService

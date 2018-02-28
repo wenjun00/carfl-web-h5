@@ -48,7 +48,7 @@
 
     <template>
       <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
-        <purchase-information></purchase-information>
+        <purchase-information ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
         </div>
@@ -145,7 +145,7 @@ export default class LastApproval extends Page {
               },
               on: {
                 click: () => {
-                  this.purchaseInfoModal = true;
+                  this.checkOrderInfo(row);
                 }
               }
             },
@@ -160,32 +160,6 @@ export default class LastApproval extends Page {
         align: "center",
         render: (h, { row, columns, index }) => {
           return h("span", {}, this.$dict.getDictName(row.orderLink));
-        }
-      },
-      {
-        title: "订单编号",
-        key: "orderNumber",
-        editable: true,
-        align: "center",
-        render: (h, { row, column, index }) => {
-          if (row && row.orderNumber) {
-            return h(
-              "i-button",
-              {
-                props: {
-                  type: "text"
-                },
-                on: {
-                  click: () => {
-                    this.purchaseInfoModal = true;
-                  }
-                }
-              },
-              row.orderNumber
-            );
-          } else if (!row) {
-            return h("span", {}, "");
-          }
         }
       },
       {
@@ -264,6 +238,11 @@ export default class LastApproval extends Page {
         key: "mobileMain"
       }
     ];
+  }
+  checkOrderInfo(row) {
+    this.purchaseInfoModal = true;
+    let _purchaseInfo: any = this.$refs["purchase-info"];
+    _purchaseInfo.getOrderDetail(row);
   }
   openSearch() {
     this.searchOptions = !this.searchOptions;

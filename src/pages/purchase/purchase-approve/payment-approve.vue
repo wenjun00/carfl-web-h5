@@ -3,10 +3,8 @@
   <section class="page payment-approve">
     <span class="form-title">付款审批</span>
     <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="approvalModel.dynamicParams" style="display:inline-block;width:10%;margin-left:10px;"></i-input>
-    <i-select placeholder="全部申请类型" style="width:10%;margin-left:10px;">
-      <i-option label="销售收款申请" value="销售收款申请" key="销售收款申请"></i-option>
-      <i-option label="提前结清申请" value="提前结清申请" key="提前结清申请"></i-option>
-      <i-option label="销售收回申请" value="销售收回申请" key="销售收回申请"></i-option>
+    <i-select placeholder="全部申请类型" style="width:10%;margin-left:10px;" clearable>
+      <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
     <i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>
     <i-button style="margin-left:10px" @click="openSearch" class="blueButton">搜索</i-button>
@@ -105,9 +103,18 @@
       })
     }
     getApproval() {
-      this.refundApplicationService.getApprovalRecord(this.approvalModel, this.pageService).subscribe(val => {
-        this.refundApproval = val.object.list
-      })
+      this.refundApplicationService
+        .getApprovalRecord(this.approvalModel, this.pageService)
+        .subscribe(
+          data => {
+            this.refundApproval = data
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
     }
     /**
      * 搜索
@@ -141,137 +148,134 @@
       this.getApproval()
       this.columns2 = [{}]
       this.columns1 = [{
-        align: 'center',
-        width: 90,
-        type: 'index',
-        renderHeader: (h, {
-          column,
-          index
-        }) => {
-          return h(
-            "div", {
-              on: {
-                click: () => {
-                  this.columnsConfig();
-                }
-              },
-              style: {
-                cursor: "pointer"
-              }
-            }, [
-              h("Icon", {
-                props: {
-                  type: "gear-b",
-                  size: "20"
-                }
-              })
-            ]
-          );
-        }
-      }, {
-        title: '操作',
-        align: 'center',
-        width: 100,
-        render: (h, {
-          row,
-          columns,
-          index
-        }) => {
-          if (row.processStatus === 1131) {
-            return h('div', [
-              h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    this.refundId = row.refundApplicationId
-                    this.checkApplyModal = true
-                    this.refundApplicationService.getRefundApplicationById({
-                      refundId: row.refundApplicationId
-                    }).subscribe(val => {
-                      this.applyInformation = val.object
-                      let _applyInfo: any = this.$refs['applyDetail']
-                      _applyInfo.getparent(this.applyInformation)
-                    })
+          title: '操作',
+          align: 'center',
+          width: 100,
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
+            if (row.processStatus === 1130) {
+              return h('div', [
+                h('i-button', {
+                  props: {
+                    type: 'text'
+                  },
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.refundId = row.refundApplicationId
+                      this.checkApplyModal = true
+                      this.refundApplicationService.getRefundApplicationById({
+                        refundId: row.refundApplicationId
+                      }).subscribe(val => {
+                        this.applyInformation = val.object
+                        let _applyInfo: any = this.$refs['applyDetail']
+                        _applyInfo.getparent(this.applyInformation)
+                      })
+                    }
                   }
-                }
-              }, '审批')
-            ])
-          } else if (row.processStatus !== 1131) {
-            return h('div', [
-              h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                }
-              }, '查看')
-            ])
+                }, '审批')
+              ])
+            } else if (row.processStatus === 1131) {
+              return h('div', [
+                h('i-button', {
+                  props: {
+                    type: 'text'
+                  },
+                  style: {
+                    color: '#265EA2'
+                  }
+                }, '查看')
+              ])
+            }
           }
+        },
+        {
+          title: '处理状态',
+          key: 'processStatus',
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.processStatus));
+          }
+        },
+        {
+          title: '处理时间',
+          key: 'processTime',
+          width: 180,
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.processTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
+        },
+        {
+          title: '处理人',
+          width: 120,
+          key: 'processName',
+          align: 'center'
+        },
+        {
+          title: '付款类型',
+          key: 'refundType',
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.refundType));
+          }
+        },
+        {
+          title: '付款金额',
+          key: 'refundTotalAmount',
+          align: 'center'
+        },
+        {
+          title: '客户账户名',
+          key: 'customerName',
+          align: 'center'
+        },
+        {
+          title: '开户银行',
+          key: 'depositBank',
+          align: 'center'
+        },
+        {
+          title: '银行卡号',
+          key: 'cardNumber',
+          align: 'center',
+          width: 180
+        },
+        {
+          title: '申请日期',
+          key: 'operateTime',
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.operateTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
+        },
+        {
+          title: '制单人',
+          key: 'operator',
+          align: 'center'
         }
-      }, {
-        title: '处理状态',
-        key: 'processStatus',
-        align: 'center'
-      }, {
-        title: '处理时间',
-        key: 'processTime',
-        width: 180,
-        align: 'center',
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          return h('span', FilterService.dateFormat(row.processTime, 'yyyy-MM-dd hh:mm:ss'))
-        }
-      }, {
-        title: '处理人',
-        width: 120,
-        key: 'processName',
-        align: 'center'
-      }, {
-        title: '付款类型',
-        key: 'refundType',
-        align: 'center'
-      }, {
-        title: '付款金额',
-        key: 'refundTotalAmount',
-        align: 'center'
-      }, {
-        title: '客户账户名',
-        key: 'customerName',
-        align: 'center'
-      }, {
-        title: '开户银行',
-        key: 'depositBank',
-        align: 'center'
-      }, {
-        title: '银行卡号',
-        key: 'cardNumber',
-        align: 'center',
-        width: 180
-      }, {
-        title: '申请日期',
-        key: 'operateTime',
-        align: 'center',
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          return h('span', FilterService.dateFormat(row.operateTime, 'yyyy-MM-dd hh:mm:ss'))
-        }
-      }, {
-        title: '制单人',
-        key: 'operator',
-        align: 'center'
-      }]
+      ]
 
       this.data2 = [{
         columnsName: '申请类型'

@@ -47,7 +47,7 @@
 
     <template>
       <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
-        <purchase-information></purchase-information>
+        <purchase-information ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
         </div>
@@ -154,7 +154,7 @@ export default class FaceApproval extends Page {
                 },
                 on: {
                   click: () => {
-                    this.purchaseInfoModal = true;
+                    this.checkOrderInfo(row);
                   }
                 }
               },
@@ -249,6 +249,11 @@ export default class FaceApproval extends Page {
     this.orderModal = true;
     this.getOrderModel.orderIds = row.orderId;
     this.getOrderModel.userId = this.$store.state.userData.id;
+  }
+  checkOrderInfo(row) {
+    this.purchaseInfoModal = true;
+    let _purchaseInfo: any = this.$refs["purchase-info"];
+    _purchaseInfo.getOrderDetail(row);
   }
   confirmGetOrder() {
     this.approvalService
