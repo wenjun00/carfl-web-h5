@@ -2,23 +2,23 @@
 <template>
   <section class="page product-package-query">
     <span class="form-title">产品包查询</span>
-    <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
-    <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
-    <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
-    <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
-    <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
-    <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
-    <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
-    <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2">
+      <i-button @click="getOrderInfoByTime(1)" type="text" v-auth="394">昨日</i-button>
+      <i-button @click="getOrderInfoByTime(2)" type="text" v-auth="394">今日</i-button>
+      <i-button @click="getOrderInfoByTime(3)" type="text" v-auth="394">本周</i-button>
+      <i-button @click="getOrderInfoByTime(4)" type="text" v-auth="394">本月</i-button>
+      <i-button @click="getOrderInfoByTime(5)" type="text" v-auth="394">上月</i-button>
+      <i-button @click="getOrderInfoByTime(6)" type="text" v-auth="394">最近三月</i-button>
+      <i-button @click="getOrderInfoByTime(7)" type="text" v-auth="394">本季度</i-button>
+      <i-button @click="getOrderInfoByTime(8)" type="text" v-auth="394">本年</i-button>
+    <i-button @click="openSearch" style="color:#265EA2" v-auth="393">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>高级搜索</i-button>
     <div class="importBtn">
-      <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+      <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="395">
         <svg-icon style="font-size:18px;" iconClass="dayin"></svg-icon>
         <span style="font-size:12px;">打印</span>
       </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="396">
         <svg-icon iconClass="daochu"></svg-icon>
         <span style="font-size:12px;">导出</span>
       </div>
@@ -31,7 +31,7 @@
       <!--<i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>-->
     </i-row>
     <i-row style="margin-top:20px">
-      <data-box :columns="queryColumns" :data="queryData" @onPageChange="productSeach" :page="pageService"></data-box>
+      <data-box :id="392" :columns="queryColumns" :data="queryData" @onPageChange="productSeach" :page="pageService"></data-box>
     </i-row>
     <!--列配置-->
     <template>
