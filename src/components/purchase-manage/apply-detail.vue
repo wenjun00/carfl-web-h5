@@ -10,7 +10,7 @@
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="付款类型" >
+          <i-form-item label="付款类型">
             <i-input v-model="refundType" disabled></i-input>
           </i-form-item>
         </i-col>
@@ -45,8 +45,8 @@
             <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
           </div>
         </i-col>
-        <i-col :span="12" >
-          <div   class="demo-upload-list" v-for="(item, id) in fileList" :key="id">
+        <i-col :span="12">
+          <div class="demo-upload-list" v-for="(item, id) in fileList" :key="id">
             <img style="height:200px;width:200px;border:1px solid #C2C2C2;" :src="item.materialUrl">
             <div class="demo-upload-list-cover">
               <i-icon type="ios-trash-outline" @click.native="handleRemove(item)"></i-icon>
@@ -105,7 +105,10 @@
     private columns3: any;
     private accountDetail: Array < Object > = [];
     private fileList: Array < Object > = [];
-    private addNewApplyModal: Object = {};
+    private addNewApplyModal: any = {
+      name: '',
+      idCard: ''
+    };
     private refundList: Object = {};
     private refundType: String = '';
     private remark: String = '';
@@ -118,7 +121,6 @@
      *打开页面获取申请数据
      */
     getparent(val) {
-      console.log(val, 99)
       this.refundList = val
       this.addNewApplyModal = val.personal
       this.payDetail = val.itemList
@@ -127,6 +129,20 @@
       this.refundType = val.RefundApplication ? val.RefundApplication.refundType : ''
       this.remark = val.RefundApplication ? val.RefundApplication.remark : ''
       this.orderNumber = val.productOrder.orderNumber
+    }
+    getparentData(val, row) {
+      console.log(val, row)
+      this.orderNumber = val.orderNumber // 订单号
+      val.collectMoneyItemModels.map(v => {
+        v.refundAmount = v.itemMoney
+        v.refundItem = v.itemLabel
+      })
+      this.addNewApplyModal.name = row.accountName // 客户姓名
+      this.payDetail = val.collectMoneyItemModels // 付款明细
+      this.addNewApplyModal.idCard = val.idCard // 证件号
+      this.refundType = val.applicationType // 付款类型
+      this.accountDetail = val.personalBank // 账户信息
+      this.fileList = val.applicationPhaseUploadResources
     }
 
     /**

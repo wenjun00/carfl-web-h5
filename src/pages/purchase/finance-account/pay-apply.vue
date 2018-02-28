@@ -283,7 +283,6 @@
         this.checkOrderId = item;
         let _message: any = this.$refs['payDetail']
         _message.refresh(this.dataSet.find(v => v.orderNumber === item))
-        console.log(_message, '_message')
       }
     }
     multipleSelect(selection) {}

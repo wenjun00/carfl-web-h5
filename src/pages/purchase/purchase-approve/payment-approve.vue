@@ -36,8 +36,8 @@
       <i-modal v-model="checkApplyModal" class="addApply" title="申请详情" width="800">
         <apply-detail ref="applyDetail"></apply-detail>
         <div slot="footer">
-          <i-button class="highDefaultButton" style="width:80px" @click="backApply">退回</i-button>
-          <i-button class="highButton" style="width:80px" @click="passApply">通过</i-button>
+          <i-button class="highDefaultButton" style="width:80px" @click="backApply" v-if="type===1">退回</i-button>
+          <i-button class="highButton" style="width:80px" @click="passApply" v-if="type===1">通过</i-button>
         </div>
       </i-modal>
     </template>
@@ -93,6 +93,7 @@
     private addAttachmentShow: Boolean = false;
     private dynamicParams: String = '';
     private refundId: String = '';
+    private type: any = '';
     private approvalModel: any = {
       dynamicParams: ''
     }
@@ -169,10 +170,11 @@
                     click: () => {
                       this.refundId = row.refundApplicationId
                       this.checkApplyModal = true
+                      this.type = 1
                       this.refundApplicationService.getRefundApplicationById({
                         refundId: row.refundApplicationId
                       }).subscribe(val => {
-                        this.applyInformation = val.object
+                        this.applyInformation = val
                         let _applyInfo: any = this.$refs['applyDetail']
                         _applyInfo.getparent(this.applyInformation)
                       })
@@ -188,6 +190,21 @@
                   },
                   style: {
                     color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.refundId = row.refundApplicationId
+                      console.log(this.refundId, 77777)
+                      this.checkApplyModal = true
+                      this.refundApplicationService.getRefundApplicationById({
+                        refundId: row.refundApplicationId
+                      }).subscribe(val => {
+
+                        this.applyInformation = val
+                        let _applyInfo: any = this.$refs['applyDetail']
+                        _applyInfo.getparent(this.applyInformation)
+                      })
+                    }
                   }
                 }, '查看')
               ])
