@@ -34,10 +34,11 @@
 
     <template>
       <i-modal v-model="checkApplyModal" class="addApply" title="销售收款申请" width="800">
-        <add-apply></add-apply>
+        <!--<add-apply></add-apply>-->
+        <apply-detail ref="applyDetail"></apply-detail>
         <div slot="footer">
-          <i-button class="highDefaultButton" style="width:80px" @click="checkApplyModal=false">退回</i-button>
-          <i-button class="highButton" style="width:80px" @click="checkApplyModal=false">通过</i-button>
+          <i-button class="highDefaultButton" style="width:80px" @click="rebackClick" v-if="type===1">退回</i-button>
+          <i-button class="highButton" style="width:80px" @click="passClick" v-if="type===1">通过</i-button>
         </div>
       </i-modal>
     </template>
@@ -67,7 +68,8 @@
   } from "~/core/decorator";
   import {
     FilterService
-  } from '~/utils/filter.service';
+  } from '~/utils/filter.service'; // 添加新申请
+  import ApplyDetail from "~/components/purchase-manage/apply-detail.vue";
 
   @Layout("workspace")
   @Component({
@@ -75,7 +77,8 @@
       DataBox,
       SvgIcon,
       AddApply,
-      Approval
+      Approval,
+      ApplyDetail
     }
   })
   export default class ReceiptApprove extends Page {
@@ -90,6 +93,9 @@
     private approvalModal: Boolean = false
     private checkApplyModal: Boolean = false;
     private addAttachmentShow: Boolean = false;
+    private applyInformation: Array < Object > = [];
+    private withdrawId: any = "";
+    private type: any = "";
     private receipt: any = {
       applicationType: '', // 全部申请类型
       isIncludeDealt: '', // 包含已处理
@@ -113,7 +119,7 @@
           columns,
           index
         }) => {
-          if (row.handleStatus === 1130) {
+          if (row.approvalDealStatus === 126) {
             return h('div', [
               h('i-button', {
                 props: {
@@ -124,12 +130,22 @@
                 },
                 on: {
                   click: () => {
+                    this.type = 1
                     this.checkApplyModal = true
+                    this.withdrawId = row.applicationId
+                    this.financeApprovalHistoryService.withdrawApplicationDetail({
+                      withdrawId: row.applicationId
+                    }).subscribe(val => {
+                      console.log(val, 'val')
+                      this.applyInformation = val
+                      let _applyInfo: any = this.$refs['applyDetail']
+                      _applyInfo.getparentData(this.applyInformation, row)
+                    })
                   }
                 }
               }, '审批')
             ])
-          } else if (row.handleStatus === 1131) {
+          } else if (row.approvalDealStatus === 125) {
             return h('div', [
               h('i-button', {
                 props: {
@@ -137,6 +153,20 @@
                 },
                 style: {
                   color: '#265EA2'
+                },
+                on: {
+                  click: () => {
+                    console.log(row)
+                    this.checkApplyModal = true
+                    this.financeApprovalHistoryService.withdrawApplicationDetail({
+                      withdrawId: row.applicationId
+                    }).subscribe(val => {
+                      console.log(val, 'val')
+                      this.applyInformation = val
+                      let _applyInfo: any = this.$refs['applyDetail']
+                      _applyInfo.getparentData(this.applyInformation, row)
+                    })
+                  }
                 }
               }, '查看')
             ])
@@ -164,7 +194,14 @@
       }, {
         title: '收款类型',
         key: 'applicationType',
-        align: 'center'
+        align: 'center',
+        render: (h, {
+          row,
+          columns,
+          index
+        }) => {
+          return h("span", {}, this.$dict.getDictName(row.applicationType));
+        }
       }, {
         title: '收款金额',
         key: 'totalPayment',
@@ -233,6 +270,48 @@
       this.financeApprovalHistoryService.getWithdrawApprovalList(this.receipt, this.pageService).subscribe(
         data => {
           this.data1 = data
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+    }
+    /**
+     * 审批通过
+     */
+    passClick() {
+      let passData: any = {
+        isPass: 1,
+        withdrawId: this.withdrawId
+      }
+      this.financeApprovalHistoryService.withdrawApplicationApprovalPass(passData).subscribe(
+        data => {
+          this.$Message.success('审批成功！');
+          this.checkApplyModal = false
+          this.searchReceiptapprove()
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+    }
+    /**
+     * 退回
+     */
+    rebackClick() {
+      let passData: any = {
+        isPass: 0,
+        withdrawId: this.withdrawId
+      }
+      this.financeApprovalHistoryService.withdrawApplicationApprovalRefuse(passData).subscribe(
+        data => {
+          this.$Message.success('退回成功！');
+          this.checkApplyModal = false
+          this.searchReceiptapprove()
         },
         ({
           msg

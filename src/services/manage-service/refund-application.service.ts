@@ -16,6 +16,7 @@ export class RefundApplicationService {
       return this.netService.send({
         server: manageService.refundApplicationController.getApprovalRecord,
         data: {
+          getApprovalRecord: data.getApprovalRecord,
           refundName: data.refundName,
           timeSearch: data.timeSearch,
           startDate: FilterService.dateFormat(data.startDate, 'yyyy-MM-dd'),

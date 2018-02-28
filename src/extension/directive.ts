@@ -7,8 +7,7 @@ export default ({ store }): Object => ({
   auth: {
     bind(el, binding, vnode) {
       // 获取权限编码
-      let authCode = binding.expression
-
+      let authCode = Number(binding.expression)
       // 验证权限码
       if (!authCode) {
         console.error('未传入权限')

@@ -277,13 +277,11 @@
      * 订单号change
      */
     changeOrder(item) {
-      console.log(item, '890809')
       if (item) {
-        this.saveData.orderId = item
-        this.checkOrderId = item;
+        this.saveData.orderId = this.dataSet.find(v => v.orderNumber === item).orderId
+        this.checkOrderId = this.dataSet.find(v => v.orderNumber === item).orderId;
         let _message: any = this.$refs['payDetail']
         _message.refresh(this.dataSet.find(v => v.orderNumber === item))
-        console.log(_message, '_message')
       }
     }
     multipleSelect(selection) {}
