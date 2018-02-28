@@ -67,7 +67,7 @@
           <td>{{orderInfo.initialPayment}}</td>
         </tr>
         <tr>
-          <td bgColor="#F5F5F5">保证金金额</td>
+          <td bgColor="#F5F5F5">保证金额</td>
           <td>{{orderInfo.depositCash}}</td>
           <td bgColor="#F5F5F5">尾付金额</td>
           <td>{{orderInfo.finalCash}}</td>
@@ -239,13 +239,19 @@
           <td bgColor="#F5F5F5">单位名称</td>
           <td bgColor="#F5F5F5">家庭住址</td>
         </tr>
-        <tr v-for="item in immediateContacts" :key="item.id">
+        <tr v-if="!immediateContacts.length">
+          <td :colspan="5">
+            <div style="text-align:center">暂无数据</div>
+          </td>
+        </tr>
+        <tr v-for="item in immediateContacts" :key="item.id" v-else>
           <td>{{item.name?item.name:''}}</td>
           <td>{{item.relation?$dict.getDictName(item.relation):''}}</td>
           <td>{{item.relation?item.phone:''}}</td>
           <td>{{item.employer?item.employer:''}}</td>
           <td>{{item.address?item.address:''}}</td>
         </tr>
+
         <tr>
           <td colspan="5">其他联系人（提示：必填3个其他联系人）</td>
         </tr>
@@ -256,7 +262,12 @@
           <td bgColor="#F5F5F5">单位名称</td>
           <td bgColor="#F5F5F5">家庭住址</td>
         </tr>
-        <tr v-for="item in otherContactsInfo" :key="item.id">
+        <tr v-if="!otherContactsInfo.length">
+          <td :colspan="5">
+            <div style="text-align:center">暂无数据</div>
+          </td>
+        </tr>
+        <tr v-for="item in otherContactsInfo" :key="item.id" v-else>
           <td>{{item.name?item.name:''}}</td>
           <td>{{item.relation?$dict.getDictName(item.relation):''}}</td>
           <td>{{item.relation?item.phone:''}}</td>
@@ -331,7 +342,7 @@ export default class Approve extends Vue {
   private personal: any = {}; // 个人资料
   private productSeries: any = {}; // 产品系列
   private contactsInfo: any = {}; // 联系人信息
-  private immediateContacts: any = {}; // 直系联系人信息
+  private immediateContacts: Array<any> = []; // 直系联系人信息
   private otherContactsInfo: any = {}; // 其他联系人信息
   private carOrderInfo: any = {}; // 选购车辆
   private personalJobInfo: any = {}; // 职业信息
@@ -367,12 +378,11 @@ export default class Approve extends Vue {
             this.personalResourceIntroduce = this.personal.personalResourceIntroduce; // 客户来源介绍
           }
           this.materialInfo = this.personal.personalDatas; // 素材相关信息
-          // console.log(this.orderInfo.personalJob, 1234)
           this.immediateContacts = this.contactsInfo.filter(
             v => v.relation === 56 || v.relation === 57 || v.relation === 58
           );
 
-          // console.log(this.immediateContacts, 8987)
+          console.log(this.immediateContacts, 18987);
           this.otherContactsInfo = this.contactsInfo.filter(
             v =>
               v.relation === 59 ||
@@ -385,6 +395,23 @@ export default class Approve extends Vue {
           this.$Message.error(msg);
         }
       );
+  }
+  /**
+   * 从审批页面获取复审终审通过所需的数据
+   */
+  getApproveData() {
+    let approveData: any = {};
+    approveData.intentionFinancingAmount = this.orderInfo.intentionFinancingAmount; // 融资金额
+    approveData.initialPayment = this.orderInfo.initialPayment; // 首付金额
+    approveData.depositCash = this.orderInfo.depositCash; // 保证金额
+    approveData.finalCash = this.orderInfo.finalCash; // 尾付金额
+    approveData.manageCost = this.orderInfo.manageCost; // 管理费金额
+    approveData.insuranceExpenses = this.orderInfo.insuranceExpenses; // 保险费
+    approveData.gpsFee = this.orderInfo.gpsFee; // GPS费
+    approveData.installLicenseFee = this.orderInfo.installLicenseFee; // 上牌费
+    approveData.purchaseTax = this.orderInfo.purchaseTax; // 购置税
+    approveData.remark = this.orderInfo.remark; // 备注
+    return approveData;
   }
 }
 </script>

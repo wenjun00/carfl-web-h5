@@ -3,7 +3,7 @@
   <section class="page flow-config">
     <span class="form-title">审批流程配置</span>
     <i-row :gutter="20">
-      <i-col :span="4" style="border:1px solid #F2F2F2;height:500px;margin-left:30px;">
+      <i-col :span="4" style="border:1px solid #dddddd;height:500px;margin-left:30px">
         <div style="font-size:14px;font-weight:bold">产品分类</div>
         <i-tree :data="treeData" @on-select-change="prdTreeChange"></i-tree>
       </i-col>

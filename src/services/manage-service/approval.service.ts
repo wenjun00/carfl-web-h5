@@ -138,4 +138,15 @@ export class ApprovalService {
       }
     })
   }
+  /**
+   * 获取订单相关比例
+   */
+  getRate({ orderId }) {
+    return this.netService.send({
+      server: manageService.approvalController.getRate,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
 }

@@ -248,6 +248,8 @@ export default class MeetConditionCheck extends Page {
    */
   getOrder(row) {
     this.orderModal = true;
+    this.getOrderModel.orderIds = row.orderId;
+    this.getOrderModel.userId = this.$store.state.userData.id;
   }
 
   getMeetConditionList() {

@@ -118,5 +118,14 @@ export default {
     controller: CONTROLLER,
     action: 'getOrderProcess',
     type: requestType.Get
+  },
+  /**
+   * 获取订单相关比例
+   */
+  getRate: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getRate',
+    type: requestType.Get
   }
 }
