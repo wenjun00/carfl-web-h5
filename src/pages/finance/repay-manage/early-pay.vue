@@ -134,7 +134,8 @@
       data.delFinanceUploadResource = _repayment.delFinanceUploadResource
       data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
-      data.paymentScheduleId = _repayment.rowObj.orderId
+      data.businessId = _repayment.rowObj.businessId
+      data.totalPayment = _repayment.paymentAmount
       this.advancePayoffService.saveCollectMoneyHistoryAsDraft(data).subscribe(data => {
         this.$Message.info('保存草稿成功！')
         this.confirmRepaymentModal = false
@@ -154,7 +155,8 @@
       data.delFinanceUploadResource = _repayment.delFinanceUploadResource
       data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
-      data.paymentScheduleId = _repayment.rowObj.orderId
+      data.businessId = _repayment.rowObj.businessId
+      data.totalPayment = _repayment.paymentAmount
       this.advancePayoffService.saveCollectMoneyHistory(data).subscribe(data => {
         this.$Message.info('操作成功！')
         this.confirmRepaymentModal = false

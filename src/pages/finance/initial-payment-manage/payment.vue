@@ -98,7 +98,8 @@
       refundName: '',
       timeSearch: '',
       startTime: '',
-      endTime: ''
+      endTime: '',
+      approvalStatus: 1127
     }
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -137,7 +138,7 @@
             column,
             index
           }) => {
-            if (row.handleStatus === '未处理') {
+            if (row.processStatus === 1130) {
               return h("div", [
                 h(
                   "i-button", {
@@ -156,7 +157,7 @@
                   "确认付款"
                 )
               ]);
-            } else if (row.handleStatus === '已处理') {
+            } else if (row.processStatus === 1131) {
               return h("div", [
                 h(
                   "i-button", {
