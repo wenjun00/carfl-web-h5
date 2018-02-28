@@ -23,7 +23,7 @@
       <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
         <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+      <i-button style="margin-left:10px" class="blueButton" @click="getEarlyPayList">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
 
@@ -43,7 +43,15 @@
   import ConfirmRepayment from "~/components/finance-manage/confirm-repayment.vue";
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
-
+  import {
+    PayoffProductOrderService
+  } from "~/services/manage-service/payoff-product-order.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   import {
     Tooltip
   } from 'iview'
@@ -56,7 +64,6 @@
 
   @Layout("workspace")
   @Component({
-
     components: {
       DataBox,
       ConfirmRepayment,
@@ -65,6 +72,9 @@
     }
   })
   export default class ClosedOrderQuery extends Page {
+    @Dependencies(PayoffProductOrderService) private payoffProductOrderService: PayoffProductOrderService;
+    @Dependencies(PageService) private pageService: PageService;
+
     private columns1: any;
     private data1: Array < Object > = [];
     private columns2: any;
@@ -78,8 +88,17 @@
       dynamicParam: '',
       timeSearch: ''
     }
+    mounted() {
+      this.getEarlyPayList();
+    }
     getEarlyPayList() {
-
+      this.payoffProductOrderService.getPayoffProductOrders(this.customerRepayModel, this.pageService).subscribe(data => {
+        this.data1 = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
     }
     getTimeSearch(val) {
       this.customerRepayModel.settlementChannel = ''
@@ -212,22 +231,6 @@
           key: "belongFirm"
         }
       ];
-
-      this.data1 = [{
-        orderId: 'KB56481456',
-        customerSettleId: 'LSK3125465',
-        customName: '陈丽',
-        idCard: '610303199111414245',
-        phone: '18265481548',
-        orderCreateTime: '2017-12-03 13:56:03',
-        compactApplyDate: '2017-12-03',
-        supposedMajorMoney: '800.00',
-        supposedPunishedInterest: '12.2',
-        supposedInterest: '50.00',
-        interestRate: '3.45',
-        clearAccountChannel: '支付宝',
-        belongFirm: '群泰西安'
-      }]
 
       this.columns2 = [{
           title: "序号",

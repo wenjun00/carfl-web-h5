@@ -150,7 +150,14 @@
         {
           title: "处理状态",
           key: "collectMoneyDealStatus",
-          align: "center"
+          align: "center",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.collectMoneyDealStatus));
+          }
         },
         {
           align: "center",
@@ -173,7 +180,14 @@
         {
           align: "center",
           title: "收款类型",
-          key: "totalPayment"
+          key: "applicationType",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.applicationType));
+          }
         },
         {
           align: "center",
@@ -258,10 +272,8 @@
      * 获取收款列表
      */
     getGatherListByCondition() {
-      this.gatherModel.queryStartDate = FilterService.dateFormat(this.gatherModel.queryStartDate, "yyyy-MM-dd")
-      this.gatherModel.queryEndDate = FilterService.dateFormat(this.gatherModel.queryEndDate, "yyyy-MM-dd")
       this.collectMoneyHistoryService.collectMoneyHistoryList(this.gatherModel, this.pageService).subscribe(val => {
-        this.gatherList = val.object.list
+        this.gatherList = val
       })
     }
   }

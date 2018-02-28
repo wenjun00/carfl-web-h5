@@ -43,6 +43,10 @@
     <template>
       <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认结清" width="900">
         <confirm-early-pay ref="confirm-early-pay"></confirm-early-pay>
+        <div slot="footer">
+          <i-button @click="saveDraft" class="highDefaultButton">保存草稿</i-button>
+          <i-button @click="confirmRepayment" class="highButton">确认</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -119,6 +123,46 @@
     }
     mounted() {
       this.getEarlyPayList();
+    }
+    /**
+     * 保存草稿
+     */
+    saveDraft() {
+      let _repayment: any = this.$refs['confirm-early-pay']
+      let data: any = {}
+      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
+      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
+      data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.orderId = _repayment.rowObj.orderId
+      data.paymentScheduleId = _repayment.rowObj.orderId
+      this.advancePayoffService.saveCollectMoneyHistoryAsDraft(data).subscribe(data => {
+        this.$Message.info('保存草稿成功！')
+        this.confirmRepaymentModal = false
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+    }
+    /**
+     * 确认还款
+     */
+    confirmRepayment() {
+      let _repayment: any = this.$refs['confirm-early-pay ']
+      let data: any = {}
+      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
+      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
+      data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.orderId = _repayment.rowObj.orderId
+      data.paymentScheduleId = _repayment.rowObj.orderId
+      this.advancePayoffService.saveCollectMoneyHistory(data).subscribe(data => {
+        this.$Message.info('操作成功！')
+        this.confirmRepaymentModal = false
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
     }
     getTimeSearch(val) {
       this.customerRepayModel.settlementChannel = ''

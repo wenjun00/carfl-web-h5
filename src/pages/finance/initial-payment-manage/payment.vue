@@ -108,16 +108,8 @@
       this.confirmGatherModal = false
     }
     getOrderQuery() {
-      this.approvalModel.startTime = FilterService.dateFormat(
-        this.approvalModel.startTime,
-        "yyyy-MM-dd"
-      );
-      this.approvalModel.endTime = FilterService.dateFormat(
-        this.approvalModel.endTime,
-        "yyyy-MM-dd"
-      );
       this.refundApplicationService.getApprovalRecord(this.approvalModel, this.pageService).subscribe(val => {
-        this.paymentData = val.object.list
+        this.paymentData = val
       })
     }
     getTimeSearch(val) {
@@ -129,7 +121,7 @@
     }
     getApproval() {
       this.refundApplicationService.getApprovalRecord(this.approvalModel, this.pageService).subscribe(val => {
-        this.paymentData = val.object.list
+        this.paymentData = val
       })
     }
     created() {
@@ -189,7 +181,14 @@
         {
           title: '处理状态',
           key: 'processStatus',
-          align: 'center'
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.processStatus));
+          }
         }, {
           title: '处理时间',
           key: 'processTime',

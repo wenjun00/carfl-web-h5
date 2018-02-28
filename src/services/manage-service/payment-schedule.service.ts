@@ -2,7 +2,7 @@ import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
-
+import { FilterService } from "~/utils/filter.service"
 export class PaymentScheduleService {
   @Inject(NetService)
   private netService: NetService
@@ -87,12 +87,16 @@ export class PaymentScheduleService {
   /**
    * 财务带搜索的划扣记录
    */
-  getCustomerDeductionRecord({ orderId, personalId }) {
+  getCustomerDeductionRecord({ orderId, personalId, startDate, endDate, periods, dealStatus }) {
     return this.netService.send({
       server: manageService.paymentScheduleController.getCustomerDeductionRecord,
       data: {
-        orderId: orderId,
-        personalId: personalId
+        orderId,
+        personalId,
+        periods,
+        dealStatus,
+        startDate: FilterService.dateFormat(startDate, 'yyyy-MM-dd'),
+        endDate: FilterService.dateFormat(endDate, 'yyyy-MM-dd')
       }
     })
   }

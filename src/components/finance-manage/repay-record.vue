@@ -30,17 +30,18 @@
     @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
     private repayObj: any = {
       customerName: '',
-      orderNumber: ''
+      clientNumber: ''
     };
     private columns1: any;
     private data1: Array < Object >= [];
-    refresh(orderId) {
-      this.paymentScheduleService.getPaymentScheduleDetail({
-        orderId: orderId
+    refresh(row) {
+      this.paymentScheduleService.getPaymentRecordDetail({
+        personalId: row.personalId,
+        businessId: row.businessId
       }).subscribe(data => {
         this.repayObj.customerName = data.customerName
-        this.repayObj.orderNumber = data.orderNumber
-        this.data1 = data.paymentDetails
+        this.repayObj.clientNumber = data.clientNumber
+        this.data1 = data.paymentRecordModels
       }, ({
         msg
       }) => {
@@ -57,29 +58,42 @@
         {
           title: '还款日期',
           width: 120,
-          key: 'payDate',
-          align: 'center'
+          key: 'actualCollectDate',
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.actualCollectDate, 'yyyy-MM-dd'))
+          }
         },
         {
           title: '还款渠道',
           width: 165,
           key: 'payChannel',
-          align: 'center'
+          align: 'center',
+          render: (h, { row, column, index }) => {
+            return h("span", {}, this.$dict.getDictName(row.collectMoneyChannel));
+          }
         },
         {
           title: '还款方式',
           key: 'payWay',
-          align: 'center'
+          align: 'center',
+          render: (h, { row, column, index }) => {
+            return h("span", {}, this.$dict.getDictName(row.collectMoneyMethod));
+          }
         },
         {
           title: '还款金额',
-          key: 'payAmt',
+          key: 'actualCollectSum',
           align: 'center'
         },
         {
           title: '汇付交易订单号',
           width: 180,
-          key: 'huifuId',
+          key: 'onlineDealNumber',
           align: 'center'
         },
         // ,
@@ -95,67 +109,10 @@
         },
         {
           title: '操作人',
-          key: 'operator',
+          key: 'userName',
           align: 'center'
         }
       ]
-
-      this.data1 = [{
-        periods: '1期',
-        payChannel: '汇付',
-        payDate: '2017-12-01',
-        outAccountId: '6227001454452014325',
-        payBank: '建行',
-        payAmt: '1500.00',
-        huifuId: 'QC000000000000002155',
-        dealStatus: '成功',
-        failReason: '',
-        operator: '胡开甲'
-      }, {
-        payChannel: '汇付',
-        periods: '2期',
-        payDate: '2017-12-01',
-        outAccountId: '6227001454452014325',
-        payBank: '建行',
-        payAmt: '1500.00',
-        huifuId: 'QC000000000000002155',
-        dealStatus: '成功',
-        failReason: '',
-        operator: '胡开甲'
-      }, {
-        periods: '3期',
-        payChannel: '汇付',
-        payDate: '2017-12-01',
-        outAccountId: '6227001454452014325',
-        payBank: '建行',
-        payAmt: '1500.00',
-        huifuId: 'QC000000000000002155',
-        dealStatus: '成功',
-        failReason: '',
-        operator: '胡开甲'
-      }, {
-        periods: '4期',
-        payDate: '2017-12-01',
-        outAccountId: '6227001454452014325',
-        payBank: '建行',
-        payAmt: '1500.00',
-        payChannel: '支付宝',
-        huifuId: '',
-        dealStatus: '成功',
-        failReason: '',
-        operator: '胡开甲'
-      }, {
-        periods: '5期',
-        payDate: '2017-12-01',
-        outAccountId: '6227001454452014325',
-        payBank: '建行',
-        payChannel: '微信',
-        payAmt: '1500.00',
-        huifuId: '',
-        dealStatus: '成功',
-        failReason: '',
-        operator: '胡开甲'
-      }]
     }
 
   }

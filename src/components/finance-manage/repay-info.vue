@@ -52,7 +52,7 @@
       customerName: '',
       orderNumber: ''
     };
-    private orderId: any;
+    private rowObj: any = {};
     private columns1: any;
     private repayList: Array < Object >= [];
     private repayRecordModal: Boolean = false;
@@ -61,12 +61,12 @@
       this.repayList = []
       this.repayObj.customerName = ''
       this.repayObj.orderNumber = ''
-      this.orderId = row.orderId
+      this.rowObj = row
       this.getRepayInfo()
     }
     getRepayInfo() {
       this.paymentScheduleService.getPaymentScheduleDetail({
-        orderId: this.orderId
+        orderId: this.rowObj.orderId
       }).subscribe(data => {
         console.log(data)
         this.repayObj.customerName = data.customerName
@@ -118,7 +118,7 @@
                   click: () => {
                     this.repayRecordModal = true
                     let _record: any = this.$refs['repay-record']
-                    _record.refresh(this.orderId)
+                    _record.refresh(this.rowObj)
                   }
                 },
                 style: {

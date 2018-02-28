@@ -59,7 +59,7 @@
       </tr>
       <tr height="40">
         <td>合计</td>
-        <td>{{repaymentObj.totalPayment}}</td>
+        <td style="font-weight:700;font-size:14px">{{repaymentObj.totalPayment}}</td>
       </tr>
     </table>
     <div style="margin-top:10px;">
@@ -67,9 +67,10 @@
     </div>
     <div style="margin-top:10px;margin-bottom:10px;">
       <i-row>
-        <i-col :span="8" v-for="(v,i) in applicationPhaseResources" :key="v.id" style="display:flex;justify-content:center;margin-top:10px">
-          <div :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
+        <i-col :span="6" v-for="(v,i) in applicationPhaseResources" :key="v.id" style="display:flex;align-items:center;margin-top:10px;flex-direction:column">
+          <div :style="`height:150px;width:150px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
           </div>
+          <div style="height:40px;line-height:40px;font-size:14px">{{v.originName}}</div>
         </i-col>
       </i-row>
     </div>
@@ -88,7 +89,8 @@
             <i-icon type="plus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
         </td>        
-        <td bgcolor="#F2F2F2" colspan="1" width="25%">收款方式</td>
+        <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
+        <td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
         <td bgcolor="#F2F2F2" colspan="1">状态</td>
       </tr>
@@ -99,8 +101,13 @@
           </div>
         </td>
         <td>
-          <i-select placeholder="选择收款方式" style="display:inline-block;width:90%" v-model="v.collectMoneyMethod">
+          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </td>
+        <td>
+          <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="v.collectItem">
+            <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
@@ -201,9 +208,11 @@
       }).subscribe(data => {
         console.log(data)
         this.repaymentObj = data
-        this.collectMoneyDetails = data.AdvancePayoffBillModel 
+        this.collectMoneyDetails = data.collectMoneyDetails 
         this.financeUploadResources = data.collectMoneyPhaseResources
         this.applicationPhaseResources = data.applicationPhaseResources
+        this.inputBlur()
+        this.remark = data.collectMoneyHistory.remark
       }, ({
         msg
       }) => {

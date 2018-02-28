@@ -2,6 +2,9 @@ import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
+import { FilterService } from "~/utils/filter.service"
+
+
 export class RefundApplicationService {
   @Inject(NetService)
   private netService: NetService
@@ -12,7 +15,12 @@ export class RefundApplicationService {
   getApprovalRecord(data, page) {
     return this.netService.send({
       server: manageService.refundApplicationController.getApprovalRecord,
-      data: data,
+      data: {
+        refundName: data.refundName,
+        timeSearch: data.timeSearch,
+        startDate: FilterService.dateFormat(data.startDate, 'yyyy-MM-dd'),
+        endDate: FilterService.dateFormat(data.endDate, 'yyyy-MM-dd')
+      },
       page: page
     })
   }

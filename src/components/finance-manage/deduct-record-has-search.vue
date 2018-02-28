@@ -2,17 +2,14 @@
 <template>
   <section class="component deduct-record-has-search">
     <span>支付日期：</span>
-    <i-input style="width:10%;display:inline-block"></i-input>~
-    <i-input style="width:10%;display:inline-block"></i-input>
+    <i-date-picker type="date" style="display:inline-block;width:10%" v-model="customerRepayModel.startTime"></i-date-picker>~
+    <i-date-picker type="date" style="display:inline-block;width:10%" v-model="customerRepayModel.endTime"></i-date-picker>
     <span style="margin-left:10px;">期数：</span>
-    <i-input style="width:10%;display:inline-block"></i-input>
-    <i-select placeholder="全部交易状态" style="width:14%;display:inline-block;margin-left:10px;">
-      <i-option label="初始" value="初始" key="初始"></i-option>
-      <i-option label="处理中" value="处理中" key="处理中"></i-option>
-      <i-option label="成功" value="成功" key="成功"></i-option>
-      <i-option label="失败" value="失败" key="失败"></i-option>
+    <i-input style="width:10%;display:inline-block" v-model="customerRepayModel.periods"></i-input>
+    <i-select placeholder="全部交易状态" style="width:14%;display:inline-block;margin-left:10px;" v-model="customerRepayModel.dealStatus" clearable>
+        <i-option v-for="{value,label} in $dict.getDictData('0115')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
-    <i-button class="blueButton">搜索</i-button>
+    <i-button class="blueButton" @click="query">搜索</i-button>
     <div style="float:right;margin-right:10px;margin-top:10px;">
       <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
         <svg-icon iconClass="daochu"></svg-icon>
@@ -36,6 +33,9 @@
     PageService
   } from "~/utils/page.service";
   import {
+    FilterService
+  } from "~/utils/filter.service"
+  import {
     PaymentScheduleService
   } from "~/services/manage-service/payment-schedule.service";
   @Component({
@@ -49,18 +49,34 @@
     @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
     private customerRepayModel: any = {
-
+      personalId:'',
+      orderId: '',
+      startDate: '',
+      endDate: '',
+      periods: '',
+      dealStatus: ''
     };
     private customerRepayObj: any = {
       customerName: '',
-      clientNumber: ''
+      clientNumber: '',
     };
     private data1: Array < Object >= [];
     refresh(row) {
+      this.customerRepayModel = {
+        personalId: row.personalId,
+        orderId: row.orderId,
+        startDate: '',
+        endDate: '',
+        periods: '',
+        dealStatus: ''
+      }
       this.customerRepayObj.customerName = ''
       this.customerRepayObj.clientNumber = ''
       this.data1 = []
-      this.paymentScheduleService.getCustomerDeductionRecord(row).subscribe(data => {
+      this.query()
+    }
+    query() {
+      this.paymentScheduleService.getCustomerDeductionRecord(this.customerRepayModel).subscribe(data => {
         this.customerRepayObj.customerName = data.customerName
         this.customerRepayObj.clientNumber = data.clientNumber
         this.data1 = data.deductionRecordDetailModels
@@ -68,7 +84,7 @@
         msg
       }) => {
         this.$Message.error(msg)
-      })    
+      })
     }
     created() {
       this.columns1 = [{
@@ -87,7 +103,14 @@
           title: '支付日期',
           width: 120,
           key: 'actualCollectDate',
-          align: 'center'
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.actualCollectDate, 'yyyy-MM-dd'))
+          }
         },
         {
           title: '出账卡号',
@@ -102,7 +125,7 @@
         },
         {
           title: '支付金额',
-          key: 'actualCollectSum',
+          key: 'collectMoneyAmount',
           align: 'center'
         },
         {
@@ -114,7 +137,14 @@
         {
           title: '交易状态',
           key: 'dealStatus',
-          align: 'center'
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.dealStatus));
+          }
         },
         {
           title: '失败原因',
