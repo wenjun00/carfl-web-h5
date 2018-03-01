@@ -178,7 +178,7 @@ export default class CustomerSign extends Page {
         title: "订单编号",
         align: "center",
         editable: true,
-        key: "orderId"
+        key: "orderNumber"
       },
       {
         align: "center",

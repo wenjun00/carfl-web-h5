@@ -56,7 +56,7 @@ export default {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'saveSubmitApplication',
-        type: requestType.Get
+        type: requestType.Post
     },
     /**
      * 获取付款明细项

@@ -157,7 +157,11 @@
     <!--复审终审-->
     <template>
       <i-modal title="审批通过" v-model="secendLastApproval" width="800">
-        <second-last-approve></second-last-approve>
+        <second-last-approve ref="second-last" @close="closeAndRefresh"></second-last-approve>
+        <div slot="footer">
+          <i-button @click="secendLastApprovalPassCancel">取消</i-button>
+          <i-button @click="secendLastApprovalPassConfirm" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -166,31 +170,31 @@
       <i-modal title="审批通过" v-model="meetConditionApproval">
         <i-form :label-width="100">
           <i-row>
-            <i-col :span="5">
-              <span>合同生效开始日</span>
-            </i-col>
-            <i-col :span="9">
-              <i-form-item>
-                <i-date-picker placeholder="请选择"></i-date-picker>
+            <i-col>
+              <i-form-item label="合同生效开始日">
+                <i-date-picker placeholder="请选择" v-model="passModel.contractDate"></i-date-picker>
               </i-form-item>
             </i-col>
-            <i-col :span="10">
-              <i-form-item>
-                <i-radio-group v-model="compactEffect">
-                  <i-radio label="当月"></i-radio>
-                  <i-radio label="次月"></i-radio>
+            <i-col>
+              <i-form-item label="合同生效类型">
+                <i-radio-group v-model="passModel.effectiveType">
+                  <i-radio v-for="{value,label} in $dict.getDictData('0431')" :key="value" :label="value" :value="value">{{label}}</i-radio>
                 </i-radio-group>
               </i-form-item>
             </i-col>
           </i-row>
           <i-row>
-            <i-col :span="24">
-              <i-form-item>
-                <i-input type="textarea" :rows="4"></i-input>
+            <i-col>
+              <i-form-item label="备注">
+                <i-input type="textarea" :rows="4" v-model="passModel.remark"></i-input>
               </i-form-item>
             </i-col>
           </i-row>
         </i-form>
+        <div slot="footer">
+          <i-button @click="meetConditionPassCancel">取消</i-button>
+          <i-button @click="meetConditionPassConfirm" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -243,6 +247,12 @@ export default class MyApproval extends Page {
   private compactEffect: String = "当月";
   private approvalOrderId: number = 0;
   private rejectOrBlackFlag: Boolean = false;
+  private passModel: any = {
+    remark: "",
+    orderId: "",
+    contractDate: "",
+    effectiveType: 1160
+  };
   private myOrderModel: any = {
     startTime: "",
     endTime: "",
@@ -439,6 +449,10 @@ export default class MyApproval extends Page {
       }
     ];
   }
+  closeAndRefresh() {
+    this.secendLastApproval = false;
+    this.getMyOrderList();
+  }
   /**
    * 面审通过取消
    */
@@ -465,6 +479,45 @@ export default class MyApproval extends Page {
           this.$Message.error(msg);
         }
       );
+  }
+  /**
+   * 复审终审通过取消
+   */
+  secendLastApprovalPassCancel() {
+    this.secendLastApproval = false;
+  }
+  /**
+   * 复审终审通过确定
+   */
+  secendLastApprovalPassConfirm() {
+    let _secondLast: any = this.$refs["second-last"];
+    _secondLast.confirmPass();
+  }
+  /**
+   * 合规通过取消
+   */
+  meetConditionPassCancel() {
+    this.meetConditionApproval = false;
+  }
+  /**
+   * 合规通过确定
+   */
+  meetConditionPassConfirm() {
+    this.passModel.contractDate = FilterService.dateFormat(
+      this.passModel.contractDate,
+      "yyyy-MM-dd"
+    );
+    this.passModel.orderId = this.approvalOrderId;
+    this.approvalService.passApproval(this.passModel).subscribe(
+      data => {
+        this.$Message.success("操作成功！");
+        this.meetConditionApproval = false;
+        this.getMyOrderList();
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
+    );
   }
   openSearch() {
     this.searchOptions = !this.searchOptions;
@@ -647,16 +700,25 @@ export default class MyApproval extends Page {
       }
     });
   }
+  /**
+   * 通过
+   */
   pass() {
     if (this.approveStatue === 332) {
-      // 面审TODO
       this.approvePassedModal = true;
     } else if (this.approveStatue === 333 || this.approveStatue === 334) {
-      // 复审&终审TODO
+      // 从approve组件里获取数据【pageData】传递给复审终审通过组件
+      let _approve: any = this.$refs["approve"];
+      let pageData = _approve.getApproveData();
       this.secendLastApproval = true;
+      let _secondLast: any = this.$refs["second-last"];
+      _secondLast.getRate(this.approvalOrderId, pageData);
     } else if (this.approveStatue === 337) {
-      // 合规TODO
       this.meetConditionApproval = true;
+      // 从approve组件里获取数据【pageData】传递给复审终审通过组件
+      let _approve: any = this.$refs["approve"];
+      let pageData = _approve.getApproveData();
+      this.passModel.remark = pageData.remark;
     }
   }
   rejectOrder() {
@@ -679,12 +741,6 @@ export default class MyApproval extends Page {
   }
   submitToGray() {
     this.grayListModal = true;
-  }
-  /**
-   * 领取
-   */
-  getOrder(row) {
-    // this.orderModal = true
   }
 
   /**

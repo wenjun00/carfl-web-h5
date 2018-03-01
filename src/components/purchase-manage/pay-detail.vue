@@ -15,8 +15,7 @@
       </tr>
       <tr height="40" v-for="item in gatherItemList" :key="item.index">
         <td width="40">
-          <div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.itemName!=='surplusPrincipal'&&item.itemName!=='surplusPenaltyFreeze'"
-            style="cursor:pointer">
+          <div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.refundItem!==1157" style="cursor:pointer">
             <Icon type="trash-a" size="18"></Icon>
           </div>
         </td>
@@ -24,9 +23,14 @@
           <span>{{item.refundItem}}</span>
         </td>
         <td>
-          <i-input v-if="item.itemName==='otherFee'" style="width:10%" :value="item.refundAmount" @on-change="changeOtherFee" :maxlength="7"></i-input>
+          <i-input v-if="item.refundItem===1159" style="width:10%" :value="item.refundAmount" @on-change="changeOtherFee" :maxlength="7"></i-input>
           <span v-else>{{item.refundAmount}}</span>
         </td>
+        <!--<tr height="40">
+          <td></td>
+          <td width="25%">合计（元）</td>
+          <td colspan="2" style="font-weight:700;font-size:14px">{{}}</td>
+        </tr>-->
       </tr>
     </table>
     <div>
@@ -160,7 +164,7 @@
           this.changeGatherItemModal = false;
           console.log(this.gatherItemList, 'gatherItemList')
           this.gatherItemList = this.gatherItemList.filter(
-            v => v.itemName !== item.itemName
+            v => v.refundItem !== item.refundItem
           );
           // 重新计算合计
           console.log(this.gatherItemList, "ddd");
