@@ -51,4 +51,13 @@ export class CollectMoneyHistoryService {
       data
     })
   }
+  /**
+   * 保存收款历史草稿
+   */
+  sendBackWithdrawApplication(data) {
+    return this.netService.send({
+      server: manageService.collectMoneyHistoryController.sendBackWithdrawApplication,
+      data
+    })
+  }
 }

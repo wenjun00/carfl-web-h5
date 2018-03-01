@@ -37,6 +37,15 @@
     </i-row>
     <data-box :id="435" :columns="columns1" :data="data1"></data-box>
 
+    <template>
+      <i-modal title="客户当前结算户" :transfer="false" v-model="customerSettleModal">
+        <customer-settle-modal ref="customer-settle"></customer-settle-modal>
+        <div slot="footer">
+          <i-button @click="customerSettleModal=false" class="blueButton">关闭</i-button>
+        </div>
+      </i-modal>
+    </template>
+
     <!--还款详情-->
     <template>
       <i-modal v-model="repayInfoModal" :transfer="false" title="还款详情" width="1200">
@@ -54,6 +63,7 @@
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import SvgIcon from '~/components/common/svg-icon.vue';
+  import CustomerSettleModal from "~/components/finance-manage/customer-settle-modal.vue";
   import {
     PayoffProductOrderService
   } from "~/services/manage-service/payoff-product-order.service";
@@ -76,6 +86,7 @@
   @Layout("workspace")
   @Component({
     components: {
+      CustomerSettleModal,
       SvgIcon,
       DataBox,
       ConfirmRepayment,
@@ -86,7 +97,8 @@
   export default class ClosedOrderQuery extends Page {
     @Dependencies(PayoffProductOrderService) private payoffProductOrderService: PayoffProductOrderService;
     @Dependencies(PageService) private pageService: PageService;
-
+    
+    private customerSettleModal: Boolean = false;
     private columns1: any = [];
     private data1: Array < Object > = [];
     private searchOptions: Boolean = false;
@@ -191,7 +203,9 @@
               },
               on: {
                 click: () => {
-                  // this.customerSettleClick(row)
+                  this.customerSettleModal = true;
+                  let _customerSettle: any = this.$refs["customer-settle"];
+                  _customerSettle.getCustomerSettleObj(row);
                 }
               }
             }, row.clientNumber)

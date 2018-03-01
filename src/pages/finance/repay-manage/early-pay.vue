@@ -35,7 +35,7 @@
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getEarlyPayList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="customerRepayList"></data-box>
+    <data-box :id="420" :columns="columns1" :data="customerRepayList"></data-box>
 
     <template>
       <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认结清" width="900">
@@ -43,6 +43,15 @@
         <div slot="footer">
           <i-button @click="saveDraft" class="highDefaultButton">保存草稿</i-button>
           <i-button @click="confirmRepayment" class="highButton">确认</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="客户当前结算户" :transfer="false" v-model="customerSettleModal">
+        <customer-settle-modal ref="customer-settle"></customer-settle-modal>
+        <div slot="footer">
+          <i-button @click="customerSettleModal=false" class="blueButton">关闭</i-button>
         </div>
       </i-modal>
     </template>
@@ -65,6 +74,7 @@
   import DataBox from "~/components/common/data-box.vue";
   import Page from "~/core/page";
   import Component from "vue-class-component";
+  import CustomerSettleModal from "~/components/finance-manage/customer-settle-modal.vue";
   import ConfirmEarlyPay from "~/components/finance-manage/confirm-early-pay.vue";
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
@@ -93,6 +103,7 @@
   @Component({
 
     components: {
+      CustomerSettleModal,
       SvgIcon,
       DeductRecordHasSearch,
       DataBox,
@@ -112,6 +123,7 @@
     private confirmRepaymentModal: Boolean = false;
     private repayInfoModal: Boolean = false;
     private deductRecordModal: Boolean = false;
+    private customerSettleModal: Boolean = false;
     private customerRepayModel: any = {
       settlementChannel: '',
       paymentStatus: '',
@@ -157,6 +169,8 @@
       this.advancePayoffService.saveCollectMoneyHistory(data).subscribe(data => {
         this.$Message.info('操作成功！')
         this.confirmRepaymentModal = false
+        this.pageService.reset()
+        this.getEarlyPayList()
       }, ({
         msg
       }) => {
@@ -198,37 +212,21 @@
             column,
             index
           }) => {
-            return h('div', [
-              h('i-button', {
+            let arr = (row.approvalStatus === 108)?[h('i-button', {
                 props: {
                   type: 'text'
                 },
                 on: {
                   click: () => {
                     this.confirmRepaymentModal = true
-                    let _repayment: any = this.$refs['confirm-early-pay']
+                    let _repayment: any = this.$refs['confirm-early-pay']                    
                     _repayment.refresh(row)
                   }
                 },
                 style: {
                   color: '#265EA2'
                 }
-              }, '确认结清'),
-              h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                on: {
-                  click: () => {
-                    this.repayInfoModal = true
-                    let _repay: any = this.$refs['repay-info']
-                    _repay.refresh(row)
-                  }
-                },
-                style: {
-                  color: '#265EA2'
-                }
-              }, '还款详情'),
+              }, '确认结清')] : [
               h('i-button', {
                 props: {
                   type: 'text'
@@ -243,8 +241,23 @@
                 style: {
                   color: '#265EA2'
                 }
-              }, '划扣记录')
-            ])
+              }, '划扣记录')]
+              arr.push(h('i-button', {
+                props: {
+                  type: 'text'
+                },
+                on: {
+                  click: () => {
+                    this.repayInfoModal = true
+                    let _repay: any = this.$refs['repay-info']
+                    _repay.refresh(row)
+                  }
+                },
+                style: {
+                  color: '#265EA2'
+                }
+              }, '还款详情'))
+            return h('div', arr)
           }
         },
         {
@@ -287,7 +300,9 @@
               },
               on: {
                 click: () => {
-                  // this.customerSettleClick(row)
+                  this.customerSettleModal = true;
+                  let _customerSettle: any = this.$refs["customer-settle"];
+                  _customerSettle.getCustomerSettleObj(row);
                 }
               }
             }, row.clientNumber)

@@ -44,10 +44,19 @@
     <!--确认收回-->
     <template>
       <i-modal title="确认收回" width="930" v-model="confirmWithdrawModal" class="confirmWithdraw">
-        <confirm-withdraw></confirm-withdraw>
+        <confirm-withdraw ref="confirm-withdraw"></confirm-withdraw>
         <div slot="footer">
           <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
-          <i-button class="highButton" @click="confirmWithdrawModal=false">确认</i-button>
+          <i-button class="highButton" @click="confirmRepayment">确认</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="客户当前结算户" :transfer="false" v-model="customerSettleModal">
+        <customer-settle-modal ref="customer-settle"></customer-settle-modal>
+        <div slot="footer">
+          <i-button @click="customerSettleModal=false" class="blueButton">关闭</i-button>
         </div>
       </i-modal>
     </template>
@@ -69,6 +78,7 @@
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import SvgIcon from '~/components/common/svg-icon.vue';
+  import CustomerSettleModal from "~/components/finance-manage/customer-settle-modal.vue";
   import {
     AdvanceRevokeService
   } from "~/services/manage-service/advance-revoke.service";
@@ -92,6 +102,7 @@
   @Component({
 
     components: {
+      CustomerSettleModal,
       SvgIcon,
       DataBox,
       ConfirmWithdraw,
@@ -109,6 +120,7 @@
     private openColumnsConfig: Boolean = false;
     private confirmWithdrawModal: Boolean = false;
     private repayInfoModal: Boolean = false;
+    private customerSettleModal: Boolean = false;
     private customerRepayModel: any = {
       settlementChannel: '',
       paymentStatus: '',
@@ -138,9 +150,49 @@
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
+    /**
+     * 保存草稿
+     */
     saveDraft() {
-      this.$Message.info('保存草稿成功！')
-      this.confirmWithdrawModal = false
+      let _repayment: any = this.$refs['confirm-withdraw']
+      let data: any = {}
+      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
+      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
+      data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.orderId = _repayment.rowObj.orderId
+      data.businessId = _repayment.rowObj.businessId
+      data.totalPayment = _repayment.paymentAmount
+      this.advanceRevokeService.saveCollectMoneyHistoryAsDraft(data).subscribe(data => {
+        this.$Message.info('保存草稿成功！')
+        this.confirmWithdrawModal = false
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+    }
+    /**
+     * 确认还款
+     */
+    confirmRepayment() {
+      let _repayment: any = this.$refs['confirm-withdraw']
+      let data: any = {}
+      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
+      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
+      data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.orderId = _repayment.rowObj.orderId
+      data.businessId = _repayment.rowObj.businessId
+      data.totalPayment = _repayment.paymentAmount
+      this.advanceRevokeService.saveCollectMoneyHistory(data).subscribe(data => {
+        this.$Message.info('操作成功！')
+        this.confirmWithdrawModal = false
+        this.pageService.reset()
+        this.getEarlyPayList()
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
     }
     created() {
       this.columns1 = [
@@ -154,39 +206,22 @@
             column,
             index
           }) => {
-            if (row.customName === '王泽杰') {
-              return h('div', [
-                h('i-button', {
-                  props: {
-                    type: 'text'
-                  },
-                  on: {
-                    click: () => {
-                      this.confirmWithdrawModal = true
-                    }
-                  },
-                  style: {
-                    color: '#265EA2'
+             let arr = (row.approvalStatus === 108)?[h('i-button', {
+                props: {
+                  type: 'text'
+                },
+                on: {
+                  click: () => {
+                    this.confirmWithdrawModal = true
+                    let _repayment: any = this.$refs['confirm-withdraw']
+                    _repayment.refresh(row)
                   }
-                }, '确认收回'),
-                h('i-button', {
-                  props: {
-                    type: 'text'
-                  },
-                  on: {
-                    click: () => {
-                      this.repayInfoModal = true
-                      let _repay: any = this.$refs['repay-info']
-                      _repay.refresh(row)
-                    }
-                  },
-                  style: {
-                    color: '#265EA2'
-                  }
-                }, '还款详情')
-              ])
-            } else if (row.customName === '陈丽') {
-              return h('i-button', {
+                },
+                style: {
+                  color: '#265EA2'
+                }
+              }, '确认收回')] : []
+              arr.push(h('i-button', {
                 props: {
                   type: 'text'
                 },
@@ -200,104 +235,155 @@
                 style: {
                   color: '#265EA2'
                 }
-              }, '还款详情')
-            }
+              }, '还款详情'))
+            return h('div', arr)
           }
         },
         {
-          title: "订单号",
-          key: "orderId",
-          editable: true,
           align: "center",
-          render: (h, row) => {
+          title: "订单号",
+          editable: true,
+          width: 160,
+          key: 'orderNumber',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('i-button', {
               props: {
                 type: 'text'
               },
               on: {
                 click: () => {
-
+                  // this.purchaseInfoModal = true
                 }
               }
-            }, 'kb20154575')
+            }, row.orderNumber)
           }
         },
         {
           align: "center",
           title: "客户结算号",
+          key: "clientNumber",
           editable: true,          
-          key: "customerSettleId",
-          render: (h, row) => {
+          width: 150,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('i-button', {
               props: {
                 type: 'text'
               },
               on: {
                 click: () => {
-
+                  this.customerSettleModal = true;
+                  let _customerSettle: any = this.$refs["customer-settle"];
+                  _customerSettle.getCustomerSettleObj(row);
                 }
               }
-            }, 'LSK3125465')
+            }, row.clientNumber)
           }
         },
         {
           align: "center",
           title: "客户姓名",
           editable: true,          
-          key: "customName"
+          key: "name",
+          width: 100
         },
         {
           align: "center",
+          title: " 证件号",
           editable: true,          
-          title: "证件号",
-          key: "idCard"
+          key: "idCard",
+          width: 160
         },
         {
           align: "center",
-          title: "手机号",
+          title: " 手机号",
           editable: true,          
-          key: "phone"
+          key: "mobileMain",
+          width: 120
         },
         {
           align: "center",
-          title: "订单创建时间",
+          title: " 订单创建时间",
           editable: true,          
-          key: "orderCreateTime"
+          key: "createTime",
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
-          title: "合同生效日",
-          key: "compactApplyDate"
+          title: " 合同生效日",
+          editable: true,          
+          key: "contractDate",
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss'))
+          }
         },
         {
           align: "center",
-          title: "待还本金",
-          key: "supposedMajorMoney"
+          title: " 待还本金",
+          editable: true,          
+          key: "principalReceivable",
+          width: 90
         },
         {
           align: "center",
-          title: "待还利息",
-          key: "supposedInterest"
+          title: " 待还利息",
+          editable: true,          
+          key: "interestReceivable",
+          width: 90
         },
         {
           align: "center",
-          title: "待还罚息",
-          key: "supposedPunishedInterest"
+          title: " 待还罚息",
+          editable: true,          
+          key: "penaltyReceivable",
+          width: 90
         },
         {
           align: "center",
-          title: "利率%/月",
-          key: "interestRate"
+          title: " 利率%/月",
+          editable: true,          
+          key: "productRate",
+          width: 90
         },
         {
           align: "center",
-          title: "结算通道",
-          key: "clearAccountChannel"
+          title: " 结算通道",
+          editable: true,          
+          key: "settlementChannel",
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.settlementChannel));
+          }
         },
         {
           align: "center",
-          title: "归属公司",
-          key: "belongFirm"
+          title: " 归属公司",
+          width: 100,
+          editable: true,          
+          key: "companyChinaName"
         }
       ];
     }

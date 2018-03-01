@@ -40,8 +40,8 @@
         <confirm-gather ref="confirm-gather"></confirm-gather>
         <div slot="footer">
           <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
-          <i-button class="highButton" @click="confirmGatherModal=false">退回</i-button>
-          <i-button class="highButton" @click="confirmGatherModal=false">确认</i-button>
+          <i-button class="highButton" @click="sendBack">退回</i-button>
+          <i-button class="highButton" @click="confirmRepayment">确认</i-button>
         </div>
       </i-modal>
     </template>
@@ -109,8 +109,64 @@
       this.searchOptions = !this.searchOptions;
     }
     saveDraft() {
-      this.$Message.success('保存草稿成功！')
-      this.confirmGatherModal = false
+      let _repayment: any = this.$refs['confirm-gather']
+      let data: any = {}
+      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
+      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
+      data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.orderId = _repayment.rowObj.orderId
+      data.businessId = _repayment.rowObj.businessId
+      data.totalPayment = _repayment.paymentAmount
+      this.collectMoneyHistoryService.saveCollectMoneyHistoryAsDraft(data).subscribe(data => {
+        this.$Message.info('保存草稿成功！')
+        this.confirmGatherModal = false
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+    }
+    /**
+     * 确认还款
+     */
+    confirmRepayment() {
+      let _repayment: any = this.$refs['confirm-gather']
+      let data: any = {}
+      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
+      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
+      data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.orderId = _repayment.rowObj.orderId
+      data.businessId = _repayment.rowObj.businessId
+      data.totalPayment = _repayment.paymentAmount
+      this.collectMoneyHistoryService.saveCollectMoneyHistory(data).subscribe(data => {
+        this.$Message.info('操作成功！')
+        this.confirmGatherModal = false
+        this.pageService.reset()
+        this.getGatherListByCondition() 
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+    }
+    /**
+     * 退回
+     */
+    sendBack() {
+      let _repayment: any = this.$refs['confirm-gather']
+      let data: any = {}
+      data.withdrawId = _repayment.rowObj.applicationId
+      data.isPass = 0
+      this.collectMoneyHistoryService.sendBackWithdrawApplication(data).subscribe(data => {
+        this.$Message.info('操作成功！')
+        this.confirmGatherModal = false
+        this.pageService.reset()
+        this.getGatherListByCondition()      
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
     }
     created() {
       this.getGatherListByCondition()

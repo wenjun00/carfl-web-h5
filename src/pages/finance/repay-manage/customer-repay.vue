@@ -48,6 +48,15 @@
     </template>
 
     <template>
+      <i-modal title="客户当前结算户" :transfer="false" v-model="customerSettleModal">
+        <customer-settle-modal ref="customer-settle"></customer-settle-modal>
+        <div slot="footer">
+          <i-button @click="customerSettleModal=false" class="blueButton">关闭</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
       <i-modal v-model="repayInfoModal" :transfer="false" title="还款详情" width="1200">
         <repay-info ref="repay-info"></repay-info>
       </i-modal>
@@ -69,6 +78,7 @@
   import DeductRecordHasSearch from "~/components/finance-manage/deduct-record-has-search.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import SvgIcon from '~/components/common/svg-icon.vue';
+  import CustomerSettleModal from "~/components/finance-manage/customer-settle-modal.vue";
 
   import {
     Tooltip
@@ -92,6 +102,7 @@
   @Component({
 
     components: {
+      CustomerSettleModal,
       SvgIcon,
       DataBox,
       ConfirmRepayment,
@@ -110,6 +121,7 @@
     private confirmRepaymentModal: Boolean = false;
     private repayInfoModal: Boolean = false;
     private deductRecordModal: Boolean = false;
+    private customerSettleModal: Boolean = false;
     private customerRepayModel: any = {
       settlementChannel: '',
       paymentStatus: '',
@@ -164,6 +176,8 @@
       this.paymentScheduleService.saveCustomerPaymentInfo(data).subscribe(data => {
         this.$Message.info('还款成功！')
         this.confirmRepaymentModal = false
+        this.pageService.reset()
+        this.getCustomerRepayList() 
       }, ({
         msg
       }) => {
@@ -270,7 +284,9 @@
               },
               on: {
                 click: () => {
-                  // this.customerSettleClick(row)
+                  this.customerSettleModal = true;
+                  let _customerSettle: any = this.$refs["customer-settle"];
+                  _customerSettle.getCustomerSettleObj(row);
                 }
               }
             }, row.clientNumber)

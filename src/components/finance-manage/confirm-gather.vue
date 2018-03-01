@@ -4,13 +4,13 @@
     <i-form :label-width="110" label-position="left">
       <i-row style="background:#F5F5F5">
         <i-col :span="24" style="padding:6px;">
-          <span>收款类型：</span><span style="margin-left:10px;">销售收款</span>
+          <span>收款类型：</span><span style="margin-left:10px;">{{$dict.getDictName(repaymentObj.applicationType)}}</span>
           <i-button style="float:right;color:#265ea2" type="text" @click="saleApplyInfo">销售申请详情</i-button>
         </i-col>
         <i-col :span="24" :pull="3" style="margin-top:10px;margin-left:10px">
           <i-form-item>
             <span>备注：</span>
-            <i-input type="textarea" v-model="gatherModal.remarks" style="display:inline-block;width:80%;" disabled></i-input>
+            <i-input type="textarea" v-model="repaymentObj.remark" style="display:inline-block;width:80%;" disabled></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -36,24 +36,12 @@
         <td bgcolor="#F2F2F2" colspan="1" width="60%">金额（元）</td>
       </tr>
       <tr height="40">
-        <td>剩余未还总额</td>
-        <td>{{repaymentObj.surplusPrincipal}}</td>
+        <td>首付金额</td>
+        <td>{{repaymentObj.initialPayment}}</td>
       </tr>
       <tr height="40">
-        <td>剩余未还罚息</td>
-        <td>{{repaymentObj.surplusPenalty}}</td>
-      </tr>
-      <tr height="40">
-        <td>剩余冻结罚息</td>
-        <td>{{repaymentObj.surplusPenaltyFreeze}}</td>
-      </tr>
-      <tr height="40">
-        <td>提前结清手续费</td>
-        <td>{{repaymentObj.advancePayoffFee}}</td>
-      </tr>
-      <tr height="40">
-        <td>剩余管理费</td>
-        <td>{{repaymentObj.surplusManageFee}}</td>
+        <td>GPS费</td>
+        <td>{{repaymentObj.gpsFee}}</td>
       </tr>
       <tr height="40">
         <td>合计</td>
@@ -172,7 +160,8 @@
     private financeUploadResources: any = [];
     private collectMoneyDetails: any = [];
     private paymentAmount: any = 0
-
+    private delFinanceUploadResource: any = []
+    private addFinanceUploadResource: any = []
 
 
 
@@ -190,7 +179,7 @@
     refresh(row) {
       this.rowObj = row
       this.collectMoneyHistoryService.withdrawApplicationDetail({
-        withdrawId: row.applicationId
+        applicationId: row.applicationId
       }).subscribe(data => {
         console.log(data)
         this.repaymentObj = data
@@ -337,7 +326,7 @@
       this.columns2 = [{
         title: "户名",
         align: 'center',
-        key: 'accountName'
+        key: 'personalName'
       }, {
         title: "开户银行",
         align: 'center',

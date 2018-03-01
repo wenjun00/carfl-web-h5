@@ -38,5 +38,14 @@ export default {
     controller: CONTROLLER,
     action: 'saveCollectMoneyHistoryAsDraft',
     type: requestType.Post
+  },
+  /**
+   * 财务退回申请付款
+   */
+  sendBackWithdrawApplication: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'sendBackWithdrawApplication',
+    type: requestType.Post
   }
 }
