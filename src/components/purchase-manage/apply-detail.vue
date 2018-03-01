@@ -144,7 +144,12 @@
       this.accountDetail = val.personalBank // 账户信息
       this.fileList = val.applicationPhaseUploadResources
     }
-
+    getparentreceipt(val) {
+      console.log(val)
+      this.addNewApplyModal.name = val.accountName // 客户姓名
+      this.refundType = val.applicationType // 付款类型
+      //   this.accountDetail = val.personalBank // 账户信息
+    }
     /**
      *删除附件
      */

@@ -112,5 +112,23 @@ export default {
         controller: CONTROLLER,
         action: 'saveAdvanceRevokeApplication',
         type: requestType.Post
+    },
+    /**
+     * 获取收款申请记录
+     */
+    getGatheringApprovalList: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getGatheringApprovalList',
+        type: requestType.Get
+    },
+    /**
+     * 查看申请详情
+     */
+    viewApplicationDetail: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'viewApplicationDetail',
+        type: requestType.Get
     }
 }

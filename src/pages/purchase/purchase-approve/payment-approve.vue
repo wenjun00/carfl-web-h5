@@ -12,7 +12,7 @@
       <svg-icon iconClass="daochu"></svg-icon>
       <span style="font-size: 12px;">导出</span>
     </div>
-    <data-box :columns="columns1" :data="refundApproval"></data-box>
+    <data-box :id="390" :columns="columns1" :data="refundApproval"></data-box>
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
@@ -241,6 +241,7 @@
         },
         {
           title: '处理状态',
+          editable: true,
           key: 'processStatus',
           align: 'center',
           render: (h, {
@@ -253,6 +254,7 @@
         },
         {
           title: '处理时间',
+          editable: true,
           key: 'processTime',
           width: 180,
           align: 'center',
@@ -266,12 +268,14 @@
         },
         {
           title: '处理人',
+          editable: true,
           width: 120,
           key: 'processName',
           align: 'center'
         },
         {
           title: '付款类型',
+          editable: true,
           key: 'refundType',
           align: 'center',
           render: (h, {
@@ -284,27 +288,32 @@
         },
         {
           title: '付款金额',
+          editable: true,
           key: 'refundTotalAmount',
           align: 'center'
         },
         {
           title: '客户账户名',
+          editable: true,
           key: 'customerName',
           align: 'center'
         },
         {
           title: '开户银行',
+          editable: true,
           key: 'depositBank',
           align: 'center'
         },
         {
           title: '银行卡号',
+          editable: true,
           key: 'cardNumber',
           align: 'center',
           width: 180
         },
         {
           title: '申请日期',
+          editable: true,
           key: 'operateTime',
           align: 'center',
           render: (h, {
@@ -317,6 +326,7 @@
         },
         {
           title: '制单人',
+          editable: true,
           key: 'operator',
           align: 'center'
         }

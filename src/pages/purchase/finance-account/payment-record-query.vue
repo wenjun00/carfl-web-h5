@@ -1,17 +1,17 @@
 <!--收款记录查询-->
 <template>
   <section class="page receipt-record-query">
-    <span class="form-title">收款记录查询</span>
+    <span class="form-title">付款记录查询</span>
     <span style="margin-left:10px">申请日期：</span>
-    <i-date-picker v-model="receiptModel.startTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
-    <i-date-picker v-model="receiptModel.endTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
-    <!--<i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" style="display:inline-block;width:10%;margin-left:10px;"></i-input>-->
-    <i-select placeholder="收款类型" style="width:10%;margin-left:10px;" v-model="receiptModel.applicationType">
-      <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
+    <i-date-picker v-model="paymentModel.startTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
+    <i-date-picker v-model="paymentModel.endTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
+    <!--<i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="paymentModel.dynamicParams" style="display:inline-block;width:10%;margin-left:10px;"></i-input>-->
+    <i-select placeholder="付款类型" style="width:10%;margin-left:10px;" v-model="paymentModel.refundType">
+      <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
     <i-checkbox style="margin-left:10px;" v-model="status">包含已处理</i-checkbox>
-    <i-button style="margin-left:10px" class="blueButton" @click="receiptRecordSearch">搜索</i-button>
-    <data-box :columns="columns1" :data="receiptDataSet"></data-box>
+    <i-button style="margin-left:10px" class="blueButton" @click="searchPaymentrecord">搜索</i-button>
+    <data-box :columns="columns1" :data="data1"></data-box>
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
@@ -43,14 +43,14 @@
   // 添加新申请
   import AddApply from "~/components/purchase-manage/add-apply.vue";
   import {
-    WithdrawApplicationService
-  } from "~/services/manage-service/withdraw-application.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
+    RefundApplicationService
+  } from "~/services/manage-service/refund-application.service";
   import {
     Layout
   } from "~/core/decorator";
+  import {
+    PageService
+  } from "~/utils/page.service";
   import {
     Dependencies
   } from "~/core/decorator";
@@ -70,21 +70,24 @@
     }
   })
   export default class ReceiptRecordQuery extends Page {
-    @Dependencies(WithdrawApplicationService) private withdrawApplicationService: WithdrawApplicationService;
+    @Dependencies(RefundApplicationService) private refundApplicationService: RefundApplicationService;
     @Dependencies(PageService) private pageService: PageService;
+
     private columns1: any;
     private columns2: any;
-    private receiptDataSet: Array < Object > = [];
+    private data1: Array < Object > = [];
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private checkApplyModal: Boolean = false;
     private status: Boolean = false;
-    private receiptModel: any = {
+    private paymentModel: any = {
+      dynamicParams: '',
       startTime: '',
       endTime: '',
-      applicationType: '', // 收款类型
+      refundType: ''
     }
+
 
     addNewApply() {
       this.$Modal.info({
@@ -94,7 +97,8 @@
       })
     }
     created() {
-      this.receiptRecordSearch()
+      this.searchPaymentrecord()
+      this.columns2 = [{}]
       this.columns1 = [{
         title: '操作',
         align: 'center',
@@ -112,11 +116,11 @@
               on: {
                 click: () => {
                   this.checkApplyModal = true
-                  this.withdrawApplicationService.viewApplicationDetail({
-                    applicationId: row.applicationId
+                  this.refundApplicationService.getRefundApplicationById({
+                    refundId: row.refundApplicationId
                   }).subscribe(val => {
                     let _applyInfo: any = this.$refs['applyDetail']
-                    _applyInfo.getparentreceipt(val)
+                    _applyInfo.getparent(val)
                   })
                 }
               },
@@ -127,63 +131,49 @@
           ])
         }
       }, {
-        title: '收款类型',
-        key: 'applicationType',
+        title: '付款类型',
+        key: 'refundType',
         align: 'center',
         render: (h, {
           row,
           column,
           index
         }) => {
-          return h("span", {}, this.$dict.getDictName(row.applicationType));
+          return h("span", {}, this.$dict.getDictName(row.refundType));
         }
       }, {
         title: '申请状态',
-        key: 'approvalStatus',
+        key: 'processStatus',
         align: 'center',
         render: (h, {
           row,
           column,
           index
         }) => {
-          return h("span", {}, this.$dict.getDictName(row.approvalStatus));
+          return h("span", {}, this.$dict.getDictName(row.processStatus));
         }
       }, {
-        title: '收款账户名',
-        key: 'gatheringAccountName',
+        title: '付款账户名',
+        key: 'customerName',
         align: 'center'
       }, {
-        title: '收款金额',
-        key: 'gatheringMoney',
+        title: '付款金额',
+        key: 'refundTotalAmount',
         align: 'center'
       }, {
         title: '申请时间',
-        key: 'operatorTime',
+        key: 'operateTime',
         align: 'center',
         render: (h, {
           row,
           column,
           index
         }) => {
-          return h('span', FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss'))
+          return h('span', FilterService.dateFormat(row.processTime, 'yyyy-MM-dd hh:mm:ss'))
         }
       }, {
         title: '申请人',
         key: 'applyPerson',
-        align: 'center'
-      }]
-      this.columns2 = [{
-        title: '序号',
-        type: 'index',
-        width: 80,
-        align: 'center'
-      }, {
-        title: '列名',
-        key: 'columnsName',
-        align: 'center'
-      }, {
-        type: 'selection',
-        width: 80,
         align: 'center'
       }]
       this.data2 = [{
@@ -210,21 +200,23 @@
         columnsName: '联系号码'
       }]
     }
-    /**
-     * 搜索
-     */
-    receiptRecordSearch() {
-      this.receiptModel.startTime = FilterService.dateFormat(
-        this.receiptModel.startTime
+    searchPaymentrecord() {
+      if (this.status) {
+        this.paymentModel.processStatus = ''
+      } else {
+        this.paymentModel.processStatus = 1130
+      }
+      this.paymentModel.startTime = FilterService.dateFormat(
+        this.paymentModel.startTime
       );
-      this.receiptModel.endTime = FilterService.dateFormat(
-        this.receiptModel.endTime
+      this.paymentModel.endTime = FilterService.dateFormat(
+        this.paymentModel.endTime
       );
-      this.withdrawApplicationService
-        .getGatheringApprovalList(this.receiptModel, this.pageService)
+      this.refundApplicationService
+        .getRefundRecord(this.paymentModel, this.pageService)
         .subscribe(
           data => {
-            this.receiptDataSet = data
+            this.data1 = data
           },
           ({
             msg

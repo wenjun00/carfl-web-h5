@@ -17,7 +17,7 @@
       <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" style="display:inline-block;width:20%;" placeholder="请输入订单编号/客户姓名/证件号码/联系号码查询"></i-input>
       <i-button style="margin-left:10px;" class="blueButton" @click="refreshData">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="customerDataSet" :page="pageService"></data-box>
+    <data-box :id="376" :columns="columns1" :data="customerDataSet" :page="pageService"></data-box>
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
@@ -168,16 +168,19 @@
         },
         {
           title: '资料上传',
+          editable: true,
           key: 'isUploadFile',
           align: 'center'
         },
         {
           title: '订单编号',
+          editable: true,
           key: 'orderId',
           align: 'center'
         },
         {
           title: '订单创建时间',
+          editable: true,
           key: 'createTime',
           align: 'center',
           render: (h, {
@@ -193,6 +196,7 @@
         },
         {
           title: '订单类型',
+          editable: true,
           key: 'orderType',
           align: 'center',
           render: (h, {
@@ -205,21 +209,25 @@
         },
         {
           title: '产品名称',
+          editable: true,
           key: 'productName',
           align: 'center'
         },
         {
           title: '客户姓名',
+          editable: true,
           key: 'personalName',
           align: 'center'
         },
         {
           title: '证件号码',
+          editable: true,
           key: 'idCard',
           align: 'center'
         },
         {
           title: '联系号码',
+          editable: true,
           key: 'mobileMain',
           align: 'center'
         }

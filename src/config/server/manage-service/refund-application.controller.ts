@@ -66,5 +66,14 @@ export default {
         controller: CONTROLLER,
         action: 'getRefundItems',
         type: requestType.Get
+    },
+    /**
+     * 进件，财务----付款记录查询/付款查询
+     */
+    getRefundRecord: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getRefundRecord',
+        type: requestType.Get
     }
 }

@@ -140,4 +140,25 @@ export class WithdrawApplicationService {
             data: data
         })
     }
+    /**
+     * 获取收款申请记录
+     */
+    getGatheringApprovalList(data, page) {
+        return this.netService.send({
+            server: manageService.withdrawApplicationController.getGatheringApprovalList,
+            data,
+            page
+        })
+    }
+    /**
+     * 查看申请详情
+     */
+    viewApplicationDetail({ applicationId }) {
+        return this.netService.send({
+            server: manageService.withdrawApplicationController.viewApplicationDetail,
+            data: {
+                applicationId: applicationId
+            }
+        })
+    }
 }

@@ -26,11 +26,6 @@
           <i-input v-if="item.refundItem===1159" style="width:10%" :value="item.refundAmount" @on-change="changeOtherFee" :maxlength="7"></i-input>
           <span v-else>{{item.refundAmount}}</span>
         </td>
-        <!--<tr height="40">
-          <td></td>
-          <td width="25%">合计（元）</td>
-          <td colspan="2" style="font-weight:700;font-size:14px">{{}}</td>
-        </tr>-->
       </tr>
     </table>
     <div>
@@ -137,7 +132,18 @@
       this.checkOrderId = data.orderId
       if (data && data.itemList.length > 0) {
         this.gatherItemList = data.itemList
+        let moneyList = this.gatherItemList.map(v => v.refundAmount)
+        let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
+        let total = {
+          refundItem: "合计（元）",
+          refundAmount: totalPayment,
+          itemName: "totalPayment"
+        };
+        if (!this.gatherItemList.map(v => v.itemName).includes("totalPayment")) {
+          this.gatherItemList.push(total);
+        }
       }
+
       if (data && data.bankList.length > 0)
         console.log(data.bankList, 'bankList')
       this.accountInfoList = data.bankList

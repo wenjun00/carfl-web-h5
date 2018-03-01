@@ -267,6 +267,10 @@
      * 保存并提交
      */
     saveSubmit() {
+      if (!this.applyData.refundType) {
+        this.$Message.warning('请选择付款类型！')
+        return false
+      }
       let _message: any = this.$refs['payDetail']
       this.saveData.bankListk = _message.accountInfoList
       let gatherItem: any = Object.assign(_message.gatherItemList)
