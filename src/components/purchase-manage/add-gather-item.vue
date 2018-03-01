@@ -87,20 +87,28 @@
         );
     }
     getOrderSaleItemData(orderId, checkSaleItem) {
+      console.log(checkSaleItem, 'checkSaleItem')
       this.refundApplicationService
         .getRefundItems({
           orderId: orderId
         })
         .subscribe(
           data => {
-            console.log(data, 'data')
+            data.map(v => {
+              v.itemLabel = v.refundItem
+              v.itemMoney = v.refundAmount
+            })
             data.map(item => {
               checkSaleItem.map(val => {
-                if (item.itemLabel === val.itemLabel) {
+                console.log(item.itemLabel, val.itemLabel, 'val.itemLabel')
+                if (item.itemLabel === 1157) {
                   item._checked = true;
                 }
-              });
-            });
+                if (item.itemLabel === 1157) {
+                  item._disabled = true;
+                }
+              })
+            })
             this.saleItemList = data;
           },
           ({

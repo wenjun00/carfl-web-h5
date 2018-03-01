@@ -13,17 +13,18 @@ export class RefundApplicationService {
      * 进件  付款审批
      */
     getApprovalRecord(data, page) {
-      return this.netService.send({
-        server: manageService.refundApplicationController.getApprovalRecord,
-        data: {
-          getApprovalRecord: data.getApprovalRecord,
-          refundName: data.refundName,
-          timeSearch: data.timeSearch,
-          startDate: FilterService.dateFormat(data.startDate, 'yyyy-MM-dd'),
-          endDate: FilterService.dateFormat(data.endDate, 'yyyy-MM-dd')
-        },
-        page: page
-      })
+        return this.netService.send({
+            server: manageService.refundApplicationController.getApprovalRecord,
+            data: {
+                getApprovalRecord: data.getApprovalRecord,
+                refundName: data.refundName,
+                timeSearch: data.timeSearch,
+                processStatus: data.processStatus,
+                startDate: FilterService.dateFormat(data.startDate, 'yyyy-MM-dd'),
+                endDate: FilterService.dateFormat(data.endDate, 'yyyy-MM-dd')
+            },
+            page: page
+        })
     }
     /**
      * 进件  付款审批

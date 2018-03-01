@@ -243,17 +243,37 @@
      * 保存草稿
      */
     saveDraft() {
-
+      let _message: any = this.$refs['payDetail']
+      this.saveData.bankListk = _message.accountInfoList
+      let gatherItem: any = Object.assign(_message.gatherItemList)
+      this.saveData.refundTotalAmount = gatherItem.find(v => v.itemLabel === '合计（元）').refundAmount
+      this.saveData.recordStatus = 1128
+      this.saveData.refundType = this.applyData.refundType
+      this.saveData.itemList = gatherItem.splice(0, (_message.gatherItemList.length - 1))
+      this.refundApplicationService
+        .saveSubmitApplication(this.saveData)
+        .subscribe(
+          data => {
+            this.$Message.success("保存并提交成功！");
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
     }
     /**
      * 保存并提交
      */
     saveSubmit() {
-      this.paramsData.recordStatus = 1129
       let _message: any = this.$refs['payDetail']
-      console.log(_message, '_message')
       this.saveData.bankListk = _message.accountInfoList
-      this.saveData.itemList = _message.gatherItemList
+      let gatherItem: any = Object.assign(_message.gatherItemList)
+      this.saveData.refundTotalAmount = gatherItem.find(v => v.itemLabel === '合计（元）').refundAmount
+      this.saveData.recordStatus = 1129
+      this.saveData.refundType = this.applyData.refundType
+      this.saveData.itemList = gatherItem.splice(0, (_message.gatherItemList.length - 1))
       this.refundApplicationService
         .saveSubmitApplication(this.saveData)
         .subscribe(

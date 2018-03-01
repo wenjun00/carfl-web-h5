@@ -126,6 +126,7 @@
      * 父组件传过来的列表数据
      */
     makeList(data) {
+      console.log(data, 'data')
       if (data && data.payoffCollectMoneyItems) {
         this.gatherItemList = data.payoffCollectMoneyItems.filter(
           v => v.itemMoney

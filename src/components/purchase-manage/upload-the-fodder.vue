@@ -63,89 +63,102 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { State, Mutation, namespace } from "vuex-class";
-import { Dependencies } from "~/core/decorator";
-import { PersonalMaterialService } from "~/services/manage-service/personal-material.service";
-import { Prop } from "vue-property-decorator";
-import UploadImage from "~/components/common/upload-image.vue";
-const ModuleState = namespace("purchaseManage", State);
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {
+    State,
+    Mutation,
+    namespace
+  } from "vuex-class";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    PersonalMaterialService
+  } from "~/services/manage-service/personal-material.service";
+  import {
+    Prop
+  } from "vue-property-decorator";
+  import UploadImage from "~/components/common/upload-image.vue";
+  const ModuleState = namespace("purchaseManage", State);
 
-@Component({
-  components: {
-    UploadImage
-  }
-})
-export default class UploadTheFodder extends Vue {
-  @Prop() orderFodderInfo: Object;
-  @Dependencies(PersonalMaterialService)
-  private personalMaterialService: PersonalMaterialService;
-  @ModuleState("productId") productId;
-  private model1: String = "";
-  private cityList: Array<object> = [];
-  private dataList: Array<any> = [];
-  private fodderList: Array<any> = [];
-  private openUpload: Boolean = false;
+  @Component({
+    components: {
+      UploadImage
+    }
+  })
+  export default class UploadTheFodder extends Vue {
+    @Prop() orderFodderInfo: Object;
+    @Dependencies(PersonalMaterialService)
+    private personalMaterialService: PersonalMaterialService;
+    @ModuleState("productId") productId;
+    private model1: String = "";
+    private cityList: Array < object > = [];
+    private dataList: Array < any > = [];
+    private fodderList: Array < any > = [];
+    private openUpload: Boolean = false;
 
-  // @Prop() productId: any
+    // @Prop() productId: any
 
-  openClick() {
-    // console.log(this.productId, 70);
-    this.personalMaterialService
-      .getAllPersonalMaterialNoPage({
-        productId: this.productId
-      })
-      .subscribe(data => {
-        // console.log(data.object);
-        this.cityList = data.object;
-        // console.log(this.cityList, 45455);
-      });
-    this.openUpload = true;
-  }
-  /**
-   * 确认上传
-   */
-  confirmUpload() {
-    this.openUpload = false;
-  }
-  onsuccess(response, file, fileList) {
-    this.dataList = fileList;
-  }
-  makeList(data) {
-    console.log(data.applicationPhaseResources, "erer");
-    if (data.applicationPhaseResources) {
-      this.fodderList = data.applicationPhaseResources;
+    openClick() {
+      // console.log(this.productId, 70);
+      this.personalMaterialService
+        .getAllPersonalMaterialNoPage({
+          productId: this.productId
+        })
+        .subscribe(data => {
+          // console.log(data.object);
+          this.cityList = data.object;
+          // console.log(this.cityList, 45455);
+        });
+      this.openUpload = true;
+    }
+    /**
+     * 确认上传
+     */
+    confirmUpload() {
+      this.openUpload = false;
+    }
+    onsuccess(response, file, fileList) {
+      this.dataList = fileList;
+    }
+    makeList(data) {
+      console.log(data, 'wenjianshul')
+      console.log(data.applicationPhaseResources, "erer");
+      if (data.applicationPhaseResources) {
+        this.fodderList = data.applicationPhaseResources;
+      }
+    }
+    /**
+     * 添加附件
+     */
+    addAttachment() {
+      this.openUpload = true;
+    }
+    /**
+     *删除附件
+     */
+    handleRemove(item) {}
+    created() {}
+    /**
+     * 确认上传素材
+     */
+    confirmUploadFodder() {
+      this.openUpload = false;
     }
   }
-  /**
-   * 添加附件
-   */
-  addAttachment() {
-    this.openUpload = true;
-  }
-  /**
-   *删除附件
-   */
-  handleRemove(item) {}
-  created() {}
-  /**
-   * 确认上传素材
-   */
-  confirmUploadFodder() {
-    this.openUpload = false;
-  }
-}
+
 </script>
 
 <style lang="less" scope>
-.demo-upload-list-cover {
-  display: none;
-}
-
-.demo-upload-list:focus {
   .demo-upload-list-cover {
-    display: inline-block;
+    display: none;
   }
-}
+  
+  .demo-upload-list:focus {
+    .demo-upload-list-cover {
+      display: inline-block;
+    }
+  }
+
 </style>

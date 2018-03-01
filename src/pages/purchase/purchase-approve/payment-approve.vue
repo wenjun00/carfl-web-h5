@@ -6,7 +6,7 @@
     <i-select placeholder="全部申请类型" style="width:10%;margin-left:10px;" clearable>
       <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
-    <i-checkbox style="margin-left:10px;">包含已处理</i-checkbox>
+    <i-checkbox style="margin-left:10px;" v-model="status">包含已处理</i-checkbox>
     <i-button style="margin-left:10px" @click="openSearch" class="blueButton">搜索</i-button>
     <div style="font-size:16px;cursor:pointer;display:inline-block;color:#3367A7;float:right;margin-right:10px;margin-top:10px;">
       <svg-icon iconClass="daochu"></svg-icon>
@@ -87,16 +87,18 @@
     private applyInformation: Array < Object > = [];
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
-    private openColumnsConfig: Boolean = false
-    private approvalModal: Boolean = false
+    private openColumnsConfig: Boolean = false;
+    private approvalModal: Boolean = false;
     private checkApplyModal: Boolean = false;
     private addAttachmentShow: Boolean = false;
     private dynamicParams: String = '';
     private refundId: String = '';
     private type: any = '';
+    private status: Boolean = false;
     private approvalModel: any = {
-      dynamicParams: ''
-    }
+      dynamicParams: '',
+      processStatus: ''
+    };
     addNewApply() {
       this.$Modal.info({
         title: '新增申请',
@@ -104,6 +106,13 @@
       })
     }
     getApproval() {
+      console.log(this.status)
+      if (this.status) {
+        this.approvalModel.processStatus = ''
+      } else {
+        this.approvalModel.processStatus = 1130
+      }
+      console.log(this.approvalModel, 'this.approvalModel')
       this.refundApplicationService
         .getApprovalRecord(this.approvalModel, this.pageService)
         .subscribe(
