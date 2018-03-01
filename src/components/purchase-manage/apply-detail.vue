@@ -148,7 +148,22 @@
       console.log(val)
       this.addNewApplyModal.name = val.accountName // 客户姓名
       this.refundType = val.applicationType // 付款类型
-      //   this.accountDetail = val.personalBank // 账户信息
+      val.collectMoneyItemModels.map(v => {
+        v.refundAmount = v.itemMoney
+        v.refundItem = v.itemLabel
+      })
+      this.payDetail = val.collectMoneyItemModels // 付款明细
+      //   this.accountDetail[0].personalName = val.personalBank.personalName
+      //   this.accountDetail[0].depositBank = val.personalBank.depositBank
+      let personalBank: any = []
+      personalBank.push({
+        personalName: val.personalBank.personalName ? val.personalBank.personalName : '',
+        depositBank: val.personalBank.depositBank,
+        cardNumber: val.personalBank.cardNumber,
+        depositBranch: val.personalBank.depositBranch,
+        clientNumber: val.personalBank.clientNumber
+      })
+      this.accountDetail = personalBank
     }
     /**
      *删除附件

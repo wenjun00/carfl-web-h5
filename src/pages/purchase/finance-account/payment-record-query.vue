@@ -6,10 +6,13 @@
     <i-date-picker v-model="paymentModel.startTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
     <i-date-picker v-model="paymentModel.endTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
     <!--<i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="paymentModel.dynamicParams" style="display:inline-block;width:10%;margin-left:10px;"></i-input>-->
-    <i-select placeholder="付款类型" style="width:10%;margin-left:10px;" v-model="paymentModel.refundType">
+    <i-select placeholder="全部付款类型" clearable style="width:10%;margin-left:10px;" v-model="paymentModel.refundType">
       <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
-    <i-checkbox style="margin-left:10px;" v-model="status">包含已处理</i-checkbox>
+    <i-select placeholder="申请状态" clearable style="width:10%;margin-left:10px;">
+      <i-option v-for="{value,label} in $dict.getDictData('0415')" :key="value" :label="label" :value="value"></i-option>
+    </i-select>
+    <i-checkbox style="margin-left:10px;" v-model="status">包含已归档订单</i-checkbox>
     <i-button style="margin-left:10px" class="blueButton" @click="searchPaymentrecord">搜索</i-button>
     <data-box :columns="columns1" :data="data1"></data-box>
     <!--Model-->
@@ -153,7 +156,7 @@
           return h("span", {}, this.$dict.getDictName(row.processStatus));
         }
       }, {
-        title: '付款账户名',
+        title: '付款客户名',
         key: 'customerName',
         align: 'center'
       }, {

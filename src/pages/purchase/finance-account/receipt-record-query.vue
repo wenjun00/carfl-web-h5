@@ -6,10 +6,13 @@
     <i-date-picker v-model="receiptModel.startTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
     <i-date-picker v-model="receiptModel.endTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
     <!--<i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" style="display:inline-block;width:10%;margin-left:10px;"></i-input>-->
-    <i-select placeholder="收款类型" style="width:10%;margin-left:10px;" v-model="receiptModel.applicationType">
-      <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
+    <i-select placeholder="全部收款类型" style="width:10%;margin-left:10px;" v-model="receiptModel.applicationType">
+      <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
-    <i-checkbox style="margin-left:10px;" v-model="status">包含已处理</i-checkbox>
+    <i-select placeholder="申请状态" style="width:10%;margin-left:10px;">
+      <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
+    </i-select>
+    <i-checkbox style="margin-left:10px;" v-model="status">包含已归档订单</i-checkbox>
     <i-button style="margin-left:10px" class="blueButton" @click="receiptRecordSearch">搜索</i-button>
     <data-box :columns="columns1" :data="receiptDataSet"></data-box>
     <!--Model-->
@@ -127,6 +130,10 @@
           ])
         }
       }, {
+        title: '订单编号',
+        key: 'applicationType',
+        align: 'center'
+      }, {
         title: '收款类型',
         key: 'applicationType',
         align: 'center',
@@ -149,12 +156,12 @@
           return h("span", {}, this.$dict.getDictName(row.approvalStatus));
         }
       }, {
-        title: '收款账户名',
-        key: 'gatheringAccountName',
+        title: '收款客户名',
+        key: 'accountName',
         align: 'center'
       }, {
         title: '收款金额',
-        key: 'gatheringMoney',
+        key: 'totalPayment',
         align: 'center'
       }, {
         title: '申请时间',
