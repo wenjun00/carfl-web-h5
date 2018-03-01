@@ -24,5 +24,31 @@ export class CollectMoneyHistoryService {
       page: page
     })
   }
-
+  /**
+   * 申请详情
+   */
+  withdrawApplicationDetail(data) {
+    return this.netService.send({
+      server: manageService.collectMoneyHistoryController.withdrawApplicationDetail,
+      data
+    })
+  }
+  /**
+   * 保存收款历史
+   */
+  saveCollectMoneyHistory(data) {
+    return this.netService.send({
+      server: manageService.collectMoneyHistoryController.saveCollectMoneyHistory,
+      data
+    })
+  }
+  /**
+   * 保存收款历史草稿
+   */
+  saveCollectMoneyHistoryAsDraft(data) {
+    return this.netService.send({
+      server: manageService.collectMoneyHistoryController.saveCollectMoneyHistoryAsDraft,
+      data
+    })
+  }
 }

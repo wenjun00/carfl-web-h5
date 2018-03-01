@@ -121,7 +121,7 @@
     </table>
     <i-form>
       <i-form-item label="备注">
-        <i-input type="textarea" v-model="remark" style="width:auto;display:block;margin-left:43px"></i-input>
+        <i-input type="textarea" v-model="remark" style="width:100%;display:block;"></i-input>
       </i-form-item>
     </i-form>
 
@@ -204,6 +204,7 @@
         this.repaymentObj = data
         this.collectMoneyDetails = data.collectMoneyDetails
         this.financeUploadResources = data.financeUploadResources
+        this.inputBlur()
       }, ({
         msg
       }) => {

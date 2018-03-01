@@ -2,19 +2,29 @@
 <template>
   <section class="page closed-order-query">
     <span class="form-title">已结清订单查询</span>
-    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2">
+    <i-button type="text" @click="getTimeSearch(0)" v-auth="437">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)" v-auth="437">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)" v-auth="437">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)" v-auth="437">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)" v-auth="437">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)" v-auth="437">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)" v-auth="437">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)" v-auth="437">本年</i-button>
+    <i-button @click="openSearch" style="color:#265EA2" v-auth="436">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
+    <div class="importBtn">
+      <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="438">
+        <svg-icon style="font-size:18px;" iconClass="dayin"></svg-icon>
+        <span style="font-size:12px;">打印</span>
+      </div>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="439">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size:12px;">导出</span>
+      </div>
+    </div>
     <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
       <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
       <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
@@ -25,7 +35,7 @@
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getEarlyPayList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :id="435" :columns="columns1" :data="data1"></data-box>
 
     <!--还款详情-->
     <template>
@@ -43,6 +53,7 @@
   import ConfirmRepayment from "~/components/finance-manage/confirm-repayment.vue";
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
+  import SvgIcon from '~/components/common/svg-icon.vue';
   import {
     PayoffProductOrderService
   } from "~/services/manage-service/payoff-product-order.service";
@@ -65,6 +76,7 @@
   @Layout("workspace")
   @Component({
     components: {
+      SvgIcon,
       DataBox,
       ConfirmRepayment,
       DeductRecord,
@@ -75,10 +87,8 @@
     @Dependencies(PayoffProductOrderService) private payoffProductOrderService: PayoffProductOrderService;
     @Dependencies(PageService) private pageService: PageService;
 
-    private columns1: any;
+    private columns1: any = [];
     private data1: Array < Object > = [];
-    private columns2: any;
-    private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private repayInfoModal: Boolean = false;
@@ -116,9 +126,37 @@
       this.columns1 = [
         {
           title: "操作",
-          width: "220",
+          width: 110,
           align: "center",
           fixed: "left",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('i-button', {
+                props: {
+                  type: 'text'
+                },
+                on: {
+                  click: () => {
+                    this.repayInfoModal = true
+                    let _repay: any = this.$refs['repay-info']
+                    _repay.refresh(row)
+                  }
+                },
+                style: {
+                  color: '#265EA2'
+                }
+              }, '还款详情')
+          }
+        },
+        {
+          align: "center",
+          title: "订单号",
+          width: 160,
+          key: 'orderId',
+          editable: true,
           render: (h, {
             row,
             column,
@@ -130,165 +168,128 @@
               },
               on: {
                 click: () => {
-                  this.repayInfoModal = true
-                  let _repay: any = this.$refs['repay-info']
-                  _repay.refresh(row)
-                }
-              },
-              style: {
-                color: '#265EA2'
-              }
-            }, '还款详情')
-          }
-        },
-        {
-          title: "订单号",
-          key: "orderId",
-          align: "center",
-          render: (h, row) => {
-            return h('i-button', {
-              props: {
-                type: 'text'
-              },
-              on: {
-                click: () => {
-
+                  // this.purchaseInfoModal = true
                 }
               }
-            }, 'kb20154575')
+            }, row.orderId)
           }
         },
         {
           align: "center",
           title: "客户结算号",
-          key: "customerSettleId",
-          render: (h, row) => {
+          key: "clientNumber",
+          width: 150,
+          editable: true,          
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('i-button', {
               props: {
                 type: 'text'
               },
               on: {
                 click: () => {
-
+                  // this.customerSettleClick(row)
                 }
               }
-            }, 'LSK3125465')
+            }, row.clientNumber)
           }
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customName"
+          key: "customerName",
+          editable: true,          
+          width: 100
         },
         {
           align: "center",
-          title: "证件号",
-          key: "idCard"
+          title: " 证件号",
+          editable: true,          
+          key: "idCard",
+          width: 160
         },
         {
           align: "center",
-          title: "手机号",
-          key: "phone"
+          title: " 手机号",
+          key: "mobileMain",
+          editable: true,          
+          width: 120
         },
         {
           align: "center",
-          title: "订单创建时间",
-          key: "orderCreateTime"
+          title: " 合同生效日",
+          key: "contractDate",
+          editable: true,          
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.contractDate, 'yyyy-MM-dd'))
+          }
         },
         {
           align: "center",
-          title: "合同生效日",
-          key: "compactApplyDate"
+          title: " 结清日期",
+          key: "settlementDay",
+          editable: true,
+          width: 160,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.settlementDay, 'yyyy-MM-dd'))
+          }
         },
         {
           align: "center",
-          title: "待还本金",
-          key: "supposedMajorMoney"
+          title: " 利率%/月",
+          key: "productRate",
+          editable: true,          
+          width: 90
         },
         {
           align: "center",
-          title: "待还利息",
-          key: "supposedInterest"
+          editable: true,          
+          title: " 结算通道",
+          key: "settlementChannel",
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.settlementChannel));
+          }
         },
         {
           align: "center",
-          title: "待还罚息",
-          key: "supposedPunishedInterest"
+          title: " 结清状态",
+          key: "settlementType",
+          editable: true,        
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.settlementType));
+          }
         },
         {
           align: "center",
-          title: "利率%/月",
-          key: "interestRate"
-        },
-        {
-          align: "center",
-          title: "结算通道",
-          key: "clearAccountChannel"
-        },
-        {
-          align: "center",
-          title: "归属公司",
-          key: "belongFirm"
+          title: " 归属公司",
+          width: 100,
+          editable: true,          
+          key: "companyChinaName"
         }
       ];
-
-      this.columns2 = [{
-          title: "序号",
-          type: "index",
-          width: "80",
-          align: "center"
-        },
-        {
-          title: "列名",
-          key: "columnsName",
-          align: "center"
-        },
-        {
-          type: "selection",
-          width: "80",
-          align: "center"
-        }
-      ];
-      this.data2 = [{
-          columnsName: "订单号"
-        },
-        {
-          columnsName: "客户结算号"
-        },
-        {
-          columnsName: "客户姓名"
-        },
-        {
-          columnsName: "证件号"
-        },
-        {
-          columnsName: "手机号"
-        },
-        {
-          columnsName: "订单创建时间"
-        },
-        {
-          columnsName: "合同生效日"
-        },
-        {
-          columnsName: "代还本金"
-        },
-        {
-          columnsName: "代还利息"
-        },
-        {
-          columnsName: "代还罚息"
-        },
-        {
-          columnsName: "利率%/月"
-        },
-        {
-          columnsName: "结算通道"
-        },
-        {
-          columnsName: "归属公司"
-        }
-      ];
+      
     }
     columnsConfig() {
       this.openColumnsConfig = true;
@@ -300,8 +301,10 @@
   }
 
 </script>
-
-<style>
-
-
+<style lang="less">
+.closed-order-query .importBtn {
+	float: right;
+	margin-right: 13px;
+	margin-top: 10px;
+}
 </style>

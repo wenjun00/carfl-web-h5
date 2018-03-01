@@ -15,7 +15,16 @@
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
-
+    <div class="importBtn">
+      <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="408">
+        <svg-icon style="font-size:18px;" iconClass="dayin"></svg-icon>
+        <span style="font-size:12px;">打印</span>
+      </div>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="409">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size:12px;">导出</span>
+      </div>
+    </div>
     <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
       <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
       <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
@@ -27,18 +36,6 @@
       <i-button style="margin-left:10px" class="blueButton" @click="getEarlyPayList">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="customerRepayList"></data-box>
-
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
 
     <template>
       <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认结清" width="900">
@@ -72,6 +69,7 @@
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import DeductRecordHasSearch from "~/components/finance-manage/deduct-record-has-search.vue";
+  import SvgIcon from '~/components/common/svg-icon.vue';
   import {
     AdvancePayoffService
   } from "~/services/manage-service/advance-payoff.service";
@@ -95,6 +93,7 @@
   @Component({
 
     components: {
+      SvgIcon,
       DeductRecordHasSearch,
       DataBox,
       ConfirmEarlyPay,
@@ -109,9 +108,7 @@
     private customerRepayList: Array < Object > = [];
     private columns1: any;
     private columns2: any = [];
-    private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
-    private openColumnsConfig: Boolean = false;
     private confirmRepaymentModal: Boolean = false;
     private repayInfoModal: Boolean = false;
     private deductRecordModal: Boolean = false;
@@ -149,7 +146,7 @@
      * 确认还款
      */
     confirmRepayment() {
-      let _repayment: any = this.$refs['confirm-early-pay ']
+      let _repayment: any = this.$refs['confirm-early-pay']
       let data: any = {}
       data.addFinanceUploadResource = _repayment.addFinanceUploadResource
       data.delFinanceUploadResource = _repayment.delFinanceUploadResource
@@ -254,6 +251,7 @@
           align: "center",
           title: "订单号",
           width: 160,
+          editable: true,
           key: 'orderNumber',
           render: (h, {
             row,
@@ -275,6 +273,7 @@
         {
           align: "center",
           title: "客户结算号",
+          editable: true,          
           key: "clientNumber",
           width: 150,
           render: (h, {
@@ -296,6 +295,7 @@
         },
         {
           align: "center",
+          editable: true,          
           title: "客户姓名",
           key: "name",
           width: 100
@@ -303,6 +303,7 @@
         {
           align: "center",
           title: " 证件号",
+          editable: true,          
           key: "idCard",
           width: 160
         },
@@ -310,11 +311,13 @@
           align: "center",
           title: " 手机号",
           key: "mobileMain",
+          editable: true,          
           width: 120
         },
         {
           align: "center",
           title: " 订单创建时间",
+          editable: true,          
           key: "createTime",
           width: 160,
           render: (h, {
@@ -329,6 +332,7 @@
           align: "center",
           title: " 合同生效日",
           key: "contractDate",
+          editable: true,          
           width: 160,
           render: (h, {
             row,
@@ -342,28 +346,33 @@
           align: "center",
           title: " 待还本金",
           key: "principalReceivable",
+          editable: true,          
           width: 90
         },
         {
           align: "center",
           title: " 待还利息",
           key: "interestReceivable",
+          editable: true,          
           width: 90
         },
         {
           align: "center",
           title: " 待还罚息",
           key: "penaltyReceivable",
+          editable: true,          
           width: 90
         },
         {
           align: "center",
           title: " 利率%/月",
           key: "productRate",
+          editable: true,          
           width: 90
         },
         {
           align: "center",
+          editable: true,          
           title: " 结算通道",
           key: "settlementChannel",
           width: 100,
@@ -378,53 +387,11 @@
         {
           align: "center",
           title: " 归属公司",
+          editable: true,          
           width: 100,
           key: "companyChinaName"
         }
       ];
-      this.data2 = [{
-          columnsName: "订单号"
-        },
-        {
-          columnsName: "客户结算号"
-        },
-        {
-          columnsName: "客户姓名"
-        },
-        {
-          columnsName: "证件号"
-        },
-        {
-          columnsName: "手机号"
-        },
-        {
-          columnsName: "订单创建时间"
-        },
-        {
-          columnsName: "合同生效日"
-        },
-        {
-          columnsName: "代还本金"
-        },
-        {
-          columnsName: "代还利息"
-        },
-        {
-          columnsName: "代还罚息"
-        },
-        {
-          columnsName: "利率%/月"
-        },
-        {
-          columnsName: "结算通道"
-        },
-        {
-          columnsName: "归属公司"
-        }
-      ];
-    }
-    columnsConfig() {
-      this.openColumnsConfig = true;
     }
     /**
      * 确定
@@ -435,6 +402,10 @@
 </script>
 
 <style>
-
+.early-pay .importBtn {
+	float: right;
+	margin-right: 13px;
+	margin-top: 10px;
+}
 
 </style>

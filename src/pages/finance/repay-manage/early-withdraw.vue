@@ -2,19 +2,29 @@
 <template>
   <section class="page early-withdraw">
     <span class="form-title">提前收回</span>
-    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2">
+    <i-button type="text" @click="getTimeSearch(0)" v-auth="430">昨日</i-button>
+    <i-button type="text" @click="getTimeSearch(1)" v-auth="430">今日</i-button>
+    <i-button type="text" @click="getTimeSearch(2)" v-auth="430">本周</i-button>
+    <i-button type="text" @click="getTimeSearch(3)" v-auth="430">本月</i-button>
+    <i-button type="text" @click="getTimeSearch(4)" v-auth="430">上月</i-button>
+    <i-button type="text" @click="getTimeSearch(5)" v-auth="430">最近三月</i-button>
+    <i-button type="text" @click="getTimeSearch(6)" v-auth="430">本季度</i-button>
+    <i-button type="text" @click="getTimeSearch(7)" v-auth="430">本年</i-button>
+    <i-button @click="openSearch" style="color:#265EA2" v-auth="429">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
+    <div class="importBtn">
+      <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="431">
+        <svg-icon style="font-size:18px;" iconClass="dayin"></svg-icon>
+        <span style="font-size:12px;">打印</span>
+      </div>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="432">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size:12px;">导出</span>
+      </div>
+    </div>
     <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
       <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码"></i-input>
       <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态">
@@ -29,7 +39,7 @@
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getEarlyPayList">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :id="428" :columns="columns1" :data="data1"></data-box>
 
     <!--确认收回-->
     <template>
@@ -58,6 +68,7 @@
   import ConfirmWithdraw from "~/components/finance-manage/confirm-withdraw.vue";
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
+  import SvgIcon from '~/components/common/svg-icon.vue';
   import {
     AdvanceRevokeService
   } from "~/services/manage-service/advance-revoke.service";
@@ -81,6 +92,7 @@
   @Component({
 
     components: {
+      SvgIcon,
       DataBox,
       ConfirmWithdraw,
       DeductRecord,
@@ -93,8 +105,6 @@
 
     private columns1: any;
     private data1: Array < Object > = [];
-    private columns2: any;
-    private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private confirmWithdrawModal: Boolean = false;
@@ -197,6 +207,7 @@
         {
           title: "订单号",
           key: "orderId",
+          editable: true,
           align: "center",
           render: (h, row) => {
             return h('i-button', {
@@ -214,6 +225,7 @@
         {
           align: "center",
           title: "客户结算号",
+          editable: true,          
           key: "customerSettleId",
           render: (h, row) => {
             return h('i-button', {
@@ -231,21 +243,25 @@
         {
           align: "center",
           title: "客户姓名",
+          editable: true,          
           key: "customName"
         },
         {
           align: "center",
+          editable: true,          
           title: "证件号",
           key: "idCard"
         },
         {
           align: "center",
           title: "手机号",
+          editable: true,          
           key: "phone"
         },
         {
           align: "center",
           title: "订单创建时间",
+          editable: true,          
           key: "orderCreateTime"
         },
         {
@@ -284,67 +300,6 @@
           key: "belongFirm"
         }
       ];
-
-      this.columns2 = [{
-          title: "序号",
-          type: "index",
-          width: 80,
-          align: "center"
-        },
-        {
-          title: "列名",
-          key: "columnsName",
-          align: "center"
-        },
-        {
-          type: "selection",
-          width: 80,
-          align: "center"
-        }
-      ];
-      this.data2 = [{
-          columnsName: "订单号"
-        },
-        {
-          columnsName: "客户结算号"
-        },
-        {
-          columnsName: "客户姓名"
-        },
-        {
-          columnsName: "证件号"
-        },
-        {
-          columnsName: "手机号"
-        },
-        {
-          columnsName: "订单创建时间"
-        },
-        {
-          columnsName: "合同生效日"
-        },
-        {
-          columnsName: "代还本金"
-        },
-        {
-          columnsName: "代还利息"
-        },
-        {
-          columnsName: "代还罚息"
-        },
-        {
-          columnsName: "利率%/月"
-        },
-        {
-          columnsName: "结算通道"
-        },
-        {
-          columnsName: "归属公司"
-        }
-      ];
-    }
-    columnsConfig() {
-      this.openColumnsConfig = true;
     }
     /**
      * 确定
@@ -361,5 +316,9 @@
       overflow: auto;
     }
   }
-
+.early-withdraw .importBtn {
+	float: right;
+	margin-right: 13px;
+	margin-top: 10px;
+}
 </style>

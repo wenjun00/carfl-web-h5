@@ -121,12 +121,12 @@
       <tr height="40">
         <td></td>
         <td width="25%">合计（元）</td>
-        <td  colspan="2" style="font-weight:700;font-size:14px">{{paymentAmount}}</td>
+        <td  colspan="3" style="font-weight:700;font-size:14px">{{paymentAmount}}</td>
       </tr>
     </table>
     <i-form>
       <i-form-item label="备注">
-        <i-input type="textarea" v-model="remark" style="width:auto;display:block;margin-left:43px"></i-input>
+        <i-input type="textarea" v-model="remark" style="width:100%;display:block;"></i-input>
       </i-form-item>
     </i-form>
 

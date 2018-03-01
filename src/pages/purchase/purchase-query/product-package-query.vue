@@ -130,24 +130,24 @@ export default class ProductPackageQuery extends Page {
 								},
 							},
 							'下载'
-						),
-						h(
-							'i-button',
-							{
-								props: {
-									type: 'text',
-								},
-								style: {
-									color: '#265ea2',
-								},
-								on: {
-									click: () => {
-										this.previewModal = true;
-									},
-								},
-							},
-							'查看'
-						),
+						)
+						// h(
+						// 	'i-button',
+						// 	{
+						// 		props: {
+						// 			type: 'text',
+						// 		},
+						// 		style: {
+						// 			color: '#265ea2',
+						// 		},
+						// 		on: {
+						// 			click: () => {
+						// 				this.previewModal = true;
+						// 			},
+						// 		},
+						// 	},
+						// 	'查看'
+						// ),
 					]);
 				},
 			},
@@ -267,8 +267,8 @@ export default class ProductPackageQuery extends Page {
 }
 </script>
 
-<style lang="less" scope>
-.importBtn {
+<style>
+.product-package-query .importBtn {
 	float: right;
 	margin-right: 13px;
 	margin-top: 10px;
