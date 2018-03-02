@@ -119,7 +119,7 @@
           columns,
           index
         }) => {
-          if (row.approvalDealStatus === 126) {
+          if (row.approvalDealStatus === 125) {
             return h('div', [
               h('i-button', {
                 props: {
@@ -145,7 +145,7 @@
                 }
               }, '审批')
             ])
-          } else if (row.approvalDealStatus === 125) {
+          } else if (row.approvalDealStatus === 126) {
             return h('div', [
               h('i-button', {
                 props: {

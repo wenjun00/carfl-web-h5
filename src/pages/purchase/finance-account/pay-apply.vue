@@ -274,7 +274,10 @@
       let _message: any = this.$refs['payDetail']
       this.saveData.bankListk = _message.accountInfoList
       let gatherItem: any = Object.assign(_message.gatherItemList)
-      this.saveData.refundTotalAmount = gatherItem.find(v => v.itemLabel === '合计（元）').refundAmount
+      console.log(gatherItem, 'gatherItem')
+      if (gatherItem) {
+        this.saveData.refundTotalAmount = gatherItem.find(v => v.itemName === 'totalPayment').refundAmount
+      }
       this.saveData.recordStatus = 1129
       this.saveData.refundType = this.applyData.refundType
       this.saveData.itemList = gatherItem.splice(0, (_message.gatherItemList.length - 1))
