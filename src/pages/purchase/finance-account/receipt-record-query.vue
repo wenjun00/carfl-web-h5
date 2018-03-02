@@ -9,7 +9,7 @@
     <i-select placeholder="全部收款类型" style="width:10%;margin-left:10px;" v-model="receiptModel.applicationType">
       <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
-    <i-select placeholder="申请状态" style="width:10%;margin-left:10px;" v-model="receiptModel.applicationStatus">
+    <i-select placeholder="申请状态" style="width:10%;margin-left:10px;" v-model="receiptModel.approvalStatus">
       <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
     <i-checkbox style="margin-left:10px;" v-model="status">包含已归档订单</i-checkbox>
@@ -87,7 +87,7 @@
       startTime: '',
       endTime: '',
       applicationType: '', // 收款类型
-      applicationStatus: '' // 申请状态
+      approvalStatus: '' // 申请状态
     }
 
     addNewApply() {
@@ -222,6 +222,11 @@
      * 搜索
      */
     receiptRecordSearch() {
+      if (this.status) {
+        this.receiptModel.isInclude = 1
+      } else {
+        this.receiptModel.isInclude = 0
+      }
       this.receiptModel.startTime = FilterService.dateFormat(
         this.receiptModel.startTime
       );

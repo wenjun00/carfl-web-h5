@@ -166,6 +166,7 @@
         clientNumber: val.personalBank.clientNumber
       })
       this.accountDetail = personalBank
+      this.fileList = val.financeUploadResources
     }
     /**
      *删除附件
