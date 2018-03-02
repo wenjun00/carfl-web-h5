@@ -49,8 +49,9 @@ export default class DataBoxConfig extends Vue {
   private remoteColumn: Array<any> = [];
 
   getTableColumn() {
+    console.log(this.dataColumns, 8978);
     this.tableColumn = this.dataColumns
-      .filter(x => x.key !== "index")
+      .filter(x => x.key !== "index" && x.type !== "selection")
       .map(x => {
         if (!x.editable) {
           x.check = true;

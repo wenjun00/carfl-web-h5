@@ -33,9 +33,9 @@
       <i-button style="margin-left:10px;" class="blueButton" @click="refreshData">搜索</i-button>
     </i-row>
     <!--列表-->
-    <data-box ref="databox" :id="192" :columns="columns1" :data="ordertransferDataSet" :page="pageService"></data-box>
+    <data-box ref="databox" :id="192" :columns="columns1" :data="ordertransferDataSet" :page="pageService" style="z-index:100"></data-box>
     <!--一键交接-->
-    <div class="submitBar">
+    <div class="submitBar" style="z-index:200">
       <i-row type="flex" align="middle" style="padding:14px">
         <i-col :span="8" push="1">
           <span>申请人：administrator</span>
