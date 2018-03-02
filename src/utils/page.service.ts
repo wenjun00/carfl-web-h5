@@ -34,4 +34,12 @@ export class PageService {
     this.total = parseInt(total)
     this.totalPage = parseInt(pages)
   }
+  /**
+   * 重置分页数据
+   */
+  reset(){
+    this.total = 0
+    this.pageIndex = 1
+    this.loading = false
+  }
 }

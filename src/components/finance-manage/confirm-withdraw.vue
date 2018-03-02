@@ -39,7 +39,7 @@
       </tr>
       <tr height="40">
         <td>违约费</td>
-        <td>{{repaymentObj.otherFee}}</td>
+        <td>{{repaymentObj.violateAmount}}</td>
       </tr>
       <tr height="40">
         <td>手续费</td>

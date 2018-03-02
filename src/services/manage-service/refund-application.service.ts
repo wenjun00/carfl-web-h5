@@ -9,6 +9,16 @@ export class RefundApplicationService {
     @Inject(NetService)
     private netService: NetService
 
+
+    /**
+     * 确认付款
+     */
+    comfireRefund(data) {
+        return this.netService.send({
+            server: manageService.refundApplicationController.comfireRefund,
+            data
+        })
+    }
     /**
      * 进件  付款审批
      */

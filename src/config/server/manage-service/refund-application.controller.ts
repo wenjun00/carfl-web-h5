@@ -5,6 +5,15 @@ const CONTROLLER = 'refundApplicationController'
 
 export default {
     /**
+     * 确认付款
+     */
+    comfireRefund: {
+      service: SERVICE,
+      controller: CONTROLLER,
+      action: 'comfireRefund',
+      type: requestType.Post
+    },
+    /**
      * 进件 付款审批
      */
     getApprovalRecord: {

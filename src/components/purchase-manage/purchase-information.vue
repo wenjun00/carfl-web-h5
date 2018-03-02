@@ -408,7 +408,7 @@ export default class PurchaseInformation extends Vue {
         if (this.orderInfo.orderServices) {
           this.fee = this.orderInfo.orderServices.map(v => v.service);
         }
-        this.personalJobInfo = this.personal.personalJob; // 职业信息
+        this.personalJobInfo = this.personal.personalJob || {}; // 职业信息
         this.contactsInfo = this.orderInfo.personal.personalContacts; // 联系人信息
         this.carOrderInfo = this.orderInfo.orderCars; // 选购车辆
         if (this.personal.personalResourcePublicity) {

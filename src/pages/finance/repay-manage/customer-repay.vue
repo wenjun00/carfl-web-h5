@@ -67,6 +67,15 @@
         <deduct-record-has-search ref="deduct-record-has-search"></deduct-record-has-search>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
+        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInformationModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -79,6 +88,7 @@
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import SvgIcon from '~/components/common/svg-icon.vue';
   import CustomerSettleModal from "~/components/finance-manage/customer-settle-modal.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
 
   import {
     Tooltip
@@ -107,16 +117,19 @@
       DataBox,
       ConfirmRepayment,
       DeductRecordHasSearch,
-      RepayInfo
+      RepayInfo,
+      PurchaseInformation
     }
   })
   export default class CustomerRepay extends Page {
     @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
     @Dependencies(PageService) private pageService: PageService;
+    private scrollTopHeight = 0;
     private columns1: any;
     private customerRepayList: Array < Object > = [];
     private columns2: any;
     private data2: Array < Object > = [];
+    private purchaseInformationModal: Boolean = false;
     private searchOptions: Boolean = false;
     private confirmRepaymentModal: Boolean = false;
     private repayInfoModal: Boolean = false;
@@ -141,6 +154,18 @@
       this.customerRepayModel.timeSearch = val
       this.getCustomerRepayList()
       this.customerRepayModel.timeSearch = ''
+    }
+    visibleChange() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body");
+      if (target) {
+        target.addEventListener("scroll", this.monitorScorll);
+      }
+    }
+    monitorScorll() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body");
+      if (target) {
+        this.scrollTopHeight = target.scrollTop;
+      }
     }
     /**
      * 保存草稿
@@ -261,7 +286,9 @@
               },
               on: {
                 click: () => {
-                  // this.purchaseInfoModal = true
+                  this.purchaseInformationModal = true;
+                  let _purchaseInfo: any = this.$refs["purchase-info"];
+                  _purchaseInfo.getOrderDetail(row);
                 }
               }
             }, row.orderNumber)

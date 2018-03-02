@@ -36,11 +36,11 @@
 
     <template>
       <i-modal v-model="confirmGatherModal" title="确认付款" width="900" class="confirmGather" :transfer="false">
-        <confirm-gather ref="confirm-gather"></confirm-gather>
+        <confirm-pay ref="confirm-pay"></confirm-pay>
         <div slot="footer">
           <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
-          <i-button class="highButton" @click="confirmGatherModal=false">退回</i-button>
-          <i-button class="highButton" @click="confirmGatherModal=false">确认</i-button>
+          <i-button class="highButton" @click="sendBack">退回</i-button>
+          <i-button class="highButton" @click="confirmRepayment">确认</i-button>
         </div>
       </i-modal>
     </template>
@@ -51,7 +51,7 @@
   import DataBox from "~/components/common/data-box.vue";
   import Page from "~/core/page";
   import Component from "vue-class-component";
-  import ConfirmGather from "~/components/finance-manage/confirm-gather.vue"
+  import ConfirmPay from "~/components/finance-manage/confirm-pay.vue"
   import SvgIcon from '~/components/common/svg-icon.vue';
   import {
     Tooltip
@@ -78,7 +78,7 @@
     components: {
       SvgIcon,
       DataBox,
-      ConfirmGather
+      ConfirmPay
     }
   })
   export default class Payment extends Page {
@@ -101,12 +101,59 @@
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
+    sendBack() {
+      let _repayment: any = this.$refs['confirm-pay']
+      this.refundApplicationService.returnRefundApplication({refundId:_repayment.rowObj.refundApplicationId}).subscribe(data => {
+        this.$Message.info('操作成功！')
+        this.confirmGatherModal = false
+        this.pageService.reset()
+        this.getOrderQuery() 
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+    }
+    confirmRepayment() {
+      let _repayment: any = this.$refs['confirm-pay']
+      let data: any = {}
+      data.financeUploadResources = _repayment.financeUploadResources
+      data.refundRecordItems = _repayment.collectMoneyDetails
+      data.orderId = _repayment.rowObj.orderId
+      data.businessId = _repayment.rowObj.businessId
+      data.id = _repayment.rowObj.refundApplicationId      
+      data.recordStatus = 1129
+      this.refundApplicationService.comfireRefund(data).subscribe(data => {
+        this.$Message.info('操作成功！')
+        this.confirmGatherModal = false
+        this.pageService.reset()
+        this.getOrderQuery() 
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+    }
     saveDraft() {
-      this.$Message.success('保存草稿成功！')
-      this.confirmGatherModal = false
+      let _repayment: any = this.$refs['confirm-pay']
+      let data: any = {}
+      data.financeUploadResources = _repayment.financeUploadResources
+      data.refundRecordItems = _repayment.collectMoneyDetails
+      data.orderId = _repayment.rowObj.orderId
+      data.businessId = _repayment.rowObj.businessId
+      data.id = _repayment.rowObj.refundApplicationId
+      data.recordStatus = 1128
+      this.refundApplicationService.comfireRefund(data).subscribe(data => {
+        this.$Message.info('保存草稿成功！')
+        this.confirmGatherModal = false
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
     }
     getOrderQuery() {
-      this.refundApplicationService.getApprovalRecord(this.approvalModel, this.pageService).subscribe(val => {
+      this.refundApplicationService.getRefundRecord(this.approvalModel, this.pageService).subscribe(val => {
         this.paymentData = val
       })
     }
@@ -117,13 +164,8 @@
       this.getOrderQuery();
       this.approvalModel.timeSearch = "";
     }
-    getApproval() {
-      this.refundApplicationService.getApprovalRecord(this.approvalModel, this.pageService).subscribe(val => {
-        this.paymentData = val
-      })
-    }
     created() {
-      this.getApproval()
+      this.getOrderQuery()
       this.columns1 = [
         {
           title: "操作",
@@ -147,7 +189,7 @@
                     },
                     on: {
                       click: () => {
-                        let _repayment: any = this.$refs['confirm-gather']
+                        let _repayment: any = this.$refs['confirm-pay']
                         _repayment.refresh(row)
                         this.confirmGatherModal = true
                       }
@@ -168,6 +210,8 @@
                     },
                     on: {
                       click: () => {
+                        let _repayment: any = this.$refs['confirm-pay']
+                        _repayment.refresh(row)
                         this.confirmGatherModal = true
                       }
                     }
@@ -213,7 +257,14 @@
           title: '付款类型',
           key: 'refundType',
           editable: true,          
-          align: 'center'
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.refundType));
+          }
         }, {
           title: '付款总金额',
           key: 'refundTotalAmount',

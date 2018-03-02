@@ -67,6 +67,15 @@
         <repay-info ref="repay-info"></repay-info>
       </i-modal>
     </template>
+    
+    <template>
+      <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
+        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInformationModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -79,6 +88,7 @@
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import SvgIcon from '~/components/common/svg-icon.vue';
   import CustomerSettleModal from "~/components/finance-manage/customer-settle-modal.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
   import {
     AdvanceRevokeService
   } from "~/services/manage-service/advance-revoke.service";
@@ -102,6 +112,7 @@
   @Component({
 
     components: {
+      PurchaseInformation,
       CustomerSettleModal,
       SvgIcon,
       DataBox,
@@ -113,10 +124,11 @@
   export default class EarlyWithdraw extends Page {
     @Dependencies(AdvanceRevokeService) private advanceRevokeService: AdvanceRevokeService;
     @Dependencies(PageService) private pageService: PageService;
-
+    private scrollTopHeight = 0;
     private columns1: any;
     private data1: Array < Object > = [];
     private searchOptions: Boolean = false;
+    private purchaseInformationModal: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private confirmWithdrawModal: Boolean = false;
     private repayInfoModal: Boolean = false;
@@ -129,6 +141,18 @@
     }
     mounted() {
       this.getEarlyPayList();
+    }
+    visibleChange() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body");
+      if (target) {
+        target.addEventListener("scroll", this.monitorScorll);
+      }
+    }
+    monitorScorll() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body");
+      if (target) {
+        this.scrollTopHeight = target.scrollTop;
+      }
     }
     getEarlyPayList() {
       this.advanceRevokeService.getAdvanceRevokeList(this.customerRepayModel, this.pageService).subscribe(data => {
@@ -256,7 +280,9 @@
               },
               on: {
                 click: () => {
-                  // this.purchaseInfoModal = true
+                  this.purchaseInformationModal = true;
+                  let _purchaseInfo: any = this.$refs["purchase-info"];
+                  _purchaseInfo.getOrderDetail(row);
                 }
               }
             }, row.orderNumber)

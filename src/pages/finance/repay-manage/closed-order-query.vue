@@ -52,6 +52,15 @@
         <repay-info ref="repay-info"></repay-info>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
+        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInformationModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -64,6 +73,7 @@
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import SvgIcon from '~/components/common/svg-icon.vue';
   import CustomerSettleModal from "~/components/finance-manage/customer-settle-modal.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
   import {
     PayoffProductOrderService
   } from "~/services/manage-service/payoff-product-order.service";
@@ -86,6 +96,7 @@
   @Layout("workspace")
   @Component({
     components: {
+      PurchaseInformation,
       CustomerSettleModal,
       SvgIcon,
       DataBox,
@@ -97,13 +108,14 @@
   export default class ClosedOrderQuery extends Page {
     @Dependencies(PayoffProductOrderService) private payoffProductOrderService: PayoffProductOrderService;
     @Dependencies(PageService) private pageService: PageService;
-    
+    private scrollTopHeight = 0;
     private customerSettleModal: Boolean = false;
     private columns1: any = [];
     private data1: Array < Object > = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private repayInfoModal: Boolean = false;
+    private purchaseInformationModal: Boolean = false;
     private customerRepayModel: any = {
       settlementChannel: '',
       paymentStatus: '',
@@ -121,6 +133,18 @@
       }) => {
         this.$Message.error(msg)
       })
+    }
+    visibleChange() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body");
+      if (target) {
+        target.addEventListener("scroll", this.monitorScorll);
+      }
+    }
+    monitorScorll() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body");
+      if (target) {
+        this.scrollTopHeight = target.scrollTop;
+      }
     }
     getTimeSearch(val) {
       this.customerRepayModel.settlementChannel = ''
@@ -180,7 +204,10 @@
               },
               on: {
                 click: () => {
-                  // this.purchaseInfoModal = true
+                  this.purchaseInformationModal = true;
+                  let _purchaseInfo: any = this.$refs["purchase-info"];
+                  row.orderNumber = row.orderId
+                  _purchaseInfo.getOrderDetail(row);
                 }
               }
             }, row.orderId)

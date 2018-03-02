@@ -67,6 +67,16 @@
         <deduct-record-has-search ref="deduct-record-has-search"></deduct-record-has-search>
       </i-modal>
     </template>
+
+
+    <template>
+      <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
+        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInformationModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -79,6 +89,7 @@
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import DeductRecordHasSearch from "~/components/finance-manage/deduct-record-has-search.vue";
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
   import SvgIcon from '~/components/common/svg-icon.vue';
   import {
     AdvancePayoffService
@@ -103,6 +114,7 @@
   @Component({
 
     components: {
+      PurchaseInformation,
       CustomerSettleModal,
       SvgIcon,
       DeductRecordHasSearch,
@@ -115,11 +127,13 @@
   export default class EarlyPay extends Page {
     @Dependencies(AdvancePayoffService) private advancePayoffService: AdvancePayoffService;
     @Dependencies(PageService) private pageService: PageService;
-    
+      
+    private scrollTopHeight = 0;
     private customerRepayList: Array < Object > = [];
     private columns1: any;
     private columns2: any = [];
     private searchOptions: Boolean = false;
+    private purchaseInformationModal: Boolean = false;
     private confirmRepaymentModal: Boolean = false;
     private repayInfoModal: Boolean = false;
     private deductRecordModal: Boolean = false;
@@ -132,6 +146,18 @@
     }
     mounted() {
       this.getEarlyPayList();
+    }
+    visibleChange() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body");
+      if (target) {
+        target.addEventListener("scroll", this.monitorScorll);
+      }
+    }
+    monitorScorll() {
+      let target = document.querySelector(".purchaseInformation .ivu-modal-body");
+      if (target) {
+        this.scrollTopHeight = target.scrollTop;
+      }
     }
     /**
      * 保存草稿
@@ -277,7 +303,9 @@
               },
               on: {
                 click: () => {
-                  // this.purchaseInfoModal = true
+                  this.purchaseInformationModal = true;
+                  let _purchaseInfo: any = this.$refs["purchase-info"];
+                  _purchaseInfo.getOrderDetail(row);
                 }
               }
             }, row.orderNumber)
