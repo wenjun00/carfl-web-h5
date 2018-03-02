@@ -5,7 +5,7 @@
     <span style="margin-left:10px">申请日期：</span>
     <i-date-picker v-model="receiptModel.startTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
     <i-date-picker v-model="receiptModel.endTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
-    <!--<i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" style="display:inline-block;width:10%;margin-left:10px;"></i-input>-->
+    <i-input placeholder="请录入订单编号" style="display:inline-block;width:10%;margin-left:10px;" v-model="receiptModel.orderNumber"></i-input>
     <i-select placeholder="全部收款类型" style="width:10%;margin-left:10px;" v-model="receiptModel.applicationType">
       <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
@@ -87,7 +87,8 @@
       startTime: '',
       endTime: '',
       applicationType: '', // 收款类型
-      approvalStatus: '' // 申请状态
+      approvalStatus: '', // 申请状态
+      orderNumber: '' // 订单编号
     }
 
     addNewApply() {
@@ -176,8 +177,8 @@
           return h('span', FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss'))
         }
       }, {
-        title: '申请人',
-        key: 'applyPerson',
+        title: '制单人',
+        key: 'userUserName',
         align: 'center'
       }]
       this.columns2 = [{

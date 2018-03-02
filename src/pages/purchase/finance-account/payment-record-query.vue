@@ -5,7 +5,7 @@
     <span style="margin-left:10px">申请日期：</span>
     <i-date-picker v-model="paymentModel.startTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
     <i-date-picker v-model="paymentModel.endTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
-    <!--<i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="paymentModel.dynamicParams" style="display:inline-block;width:10%;margin-left:10px;"></i-input>-->
+    <i-input placeholder="请录入订单编号" v-model="paymentModel.orderNumber" style="display:inline-block;width:10%;margin-left:10px;"></i-input>
     <i-select placeholder="全部付款类型" clearable style="width:10%;margin-left:10px;" v-model="paymentModel.refundType">
       <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
@@ -85,7 +85,7 @@
     private checkApplyModal: Boolean = false;
     private status: Boolean = false;
     private paymentModel: any = {
-      dynamicParams: '',
+      orderNumber: '',
       startTime: '',
       endTime: '',
       refundType: '',
@@ -180,8 +180,8 @@
           return h('span', FilterService.dateFormat(row.processTime, 'yyyy-MM-dd hh:mm:ss'))
         }
       }, {
-        title: '申请人',
-        key: 'applyPerson',
+        title: '制单人',
+        key: 'operator',
         align: 'center'
       }]
       this.data2 = [{
