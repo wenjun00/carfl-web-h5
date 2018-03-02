@@ -110,6 +110,10 @@
       idCardAddressDetail: '', // 箱子地址
       orderServiceList: [], // 代办服务
     };
+    getinfo(data) {
+      this.customerData = data
+      this.customerData.mobileMain = data.customerPhone
+    }
     // mounted() {}
     // whgwgdhwgdh() {
     //   console.log(this.customerData.orderServiceList, 700)
