@@ -92,7 +92,7 @@
         </td>
         <td>
           <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="v.refundItem">
-            <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>
+            <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
