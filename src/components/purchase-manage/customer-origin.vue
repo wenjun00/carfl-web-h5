@@ -122,7 +122,10 @@
     private isShow: Boolean = false;
     private isBuyCar: String = '是';
 
-
+    Reverse(data) {
+      console.log(data.personal.personalResourcePublicity.map(v => v.resourceType))
+      this.OriginModel.resourceType = data.personal.personalResourcePublicity.map(v => v.resourceType)
+    }
     checked() {
       return !this.ischecked
     }

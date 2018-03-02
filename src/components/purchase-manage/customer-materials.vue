@@ -365,7 +365,12 @@
     }
     @Prop()
     disabled: Boolean;
-
+    Reverse(data) {
+      this.customerMaterialsForm = data.personal
+    }
+    getinfo(customerModel) {
+      this.customerMaterialsForm = customerModel
+    }
     idCardChange(value) {
       if (value) {
         this.customerMaterialsForm.province1 = this.customerMaterialsForm.province

@@ -80,8 +80,29 @@
         <i-row>
           <i-col :span="12">
             <i-form-item label="单位地址" prop="companyAddress">
-              <i-input type="text" v-model="job.companyAddress" placeholder="请输入单位地址">
-              </i-input>
+              <i-row>
+                <i-col :span="3">
+                  <i-select style="width: 80px;" placeholder="省" v-model="job.province">
+                    <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+                  </i-select>
+                </i-col>
+                <i-col :span="3">
+                  <i-select style="width: 80px;" placeholder="市" v-model="job.city">
+                    <i-option v-for="{value,label} in this.job.province ? this.$city.getCityData({ level: 1, id: this.job.province }) : []" :key="value"
+                      :label="label" :value="value"></i-option>
+                  </i-select>
+                </i-col>
+                <i-col :span="3">
+                  <i-select style="width: 80px;" placeholder="区" v-model="job.companyAddress">
+                    <i-option v-for="{value,label} in this.job.city ? this.$city.getCityData({ level: 1, id: this.job.city }) : []" :key="value"
+                      :label="label" :value="value"></i-option>
+                  </i-select>
+                </i-col>
+              </i-row>
+              <i-row>
+                <i-input type="text" placeholder="请具体到门牌号" v-model="job.companyAddressDetail">
+                </i-input>
+              </i-row>
             </i-form-item>
           </i-col>
           <i-col :span="12" :pull="3">
@@ -230,6 +251,7 @@
       rank: '', // 职级
       accessCompanyTime: '', // 何时进入公司
       companyAddress: '', // 单位地址
+      companyAddressDetail: '', // 单位详细地址
       companyPhone: '', // 单位固定电话
       basicSalary: '', // 基本月薪
       payDay: '', // 每月发薪日
@@ -246,27 +268,11 @@
       pastyearIncome: '', // 过去一年营业收入
       pastyearProfit: '', // 过去一年利润
     };
-    // private revenue: any = {
-    //   basicSalary: '', // 基本月薪
-    //   payDay: '', // 每月发薪日
-    //   payWay: '', // 发薪方式
-    //   yearlySalaries: '', // 年收入
-    //   monthOtherIncome: '', // 每月其他收入
-    //   otherIncomeSource: '', // 其他收入来源
-    // };
-    // private company: any = {
-    //   identity: "", // 身份
-    //   enterpriseManageYears: '', // 企业经营年限
-    //   enterpriseManageBelong: '', // 经营地归属
-    //   employeesNumber: '', // 员工人数
-    //   registeredCapital: '', // 注册资本
-    //   industry: '', // 所属行业
-    //   pastyearIncome: '', // 过去一年营业收入
-    //   pastyearProfit: '', // 过去一年利润
-    // };
     private jobType: any = 37;
     private typeList: Array < String > ;
-
+    Reverse(data) {
+      this.job = data.personal.personalJob
+    }
     jfhdfdf() {
       console.log(this.jobType)
     }
@@ -282,7 +288,7 @@
 <style lang="less" scope>
   .customer-job-message {
     .ivu-select-selection {
-      width: 240%;
+      width: 100%;
       display: inline-block;
       border-style: none;
       border-bottom-style: solid;

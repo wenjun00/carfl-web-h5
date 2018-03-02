@@ -122,6 +122,9 @@
   import {
     CityService
   } from "~/utils/city.service"
+  import {
+    FilterService
+  } from "~/utils/filter.service"
 
   @Layout("workspace")
   @Component({
@@ -165,6 +168,8 @@
      * 根据客户三项查询历史订单
      */
     checkcustomerinfo() {
+      let customermodel: any = this.$refs['customer-materials']
+      customermodel.getinfo(this.customerModel)
       if (this.customerModel.idCard) {
         this.personalService
           .getCustomerHistoryFinanceInfo(this.customerModel)
@@ -185,9 +190,26 @@
       }
     }
     distributionData(data) {
+      console.log(data, 888)
       this.customerModel.name = data.personal.name;
       this.customerModel.customerPhone = data.personal.mobileMain;
       this.customerModel.salesmanName = data.salesmanName;
+      //   选购资料反显
+      let _choosebuymaterials: any = this.$refs['choose-buy-materials']
+      _choosebuymaterials.Reverse(data)
+      //   客户联系人反显
+      let _customercontacts: any = this.$refs['customer-contacts']
+      _customercontacts.Reverse(data)
+      //   职业信息
+      let _customerjobmessage: any = this.$refs['customer-job-message']
+      _customerjobmessage.Reverse(data)
+      //   客户资料
+      let _customermaterials: any = this.$refs['customer-materials']
+      _customermaterials.Reverse(data)
+      //   客户来源
+      let _customerorigin: any = this.$refs['customer-origin']
+      _customerorigin.Reverse(data)
+
     }
     /**
      * 获取productId
@@ -223,6 +245,7 @@
       let customerJobMessage: any = this.$refs['customer-job-message'];
       let customerContacts: any = this.$refs['customer-contacts'];
       let customerOrigin: any = this.$refs['customer-origin'];
+      console.log(customerOrigin, 'customerOrigin')
       let uploadTheMaterial: any = this.$refs['upload-the-material'];
       if (customerContacts.data1.length < 2) {
         this.$Message.warning('直系亲属必填2个！');
@@ -270,6 +293,8 @@
           //   id: material.response.id,
         })
       }
+      //   customerJobMessage.job.accessCompanyTime = FilterService.dateFormat(customerJobMessage.job.accessCompanyTime,
+      //     'yyyy-MM-dd')
       let savesubmitDataset: any = {
         orderStatus: this.orderStatus,
         idCard: this.customerModel.idCard,
