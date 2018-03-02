@@ -32,83 +32,79 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component'
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import {
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop } from "vue-property-decorator";
+import { DataGrid, DataGridItem } from "vue-fintech-component";
+import { RemitApplicationService } from "~/services/manage-service/remit-application.service";
+import { Dependencies } from "~/core/decorator";
+@Component({
+  components: {
     DataGrid,
     DataGridItem
-  } from "vue-fintech-component";
-  import {
-    RemitApplicationService
-  } from "~/services/manage-service/remit-application.service";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  @Component({
-    components: {
-      DataGrid,
-      DataGridItem
-    }
-  })
-  export default class ApplyDerate extends Vue {
-    @Dependencies(RemitApplicationService) private remitApplicationService: RemitApplicationService;
+  }
+})
+export default class ApplyDerate extends Vue {
+  @Dependencies(RemitApplicationService)
+  private remitApplicationService: RemitApplicationService;
 
-    private columns1: any;
-    private data1: Array < Object > = [];
-    private repaySumObj: any = {}
-    private paymentScheduleId: number = 0;
-    private orderId: number = 0;
-    private applyDerateModel: any = {
-      paymentScheduleId: '',
-      orderId: '',
-      remark: '',
-      remitAmount: 0,
-      remitItem: 1121
-    }
-    @Prop()
-    row: Object;
+  private columns1: any;
+  private data1: Array<Object> = [];
+  private repaySumObj: any = {};
+  private paymentScheduleId: number = 0;
+  private orderId: number = 0;
+  private applyDerateModel: any = {
+    paymentScheduleId: "",
+    orderId: "",
+    remark: "",
+    remitAmount: 0,
+    remitItem: 1121
+  };
+  @Prop() row: Object;
 
-    created() {}
+  created() {}
 
-    cancel() {
+  cancel() {}
+  confirm() {}
 
+  getInterestInfo(data, orderId) {
+    this.repaySumObj = data;
+    if (data && data.paymentSchedule) {
+      this.paymentScheduleId = data.paymentSchedule.id; // 获取当前记录id
     }
-    confirm() {
-
-    }
-    getInterestInfo(data, orderId) {
-      this.repaySumObj = data
-      if (data && data.paymentSchedule) {
-        this.paymentScheduleId = data.paymentSchedule.id // 获取当前记录id
-      }
-      this.orderId = orderId // 获取orderId
-    }
-    confirmApplyDerate() {
-      this.applyDerateModel.paymentScheduleId = this.paymentScheduleId
-      this.applyDerateModel.orderId = this.orderId
-      if (!this.applyDerateModel.remitAmount) {
-        this.$Message.error('减免金额必须大于0！')
-      } else if (this.applyDerateModel.remitAmount > this.repaySumObj.paymentSchedule.penaltySurplus) {
-        this.$Message.error('减免金额不能大于剩余应还罚息！')
-      } else {
-        this.remitApplicationService.applyForRelief(this.applyDerateModel).subscribe(val => {
-          this.$Message.success('申请减免成功！')
-          this.$emit('close')
-          this.resetInput()
-        }, ({
-          msg
-        }) => {
-          this.$Message.error(msg)
-        })
-      }
-    }
-    resetInput() {
-      this.applyDerateModel.remitAmount = 0
-      this.applyDerateModel.remark = ''
+    this.orderId = orderId; // 获取orderId
+  }
+  confirmApplyDerate() {
+    this.applyDerateModel.paymentScheduleId = this.paymentScheduleId;
+    this.applyDerateModel.orderId = this.orderId;
+    if (!this.applyDerateModel.remitAmount) {
+      this.$Message.error("减免金额必须大于0！");
+    } else if (
+      this.applyDerateModel.remitAmount >
+      this.repaySumObj.paymentSchedule.penaltySurplus
+    ) {
+      this.$Message.error("减免金额不能大于剩余应还罚息！");
+    } else {
+      this.remitApplicationService
+        .applyForRelief(this.applyDerateModel)
+        .subscribe(
+          val => {
+            this.$Message.success("申请减免成功！");
+            this.$emit("close");
+            this.resetInput();
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
     }
   }
-
+  /**
+   * 重置之前输入的减免金额和备注
+   */
+  resetInput() {
+    this.applyDerateModel.remitAmount = 0;
+    this.applyDerateModel.remark = "";
+  }
+}
 </script>

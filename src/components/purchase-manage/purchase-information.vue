@@ -408,16 +408,24 @@ export default class PurchaseInformation extends Vue {
         if (this.orderInfo.orderServices) {
           this.fee = this.orderInfo.orderServices.map(v => v.service);
         }
-        this.personalJobInfo = this.personal.personalJob; // 职业信息
-        this.contactsInfo = this.orderInfo.personal.personalContacts; // 联系人信息
-        this.carOrderInfo = this.orderInfo.orderCars; // 选购车辆
+        if (this.personal.personalJob) {
+          this.personalJobInfo = this.personal.personalJob; // 职业信息
+        }
+        if (this.orderInfo.personal.personalContacts) {
+          this.contactsInfo = this.orderInfo.personal.personalContacts; // 联系人信息
+        }
+        if (this.orderInfo.orderCars) {
+          this.carOrderInfo = this.orderInfo.orderCars; // 选购车辆
+        }
         if (this.personal.personalResourcePublicity) {
           this.personalResourcePublicity = this.personal.personalResourcePublicity; // 客户来源相关信息
         }
         if (this.personal.personalResourceIntroduce) {
           this.personalResourceIntroduce = this.personal.personalResourceIntroduce; // 客户来源介绍
         }
-        this.materialInfo = this.personal.personalDatas; // 素材相关信息
+        if (this.personal.personalDatas) {
+          this.materialInfo = this.personal.personalDatas; // 素材相关信息
+        }
         // console.log(this.orderInfo.personalJob, 1234)
         this.immediateContacts = this.contactsInfo.filter(
           v => v.relation === 56 || v.relation === 57 || v.relation === 58

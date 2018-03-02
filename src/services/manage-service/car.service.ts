@@ -91,4 +91,38 @@ export class CarService {
       server: manageService.carController.getSeriesByBrandId,
     })
   }
+  /**
+   * 新增系列
+   */
+  createCarSeries({ brandId, seriesName }) {
+    return this.netService.send({
+      data: {
+        brandId: brandId,
+        seriesName: seriesName
+      },
+      server: manageService.carController.createCarSeries,
+    })
+  }
+  /**
+   * 根据车辆系列id获取车辆品牌
+   */
+  getCarBrandBySeriesId({ seriesId }) {
+    return this.netService.send({
+      data: {
+        seriesId: seriesId
+      },
+      server: manageService.carController.getCarBrandBySeriesId,
+    })
+  }
+  /**
+   * 新增车辆品牌
+   */
+  createCarBrand({ brandName }) {
+    return this.netService.send({
+      data: {
+        brandName: brandName
+      },
+      server: manageService.carController.createCarBrand,
+    })
+  }
 }
