@@ -135,6 +135,10 @@
           ])
         }
       }, {
+        title: '订单编号',
+        key: 'orderNumber',
+        align: 'center'
+      }, {
         title: '付款类型',
         key: 'refundType',
         align: 'center',

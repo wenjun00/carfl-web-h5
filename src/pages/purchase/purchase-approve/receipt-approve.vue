@@ -12,7 +12,7 @@
       <svg-icon iconClass="daochu"></svg-icon>
       <span style="font-size: 12px;">导出</span>
     </div>
-    <data-box :columns="columns1" :data="data1" :page="pageService"></data-box>
+    <data-box :id="381" :columns="columns1" :data="data1" :page="pageService"></data-box>
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">
@@ -174,6 +174,7 @@
         }
       }, {
         title: '处理状态',
+        editable: true,
         key: 'approvalDealStatus',
         align: 'center',
         render: (h, {
@@ -185,14 +186,17 @@
         }
       }, {
         title: '处理时间',
+        editable: true,
         key: 'dealDate',
         align: 'center'
       }, {
         title: '处理人',
+        editable: true,
         key: 'dealerName',
         align: 'center'
       }, {
         title: '收款类型',
+        editable: true,
         key: 'applicationType',
         align: 'center',
         render: (h, {
@@ -204,14 +208,17 @@
         }
       }, {
         title: '收款金额',
+        editable: true,
         key: 'totalPayment',
         align: 'center'
       }, {
         title: '收款账户名',
+        editable: true,
         key: 'accountName',
         align: 'center'
       }, {
         title: '申请日期',
+        editable: true,
         key: 'operatorTime',
         align: 'center',
         render: (h, {
@@ -223,6 +230,7 @@
         },
       }, {
         title: '申请人',
+        editable: true,
         key: 'operatorName',
         align: 'center'
       }]
