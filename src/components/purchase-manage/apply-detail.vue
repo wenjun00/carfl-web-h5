@@ -148,11 +148,13 @@
       console.log(val)
       this.addNewApplyModal.name = val.accountName // 客户姓名
       this.refundType = val.applicationType // 付款类型
-      val.collectMoneyItemModels.map(v => {
-        v.refundAmount = v.itemMoney
-        v.refundItem = v.itemLabel
-      })
-      this.payDetail = val.collectMoneyItemModels // 付款明细
+      if (val.collectMoneyItemModels) {
+        val.collectMoneyItemModels.map(v => {
+          v.refundAmount = v.itemMoney
+          v.refundItem = v.itemLabel
+        })
+        this.payDetail = val.collectMoneyItemModels // 付款明细
+      }
       //   this.accountDetail[0].personalName = val.personalBank.personalName
       //   this.accountDetail[0].depositBank = val.personalBank.depositBank
       let personalBank: any = []
