@@ -301,6 +301,17 @@
       this.data1 = []
       this.data2 = []
     }
+    /**
+     * 客户联系人反显
+     */
+    Reverse(data) {
+      let personalContactsData1: any = data.personal.personalContacts.filter(v => v.relation === 56 || v.relation ===
+        57 || v.relation === 58)
+      let personalContactsData2: any = data.personal.personalContacts.filter(v => v.relation === 59 || v.relation ===
+        60 || v.relation === 61 || v.relation === 62)
+      this.data1 = personalContactsData1
+      this.data2 = personalContactsData2
+    }
     editContacts(row) {
       this.rowData = row
       this.contactsModel = {

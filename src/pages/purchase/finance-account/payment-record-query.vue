@@ -1,4 +1,4 @@
-<!--收款记录查询-->
+<!--付款记录查询-->
 <template>
   <section class="page receipt-record-query">
     <span class="form-title">付款记录查询</span>
@@ -9,7 +9,7 @@
     <i-select placeholder="全部付款类型" clearable style="width:10%;margin-left:10px;" v-model="paymentModel.refundType">
       <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
-    <i-select placeholder="申请状态" clearable style="width:10%;margin-left:10px;">
+    <i-select placeholder="申请状态" clearable style="width:10%;margin-left:10px;" v-model="paymentModel.applicationStatus">
       <i-option v-for="{value,label} in $dict.getDictData('0415')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
     <i-checkbox style="margin-left:10px;" v-model="status">包含已归档订单</i-checkbox>
@@ -88,7 +88,8 @@
       dynamicParams: '',
       startTime: '',
       endTime: '',
-      refundType: ''
+      refundType: '',
+      applicationStatus: '' // 申请状态
     }
 
 
@@ -133,6 +134,10 @@
             }, '查看')
           ])
         }
+      }, {
+        title: '订单编号',
+        key: 'orderNumber',
+        align: 'center'
       }, {
         title: '付款类型',
         key: 'refundType',

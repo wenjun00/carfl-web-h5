@@ -41,10 +41,12 @@ export class CarParamControllerService {
   /**
 * 新增或者修改车辆参数
 */
-  saveOrUpdate(data) {
+  saveOrUpdate({ carParams }) {
     return this.netService.send({
       server: manageService.carParamController.saveOrUpdate,
-      data: data
+      data: {
+        carParams: carParams
+      }
     })
   }
 

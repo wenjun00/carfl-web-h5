@@ -14,7 +14,7 @@
       </data-grid-item>
       <data-grid-item label="可冻结罚息" :span="6">
         <template>
-          <div>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltyReceivable:0}}</div>
+          <div>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltyCanFreeze:0}}</div>
         </template>
       </data-grid-item>
       <data-grid-item label="冻结罚息" :span="6">
@@ -32,75 +32,76 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component'
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import {
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop } from "vue-property-decorator";
+import { DataGrid, DataGridItem } from "vue-fintech-component";
+import { RemitApplicationService } from "~/services/manage-service/remit-application.service";
+import { Dependencies } from "~/core/decorator";
+@Component({
+  components: {
     DataGrid,
     DataGridItem
-  } from "vue-fintech-component";
-  import {
-    RemitApplicationService
-  } from "~/services/manage-service/remit-application.service";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  @Component({
-    components: {
-      DataGrid,
-      DataGridItem
+  }
+})
+export default class ApplyFrozen extends Vue {
+  @Dependencies(RemitApplicationService)
+  private remitApplicationService: RemitApplicationService;
+  private columns1: any;
+  private data1: Array<Object> = [];
+  private applyFrozenModel: any = {
+    remitAmount: 0,
+    remark: "",
+    paymentScheduleId: "",
+    orderId: "",
+    remitItem: 1122
+  };
+  private repaySumObj: any = {};
+  private paymentScheduleId: number = 0;
+  private orderId: number = 0;
+  created() {}
+  cancel() {}
+  getInterestInfo(data, orderId) {
+    this.repaySumObj = data;
+    if (data && data.paymentSchedule) {
+      this.paymentScheduleId = data.paymentSchedule.id; // 获取当前记录id
     }
-  })
-  export default class ApplyFrozen extends Vue {
-    @Dependencies(RemitApplicationService) private remitApplicationService: RemitApplicationService;
-    private columns1: any;
-    private data1: Array < Object > = [];
-    private applyFrozenModel: any = {
-      remitAmount: 0,
-      remark: '',
-      paymentScheduleId: '',
-      orderId: '',
-      remitItem: 1122
-    }
-    private repaySumObj: any = {}
-    private paymentScheduleId: number = 0;
-    private orderId: number = 0;
-    created() {
-
-    }
-    cancel() {
-
-    }
-    getInterestInfo(data, orderId) {
-      this.repaySumObj = data
-      if (data && data.paymentSchedule) {
-        this.paymentScheduleId = data.paymentSchedule.id // 获取当前记录id
-      }
-      this.orderId = orderId // 获取orderId
-    }
-    /**
-     * 确定申请冻结
-     */
-    confirmApplyFrozen() {
-      this.applyFrozenModel.paymentScheduleId = this.paymentScheduleId
-      this.applyFrozenModel.orderId = this.orderId
-      if (this.applyFrozenModel.remitAmount > this.repaySumObj.paymentSchedule.penaltyReceivable) {
-        this.$Message.error('申请冻结罚息不能大于可冻结罚息')
-      } else if (!this.applyFrozenModel.remitAmount) {
-        this.$Message.error('申请冻结罚息必须大于0')
-      } else {
-        this.remitApplicationService.applyToFreeze(this.applyFrozenModel).subscribe(val => {
-          this.$Message.success('申请冻结成功！')
-          this.$emit('close')
-        }, ({
-          msg
-        }) => {
-          this.$Message.error(msg)
-        })
-      }
+    this.orderId = orderId; // 获取orderId
+  }
+  /**
+   * 确定申请冻结
+   */
+  confirmApplyFrozen() {
+    this.applyFrozenModel.paymentScheduleId = this.paymentScheduleId;
+    this.applyFrozenModel.orderId = this.orderId;
+    if (
+      this.applyFrozenModel.remitAmount >
+      this.repaySumObj.paymentSchedule.penaltyCanFreeze
+    ) {
+      this.$Message.error("申请冻结罚息不能大于可冻结罚息");
+    } else if (!this.applyFrozenModel.remitAmount) {
+      this.$Message.error("申请冻结罚息必须大于0");
+    } else {
+      this.remitApplicationService
+        .applyToFreeze(this.applyFrozenModel)
+        .subscribe(
+          val => {
+            this.$Message.success("申请冻结成功！");
+            this.$emit("close");
+            this.resetInput();
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
     }
   }
-
+  /**
+   * 重置之前输入的减免金额和备注
+   */
+  resetInput() {
+    this.applyFrozenModel.remitAmount = 0;
+    this.applyFrozenModel.remark = "";
+  }
+}
 </script>

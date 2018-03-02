@@ -85,5 +85,32 @@ export default {
     controller: CONTROLLER,
     action: 'getSeriesByBrandId',
     type: requestType.Get
+  },
+  /**
+   * 新增系列
+   */
+  createCarSeries: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'createCarSeries',
+    type: requestType.Post
+  },
+  /**
+   * 根据车辆系列id获取车辆品牌
+   */
+  getCarBrandBySeriesId: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCarBrandBySeriesId',
+    type: requestType.Get
+  },
+  /**
+   * 新增车辆品牌
+   */
+  createCarBrand: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'createCarBrand',
+    type: requestType.Post
   }
 }

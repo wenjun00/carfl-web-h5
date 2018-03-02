@@ -299,6 +299,23 @@ export default class OrgUserManage extends Page {
                 }
               },
               "设备管理"
+            ),
+            h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.dataPowerClick(row);
+                  }
+                }
+              },
+              "数据权限"
             )
           ]);
         }
@@ -545,6 +562,13 @@ export default class OrgUserManage extends Page {
         }
       );
   }
+  /**
+   * 数据权限
+   */
+  dataPowerClick(row) {}
+  /**
+   * 确认分配角色
+   */
   allotRoleClick() {
     let _addRole = <Modal>this.$refs["allot-role-modal"];
     _addRole.allotRole();

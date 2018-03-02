@@ -362,7 +362,15 @@
     // productData(productId) {}
     @Prop()
     disabledStatus: String;
-
+    /**
+     * 数据反显
+     */
+    Reverse(data) {
+      this.chooseBuyModel = data
+      this.addcarData = data.orderCars
+      this.chooseBuyModel = data
+      //   this.prdInfoShow = true
+    }
     /**
      * 
      */
