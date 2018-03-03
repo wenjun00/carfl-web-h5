@@ -16,7 +16,7 @@
       </i-row>
     </i-form>
 
-    <div>
+    <div v-if="applicationPhaseResources.length">
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>附件</span>
     </div>
 
@@ -123,7 +123,7 @@
 
     <template>
       <i-modal title="订单详情" v-model="purchaseInfoModel" width="1000" class="purchaseInformation">
-        <purchase-information ref="purchase-information" :scrollTopHeight="scrollTopHeight"></purchase-information>
+        <purchase-information ref="purchase-info" :scrollTopHeight="scrollTopHeight"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
         </div>
@@ -162,6 +162,7 @@
     private paymentAmount: any = 0
     private delFinanceUploadResource: any = []
     private addFinanceUploadResource: any = []
+    private collectMoneyId: any = ''
 
 
 
@@ -181,6 +182,7 @@
       this.collectMoneyHistoryService.withdrawApplicationDetail({
         applicationId: row.applicationId
       }).subscribe(data => {
+        this.collectMoneyId = data.collectMoneyHistory?data.collectMoneyHistory.id:''
         console.log(data)
         this.repaymentObj = data
         this.collectMoneyDetails = data.collectMoneyHistory.collectMoneyDetails 
@@ -363,6 +365,7 @@
     saleApplyInfo() {
       this.purchaseInfoModel = true
       let _purchaseInfo: any = this.$refs["purchase-info"];
+      _purchaseInfo.getOrderDetail(this.rowObj);
     }
   }
 

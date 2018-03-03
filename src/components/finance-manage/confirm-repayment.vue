@@ -194,6 +194,7 @@
     private paymentAmount: any = 0
     private delFinanceUploadResource: any = []
     private addFinanceUploadResource: any = []
+    private collectMoneyId: any = ''
 
     refresh(row) {
       this.rowObj = row
@@ -201,6 +202,7 @@
         orderId: row.orderId
       }).subscribe(data => {
         console.log(data)
+        this.collectMoneyId = data.collectMoneyHistory?data.collectMoneyHistory.id:''
         this.repaymentObj = data
         this.collectMoneyDetails = data.collectMoneyDetails
         this.financeUploadResources = data.financeUploadResources

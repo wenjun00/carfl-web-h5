@@ -178,6 +178,7 @@
       data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
       data.paymentScheduleId = _repayment.rowObj.orderId
+      data.collectMoneyId = _repayment.collectMoneyId      
       this.paymentScheduleService.saveCustomerPaymentInfoAsDraft(data).subscribe(data => {
         this.$Message.info('保存草稿成功！')
         this.confirmRepaymentModal = false
@@ -198,6 +199,7 @@
       data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
       data.paymentScheduleId = _repayment.rowObj.orderId
+      data.collectMoneyId = _repayment.collectMoneyId      
       this.paymentScheduleService.saveCustomerPaymentInfo(data).subscribe(data => {
         this.$Message.info('还款成功！')
         this.confirmRepaymentModal = false

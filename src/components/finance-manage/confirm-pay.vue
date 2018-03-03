@@ -34,7 +34,7 @@
         </i-form-item>
       </i-col>
     </i-form>
-    <div>
+    <div v-if="applicationPhaseResources.length">
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>附件</span>
     </div>
 
@@ -193,12 +193,14 @@
     }
     private payType = ''
     private scrollTopHeight = 0
+    private collectMoneyId: any = ''
     refresh(row) {
       this.rowObj = row
       this.refundApplicationService.getRefundApplicationById({
         refundId: row.refundApplicationId
       }).subscribe(data => {
         console.log(data)
+        this.collectMoneyId = data.collectMoneyHistory?data.collectMoneyHistory.id:''
         this.personal = data.personal
         this.productOrder = data.productOrder
         this.itemList = data.itemList

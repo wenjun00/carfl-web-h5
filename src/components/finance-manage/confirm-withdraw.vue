@@ -50,7 +50,7 @@
         <td style="font-weight:700;font-size:14px">{{repaymentObj.totalPayment}}</td>
       </tr>
     </table>
-    <div style="margin-top:10px;">
+    <div style="margin-top:10px;" v-if="applicationPhaseResources.length">
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>附件</span>
     </div>
     <div style="margin-top:10px;margin-bottom:10px;">
@@ -184,6 +184,7 @@
     private delFinanceUploadResource: any = []
     private addFinanceUploadResource: any = []
     private applicationPhaseResources: any = []
+    private collectMoneyId: any = ''
 
     refresh(row) {
       this.rowObj = row
@@ -191,12 +192,13 @@
         orderId: row.orderId
       }).subscribe(data => {
         console.log(data)
+        this.collectMoneyId = data.collectMoneyHistory?data.collectMoneyHistory.id:''
         this.repaymentObj = data
         this.collectMoneyDetails = data.collectMoneyDetails || []
         this.financeUploadResources = data.collectMoneyPhaseResources
         this.applicationPhaseResources = data.applicationPhaseResources
         this.inputBlur()
-        this.remark = data.collectMoneyHistory.remark
+        this.remark = data.collectMoneyHistory?data.collectMoneyHistory.remark:''
       }, ({
         msg
       }) => {

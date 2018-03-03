@@ -111,6 +111,7 @@
     saveDraft() {
       let _repayment: any = this.$refs['confirm-gather']
       let data: any = {}
+      data.collectMoneyId = _repayment.collectMoneyId      
       data.addFinanceUploadResource = _repayment.addFinanceUploadResource
       data.delFinanceUploadResource = _repayment.delFinanceUploadResource
       data.collectMoneyDetails = _repayment.collectMoneyDetails
@@ -132,6 +133,7 @@
     confirmRepayment() {
       let _repayment: any = this.$refs['confirm-gather']
       let data: any = {}
+      data.collectMoneyId = _repayment.collectMoneyId      
       data.addFinanceUploadResource = _repayment.addFinanceUploadResource
       data.delFinanceUploadResource = _repayment.delFinanceUploadResource
       data.collectMoneyDetails = _repayment.collectMoneyDetails
