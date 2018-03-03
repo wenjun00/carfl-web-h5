@@ -20,7 +20,7 @@
     "vue": "~2.5.2",
     "vue-amap": "~0.4.5",
     "vue-class-component": "~6.1.2",
-    "vue-fintech-component": "git+http://git:123456@117.36.75.166:3000/web_dev/vue-fintech-component.git",
+    "@zct1989/vue-component": "^0.0.3",
     "vue-inject": "~2.0.0",
     "vue-property-decorator": "~6.0.0",
     "vue-router": "~3.0.1",
