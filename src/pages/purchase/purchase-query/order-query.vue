@@ -86,7 +86,7 @@ import CustomerQuery from '~/components/purchase-manage/customer-query.vue';
 import PurchaseInformation from '~/components/purchase-manage/purchase-information.vue';
 import PurchaseInformationTotal from '~/components/purchase-manage/purchase-information-total.vue';
 
-import { DataGrid, DataGridItem } from 'vue-fintech-component';
+import { DataGrid, DataGridItem } from '@zct1989/vue-component';
 
 import { Dependencies } from '~/core/decorator';
 import { ProductOrderService } from '~/services/manage-service/product-order.service';

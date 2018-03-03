@@ -18,7 +18,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
-import { DataGrid, DataGridItem } from 'vue-fintech-component';
+import { DataGrid, DataGridItem } from '@zct1989/vue-component';
 import { Form } from 'iview';
 import { Dependencies } from '~/core/decorator';
 import { ProductService } from '~/services/manage-service/product.service';

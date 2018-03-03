@@ -11,7 +11,7 @@
   import {
     DataGrid,
     DataGridItem
-  } from "vue-fintech-component";
+  } from "@zct1989/vue-component";
   import DataBox from "~/components/common/data-box.vue";
 
   @Component({

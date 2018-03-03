@@ -46,7 +46,7 @@ import DataBox from "~/components/common/data-box.vue";
 import { Prop } from "vue-property-decorator";
 import ModifyGatherItem from "~/components/purchase-manage/modify-gather-item.vue";
 import ChangeGatherItem from "~/components/purchase-manage/change-gather-item.vue";
-import { DataGrid, DataGridItem } from "vue-fintech-component";
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 @Component({
   components: {
     SvgIcon,

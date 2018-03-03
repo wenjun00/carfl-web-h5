@@ -26,7 +26,7 @@ export default class App extends Vue {
 
 <style lang="less">
 @import "normalize-css/normalize.css";
-@import "vue-fintech-component/dist/index.css";
+@import "@zct1989/vue-component/dist/index.css";
 @import "assets/styles/layout.less";
 @import "assets/styles/common.less";
 @import "assets/styles/default.less";

@@ -107,7 +107,7 @@ import Component from "vue-class-component";
 import ApplyDerate from "~/components/approval-manage/apply-derate.vue";
 import ApplyFrozen from "~/components/approval-manage/apply-frozen.vue";
 import { PaymentScheduleService } from "~/services/manage-service/payment-schedule.service";
-import { DataGrid, DataGridItem } from "vue-fintech-component";
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 @Component({

@@ -29,7 +29,7 @@
   import {
     DataGrid,
     DataGridItem
-  } from "vue-fintech-component";
+  } from "@zct1989/vue-component";
   @Component({
     components: {
       DataGrid,

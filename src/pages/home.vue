@@ -66,7 +66,7 @@ import Component from "vue-class-component";
 import Test2 from "./test2.vue";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import Map from "~/components/common/map.vue";
-import { DataGrid, DataGridItem } from "vue-fintech-component";
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { Layout } from "~/core/decorator";
 import { Mutation } from "vuex-class";
 

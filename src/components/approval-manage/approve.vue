@@ -321,7 +321,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { DataGrid, DataGridItem } from "vue-fintech-component";
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { Prop } from "vue-property-decorator";
 import { Action } from "vuex-class";
