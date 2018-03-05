@@ -4,7 +4,7 @@
     <i-row :gutter="10">
       <i-col :span="6">
         <div style="border:1px solid #D7D7D7;height:380px;">
-          <span style="position:absolute;top:50%;left:24px;">可选部门</span>
+          <span style="position:absolute;top:50%;left:34px;">可选机构</span>
         </div>
       </i-col>
       <i-col :span="18">
@@ -22,63 +22,70 @@
   import {
     Prop
   } from "vue-property-decorator";
-
+  import {
+    ManageService
+  } from "~/services/manage-service/manage.service";
+  import { Dependencies } from "~/core/decorator";
+  
   @Component({
     components: {}
   })
   export default class DataPowerModal extends Vue {
+    @Dependencies(ManageService) private manageService: ManageService;
     private columns1: any;
-    private data1: Array < Object > = [];
-    private treeData: Array < Object > = [];
-
-    @Prop()
-    row: Object;
+    private treeData: Array < any > = [];
+    private allData: Array<any> = [];
 
     created() {
-      this.treeData = [{
-          title: '开呗管理',
-          expand: true,
-          children: [{
-              title: '管理办公室'
-            },
-            {
-              title: '财务二中心'
-            }
-          ]
+     
+    }
+    getAllOrg() {
+        this.manageService.getAllDepartment().subscribe(
+        data => {
+          this.allData = data
+          this.createNewTree(data)
         },
-        {
-          title: '营销中心',
-          expand: true,
-          children: [{
-              title: '地推管理部',
-              expand: true,
-              children: [{
-                title: '西安营业部'
-              }, {
-                title: '宝鸡营业部'
-              }, {
-                title: '咸阳营业部'
-              }, {
-                title: '渭南营业部'
-              }, {
-                title: '铜川营业部'
-              }]
-            },
-            {
-              title: '网络营销部'
-            },
-            {
-              title: '渠道销售部'
-            }
-          ]
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
         }
-      ]
+      );
     }
-    cancel() {
-
-    }
-    confirm() {
-
-    }
+     /**
+   * 生成树
+   */
+  createNewTree(allData) {
+    let root = allData.filter(v => v.deptPid===0); // 获取树根
+    // 遍历根对象push进树中
+    root.forEach(item => {
+      let node1 = {
+        title: item.deptName,
+        expand: true,
+        id:item.id,
+        children: this.getChild(item)
+      };
+      this.treeData.push(node1);
+    });
+  } 
+    /**
+   * 获取相对根元素的子元素
+   */
+  getChild(item) {
+    let child: any = [];
+    // 判断子的父id与全部数据的id相等
+    this.allData.map(val => {
+      if (item.id === val.deptPid) {
+          let node2 = {
+            title: val.deptName,
+            id: val.id,
+            expand: true,
+            children: this.getChild(val) // 迭代产生根
+          };
+          child.push(node2);
+      }
+    });
+    return child;
+  }
   }
 </script>

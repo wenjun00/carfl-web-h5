@@ -50,7 +50,7 @@
                 <p>添加新增期数</p>
               </div>
             </div>
-            <i-col v-for="item in prdConfig" :key="item.productId" style="margin-bottom:10px;felx:1;margin-right:20px;" v-show="productShow">
+            <i-col v-for="item in prdConfig" :key="item.id" style="margin-bottom:10px;felx:1;margin-right:20px;" v-show="productShow">
               <div>
                 <div class="boxContainerTitle">
                   <div style="height:48px;display:inline-block;position:relative;bottom:2px;font-size:12px;margin-left:10px;">No.{{item.id}}</div>
@@ -126,7 +126,10 @@
 
     <template>
       <i-modal title="客户素材配置" v-model="customerFodderConfigModal" :width="300">
-        <i-tree :data="customerFodderTree" show-checkbox></i-tree>
+        <i-tree :data="customerFodderTree" show-checkbox ref="config-tree"></i-tree>
+        <div slot="footer">
+          <i-button type="primary" @click="configConfirm">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -292,42 +295,6 @@
 
     created() {
       this.treeList();
-      this.customerFodderTree = [
-        //   {
-        //   title: '全选',
-        //   expand: true,
-        //   children: [{
-        //       title: '个人基本资料',
-        //       expand: true,
-        //       children: [{
-        //           title: '身份证',
-        //         },
-        //         {
-        //           title: '户口本',
-        //         },
-        //         {
-        //           title: '结婚证',
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       title: '资产证明',
-        //     },
-        //     {
-        //       title: '银行流水',
-        //     },
-        //     {
-        //       title: '征信',
-        //     },
-        //     {
-        //       title: '职业证明',
-        //     },
-        //     {
-        //       title: '其他',
-        //     },
-        //   ],
-        // },
-      ];
       this.prdConfig = [{
         productId: '',
         periods: '', // 产品期数
@@ -760,35 +727,61 @@
       this.treeList();
     }
     /**
+     * 客户素材配置确定
+     */
+    configConfirm() {
+      let tree: any = this.$refs['config-tree']
+      console.log(tree.getCheckedNodes())
+      let obj: any = {
+        ids: tree.getCheckedNodes(),
+        isSelect: 0,
+        productId: this.productMessage.id
+      }
+      this.personalMaterialService
+        .select(obj).subscribe(data => {
+          this.$Message.success('操作成功！')
+          this.customerFodderConfigModal = false      
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        })
+    }
+    /**
      * 客户素材配置
      */
     customerFodderConfig() {
+      if(!this.productMessage.id) {
+        this.$Message.error('请选择产品！');
+        return
+      }
       this.customerFodderConfigModal = true;
       this.personalMaterialService
         .getAllPersonalMaterialNoPage({
           productId: this.productMessage.id,
         })
-        .subscribe(val => {
-          this.newTree = val;
-          this.newTree.map(val => {
-            let dictData = JSON.parse(localStorage.dictData); //获取所有数字字典项
-            let pt = dictData.find(v => v.id === val.type); // 找到字典项对应的父类
-            let child = Array.from(new Set(pt));
-            this.childs = {
-              title: pt.name,
+        .subscribe(data => {
+          let typeArr: any = data.map(v => v.type)
+          let arr: any = []
+          typeArr.forEach(v => {
+            if(!arr.find(val => val === v)) {
+              arr.push(v)
+            }
+          })
+          arr = arr.map(v => {
+            let title = String(this.$dict.getDictName(v))
+            let children = data.filter(val => val.type === v).map(val => {
+              val.title = val.name
+              return val
+            })
+            return {
+              title,
               expand: true,
-              children: [{
-                title: val.name,
-                expand: true,
-              }, ],
-            };
-          });
-          this.node1 = {
-            title: '全选',
-            expand: true,
-            children: [this.childs],
-          };
-          this.customerFodderTree.push(this.node1);
+              children
+            }
+          })
+          console.log(typeArr)
+          this.customerFodderTree = arr;
         });
     }
   }
