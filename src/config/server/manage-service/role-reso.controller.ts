@@ -84,5 +84,14 @@ export default {
     controller: CONTROLLER,
     action: 'findRoleResoResourceByRoleId',
     type: requestType.Post
+  },
+  /**
+  * 获取角色已有页面
+  */
+  findRoleResoMenuByRoleId: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findRoleResoMenuByRoleId',
+    type: requestType.Post
   }
 }

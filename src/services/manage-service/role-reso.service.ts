@@ -91,4 +91,15 @@ export class RoleResoService {
       }
     })
   }
+  /**
+   * 获取角色已有页面
+   */
+  findRoleResoMenuByRoleId({ roleIds }) {
+    return this.netService.send({
+      server: manageService.roleResoController.findRoleResoMenuByRoleId,
+      data: {
+        roleIds: roleIds
+      }
+    })
+  }
 }

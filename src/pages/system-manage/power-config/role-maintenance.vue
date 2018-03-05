@@ -32,17 +32,17 @@
     </template>
 
     <template>
-      <i-modal v-model="modulePowerModal" title="模块权限" width="600" @on-visible-change="modulePoweropen" class="user-list">
+      <i-modal v-model="modulePowerModal" title="模块权限" width="600" @on-visible-change="modulePoweropen">
         <module-power @close="modulePowerModal=false" ref="module-power"></module-power>
         <div slot="footer">
           <i-button @click="modulePowerModal=false">取消</i-button>
-          <i-button @click="saveModulePower">确定</i-button>
+          <i-button @click="saveModulePower" class="blueButton">确定</i-button>
         </div>
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="userListModal" title="用户列表" width="800" class="user-list" @on-visible-change="visibleChange">
+      <i-modal v-model="userListModal" title="用户列表" width="800" class-name="no-footer" @on-visible-change="visibleChange">
         <user-list ref="user-list"></user-list>
       </i-modal>
     </template>
@@ -199,7 +199,6 @@ export default class RoleMaintenance extends Page {
                 on: {
                   click: () => {
                     this.modulePower(row);
-                    console.log(row, "row");
                   }
                 }
               },
@@ -247,7 +246,6 @@ export default class RoleMaintenance extends Page {
         editable: true,
         title: "状态",
         key: "roleStatus",
-        width: 164,
         render: (h, { row, columns, index }) => {
           if (row.roleStatus === 0) {
             return h("span", {}, "启用");
@@ -260,29 +258,25 @@ export default class RoleMaintenance extends Page {
         align: "center",
         editable: true,
         title: "角色名称",
-        key: "roleName",
-        width: 160
+        key: "roleName"
       },
       {
         align: "center",
         editable: true,
         title: "备注",
-        key: "roleRemark",
-        width: 260
+        key: "roleRemark"
       },
       {
         align: "center",
         editable: true,
         title: "操作人",
-        key: "realName",
-        width: 260
+        key: "realName"
       },
       {
         align: "center",
         editable: true,
         title: "创建时间",
         key: "operateTime",
-        width: 300,
         render: (h, { row, columns, index }) => {
           return h(
             "span",
@@ -488,6 +482,7 @@ export default class RoleMaintenance extends Page {
     this.rowIdFun = row.id;
     let roleOpen: any = this.$refs["module-power"];
     roleOpen.getTreeDate();
+    roleOpen.getRoleButtonAndMenu(row.id)
   }
   userList(row) {
     this.userListModal = true;
