@@ -24,60 +24,104 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { Prop, Watch } from 'vue-property-decorator';
-import { Form } from 'iview';
-import { Dependencies } from '~/core/decorator';
-import { ApproveReasonService } from '~/services/manage-service/approve-reason.service';
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+  import {
+    Prop,
+    Watch
+  } from 'vue-property-decorator';
+  import {
+    Form
+  } from 'iview';
+  import {
+    Dependencies
+  } from '~/core/decorator';
+  import {
+    ApproveReasonService
+  } from '~/services/manage-service/approve-reason.service';
 
-@Component({
-	components: {},
-})
-export default class AddApprovalReason extends Vue {
-	@Dependencies(ApproveReasonService) private approveReasonService: ApproveReasonService;
-	private editApproval: any = {};
-	private rulesApproval: any = {};
-	created() {
-		this.rulesApproval = {
-			type: [{ required: true, message: '请选择类型', trigger: 'change', type: 'number' }],
-			first: [{ required: true, message: '请选择一级内容', trigger: 'change' }],
-			second: [{ required: true, message: '请输入二级内容', trigger: 'blur' }],
-			crc: [
-				{ required: true, message: '请输入CRC编码', trigger: 'blur' },
-				{ max: 20, message: '长度不能超过20个字符', trigger: 'blur' },
-			],
-			detail: [
-				{ required: true, message: '请输入详细内容', trigger: 'blur' },
-				{ max: 400, message: '长度不能超过400个字符', trigger: 'blur' },
-			],
-		};
-	}
-	//获取父组件的值
-	rowParms(row) {
-		this.editApproval = {
-			type: (row.type = '退件' ? (this.editApproval = 374) : (this.editApproval = '375')),
-			first: row.first,
-			second: row.second,
-			crc: row.crc,
-			detail: row.detail,
-			id: row.id,
-		};
-	}
-	validFun() {
-		let form = <Form>this.$refs['edit-approval'];
-		form.validate(valid => {
-			if (!valid) return false;
-			this.approveReasonService.createApproveReason(this.editApproval).subscribe(
-				val => {
-					this.$emit('close');
-					this.$Message.success('修改成功！');
-				},
-				({ msg }) => {
-					this.$Message.error(msg);
-				}
-			);
-		});
-	}
-}
+  @Component({
+    components: {},
+  })
+  export default class AddApprovalReason extends Vue {
+    @Dependencies(ApproveReasonService) private approveReasonService: ApproveReasonService;
+    private editApproval: any = {};
+    private rulesApproval: any = {};
+    created() {
+      this.rulesApproval = {
+        type: [{
+          required: true,
+          message: '请选择类型',
+          trigger: 'change',
+          type: 'number'
+        }],
+        first: [{
+          required: true,
+          message: '请选择一级内容',
+          trigger: 'change'
+        }],
+        second: [{
+          required: true,
+          message: '请输入二级内容',
+          trigger: 'blur'
+        }],
+        crc: [{
+            required: true,
+            message: '请输入CRC编码',
+            trigger: 'blur'
+          },
+          {
+            max: 20,
+            message: '长度不能超过20个字符',
+            trigger: 'blur'
+          },
+        ],
+        detail: [{
+            required: true,
+            message: '请输入详细内容',
+            trigger: 'blur'
+          },
+          {
+            max: 400,
+            message: '长度不能超过400个字符',
+            trigger: 'blur'
+          },
+        ],
+      };
+    }
+    reset() {
+      let _editapproval: any = this.$refs['edit-approval']
+      _editapproval.resetFields()
+    }
+    //获取父组件的值
+    rowParms(row) {
+      console.log(row, 'reset')
+      this.editApproval = {
+        type: row.type,
+        first: row.first,
+        second: row.second,
+        crc: row.crc,
+        detail: row.detail,
+        id: row.id,
+      };
+    }
+    validFun() {
+      let form = < Form > this.$refs['edit-approval'];
+      form.validate(valid => {
+        if (!valid) return false;
+        this.approveReasonService.createApproveReason(this.editApproval).subscribe(
+          val => {
+            this.$emit('close');
+            this.$Message.success('修改成功！');
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
+      });
+    }
+  }
+
 </script>
