@@ -365,34 +365,6 @@
         },
         {
           align: "center",
-          title: " 待还本金",
-          editable: true,          
-          key: "principalReceivable",
-          width: 90
-        },
-        {
-          align: "center",
-          title: " 待还利息",
-          editable: true,          
-          key: "interestReceivable",
-          width: 90
-        },
-        {
-          align: "center",
-          title: " 待还罚息",
-          editable: true,          
-          key: "penaltyReceivable",
-          width: 90
-        },
-        {
-          align: "center",
-          title: " 利率%/月",
-          editable: true,          
-          key: "productRate",
-          width: 90
-        },
-        {
-          align: "center",
           title: " 结算通道",
           editable: true,          
           key: "settlementChannel",

@@ -217,11 +217,16 @@
       if (surplusPrincipal) {
         this.saveDraftModel.surplusPrincipal = surplusPrincipal.itemMoney;
       }
+       let advancePayoffFee=itemList.find(
+        v => v.itemName === "advancePayoffFee"
+      );
+      if(advancePayoffFee){
+        this.saveDraftModel.advancePayoffFee = advancePayoffFee.itemMoney;
+      }
       let totalPayment = itemList.find(v => v.itemName === "totalPayment");
       if (totalPayment) {
         this.saveDraftModel.totalPayment = totalPayment.itemMoney;
       }
-      console.log(this.saveDraftModel, "vbvbvb");
       this.withdrawApplicationService
         .saveAdvancePayoffApplicationAsDraft(this.saveDraftModel)
         .subscribe(

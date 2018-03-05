@@ -57,5 +57,32 @@ export default {
     controller: CONTROLLER,
     action: 'getSonReso',
     type: requestType.Get
+  },
+  /**
+   * 获取系统目录菜单
+   */
+  findRoleResoMenu: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findRoleResoMenu',
+    type: requestType.Get
+  },
+  /**
+ * 根据父id查询子类不分页
+ */
+  getSonResoNoPage: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getSonResoNoPage',
+    type: requestType.Get
+  },
+  /**
+   * 获取角色已有按钮和输入框
+   */
+  findRoleResoResourceByRoleId: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findRoleResoResourceByRoleId',
+    type: requestType.Post
   }
 }

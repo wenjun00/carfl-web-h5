@@ -449,18 +449,19 @@
      * 发布产品
      */
     publish(item) {
+      console.log(item)
       this.confirmPublishModal = true;
       this.publishItem = item;
-      this.publishItem.isPublish = 360;
-      if (this.prdConfig[0].productStatus === true) {
-        return (this.prdConfig[0].productStatus = 0);
-      } else {
-        return (this.prdConfig[0].productStatus = 1);
-      }
+      // if (this.prdConfig[0].productStatus === true) {
+      //   return (this.prdConfig[0].productStatus = 0);
+      // } else {
+      //   return (this.prdConfig[0].productStatus = 1);
+      // }
     }
     publishNext() {
       this.productPlanIssueService.publish(this.publishItem).subscribe(
         val => {
+          this.productNameDetail(this.scopes)
           this.$Message.success('发布成功！');
         },
         ({
@@ -733,7 +734,7 @@
       let tree: any = this.$refs['config-tree']
       console.log(tree.getCheckedNodes())
       let obj: any = {
-        ids: tree.getCheckedNodes(),
+        ids: tree.getCheckedNodes().filter(v => v.id).map(v => v.id),
         isSelect: 0,
         productId: this.productMessage.id
       }

@@ -6,13 +6,13 @@
       <i-col :span="10">
         <span>模块名</span>
         <div style="height:600px;overflow:auto">
-          <i-tree show-checkbox :data="treeData"></i-tree>
+          <i-tree show-checkbox :data="treeData" @on-select-change="getPageButton"></i-tree>
         </div>
       </i-col>
       <!--表格-->
-      <i-col :span="14">
+      <i-col :span="14" style="padding:0 10px">
         <span>模块功能</span>
-        <data-box ref="databox" :columns="treeColumns" :data="treeDatabox" @on-select="selectFun" :noDefaultRow="true"></data-box>
+        <i-table ref="databox" :columns="treeColumns" :data="treeDatabox"  @on-select="selectFun" :noDefaultRow="true"></i-table>
       </i-col>
     </i-row>
     <!-- <div style="text-align:right">
@@ -31,6 +31,8 @@ import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { RoleResoService } from "~/services/manage-service/role-reso.service";
 import { Emit } from "vue-property-decorator";
+import { PageService } from "~/utils/page.service";
+
 @Component({
   components: {
     DataBox
@@ -39,10 +41,11 @@ import { Emit } from "vue-property-decorator";
 export default class ModulePower extends Vue {
   @Dependencies(RoleService) private roleService: RoleService;
   @Dependencies(RoleResoService) private roleResoService: RoleResoService;
+  @Dependencies(PageService) private pageService: PageService;
 
   private treeData: Array<Object> = [];
   private treeColumns: any;
-  private treeDatabox: Array<Object> = [];
+  private treeDatabox: Array<any> = [];
   private allData: Array<any> = [];
   private resoPid: number = 0;
   private checkBoolen: Boolean = false;
@@ -75,7 +78,7 @@ export default class ModulePower extends Vue {
       },
       {
         align: "center",
-        key: "desc",
+        key: "resoRemark",
         title: "描述"
       }
     ];
@@ -91,9 +94,29 @@ export default class ModulePower extends Vue {
         this.getTreeDate();
       });
   }
-  // handleCheckChange(data, checked, indeterminate) {
-  //   console.log(data, checked, indeterminate, 100)
-  // }
+  getPageButton(val){
+    if(val.length){
+      this.roleResoService.getSonResoNoPage({
+        id:val[0].id
+      }).subscribe(data=>{
+        this.treeDatabox = data
+      },({msg})=>{
+        this.$Message.error(msg)
+      })
+    }
+  }
+  /**
+   * 获取角色已有按钮和输入框
+   */
+  getRoleButton(){
+    this.roleResoService.findRoleResoResourceByRoleId({
+      roleIds:rolesId
+    }).subscribe(data=>{
+
+    },({msg})=>{
+      this.$Message.error(msg)
+    })
+  }
   /**
    * 取消
    */
@@ -126,7 +149,8 @@ export default class ModulePower extends Vue {
    * 获取树接口
    */
   getTreeDate() {
-    this.roleResoService.getAllResource().subscribe(val => {
+    // 获取树的数据
+    this.roleResoService.findRoleResoMenu().subscribe(val => {
       this.allData = val;
       this.resoPid = val.resoPid;
       this.createNewTree(this.allData);
@@ -136,15 +160,17 @@ export default class ModulePower extends Vue {
    * 生成树
    */
   createNewTree(allData) {
-    let root = allData.filter(v => !v.resoPid); // 获取树根
+    let root = allData.filter(v => v.pid===10000); // 获取树根
+    console.log(root,'root')
     this.treeData = [];
 
     // 遍历根对象push进树中
     root.forEach(item => {
+
       let node1 = {
-        title: item.resoName,
+        title: item.resoname,
         id: item.id,
-        resoName: item.resoName,
+        resoname: item.resoname,
         expand: false,
         children: this.getChild(item)
       };
@@ -158,14 +184,13 @@ export default class ModulePower extends Vue {
     let child: any = [];
     // 判断子的父id与全部数据的id相等
     this.allData.map(val => {
-      if (item.id === val.resoPid) {
-        this.expand = this.expandData.find((v, i) => v === val.id);
-        if (val.resoPid) {
+      if (item.id === val.pid) {
+        // this.expand = this.expandData.find((v, i) => v === val.id);
+        if (val.pid) {
           let node2 = {
-            title: val.resoName,
-            resoName: val.resoName,
+            title: val.resoname,
+            resoname: val.resoname,
             id: val.id,
-            checked: this.expand,
             expand: this.expand,
             children: this.getChild(val) // 迭代产生根
           };
