@@ -34,6 +34,10 @@
     <template>
       <i-modal v-model="modulePowerModal" title="模块权限" width="600" @on-visible-change="modulePoweropen" class="user-list">
         <module-power @close="modulePowerModal=false" ref="module-power"></module-power>
+        <div slot="footer">
+          <i-button @click="modulePowerModal=false">取消</i-button>
+          <i-button @click="saveModulePower">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -379,6 +383,13 @@ export default class RoleMaintenance extends Page {
         fileName: "补充协议（减免）"
       }
     ];
+  }
+  /**
+   * 保存角色的模块权限
+   */
+  saveModulePower() {
+    let _modulePower: any = this.$refs["module-power"];
+    _modulePower.submitRole();
   }
   addNewRole() {
     this.addRoleModal = true;

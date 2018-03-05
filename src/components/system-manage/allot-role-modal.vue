@@ -36,6 +36,7 @@ export default class AllotRoleModal extends Vue {
   private batchAllotModel: any; // 批量分配角色model
   private multipleRoleId; // 所选角色array
   private checkRoleId: Array<any> = []; // 反显的角色id
+
   private checkUserId: number = 0;
   @Prop() userId: any; // 单个用户id
   @Prop() batchAllotFlag: Boolean;
@@ -76,7 +77,6 @@ export default class AllotRoleModal extends Vue {
       .subscribe(
         data => {
           this.roleList = data;
-          console.log("roleList", this.roleList);
           this.checkRoleId = data.filter(v => v._checked).map(x => x.id);
         },
         ({ msg }) => {
@@ -93,46 +93,48 @@ export default class AllotRoleModal extends Vue {
     this.multipleRoleId = this.multipleRoleId.getCurrentSelection();
     // 获取roleId
     if (this.multipleRoleId) {
-      this.multipleRoleId = this.multipleRoleId.concat(this.checkRoleId);
       this.allotRoleModel.rolesId = this.multipleRoleId.map(v => v.id);
       this.batchAllotModel.rolesId = this.multipleRoleId.map(v => v.id);
     } else {
       this.multipleRoleId = [];
-      this.multipleRoleId = this.multipleRoleId.concat(this.checkRoleId);
-      this.allotRoleModel.rolesId = this.multipleRoleId;
-      this.batchAllotModel.rolesId = this.multipleRoleId;
+      this.allotRoleModel.rolesId = this.multipleRoleId.concat(
+        this.checkRoleId
+      );
+      this.batchAllotModel.rolesId = this.multipleRoleId.concat(
+        this.checkRoleId
+      );
     }
 
     // 根据flag判断是批量分配还是单个分配角色
-    // if (!this.multipleRoleId.length) {
-    //   this.$Message.info("请选择角色！");
-    // } else {
-    //   if (this.batchAllotFlag) {
-    //     this.batchAllotModel.usersId = this.userIds;
-    //     this.manageService
-    //       .userBatchAllocateRoles(this.batchAllotModel)
-    //       .subscribe(
-    //         val => {
-    //           this.$Message.success("批量分配成功！");
-    //           this.$emit("closeAndRefreshTree");
-    //         },
-    //         ({ msg }) => {
-    //           this.$Message.error(msg);
-    //         }
-    //       );
-    //   } else {
-    //     this.allotRoleModel.userId = this.userId;
-    //     this.manageService.userAllocateRoles(this.allotRoleModel).subscribe(
-    //       val => {
-    //         this.$Message.success("分配成功！");
-    //         this.$emit("closeAndRefreshTree");
-    //       },
-    //       ({ msg }) => {
-    //         this.$Message.error(msg);
-    //       }
-    //     );
-    //   }
-    // }
+    if (!this.multipleRoleId.length && !this.checkRoleId.length) {
+      this.$Message.info("请选择角色！");
+    } else {
+      if (this.batchAllotFlag) {
+        this.batchAllotModel.usersId = this.userIds;
+        this.manageService
+          .userBatchAllocateRoles(this.batchAllotModel)
+          .subscribe(
+            val => {
+              this.$Message.success("批量分配成功！");
+              this.$emit("closeAndRefreshTree");
+            },
+            ({ msg }) => {
+              this.$Message.error(msg);
+            }
+          );
+      } else {
+        this.allotRoleModel.userId = this.userId;
+        this.manageService.userAllocateRoles(this.allotRoleModel).subscribe(
+          val => {
+            this.$Message.success("分配成功！");
+            this.$emit("closeAndRefreshTree");
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+      }
+    }
   }
   resetForm() {
     this.roleListModel.roleName = "";

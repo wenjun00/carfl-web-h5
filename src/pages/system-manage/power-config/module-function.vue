@@ -2,10 +2,6 @@
 <template>
   <section class="page module-function">
     <span class="form-title">模块功能</span>
-    <!-- <i-row style="margin-bottom:10px;text-align:right;margin-right:42px">
-      <i-button style="margin-left:10px;" class="blueButton" @click="ResetNameClick">重置名称</i-button>
-      <i-button style="margin-left:10px;" class="blueButton" @click="ResetIconClick">重置图标</i-button>
-    </i-row> -->
     <i-row>
       <!--树-->
       <i-col :span="4" style="border:1px solid #DDDEE1;height:590px;margin-top:9px;">
@@ -261,12 +257,6 @@ export default class ModuleFunction extends Page {
         key: "resoIcon",
         title: "资源图标"
       },
-      // {
-      //   align: "center",
-      //   editable: true,
-      //   key: "moduleId",
-      //   title: "重置"
-      // },
       {
         align: "center",
         editable: true,
@@ -447,8 +437,10 @@ export default class ModuleFunction extends Page {
   }
   prdTreeChange(val) {
     //   this.treeDatabox = val;
-    this.id = val[0].id;
-    this.roleReso();
+    if (val.length) {
+      this.id = val[0].id;
+      this.roleReso();
+    }
   }
   roleReso() {
     this.roleResoService

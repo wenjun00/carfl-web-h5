@@ -58,17 +58,16 @@ export default class OrderTransfer extends Page {
   private openColumnsConfig: Boolean = false;
   private openOneKeyToConnect: Boolean = false;
   private editSysParamsModal: Boolean = false;
-  private systemParameterModel: any;
+  private systemParameterModel: any = {
+    paramName: "",
+    paramStatus: ""
+  };
   private checkRadio: String = "";
   private modifySysParamsModel: any;
   mounted() {
     this.getSystemParam();
   }
   created() {
-    this.systemParameterModel = {
-      paramName: "",
-      paramStatus: ""
-    };
     this.modifySysParamsModel = {
       paramCode: "",
       paramName: "",
@@ -186,10 +185,12 @@ export default class OrderTransfer extends Page {
    * 重置搜索
    */
   refreshRoleList() {
-    this.systemParameterModel = {
-      paramName: "",
-      paramStatus: ""
-    };
+    // this.systemParameterModel = {
+    //   paramName: "",
+    //   paramStatus: ""
+    // };
+    this.systemParameterModel.paramName = "";
+    this.systemParameterModel.paramStatus = "";
   }
 }
 </script>

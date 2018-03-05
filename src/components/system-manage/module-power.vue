@@ -5,7 +5,9 @@
       <!--树-->
       <i-col :span="10">
         <span>模块名</span>
-        <i-tree show-checkbox :data="treeData"></i-tree>
+        <div style="height:600px;overflow:auto">
+          <i-tree show-checkbox :data="treeData"></i-tree>
+        </div>
       </i-col>
       <!--表格-->
       <i-col :span="14">
@@ -13,10 +15,10 @@
         <data-box ref="databox" :columns="treeColumns" :data="treeDatabox" @on-select="selectFun" :noDefaultRow="true"></data-box>
       </i-col>
     </i-row>
-    <div style="text-align:right">
+    <!-- <div style="text-align:right">
       <i-button type="ghost" @click="cancelClick">取消</i-button>
       <i-button class="blueButton" @click="submitRole">确定</i-button>
-    </div>
+    </div> -->
   </section>
 </template>
 
