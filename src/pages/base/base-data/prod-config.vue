@@ -85,15 +85,15 @@
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">保证金</span>
-                    <span class="item">{{item.depositCash}}元</span>
+                    <span class="item">{{item.depositCash}} %</span>
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">尾付款</span>
-                    <span class="item">{{item.finalCash}}元</span>
+                    <span class="item">{{item.finalCash}} %</span>
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">管理费</span>
-                    <span class="item">{{item.manageCost}}元</span>
+                    <span class="item">{{item.manageCost}} %</span>
                   </div>
                   <div v-if="item.isPublish===360" class="itemContainer">
                     <span class="itemName">启用/停用</span>
