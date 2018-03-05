@@ -65,7 +65,7 @@
     </template>
 
     <template>
-      <i-modal v-model="deviceManageModal" title="设备管理" width="660" class="device-manage">
+      <i-modal v-model="deviceManageModal" title="设备管理" width="660" class="device-manage" class-name="no-footer">
         <device-manage ref="device-manage"></device-manage>
       </i-modal>
     </template>

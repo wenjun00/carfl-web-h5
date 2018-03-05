@@ -264,7 +264,7 @@ export default class FrozenApplyRecord extends Page {
       })
       .subscribe(
         val => {
-          this.$Message.success("撤销成功！");
+          this.$Message.success("解冻成功！");
           this.getFrozenList();
         },
         ({ msg }) => {

@@ -12,7 +12,7 @@
         <div style="text-align:center;font-size: 14px;font-weight: bold;width: 100%;background: #F8F8F9;height: 41px;top: 1px;">
           <span>模块名称</span>
         </div>
-        <div style="overflow:auto;height:550px;">
+        <div style="overflow:auto;max-height:550px;">
           <i-tree :data="treeData" @on-select-change="prdTreeChange"></i-tree>
         </div>
       </i-col>
@@ -261,13 +261,12 @@ export default class ModuleFunction extends Page {
         key: "resoIcon",
         title: "资源图标"
       },
-
-      {
-        align: "center",
-        editable: true,
-        key: "moduleId",
-        title: "重置"
-      },
+      // {
+      //   align: "center",
+      //   editable: true,
+      //   key: "moduleId",
+      //   title: "重置"
+      // },
       {
         align: "center",
         editable: true,
@@ -386,7 +385,7 @@ export default class ModuleFunction extends Page {
         resoType: item.resoType,
         resoFiletype: item.resoFiletype,
         resoRemark: item.resoRemark,
-        expand: false,
+        expand: true,
         children: this.getChild(item)
       };
       this.treeData.push(node1);
@@ -453,9 +452,12 @@ export default class ModuleFunction extends Page {
   }
   roleReso() {
     this.roleResoService
-      .getSonReso({
-        id: this.id
-      })
+      .getSonReso(
+        {
+          id: this.id
+        },
+        this.pageService
+      )
       .subscribe(
         data => {
           this.treeDatabox = data;
