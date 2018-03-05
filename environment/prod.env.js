@@ -1,5 +1,3 @@
 module.exports = {
-  URL: {
-    SERVER: JSON.stringify("http://192.168.3.9:9000")
-  }
+  URL_SERVER: JSON.stringify("http://carfl-server-test.daocloudapp.com")
 }
