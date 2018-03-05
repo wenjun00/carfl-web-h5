@@ -27,7 +27,7 @@ async function startUp() {
 
 // 打印版本发布信息
 if (process.env.BUILD_TIME) {
-  console.log('版本发布时间' + new Date(process.env.BUILD_TIME))
+  console.log('版本发布时间:' + process.env.BUILD_TIME)
 }
 
 // 应用程序启动
