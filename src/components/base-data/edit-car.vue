@@ -9,7 +9,7 @@
           </i-form-item>
         </i-col>
         <i-col :span="12" :push="1">
-          <i-form-item label="产品包" prop="quotationName">
+          <i-form-item label="产品包" prop="productPackageId">
             <i-select v-model="carFormItem.productPackageId">
               <i-option v-for="item in allProdPackage" :key="item.id" :value="item.id" :label="item.fileName"></i-option>
             </i-select>
@@ -68,8 +68,8 @@
       </i-row>
       <i-row>
         <i-col :span="11">
-          <i-form-item label="经销商报价" prop="firstPayment">
-            <i-input v-model="carFormItem.firstPayment"></i-input>
+          <i-form-item label="经销商报价" prop="dealerGuidingPrice">
+            <i-input v-model="carFormItem.dealerGuidingPrice"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12" :push="1">
@@ -168,7 +168,7 @@
     @Dependencies(CarQuotationService) private carQuotationService: CarQuotationService;
     @Dependencies(CarService) private carService: CarService;
     @Dependencies(ProductPackageService) private productPackageService: ProductPackageService;
-    @Prop() carFormItem: any;
+    // @Prop() carFormItem: any;
 
     @Emit('close')
     close() {}
@@ -179,37 +179,56 @@
     private SeriesList: any = []; // 系列
     private carList: any = []; // 型号
     private allProdPackage: Array < any > = [];
+    private carFormItem: any = {
+      quotationName: '', // 经销商
+      productPackageId: '', // 产品包
+      carBrandId: '', // 品牌
+      carName: '', // 车型
+      carSeriesName: '', // 车系
+      carColor: '', // 颜色
+      marketGuidingPrice: '', // 市场指导价
+      monthPay: '', // 租金
+      firstPayment: '', // 首期金额
+      dealerGuidingPrice: '', // 经销商报价
+      purchaseTaxMoney: '', // 购置税
+      roadBridgeFee: '', // 路桥费
+      financeAmount: '', // 融资金额
+      annualAmount: '', // 保险费
+      periods: '', // 期数
+      gpsFee: '', // GPS费
+      otherFee: '', // 其他费用
+      status: '', // 是否启用
+    };
     private ruleValidate: any = {
       quotationName: [{
-          required: true,
-          message: '请输入经销商',
-          trigger: 'blur',
-        },
-        {
-          type: 'string',
-          max: 10,
-          message: '您输入的字符不能超过10个',
-          trigger: 'blur'
-        },
-      ],
+        required: true,
+        message: '请输入经销商',
+        trigger: 'blur',
+      }],
+      productPackageId: [{
+        required: true,
+        message: '请输入产品包',
+        trigger: 'change',
+        type: 'number',
+      }],
       carBrandId: [{
         required: true,
         message: '请输入品牌',
         trigger: 'change',
         type: 'number',
-      }, ],
+      }],
+      carId: [{
+        required: true,
+        message: '请输入车型',
+        trigger: 'change',
+        type: 'number',
+      }],
       carSeriesName: [{
         required: true,
-        message: '请输入系列',
+        message: '请输入车系',
         trigger: 'change',
-        // type: 'number'
-      }, ],
-      carName: [{
-        required: true,
-        message: '请输入型号',
-        trigger: 'change',
-        // type: 'number'
-      }, ],
+        // type: 'number',
+      }],
       carColor: [{
         required: true,
         message: '请输入颜色',
@@ -221,33 +240,15 @@
         trigger: 'blur',
         type: 'number',
       }],
-      dealerGuidingPrice: [{
-        required: true,
-        message: '请输入经销商报价',
-        trigger: 'blur',
-        type: 'number',
-      }],
-      firstPayment: [{
-        required: true,
-        message: '请输入首期金额',
-        trigger: 'blur',
-        type: 'number',
-      }],
-      financeAmount: [{
-        required: true,
-        message: '请输入融资金额',
-        trigger: 'blur',
-        type: 'number',
-      }],
-      periods: [{
-        required: true,
-        message: '请输入融资期数',
-        trigger: 'blur',
-        type: 'number',
-      }],
       monthPay: [{
         required: true,
         message: '请输入租金',
+        trigger: 'blur',
+        type: 'number',
+      }],
+      dealerGuidingPrice: [{
+        required: true,
+        message: '请输入经销商报价',
         trigger: 'blur',
         type: 'number',
       }],
@@ -257,9 +258,21 @@
         trigger: 'blur',
         type: 'number',
       }],
+      firstPayment: [{
+        required: true,
+        message: '请输入首期金额',
+        trigger: 'blur',
+        type: 'number',
+      }],
       roadBridgeFee: [{
         required: true,
         message: '请输入路桥费',
+        trigger: 'blur',
+        type: 'number',
+      }],
+      financeAmount: [{
+        required: true,
+        message: '请输入融资金额',
         trigger: 'blur',
         type: 'number',
       }],
@@ -269,28 +282,27 @@
         trigger: 'blur',
         type: 'number',
       }],
+      periods: [{
+        required: true,
+        message: '请输入融资期数',
+        trigger: 'blur',
+        type: 'number',
+      }],
       gpsFee: [{
         required: true,
         message: '请输入GPS费',
         trigger: 'blur',
         type: 'number',
       }],
-      otherFee: [{
-        required: true,
-        message: '请输入其他费用',
-        trigger: 'blur',
-        type: 'number',
-      }],
       status: [{
         required: true,
-        message: '请选择状态',
-        trigger: 'blur',
+        message: '请选择是否启用',
+        trigger: 'change',
         type: 'number',
-      }],
+      }, ],
     };
 
     created() {
-      console.log(this.carFormItem, 90);
       // 获取品牌
       this.carService.getAllBrand().subscribe(
         data => {
@@ -336,25 +348,31 @@
     submitButton() {
       let formVal: any = this.$refs['form'];
       formVal.validate(valid => {
-        if (!valid) return false;
-        this.carFormItem.carRemark = this.carFormItem.carColor;
-        this.carQuotationService.updateCarQuotation(this.carFormItem).subscribe(
-          data => {
-            this.$Message.success('修改成功！');
-            this.$emit('close');
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg);
-          }
-        );
+        if (!valid) {
+          return false
+        } else {
+          this.carFormItem.carRemark = this.carFormItem.carColor;
+          this.carQuotationService.updateCarQuotation(this.carFormItem).subscribe(
+            data => {
+              this.$Message.success('修改成功！');
+              this.$emit('close');
+            },
+            ({
+              msg
+            }) => {
+              this.$Message.error(msg);
+            }
+          );
+        }
       });
     }
     /**
      * 获取所有产品包
      */
-    getAllProdPackage() {
+    getAllProdPackage(row) {
+      console.log(row, 'productPackageId')
+      this.carFormItem = Object.assign({}, row)
+      console.log(this.carFormItem, 'carformitem')
       this.productPackageService.getAllProductPackageNoPage().subscribe(
         data => {
           this.allProdPackage = data;
