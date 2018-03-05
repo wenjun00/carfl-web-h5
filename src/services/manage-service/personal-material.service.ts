@@ -39,9 +39,10 @@ export class PersonalMaterialService {
   /**
    * 勾选客户素材
    */
-  select() {
+  select(data) {
     return this.netService.send({
       server: manageService.personalMaterialController.select,
+      data
     })
   }
 
