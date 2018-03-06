@@ -101,7 +101,7 @@
           </div>
         </td>
         <td>
-          <i-select placeholder="选择收款方式" style="display:inline-block;width:90%" v-model="v.collectMoneyMethod">
+          <i-select placeholder="选择收款方式" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
@@ -225,7 +225,7 @@
       console.log('add')
       this.collectMoneyDetails.push({
         collectMoneyAmount: '',
-        collectMoneyMethod: ''
+        collectMoneyChannel: ''
       })
     }
     /**
