@@ -49,11 +49,11 @@
     </i-row>
     <div class="shade" :style="{display:disabledStatus}">
     </div>
-    <i-tabs active-key="key1" type="card" class="fulls-pay-tabs">
-      <i-tab-pane label="选购资料" key="key1">
+    <i-tabs type="card" class="fulls-pay-tabs">
+      <i-tab-pane label="选购资料" name="choose-buy-materials-all">
         <choose-buy-materials-all ref='materials-all'></choose-buy-materials-all>
       </i-tab-pane>
-      <i-tab-pane label="客户资料">
+      <i-tab-pane label="客户资料" name="customer-materials-all">
         <customer-materials-all ref="materials"></customer-materials-all>
       </i-tab-pane>
     </i-tabs>

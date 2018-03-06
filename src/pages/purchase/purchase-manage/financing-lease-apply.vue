@@ -338,8 +338,11 @@
             this.$Message.warning('请完善客户来源信息');
             return
           }
-
+          let resourceType = Array.from(new Set(customerOrigin.OriginModel.resourceType))
           //   customerJobMessage.job.accessCompanyTime = FilterService.dateFormat(customerJobMessage.job.accessCompanyTime,
+          //     'yyyy-MM')
+          //   customerMaterials.customerMaterialsForm.birthTime = FilterService.dateFormat(customerMaterials.customerMaterialsForm
+          //     .birthTime,
           //     'yyyy-MM-dd')
           let savesubmitDataset: any = {
             orderStatus: this.orderStatus,
@@ -383,7 +386,7 @@
             personalContacts: customerContacts.data1.concat(customerContacts.data2),
             // 客户来源
             personalResourceIntroduce: customerOrigin.customerOriginModel, // 通过介绍
-            resourceTypes: customerOrigin.OriginModel.resourceType, // 通过宣传
+            resourceTypes: resourceType, // 通过宣传
             // 上传素材
             personalDatas: this.PersonalData,
           };
