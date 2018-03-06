@@ -20,7 +20,7 @@
               <span><span style="color:#ccc">资金渠道：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].capitaChannels:''):''}}</span>
             </div>
             <div style="margin-bottom:20px;margin-left:50px;font-size:16px"><span style="color:#ccc">产品序号：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].productNumber:''):''}}</div>
-            <div style="position:relative;bottom:10px">
+            <div style="position:relative;bottom:10px;padding-left:10px">
               <i-table highlight-row @on-current-change="currenttrablerowdata" :columns="carColumns" :data="carData" :page="pageService"></i-table>
             </div>
           </i-col>
@@ -273,10 +273,13 @@
      * 根据产品树获取期数列表
      */
     productPlanissueDetail(data) {
-      this.productId = data[0].productId
-      console.log(this.productId)
+      if (data[0].seriesId) {
+        this.productId = data[0].seriesId
+      }
+      if (data[0].productId) {
+        this.productId = data[0].productId
+      }
       this.productPlanissue(data)
-      console.log(data, 555)
       this.productDataModel = data
       this.productPlanIssueService.getAllProductPlan({
         productId: this.productId
