@@ -293,6 +293,15 @@
           //   id: material.response.id,
         })
       }
+      if (choosebuymaterials.addcarData.length === 0) {
+        this.$Message.warning('请添加车辆信息');
+        return
+      }
+      if (choosebuymaterials.chooseBuyModel.financeTotalMoney === '') {
+        this.$Message.warning('请输入产品信息中的融资总额');
+        return
+      }
+
       //   customerJobMessage.job.accessCompanyTime = FilterService.dateFormat(customerJobMessage.job.accessCompanyTime,
       //     'yyyy-MM-dd')
       let savesubmitDataset: any = {

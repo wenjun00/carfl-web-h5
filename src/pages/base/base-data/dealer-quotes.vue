@@ -16,22 +16,22 @@
         <i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>
 
       </div>
-      <div style="float:right;margin-right:10px;margin-top:10px;">
+      <div style="float:right;margin-right:10px;margin-top:10px;width:280px;">
         <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
+          <svg-icon style="font-size:16px;" iconClass="dayin"></svg-icon>
           <span style="font-size:12px;">打印</span>
         </div>
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon iconClass="daochu"></svg-icon>
-          <span style="font-size: 12px;">导出</span>
+          <svg-icon iconClass="daochu" style="font-size:14px;"></svg-icon>
+          <span style="font-size: 8px;">导出</span>
         </div>
         <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon style="font-size:24px;" iconClass="daoru"></svg-icon>
+          <svg-icon style="font-size:16px;" iconClass="daoru"></svg-icon>
           <span style="font-size:8px;">导入</span>
         </div>
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon iconClass="xiazai"></svg-icon>
-          <span style="font-size: 16px;">模版下载</span>
+          <svg-icon iconClass="xiazai" style="font-size:16px;"></svg-icon>
+          <span style="font-size: 8px;">模版下载</span>
         </div>
       </div>
     </div>

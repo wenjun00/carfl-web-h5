@@ -97,7 +97,7 @@
     <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
     <!--</div>-->
     <i-row v-show="prdInfoShow">
-      <i-form ref="customer-form" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;">
+      <i-form ref="customer-form" :rule="rules" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;">
         <i-col span="12">
           <i-form-item label="产品系列" prop="prdSeriods">
             <i-input type="text" v-model="chooseBuyModel.prdSeriods">
@@ -357,6 +357,13 @@
       initialPayment: '', // 首付金额
       otherFee: '', // 其他费用
     };
+    private rules: any = {
+      financeTotalMoney: [{
+        required: true,
+        message: '请输入融资总额',
+        trigger: 'blur',
+      }, ],
+    }
 
     // @Emit('productData')
     // productData(productId) {}
