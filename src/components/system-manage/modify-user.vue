@@ -52,9 +52,7 @@
         <i-col :span="12">
           <i-form-item label="数据权限" prop="userManager">
             <i-select v-model="modifyModel.userManager">
-              <i-option :value="416" label="个人" :key="416"></i-option>
-              <i-option :value="417" label="组织" :key="417"></i-option>
-              <i-option :value="418" label="公司" :key="418"></i-option>
+              <i-option v-for="{value,label} in $dict.getDictData('0405')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>

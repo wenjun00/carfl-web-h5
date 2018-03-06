@@ -49,7 +49,7 @@
 
     <template>
       <i-modal v-model="waitHandleCaseModal" title="待办事项配置">
-        <wait-handle-case ref="wait-handle" @configData="configData"></wait-handle-case>
+        <wait-handle-case ref="wait-handle" @close="waitHandleCaseModal=false"></wait-handle-case>
         <div slot="footer">
           <i-button type="ghost" @click="waitHandleCaseModal=false">取消</i-button>
           <i-button class="blueButton" @click="submitRole">确定</i-button>
@@ -127,10 +127,8 @@ export default class RoleMaintenance extends Page {
   private addRoleModal: Boolean = false; // 新增角色
   private roleModel: any;
   private modifyRoleModel: any;
-  private roleConfig: Object = {};
-  private roleID: Number;
   private rowIdFun: any = "";
-
+  private roleId: Number = 0;
   mounted() {
     this.getRoleListByCondition();
   }
@@ -285,11 +283,6 @@ export default class RoleMaintenance extends Page {
         }
       }
     ];
-
- 
-    
-
-    
   }
   /**
    * 保存角色的模块权限
@@ -395,7 +388,7 @@ export default class RoleMaintenance extends Page {
     this.rowIdFun = row.id;
     let roleOpen: any = this.$refs["module-power"];
     roleOpen.getTreeDate();
-    roleOpen.getRoleButtonAndMenu(row.id)
+    roleOpen.getRoleButtonAndMenu(row.id);
   }
   userList(row) {
     this.userListModal = true;
@@ -404,9 +397,9 @@ export default class RoleMaintenance extends Page {
   }
   waitHandleCaseConfig(row) {
     this.waitHandleCaseModal = true;
+    this.roleId = row.id;
     let waitHandle: any = this.$refs["wait-handle"];
-    waitHandle.getDate();
-    this.roleID = row.id;
+    waitHandle.getData(this.roleId);
   }
   modulePoweropen(val) {
     if (val) {
@@ -420,28 +413,13 @@ export default class RoleMaintenance extends Page {
       _userList.resetFrom();
     }
   }
-  /**
-   * 代办事项配置选择/子组件向父组件传
-   */
-  configData(data) {
-    this.roleConfig = {
-      backlogIds: data,
-      roleId: this.roleID
-    };
-  }
+
   /**
    * 代办事项配置确定提交
    */
   submitRole() {
-    this.backLogService.roleAllocateBacklogs(this.roleConfig).subscribe(
-      val => {
-        this.$Message.success('配置成功！');
-        this.waitHandleCaseModal = false;
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
-    );
+    let _waitHandle: any = this.$refs["wait-handle"];
+    _waitHandle.configWaitHandle(this.roleId);
   }
 }
 </script>
