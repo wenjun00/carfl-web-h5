@@ -25,8 +25,7 @@
       <i-row>
         <i-col span="12">
           <i-form-item label="出生日期" prop="birthTime">
-            <i-input type="text" placeholder="请输入出生日期" v-model="customerMaterialsForm.birthTime">
-            </i-input>
+            <i-date-picker type="date" placeholder="选择出生日期" v-model="customerMaterialsForm.birthTime"></i-date-picker>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">

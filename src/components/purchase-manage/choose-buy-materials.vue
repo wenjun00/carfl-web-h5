@@ -373,10 +373,15 @@
      * 数据反显
      */
     Reverse(data) {
-      this.chooseBuyModel = data
-      this.addcarData = data.orderCars
-      this.chooseBuyModel = data
-      //   this.prdInfoShow = true
+      this.chooseBuyModel.province = data.province
+      this.chooseBuyModel.city = data.city
+      this.chooseBuyModel.companyId = data.companyId
+      this.chooseBuyModel.orderServiceList = data.orderServiceList // 自缴费用
+      this.chooseBuyModel.financingUse = data.financingUse
+      this.chooseBuyModel.intentionFinancingAmount = data.intentionFinancingAmount
+      this.chooseBuyModel.intentionPeriods = data.intentionPeriods
+      this.chooseBuyModel.rentPayable = data.rentPayable
+      this.chooseBuyModel.hopeProportion = data.hopeProportion
     }
     /**
      * 

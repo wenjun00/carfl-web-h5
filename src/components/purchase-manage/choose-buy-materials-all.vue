@@ -3,7 +3,7 @@
   <section class="component choose-buy-materials-all">
     <div class="form-title">选购信息</div>
     <i-row class="proCity">
-      <i-form ref="parchase-form" :rules="applyRule" :label-width="110">
+      <i-form :rules="applyRule" ref="parchase-form" :label-width="110">
         <i-col span="12">
           <i-form-item label="申请省份" prop="province">
             <i-select placeholder="选择省" v-model="choosebusyData.province" clearable>
@@ -20,7 +20,7 @@
           </i-form-item>
         </i-col>
         <i-col span="12">
-          <i-form-item label="所属公司" prop="">
+          <i-form-item label="所属公司" prop="companyId">
             <i-select v-model="choosebusyData.companyId" clearable>
               <i-option v-for="item in companyObject" :key="item.id" :value="item.id" :label="item.companyChinaname"></i-option>
             </i-select>
@@ -90,12 +90,29 @@
     private rowData: any = null;
     private saveData: any = null;
 
-    applyRule: Object = {};
+    private applyRule: Object = {
+      province: [{
+        required: true,
+        message: '请选择申请省份',
+        trigger: 'change',
+        type: 'number',
+      }],
+      city: [{
+        required: true,
+        message: '请选择申请城市',
+        trigger: 'change',
+        type: 'number',
+      }],
+      companyId: [{
+        required: true,
+        message: '请选择所属公司',
+        trigger: 'change',
+        type: 'number',
+      }]
+    };
     @Prop()
     disabledStatus: String;
     @Prop() currentRowData: any;
-
-
     created() {
       //   console.log(this.currentRowData.addcarData, 800)
       //   this.addcarData = this.currentRowData.addcarData

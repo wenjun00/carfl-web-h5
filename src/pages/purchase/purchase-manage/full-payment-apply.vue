@@ -132,7 +132,28 @@
       salesmanName: '',
     };
 
-    applyRule: Object = {};
+    private applyRule: Object = {
+      idCard: [{
+        required: true,
+        message: '请输入证件号码',
+        trigger: 'blur',
+      }],
+      name: [{
+        required: true,
+        message: '请输入客户姓名',
+        trigger: 'blur',
+      }],
+      customerPhone: [{
+        required: true,
+        message: '请输入客户电话',
+        trigger: 'blur',
+      }],
+      salesmanName: [{
+        required: true,
+        message: '请输入归属业务员',
+        trigger: 'blur',
+      }]
+    };
 
     private columns1: any;
     private columns2: any;
@@ -363,53 +384,72 @@
      * 保存并提交
      */
     saveAndSubmit(type) {
-      let component: any = this.$refs['materials-all'];
-      //   选购信息
-      let choosebusyData: any = component.choosebusyData;
-      for (let item of component.addcarData) {
-        this.addcarData.push({
-          brandId: item.brandId,
-          brandName: item.brandName,
-          carSeriesId: item.carSeriesId,
-          modelName: item.modelName,
-          otherExpenses: item.otherExpenses,
-          vehicleAmount: item.vehicleAmount,
-          vehicleColour: item.vehicleColour,
-        });
-      }
-      //   客户资料
-      let materials: any = this.$refs['materials'];
-      let customerData: any = materials.customerData;
-      console.log(customerData, 900000000000000);
-      if (type) {
-        this.orderStatus = 303;
-      } else {
-        this.orderStatus = 304;
-      }
-      let savesubmitDataset: any = {
-        idCard: this.applyData.idCard,
-        name: this.applyData.name,
-        mobileMain: this.applyData.customerPhone,
-        salesmanName: this.applyData.salesmanName,
-        city: choosebusyData.city,
-        companyId: choosebusyData.companyId,
-        province: choosebusyData.province,
-        orderCars: this.addcarData, // 车辆
-        personal: customerData,
-        orderServiceList: customerData.orderServiceList,
-        orderStatus: this.orderStatus,
-      };
-      console.log(savesubmitDataset, 8888);
-      this.productOrderService.createFullPaymentOrder(savesubmitDataset).subscribe(
-        data => {
-          this.$Message.success('保存成功！');
-        },
-        ({
-          msg
-        }) => {
-          this.$Message.error(msg);
+      let _customerform: any = this.$refs['customer-form'];
+      _customerform.validate(valid => {
+        if (!valid) {
+          return false
+        } else {
+          let component: any = this.$refs['materials-all'];
+          let _parchaseform: any = component.$refs['parchase-form']
+          _parchaseform.validate(valid => {
+            if (!valid) {
+              return false
+            } else {
+              //   选购信息
+              let choosebusyData: any = component.choosebusyData;
+              for (let item of component.addcarData) {
+                this.addcarData.push({
+                  brandId: item.brandId,
+                  brandName: item.brandName,
+                  carSeriesId: item.carSeriesId,
+                  modelName: item.modelName,
+                  otherExpenses: item.otherExpenses,
+                  vehicleAmount: item.vehicleAmount,
+                  vehicleColour: item.vehicleColour,
+                });
+              }
+              console.log(component.addcarData.length, 'component.addcarData')
+              if (component.addcarData.length === 0) {
+                this.$Message.warning('请添加车辆信息');
+                return
+              }
+              //   客户资料
+              let materials: any = this.$refs['materials'];
+              let customerData: any = materials.customerData;
+              console.log(customerData, 900000000000000);
+              if (type) {
+                this.orderStatus = 303;
+              } else {
+                this.orderStatus = 304;
+              }
+              let savesubmitDataset: any = {
+                idCard: this.applyData.idCard,
+                name: this.applyData.name,
+                mobileMain: this.applyData.customerPhone,
+                salesmanName: this.applyData.salesmanName,
+                city: choosebusyData.city,
+                companyId: choosebusyData.companyId,
+                province: choosebusyData.province,
+                orderCars: this.addcarData, // 车辆
+                personal: customerData,
+                orderServiceList: customerData.orderServiceList,
+                orderStatus: this.orderStatus,
+              };
+              console.log(savesubmitDataset, 8888);
+              this.productOrderService.createFullPaymentOrder(savesubmitDataset).subscribe(
+                data => {
+                  this.$Message.success('保存成功！');
+                },
+                ({
+                  msg
+                }) => {
+                  this.$Message.error(msg);
+                }
+              );
+            }
+          })
         }
-      );
+      })
     }
     showTab() {
       if (this.applyData.idCard.length === 18) {
