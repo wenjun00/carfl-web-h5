@@ -126,7 +126,9 @@
 
     <template>
       <i-modal title="客户素材配置" v-model="customerFodderConfigModal" :width="300">
-        <i-tree :data="customerFodderTree" show-checkbox ref="config-tree"></i-tree>
+        <div style="max-height:500px;overflow:auto">
+          <i-tree :data="customerFodderTree" show-checkbox ref="config-tree"></i-tree>
+        </div>
         <div slot="footer">
           <i-button type="primary" @click="configConfirm">确定</i-button>
         </div>
@@ -286,7 +288,7 @@
     private addSericeModal: Boolean = false;
     private seriId: Number = -1;
     private parentsId: Number = -1;
-    private scopes: any = {};
+    private scopes: any = null;
     private newTree: any = {};
     private parent: any = {};
     private node1: any = {};
@@ -707,10 +709,14 @@
      * 树形结构 新增产品系列
      */
     addSericeFun() {
-      if (typeof this.scopes[0].flag === 'undefined' || this.scopes[0].flag !== '产品') {
-        this.addSericeModal = true;
+      if(this.scopes) {
+        if (typeof this.scopes[0].flag === 'undefined' || this.scopes[0].flag !== '产品') {
+          this.addSericeModal = true;
+        } else {
+          this.$Message.error('温馨提示：不能在产品中添加产品系列！');
+        }
       } else {
-        this.$Message.error('温馨提示：不能在产品中添加产品系列！');
+        this.addSericeModal = true;        
       }
     }
     /**
@@ -773,6 +779,7 @@
             let title = String(this.$dict.getDictName(v))
             let children = data.filter(val => val.type === v).map(val => {
               val.title = val.name
+              val.checked = !val.isSelect
               return val
             })
             return {
