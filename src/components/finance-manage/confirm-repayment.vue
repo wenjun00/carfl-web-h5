@@ -204,8 +204,8 @@
         console.log(data)
         this.collectMoneyId = data.collectMoneyHistory?data.collectMoneyHistory.id:''
         this.repaymentObj = data
-        this.collectMoneyDetails = data.collectMoneyDetails
-        this.financeUploadResources = data.financeUploadResources
+        this.collectMoneyDetails = data.collectMoneyDetails || []
+        this.financeUploadResources = data.financeUploadResources || []
         this.inputBlur()
       }, ({
         msg

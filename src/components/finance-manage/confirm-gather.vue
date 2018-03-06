@@ -7,7 +7,7 @@
           <span>收款类型：</span><span style="margin-left:10px;">{{$dict.getDictName(repaymentObj.applicationType)}}</span>
           <i-button style="float:right;color:#265ea2" type="text" @click="saleApplyInfo">销售申请详情</i-button>
         </i-col>
-        <i-col :span="24" :pull="3" style="margin-top:10px;margin-left:10px">
+        <i-col :span="24" style="margin-top:10px;margin-left:10px">
           <i-form-item>
             <span>备注：</span>
             <i-input type="textarea" v-model="repaymentObj.remark" style="display:inline-block;width:80%;" disabled></i-input>
@@ -35,13 +35,9 @@
         <td bgcolor="#F2F2F2" colspan="1" width="40%">项目</td>
         <td bgcolor="#F2F2F2" colspan="1" width="60%">金额（元）</td>
       </tr>
-      <tr height="40">
-        <td>首付金额</td>
-        <td>{{repaymentObj.initialPayment}}</td>
-      </tr>
-      <tr height="40">
-        <td>GPS费</td>
-        <td>{{repaymentObj.gpsFee}}</td>
+      <tr height="40" v-for="item in collectMoneyItemModels" :key="item.itemName">
+        <td>{{item.itemLabel}}</td>
+        <td>{{item.itemMoney}}</td>
       </tr>
       <tr height="40">
         <td>合计</td>
@@ -162,6 +158,7 @@
     private paymentAmount: any = 0
     private delFinanceUploadResource: any = []
     private addFinanceUploadResource: any = []
+    private collectMoneyItemModels: any = []
     private collectMoneyId: any = ''
 
 
@@ -185,10 +182,11 @@
         this.collectMoneyId = data.collectMoneyHistory?data.collectMoneyHistory.id:''
         console.log(data)
         this.repaymentObj = data
-        this.collectMoneyDetails = data.collectMoneyHistory.collectMoneyDetails 
+        this.collectMoneyDetails = data.collectMoneyHistory?data.collectMoneyHistory.collectMoneyDetails:[]
         this.personalBanks = data.personalBanks 
         this.financeUploadResources = data.collectMoneyPhaseUploadResources
         this.applicationPhaseResources = data.applicationPhaseUploadResources
+        this.collectMoneyItemModels = data.collectMoneyItemModels
         this.inputBlur()
       }, ({
         msg

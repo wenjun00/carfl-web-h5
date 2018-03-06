@@ -170,8 +170,8 @@
         </data-grid-item>
         <data-grid-item :span="12" label="罚息费率">
           <i-form-item prop="penaltyRate" style="margin-top:15px;">
-            <i-input v-model="formItems.penaltyRate"></i-input>&nbsp;%/天
-          </i-form-item>
+            <i-input v-model="formItems.penaltyRate"></i-input>
+          </i-form-item><span>&nbsp;%/天</span>
         </data-grid-item>
       </data-grid>
       <div style="margin-right:10px;display:inline-block" class="addPeriodsItem">状态</div>
@@ -406,7 +406,6 @@ export default class AddPeriods extends Vue {
         if(this.manageMoneyParams==='无') {
           delete this.formItems.manageCost
         }
-				this.$emit('close', this.formItems);
 				this.formItems.paymentType === '固定账期'
 					? (this.formItems.paymentType = 387)
 					: (this.formItems.paymentType = 386);
@@ -424,6 +423,7 @@ export default class AddPeriods extends Vue {
 				this.formItems.productStatus = this.pNameTitle.status;
 				this.ProductPlanIssueService.createOrModifyProductPlan(this.formItems).subscribe(val => {
 					this.$Message.success('新增成功！');
+				  this.$emit('close', this.formItems);       
 				});
 			},
 			({ msg }) => {

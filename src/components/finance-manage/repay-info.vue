@@ -82,7 +82,6 @@
       this.columns1 = [{
           key: "periods",
           title: '期数',
-          fixed: 'left',
           align: 'center',
           width: 50
         },
