@@ -270,12 +270,8 @@
      * 根据产品树获取期数列表
      */
     productPlanissueDetail(data) {
-      if (data[0].seriesId) {
-        this.productId = data[0].seriesId
-      }
-      if (data[0].productId) {
-        this.productId = data[0].productId
-      }
+      this.productId = data[0].productId
+      console.log(this.productId)
       this.productPlanissue(data)
       console.log(data, 555)
       this.productDataModel = data
