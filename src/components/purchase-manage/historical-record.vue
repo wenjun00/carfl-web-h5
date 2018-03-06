@@ -1,6 +1,6 @@
 <template>
   <section class="component historical-record">
-    <i-table highlight-row @on-current-change="getCurrentSelectionData" ref="databox" :columns="carColumns" :data="historicalDataset"></i-table>
+    <i-table height="500" highlight-row @on-current-change="getCurrentSelectionData" ref="databox" :columns="carColumns" :data="historicalDataset"></i-table>
     <i-row style="margin-top:20px;">
       <i-button class="blueButton" style="float:right" @click="chooseback">选择并返回</i-button>
     </i-row>
@@ -114,23 +114,23 @@
     max-width: auto;
     overflow: hidden;
   }
-
+  
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-
+  
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-
+  
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-
+  
   .arrowButton {
     line-height: 570px;
     height: 100%;

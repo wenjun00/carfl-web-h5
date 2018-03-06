@@ -288,7 +288,7 @@
 <style lang="less" scope>
   .customer-job-message {
     .ivu-select-selection {
-      width: 100%;
+      width: 100%!important;
       display: inline-block;
       border-style: none;
       border-bottom-style: solid;
