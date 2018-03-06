@@ -285,98 +285,11 @@ export default class RoleMaintenance extends Page {
         }
       }
     ];
-    this.columns2 = [
-      {
-        title: "序号",
-        type: "index",
-        width: 80,
-        align: "center"
-      },
-      {
-        title: "列名",
-        key: "columnsName",
-        align: "center"
-      },
-      {
-        type: "selection",
-        width: 80,
-        align: "center"
-      }
-    ];
-    this.columns3 = [
-      {
-        title: "文件名称",
-        align: "center",
-        key: "fileName"
-      },
-      {
-        type: "selection",
-        align: "center",
-        width: 80
-      }
-    ];
-    this.data2 = [
-      {
-        columnsName: "订单编号"
-      },
-      {
-        columnsName: "订单创建时间"
-      },
-      {
-        columnsName: "订单类型"
-      },
-      {
-        columnsName: "产品名称"
-      },
-      {
-        columnsName: "客户姓名"
-      },
-      {
-        columnsName: "证件号码"
-      },
-      {
-        columnsName: "最近合同生成日期"
-      }
-    ];
 
-    this.data3 = [
-      {
-        fileName: "融资租赁申请单"
-      },
-      {
-        fileName: "融资租赁合同正文"
-      },
-      {
-        fileName: "合同附件一(付款时间表)"
-      },
-      {
-        fileName: "合同附件二(配偶确认书)"
-      },
-      {
-        fileName: "合同附件三(共同承租人确认书)"
-      },
-      {
-        fileName: "委托收款合同"
-      },
-      {
-        fileName: "首付款明细"
-      },
-      {
-        fileName: "服务确认书"
-      },
-      {
-        fileName: "责任告知书"
-      },
-      {
-        fileName: "车辆交接单"
-      },
-      {
-        fileName: "车辆出库单"
-      },
-      {
-        fileName: "补充协议（减免）"
-      }
-    ];
+ 
+    
+
+    
   }
   /**
    * 保存角色的模块权限
@@ -522,7 +435,7 @@ export default class RoleMaintenance extends Page {
   submitRole() {
     this.backLogService.roleAllocateBacklogs(this.roleConfig).subscribe(
       val => {
-        this.$Message.success(val.msg);
+        this.$Message.success('配置成功！');
         this.waitHandleCaseModal = false;
       },
       ({ msg }) => {

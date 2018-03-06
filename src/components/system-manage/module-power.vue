@@ -12,7 +12,7 @@
       <!--表格-->
       <i-col :span="14" style="padding:0 10px">
         <span>模块功能</span>
-        <i-table ref="databox" :columns="treeColumns" :data="treeDatabox"  @on-select="selectFun" :noDefaultRow="true" @on-selection-change="selectionChange"></i-table>
+        <i-table ref="databox" :columns="treeColumns" :data="treeDatabox"  :noDefaultRow="true" @on-selection-change="selectionChange"></i-table>
       </i-col>
     </i-row>
     <!-- <div style="text-align:right">
@@ -166,8 +166,20 @@ export default class ModulePower extends Vue {
    */
   submitRole() {
     this.multipleSelection = this.$refs["databox"];
-    let resourcesId = []
-    // if(!this.checkButtonIds.length)
+    let treeIds=[]
+    let tableIds=[]
+    if(!this.treeCheckChangeId.length){
+      treeIds = this.checkMenuIds // 若未对树的checkbox进行点击，treeId 等于 接口返回的反显数据。否则treeId等于checkbox点击后的id
+    }else{
+      treeIds= this.treeCheckChangeId
+    }
+    if(!this.tableCheckChangeId.length){
+      tableIds = this.checkButtonIds
+    }else{
+      tableIds = this.tableCheckChangeId
+    }
+    let resourcesId = treeIds.concat(tableIds)
+
     this.roleService
       .roleAllocateResources({
         roleId: this.roleId,
@@ -191,6 +203,8 @@ export default class ModulePower extends Vue {
       this.allData = val;
       this.resoPid = val.resoPid;
       this.createNewTree(this.allData);
+    },({msg})=>{
+      this.$Message.error(msg)
     });
   }
   /**
@@ -248,7 +262,6 @@ export default class ModulePower extends Vue {
   //     this.treeDatabox = [];
   //   }
   // }
-  selectFun(row) {}
   /**
    * 通过角色id查询资源 (获取该角色已配置过的模块)
    */
