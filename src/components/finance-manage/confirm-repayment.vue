@@ -116,7 +116,7 @@
       <tr height="40">
         <td></td>
         <td width="25%">合计（元）</td>
-        <td colspan="2" style="font-weight:700;font-size:14px">{{paymentAmount}}</td>
+        <td colspan="2" style="font-weight:700;font-size:14px">{{collectMoneySum}}</td>
       </tr>
     </table>
     <i-form>
@@ -191,12 +191,17 @@
     private data2: any = [];
     private deductRecordModal: Boolean = false
     private remark: String = ''
-    private paymentAmount: any = 0
+    private collectMoneySum: any = 0
     private delFinanceUploadResource: any = []
     private addFinanceUploadResource: any = []
     private collectMoneyId: any = ''
 
     refresh(row) {
+      this.collectMoneyId = ''
+      this.repaymentObj = {}
+      this.collectMoneyDetails = []
+      this.financeUploadResources = []
+      this.inputBlur()      
       this.rowObj = row
       this.paymentScheduleService.getCustomerScheduleBillDetail({
         orderId: row.orderId
@@ -245,7 +250,7 @@
         sum = sum + (Number(v.collectMoneyAmount) || 0)
       })
       console.log(sum)
-      this.paymentAmount = sum
+      this.collectMoneySum = sum
     }
     created() {
       this.columns1 = [{

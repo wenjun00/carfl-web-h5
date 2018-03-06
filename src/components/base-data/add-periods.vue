@@ -63,11 +63,11 @@
       <div class="addPeriodsItem">首付款参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item ref label="首付款" :span="12">
-          <i-radio-group style="margin-top:6px;" v-model="initialParams" @on-change="changeInitialParams">
+          <i-radio-group style="margin-top:6px;" v-model="initialParams">
             <i-radio label="无"></i-radio>
             <i-radio label="有"></i-radio>
           </i-radio-group>
-          <div v-if="initialParamsShow" style="margin-top:24px;margin-left:-51px;" class="initialPayment">
+          <div v-if="initialParams==='有'" style="margin-top:24px;margin-left:-51px;" class="initialPayment">
             <i-form-item prop="initialPayment" label="比例">
               <i-input v-model="formItems.initialPayment" style="width:80%;"></i-input>
             </i-form-item>
@@ -79,13 +79,13 @@
       <div class="addPeriodsItem">保证金参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="保证金" :span="12">
-          <i-radio-group style="float:left;margin-top:6px;" v-model="promiseMoenyParams" @on-change="changePromiseMoenyParams">
+          <i-radio-group style="float:left;margin-top:6px;" v-model="promiseMoenyParams">
             <i-radio label="无"></i-radio>
             <i-radio label="有"></i-radio>
           </i-radio-group>
         </data-grid-item>
         <data-grid-item label="保证金比例" :span="12">
-          <div v-if="promiseMoneyShow" style="margin-left:-51px;margin-top:17px;" class="initialPayment">
+          <div v-if="promiseMoenyParams==='有'" style="margin-left:-51px;margin-top:17px;" class="initialPayment">
             <i-form-item prop="depositCash" label="比例">
               <i-input v-model="formItems.depositCash"></i-input>
             </i-form-item>
@@ -103,11 +103,11 @@
       <div class="addPeriodsItem">尾付款参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="尾付款" :span="12">
-          <i-radio-group style="margin-top:6px;" v-model="residueParams" @on-change="changeResidueParams">
+          <i-radio-group style="margin-top:6px;" v-model="residueParams">
             <i-radio label="无"></i-radio>
             <i-radio label="有"></i-radio>
           </i-radio-group>
-          <div v-if="residueParamsShow" class="initialPayment" style="margin-top:27px;">
+          <div v-if="residueParams==='有'" class="initialPayment" style="margin-top:27px;">
             <span class="after_text">年利率:</span>
             <i-form-item prop="finalCash">
               <i-input v-model="formItems.finalCash"></i-input>
@@ -134,12 +134,12 @@
         </data-grid-item>
         <data-grid-item label="管理费收取方式" :span="12">
           <i-form-item prop="manageCostType" style="margin-top:15px;">
-            <i-radio-group v-model="formItems.manageCostType" @on-change="stagingPeriod">
-              <i-radio label="一次性收取"></i-radio>
-              <i-radio label="分期数收取"></i-radio>
+            <i-radio-group v-model="formItems.manageCostType">
+              <i-radio label="一次性收取" :value="394"></i-radio>
+              <i-radio label="分期数收取" :value="395"></i-radio>
             </i-radio-group>
           </i-form-item>
-          <div v-if="stagingPeriodShow" class="initialPayment" style="margin-top:15px;">
+          <div v-if="formItems.manageCostType===395" class="initialPayment" style="margin-top:15px;">
             <i-form-item prop="stagingPeriods" label="期数">
               <i-input v-model="formItems.stagingPeriods"></i-input>
             </i-form-item>
@@ -177,8 +177,8 @@
       <div style="margin-right:10px;display:inline-block" class="addPeriodsItem">状态</div>
       <i-form-item prop="isPublish">
         <i-radio-group v-model="formItems.isPublish">
-          <i-radio label="未发布"></i-radio>
-          <i-radio label="已发布"></i-radio>
+          <i-radio label="未发布" :value="361"></i-radio>
+          <i-radio label="已发布" :value="360"></i-radio>
         </i-radio-group>
       </i-form-item>
     </section>
@@ -209,10 +209,7 @@ export default class AddPeriods extends Vue {
 	private residueParams: String = '无';
 	private manageMoneyParams: String = '无';
 	private disabled: Boolean = false;
-	private initialParamsShow: Boolean = false;
 	private changePromiseMoenyShow: Boolean = false;
-	private promiseMoneyShow: Boolean = false;
-	private residueParamsShow: Boolean = false;
 	private formItems: any = {
 		productId: '',
 		periods: '', //产品期数
@@ -226,7 +223,7 @@ export default class AddPeriods extends Vue {
 		depositCash: '',
 		depositCashType: '',
 		finalCash: '',
-		manageCostType: '一次性收取',
+		manageCostType: '',
 		stagingPeriods: '', // 期数
 		creditProtectDays: '',
 		overdueProtectDays: '',
@@ -234,38 +231,16 @@ export default class AddPeriods extends Vue {
 		contractBreakRate: '',
 		prepaymentRate: '',
 		productStatus: '',
-		isPublish: '未发布',
+		isPublish: '',
     manageCost: ''
 	};
 	private amount: any;
 	private monthDay: any;
-	private stagingPeriodShow: Boolean = false;
 	private formRules: Object = {};
 
   refresh() {
-    this.formItems = {
-      productId: '',
-      periods: '', //产品期数
-      periodType: '',
-      paymentType: '',
-      paymentDay: '',
-      productRate: '',
-      payWay: '',
-      financingAmount: '',
-      initialPayment: '',
-      depositCash: '',
-      depositCashType: '',
-      finalCash: '',
-      manageCostType: '一次性收取',
-      stagingPeriods: '', // 期数
-      creditProtectDays: '',
-      overdueProtectDays: '',
-      penaltyRate: '',
-      contractBreakRate: '',
-      prepaymentRate: '',
-      productStatus: '',
-      isPublish: '未发布',
-      manageCost: ''
+    for(let v in this.formItems) {
+      this.formItems[v] = ''
     }
   }
 	created() {
@@ -318,6 +293,7 @@ export default class AddPeriods extends Vue {
 				{
 					required: true,
 					message: '请选择',
+          type: 'number',
 					trigger: 'change',
 				},
 			],
@@ -392,34 +368,6 @@ export default class AddPeriods extends Vue {
 			});
 		}
 	}
-	changeInitialParams(val) {
-		if (val === '无') {
-			this.initialParamsShow = false;
-		} else {
-			this.initialParamsShow = true;
-		}
-	}
-	changePromiseMoenyParams(val) {
-		if (val === '无') {
-			this.promiseMoneyShow = false;
-		} else {
-			this.promiseMoneyShow = true;
-		}
-	}
-	changeResidueParams(val) {
-		if (val === '无') {
-			this.residueParamsShow = false;
-		} else {
-			this.residueParamsShow = true;
-		}
-	}
-	stagingPeriod(val) {
-		if (val === '一次性收取') {
-			this.stagingPeriodShow = false;
-		} else {
-			this.stagingPeriodShow = true;
-		}
-	}
 
 	/**@
 	 * 点击确定按钮
@@ -432,18 +380,10 @@ export default class AddPeriods extends Vue {
         if(this.manageMoneyParams==='无') {
           delete this.formItems.manageCost
         }
-				this.formItems.paymentType === '固定账期'
-					? (this.formItems.paymentType = 387)
-					: (this.formItems.paymentType = 386);
-				this.formItems.manageCostType === '一次性收取'
-					? (this.formItems.manageCostType = 394)
-					: (this.formItems.manageCostType = 395);
-				this.formItems.depositCashType === '退还'
-					? (this.formItems.depositCashType = 396)
-					: (this.formItems.depositCashType = 397);
-				this.formItems.isPublish === '未发布'
-					? (this.formItems.isPublish = 361)
-					: (this.formItems.isPublish = 360);
+        if(this.initialParams==='无') {
+          delete this.formItems.initialPayment
+        }
+        
 				this.formItems.financingAmount = this.amount.financingAmount1 + '~' + this.amount.financingAmount2;
 				this.formItems.productId = this.pNameTitle.id;
 				this.formItems.productStatus = this.pNameTitle.status;

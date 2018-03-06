@@ -179,7 +179,8 @@
       data.orderId = _repayment.rowObj.orderId
       data.paymentScheduleId = _repayment.repaymentObj.paymentScheduleId
       data.collectMoneyId = _repayment.collectMoneyId
-      data.historyId = _repayment.repaymentObj.historyId         
+      data.historyId = _repayment.repaymentObj.historyId      
+      data.collectMoneySum = _repayment.collectMoneySum      
       this.paymentScheduleService.saveCustomerPaymentInfoAsDraft(data).subscribe(data => {
         this.$Message.info('保存草稿成功！')
         this.confirmRepaymentModal = false
@@ -201,7 +202,8 @@
       data.orderId = _repayment.rowObj.orderId
       data.paymentScheduleId = _repayment.repaymentObj.paymentScheduleId
       data.historyId = _repayment.repaymentObj.historyId
-      data.collectMoneyId = _repayment.collectMoneyId      
+      data.collectMoneyId = _repayment.collectMoneyId
+      data.collectMoneySum = _repayment.collectMoneySum      
       this.paymentScheduleService.saveCustomerPaymentInfo(data).subscribe(data => {
         this.$Message.info('还款成功！')
         this.confirmRepaymentModal = false
