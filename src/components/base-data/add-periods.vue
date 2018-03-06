@@ -242,6 +242,32 @@ export default class AddPeriods extends Vue {
 	private stagingPeriodShow: Boolean = false;
 	private formRules: Object = {};
 
+  refresh() {
+    this.formItems = {
+      productId: '',
+      periods: '', //产品期数
+      periodType: '',
+      paymentType: '',
+      paymentDay: '',
+      productRate: '',
+      payWay: '',
+      financingAmount: '',
+      initialPayment: '',
+      depositCash: '',
+      depositCashType: '',
+      finalCash: '',
+      manageCostType: '一次性收取',
+      stagingPeriods: '', // 期数
+      creditProtectDays: '',
+      overdueProtectDays: '',
+      penaltyRate: '',
+      contractBreakRate: '',
+      prepaymentRate: '',
+      productStatus: '',
+      isPublish: '未发布',
+      manageCost: ''
+    }
+  }
 	created() {
 		this.amount = {
 			financingAmount1: '',
