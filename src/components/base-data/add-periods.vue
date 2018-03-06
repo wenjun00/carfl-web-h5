@@ -51,11 +51,11 @@
         <data-grid-item label="账期类型" :span="12">
           <i-form-item prop="paymentType">
             <i-radio-group style="margin-top:14px;" v-model="formItems.paymentType">
-              <i-radio label="正常账期" :value="386" style="margin-right:40px;"></i-radio>
-              <i-radio label="固定账期" :value="387"></i-radio>
+              <i-radio :label="386" style="margin-right:40px;">正常账期</i-radio>
+              <i-radio :label="387">固定账期</i-radio>
             </i-radio-group>
           </i-form-item>
-          <i-select v-model="formItems.paymentDay" style="width:30%;" v-if="formItems.paymentType ===387">
+          <i-select v-model="formItems.paymentDay" style="width:30%;" v-if="formItems.paymentType === 387">
             <i-option :label="item.day" :key="item.key" :value="item.value" v-for="item in monthDay"></i-option>
           </i-select>
         </data-grid-item>
@@ -92,8 +92,8 @@
             <span style="color:red" class="after_text">%</span>
             <i-form-item prop="depositCashType">
               <i-select v-model="formItems.depositCashType" placeholder="缴纳方式">
-                <i-option label="退还" :value="396" key="退还"></i-option>
-                <i-option label="不退还" :value="397" key="不退还"></i-option>
+                <i-option :label="396" key="退还">退还</i-option>
+                <i-option :label="397" key="不退还">不退还</i-option>
               </i-select>
             </i-form-item>
             <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
@@ -132,11 +132,11 @@
             <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
           </div>
         </data-grid-item>
-        <data-grid-item label="管理费收取方式" :span="12">
+        <data-grid-item label="管理费收取方式" :span="12" v-if="manageMoneyParams==='有'">
           <i-form-item prop="manageCostType" style="margin-top:15px;">
             <i-radio-group v-model="formItems.manageCostType">
-              <i-radio label="一次性收取" :value="394"></i-radio>
-              <i-radio label="分期数收取" :value="395"></i-radio>
+              <i-radio :label="394">一次性收取</i-radio>
+              <i-radio :label="395">分期数收取</i-radio>
             </i-radio-group>
           </i-form-item>
           <div v-if="formItems.manageCostType===395" class="initialPayment" style="margin-top:15px;">
@@ -177,8 +177,8 @@
       <div style="margin-right:10px;display:inline-block" class="addPeriodsItem">状态</div>
       <i-form-item prop="isPublish">
         <i-radio-group v-model="formItems.isPublish">
-          <i-radio label="未发布" :value="361"></i-radio>
-          <i-radio label="已发布" :value="360"></i-radio>
+          <i-radio :label="361">未发布</i-radio>
+          <i-radio :label="360">已发布</i-radio>
         </i-radio-group>
       </i-form-item>
     </section>
@@ -243,6 +243,8 @@ export default class AddPeriods extends Vue {
       this.formItems[v] = ''
     }
     this.formItems.manageCostType = 394
+		let form: any = this.$refs['formItems'];
+    form.resetFields()
   }
 	created() {
 		this.amount = {
@@ -380,6 +382,7 @@ export default class AddPeriods extends Vue {
 				if (!valid) return false;
         if(this.manageMoneyParams==='无') {
           delete this.formItems.manageCost
+          delete this.formItems.manageCostType
         }
         if(this.initialParams==='无') {
           delete this.formItems.initialPayment
