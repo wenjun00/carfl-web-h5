@@ -50,7 +50,7 @@ export class RoleResoService {
     })
   }
   /**
-   * 根据父id查询子类
+   * 根据父id查询子类分页
    */
   getSonReso({ id }, page) {
     return this.netService.send({
@@ -61,5 +61,45 @@ export class RoleResoService {
       page: page
     })
   }
-
+  /**
+   * 获取系统目录菜单
+   */
+  findRoleResoMenu() {
+    return this.netService.send({
+      server: manageService.roleResoController.findRoleResoMenu
+    })
+  }
+  /**
+   * 根据父id查询子类不分页
+   */
+  getSonResoNoPage({ id }) {
+    return this.netService.send({
+      server: manageService.roleResoController.getSonResoNoPage,
+      data: {
+        id: id
+      }
+    })
+  }
+  /**
+   * 获取角色已有按钮和输入框
+   */
+  findRoleResoResourceByRoleId({ roleIds }) {
+    return this.netService.send({
+      server: manageService.roleResoController.findRoleResoResourceByRoleId,
+      data: {
+        roleIds: roleIds
+      }
+    })
+  }
+  /**
+   * 获取角色已有页面
+   */
+  findRoleResoMenuByRoleId({ roleIds }) {
+    return this.netService.send({
+      server: manageService.roleResoController.findRoleResoMenuByRoleId,
+      data: {
+        roleIds: roleIds
+      }
+    })
+  }
 }

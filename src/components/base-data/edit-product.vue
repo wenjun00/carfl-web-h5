@@ -149,28 +149,28 @@
       <data-grid :labelWidth="100">
         <data-grid-item :span="6" label="征信保护天数">
           <i-form-item prop="creditProtectDays" style="margin-top:15px;">
-            <i-input v-model="productDetail.creditProtectDays"></i-input>&nbsp;天
-          </i-form-item>
+            <i-input v-model="productDetail.creditProtectDays"></i-input>
+          </i-form-item><span>&nbsp;天</span>
         </data-grid-item>
         <data-grid-item :span="6" label="逾期保护天数">
           <i-form-item prop="overdueProtectDays" style="margin-top:15px;">
-            <i-input v-model="productDetail.overdueProtectDays"></i-input>&nbsp;天
-          </i-form-item>
+            <i-input v-model="productDetail.overdueProtectDays"></i-input>
+          </i-form-item><span >&nbsp;天</span>
         </data-grid-item>
-        <data-grid-item :span="6" label="合同违约金费率" style="margin-top:15px;">
-          <i-form-item prop="contractBreakRate">
-            <i-input v-model="productDetail.contractBreakRate"></i-input>&nbsp;天
-          </i-form-item>
+        <data-grid-item :span="6" label="合同违约金费率">
+          <i-form-item prop="contractBreakRate"  style="margin-top:15px;">
+            <i-input v-model="productDetail.contractBreakRate"></i-input>
+          </i-form-item><span >&nbsp;%</span>
         </data-grid-item>
-        <data-grid-item :span="6" label="提前还款费率" style="margin-top:15px;">
-          <i-form-item prop="prepaymentRate">
-            <i-input v-model="productDetail.prepaymentRate"></i-input>&nbsp;天
-          </i-form-item>
+        <data-grid-item :span="6" label="提前还款费率">
+          <i-form-item prop="prepaymentRate" style="margin-top:15px;">
+            <i-input v-model="productDetail.prepaymentRate"></i-input>
+          </i-form-item><span >&nbsp;%</span>
         </data-grid-item>
-        <data-grid-item :span="12" label="罚息费率" style="margin-top:15px;">
-          <i-form-item prop="penaltyRate">
-            <i-input v-model="productDetail.penaltyRate"></i-input>&nbsp;天
-          </i-form-item>
+        <data-grid-item :span="12" label="罚息费率" >
+          <i-form-item prop="penaltyRate" style="margin-top:15px;">
+            <i-input v-model="productDetail.penaltyRate"></i-input>
+          </i-form-item><span >&nbsp;%/天</span>
         </data-grid-item>
       </data-grid>
       <div style="margin-right:10px;display:inline-block" class="addPeriodsItem">状态</div>

@@ -52,7 +52,7 @@
     </table>
     <template>
       <i-modal v-model="addGatherItemModal" title="收款项目">
-        <add-gather-item ref="add-gather-item" @change="changeItem"></add-gather-item>
+        <add-gather-item ref="add-gather-item" @change="changeItem" @close="addGatherItemModal=false"></add-gather-item>
         <div slot="footer">
           <i-button @click="addGatherItemModal=false">取消</i-button>
           <i-button class="blueButton" @click="confirmAddGatherItem">确定</i-button>
@@ -126,7 +126,6 @@
      * 父组件传过来的列表数据
      */
     makeList(data) {
-      console.log(data, 'data')
       if (data && data.payoffCollectMoneyItems) {
         this.gatherItemList = data.payoffCollectMoneyItems.filter(
           v => v.itemMoney

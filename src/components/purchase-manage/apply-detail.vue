@@ -32,9 +32,9 @@
       </i-form>
 
       <span class="title">付款明细</span>
-      <data-box :columns="columns1" :data="payDetail"></data-box>
+      <data-box :columns="columns1" :data="payDetail" noDefaultRow></data-box>
       <span class="title">账户信息</span>
-      <data-box :columns="columns3" :data="accountDetail"></data-box>
+      <data-box :columns="columns3" :data="accountDetail" noDefaultRow></data-box>
       <span class="title">附件</span>
       <i-row>
         <i-col :span="12">

@@ -32,17 +32,17 @@
     </template>
 
     <template>
-      <i-modal v-model="modulePowerModal" title="模块权限" width="600" @on-visible-change="modulePoweropen" class="user-list">
+      <i-modal v-model="modulePowerModal" title="模块权限" width="600" @on-visible-change="modulePoweropen">
         <module-power @close="modulePowerModal=false" ref="module-power"></module-power>
         <div slot="footer">
           <i-button @click="modulePowerModal=false">取消</i-button>
-          <i-button @click="saveModulePower">确定</i-button>
+          <i-button @click="saveModulePower" class="blueButton">确定</i-button>
         </div>
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="userListModal" title="用户列表" width="800" class="user-list" @on-visible-change="visibleChange">
+      <i-modal v-model="userListModal" title="用户列表" width="800" class-name="no-footer" @on-visible-change="visibleChange">
         <user-list ref="user-list"></user-list>
       </i-modal>
     </template>
@@ -199,7 +199,6 @@ export default class RoleMaintenance extends Page {
                 on: {
                   click: () => {
                     this.modulePower(row);
-                    console.log(row, "row");
                   }
                 }
               },
@@ -247,7 +246,6 @@ export default class RoleMaintenance extends Page {
         editable: true,
         title: "状态",
         key: "roleStatus",
-        width: 164,
         render: (h, { row, columns, index }) => {
           if (row.roleStatus === 0) {
             return h("span", {}, "启用");
@@ -260,29 +258,25 @@ export default class RoleMaintenance extends Page {
         align: "center",
         editable: true,
         title: "角色名称",
-        key: "roleName",
-        width: 160
+        key: "roleName"
       },
       {
         align: "center",
         editable: true,
         title: "备注",
-        key: "roleRemark",
-        width: 260
+        key: "roleRemark"
       },
       {
         align: "center",
         editable: true,
         title: "操作人",
-        key: "realName",
-        width: 260
+        key: "realName"
       },
       {
         align: "center",
         editable: true,
         title: "创建时间",
         key: "operateTime",
-        width: 300,
         render: (h, { row, columns, index }) => {
           return h(
             "span",
@@ -291,98 +285,11 @@ export default class RoleMaintenance extends Page {
         }
       }
     ];
-    this.columns2 = [
-      {
-        title: "序号",
-        type: "index",
-        width: 80,
-        align: "center"
-      },
-      {
-        title: "列名",
-        key: "columnsName",
-        align: "center"
-      },
-      {
-        type: "selection",
-        width: 80,
-        align: "center"
-      }
-    ];
-    this.columns3 = [
-      {
-        title: "文件名称",
-        align: "center",
-        key: "fileName"
-      },
-      {
-        type: "selection",
-        align: "center",
-        width: 80
-      }
-    ];
-    this.data2 = [
-      {
-        columnsName: "订单编号"
-      },
-      {
-        columnsName: "订单创建时间"
-      },
-      {
-        columnsName: "订单类型"
-      },
-      {
-        columnsName: "产品名称"
-      },
-      {
-        columnsName: "客户姓名"
-      },
-      {
-        columnsName: "证件号码"
-      },
-      {
-        columnsName: "最近合同生成日期"
-      }
-    ];
 
-    this.data3 = [
-      {
-        fileName: "融资租赁申请单"
-      },
-      {
-        fileName: "融资租赁合同正文"
-      },
-      {
-        fileName: "合同附件一(付款时间表)"
-      },
-      {
-        fileName: "合同附件二(配偶确认书)"
-      },
-      {
-        fileName: "合同附件三(共同承租人确认书)"
-      },
-      {
-        fileName: "委托收款合同"
-      },
-      {
-        fileName: "首付款明细"
-      },
-      {
-        fileName: "服务确认书"
-      },
-      {
-        fileName: "责任告知书"
-      },
-      {
-        fileName: "车辆交接单"
-      },
-      {
-        fileName: "车辆出库单"
-      },
-      {
-        fileName: "补充协议（减免）"
-      }
-    ];
+ 
+    
+
+    
   }
   /**
    * 保存角色的模块权限
@@ -488,6 +395,7 @@ export default class RoleMaintenance extends Page {
     this.rowIdFun = row.id;
     let roleOpen: any = this.$refs["module-power"];
     roleOpen.getTreeDate();
+    roleOpen.getRoleButtonAndMenu(row.id)
   }
   userList(row) {
     this.userListModal = true;
@@ -527,7 +435,7 @@ export default class RoleMaintenance extends Page {
   submitRole() {
     this.backLogService.roleAllocateBacklogs(this.roleConfig).subscribe(
       val => {
-        this.$Message.success(val.msg);
+        this.$Message.success('配置成功！');
         this.waitHandleCaseModal = false;
       },
       ({ msg }) => {

@@ -100,7 +100,6 @@
             })
             data.map(item => {
               checkSaleItem.map(val => {
-                console.log(item.itemLabel, val.itemLabel, 'val.itemLabel')
                 if (item.itemLabel === 1157) {
                   item._checked = true;
                 }
@@ -123,17 +122,21 @@
     }
     changeItem() {
       console.log(this.multipleSelection, 'multipleSelection')
-      let moneyList = this.multipleSelection.map(v => v.itemMoney);
-      let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
-      let total = {
-        itemLabel: "合计（元）",
-        itemMoney: totalPayment,
-        itemName: "totalPayment"
-      };
-      if (!this.multipleSelection.map(v => v.itemName).includes("totalPayment")) {
-        this.multipleSelection.push(total);
+      if(this.multipleSelection){
+        let moneyList = this.multipleSelection.map(v => v.itemMoney);
+        let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
+        let total = {
+          itemLabel: "合计（元）",
+          itemMoney: totalPayment,
+          itemName: "totalPayment"
+        };
+        if (!this.multipleSelection.map(v => v.itemName).includes("totalPayment")) {
+          this.multipleSelection.push(total);
+        }
+        this.$emit("change", this.multipleSelection, totalPayment);
+      }else{
+        this.$emit("close")
       }
-      this.$emit("change", this.multipleSelection, totalPayment);
     }
     changeItemdata() {
       console.log(this.multipleSelection, 'multipleSelection')

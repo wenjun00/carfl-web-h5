@@ -17,5 +17,13 @@ export class BackLogService {
       data: data
     })
   }
+  /**
+   * 查询所有待办事项
+   */
+  queryBacklog() {
+    return this.netService.send({
+      server: manageService.backLogController.queryBacklog
+    })
+  }
 
 }

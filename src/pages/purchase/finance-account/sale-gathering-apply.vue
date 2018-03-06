@@ -153,7 +153,7 @@
     saveDraft() {
       let _gatherDetail: any = this.$refs["gather-detail"];
       let itemList = _gatherDetail.getItem();
-      // console.log(itemList, "itemList");
+      console.log(itemList,'itemList')
       let initialPayment = itemList.find(v => v.itemName === "initialPayment"); // 首付款
       if (initialPayment) {
         this.saveDraftModel.initialPayment = initialPayment.itemMoney;
@@ -168,9 +168,10 @@
       }
       let firstMonthlySupply = itemList.find(
         // 月供金额
-        v => v.itemName === "firstMonthlySupply"
+        v => v.itemName === "monthlySupply"
       );
       if (firstMonthlySupply) {
+        console.log(firstMonthlySupply,989999999999)
         this.saveDraftModel.firstMonthlySupply = firstMonthlySupply.itemMoney;
       }
       let gpsFee = itemList.find(v => v.itemName === "gpsFee"); // gps费

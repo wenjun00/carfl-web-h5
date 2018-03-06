@@ -6,13 +6,13 @@
       <i-col :span="10">
         <span>模块名</span>
         <div style="height:600px;overflow:auto">
-          <i-tree show-checkbox :data="treeData"></i-tree>
+          <i-tree show-checkbox :data="treeData" @on-select-change="getPageButton" @on-check-change="treeCheckChange"></i-tree>
         </div>
       </i-col>
       <!--表格-->
-      <i-col :span="14">
+      <i-col :span="14" style="padding:0 10px">
         <span>模块功能</span>
-        <data-box ref="databox" :columns="treeColumns" :data="treeDatabox" @on-select="selectFun" :noDefaultRow="true"></data-box>
+        <i-table ref="databox" :columns="treeColumns" :data="treeDatabox" :noDefaultRow="true" @on-selection-change="selectionChange"></i-table>
       </i-col>
     </i-row>
     <!-- <div style="text-align:right">
@@ -31,6 +31,8 @@ import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { RoleResoService } from "~/services/manage-service/role-reso.service";
 import { Emit } from "vue-property-decorator";
+import { PageService } from "~/utils/page.service";
+
 @Component({
   components: {
     DataBox
@@ -39,10 +41,11 @@ import { Emit } from "vue-property-decorator";
 export default class ModulePower extends Vue {
   @Dependencies(RoleService) private roleService: RoleService;
   @Dependencies(RoleResoService) private roleResoService: RoleResoService;
+  @Dependencies(PageService) private pageService: PageService;
 
-  private treeData: Array<Object> = [];
+  private treeData: Array<any> = [];
   private treeColumns: any;
-  private treeDatabox: Array<Object> = [];
+  private treeDatabox: Array<any> = [];
   private allData: Array<any> = [];
   private resoPid: number = 0;
   private checkBoolen: Boolean = false;
@@ -53,6 +56,13 @@ export default class ModulePower extends Vue {
   private multipleSelection: any = [];
   private expand: any = [];
   // private itemexpand: Boolean = false;
+  private checkButtonIds: Array<any> = []; // 接口返回的已选按钮和输入框
+  private checkMenuIds: Array<any> = []; // 接口返回的已选页面
+
+  private tableCheckChangeId: Array<any> = []; // 表格checkId
+  private treeCheckChangeId: Array<any> = []; // 树checkId
+
+  private roleId: Number = 0; // 角色id
 
   @Emit("close")
   close() {}
@@ -75,7 +85,7 @@ export default class ModulePower extends Vue {
       },
       {
         align: "center",
-        key: "desc",
+        key: "resoRemark",
         title: "描述"
       }
     ];
@@ -91,9 +101,75 @@ export default class ModulePower extends Vue {
         this.getTreeDate();
       });
   }
-  // handleCheckChange(data, checked, indeterminate) {
-  //   console.log(data, checked, indeterminate, 100)
-  // }
+  getPageButton(val) {
+    if (val.length) {
+      this.roleResoService
+        .getSonResoNoPage({
+          id: val[0].id
+        })
+        .subscribe(
+          data => {
+            data.forEach(v => {
+              if (this.checkButtonIds.includes(v.id)) {
+                v._checked = true;
+              } else {
+                v._checked = false;
+              }
+            });
+            this.treeDatabox = data;
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+  }
+  /**
+   * 树勾选后change事件
+   */
+  treeCheckChange(data) {
+    this.treeCheckChangeId = data.map(v => v.id);
+  }
+  /**
+   * 表格checkbox的change事件
+   */
+  selectionChange(data) {
+    this.tableCheckChangeId = data.map(v => v.id);
+  }
+  /**
+   * 获取角色已有按钮输入框&&已有页面
+   */
+  getRoleButtonAndMenu(rolesId) {
+    this.roleId = rolesId; // 将roleId保存起来以备他用
+    // 反显按钮输入框
+    this.roleResoService
+      .findRoleResoResourceByRoleId({
+        roleIds: [rolesId]
+      })
+      .subscribe(
+        data => {
+          this.checkButtonIds = data.map(v => v.id);
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+
+    // 反显页面
+    this.roleResoService
+      .findRoleResoMenuByRoleId({
+        roleIds: [rolesId]
+      })
+      .subscribe(
+        data => {
+          this.checkMenuIds = data.map(v => v.id);
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+
   /**
    * 取消
    */
@@ -105,13 +181,24 @@ export default class ModulePower extends Vue {
    */
   submitRole() {
     this.multipleSelection = this.$refs["databox"];
-    let checkMsg: any = this.multipleSelection
-      .getCurrentSelection()
-      .map(v => v.id);
+    let treeIds: any = [];
+    let tableIds: any = [];
+    if (!this.treeCheckChangeId.length) {
+      treeIds = this.checkMenuIds; // 若未对树的checkbox进行点击，treeId 等于 接口返回的反显数据。否则treeId等于checkbox点击后的id
+    } else {
+      treeIds = this.treeCheckChangeId;
+    }
+    if (!this.tableCheckChangeId.length) {
+      tableIds = this.checkButtonIds;
+    } else {
+      tableIds = this.tableCheckChangeId;
+    }
+    let resourcesId = treeIds.concat(tableIds);
+
     this.roleService
       .roleAllocateResources({
-        roleId: this.id,
-        resourcesId: checkMsg
+        roleId: this.roleId,
+        resourcesId: resourcesId
       })
       .subscribe(
         data => {
@@ -126,29 +213,37 @@ export default class ModulePower extends Vue {
    * 获取树接口
    */
   getTreeDate() {
-    this.roleResoService.getAllResource().subscribe(val => {
-      this.allData = val;
-      this.resoPid = val.resoPid;
-      this.createNewTree(this.allData);
-    });
+    // 获取树的数据
+    this.roleResoService.findRoleResoMenu().subscribe(
+      val => {
+        this.allData = val;
+        this.resoPid = val.resoPid;
+        this.createNewTree(this.allData);
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
+    );
   }
   /**
    * 生成树
    */
   createNewTree(allData) {
-    let root = allData.filter(v => !v.resoPid); // 获取树根
+    let root = allData.filter(v => v.pid === 10000); // 获取树根
     this.treeData = [];
 
     // 遍历根对象push进树中
     root.forEach(item => {
-      let node1 = {
-        title: item.resoName,
+      let node = {
+        title: item.resoname,
         id: item.id,
-        resoName: item.resoName,
-        expand: false,
+        resoname: item.resoname,
+        expand: true,
+        checked: this.checkMenuIds.includes(item.id),
         children: this.getChild(item)
       };
-      this.treeData.push(node1);
+
+      this.treeData.push(node);
     });
   }
   /**
@@ -158,18 +253,18 @@ export default class ModulePower extends Vue {
     let child: any = [];
     // 判断子的父id与全部数据的id相等
     this.allData.map(val => {
-      if (item.id === val.resoPid) {
-        this.expand = this.expandData.find((v, i) => v === val.id);
-        if (val.resoPid) {
-          let node2 = {
-            title: val.resoName,
-            resoName: val.resoName,
+      if (item.id === val.pid) {
+        if (val.pid) {
+          let node = {
+            title: val.resoname,
+            resoname: val.resoname,
             id: val.id,
-            checked: this.expand,
-            expand: this.expand,
+            checked: this.checkMenuIds.includes(item.id),
+            expand: true,
             children: this.getChild(val) // 迭代产生根
           };
-          child.push(node2);
+
+          child.push(node);
         }
       }
     });
@@ -185,7 +280,6 @@ export default class ModulePower extends Vue {
   //     this.treeDatabox = [];
   //   }
   // }
-  selectFun(row) {}
   /**
    * 通过角色id查询资源 (获取该角色已配置过的模块)
    */

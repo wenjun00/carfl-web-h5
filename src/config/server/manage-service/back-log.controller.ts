@@ -11,5 +11,14 @@ export default {
     controller: CONTROLLER,
     action: 'roleAllocateBacklogs',
     type: requestType.Post
+  },
+  /**
+   * 获取所有待办事项
+   */
+  queryBacklog: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'queryBacklog',
+    type: requestType.Get
   }
 }
