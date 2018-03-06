@@ -1,7 +1,7 @@
 <!--融资租赁申请-->
 <template>
   <section class="pageContainer financing-lease-apply specialInput">
-    <div class="page" style="height:782px;overflow:hidden">
+    <div class="page" style="height:820px;overflow:hidden">
       <div class="header">
         <div class="form-title">融资租赁申请
           <div style="float:right;margin-right:20px;">
@@ -412,7 +412,7 @@
   }
   
   .page {
-    height: 1500px!important;
+    height: 1550px!important;
   }
   
   .submitBar {

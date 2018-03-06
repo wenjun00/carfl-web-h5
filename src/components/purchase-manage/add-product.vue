@@ -92,91 +92,94 @@
 
     created() {
       this.treeList()
-      this.carColumns = [{
-        align: 'center',
-        title: '选择',
-        width: 180,
-        render: (h, {
-          row,
-          columns,
-          index
-        }) => {
-          return h('Radio', {
-            props: {
-              label: row.workId
-            },
-            on: {
-              click: () => {
-                this.AddProductData = row
-                console.log(this.AddProductData)
-              }
-            }
-          })
+      this.carColumns = [
+        //       {
+        //     align: 'center',
+        //     title: '选择',
+        //     width: 180,
+        //     render: (h, {
+        //       row,
+        //       columns,
+        //       index
+        //     }) => {
+        //       return h('Radio', {
+        //         props: {
+        //           label: row.workId
+        //         },
+        //         on: {
+        //           click: () => {
+        //             this.AddProductData = row
+        //             console.log(this.AddProductData)
+        //           }
+        //         }
+        //       })
+        //     }
+        //   }, 
+        {
+          title: '期数(月)',
+          key: 'periods',
+          align: 'center',
+          width: 100
+        }, {
+          title: '账期类型',
+          key: 'periodType',
+          align: 'center',
+          width: 120,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.periodType));
+          }
+        }, {
+          title: '产品利率',
+          key: 'productRate',
+          align: 'center',
+          width: 100
+        }, {
+          title: '还款方式',
+          key: 'payWay',
+          align: 'center',
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.payWay));
+          }
+        }, {
+          title: '融资金额(元)',
+          key: 'financingAmount',
+          align: 'center',
+          width: 110
+        }, {
+          title: '首付款',
+          key: 'initialPayment',
+          align: 'center',
+          width: 100
+        }, {
+          title: '保证金',
+          key: 'depositCash',
+          align: 'center',
+          width: 100
+        }, {
+          title: '尾付款',
+          key: 'finalCash',
+          align: 'center',
+          width: 100
+        }, {
+          title: '管理费',
+          key: 'manageCost',
+          align: 'center',
+          width: 100
+        }, {
+          title: '状态',
+          key: 'productStatus',
+          align: 'center'
         }
-      }, {
-        title: '期数(月)',
-        key: 'periods',
-        align: 'center',
-        width: 100
-      }, {
-        title: '账期类型',
-        key: 'periodType',
-        align: 'center',
-        width: 120,
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          return h("span", {}, this.$dict.getDictName(row.periodType));
-        }
-      }, {
-        title: '产品利率',
-        key: 'productRate',
-        align: 'center',
-        width: 100
-      }, {
-        title: '还款方式',
-        key: 'payWay',
-        align: 'center',
-        width: 100,
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          return h("span", {}, this.$dict.getDictName(row.payWay));
-        }
-      }, {
-        title: '融资金额(元)',
-        key: 'financingAmount',
-        align: 'center',
-        width: 110
-      }, {
-        title: '首付款',
-        key: 'initialPayment',
-        align: 'center',
-        width: 100
-      }, {
-        title: '保证金',
-        key: 'depositCash',
-        align: 'center',
-        width: 100
-      }, {
-        title: '尾付款',
-        key: 'finalCash',
-        align: 'center',
-        width: 100
-      }, {
-        title: '管理费',
-        key: 'manageCost',
-        align: 'center',
-        width: 100
-      }, {
-        title: '状态',
-        key: 'productStatus',
-        align: 'center'
-      }]
+      ]
     }
 
 

@@ -92,10 +92,10 @@
         <span style="font-size:12px;">月供模拟计算器</span>
       </div>-->
     </i-col>
-    <!--<div v-show="addPrdShow">-->
-    <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
-    <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
-    <!--</div>-->
+    <div v-show="addPrdShow">
+      <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
+      <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
+    </div>
     <i-row v-show="prdInfoShow">
       <i-form ref="customer-form" :rule="rules" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;">
         <i-col span="12">
