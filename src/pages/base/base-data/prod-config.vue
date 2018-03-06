@@ -636,6 +636,8 @@
      */
     addPeriods() {
       this.addPeriodsModal = true;
+      let periodsModal: any = this.$refs['add-periods-ref'];
+      periodsModal.refresh();
     }
     /**
      * 新增提交按钮

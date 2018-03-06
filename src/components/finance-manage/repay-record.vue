@@ -37,7 +37,8 @@
     refresh(row) {
       this.paymentScheduleService.getPaymentRecordDetail({
         personalId: row.personalId,
-        businessId: row.businessId
+        businessId: row.businessId,
+        orderId: row.orderId
       }).subscribe(data => {
         this.repayObj.customerName = data.customerName
         this.repayObj.clientNumber = data.clientNumber

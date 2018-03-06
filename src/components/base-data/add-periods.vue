@@ -84,8 +84,8 @@
             <i-radio label="有"></i-radio>
           </i-radio-group>
         </data-grid-item>
-        <data-grid-item label="保证金比例" :span="12">
-          <div v-if="promiseMoenyParams==='有'" style="margin-left:-51px;margin-top:17px;" class="initialPayment">
+        <data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">
+          <div style="margin-left:-51px;margin-top:17px;" class="initialPayment">
             <i-form-item prop="depositCash" label="比例">
               <i-input v-model="formItems.depositCash"></i-input>
             </i-form-item>
@@ -223,7 +223,7 @@ export default class AddPeriods extends Vue {
 		depositCash: '',
 		depositCashType: '',
 		finalCash: '',
-		manageCostType: '',
+		manageCostType: 394,
 		stagingPeriods: '', // 期数
 		creditProtectDays: '',
 		overdueProtectDays: '',
@@ -242,6 +242,7 @@ export default class AddPeriods extends Vue {
     for(let v in this.formItems) {
       this.formItems[v] = ''
     }
+    this.formItems.manageCostType = 394
   }
 	created() {
 		this.amount = {
