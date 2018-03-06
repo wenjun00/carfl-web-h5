@@ -21,7 +21,8 @@
           </i-col>
           <i-col span="22" style="overflow:hidden">
             <div>
-              <data-box ref="databox" :columns="carColumns" :data="carDataModel" border stripe @onPageChange="cartreeChange" :page="pageService"></data-box>
+              <data-box :height="540" ref="databox" :columns="carColumns" :data="carDataModel" border stripe @onPageChange="cartreeChange"
+                :page="pageService"></data-box>
             </div>
           </i-col>
         </i-row>
@@ -72,6 +73,7 @@
     private treeData: any = [];
     private treeId: any;
     private multipleSelection: any = [];
+    private treeDatas: any = [];
 
     @Emit('distributionData')
     distributionData(multipleSelection) {}
@@ -105,13 +107,13 @@
         },
         {
           title: '车身颜色',
-          key: 'vehicleColour',
+          key: 'carColour',
           align: 'center',
           width: 160,
         },
         {
           title: '车辆排量',
-          key: 'vehicleEmissions',
+          key: 'carEmissions',
           align: 'center',
           width: 160,
         },
@@ -197,7 +199,9 @@
       if (data[0].carId) {
         this.treeId = data[0].carId;
       }
-      this.carService.findAllCarBySeries(this.treeId).subscribe(
+      this.carService.findAllCarBySeries({
+        seriesId: this.treeId
+      }).subscribe(
         data => {
           this.carDataModel = data;
           console.log(this.carDataModel, 988);
@@ -235,32 +239,33 @@
           series.set(t.id, t);
         }
       });
-      this.treeData = [];
+      this.treeDatas = [];
       series.forEach(item => {
         let lv1Node = {
-          title: '所有品牌',
+          title: item.brandName,
+          brandId: item.id,
           expand: true,
-          children: [{
-            title: item.brandName,
-            seriesId: item.id,
-            expand: true,
-            children: item.series.map(v => {
-              return {
-                title: v.seriesName,
-                brandId: v.id,
-                expand: true,
-                children: v.cars.map(m => {
-                  return {
-                    title: m.modelName,
-                    carId: m.id,
-                  };
-                }),
-              };
-            }),
-          }, ],
+          children: item.series.map(v => {
+            return {
+              title: v.seriesName,
+              seriesId: v.id,
+              expand: true,
+              children: v.cars.map(m => {
+                return {
+                  title: m.modelName,
+                  carId: m.id
+                };
+              })
+            };
+          })
         };
-        this.treeData.push(lv1Node);
+        this.treeDatas.push(lv1Node);
       });
+      this.treeData = [{
+        title: "所有品牌",
+        expand: true,
+        children: this.treeDatas
+      }];
     }
   }
 

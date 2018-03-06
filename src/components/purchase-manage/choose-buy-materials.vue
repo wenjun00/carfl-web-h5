@@ -3,7 +3,7 @@
   <section class="component choose-buy-materials">
     <i-col span="24" style="line-height:30px" class="form-title">选购信息</i-col>
     <i-row>
-      <i-form ref="customer-form" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;position:relative;left:16px;"
+      <i-form ref="customer-form" :rules="rules" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;position:relative;left:16px;"
         label-position="left">
         <i-row>
           <i-col span="12">
@@ -92,10 +92,10 @@
         <span style="font-size:12px;">月供模拟计算器</span>
       </div>-->
     </i-col>
-    <!--<div v-show="addPrdShow">-->
-    <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
-    <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
-    <!--</div>-->
+    <div v-show="addPrdShow">
+      <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
+      <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
+    </div>
     <i-row v-show="prdInfoShow">
       <i-form ref="customer-form" :rule="rules" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;">
         <i-col span="12">
@@ -585,11 +585,11 @@
           align: 'center'
         }, {
           title: '车身颜色',
-          key: 'vehicleColour',
+          key: 'carColour',
           align: 'center'
         }, {
           title: '车辆排量',
-          key: 'vehicleEmissions',
+          key: 'carEmissions',
           align: 'center'
         }, {
           title: '单价（元）',
@@ -651,31 +651,27 @@
       this.finalCashData = data.finalCash.split(';')
       this.initialPaymentData = data.initialPayment.split(';')
       this.manageCostData = data.manageCost.split(';')
-      console.log(data.productId, 'data.productId')
       this.updateProductId(data.productId)
-      this.chooseBuyModel = {
-        // prdSeriods: data.prdSeriods,
-        periods: data.periods,
-        prdInterestRate: data.productRate, // 产品利率
-        payWay: data.payWay,
-        moneyPay: data.moneyPay,
-        insuranceMoney: data.insuranceMoney,
-        purchaseMoney: data.purchaseMoney,
-        licenseMoney: data.licenseMoney,
-        GpsMoney: data.GpsMoney,
-        otherFee: data.otherFee,
-        remark: data.remark,
-        vehicleAmount: this.totalPrice,
-        name: productDataModel.title, // 产品名称
-        prdSeriods: productDataModel.series, // 产品系列
-
-      }
+      this.chooseBuyModel.name = productDataModel.title // 产品名称
+      this.chooseBuyModel.prdSeriods = productDataModel.series // 产品系列
+      this.chooseBuyModel.periods = data.periods // 产品期数
+      this.chooseBuyModel.prdInterestRate = data.productRate // 产品利率
+      this.chooseBuyModel.payWay = data.payWay // 还款方式
+      this.chooseBuyModel.moneyPay = data.moneyPay
+      this.chooseBuyModel.insuranceMoney = data.insuranceMoney
+      this.chooseBuyModel.purchaseMoney = data.purchaseMoney
+      this.chooseBuyModel.licenseMoney = data.licenseMoney
+      this.chooseBuyModel.GpsMoney = data.GpsMoney
+      this.chooseBuyModel.otherFee = data.otherFee
+      this.chooseBuyModel.remark = data.remark
+      this.chooseBuyModel.vehicleAmount = this.totalPrice
     }
     productPlanissue(data) {
-      this.chooseBuyModel = {
-        name: data.title // 产品名称
-        // prdSeriods:
-      }
+      console.log(data, 'daatgjgjg')
+      //   this.chooseBuyModel = {
+      //     name: data.title // 产品名称
+      //     // prdSeriods:
+      //   }
     }
   }
 
