@@ -79,7 +79,7 @@
         </i-col>
       </i-form>
     </i-row>
-    <i-table :columns="carColumns" :data="addcarData" stripe style="margin:10px;" width="1100"></i-table>
+    <i-table height="200" :columns="carColumns" :data="addcarData" stripe style="margin:10px;" width="1100"></i-table>
     <div>
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
       <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
@@ -425,6 +425,7 @@
         required: true,
         message: '请输入意向融资金额',
         trigger: 'blur',
+        type: 'number'
       }],
       intentionPeriods: [{
         required: true,
@@ -435,6 +436,7 @@
         required: true,
         message: '请输入租金支付',
         trigger: 'blur',
+        type: 'number'
       }],
       province: [{
         required: true,

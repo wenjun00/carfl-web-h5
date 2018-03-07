@@ -170,20 +170,19 @@
     chooseback() {
       this.multipleSelection = this.$refs['databox'];
       this.multipleSelection = this.multipleSelection.getCurrentSelection();
-      //   console.log(this.rowData)
-      if (this.rowData) {
-        //   this.rowData.s = s
-        Object.assign(this.rowData, this.multipleSelection[0]);
+      console.log(this.multipleSelection)
+      if (this.multipleSelection === undefined) {
+        this.$Message.warning('请选择车辆！')
+        return
       } else {
-        this.distributionData(this.addcarData.concat(this.multipleSelection));
-        this.multipleSelection = [];
+        if (this.rowData) {
+          Object.assign(this.rowData, this.multipleSelection[0]);
+        } else {
+          this.distributionData(this.addcarData.concat(this.multipleSelection));
+          this.multipleSelection = [];
+        }
+        this.close();
       }
-      //   if (this.rowData) {
-      //     this.rowData = this.multipleSelection[0]
-      //   } else {
-      //   let multipleSelectionData=
-      //   }
-      this.close();
     }
     /**
      * 根据车系列树获取车列表

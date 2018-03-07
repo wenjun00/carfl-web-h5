@@ -374,12 +374,12 @@
         trigger: 'change',
         type: 'number'
       }],
-      birthTime: [{
-        required: true,
-        message: '请选择出生日期',
-        trigger: 'change',
-        type: 'date'
-      }],
+      //   birthTime: [{
+      //     required: true,
+      //     message: '请选择出生日期',
+      //     trigger: 'change',
+      //     type: 'date'
+      //   }],
       mobileMain: [{
         required: true,
         message: '请输入手机号码',

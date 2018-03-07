@@ -263,6 +263,7 @@
      * 保存并提交
      */
     saveAndSubmit(type) {
+      console.log(7878078780)
       let _customerform: any = this.$refs['customer-form'];
       _customerform.validate(valid => {
         if (!valid) {
@@ -283,7 +284,9 @@
                 } else {
                   let customerMaterials: any = this.$refs['customer-materials'];
                   let _jobform: any = customerMaterials.$refs['job-form'];
+                  console.log(_jobform, '_jobform')
                   _jobform.validate(valid => {
+                    console.log(valid, 'valid')
                     if (!valid) {
                       this.$Message.warning('您有未输入的选项，请先检查并输入后再提交！');
                       return false
@@ -364,7 +367,7 @@
                         mobileMain: this.customerModel.customerPhone,
                         salesmanName: this.customerModel.salesmanName,
                         // 选购资料
-                        orderCars: addcarDatas,
+                        orderCars: choosebuymaterials.addcarData,
                         province: choosebuymaterials.chooseBuyModel.province,
                         city: choosebuymaterials.chooseBuyModel.city,
                         companyId: choosebuymaterials.chooseBuyModel.companyId,
@@ -434,7 +437,7 @@
   }
   
   .page {
-    height: 1550px!important;
+    height: 1750px!important;
   }
   
   .submitBar {
