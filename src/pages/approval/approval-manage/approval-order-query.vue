@@ -16,13 +16,17 @@
       <span>高级搜索</span>
     </i-button>
     <div style="float:right;margin-right:10px;margin-top:10px;">
+      <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="dayin"></svg-icon>
+        <span style="font-size: 12px;">打印</span>
+      </div>
       <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
         <svg-icon iconClass="daochu"></svg-icon>
         <span style="font-size: 12px;">导出</span>
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
-      <i-input style="display:inline-block;width:14%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>
+      <i-input style="display:inline-block;width:14%;margin-left:20px;min-width:230px;" placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>
       <span style="margin-left:10px">日期：</span>
       <i-date-picker style="display:inline-block;width:10%" v-model="approvalModel.startTime" placeholder="起始日期"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%" v-model="approvalModel.endTime" placeholder="终止日期"></i-date-picker>
