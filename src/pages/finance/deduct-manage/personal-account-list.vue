@@ -27,7 +27,7 @@
       <i-select style="display:inline-block;width:10%;margin-left:10px;" placeholder="全部状态">
         <i-option value="拒绝" label="拒绝" key="拒绝"></i-option>
         <i-option value="退单" label="退单" key="退单"></i-option>
-        <i-option value="通过" label="通过" key="通过"></i-option>
+        <i-option value="通过" label="通过"></i-option>
       </i-select>
       <i-select style="display:inline-block;width:10%;margin-left:10px;" placeholder="全部拒单原因">
         <i-option value="不符合进件操作" label="不符合进件操作" key="不符合进件操作"></i-option>
@@ -40,15 +40,14 @@
       <i-select style="display:inline-block;width:10%;margin-left:10px;" placeholder="全部拒单细节">
         <i-option value="行业限制" label="拒绝" key="拒绝"></i-option>
         <i-option value="信用卡开户数超标" label="退单" key="退单"></i-option>
-        <i-option value="话单非本人名下且不满两年" label="通过" key="通过"></i-option>
-        <i-option value="话单本人名下但不满半年" label="通过" key="通过"></i-option>
+        <i-option value="话单非本人名下且不满两年" label="通过"></i-option>
+        <i-option value="话单本人名下但不满半年" label="通过"></i-option>
       </i-select>
       <span style="margin-left:10px">日期：</span>
       <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
-      <i-button class="blueButton">搜索</i-button>
+      <i-button class="blueButton" @click="getGatherListByCondition">搜索</i-button>
     </i-row>
-    <!--<i-table :columns="columns1" :data="data1" border stripe></i-table>-->
     <data-box :columns="columns1" :data="data1"></data-box>
 
     <div class="submitBar">
@@ -145,12 +144,11 @@
   import Component from "vue-class-component";
   import SvgIcon from '~/components/common/svg-icon.vue'
   import Deduct from '~/components/finance-manage/deduct.vue'
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    Layout
-  } from "~/core/decorator";
+  import { Dependencies } from "~/core/decorator";
+  import { Layout } from "~/core/decorator";
+  import { ChargeBackService } from "~/services/manage-service/charge-back.service";
+  import { PageService } from "~/utils/page.service";
+  import { FilterService } from "~/utils/filter.service"
 
   @Layout("workspace")
   @Component({
@@ -163,17 +161,30 @@
     }
   })
   export default class PersonalAccountList extends Page {
+    @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
     private data1: Array < Object > = [];
     private searchOptions: Boolean = false;
     private customName: String = "";
-    private data3: Array < Object > = [];
     private checkRadio: String = "融资租赁合同";
-    private columns3: any;
     private openCreateAccount: Boolean = false;
     private bankCardInfoModal: Boolean = false;
     private deductModal: Boolean = false;
-
+    private gatherModel: any = {
+      accountName: '',
+      queryStartDate: '',
+      queryEndDate: '',
+      timeSearch: ''
+    }
+    /**
+     * 获取列表
+     */
+    getGatherListByCondition() {
+      this.chargeBackService.getPersonalAccountList(this.gatherModel, this.pageService).subscribe(val => {
+        this.data1 = val
+      })
+    }
     /**
      * 开户
      */
@@ -181,35 +192,26 @@
       this.openCreateAccount = true
     }
     created() {
+      this.getGatherListByCondition()
       this.columns1 = [
         {
           title: "操作",
           width: 220,
           align: "center",
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h("div", [
-              h(
-                "i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      this.bankCardInfoModal = true
-                    }
-                  }
+          render: (h, { row, column, index }) => {
+            return h("div", [ h("i-button", {
+              props: {
+                  type: "text"
                 },
-                "银行卡信息"
-              ),
-              h(
-                "i-button", {
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    this.bankCardInfoModal = true
+                  }
+                }
+              }, "银行卡信息"), h("i-button", {
                   props: {
                     type: "text"
                   },
@@ -221,122 +223,54 @@
                       this.deductModal = true
                     }
                   }
-                },
-                "划扣"
-              )
-            ]);
+                }, "划扣")]);
           }
         },
         {
           title: "开户日期",
           align: "center",
-          key: "openAccountDate"
+          key: "openAccountDate",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', FilterService.dateFormat(row.openAccountDate, 'yyyy-MM-dd'))
+          }
         },
         {
           align: "center",
           title: "开户类型",
-          key: "openAccountType"
+          key: "accountType",
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.accountType));
+          }
         },
         {
           align: "center",
           title: "客户号",
-          key: "customerId"
+          key: "clientNumber"
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customerName"
+          key: "name"
         },
         {
           align: "center",
           title: "证件号码",
-          key: "IdCard"
+          key: "certificateNumber"
         },
         {
           align: "center",
           title: "预留手机",
-          key: "phone"
+          key: "reservedPhoneNumber"
         }
       ];
-      this.columns3 = [{
-          title: "文件名称",
-          align: "center",
-          key: "fileName"
-        },
-        {
-          type: "selection",
-          align: "center",
-          width: 80
-        }
-      ];
-
-      this.data3 = [{
-          fileName: "融资租赁申请单"
-        },
-        {
-          fileName: "融资租赁合同正文"
-        },
-        {
-          fileName: "合同附件一(付款时间表)"
-        },
-        {
-          fileName: "合同附件二(配偶确认书)"
-        },
-        {
-          fileName: "合同附件三(共同承租人确认书)"
-        },
-        {
-          fileName: "委托收款合同"
-        },
-        {
-          fileName: "首付款明细"
-        },
-        {
-          fileName: "服务确认书"
-        },
-        {
-          fileName: "责任告知书"
-        },
-        {
-          fileName: "车辆交接单"
-        },
-        {
-          fileName: "车辆出库单"
-        },
-        {
-          fileName: "补充协议（减免）"
-        }
-      ];
-
-      this.data1 = [{
-        openAccountDate: '2017-12-01',
-        openAccountType: '汇付',
-        customerId: '62103526456',
-        customerName: '胡开甲',
-        IdCard: '610303199110054516',
-        phone: '18899245146'
-      }, {
-        openAccountDate: '2017-12-01',
-        openAccountType: '汇付',
-        customerId: '62103526456',
-        customerName: '胡开甲',
-        IdCard: '610303199110054516',
-        phone: '18899245146'
-      }, {
-        openAccountDate: '2017-12-01',
-        openAccountType: '汇付',
-        customerId: '62103526456',
-        customerName: '胡开甲',
-        IdCard: '610303199110054516',
-        phone: '18899245146'
-      }, {
-        openAccountDate: '2017-12-01',
-        openAccountType: '汇付',
-        customerId: '62103526456',
-        customerName: '胡开甲',
-        IdCard: '610303199110054516',
-        phone: '18899245146'
-      }]
     }
     getOrderInfoByTime() {}
     openSearch() {
@@ -347,110 +281,6 @@
      * 多选
      */
     multipleSelect(selection) {
-    }
-    /**
-     * 切换合同种类
-     */
-    changeCompactType(type) {
-      if (type === "全款销售合同") {
-        this.data3 = [{
-            fileName: "融资租赁申请单"
-          },
-          {
-            fileName: "融资租赁合同正文"
-          },
-          {
-            fileName: "合同附件一(付款时间表)"
-          },
-          {
-            fileName: "合同附件二(配偶确认书)"
-          },
-          {
-            fileName: "合同附件三(共同承租人确认书)"
-          }
-        ];
-      } else if (type === "长租合同（银行版）") {
-        this.data3 = [{
-            fileName: "融资租赁申请单"
-          },
-          {
-            fileName: "融资租赁合同正文"
-          },
-          {
-            fileName: "合同附件一(付款时间表)"
-          },
-          {
-            fileName: "合同附件二(配偶确认书)"
-          }
-        ];
-      } else if (type === "长租合同") {
-        this.data3 = [{
-            fileName: "长期租赁申请单"
-          },
-          {
-            fileName: "长期租赁合同正文"
-          },
-          {
-            fileName: "合同附件一(甲乙双方相关责任条款)"
-          },
-          {
-            fileName: "合同附件二(车辆交接清单)"
-          },
-          {
-            fileName: "委托收款合同"
-          },
-          {
-            fileName: "车辆销售协议"
-          },
-          {
-            fileName: "收款明细"
-          },
-          {
-            fileName: "车辆出库单"
-          },
-          {
-            fileName: "补充协议（减免）"
-          }
-        ];
-      } else {
-        this.data3 = [{
-            fileName: "融资租赁申请单"
-          },
-          {
-            fileName: "融资租赁合同正文"
-          },
-          {
-            fileName: "合同附件一(付款时间表)"
-          },
-          {
-            fileName: "合同附件二(配偶确认书)"
-          },
-          {
-            fileName: "合同附件三(共同承租人确认书)"
-          },
-          {
-            fileName: "委托收款合同"
-          },
-          {
-            fileName: "首付款明细"
-          },
-          {
-            fileName: "服务确认书"
-          },
-          {
-            fileName: "责任告知书"
-          },
-          {
-            fileName: "车辆交接单"
-          },
-          {
-            fileName: "车辆出库单"
-          },
-          {
-            fileName: "补充协议（减免）"
-          }
-        ];
-      }
     }
   }
 

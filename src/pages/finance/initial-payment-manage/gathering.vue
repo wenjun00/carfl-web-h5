@@ -54,27 +54,14 @@
   import Component from "vue-class-component";
   import ConfirmGather from "~/components/finance-manage/confirm-gather.vue"
   import SvgIcon from '~/components/common/svg-icon.vue';
-  import {
-    Tooltip
-  } from 'iview'
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    CollectMoneyHistoryService
-  } from "~/services/manage-service/collect-money-history.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  import {
-    FilterService
-  } from "~/utils/filter.service"
+  import { Tooltip } from 'iview'
+  import { Dependencies } from "~/core/decorator";
+  import { Layout } from "~/core/decorator";
+  import { CollectMoneyHistoryService } from "~/services/manage-service/collect-money-history.service";
+  import { PageService } from "~/utils/page.service";
+  import { FilterService } from "~/utils/filter.service"
   @Layout("workspace")
   @Component({
-
     components: {
       SvgIcon,
       DataBox,
