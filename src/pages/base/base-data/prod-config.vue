@@ -482,6 +482,7 @@
       });
     }
     createNewTree(allData) {
+      this.scopes = null
       let root = allData.filter(v => !v.parent);
       this.treeData = [];
       root.forEach(item => {
