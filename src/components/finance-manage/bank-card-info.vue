@@ -46,6 +46,9 @@
   import Component from "vue-class-component";
   import ChangeCard from "~/components/purchase-manage/change-card.vue"
   import UnbindBankCard from "~/components/purchase-manage/unbind-bank-card.vue"
+  import { ChargeBackService } from "~/services/manage-service/charge-back.service";
+  import { Dependencies } from "~/core/decorator";
+
   @Component({
     components: {
       ChangeCard,
@@ -53,8 +56,15 @@
     }
   })
   export default class BankCardInfo extends Vue {
+    @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
     private changeBankCardModal: Boolean = false
     private unbindBankCardModal: Boolean = false
+    refresh(row) {
+      this.chargeBackService.getPersonalBank({ id: row.personalId, accountType: row.accountType }).subscribe(val => {
+      }, ({ msg }) => {
+        this.$Message.error(msg)
+      })
+    }
     created() {
 
     }

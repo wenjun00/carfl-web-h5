@@ -39,10 +39,6 @@
         <td>{{item.itemLabel}}</td>
         <td>{{item.itemMoney}}</td>
       </tr>
-      <tr height="40">
-        <td>合计</td>
-        <td style="font-weight:700;font-size:14px">{{repaymentObj.totalPayment}}</td>
-      </tr>
     </table>
 
     <div>
@@ -51,7 +47,7 @@
 
     <table border="1" width="850" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
-        <td bgcolor="#F2F2F2" colspan="1" width="5%">
+        <td bgcolor="#F2F2F2" colspan="1" width="5%" v-if="!check">
           <div @click="addObj">
             <i-icon type="plus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
@@ -62,31 +58,31 @@
         <td bgcolor="#F2F2F2" colspan="1">状态</td>
       </tr>
       <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
-        <td>
+        <td v-if="!check">
           <div @click="deleteObj(i)">          
             <i-icon type="minus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
         </td>
         <td>
-          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel">
+          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel" :disabled="check">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="v.collectItem">
+          <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="v.collectItem" :disabled="check">
             <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-input style="display:inline-block;width:30%;margin-right:10px" v-model="v.collectMoneyAmount" @on-blur="inputBlur"></i-input>
-          <i-button class="blueButton">确认划扣</i-button>
+          <i-input style="display:inline-block;width:30%;margin-right:10px" v-model="v.collectMoneyAmount" @on-blur="inputBlur" :readonly="check"></i-input>
+          <i-button class="blueButton" v-if="!check">确认划扣</i-button>
         </td>
         <td><span>已处理</span>
           <i-icon type="loop" size="20" color="#199ED8" style="margin-left:6px;cursor:pointer"></i-icon>
         </td>
       </tr>
       <tr height="40">
-        <td></td>
+        <td v-if="!check"></td>
         <td width="25%">合计（元）</td>
         <td  colspan="3" style="font-weight:700;font-size:14px">{{paymentAmount}}</td>
       </tr>
@@ -98,12 +94,12 @@
     </div>
     <i-table :columns="columns2" :data="personalBanks"></i-table>
 
-    <div>
+    <div v-if="!check||financeUploadResources.length">
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;margin-top:10px;"></div><span>收款凭证</span>
     </div>
 
     <i-row style="margin-top:10px">
-      <i-col :span="12">
+      <i-col :span="12" v-if="!check">
         <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;"
           @click="addAttachment">
           <Icon type="plus-circled" style="display:block;margin-top:53px;" size="40" color="#265ea2"></Icon>
@@ -140,6 +136,7 @@
   import {
     CollectMoneyHistoryService
   } from "~/services/manage-service/collect-money-history.service";
+  import { Prop } from "vue-property-decorator";
 
   @Component({
     components: {
@@ -156,11 +153,12 @@
     private financeUploadResources: any = [];
     private collectMoneyDetails: any = [];
     private paymentAmount: any = 0
-    private delFinanceUploadResource: any = []
-    private addFinanceUploadResource: any = []
     private collectMoneyItemModels: any = []
     private collectMoneyId: any = ''
-
+    @Prop({
+      default: false
+    })
+    check: boolean;
 
 
     private columns2: any;
@@ -179,10 +177,10 @@
       this.collectMoneyHistoryService.withdrawApplicationDetail({
         applicationId: row.applicationId
       }).subscribe(data => {
-        this.collectMoneyId = data.collectMoneyHistory?data.collectMoneyHistory.id:''
+        this.collectMoneyId = data.collectMoneyId || ''
         console.log(data)
         this.repaymentObj = data
-        this.collectMoneyDetails = data.collectMoneyHistory?data.collectMoneyHistory.collectMoneyDetails:[]
+        this.collectMoneyDetails = data.collectMoneyDetails || []
         this.personalBanks = data.personalBanks 
         this.financeUploadResources = data.collectMoneyPhaseUploadResources
         this.applicationPhaseResources = data.applicationPhaseUploadResources
