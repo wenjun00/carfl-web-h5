@@ -507,6 +507,8 @@ export default class MyApproval extends Page {
   secendLastApprovalPassConfirm() {
     let _secondLast: any = this.$refs["second-last"];
     _secondLast.confirmPass();
+    this.approveModal = false;
+    this.getMyOrderList();
   }
   /**
    * 合规通过取消
@@ -527,6 +529,7 @@ export default class MyApproval extends Page {
       data => {
         this.$Message.success("操作成功！");
         this.meetConditionApproval = false;
+        this.approveModal = false
         this.getMyOrderList();
       },
       ({ msg }) => {

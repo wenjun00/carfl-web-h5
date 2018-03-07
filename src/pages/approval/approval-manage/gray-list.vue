@@ -158,7 +158,29 @@ export default class GrayList extends Page {
         editable: true,
         title: "环节",
         render: (h, { row, columns, index }) => {
-          return h("span", {}, this.$dict.getDictName(row.orderLink));
+          return h("div", [
+            h("span", {}, this.$dict.getDictName(row.orderLink)),
+            h(
+              "Tooltip",
+              {
+                props: {
+                  content: row.recorder
+                }
+              },
+              [
+                h(
+                  "div",
+                  {
+                    props: {}
+                    // style: {
+                    //   background: URL("/static/images/common/headPortrail.png")
+                    // }
+                  },
+                  "测试"
+                )
+              ]
+            )
+          ]);
         }
       },
       {
