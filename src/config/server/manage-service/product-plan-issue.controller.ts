@@ -29,5 +29,14 @@ export default {
     controller: CONTROLLER,
     action: 'publish',
     type: requestType.Put
+  },
+  /**
+   * 停用启用
+   */
+  ableOrUnable: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'ableOrUnable',
+    type: requestType.Get
   }
 }

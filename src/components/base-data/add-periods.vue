@@ -175,13 +175,13 @@
           <span>&nbsp;%/天</span>
         </data-grid-item>
       </data-grid>
-      <div style="margin-right:10px;display:inline-block" class="addPeriodsItem">状态</div>
+      <!--<div style="margin-right:10px;display:inline-block" class="addPeriodsItem">状态</div>
       <i-form-item prop="isPublish">
         <i-radio-group v-model="formItems.isPublish">
           <i-radio :label="361">未发布</i-radio>
           <i-radio :label="360">已发布</i-radio>
         </i-radio-group>
-      </i-form-item>
+      </i-form-item>-->
     </section>
   </i-form>
 </template>
@@ -233,7 +233,7 @@ export default class AddPeriods extends Vue {
     contractBreakRate: "",
     prepaymentRate: "",
     productStatus: "",
-    isPublish: "",
+    // isPublish: '',
     manageCost: ""
   };
   private amount: any;
@@ -385,11 +385,22 @@ export default class AddPeriods extends Vue {
         if (this.manageMoneyParams === "无") {
           delete this.formItems.manageCost;
           delete this.formItems.manageCostType;
+          delete this.formItems.stagingPeriods;
+        } else {
+          if (this.formItems.manageCostType === 394) {
+            delete this.formItems.stagingPeriods;
+          }
         }
         if (this.initialParams === "无") {
           delete this.formItems.initialPayment;
         }
 
+        if (this.promiseMoenyParams === "无") {
+          delete this.formItems.depositCash;
+        }
+        if (this.residueParams === "无") {
+          delete this.formItems.finalCash;
+        }
         this.formItems.financingAmount =
           this.amount.financingAmount1 + "~" + this.amount.financingAmount2;
         this.formItems.productId = this.pNameTitle.id;
