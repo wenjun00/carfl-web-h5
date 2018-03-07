@@ -279,11 +279,13 @@
       if (data[0].productId) {
         this.productId = data[0].productId
       }
+      let productData: any = {
+        productId: this.productId,
+        status: 0
+      }
       this.productPlanissue(data)
       this.productDataModel = data
-      this.productPlanIssueService.getAllProductPlan({
-        productId: this.productId
-      }, this.pageService).subscribe(data => {
+      this.productPlanIssueService.getAllProductPlan(productData, this.pageService).subscribe(data => {
         this.carData = data
       });
     }
