@@ -349,25 +349,20 @@
         );
       }
     }
+    /**
+     * 客户信息反显
+     */
     distributionData(data) {
-      //   this.currentRowData = data
       console.log(data, 80800);
       this.applyData.name = data.personal.name;
       this.applyData.customerPhone = data.personal.mobileMain;
       this.applyData.salesmanName = data.salesmanName;
-      let component: any = this.$refs['materials-all'];
-      //   for (let item of data.addcarData) {
-      //     component.addcarData.push({
-      //       brandId: item.brandId,
-      //       brandName: item.brandName,
-      //       carSeriesId: item.carSeriesId,
-      //       modelName: item.modelName,
-      //       otherExpenses: item.otherExpenses,
-      //       vehicleAmount: item.vehicleAmount,
-      //       vehicleColour: item.vehicleColour
-      //     })
-      //   }
-      console.log(component, 666);
+      //   选购信息反显
+      let _materialsall: any = this.$refs['materials-all'];
+      _materialsall.Reverse(data)
+      //   客户资料
+      let _materials: any = this.$refs['materials']
+      _materials.Reverse(data)
     }
     /**
      * 多选
@@ -396,57 +391,66 @@
               this.$Message.warning('您有未输入的选项，请先检查并输入后再提交！');
               return false
             } else {
-              //   选购信息
-              let choosebusyData: any = component.choosebusyData;
-              for (let item of component.addcarData) {
-                this.addcarData.push({
-                  brandId: item.brandId,
-                  brandName: item.brandName,
-                  carSeriesId: item.carSeriesId,
-                  modelName: item.modelName,
-                  otherExpenses: item.otherExpenses,
-                  vehicleAmount: item.vehicleAmount,
-                  vehicleColour: item.vehicleColour,
-                });
-              }
-              console.log(component.addcarData.length, 'component.addcarData')
-              if (component.addcarData.length === 0) {
-                this.$Message.warning('请添加车辆信息');
-                return
-              }
-              //   客户资料
-              let materials: any = this.$refs['materials'];
-              let customerData: any = materials.customerData;
-              console.log(customerData, 900000000000000);
-              if (type) {
-                this.orderStatus = 303;
-              } else {
-                this.orderStatus = 304;
-              }
-              let savesubmitDataset: any = {
-                idCard: this.applyData.idCard,
-                name: this.applyData.name,
-                mobileMain: this.applyData.customerPhone,
-                salesmanName: this.applyData.salesmanName,
-                city: choosebusyData.city,
-                companyId: choosebusyData.companyId,
-                province: choosebusyData.province,
-                orderCars: this.addcarData, // 车辆
-                personal: customerData,
-                orderServiceList: customerData.orderServiceList,
-                orderStatus: this.orderStatus,
-              };
-              console.log(savesubmitDataset, 8888);
-              this.productOrderService.createFullPaymentOrder(savesubmitDataset).subscribe(
-                data => {
-                  this.$Message.success('保存成功！');
-                },
-                ({
-                  msg
-                }) => {
-                  this.$Message.error(msg);
+              let _materials: any = this.$refs['materials']
+              let _parchase: any = _materials.$refs['parchase-form']
+              _parchase.validate(valid => {
+                if (!valid) {
+                  this.$Message.warning('您有未输入的选项，请先检查并输入后再提交！');
+                  return false
+                } else {
+                  //   选购信息
+                  let choosebusyData: any = component.choosebusyData;
+                  for (let item of component.addcarData) {
+                    this.addcarData.push({
+                      brandId: item.brandId,
+                      brandName: item.brandName,
+                      carSeriesId: item.carSeriesId,
+                      modelName: item.modelName,
+                      otherExpenses: item.otherExpenses,
+                      vehicleAmount: item.vehicleAmount,
+                      vehicleColour: item.vehicleColour,
+                    });
+                  }
+                  console.log(component.addcarData.length, 'component.addcarData')
+                  if (component.addcarData.length === 0) {
+                    this.$Message.warning('请添加车辆信息');
+                    return
+                  }
+                  //   客户资料
+                  let materials: any = this.$refs['materials'];
+                  let customerData: any = materials.customerData;
+                  console.log(customerData, 900000000000000);
+                  if (type) {
+                    this.orderStatus = 303;
+                  } else {
+                    this.orderStatus = 304;
+                  }
+                  let savesubmitDataset: any = {
+                    idCard: this.applyData.idCard,
+                    name: this.applyData.name,
+                    mobileMain: this.applyData.customerPhone,
+                    salesmanName: this.applyData.salesmanName,
+                    city: choosebusyData.city,
+                    companyId: choosebusyData.companyId,
+                    province: choosebusyData.province,
+                    orderCars: this.addcarData, // 车辆
+                    personal: customerData,
+                    orderServiceList: customerData.orderServiceList,
+                    orderStatus: this.orderStatus,
+                  };
+                  console.log(savesubmitDataset, 8888);
+                  this.productOrderService.createFullPaymentOrder(savesubmitDataset).subscribe(
+                    data => {
+                      this.$Message.success('保存成功！');
+                    },
+                    ({
+                      msg
+                    }) => {
+                      this.$Message.error(msg);
+                    }
+                  );
                 }
-              );
+              })
             }
           })
         }
