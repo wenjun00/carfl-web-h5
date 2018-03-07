@@ -116,6 +116,9 @@ export default class ApprovalResourcePool extends Page {
   mounted() {
     this.getApprovalListByCondition();
   }
+  activated() {
+    this.getApprovalListByCondition();
+  }
   created() {
     this.getOrderModel = {
       userId: "",

@@ -57,7 +57,7 @@
         </tr>
         <tr>
           <td bgColor="#F5F5F5">还款方式</td>
-          <td>{{orderInfo.payWay}}</td>
+          <td>{{$dict.getDictName(orderInfo.payWay)}}</td>
           <td bgColor="#F5F5F5">融资总额</td>
           <td>{{orderInfo.financingAmount}}</td>
           <td bgColor="#F5F5F5">月供金额</td>
@@ -102,9 +102,9 @@
           <td bgColor="#F5F5F5">姓名</td>
           <td>{{orderInfo.personal?orderInfo.personal.name:''}}</td>
           <td bgColor="#F5F5F5">性别</td>
-          <td>{{orderInfo.personal?orderInfo.personal.sex:''}}</td>
+          <td>{{orderInfo.personal?$dict.getDictName(orderInfo.personal.sex):''}}</td>
           <td bgColor="#F5F5F5">出生日期</td>
-          <td>{{orderInfo.personal?orderInfo.personal.birthTime:''}}</td>
+          <td>{{orderInfo.personal.birthTime|dateFormat('yyyy-MM-dd')}}</td>
           <td bgColor="#F5F5F5">微信号</td>
           <td>{{orderInfo.personal?orderInfo.personal.wechat:''}}</td>
         </tr>
@@ -116,7 +116,7 @@
           <td bgColor="#F5F5F5">身份证号</td>
           <td>{{orderInfo.personal?orderInfo.personal.idCard:''}}</td>
           <td bgColor="#F5F5F5">婚属状况</td>
-          <td colspan="5">{{orderInfo.personal?orderInfo.personal.marital:''}}</td>
+          <td colspan="5">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.marital):''}}</td>
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">身份证有效期</td>
@@ -142,11 +142,11 @@
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">现居住地房产归属</td>
-          <td colspan="6">{{orderInfo.personal?orderInfo.personal.localLiveHouseOwner:''}}</td>
+          <td colspan="6">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.localLiveHouseOwner):''}}</td>
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">本市自有房产状况归属</td>
-          <td colspan="2">{{orderInfo.personal?orderInfo.personal.cityOwnhouseCondition:''}}</td>
+          <td colspan="2">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.cityOwnhouseCondition):''}}</td>
           <td bgColor="#F5F5F5">电费账号</td>
           <td>{{orderInfo.personal?orderInfo.personal.electricityAccount:''}}</td>
           <td bgColor="#F5F5F5">电费密码</td>
@@ -158,7 +158,7 @@
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">教育程度</td>
-          <td>{{orderInfo.personal?orderInfo.personal.education:''}}</td>
+          <td>{{orderInfo.personal?$dict.getDictName(orderInfo.personal.education):''}}</td>
           <td bgColor="#F5F5F5">毕业院校</td>
           <td>{{orderInfo.personal?orderInfo.personal.school:''}}</td>
           <td bgColor="#F5F5F5">是否接受现场勘查</td>
@@ -186,13 +186,13 @@
         </tr>
         <tr>
           <td bgColor="#F5F5F5">单位性质</td>
-          <td>{{personalJobInfo.companyNature}}</td>
+          <td>{{$dict.getDictName(personalJobInfo.companyNature)}}</td>
           <td bgColor="#F5F5F5">职务</td>
           <td>{{personalJobInfo.duty}}</td>
         </tr>
         <tr>
           <td bgColor="#F5F5F5">职级</td>
-          <td>{{personalJobInfo.rank}}</td>
+          <td>{{$dict.getDictName(personalJobInfo.rank)}}</td>
           <td bgColor="#F5F5F5">单位地址</td>
           <td>{{personalJobInfo.companyAddress}}</td>
         </tr>
@@ -202,7 +202,7 @@
           <td bgColor="#F5F5F5">单位固定电话</td>
           <td>{{personalJobInfo.companyPhone}}</td>
           <td bgColor="#F5F5F5">何时进入公司</td>
-          <td>{{personalJobInfo.accessCompanyTime}}</td>
+          <td>{{personalJobInfo.accessCompanyTime|dateFormat('yyyy-MM-dd')}}</td>
         </tr>
         <tr>
           <td bgColor="#F5F5F5">基本月薪(元)</td>

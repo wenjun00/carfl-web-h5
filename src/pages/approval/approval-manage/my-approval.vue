@@ -488,6 +488,7 @@ export default class MyApproval extends Page {
           this.approvePassedModal = false;
           this.facePassModel.remark = "";
           this.approveModal = false;
+          this.getMyOrderList();
         },
         ({ msg }) => {
           this.$Message.error(msg);
