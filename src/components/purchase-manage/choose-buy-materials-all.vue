@@ -3,7 +3,7 @@
   <section class="component choose-buy-materials-all">
     <div class="form-title">选购信息</div>
     <i-row class="proCity">
-      <i-form ref="parchase-form" :label-width="110">
+      <i-form :rules="applyRule" ref="parchase-form" :label-width="110">
         <i-col span="12">
           <i-form-item label="申请省份" prop="province">
             <i-select placeholder="选择省" v-model="choosebusyData.province" clearable>
@@ -90,7 +90,7 @@
     private rowData: any = null;
     private saveData: any = null;
 
-    private applyRule: Object = {
+    private applyRule: any = {
       province: [{
         required: true,
         message: '请选择申请省份',
@@ -114,6 +114,7 @@
     disabledStatus: String;
     @Prop() currentRowData: any;
     created() {
+
       //   console.log(this.currentRowData.addcarData, 800)
       //   this.addcarData = this.currentRowData.addcarData
       // 获取公司名称

@@ -393,6 +393,7 @@
           let _parchaseform: any = component.$refs['parchase-form']
           _parchaseform.validate(valid => {
             if (!valid) {
+              this.$Message.warning('您有未输入的选项，请先检查并输入后再提交！');
               return false
             } else {
               //   选购信息
