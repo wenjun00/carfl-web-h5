@@ -33,12 +33,12 @@
           <i-col span="12" pull="3">
             <i-form-item label="自缴费用" prop="orderServiceList">
               <i-checkbox-group v-model="chooseBuyModel.orderServiceList">
-                <i-checkbox :value="368" :label="368">无</i-checkbox>
-                <i-checkbox :value="369" :label="369">购置税</i-checkbox>
-                <i-checkbox :value="370" :label="370">保险费</i-checkbox>
-                <i-checkbox :value="371" :label="371">上牌费</i-checkbox>
-                <i-checkbox :value="372" :label="372">路桥费</i-checkbox>
-                <i-checkbox :value="373" :label="373">首期租金</i-checkbox>
+                <i-checkbox :value="368" :label="368" :disabled="chooseBuyModel.orderServiceList.find(v=>v!==368)">无</i-checkbox>
+                <i-checkbox :value="369" :label="369" :disabled="chooseBuyModel.orderServiceList.find(v=>v===368)">购置税</i-checkbox>
+                <i-checkbox :value="370" :label="370" :disabled="chooseBuyModel.orderServiceList.find(v=>v===368)">保险费</i-checkbox>
+                <i-checkbox :value="371" :label="371" :disabled="chooseBuyModel.orderServiceList.find(v=>v===368)">上牌费</i-checkbox>
+                <i-checkbox :value="372" :label="372" :disabled="chooseBuyModel.orderServiceList.find(v=>v===368)">路桥费</i-checkbox>
+                <i-checkbox :value="373" :label="373" :disabled="chooseBuyModel.orderServiceList.find(v=>v===368)">首期租金</i-checkbox>
               </i-checkbox-group>
             </i-form-item>
           </i-col>
