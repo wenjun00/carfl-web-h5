@@ -64,23 +64,6 @@
         </i-col>
       </i-row>
     </div>
-    <!--弹出框-->
-    <template>
-
-    </template>
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
-        <!--<i-table :columns="columns2" :data="data2" border stripe @on-select="multipleSelect"></i-table>-->
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
-
     <!--开户弹窗-->
     <template>
       <i-modal v-model="openCreateAccount" title="开户绑卡" width="400">
@@ -184,9 +167,6 @@
     private data1: Array < Object > = [];
     private searchOptions: Boolean = false;
     private customName: String = "";
-    private openColumnsConfig: Boolean = false;
-    private columns2: any;
-    private data2: Array < Object > = [];
     private data3: Array < Object > = [];
     private checkRadio: String = "融资租赁合同";
     private columns3: any;
@@ -201,35 +181,7 @@
       this.openCreateAccount = true
     }
     created() {
-      this.columns1 = [{
-          align: "center",
-          type: "index",
-          width: 60,
-          renderHeader: (h, {
-            column,
-            index
-          }) => {
-            return h(
-              "div", {
-                on: {
-                  click: () => {
-                    this.columnsConfig();
-                  }
-                },
-                style: {
-                  cursor: "pointer"
-                }
-              }, [
-                h("Icon", {
-                  props: {
-                    type: "gear-b",
-                    size: "20"
-                  }
-                })
-              ]
-            );
-          }
-        },
+      this.columns1 = [
         {
           title: "操作",
           width: 220,
@@ -306,23 +258,6 @@
           key: "phone"
         }
       ];
-      this.columns2 = [{
-          title: "序号",
-          type: "index",
-          width: 80,
-          align: "center"
-        },
-        {
-          title: "列名",
-          key: "columnsName",
-          align: "center"
-        },
-        {
-          type: "selection",
-          width: 80,
-          align: "center"
-        }
-      ];
       this.columns3 = [{
           title: "文件名称",
           align: "center",
@@ -332,25 +267,6 @@
           type: "selection",
           align: "center",
           width: 80
-        }
-      ];
-      this.data2 = [{
-          columnsName: "开户日期"
-        },
-        {
-          columnsName: "开户类型"
-        },
-        {
-          columnsName: "客户号"
-        },
-        {
-          columnsName: "客户姓名"
-        },
-        {
-          columnsName: "证件号码"
-        },
-        {
-          columnsName: "预留手机"
         }
       ];
 
@@ -427,9 +343,6 @@
       this.searchOptions = !this.searchOptions;
     }
     oneKeyToConnect() {}
-    columnsConfig() {
-      this.openColumnsConfig = true;
-    }
     /**
      * 多选
      */
@@ -539,10 +452,6 @@
         ];
       }
     }
-    /**
-     * 确定
-     */
-    confirm() {}
   }
 
 </script>

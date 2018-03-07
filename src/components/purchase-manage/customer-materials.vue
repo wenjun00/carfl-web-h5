@@ -2,7 +2,7 @@
 <template>
   <section class="component customer-materials">
     <i-col span="24" style="line-height:30px" class="form-title">个人信息</i-col>
-    <i-form ref="job-form" :model="customerMaterialsForm" :label-width="110" label-position="left" style="position:relative;left:16px;margin-top:10px;">
+    <i-form :rules="rules" ref="job-form" :model="customerMaterialsForm" :label-width="110" label-position="left" style="position:relative;left:16px;margin-top:10px;">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">基础信息</span>
       </div>
@@ -361,6 +361,47 @@
       idCardAddress: '',
       localHomeAddr: '',
       cityOwnhouseAddress: '',
+    }
+    private rules: any = {
+      name: [{
+        required: true,
+        message: '请输入姓名',
+        trigger: 'blur',
+      }],
+      sex: [{
+        required: true,
+        message: '请选择性别',
+        trigger: 'change',
+        type: 'number'
+      }],
+      birthTime: [{
+        required: true,
+        message: '请选择出生日期',
+        trigger: 'change',
+        type: 'date'
+      }],
+      mobileMain: [{
+        required: true,
+        message: '请输入手机号码',
+        trigger: 'blur',
+      }],
+      education: [{
+        required: true,
+        message: '请选择教育程度',
+        trigger: 'change',
+        type: 'number'
+      }],
+      school: [{
+        required: true,
+        message: '请输入毕业院校',
+        trigger: 'blur',
+      }],
+      marital: [{
+        required: true,
+        message: '请选择婚姻状况',
+        trigger: 'change',
+        type: 'number'
+      }]
     }
     @Prop()
     disabled: Boolean;

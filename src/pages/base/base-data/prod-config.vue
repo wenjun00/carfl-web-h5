@@ -454,11 +454,6 @@
       console.log(item)
       this.confirmPublishModal = true;
       this.publishItem = item;
-      // if (this.prdConfig[0].productStatus === true) {
-      //   return (this.prdConfig[0].productStatus = 0);
-      // } else {
-      //   return (this.prdConfig[0].productStatus = 1);
-      // }
     }
     publishNext() {
       this.productPlanIssueService.publish(this.publishItem).subscribe(
@@ -553,18 +548,12 @@
             if (val.length > 0) {
               this.productShow = true;
               this.prdConfig = val;
-              //初始化启用/停用状态
-              if (this.prdConfig[0].productStatus === 0) {
-                this.prdConfig[0].productStatus = true;
-              } else if (this.prdConfig[0].productStatus === 1) {
-                this.prdConfig[0].productStatus = false;
-              }
               //初始化
-              if ((this.productMessage.capitaChannels = 382)) {
-                this.productMessage.capitaChannels = '自有资金';
-              } else {
-                this.productMessage.capitaChannels = '第三方';
-              }
+              // if ((this.productMessage.capitaChannels = 382)) {
+              //   this.productMessage.capitaChannels = '自有资金';
+              // } else {
+              //   this.productMessage.capitaChannels = '第三方';
+              // }
             } else {
               this.prdConfig = val;
             }

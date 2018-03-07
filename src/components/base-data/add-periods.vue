@@ -92,8 +92,8 @@
             <span style="color:red" class="after_text">%</span>
             <i-form-item prop="depositCashType">
               <i-select v-model="formItems.depositCashType" placeholder="缴纳方式">
-                <i-option :label="396" key="退还">退还</i-option>
-                <i-option :label="397" key="不退还">不退还</i-option>
+                <i-option :value="396">退还</i-option>
+                <i-option :value="397">不退还</i-option>
               </i-select>
             </i-form-item>
             <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>

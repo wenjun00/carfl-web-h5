@@ -55,7 +55,7 @@
               <i-radio :label="387">固定账期</i-radio>
             </i-radio-group>
           </i-form-item>
-          <i-select v-model="productDetail.paymentDay" style="width:30%;margin-top:0px;" v-if="formItems.paymentType === 387">
+          <i-select v-model="productDetail.paymentDay" style="width:30%;margin-top:0px;" v-if="productDetail.paymentType === 387">
             <i-option :key="item.key" :value="item.key" v-for="item in monthDay">{{item.value}}</i-option>
           </i-select>
         </data-grid-item>
@@ -92,8 +92,8 @@
             <span style="color:red" class="after_text">%</span>
             <i-form-item prop="depositCashType" style="width:30%;">
               <i-select v-model="productDetail.depositCashType" placeholder="缴纳方式">
-                <i-option :label="396" key="退还">退还</i-option>
-                <i-option :label="397" key="不退还">不退还</i-option>
+                <i-option :value="396">退还</i-option>
+                <i-option :value="397">不退还</i-option>
               </i-select>
             </i-form-item>
             <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
@@ -211,7 +211,6 @@ export default class AddProduct extends Vue {
 	private disabled: Boolean = false;
 	private changePromiseMoenyShow: Boolean = false;
 	private formRules: Object = {};
-	private formItems: any = {};
 	private amount: any = {};
 	private monthDay: any = [];
 	private moneyArray: any = [];
@@ -235,7 +234,16 @@ export default class AddProduct extends Vue {
 	 * 父组件向子组件传值  并转为字符串
 	 */
 	moneyFun(item) {
-		this.productDetail = item;
+    console.log(item)
+    this.productDetail = item
+    this.productDetail.periods = String(item.periods)
+    this.productDetail.productRate = String(item.productRate)
+    this.productDetail.creditProtectDays = String(item.creditProtectDays)
+    this.productDetail.overdueProtectDays = String(item.overdueProtectDays)
+    this.productDetail.contractBreakRate = String(item.contractBreakRate)
+    this.productDetail.prepaymentRate = String(item.prepaymentRate)
+    this.productDetail.penaltyRate = String(item.penaltyRate)
+    this.productDetail.stagingPeriods = String(item.stagingPeriods)
 		this.moneyArray = item.financingAmount.split('~');
 		this.amount = {
 			financingAmount1: this.moneyArray[0],
@@ -263,18 +271,16 @@ export default class AddProduct extends Vue {
 	confirmPeriods() {
 		let formVal = <Form>this.$refs['productref'];
 		formVal.validate(valid => {
-			if (valid) {
-				this.productDetail.financingAmount = this.amount.financingAmount1 + '~' + this.amount.financingAmount2;
-				this.ProductPlanIssueService.createOrModifyProductPlan(this.productDetail).subscribe(
-					val => {
-						this.$emit('close');
-						this.$Message.success('修改成功！');
-					},
-					({ msg }) => {
-						this.$Message.error(msg);
-					}
-				);
-			}
+      if (!valid) return false;
+      this.productDetail.financingAmount = this.amount.financingAmount1 + '~' + this.amount.financingAmount2;
+      this.ProductPlanIssueService.createOrModifyProductPlan(this.productDetail).subscribe(
+        val => {
+          this.$emit('close');
+          this.$Message.success('修改成功！');
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        });
 		});
 	}
   created() {

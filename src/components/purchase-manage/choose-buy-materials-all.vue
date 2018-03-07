@@ -3,7 +3,7 @@
   <section class="component choose-buy-materials-all">
     <div class="form-title">选购信息</div>
     <i-row class="proCity">
-      <i-form :rules="applyRule" ref="parchase-form" :label-width="110">
+      <i-form :rules="applyRule" ref="parchase-form" :label-width="110" :model="choosebusyData">
         <i-col span="12">
           <i-form-item label="申请省份" prop="province">
             <i-select placeholder="选择省" v-model="choosebusyData.province" clearable>
@@ -223,6 +223,11 @@
         key: 'vehicleLicence',
         align: 'center'
       }]
+    }
+    Reverse(data) {
+      this.choosebusyData.companyId = data.companyId
+      this.choosebusyData.city = data.city
+      this.choosebusyData.province = data.province
     }
     addModalOpen() {
       this.addOrEditFlag = true

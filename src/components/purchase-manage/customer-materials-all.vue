@@ -4,7 +4,7 @@
     <i-tab-pane name="customerItem" label="客户资料">
       <span class="form-title">个人信息</span>
       <i-row>
-        <i-form ref="parchase-form" :model="customerData" :label-width="110">
+        <i-form ref="parchase-form" :rules="rules" :model="customerData" :label-width="110">
           <i-row>
             <i-col span="12" class="bigSelect">
               <i-form-item label="购车方" prop="name">
@@ -33,7 +33,7 @@
           </i-row>
           <i-row>
             <i-col :span="12">
-              <i-form-item label="联系地址">
+              <i-form-item label="联系地址" prop="idCardAddressDetail">
                 <i-row>
                   <i-row>
                     <i-col :span="4">
@@ -110,6 +110,40 @@
       idCardAddressDetail: '', // 箱子地址
       orderServiceList: [], // 代办服务
     };
+    private rules: any = {
+      certificateType: [{
+        required: true,
+        message: '请输入证件类型',
+        trigger: 'blur',
+      }],
+      idCardAddressDetail: [{
+        required: true,
+        message: '请输入详细地址信息',
+        trigger: 'blur',
+      }],
+      postalCode: [{
+        required: true,
+        message: '请输入邮政编码',
+        trigger: 'blur',
+      }],
+      orderServiceList: [{
+        required: true,
+        message: '选择代办服务',
+        trigger: 'blur',
+      }],
+      mobileMain: [{
+        required: true,
+        message: '请输入联系电话',
+        trigger: 'blur',
+      }],
+    }
+    /**
+     * 信息反显
+     */
+    Reverse(data) {
+      this.customerData = data.personal
+      this.customerData.orderServiceList = data.orderServices.map(v => v.service)
+    }
     getinfo(data) {
       this.customerData = data
       this.customerData.mobileMain = data.customerPhone
