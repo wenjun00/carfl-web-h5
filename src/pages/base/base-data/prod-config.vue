@@ -97,7 +97,7 @@
                   </div>
                   <div v-if="item.isPublish===360" class="itemContainer">
                     <span class="itemName">启用/停用</span>
-                    <i-switch class="item" v-model="item.productStatus" size="large" @on-change="switchStatus(item)">
+                    <i-switch class="item" v-model="item.productStatus" size="large" :true-value="0" :false-value="1" @on-change="switchStatus(item)">
                       <span slot="open">启用</span>
                       <span slot="close">停用</span>
 
@@ -624,11 +624,16 @@
      * 停用启用状态
      */
     switchStatus(item) {
-      if (item.productStatus === true) {
-        return (item.productStatus = 0);
-      } else {
-        return (item.productStatus = 1);
-      }
+      this.productPlanIssueService.ableOrUnable({ id: item.id, status: item.productStatus }).subscribe(
+        val => {
+          this.$Message.success('操作成功！');
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
     }
 
     /**

@@ -40,5 +40,13 @@ export class ProductPlanIssueService {
             data: data
         })
     }
-
+    /**
+     * 停用启用
+     */
+    ableOrUnable(data) {
+        return this.netService.send({
+            server: manageService.productPlanIssueController.ableOrUnable,
+            data
+        })
+    }
 }
