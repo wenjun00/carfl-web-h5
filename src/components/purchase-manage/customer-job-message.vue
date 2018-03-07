@@ -16,7 +16,7 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">单位信息</span>
       </div>
-      <i-form ref="job-form" :model="job" :label-width="110" label-position="left" style="position:relative;left:16px;">
+      <i-form ref="form-job" :model="job" :label-width="110" label-position="left" style="position:relative;left:16px;">
         <i-row>
 
           <i-col :span="12">
@@ -271,6 +271,7 @@
     private jobType: any = 37;
     private typeList: Array < String > ;
     Reverse(data) {
+      console.log(data, '88')
       this.job = data.personal.personalJob
     }
     jfhdfdf() {

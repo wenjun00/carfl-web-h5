@@ -21,10 +21,15 @@
     <i-row>
       <div style="margin-left:50px;">
 
-        <span style="margin-right:40px;">通过介绍</span>
-        <div style="margin-left:58px;">
-          <i-checkbox v-model="ischecked" @on-change="checked">同行推荐</i-checkbox>
-          <div v-if="ischecked" style="position:relative;left:105px;width:300px;">
+        <span style="margin-right:8px;">通过介绍</span>
+        <i-radio-group v-model="ischecked">
+          <i-radio :label="0" :value="0" :key="0">同行推荐</i-radio>
+          <i-radio :label="1" :value="1" :key="1">客户转介绍</i-radio>
+          <i-radio :label="2" :value="2" :key="2">分支机构推荐</i-radio>
+        </i-radio-group>
+        <div style="margin-left:58px;margin-top:15px">
+          <!--<i-checkbox v-model="ischecked" @on-change="checked">同行推荐</i-checkbox>-->
+          <div v-if="ischecked===0" style="position:relative;width:300px;">
             <i-form ref="job-form" :model="customerOriginModel" label-position="left" :label-width="110">
               <i-form-item label="同行姓名" prop="peerName">
                 <i-input type="text" v-model="customerOriginModel.peerName"></i-input>
@@ -39,8 +44,8 @@
           </div>
         </div>
         <div style="margin-left:58px;margin-top:15px">
-          <i-checkbox v-model="isShow" @on-change="checked1">客户转介绍</i-checkbox>
-          <div v-if="isShow" style="position:relative;left:105px;width:300px;">
+          <!--<i-checkbox v-model="isShow" @on-change="checked1">客户转介绍</i-checkbox>-->
+          <div v-if="ischecked===1" style="position:relative;width:300px;">
             <i-form ref="job-form" label-position="left" :label-width="110">
               <i-form-item label="客户姓名" prop="customerName">
                 <i-input type="text" v-model="customerOriginModel.customerName"></i-input>
@@ -59,8 +64,8 @@
           </div>
         </div>
         <div style="margin-left:58px;margin-top:15px">
-          <i-checkbox v-model="isTrue" @on-change="checked2">分支机构推荐</i-checkbox>
-          <div v-if="isTrue" style="position:relative;left:105px;width:300px;">
+          <!--<i-checkbox v-model="isTrue" @on-change="checked2">分支机构推荐</i-checkbox>-->
+          <div v-if="ischecked===2" style="position:relative;width:300px;">
             <i-form ref="job-form" label-position="left" :label-width="110">
               <i-form-item label="机构名称" prop="organizationNames">
                 <i-input type="text" v-model="customerOriginModel.organizationNames"></i-input>
@@ -117,7 +122,7 @@
     };
     private jobType: String = "工薪者";
     private typeList: Array < String > ;
-    private ischecked: Boolean = false;
+    private ischecked: any = '';
     private isTrue: Boolean = false;
     private isShow: Boolean = false;
     private isBuyCar: String = '是';
