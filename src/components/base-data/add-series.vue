@@ -35,8 +35,11 @@ export default class addSeries extends Vue {
 		};
 	}
 	vaildFun(seriesId) {
+    delete this.addSeries.parentId
 		let form = <Form>this.$refs['add-series'];
-		this.addSeries.parentId = seriesId;
+    if(seriesId !== -1) {
+		  this.addSeries.parentId = seriesId;
+    }
 		console.log(seriesId, 345);
 		form.validate(valid => {
 			if (!valid) return false;

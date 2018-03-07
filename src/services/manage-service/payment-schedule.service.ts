@@ -20,12 +20,13 @@ export class PaymentScheduleService {
   /**
    * 还款详情（彭长须接口）
    */
-  getPaymentRecordDetail({ personalId, businessId }) {
+  getPaymentRecordDetail({ personalId, businessId, orderId }) {
     return this.netService.send({
       server: manageService.paymentScheduleController.getPaymentRecordDetail,
       data: {
-        personalId: personalId,
-        businessId: businessId
+        personalId,
+        businessId,
+        orderId
       }
     })
   }

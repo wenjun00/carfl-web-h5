@@ -20,7 +20,7 @@
               <span><span style="color:#ccc">资金渠道：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].capitaChannels:''):''}}</span>
             </div>
             <div style="margin-bottom:20px;margin-left:50px;font-size:16px"><span style="color:#ccc">产品序号：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].productNumber:''):''}}</div>
-            <div style="position:relative;bottom:10px">
+            <div style="position:relative;bottom:10px;padding-left:10px">
               <i-table highlight-row @on-current-change="currenttrablerowdata" :columns="carColumns" :data="carData" :page="pageService"></i-table>
             </div>
           </i-col>
@@ -92,91 +92,94 @@
 
     created() {
       this.treeList()
-      this.carColumns = [{
-        align: 'center',
-        title: '选择',
-        width: 180,
-        render: (h, {
-          row,
-          columns,
-          index
-        }) => {
-          return h('Radio', {
-            props: {
-              label: row.workId
-            },
-            on: {
-              click: () => {
-                this.AddProductData = row
-                console.log(this.AddProductData)
-              }
-            }
-          })
+      this.carColumns = [
+        //       {
+        //     align: 'center',
+        //     title: '选择',
+        //     width: 180,
+        //     render: (h, {
+        //       row,
+        //       columns,
+        //       index
+        //     }) => {
+        //       return h('Radio', {
+        //         props: {
+        //           label: row.workId
+        //         },
+        //         on: {
+        //           click: () => {
+        //             this.AddProductData = row
+        //             console.log(this.AddProductData)
+        //           }
+        //         }
+        //       })
+        //     }
+        //   }, 
+        {
+          title: '期数(月)',
+          key: 'periods',
+          align: 'center',
+          width: 100
+        }, {
+          title: '账期类型',
+          key: 'periodType',
+          align: 'center',
+          width: 120,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.periodType));
+          }
+        }, {
+          title: '产品利率',
+          key: 'productRate',
+          align: 'center',
+          width: 100
+        }, {
+          title: '还款方式',
+          key: 'payWay',
+          align: 'center',
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.payWay));
+          }
+        }, {
+          title: '融资金额(元)',
+          key: 'financingAmount',
+          align: 'center',
+          width: 110
+        }, {
+          title: '首付款',
+          key: 'initialPayment',
+          align: 'center',
+          width: 100
+        }, {
+          title: '保证金',
+          key: 'depositCash',
+          align: 'center',
+          width: 100
+        }, {
+          title: '尾付款',
+          key: 'finalCash',
+          align: 'center',
+          width: 100
+        }, {
+          title: '管理费',
+          key: 'manageCost',
+          align: 'center',
+          width: 100
+        }, {
+          title: '状态',
+          key: 'productStatus',
+          align: 'center'
         }
-      }, {
-        title: '期数(月)',
-        key: 'periods',
-        align: 'center',
-        width: 100
-      }, {
-        title: '账期类型',
-        key: 'periodType',
-        align: 'center',
-        width: 120,
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          return h("span", {}, this.$dict.getDictName(row.periodType));
-        }
-      }, {
-        title: '产品利率',
-        key: 'productRate',
-        align: 'center',
-        width: 100
-      }, {
-        title: '还款方式',
-        key: 'payWay',
-        align: 'center',
-        width: 100,
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          return h("span", {}, this.$dict.getDictName(row.payWay));
-        }
-      }, {
-        title: '融资金额(元)',
-        key: 'financingAmount',
-        align: 'center',
-        width: 110
-      }, {
-        title: '首付款',
-        key: 'initialPayment',
-        align: 'center',
-        width: 100
-      }, {
-        title: '保证金',
-        key: 'depositCash',
-        align: 'center',
-        width: 100
-      }, {
-        title: '尾付款',
-        key: 'finalCash',
-        align: 'center',
-        width: 100
-      }, {
-        title: '管理费',
-        key: 'manageCost',
-        align: 'center',
-        width: 100
-      }, {
-        title: '状态',
-        key: 'productStatus',
-        align: 'center'
-      }]
+      ]
     }
 
 
@@ -277,7 +280,6 @@
         this.productId = data[0].productId
       }
       this.productPlanissue(data)
-      console.log(data, 555)
       this.productDataModel = data
       this.productPlanIssueService.getAllProductPlan({
         productId: this.productId

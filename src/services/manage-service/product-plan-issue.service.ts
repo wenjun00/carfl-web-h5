@@ -25,7 +25,8 @@ export class ProductPlanIssueService {
         return this.netService.send({
             server: manageService.productPlanIssueController.getAllProductPlan,
             data: {
-                productId: productId
+                productId: productId,
+                status: 0
             },
             page: page
         })

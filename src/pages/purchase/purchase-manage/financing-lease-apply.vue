@@ -1,7 +1,7 @@
 <!--融资租赁申请-->
 <template>
   <section class="pageContainer financing-lease-apply specialInput">
-    <div class="page" style="height:782px;overflow:hidden">
+    <div class="page" style="height:820px;overflow:hidden">
       <div class="header">
         <div class="form-title">融资租赁申请
           <div style="float:right;margin-right:20px;">
@@ -144,7 +144,28 @@
     @Dependencies(ProductOrderService)
     private productOrderService: ProductOrderService;
 
-    private customerRule: Object = {};
+    private customerRule: Object = {
+      idCard: [{
+        required: true,
+        message: '请输入证件号码',
+        trigger: 'blur',
+      }],
+      name: [{
+        required: true,
+        message: '请输入客户姓名',
+        trigger: 'blur',
+      }],
+      mobileMain: [{
+        required: true,
+        message: '请输入客户电话',
+        trigger: 'blur',
+      }],
+      salesmanName: [{
+        required: true,
+        message: '请输入归属业务员',
+        trigger: 'blur',
+      }],
+    };
     private customerModel: any = {
       idCard: "", // 证件号码
       name: "", // 客户姓名
@@ -189,8 +210,10 @@
           );
       }
     }
+    /**
+     * 客户信息反显
+     */
     distributionData(data) {
-      console.log(data, 888)
       this.customerModel.name = data.personal.name;
       this.customerModel.customerPhone = data.personal.mobileMain;
       this.customerModel.salesmanName = data.salesmanName;
@@ -240,119 +263,142 @@
      * 保存并提交
      */
     saveAndSubmit(type) {
-      let choosebuymaterials: any = this.$refs["choose-buy-materials"];
-      let customerMaterials: any = this.$refs['customer-materials'];
-      let customerJobMessage: any = this.$refs['customer-job-message'];
-      let customerContacts: any = this.$refs['customer-contacts'];
-      let customerOrigin: any = this.$refs['customer-origin'];
-      console.log(customerOrigin, 'customerOrigin')
-      let uploadTheMaterial: any = this.$refs['upload-the-material'];
-      if (customerContacts.data1.length < 2) {
-        this.$Message.warning('直系亲属必填2个！');
-        return
-      }
-      if (customerContacts.data2.length < 3) {
-        this.$Message.warning('必填3个其他联系人！');
-        return
-      }
-      if (type) {
-        this.orderStatus = 303;
-      } else {
-        this.orderStatus = 304;
-      }
-      //   customerMaterials.customerMaterialsForm.idCardAddress = CityService.getCityName(customerMaterials.customerMaterialsForm
-      //       .province) +
-      //     CityService.getCityName(customerMaterials.customerMaterialsForm.city) + CityService.getCityName(
-      //       customerMaterials.customerMaterialsForm.idCardAddress)
-      //   customerMaterials.customerMaterialsForm.localHomeAddr = CityService.getCityName(customerMaterials.customerMaterialsForm
-      //       .province1) +
-      //     CityService.getCityName(customerMaterials.customerMaterialsForm.city1) + CityService.getCityName(
-      //       customerMaterials.customerMaterialsForm.localHomeAddr)
-      //   customerMaterials.customerMaterialsForm.cityOwnhouseAddress = CityService.getCityName(customerMaterials.customerMaterialsForm
-      //       .province2) +
-      //     CityService.getCityName(customerMaterials.customerMaterialsForm.city2) + CityService.getCityName(
-      //       customerMaterials.customerMaterialsForm.cityOwnhouseAddress)
-      for (let item of choosebuymaterials.addcarData) {
-        this.addcarData.push({
-          //   id: item.id,
-          brandId: item.brandId,
-          brandName: item.brandName,
-          carSeriesId: item.seriesId,
-          modelName: item.modelName,
-          otherExpenses: item.otherExpenses,
-          amount: item.carAmount,
-          vehicleColour: item.carColour,
-          vehicleEmissions: item.carEmissions
-        });
-      }
-      let addcarDatas = Array.from(new Set(this.addcarData))
-      for (let material of uploadTheMaterial.dataList) {
-        this.PersonalData.push({
-          materialType: uploadTheMaterial.model1, // 客户素材类型
-          uploadName: material.name, // 资料上传名称
-          //   id: material.response.id,
-        })
-      }
-      //   customerJobMessage.job.accessCompanyTime = FilterService.dateFormat(customerJobMessage.job.accessCompanyTime,
-      //     'yyyy-MM-dd')
-      let savesubmitDataset: any = {
-        orderStatus: this.orderStatus,
-        idCard: this.customerModel.idCard,
-        name: this.customerModel.name,
-        mobileMain: this.customerModel.customerPhone,
-        salesmanName: this.customerModel.salesmanName,
-        // 选购资料
-        orderCars: addcarDatas,
-        province: choosebuymaterials.chooseBuyModel.province,
-        city: choosebuymaterials.chooseBuyModel.city,
-        companyId: choosebuymaterials.chooseBuyModel.companyId,
-        orderService: choosebuymaterials.chooseBuyModel.orderServiceList, // 自缴费用
-        financingUse: choosebuymaterials.chooseBuyModel.financingUse, // 融资租赁用途
-        intentionFinancingAmount: choosebuymaterials.chooseBuyModel.intentionFinancingAmount, // 意向融资金额
-        intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods, // 意向期限
-        rentPayable: choosebuymaterials.chooseBuyModel.rentPayable, // 租金支付
-        hopeProportion: choosebuymaterials.chooseBuyModel.hopeProportion, // 意向首付比例
-        orderCar: choosebuymaterials.addcarData, // 添加车辆信息
-        // 产品信息
-        productId: choosebuymaterials.DataSet.productId,
-        productRate: choosebuymaterials.chooseBuyModel.prdInterestRate, // 产品利率
-        payWay: choosebuymaterials.chooseBuyModel.payWay, // 还款方式
-        vehicleAmount: choosebuymaterials.chooseBuyModel.vehicleAmount, // 车辆参考总价
-        financingAmount: choosebuymaterials.chooseBuyModel.financeTotalMoney, // 融资总额
-        initialPayment: choosebuymaterials.chooseBuyModel.initialPayment, // 首付金额
-        depositCash: choosebuymaterials.chooseBuyModel.depositCash, // 保证金金额
-        finalCash: choosebuymaterials.chooseBuyModel.finalCash, // 尾付金额
-        manageCost: choosebuymaterials.chooseBuyModel.manageCost, // 管理费
-        insuranceExpenses: choosebuymaterials.chooseBuyModel.insuranceExpenses, // 保险费
-        purchaseTax: choosebuymaterials.chooseBuyModel.purchaseMoney, // 购置费
-        installLicenseFee: choosebuymaterials.chooseBuyModel.licenseMoney, // 上牌费
-        gpsFee: choosebuymaterials.chooseBuyModel.gpsFee, // GPS费
-        remark: choosebuymaterials.chooseBuyModel.remark, // 备注
-        otherFee: choosebuymaterials.chooseBuyModel.otherFee, // 其他费用
-        // 客户资料
-        personal: customerMaterials.customerMaterialsForm,
-        // 客户职业
-        personalJob: customerJobMessage.job,
-        // 客户联系人
-        personalContacts: customerContacts.data1.concat(customerContacts.data2),
-        // 客户来源
-        personalResourceIntroduce: customerOrigin.customerOriginModel, // 通过介绍
-        resourceTypes: customerOrigin.OriginModel.resourceType, // 通过宣传
-        // 上传素材
-        personalDatas: this.PersonalData,
-      };
-      this.productOrderService.saveFinanceApplyInfo(savesubmitDataset).subscribe(data => {
-        this.$Message.success('保存成功！');
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg);
-      });
-      //   this.customerModel.idCard = ''
-      //   this.customerModel.userName = ''
-      //   this.customerModel.userName = ''
-      //   this.customerModel.mobileMain = ''
-      //   this.customerModel.worker = ''
+      let _customerform: any = this.$refs['customer-form'];
+      _customerform.validate(valid => {
+        if (!valid) {
+          return false
+        } else {
+          let choosebuymaterials: any = this.$refs["choose-buy-materials"];
+          let customerMaterials: any = this.$refs['customer-materials'];
+          let customerJobMessage: any = this.$refs['customer-job-message'];
+          let customerContacts: any = this.$refs['customer-contacts'];
+          let customerOrigin: any = this.$refs['customer-origin'];
+          console.log(customerOrigin.OriginModel, 'OriginModel')
+          let uploadTheMaterial: any = this.$refs['upload-the-material'];
+          if (customerContacts.data1.length < 2) {
+            this.$Message.warning('直系亲属必填2个！');
+            return
+          }
+          if (customerContacts.data2.length < 3) {
+            this.$Message.warning('必填3个其他联系人！');
+            return
+          }
+          if (type) {
+            this.orderStatus = 303;
+          } else {
+            this.orderStatus = 304;
+          }
+          //   customerMaterials.customerMaterialsForm.idCardAddress = CityService.getCityName(customerMaterials.customerMaterialsForm
+          //       .province) +
+          //     CityService.getCityName(customerMaterials.customerMaterialsForm.city) + CityService.getCityName(
+          //       customerMaterials.customerMaterialsForm.idCardAddress)
+          //   customerMaterials.customerMaterialsForm.localHomeAddr = CityService.getCityName(customerMaterials.customerMaterialsForm
+          //       .province1) +
+          //     CityService.getCityName(customerMaterials.customerMaterialsForm.city1) + CityService.getCityName(
+          //       customerMaterials.customerMaterialsForm.localHomeAddr)
+          //   customerMaterials.customerMaterialsForm.cityOwnhouseAddress = CityService.getCityName(customerMaterials.customerMaterialsForm
+          //       .province2) +
+          //     CityService.getCityName(customerMaterials.customerMaterialsForm.city2) + CityService.getCityName(
+          //       customerMaterials.customerMaterialsForm.cityOwnhouseAddress)
+          for (let item of choosebuymaterials.addcarData) {
+            this.addcarData.push({
+              //   id: item.id,
+              brandId: item.brandId,
+              brandName: item.brandName,
+              carSeriesId: item.seriesId,
+              modelName: item.modelName,
+              otherExpenses: item.otherExpenses,
+              amount: item.carAmount,
+              vehicleColour: item.carColour,
+              vehicleEmissions: item.carEmissions
+            });
+          }
+          let addcarDatas = Array.from(new Set(this.addcarData))
+          for (let material of uploadTheMaterial.dataList) {
+            this.PersonalData.push({
+              materialType: uploadTheMaterial.model1, // 客户素材类型
+              uploadName: material.name, // 资料上传名称
+              //   id: material.response.id,
+            })
+          }
+          if (choosebuymaterials.addcarData.length === 0) {
+            this.$Message.warning('请添加车辆信息');
+            return
+          }
+          console.log(customerJobMessage.job, 'job')
+          if (choosebuymaterials.chooseBuyModel.financeTotalMoney === undefined) {
+            this.$Message.warning('请输入产品信息中的融资总额');
+            return
+          }
+          if (customerJobMessage.job.companyName === '') {
+            this.$Message.warning('请完善客户职业信息');
+            return
+          }
+          if (customerOrigin.OriginModel.resourceType.length === 0) {
+            this.$Message.warning('请完善客户来源信息');
+            return
+          }
+          let resourceType = Array.from(new Set(customerOrigin.OriginModel.resourceType))
+          //   customerJobMessage.job.accessCompanyTime = FilterService.dateFormat(customerJobMessage.job.accessCompanyTime,
+          //     'yyyy-MM')
+          //   customerMaterials.customerMaterialsForm.birthTime = FilterService.dateFormat(customerMaterials.customerMaterialsForm
+          //     .birthTime,
+          //     'yyyy-MM-dd')
+          let savesubmitDataset: any = {
+            orderStatus: this.orderStatus,
+            idCard: this.customerModel.idCard,
+            name: this.customerModel.name,
+            mobileMain: this.customerModel.customerPhone,
+            salesmanName: this.customerModel.salesmanName,
+            // 选购资料
+            orderCars: addcarDatas,
+            province: choosebuymaterials.chooseBuyModel.province,
+            city: choosebuymaterials.chooseBuyModel.city,
+            companyId: choosebuymaterials.chooseBuyModel.companyId,
+            orderService: choosebuymaterials.chooseBuyModel.orderServiceList, // 自缴费用
+            financingUse: choosebuymaterials.chooseBuyModel.financingUse, // 融资租赁用途
+            intentionFinancingAmount: choosebuymaterials.chooseBuyModel.intentionFinancingAmount, // 意向融资金额
+            intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods, // 意向期限
+            rentPayable: choosebuymaterials.chooseBuyModel.rentPayable, // 租金支付
+            hopeProportion: choosebuymaterials.chooseBuyModel.hopeProportion, // 意向首付比例
+            orderCar: choosebuymaterials.addcarData, // 添加车辆信息
+            // 产品信息
+            productId: choosebuymaterials.DataSet.productId,
+            productRate: choosebuymaterials.chooseBuyModel.prdInterestRate, // 产品利率
+            payWay: choosebuymaterials.chooseBuyModel.payWay, // 还款方式
+            vehicleAmount: choosebuymaterials.chooseBuyModel.vehicleAmount, // 车辆参考总价
+            financingAmount: choosebuymaterials.chooseBuyModel.financeTotalMoney, // 融资总额
+            initialPayment: choosebuymaterials.chooseBuyModel.initialPayment, // 首付金额
+            depositCash: choosebuymaterials.chooseBuyModel.depositCash, // 保证金金额
+            finalCash: choosebuymaterials.chooseBuyModel.finalCash, // 尾付金额
+            manageCost: choosebuymaterials.chooseBuyModel.manageCost, // 管理费
+            insuranceExpenses: choosebuymaterials.chooseBuyModel.insuranceExpenses, // 保险费
+            purchaseTax: choosebuymaterials.chooseBuyModel.purchaseMoney, // 购置费
+            installLicenseFee: choosebuymaterials.chooseBuyModel.licenseMoney, // 上牌费
+            gpsFee: choosebuymaterials.chooseBuyModel.gpsFee, // GPS费
+            remark: choosebuymaterials.chooseBuyModel.remark, // 备注
+            otherFee: choosebuymaterials.chooseBuyModel.otherFee, // 其他费用
+            // 客户资料
+            personal: customerMaterials.customerMaterialsForm,
+            // 客户职业
+            personalJob: customerJobMessage.job,
+            // 客户联系人
+            personalContacts: customerContacts.data1.concat(customerContacts.data2),
+            // 客户来源
+            personalResourceIntroduce: customerOrigin.customerOriginModel, // 通过介绍
+            resourceTypes: resourceType, // 通过宣传
+            // 上传素材
+            personalDatas: this.PersonalData,
+          };
+          this.productOrderService.saveFinanceApplyInfo(savesubmitDataset).subscribe(data => {
+            this.$Message.success('保存成功！');
+          }, ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          });
+        }
+      })
     }
     showTab() {
       if (this.customerModel.idCard.length === 18) {
@@ -369,7 +415,7 @@
   }
   
   .page {
-    height: 1500px!important;
+    height: 1550px!important;
   }
   
   .submitBar {

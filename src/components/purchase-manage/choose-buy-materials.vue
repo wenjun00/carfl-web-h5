@@ -3,7 +3,7 @@
   <section class="component choose-buy-materials">
     <i-col span="24" style="line-height:30px" class="form-title">选购信息</i-col>
     <i-row>
-      <i-form ref="customer-form" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;position:relative;left:16px;"
+      <i-form ref="customer-form" :rules="rules" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;position:relative;left:16px;"
         label-position="left">
         <i-row>
           <i-col span="12">
@@ -92,12 +92,12 @@
         <span style="font-size:12px;">月供模拟计算器</span>
       </div>-->
     </i-col>
-    <!--<div v-show="addPrdShow">-->
-    <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
-    <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
-    <!--</div>-->
+    <div v-show="addPrdShow">
+      <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
+      <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
+    </div>
     <i-row v-show="prdInfoShow">
-      <i-form ref="customer-form" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;">
+      <i-form ref="customer-form" :rule="rules" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;">
         <i-col span="12">
           <i-form-item label="产品系列" prop="prdSeriods">
             <i-input type="text" v-model="chooseBuyModel.prdSeriods">
@@ -148,58 +148,58 @@
         </i-col>
         <i-col span="12">
           <i-form-item label="首付金额" prop="initialPayment">
-            <i-col>
+            <i-row>
               <i-input type="text" v-model="chooseBuyModel.initialPayment" :disabled="!DataSet.initialPayment" @on-change="initialChange">
               </i-input>
-            </i-col>
-            <i-col>
+            </i-row>
+            <i-row>
               <i-select placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment">
                 <i-option v-for="item in initialPaymentData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
-            </i-col>
+            </i-row>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="保证金金额" prop="depositCash">
-            <i-col>
+            <i-row>
               <i-input type="text" v-model="chooseBuyModel.depositCash" :disabled="!DataSet.depositCash">
               </i-input>
-            </i-col>
-            <i-col>
+            </i-row>
+            <i-row>
               <i-select placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit">
                 <i-option v-for="item in depositCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
-            </i-col>
+            </i-row>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="尾付金额" prop="finalCash">
-            <i-col>
+            <i-row>
               <i-input placeholder="请输入尾付本金" type="text" v-model="chooseBuyModel.finalprincipal">
               </i-input>
-            </i-col>
-            <i-col>
+            </i-row>
+            <i-row>
               <i-input type="text" placeholder="尾付总额" v-model="chooseBuyModel.finalCash" :disabled="!DataSet.finalCash">
               </i-input>
-            </i-col>
-            <i-col>
+            </i-row>
+            <i-row>
               <i-select placeholder="请选择尾付金额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash">
                 <i-option v-for="item in finalCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
-            </i-col>
+            </i-row>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="管理费" prop="manageCost">
-            <i-col>
+            <i-row>
               <i-input placeholder="请输入管理费" type="text" v-model="chooseBuyModel.manageCost">
               </i-input>
-            </i-col>
-            <i-col>
+            </i-row>
+            <i-row>
               <i-select v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost">
                 <i-option v-for="item in manageCostData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
-            </i-col>
+            </i-row>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
@@ -357,6 +357,13 @@
       initialPayment: '', // 首付金额
       otherFee: '', // 其他费用
     };
+    private rules: any = {
+      financeTotalMoney: [{
+        required: true,
+        message: '请输入融资总额',
+        trigger: 'blur',
+      }, ],
+    }
 
     // @Emit('productData')
     // productData(productId) {}
@@ -366,10 +373,15 @@
      * 数据反显
      */
     Reverse(data) {
-      this.chooseBuyModel = data
-      this.addcarData = data.orderCars
-      this.chooseBuyModel = data
-      //   this.prdInfoShow = true
+      this.chooseBuyModel.province = data.province
+      this.chooseBuyModel.city = data.city
+      this.chooseBuyModel.companyId = data.companyId
+      this.chooseBuyModel.orderServiceList = data.orderServiceList // 自缴费用
+      this.chooseBuyModel.financingUse = data.financingUse
+      this.chooseBuyModel.intentionFinancingAmount = data.intentionFinancingAmount
+      this.chooseBuyModel.intentionPeriods = data.intentionPeriods
+      this.chooseBuyModel.rentPayable = data.rentPayable
+      this.chooseBuyModel.hopeProportion = data.hopeProportion
     }
     /**
      * 
@@ -573,11 +585,11 @@
           align: 'center'
         }, {
           title: '车身颜色',
-          key: 'vehicleColour',
+          key: 'carColour',
           align: 'center'
         }, {
           title: '车辆排量',
-          key: 'vehicleEmissions',
+          key: 'carEmissions',
           align: 'center'
         }, {
           title: '单价（元）',
@@ -639,31 +651,27 @@
       this.finalCashData = data.finalCash.split(';')
       this.initialPaymentData = data.initialPayment.split(';')
       this.manageCostData = data.manageCost.split(';')
-      console.log(data.productId, 'data.productId')
       this.updateProductId(data.productId)
-      this.chooseBuyModel = {
-        // prdSeriods: data.prdSeriods,
-        periods: data.periods,
-        prdInterestRate: data.productRate, // 产品利率
-        payWay: data.payWay,
-        moneyPay: data.moneyPay,
-        insuranceMoney: data.insuranceMoney,
-        purchaseMoney: data.purchaseMoney,
-        licenseMoney: data.licenseMoney,
-        GpsMoney: data.GpsMoney,
-        otherFee: data.otherFee,
-        remark: data.remark,
-        vehicleAmount: this.totalPrice,
-        name: productDataModel.title, // 产品名称
-        prdSeriods: productDataModel.series, // 产品系列
-
-      }
+      this.chooseBuyModel.name = productDataModel.title // 产品名称
+      this.chooseBuyModel.prdSeriods = productDataModel.series // 产品系列
+      this.chooseBuyModel.periods = data.periods // 产品期数
+      this.chooseBuyModel.prdInterestRate = data.productRate // 产品利率
+      this.chooseBuyModel.payWay = data.payWay // 还款方式
+      this.chooseBuyModel.moneyPay = data.moneyPay
+      this.chooseBuyModel.insuranceMoney = data.insuranceMoney
+      this.chooseBuyModel.purchaseMoney = data.purchaseMoney
+      this.chooseBuyModel.licenseMoney = data.licenseMoney
+      this.chooseBuyModel.GpsMoney = data.GpsMoney
+      this.chooseBuyModel.otherFee = data.otherFee
+      this.chooseBuyModel.remark = data.remark
+      this.chooseBuyModel.vehicleAmount = this.totalPrice
     }
     productPlanissue(data) {
-      this.chooseBuyModel = {
-        name: data.title // 产品名称
-        // prdSeriods:
-      }
+      console.log(data, 'daatgjgjg')
+      //   this.chooseBuyModel = {
+      //     name: data.title // 产品名称
+      //     // prdSeriods:
+      //   }
     }
   }
 
