@@ -421,23 +421,23 @@
         message: '请输入意向首付比例',
         trigger: 'blur',
       }],
-      intentionFinancingAmount: [{
-        required: true,
-        message: '请输入意向融资金额',
-        trigger: 'blur',
-        type: 'number'
-      }],
+      //   intentionFinancingAmount: [{
+      //     required: true,
+      //     message: '请输入意向融资金额',
+      //     trigger: 'blur',
+      //     type: 'number'
+      //   }],
       intentionPeriods: [{
         required: true,
         message: '请输入意向期限',
         trigger: 'blur',
       }],
-      rentPayable: [{
-        required: true,
-        message: '请输入租金支付',
-        trigger: 'blur',
-        type: 'number'
-      }],
+      //   rentPayable: [{
+      //     required: true,
+      //     message: '请输入租金支付',
+      //     trigger: 'blur',
+      //     type: 'number'
+      //   }],
       province: [{
         required: true,
         message: '请选择申请省份',
