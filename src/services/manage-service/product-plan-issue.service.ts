@@ -21,14 +21,11 @@ export class ProductPlanIssueService {
      * 
      *  分页查询某一产品下的所有计划
      */
-    getAllProductPlan({ productId }, page) {
+    getAllProductPlan(data, page) {
         return this.netService.send({
             server: manageService.productPlanIssueController.getAllProductPlan,
-            data: {
-                productId: productId,
-                status: 0
-            },
-            page: page
+            data,
+            page
         })
     }
     /**
