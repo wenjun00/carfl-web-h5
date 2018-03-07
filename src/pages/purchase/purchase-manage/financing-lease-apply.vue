@@ -6,6 +6,7 @@
         <div class="form-title">融资租赁申请
           <div style="float:right;margin-right:20px;">
             <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+              <span style="font-size:12px;margin-right:10px" @click="BusinessFlowDiagram">业务流程图</span>
               <svg-icon iconClass="dayin" style="font-size:24px;"></svg-icon>
               <span style="font-size:12px;" @click="print">打印</span>
             </div>
@@ -92,6 +93,13 @@
         <historical-record @close="historicalModal=false" :historicalDataset="historicalDataset" @distributionData="distributionData"></historical-record>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal title="业务流程图" width="1000" height="628" v-model="BusinessFlowDiagramModel" :trandfer="false">
+        <div class="yewuliucheng-bg">
+        </div>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -172,6 +180,7 @@
       mobileMain: "", // 客户电话
       salesmanName: "" // 归属业务员
     };
+    private BusinessFlowDiagramModel: Boolean = false;
     private addCar: Boolean = false;
     private disabledStatus: String = ""; // 子组件中输入框禁用flag
     private materialTabs: String = "choose-buy-materials";
@@ -184,6 +193,12 @@
     // private productId: any;
     print() {
       window.print();
+    }
+    /**
+     * 业务流程图
+     */
+    BusinessFlowDiagram() {
+      this.BusinessFlowDiagramModel = true
     }
     /**
      * 根据客户三项查询历史订单
@@ -200,6 +215,11 @@
               console.log(data, 'data')
               if (this.historicalDataset.length) {
                 this.historicalModal = true;
+              } else {
+                this.customerModel.name = ''
+                this.customerModel.mobileMain = ''
+                this.customerModel.salesmanName = ''
+                this.resethistory()
               }
             },
             ({
@@ -235,11 +255,31 @@
 
     }
     /**
-     * 获取productId
+     * 重置
      */
-    // productData(productId) {
-    //   this.productId = productId
-    // }
+    resethistory() {
+      //   选购资料重置
+      let _choosebuymaterials: any = this.$refs['choose-buy-materials']
+      let customerform: any = _choosebuymaterials.$refs['customer-form']
+      customerform.resetFields()
+      //   客户联系人反显
+      let _customercontacts: any = this.$refs['customer-contacts']
+      _customercontacts.reset()
+      //   职业信息
+      let _customerjobmessage: any = this.$refs['customer-job-message']
+      let jobform: any = _customerjobmessage.$refs['job-form']
+      let formjob: any = _customerjobmessage.$refs['form-job']
+      jobform.resetFields()
+      formjob.resetFields()
+      //   客户资料
+      let _customermaterials: any = this.$refs['customer-materials']
+      let job: any = _customermaterials.$refs['job-form']
+      job.resetFields()
+      //   客户来源
+      let _customerorigin: any = this.$refs['customer-origin']
+      let form: any = _customerorigin.$refs['job-form']
+      form.resetFields()
+    }
     created() {}
     addNewApply() {
       this.$Modal.confirm({
@@ -247,12 +287,8 @@
         content: "有未提交的申请，确定创建新申请吗？",
         onOk: () => {
           let resetData: any = this.$refs["customer-form"];
-          //   let component: any = this.$refs['materials-all']
-          //   let materials: any = this.$refs['materials']
-          //   component.choosebusyData = {}
-          //   component.addcarData = []
-          //   materials.customerData = {}
           resetData.resetFields();
+          this.resethistory()
         },
         onCancel: () => {
           this.$Message.info("取消成功！");
@@ -498,6 +534,16 @@
     .ivu-modal-footer {
       display: none !important;
     }
+  }
+  
+  .yewuliucheng-bg {
+    width: 1000px;
+    height: 375px;
+    background-image: url('/static/images/common/yewuliucheng-bg.jpg');
+    position: absolute;
+    left: -1px;
+    background-repeat: no-repeat;
+    background-size: 1000px 375px;
   }
 
 </style>

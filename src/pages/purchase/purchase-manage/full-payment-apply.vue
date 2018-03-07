@@ -171,7 +171,21 @@
     private type: Boolean = false;
     private orderStatus: any = '';
     // private currentRowData: any = {};
-
+    /**
+     * 清空数据
+     */
+    resethistory() {
+      let resetData: any = this.$refs['customer-form'];
+      resetData.resetFields();
+      //   选购资料请空
+      let component: any = this.$refs['materials-all'];
+      let _parchaseform: any = component.$refs['parchase-form']
+      _parchaseform.resetFields()
+      //   客户资料清空
+      let materials: any = this.$refs['materials'];
+      let _parchase: any = materials.$refs['parchase-form']
+      _parchase.resetFields()
+    }
     /**
      * 添加新申请
      */
@@ -180,13 +194,7 @@
         title: '提示',
         content: '有未提交的申请，确定创建新申请吗？',
         onOk: () => {
-          let resetData: any = this.$refs['customer-form'];
-          let component: any = this.$refs['materials-all'];
-          let materials: any = this.$refs['materials'];
-          component.choosebusyData = {};
-          component.addcarData = [];
-          materials.customerData = {};
-          resetData.resetFields();
+          this.resethistory()
         },
         onCancel: () => {
           this.$Message.info('取消成功！');
@@ -339,6 +347,18 @@
             this.historicalDataset = data;
             if (this.historicalDataset.length) {
               this.historicalModal = true;
+            } else {
+              this.applyData.name = ''
+              this.applyData.customerPhone = ''
+              this.applyData.salesmanName = ''
+              //   选购资料请空
+              let component: any = this.$refs['materials-all'];
+              let _parchaseform: any = component.$refs['parchase-form']
+              _parchaseform.resetFields()
+              //   客户资料清空
+              let materials: any = this.$refs['materials'];
+              let _parchase: any = materials.$refs['parchase-form']
+              _parchase.resetFields()
             }
           },
           ({

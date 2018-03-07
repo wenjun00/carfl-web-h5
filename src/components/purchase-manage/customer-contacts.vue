@@ -301,6 +301,10 @@
       this.data1 = []
       this.data2 = []
     }
+    reset() {
+      this.data1 = []
+      this.data2 = []
+    }
     /**
      * 客户联系人反显
      */
