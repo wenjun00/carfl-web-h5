@@ -36,12 +36,12 @@
 
 
     <template>
-      <i-modal v-model="confirmGatherModal" title="确认收款" width="900" class="confirmGather" :transfer="false">
-        <confirm-gather ref="confirm-gather"></confirm-gather>
+      <i-modal v-model="confirmGatherModal" :title="check?'查看':'确认收款'" width="900" class="confirmGather" :transfer="false">
+        <confirm-gather ref="confirm-gather" :check="check"></confirm-gather>
         <div slot="footer">
-          <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
-          <i-button class="highButton" @click="sendBack">退回</i-button>
-          <i-button class="highButton" @click="confirmRepayment">确认</i-button>
+          <i-button class="highDefaultButton" @click="saveDraft" v-if="!check">保存草稿</i-button>
+          <i-button class="highButton" @click="sendBack" v-if="!check">退回</i-button>
+          <i-button class="highButton" @click="confirmRepayment" v-if="!check">确认</i-button>
         </div>
       </i-modal>
     </template>
@@ -75,6 +75,7 @@
     private gatherList: Array < Object > = [];
     private searchOptions: Boolean = false;
     private confirmGatherModal: Boolean = false;
+    private check: Boolean = false;
     private gatherModel: any = {
       accountName: '',
       queryStartDate: '',
@@ -99,11 +100,10 @@
       let _repayment: any = this.$refs['confirm-gather']
       let data: any = {}
       data.collectMoneyId = _repayment.collectMoneyId      
-      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
-      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
+      data.financeUploadResource = _repayment.financeUploadResources
       data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
-      data.businessId = _repayment.rowObj.businessId
+      data.businessId = _repayment.rowObj.applicationId
       data.totalPayment = _repayment.paymentAmount
       this.collectMoneyHistoryService.saveCollectMoneyHistoryAsDraft(data).subscribe(data => {
         this.$Message.info('保存草稿成功！')
@@ -121,11 +121,10 @@
       let _repayment: any = this.$refs['confirm-gather']
       let data: any = {}
       data.collectMoneyId = _repayment.collectMoneyId      
-      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
-      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
+      data.financeUploadResource = _repayment.financeUploadResources
       data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
-      data.businessId = _repayment.rowObj.businessId
+      data.businessId = _repayment.rowObj.applicationId
       data.totalPayment = _repayment.paymentAmount
       this.collectMoneyHistoryService.saveCollectMoneyHistory(data).subscribe(data => {
         this.$Message.info('操作成功！')
@@ -170,9 +169,9 @@
             column,
             index
           }) => {
-            return h("div", [
-              h(
-                "i-button", {
+            let obj: any = {}
+            if(row.collectMoneyDealStatus===126) {
+              obj = h("i-button", {
                   props: {
                     type: "text"
                   },
@@ -183,13 +182,30 @@
                     click: () => {
                       let _repayment: any = this.$refs['confirm-gather']
                       _repayment.refresh(row)
+                      this.check = true
                       this.confirmGatherModal = true
                     }
                   }
-                },
-                "确认收款"
-              )
-            ]);
+                }, "查看")
+            } else {
+              obj = h("i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      let _repayment: any = this.$refs['confirm-gather']
+                      _repayment.refresh(row)
+                      this.check = false                      
+                      this.confirmGatherModal = true
+                    }
+                  }
+                }, "确认收款")
+            }
+            return h("div", [obj]);
           }
         },
         {

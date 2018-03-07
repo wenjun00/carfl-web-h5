@@ -3,6 +3,7 @@ import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
+import { FilterService } from "~/utils/filter.service"
 
 export class ChargeBackService {
   @Inject(NetService)
@@ -14,7 +15,12 @@ export class ChargeBackService {
   getPersonalAccountList(data, page) {
     return this.netService.send({
       server: manageService.chargeBackController.getPersonalAccountList,
-      data: data,
+      data: {
+        orderInfo: data.orderInfo,
+        createDateStart: FilterService.dateFormat(data.createDateStart, 'yyyy-MM-dd'),
+        createDateEnd: FilterService.dateFormat(data.createDateEnd, 'yyyy-MM-dd'),
+        timeSearch: data.timeSearch
+      },
       page: page
     })
   }
