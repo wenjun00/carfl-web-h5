@@ -712,13 +712,12 @@ export default class OrgUserManage extends Page {
    * 添加机构
    */
   addDept(val) {
-    console.log(val, 565);
     let companyId = val.companyId;
     this.addNewOrgModal = true;
     if (this.deptLevel) {
       this.addOrgModel.deptLevel = this.deptLevel;
     } else {
-      this.addOrgModel.deptLevel = 402;
+      this.addOrgModel.deptLevel = 401;
     }
     let _add: any = this.$refs["add-org"];
     _add.addDept(companyId);
