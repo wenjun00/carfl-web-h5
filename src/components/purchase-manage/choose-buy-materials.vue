@@ -647,10 +647,10 @@
     currentRowData(data, productDataModel) {
       console.log(data, productDataModel, 999)
       this.DataSet = data
-      this.depositCashData = data.depositCash.split(';')
-      this.finalCashData = data.finalCash.split(';')
-      this.initialPaymentData = data.initialPayment.split(';')
-      this.manageCostData = data.manageCost.split(';')
+      this.depositCashData = data.depositCash ? (data.depositCash.split(';')) : ''
+      this.finalCashData = data.finalCash ? (data.finalCash.split(';')) : ''
+      this.initialPaymentData = data.initialPayment ? (data.initialPayment.split(';')) : ''
+      this.manageCostData = data.manageCost ? (data.manageCost.split(';')) : ''
       this.updateProductId(data.productId)
       this.chooseBuyModel.name = productDataModel.title // 产品名称
       this.chooseBuyModel.prdSeriods = productDataModel.series // 产品系列
