@@ -33,12 +33,12 @@
           <i-col span="12" pull="3">
             <i-form-item label="自缴费用" prop="orderServiceList">
               <i-checkbox-group v-model="chooseBuyModel.orderServiceList" @on-change="disabledChange">
-                <i-checkbox :value="368" :label="368">无</i-checkbox>
-                <i-checkbox :value="369" :label="369">购置税</i-checkbox>
-                <i-checkbox :value="370" :label="370">保险费</i-checkbox>
-                <i-checkbox :value="371" :label="371">上牌费</i-checkbox>
-                <i-checkbox :value="372" :label="372">路桥费</i-checkbox>
-                <i-checkbox :value="373" :label="373">首期租金</i-checkbox>
+                <i-checkbox :value="368" :label="368" :disabled="disabled">无</i-checkbox>
+                <i-checkbox :value="369" :label="369" :disabled="disabled1">购置税</i-checkbox>
+                <i-checkbox :value="370" :label="370" :disabled="disabled1">保险费</i-checkbox>
+                <i-checkbox :value="371" :label="371" :disabled="disabled1">上牌费</i-checkbox>
+                <i-checkbox :value="372" :label="372" :disabled="disabled1">路桥费</i-checkbox>
+                <i-checkbox :value="373" :label="373" :disabled="disabled1">首期租金</i-checkbox>
               </i-checkbox-group>
             </i-form-item>
           </i-col>
@@ -352,8 +352,8 @@
     private manageCostData: any = []; // 管理费
     private totalPrice: any = '';
     private DataSet: any = '';
-    private disabled: any = '';
-    private disabled1: any = '';
+    private disabled: Boolean = false;
+    private disabled1: Boolean = false;
     private chooseBuyModel: any = {
       name: '', // 产品名称
       prdSeriods: '', // 产品系列
@@ -481,10 +481,19 @@
     @Prop()
     disabledStatus: String;
     disabledChange() {
-      //   if (this.chooseBuyModel.orderServiceList) {
-      //     this.disabled = this.chooseBuyModel.orderServiceList.find(v => v !== 368)
-      //     this.disabled1 = this.chooseBuyModel.orderServiceList.find(v => v === 368)
-      //   }
+      console.log(this.chooseBuyModel.orderServiceList, 'this.chooseBuyModel.orderServiceList')
+      if (this.chooseBuyModel.orderServiceList) {
+        if (this.chooseBuyModel.orderServiceList.find(v => v !== 368)) {
+          this.disabled = true
+        }
+        if (this.chooseBuyModel.orderServiceList.find(v => v === 368)) {
+          this.disabled1 = true
+        }
+      }
+      if (this.chooseBuyModel.orderServiceList.length === 0) {
+        this.disabled = false
+        this.disabled1 = false
+      }
     }
     /**
      * 数据反显
