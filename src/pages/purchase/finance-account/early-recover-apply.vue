@@ -212,6 +212,7 @@
     private saveDraftModel: any = {
       addFinanceUploadResources: [], // 新增上传资料列表
       delFinanceUploadResources: [], // 删除上传资料Id列表
+      financeUploadResources:[], // 上传素材相关信息
       accountName: "",
       advancePayoffFee: 0, // 提前结清手续费
       id: "", // 申请id

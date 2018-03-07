@@ -67,7 +67,7 @@
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
         <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
-          <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
+          <i-button class="highDefaultButton" @click="saveDraft" :disabled="saveDraftDisabled">保存草稿</i-button>
           <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
         </i-col>
       </i-row>
@@ -129,6 +129,7 @@ export default class EarlyPaymentApply extends Page {
   private saveDraftModel: any = {
     addFinanceUploadResources: [], // 新增上传资料列表
     delFinanceUploadResources: [], // 删除上传资料Id列表
+    financeUploadResources: [], // 上传素材相关信息
     accountName: "",
     advancePayoffFee: 0, // 提前结清手续费
     id: "", // 申请id
@@ -141,6 +142,8 @@ export default class EarlyPaymentApply extends Page {
     totalPayment: 0, // 收款总额
     remark: "" // 备注
   };
+  private saveDraftDisabled: Boolean = false;
+
   created() {}
   /**
    * 订单号change
@@ -236,6 +239,7 @@ export default class EarlyPaymentApply extends Page {
       .subscribe(
         data => {
           this.$Message.success("保存并提交成功！");
+          this.saveDraftDisabled = true;
         },
         ({ msg }) => {
           this.$Message.error(msg);
@@ -289,6 +293,8 @@ export default class EarlyPaymentApply extends Page {
         this.disabledStatus = "block";
         // 清空orderId
         this.checkOrderId = 0;
+        // 停止禁用保存草稿
+        this.saveDraftDisabled = false;
       }
     });
   }
