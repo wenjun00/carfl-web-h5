@@ -152,11 +152,6 @@
               <i-input type="text" v-model="chooseBuyModel.initialPayment" :disabled="!DataSet.initialPayment" @on-change="initialChange">
               </i-input>
             </i-row>
-            <i-row>
-              <i-select placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment">
-                <i-option v-for="item in initialPaymentData" :key="item" :value="item" :label="item"></i-option>
-              </i-select>
-            </i-row>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
@@ -165,27 +160,27 @@
               <i-input type="text" v-model="chooseBuyModel.depositCash" :disabled="!DataSet.depositCash">
               </i-input>
             </i-row>
-            <i-row>
-              <i-select placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit">
-                <i-option v-for="item in depositCashData" :key="item" :value="item" :label="item"></i-option>
-              </i-select>
-            </i-row>
           </i-form-item>
+        </i-col>
+        <i-col span="12" offset="2">
+          <i-form-item>
+            <i-select placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment">
+              <i-option v-for="item in initialPaymentData" :key="item" :value="item" :label="item"></i-option>
+            </i-select>
+          </i-form-item>
+        </i-col>
+        <i-col span="10" pull="3">
+          <i-row>
+            <i-select placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit">
+              <i-option v-for="item in depositCashData" :key="item" :value="item" :label="item"></i-option>
+            </i-select>
+          </i-row>
         </i-col>
         <i-col span="12">
           <i-form-item label="尾付金额" prop="finalCash">
             <i-row>
               <i-input placeholder="请输入尾付本金" type="text" v-model="chooseBuyModel.finalprincipal">
               </i-input>
-            </i-row>
-            <i-row>
-              <i-input type="text" placeholder="尾付总额" v-model="chooseBuyModel.finalCash" :disabled="!DataSet.finalCash">
-              </i-input>
-            </i-row>
-            <i-row>
-              <i-select placeholder="请选择尾付金额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash">
-                <i-option v-for="item in finalCashData" :key="item" :value="item" :label="item"></i-option>
-              </i-select>
             </i-row>
           </i-form-item>
         </i-col>
@@ -195,6 +190,18 @@
               <i-input placeholder="请输入管理费" type="text" v-model="chooseBuyModel.manageCost">
               </i-input>
             </i-row>
+          </i-form-item>
+        </i-col>
+        <i-col span="12" offset="2">
+          <i-form-item>
+            <i-row>
+              <i-input type="text" placeholder="尾付总额" v-model="chooseBuyModel.finalCash" :disabled="!DataSet.finalCash">
+              </i-input>
+            </i-row>
+          </i-form-item>
+        </i-col>
+        <i-col span="10" pull="3">
+          <i-form-item>
             <i-row>
               <i-select v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost">
                 <i-option v-for="item in manageCostData" :key="item" :value="item" :label="item"></i-option>
@@ -202,7 +209,16 @@
             </i-row>
           </i-form-item>
         </i-col>
-        <i-col span="12" pull="3">
+        <i-col span="12" offset="2">
+          <i-form-item>
+            <i-row>
+              <i-select placeholder="请选择尾付金额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash">
+                <i-option v-for="item in finalCashData" :key="item" :value="item" :label="item"></i-option>
+              </i-select>
+            </i-row>
+          </i-form-item>
+        </i-col>
+        <i-col span="10" pull="5">
           <i-form-item label="保险费" prop="insuranceMoney">
             <i-input type="text" v-model="chooseBuyModel.insuranceMoney">
             </i-input>

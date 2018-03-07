@@ -215,7 +215,7 @@
      */
     distributionData(data) {
       this.customerModel.name = data.personal.name;
-      this.customerModel.customerPhone = data.personal.mobileMain;
+      this.customerModel.mobileMain = data.personal.mobileMain;
       this.customerModel.salesmanName = data.salesmanName;
       //   选购资料反显
       let _choosebuymaterials: any = this.$refs['choose-buy-materials']

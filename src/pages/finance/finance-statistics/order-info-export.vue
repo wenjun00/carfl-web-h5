@@ -695,8 +695,7 @@
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
-    exportMonthReport() {
-    }
+    exportMonthReport() {}
   }
 
 </script>
