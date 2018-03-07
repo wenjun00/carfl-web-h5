@@ -168,16 +168,14 @@ export default class GrayList extends Page {
                 }
               },
               [
-                h(
-                  "div",
-                  {
-                    props: {}
-                    // style: {
-                    //   background: URL("/static/images/common/headPortrail.png")
-                    // }
+                h("SvgIcon", {
+                  props: {
+                    iconClass: "heimingdan"
                   },
-                  "测试"
-                )
+                  style: {
+                    color: "red"
+                  }
+                })
               ]
             )
           ]);

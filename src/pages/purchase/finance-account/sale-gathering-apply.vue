@@ -140,65 +140,112 @@ export default class SaleGatheringApply extends Page {
   private saveDraftDisabled: Boolean = false;
 
   created() {}
+  getSaveModel() {
+    let _gatherDetail: any = this.$refs["gather-detail"];
+    let itemList = _gatherDetail.getItem();
+    // console.log("itemList", itemList);
+    let initialPayment = itemList.find(v => v.itemName === "initialPayment"); // 首付款
+    this.saveDraftModel.initialPayment = initialPayment
+      ? initialPayment.itemMoney
+      : 0;
+
+    let depositCash = itemList.find(v => v.itemName === "depositCash"); // 保证金
+    this.saveDraftModel.depositCash = depositCash ? depositCash.itemMoney : 0;
+
+    let finalCash = itemList.find(v => v.itemName === "finalCash"); // 尾付款
+    this.saveDraftModel.finalCash = finalCash ? finalCash.itemMoney : 0;
+
+    let firstMonthlySupply = itemList.find(v => v.itemName === "monthlySupply"); // 月供金额
+    this.saveDraftModel.firstMonthlySupply = firstMonthlySupply
+      ? firstMonthlySupply.itemMoney
+      : 0;
+
+    let gpsFee = itemList.find(v => v.itemName === "gpsFee"); // gps费
+    this.saveDraftModel.gpsFee = gpsFee ? gpsFee.itemMoney : 0;
+
+    let installLicenseFee = itemList.find(
+      v => v.itemName === "installLicenseFee"
+    ); // 安装费
+    this.saveDraftModel.installLicenseFee = installLicenseFee
+      ? installLicenseFee.itemMoney
+      : 0;
+
+    let insuranceExpenses = itemList.find(
+      v => v.itemName === "insuranceExpenses"
+    ); // 保险费
+    this.saveDraftModel.insuranceExpenses = insuranceExpenses
+      ? insuranceExpenses.itemMoney
+      : 0;
+
+    let manageCost = itemList.find(v => v.itemName === "manageCost"); // 管理费
+    this.saveDraftModel.manageCost = manageCost ? manageCost.itemMoney : 0;
+
+    let otherFee = itemList.find(v => v.itemName === "otherFee"); // 其他费用
+    this.saveDraftModel.otherFee = otherFee ? otherFee.itemMoney : 0;
+
+    let purchaseTax = itemList.find(v => v.itemName === "purchaseTax"); // 购置税
+    this.saveDraftModel.purchaseTax = purchaseTax ? purchaseTax.itemMoney : 0;
+
+    let totalPayment = itemList.find(v => v.itemName === "totalPayment"); // 合计
+    this.saveDraftModel.totalPayment = totalPayment
+      ? totalPayment.itemMoney
+      : 0;
+  }
   /**
    * 保存草稿
    */
   saveDraft() {
-    let _gatherDetail: any = this.$refs["gather-detail"];
-    let itemList = _gatherDetail.getItem();
-    let initialPayment = itemList.find(v => v.itemName === "initialPayment"); // 首付款
-    if (initialPayment) {
-      this.saveDraftModel.initialPayment = initialPayment.itemMoney;
-    }
-    let depositCash = itemList.find(v => v.itemName === "depositCash"); // 保证金
-    if (depositCash) {
-      this.saveDraftModel.depositCash = depositCash.itemMoney;
-    }
-    let finalCash = itemList.find(v => v.itemName === "finalCash"); // 尾付款
-    if (finalCash) {
-      this.saveDraftModel.finalCash = finalCash.itemMoney;
-    }
-    let firstMonthlySupply = itemList.find(
-      // 月供金额
-      v => v.itemName === "monthlySupply"
-    );
-    if (firstMonthlySupply) {
-      this.saveDraftModel.firstMonthlySupply = firstMonthlySupply.itemMoney;
-    }
-    let gpsFee = itemList.find(v => v.itemName === "gpsFee"); // gps费
-    if (gpsFee) {
-      this.saveDraftModel.gpsFee = gpsFee.itemMoney;
-    }
-    let installLicenseFee = itemList.find(
-      // 安装费
-      v => v.itemName === "installLicenseFee"
-    );
-    if (installLicenseFee) {
-      this.saveDraftModel.installLicenseFee = installLicenseFee.itemMoney;
-    }
-    let insuranceExpenses = itemList.find(
-      // 保险费
-      v => v.itemName === "insuranceExpenses"
-    );
-    if (insuranceExpenses) {
-      this.saveDraftModel.insuranceExpenses = insuranceExpenses.itemMoney;
-    }
-    let manageCost = itemList.find(v => v.itemName === "manageCost"); // 管理费
-    if (manageCost) {
-      this.saveDraftModel.manageCost = manageCost.itemMoney;
-    }
-    let otherFee = itemList.find(v => v.itemName === "otherFee"); // 其他费用
-    if (otherFee) {
-      this.saveDraftModel.otherFee = otherFee.itemMoney;
-    }
-    let purchaseTax = itemList.find(v => v.itemName === "purchaseTax"); // 购置税
-    if (purchaseTax) {
-      this.saveDraftModel.purchaseTax = purchaseTax.itemMoney;
-    }
-    let totalPayment = itemList.find(v => v.itemName === "totalPayment"); // 合计
-    if (totalPayment) {
-      this.saveDraftModel.totalPayment = totalPayment.itemMoney;
-    }
+    this.getSaveModel();
+    // let _gatherDetail: any = this.$refs["gather-detail"];
+    // let itemList = _gatherDetail.getItem();
+    // // console.log("itemList", itemList);
+    // let initialPayment = itemList.find(v => v.itemName === "initialPayment"); // 首付款
+    // this.saveDraftModel.initialPayment = initialPayment
+    //   ? initialPayment.itemMoney
+    //   : 0;
+
+    // let depositCash = itemList.find(v => v.itemName === "depositCash"); // 保证金
+    // this.saveDraftModel.depositCash = depositCash ? depositCash.itemMoney : 0;
+
+    // let finalCash = itemList.find(v => v.itemName === "finalCash"); // 尾付款
+    // this.saveDraftModel.finalCash = finalCash ? finalCash.itemMoney : 0;
+
+    // let firstMonthlySupply = itemList.find(v => v.itemName === "monthlySupply"); // 月供金额
+    // this.saveDraftModel.firstMonthlySupply = firstMonthlySupply
+    //   ? firstMonthlySupply.itemMoney
+    //   : 0;
+
+    // let gpsFee = itemList.find(v => v.itemName === "gpsFee"); // gps费
+    // this.saveDraftModel.gpsFee = gpsFee ? gpsFee.itemMoney : 0;
+
+    // let installLicenseFee = itemList.find(
+    //   v => v.itemName === "installLicenseFee"
+    // ); // 安装费
+    // this.saveDraftModel.installLicenseFee = installLicenseFee
+    //   ? installLicenseFee.itemMoney
+    //   : 0;
+
+    // let insuranceExpenses = itemList.find(
+    //   v => v.itemName === "insuranceExpenses"
+    // ); // 保险费
+    // this.saveDraftModel.insuranceExpenses = insuranceExpenses
+    //   ? insuranceExpenses.itemMoney
+    //   : 0;
+
+    // let manageCost = itemList.find(v => v.itemName === "manageCost"); // 管理费
+    // this.saveDraftModel.manageCost = manageCost ? manageCost.itemMoney : 0;
+
+    // let otherFee = itemList.find(v => v.itemName === "otherFee"); // 其他费用
+    // this.saveDraftModel.otherFee = otherFee ? otherFee.itemMoney : 0;
+
+    // let purchaseTax = itemList.find(v => v.itemName === "purchaseTax"); // 购置税
+    // this.saveDraftModel.purchaseTax = purchaseTax ? purchaseTax.itemMoney : 0;
+
+    // let totalPayment = itemList.find(v => v.itemName === "totalPayment"); // 合计
+    // this.saveDraftModel.totalPayment = totalPayment
+    //   ? totalPayment.itemMoney
+    //   : 0;
+    console.log(777, this.saveDraftModel);
     if (this.applyData.orderId) {
       this.withdrawApplicationService
         .saveSaleCollectMoneyApplicationAsDraft(this.saveDraftModel)
@@ -218,8 +265,10 @@ export default class SaleGatheringApply extends Page {
    * 保存并提交
    */
   saveAndCommit() {
+    this.getSaveModel();
     if (this.applyData.orderId) {
       let saveAndCommitModel = this.saveDraftModel;
+      console.log("saveAndCommitModel", saveAndCommitModel);
       this.withdrawApplicationService
         .saveSaleCollectMoneyApplication(saveAndCommitModel)
         .subscribe(
