@@ -72,8 +72,8 @@
           </i-col>
         </i-row>
         <i-col span="12">
-          <i-form-item label="意向首付比例" prop="hopeProportion">
-            <i-input type="text" v-model="chooseBuyModel.hopeProportion">
+          <i-form-item label="意向首付比例" prop="intentionPaymentRatio">
+            <i-input type="text" v-model="chooseBuyModel.intentionPaymentRatio">
             </i-input>
           </i-form-item>
         </i-col>
@@ -97,7 +97,7 @@
       <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
     </div>
     <i-row v-show="prdInfoShow">
-      <i-form ref="customer-form" :rule="rules" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;">
+      <i-form ref="form" :rules="rulesdata" :model="chooseBuyModel" :label-width="110" style="margin-top:20px;">
         <i-col span="12">
           <i-form-item label="产品系列" prop="prdSeriods">
             <i-input type="text" v-model="chooseBuyModel.prdSeriods">
@@ -218,7 +218,7 @@
             </i-row>
           </i-form-item>
         </i-col>
-        <i-col span="10" pull="5">
+        <i-col span="10" pull="3">
           <i-form-item label="保险费" prop="insuranceMoney">
             <i-input type="text" v-model="chooseBuyModel.insuranceMoney">
             </i-input>
@@ -373,13 +373,104 @@
       initialPayment: '', // 首付金额
       otherFee: '', // 其他费用
     };
-    private rules: any = {
+    private rulesdata: any = {
+      //   moneyPay: [{
+      //     required: true,
+      //     message: '请输入月供金额',
+      //     trigger: 'blur',
+      //   }],
+      //   vehicleAmount: [{
+      //     required: true,
+      //     message: '请输入车辆参考总价',
+      //     trigger: 'blur',
+      //   }],
+      //   payWay: [{
+      //     required: true,
+      //     message: '请输入还款方式',
+      //     trigger: 'blur',
+      //   }],
+      //   prdInterestRate: [{
+      //     required: true,
+      //     message: '请输入产品利率',
+      //     trigger: 'blur',
+      //   }],
+      //   periods: [{
+      //     required: true,
+      //     message: '请输入产品期数',
+      //     trigger: 'blur',
+      //   }],
+      //   name: [{
+      //     required: true,
+      //     message: '请输入产品名称',
+      //     trigger: 'blur',
+      //   }],
+      //   prdSeriods: [{
+      //     required: true,
+      //     message: '请输入产品系列',
+      //     trigger: 'blur',
+      //   }],
       financeTotalMoney: [{
         required: true,
         message: '请输入融资总额',
         trigger: 'blur',
-      }, ],
-    }
+      }],
+    };
+    private rules: any = {
+      intentionPaymentRatio: [{
+        required: true,
+        message: '请输入意向首付比例',
+        trigger: 'blur',
+      }],
+      intentionFinancingAmount: [{
+        required: true,
+        message: '请输入意向融资金额',
+        trigger: 'blur',
+      }],
+      intentionPeriods: [{
+        required: true,
+        message: '请输入意向期限',
+        trigger: 'blur',
+      }],
+      rentPayable: [{
+        required: true,
+        message: '请输入租金支付',
+        trigger: 'blur',
+      }],
+      province: [{
+        required: true,
+        message: '请选择申请省份',
+        trigger: 'change',
+        type: 'number',
+      }],
+      city: [{
+        required: true,
+        message: '请选择申请城市',
+        trigger: 'change',
+        type: 'number',
+      }],
+      companyId: [{
+        required: true,
+        message: '请选择申请公司',
+        trigger: 'change',
+        type: 'number',
+      }],
+      orderServiceList: [{
+        required: true,
+        message: '请选择自缴费用',
+        trigger: 'change',
+        type: 'array',
+      }],
+      financingUse: [{
+        required: true,
+        message: '请输入融资租赁用途',
+        trigger: 'blur',
+      }],
+      financeTotalMoney: [{
+        required: true,
+        message: '请输入融资总额',
+        trigger: 'blur',
+      }],
+    };
 
     // @Emit('productData')
     // productData(productId) {}

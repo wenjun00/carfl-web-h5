@@ -519,7 +519,7 @@
      */
     getOrderInfo() {
       this.withdrawApplicationService
-        .getPersonalProductOrderInfo({
+        .getPersonalProductOrderInfoForAdvance({
           idCard: this.applyData.idCard,
           customerName: this.applyData.customerName,
           mobileMain: this.applyData.mobileMain

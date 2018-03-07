@@ -286,7 +286,10 @@
         <tr>
           <td bgColor="#F5F5F5">通过宣传</td>
           <td colspan="4">
-            <span>{{personalResourcePublicity.resourceContent?personalResourcePublicity.resourceContent:''}}</span>
+            <!-- <span>{{personalResourcePublicity.resourceContent?personalResourcePublicity.resourceContent:''}}</span> -->
+            <i-checkbox-group v-model="byAdvertise">
+              <i-checkbox v-for="{value,label} in $dict.getDictData('0018')" :key="value" :label="value" :value="value" disabled>{{label}}</i-checkbox>
+            </i-checkbox-group>
           </td>
         </tr>
         <tr>
@@ -349,6 +352,7 @@ export default class Approve extends Vue {
   private personalResourcePublicity: any = {}; // 客户来源相关信息
   private personalResourceIntroduce: any = {}; // 客户来源介绍相关信息
   private materialInfo: any = {}; // 素材资料相关信息
+  private byAdvertise: Array<any> = []; // 客户来源通过宣传
   @Prop() person;
   @Action select;
 
@@ -376,6 +380,12 @@ export default class Approve extends Vue {
           }
           if (this.personal.personalResourceIntroduce) {
             this.personalResourceIntroduce = this.personal.personalResourceIntroduce; // 客户来源介绍
+          }
+          // 客户来源通过宣传
+          if (this.personal.personalResourcePublicity) {
+            this.byAdvertise = this.personal.personalResourcePublicity.map(
+              v => v.resourceType
+            );
           }
           this.materialInfo = this.personal.personalDatas; // 素材相关信息
           this.immediateContacts = this.contactsInfo.filter(

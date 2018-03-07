@@ -386,7 +386,9 @@
         } else {
           let component: any = this.$refs['materials-all'];
           let _parchaseform: any = component.$refs['parchase-form']
+          console.log(_parchaseform, '_parchaseform')
           _parchaseform.validate(valid => {
+            console.log(valid, 'valid')
             if (!valid) {
               this.$Message.warning('您有未输入的选项，请先检查并输入后再提交！');
               return false

@@ -15,8 +15,18 @@
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
+    <div style="float:right;margin-right:10px;margin-top:10px;">
+      <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="dayin"></svg-icon>
+        <span style="font-size: 12px;">打印</span>
+      </div>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size: 12px;">导出</span>
+      </div>
+    </div>
     <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
-      <i-input style="display:inline-block;width:14%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.resourcePoolModel"></i-input>
+      <i-input style="display:inline-block;width:14%;margin-left:20px;min-width:230px;" placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.resourcePoolModel"></i-input>
       <span style="margin-left:10px">日期：</span>
       <i-date-picker style="display:inline-block;width:10%" v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%" v-model="resourcePoolModel.endTime" placeholder="终止日期"></i-date-picker>
@@ -67,12 +77,14 @@ import PurchaseInformation from "~/components/purchase-manage/purchase-informati
 import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
 import { CityService } from "~/utils/city.service";
+import SvgIcon from "~/components/common/svg-icon.vue";
 import { ApprovalService } from "~/services/manage-service/approval.service";
 @Layout("workspace")
 @Component({
   components: {
     DataBox,
-    PurchaseInformation
+    PurchaseInformation,
+    SvgIcon
   }
 })
 export default class SecondApproval extends Page {

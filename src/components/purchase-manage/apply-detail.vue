@@ -137,9 +137,10 @@
         v.refundAmount = v.itemMoney
         v.refundItem = v.itemLabel
       })
-      this.addNewApplyModal.name = row.accountName // 客户姓名
+      this.addNewApplyModal.name = val.customerName // 客户姓名
       this.payDetail = val.collectMoneyItemModels // 付款明细
       this.addNewApplyModal.idCard = val.idCard // 证件号
+      this.remark = val.remark
       this.refundType = val.applicationType // 付款类型
       this.accountDetail = val.personalBank // 账户信息
       this.fileList = val.applicationPhaseUploadResources

@@ -15,8 +15,18 @@
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
+    <div style="float:right;margin-right:10px;margin-top:10px;">
+      <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="dayin"></svg-icon>
+        <span style="font-size: 12px;">打印</span>
+      </div>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size: 12px;">导出</span>
+      </div>
+    </div>
     <i-row v-if="searchOptions" style="position:relative;right:10px;">
-      <i-input style="display:inline-block;width:14%;margin-left:20px;" v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
+      <i-input style="display:inline-block;width:14%;margin-left:20px;min-width:230px;" v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
       <span style="margin-left:10px">日期：</span>
       <i-date-picker style="display:inline-block;width:10%" v-model="myOrderModel.startTime" placeholder="起始日期"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%" v-model="myOrderModel.endTime" placeholder="终止日期"></i-date-picker>
@@ -214,13 +224,16 @@ import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
 import { CityService } from "~/utils/city.service";
 import { ApproveReasonService } from "~/services/manage-service/approve-reason.service";
+import SvgIcon from "~/components/common/svg-icon.vue";
+
 @Layout("workspace")
 @Component({
   components: {
     DataBox,
     PurchaseInformation,
     Approve,
-    SecondLastApprove
+    SecondLastApprove,
+    SvgIcon
   }
 })
 export default class MyApproval extends Page {
@@ -474,6 +487,7 @@ export default class MyApproval extends Page {
           this.$Message.success("操作成功！");
           this.approvePassedModal = false;
           this.facePassModel.remark = "";
+          this.approveModal = false;
         },
         ({ msg }) => {
           this.$Message.error(msg);
