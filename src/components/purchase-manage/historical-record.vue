@@ -27,6 +27,9 @@
     Emit
   } from "vue-property-decorator";
   import {
+    FilterService
+  } from "~/utils/filter.service";
+  import {
     ProductOrderService
   } from "~/services/manage-service/product-order.service";
 
@@ -69,11 +72,25 @@
       }, {
         title: '订单类型',
         key: 'orderType',
-        align: 'center'
+        align: 'center',
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h("span", {}, this.$dict.getDictName(row.orderType));
+        }
       }, {
         title: '订单创建时间',
         key: 'createTime',
-        align: 'center'
+        align: 'center',
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h('span', FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
+        }
       }]
     }
     showCategory() {
