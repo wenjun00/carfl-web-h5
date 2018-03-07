@@ -385,7 +385,23 @@
         message: '请输入手机号码',
         trigger: 'blur',
       }],
-
+      education: [{
+        required: true,
+        message: '请选择教育程度',
+        trigger: 'change',
+        type: 'number'
+      }],
+      school: [{
+        required: true,
+        message: '请输入毕业院校',
+        trigger: 'blur',
+      }],
+      marital: [{
+        required: true,
+        message: '请选择婚姻状况',
+        trigger: 'change',
+        type: 'number'
+      }]
     }
     @Prop()
     disabled: Boolean;

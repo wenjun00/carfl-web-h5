@@ -374,41 +374,41 @@
       otherFee: '', // 其他费用
     };
     private rulesdata: any = {
-      moneyPay: [{
-        required: true,
-        message: '请输入月供金额',
-        trigger: 'blur',
-      }],
-      vehicleAmount: [{
-        required: true,
-        message: '请输入车辆参考总价',
-        trigger: 'blur',
-      }],
-      payWay: [{
-        required: true,
-        message: '请输入还款方式',
-        trigger: 'blur',
-      }],
-      prdInterestRate: [{
-        required: true,
-        message: '请输入产品利率',
-        trigger: 'blur',
-      }],
-      periods: [{
-        required: true,
-        message: '请输入产品期数',
-        trigger: 'blur',
-      }],
-      name: [{
-        required: true,
-        message: '请输入产品名称',
-        trigger: 'blur',
-      }],
-      prdSeriods: [{
-        required: true,
-        message: '请输入产品系列',
-        trigger: 'blur',
-      }],
+      //   moneyPay: [{
+      //     required: true,
+      //     message: '请输入月供金额',
+      //     trigger: 'blur',
+      //   }],
+      //   vehicleAmount: [{
+      //     required: true,
+      //     message: '请输入车辆参考总价',
+      //     trigger: 'blur',
+      //   }],
+      //   payWay: [{
+      //     required: true,
+      //     message: '请输入还款方式',
+      //     trigger: 'blur',
+      //   }],
+      //   prdInterestRate: [{
+      //     required: true,
+      //     message: '请输入产品利率',
+      //     trigger: 'blur',
+      //   }],
+      //   periods: [{
+      //     required: true,
+      //     message: '请输入产品期数',
+      //     trigger: 'blur',
+      //   }],
+      //   name: [{
+      //     required: true,
+      //     message: '请输入产品名称',
+      //     trigger: 'blur',
+      //   }],
+      //   prdSeriods: [{
+      //     required: true,
+      //     message: '请输入产品系列',
+      //     trigger: 'blur',
+      //   }],
       financeTotalMoney: [{
         required: true,
         message: '请输入融资总额',
