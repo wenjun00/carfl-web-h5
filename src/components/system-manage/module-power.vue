@@ -202,6 +202,7 @@ export default class ModulePower extends Vue {
       })
       .subscribe(
         data => {
+          this.$Message.success("模块权限分配成功！");
           this.close();
         },
         ({ msg }) => {

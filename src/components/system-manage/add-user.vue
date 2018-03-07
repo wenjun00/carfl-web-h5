@@ -76,150 +76,155 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { Prop, Watch } from "vue-property-decorator";
-import { Form } from "iview";
-import { Dependencies } from "~/core/decorator";
-import { ManageService } from "~/services/manage-service/manage.service";
-@Component({
-  components: {}
-})
-export default class AddUser extends Vue {
-  @Dependencies(ManageService) private manageService: ManageService;
-  @Prop() deptObject;
-  @Watch("deptObject")
-  updateDeptObject() {}
-  private addUserModel: any = {
-    userPhone: "",
-    companyName: "",
-    deptId: 1,
-    deptName: "",
-    userUsername: "",
-    userRealname: "",
-    userEmail: "",
-    userSex: "",
-    userManager: "",
-    userRemark: "",
-    loginDevice: 414,
-    loginType: 411,
-    userType: 409,
-    userStatus: 0
-  };
-  private rules: any;
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {
+    Prop,
+    Watch
+  } from "vue-property-decorator";
+  import {
+    Form
+  } from "iview";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    ManageService
+  } from "~/services/manage-service/manage.service";
 
-  mounted() {}
-  created() {
-    this.rules = {
-      userUsername: [
-        {
+  @Component({
+    components: {}
+  })
+  export default class AddUser extends Vue {
+    @Dependencies(ManageService) private manageService: ManageService;
+    @Prop() deptObject;
+    @Watch("deptObject")
+    updateDeptObject() {}
+    private addUserModel: any = {
+      userPhone: "",
+      companyName: "",
+      deptId: 1,
+      deptName: "",
+      userUsername: "",
+      userRealname: "",
+      userEmail: "",
+      userSex: "",
+      userManager: "",
+      userRemark: "",
+      loginDevice: 414,
+      loginType: 411,
+      userType: 409,
+      userStatus: 0
+    };
+    private rules: any;
+
+    mounted() {}
+    created() {
+      this.rules = {
+        userUsername: [{
           required: true,
           message: "用户名不能为空",
           trigger: "blur"
-        }
-      ],
-      userRealname: [
-        {
-          required: true,
-          message: "姓名不能为空",
-          trigger: "blur"
-        },
-        {
-          message: "请输入汉字或英文字母",
-          trigger: "blur",
-          pattern: /^([\u4e00-\u9fa5]+|([a-zA-Z]+\s?)+)$/
-        }
-      ],
-      userPhone: [
-        {
-          required: true,
-          message: "电话号码不能为空",
-          trigger: "blur"
-        },
-        {
-          message: "请输入正确的电话号码",
-          trigger: "blur",
-          pattern: /^1(3|4|5|7|8)\d{9}$/
-        }
-      ],
-      userEmail: [
-        {
-          required: true,
-          message: "邮箱不能为空",
-          trigger: "blur"
-        },
-        {
-          message: "请输入正确的邮箱",
-          trigger: "blur",
-          type: "email"
-        }
-      ],
-      userSex: [
-        {
+        }],
+        userRealname: [{
+            required: true,
+            message: "姓名不能为空",
+            trigger: "blur"
+          },
+          {
+            message: "请输入汉字或英文字母",
+            trigger: "blur",
+            pattern: /^([\u4e00-\u9fa5]+|([a-zA-Z]+\s?)+)$/
+          }
+        ],
+        userPhone: [{
+            required: true,
+            message: "电话号码不能为空",
+            trigger: "blur"
+          },
+          {
+            message: "请输入正确的电话号码",
+            trigger: "blur",
+            pattern: /^1(3|4|5|7|8)\d{9}$/
+          }
+        ],
+        userEmail: [{
+            required: true,
+            message: "邮箱不能为空",
+            trigger: "blur"
+          },
+          {
+            message: "请输入正确的邮箱",
+            trigger: "blur",
+            type: "email"
+          }
+        ],
+        userSex: [{
           required: true,
           message: "请选择性别",
           type: "number",
           trigger: "change"
-        }
-      ],
-      userManager: [
-        {
+        }],
+        userManager: [{
           required: true,
           type: "number",
           message: "请选择数据权限",
           trigger: "change"
+        }]
+      };
+    }
+    /**
+     * 检查用户名长度
+     */
+    checkUserName() {
+      if (this.addUserModel.userUsername.length < 6) {
+        this.$Message.error("用户名长度为6到50位,请重新输入！");
+        this.addUserModel.userUsername = "";
+        return;
+      }
+    }
+    makeData(obj) {
+      this.addUserModel.deptName = obj.deptName;
+      this.addUserModel.companyName = obj.companyName;
+    }
+    confirmAddUser() {
+      // 获取相关数据
+      this.addUserModel.deptId = this.deptObject.id;
+      this.addUserModel.companyName = this.deptObject.companyName;
+      this.addUserModel.deptName = this.deptObject.deptName;
+
+      let registerForm = < Form > this.$refs["add-user"];
+      registerForm.validate(valid => {
+        if (valid) {
+          this.manageService.createUser(this.addUserModel).subscribe(
+            val => {
+              this.$Message.success("新增成功!");
+              this.$emit("close");
+            },
+            ({
+              msg
+            }) => {
+              this.$Message.error(msg);
+            }
+          );
         }
-      ]
-    };
-  }
-  /**
-   * 检查用户名长度
-   */
-  checkUserName() {
-    if (this.addUserModel.userUsername.length < 6) {
-      this.$Message.error("用户名长度为6到50位,请重新输入！");
-      this.addUserModel.userUsername = "";
-      return;
+      });
+    }
+    /**
+     * 取消
+     */
+    cancelAddUser() {}
+    resetForm() {
+      let _addUserForm: any = this.$refs["add-user"];
+      _addUserForm.resetFields();
     }
   }
-  makeData(obj) {
-    this.addUserModel.deptName = obj.deptName;
-    this.addUserModel.companyName = obj.companyName;
-  }
-  confirmAddUser() {
-    // 获取相关数据
-    this.addUserModel.deptId = this.deptObject.id;
-    this.addUserModel.companyName = this.deptObject.companyName;
-    this.addUserModel.deptName = this.deptObject.deptName;
 
-    let registerForm = <Form>this.$refs["add-user"];
-    registerForm.validate(valid => {
-      if (valid) {
-        this.manageService.createUser(this.addUserModel).subscribe(
-          val => {
-            this.$Message.success("新增成功!");
-            this.$emit("close");
-          },
-          ({ msg }) => {
-            this.$Message.error(msg);
-          }
-        );
-      }
-    });
-  }
-  /**
-   * 取消
-   */
-  cancelAddUser() {}
-  resetForm() {
-    let _addUserForm: any = this.$refs["add-user"];
-    _addUserForm.resetFields();
-  }
-}
 </script>
 <style lang="less">
-.addUser {
-  position: relative;
-  right: 30px;
-}
+  .addUser {
+    position: relative;
+    right: 30px;
+  }
+
 </style>

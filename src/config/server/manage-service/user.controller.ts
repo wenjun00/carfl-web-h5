@@ -84,5 +84,23 @@ export default {
     controller: CONTROLLER,
     action: 'userAllocateListbox',
     type: requestType.Post
+  },
+  /**
+   * 用户分配权限
+   */
+  userAllocatePrivileges: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'userAllocatePrivileges',
+    type: requestType.Post
+  },
+  /**
+   * 获取用户数据权限
+   */
+  findUserPrivileges: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findUserPrivileges',
+    type: requestType.Get
   }
 }

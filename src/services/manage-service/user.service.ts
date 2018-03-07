@@ -54,4 +54,24 @@ export class UserService {
       }
     })
   }
+  /**
+   * 用户分配权限
+   */
+  userAllocatePrivileges(data) {
+    return this.netService.send({
+      server: manageService.userController.userAllocatePrivileges,
+      data: data
+    })
+  }
+  /**
+   * 获取用户数据权限
+   */
+  findUserPrivileges({ userId }) {
+    return this.netService.send({
+      server: manageService.userController.findUserPrivileges,
+      data: {
+        userId: userId
+      }
+    })
+  }
 }

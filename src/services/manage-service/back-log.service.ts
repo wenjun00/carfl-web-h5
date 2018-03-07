@@ -25,5 +25,16 @@ export class BackLogService {
       server: manageService.backLogController.queryBacklog
     })
   }
+  /** 
+   * 查询角色下待办事项
+  */
+  findBacklogByRoleId({ roleIds }) {
+    return this.netService.send({
+      server: manageService.backLogController.findBacklogByRoleId,
+      data: {
+        roleIds: roleIds
+      }
+    })
+  }
 
 }
