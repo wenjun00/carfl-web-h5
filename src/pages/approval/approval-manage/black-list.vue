@@ -312,7 +312,8 @@ export default class BlackList extends Page {
   moveOut(row) {
     this.approvalService
       .removeRiskStatus({
-        orderIds: row.orderId
+        orderIds: row.orderId,
+        isBlack:true
       })
       .subscribe(
         val => {

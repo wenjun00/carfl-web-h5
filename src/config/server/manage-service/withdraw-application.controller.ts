@@ -140,5 +140,14 @@ export default {
     controller: CONTROLLER,
     action: 'getPersonalProductOrderInfoForAdvance',
     type: requestType.Get
+  },
+  /**
+   * 获取提前收回收款项
+   */
+  getAdvanceRevokeItems: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getAdvanceRevokeItems',
+    type: requestType.Get
   }
 }

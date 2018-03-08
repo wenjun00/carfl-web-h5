@@ -174,4 +174,15 @@ export class WithdrawApplicationService {
       }
     })
   }
+  /**
+   * 获取提前收回收款项
+   */
+  getAdvanceRevokeItems({ orderId }) {
+    return this.netService.send({
+      server: manageService.withdrawApplicationController.getAdvanceRevokeItems,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
 }

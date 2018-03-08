@@ -166,17 +166,17 @@ export default class GrayList extends Page {
                 props: {
                   content: row.recorder
                 }
-              },
-              [
-                h("SvgIcon", {
-                  props: {
-                    iconClass: "heimingdan"
-                  },
-                  style: {
-                    color: "red"
-                  }
-                })
-              ]
+              }
+              // [
+              //   h("SvgIcon", {
+              //     props: {
+              //       iconClass: "heimingdan"
+              //     },
+              //     style: {
+              //       color: "red"
+              //     }
+              //   })
+              // ]
             )
           ]);
         }
@@ -339,7 +339,8 @@ export default class GrayList extends Page {
   moveOut(row) {
     this.approvalService
       .removeRiskStatus({
-        orderIds: row.orderId
+        orderIds: row.orderId,
+        isBlack: false
       })
       .subscribe(
         val => {

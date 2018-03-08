@@ -105,7 +105,7 @@
           <td bgColor="#F5F5F5">性别</td>
           <td>{{orderInfo.personal?$dict.getDictName(orderInfo.personal.sex):''}}</td>
           <td bgColor="#F5F5F5">出生日期</td>
-          <td>{{orderInfo.personal.birthTime|dateFormat('yyyy-MM-dd')}}</td>
+          <td>{{personal.birthTime|dateFormat('yyyy-MM-dd')}}</td>
           <td bgColor="#F5F5F5">微信号</td>
           <td>{{orderInfo.personal?orderInfo.personal.wechat:''}}</td>
         </tr>

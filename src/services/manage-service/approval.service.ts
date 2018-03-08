@@ -51,11 +51,12 @@ export class ApprovalService {
   /**
    * 内审、黑名单、灰名单移出
    */
-  removeRiskStatus({ orderIds }) {
+  removeRiskStatus({ orderIds, isBlack }) {
     return this.netService.send({
       server: manageService.approvalController.removeRiskStatus,
       data: {
-        orderIds: orderIds
+        orderIds: orderIds,
+        isBlack: isBlack
       }
     })
   }

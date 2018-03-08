@@ -314,7 +314,8 @@ export default class InternalAuditManage extends Page {
   moveOut(row) {
     this.approvalService
       .removeRiskStatus({
-        orderIds: row.orderId
+        orderIds: row.orderId,
+        isBlack: false
       })
       .subscribe(
         val => {

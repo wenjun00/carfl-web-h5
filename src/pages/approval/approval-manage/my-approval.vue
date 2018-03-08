@@ -529,7 +529,7 @@ export default class MyApproval extends Page {
       data => {
         this.$Message.success("操作成功！");
         this.meetConditionApproval = false;
-        this.approveModal = false
+        this.approveModal = false;
         this.getMyOrderList();
       },
       ({ msg }) => {
@@ -685,6 +685,7 @@ export default class MyApproval extends Page {
           val => {
             this.$Message.success("提交黑名单成功！");
             this.blackListModal = false;
+            this.approveModal = false;
             this.cancelAddBlack();
             this.getMyOrderList();
           },
