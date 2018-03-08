@@ -293,8 +293,12 @@
      * 确定并返回
      */
     confirmAndBackPrd() {
-      this.currentRowData(this.currentRow, this.productDataModel[0])
-      this.close()
+      if (!this.currentRow.id) {
+        this.$Message.error("请选择产品！");
+      } else {
+        this.currentRowData(this.currentRow, this.productDataModel[0])
+        this.close()
+      }
     }
   }
 
