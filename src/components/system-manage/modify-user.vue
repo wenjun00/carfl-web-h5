@@ -44,8 +44,9 @@
         <i-col :span="12">
           <i-form-item label="性别" prop="userSex">
             <i-select v-model="modifyModel.userSex">
-              <i-option label="男" :value="419" :key="419"></i-option>
-              <i-option label="女" :value="420" :key="420"></i-option>
+              <!-- <i-option label="男" :value="419" :key="419"></i-option>
+              <i-option label="女" :value="420" :key="420"></i-option> -->
+              <i-option v-for="{value,label} in $dict.getDictData('0406')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>

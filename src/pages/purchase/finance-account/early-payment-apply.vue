@@ -176,48 +176,58 @@ export default class EarlyPaymentApply extends Page {
         );
     }
   }
-  /**
-   * 保存草稿
-   */
-  saveDraft() {
+  getModel() {
     let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
     let itemList = _gatherDetail.getItem();
     console.log(itemList, "itemList");
     this.saveDraftModel.otherFee = _gatherDetail.getOtherFee();
     this.saveDraftModel.remark = this.applyData.remark;
-    // console.log(itemList, "itemList");
     let surplusManageFee = itemList.find(
       v => v.itemName === "surplusManageFee"
     );
-    if (surplusManageFee) {
-      this.saveDraftModel.surplusManageFee = surplusManageFee.itemMoney;
-    }
+    this.saveDraftModel.surplusManageFee = surplusManageFee
+      ? surplusManageFee.itemMoney
+      : 0;
+
     let surplusPenalty = itemList.find(v => v.itemName === "surplusPenalty");
-    if (surplusPenalty) {
-      this.saveDraftModel.surplusPenalty = surplusPenalty.itemMoney;
-    }
+    this.saveDraftModel.surplusPenalty = surplusPenalty
+      ? surplusPenalty.itemMoney
+      : 0;
+
     let surplusPenaltyFreeze = itemList.find(
       v => v.itemName === "surplusPenaltyFreeze"
     );
-    if (surplusPenaltyFreeze) {
-      this.saveDraftModel.surplusPenaltyFreeze = surplusPenaltyFreeze.itemMoney;
-    }
+    this.saveDraftModel.surplusPenaltyFreeze = surplusPenaltyFreeze
+      ? surplusPenaltyFreeze.itemMoney
+      : 0;
+
     let surplusPrincipal = itemList.find(
       v => v.itemName === "surplusPrincipal"
     );
-    if (surplusPrincipal) {
-      this.saveDraftModel.surplusPrincipal = surplusPrincipal.itemMoney;
-    }
+    this.saveDraftModel.surplusPrincipal = surplusPrincipal
+      ? surplusPrincipal.itemMoney
+      : 0;
+
     let advancePayoffFee = itemList.find(
       v => v.itemName === "advancePayoffFee"
     );
-    if (advancePayoffFee) {
-      this.saveDraftModel.advancePayoffFee = advancePayoffFee.itemMoney;
-    }
+    this.saveDraftModel.advancePayoffFee = advancePayoffFee
+      ? advancePayoffFee.itemMoney
+      : 0;
+
+    // let otherFee = itemList.find(v => v.itemName === "otherFee");
+    // this.saveDraftModel.otherFee = otherFee ? otherFee.itemMoney : 0;
+
     let totalPayment = itemList.find(v => v.itemName === "totalPayment");
-    if (totalPayment) {
-      this.saveDraftModel.totalPayment = totalPayment.itemMoney;
-    }
+    this.saveDraftModel.totalPayment = totalPayment
+      ? totalPayment.itemMoney
+      : 0;
+  }
+  /**
+   * 保存草稿
+   */
+  saveDraft() {
+    this.getModel();
     this.withdrawApplicationService
       .saveAdvancePayoffApplicationAsDraft(this.saveDraftModel)
       .subscribe(
@@ -233,6 +243,7 @@ export default class EarlyPaymentApply extends Page {
    * 保存并提交
    */
   saveAndCommit() {
+    this.getModel();
     let saveAndCommitModel = this.saveDraftModel;
     this.withdrawApplicationService
       .saveAdvancePayoffApplication(saveAndCommitModel)
