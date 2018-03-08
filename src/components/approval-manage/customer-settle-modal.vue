@@ -10,7 +10,7 @@
       <data-grid-item label="账户类型" :span="12">
         <template>
           <div>
-            <span>{{customerSettleModel.personalBank?customerSettleModel.personalBank.accountType:''}}</span>
+            <span>{{customerSettleModel.personalBank?$dict.getDictName(customerSettleModel.personalBank.accountType):''}}</span>
           </div>
         </template>
       </data-grid-item>
@@ -69,86 +69,79 @@
 </template>
 
 <script lang="ts">
-  import Component from 'vue-class-component'
-  import {
-    Emit
-  } from "vue-property-decorator";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    PersonalService
-  } from "~/services/manage-service/personal.service";
-  import {
+import Component from "vue-class-component";
+import { Emit } from "vue-property-decorator";
+import { Dependencies } from "~/core/decorator";
+import { PersonalService } from "~/services/manage-service/personal.service";
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
+import Vue from "vue";
+
+@Component({
+  components: {
     DataGrid,
     DataGridItem
-  } from "@zct1989/vue-component";
-  import Vue from "vue";
-
-  @Component({
-    components: {
-      DataGrid,
-      DataGridItem
-    }
-  })
-  export default class CustomerSettleModal extends Vue {
-    @Dependencies(PersonalService) private personalService: PersonalService;
-
-    @Emit("closeModal")
-    closeCustomerModal() {}
-    private customerSettleModel: any = {
-      personalBank: {
-        settleChannel: ''
-      }
-    }
-    private clientNumber: number = 0
-    private settleChannel: number = 0
-    activated() {}
-    created() {
-
-    }
-    /**
-     * 关闭
-     */
-    closeModal() {
-      this.closeCustomerModal()
-    }
-    /**
-     * 客户结算号
-     */
-    getCustomerSettleObj(row) {
-      this.clientNumber = row.clientNumber
-      this.settleChannel = row.settlementChannel
-      this.personalService.getBankByClientNumber({
-        clientNumber: this.clientNumber,
-        settleChannel: this.settleChannel
-      }).subscribe(data => {
-        this.customerSettleModel = data
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
-      })
-    }
-    /**
-     * select的Change事件
-     */
-    changeSettle(val) {
-      this.personalService.getBankByClientNumber({
-        clientNumber: this.clientNumber,
-        settleChannel: this.settleChannel
-      }).subscribe(data => {
-        this.customerSettleModel = data
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
-      })
-    }
   }
+})
+export default class CustomerSettleModal extends Vue {
+  @Dependencies(PersonalService) private personalService: PersonalService;
 
+  @Emit("closeModal")
+  closeCustomerModal() {}
+  private customerSettleModel: any = {
+    personalBank: {
+      settleChannel: ""
+    }
+  };
+  private clientNumber: number = 0;
+  private settleChannel: number = 0;
+  activated() {}
+  created() {}
+  /**
+   * 关闭
+   */
+  closeModal() {
+    this.closeCustomerModal();
+  }
+  /**
+   * 客户结算号
+   */
+  getCustomerSettleObj(row) {
+    this.clientNumber = row.clientNumber;
+    this.settleChannel = row.settlementChannel;
+    this.personalService
+      .getBankByClientNumber({
+        clientNumber: this.clientNumber,
+        settleChannel: this.settleChannel
+      })
+      .subscribe(
+        data => {
+          this.customerSettleModel = data;
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+  /**
+   * select的Change事件
+   */
+  changeSettle(val) {
+    this.personalService
+      .getBankByClientNumber({
+        clientNumber: this.clientNumber,
+        settleChannel: this.settleChannel
+      })
+      .subscribe(
+        data => {
+          this.customerSettleModel = data;
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+}
 </script>
 <style>
-
 
 </style>

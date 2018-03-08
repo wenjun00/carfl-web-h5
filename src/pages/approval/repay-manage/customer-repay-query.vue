@@ -103,7 +103,8 @@ export default class CustomerRepayQuery extends Page {
   private customerRepayModel: any = {
     settlementChannel: "",
     paymentStatus: "",
-    dynamicParam: ""
+    dynamicParam: "",
+    timeSearch: ""
   };
   private personalId: any = "";
   private businessId: any = "";
@@ -313,7 +314,14 @@ export default class CustomerRepayQuery extends Page {
         }
       );
   }
-  getTimeSearch(val) {}
+  getTimeSearch(val) {
+    this.customerRepayModel.settlementChannel = "";
+    this.customerRepayModel.paymentStatus = "";
+    this.customerRepayModel.dynamicParam = "";
+    this.customerRepayModel.timeSearch = val;
+    this.getCustomerRepayList();
+    this.customerRepayModel.timeSearch = "";
+  }
   /**
    * 还款详情
    */
