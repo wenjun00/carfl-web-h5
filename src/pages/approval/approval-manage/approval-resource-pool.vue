@@ -79,14 +79,12 @@ import { Layout } from "~/core/decorator";
 import { Mutation } from "vuex-class";
 import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
-import SvgIcon from "~/components/common/svg-icon.vue";
 import { CityService } from "~/utils/city.service";
 @Layout("workspace")
 @Component({
   components: {
     DataBox,
-    PurchaseInformation,
-    SvgIcon
+    PurchaseInformation
   }
 })
 export default class ApprovalResourcePool extends Page {
@@ -154,11 +152,34 @@ export default class ApprovalResourcePool extends Page {
       },
       {
         key: "orderLink",
-        title: "环节",
-        editable: true,
         align: "center",
+        editable: true,
+        title: "环节",
         render: (h, { row, columns, index }) => {
-          return h("span", {}, this.$dict.getDictName(row.orderLink));
+          return h("div", [
+            h("span", {}, this.$dict.getDictName(row.orderLink)),
+            h(
+              "Tooltip",
+              {
+                props: {
+                  content: "已加入黑名单"
+                }
+              },
+              [
+                h("svg-icon", {
+                  props: {
+                    iconClass: this.getIconClass(row)
+                  },
+                  style: {
+                    color: this.getIconColor(row),
+                    fontSize: "26px",
+                    position: "relative",
+                    top: "6px"
+                  }
+                })
+              ]
+            )
+          ]);
         }
       },
       {
@@ -273,7 +294,18 @@ export default class ApprovalResourcePool extends Page {
     this.getOrderModel.orderIds = row.orderId;
     this.getOrderModel.userId = this.$store.state.userData.id;
   }
-
+  /**
+   * 获取Icon类
+   */
+  getIconClass(row) {
+    // console.log("类", row);
+  }
+  /**
+   * 获取Icon颜色
+   */
+  getIconColor(row) {
+    // console.log("颜色", row);
+  }
   confirmGetOrder() {
     this.approvalService.batchReceiveApproval(this.getOrderModel).subscribe(
       data => {

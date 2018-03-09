@@ -13,8 +13,12 @@
         <data-grid-item label="融资租赁用途" :span="3">{{orderInfo.financingUse}} </data-grid-item>
         <data-grid-item label="自缴费用" :span="9">
           <i-checkbox-group v-model="fee">
-            <i-checkbox :label="369" :value="369" disabled>保险费</i-checkbox>
-            <i-checkbox :label="370" :value="370" disabled>购置费</i-checkbox>
+            <i-checkbox :value="368" :label="368" disabled>无</i-checkbox>
+            <i-checkbox :value="369" :label="369" disabled>购置税</i-checkbox>
+            <i-checkbox :value="370" :label="370" disabled>保险费</i-checkbox>
+            <i-checkbox :value="371" :label="371" disabled>上牌费</i-checkbox>
+            <i-checkbox :value="372" :label="372" disabled>路桥费</i-checkbox>
+            <i-checkbox :value="373" :label="373" disabled>首期租金</i-checkbox>
           </i-checkbox-group>
         </data-grid-item>
         <data-grid-item label="意向融资金额" :span="3">{{orderInfo.intentionFinancingAmount}}</data-grid-item>
@@ -164,8 +168,8 @@
           <td bgColor="#F5F5F5">是否接受现场勘查</td>
           <td colspan="2">
             <i-radio-group v-model="personal.houseProspecting">
-              <i-radio :label="0" :value="0" :key="0" disabled>是</i-radio>
-              <i-radio :label="1" :value="1" :key="1" disabled>否</i-radio>
+              <i-radio :label="29" :value="29" :key="29" disabled>是</i-radio>
+              <i-radio :label="30" :value="30" :key="30" disabled>否</i-radio>
             </i-radio-group>
           </td>
         </tr>
@@ -301,8 +305,8 @@
         <a name="sucaiziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">素材资料</a>
       </div>
       <i-row style="margin-top:10px">
-        <i-col :span="12">
-          <img v-for="item in materialInfo" :key="item.id" style="height:200px;width:200px;border:1px solid #C2C2C2;" :src="item.materialUrl">
+        <i-col :span="24">
+          <img v-for="item in materialInfo" :key="item.id" style="height:200px;width:200px;border:1px solid #C2C2C2;margin-left:10px" :src="item.materialUrl">
         </i-col>
       </i-row>
     </i-row>

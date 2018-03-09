@@ -171,8 +171,8 @@
           <td bgColor="#F5F5F5">是否接受现场勘查</td>
           <td colspan="2">
             <i-radio-group v-model="personal.houseProspecting">
-              <i-radio :label="0" :value="0" :key="0" disabled>是</i-radio>
-              <i-radio :label="1" :value="1" :key="1" disabled>否</i-radio>
+              <i-radio :label="29" :value="29" :key="29" disabled>是</i-radio>
+              <i-radio :label="30" :value="30" :key="30" disabled>否</i-radio>
             </i-radio-group>
           </td>
         </tr>
@@ -319,8 +319,8 @@
         <a name="sucaiziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">素材资料</a>
       </div>
       <i-row style="margin-top:10px">
-        <i-col :span="12">
-          <img v-for="item in materialInfo" :key="item.id" style="height:200px;width:200px;border:1px solid #C2C2C2;" :src="item.materialUrl">
+        <i-col :span="24">
+          <img v-for="item in materialInfo" :key="item.id" style="height:200px;width:200px;border:1px solid #C2C2C2;margin-left:10px" :src="item.materialUrl">
         </i-col>
       </i-row>
     </i-row>
