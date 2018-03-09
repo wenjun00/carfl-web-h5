@@ -204,6 +204,10 @@
      * 根据客户三项查询历史订单
      */
     checkcustomerinfo() {
+      this.customerModel.name = ''
+      this.customerModel.mobileMain = ''
+      this.customerModel.salesmanName = ''
+      this.resethistory()
       let customermodel: any = this.$refs['customer-materials']
       customermodel.getinfo(this.customerModel)
       if (this.customerModel.idCard) {
@@ -235,6 +239,7 @@
      * 客户信息反显
      */
     distributionData(data) {
+      console.log(data, '信息反显')
       this.customerModel.name = data.personal.name;
       this.customerModel.mobileMain = data.personal.mobileMain;
       this.customerModel.salesmanName = data.salesmanName;
@@ -263,23 +268,28 @@
       let _choosebuymaterials: any = this.$refs['choose-buy-materials']
       let customerform: any = _choosebuymaterials.$refs['customer-form']
       customerform.resetFields()
-      //   客户联系人反显
+      _choosebuymaterials.addcarData = []
+      _choosebuymaterials.chooseBuyModel = {}
+      //   客户联系人重置
       let _customercontacts: any = this.$refs['customer-contacts']
       _customercontacts.reset()
-      //   职业信息
-      let _customerjobmessage: any = this.$refs['customer-job-message']
-      let jobform: any = _customerjobmessage.$refs['job-form']
-      let formjob: any = _customerjobmessage.$refs['form-job']
-      jobform.resetFields()
-      formjob.resetFields()
+
       //   客户资料
       let _customermaterials: any = this.$refs['customer-materials']
       let job: any = _customermaterials.$refs['job-form']
       job.resetFields()
       //   客户来源
       let _customerorigin: any = this.$refs['customer-origin']
-      let form: any = _customerorigin.$refs['job-form']
-      form.resetFields()
+      //   let form: any = _customerorigin.$refs['job-form']
+      _customerorigin.reset()
+      //   职业信息
+      let _customerjobmessage: any = this.$refs['customer-job-message']
+      let formjob: any = _customerjobmessage.$refs['form-job']
+      formjob.resetFields()
+      let revenueform: any = _customerjobmessage.$refs['revenue-form']
+      revenueform.resetFields()
+      //   let jobform: any = _customerjobmessage.$refs['company-form']
+      //   jobform.resetFields()
     }
     created() {}
     addNewApply() {

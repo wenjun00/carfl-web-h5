@@ -409,7 +409,7 @@
       this.customerMaterialsForm = data.personal
     }
     getinfo(customerModel) {
-      this.customerMaterialsForm = customerModel
+      //   this.customerMaterialsForm = customerModel
     }
     idCardChange(value) {
       if (value) {

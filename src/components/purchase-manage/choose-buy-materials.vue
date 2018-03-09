@@ -418,17 +418,6 @@
       }],
     };
     private rules: any = {
-      intentionPaymentRatio: [{
-        required: true,
-        message: '请输入意向首付比例',
-        trigger: 'blur',
-      }],
-      //   intentionFinancingAmount: [{
-      //     required: true,
-      //     message: '请输入意向融资金额',
-      //     trigger: 'blur',
-      //     type: 'number'
-      //   }],
       intentionPeriods: [{
         required: true,
         message: '请输入意向期限',
@@ -499,16 +488,8 @@
      * 数据反显
      */
     Reverse(data) {
-      this.chooseBuyModel.province = data.province
-      this.chooseBuyModel.city = data.city
-      this.chooseBuyModel.companyId = data.companyId
-      this.chooseBuyModel.orderServiceList = data.orderServiceList // 自缴费用
-      this.chooseBuyModel.financingUse = data.financingUse
-      this.chooseBuyModel.intentionFinancingAmount = data.intentionFinancingAmount
-      this.chooseBuyModel.intentionPeriods = data.intentionPeriods
-      this.chooseBuyModel.rentPayable = data.rentPayable
-      this.chooseBuyModel.hopeProportion = data.hopeProportion
-      this.chooseBuyModel.intentionPaymentRatio = data.intentionPaymentRatio
+      data.orderServiceList = Array.from(new Set(data.orderServiceList))
+      this.chooseBuyModel = data
     }
     /**
      * 
@@ -722,7 +703,32 @@
         }, {
           title: '单价（元）',
           key: 'carAmount',
-          align: 'center'
+          align: 'center',
+          //   render: (h, {
+          //     row,
+          //     column,
+          //     index
+          //   }) => {
+          //     return h("div", [
+          //       h(
+          //         "i-input", {
+          //           props: {
+          //             type: "text"
+          //           },
+          //           style: {
+          //             color: "#265EA2"
+          //           },
+          //           on: {
+          //             click: () => {
+          //               console.log(row, 88777)
+          //               this.totalPrice = this.totalPrice + row.carAmount
+          //             }
+          //           }
+          //         },
+          //         "carAmount"
+          //       ),
+          //     ]);
+          //   }
         }, {
           title: '车辆配置',
           key: 'vehicleConfiguration',

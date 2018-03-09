@@ -30,7 +30,7 @@
         <div style="margin-left:58px;margin-top:15px">
           <!--<i-checkbox v-model="ischecked" @on-change="checked">同行推荐</i-checkbox>-->
           <div v-if="ischecked===0" style="position:relative;width:300px;">
-            <i-form ref="job-form" :model="customerOriginModel" label-position="left" :label-width="110">
+            <i-form ref="form" :model="customerOriginModel" label-position="left" :label-width="110">
               <i-form-item label="同行姓名" prop="peerName">
                 <i-input type="text" v-model="customerOriginModel.peerName"></i-input>
               </i-form-item>
@@ -130,6 +130,10 @@
     Reverse(data) {
       console.log(data.personal.personalResourcePublicity.map(v => v.resourceType))
       this.OriginModel.resourceType = data.personal.personalResourcePublicity.map(v => v.resourceType)
+    }
+    reset() {
+      this.OriginModel.resourceType = []
+      this.customerOriginModel = ''
     }
     checked() {
       return !this.ischecked

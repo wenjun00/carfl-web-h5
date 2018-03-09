@@ -175,11 +175,10 @@
      * 清空数据
      */
     resethistory() {
-      let resetData: any = this.$refs['customer-form'];
-      resetData.resetFields();
       //   选购资料请空
       let component: any = this.$refs['materials-all'];
       let _parchaseform: any = component.$refs['parchase-form']
+      component.addcarData = []
       _parchaseform.resetFields()
       //   客户资料清空
       let materials: any = this.$refs['materials'];
@@ -194,6 +193,8 @@
         title: '提示',
         content: '有未提交的申请，确定创建新申请吗？',
         onOk: () => {
+          let resetData: any = this.$refs['customer-form'];
+          resetData.resetFields();
           this.resethistory()
         },
         onCancel: () => {
@@ -339,6 +340,10 @@
      * 根据客户三项查询历史订单
      */
     checkcustomerinfo() {
+      this.applyData.name = ''
+      this.applyData.customerPhone = ''
+      this.applyData.salesmanName = ''
+      this.resethistory()
       let customermodel: any = this.$refs['materials']
       customermodel.getinfo(this.applyData)
       if (this.applyData.idCard) {

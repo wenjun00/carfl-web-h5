@@ -89,7 +89,7 @@
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
         <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
-          <i-button class="highDefaultButton" @click="saveDraftClick">保存草稿</i-button>
+          <i-button class="highDefaultButton" @click="saveDraftClick" :disabled="type">保存草稿</i-button>
           <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
         </i-col>
       </i-row>
@@ -209,10 +209,11 @@
     private orderNumberIdModels: Array < Object > = [];
     private orderIdModels: any = {};
     private single: Boolean = false;
+    private type: Boolean = false;
     private saveDraftModel: any = {
       addFinanceUploadResources: [], // 新增上传资料列表
       delFinanceUploadResources: [], // 删除上传资料Id列表
-      financeUploadResources:[], // 上传素材相关信息
+      financeUploadResources: [], // 上传素材相关信息
       accountName: "",
       advancePayoffFee: 0, // 提前结清手续费
       id: "", // 申请id
@@ -223,7 +224,8 @@
       surplusPenaltyFreeze: 0, // 剩余冻结罚金
       surplusPrincipal: 0, // 剩余本金
       totalPayment: 0, // 收款总额
-      remark: "" // 备注
+      remark: "", // 备注
+      withdrawType: ''
     };
 
     created() {
@@ -553,6 +555,7 @@
           .subscribe(
             data => {
               this.applyData.remark = data.remark;
+              this.applyData.withdrawType = data.withdrawType
               // 获取收款项和备注信息
               let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
               _gatherDetail.makeListdataSet(data);
@@ -560,7 +563,7 @@
                 this.saveDraftModel.accountName = data.personalBank.personalName; // 获取保存草稿时需要的accountName
               }
               if (data.withdrawId) {
-                this.saveDraftModel.id = data.withdrawId; // 获取保存草稿时需要的id
+                this.saveDraftModel.applicationId = data.withdrawId; // 获取保存草稿时需要的id
               }
             },
             ({
@@ -571,12 +574,10 @@
           );
       }
     }
-    /**
-     * 保存草稿
-     */
-    saveDraftClick() {
+    getgather() {
       let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
       let itemList = _gatherDetail.getItem();
+      console.log(itemList, 'itemList')
       this.saveDraftModel.otherFee = _gatherDetail.getOtherFee();
       this.saveDraftModel.remark = this.applyData.remark;
       // console.log(itemList, "itemList");
@@ -606,12 +607,23 @@
       if (totalPayment) {
         this.saveDraftModel.totalPayment = totalPayment.itemMoney;
       }
-      console.log(this.saveDraftModel, "vbvbvb");
+      let violateAmount = itemList.find(v => v.itemName === 'violateAmount');
+      if (violateAmount) {
+        this.saveDraftModel.violateAmount = violateAmount.itemMoney;
+      }
+    }
+    /**
+     * 保存草稿
+     */
+    saveDraftClick() {
+      this.getgather()
+      this.saveDraftModel.withdrawType = this.applyData.withdrawType
       this.withdrawApplicationService
         .saveAdvanceRevokeApplicationAsDraft(this.saveDraftModel)
         .subscribe(
           data => {
             this.$Message.success("保存草稿成功！");
+            this.resetAll()
           },
           ({
             msg
@@ -624,12 +636,15 @@
      * 保存并提交
      */
     saveAndCommit() {
+      this.saveDraftModel.withdrawType = this.applyData.withdrawType
       let saveAndCommitModel = this.saveDraftModel;
       this.withdrawApplicationService
-        .saveAdvancePayoffApplication(saveAndCommitModel)
+        .saveAdvanceRevokeApplication(saveAndCommitModel)
         .subscribe(
           data => {
             this.$Message.success("保存并提交成功！");
+            this.resetAll()
+            this.type = true
           },
           ({
             msg
