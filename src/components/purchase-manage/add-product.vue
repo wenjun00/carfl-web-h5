@@ -217,11 +217,14 @@
       //     this.categoryData.push(lv1Node);
       //   });
       let root = allData.filter(v => !v.parent)
+      console.log(root, 'root')
       this.treeData = []
       root.forEach(item => {
+        console.log(item, 'item')
         let node1 = {
+          //   seriesId: id
           title: item.name,
-          productId: item.id,
+          seriesId: item.id,
           expand: true,
           productNumber: item.productNumber,
           capitaChannels: item.capitaChannels,
@@ -241,11 +244,13 @@
       //   return Lv2Nodes;
       let child: any = []
       this.allData.map(val => {
+        console.log(val, 'valval')
         if (item.id === val.parent) {
           if (val.flag === '产品') {
             let node2 = {
               title: val.name,
               productId: val.id,
+              seriesId: val.parent,
               expand: true,
               series: item.name,
               productNumber: val.productNumber,

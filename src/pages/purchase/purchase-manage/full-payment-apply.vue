@@ -347,19 +347,20 @@
             this.historicalDataset = data;
             if (this.historicalDataset.length) {
               this.historicalModal = true;
-            } else {
-              this.applyData.name = ''
-              this.applyData.customerPhone = ''
-              this.applyData.salesmanName = ''
-              //   选购资料请空
-              let component: any = this.$refs['materials-all'];
-              let _parchaseform: any = component.$refs['parchase-form']
-              _parchaseform.resetFields()
-              //   客户资料清空
-              let materials: any = this.$refs['materials'];
-              let _parchase: any = materials.$refs['parchase-form']
-              _parchase.resetFields()
             }
+            // else {
+            //   this.applyData.name = ''
+            //   this.applyData.customerPhone = ''
+            //   this.applyData.salesmanName = ''
+            //   //   选购资料请空
+            //   let component: any = this.$refs['materials-all'];
+            //   let _parchaseform: any = component.$refs['parchase-form']
+            //   _parchaseform.resetFields()
+            //   //   客户资料清空
+            //   let materials: any = this.$refs['materials'];
+            //   let _parchase: any = materials.$refs['parchase-form']
+            //   _parchase.resetFields()
+            // }
           },
           ({
             msg

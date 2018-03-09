@@ -215,12 +215,13 @@
               console.log(data, 'data')
               if (this.historicalDataset.length) {
                 this.historicalModal = true;
-              } else {
-                this.customerModel.name = ''
-                this.customerModel.mobileMain = ''
-                this.customerModel.salesmanName = ''
-                this.resethistory()
               }
+              //    else {
+              //     this.customerModel.name = ''
+              //     this.customerModel.mobileMain = ''
+              //     this.customerModel.salesmanName = ''
+              //     this.resethistory()
+              //   }
             },
             ({
               msg
@@ -396,6 +397,7 @@
                       //   customerMaterials.customerMaterialsForm.birthTime = FilterService.dateFormat(customerMaterials.customerMaterialsForm
                       //     .birthTime,
                       //     'yyyy-MM-dd')
+                      let orderServiceList = Array.from(new Set(choosebuymaterials.chooseBuyModel.orderServiceList))
                       let savesubmitDataset: any = {
                         orderStatus: this.orderStatus,
                         idCard: this.customerModel.idCard,
@@ -407,15 +409,17 @@
                         province: choosebuymaterials.chooseBuyModel.province,
                         city: choosebuymaterials.chooseBuyModel.city,
                         companyId: choosebuymaterials.chooseBuyModel.companyId,
-                        orderService: choosebuymaterials.chooseBuyModel.orderServiceList, // 自缴费用
+                        orderService: orderServiceList, // 自缴费用
                         financingUse: choosebuymaterials.chooseBuyModel.financingUse, // 融资租赁用途
                         intentionFinancingAmount: choosebuymaterials.chooseBuyModel.intentionFinancingAmount, // 意向融资金额
                         intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods, // 意向期限
                         rentPayable: choosebuymaterials.chooseBuyModel.rentPayable, // 租金支付
-                        hopeProportion: choosebuymaterials.chooseBuyModel.hopeProportion, // 意向首付比例
-                        orderCar: choosebuymaterials.addcarData, // 添加车辆信息
+                        intentionPaymentRatio: choosebuymaterials.chooseBuyModel.intentionPaymentRatio, // 意向首付比例
+                        // orderCar: choosebuymaterials.addcarData, // 添加车辆信息
                         // 产品信息
-                        productId: choosebuymaterials.DataSet.productId,
+                        productId: choosebuymaterials.DataSet.productId, // 产品id
+                        productIssueId: choosebuymaterials.DataSet.id, // 期数id
+                        seriesId: choosebuymaterials.chooseBuyModel.seriesId, // 系列id
                         productRate: choosebuymaterials.chooseBuyModel.prdInterestRate, // 产品利率
                         payWay: choosebuymaterials.chooseBuyModel.payWay, // 还款方式
                         vehicleAmount: choosebuymaterials.chooseBuyModel.vehicleAmount, // 车辆参考总价
@@ -424,12 +428,15 @@
                         depositCash: choosebuymaterials.chooseBuyModel.depositCash, // 保证金金额
                         finalCash: choosebuymaterials.chooseBuyModel.finalCash, // 尾付金额
                         manageCost: choosebuymaterials.chooseBuyModel.manageCost, // 管理费
-                        insuranceExpenses: choosebuymaterials.chooseBuyModel.insuranceExpenses, // 保险费
+                        insuranceExpenses: choosebuymaterials.chooseBuyModel.insuranceMoney, // 保险费
                         purchaseTax: choosebuymaterials.chooseBuyModel.purchaseMoney, // 购置费
                         installLicenseFee: choosebuymaterials.chooseBuyModel.licenseMoney, // 上牌费
-                        gpsFee: choosebuymaterials.chooseBuyModel.gpsFee, // GPS费
+                        gpsFee: choosebuymaterials.chooseBuyModel.GpsMoney, // GPS费
                         remark: choosebuymaterials.chooseBuyModel.remark, // 备注
                         otherFee: choosebuymaterials.chooseBuyModel.otherFee, // 其他费用
+                        // productIssueId: choosebuymaterials.chooseBuyModel.periods, // 产品期数
+                        monthlySupply: choosebuymaterials.chooseBuyModel.moneyPay, // 月供金额
+
                         // 客户资料
                         personal: customerMaterials.customerMaterialsForm,
                         // 客户职业
