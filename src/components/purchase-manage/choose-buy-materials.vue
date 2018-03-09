@@ -502,12 +502,13 @@
       this.chooseBuyModel.province = data.province
       this.chooseBuyModel.city = data.city
       this.chooseBuyModel.companyId = data.companyId
-      this.chooseBuyModel.orderServiceList = data.orderServiceList // 自缴费用
+      this.chooseBuyModel.orderServiceList = [65, 66] // 自缴费用
       this.chooseBuyModel.financingUse = data.financingUse
       this.chooseBuyModel.intentionFinancingAmount = data.intentionFinancingAmount
       this.chooseBuyModel.intentionPeriods = data.intentionPeriods
       this.chooseBuyModel.rentPayable = data.rentPayable
       this.chooseBuyModel.hopeProportion = data.hopeProportion
+      this.chooseBuyModel.intentionPaymentRatio = data.intentionPaymentRatio
     }
     /**
      * 
@@ -791,6 +792,7 @@
       this.chooseBuyModel.otherFee = data.otherFee
       this.chooseBuyModel.remark = data.remark
       this.chooseBuyModel.vehicleAmount = this.totalPrice
+      this.chooseBuyModel.seriesId = productDataModel.seriesId
     }
     productPlanissue(data) {
       console.log(data, 'daatgjgjg')
