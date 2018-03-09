@@ -346,10 +346,10 @@ export default class ModuleFunction extends Page {
    * 获取树接口
    */
   getTreeDate() {
-    this.roleResoService.getAllResource().subscribe(val => {
-      console.log(val, 999);
-      this.allData = val;
-      this.resoPid = val.resoPid;
+    this.roleResoService.findRoleResoMenu().subscribe(data => {
+      console.log(data, 999);
+      this.allData = data;
+      this.resoPid = data.pid;
       this.createNewTree(this.allData);
     });
   }
@@ -357,12 +357,12 @@ export default class ModuleFunction extends Page {
    * 生成树
    */
   createNewTree(allData) {
-    let root = allData.filter(v => !v.resoPid); // 获取树根
+    let root = allData.filter(v => v.pid === 10000); // 获取树根
     this.treeData = [];
     // 遍历根对象push进树中
     root.forEach(item => {
       let node1 = {
-        title: item.resoName,
+        title: item.resoname,
         id: item.id,
         resoSysname: item.resoSysname,
         resoInitName: item.resoInitName,
@@ -389,11 +389,11 @@ export default class ModuleFunction extends Page {
     let child: any = [];
     // 判断子的父id与全部数据的id相等
     this.allData.map(val => {
-      if (item.id === val.resoPid) {
-        if (val.resoPid) {
+      if (item.id === val.pid) {
+        if (val.pid) {
           let node2 = {
-            title: val.resoName,
-            resoName: val.resoName,
+            title: val.resoname,
+            resoName: val.resoname,
             id: val.id,
             resoSysname: val.resoSysname,
             resoInitName: val.resoInitName,
@@ -410,11 +410,11 @@ export default class ModuleFunction extends Page {
             children: this.getChild(val) // 迭代产生根
           };
           child.push(node2);
-        } else if (val.resoPid === null) {
+        } else if (val.pid === null) {
           let node2 = {
-            title: val.resoName,
+            title: val.resoname,
             id: val.id,
-            resoName: val.resoName,
+            resoName: val.resoname,
             resoSysname: val.resoSysname,
             resoInitName: val.resoInitName,
             resoCode: val.resoCode,
