@@ -55,5 +55,14 @@ export default {
     controller: CONTROLLER,
     action: 'removePersonalBank',
     type: requestType.Delete
+  },
+  /**
+   * 更换银行卡
+   */
+  updatePersonalBank: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updatePersonalBank',
+    type: requestType.Put
   }
 }

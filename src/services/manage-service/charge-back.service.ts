@@ -71,4 +71,13 @@ export class ChargeBackService {
       data
     })
   }
+  /**
+   * 更换银行卡
+   */
+  updatePersonalBank(data) {
+    return this.netService.send({
+      server: manageService.chargeBackController.updatePersonalBank,
+      data
+    })
+  }
 }
