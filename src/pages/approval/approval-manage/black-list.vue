@@ -160,7 +160,36 @@ export default class BlackList extends Page {
         editable: true,
         title: "环节",
         render: (h, { row, columns, index }) => {
-          return h("span", {}, this.$dict.getDictName(row.orderLink));
+          if (row.riskStatus) {
+            return h("div", [
+              h("span", {}, this.$dict.getDictName(row.orderLink)),
+              h(
+                "Tooltip",
+                {
+                  props: {
+                    content: row.riskRemark
+                  }
+                },
+                [
+                  h("svg-icon", {
+                    props: {
+                      iconClass: this.getIconClass(row)
+                    },
+                    style: {
+                      color: this.getIconColor(row),
+                      fontSize: "26px",
+                      position: "relative",
+                      top: "6px"
+                    }
+                  })
+                ]
+              )
+            ]);
+          } else {
+            return h("div", [
+              h("span", {}, this.$dict.getDictName(row.orderLink))
+            ]);
+          }
         }
       },
       {
@@ -277,6 +306,30 @@ export default class BlackList extends Page {
     _purchaseInfo.getOrderDetail(row);
   }
   /**
+   * 获取Icon类
+   */
+  getIconClass(row) {
+    if (row.riskStatus === 345) {
+      return "heimingdan";
+    } else if (row.riskStatus === 346) {
+      return "huimingdan";
+    } else if (row.riskStatus === 347) {
+      return "neishen";
+    }
+  }
+  /**
+   * 获取Icon颜色
+   */
+  getIconColor(row) {
+    if (row.riskStatus === 345) {
+      return "#666666";
+    } else if (row.riskStatus === 346) {
+      return "#B6B6B6";
+    } else if (row.riskStatus === 347) {
+      return "#F9435D";
+    }
+  }
+  /**
    * 领取
    */
   getOrder(row) {
@@ -313,7 +366,7 @@ export default class BlackList extends Page {
     this.approvalService
       .removeRiskStatus({
         orderIds: row.orderId,
-        isBlack:true
+        isBlack: true
       })
       .subscribe(
         val => {
