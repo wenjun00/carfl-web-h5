@@ -10,6 +10,15 @@ export class ChargeBackService {
   private netService: NetService
 
   /**
+   * 客户开户
+   */
+  createPersonalAccount(data) {
+    return this.netService.send({
+      server: manageService.chargeBackController.createPersonalAccount,
+      data
+    })
+  }
+  /**
    * 获取个人开户列表
    */
   getPersonalAccountList(data, page) {
@@ -28,10 +37,11 @@ export class ChargeBackService {
    * 
    * 获取划扣记录
    */
-  getChargeRecordList(data) {
+  getChargeRecordList(data, page) {
     return this.netService.send({
       server: manageService.chargeBackController.getChargeRecordList,
-      data: data
+      data,
+      page
     })
   }
   /**

@@ -5,28 +5,28 @@
       <data-grid-item label="出账客户号" :span="6">
         <template>
           <div>
-            6666000000566559
+            {{ rowObj.clientNumber }}
           </div>
         </template>
       </data-grid-item>
       <data-grid-item label="出账卡号" :span="6">
         <template>
           <div>
-            610***2416
+            {{ rowObj.cardNumber }}
           </div>
         </template>
       </data-grid-item>
       <data-grid-item label="客户姓名" :span="6">
         <template>
           <div>
-            胡开甲
+            {{ rowObj.name }}
           </div>
         </template>
       </data-grid-item>
       <data-grid-item label="支付银行" :span="6">
         <template>
           <div>
-            建设银行
+            {{ rowObj.depositBank }}
           </div>
         </template>
       </data-grid-item>
@@ -49,10 +49,10 @@
       </tr>
     </table>
 
-    <div>
+    <div style="margin:5px 0px">
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>划扣记录</span>
     </div>
-    <data-box :columns="columns1" :data="data1" width="900" style="position:relative;right:10px;"></data-box>
+    <data-box :columns="columns1" :data="data1" width="900" style="position:relative;right:10px;" @onPageChange="getRecord" :page="pageService" :noDefaultRow="true"></data-box>
   </section>
 </template>
 
@@ -61,6 +61,9 @@
   import Component from "vue-class-component";
   import ChangeCard from "~/components/purchase-manage/change-card.vue"
   import DataBox from "~/components/common/data-box.vue";
+  import { ChargeBackService } from "~/services/manage-service/charge-back.service";
+  import { PageService } from "~/utils/page.service";
+  import { Dependencies } from "~/core/decorator";
   import {
     DataGrid,
     DataGridItem
@@ -74,9 +77,26 @@
     }
   })
   export default class Deduct extends Vue {
+    @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
     private data1: Array < Object > = [];
-
+    private rowObj: any = {};
+    refresh(row) {
+      this.rowObj = row
+      this.pageService.reset()
+      this.getRecord()
+    }
+    /**
+     * 获取划扣记录
+     */
+    getRecord() {
+      this.chargeBackService.getChargeRecordList({ personalId: this.rowObj.personalId }, this.pageService).subscribe(data => {
+        this.data1 = data
+      }, ({ msg }) => {
+        this.$Message.error(msg)
+      })
+    }
     created() {
 
       this.columns1 = [{
@@ -91,7 +111,7 @@
         width: 180
       }, {
         title: '支付金额',
-        key: 'payMoney',
+        key: 'paymentAmount',
         align: 'center'
       }, {
         title: '订单号',
@@ -134,9 +154,6 @@
         failReason: '银行卡余额不足',
         operator: '张三疯'
       }]
-
-    }
-    changeBankCard() {
 
     }
   }

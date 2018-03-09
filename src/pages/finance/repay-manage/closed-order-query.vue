@@ -35,7 +35,7 @@
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getEarlyPayList">搜索</i-button>
     </i-row>
-    <data-box :id="435" :columns="columns1" :data="data1"></data-box>
+    <data-box :id="435" :columns="columns1" :data="data1" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
 
     <template>
       <i-modal title="客户当前结算户" :transfer="false" v-model="customerSettleModal">

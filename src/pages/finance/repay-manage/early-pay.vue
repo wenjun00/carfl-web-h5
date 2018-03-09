@@ -35,7 +35,7 @@
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getEarlyPayList">搜索</i-button>
     </i-row>
-    <data-box :id="420" :columns="columns1" :data="customerRepayList"></data-box>
+    <data-box :id="420" :columns="columns1" :data="customerRepayList"  @onPageChange="getEarlyPayList" :page="pageService"></data-box>
 
     <template>
       <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认结清" width="900">

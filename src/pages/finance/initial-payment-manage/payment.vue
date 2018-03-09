@@ -32,7 +32,7 @@
       <i-date-picker type="date" style="display:inline-block;width:10%" v-model="approvalModel.endTime"></i-date-picker>
       <i-button style="margin-left:10px" @click="getOrderQuery" class="blueButton">搜索</i-button>
     </i-row>
-    <data-box :id="405" :columns="columns1" :data="paymentData"></data-box>
+    <data-box :id="405" :columns="columns1" :data="paymentData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
 
     <template>
       <i-modal v-model="confirmGatherModal" :title="checkGatherModal?'查看':'确认付款'" width="900" class="confirmGather" :transfer="false">

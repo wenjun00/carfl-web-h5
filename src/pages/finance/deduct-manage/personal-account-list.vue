@@ -30,7 +30,7 @@
       <i-date-picker style="display:inline-block;width:10%" v-model="gatherModel.createDateEnd"></i-date-picker>
       <i-button class="blueButton" @click="getGatherListByCondition">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="data1" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
 
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
@@ -47,60 +47,11 @@
     </div>
     <!--开户弹窗-->
     <template>
-      <i-modal v-model="openCreateAccount" title="开户绑卡" width="400">
-        <i-form :label-width="110">
-          <i-form-item label="账户类型">
-            <i-select style="width:160px;">
-              <i-option label="汇付" value="汇付" key="汇付"></i-option>
-              <i-option label="对公" value="对公" key="对公"></i-option>
-              <i-option label="富友" value="富友" key="富友"></i-option>
-            </i-select>
-          </i-form-item>
-          <i-form-item label="客户姓名">
-            <i-input style="width:160px;"></i-input>
-          </i-form-item>
-          <i-form-item label="证件类型">
-            <i-select style="width:160px;">
-              <i-option label="身份证" value="身份证" key="身份证"></i-option>
-            </i-select>
-          </i-form-item>
-          <i-form-item label="证件号码">
-            <i-input style="width:160px;"></i-input>
-          </i-form-item>
-          <i-form-item label="开户银行">
-            <i-input style="width:160px;"></i-input>
-          </i-form-item>
-          <i-form-item label="开户省市">
-            <i-select style="width:80px;">
-              <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
-            </i-select>
-            <i-select style="width:80px;">
-              <i-option label="西安市" value="西安市" key="西安市"></i-option>
-              <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
-              <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
-              <i-option label="渭南市" value="渭南市" key="渭南市"></i-option>
-              <i-option label="铜川市" value="铜川市" key="铜川市"></i-option>
-              <i-option label="榆林市" value="榆林市" key="榆林市"></i-option>
-              <i-option label="延安市" value="延安市" key="延安市"></i-option>
-              <i-option label="汉中市" value="汉中市" key="汉中市"></i-option>
-              <i-option label="安康市" value="安康市" key="安康市"></i-option>
-              <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
-            </i-select>
-          </i-form-item>
-          <i-form-item label="银行卡号">
-            <i-input style="width:160px;"></i-input>
-          </i-form-item>
-          <i-form-item label="银行预留手机号">
-            <i-input style="width:160px;"></i-input>
-          </i-form-item>
-          <!--<i-form-item label="验证码">
-            <i-input style="width:160px;"></i-input>
-            <i-button style="display:inline-block;margin-left:8px;" class="blueButton" size="small">发送验证码<span>60</span></i-button>
-          </i-form-item>-->
-        </i-form>
+      <i-modal v-model="dialog.create" title="开户绑卡" width="400">
+        <create-personal-account ref="create-personal-account"></create-personal-account>
         <div slot="footer">
-          <i-button @click="openCreateAccount=false">取消</i-button>
-          <i-button class="blueButton" @click="openCreateAccount=false">确认开户</i-button>
+          <i-button @click="dialog.create=false">取消</i-button>
+          <i-button class="blueButton" @click="createConfirm">确认开户</i-button>
         </div>
       </i-modal>
     </template>
@@ -113,7 +64,7 @@
 
     <template>
       <i-modal v-model="deductModal" title="划扣" width="930">
-        <deduct></deduct>
+        <deduct ref="deduct"></deduct>
       </i-modal>
     </template>
   </section>
@@ -123,6 +74,7 @@
   import Page from "~/core/page";
   import DataBox from "~/components/common/data-box.vue";
   import BankCardInfo from "~/components/finance-manage/bank-card-info.vue";
+  import CreatePersonalAccount from "~/pages/finance/deduct-manage/personal-account-list/create-personal-account.vue";
   import Component from "vue-class-component";
   import SvgIcon from '~/components/common/svg-icon.vue'
   import Deduct from '~/components/finance-manage/deduct.vue'
@@ -136,6 +88,7 @@
   @Component({
 
     components: {
+      CreatePersonalAccount,
       DataBox,
       BankCardInfo,
       SvgIcon,
@@ -150,7 +103,10 @@
     private searchOptions: Boolean = false;
     private customName: String = "";
     private checkRadio: String = "融资租赁合同";
-    private openCreateAccount: Boolean = false;
+    private dialog: any = {
+      create: false,
+
+    }
     private bankCardInfoModal: Boolean = false;
     private deductModal: Boolean = false;
     private gatherModel: any = {
@@ -178,10 +134,23 @@
       })
     }
     /**
+     * 开户确定
+     */
+    createConfirm() {
+      let create: any = this.$refs['create-personal-account']
+      this.chargeBackService.createPersonalAccount(create.model).subscribe(val => {
+        this.$Message.info('操作成功！')
+      }, ({ msg }) => {
+        this.$Message.error(msg)
+      })
+    }
+    /**
      * 开户
      */
     createAccount() {
-      this.openCreateAccount = true
+      let create: any = this.$refs['create-personal-account']
+      create.refresh()
+      this.dialog.create = true
     }
     created() {
       this.getGatherListByCondition()
@@ -201,8 +170,8 @@
                 on: {
                   click: () => {
                     this.bankCardInfoModal = true
-                    let card: any = this.$refs['bank-card-info']
-                    card.refresh(row)
+                    let _card: any = this.$refs['bank-card-info']
+                    _card.refresh(row)
                   }
                 }
               }, "银行卡信息"), h("i-button", {
@@ -214,6 +183,8 @@
                   },
                   on: {
                     click: () => {
+                      let _deduct: any = this.$refs.deduct
+                      _deduct.refresh(row)
                       this.deductModal = true
                     }
                   }

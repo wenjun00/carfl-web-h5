@@ -3,6 +3,15 @@ const SERVICE = 'service-manage'
 const CONTROLLER = 'chargeBackController'
 export default {
   /**
+   * 客户开户
+   */
+  createPersonalAccount: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'createPersonalAccount',
+    type: requestType.Post
+  },
+  /**
    * 获取个人开户列表
    */
   getPersonalAccountList: {

@@ -32,7 +32,7 @@
       <i-date-picker style="display:inline-block;width:10%" v-model="gatherModel.queryEndDate"></i-date-picker>
       <i-button style="margin-left:10px" class="blueButton" @click="getGatherListByCondition">搜索</i-button>
     </i-row>
-    <data-box :id="399" :columns="columns1" :data="gatherList"></data-box>
+    <data-box :id="399" :columns="columns1" :data="gatherList" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
 
 
     <template>

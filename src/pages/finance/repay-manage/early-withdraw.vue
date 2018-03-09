@@ -39,7 +39,7 @@
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getEarlyPayList">搜索</i-button>
     </i-row>
-    <data-box :id="428" :columns="columns1" :data="data1"></data-box>
+    <data-box :id="428" :columns="columns1" :data="data1" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
 
     <!--确认收回-->
     <template>
