@@ -56,10 +56,14 @@
       <div class="submitBar">
         <i-row type="flex" align="middle" style="padding:14px">
           <i-col :span="8" push="1">
-            <span style="height:40px;display:inline-block;line-height:3">申请人：administrator</span>
+            <span style="height:40px;display:inline-block;line-height:3">申请人：
+              <span>{{applyPerson}}</span>
+            </span>
           </i-col>
           <i-col :span="10" pull="4">
-            <span>申请时间：2017-12-01 13:56:56</span>
+            <span>申请时间：
+              <span>{{applyTime}}</span>
+            </span>
           </i-col>
           <i-col :span="6" style="text-align:right;">
             <i-button class="highDefaultButton" @click="saveDraft" :disabled="saveDraftDisabled">保存草稿</i-button>
@@ -102,6 +106,8 @@ export default class SaleGatheringApply extends Page {
     mobileMain: "",
     orderId: ""
   };
+  private applyPerson: String = ""; // 申请人
+  private applyTime: String = ""; // 申请时间
   applyRule: Object = {};
   private purchaseData: Object = {
     province: "",
@@ -139,7 +145,22 @@ export default class SaleGatheringApply extends Page {
   };
   private saveDraftDisabled: Boolean = false;
 
-  created() {}
+  created() {
+    this.applyPerson = this.$store.state.userData.username;
+    let time = new Date();
+    this.applyTime =
+      time.getFullYear() +
+      "-" +
+      (time.getMonth() + 1) +
+      "-" +
+      time.getDate() +
+      " " +
+      time.getHours() +
+      ":" +
+      time.getMinutes() +
+      ":" +
+      time.getSeconds();
+  }
   getSaveModel() {
     let _gatherDetail: any = this.$refs["gather-detail"];
     let itemList = _gatherDetail.getItem();
@@ -268,13 +289,14 @@ export default class SaleGatheringApply extends Page {
     this.getSaveModel();
     if (this.applyData.orderId) {
       let saveAndCommitModel = this.saveDraftModel;
-      console.log("saveAndCommitModel", saveAndCommitModel);
+      // console.log("saveAndCommitModel", saveAndCommitModel);
       this.withdrawApplicationService
         .saveSaleCollectMoneyApplication(saveAndCommitModel)
         .subscribe(
           data => {
             this.$Message.success("保存并提交成功！");
             this.saveDraftDisabled = true;
+            this.clearAll()
           },
           ({ msg }) => {
             this.$Message.error(msg);

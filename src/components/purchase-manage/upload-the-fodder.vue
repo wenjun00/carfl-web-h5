@@ -5,7 +5,7 @@
     <i-row>
       <div style="display:flex;justify-content:flex-start;">
         <div style="height:200px;width:200px;border:1px solid #dddddd;cursor:pointer;text-align:center;">
-          <Upload action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false" :on-success="onSuccess" :data="uploadData" :max-size="10240">
+          <Upload action="http://192.168.3.70:8762/service-file/fileUploadController/uploadFileGrid" :on-progress="onProgress" accept=".jpg,.png" :headers="{'authorization':$store.token}" :show-upload-list="false" :on-success="onSuccess" :data="uploadData" :max-size="10240">
             <Icon type="plus-circled" style="display:block;margin-top:60px;" size="40" color="#265ea2"></Icon>
             <div>点击添加附件</div>
           </Upload>
@@ -115,6 +115,12 @@ export default class UploadTheFodder extends Vue {
    */
   onSuccess(response, file, fileList) {
     console.log("qwr", response, file, fileList);
+  }
+  /**
+   * 上传中的钩子
+   */
+  onProgress() {
+    this.$Message.info("正在上传，请稍等！");
   }
 }
 </script>

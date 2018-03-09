@@ -32,7 +32,7 @@
             </i-col>
             <i-col :span="22" v-if="dataLength" style="margin-left:20px;">
               <i-table v-if="viewStatus" :columns="carColumns" :data="paramList"></i-table>
-              <i-form class="table_container" ref="parms=form" v-else>
+              <i-form class="table_container" v-else>
                 <i-row type="flex">
                   <i-col :span="12">参数名称</i-col>
                   <i-col :span="12">参数值</i-col>
@@ -49,8 +49,8 @@
                     </i-form-item>
                   </i-col>
                 </i-row>
-                <i-button type="text" style="color:#265ea2;position: absolute;" @click="addItem">+添加参数</i-button>
               </i-form>
+              <i-button type="text" style="color:#265ea2;position: absolute;" @click="addItem">+添加参数</i-button>
             </i-col>
           </i-row>
           <div v-if="!dataLength" class="empty_text">空空如也，请选择车辆^_^</div>
@@ -638,7 +638,8 @@ export default class VehicleMaintenance extends Page {
 }
 
 .table_container {
-  text-align-last: center;
+  // text-align-last: center;
+  text-align: center;
   border: 1px solid #dddd;
   .ivu-row-flex {
     height: 40px;

@@ -61,10 +61,10 @@
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:14px">
         <i-col :span="8" push="1">
-          <span style="height:40px;display:inline-block;line-height:3">申请人：administrator</span>
+          <span style="height:40px;display:inline-block;line-height:3">申请人：{{applyPerson}}</span>
         </i-col>
         <i-col :span="10" pull="4">
-          <span>申请时间：2017-12-01 13:56:56</span>
+          <span>申请时间：{{applyTime}}</span>
         </i-col>
         <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
           <i-button class="highDefaultButton" @click="saveDraft" :disabled="saveDraftDisabled">保存草稿</i-button>
@@ -118,6 +118,8 @@ export default class EarlyPaymentApply extends Page {
     city: "",
     company: ""
   };
+  private applyPerson: String = ""; // 申请人
+  private applyTime: String = ""; // 申请时间
   private orderNumberIdModels: Array<any> = [];
   private loading: Boolean = false;
   private addCar: Boolean = false;
@@ -144,7 +146,22 @@ export default class EarlyPaymentApply extends Page {
   };
   private saveDraftDisabled: Boolean = false;
 
-  created() {}
+  created() {
+    this.applyPerson = this.$store.state.userData.username;
+    let time = new Date();
+    this.applyTime =
+      time.getFullYear() +
+      "-" +
+      (time.getMonth() + 1) +
+      "-" +
+      time.getDate() +
+      " " +
+      time.getHours() +
+      ":" +
+      time.getMinutes() +
+      ":" +
+      time.getSeconds();
+  }
   /**
    * 订单号change
    */

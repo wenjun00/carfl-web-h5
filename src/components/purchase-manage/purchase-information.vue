@@ -299,7 +299,7 @@
     </i-row>
 
     <!--素材资料-->
-    <i-row style="margin-top:20px;">
+    <i-row style="margin-top:20px;" v-if="materialInfo.length">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
         <a name="sucaiziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">素材资料</a>
@@ -312,14 +312,14 @@
     </i-row>
     <div style="position:absolute;top:122px;right:153px ">
       <div style="width: 65px;height: 260px;display: flex;align-items: center;flex-wrap: wrap; position: absolute;top: 10px;left: 30px; ">
-        <a href="#xuangouxinxi " class="quick-link " :class="{color:getClassName.a1} ">选购信息</a>
-        <a href="#cheliangxinxi " class="quick-link " :class="{color:getClassName.a2} ">车辆信息</a>
-        <a href="#chanpinxinxi " class="quick-link " :class="{color:getClassName.a3} ">产品信息</a>
-        <a href="#gerenziliao " class="quick-link " :class="{color:getClassName.a4} ">个人资料</a>
+        <a href="#xuangouxinxi " class="quick-link " :class="{color:getClassName.a1}">选购信息</a>
+        <a href="#cheliangxinxi " v-if="carOrderInfo.length" class="quick-link " :class="{color:getClassName.a2}">车辆信息</a>
+        <a href="#chanpinxinxi " class="quick-link " :class="{color:getClassName.a3}">产品信息</a>
+        <a href="#gerenziliao " class="quick-link " :class="{color:getClassName.a4}">个人资料</a>
         <a href="#zhiyexinxi " class="quick-link " :class="{color:getClassName.a5} ">职业信息</a>
         <a href="#lianxirenxinxi " class="quick-link " :class="{color:getClassName.a6} ">联系人信息</a>
         <a href="#kehulaiyuan " class="quick-link " :class="{color:getClassName.a7} ">客户来源</a>
-        <a href="#sucaiziliao " class="quick-link " :class="{color:getClassName.a8} ">素材资料</a>
+        <a href="#sucaiziliao " v-if="materialInfo.length" class="quick-link " :class="{color:getClassName.a8} ">素材资料</a>
       </div>
     </div>
     <!--<Slider v-model="sliderStep " :step="1 " show-stops :min="2 " :max="7 " style="transform: rotate(90deg);position: absolute;top: 242px;right: 15px;width:280px "></Slider>-->
