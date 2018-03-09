@@ -16,6 +16,7 @@ requireAll(require.context("~/assets/icons", false, /\.svg$/));
   components: {}
 })
 export default class SvgIcon extends Vue {
+  // name: "SvgIcon";
   @Prop({ required: true })
   iconClass: String;
 

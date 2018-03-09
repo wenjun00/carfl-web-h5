@@ -32,14 +32,13 @@
       </i-form>
 
       <span class="title">付款明细</span>
-      <data-box :columns="columns1" :data="payDetail" :noDefaultRow="true"></data-box>
+      <i-table :columns="columns1" :data="payDetail" :noDefaultRow="true"></i-table>
       <span class="title">账户信息</span>
-      <data-box :columns="columns3" :data="accountDetail" :noDefaultRow="true"></data-box>
+      <i-table :columns="columns3" :data="accountDetail" :noDefaultRow="true"></i-table>
       <span class="title">附件</span>
       <i-row>
         <i-col :span="12">
-          <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;"
-            @click="addAttachment">
+          <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;" @click="addAttachment">
             <Icon type="plus-circled" style="display:block;margin-top:60px;" size="40"></Icon>
             <div>点击添加附件</div>
             <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
@@ -64,129 +63,119 @@
       
     </i-row>-->
     <!--Model-->
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置">
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
   </section>
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import DataBox from "~/components/common/data-box.vue";
-  import {
-    Prop
-  } from "vue-property-decorator";
-  @Component({
+import Vue from "vue";
+import Component from "vue-class-component";
+import DataBox from "~/components/common/data-box.vue";
+import { Prop } from "vue-property-decorator";
+@Component({
+  components: {
+    DataBox
+  }
+})
+export default class ApplyDetail extends Vue {
+  @Prop() orderType;
+  addAttachmentShow: Boolean;
 
-    components: {
-      DataBox
-    }
-  })
-  export default class ApplyDetail extends Vue {
-    @Prop() orderType;
-    addAttachmentShow: Boolean;
-
-    private applyType: String = '销售收款申请'
-    private payDetail: Array < Object > = [];
-    private data1: Array < Object > = [];
-    private columns1: any;
-    private openColumnsConfig: Boolean = false
-    private columns2: any;
-    private data2: Array < Object > = [];
-    private columns3: any;
-    private accountDetail: Array < Object > = [];
-    private fileList: Array < Object > = [];
-    private addNewApplyModal: any = {
-      name: '',
-      idCard: ''
-    };
-    private refundList: Object = {};
-    private refundType: String = '';
-    private remark: String = '';
-    private orderNumber: String = '';
-    /**
-     * 添加附件
-     */
-    addAttachment() {}
-    /**
-     *打开页面获取申请数据
-     */
-    getparent(val) {
-      this.refundList = val
-      this.addNewApplyModal = val.personal
-      this.payDetail = val.itemList
-      this.accountDetail = val.bankListk
-      this.fileList = val.resourceList
-      this.refundType = val.RefundApplication ? val.RefundApplication.refundType : ''
-      this.remark = val.RefundApplication ? val.RefundApplication.remark : ''
-      this.orderNumber = val.productOrder.orderNumber
-    }
-    getparentData(val, row) {
-      console.log(val, row)
-      this.orderNumber = val.orderNumber // 订单号
+  private applyType: String = "销售收款申请";
+  private payDetail: Array<Object> = [];
+  private data1: Array<Object> = [];
+  private columns1: any;
+  private columns2: any;
+  private data2: Array<Object> = [];
+  private columns3: any;
+  private accountDetail: Array<Object> = [];
+  private fileList: Array<Object> = [];
+  private addNewApplyModal: any = {
+    name: "",
+    idCard: ""
+  };
+  private refundList: Object = {};
+  private refundType: String = "";
+  private remark: String = "";
+  private orderNumber: String = "";
+  /**
+   * 添加附件
+   */
+  addAttachment() {}
+  /**
+   *打开页面获取申请数据
+   */
+  getparent(val) {
+    this.refundList = val;
+    this.addNewApplyModal = val.personal;
+    this.payDetail = val.itemList;
+    this.accountDetail = val.bankListk;
+    this.fileList = val.resourceList;
+    this.refundType = val.RefundApplication
+      ? val.RefundApplication.refundType
+      : "";
+    this.remark = val.RefundApplication ? val.RefundApplication.remark : "";
+    this.orderNumber = val.productOrder.orderNumber;
+  }
+  getparentData(val, row) {
+    console.log(val, row);
+    this.orderNumber = val.orderNumber; // 订单号
+    val.collectMoneyItemModels.map(v => {
+      v.refundAmount = v.itemMoney;
+      v.refundItem = v.itemLabel;
+    });
+    this.addNewApplyModal.name = val.customerName; // 客户姓名
+    this.payDetail = val.collectMoneyItemModels; // 付款明细
+    this.addNewApplyModal.idCard = val.idCard; // 证件号
+    this.remark = val.remark;
+    this.refundType = val.applicationType
+      ? this.$dict.getDictName(val.applicationType)
+      : ""; // 付款类型
+    this.accountDetail = val.personalBank; // 账户信息
+    this.fileList = val.applicationPhaseUploadResources;
+  }
+  getparentreceipt(val) {
+    console.log(val);
+    this.addNewApplyModal.name = val.accountName; // 客户姓名
+    this.refundType = val.applicationType; // 付款类型
+    if (val.collectMoneyItemModels) {
       val.collectMoneyItemModels.map(v => {
-        v.refundAmount = v.itemMoney
-        v.refundItem = v.itemLabel
-      })
-      this.addNewApplyModal.name = val.customerName // 客户姓名
-      this.payDetail = val.collectMoneyItemModels // 付款明细
-      this.addNewApplyModal.idCard = val.idCard // 证件号
-      this.remark = val.remark
-      this.refundType = val.applicationType // 付款类型
-      this.accountDetail = val.personalBank // 账户信息
-      this.fileList = val.applicationPhaseUploadResources
+        v.refundAmount = v.itemMoney;
+        v.refundItem = v.itemLabel;
+      });
+      this.payDetail = val.collectMoneyItemModels; // 付款明细
     }
-    getparentreceipt(val) {
-      console.log(val)
-      this.addNewApplyModal.name = val.accountName // 客户姓名
-      this.refundType = val.applicationType // 付款类型
-      if (val.collectMoneyItemModels) {
-        val.collectMoneyItemModels.map(v => {
-          v.refundAmount = v.itemMoney
-          v.refundItem = v.itemLabel
-        })
-        this.payDetail = val.collectMoneyItemModels // 付款明细
-      }
-      //   this.accountDetail[0].personalName = val.personalBank.personalName
-      //   this.accountDetail[0].depositBank = val.personalBank.depositBank
-      let personalBank: any = []
-      personalBank.push({
-        personalName: val.personalBank.personalName ? val.personalBank.personalName : '',
-        depositBank: val.personalBank.depositBank,
-        cardNumber: val.personalBank.cardNumber,
-        depositBranch: val.personalBank.depositBranch,
-        clientNumber: val.personalBank.clientNumber
-      })
-      this.accountDetail = personalBank
-      this.fileList = val.financeUploadResources
-    }
-    /**
-     *删除附件
-     */
-    handleRemove(file) {
-      console.log(file)
-      this.fileList.splice(this.fileList.indexOf(file), 1);
-    }
-    created() {
-      console.log(2)
-      this.columns1 = [{
-        align: 'center',
+    //   this.accountDetail[0].personalName = val.personalBank.personalName
+    //   this.accountDetail[0].depositBank = val.personalBank.depositBank
+    let personalBank: any = [];
+    personalBank.push({
+      personalName: val.personalBank.personalName
+        ? val.personalBank.personalName
+        : "",
+      depositBank: val.personalBank.depositBank,
+      cardNumber: val.personalBank.cardNumber,
+      depositBranch: val.personalBank.depositBranch,
+      clientNumber: val.personalBank.clientNumber
+    });
+    this.accountDetail = personalBank;
+    this.fileList = val.financeUploadResources;
+  }
+  /**
+   *删除附件
+   */
+  handleRemove(file) {
+    console.log(file);
+    this.fileList.splice(this.fileList.indexOf(file), 1);
+  }
+  created() {
+    console.log(2);
+    this.columns1 = [
+      {
+        align: "center",
         width: 60,
-        renderHeader: (h, {
-          column,
-          index
-        }) => {
+        renderHeader: (h, { column, index }) => {
           return h(
-            "div", {
+            "div",
+            {
               on: {
                 click: () => {
                   // this.columnsConfig();
@@ -195,7 +184,8 @@
               style: {
                 cursor: "pointer"
               }
-            }, [
+            },
+            [
               h("Icon", {
                 props: {
                   type: "plus",
@@ -205,89 +195,87 @@
             ]
           );
         },
-        render: (h, {
-          row,
-          columns,
-          index
-        }) => {
-          if (row.projectName !== '合计') {
-            return h('Icon', {
+        render: (h, { row, columns, index }) => {
+          if (row.itemName !== "totalPayment") {
+            return h("Icon", {
               props: {
-                type: 'trash-b',
+                type: "trash-b",
                 size: "20"
               }
-            })
+            });
           }
         }
-      }, {
-        title: '项目名称',
-        key: 'refundItem',
-        align: 'center'
-      }, {
-        title: '金额',
-        key: 'refundAmount',
-        align: 'center'
-      }]
+      },
+      {
+        title: "项目名称",
+        key: "refundItem",
+        align: "center"
+      },
+      {
+        title: "金额",
+        key: "refundAmount",
+        align: "center"
+      }
+    ];
 
-      this.data1 = [{
-        projectName: '首付金额',
-        money: '80000'
-      }, {
-        projectName: '首付月供',
-        money: '10000'
-      }, {
-        projectName: '保证金',
-        money: '8000'
-      }, {
-        projectName: '路桥费',
-        money: '0'
-      }, {
-        projectName: '合计',
-        money: '98000'
-      }]
-      this.columns2 = [{
+    this.data1 = [
+      {
+        projectName: "首付金额",
+        money: "80000"
+      },
+      {
+        projectName: "首付月供",
+        money: "10000"
+      },
+      {
+        projectName: "保证金",
+        money: "8000"
+      },
+      {
+        projectName: "路桥费",
+        money: "0"
+      },
+      {
+        projectName: "合计",
+        money: "98000"
+      }
+    ];
+    this.columns2 = [{}];
+    this.data2 = [{}];
 
-      }]
-      this.data2 = [{
-
-      }]
-
-      this.columns3 = [{
+    this.columns3 = [
+      {
         title: "户名",
-        align: 'center',
-        key: 'personalName'
-      }, {
+        align: "center",
+        key: "personalName"
+      },
+      {
         title: "开户银行",
-        align: 'center',
-        key: 'depositBank'
-      }, {
+        align: "center",
+        key: "depositBank"
+      },
+      {
         title: "银行卡号",
-        align: 'center',
-        key: 'cardNumber'
-      }, {
+        align: "center",
+        key: "cardNumber"
+      },
+      {
         title: "支行名称",
-        align: 'center',
-        key: 'depositBranch'
-      }, {
+        align: "center",
+        key: "depositBranch"
+      },
+      {
         title: "第三方客户号",
-        align: 'center',
-        key: 'clientNumber'
-      }]
-
-    }
-    /**
-     * 列配置
-     */
-    columnsConfig() {
-      this.openColumnsConfig = true
-    }
+        align: "center",
+        key: "clientNumber"
+      }
+    ];
   }
-
+}
 </script>
 <style lang="less" scope>
-  .title {
-    font-size: 14px;
-    font-weight: bold;
-  }
-
+.title {
+  font-size: 14px;
+  font-weight: bold;
+}
 </style>
