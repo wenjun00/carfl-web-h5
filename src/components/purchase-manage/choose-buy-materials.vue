@@ -502,7 +502,7 @@
       this.chooseBuyModel.province = data.province
       this.chooseBuyModel.city = data.city
       this.chooseBuyModel.companyId = data.companyId
-      this.chooseBuyModel.orderServiceList = [65, 66] // 自缴费用
+      this.chooseBuyModel.orderServiceList = data.orderServiceList // 自缴费用
       this.chooseBuyModel.financingUse = data.financingUse
       this.chooseBuyModel.intentionFinancingAmount = data.intentionFinancingAmount
       this.chooseBuyModel.intentionPeriods = data.intentionPeriods
@@ -623,6 +623,7 @@
      * 添加车辆信息
      */
     distributionData(data) {
+      console.log(data, 'addcarData')
       this.addcarData = data
       this.totalPrice = data.map(v => v.carAmount).reduce((x, y) => {
         return x + y;

@@ -371,6 +371,13 @@
                           vehicleEmissions: item.carEmissions
                         });
                       }
+                      choosebuymaterials.addcarData.map(v => {
+                        v.carSeriesId = v.seriesId,
+                          v.amount = v.carAmount,
+                          v.vehicleColour = v.carColour,
+                          v.vehicleEmissions = v.carEmissions
+
+                      })
                       let addcarDatas = Array.from(new Set(this.addcarData))
                       for (let material of uploadTheMaterial.dataList) {
                         this.PersonalData.push({
