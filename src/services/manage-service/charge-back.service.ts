@@ -40,7 +40,13 @@ export class ChargeBackService {
   getChargeRecordList(data, page) {
     return this.netService.send({
       server: manageService.chargeBackController.getChargeRecordList,
-      data,
+      data: {
+        startTime: FilterService.dateFormat(data.startTime, 'yyyy-MM-dd'),
+        endTime: FilterService.dateFormat(data.endTime, 'yyyy-MM-dd'),
+        payStatus: data.payStatus,  
+        personalInfo: data.personalInfo,  
+        personalId: data.personalId
+      },
       page
     })
   }

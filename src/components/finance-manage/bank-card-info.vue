@@ -15,13 +15,13 @@
       <p>开户行：{{model.depositBank}} <span style="font-size:16px">|</span> 支行：{{model.depositBranch}}</p>
     </div>
     <div style="border:1px solid #ddd;height:40px;line-height:40px;background:#F1F9FD">
-      <span style="margin-left:6px;">验证状态：</span><span style="color:green">{{model.openAccountStatus}}</span>
+      <span style="margin-left:6px;">验证状态：</span><span style="color:green">{{$dict.getDictName(model.openAccountStatus)}}</span>
       <span style="float:right;margin-right:6px;">绑卡日期：2017-12-01</span>
     </div>
 
     <template>
       <i-modal title="换卡" v-model="dialog.change" width="480" class="changeCard">
-        <change-card @close="dialog.change = false"></change-card>
+        <change-card ref="change-card" @close="dialog.change = false,$emit('change')"></change-card>
         <div slot="footer">
           <i-button>取消</i-button>
           <i-button class="blueButton">确认解绑</i-button>
@@ -31,10 +31,10 @@
 
     <template>
       <i-modal title="解绑银行卡" width="480" v-model="dialog.unbind">
-        <unbind-bank-card></unbind-bank-card>
+        <unbind-bank-card ref="unbind-bank-card"></unbind-bank-card>
         <div slot="footer">
           <i-button @click="dialog.unbind=false" class="defaultButton">取消</i-button>
-          <i-button @click="dialog.unbind=false" class="blueButton">确认解绑</i-button>
+          <i-button @click="unbindConfirm" class="blueButton">确认解绑</i-button>
         </div>
       </i-modal>
     </template>
@@ -65,7 +65,9 @@
       change: '',
       unbind: ''
     }
+    private rowObj: any = {};
     refresh(row) {
+      this.rowObj = row
       this.chargeBackService.getPersonalBank({ id: row.personalId, accountType: row.accountType }).subscribe(val => {
         this.model = val
       }, ({ msg }) => {
@@ -73,13 +75,29 @@
       })
     }
     changeBankCard() {
+      let _change: any = this.$refs['change-card']
+      _change.refresh(this.rowObj)
       this.dialog.change = true
     }
     /**
      * 解绑银行卡
      */
     unbindBankCard() {
+      let _change: any = this.$refs['unbind-bank-card']
+      _change.refresh(this.rowObj)
       this.dialog.unbind = true
+    }
+    /**
+     * 确认解绑
+     */
+    unbindConfirm() {
+      this.chargeBackService.getPersonalBank({ id: this.rowObj.personalId, accountType: this.rowObj.accountType }).subscribe(val => {
+        this.$Message.success('解绑成功！')
+        this.dialog.unbind = false
+        this.$emit('change')
+      }, ({ msg }) => {
+        this.$Message.error(msg)
+      })
     }
   }
 

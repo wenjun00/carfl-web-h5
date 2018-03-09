@@ -32,7 +32,7 @@
     </i-row>
     <data-box :columns="columns1" :data="data1" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
 
-    <div class="submitBar">
+    <!--<div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="8" push="1">
           <span>申请人：administrator</span>
@@ -44,7 +44,7 @@
           <i-button class="highButton" style="margin-left:10px;" @click="createAccount">客户开户</i-button>
         </i-col>
       </i-row>
-    </div>
+    </div>-->
     <!--开户弹窗-->
     <template>
       <i-modal v-model="dialog.create" title="开户绑卡" width="400">
@@ -57,8 +57,8 @@
     </template>
 
     <template>
-      <i-modal v-model="bankCardInfoModal" :transfer="false" class="bankCardInfo" title="银行卡信息" width="400">
-        <bank-card-info ref="bank-card-info"></bank-card-info>
+      <i-modal v-model="dialog.cardInfo" :transfer="false" class="bankCardInfo" title="银行卡信息" width="400">
+        <bank-card-info ref="bank-card-info" @change="dialog.cardInfo=false,getGatherListByCondition()"></bank-card-info>
       </i-modal>
     </template>
 
@@ -105,9 +105,8 @@
     private checkRadio: String = "融资租赁合同";
     private dialog: any = {
       create: false,
-
+      cardInfo: false
     }
-    private bankCardInfoModal: Boolean = false;
     private deductModal: Boolean = false;
     private gatherModel: any = {
       orderInfo: '',
@@ -140,17 +139,11 @@
       let create: any = this.$refs['create-personal-account']
       this.chargeBackService.createPersonalAccount(create.model).subscribe(val => {
         this.$Message.info('操作成功！')
+        this.dialog.create = false
+        this.getGatherListByCondition()
       }, ({ msg }) => {
         this.$Message.error(msg)
       })
-    }
-    /**
-     * 开户
-     */
-    createAccount() {
-      let create: any = this.$refs['create-personal-account']
-      create.refresh()
-      this.dialog.create = true
     }
     created() {
       this.getGatherListByCondition()
@@ -162,6 +155,20 @@
           render: (h, { row, column, index }) => {
             return h("div", [ h("i-button", {
               props: {
+                type: "text"
+              },
+              style: {
+                color: "#265EA2"
+              },
+              on: {
+                click: () => {
+                  let create: any = this.$refs['create-personal-account']
+                  create.refresh(row)
+                  this.dialog.create = true
+                }
+              }
+            }, "客户开户"),h("i-button", {
+              props: {
                   type: "text"
                 },
                 style: {
@@ -169,26 +176,26 @@
                 },
                 on: {
                   click: () => {
-                    this.bankCardInfoModal = true
+                    this.dialog.cardInfo = true
                     let _card: any = this.$refs['bank-card-info']
                     _card.refresh(row)
                   }
                 }
               }, "银行卡信息"), h("i-button", {
-                  props: {
-                    type: "text"
-                  },
-                  style: {
-                    color: "#265EA2"
-                  },
-                  on: {
-                    click: () => {
-                      let _deduct: any = this.$refs.deduct
-                      _deduct.refresh(row)
-                      this.deductModal = true
-                    }
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    let _deduct: any = this.$refs.deduct
+                    _deduct.refresh(row)
+                    this.deductModal = true
                   }
-                }, "划扣")]);
+                }
+              }, "划扣")]);
           }
         },
         {
@@ -212,7 +219,7 @@
             column,
             index
           }) => {
-            return h("span", {}, this.$dict.getDictName(row.accountType));
+            return h("span", {}, this.$dict.getDictName(Number(row.accountType)));
           }
         },
         {
