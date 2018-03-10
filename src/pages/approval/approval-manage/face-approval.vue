@@ -20,7 +20,7 @@
         <svg-icon iconClass="dayin"></svg-icon>
         <span style="font-size: 12px;">打印</span>
       </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" @click="exportFaceApprovalList">
         <svg-icon iconClass="daochu"></svg-icon>
         <span style="font-size: 12px;">导出</span>
       </div>
@@ -78,6 +78,7 @@ import { FilterService } from "~/utils/filter.service";
 import { CityService } from "~/utils/city.service";
 import { ApprovalService } from "~/services/manage-service/approval.service";
 import SvgIcon from "~/components/common/svg-icon.vue";
+import { CommonService } from "~/utils/common.service";
 
 @Layout("workspace")
 @Component({
@@ -283,6 +284,10 @@ export default class FaceApproval extends Page {
       }
     ];
   }
+  /**
+   * 导出面审列表
+   */
+  exportFaceApprovalList() {}
   /**
    * 领取
    */

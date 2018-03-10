@@ -310,7 +310,8 @@
      * 保存并提交
      */
     saveAndSubmit(type) {
-      console.log(7878078780)
+      let customerOrigin: any = this.$refs['customer-origin'];
+      console.log(customerOrigin.customerOriginModel, 'customerOrigin.customerOriginModel')
       let _customerform: any = this.$refs['customer-form'];
       _customerform.validate(valid => {
         if (!valid) {
@@ -341,7 +342,7 @@
                       let customerJobMessage: any = this.$refs['customer-job-message'];
                       let customerContacts: any = this.$refs['customer-contacts'];
                       let customerOrigin: any = this.$refs['customer-origin'];
-                      console.log(customerOrigin.OriginModel, 'OriginModel')
+                      console.log(customerOrigin, 'OriginModel')
                       let uploadTheMaterial: any = this.$refs['upload-the-material'];
                       if (customerContacts.data1.length < 2) {
                         this.$Message.warning('直系亲属必填2个！');
@@ -530,7 +531,7 @@
     }
     .shade {
       width: 98%;
-      height: 666px;
+      height: 2000px;
       background: rgba(250, 250, 250, 0.4);
       position: absolute;
       left: 21px;

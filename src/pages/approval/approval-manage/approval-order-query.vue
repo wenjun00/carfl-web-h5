@@ -20,7 +20,7 @@
         <svg-icon iconClass="dayin"></svg-icon>
         <span style="font-size: 12px;">打印</span>
       </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" @click="exportOrderQueryList">
         <svg-icon iconClass="daochu"></svg-icon>
         <span style="font-size: 12px;">导出</span>
       </div>
@@ -58,6 +58,8 @@ import { ApprovalService } from "~/services/manage-service/approval.service";
 import { PageService } from "~/utils/page.service";
 import { CityService } from "~/utils/city.service";
 import { FilterService } from "~/utils/filter.service";
+import { CommonService } from "~/utils/common.service";
+
 @Layout("workspace")
 @Component({
   components: {
@@ -259,6 +261,10 @@ export default class ApprovalOrderQuery extends Page {
   openSearch() {
     this.searchOptions = !this.searchOptions;
   }
+  /**
+   * 导出订单查询列表
+   */
+  exportOrderQueryList() {}
   /**
    * 获取Icon类
    */

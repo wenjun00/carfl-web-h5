@@ -9,7 +9,7 @@
         <div>{{pageData.intentionFinancingAmount}}</div>
       </data-grid-item>
       <data-grid-item label="首付比例" :span="6">
-        <i-select v-model="passModel.paymentScale">
+        <i-select v-model="passModel.paymentScale" clearable>
           <i-option v-for="item in initialPayment" :key="item" :value="item" :label="item+'%'"></i-option>
         </i-select>
       </data-grid-item>
@@ -17,7 +17,7 @@
         <div>{{pageData.initialPayment}}</div>
       </data-grid-item>
       <data-grid-item label="保证金比例" :span="6">
-        <i-select v-model="passModel.depositPercent">
+        <i-select v-model="passModel.depositPercent" clearable>
           <i-option v-for="item in depositCash" :key="item" :value="item" :label="item+'%'"></i-option>
         </i-select>
       </data-grid-item>
@@ -31,7 +31,7 @@
         <div>{{pageData.finalCash}}</div>
       </data-grid-item>
       <data-grid-item label="管理费率" :span="6">
-        <i-select v-model="passModel.manageCostPercent">
+        <i-select v-model="passModel.manageCostPercent" clearable>
           <i-option v-for="item in manageCost" :key="item" :value="item" :label="item+'%'"></i-option>
         </i-select>
       </data-grid-item>
@@ -48,7 +48,7 @@
         <div>{{productRate}}</div>
       </data-grid-item>
       <data-grid-item label="还款方式" :span="6">
-        <i-select v-model="passModel.payWay">
+        <i-select v-model="passModel.payWay" clearable>
           <i-option v-for="{value,label} in $dict.getDictData('0408')" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </data-grid-item>
@@ -102,7 +102,6 @@ export default class SecondLastApprove extends Vue {
   private monthlySupply: Number = 0;
   private periods: String = "";
   private pageData: any = {};
-
   private passModel: any = {
     paymentScale: "",
     depositPercent: "",
@@ -118,10 +117,9 @@ export default class SecondLastApprove extends Vue {
    * 获取页面所需比例
    */
   getRate(orderId, pageData) {
+    console.log(pageData, "ppppppp");
     this.passModel.orderId = orderId; // 获取通过时需要的orderId
     this.pageData = pageData;
-    this.passModel.remark=pageData.remark
-    console.log(pageData, 9980);
     this.approvalService
       .getRate({
         orderId: orderId
@@ -154,16 +152,30 @@ export default class SecondLastApprove extends Vue {
     this.passModel.periods = this.periods; // 期数
     this.passModel.monthlySupply = this.monthlySupply; // 月供金额
     this.passModel.productRate = this.productRate; // 产品利率
-
-    this.approvalService.passApproval(this.passModel).subscribe(
-      data => {
-        this.$Message.success("操作成功！");
-        this.$emit("close");
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
-    );
+    if (
+      this.passModel.paymentScale &&
+      this.passModel.depositPercent &&
+      this.passModel.manageCostPercent &&
+      this.passModel.payWay
+    ) {
+      this.approvalService.passApproval(this.passModel).subscribe(
+        data => {
+          this.$Message.success("操作成功！");
+          this.$emit("close");
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+    } else if (!this.passModel.paymentScale) {
+      this.$Message.error("请选择首付比例！");
+    } else if (!this.passModel.depositPercent) {
+      this.$Message.error("请选择保证金比例！");
+    } else if (!this.passModel.manageCostPercent) {
+      this.$Message.error("请选择管理费率！");
+    } else if (!this.passModel.payWay) {
+      this.$Message.error("请选择还款方式！");
+    }
   }
 }
 </script>
