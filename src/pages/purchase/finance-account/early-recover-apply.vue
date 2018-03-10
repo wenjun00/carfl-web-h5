@@ -72,7 +72,7 @@
     </i-row>
     <i-tabs v-model="materialTabs" type="card" class="early-recover-tabs">
       <i-tab-pane name="gather-detail-early-pay" label="收款明细">
-        <gather-detail-early-pay :checkOrderId="checkOrderId" ref="gather-detail-early-pay"></gather-detail-early-pay>
+        <gather-detail-early-pay :checkOrderId="checkOrderId" :typeData="typeData" ref="gather-detail-early-pay"></gather-detail-early-pay>
       </i-tab-pane>
       <i-tab-pane name="upload-the-fodder" label="上传素材">
         <upload-the-fodder></upload-the-fodder>
@@ -210,6 +210,7 @@
     private orderIdModels: any = {};
     private single: Boolean = false;
     private type: Boolean = false;
+    private typeData: Boolean = true;
     private saveDraftModel: any = {
       addFinanceUploadResources: [], // 新增上传资料列表
       delFinanceUploadResources: [], // 删除上传资料Id列表
