@@ -57,8 +57,8 @@
     Dependencies
   } from "~/core/decorator";
   import {
-    OrderService
-  } from "~/services/business-service/order.service";
+    ReportService
+  } from "~/services/report-service/report.service";
   import {
     Layout
   } from "~/core/decorator";
@@ -72,15 +72,24 @@
     }
   })
   export default class ClearAccountReport extends Page {
-    @Dependencies(OrderService) private orderService: OrderService;
+    @Dependencies(ReportService) private reportService: ReportService;
     private columns1: any;
     private data1: Array < Object > = [];
+    private model: any = {
+      
+    };
     private dataHuifu: Array < Object > = [];
     private columnsFuyou: any;
     private dataFuyou: Array < Object > = [];
     private searchOptions: Boolean = false;
 
-
+    getData() {
+      this.reportService.getSettlementReport(this.model).subscribe(val => {
+        this.data1 = val
+      }, ({ msg }) => {
+        this.$Message.error(msg)
+      })    
+    }
     created() {
       this.data1 = [{
         companyProfile: '群泰西安'
