@@ -11,9 +11,9 @@ export class ContractService {
     /**
      * 生成合同
      */
-    createContract(data) {
+    createOneContract(data) {
         return this.netService.send({
-            server: contractService.contractController.createContract,
+            server: contractService.contractController.createOneContract,
             data
         })
     }

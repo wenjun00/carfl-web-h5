@@ -6,10 +6,10 @@ export default {
     /**
      * 生成合同
      */
-    createContract: {
+    createOneContract: {
         service: SERVICE,
         controller: CONTROLLER,
-        action: 'createContract',
+        action: 'createOneContract',
         type: requestType.Get
     }
 }

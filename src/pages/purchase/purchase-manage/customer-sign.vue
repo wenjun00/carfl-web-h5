@@ -525,10 +525,10 @@
       console.log(this.rowData)
       let printData: any = {
         orderId: this.rowData.orderId,
-        contractEnum: 'DIRECT_RENT'
+        contectEnum: 'FULL_SALES'
       }
       this.contractService
-        .createContract(printData)
+        .createOneContract(printData)
         .subscribe(
           data => {
             console.log(data)
