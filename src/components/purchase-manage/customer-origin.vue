@@ -133,7 +133,7 @@
     }
     reset() {
       this.OriginModel.resourceType = []
-      this.customerOriginModel = ''
+      this.customerOriginModel = {}
     }
     checked() {
       return !this.ischecked
