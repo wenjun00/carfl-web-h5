@@ -65,6 +65,7 @@
     <template>
       <i-modal v-model="deductModal" title="划扣" width="930">
         <deduct ref="deduct"></deduct>
+        <div slot="footer"></div>
       </i-modal>
     </template>
   </section>

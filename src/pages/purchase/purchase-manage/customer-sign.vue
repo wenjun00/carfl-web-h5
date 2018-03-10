@@ -40,13 +40,13 @@
           <span style="position:relative;bottom:6px;margin-right:10px;">订单类型</span>
           <i-radio-group v-model="checkRadio" @on-change="changeCompactType">
             <i-row>
-              <i-col :span="6">
+              <i-col :span="12">
                 <i-radio label="融资租赁合同"></i-radio>
-                <i-radio label="长租合同"></i-radio>
+                <!--<i-radio label="长租合同"></i-radio>-->
               </i-col>
-              <i-col :span="6">
+              <i-col :span="12">
                 <i-radio label="全款销售合同"></i-radio>
-                <i-radio label="长租合同（银行版）"></i-radio>
+                <!--<i-radio label="长租合同（银行版）"></i-radio>-->
               </i-col>
             </i-row>
             <!--<i-row>-->
@@ -135,6 +135,8 @@
     private checkRadio: String = "融资租赁合同";
     private columns3: any;
     private rowData: any;
+    private type: any;
+    private contectEnum: any;
     private customerSignModel: any = {
       orderInfo: "",
       timeSearch: "",
@@ -324,40 +326,43 @@
 
       this.data3 = [{
           fileName: "融资租赁申请单"
-        },
-        {
-          fileName: "融资租赁合同正文"
-        },
-        {
-          fileName: "合同附件一(付款时间表)"
-        },
-        {
-          fileName: "合同附件二(配偶确认书)"
-        },
-        {
-          fileName: "合同附件三(共同承租人确认书)"
-        },
-        {
-          fileName: "委托收款合同"
-        },
-        {
-          fileName: "首付款明细"
-        },
-        {
-          fileName: "服务确认书"
-        },
-        {
-          fileName: "责任告知书"
-        },
-        {
-          fileName: "车辆交接单"
-        },
-        {
-          fileName: "车辆出库单"
-        },
-        {
-          fileName: "补充协议（减免）"
         }
+        //   {
+        //   fileName: "融资租赁申请单"
+        // },
+        // {
+        //   fileName: "融资租赁合同正文"
+        // },
+        // {
+        //   fileName: "合同附件一(付款时间表)"
+        // },
+        // {
+        //   fileName: "合同附件二(配偶确认书)"
+        // },
+        // {
+        //   fileName: "合同附件三(共同承租人确认书)"
+        // },
+        // {
+        //   fileName: "委托收款合同"
+        // },
+        // {
+        //   fileName: "首付款明细"
+        // },
+        // {
+        //   fileName: "服务确认书"
+        // },
+        // {
+        //   fileName: "责任告知书"
+        // },
+        // {
+        //   fileName: "车辆交接单"
+        // },
+        // {
+        //   fileName: "车辆出库单"
+        // },
+        // {
+        //   fileName: "补充协议（减免）"
+        // }
       ];
     }
     /**
@@ -418,6 +423,7 @@
      * 切换合同种类
      */
     changeCompactType(type) {
+      this.type = type
       if (type === "全款销售合同") {
         this.data3 = [{
             fileName: "融资租赁申请单"
@@ -522,17 +528,22 @@
      * 打印预览
      */
     printPreview() {
-      console.log(this.rowData)
+      if (this.checkRadio === '全款销售合同') {
+        this.contectEnum = 'FULL_SALES'
+      }
+      if (this.checkRadio === '融资租赁合同') {
+        this.contectEnum = 'DIRECT_RENT'
+      }
       let printData: any = {
         orderId: this.rowData.orderId,
-        contectEnum: 'FULL_SALES'
+        contectEnum: this.contectEnum
       }
       this.contractService
         .createOneContract(printData)
         .subscribe(
           data => {
-            console.log(data)
-            // this.data1 = data;
+            window.open(data.resultJson.contractInfo[0].pdfUrl);
+            this.openCreateCompact = false
           },
           ({
             msg

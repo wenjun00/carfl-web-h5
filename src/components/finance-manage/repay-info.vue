@@ -117,7 +117,7 @@
                   click: () => {
                     this.repayRecordModal = true
                     let _record: any = this.$refs['repay-record']
-                    _record.refresh(this.rowObj)
+                    _record.refresh(this.rowObj, row)
                   }
                 },
                 style: {

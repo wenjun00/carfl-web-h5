@@ -34,10 +34,10 @@
     };
     private columns1: any;
     private data1: Array < Object >= [];
-    refresh(row) {
+    refresh(row, obj) {
       this.paymentScheduleService.getPaymentRecordDetail({
         personalId: row.personalId,
-        businessId: row.businessId,
+        businessId: obj.id,
         orderId: row.orderId
       }).subscribe(data => {
         this.repayObj.customerName = data.customerName
