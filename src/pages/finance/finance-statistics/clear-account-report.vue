@@ -27,19 +27,24 @@
       <i-date-picker></i-date-picker>~
       <i-date-picker></i-date-picker>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <!--<table border="1" width="100%" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
+      <tr height="40">
+        <td bgcolor="#F2F2F2" rowspan="2" width="5%">公司简称</td>        
+        <td bgcolor="#F2F2F2" colspan="10" width="20%">汇付</td>
+        <td bgcolor="#F2F2F2" colspan="10" width="20%">富友</td>
+      </tr>
+      <tr height="40">
+        <td bgcolor="#F2F2F2" v-for="(v,i) in columnsFuyou" :key="'a'+i">{{v.title}}</td>
+        <td bgcolor="#F2F2F2" v-for="(v,i) in columnsFuyou" :key="'b'+i">{{v.title}}</td>
+      </tr>
+      <tr height="40" v-for="(val,index) in data1" :key="index">
+        <td>{{val.companyProfile}}</td>
+        <td v-for="(v,i) in columnsFuyou" :key="'c'+i">{{val.huifu[v.key]}}</td>
+        <td v-for="(v,i) in columnsFuyou" :key="'d'+i">{{val.fuyou[v.key]}}</td>
+      </tr>
+    </table>-->
+    <i-table :columns="columns1" :data="data1"></i-table>
 
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置">
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -52,8 +57,8 @@
     Dependencies
   } from "~/core/decorator";
   import {
-    OrderService
-  } from "~/services/business-service/order.service";
+    ReportService
+  } from "~/services/report-service/report.service";
   import {
     Layout
   } from "~/core/decorator";
@@ -67,49 +72,33 @@
     }
   })
   export default class ClearAccountReport extends Page {
-    @Dependencies(OrderService) private orderService: OrderService;
+    @Dependencies(ReportService) private reportService: ReportService;
     private columns1: any;
     private data1: Array < Object > = [];
-    private columns2: any;
-    private data2: Array < Object > = [];
-    private columnsHuifu: any;
+    private model: any = {
+      
+    };
     private dataHuifu: Array < Object > = [];
     private columnsFuyou: any;
     private dataFuyou: Array < Object > = [];
     private searchOptions: Boolean = false;
-    private openColumnsConfig: Boolean = false;
 
-
+    getData() {
+      this.reportService.getSettlementReport(this.model).subscribe(val => {
+        this.data1 = val
+      }, ({ msg }) => {
+        this.$Message.error(msg)
+      })    
+    }
     created() {
-      this.columns1 = [{
-          width: 60,
-          type: 'index',
-          align: 'center',
-          renderHeader: (h, {
-            column,
-            index
-          }) => {
-            return h(
-              "div", {
-                on: {
-                  click: () => {
-                    this.columnsConfig();
-                  }
-                },
-                style: {
-                  cursor: "pointer"
-                }
-              }, [
-                h("Icon", {
-                  props: {
-                    type: "gear-b",
-                    size: "20"
-                  }
-                })
-              ]
-            );
-          }
-        },
+      this.data1 = [{
+        companyProfile: '群泰西安'
+      }, {
+        companyProfile: '群泰上海'
+      }, {
+        companyProfile: '群泰武汉'
+      }]
+      this.columns1 = [
         {
           title: "公司简介",
           align: 'center',
@@ -123,7 +112,7 @@
           render: (h, params) => {
             return h('i-table', {
               props: {
-                columns: this.columnsHuifu,
+                columns: this.columnsFuyou,
                 width: 890,
                 data: this.dataHuifu,
                 // border: true,
@@ -149,104 +138,6 @@
           }
         }
       ]
-      this.columns2 = [{
-          title: "序号",
-          type: "index",
-          width: 80,
-          align: "center"
-        },
-        {
-          title: "列名",
-          key: "columnsName",
-          align: "center"
-        },
-        {
-          type: "selection",
-          width: 80,
-          align: "center"
-        }
-      ];
-      this.data2 = [{
-          columnsName: "保证金"
-        },
-        {
-          columnsName: "首付"
-        },
-        {
-          columnsName: "购置税"
-        },
-        {
-          columnsName: "保险"
-        },
-        {
-          columnsName: "杂费"
-        },
-        {
-          columnsName: "月租本金"
-        },
-        {
-          columnsName: "月租利息"
-        },
-        {
-          columnsName: "罚息"
-        },
-        {
-          columnsName: "手续费"
-        }
-      ];
-      this.data1 = [{
-        companyProfile: '群泰西安'
-      }, {
-        companyProfile: '群泰上海'
-      }, {
-        companyProfile: '群泰武汉'
-      }]
-
-      this.columnsHuifu = [{
-        title: '保证金',
-        key: 'cashDeposit',
-        width: 80,
-        align: 'center'
-      }, {
-        title: '首付',
-        key: 'intialPay',
-        align: 'center'
-      }, {
-        title: '购置税',
-        width: 80,
-        key: 'payTax',
-        align: 'center'
-      }, {
-        title: '保险',
-        key: 'insurance',
-        align: 'center'
-      }, {
-        title: '杂费',
-        key: 'otherMoney',
-        align: 'center'
-      }, {
-        title: '月租本金',
-        width: 90,
-        key: 'monthRentMajorMoney',
-        align: 'center'
-      }, {
-        title: '月租利息',
-        width: 90,
-        key: 'monthRentInterest',
-        align: 'center'
-      }, {
-        title: '罚息',
-        key: 'punishedInterest',
-        align: 'center'
-      }, {
-        title: '手续费',
-        key: 'serviceCharge',
-        align: 'center'
-      }, {
-        title: '小计',
-        key: 'subtotal',
-        align: 'center'
-      }]
 
       this.dataHuifu = [{
         cashDeposit: '800',
@@ -263,57 +154,44 @@
 
       this.columnsFuyou = [{
         title: '保证金',
-        key: 'cashDeposit',
+        key: 'depositCash',
         align: 'center'
       }, {
         title: '首付',
-        key: 'intialPay',
+        key: 'initialPayment',
         align: 'center'
       }, {
         title: '购置税',
-        key: 'payTax',
+        key: 'purchaseTax',
         align: 'center'
       }, {
         title: '保险',
-        key: 'insurance',
+        key: 'insuranceExpenses',
         align: 'center'
       }, {
         title: '杂费',
-        key: 'otherMoney',
+        key: 'otherFee',
         align: 'center'
       }, {
         title: '月租本金',
-        key: 'monthRentMajorMoney',
+        key: 'principalReceived',
         align: 'center'
       }, {
         title: '月租利息',
-        key: 'monthRentInterest',
+        key: 'interestReceived',
         align: 'center'
       }, {
         title: '罚息',
-        key: 'punishedInterest',
+        key: 'penaltyReceived',
         align: 'center'
       }, {
         title: '手续费',
-        key: 'serviceCharge',
+        key: 'param',
         align: 'center'
       }, {
         title: '小计',
-        key: 'subtotal',
+        key: 'sum',
         align: 'center'
-      }]
-
-      this.dataFuyou = [{
-        cashDeposit: '800',
-        intialPay: '900',
-        payTax: '56',
-        insurance: '34',
-        otherMoney: '55',
-        monthRentMajorMoney: '345',
-        monthRentInterest: '25',
-        punishedInterest: '45',
-        serviceCharge: '5',
-        subtotal: '2856'
       }]
     }
     getOrderInfoByTime() {}
@@ -321,9 +199,6 @@
       this.searchOptions = !this.searchOptions;
     }
     exportMonthReport() {
-    }
-    columnsConfig() {
-      this.openColumnsConfig = true;
     }
   }
 
