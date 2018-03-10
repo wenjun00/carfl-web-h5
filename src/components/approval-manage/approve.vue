@@ -293,13 +293,30 @@
         </tr>
         <tr>
           <td bgColor="#F5F5F5">通过介绍</td>
-          <td>
+          <td v-if="personalResourceIntroduce.resourceType===81">
             <span>同行姓名：</span>
             <span>{{personalResourceIntroduce.peerName}}</span>
-            <span>同行公司：</span>
+            <span style="margin-left:10px">同行公司：</span>
             <span>{{personalResourceIntroduce.peerCompany}}</span>
-            <span>同行联系方式：</span>
+            <span style="margin-left:10px">同行联系方式：</span>
             <span>{{personalResourceIntroduce.peerPhone}}</span>
+          </td>
+          <td v-else-if="personalResourceIntroduce.resourceType===82">
+            <span>客户姓名：</span>
+            <span>{{personalResourceIntroduce.customerName}}</span>
+            <span style="margin-left:10px">联系方式：</span>
+            <span>{{personalResourceIntroduce.customerPhone}}</span>
+            <span style="margin-left:10px">在我司是否成功购车：</span>
+            <span>{{personalResourceIntroduce.isBuyCar===0?'是':'否'}}</span>
+          </td>
+          <td v-else-if="personalResourceIntroduce.resourceType===83">
+            <span>机构名称：</span>
+            <span>{{personalResourceIntroduce.organizationNames}}</span>
+            <span style="margin-left:10px">推荐人：</span>
+            <span>{{personalResourceIntroduce.referrer}}</span>
+          </td>
+          <td v-else>
+            <span></span>
           </td>
         </tr>
       </table>
@@ -419,6 +436,7 @@ export default class Approve extends Vue {
     approveData.installLicenseFee = this.orderInfo.installLicenseFee; // 上牌费
     approveData.purchaseTax = this.orderInfo.purchaseTax; // 购置税
     approveData.remark = this.orderInfo.remark; // 备注
+    approveData.vehicleAmount= this.orderInfo.vehicleAmount; // 车辆参考总价
     return approveData;
   }
 }

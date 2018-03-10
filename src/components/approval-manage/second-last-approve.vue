@@ -2,8 +2,8 @@
 <template>
   <section class="component second-last-approve">
     <data-grid :labelWidth="140">
-      <data-grid-item label="开呗参考价/成交价" :span="6">
-        <div>{{pageData.canKaoJia}}</div>
+      <data-grid-item label="车辆参考总价" :span="6">
+        <div>{{pageData.vehicleAmount}}</div>
       </data-grid-item>
       <data-grid-item label="融资额" :span="6">
         <div>{{pageData.intentionFinancingAmount}}</div>
@@ -17,7 +17,7 @@
         <div>{{pageData.initialPayment}}</div>
       </data-grid-item>
       <data-grid-item label="保证金比例" :span="6">
-        <i-select v-model="passModel.depositPercent" clearable>
+        <i-select v-model="passModel.depositPercent" clearable @on-change="depositChange">
           <i-option v-for="item in depositCash" :key="item" :value="item" :label="item+'%'"></i-option>
         </i-select>
       </data-grid-item>
@@ -31,7 +31,7 @@
         <div>{{pageData.finalCash}}</div>
       </data-grid-item>
       <data-grid-item label="管理费率" :span="6">
-        <i-select v-model="passModel.manageCostPercent" clearable>
+        <i-select v-model="passModel.manageCostPercent" clearable @on-change="manageChange">
           <i-option v-for="item in manageCost" :key="item" :value="item" :label="item+'%'"></i-option>
         </i-select>
       </data-grid-item>
@@ -177,11 +177,25 @@ export default class SecondLastApprove extends Vue {
     }
   }
   /**
-   * 首付比例change计算首付金额
+   * 首付比例change计算首付金额：公式（首付金额=车辆参考总价*首付比例）
    */
   initialChange(data) {
-    console.log(data, "datasdf");
-    // this.pageData.initialPayment =parseFloat(data/100)*
+    this.pageData.initialPayment =
+      parseFloat(data) / 100 * this.pageData.vehicleAmount;
+  }
+  /**
+   * 保证金比例change计算保证金：公式（保证金额=车辆参考总价*保证金比例）
+   */
+  depositChange(data) {
+    this.pageData.insuranceExpenses =
+      parseFloat(data) / 100 * this.pageData.vehicleAmount;
+  }
+  /**
+   * 管理费比例change计算管理费：公式（管理费=车辆参考总价*管理费比例）
+   */
+  manageChange(data) {
+    this.pageData.manageCost =
+      parseFloat(data) / 100 * this.pageData.vehicleAmount;
   }
 }
 </script>
