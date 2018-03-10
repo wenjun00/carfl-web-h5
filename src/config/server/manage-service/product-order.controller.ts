@@ -67,6 +67,14 @@ export default {
     controller: CONTROLLER,
     action: 'saveFinanceApplyInfo',
     type: requestType.Post
+  },
+  /**
+   * 导出订单列表
+   */
+  exportProductList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'exportProductList',
+    type: requestType.Post
   }
-
 }

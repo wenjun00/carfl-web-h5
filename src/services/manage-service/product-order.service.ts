@@ -75,4 +75,15 @@ export class ProductOrderService {
       data
     })
   }
+  /**
+   * 批量导出订单列表
+   */
+  exportProductList({ ids }) {
+    return this.netService.send({
+      server: manageService.productOrderController.exportProductList,
+      data: {
+        ids: ids
+      }
+    })
+  }
 }
