@@ -243,7 +243,9 @@ export default class AddProduct extends Vue {
     this.productDetail.contractBreakRate = String(item.contractBreakRate)
     this.productDetail.prepaymentRate = String(item.prepaymentRate)
     this.productDetail.penaltyRate = String(item.penaltyRate)
-    this.productDetail.stagingPeriods = String(item.stagingPeriods)
+    if(item.stagingPeriods) {
+      this.productDetail.stagingPeriods = String(item.stagingPeriods)
+    }
 		this.moneyArray = item.financingAmount.split('~');
 		this.amount = {
 			financingAmount1: this.moneyArray[0],

@@ -2,11 +2,10 @@
 <template>
   <section class="page clear-account-report">
     <span class="form-title">清结算日报表</span>
-    <i-select style="margin-left:10px;width:10%;" placeholder="统计机构">
-      <i-option label="订单信息" value="订单信息" key="订单信息"></i-option>
-      <i-option label="车辆信息" value="车辆信息" key="车辆信息"></i-option>
+    <i-select style="margin-left:10px;width:10%;" placeholder="统计机构"  v-model="model.companyId" clearable>
+      <i-option :label="companyChinaname" :value="id" :key="id" v-for="{id, companyChinaname} in company"></i-option>
     </i-select>
-    <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+    <i-button class="blueButton" style="margin-left:10px;" @click="getData">搜索</i-button>
     <i-button @click="openSearch" style="color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
@@ -19,13 +18,12 @@
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin-top:6px;">
-      <i-select placeholder="统计通道" style="margin-left:10px;width:10%;">
-        <i-option label="汇付" value="汇付" key="汇付"></i-option>
-        <i-option label="富友" value="富友" key="富友"></i-option>
+      <i-select placeholder="统计通道" style="margin-left:10px;width:10%;" v-model="model.channel">
+        <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <span style="margin-left:10px;">结算日期：</span>
-      <i-date-picker></i-date-picker>~
-      <i-date-picker></i-date-picker>
+      <i-date-picker v-model="model.minSettlementDate"></i-date-picker>~
+      <i-date-picker v-model="model.maxSettlementDate"></i-date-picker>
     </i-row>
     <!--<table border="1" width="100%" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
@@ -43,7 +41,7 @@
         <td v-for="(v,i) in columnsFuyou" :key="'d'+i">{{val.fuyou[v.key]}}</td>
       </tr>
     </table>-->
-    <i-table :columns="columns1" :data="data1"></i-table>
+    <i-table :columns="columns1" :data="data1" style="margin-top:10px;margin-right:10px"></i-table>
 
   </section>
 </template>
@@ -60,6 +58,9 @@
     ReportService
   } from "~/services/report-service/report.service";
   import {
+    CompanyService
+  } from "~/services/manage-service/company.service";
+  import {
     Layout
   } from "~/core/decorator";
 
@@ -73,36 +74,52 @@
   })
   export default class ClearAccountReport extends Page {
     @Dependencies(ReportService) private reportService: ReportService;
+    @Dependencies(CompanyService) private companyService: CompanyService;
     private columns1: any;
     private data1: Array < Object > = [];
+    private allData: any = [];
+    private company: any = [];
     private model: any = {
-      
+      companyId: '',
+      channel: '',
+      minSettlementDate: '',
+      maxSettlementDate: ''
     };
-    private dataHuifu: Array < Object > = [];
     private columnsFuyou: any;
-    private dataFuyou: Array < Object > = [];
     private searchOptions: Boolean = false;
-
+    /**
+     * 获取列表
+     */
     getData() {
-      this.reportService.getSettlementReport(this.model).subscribe(val => {
-        this.data1 = val
+      this.reportService.getSettlementReport(this.model).subscribe(data => {
+        this.allData = data
+        let arr: any = []
+        data.forEach(v => {
+          if(!arr.find(val => val.companyName === v.companyName)){
+            arr.push(v)
+          }
+        })
+        this.data1 = arr
       }, ({ msg }) => {
         this.$Message.error(msg)
       })    
     }
+    /**
+     * 获取公司
+     */
+    getCompany() {
+      this.companyService.getAllCompany().subscribe(val => {
+        this.company = val
+      })
+    }
     created() {
-      this.data1 = [{
-        companyProfile: '群泰西安'
-      }, {
-        companyProfile: '群泰上海'
-      }, {
-        companyProfile: '群泰武汉'
-      }]
+      this.getCompany()
+      this.getData()
       this.columns1 = [
         {
           title: "公司简介",
           align: 'center',
-          key: 'companyProfile',
+          key: 'companyName',
           width: 104
         },
         {
@@ -114,7 +131,18 @@
               props: {
                 columns: this.columnsFuyou,
                 width: 890,
-                data: this.dataHuifu,
+                data: [ this.allData.find(v => (v.companyName === params.row.companyName) && (v.type === 162)) || {
+                  depositCash: '-',
+                  initialPayment: '-',
+                  purchaseTax: '-',
+                  insuranceExpenses: '-',
+                  otherFee: '-',
+                  principalReceived: '-',
+                  interestReceived: '-',
+                  penaltyReceived: '-',
+                  param: '-',
+                  sum: '-'
+                }],
                 // border: true,
                 stripe: true
               }
@@ -130,7 +158,18 @@
               props: {
                 columns: this.columnsFuyou,
                 width: 890,
-                data: this.dataFuyou,
+                data: [ this.allData.find(v => (v.companyName === params.row.companyName) && (v.type === 163)) || {
+                  depositCash: '-',
+                  initialPayment: '-',
+                  purchaseTax: '-',
+                  insuranceExpenses: '-',
+                  otherFee: '-',
+                  principalReceived: '-',
+                  interestReceived: '-',
+                  penaltyReceived: '-',
+                  param: '-',
+                  sum: '-'
+                }],
                 // border: true,
                 stripe: true
               }
@@ -139,18 +178,6 @@
         }
       ]
 
-      this.dataHuifu = [{
-        cashDeposit: '800',
-        intialPay: '900',
-        payTax: '56',
-        insurance: '34',
-        otherMoney: '55',
-        monthRentMajorMoney: '345',
-        monthRentInterest: '25',
-        punishedInterest: '45',
-        serviceCharge: '5',
-        subtotal: '2856'
-      }]
 
       this.columnsFuyou = [{
         title: '保证金',
