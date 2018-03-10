@@ -22,7 +22,7 @@
       <div style="margin-left:50px;">
 
         <span style="margin-right:8px;">通过介绍</span>
-        <i-radio-group v-model="customerOriginModel.resourceType">
+        <i-radio-group v-model="customerOriginModel.resourceType" :disabled="disabled">
           <i-radio :label="81" :value="81" :key="81">同行推荐</i-radio>
           <i-radio :label="82" :value="82" :key="82">客户转介绍</i-radio>
           <i-radio :label="83" :value="83" :key="83">分支机构推荐</i-radio>
@@ -127,10 +127,15 @@
     private isTrue: Boolean = false;
     private isShow: Boolean = false;
     private isBuyCar: String = '是';
+    private disabled: Boolean = false;
 
     Reverse(data) {
       console.log(data.personal.personalResourcePublicity.map(v => v.resourceType))
       this.OriginModel.resourceType = data.personal.personalResourcePublicity.map(v => v.resourceType)
+      this.customerOriginModel = data.personal.personalResourceIntroduce
+      if (data.personal.personalResourceIntroduce.id) {
+        this.disabled = true
+      }
     }
     reset() {
       this.OriginModel.resourceType = []
