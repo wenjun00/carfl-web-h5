@@ -13,12 +13,7 @@
         <data-grid-item label="融资租赁用途" :span="3">{{orderInfo.financingUse}} </data-grid-item>
         <data-grid-item label="自缴费用" :span="9">
           <i-checkbox-group v-model="fee">
-            <i-checkbox :value="368" :label="368" disabled>无</i-checkbox>
-            <i-checkbox :value="369" :label="369" disabled>购置税</i-checkbox>
-            <i-checkbox :value="370" :label="370" disabled>保险费</i-checkbox>
-            <i-checkbox :value="371" :label="371" disabled>上牌费</i-checkbox>
-            <i-checkbox :value="372" :label="372" disabled>路桥费</i-checkbox>
-            <i-checkbox :value="373" :label="373" disabled>首期租金</i-checkbox>
+            <i-checkbox v-for="{value,label} in $dict.getDictData('0307')" :key="value" :label="value" :value="value" disabled>{{label}}</i-checkbox>
           </i-checkbox-group>
         </data-grid-item>
         <data-grid-item label="意向融资金额" :span="3">{{orderInfo.intentionFinancingAmount}}</data-grid-item>

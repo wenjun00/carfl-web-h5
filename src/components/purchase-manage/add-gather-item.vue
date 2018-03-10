@@ -54,7 +54,7 @@ export default class AddGatherItem extends Vue {
    */
   getOrderSaleItem(orderId, checkSaleItem) {
     this.withdrawApplicationService
-      .getAdvanceRevokeItems({
+      .getAdvancePayoffItems({
         orderId: orderId
       })
       .subscribe(

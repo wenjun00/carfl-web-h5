@@ -63,6 +63,20 @@
     </template>
 
     <template>
+      <i-modal title="灰名单" v-model="grayListModal">
+        <i-form>
+          <i-form-item label="详细原因">
+            <i-input type="textarea" v-model="grayModel.remark"></i-input>
+          </i-form-item>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="cancelAddGray">取消</i-button>
+          <i-button @click="confirmAddGray" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
       <i-modal title="提交内审" v-model="submitToInternalModal">
         <i-form>
           <i-form-item label="详细原因">
@@ -106,20 +120,6 @@
         <purchase-information ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
-
-    <template>
-      <i-modal title="灰名单" v-model="grayListModal">
-        <i-form>
-          <i-form-item label="详细原因">
-            <i-input type="textarea" v-model="grayModel.remark"></i-input>
-          </i-form-item>
-        </i-form>
-        <div slot="footer">
-          <i-button @click="cancelAddGray">取消</i-button>
-          <i-button @click="confirmAddGray" class="blueButton">确定</i-button>
         </div>
       </i-modal>
     </template>
@@ -492,6 +492,7 @@ export default class MyApproval extends Page {
   }
   closeAndRefresh() {
     this.secendLastApproval = false;
+    this.approveModal = false;
     this.getMyOrderList();
   }
   /**
@@ -559,7 +560,6 @@ export default class MyApproval extends Page {
   secendLastApprovalPassConfirm() {
     let _secondLast: any = this.$refs["second-last"];
     _secondLast.confirmPass();
-    this.approveModal = false;
     this.getMyOrderList();
   }
   /**
@@ -789,7 +789,6 @@ export default class MyApproval extends Page {
       // 从approve组件里获取数据【pageData】传递给复审终审通过组件
       let _approve: any = this.$refs["approve"];
       let pageData = _approve.getApproveData();
-      this.passModel.remark = pageData.remark;
     }
   }
   rejectOrder() {

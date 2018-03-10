@@ -268,6 +268,7 @@ export default class EarlyPaymentApply extends Page {
         data => {
           this.$Message.success("保存并提交成功！");
           this.saveDraftDisabled = true;
+          this.clearAll()
         },
         ({ msg }) => {
           this.$Message.error(msg);
