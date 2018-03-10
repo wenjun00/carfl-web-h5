@@ -7,28 +7,27 @@
     </i-steps>
     <i-form :label-width="110" style="margin-top:20px;">
       <i-form-item label="账户类型">
-        <i-input style="width:160px;"></i-input>
+        <i-select style="width:160px;" v-model="model.accountType" :disabled="current===0">
+          <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+        </i-select>      
       </i-form-item>
       <i-form-item label="客户姓名">
-        <i-input style="width:160px;"></i-input>
+        <i-input style="width:160px;" :readonly="current===0" v-model="model.name"></i-input>
       </i-form-item>
       <i-form-item label="证件类型" v-if="current===2">
-        <i-input style="width:160px;"></i-input>
+        <i-input style="width:160px;" :readonly="current===0" v-model="model.certificateType"></i-input>
       </i-form-item>
       <i-form-item label="证件号码" v-if="current===2">
-        <i-input style="width:160px;"></i-input>
-      </i-form-item>
-      <i-form-item label="身份证号码" v-if="current===1">
-        <i-input style="width:160px;"></i-input>
+        <i-input style="width:160px;" :readonly="current===0" v-model="model.certificateNumber"></i-input>
       </i-form-item>
       <i-form-item label="开户银行">
-        <i-input style="width:160px;"></i-input>
+        <i-input style="width:160px;" :readonly="current===0" v-model="model.depositBank"></i-input>
       </i-form-item>
       <i-form-item label="开户省市">
-        <i-select style="width:80px;">
+        <i-select style="width:80px;" :disabled="current===0" v-model="model.accountType">
           <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
         </i-select>
-        <i-select style="width:80px;">
+        <i-select style="width:80px;" :disabled="current===0" v-model="model.accountType">
           <i-option label="西安市" value="西安市" key="西安市"></i-option>
           <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
           <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
@@ -41,13 +40,13 @@
           <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
         </i-select>
       </i-form-item>
-      <i-form-item label="银行预留手机号">
-        <i-input style="width:160px;"></i-input>
+      <i-form-item label="银行预留手机号" v-if="current===1">
+        <i-input style="width:160px;" v-model="model.reservedPhoneNumber"></i-input>
+        <!--<i-button style="display:inline-block;margin-left:8px;" class="blueButton">发送验证码<span>60</span></i-button>-->
       </i-form-item>
-      <i-form-item label="验证码" v-if="current===0">
+      <!--<i-form-item label="验证码" v-if="current===0">
         <i-input style="width:160px;"></i-input>
-        <i-button style="display:inline-block;margin-left:8px;" class="blueButton">发送验证码<span>60</span></i-button>
-      </i-form-item>
+      </i-form-item>-->
     </i-form>
     <div style="text-align:center">
       <i-button @click="cancelChangeCard" class="blueButton">取消</i-button>
@@ -60,25 +59,23 @@
 <script lang="ts">
   import Vue from "vue";
   import Component from "vue-class-component";
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    ApplyQueryService
-  } from "~/services/business-service/apply-query.service";
+  import { Prop } from "vue-property-decorator";
+  import { Dependencies } from "~/core/decorator";
+  import { ChargeBackService } from "~/services/manage-service/charge-back.service";
+
   @Component({
     components: {}
   })
   export default class ChangeCard extends Vue {
+    @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
     private current: any = 0;
     private openChangeBankCard: Boolean = false;
-
-    @Prop() row: Object;
-    created() {
-
+    private model: any = {};
+    private row: any = {};
+    refresh(row) {
+      this.current = 0      
+      this.row = row
+      this.model = row
     }
     cancelChangeCard() {
       this.$Modal.remove()
@@ -91,6 +88,7 @@
       if (this.current === 1) {
         this.current = 0;
       } else {
+        this.model = {}
         this.current += 1;
       }
     }
@@ -98,8 +96,14 @@
      * 确认绑卡
      */
     confirmBindCard() {
-      this.current = 0
-      this.$emit('close')
+      this.model.smsCode = '666666'
+      this.model.personalId = this.row.personalId
+      this.chargeBackService.updatePersonalBank(this.model).subscribe(val => {
+        this.$Message.success('操作成功！')
+        this.$emit('close')
+      }, ({ msg }) => {
+        this.$Message.error(msg)
+      })
     }
   }
 
