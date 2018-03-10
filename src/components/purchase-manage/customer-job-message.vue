@@ -271,8 +271,9 @@
     private jobType: any = 37;
     private typeList: Array < String > ;
     Reverse(data) {
-      console.log(data, '88')
-      this.job = data.personal.personalJob
+      if (data.personal.personalJob) {
+        this.job = data.personal.personalJob
+      }
     }
     jfhdfdf() {
       console.log(this.jobType)

@@ -22,14 +22,14 @@
       <div style="margin-left:50px;">
 
         <span style="margin-right:8px;">通过介绍</span>
-        <i-radio-group v-model="ischecked">
-          <i-radio :label="0" :value="0" :key="0">同行推荐</i-radio>
-          <i-radio :label="1" :value="1" :key="1">客户转介绍</i-radio>
-          <i-radio :label="2" :value="2" :key="2">分支机构推荐</i-radio>
+        <i-radio-group v-model="customerOriginModel.resourceType">
+          <i-radio :label="81" :value="81" :key="81">同行推荐</i-radio>
+          <i-radio :label="82" :value="82" :key="82">客户转介绍</i-radio>
+          <i-radio :label="83" :value="83" :key="83">分支机构推荐</i-radio>
         </i-radio-group>
         <div style="margin-left:58px;margin-top:15px">
           <!--<i-checkbox v-model="ischecked" @on-change="checked">同行推荐</i-checkbox>-->
-          <div v-if="ischecked===0" style="position:relative;width:300px;">
+          <div v-if="customerOriginModel.resourceType===81" style="position:relative;width:300px;">
             <i-form ref="form" :model="customerOriginModel" label-position="left" :label-width="110">
               <i-form-item label="同行姓名" prop="peerName">
                 <i-input type="text" v-model="customerOriginModel.peerName"></i-input>
@@ -45,7 +45,7 @@
         </div>
         <div style="margin-left:58px;margin-top:15px">
           <!--<i-checkbox v-model="isShow" @on-change="checked1">客户转介绍</i-checkbox>-->
-          <div v-if="ischecked===1" style="position:relative;width:300px;">
+          <div v-if="customerOriginModel.resourceType===82" style="position:relative;width:300px;">
             <i-form ref="job-form" label-position="left" :label-width="110">
               <i-form-item label="客户姓名" prop="customerName">
                 <i-input type="text" v-model="customerOriginModel.customerName"></i-input>
@@ -56,8 +56,8 @@
               <i-form-item label="在我司是否成功购车" prop="isBuyCar">
                 <!--<i-input type="text"></i-input>-->
                 <RadioGroup v-model="customerOriginModel.isBuyCar">
-                  <Radio label="是"></Radio>
-                  <Radio label="否"></Radio>
+                  <Radio :label="0" :value="0">是</Radio>
+                  <Radio :label="1" :value="1">否</Radio>
                 </RadioGroup>
               </i-form-item>
             </i-form>
@@ -65,7 +65,7 @@
         </div>
         <div style="margin-left:58px;margin-top:15px">
           <!--<i-checkbox v-model="isTrue" @on-change="checked2">分支机构推荐</i-checkbox>-->
-          <div v-if="ischecked===2" style="position:relative;width:300px;">
+          <div v-if="customerOriginModel.resourceType===83" style="position:relative;width:300px;">
             <i-form ref="job-form" label-position="left" :label-width="110">
               <i-form-item label="机构名称" prop="organizationNames">
                 <i-input type="text" v-model="customerOriginModel.organizationNames"></i-input>
@@ -100,6 +100,7 @@
 
       organizationNames: '', // 机构名称
       referrer: '', // 推荐人
+      resourceType: ''
 
     };
     private OriginModel: any = {
