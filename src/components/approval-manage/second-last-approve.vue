@@ -3,13 +3,13 @@
   <section class="component second-last-approve">
     <data-grid :labelWidth="140">
       <data-grid-item label="开呗参考价/成交价" :span="6">
-        <div>1234</div>
+        <div>{{pageData.canKaoJia}}</div>
       </data-grid-item>
       <data-grid-item label="融资额" :span="6">
         <div>{{pageData.intentionFinancingAmount}}</div>
       </data-grid-item>
       <data-grid-item label="首付比例" :span="6">
-        <i-select v-model="passModel.paymentScale" clearable>
+        <i-select v-model="passModel.paymentScale" clearable @on-change="initialChange">
           <i-option v-for="item in initialPayment" :key="item" :value="item" :label="item+'%'"></i-option>
         </i-select>
       </data-grid-item>
@@ -117,7 +117,6 @@ export default class SecondLastApprove extends Vue {
    * 获取页面所需比例
    */
   getRate(orderId, pageData) {
-    console.log(pageData, "ppppppp");
     this.passModel.orderId = orderId; // 获取通过时需要的orderId
     this.pageData = pageData;
     this.approvalService
@@ -176,6 +175,13 @@ export default class SecondLastApprove extends Vue {
     } else if (!this.passModel.payWay) {
       this.$Message.error("请选择还款方式！");
     }
+  }
+  /**
+   * 首付比例change计算首付金额
+   */
+  initialChange(data) {
+    console.log(data, "datasdf");
+    // this.pageData.initialPayment =parseFloat(data/100)*
   }
 }
 </script>

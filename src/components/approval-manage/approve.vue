@@ -391,7 +391,6 @@ export default class Approve extends Vue {
             v => v.relation === 56 || v.relation === 57 || v.relation === 58
           );
 
-          console.log(this.immediateContacts, 18987);
           this.otherContactsInfo = this.contactsInfo.filter(
             v =>
               v.relation === 59 ||

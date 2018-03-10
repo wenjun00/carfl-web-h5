@@ -26,7 +26,6 @@ export default class DataBoxConfig extends Vue {
 
   @Watch("visible")
   onVisibleChange(value) {
-    console.log(value);
     if (value) {
       this.remoteColumn = clone(this.configColumns);
       this.getTableColumn();
@@ -49,7 +48,6 @@ export default class DataBoxConfig extends Vue {
   private remoteColumn: Array<any> = [];
 
   getTableColumn() {
-    console.log(this.dataColumns, 8978);
     this.tableColumn = this.dataColumns
       .filter(x => x.key !== "index" && x.type !== "selection")
       .map(x => {
@@ -78,7 +76,6 @@ export default class DataBoxConfig extends Vue {
 
     let index = sortColumns.findIndex(x => x.resoCode == row.key);
 
-    console.log(row, index, direction);
     if (direction < 0) {
       if (index <= 0) {
         return;
