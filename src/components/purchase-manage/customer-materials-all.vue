@@ -129,7 +129,8 @@
       orderServiceList: [{
         required: true,
         message: '选择代办服务',
-        trigger: 'blur',
+        trigger: 'change',
+        type: 'array'
       }],
       mobileMain: [{
         required: true,

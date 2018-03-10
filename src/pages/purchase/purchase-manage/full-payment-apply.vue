@@ -461,7 +461,7 @@
                     city: choosebusyData.city,
                     companyId: choosebusyData.companyId,
                     province: choosebusyData.province,
-                    orderCars: this.addcarData, // 车辆
+                    orderCars: component.addcarData, // 车辆
                     personal: customerData,
                     orderServiceList: customerData.orderServiceList,
                     orderStatus: this.orderStatus,
