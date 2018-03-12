@@ -174,8 +174,8 @@
             <i-form-item label="身份" prop="identity">
               <i-row>
                 <i-radio-group v-model="job.identity">
-                  <i-radio label="法人代表"></i-radio>
-                  <i-radio label="股东"></i-radio>
+                  <i-radio :label="54" :value="54">法人代表</i-radio>
+                  <i-radio :label="55" :value="55">股东</i-radio>
                 </i-radio-group>
                 <i-input style="width:185px;" placeholder="股份占比%"></i-input>
               </i-row>

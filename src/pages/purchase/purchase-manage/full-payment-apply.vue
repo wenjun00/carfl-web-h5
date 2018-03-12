@@ -21,13 +21,13 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="客户姓名" prop="name">
-              <i-input type="text" v-model="applyData.name" placeholder="请输入客户姓名">
+              <i-input type="text" v-model="applyData.name" placeholder="请输入客户姓名" @on-blur="ReverseData">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="客户电话" prop="customerPhone">
-              <i-input type="text" v-model="applyData.customerPhone" placeholder="请输入客户电话">
+              <i-input type="text" v-model="applyData.customerPhone" placeholder="请输入客户电话" @on-blur="ReverseData">
               </i-input>
             </i-form-item>
           </i-col>
@@ -335,6 +335,10 @@
           width: 86,
         },
       ];
+    }
+    ReverseData() {
+      let customermodel: any = this.$refs['materials']
+      customermodel.getinfo(this.applyData)
     }
     /**
      * 根据客户三项查询历史订单

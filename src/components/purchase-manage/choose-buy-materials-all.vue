@@ -32,6 +32,7 @@
     <div>
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
       <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
+      <span style="margin-left:115px;font-weight:bold">总价</span><span style="margin-left:340px;font-weight:bold;">{{totalPrice}}</span>
     </div>
     <!--添加车辆弹框-->
     <template>
@@ -79,6 +80,7 @@
     private editCarModal: Boolean = false;
     private addOrEditFlag: Boolean = false;
     private addCar: Boolean = false;
+    private totalPrice: any = '';
     private carDataModal: Array < Object > = []; // 车辆信息
     private choosebusyData: any = {
       province: '', // 省份
@@ -234,7 +236,11 @@
       this.editCarModal = true
     }
     distributionData(data) {
+      console.log(data, 'data')
       this.addcarData = data
+      this.totalPrice = data.map(v => v.carAmount).reduce((x, y) => {
+        return x + y;
+      })
     }
   }
 

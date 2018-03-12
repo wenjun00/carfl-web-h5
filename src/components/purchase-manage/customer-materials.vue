@@ -140,9 +140,7 @@
               <i-checkbox label="长期" :value="14" :checked.sync="single" @on-change="ValidityPeriodChange">长期</i-checkbox>
             </i-row>
             <i-row>
-              <i-input type="text" placeholder="有效期截止日期" v-model="customerMaterialsForm.idCardValidityPeriodType" v-if="ValidityPeriodValue">
-              </i-input>
-              <i-input type="text" placeholder="有效期截止日期" v-model="customerMaterialsForm.idCardValidityPeriodSection" v-else>
+              <i-input type="text" placeholder="有效期截止日期" v-model="customerMaterialsForm.idCardValidityPeriodSection" v-if="customerMaterialsForm.idCardValidityPeriodType === 15">
               </i-input>
             </i-row>
           </i-form-item>
@@ -344,7 +342,7 @@
       cityLiveTime: '', // 本市生活时长
       cityOwnhouseAddressDetail: '', // 现居住地生活时长
       houseProspecting: '', // 是否接受现场勘查
-      idCardValidityPeriodType: '', // 身份证有效期（长期）
+      idCardValidityPeriodType: 15, // 身份证有效期（长期）
       idCardValidityPeriodSection: '', // 身份证有效期（非长期）
       province: '', // 省
       city: '', // 市
@@ -409,7 +407,7 @@
       this.customerMaterialsForm = data.personal
     }
     getinfo(customerModel) {
-      //   this.customerMaterialsForm = customerModel
+      this.customerMaterialsForm = Object.assign({}, customerModel)
     }
     idCardChange(value) {
       if (value) {
@@ -455,6 +453,12 @@
       }
     }
     ValidityPeriodChange(value) {
+      if (value) {
+        this.customerMaterialsForm.idCardValidityPeriodType = 14
+      } else {
+        this.customerMaterialsForm.idCardValidityPeriodType = 15
+      }
+      console.log(value, 'value')
       this.ValidityPeriodValue = value
     }
     mounted() {}

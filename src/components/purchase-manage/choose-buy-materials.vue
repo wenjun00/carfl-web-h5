@@ -543,6 +543,7 @@
       }
       this.chooseBuyModel.financeTotalMoney = (Number(this.chooseBuyModel.vehicleAmount) - Number(this.chooseBuyModel
         .initialPayment)) - Number(this.chooseBuyModel.finalprincipal)
+      this.chooseBuyModel.financeTotalMoney = this.chooseBuyModel.financeTotalMoney.toString()
     }
     initialChange() {
       console.log(Number(this.chooseBuyModel.vehicleAmount), Number(this.chooseBuyModel

@@ -146,8 +146,8 @@
       this.customerData.orderServiceList = data.orderServices.map(v => v.service)
     }
     getinfo(data) {
-      //   this.customerData = data
-      //   this.customerData.mobileMain = data.customerPhone
+      this.customerData = Object.assign({}, data)
+      this.customerData.mobileMain = data.customerPhone
     }
     // mounted() {}
     // whgwgdhwgdh() {

@@ -130,12 +130,13 @@
     private disabled: Boolean = false;
 
     Reverse(data) {
-      console.log(data.personal.personalResourcePublicity.map(v => v.resourceType))
-      this.OriginModel.resourceType = data.personal.personalResourcePublicity.map(v => v.resourceType)
-      this.customerOriginModel = data.personal.personalResourceIntroduce
-      if (data.personal.personalResourceIntroduce.id) {
-        this.disabled = true
+      if (data.personal.personalResourcePublicity) {
+        this.OriginModel.resourceType = data.personal.personalResourcePublicity.map(v => v.resourceType)
       }
+      this.customerOriginModel = data.personal.personalResourceIntroduce
+      //   if (data.personal.personalResourceIntroduce.id) {
+      //     this.disabled = true
+      //   }
     }
     reset() {
       this.OriginModel.resourceType = []
