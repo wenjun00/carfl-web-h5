@@ -40,7 +40,7 @@ import { State, Mutation, namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
 import { PersonalMaterialService } from "~/services/manage-service/personal-material.service";
 import { Prop } from "vue-property-decorator";
-import FileUpload from "~/components/common/file-upload.vue";
+import FileUpload from "~/components/common/file-upload.tsx.vue";
 const ModuleState = namespace("purchaseManage", State);
 
 @Component({

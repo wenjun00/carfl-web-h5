@@ -22,7 +22,7 @@ module.exports = {
       config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.ts', '.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.ts', '.tsx', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
@@ -31,64 +31,78 @@ module.exports = {
   },
   module: {
     rules: [{
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig
-      },
-      {
-        test: /\.vue$/,
-        loader: 'iview-loader',
-        options: {
-          prefix: true
+      test: /\.vue$/,
+      use: [
+        {
+          loader: 'vue-loader',
+          options: Object.assign(vueLoaderConfig, {
+            loaders: {
+              ts: 'ts-loader',
+              tsx: 'babel-loader!ts-loader'
+            }
+          })
+        },
+        {
+          loader: 'iview-loader',
+          options: {
+            prefix: true
+          }
         }
-      },
-      {
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/,
-        options: {
-          transpileOnly: true,
-          appendTsSuffixTo: [/\.vue$/],
+      ]
+    },
+    {
+      test: /\.tsx?$/,
+      exclude: /node_modules/,
+      use: [
+        'babel-loader',
+        {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+            appendTsSuffixTo: [/[^t][^s][^x]\.vue$/],
+            appendTsxSuffixTo: [/\.tsx\.vue$/]
+          }
         }
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
-        exclude: [resolve('src/assets/icons')],
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
-        }
-      },
-      {
-        test: /\.svg$/,
-        loader: 'svg-sprite-loader',
-        include: [resolve('src/assets/icons')],
-        options: {
-          symbolId: 'icon-[name]'
-        }
-      },
-      {
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('media/[name].[hash:7].[ext]')
-        }
-      },
-      {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
-        }
+      ]
+    },
+    {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      include: [resolve('src'), resolve('test')]
+    },
+    {
+      test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+      loader: 'url-loader',
+      exclude: [resolve('src/assets/icons')],
+      options: {
+        limit: 10000,
+        name: utils.assetsPath('img/[name].[hash:7].[ext]')
       }
+    },
+    {
+      test: /\.svg$/,
+      loader: 'svg-sprite-loader',
+      include: [resolve('src/assets/icons')],
+      options: {
+        symbolId: 'icon-[name]'
+      }
+    },
+    {
+      test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+      loader: 'url-loader',
+      options: {
+        limit: 10000,
+        name: utils.assetsPath('media/[name].[hash:7].[ext]')
+      }
+    },
+    {
+      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+      loader: 'url-loader',
+      options: {
+        limit: 10000,
+        name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+      }
+    }
     ]
   },
   plugins: [

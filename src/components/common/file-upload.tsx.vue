@@ -12,13 +12,13 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import Vue from "vue";
 import Component from "vue-class-component";
 import { NetService } from "~/utils/net.service";
 import { fileService } from "~/config/server";
-import { Prop,Emit } from "vue-property-decorator";
-import { Upload } from "iview";
+import { Prop, Emit } from "vue-property-decorator";
+import { Upload, Button } from "iview";
 import appConfig from "~/config/app.config";
 @Component({
   components: {}
@@ -38,8 +38,8 @@ export default class FileUpload extends Vue {
   })
   fileSizeLimit;
 
-  @Emit('on-success')
-  success(){}
+  @Emit("on-success")
+  success() {}
 
   private uploadColumns: any;
   private uploadList: Array<any> = [];
@@ -69,47 +69,39 @@ export default class FileUpload extends Vue {
         align: "center",
         key: "percentage",
         render: (h, { row, column, index }) => {
-          if (row.percentage && row.percentage > 0) {
-            return h("span", row.percentage);
-          }
-          switch (row.state) {
-            case "ready":
-              return h("span", "准备");
-            case "uploading":
-              return h("span", row.percentage);
-            case "finish":
-              return h("span", "完成");
-          }
+          let state = {
+            ready: "准备",
+            finish: "完成"
+          };
+
+          return <span>{state[row.state] || row.percentage}</span>;
         }
       },
       {
         title: "操作",
         align: "center",
         render: (h, { row, column, index }) => {
-          return h(
-            "i-button",
-            {
-              props: {
-                type: "text",
-                disabled: row.state !== "ready"
-              },
-              style: {
-                color: "#265ea2"
-              },
-              on: {
-                click: () => {
-                  this.$Modal.confirm({
-                    title: "提示",
-                    content: "确定移出吗？",
-                    transfer: false,
-                    onOk: () => {
-                      this.uploadList.splice(index, 1);
-                    }
-                  });
-                }
+          // 移除文件
+          let removeHandle = () => {
+            this.$Modal.confirm({
+              title: "提示",
+              content: "确定移出吗？",
+              transfer: false,
+              onOk: () => {
+                this.uploadList.splice(index, 1);
               }
-            },
-            "移出"
+            });
+          };
+          // 移除按钮
+          return (
+            <i-button
+              type="text"
+              disabled={row.state !== "ready"}
+              style="#265ea2"
+              onClick={removeHandle}
+            >
+              移除
+            </i-button>
           );
         }
       }
@@ -171,7 +163,7 @@ export default class FileUpload extends Vue {
     target.state = "finish";
 
     if (this.uploadList.every(x => x.state === "finish")) {
-      this.success()
+      this.success();
     }
   }
 
@@ -185,10 +177,10 @@ export default class FileUpload extends Vue {
     });
   }
 
-  reset(){
+  reset() {
     let upload = this.$refs["upload"] as Upload;
-    this.uploadList = []
-    upload.clearFiles()
+    this.uploadList = [];
+    upload.clearFiles();
   }
 }
 </script>
