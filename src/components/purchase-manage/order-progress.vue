@@ -46,9 +46,9 @@
     private progressData: Array < Object > = [];
     private stepList: Array < any > = [];
     private page: any;
+    private orderId: any;
     private currentStep: number = 0;
     created() {
-      this.getOrderProgressInfo()
       this.progressColumns = [{
           title: "序号",
           type: "index",
@@ -108,10 +108,11 @@
       ];
       this.updateData();
     }
-    getOrderProgressInfo() {
+    getOrderProgressInfo(row) {
+      this.orderId = row.orderId
       this.approvalService
         .findOrderApproveRecord({
-          orderId: 1
+          orderId: this.orderId
         })
         .subscribe(
           data => {
@@ -125,7 +126,7 @@
         );
       this.approvalService
         .getOrderProcess({
-          orderId: row.orderId
+          orderId: this.orderId
         })
         .subscribe(data => {
           this.stepList = data;

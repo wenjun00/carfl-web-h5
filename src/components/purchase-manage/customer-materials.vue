@@ -139,8 +139,8 @@
             <i-row>
               <i-checkbox label="长期" :value="14" :checked.sync="single" @on-change="ValidityPeriodChange">长期</i-checkbox>
             </i-row>
-            <i-row>
-              <i-input type="text" placeholder="有效期截止日期" v-model="customerMaterialsForm.idCardValidityPeriodSection" v-if="customerMaterialsForm.idCardValidityPeriodType === 15">
+            <i-row v-show="customerMaterialsForm.idCardValidityPeriodType === 15">
+              <i-input type="text" placeholder="有效期截止日期" v-model="customerMaterialsForm.idCardValidityPeriodSection">
               </i-input>
             </i-row>
           </i-form-item>
@@ -455,8 +455,10 @@
     ValidityPeriodChange(value) {
       if (value) {
         this.customerMaterialsForm.idCardValidityPeriodType = 14
+        console.log(this.customerMaterialsForm.idCardValidityPeriodType)
       } else {
         this.customerMaterialsForm.idCardValidityPeriodType = 15
+        console.log(this.customerMaterialsForm.idCardValidityPeriodType)
       }
       console.log(value, 'value')
       this.ValidityPeriodValue = value

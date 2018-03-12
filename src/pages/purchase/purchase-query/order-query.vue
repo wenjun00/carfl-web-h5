@@ -60,7 +60,7 @@
     <!--进度查询-->
     <template>
       <i-modal v-model="orderProgressModal" title="审核进度" width="1000">
-        <order-progress></order-progress>
+        <order-progress ref="order-progress"></order-progress>
         <div slot="footer"></div>
       </i-modal>
     </template>
@@ -146,7 +146,6 @@
     private orderInfo: any;
     private startTime: any;
     private endTime: any;
-    private processData: any;
     private approvalModel: any = {
       timeSearch: "",
       orderInfo: "",
@@ -189,8 +188,7 @@
                       },
                       on: {
                         click: () => {
-                          this.processData = row
-                          this.orderProgressModal = true;
+                          this.processData(row)
                         }
                       }
                     },
@@ -226,8 +224,7 @@
                       },
                       on: {
                         click: () => {
-                          this.processData = row
-                          this.orderProgressModal = true;
+                          this.processData(row)
                         }
                       }
                     },
@@ -286,8 +283,7 @@
                     },
                     on: {
                       click: () => {
-                        this.processData = row
-                        this.orderProgressModal = true;
+                        this.processData(row)
                       }
                     }
                   },
@@ -499,6 +495,11 @@
           columnsName: "最近合同生成日期"
         }
       ];
+    }
+    processData(row) {
+      let orderprogress: any = this.$refs['order-progress']
+      orderprogress.getOrderProgressInfo(row)
+      this.orderProgressModal = true;
     }
     getOrderQuery() {
       this.approvalModel.startTime = FilterService.dateFormat(
