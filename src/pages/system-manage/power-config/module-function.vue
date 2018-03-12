@@ -6,7 +6,7 @@
       <!--树-->
       <i-col :span="4" style="border:1px solid #DDDEE1;height:590px;margin-top:9px;">
         <div style="text-align:center;font-size: 14px;font-weight: bold;width: 100%;background: #F8F8F9;height: 41px;top: 1px;">
-          <span>模块名称</span>
+          <span style="position:relative;top:10px;">模块名称</span>
         </div>
         <div style="overflow:auto;max-height:550px;">
           <i-tree :data="treeData" @on-select-change="prdTreeChange"></i-tree>

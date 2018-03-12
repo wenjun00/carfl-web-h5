@@ -66,5 +66,14 @@ export default {
     controller: CONTROLLER,
     action: 'resetDevice',
     type: requestType.Post
+  },
+  /**
+   * 注销用户
+   */
+  logout: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'logout',
+    type: requestType.Post
   }
 }

@@ -20,7 +20,7 @@
           </div>
         </div>
       </i-poptip>
-      <span style="color:#fff;font-size:12px;margin-left:6px;margin-right:50px;position:relative;top:2px;">administrator</span>
+      <span style="color:#fff;font-size:12px;margin-left:6px;margin-right:50px;position:relative;top:2px;">{{loginPerson}}</span>
     </div>
 
     <template>
@@ -48,6 +48,8 @@ import { Prop } from "vue-property-decorator";
 import { Action } from "vuex-class";
 import WorkMenu from "~/components/workspace/work-menu.vue";
 import WorkTheme from "~/components/workspace/work-theme.vue";
+import { Dependencies } from "~/core/decorator";
+import { LoginService } from "~/services/manage-service/login.service";
 @Component({
   components: {
     WorkMenu,
@@ -55,6 +57,7 @@ import WorkTheme from "~/components/workspace/work-theme.vue";
   }
 })
 export default class WorkHeader extends Vue {
+  @Dependencies(LoginService) private loginService: LoginService;
   private modifyPwdModal: Boolean = false;
   private loginPerson: Boolean = false;
   @Prop() person;
@@ -71,6 +74,12 @@ export default class WorkHeader extends Vue {
       title: "提示",
       content: "确认退出系统吗？",
       onOk: () => {
+        this.loginService.logout().subscribe(
+          () => {},
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
         this.$router.push("/");
       }
     });

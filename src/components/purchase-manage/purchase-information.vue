@@ -125,11 +125,11 @@
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">身份证地址</td>
-          <td colspan="6">{{orderInfo.personal?orderInfo.personal.idCardAddress:''}}</td>
+          <td colspan="6">{{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.idCardAddress)):''}}</td>
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">现居住地址</td>
-          <td colspan="6">{{orderInfo.personal?orderInfo.personal.localHomeAddr:''}}</td>
+          <td colspan="6">{{orderInfo.personal?getCityName(parseInt(orderInfo.personal.localHomeAddr)):''}}</td>
         </tr>
         <tr>
           <td bgColor="#F5F5F5" colspan="2">居住地址家庭座机</td>

@@ -43,7 +43,7 @@ import PurchaseInformation from "~/components/purchase-manage/purchase-informati
 import SvgIcon from "~/components/common/svg-icon.vue";
 // 添加新申请
 import AddApply from "~/components/purchase-manage/add-apply.vue";
-import Approval from "~/components/common/approval.vue";
+// import Approval from "~/components/common/approval.vue";
 import { FinanceApprovalHistoryService } from "~/services/manage-service/finance-approval-history.service";
 import { PageService } from "~/utils/page.service";
 import { Layout } from "~/core/decorator";
@@ -56,7 +56,7 @@ import ApplyDetail from "~/components/purchase-manage/apply-detail.vue";
     DataBox,
     SvgIcon,
     AddApply,
-    Approval,
+    // Approval,
     ApplyDetail
   }
 })

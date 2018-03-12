@@ -191,6 +191,7 @@ export default class ModifyUser extends Vue {
     this.modifyModel.userSex = data.userSex;
     this.modifyModel.userManager = data.userManager;
     this.modifyModel.userRemark = data.userRemark;
+    this.modifyModel.userStatus = data.userStatus
     //获取所有组织机构
     this.manageService.getAllDepartment().subscribe(
       data => {

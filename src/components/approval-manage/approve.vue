@@ -126,11 +126,11 @@
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">身份证地址</td>
-          <td colspan="6">{{orderInfo.personal?orderInfo.personal.idCardAddress:''}}</td>
+          <td colspan="6">{{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.idCardAddress)):''}}</td>
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">现居住地址</td>
-          <td colspan="6">{{orderInfo.personal?orderInfo.personal.localHomeAddr:''}}</td>
+          <td colspan="6">{{orderInfo.personal?getCityName(parseInt(orderInfo.personal.localHomeAddr)):''}}</td>
         </tr>
         <tr>
           <td bgColor="#F5F5F5" colspan="2">居住地址家庭座机</td>
@@ -436,7 +436,7 @@ export default class Approve extends Vue {
     approveData.installLicenseFee = this.orderInfo.installLicenseFee; // 上牌费
     approveData.purchaseTax = this.orderInfo.purchaseTax; // 购置税
     approveData.remark = this.orderInfo.remark; // 备注
-    approveData.vehicleAmount= this.orderInfo.vehicleAmount; // 车辆参考总价
+    approveData.vehicleAmount = this.orderInfo.vehicleAmount; // 车辆参考总价
     return approveData;
   }
 }

@@ -93,5 +93,14 @@ export class LoginService {
       }
     })
   }
+
+  /**
+   * 注销用户
+   */
+  logout() {
+    return this.netService.send({
+      server: manageService.loginController.logout
+    })
+  }
 }
 
