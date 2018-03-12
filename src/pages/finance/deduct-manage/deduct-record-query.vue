@@ -2,7 +2,7 @@
 <template>
   <section class="page deduct-record-query">
     <span class="form-title">划扣记录查询</span>
-    <i-row style="margin:6px;">
+    <i-row style="margin:6px;" v-auth="464">
       <span style="margin-left:10px">支付日期：</span>
       <i-date-picker style="display:inline-block;width:10%" v-model="model.startTime"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%" v-model="model.endTime"></i-date-picker>
@@ -14,8 +14,12 @@
         <i-option label="处理中" value="渭南市" key="渭南市"></i-option>
       </i-select>
       <i-button style="margin-left:10px" class="blueButton" @click="getRecord">搜索</i-button>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-right:10px;color:#3367A7;float: right;" v-auth="465">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size:12px;">导出</span>
+      </div>
     </i-row>
-    <data-box :columns="columns1" :data="data1" @onPageChange="getRecord" :page="pageService"></data-box>
+    <data-box :id="463" :columns="columns1" :data="data1" @onPageChange="getRecord" :page="pageService"></data-box>
   </section>
 </template>
 
@@ -27,6 +31,7 @@
   import { ChargeBackService } from "~/services/manage-service/charge-back.service";
   import { PageService } from "~/utils/page.service";
   import { FilterService } from "~/utils/filter.service"
+  import SvgIcon from '~/components/common/svg-icon.vue';
 
   import {
     Tooltip
@@ -41,6 +46,7 @@
   @Layout("workspace")
   @Component({
     components: {
+      SvgIcon,
       DataBox,
       PurchaseInformation
     }
