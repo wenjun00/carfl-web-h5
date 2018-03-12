@@ -160,7 +160,7 @@ export default [
         title: '财务',
         path: 'finance/finance-index',
         children: [{
-            title: '首付款管理',
+            title: '收付款管理',
             icon: 'shoufukuanguanli',
             path: 'finance/initial-payment-manage',
             color: '#598AC5',

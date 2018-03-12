@@ -3,20 +3,20 @@
   <section class="page personal-account-list">
     <i-row style="margin-top:10px">
       <span style="font-size:18px;font-weight:bold">个人开户列表</span>
-      <i-button @click="getTimeSearch(1)" type="text">昨日</i-button>
-      <i-button @click="getTimeSearch(2)" type="text">今日</i-button>
-      <i-button @click="getTimeSearch(3)" type="text">本周</i-button>
-      <i-button @click="getTimeSearch(4)" type="text">本月</i-button>
-      <i-button @click="getTimeSearch(5)" type="text">上月</i-button>
-      <i-button @click="getTimeSearch(6)" type="text">最近三月</i-button>
-      <i-button @click="getTimeSearch(7)" type="text">本季度</i-button>
-      <i-button @click="getTimeSearch(8)" type="text">本年</i-button>
-      <i-button @click="openSearch" style="color:#265EA2">
+      <i-button @click="getTimeSearch(1)" type="text" v-auth="458">昨日</i-button>
+      <i-button @click="getTimeSearch(2)" type="text" v-auth="458">今日</i-button>
+      <i-button @click="getTimeSearch(3)" type="text" v-auth="458">本周</i-button>
+      <i-button @click="getTimeSearch(4)" type="text" v-auth="458">本月</i-button>
+      <i-button @click="getTimeSearch(5)" type="text" v-auth="458">上月</i-button>
+      <i-button @click="getTimeSearch(6)" type="text" v-auth="458">最近三月</i-button>
+      <i-button @click="getTimeSearch(7)" type="text" v-auth="458">本季度</i-button>
+      <i-button @click="getTimeSearch(8)" type="text" v-auth="458">本年</i-button>
+      <i-button @click="openSearch" style="color:#265EA2" v-auth="457">
         <span v-if="!searchOptions">展开</span>
         <span v-if="searchOptions">收起</span>
         <span>高级搜索</span>
       </i-button>
-      <div style="float:right;margin-right:10px;margin-top:10px;">
+      <div style="float:right;margin-right:10px;margin-top:10px;" v-auth="459">
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon iconClass="daochu"></svg-icon>
           <span style="font-size: 12px;">导出</span>
@@ -30,7 +30,7 @@
       <i-date-picker style="display:inline-block;width:10%" v-model="gatherModel.createDateEnd"></i-date-picker>
       <i-button class="blueButton" @click="getGatherListByCondition">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
+    <data-box :id="456" :columns="columns1" :data="data1" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
 
     <!--<div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">

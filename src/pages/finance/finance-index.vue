@@ -52,7 +52,7 @@
       this.finance = [{
         index: 1,
         color: '#598AC5',
-        iconName: '首付款管理',
+        iconName: '收付款管理',
         icon: 'shoufukuanguanli',
         pageList: [{
           pageName: '收款',
