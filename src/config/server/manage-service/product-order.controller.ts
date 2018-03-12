@@ -76,5 +76,14 @@ export default {
     controller: CONTROLLER,
     action: 'exportProductList',
     type: requestType.Post
+  },
+  /**
+   * 查询订单状态变更列表
+   */
+  getOrderStatusChange: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getOrderStatusChange',
+    type: requestType.Get
   }
 }

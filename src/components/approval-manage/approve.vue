@@ -126,11 +126,11 @@
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">身份证地址</td>
-          <td colspan="6">{{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.idCardAddress)):''}}</td>
+          <td colspan="6">{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[0]):''}}{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[1]):''}}{{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.idCardAddress)):''}}{{orderInfo.personal?orderInfo.personal.idCardAddressDetail:''}}</td>
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">现居住地址</td>
-          <td colspan="6">{{orderInfo.personal?getCityName(parseInt(orderInfo.personal.localHomeAddr)):''}}</td>
+          <td colspan="6">{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[0]):''}}{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[1]):''}}{{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.localHomeAddr)):''}}{{orderInfo.personal?orderInfo.personal.localHomeAddrDetail:''}}</td>
         </tr>
         <tr>
           <td bgColor="#F5F5F5" colspan="2">居住地址家庭座机</td>

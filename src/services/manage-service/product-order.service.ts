@@ -86,4 +86,16 @@ export class ProductOrderService {
       }
     })
   }
+  /**
+   * 查询订单状态变更列表
+   */
+  getOrderStatusChange({ orderInfo }, page) {
+    return this.netService.send({
+      server: manageService.productOrderController.getOrderStatusChange,
+      data: {
+        orderInfo: orderInfo
+      },
+      page: page
+    })
+  }
 }
