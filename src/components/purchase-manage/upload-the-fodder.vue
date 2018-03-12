@@ -5,10 +5,10 @@
     <i-row>
       <div style="display:flex;justify-content:flex-start;">
         <div style="height:200px;width:200px;border:1px solid #dddddd;cursor:pointer;text-align:center;">
-          <Upload action="http://192.168.3.70:8762/service-file/fileUploadController/uploadFileGrid" :on-progress="onProgress" accept=".jpg,.png" :headers="{'authorization':$store.token}" :show-upload-list="false" :on-success="onSuccess" :data="uploadData" :max-size="10240">
+          <div @click="uploadFile">
             <Icon type="plus-circled" style="display:block;margin-top:60px;" size="40" color="#265ea2"></Icon>
             <div>点击添加附件</div>
-          </Upload>
+          </div>
           <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
         </div>
         <div v-for="item in fodderList" :key="item.id">
@@ -22,16 +22,13 @@
         </div>
       </div>
     </i-row>
+
     <!-- 弹出框 -->
-    <!-- <template>
-      <i-modal title="上传素材" v-model="openUpload">
-        <upload-image></upload-image>
-        <div slot="footer">
-          <i-button @click="openUpload=false">取消</i-button>
-          <i-button class="blueButton" @click="confirmUpload">确定</i-button>
-        </div>
+    <template>
+      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
+        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
       </i-modal>
-    </template> -->
+    </template>
 
   </section>
 </template>
@@ -43,12 +40,12 @@ import { State, Mutation, namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
 import { PersonalMaterialService } from "~/services/manage-service/personal-material.service";
 import { Prop } from "vue-property-decorator";
-import UploadImage from "~/components/common/upload-image.vue";
+import FileUpload from "~/components/common/file-upload.vue";
 const ModuleState = namespace("purchaseManage", State);
 
 @Component({
   components: {
-    UploadImage
+    FileUpload
   }
 })
 export default class UploadTheFodder extends Vue {
@@ -64,63 +61,49 @@ export default class UploadTheFodder extends Vue {
   private uploadData: any = {
     url: ""
   };
-  // @Prop() productId: any
 
   openClick() {
-    // console.log(this.productId, 70);
     this.personalMaterialService
       .getAllPersonalMaterialNoPage({
         productId: this.productId
       })
       .subscribe(data => {
-        // console.log(data.object);
         this.cityList = data.object;
-        // console.log(this.cityList, 45455);
       });
     this.openUpload = true;
   }
-  /**
-   * 确认上传
-   */
-  confirmUpload() {
-    this.openUpload = false;
-  }
+
   onsuccess(response, file, fileList) {
     this.dataList = fileList;
   }
+
   makeList(data) {
     if (data.applicationPhaseResources) {
       this.fodderList = data.applicationPhaseResources;
     }
   }
-  /**
-   * 添加附件
-   */
-  addAttachment() {
+
+  uploadFile() {
     this.openUpload = true;
   }
+
   /**
-   *删除附件
+   * 上传文件
    */
-  handleRemove(item) {}
-  created() {}
+  postFile() {
+    let fileUpload = this.$refs["file-upload"] as FileUpload;
+    fileUpload.upload();
+  }
+
   /**
-   * 确认上传素材
+   * 上传文件成功回调
    */
-  confirmUploadFodder() {
+  uploadSuccess() {
     this.openUpload = false;
-  }
-  /**
-   * 上传成功钩子
-   */
-  onSuccess(response, file, fileList) {
-    console.log("qwr", response, file, fileList);
-  }
-  /**
-   * 上传中的钩子
-   */
-  onProgress() {
-    this.$Message.info("正在上传，请稍等！");
+    this.$nextTick(() => {
+      let fileUpload = this.$refs["file-upload"] as FileUpload;
+      fileUpload.reset();
+    });
   }
 }
 </script>

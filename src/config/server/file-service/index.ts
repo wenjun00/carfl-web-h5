@@ -1,4 +1,4 @@
-import fileUploadController from './file-upload-controller.controller'
+import fileUploadController from './file-upload.controller'
 
 export const fileService = {
   fileUploadController

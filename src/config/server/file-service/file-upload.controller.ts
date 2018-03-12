@@ -1,5 +1,5 @@
 import { requestType } from '~/config/enum.config'
-const SERVICE = 'service-manage'
+const SERVICE = 'service-file'
 const CONTROLLER = 'fileUploadController'
 export default {
   /**
