@@ -436,6 +436,7 @@
         this.customerMaterialsForm.city1 = this.customerMaterialsForm.city
         this.customerMaterialsForm.localHomeAddr = this.customerMaterialsForm.idCardAddress
         this.customerMaterialsForm.localHomeAddrDetail = this.customerMaterialsForm.idCardAddressDetail
+        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
       } else {
         this.customerMaterialsForm.province1 = ''
         this.customerMaterialsForm.city1 = ''
@@ -457,6 +458,7 @@
         this.customerMaterialsForm.city2 = this.customerMaterialsForm.city
         this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.idCardAddress
         this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.idCardAddressDetail
+        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
       } else {
         this.reset()
       }
@@ -469,19 +471,20 @@
         this.customerMaterialsForm.city2 = this.customerMaterialsForm.city1
         this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.localHomeAddr
         this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.localHomeAddrDetail
+        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
       } else {
         this.reset()
       }
     }
     ValidityPeriodChange(value) {
       if (value) {
+
         this.customerMaterialsForm.idCardValidityPeriodType = 14
-        console.log(this.customerMaterialsForm.idCardValidityPeriodType)
+        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
       } else {
         this.customerMaterialsForm.idCardValidityPeriodType = 15
-        console.log(this.customerMaterialsForm.idCardValidityPeriodType)
+        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
       }
-      console.log(value, 'value')
       this.ValidityPeriodValue = value
     }
     mounted() {}
