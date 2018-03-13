@@ -240,6 +240,12 @@
 <script lang="ts">
   import Vue from "vue";
   import Component from "vue-class-component";
+  import {
+    CityService
+  } from "~/utils/city.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
 
   @Component({})
   export default class CustomerJobMessage extends Vue {
@@ -272,6 +278,11 @@
     private typeList: Array < String > ;
     Reverse(data) {
       if (data.personal.personalJob) {
+        data.personal.personalJob.accessCompanyTime = FilterService.dateFormat(data.personal.personalJob.accessCompanyTime,
+          'yyyy-MM-dd')
+        data.personal.personalJob.companyAddress = Number(data.personal.companyAddress)
+        data.personal.personalJob.city = CityService.getCityParent(Number(data.personal.companyAddress))[1]
+        data.personal.personalJob.province = CityService.getCityParent(Number(data.personal.companyAddress))[0]
         this.job = data.personal.personalJob
       }
     }

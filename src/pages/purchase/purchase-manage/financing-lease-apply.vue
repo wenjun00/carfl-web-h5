@@ -352,7 +352,7 @@
         this.PersonalData.push({
           materialType: uploadTheMaterial.model1, // 客户素材类型
           uploadName: material.name, // 资料上传名称
-          //   id: material.response.id,
+          id: material.id,
         })
       }
       let resourceType = Array.from(new Set(customerOrigin.OriginModel.resourceType))

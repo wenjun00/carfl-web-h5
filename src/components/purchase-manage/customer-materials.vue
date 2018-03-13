@@ -315,6 +315,12 @@
   import Vue from "vue";
   import Component from "vue-class-component";
   import {
+    CityService
+  } from "~/utils/city.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
+  import {
     Prop
   } from "vue-property-decorator";
   @Component({})
@@ -356,9 +362,9 @@
       electricityAccount: '', // 电费账号
       electricityPassword: '', // 电费密码
       localLiveHouseMoney: '', // 每月租金
-      idCardAddress: '',
-      localHomeAddr: '',
-      cityOwnhouseAddress: '',
+      idCardAddress: '', // 身份证地址（区）
+      localHomeAddr: '', // 先居住地址（区）
+      cityOwnhouseAddress: '', // 本市房产地址（区）
     }
     private rules: any = {
       name: [{
@@ -404,6 +410,21 @@
     @Prop()
     disabled: Boolean;
     Reverse(data) {
+      console.log(data, 'dsdhsjhdskjd')
+      //   身份证地址回显
+      data.personal.birthTime = FilterService.dateFormat(data.personal.birthTime, 'yyyy-MM-dd')
+      console.log(data.personal.birthTime)
+      data.personal.idCardAddress = Number(data.personal.idCardAddress)
+      data.personal.city = CityService.getCityParent(Number(data.personal.idCardAddress))[1]
+      data.personal.province = CityService.getCityParent(Number(data.personal.idCardAddress))[0]
+      // 现居住地址
+      data.personal.localHomeAddr = Number(data.personal.localHomeAddr)
+      data.personal.city1 = CityService.getCityParent(Number(data.personal.localHomeAddr))[1]
+      data.personal.province1 = CityService.getCityParent(Number(data.personal.localHomeAddr))[0]
+      // 本市房产地址
+      data.personal.cityOwnhouseAddress = Number(data.personal.cityOwnhouseAddress)
+      data.personal.city2 = CityService.getCityParent(Number(data.personal.cityOwnhouseAddress))[1]
+      data.personal.province2 = CityService.getCityParent(Number(data.personal.cityOwnhouseAddress))[0]
       this.customerMaterialsForm = data.personal
     }
     getinfo(customerModel) {

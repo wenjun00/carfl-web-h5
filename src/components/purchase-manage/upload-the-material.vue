@@ -15,9 +15,9 @@
           <li v-for="item in dataList" :key="item.uid">
             <p>{{item.name}}</p>
             <div>
-              <i-button type="text" icon="arrow-down-a"></i-button>
-              <i-button type="text" icon="eye"></i-button>
-              <i-button type="text" icon="close"></i-button>
+              <i-button type="text" icon="arrow-down-a" @click="download(item)"></i-button>
+              <i-button type="text" icon="eye" @click="preview(item)"></i-button>
+              <i-button type="text" icon="close" @click="handleRemove(item)"></i-button>
 
             </div>
           </li>
@@ -25,7 +25,7 @@
       </i-col>
     </i-row>
     <template>
-      <i-modal v-model="openUpload">
+      <i-modal :loading="true" v-model="openUpload" @on-ok="postFile">
         <i-row>
           <i-col span="4">
             <span style="line-height:36px;">文件类型</span>
@@ -35,14 +35,20 @@
               <i-option v-for="item in cityList" :label="item.name" :value="item.id" :key="item.id"></i-option>
             </i-select>
           </i-col>
-          <i-col span="4">
-            <i-upload :default-file-list="dataList" :on-success="hhh" multiple action="//jsonplaceholder.typicode.com/posts/">
-              <i-button style="color: #2d8cf0;font-size:14px;" type="text" icon="ios-cloud-upload-outline">上传文件</i-button>
-            </i-upload>
+        </i-row>
+        <i-row>
+          <i-col span="24">
+            <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
           </i-col>
         </i-row>
       </i-modal>
+    </template>
 
+    <template>
+      <i-modal title="预览" v-model="previewModel" width="800" class-name="no-footer">
+        <img :src="url" style="width: 100%">
+        </Modal>
+      </i-modal>
     </template>
 
   </section>
@@ -51,6 +57,7 @@
 <script lang="ts">
   import Vue from "vue";
   import Component from "vue-class-component";
+  import FileUpload from "~/components/common/file-upload.tsx.vue";
   import {
     State,
     Mutation,
@@ -60,11 +67,18 @@
     Dependencies
   } from "~/core/decorator";
   import {
+    CommonService
+  } from "~/utils/common.service";
+  import {
     PersonalMaterialService
   } from "~/services/manage-service/personal-material.service";
   const ModuleState = namespace('purchase', State)
 
-  @Component({})
+  @Component({
+    components: {
+      FileUpload
+    }
+  })
   export default class UploadTheMaterial extends Vue {
     @Dependencies(PersonalMaterialService) private personalMaterialService: PersonalMaterialService;
     @ModuleState('productId') productId
@@ -73,9 +87,64 @@
     private dataList: Array < any > = [];
 
     private openUpload: Boolean = false;
+    private previewModel: Boolean = false;
+    private url: any = "";
 
     // @Prop() productId: any
-
+    /**
+     * 下载
+     */
+    download(file) {
+      CommonService.downloadFile(file.url, "订单查询");
+    }
+    /**
+     * 预览
+     */
+    preview(file) {
+      if (file.type === 'jpg' || file.type === 'png' || file.type === "JPG" || file.type === 'PNG') {
+        this.url = file.url
+        this.previewModel = true
+      } else {
+        window.open(file.url)
+      }
+    }
+    /**
+     * 删除
+     */
+    handleRemove(file) {
+      this.dataList.splice(this.dataList.indexOf(file), 1);
+    };
+    /**
+     * 上传文件成功回调
+     */
+    uploadSuccess() {
+      this.openUpload = false;
+      this.$nextTick(() => {
+        let fileUpload = this.$refs["file-upload"] as FileUpload;
+        fileUpload.reset();
+        console.log(fileUpload.makeList(), 'fileUpload.makeList()')
+        for (let item of fileUpload.makeList()) {
+          this.dataList.push({
+            name: item.name,
+            uid: item.uid,
+            url: item.response.url,
+            localUrl: item.response.localUrl,
+            type: item.response.type,
+            id: item.response.id,
+            size: item.size,
+            status: item.status,
+            createTime: item.response.createTime
+          })
+        }
+      });
+    }
+    /**
+     * 上传文件
+     */
+    postFile() {
+      let fileUpload = this.$refs["file-upload"] as FileUpload;
+      fileUpload.upload();
+    }
     openClick() {
       this.personalMaterialService.getAllPersonalMaterialNoPage({
         productId: this.productId
