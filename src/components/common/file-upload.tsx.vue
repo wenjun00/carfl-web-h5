@@ -1,7 +1,7 @@
 <!--财务·上传图片-->
 <template>
   <section class="component file-upload">
-    <Upload :on-progress="onProgress" :on-success="onSuccess" :show-upload-list="false" :headers="{'authorization':$store.token}" ref="upload" :action="uploadUrl" :before-upload="beforeUpload">
+    <Upload :on-progress="onProgress" :on-success="onSuccess" :show-upload-list="false" :accept="acceptFileType" :headers="{'authorization':$store.token}" ref="upload" :action="uploadUrl" :before-upload="beforeUpload">
       <i-row>
         <i-col>
           <Button class="blueButton">选择文件</Button>
@@ -37,6 +37,11 @@ export default class FileUpload extends Vue {
     type: Number
   })
   fileSizeLimit;
+
+  @Prop({
+    type:String
+  })
+  acceptFileType
 
   @Emit("on-success")
   success() {}

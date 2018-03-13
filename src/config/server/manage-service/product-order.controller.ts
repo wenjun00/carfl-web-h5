@@ -85,5 +85,14 @@ export default {
     controller: CONTROLLER,
     action: 'getOrderStatusChange',
     type: requestType.Get
+  },
+  /**
+  * 订单状态变更
+  */
+  changeOrderStatus: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'changeOrderStatus',
+    type: requestType.Get
   }
 }

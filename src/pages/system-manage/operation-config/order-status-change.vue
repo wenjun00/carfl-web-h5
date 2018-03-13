@@ -3,6 +3,16 @@
   <section class="page order-status-change">
     <span class="form-title">订单状态变更</span>
     <i-row style="margin:6px;">
+     <div style="float:right;margin-right:10px;margin-top:-48px;">
+      <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="dayin"></svg-icon>
+        <span style="font-size: 12px;">打印</span>
+      </div>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size: 12px;">导出</span>
+      </div>
+    </div>
       <i-input style="display:inline-block;width:14%;margin-left:5px;min-width:260px;" placeholder="请录入客户姓名\证件号码\手机号\订单号查询" v-model="orderInfo"></i-input>
       <i-button class="blueButton" style="margin-left:10px;" @click="getOrderStatusChangeList">搜索</i-button>
       <!-- <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button> -->
@@ -12,13 +22,8 @@
 
     <template>
       <i-modal v-model="changeStatusOpen" title="状态变更" width="300">
-        <i-select placeholder="请选择状态">
-          <i-option label="已删除" value="已删除" key="已删除"></i-option>
-          <i-option label="待提交" value="待提交" key="待提交"></i-option>
-          <i-option label="待面审" value="待面审" key="待面审"></i-option>
-          <i-option label="待复审" value="待复审" key="待复审"></i-option>
-          <i-option label="待终审" value="待终审" key="待终审"></i-option>
-          <i-option label="待合规" value="待合规" key="待合规"></i-option>
+        <i-select placeholder="请选择状态" v-model="orderStatus">
+          <i-option v-for="{value,label} in $dict.getDictData('0302')" :key="value" :label="label" :value="value"></i-option>
         </i-select>
         <div slot="footer">
           <i-button @click="changeStatusOpen=false">取消</i-button>
@@ -37,6 +42,7 @@ import { Dependencies } from "~/core/decorator";
 import { Layout } from "~/core/decorator";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { PageService } from "~/utils/page.service";
+import { FilterService } from "~/utils/filter.service";
 
 @Layout("workspace")
 @Component({
@@ -52,6 +58,7 @@ export default class OrderStatusChange extends Page {
   private columns1: any;
   private orderStatusChangeList: Array<any> = [];
   private orderInfo: String = "";
+  private orderStatus:Number=0;
 
   mounted() {
     this.getOrderStatusChangeList();
@@ -101,7 +108,13 @@ export default class OrderStatusChange extends Page {
       {
         title: "订单创建时间",
         key: "createTime",
-        align: "center"
+        align: "center" , 
+        render: (h, { row, column, index }) => {
+          return h(
+            "span",
+            FilterService.dateFormat(row.createTime, "yyyy-MM-dd hh:mm:ss")
+          );
+        }
       },
       {
         title: "订单编号",
@@ -182,6 +195,7 @@ export default class OrderStatusChange extends Page {
    * 更改状态
    */
   changeStatus(row) {
+    this.orderStatus = row.orderStatus
     this.changeStatusOpen = true;
   }
   /**

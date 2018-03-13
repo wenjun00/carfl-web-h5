@@ -3,6 +3,16 @@
   <section class="page customer-repay-revert">
     <span class="form-title">客户还款撤销</span>
     <i-row style="margin:6px;">
+        <div style="float:right;margin-right:10px;margin-top:-48px;">
+      <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="dayin"></svg-icon>
+        <span style="font-size: 12px;">打印</span>
+      </div>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size: 12px;">导出</span>
+      </div>
+    </div>
       <span>客户姓名：</span>
       <i-input style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
       <span style="margin-left:10px;">证件号码：</span>

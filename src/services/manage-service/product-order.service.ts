@@ -98,4 +98,16 @@ export class ProductOrderService {
       page: page
     })
   }
+  /**
+   * 订单状态变更
+   */
+  changeOrderStatus({ orderId, linkId }) {
+    return this.netService.send({
+      server: manageService.productOrderController.changeOrderStatus,
+      data: {
+        orderId: orderId,
+        linkId: linkId
+      }
+    })
+  }
 }
