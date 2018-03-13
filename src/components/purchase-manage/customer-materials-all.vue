@@ -92,6 +92,9 @@
 <script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
+  import {
+    CityService
+  } from "~/utils/city.service";
   // import {
   //   Prop
   // } from "vue-property-decorator";
@@ -142,8 +145,12 @@
      * 信息反显
      */
     Reverse(data) {
+      data.personal.localHomeAddr = Number(data.personal.localHomeAddr)
+      data.personal.city = CityService.getCityParent(Number(data.personal.localHomeAddr))[1]
+      data.personal.province = CityService.getCityParent(Number(data.personal.localHomeAddr))[
+        0]
+      data.orderServiceList = data.orderServices.map(v => v.service)
       this.customerData = data.personal
-      this.customerData.orderServiceList = data.orderServices.map(v => v.service)
     }
     getinfo(data) {
       this.customerData = Object.assign({}, data)
