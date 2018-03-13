@@ -71,7 +71,7 @@
         <i-button class="blueButton">确认</i-button>
       </div>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="data1" :page="pageService"></data-box>
 
     <template>
       <i-modal title="另存为模板" width="400" v-model="saveTemplateModal" @on-ok="confirmSaveTemplate">
@@ -104,15 +104,10 @@
   import DataBox from "~/components/common/data-box.vue";
   import Component from "vue-class-component";
   import SvgIcon from '~/components/common/svg-icon.vue'
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    OrderService
-  } from "~/services/business-service/order.service";
-  import {
-    Layout
-  } from "~/core/decorator";
+  import { PageService } from "~/utils/page.service";
+  import { Dependencies } from "~/core/decorator";
+  import { TemplateService } from "~/services/manage-service/template.service";
+  import { Layout } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
@@ -123,7 +118,8 @@
     }
   })
   export default class OrderInfoExport extends Page {
-    @Dependencies(OrderService) private orderService: OrderService;
+    @Dependencies(TemplateService) private templateService: TemplateService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
     private data1: Array < Object > = [];
     private searchOptions: Boolean = false;
@@ -543,7 +539,6 @@
           title: "客户名",
           key: "customerName",
           width: 160,
-          fixed: 'left',
           align: 'center'
         }, {
           title: "合同号",
@@ -602,7 +597,8 @@
         {
           title: "购置税",
           key: "purchaseTax",
-          width: 100
+          width: 100,
+          align: 'center'          
         },
         {
           title: "路桥费",

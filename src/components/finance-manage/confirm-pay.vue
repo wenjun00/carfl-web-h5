@@ -122,8 +122,7 @@
 
     <i-row style="margin-top:10px">
       <i-col :span="12"  v-if="!check">
-        <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;"
-          @click="addAttachment">
+        <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;" @click="openUpload=true">
           <Icon type="plus-circled" style="display:block;margin-top:53px;" size="40" color="#265ea2"></Icon>
           <div>点击添加附件</div>
           <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
@@ -143,6 +142,13 @@
         </div>
       </i-modal>
     </template>
+
+    <!-- 弹出框 -->
+    <template>
+      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
+        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -152,6 +158,7 @@
   import ChangeCard from "~/components/purchase-manage/change-card.vue"
   import DataBox from "~/components/common/data-box.vue";
   import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
+  import FileUpload from "~/components/common/file-upload.tsx.vue";
   import {
     Dependencies
   } from "~/core/decorator";
@@ -162,6 +169,7 @@
 
   @Component({
     components: {
+      FileUpload,
       ChangeCard,
       DataBox,
       PurchaseInformation
@@ -181,6 +189,7 @@
     private delFinanceUploadResource: any = []
     private addFinanceUploadResource: any = []
     private personalBanks: any = [];
+    private openUpload: Boolean = false;
     @Prop({
       default: false
     })
@@ -198,6 +207,24 @@
     private payType = ''
     private scrollTopHeight = 0
     private collectMoneyId: any = ''
+
+    /**
+     * 上传文件成功回调
+     */
+    uploadSuccess() {
+      this.openUpload = false;
+      this.$nextTick(() => {
+        let fileUpload = this.$refs["file-upload"] as FileUpload;
+        fileUpload.reset();
+      });
+    }
+    /**
+     * 上传文件
+     */
+    postFile() {
+      let fileUpload = this.$refs["file-upload"] as FileUpload;
+      fileUpload.upload();
+    }
     refresh(row) {
       this.rowObj = row
       this.refundApplicationService.getRefundApplicationById({
@@ -232,7 +259,6 @@
       console.log(sum)
       this.paymentAmount = sum 
     }
-    addAttachment() {}
     mounted() {
       let target = document.querySelector(".purchaseInformation .ivu-modal-body")
       if (target) {

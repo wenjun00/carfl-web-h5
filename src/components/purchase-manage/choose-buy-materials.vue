@@ -468,8 +468,9 @@
      * 数据反显
      */
     Reverse(data) {
-      data.orderServiceList = Array.from(new Set(data.orderServiceList))
+      data.orderServiceList = data.orderServices.map(v => v.service)
       this.chooseBuyModel = data
+      console.log(data.orderServiceList)
     }
     /**
      * 
