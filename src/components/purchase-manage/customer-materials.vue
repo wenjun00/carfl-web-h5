@@ -110,19 +110,19 @@
         <i-col span="12">
           <i-form-item label="身份证地址" prop="idCardAddressDetail">
             <i-row>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="省" v-model="customerMaterialsForm.province">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="省" v-model="customerMaterialsForm.province">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="市" v-model="customerMaterialsForm.city">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="市" v-model="customerMaterialsForm.city">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="区" v-model="customerMaterialsForm.idCardAddress">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="区" v-model="customerMaterialsForm.idCardAddress">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
@@ -160,19 +160,19 @@
               <i-checkbox label="身份证地址" :value="14" :checked.sync="checked" @on-change="idCardChange">身份证地址</i-checkbox>
             </i-row>
             <i-row>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="省" v-model="customerMaterialsForm.province1">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="省" v-model="customerMaterialsForm.province1">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="市" v-model="customerMaterialsForm.city1">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="市" v-model="customerMaterialsForm.city1">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province1 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="区" v-model="customerMaterialsForm.localHomeAddr">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="区" v-model="customerMaterialsForm.localHomeAddr">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city1 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
@@ -272,19 +272,19 @@
               <!--</i-checkbox-group>-->
             </i-row>
             <i-row>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="省" v-model="customerMaterialsForm.province2">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="省" v-model="customerMaterialsForm.province2">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="市" v-model="customerMaterialsForm.city2">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="市" v-model="customerMaterialsForm.city2">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province2 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="区" v-model="customerMaterialsForm.cityOwnhouseAddress">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="区" v-model="customerMaterialsForm.cityOwnhouseAddress">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city2 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>

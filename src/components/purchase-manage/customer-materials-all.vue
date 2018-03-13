@@ -36,19 +36,19 @@
               <i-form-item label="联系地址" prop="idCardAddressDetail">
                 <i-row>
                   <i-row>
-                    <i-col :span="4">
-                      <i-select style="width:80px" placeholder="省" v-model="customerData.province">
+                    <i-col :span="5">
+                      <i-select style="width:96px" placeholder="省" v-model="customerData.province">
                         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                       </i-select>
                     </i-col>
-                    <i-col :span="4">
-                      <i-select style="width:80px" placeholder="市" v-model="customerData.city">
+                    <i-col :span="5">
+                      <i-select style="width:96px" placeholder="市" v-model="customerData.city">
                         <i-option v-for="{value,label} in this.customerData.province ? this.$city.getCityData({ level: 1, id: this.customerData.province }) : []"
                           :key="value" :label="label" :value="value"></i-option>
                       </i-select>
                     </i-col>
-                    <i-col :span="4">
-                      <i-select style="width:80px" placeholder="区" v-model="customerData.localHomeAddr">
+                    <i-col :span="5">
+                      <i-select style="width:96px" placeholder="区" v-model="customerData.localHomeAddr">
                         <i-option v-for="{value,label} in this.customerData.city ? this.$city.getCityData({ level: 1, id: this.customerData.city }) : []"
                           :key="value" :label="label" :value="value"></i-option>
                       </i-select>
