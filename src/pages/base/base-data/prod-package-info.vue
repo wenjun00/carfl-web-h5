@@ -26,10 +26,10 @@
       </i-row>
     </div>
     <template>
-      <i-modal title="新增产品包" v-model="pPackageModel">
+      <i-modal title="新增产品包" v-model="pPackageModel" :transfer="false">
         <add-product-package @close="close" ref="add-product-package"></add-product-package>
         <div slot="footer">
-          <i-button @click="pPackageModel=false">取消</i-button>
+          <i-button @click="cancelClick">取消</i-button>
           <i-button class="blueButton" @click="addProductpageageClick">新增</i-button>
         </div>
       </i-modal>
@@ -189,6 +189,11 @@
     // mounted() {
     //   this.getProductPackage();
     // }
+    cancelClick() {
+      this.pPackageModel = false
+      let _addproductpackage: any = this.$refs['add-product-package']
+      _addproductpackage.reset()
+    }
     close() {
       this.pPackageModel = false
       this.getProductPackage()
