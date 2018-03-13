@@ -4,12 +4,11 @@
     <i-row style="margin-top:10px;">
       <span style="font-size:18px;font-weight:bold">查询模版管理</span>
       <i-select style="margin-left:10px;width:10%;">
-        <i-option label="订单信息" value="订单信息" key="订单信息"></i-option>
-        <i-option label="车辆信息" value="车辆信息" key="车辆信息"></i-option>
+        <i-option v-for="{value,label} in $dict.getDictData('0428')" :key="value" :label="label" :value="value"></i-option>        
       </i-select>
-      <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="query">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="data1" :page="pageService"></data-box>
   </section>
 </template>
 
@@ -18,16 +17,10 @@
   import DataBox from "~/components/common/data-box.vue";
   import Component from "vue-class-component";
   import SvgIcon from '~/components/common/svg-icon.vue'
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    OrderService
-  } from "~/services/business-service/order.service";
-  import {
-    Layout
-  } from "~/core/decorator";
-
+  import { Dependencies } from "~/core/decorator";
+  import { TemplateService } from "~/services/manage-service/template.service";
+  import { Layout } from "~/core/decorator";
+  import { PageService } from "~/utils/page.service";
   @Layout("workspace")
   @Component({
 
@@ -37,21 +30,29 @@
     }
   })
   export default class QueryTemplateManage extends Page {
-    @Dependencies(OrderService) private orderService: OrderService;
+    @Dependencies(TemplateService) private templateService: TemplateService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
+    private model: any = {};
     private data1: Array < Object > = [];
     private searchOptions: Boolean = false;
-
+    query() {
+      this.templateService.selectTemplate(this.model, this.pageService).subscribe(data => {
+        this.data1 = data
+      }, ({
+        msg
+      }) => {
+        this.$Message.error(msg)
+      })
+    }
     created() {
-      this.columns1 = [{
-          title: "序号",
-          width: 60,
-          type: 'index',
-          align: 'center'
-        },
+      this.query()
+      this.columns1 = [
         {
           title: "操作",
           align: 'center',
+          fixed: 'left',
+          width: 150,
           render: (h, {
             row,
             column,
@@ -77,7 +78,16 @@
                   click: () => {
                     this.$Modal.confirm({
                       title: '提示',
-                      content: '确定删除吗？'
+                      content: '确定删除吗？',
+                      onOk: () => {
+                        this.templateService.deleteTemplate({ templateId: row.id }).subscribe(data => {
+                          this.$Message.success('删除成功！')
+                          this.pageService.reset()
+                          this.query()
+                        }, ({ msg }) => {
+                          this.$Message.error(msg)
+                        })
+                      }
                     })
                   }
                 }
@@ -88,7 +98,10 @@
         {
           title: "模版类型",
           key: "templateType",
-          align: 'center'
+          align: 'center',
+          render: (h, { row, column, index }) => {
+            return h("span", {}, this.$dict.getDictName(row.templateType));
+          }
         },
         {
           title: "模版名称",
@@ -97,16 +110,10 @@
         },
         {
           title: "创建人",
-          key: "creator",
+          key: "operator",
           align: 'center'
         }
       ]
-
-      this.data1 = [{
-        templateType: '订单信息',
-        templateName: '左拉的常用查询模板1',
-        creator: '左拉'
-      }]
     }
     getOrderInfoByTime() {}
     openSearch() {

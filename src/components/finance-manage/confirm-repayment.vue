@@ -134,7 +134,7 @@
 
       <i-row>
         <i-col :span="8" style="display:flex;justify-content:center;;margin-top:10px">
-          <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;">
+          <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;" @click="openUpload=true">
             <Icon type="plus-circled" style="display:block;margin-top:53px;" color="#265ea2" size="40"></Icon>
             <div>点击添加附件</div>
             <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
@@ -153,6 +153,13 @@
         <deduct-record ref="deduct-record"></deduct-record>
       </i-modal>
     </template>
+
+    <!-- 弹出框 -->
+    <template>
+      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
+        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
+      </i-modal>
+    </template>
   </section>
 </template>
 
@@ -161,6 +168,7 @@
   import Component from "vue-class-component";
   import DataBox from "~/components/common/data-box.vue";
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
+  import FileUpload from "~/components/common/file-upload.tsx.vue";
   import {
     DataGrid,
     DataGridItem
@@ -174,6 +182,7 @@
 
   @Component({
     components: {
+      FileUpload,
       DataBox,
       DataGrid,
       DataGridItem,
@@ -189,13 +198,31 @@
     private collectMoneyDetails: any = [];
     private financeUploadResources: any = [];
     private data2: any = [];
-    private deductRecordModal: Boolean = false
+    private deductRecordModal: Boolean = false;
+    private openUpload: Boolean = false;
     private remark: String = ''
     private collectMoneySum: any = 0
     private delFinanceUploadResource: any = []
     private addFinanceUploadResource: any = []
     private collectMoneyId: any = ''
 
+    /**
+     * 上传文件成功回调
+     */
+    uploadSuccess() {
+      this.openUpload = false;
+      this.$nextTick(() => {
+        let fileUpload = this.$refs["file-upload"] as FileUpload;
+        fileUpload.reset();
+      });
+    }
+    /**
+     * 上传文件
+     */
+    postFile() {
+      let fileUpload = this.$refs["file-upload"] as FileUpload;
+      fileUpload.upload();
+    }
     refresh(row) {
       this.collectMoneyId = ''
       this.repaymentObj = {}
