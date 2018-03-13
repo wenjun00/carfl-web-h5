@@ -43,6 +43,7 @@ export default class FileUpload extends Vue {
 
   private uploadColumns: any;
   private uploadList: Array<any> = [];
+  private fileList: Array<any> = []; // 文件上传成功文件列表
 
   /**
    * 初始化
@@ -158,13 +159,22 @@ export default class FileUpload extends Vue {
   /**
    * 上传成功回调
    */
-  onSuccess(event, file) {
+  onSuccess(event, file,fileList) {
     let target = this.uploadList.find(x => x.file.uid === file.uid);
     target.state = "finish";
 
     if (this.uploadList.every(x => x.state === "finish")) {
       this.success();
+      this.fileList = fileList
+      console.log(fileList,'fileList')
     }
+  }
+
+  /**
+   * 返回上传成功时文件列表
+   */
+  makeList(){
+    return this.fileList
   }
 
   /**

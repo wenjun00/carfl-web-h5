@@ -162,9 +162,11 @@ export default class SaleGatheringApply extends Page {
       time.getSeconds();
   }
   getSaveModel() {
+    /**
+     * 获取收款明细信息start
+     */
     let _gatherDetail: any = this.$refs["gather-detail"];
     let itemList = _gatherDetail.getItem();
-    // console.log("itemList", itemList);
     let initialPayment = itemList.find(v => v.itemName === "initialPayment"); // 首付款
     this.saveDraftModel.initialPayment = initialPayment
       ? initialPayment.itemMoney
@@ -211,6 +213,18 @@ export default class SaleGatheringApply extends Page {
     this.saveDraftModel.totalPayment = totalPayment
       ? totalPayment.itemMoney
       : 0;
+     /**
+     * 获取收款明细信息end
+     */
+
+    /**
+     * 获取上传素材信息start
+     */
+    let _uploadFodder = this.$refs['upload-the-fodder'] as UploadTheFodder
+    let uploadList = _uploadFodder.getUploadItem()
+    /**
+     * 获取上传素材信息end
+     */
   }
   /**
    * 保存草稿
