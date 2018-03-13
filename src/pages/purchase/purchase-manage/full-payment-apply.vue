@@ -505,6 +505,12 @@
                   } else {
                     this.orderStatus = 304;
                   }
+                  component.addcarData.map(v => {
+                    v.carSeriesId = v.seriesId,
+                      v.amount = v.carAmount,
+                      v.vehicleColour = v.carColour,
+                      v.vehicleEmissions = v.carEmissions
+                  })
                   let savesubmitDataset: any = {
                     idCard: this.applyData.idCard,
                     name: this.applyData.name,

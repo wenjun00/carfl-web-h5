@@ -184,7 +184,7 @@
         align: 'center'
       }, {
         title: '车身颜色',
-        key: 'vehicleColour',
+        key: 'carColour',
         align: 'center'
       }, {
         title: '单价（元）',
@@ -237,6 +237,7 @@
     }
     distributionData(data) {
       console.log(data, 'data')
+      data.vehicleColour = data.map(v => v.carColour)
       this.addcarData = data
       this.totalPrice = data.map(v => v.carAmount).reduce((x, y) => {
         return x + y;
