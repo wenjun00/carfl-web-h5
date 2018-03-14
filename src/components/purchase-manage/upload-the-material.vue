@@ -90,7 +90,22 @@
     private openUpload: Boolean = false;
     private previewModel: Boolean = false;
     private url: any = "";
-
+    /**
+     * 重置
+     */
+    resetfileList(){
+    this.dataList=[]
+    }
+    /**
+     * 反显
+     */
+    Reverse(data){
+        data.personal.personalDatas.map(v=>{
+            v.url=v.materialUrl,
+            v.name=v.uploadName
+        })
+    this.dataList=data.personal.personalDatas
+    }
     /**
      * 下载
      */

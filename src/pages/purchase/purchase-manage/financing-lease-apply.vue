@@ -262,6 +262,9 @@
       //   客户来源
       let _customerorigin: any = this.$refs['customer-origin']
       _customerorigin.Reverse(data)
+    //   上传资料反显
+      let _uploadthematerial:any=this.$refs['upload-the-material']
+      _uploadthematerial.Reverse(data)
 
     }
     /**
@@ -286,12 +289,14 @@
       let _customerorigin: any = this.$refs['customer-origin']
       //   let form: any = _customerorigin.$refs['job-form']
       _customerorigin.reset()
+           //   上传资料
+      let uploadmaterial: any = this.$refs['upload-the-material']
+      uploadmaterial.resetfileList()
       //   职业信息
       let _customerjobmessage: any = this.$refs['customer-job-message']
-      let formjob: any = _customerjobmessage.$refs['form-job']
-      formjob.resetFields()
-      let revenueform: any = _customerjobmessage.$refs['revenue-form']
-      revenueform.resetFields()
+       _customerjobmessage.jobchange()
+    //   let revenueform: any = _customerjobmessage.$refs['revenue-form']
+    //   revenueform.resetFields()
       //   let jobform: any = _customerjobmessage.$refs['company-form']
       //   jobform.resetFields()
     }
@@ -348,11 +353,13 @@
 
       })
       let addcarDatas = Array.from(new Set(this.addcarData))
+      console.log(uploadTheMaterial.dataList,'uploadTheMaterial.dataList')
       for (let material of uploadTheMaterial.dataList) {
         this.PersonalData.push({
           materialType: uploadTheMaterial.model1, // 客户素材类型
           uploadName: material.name, // 资料上传名称
           id: material.id,
+          materialUrl:material.url,
         })
       }
       let resourceType = Array.from(new Set(customerOrigin.OriginModel.resourceType))
@@ -509,6 +516,7 @@
                         this.PersonalData.push({
                           materialType: uploadTheMaterial.model1, // 客户素材类型
                           uploadName: material.name, // 资料上传名称
+                          materialUrl:material.url,
                           //   id: material.response.id,
                         })
                       }
