@@ -17,7 +17,7 @@
 
     <template>
       <i-modal title="审批" width="500" v-model="approvalModal">
-        <approval :addAttachmentShow="addAttachmentShow"></approval>
+        <!--<approval :addAttachmentShow="addAttachmentShow"></approval>-->
       </i-modal>
     </template>
 

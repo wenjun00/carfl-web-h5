@@ -72,7 +72,8 @@
   import {
     PersonalMaterialService
   } from "~/services/manage-service/personal-material.service";
-  const ModuleState = namespace('purchase', State)
+  const ModuleState = namespace('purchase', State);
+  import { Prop } from "vue-property-decorator";
 
   @Component({
     components: {
@@ -90,7 +91,6 @@
     private previewModel: Boolean = false;
     private url: any = "";
 
-    // @Prop() productId: any
     /**
      * 下载
      */

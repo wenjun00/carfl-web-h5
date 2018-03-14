@@ -22,7 +22,7 @@
       <div style="margin-left:50px;">
 
         <span style="margin-right:8px;">通过介绍</span>
-        <i-radio-group v-model="customerOriginModel.resourceType" :disabled="disabled">
+        <i-radio-group v-model="customerOriginModel.resourceType" :disabled="disabled" @on-change="resetRadio">
           <i-radio :label="81" :value="81" :key="81">同行推荐</i-radio>
           <i-radio :label="82" :value="82" :key="82">客户转介绍</i-radio>
           <i-radio :label="83" :value="83" :key="83">分支机构推荐</i-radio>
@@ -128,6 +128,19 @@
     private isShow: Boolean = false;
     private isBuyCar: String = '是';
     private disabled: Boolean = false;
+
+    resetRadio(){
+       this.customerOriginModel.peerName= '', // 同行姓名
+      this.customerOriginModel.peerCompany= '', // 同行公司
+      this.customerOriginModel.peerPhone= '', // 同行联系方式
+
+      this.customerOriginModel.customerName= '', // 客户姓名
+      this.customerOriginModel.customerPhone= '', // 联系方式
+      this.customerOriginModel.isBuyCar= '', // 在我司是否成功购车
+
+      this.customerOriginModel.organizationNames= '', // 机构名称
+      this.customerOriginModel.referrer= '' // 推荐人
+    }
 
     Reverse(data) {
       if (data.personal.personalResourcePublicity) {

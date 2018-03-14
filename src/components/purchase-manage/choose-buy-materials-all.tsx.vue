@@ -232,6 +232,9 @@
         this.totalPrice = data.map(v => v.carAmount).reduce((x, y) => {
           return x + y;
         })
+        if(this.totalPrice===NaN){
+            this.totalPrice=0
+        }
       }
     }
 

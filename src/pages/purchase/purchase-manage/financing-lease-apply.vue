@@ -436,13 +436,13 @@
           let _customerform: any = choosebuymaterials.$refs['customer-form'];
           _customerform.validate(valid => {
             if (!valid) {
-              this.$Message.warning('您有未输入的选项，请先检查并输入后再提交！');
+              this.$Message.warning('请完善选购资料信息！');
               return false
             } else {
               let _form: any = choosebuymaterials.$refs['form'];
               _form.validate(valid => {
                 if (!valid) {
-                  this.$Message.warning('请先完善产品信息！');
+                  this.$Message.warning('请完善选购资料信息！');
                   return false
                 } else {
                   let customerMaterials: any = this.$refs['customer-materials'];
@@ -451,7 +451,7 @@
                   _jobform.validate(valid => {
                     console.log(valid, 'valid')
                     if (!valid) {
-                      this.$Message.warning('您有未输入的选项，请先检查并输入后再提交！');
+                      this.$Message.warning('请完善客户资料信息！');
                       return false
                     } else {
                       let customerJobMessage: any = this.$refs['customer-job-message'];
@@ -460,11 +460,11 @@
                       console.log(customerOrigin, 'OriginModel')
                       let uploadTheMaterial: any = this.$refs['upload-the-material'];
                       if (customerContacts.data1.length < 2) {
-                        this.$Message.warning('直系亲属必填2个！');
+                        this.$Message.warning('客户联系人信息直系亲属必填2个！');
                         return
                       }
                       if (customerContacts.data2.length < 3) {
-                        this.$Message.warning('必填3个其他联系人！');
+                        this.$Message.warning('客户联系人信息信息必填3个其他联系人！');
                         return
                       }
                       if (type) {
@@ -516,10 +516,15 @@
                         this.$Message.warning('请添加车辆信息');
                         return
                       }
-                      if (customerJobMessage.job.companyName === '') {
+                      if(customerJobMessage.jobType===37&&customerJobMessage.job.companyName === ''){
                         this.$Message.warning('请完善客户职业信息');
                         return
                       }
+                      if(customerJobMessage.jobType===38&&customerJobMessage.job.identity === ''){
+                        this.$Message.warning('请完善客户职业信息');
+                        return
+                      }
+                
                       if (customerOrigin.OriginModel.resourceType.length === 0) {
                         this.$Message.warning('请完善客户来源信息');
                         return

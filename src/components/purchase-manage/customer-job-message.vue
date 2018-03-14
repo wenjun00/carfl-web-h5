@@ -177,7 +177,7 @@
                   <i-radio :label="54" :value="54">法人代表</i-radio>
                   <i-radio :label="55" :value="55">股东</i-radio>
                 </i-radio-group>
-                <i-input style="width:185px;" placeholder="股份占比%"></i-input>
+                <i-input style="width:185px;" placeholder="股份占比%" v-model="job.stockScale"></i-input>
               </i-row>
             </i-form-item>
           </i-col>
@@ -273,11 +273,17 @@
       industry: '', // 所属行业
       pastyearIncome: '', // 过去一年营业收入
       pastyearProfit: '', // 过去一年利润
+      stockScale:''
     };
     private jobType: any = 37;
     private typeList: Array < String > ;
     Reverse(data) {
       if (data.personal.personalJob) {
+          if(data.personal.personalJob.identity){
+          this.jobType=38
+          }else{
+          this.jobType=37 
+          }
         data.personal.personalJob.accessCompanyTime = FilterService.dateFormat(data.personal.personalJob.accessCompanyTime,
           'yyyy-MM-dd')
         data.personal.personalJob.companyAddress = Number(data.personal.companyAddress)
@@ -285,9 +291,10 @@
         data.personal.personalJob.province = CityService.getCityParent(Number(data.personal.companyAddress))[0]
         this.job = data.personal.personalJob
       }
+      console.log(data.personal,'data.personal')
     }
     jfhdfdf() {
-      console.log(this.jobType)
+      this.job={}
     }
 
     created() {
