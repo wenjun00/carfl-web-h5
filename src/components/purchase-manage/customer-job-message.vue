@@ -3,7 +3,7 @@
   <section class="component customer-job-message">
     <i-col span="24" style="line-height:30px" class="form-title">职业信息</i-col>
     <div span="24" style="line-height:30px">
-      <i-radio-group v-model="jobType" @on-change="jfhdfdf">
+      <i-radio-group v-model="jobType" @on-change="jobchange">
         <i-radio :label="37" :value="37">工薪者</i-radio>
         <i-radio :label="38" :value="38">企业经营者</i-radio>
       </i-radio-group>
@@ -291,9 +291,8 @@
         data.personal.personalJob.province = CityService.getCityParent(Number(data.personal.companyAddress))[0]
         this.job = data.personal.personalJob
       }
-      console.log(data.personal,'data.personal')
     }
-    jfhdfdf() {
+    jobchange() {
       this.job={}
     }
 
