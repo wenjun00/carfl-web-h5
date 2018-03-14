@@ -32,8 +32,9 @@
     </template>
     <!--上传资料、补充资料-->
     <template>
-      <i-modal v-model="openUpload" :title="uploadOrAddFlag?'上传资料':'补充资料'">
-        <i-button @click="uploadDialog">上传</i-button>
+      <i-modal v-model="openUpload" :transfer="false" width="700" :title="uploadOrAddFlag?'上传资料':'补充资料'">
+            <upload-the-material ref="upload-the-material"></upload-the-material>
+        <!--<i-button @click="uploadDialog">上传</i-button>
         <div style="font-size:18px;font-weight:bold;margin-top:10px">
           <span>文件数量（3）</span>
           <div style="display:inline-block;float:right;">
@@ -46,7 +47,7 @@
         </div>
         <div style="margin-top:6px;font-size:14px;">
           <span>结婚证-001fdawdeklvkje...</span>
-        </div>
+        </div>-->
       </i-modal>
     </template>
 
@@ -96,11 +97,13 @@
   import {
     Layout
   } from "~/core/decorator";
+   import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
 
   @Layout("workspace")
   @Component({
     components: {
-      DataBox
+      DataBox,
+      UploadTheMaterial
     }
   })
   export default class CustomerDataQuery extends Page {
@@ -135,7 +138,7 @@
             column,
             index
           }) => {
-            if (row.customerName === '王泽杰') {
+            if (row.isUploadFile=== 0) {
               return h('i-button', {
                 props: {
                   type: 'text'
@@ -170,7 +173,10 @@
           title: '资料上传',
           editable: true,
           key: 'isUploadFile',
-          align: 'center'
+          align: 'center',
+            render: (h, { row, column, index }) => {
+          return h("span", {}, row.isUploadFile === 0 ? "未上传" : "已上传");
+        }
         },
         {
           title: '订单编号',

@@ -66,7 +66,7 @@
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
         <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
-          <i-button size="large" class="highDefaultButton" @click="saveAndSubmit(true)">保存草稿</i-button>
+          <i-button size="large" class="highDefaultButton" @click="draftsaveAndSubmit(true)">保存草稿</i-button>
           <i-button class="highButton" @click="saveAndSubmit(false)">保存并提交</i-button>
         </i-col>
       </i-row>
@@ -105,7 +105,7 @@
   import AddCar from '~/components/purchase-manage/add-car.vue';
   import HistoricalRecord from '~/components/purchase-manage/historical-record.vue';
 
-  import ChooseBuyMaterialsAll from '~/components/purchase-manage/choose-buy-materials-all.vue';
+  import ChooseBuyMaterialsAll from '~/components/purchase-manage/choose-buy-materials-all.tsx.vue';
   import CustomerMaterialsAll from '~/components/purchase-manage/customer-materials-all.vue';
 
   @Layout('workspace')
@@ -405,6 +405,54 @@
       this.isShown = !this.isShown;
     }
     savedraft() {}
+    draftsaveAndSubmit(type) {
+      let component: any = this.$refs['materials-all'];
+      //   选购信息
+      let choosebusyData: any = component.choosebusyData;
+      for (let item of component.addcarData) {
+        this.addcarData.push({
+          brandId: item.brandId,
+          brandName: item.brandName,
+          carSeriesId: item.carSeriesId,
+          modelName: item.modelName,
+          otherExpenses: item.otherExpenses,
+          vehicleAmount: item.vehicleAmount,
+          vehicleColour: item.vehicleColour,
+        });
+      }
+      //   客户资料
+      let materials: any = this.$refs['materials'];
+      let customerData: any = materials.customerData;
+      console.log(customerData, 900000000000000);
+      if (type) {
+        this.orderStatus = 303;
+      } else {
+        this.orderStatus = 304;
+      }
+      let savesubmitDataset: any = {
+        idCard: this.applyData.idCard,
+        name: this.applyData.name,
+        mobileMain: this.applyData.customerPhone,
+        salesmanName: this.applyData.salesmanName,
+        city: choosebusyData.city,
+        companyId: choosebusyData.companyId,
+        province: choosebusyData.province,
+        orderCars: component.addcarData, // 车辆
+        personal: customerData,
+        orderServiceList: customerData.orderServiceList,
+        orderStatus: this.orderStatus,
+      };
+      this.productOrderService.createFullPaymentOrder(savesubmitDataset).subscribe(
+        data => {
+          this.$Message.success('保存成功！');
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+    }
     /**
      * 保存并提交
      */
@@ -457,6 +505,12 @@
                   } else {
                     this.orderStatus = 304;
                   }
+                  component.addcarData.map(v => {
+                    v.carSeriesId = v.seriesId,
+                      v.amount = v.carAmount,
+                      v.vehicleColour = v.carColour,
+                      v.vehicleEmissions = v.carEmissions
+                  })
                   let savesubmitDataset: any = {
                     idCard: this.applyData.idCard,
                     name: this.applyData.name,

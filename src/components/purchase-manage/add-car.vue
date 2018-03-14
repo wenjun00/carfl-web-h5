@@ -21,8 +21,7 @@
           </i-col>
           <i-col span="22" style="overflow:hidden">
             <div>
-              <data-box :height="540" ref="databox" :columns="carColumns" :data="carDataModel" border stripe @onPageChange="cartreeChange"
-                :page="pageService"></data-box>
+              <data-box :height="540" ref="databox" :columns="carColumns" :data="carDataModel" :noDefaultRow="true"></data-box>
             </div>
           </i-col>
         </i-row>
@@ -97,55 +96,46 @@
           title: '车辆品牌',
           key: 'brandName',
           align: 'center',
-          width: 160,
         },
         {
           title: '车辆型号',
           key: 'modelName',
           align: 'center',
-          width: 160,
         },
         {
           title: '车身颜色',
           key: 'carColour',
           align: 'center',
-          width: 160,
         },
         {
           title: '车辆排量',
           key: 'carEmissions',
           align: 'center',
-          width: 160,
         },
         {
           title: '车辆配置',
           key: 'vehicleConfiguration',
           align: 'center',
-          width: 160,
         },
         {
           title: '上牌地区',
           key: 'registrationArea',
-          align: 'center',
-          width: 160,
+          align: 'center'
         },
         {
           title: '车辆牌照',
           key: 'vehicleLicence',
-          align: 'center',
-          width: 160,
+          align: 'center'
         },
         {
           title: '所在门店',
           key: 'store',
-          align: 'center',
-          width: 160,
+          align: 'center'
         },
         {
           title: '状态',
           key: 'status',
           align: 'center',
-          width: 160,
           render: (h, {
             row,
             column,

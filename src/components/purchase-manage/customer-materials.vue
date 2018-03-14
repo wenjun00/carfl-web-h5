@@ -110,19 +110,19 @@
         <i-col span="12">
           <i-form-item label="身份证地址" prop="idCardAddressDetail">
             <i-row>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="省" v-model="customerMaterialsForm.province">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="省" v-model="customerMaterialsForm.province">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="市" v-model="customerMaterialsForm.city">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="市" v-model="customerMaterialsForm.city">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="区" v-model="customerMaterialsForm.idCardAddress">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="区" v-model="customerMaterialsForm.idCardAddress">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
@@ -160,19 +160,19 @@
               <i-checkbox label="身份证地址" :value="14" :checked.sync="checked" @on-change="idCardChange">身份证地址</i-checkbox>
             </i-row>
             <i-row>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="省" v-model="customerMaterialsForm.province1">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="省" v-model="customerMaterialsForm.province1">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="市" v-model="customerMaterialsForm.city1">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="市" v-model="customerMaterialsForm.city1">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province1 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="区" v-model="customerMaterialsForm.localHomeAddr">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="区" v-model="customerMaterialsForm.localHomeAddr">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city1 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
@@ -272,19 +272,19 @@
               <!--</i-checkbox-group>-->
             </i-row>
             <i-row>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="省" v-model="customerMaterialsForm.province2">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="省" v-model="customerMaterialsForm.province2">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="市" v-model="customerMaterialsForm.city2">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="市" v-model="customerMaterialsForm.city2">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province2 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
-              <i-col :span="3">
-                <i-select style="width: 80px;" placeholder="区" v-model="customerMaterialsForm.cityOwnhouseAddress">
+              <i-col :span="5">
+                <i-select style="width: 96px;" placeholder="区" v-model="customerMaterialsForm.cityOwnhouseAddress">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city2 }) : []"
                     :key="value" :label="label" :value="value"></i-option>
                 </i-select>
@@ -314,6 +314,12 @@
 <script lang="ts">
   import Vue from "vue";
   import Component from "vue-class-component";
+  import {
+    CityService
+  } from "~/utils/city.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   import {
     Prop
   } from "vue-property-decorator";
@@ -356,9 +362,9 @@
       electricityAccount: '', // 电费账号
       electricityPassword: '', // 电费密码
       localLiveHouseMoney: '', // 每月租金
-      idCardAddress: '',
-      localHomeAddr: '',
-      cityOwnhouseAddress: '',
+      idCardAddress: '', // 身份证地址（区）
+      localHomeAddr: '', // 先居住地址（区）
+      cityOwnhouseAddress: '', // 本市房产地址（区）
     }
     private rules: any = {
       name: [{
@@ -404,6 +410,21 @@
     @Prop()
     disabled: Boolean;
     Reverse(data) {
+      console.log(data, 'dsdhsjhdskjd')
+      //   身份证地址回显
+      data.personal.birthTime = FilterService.dateFormat(data.personal.birthTime, 'yyyy-MM-dd')
+      console.log(data.personal.birthTime)
+      data.personal.idCardAddress = Number(data.personal.idCardAddress)
+      data.personal.city = CityService.getCityParent(Number(data.personal.idCardAddress))[1]
+      data.personal.province = CityService.getCityParent(Number(data.personal.idCardAddress))[0]
+      // 现居住地址
+      data.personal.localHomeAddr = Number(data.personal.localHomeAddr)
+      data.personal.city1 = CityService.getCityParent(Number(data.personal.localHomeAddr))[1]
+      data.personal.province1 = CityService.getCityParent(Number(data.personal.localHomeAddr))[0]
+      // 本市房产地址
+      data.personal.cityOwnhouseAddress = Number(data.personal.cityOwnhouseAddress)
+      data.personal.city2 = CityService.getCityParent(Number(data.personal.cityOwnhouseAddress))[1]
+      data.personal.province2 = CityService.getCityParent(Number(data.personal.cityOwnhouseAddress))[0]
       this.customerMaterialsForm = data.personal
     }
     getinfo(customerModel) {
@@ -415,6 +436,7 @@
         this.customerMaterialsForm.city1 = this.customerMaterialsForm.city
         this.customerMaterialsForm.localHomeAddr = this.customerMaterialsForm.idCardAddress
         this.customerMaterialsForm.localHomeAddrDetail = this.customerMaterialsForm.idCardAddressDetail
+        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
       } else {
         this.customerMaterialsForm.province1 = ''
         this.customerMaterialsForm.city1 = ''
@@ -436,6 +458,7 @@
         this.customerMaterialsForm.city2 = this.customerMaterialsForm.city
         this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.idCardAddress
         this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.idCardAddressDetail
+        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
       } else {
         this.reset()
       }
@@ -448,19 +471,20 @@
         this.customerMaterialsForm.city2 = this.customerMaterialsForm.city1
         this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.localHomeAddr
         this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.localHomeAddrDetail
+        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
       } else {
         this.reset()
       }
     }
     ValidityPeriodChange(value) {
       if (value) {
+
         this.customerMaterialsForm.idCardValidityPeriodType = 14
-        console.log(this.customerMaterialsForm.idCardValidityPeriodType)
+        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
       } else {
         this.customerMaterialsForm.idCardValidityPeriodType = 15
-        console.log(this.customerMaterialsForm.idCardValidityPeriodType)
+        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
       }
-      console.log(value, 'value')
       this.ValidityPeriodValue = value
     }
     mounted() {}

@@ -169,43 +169,43 @@ export default class ApplyDetail extends Vue {
   created() {
     console.log(2);
     this.columns1 = [
-      {
-        align: "center",
-        width: 60,
-        renderHeader: (h, { column, index }) => {
-          return h(
-            "div",
-            {
-              on: {
-                click: () => {
-                  // this.columnsConfig();
-                }
-              },
-              style: {
-                cursor: "pointer"
-              }
-            },
-            [
-              h("Icon", {
-                props: {
-                  type: "plus",
-                  size: "20"
-                }
-              })
-            ]
-          );
-        },
-        render: (h, { row, columns, index }) => {
-          if (row.itemName !== "totalPayment") {
-            return h("Icon", {
-              props: {
-                type: "trash-b",
-                size: "20"
-              }
-            });
-          }
-        }
-      },
+    //   {
+    //     align: "center",
+    //     width: 60,
+    //     renderHeader: (h, { column, index }) => {
+    //       return h(
+    //         "div",
+    //         {
+    //           on: {
+    //             click: () => {
+    //               // this.columnsConfig();
+    //             }
+    //           },
+    //           style: {
+    //             cursor: "pointer"
+    //           }
+    //         },
+    //         [
+    //           h("Icon", {
+    //             props: {
+    //               type: "plus",
+    //               size: "20"
+    //             }
+    //           })
+    //         ]
+    //       );
+    //     },
+    //     render: (h, { row, columns, index }) => {
+    //       if (row.itemName !== "totalPayment") {
+    //         return h("Icon", {
+    //           props: {
+    //             type: "trash-b",
+    //             size: "20"
+    //           }
+    //         });
+    //       }
+    //     }
+    //   },
       {
         title: "项目名称",
         key: "refundItem",

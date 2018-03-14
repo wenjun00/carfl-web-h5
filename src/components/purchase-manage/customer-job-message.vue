@@ -3,7 +3,7 @@
   <section class="component customer-job-message">
     <i-col span="24" style="line-height:30px" class="form-title">职业信息</i-col>
     <div span="24" style="line-height:30px">
-      <i-radio-group v-model="jobType" @on-change="jfhdfdf">
+      <i-radio-group v-model="jobType" @on-change="jobchange">
         <i-radio :label="37" :value="37">工薪者</i-radio>
         <i-radio :label="38" :value="38">企业经营者</i-radio>
       </i-radio-group>
@@ -81,19 +81,19 @@
           <i-col :span="12">
             <i-form-item label="单位地址" prop="companyAddress">
               <i-row>
-                <i-col :span="3">
-                  <i-select style="width: 80px;" placeholder="省" v-model="job.province">
+                <i-col :span="5">
+                  <i-select style="width: 96px;" placeholder="省" v-model="job.province">
                     <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                   </i-select>
                 </i-col>
-                <i-col :span="3">
-                  <i-select style="width: 80px;" placeholder="市" v-model="job.city">
+                <i-col :span="5">
+                  <i-select style="width: 96px;" placeholder="市" v-model="job.city">
                     <i-option v-for="{value,label} in this.job.province ? this.$city.getCityData({ level: 1, id: this.job.province }) : []" :key="value"
                       :label="label" :value="value"></i-option>
                   </i-select>
                 </i-col>
-                <i-col :span="3">
-                  <i-select style="width: 80px;" placeholder="区" v-model="job.companyAddress">
+                <i-col :span="5">
+                  <i-select style="width: 96px;" placeholder="区" v-model="job.companyAddress">
                     <i-option v-for="{value,label} in this.job.city ? this.$city.getCityData({ level: 1, id: this.job.city }) : []" :key="value"
                       :label="label" :value="value"></i-option>
                   </i-select>
@@ -177,7 +177,7 @@
                   <i-radio :label="54" :value="54">法人代表</i-radio>
                   <i-radio :label="55" :value="55">股东</i-radio>
                 </i-radio-group>
-                <i-input style="width:185px;" placeholder="股份占比%"></i-input>
+                <i-input style="width:185px;" placeholder="股份占比%" v-model="job.stockScale"></i-input>
               </i-row>
             </i-form-item>
           </i-col>
@@ -240,6 +240,12 @@
 <script lang="ts">
   import Vue from "vue";
   import Component from "vue-class-component";
+  import {
+    CityService
+  } from "~/utils/city.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
 
   @Component({})
   export default class CustomerJobMessage extends Vue {
@@ -267,16 +273,27 @@
       industry: '', // 所属行业
       pastyearIncome: '', // 过去一年营业收入
       pastyearProfit: '', // 过去一年利润
+      stockScale:''
     };
     private jobType: any = 37;
     private typeList: Array < String > ;
     Reverse(data) {
       if (data.personal.personalJob) {
+          if(data.personal.personalJob.identity){
+          this.jobType=38
+          }else{
+          this.jobType=37 
+          }
+        data.personal.personalJob.accessCompanyTime = FilterService.dateFormat(data.personal.personalJob.accessCompanyTime,
+          'yyyy-MM-dd')
+        data.personal.personalJob.companyAddress = Number(data.personal.companyAddress)
+        data.personal.personalJob.city = CityService.getCityParent(Number(data.personal.companyAddress))[1]
+        data.personal.personalJob.province = CityService.getCityParent(Number(data.personal.companyAddress))[0]
         this.job = data.personal.personalJob
       }
     }
-    jfhdfdf() {
-      console.log(this.jobType)
+    jobchange() {
+      this.job={}
     }
 
     created() {

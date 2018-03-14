@@ -12,14 +12,18 @@
       <i-date-picker style="display:inline-block;width:10%;" v-model="systemLogModel.endTime"></i-date-picker>
       <i-button class="blueButton" style="margin-left:10px;" @click="search">搜索</i-button>
       <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
-      <div style="float:right;margin-right:10px;margin-top:10px;">
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon iconClass="xiazai"></svg-icon>
-          <span style="font-size: 12px;">导出</span>
-        </div>
+      <div style="float:right;margin-right:10px;margin-top:-48px;">
+      <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <svg-icon iconClass="dayin"></svg-icon>
+        <span style="font-size: 12px;">打印</span>
       </div>
+      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" @click="exportLogs">
+        <svg-icon iconClass="daochu"></svg-icon>
+        <span style="font-size: 12px;">导出</span>
+      </div>
+    </div>
     </i-row>
-    <data-box :id="57" :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService"></data-box>
+    <data-box :id="57" :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService" ref="databox"></data-box>
   </section>
 </template>
 
@@ -31,7 +35,9 @@ import SvgIcon from "~/components/common/svg-icon.vue";
 import { Dependencies } from "~/core/decorator";
 import { Layout } from "~/core/decorator";
 import { ManageService } from "~/services/manage-service/manage.service";
+import { SystemLogsService } from "~/services/manage-service/system-logs.service";
 import { PageService } from "~/utils/page.service";
+import { CommonService } from "~/utils/common.service";
 import { FilterService } from "~/utils/filter.service";
 @Layout("workspace")
 @Component({
@@ -42,6 +48,7 @@ import { FilterService } from "~/utils/filter.service";
 })
 export default class SystemLogDownload extends Page {
   @Dependencies(ManageService) private manageService: ManageService;
+  @Dependencies(SystemLogsService) private systemLogsService: SystemLogsService;
   @Dependencies(PageService) private pageService: PageService;
 
   private columns1: any;
@@ -60,6 +67,12 @@ export default class SystemLogDownload extends Page {
     this.search();
 
     this.columns1 = [
+      {
+        type:'selection',
+        align:'center',
+        width:60,
+        fixed:'left'
+      },
       {
         title: "操作时间",
         key: "operateTime",
@@ -146,6 +159,30 @@ export default class SystemLogDownload extends Page {
       exeType: "",
       exeTime: ""
     };
+  }
+  /**
+   * 导出系统日志列表
+   */
+  exportLogs(){
+   let databox = this.$refs["databox"] as DataBox;
+    let multipleSelection = databox.getCurrentSelection();
+    if (multipleSelection && multipleSelection.length) {
+      let sysLogsIds = multipleSelection.map(v => v.id);
+      this.systemLogsService
+        .exportSystemLogs({
+          sysLogsIds: sysLogsIds
+        })
+        .subscribe(
+          data => {
+            CommonService.downloadFile(data.url, "系统日志下载");
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+    } else {
+      this.$Message.info("请先选择日志再导出！");
+    }
   }
 }
 </script>

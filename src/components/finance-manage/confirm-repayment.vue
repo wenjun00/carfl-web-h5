@@ -234,13 +234,13 @@
       this.repaymentObj = {}
       this.collectMoneyDetails = []
       this.financeUploadResources = []
-      this.inputBlur()      
+      this.inputBlur()
       this.rowObj = row
       this.paymentScheduleService.getCustomerScheduleBillDetail({
         orderId: row.orderId
       }).subscribe(data => {
         console.log(data)
-        this.collectMoneyId = data.collectMoneyHistory?data.collectMoneyHistory.id:''
+        this.collectMoneyId = data.collectMoneyHistory ? data.collectMoneyHistory.id : ''
         this.repaymentObj = data
         this.collectMoneyDetails = data.collectMoneyDetails || []
         this.financeUploadResources = data.financeUploadResources || []

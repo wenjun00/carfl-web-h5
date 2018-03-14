@@ -43,7 +43,7 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
   import Vue from "vue";
   import Component from "vue-class-component";
   import {
@@ -64,6 +64,11 @@
     Prop
   } from "vue-property-decorator";
   import AddCar from "~/components/purchase-manage/add-car.vue";
+  import {
+    Input,
+    Button
+  } from "iview";
+
   @Component({
     components: {
       SvgIcon,
@@ -128,121 +133,110 @@
       })
 
       this.columns1 = [{
-        title: '操作',
-        align: 'center',
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          return h("div", [
-            h(
-              "i-button", {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    this.editCarModal = true;
-                    this.rowData = row
-                    console.log(this.rowData, 88777)
+          title: '操作',
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("div", [
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.editCarModal = true;
+                      this.rowData = row
+                      console.log(this.rowData, 88777)
+                    }
                   }
-                }
-              },
-              "编辑"
-            ),
-            h(
-              "i-button", {
-                props: {
-                  type: "text"
                 },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '提示',
-                      content: '确定删除吗？',
-                      onOk: () => {
-                        this.addcarData.splice(index, 1);
-                      }
-                    })
+                "编辑"
+              ),
+              h(
+                "i-button", {
+                  props: {
+                    type: "text"
+                  },
+                  style: {
+                    color: "#265EA2"
+                  },
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '确定删除吗？',
+                        onOk: () => {
+                          this.addcarData.splice(index, 1);
+                        }
+                      })
+                    }
                   }
-                }
-              },
-              "删除"
-            )
-          ]);
+                },
+                "删除"
+              )
+            ]);
+          }
+        }, {
+          title: '品牌/型号',
+          key: 'modelName',
+          align: 'center'
+        }, {
+          title: '车身颜色',
+          key: 'carColour',
+          align: 'center'
+        }, {
+          title: '单价（元）',
+          key: 'carAmount',
+          align: 'center',
+        }, {
+          title: '数量',
+          key: 'carNumber',
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            let removeHandle = (ss) => {
+              this.addcarData[index].carNumber = ss.target.value
+            };
+            return ( 
+                <i-input style="width:80px" onOn-blur={removeHandle} value={row.carNumber}> </i-input>);
+            }
+        },{
+            title: '车牌号码',
+            key: 'vehicleLicence',
+            align: 'center'
+        }]
+      }
+      Reverse(data) {
+        this.choosebusyData.companyId = data.companyId
+        this.choosebusyData.city = data.city
+        this.choosebusyData.province = data.province
+      }
+      addModalOpen() {
+        this.addOrEditFlag = true
+        this.editCarModal = true
+      }
+      distributionData(data) {
+        console.log(data, 'data')
+        data.vehicleColour = data.map(v => v.carColour)
+        this.addcarData = data
+        this.totalPrice = data.map(v => v.carAmount).reduce((x, y) => {
+          return x + y;
+        })
+        if(this.totalPrice===NaN){
+            this.totalPrice=0
         }
-      }, {
-        title: '品牌/型号',
-        key: 'modelName',
-        align: 'center'
-      }, {
-        title: '车身颜色',
-        key: 'vehicleColour',
-        align: 'center'
-      }, {
-        title: '单价（元）',
-        key: 'carAmount',
-        align: 'center'
-      }, {
-        title: '数量',
-        key: 'carNumber',
-        align: 'center',
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          return h("div", [
-            h(
-              "i-input", {
-                props: {
-                  type: "text"
-                },
-                style: {
-                  color: "#265EA2"
-                },
-                on: {
-                  click: () => {
-                    this.editCarModal = true;
-                    this.rowData = row
-                    console.log(this.rowData, 88777)
-                  }
-                }
-              },
-              "amount"
-            ),
-          ]);
-        }
-      }, {
-        title: '车牌号码',
-        key: 'vehicleLicence',
-        align: 'center'
-      }]
+      }
     }
-    Reverse(data) {
-      this.choosebusyData.companyId = data.companyId
-      this.choosebusyData.city = data.city
-      this.choosebusyData.province = data.province
-    }
-    addModalOpen() {
-      this.addOrEditFlag = true
-      this.editCarModal = true
-    }
-    distributionData(data) {
-      console.log(data, 'data')
-      this.addcarData = data
-      this.totalPrice = data.map(v => v.carAmount).reduce((x, y) => {
-        return x + y;
-      })
-    }
-  }
 
 </script>
 

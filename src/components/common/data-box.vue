@@ -6,7 +6,7 @@
     </div>
     <div class="row end-span" :style="{'width':`${width}px`}">
       <i-page class="pagination" size="small" show-total show-sizer :show-elevator="page.showElevator" :current.sync="page.pageIndex"
-        :total="page.total" :page-size.sync="page.pageSize" @on-change="pageChange" @on-page-size-change="pageSizeChange"></i-page>
+        :total="page.total" :page-size-opts="pageSizeOpts" :page-size.sync="page.pageSize" @on-change="pageChange" @on-page-size-change="pageSizeChange"></i-page>
     </div>
 
     <template class="dialog">
@@ -118,6 +118,7 @@
     private multipleSelection; // 多选数据
     private filterColumns: Array < any > | null = null;
     private tableColumns: Array < any > | null = [];
+    private pageSizeOpts:Array<any>=[10,30,50]
 
     /**
      * 添加默认显示列

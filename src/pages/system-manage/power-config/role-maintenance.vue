@@ -11,7 +11,7 @@
       </i-select>
       <i-button class="blueButton" style="margin-left:20px;" @click="getRoleListByCondition">搜索</i-button>
       <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
-      <i-button class="blueButton" style="margin-left:20px;" @click="addNewRole">新增角色</i-button>
+      <i-button class="blueButton" style="margin-left:10px;" @click="addNewRole">新增角色</i-button>
       <div style="float:right;margin-right:10px;margin-top:10px;">
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon iconClass="daochu"></svg-icon>

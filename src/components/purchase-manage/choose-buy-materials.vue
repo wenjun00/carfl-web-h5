@@ -60,8 +60,9 @@
         <i-row>
           <i-col span="12">
             <i-form-item label="意向期限" prop="intentionPeriods">
-              <i-input type="text" v-model="chooseBuyModel.intentionPeriods">
-              </i-input>
+            <i-select v-model="chooseBuyModel.intentionPeriods">
+              <i-option v-for="{value,label} in $dict.getDictData('0314')" :key="value" :label="label" :value="value"></i-option>
+            </i-select>
             </i-form-item>
           </i-col>
           <i-col span="12" pull="3">
@@ -79,7 +80,7 @@
         </i-col>
       </i-form>
     </i-row>
-    <i-table height="200" :columns="carColumns" :data="addcarData" stripe style="margin:10px;" width="1100"></i-table>
+    <i-table :columns="carColumns" :data="addcarData" stripe style="margin:10px;" width="1100"></i-table>
     <div>
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
       <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
@@ -158,7 +159,7 @@
               <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment">
                 <i-option v-for="item in initialPaymentData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
-              <i-input style="width:180px" type="text" v-model="chooseBuyModel.initialPayment" :disabled="!DataSet.initialPayment" @on-change="initialChange">
+              <i-input style="width:180px" type="text" v-model="chooseBuyModel.initialPayment" @on-change="initialChange">
               </i-input>
             </i-row>
           </i-form-item>
@@ -169,7 +170,7 @@
               <i-select style="width:140px" placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit">
                 <i-option v-for="item in depositCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
-              <i-input style="width:180px" type="text" v-model="chooseBuyModel.depositCash" :disabled="!DataSet.depositCash">
+              <i-input style="width:180px" type="text" v-model="chooseBuyModel.depositCash">
               </i-input>
             </i-row>
           </i-form-item>
@@ -182,7 +183,7 @@
               <i-select style="width:140px" placeholder="请选择尾付金额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash">
                 <i-option v-for="item in finalCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
-              <i-input style="width:180px" type="text" placeholder="尾付总额" v-model="chooseBuyModel.finalCash" :disabled="!DataSet.finalCash">
+              <i-input style="width:180px" type="text" placeholder="尾付总额" v-model="chooseBuyModel.finalCash">
               </i-input>
             </i-row>
           </i-form-item>
@@ -271,7 +272,7 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
   import Vue from "vue";
   import Component from "vue-class-component";
   import {
@@ -289,7 +290,7 @@
   import SvgIcon from '~/components/common/svg-icon.vue'
   import DataBox from "~/components/common/data-box.vue"
   import SimulateCalculate from "~/components/common/simulate-calculate.vue"
-  import AddProduct from '~/components/purchase-manage/add-product.vue'
+  import AddProduct from '~/components/purchase-manage/add-product.tsx.vue'
   import {
     CompanyService
   } from "~/services/manage-service/company.service";
@@ -402,6 +403,7 @@
         required: true,
         message: '请输入意向期限',
         trigger: 'blur',
+        type:'number'
       }],
       //   rentPayable: [{
       //     required: true,
@@ -469,8 +471,9 @@
      */
     Reverse(data) {
       data.orderServiceList = data.orderServices.map(v => v.service)
+      data.intentionPeriods = Number(data.intentionPeriods)
       this.chooseBuyModel = data
-      console.log(data.orderServiceList)
+      console.log(data,'意向期限')
     }
     /**
      * 
@@ -591,7 +594,6 @@
       this.totalPrice = data.map(v => v.carAmount).reduce((x, y) => {
         return x + y;
       })
-      console.log(this.totalPrice, 'addcarData')
     }
     /**
      * 打开月供模拟计算器

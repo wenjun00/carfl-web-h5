@@ -33,7 +33,7 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
   import Vue from "vue";
   import DataBox from "~/components/common/data-box.vue";
   import Component from "vue-class-component";
@@ -58,6 +58,7 @@
   import {
     Emit
   } from "vue-property-decorator";
+  import { Upload, Radio } from "iview";
 
   @Component({
 
@@ -93,28 +94,34 @@
     created() {
       this.treeList()
       this.carColumns = [
-        //       {
-        //     align: 'center',
-        //     title: '选择',
-        //     width: 180,
-        //     render: (h, {
-        //       row,
-        //       columns,
-        //       index
-        //     }) => {
-        //       return h('Radio', {
-        //         props: {
-        //           label: row.workId
-        //         },
-        //         on: {
-        //           click: () => {
-        //             this.AddProductData = row
-        //             console.log(this.AddProductData)
-        //           }
-        //         }
-        //       })
-        //     }
-        //   }, 
+              {
+            align: 'center',
+            title: '选择',
+            width: 180,
+            render: (h, {
+              row,
+              columns,
+              index
+            }) => {
+            //   return h('Radio', {
+            //     props: {
+            //       label: row.workId
+            //     },
+            //     on: {
+            //       click: () => {
+            //         this.AddProductData = row
+            //         console.log(this.AddProductData)
+            //       }
+            //     }
+            //   })
+            let radioChange=(status) => {
+                this.carData.forEach(v=>v.radio=false)
+                this.carData[index].radio = status
+                this.carData = JSON.parse(JSON.stringify(this.carData))
+            };
+            return (<i-radio onOn-change={radioChange} value={row.radio}></i-radio>)
+            }
+          }, 
         {
           title: '期数(月)',
           key: 'periods',
@@ -298,11 +305,12 @@
      * 确定并返回
      */
     confirmAndBackPrd() {
-      if (!this.currentRow.id) {
-        this.$Message.error("请选择产品！");
-      } else {
-        this.currentRowData(this.currentRow, this.productDataModel[0])
+      let radioData:any=this.carData.find(v=>v.radio===true)
+      if (radioData) {
+        this.currentRowData(radioData, this.productDataModel[0])
         this.close()
+      } else {
+        this.$Message.error("请选择产品！");
       }
     }
   }

@@ -675,7 +675,7 @@ export default class MyApproval extends Page {
           this.$Message.success("提交灰名单成功！");
           this.grayModel.remark = "";
           this.grayListModal = false;
-          this.approveModal = false;
+          // this.approveModal = false;
           this.getMyOrderList();
         },
         ({ msg }) => {
@@ -694,7 +694,7 @@ export default class MyApproval extends Page {
         val => {
           this.$Message.success("提交内审成功！");
           this.internalModel.remark = "";
-          this.approveModal = false;
+          // this.approveModal = false;
           this.submitToInternalModal = false;
           this.getMyOrderList();
         },
