@@ -105,7 +105,7 @@
   import AddCar from '~/components/purchase-manage/add-car.vue';
   import HistoricalRecord from '~/components/purchase-manage/historical-record.vue';
 
-  import ChooseBuyMaterialsAll from '~/components/purchase-manage/choose-buy-materials-all.vue';
+  import ChooseBuyMaterialsAll from '~/components/purchase-manage/choose-buy-materials-all.tsx.vue';
   import CustomerMaterialsAll from '~/components/purchase-manage/customer-materials-all.vue';
 
   @Layout('workspace')
