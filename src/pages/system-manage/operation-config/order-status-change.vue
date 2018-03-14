@@ -22,8 +22,8 @@
 
     <template>
       <i-modal v-model="changeStatusOpen" title="状态变更" width="300">
-        <i-select placeholder="请选择状态" v-model="orderStatus">
-          <i-option v-for="{value,label} in $dict.getDictData('0302')" :key="value" :label="label" :value="value"></i-option>
+        <i-select placeholder="请选择状态" v-model="orderLink">
+          <i-option v-for="item in orderStatusList" :key="item.code" :label="item.name" :value="item.code"></i-option>
         </i-select>
         <div slot="footer">
           <i-button @click="changeStatusOpen=false">取消</i-button>
@@ -58,7 +58,9 @@ export default class OrderStatusChange extends Page {
   private columns1: any;
   private orderStatusChangeList: Array<any> = [];
   private orderInfo: String = "";
-  private orderStatus:Number=0;
+  private orderLink:Number=0;
+  private orderStatusList:Array<any>=[]
+  private orderId:Number = 0;
 
   mounted() {
     this.getOrderStatusChangeList();
@@ -94,6 +96,14 @@ export default class OrderStatusChange extends Page {
         title: "客户姓名",
         key: "personalName",
         align: "center"
+      },
+      {
+         title: "环节",
+        key: "orderLink",
+        align: "center",
+        render: (h, { row, columns, index }) => {
+          return h("span", {}, this.$dict.getDictName(row.orderLink));
+        }
       },
       {
         title: "证件号码",
@@ -170,7 +180,18 @@ export default class OrderStatusChange extends Page {
   /**
    * 确定改变状态
    */
-  confirmChangeStatus() {}
+  confirmChangeStatus() {
+    this.productOrderService.changeOrderStatus({
+      orderId:this.orderId,
+      linkId:this.orderLink
+    }).subscribe(data=>{
+      this.$Message.success('更改成功！')
+      this.changeStatusOpen = false
+      this.getOrderStatusChangeList()
+    },({msg})=>{
+      this.$Message.error(msg)
+    })
+  }
   /**
    * 订单状态变更列表
    */
@@ -195,8 +216,16 @@ export default class OrderStatusChange extends Page {
    * 更改状态
    */
   changeStatus(row) {
-    this.orderStatus = row.orderStatus
+    this.orderLink = row.orderLink
+    this.orderId = row.orderId
     this.changeStatusOpen = true;
+    this.productOrderService.getPreProcess({
+      orderId:row.orderId
+    }).subscribe(data=>{
+      this.orderStatusList = data
+    },({msg})=>{
+      this.$Message.error(msg)
+    })
   }
   /**
    * 重置搜索

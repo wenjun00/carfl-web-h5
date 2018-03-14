@@ -94,5 +94,14 @@ export default {
     controller: CONTROLLER,
     action: 'changeOrderStatus',
     type: requestType.Get
+  },
+  /**
+   * 根据订单id获取订单前期流程
+   */
+  getPreProcess: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getPreProcess',
+    type: requestType.Get
   }
 }

@@ -110,4 +110,15 @@ export class ProductOrderService {
       }
     })
   }
+  /**
+   * 根据订单id获取订单前期流程
+   */
+  getPreProcess({ orderId }) {
+    return this.netService.send({
+      server: manageService.productOrderController.getPreProcess,
+      data: {
+        orderId: orderId
+      }
+    })
+  }
 }
