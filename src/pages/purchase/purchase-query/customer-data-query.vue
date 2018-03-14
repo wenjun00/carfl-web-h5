@@ -138,7 +138,7 @@
             column,
             index
           }) => {
-            if (row.isUploadFile=== 1) {
+            if (row.isUploadFile=== 0) {
               return h('i-button', {
                 props: {
                   type: 'text'
@@ -173,7 +173,10 @@
           title: '资料上传',
           editable: true,
           key: 'isUploadFile',
-          align: 'center'
+          align: 'center',
+            render: (h, { row, column, index }) => {
+          return h("span", {}, row.isUploadFile === 0 ? "未上传" : "已上传");
+        }
         },
         {
           title: '订单编号',
