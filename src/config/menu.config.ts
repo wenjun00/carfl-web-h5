@@ -235,7 +235,7 @@ export default [
                 title: '订单信息导出',
                 path: 'finance/finance-statistics/order-info-export'
             }, {
-                title: '查询模版管理',
+                title: '导出模板管理',
                 path: 'finance/finance-statistics/query-template-manage'
             }]
         }

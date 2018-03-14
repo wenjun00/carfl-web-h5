@@ -533,6 +533,7 @@
      *  树change事件 查询产品列表详情
      */
     productNameDetail(scope) {
+      console.log(scope)
       this.noData = false;
       this.seriId = scope[0].seriesId; //保存系列ID
       this.parentsId = scope[0].id; //保存ID
@@ -646,7 +647,6 @@
      */
     closeModal() {
       this.addPeriodsModal = false;
-      this.treeList();
       this.productNameDetail(this.scopes);
     }
     /**
@@ -670,7 +670,6 @@
      */
     closeEditModal() {
       this.editModal = false;
-      this.treeList();
       this.productNameDetail(this.scopes);
     }
     viewButton(item) {

@@ -15,6 +15,15 @@ export default {
     type: requestType.Get
   },
   /**
+   * 查看当前模板
+   */
+  getTemplateMessage: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getTemplateMessage',
+    type: requestType.Get
+  },
+  /**
    * 生成模板
    */
   createTemplate: {

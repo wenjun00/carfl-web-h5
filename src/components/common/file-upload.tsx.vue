@@ -169,8 +169,8 @@ export default class FileUpload extends Vue {
     target.state = "finish";
 
     if (this.uploadList.every(x => x.state === "finish")) {
-      this.success();
       this.fileList = fileList
+      this.success();
       console.log(fileList,'fileList')
     }
   }

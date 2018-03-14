@@ -38,12 +38,12 @@
         <td bgcolor="#F2F2F2" colspan="4">明细</td>
       </tr>
       <tr height="40">
-        <td bgcolor="#F2F2F2">本金</td>
-        <td>应付本金</td>
-        <td>{{repaymentObj.principalReceivable}}</td>
-        <td>已还本金</td>
-        <td>{{repaymentObj.principalReceived}}</td>
-        <td>剩余本金</td>
+        <td bgcolor="#F2F2F2" width="100px">本金</td>
+        <td width="100px">应付本金</td>
+        <td width="150px">{{repaymentObj.principalReceivable}}</td>
+        <td width="100px">已还本金</td>
+        <td width="150px">{{repaymentObj.principalReceived}}</td>
+        <td width="100px">剩余本金</td>
         <td>{{repaymentObj.principalSurplus}}</td>
       </tr>
       <tr height="40">
@@ -202,8 +202,6 @@
     private openUpload: Boolean = false;
     private remark: String = ''
     private collectMoneySum: any = 0
-    private delFinanceUploadResource: any = []
-    private addFinanceUploadResource: any = []
     private collectMoneyId: any = ''
 
     /**
@@ -212,7 +210,15 @@
     uploadSuccess() {
       this.openUpload = false;
       this.$nextTick(() => {
-        let fileUpload = this.$refs["file-upload"] as FileUpload;
+        let fileUpload: any = this.$refs["file-upload"];
+        this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
+          return {
+            id: v.response.id,
+            materialUrl: v.response.url,
+            orderId: this.rowObj.orderId,
+            businessId: this.rowObj.businessId
+          }
+        }))
         fileUpload.reset();
       });
     }

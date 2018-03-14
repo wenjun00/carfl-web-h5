@@ -41,12 +41,14 @@
           </i-form-item>
         </data-grid-item>
         <data-grid-item label="融资金额" :span="8">
-          <i-form-item prop="financingAmount">
-            <i-input v-model="amount.financingAmount1" placeholder="请输入融资金额"></i-input>~
-          </i-form-item>
-          <i-form-item prop="financingAmount2">
-            <i-input v-model="amount.financingAmount2" placeholder="请输入融资金额"></i-input>
-          </i-form-item>
+          <i-form ref="finance" :model="amount" :rules="amountRules" inline>
+            <i-form-item prop="financingAmount1">
+              <i-input v-model="amount.financingAmount1" placeholder="请输入融资金额"></i-input>~
+            </i-form-item>
+            <i-form-item prop="financingAmount2">
+              <i-input v-model="amount.financingAmount2" placeholder="请输入融资金额"></i-input>
+            </i-form-item>
+          </i-form>
         </data-grid-item>
         <data-grid-item label="账期类型" :span="12">
           <i-form-item prop="paymentType">
@@ -236,6 +238,7 @@ export default class AddPeriods extends Vue {
     // isPublish: '',
     manageCost: ""
   };
+  private amountRules: Object = {};
   private amount: any;
   private monthDay: any;
   private formRules: Object = {};
@@ -255,110 +258,76 @@ export default class AddPeriods extends Vue {
     };
     this.monthDay = [];
     this.monthDayFun();
-    this.formRules = {
-      periods: [
-        { required: true, message: "您输入的内容不能为空", trigger: "blur" }
-      ],
-      productRate: [
-        { required: true, message: "您输入的内容不能为空", trigger: "blur" }
-      ],
-      payWay: [
-        { required: true, message: "请选择", trigger: "change", type: "number" }
-      ],
-      periodType: [
-        {
-          required: true,
-          message: "请选择",
-          type: "number",
-          trigger: "change"
-        }
-      ],
-      paymentDay: [
-        {
-          required: true,
-          message: "请选择",
-          trigger: "change"
-        }
-      ],
-      initialPayment: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      depositCash: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      depositCashType: [
-        {
-          required: true,
-          message: "请选择",
-          type: "number",
-          trigger: "change"
-        }
-      ],
-      finalCash: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      manageCost: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      stagingPeriods: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      creditProtectDays: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      overdueProtectDays: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      contractBreakRate: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      prepaymentRate: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ],
-      penaltyRate: [
-        {
-          required: true,
-          message: "您输入的内容不能为空",
-          trigger: "blur"
-        }
-      ]
-    };
+    this.amountRules = {
+    	financingAmount1: [
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }
+			],
+      financingAmount2: [
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }
+			]
+    }
+		this.formRules = {
+			periods: [
+				{ required: true, message: '请输入产品期数', trigger: 'blur' },
+				{ pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }        
+			],
+			productRate: [
+				{ required: true, message: '请输入产品利率', trigger: 'blur' },
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }
+			],
+			payWay: [
+				{ required: true, message: '请选择还款方式', trigger: 'change', type: 'number' }
+			],
+			periodType: [
+				{ required: true, message: '请选择周期类型', trigger: 'change', type: 'number' }
+			],
+			paymentDay: [
+				{ required: true, message: '请选择固定账期期数', trigger: 'change', type: 'number' }
+			],
+			initialPayment: [
+				{ required: true, message: '请输入首付款比例', trigger: 'blur' },
+				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }        
+			],
+			depositCash: [
+        { required: true, message: '请输入保证金比例', trigger: 'blur' },
+				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }                
+			],
+			depositCashType: [
+				{ required: true, message: '请选择退还方式', trigger: 'change', type: 'number' }
+			],
+			finalCash: [
+				{ required: true, message: '请输入尾付款年利率', trigger: 'blur' },
+				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }                        
+			],
+			manageCost: [
+				{ required: true, message: '请输入管理费比例', trigger: 'blur' },
+				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }                                
+			],
+			stagingPeriods: [
+				{ required: true, message: '请输入管理费分期期数', trigger: 'blur' },
+				{ pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }                                        
+			],
+			creditProtectDays: [
+				{ required: true, message: '请输入征信保护天数', trigger: 'blur' },
+				{ pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }                                                
+			],
+			overdueProtectDays: [
+				{ required: true, message: '请输入逾期保护天数', trigger: 'blur' },
+				{ pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }                                            
+			],
+			contractBreakRate: [
+				{ required: true, message: '请输入合同违约金费率', trigger: 'blur' },
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }                                                    
+			],
+			prepaymentRate: [
+				{ required: true, message: '请输入提前还款费率', trigger: 'blur' },
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }                                                    
+			],
+			penaltyRate: [
+				{ required: true, message: '请输入罚期费率', trigger: 'blur' },
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }                                                    
+			]
+		};
   }
   /**
    * 获取月份天数
@@ -378,10 +347,11 @@ export default class AddPeriods extends Vue {
    * 点击确定按钮
    */
   confirmPeriods() {
-    let formVal = <Form>this.$refs["formItems"];
-    formVal.validate(
-      valid => {
-        if (!valid) return false;
+    let form = <Form>this.$refs["formItems"];
+    let formVal = <Form>this.$refs['finance'];
+    form.validate(valid => {
+      formVal.validate(vali => {
+        if(!vali || !valid) return false;
         if (this.manageMoneyParams === "无") {
           delete this.formItems.manageCost;
           delete this.formItems.manageCostType;
@@ -401,21 +371,18 @@ export default class AddPeriods extends Vue {
         if (this.residueParams === "无") {
           delete this.formItems.finalCash;
         }
-        this.formItems.financingAmount =
-          this.amount.financingAmount1 + "~" + this.amount.financingAmount2;
+        this.formItems.financingAmount = this.amount.financingAmount1 + "~" + this.amount.financingAmount2;
         this.formItems.productId = this.pNameTitle.id;
         this.formItems.productStatus = this.pNameTitle.status;
-        this.ProductPlanIssueService.createOrModifyProductPlan(
-          this.formItems
-        ).subscribe(val => {
+        this.ProductPlanIssueService.createOrModifyProductPlan(this.formItems).subscribe(val => {
           this.$Message.success("新增成功！");
           this.$emit("close", this.formItems);
+        }, ({ msg }) => {
+          this.$Message.error(msg);
         });
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
-    );
+      })
+      if (!valid) return false;
+    })
   }
 }
 </script>

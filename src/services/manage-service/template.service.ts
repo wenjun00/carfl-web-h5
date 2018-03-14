@@ -17,6 +17,15 @@ export class TemplateService {
     })
   }
   /**
+   * 查看当前模板
+   */
+  getTemplateMessage(data) {
+    return this.netService.send({
+      server: manageService.templateController.getTemplateMessage,
+      data: data
+    })
+  }
+  /**
    * 生成模板
    */
   createTemplate(data) {

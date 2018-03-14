@@ -25,12 +25,12 @@
       </data-grid-item>
       <data-grid-item label="还款方式" :span="4">
         <div>
-          {{productDetailView.payWay === 384 ? "等本等息" : "等额等息"}}
+          {{$dict.getDictName(productDetailView.payWay)}}
         </div>
       </data-grid-item>
       <data-grid-item label="周期类型" :span="4">
         <div>
-          {{productDetailView.periodType === 388 ? "月" : ""}}
+          {{$dict.getDictName(productDetailView.periodType)}}
         </div>
       </data-grid-item>
       <data-grid-item label="融资金额" :span="8">
@@ -39,11 +39,11 @@
         </div>
       </data-grid-item>
       <data-grid-item label="账期类型" :span="12">
-        <i-radio-group style="float:left;" v-model="accountPeriodsList" ref="accountPeriodsList">
-          <i-radio label="正常账期" disabled></i-radio>
-          <i-radio label="固定账期" disabled></i-radio>
+        <i-radio-group style="float:left;" v-model="productDetailView.paymentType">
+          <i-radio :label="386" disabled>正常账期</i-radio>
+          <i-radio :label="387" disabled>固定账期</i-radio>
         </i-radio-group>
-        <span v-show="productDetailView.paymentType===387">{{productDetailView.paymentDay}}月</span>
+        <span v-show="productDetailView.paymentType===387">{{productDetailView.paymentDay}}日</span>
       </data-grid-item>
     </data-grid>
     <div class="addPeriodsItem">首付款参数</div>
@@ -54,7 +54,7 @@
             <i-radio label="无" disabled></i-radio>
             <i-radio label="有" disabled></i-radio>
           </i-radio-group>
-          <div v-show="productDetailView.manageCost!=''" style="float:left">
+          <div v-show="initialParams==='有'" style="float:left">
             <span>比例</span>
             <span>{{productDetailView.manageCost}}</span>
             <span style="color:red">%</span>
@@ -70,8 +70,8 @@
           <i-radio label="有" disabled></i-radio>
         </i-radio-group>
       </data-grid-item>
-      <data-grid-item label="保证金比例" :span="12">
-        <div v-show="productDetailView.depositCash!=''" style="float:left">
+      <data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">
+        <div style="float:left">
           <span style="margin-right:10px;">比例</span>
           <span>{{productDetailView.depositCash}}</span>
           <span style="color:red">%</span>
@@ -86,7 +86,7 @@
           <i-radio label="无" disabled></i-radio>
           <i-radio label="有" disabled></i-radio>
         </i-radio-group>
-        <div v-show="productDetailView.finalCash != '' " style="float:left;margin-top:4px;">
+        <div v-show="residueParams==='有'" style="float:left;margin-top:4px;">
           <span>年利率：</span>
           <span>{{productDetailView.finalCash}}</span>
           <span style="color:red">%</span>
@@ -100,17 +100,18 @@
           <i-radio label="无" disabled></i-radio>
           <i-radio label="有" disabled></i-radio>
         </i-radio-group>
-        <div v-show="productDetailView.manageCost != ''" style="float:left;margin-top:6px;">
+        <div v-show="manageMoneyParams==='有'" style="float:left;margin-top:6px;">
           <span>比例</span>
           <span>{{productDetailView.manageCost}}</span>
           <span style="color:red">%</span>
         </div>
       </data-grid-item>
-      <data-grid-item label="管理费收取方式" :span="12">
-        <i-radio-group v-model="manageCostType" style="float:left">
-          <i-radio label="一次性收取" disabled></i-radio>
-          <i-radio label="分期数收取" disabled></i-radio>
+      <data-grid-item label="管理费收取方式" :span="12" v-if="manageMoneyParams==='有'">
+        <i-radio-group v-model="productDetailView.manageCostType" style="float:left">
+          <i-radio :label="394" disabled>一次性收取</i-radio>
+          <i-radio :label="395" disabled>分期数收取</i-radio>
         </i-radio-group>
+        <span v-if="productDetailView.manageCostType===395">{{productDetailView.stagingPeriods}}期</span>
       </data-grid-item>
     </data-grid>
     <div class="addPeriodsItem">逾期违约惩罚参数</div>
@@ -142,9 +143,9 @@
       </data-grid-item>
     </data-grid>
     <div style="margin-right:10px;display:inline-block" class="addPeriodsItem">状态</div>
-    <i-radio-group v-model="pulishStatus">
-      <i-radio label="未发布" disabled></i-radio>
-      <i-radio label="已发布" disabled></i-radio>
+    <i-radio-group v-model="productDetailView.isPublish">
+      <i-radio :label="361">未发布</i-radio>
+      <i-radio :label="360">已发布</i-radio> 
     </i-radio-group>
   </section>
 </template>
@@ -154,7 +155,7 @@ import Vue from 'vue';
 import Page from '~/core/page';
 import Component from 'vue-class-component';
 import SvgIcon from '~/components/common/svg-icon.vue';
-import { Prop } from 'vue-property-decorator';
+import { Prop, Watch } from 'vue-property-decorator';
 import { Form } from 'iview';
 import { Dependencies } from '~/core/decorator';
 import { DataGrid, DataGridItem } from '@zct1989/vue-component';
@@ -168,43 +169,17 @@ import { Layout } from '~/core/decorator';
 export default class AddPeriods extends Vue {
 	@Prop() productDetailView: any;
 	@Prop() dpNameTitleView: any;
-	private accountPeriodsList: String = '正常账期';
 	private initialParams: String = '无';
 	private promiseMoenyParams: String = '无';
 	private residueParams: String = '无';
 	private manageMoneyParams: String = '无';
-	private pulishStatus: String = '已发布';
-	private manageCostType: String = '一次性收取';
 
-	created() {
-		this.class();
-	}
+  @Watch('productDetailView')
 	class() {
-		if (this.productDetailView.manageCost != '') {
-			this.initialParams = '有';
-		}
-		if (this.productDetailView.paymentType === 387) {
-			this.accountPeriodsList = '固定账期';
-		}
-		if (this.productDetailView.depositCash != '') {
-			this.promiseMoenyParams = '有';
-		}
-		if (this.productDetailView.finalCash != '') {
-			this.residueParams = '有';
-		}
-		if (this.productDetailView.manageCost != '') {
-			this.manageMoneyParams = '有';
-		}
-		if (this.productDetailView.manageCostType === 394) {
-			this.manageCostType = '一次性收取';
-		} else if (this.productDetailView.manageCostType === 395) {
-			this.manageCostType = '分期收取';
-		}
-		if (this.productDetailView.isPublish === 361) {
-			this.pulishStatus = '未发布';
-		} else if (this.productDetailView.isPublish === 360) {
-			this.pulishStatus = '已发布';
-		}
+    this.productDetailView.manageCost?this.initialParams = '有':this.initialParams = '无';
+    this.productDetailView.depositCash?this.promiseMoenyParams = '有':this.promiseMoenyParams = '无';
+    this.productDetailView.finalCash?this.residueParams = '有':this.residueParams = '无';
+    this.productDetailView.manageCost?this.manageMoneyParams = '有':this.manageMoneyParams = '无';
 	}
 }
 </script>

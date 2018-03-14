@@ -41,12 +41,14 @@
           </i-form-item>
         </data-grid-item>
         <data-grid-item label="融资金额" :span="8">
-          <i-form-item prop="financingAmount">
-            <i-input v-model="amount.financingAmount1" placeholder="请输入融资金额"></i-input>~
-          </i-form-item>
-          <i-form-item prop="financingAmount2">
-            <i-input v-model="amount.financingAmount2" placeholder="请输入融资金额"></i-input>
-          </i-form-item>
+          <i-form ref="finance" :model="amount" :rules="amountRules" inline>
+            <i-form-item prop="financingAmount1">
+              <i-input v-model="amount.financingAmount1" placeholder="请输入融资金额"></i-input>~
+            </i-form-item>
+            <i-form-item prop="financingAmount2">
+              <i-input v-model="amount.financingAmount2" placeholder="请输入融资金额"></i-input>
+            </i-form-item>
+          </i-form>
         </data-grid-item>
         <data-grid-item label="账期类型" :span="12">
           <i-form-item style="width:23%;" prop="paymentType">
@@ -56,7 +58,7 @@
             </i-radio-group>
           </i-form-item>
           <i-select v-model="productDetail.paymentDay" style="width:30%;margin-top:0px;" v-if="productDetail.paymentType === 387">
-            <i-option :key="item.key" :value="item.key" v-for="item in monthDay">{{item.value}}</i-option>
+            <i-option :label="item.day" :key="item.key" :value="item.value" v-for="item in monthDay"></i-option>
           </i-select>
         </data-grid-item>
       </data-grid>
@@ -211,6 +213,7 @@ export default class AddProduct extends Vue {
 	private disabled: Boolean = false;
 	private changePromiseMoenyShow: Boolean = false;
 	private formRules: Object = {};
+	private amountRules: Object = {};
 	private amount: any = {};
 	private monthDay: any = [];
 	private moneyArray: any = [];
@@ -225,7 +228,7 @@ export default class AddProduct extends Vue {
 		for (let i = 1; i <= arr; i++) {
 			this.monthDay.push({
 				day: i + '日',
-				key: i,
+				key: i + '日',
 				value: i,
 			});
 		}
@@ -234,7 +237,7 @@ export default class AddProduct extends Vue {
 	 * 父组件向子组件传值  并转为字符串
 	 */
 	moneyFun(item) {
-    console.log(item)
+    console.log(item,this.productDetail.initialPayment)
     this.productDetail = item
     this.productDetail.periods = String(item.periods)
     this.productDetail.productRate = String(item.productRate)
@@ -271,139 +274,94 @@ export default class AddProduct extends Vue {
 	 * 点击确定按钮
 	 */
 	confirmPeriods() {
-		let formVal = <Form>this.$refs['productref'];
-		formVal.validate(valid => {
-      if (!valid) return false;
-      this.productDetail.financingAmount = this.amount.financingAmount1 + '~' + this.amount.financingAmount2;
-      this.ProductPlanIssueService.createOrModifyProductPlan(this.productDetail).subscribe(
-        val => {
+		let form = <Form>this.$refs['productref'];
+    let formVal = <Form>this.$refs['finance'];
+		form.validate(valid => {
+      formVal.validate(vali => {
+        if(!vali || !valid) return false;
+        this.productDetail.financingAmount = this.amount.financingAmount1 + '~' + this.amount.financingAmount2;
+        this.ProductPlanIssueService.createOrModifyProductPlan(this.productDetail).subscribe(val => {
           this.$emit('close');
           this.$Message.success('修改成功！');
         },
         ({ msg }) => {
           this.$Message.error(msg);
         });
+      })
+      if (!valid) return false;
 		});
 	}
   created() {
 		this.monthDayFun();
+    this.amountRules = {
+    	financingAmount1: [
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }
+			],
+      financingAmount2: [
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }
+			]
+    }
 		this.formRules = {
 			periods: [
-				{
-					required: true,
-					message: '请输入产品期数',
-					trigger: 'blur',
-				},
+				{ required: true, message: '请输入产品期数', trigger: 'blur' },
+        { pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }        
 			],
 			productRate: [
-				{
-					required: true,
-					message: '请输入产品利率',
-					trigger: 'blur',
-				},
+				{ required: true, message: '请输入产品利率', trigger: 'blur' },
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }
 			],
 			payWay: [
-				{
-					required: true,
-					message: '请选择还款方式',
-					trigger: 'change',
-					type: 'number',
-				},
+				{ required: true, message: '请选择还款方式', trigger: 'change', type: 'number' }
 			],
 			periodType: [
-				{
-					required: true,
-					message: '请选择周期类型',
-					trigger: 'change',
-					type: 'number',
-				},
+				{ required: true, message: '请选择周期类型', trigger: 'change', type: 'number' }
 			],
 			paymentDay: [
-				{
-					required: true,
-					message: '请选择固定账期期数',
-					trigger: 'change',
-					type: 'number',
-				},
+				{ required: true, message: '请选择固定账期期数', trigger: 'change', type: 'number' }
 			],
 			initialPayment: [
-				{
-					required: true,
-					message: '请输入首付款比例',
-					trigger: 'blur',
-				},
+				{ required: true, message: '请输入首付款比例', trigger: 'blur' },
+				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }        
 			],
 			depositCash: [
-				{
-					required: true,
-					message: '请输入保证金比例',
-					trigger: 'blur',
-				},
+        { required: true, message: '请输入保证金比例', trigger: 'blur' },
+				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }                
 			],
 			depositCashType: [
-				{
-					required: true,
-					message: '请选择退还方式',
-					trigger: 'change',
-					type: 'number',
-				},
+				{ required: true, message: '请选择退还方式', trigger: 'change', type: 'number' }
 			],
 			finalCash: [
-				{
-					required: true,
-					message: '请输入尾付款年利率',
-					trigger: 'blur',
-				},
+				{ required: true, message: '请输入尾付款年利率', trigger: 'blur' },
+				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }                        
 			],
 			manageCost: [
-				{
-					required: true,
-					message: '请输入管理费比例',
-					trigger: 'blur',
-				},
+				{ required: true, message: '请输入管理费比例', trigger: 'blur' },
+				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }                                
 			],
 			stagingPeriods: [
-				{
-					required: true,
-					message: '请输入管理费分期期数',
-					trigger: 'blur',
-				},
+				{ required: true, message: '请输入管理费分期期数', trigger: 'blur' },
+				{ pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }                                        
 			],
 			creditProtectDays: [
-				{
-					required: true,
-					message: '请输入征信保护天数',
-					trigger: 'blur',
-				},
+				{ required: true, message: '请输入征信保护天数', trigger: 'blur' },
+				{ pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }                                                
 			],
 			overdueProtectDays: [
-				{
-					required: true,
-					message: '请输入逾期保护天数',
-					trigger: 'blur',
-				},
+				{ required: true, message: '请输入逾期保护天数', trigger: 'blur' },
+				{ pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }                                            
 			],
 			contractBreakRate: [
-				{
-					required: true,
-					message: '请输入合同违约金费率',
-					trigger: 'blur',
-				},
+				{ required: true, message: '请输入合同违约金费率', trigger: 'blur' },
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }                                                    
 			],
 			prepaymentRate: [
-				{
-					required: true,
-					message: '请输入提前还款费率',
-					trigger: 'blur',
-				},
+				{ required: true, message: '请输入提前还款费率', trigger: 'blur' },
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }                                                    
 			],
 			penaltyRate: [
-				{
-					required: true,
-					message: '请输入罚期费率',
-					trigger: 'blur',
-				},
-			],
+				{ required: true, message: '请输入罚期费率', trigger: 'blur' },
+				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }                                                    
+			]
 		};
 		this.productDetail = {
 			productId: '',

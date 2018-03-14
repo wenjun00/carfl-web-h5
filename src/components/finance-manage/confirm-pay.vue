@@ -214,7 +214,8 @@
     uploadSuccess() {
       this.openUpload = false;
       this.$nextTick(() => {
-        let fileUpload = this.$refs["file-upload"] as FileUpload;
+        let fileUpload: any = this.$refs["file-upload"];
+        this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => v.response))
         fileUpload.reset();
       });
     }
@@ -222,7 +223,7 @@
      * 上传文件
      */
     postFile() {
-      let fileUpload = this.$refs["file-upload"] as FileUpload;
+      let fileUpload: any = this.$refs["file-upload"];
       fileUpload.upload();
     }
     refresh(row) {

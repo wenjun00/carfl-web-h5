@@ -131,7 +131,7 @@
           isAttention: false,
           path: 'finance/finance-statistics/order-info-export'
         }, {
-          pageName: '查询模版管理',
+          pageName: '导出模板管理',
           isAttention: false,
           path: 'finance/finance-statistics/query-template-manage'
         }]
