@@ -68,7 +68,7 @@
     <!--订单详情-->
     <template>
       <i-modal v-model="purchaseInfoModal" title="订单详情" width="1000" class="purchaseInformation">
-        <purchase-information></purchase-information>
+        <purchase-information ref="purchase-information"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
         </div>
@@ -306,6 +306,9 @@
                   props: {
                     type: "text"
                   },
+                  style:{
+                    color:'blue'
+                  },
                   on: {
                     click: () => {
                       if (params.row.orderType === "全额") {
@@ -316,12 +319,14 @@
                           render: h => h(PurchaseInformationTotal)
                         });
                       } else {
+                         let _purchaseinformation:any=this.$refs['purchase-information']
+                         _purchaseinformation.getOrderDetail(params.row)
                         this.purchaseInfoModal = true;
                       }
                     }
                   }
                 },
-                params.row.orderId
+                params.row.orderNumber
               )
             ]);
           }

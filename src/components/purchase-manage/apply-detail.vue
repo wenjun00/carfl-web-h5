@@ -110,10 +110,8 @@ export default class ApplyDetail extends Vue {
     this.payDetail = val.itemList;
     this.accountDetail = val.bankListk;
     this.fileList = val.resourceList;
-    this.refundType = val.RefundApplication
-      ? val.RefundApplication.refundType
-      : "";
-    this.remark = val.RefundApplication ? val.RefundApplication.remark : "";
+    this.refundType = this.$dict.getDictName(val.refundType);
+    this.remark = val.remark;
     this.orderNumber = val.productOrder.orderNumber;
   }
   getparentData(val, row) {
@@ -135,7 +133,7 @@ export default class ApplyDetail extends Vue {
   }
   getparentreceipt(val) {
     console.log(val);
-    this.addNewApplyModal.name = val.accountName; // 客户姓名
+    this.addNewApplyModal = val.customerName; // 客户姓名
     this.refundType = val.applicationType; // 付款类型
     if (val.collectMoneyItemModels) {
       val.collectMoneyItemModels.map(v => {

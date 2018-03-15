@@ -72,7 +72,7 @@
       ApplyDetail
     }
   })
-  export default class RaymentRecordQuery extends Page {
+  export default class PaymentRecordQuery extends Page {
     @Dependencies(RefundApplicationService) private refundApplicationService: RefundApplicationService;
     @Dependencies(PageService) private pageService: PageService;
 

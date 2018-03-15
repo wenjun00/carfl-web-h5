@@ -23,7 +23,7 @@
       </data-grid>
     </i-row>
     <!-- 车辆信息 -->
-    <i-row style="margin-top:20px;display:block" v-if="carOrderInfo.length">
+    <i-row style="margin-top:20px;display:block">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
         <a name="cheliangxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">车辆信息</a>
@@ -422,6 +422,7 @@ export default class PurchaseInformation extends Vue {
         orderNumber: row.orderNumber
       })
       .subscribe(data => {
+          console.log(data,'data')
         let allData = JSON.stringify(data);
         this.orderInfo = JSON.parse(allData);
         this.personal = this.orderInfo.personal; // 个人资料

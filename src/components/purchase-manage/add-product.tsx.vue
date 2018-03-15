@@ -273,21 +273,23 @@
      * 根据产品树获取期数列表
      */
     productPlanissueDetail(data) {
-      if (data[0].seriesId) {
-        this.productId = data[0].seriesId
-      }
+    //   if (data[0].seriesId) {
+    //     this.productId = data[0].seriesId
+    //   }
       if (data[0].productId) {
         this.productId = data[0].productId
-      }
-      let productData: any = {
+        let productData: any = {
         productId: this.productId,
-        status: 0
+        status: 0,
+        isPublish:360
       }
       this.productPlanissue(data)
       this.productDataModel = data
       this.productPlanIssueService.getAllProductPlan(productData, this.pageService).subscribe(data => {
         this.carData = data
       });
+      }
+    
     }
     /**
      * 确定并返回
