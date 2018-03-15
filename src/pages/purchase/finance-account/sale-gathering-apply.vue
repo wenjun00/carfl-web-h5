@@ -84,9 +84,11 @@ import DataBox from "~/components/common/data-box.vue";
 import { PageService } from "~/utils/page.service";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import { Layout } from "~/core/decorator";
+import { State, Mutation, namespace } from "vuex-class";
 import UploadTheFodder from "~/components/purchase-manage/upload-the-fodder.vue";
 import GatherDetail from "~/components/purchase-manage/gather-detail.vue";
 import { WithdrawApplicationService } from "~/services/manage-service/withdraw-application.service";
+ const ModuleMutation = namespace('purchase', Mutation)
 @Layout("workspace")
 @Component({
   components: {
@@ -100,6 +102,7 @@ export default class SaleGatheringApply extends Page {
   @Dependencies() private pageService: PageService;
   @Dependencies(WithdrawApplicationService)
   private withdrawApplicationService: WithdrawApplicationService;
+  @ModuleMutation paymentRecordFlag
   private applyData: any = {
     idCard: "",
     customerName: "",
@@ -308,9 +311,9 @@ export default class SaleGatheringApply extends Page {
         .saveSaleCollectMoneyApplication(saveAndCommitModel)
         .subscribe(
           data => {
+            this.updatePaymentRecord(new Date())
             this.$Message.success("保存并提交成功！");
             this.saveDraftDisabled = true;
-            this.clearAll()
           },
           ({ msg }) => {
             this.$Message.error(msg);

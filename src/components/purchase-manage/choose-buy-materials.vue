@@ -352,7 +352,7 @@
       deposit: '',
       final: '',
       manageData: '',
-      vehicleAmount: '', // 车辆参考总价
+      vehicleAmount: 0, // 车辆参考总价
       finalprincipal: '', // 尾付本金
       initialPayment: '', // 首付金额
       otherFee: '', // 其他费用
@@ -556,11 +556,16 @@
      */
     chooseinitialPayment() {
       // 首付金额=车辆参考总价*首付比例
-      this.chooseBuyModel.initialPayment = (Number(this.chooseBuyModel.vehicleAmount)) * (Number(this.chooseBuyModel
+      console.log(this.chooseBuyModel.vehicleAmount,'this.chooseBuyModel.vehicleAmount')
+      if(this.chooseBuyModel.vehicleAmount>0){
+     this.chooseBuyModel.initialPayment = (Number(this.chooseBuyModel.vehicleAmount)) * (Number(this.chooseBuyModel
           .Payment) *
         0.01)
       // 融资总额
       this.initialPaymentChange()
+      }else{
+       this.$Message.warning('请先输入车辆参考总价')
+      }
     }
     /**
      * 保证金金额
@@ -575,6 +580,7 @@
      * 尾付总额
      */
     choosefinalCash() {
+        console.log(78365946574865)
       // 尾付利息(尾款本金*年利率*期数)
       let finalCashinterest: any = Number(this.chooseBuyModel.finalprincipal) * (Number(this.chooseBuyModel.final) *
         0.01) * Number(this.chooseBuyModel.periods)

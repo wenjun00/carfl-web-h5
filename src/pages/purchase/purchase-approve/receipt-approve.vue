@@ -39,8 +39,10 @@ import Page from "~/core/page";
 import Component from "vue-class-component";
 import { Dependencies } from "~/core/decorator";
 import DataBox from "~/components/common/data-box.vue";
+import { State, Mutation, namespace } from "vuex-class";
 import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
 import SvgIcon from "~/components/common/svg-icon.vue";
+import { Watch } from "vue-property-decorator";
 // 添加新申请
 import AddApply from "~/components/purchase-manage/add-apply.vue";
 // import Approval from "~/components/common/approval.vue";
@@ -49,6 +51,7 @@ import { PageService } from "~/utils/page.service";
 import { Layout } from "~/core/decorator";
 import { FilterService } from "~/utils/filter.service"; // 添加新申请
 import ApplyDetail from "~/components/purchase-manage/apply-detail.vue";
+ const ModuleMutation = namespace('purchase', Mutation)
 
 @Layout("workspace")
 @Component({
@@ -64,6 +67,7 @@ export default class ReceiptApprove extends Page {
   @Dependencies(FinanceApprovalHistoryService)
   private financeApprovalHistoryService: FinanceApprovalHistoryService;
   @Dependencies(PageService) private pageService: PageService;
+  @ModuleMutation paymentRecordFlag;
   private columns1: any;
   private columns2: any;
   private data1: Array<Object> = [];
@@ -81,6 +85,10 @@ export default class ReceiptApprove extends Page {
     dynamicCondition: ""
   };
 
+  @Watch("paymentRecordFlag")
+  flagChang() {
+    this.searchReceiptapprove();
+  }
   addNewApply() {
     this.$Modal.info({
       title: "新增申请",
