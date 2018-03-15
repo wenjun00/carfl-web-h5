@@ -73,7 +73,7 @@
     @Dependencies(ProductPlanIssueService) private productPlanIssueService: ProductPlanIssueService;
     private isShown: Boolean = true;
     private carColumns: any;
-    private carData: Array < Object > = [];
+    private carData: any = [];
     private checkRadio: String = ""
     private treeData: Array < any >= [];
     private allData: Array < any > = [];
