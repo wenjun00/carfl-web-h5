@@ -213,6 +213,7 @@
           title: "操作",
           width: 200,
           align: "center",
+          fixed: 'left',
           render: (h, {
             row,
             column,
@@ -252,13 +253,13 @@
                 }
               }, '撤销')
             ])
-          },
-          fixed: 'left'
+          }
         },
         {
-          title: "订单编号",
+          title: "付款日期",
           key: "orderId",
           align: "center",
+          width: 180,          
           render: (h, row) => {
             return h('i-button', {
               props: {
@@ -270,14 +271,13 @@
                 }
               }
             }, 'kb20154575')
-          },
-          fixed: 'left',
-          width: 180
+          }
         },
         {
           align: "center",
-          title: "客户结算号",
+          title: "客户姓名",
           key: "customerSettleId",
+          width: 180,          
           render: (h, row) => {
             return h('i-button', {
               props: {
@@ -289,76 +289,67 @@
                 }
               }
             }, 'LSK3125465')
-          },
-          fixed: 'left',
-          width: 180
+          }
         },
         {
           align: "center",
-          title: "客户姓名",
+          title: "项目",
           key: "customName",
           width: 180,
-          fixed: 'left'
         },
         {
           align: "center",
-          title: "证件号",
+          title: "金额",
           key: "idCard",
           width: 180
         },
         {
           align: "center",
-          title: "手机号",
+          title: "期数",
           key: "phone",
           width: 180
         },
         {
           align: "center",
-          title: "订单创建时间",
+          title: "所属公司",
           key: "orderCreateTime",
           width: 180
         },
         {
           align: "center",
-          title: "合同生效日",
+          title: "结算通道",
           key: "compactApplyDate",
           width: 180
         },
         {
           align: "center",
-          title: "待还本金",
+          title: "开票状态",
           key: "supposedMajorMoney",
           width: 100
         },
         {
           align: "center",
-          title: "待还利息",
+          title: "发票号",
           key: "supposedInterest",
           width: 100
         },
         {
           align: "center",
-          title: "待还罚息",
+          title: "开票日期",
           key: "supposedPunishedInterest",
           width: 100
         },
         {
           align: "center",
-          title: "利率%/月",
+          title: "发票抬头",
           key: "interestRate",
           width: 100
         },
         {
           align: "center",
-          title: "结算通道",
+          title: "备注",
           key: "clearAccountChannel",
           width: 100
-        },
-        {
-          align: "center",
-          title: "归属公司",
-          key: "belongFirm",
-          width: 120
         }
       ];
 

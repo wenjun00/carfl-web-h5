@@ -80,7 +80,7 @@
 
     <!--开户弹窗-->
     <template>
-      <i-modal v-model="addCompanyModal" title="开户绑卡" width="800" class="openAccount_modal" ok-text="确认修改">
+      <i-modal v-model="addCompanyModal" title="新增企业开户" width="800" class="openAccount_modal" ok-text="确认开户">
         <i-form :label-width="110" label-position="left">
           <i-row>
             <i-col :span="24">
@@ -119,6 +119,11 @@
               </i-col>
               <i-col :span="12">
                 <i-form-item label="税务登记证号">
+                  <i-input style="width:160px;"></i-input>
+                </i-form-item>
+              </i-col>              
+              <i-col :span="12">
+                <i-form-item label="企业名称">
                   <i-input style="width:160px;"></i-input>
                 </i-form-item>
               </i-col>
@@ -304,7 +309,10 @@
             <i-input style="width:160px;"></i-input>
           </i-form-item>
           <i-form-item label="手续服务费对象">
-            <i-input style="width:160px;"></i-input>
+            <i-select>
+              <i-option  label="向商户收取" value="向商户收取"></i-option>
+              <i-option  label="向用户收取" value="向用户收取"></i-option>
+            </i-select>          
           </i-form-item>
           <i-form-item label="手续费收取子账户">
             <i-input style="width:160px;"></i-input>
@@ -461,35 +469,7 @@
         cashWay: '',
         serviceCharge: ''
       }
-      this.columns1 = [{
-          align: "center",
-          type: "index",
-          width: 60,
-          renderHeader: (h, {
-            column,
-            index
-          }) => {
-            return h(
-              "div", {
-                on: {
-                  click: () => {
-                    this.columnsConfig();
-                  }
-                },
-                style: {
-                  cursor: "pointer"
-                }
-              }, [
-                h("Icon", {
-                  props: {
-                    type: "gear-b",
-                    size: "20"
-                  }
-                })
-              ]
-            );
-          }
-        },
+      this.columns1 = [
         {
           title: "操作",
           width: 220,

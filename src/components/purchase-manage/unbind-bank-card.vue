@@ -8,6 +8,9 @@
       <i-form-item label="开户银行">
         <i-input style="width:160px;" v-model="unbindBankCardModal.depositBank" readonly></i-input>
       </i-form-item>
+      <i-form-item label="银行卡号">
+        <i-input style="width:160px;" v-model="unbindBankCardModal.cardNumber" readonly></i-input>
+      </i-form-item>
       <i-form-item label="开户省市">
         <i-input style="width:160px;" v-model="unbindBankCardModal.city" readonly></i-input>
       </i-form-item>

@@ -50,7 +50,7 @@
 
     <template>
       <i-modal title="解绑银行卡" width="480" v-model="unbindBankCardModal">
-        <unbind-bank-card></unbind-bank-card>
+        <unbind-bank-card ref="unbind-bank-card"></unbind-bank-card>
         <div slot="footer">
           <i-button @click="unbindBankCardModal=false">取消</i-button>
           <i-button @click="unbindBankCardModal=false" class="blueButton">确认解绑</i-button>
@@ -82,6 +82,13 @@
   export default class CompanyBankCard extends Vue {
     private unbindBankCardModal: Boolean = false
     private addNewBankCardModal: Boolean = false
+    private model: any = {
+      name: '招商',
+      depositBank: '招商银行',
+      cardNumber: '5719000340820829505',
+      city: '西安',
+      reservedPhoneNumber: '15555555555'
+    }
 
     created() {
 
@@ -100,6 +107,8 @@
      */
     unbindBankCard() {
       this.unbindBankCardModal = true
+      let unbind: any =this.$refs['unbind-bank-card']
+      unbind.refresh(this.model)
     }
   }
 

@@ -247,6 +247,10 @@ export default class AddPeriods extends Vue {
     for (let v in this.formItems) {
       this.formItems[v] = "";
     }
+    this.amount = {
+      financingAmount1: "",
+      financingAmount2: ""
+    };
     this.formItems.manageCostType = 394;
     let form: any = this.$refs["formItems"];
     form.resetFields();
