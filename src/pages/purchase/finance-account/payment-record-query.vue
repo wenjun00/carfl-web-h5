@@ -1,6 +1,6 @@
 <!--付款记录查询-->
 <template>
-  <section class="page receipt-record-query">
+  <section class="page payment-record-query">
     <span class="form-title">付款记录查询</span>
     <span style="margin-left:10px">申请日期：</span>
     <i-date-picker v-model="paymentModel.startTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
@@ -72,7 +72,7 @@
       ApplyDetail
     }
   })
-  export default class ReceiptRecordQuery extends Page {
+  export default class RaymentRecordQuery extends Page {
     @Dependencies(RefundApplicationService) private refundApplicationService: RefundApplicationService;
     @Dependencies(PageService) private pageService: PageService;
 
