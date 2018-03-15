@@ -206,7 +206,7 @@
     resetAll() {
       let _form: any = this.$refs["customer-form"];
       _form.resetFields();
-      this.applyData.orderId = "";
+      this.applyData = {};
       let _gatherDetail: any = this.$refs["payDetail"];
       _gatherDetail.resetTable();
     }
@@ -255,6 +255,7 @@
         .subscribe(
           data => {
             this.$Message.success("保存并提交成功！");
+            this.resetAll()
           },
           ({
             msg
@@ -286,6 +287,7 @@
         .subscribe(
           data => {
             this.$Message.success("保存并提交成功！");
+            this.resetAll()
           },
           ({
             msg

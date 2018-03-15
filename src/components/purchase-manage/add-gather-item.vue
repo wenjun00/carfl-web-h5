@@ -45,7 +45,14 @@
         {
           align: "center",
           title: "收款项",
-          key: "itemLabel"
+          key: "itemLabel",
+          render: (h, {
+          row,
+          column,
+          index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.itemLabel));
+          }
         },
         {
           align: "center",

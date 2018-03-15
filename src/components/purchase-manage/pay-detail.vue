@@ -20,7 +20,7 @@
           </div>
         </td>
         <td>
-          <span>{{item.refundItem}}</span>
+          <span>{{$dict.getDictName(item.refundItem)}}</span>
         </td>
         <td>
           <i-input v-if="item.refundItem===1159" style="width:10%" :value="item.refundAmount" @on-change="changeOtherFee" :maxlength="7"></i-input>
@@ -132,8 +132,12 @@
       this.checkOrderId = data.orderId
       if (data && data.itemList.length > 0) {
         this.gatherItemList = data.itemList
-        let moneyList = this.gatherItemList.map(v => v.refundAmount)
-        let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
+        let totalPayment:any=0
+        let sum:any=0
+        this.gatherItemList.forEach(v=>{
+            sum=sum+(Number(v.refundAmount)||0)
+        }); // 获取合计
+        totalPayment=sum
         let total = {
           refundItem: "合计（元）",
           refundAmount: totalPayment,
