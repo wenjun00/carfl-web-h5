@@ -19,9 +19,14 @@
               <Icon type="android-arrow-dropleft-circle" color="white" size="16"></Icon>
             </div>
           </i-col>
-          <i-col span="22" style="overflow:hidden">
+         <i-col span="22" style="overflow:hidden" v-show="addOpen===true">
             <div>
               <data-box :height="540" ref="databox" :columns="carColumns" :data="carDataModel" :noDefaultRow="true"></data-box>
+            </div>
+          </i-col>
+            <i-col span="22" style="overflow:hidden" v-show="addOpen===false">
+            <div>
+              <data-box :height="540" ref="databox" :columns="carColumns1" :data="carDataModel" :noDefaultRow="true"></data-box>
             </div>
           </i-col>
         </i-row>
@@ -33,10 +38,11 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
   import Vue from 'vue';
   import DataBox from '~/components/common/data-box.vue';
   import Component from 'vue-class-component';
+  import { Upload, Radio } from "iview";
   import {
     Prop
   } from 'vue-property-decorator';
@@ -67,12 +73,14 @@
     @Dependencies(PageService) private pageService: PageService;
     private isShown: Boolean = true;
     private carColumns: any;
-    private carDataModel: Array < Object > = [];
+    private carColumns1:any;
+    private carDataModel:any= [];
     private dataList: any = [];
     private treeData: any = [];
     private treeId: any;
     private multipleSelection: any = [];
     private treeDatas: any = [];
+    private vv:any=1
 
     @Emit('distributionData')
     distributionData(multipleSelection) {}
@@ -82,6 +90,7 @@
     @Emit('update:rowData')
     updateRowData(row) {}
     @Prop() addcarData: any;
+    @Prop() addOpen:any;
 
     @Prop() row: Object;
     created() {
@@ -90,7 +99,6 @@
           type: 'selection',
           align: 'center',
           width: 100,
-          //   fixed: 'left',
         },
         {
           title: '车辆品牌',
@@ -145,22 +153,89 @@
           }
         },
       ];
-      // this.applyQueryService.addCarQueryData().subscribe(({
-      //   val
-      // }) => {
-      //   this.carData = val
-      // })
+        this.carColumns1 = [{
+            align: 'center',
+            title: '选择',
+            width: 180,
+            render: (h, {
+              row,
+              columns,
+              index
+            }) => {
+            let radioChange=(status) => {
+                this.carDataModel.forEach(v=>v.radio=false)
+                this.carDataModel[index].radio = status
+                this.carDataModel = JSON.parse(JSON.stringify(this.carDataModel))
+            };
+            return (<i-radio onOn-change={radioChange} value={row.radio}></i-radio>)
+            }
+          }, 
+        {
+          title: '车辆品牌',
+          key: 'brandName',
+          align: 'center',
+        },
+        {
+          title: '车辆型号',
+          key: 'modelName',
+          align: 'center',
+        },
+        {
+          title: '车身颜色',
+          key: 'carColour',
+          align: 'center',
+        },
+        {
+          title: '车辆排量',
+          key: 'carEmissions',
+          align: 'center',
+        },
+        {
+          title: '车辆配置',
+          key: 'vehicleConfiguration',
+          align: 'center',
+        },
+        {
+          title: '上牌地区',
+          key: 'registrationArea',
+          align: 'center'
+        },
+        {
+          title: '车辆牌照',
+          key: 'vehicleLicence',
+          align: 'center'
+        },
+        {
+          title: '所在门店',
+          key: 'store',
+          align: 'center'
+        },
+        {
+          title: '状态',
+          key: 'status',
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.status));
+          }
+        },
+      ];
     }
     showCategory() {
       this.isShown = !this.isShown;
+    }
+    resetcarDataModel(){
+        this.carDataModel=[]
     }
     /**
      * 选择并返回
      */
     chooseback() {
       this.multipleSelection = this.$refs['databox'];
-      this.multipleSelection = this.multipleSelection.getCurrentSelection();
-      console.log(this.multipleSelection)
+      this.multipleSelection = this.multipleSelection.data;
       if (this.multipleSelection === undefined) {
         this.$Message.warning('请选择车辆！')
         return
@@ -178,7 +253,6 @@
      * 根据车系列树获取车列表
      */
     cartreeChange(data) {
-      console.log(data[0], 88);
       if (data[0].seriesId) {
         this.treeId = data[0].seriesId;
       }
@@ -193,7 +267,6 @@
       }).subscribe(
         data => {
           this.carDataModel = data;
-          console.log(this.carDataModel, 988);
         },
         ({
           msg

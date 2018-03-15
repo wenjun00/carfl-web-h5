@@ -14,7 +14,7 @@
     </i-select>
     <i-checkbox style="margin-left:10px;" v-model="status">包含已归档订单</i-checkbox>
     <i-button style="margin-left:10px" class="blueButton" @click="receiptRecordSearch">搜索</i-button>
-    <data-box :columns="columns1" :data="receiptDataSet"></data-box>
+    <data-box :columns="columns1" :data="receiptDataSet" :page="pageService"></data-box>
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">

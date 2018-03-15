@@ -21,7 +21,7 @@
             </div>
             <div style="margin-bottom:20px;margin-left:50px;font-size:16px"><span style="color:#ccc">产品序号：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].productNumber:''):''}}</div>
             <div style="position:relative;bottom:10px;padding-left:10px">
-              <i-table highlight-row @on-current-change="currenttrablerowdata" :columns="carColumns" :data="carData" :page="pageService"></i-table>
+              <i-table height="500" highlight-row @on-current-change="currenttrablerowdata" :columns="carColumns" :data="carData" :page="pageService"></i-table>
             </div>
           </i-col>
         </i-row>
@@ -97,23 +97,12 @@
               {
             align: 'center',
             title: '选择',
-            width: 180,
+            width: 80,
             render: (h, {
               row,
               columns,
               index
             }) => {
-            //   return h('Radio', {
-            //     props: {
-            //       label: row.workId
-            //     },
-            //     on: {
-            //       click: () => {
-            //         this.AddProductData = row
-            //         console.log(this.AddProductData)
-            //       }
-            //     }
-            //   })
             let radioChange=(status) => {
                 this.carData.forEach(v=>v.radio=false)
                 this.carData[index].radio = status
@@ -131,7 +120,7 @@
           title: '账期类型',
           key: 'periodType',
           align: 'center',
-          width: 120,
+          width: 100,
           render: (h, {
             row,
             column,
@@ -251,7 +240,6 @@
       //   return Lv2Nodes;
       let child: any = []
       this.allData.map(val => {
-        console.log(val, 'valval')
         if (item.id === val.parent) {
           if (val.flag === '产品') {
             let node2 = {

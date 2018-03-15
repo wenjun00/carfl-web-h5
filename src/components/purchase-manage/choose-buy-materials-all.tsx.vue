@@ -32,12 +32,12 @@
     <div>
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
       <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
-      <span style="margin-left:115px;font-weight:bold">总价</span><span style="margin-left:340px;font-weight:bold;">{{totalPrice}}</span>
+      <span style="margin-left:155px;font-weight:bold">总价</span><span style="margin-left:340px;font-weight:bold;">{{totalPrice}}</span>
     </div>
     <!--添加车辆弹框-->
     <template>
       <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="1200" v-model="editCarModal" :trandfer="false" class="add-car">
-        <add-car @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
+        <add-car :addOpen="addOpen"  @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
       </i-modal>
     </template>
   </section>
@@ -63,7 +63,7 @@
   import {
     Prop
   } from "vue-property-decorator";
-  import AddCar from "~/components/purchase-manage/add-car.vue";
+  import AddCar from "~/components/purchase-manage/add-car.tsx.vue";
   import {
     Input,
     Button
@@ -96,6 +96,7 @@
     private addcarData: any = [];
     private rowData: any = null;
     private saveData: any = null;
+    private addOpen: Boolean = false;
 
     private applyRule: any = {
       province: [{
@@ -151,6 +152,7 @@
                   },
                   on: {
                     click: () => {
+                        this.addOpen=false
                       this.editCarModal = true;
                       this.rowData = row
                       console.log(this.rowData, 88777)
@@ -222,19 +224,18 @@
         this.choosebusyData.province = data.province
       }
       addModalOpen() {
+        this.addOpen=true
         this.addOrEditFlag = true
         this.editCarModal = true
       }
       distributionData(data) {
-        console.log(data, 'data')
         data.vehicleColour = data.map(v => v.carColour)
         this.addcarData = data
-        this.totalPrice = data.map(v => v.carAmount).reduce((x, y) => {
-          return x + y;
+        let sum:any=0
+        data.forEach(v=>{
+        sum=sum+(Number(v.carAmount)||0)
         })
-        if(this.totalPrice===NaN){
-            this.totalPrice=0
-        }
+        this.totalPrice=sum
       }
     }
 

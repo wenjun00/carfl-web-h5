@@ -352,6 +352,7 @@
           v.vehicleEmissions = v.carEmissions
 
       })
+      choosebuymaterials.addcarData.forEach(v=>delete v.id)
       let addcarDatas = Array.from(new Set(this.addcarData))
       console.log(uploadTheMaterial.dataList,'uploadTheMaterial.dataList')
       for (let material of uploadTheMaterial.dataList) {
@@ -509,7 +510,6 @@
                           v.amount = v.carAmount,
                           v.vehicleColour = v.carColour,
                           v.vehicleEmissions = v.carEmissions
-
                       })
                       let addcarDatas = Array.from(new Set(this.addcarData))
                       for (let material of uploadTheMaterial.dataList) {
@@ -543,6 +543,8 @@
                       //   customerMaterials.customerMaterialsForm.birthTime = FilterService.dateFormat(customerMaterials.customerMaterialsForm
                       //     .birthTime,
                       //     'yyyy-MM-dd')
+                      choosebuymaterials.addcarData.forEach(v=>delete v.id)
+                      console.log(choosebuymaterials.addcarData,'choosebuymaterials.addcarData')
                       let orderServiceList = Array.from(new Set(choosebuymaterials.chooseBuyModel.orderServiceList))
                       let savesubmitDataset: any = {
                         orderStatus: this.orderStatus,

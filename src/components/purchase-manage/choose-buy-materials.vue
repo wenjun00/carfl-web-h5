@@ -257,7 +257,7 @@
 
     <template>
       <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="80" v-model="editCarModal" :trandfer="false" class="add-car">
-        <add-car @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
+        <add-car :addOpen="addOpen" @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
       </i-modal>
     </template>
 
@@ -286,7 +286,7 @@
   import {
     Dependencies
   } from "~/core/decorator";
-  import AddCar from "~/components/purchase-manage/add-car.vue"
+  import AddCar from "~/components/purchase-manage/add-car.tsx.vue"
   import SvgIcon from '~/components/common/svg-icon.vue'
   import DataBox from "~/components/common/data-box.vue"
   import SimulateCalculate from "~/components/common/simulate-calculate.vue"
@@ -315,7 +315,7 @@
     @Dependencies(CompanyService) private companyService: CompanyService;
     @ModuleMutation('updateProductId') updateProductId
     private carColumns: any;
-    private carData: Array < Object > = [];
+    private carData: any= [];
     private simulateCalculateModal: Boolean = false;
     private editCarModal: Boolean = false;
     private addOrEditFlag: Boolean = false;
@@ -324,7 +324,7 @@
     private addProductModal: Boolean = false;
     private addPrdShow: Boolean = true;
     private changePrdShow: Boolean = false;
-    private companyObject: Array < Object >= []; // 公司信息
+    private companyObject: any= []; // 公司信息
     private addcarData: any = [];
     private rowData: any = null;
     private depositCashData: any = []; // 保证金
@@ -335,6 +335,7 @@
     private DataSet: any = '';
     private disabled: Boolean = false;
     private disabled1: Boolean = false;
+    private addOpen:Boolean = false;
     private chooseBuyModel: any = {
       name: '', // 产品名称
       prdSeriods: '', // 产品系列
@@ -452,7 +453,6 @@
     @Prop()
     disabledStatus: String;
     disabledChange() {
-      console.log(this.chooseBuyModel.orderServiceList, 'this.chooseBuyModel.orderServiceList')
       if (this.chooseBuyModel.orderServiceList) {
         if (this.chooseBuyModel.orderServiceList.find(v => v !== 368)) {
           this.disabled = true
@@ -473,7 +473,6 @@
       data.orderServiceList = data.orderServices.map(v => v.service)
       data.intentionPeriods = Number(data.intentionPeriods)
       this.chooseBuyModel = data
-      console.log(data,'意向期限')
     }
     /**
      * 
@@ -550,8 +549,6 @@
       this.chooseBuyModel.financeTotalMoney = this.chooseBuyModel.financeTotalMoney.toString()
     }
     initialChange() {
-      console.log(Number(this.chooseBuyModel.vehicleAmount), Number(this.chooseBuyModel
-        .initialPayment), Number(this.chooseBuyModel.finalprincipal))
       this.initialPaymentChange()
     }
     /**
@@ -564,7 +561,6 @@
         0.01)
       // 融资总额
       this.initialPaymentChange()
-      console.log(this.chooseBuyModel.financeTotalMoney)
     }
     /**
      * 保证金金额
@@ -589,11 +585,12 @@
      * 添加车辆信息
      */
     distributionData(data) {
-      console.log(data, 'addcarData')
       this.addcarData = data
-      this.totalPrice = data.map(v => v.carAmount).reduce((x, y) => {
-        return x + y;
+      let sum:any=0
+      data.forEach(v=>{
+          sum=sum+(Number(v.carAmount)||0)
       })
+      this.totalPrice=sum
     }
     /**
      * 打开月供模拟计算器
@@ -635,6 +632,7 @@
                   },
                   on: {
                     click: () => {
+                      this.addOpen=false
                       this.editCarModal = true
                       this.rowData = row
                     }
@@ -746,6 +744,7 @@
       this.carData = []
     }
     addModalOpen() {
+      this.addOpen=true
       this.addOrEditFlag = true
       this.editCarModal = true
     }
@@ -763,7 +762,6 @@
      * 获取添加产品信息
      */
     currentRowData(data, productDataModel) {
-      console.log(data, productDataModel, 999)
       this.DataSet = data
       this.depositCashData = data.depositCash ? (data.depositCash.split(';')) : ''
       this.finalCashData = data.finalCash ? (data.finalCash.split(';')) : ''
@@ -786,7 +784,6 @@
       this.chooseBuyModel.seriesId = productDataModel.seriesId
     }
     productPlanissue(data) {
-      console.log(data, 'daatgjgjg')
       //   this.chooseBuyModel = {
       //     name: data.title // 产品名称
       //     // prdSeriods:

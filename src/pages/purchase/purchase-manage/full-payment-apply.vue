@@ -102,7 +102,7 @@
   import {
     Layout
   } from '~/core/decorator';
-  import AddCar from '~/components/purchase-manage/add-car.vue';
+  import AddCar from '~/components/purchase-manage/add-car.tsx.vue';
   import HistoricalRecord from '~/components/purchase-manage/historical-record.vue';
 
   import ChooseBuyMaterialsAll from '~/components/purchase-manage/choose-buy-materials-all.tsx.vue';
@@ -429,6 +429,13 @@
       } else {
         this.orderStatus = 304;
       }
+      component.addcarData.map(v => {
+        v.carSeriesId = v.seriesId,
+        v.amount = v.carAmount,
+        v.vehicleColour = v.carColour,
+        v.vehicleEmissions = v.carEmissions
+        })
+      component.addcarData.forEach(v=>delete v.id)
       let savesubmitDataset: any = {
         idCard: this.applyData.idCard,
         name: this.applyData.name,
@@ -511,6 +518,7 @@
                       v.vehicleColour = v.carColour,
                       v.vehicleEmissions = v.carEmissions
                   })
+                  component.addcarData.forEach(v=>delete v.id)
                   let savesubmitDataset: any = {
                     idCard: this.applyData.idCard,
                     name: this.applyData.name,
