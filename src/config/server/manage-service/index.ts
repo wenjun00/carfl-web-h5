@@ -37,8 +37,10 @@ import payoffProductOrderController from './payoff-product-order.controller'
 import financeApprovalHistoryController from './finance-approval-history.controller'
 import chargeBackController from './charge-back.controller'
 import templateController from './template.controller'
+import financeInvoiceController from './finance-invoice.controller'
 
 export const manageService = {
+    financeInvoiceController,
     templateController,
     payoffProductOrderController,
     advancePayoffController,

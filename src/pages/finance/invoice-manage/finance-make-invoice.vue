@@ -3,12 +3,12 @@
   <section class="page finance-make-invoice">
     <span class="form-title">财务开票</span>
     <span style="margin-left:10px;">关键字：</span>
-    <i-input style="display:inline-block;width:10%" placeholder="客户姓名\发票号"></i-input>
-    <i-select placeholder="开票状态" style="margin-left:10px;width:10%">
+    <i-input style="display:inline-block;width:10%" placeholder="客户姓名\发票号" v-model="model.dynamicCondition"></i-input>
+    <i-select placeholder="开票状态" style="margin-left:10px;width:10%" v-model="model.invoicingStatus">
       <i-option label="已开票" value="已开票" key="已开票"></i-option>
       <i-option label="未开票" value="未开票" key="未开票"></i-option>
     </i-select>
-    <i-button style="margin-left:10px" class="blueButton">搜索</i-button>
+    <i-button style="margin-left:10px" class="blueButton" @click="query">搜索</i-button>
     <i-button @click="openSearch" style="margin-left:10px;color:#265EA2">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
@@ -16,28 +16,28 @@
     </i-button>
     <i-row v-if="searchOptions" style="margin:6px;">
       <span>所属公司：</span>
-      <i-select style="margin-left:10px;width:15%" placeholder="全部机构">
+      <i-select style="margin-left:10px;width:15%" placeholder="全部机构" v-model="model.companyId">
         <i-option value="群泰上海" key="群泰上海" label="群泰上海"></i-option>
         <i-option value="群泰西安" key="群泰西安" label="群泰西安"></i-option>
       </i-select>
       <span>状态筛选：</span>
-      <i-select style="margin-left:10px;width:15%" placeholder="全部项目">
+      <i-select style="margin-left:10px;width:15%" placeholder="全部项目" v-model="model.collectItem">
         <i-option value="汇付" key="汇付" label="汇付"></i-option>
         <i-option value="富友" key="富友" label="富友"></i-option>
         <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
         <i-option value="现金" key="现金" label="现金"></i-option>
       </i-select>
-      <i-select style="margin-left:10px;width:15%" placeholder="全部状态">
+      <i-select style="margin-left:10px;width:15%" placeholder="全部状态" v-model="model.collectMoneyChannel">
         <i-option value="汇付" key="汇付" label="汇付"></i-option>
         <i-option value="富友" key="富友" label="富友"></i-option>
         <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
         <i-option value="现金" key="现金" label="现金"></i-option>
       </i-select>
       <span>付款日期：</span>
-      <i-date-picker style="width:10%"></i-date-picker>~
-      <i-date-picker style="width:10%"></i-date-picker>
+      <i-date-picker style="width:10%" v-model="model.startDate"></i-date-picker>~
+      <i-date-picker style="width:10%" v-model="model.endDate"></i-date-picker>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="data1" :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="8" push="1">
@@ -75,15 +75,12 @@
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import CheckAttachment from '~/components/finance-manage/check-attachment.vue'
   import ConfirmMakeInvoice from '~/components/finance-manage/confirm-make-invoice.vue'
-  import {
-    Tooltip
-  } from 'iview'
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    Layout
-  } from "~/core/decorator";
+  import { Tooltip } from 'iview'
+  import { Dependencies } from "~/core/decorator";
+  import { Layout } from "~/core/decorator";
+  import { FinanceInvoiceService } from "~/services/manage-service/finance-invoice.service";
+  import { PageService } from "~/utils/page.service";
+  import { FilterService } from "~/utils/filter.service"
 
   @Layout("workspace")
   @Component({
@@ -98,16 +95,31 @@
     }
   })
   export default class FinanceMakeInvoice extends Page {
+    @Dependencies(FinanceInvoiceService) private financeInvoiceService: FinanceInvoiceService;
+    @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private invoiceColumns: any;
-    private data1: Array < Object > = [];
-    private invoiceData: Array < Object > = [];
-    private columns2: any;
-    private data2: Array < Object > = [];
+    private data1: any = [];
     private searchOptions: Boolean = false;
     private openColumnsConfig: Boolean = false;
     private makeInvoiceModal: Boolean = false;
     private checkAttachmentModal: Boolean = false;
+    private model: any = {
+      dynamicCondition: '',
+      invoicingStatus: '',
+      companyId: '',
+      collectItem: '',
+      collectMoneyChannel: '',
+      startDate: '',
+      endDate: ''
+    };
+
+    query() {
+      this.financeInvoiceService.getFinanceInvoiceList(this.model, this.pageService).subscribe(val => {
+        this.data1 = val
+      }, ({ msg }) => {
+        this.$Message.error(msg)
+      })
+    }
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -121,104 +133,19 @@
     }
 
     created() {
-      this.invoiceData = [{
-        attachmentName: 'kb0917',
-        uploadTime: '2017-12-03 14:56:25',
-        uploadPerson: '胡开甲'
-      }]
-
-      this.invoiceColumns = [{
-          title: '操作',
-          width: 200,
-          align: 'center',
-          render: (h, params) => {
-
-            return h('div', [
-              h('Icon', {
-                props: {
-                  type: 'archive',
-                  size: '20'
-                },
-                style: {
-                  cursor: 'pointer',
-                  marginRight: '15px',
-                  color: '#199ED8'
-                },
-                on: {
-                  click: () => {
-
-                  }
-                }
-              }),
-              h('Icon', {
-                props: {
-                  type: 'eye',
-                  size: '20'
-                },
-                style: {
-                  cursor: 'pointer',
-                  marginRight: '15px',
-                  color: '#199ED8'
-                },
-                on: {
-                  click: () => {
-
-                  }
-                }
-              }),
-              h('Icon', {
-                props: {
-                  type: 'trash-a',
-                  size: '20'
-                },
-                style: {
-                  cursor: 'pointer',
-                  color: '#199ED8'
-                },
-                on: {
-                  click: () => {
-
-                  }
-                }
-              })
-            ])
-
-          }
-        },
-        {
-          title: '附件信息',
-          align: 'center',
-          key: 'attachmentName'
-        },
-        {
-          align: 'center',
-          title: '上传日期',
-          key: 'uploadTime',
-          width: 180
-        },
-        {
-          align: 'center',
-          title: '上传人',
-          key: 'uploadPerson'
-        }
-      ]
-
+      this.query()
       this.columns1 = [{
           align: "center",
           type: "selection",
-          width: 60,
+          width: 30,
           fixed: 'left'
         },
         {
           title: "操作",
-          width: 200,
+          width: 120,
           align: "center",
           fixed: 'left',
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
+          render: (h, { row, column, index }) => {
             return h('div', [
               h('i-button', {
                 props: {
@@ -257,201 +184,78 @@
         },
         {
           title: "付款日期",
-          key: "orderId",
+          key: "actualCollectDate",
           align: "center",
-          width: 180,          
-          render: (h, row) => {
-            return h('i-button', {
-              props: {
-                type: 'text'
-              },
-              on: {
-                click: () => {
-
-                }
-              }
-            }, 'kb20154575')
+          render: (h, { row, column, index }) => {
+            return h('span', FilterService.dateFormat(row.actualCollectDate, 'yyyy-MM-dd'))
           }
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "customerSettleId",
-          width: 180,          
-          render: (h, row) => {
-            return h('i-button', {
-              props: {
-                type: 'text'
-              },
-              on: {
-                click: () => {
-
-                }
-              }
-            }, 'LSK3125465')
-          }
+          key: "customerName"
         },
         {
           align: "center",
           title: "项目",
-          key: "customName",
-          width: 180,
+          key: "collectItem",
+          render: (h, { row, column, index }) => {
+            return h("span", {}, this.$dict.getDictName(row.collectItem));
+          }
         },
         {
           align: "center",
           title: "金额",
-          key: "idCard",
-          width: 180
+          key: "collectMoneyAmount"
         },
         {
           align: "center",
           title: "期数",
-          key: "phone",
-          width: 180
+          key: "periods"
         },
         {
           align: "center",
           title: "所属公司",
-          key: "orderCreateTime",
-          width: 180
+          key: "companyChinaName"
         },
         {
           align: "center",
           title: "结算通道",
-          key: "compactApplyDate",
-          width: 180
+          key: "colectMoneyChannel",
+          render: (h, { row, column, index }) => {
+            return h("span", {}, this.$dict.getDictName(row.colectMoneyChannel));
+          }
         },
         {
           align: "center",
           title: "开票状态",
-          key: "supposedMajorMoney",
-          width: 100
+          key: "invoicingStatus",
+          render: (h, { row, column, index }) => {
+            return h("span", {}, this.$dict.getDictName(row.invoicingStatus));
+          }
         },
         {
           align: "center",
           title: "发票号",
-          key: "supposedInterest",
-          width: 100
+          key: "invoiceNumber"
         },
         {
           align: "center",
           title: "开票日期",
-          key: "supposedPunishedInterest",
-          width: 100
+          key: "invoicingDate",
+          render: (h, { row, column, index }) => {
+            return h('span', FilterService.dateFormat(row.invoicingDate, 'yyyy-MM-dd'))
+          }
         },
         {
           align: "center",
           title: "发票抬头",
-          key: "interestRate",
-          width: 100
+          key: "invoicingTitle"
         },
         {
           align: "center",
           title: "备注",
-          key: "clearAccountChannel",
-          width: 100
-        }
-      ];
-
-      this.data1 = [{
-        orderId: 'KB56481456',
-        customerSettleId: 'LSK3125465',
-        customName: '陈丽',
-        idCard: '610303199111414245',
-        phone: '18265481548',
-        orderCreateTime: '2017-12-03 13:56:03',
-        compactApplyDate: '2017-12-03',
-        supposedMajorMoney: '800.00',
-        supposedPunishedInterest: '12.2',
-        supposedInterest: '50.00',
-        interestRate: '3.45',
-        clearAccountChannel: '支付宝',
-        belongFirm: '群泰西安'
-      }, {
-        orderId: 'KB56481456',
-        customerSettleId: 'LSK3125465',
-        customName: '陈丽',
-        idCard: '610303199111414245',
-        phone: '18265481548',
-        orderCreateTime: '2017-12-03 13:56:03',
-        compactApplyDate: '2017-12-03',
-        supposedMajorMoney: '800.00',
-        supposedPunishedInterest: '12.2',
-        supposedInterest: '50.00',
-        interestRate: '3.45',
-        clearAccountChannel: '支付宝',
-        belongFirm: '群泰西安'
-      }, {
-        orderId: 'KB56481456',
-        customerSettleId: 'LSK3125465',
-        customName: '陈丽',
-        idCard: '610303199111414245',
-        phone: '18265481548',
-        orderCreateTime: '2017-12-03 13:56:03',
-        compactApplyDate: '2017-12-03',
-        supposedMajorMoney: '800.00',
-        supposedPunishedInterest: '12.2',
-        supposedInterest: '50.00',
-        interestRate: '3.45',
-        clearAccountChannel: '支付宝',
-        belongFirm: '群泰西安'
-      }]
-
-      this.columns2 = [{
-          title: "序号",
-          type: "index",
-          width: "80",
-          align: "center"
-        },
-        {
-          title: "列名",
-          key: "columnsName",
-          align: "center"
-        },
-        {
-          type: "selection",
-          width: "80",
-          align: "center"
-        }
-      ];
-      this.data2 = [{
-          columnsName: "订单号"
-        },
-        {
-          columnsName: "客户结算号"
-        },
-        {
-          columnsName: "客户姓名"
-        },
-        {
-          columnsName: "证件号"
-        },
-        {
-          columnsName: "手机号"
-        },
-        {
-          columnsName: "订单创建时间"
-        },
-        {
-          columnsName: "合同生效日"
-        },
-        {
-          columnsName: "代还本金"
-        },
-        {
-          columnsName: "代还利息"
-        },
-        {
-          columnsName: "代还罚息"
-        },
-        {
-          columnsName: "利率%/月"
-        },
-        {
-          columnsName: "结算通道"
-        },
-        {
-          columnsName: "归属公司"
+          key: "remark"
         }
       ];
     }

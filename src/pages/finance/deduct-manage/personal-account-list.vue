@@ -203,11 +203,7 @@
           title: "开户日期",
           align: "center",
           key: "openAccountDate",
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
+          render: (h, { row, column, index }) => {
             return h('span', FilterService.dateFormat(row.openAccountDate, 'yyyy-MM-dd'))
           }
         },
@@ -215,11 +211,7 @@
           align: "center",
           title: "开户类型",
           key: "accountType",
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
+          render: (h, { row, column, index }) => {
             return h("span", {}, this.$dict.getDictName(Number(row.accountType)));
           }
         },
