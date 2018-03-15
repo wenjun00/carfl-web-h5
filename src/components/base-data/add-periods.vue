@@ -16,7 +16,9 @@
         </data-grid-item>
         <data-grid-item label="产品期数" :span="4">
           <i-form-item prop="periods" style="width:70%;">
-            <i-input v-model="formItems.periods" placeholder="请输入产品期数"></i-input>
+            <i-select v-model="formItems.periods" placeholder="请输入产品期数">
+              <i-option v-for="{value,label} in $dict.getDictData('0435')" :key="value" :label="label" :value="value"></i-option>
+            </i-select>
           </i-form-item>
         </data-grid-item>
         <data-grid-item label="产品利率" :span="4">
@@ -208,7 +210,7 @@ export default class AddPeriods extends Vue {
   private ProductPlanIssueService: ProductPlanIssueService;
   @Prop() pNameTitle: any;
   private accountPeriodsList: String = "正常账期";
-  private initialParams: String = "无";
+  private initialParams: String = "有";
   private promiseMoenyParams: String = "无";
   private residueParams: String = "无";
   private manageMoneyParams: String = "无";
@@ -229,17 +231,20 @@ export default class AddPeriods extends Vue {
     finalCash: "",
     manageCostType: 394,
     stagingPeriods: "", // 期数
-    creditProtectDays: "",
-    overdueProtectDays: "",
-    penaltyRate: "",
-    contractBreakRate: "",
-    prepaymentRate: "",
+    creditProtectDays: '0',
+    overdueProtectDays: '0',
+    penaltyRate: '1',
+    contractBreakRate: '0',
+    prepaymentRate: '0',
     productStatus: "",
     // isPublish: '',
     manageCost: ""
   };
   private amountRules: Object = {};
-  private amount: any;
+  private amount: any = {
+    financingAmount1: "",
+    financingAmount2: ""
+  };
   private monthDay: any;
   private formRules: Object = {};
 
@@ -247,37 +252,35 @@ export default class AddPeriods extends Vue {
     for (let v in this.formItems) {
       this.formItems[v] = "";
     }
-    this.amount = {
-      financingAmount1: "",
-      financingAmount2: ""
-    };
+    this.formItems.creditProtectDays = '0'
+    this.formItems.contractBreakRate = '0'
+    this.formItems.overdueProtectDays = '0'
+    this.formItems.prepaymentRate = '0'
+    this.formItems.penaltyRate = '1'
     this.formItems.manageCostType = 394;
-    let form: any = this.$refs["formItems"];
-    form.resetFields();
+    let form1: any = this.$refs["formItems"];
+    form1.resetFields();
+    let form2: any = this.$refs["finance"];
+    form2.resetFields();
   }
   created() {
-    this.amount = {
-      financingAmount1: "",
-      financingAmount2: ""
-    };
     this.monthDay = [];
     this.monthDayFun();
     this.amountRules = {
     	financingAmount1: [
-				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }
+				{ pattern: /^[0-9]{1,9}$/g, message: '请输入1~9位数字', trigger: 'blur' }
 			],
       financingAmount2: [
-				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }
+				{ pattern: /^[0-9]{1,9}$/g, message: '请输入1~9位数字', trigger: 'blur' }
 			]
     }
 		this.formRules = {
 			periods: [
-				{ required: true, message: '请输入产品期数', trigger: 'blur' },
-				{ pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }        
+				{ required: true, message: '请输入产品期数', type: 'number', trigger: 'change' }
 			],
 			productRate: [
 				{ required: true, message: '请输入产品利率', trigger: 'blur' },
-				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }
+				{ pattern: /^[0-9]{1,3}([.]{1}[0-9]{0,4}){0,1}$/g, message: '请输入0~999整数或四位小数', trigger: 'blur' }
 			],
 			payWay: [
 				{ required: true, message: '请选择还款方式', trigger: 'change', type: 'number' }
@@ -290,22 +293,22 @@ export default class AddPeriods extends Vue {
 			],
 			initialPayment: [
 				{ required: true, message: '请输入首付款比例', trigger: 'blur' },
-				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }        
+				{ pattern: /^(0|[1-9][0-9]{0,1}|100)$/g, message: '请输入0~100整数', trigger: 'blur' }        
 			],
 			depositCash: [
         { required: true, message: '请输入保证金比例', trigger: 'blur' },
-				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }                
+				{ pattern: /^(0|[1-9][0-9]{0,1}|100)$/g, message: '请输入0~100整数', trigger: 'blur' }        
 			],
 			depositCashType: [
 				{ required: true, message: '请选择退还方式', trigger: 'change', type: 'number' }
 			],
 			finalCash: [
 				{ required: true, message: '请输入尾付款年利率', trigger: 'blur' },
-				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }                        
+				{ pattern: /^(0|[1-9][0-9]{0,1}|100)$/g, message: '请输入0~100整数', trigger: 'blur' }        
 			],
 			manageCost: [
 				{ required: true, message: '请输入管理费比例', trigger: 'blur' },
-				{ pattern: /^[\d.;]+$/, message: '请输入数字或小数多个用英文分号隔开', trigger: 'blur' }                                
+				{ pattern: /^(0|[1-9][0-9]{0,1}|100)$/g, message: '请输入0~100整数', trigger: 'blur' }        
 			],
 			stagingPeriods: [
 				{ required: true, message: '请输入管理费分期期数', trigger: 'blur' },
@@ -313,23 +316,23 @@ export default class AddPeriods extends Vue {
 			],
 			creditProtectDays: [
 				{ required: true, message: '请输入征信保护天数', trigger: 'blur' },
-				{ pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }                                                
+				{ pattern: /^(0|[1-9][0-9]{0,3})$/g, message: '请输入0~9999整数', trigger: 'blur' }        
 			],
 			overdueProtectDays: [
 				{ required: true, message: '请输入逾期保护天数', trigger: 'blur' },
-				{ pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }                                            
+				{ pattern: /^(0|[1-9][0-9]{0,3})$/g, message: '请输入0~9999整数', trigger: 'blur' }        
 			],
 			contractBreakRate: [
 				{ required: true, message: '请输入合同违约金费率', trigger: 'blur' },
-				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }                                                    
+				{ pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }                                                    
 			],
 			prepaymentRate: [
 				{ required: true, message: '请输入提前还款费率', trigger: 'blur' },
-				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }                                                    
+				{ pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }                                                    
 			],
 			penaltyRate: [
 				{ required: true, message: '请输入罚期费率', trigger: 'blur' },
-				{ pattern: /^[\d.]+$/, message: '请输入数字或小数', trigger: 'blur' }                                                    
+				{ pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }                                                    
 			]
 		};
   }
@@ -420,4 +423,5 @@ export default class AddPeriods extends Vue {
   margin-left: 5px;
   margin-bottom: 20px;
 }
+
 </style>

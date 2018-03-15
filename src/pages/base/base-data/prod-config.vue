@@ -73,7 +73,7 @@
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">还款方式</span>
-                    <span class="item">{{getPayWay(item)}}</span>
+                    <span class="item">{{$dict.getDictName(item.payWay)}}</span>
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">融资金额</span>
@@ -602,13 +602,6 @@
         return '固定账期';
       } else {
         return '正常账期';
-      }
-    }
-    getPayWay(item) {
-      if (item.paymentType === 384) {
-        return '等本等息';
-      } else {
-        return '等额本息';
       }
     }
     /**
