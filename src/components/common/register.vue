@@ -9,7 +9,7 @@
         <i-input v-model="registerModel.userRealname" style="width:80%;" :maxlength="8"></i-input>
       </i-form-item>
       <i-form-item label="电话" prop="userPhone">
-        <i-input v-model="registerModel.userPhone" style="width:80%;" :maxlength="11"></i-input>
+        <i-input v-model="registerModel.userPhone" style="width:80%;" :maxlength="11"  @on-blur="checkUserPhone"></i-input>
       </i-form-item>
       <i-form-item label="密码" prop="userPassword">
         <i-input v-model="registerModel.userPassword" type="password" style="width:80%;" :maxlength="20" @on-blur="checkPwd"></i-input>
@@ -94,17 +94,17 @@ export default class Register extends Vue {
       this.$Message.error("密码长度为6到20位,请重新输入！");
       return false;
     }
-    if (this.registerModel.confirmPwd !== this.registerModel.userPassword) {
-      this.$Message.error("两次密码输入不一致，请重新输入!");
-      return false;
-    }
+    // if (this.registerModel.confirmPwd !== this.registerModel.userPassword) {
+    //   this.$Message.error("两次密码输入不一致，请重新输入!");
+    //   return false;
+    // }
   }
   /**
    * 检查用户名
    */
   checkUserName() {
-    if (this.registerModel.userUsername.length < 6) {
-      this.$Message.error("用户名长度为6到50位,请重新输入！");
+    if (this.registerModel.userUsername.length < 6 || (/[\u4e00-\u9fa5]+/).test(this.registerModel.userUsername.toString())) {
+      this.$Message.error("用户名长度为6到50位且不能为汉字,请重新输入！");
       this.registerModel.userUsername = "";
       return false;
     }
@@ -116,6 +116,16 @@ export default class Register extends Vue {
     if (this.registerModel.userPassword.length < 6) {
       this.$Message.error("密码长度为6到20位,请重新输入！");
       this.registerModel.userPassword = "";
+      return false;
+    }
+  }
+  /**
+   * 检查电话号码
+   */
+  checkUserPhone(){
+    if(!((/^1(3|4|5|7|8)\d{9}$/).test(this.registerModel.userPhone.toString()))){
+      this.$Message.error("手机号码为11位且不能为汉字以及特殊字符,请重新输入！");
+      // this.registerModel.userPhone = "";
       return false;
     }
   }

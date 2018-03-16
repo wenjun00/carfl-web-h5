@@ -87,6 +87,12 @@
     };
     private registerModal: Boolean = false;
 
+    mounted(){
+      if(StorageService.getItem('account') !== null){
+        this.loginModel.username = StorageService.getItem('account').username
+        this.loginModel.password = StorageService.getItem('account').password
+      }
+    }
     created() {
       // 设置表单数据
       // this.loginModel = {};
