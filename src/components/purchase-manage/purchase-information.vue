@@ -125,11 +125,13 @@
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">身份证地址</td>
-          <td colspan="6">{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[0]):''}}{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[1]):''}}{{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.idCardAddress)):''}}{{orderInfo.personal?orderInfo.personal.idCardAddressDetail:''}}</td>
+          <td colspan="6" v-if="orderInfo.personal&&orderInfo.personal.idCardAddress">{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[0]):''}}{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[1]):''}}{{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.idCardAddress)):''}}{{orderInfo.personal?orderInfo.personal.idCardAddressDetail:''}}</td>
+          <td v-else colspan="6"></td>
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">现居住地址</td>
-          <td colspan="6">{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[0]):''}}{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[1]):''}}{{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.localHomeAddr)):''}}{{orderInfo.personal?orderInfo.personal.localHomeAddrDetail:''}}</td>
+          <td v-if="orderInfo.personal&&orderInfo.personal.localHomeAddr" colspan="6">{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[0]):''}}{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[1]):''}}{{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.localHomeAddr)):''}}{{orderInfo.personal?orderInfo.personal.localHomeAddrDetail:''}}</td>
+          <td v-else colspan="6"></td>
         </tr>
         <tr>
           <td bgColor="#F5F5F5" colspan="2">居住地址家庭座机</td>
@@ -422,7 +424,7 @@ export default class PurchaseInformation extends Vue {
         orderNumber: row.orderNumber
       })
       .subscribe(data => {
-          console.log(data,'data')
+        console.log(data, "data");
         let allData = JSON.stringify(data);
         this.orderInfo = JSON.parse(allData);
         this.personal = this.orderInfo.personal; // 个人资料
