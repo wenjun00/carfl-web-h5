@@ -115,7 +115,10 @@
           title: '期数(月)',
           key: 'periods',
           align: 'center',
-          width: 100
+          width: 100,
+          render: (h, { row, column, index }) => {
+            return h("span", {}, this.$dict.getDictName(row.periods));
+          }
         }, {
           title: '账期类型',
           key: 'periodType',

@@ -76,6 +76,7 @@
           <i-form-item label="意向首付比例" prop="intentionPaymentRatio">
             <i-input type="text" v-model="chooseBuyModel.intentionPaymentRatio">
             </i-input>
+            <span style="position:absolute;left:300px">%</span>
           </i-form-item>
         </i-col>
       </i-form>
@@ -117,7 +118,7 @@
           <i-form-item label="产品期数" prop="periods">
             <!--<i-input type="text" v-model="chooseBuyModel.periods" disabled>
             </i-input>-->
-            <span style="color:#ccc">{{chooseBuyModel.periods}}</span>
+            <span style="color:#ccc">{{$dict.getDictName(chooseBuyModel.periods)}}</span>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
@@ -142,14 +143,14 @@
           </i-form-item>
         </i-col>
         <i-col span="12">
-          <i-form-item label="融资总额" prop="financeTotalMoney">
-            <i-input type="text" v-model="chooseBuyModel.financeTotalMoney" @on-focus="financeTotalRemind" @on-change="financeTotalMoneyChange">
+          <i-form-item label="尾付本金" prop="finalprincipal">
+            <i-input type="text" v-model="chooseBuyModel.finalprincipal" @on-change="finalprincipalChange">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="月供金额" prop="moneyPay">
-            <i-input type="text" v-model="chooseBuyModel.moneyPay">
+            <i-input type="text" v-model="chooseBuyModel.moneyPay" readonly>
             </i-input>
           </i-form-item>
         </i-col>
@@ -159,7 +160,7 @@
               <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment">
                 <i-option v-for="item in initialPaymentData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
-              <i-input style="width:180px" type="text" v-model="chooseBuyModel.initialPayment" @on-change="initialChange">
+              <i-input style="width:180px" type="text" v-model="chooseBuyModel.initialPayment" readonly>
               </i-input>
             </i-row>
           </i-form-item>
@@ -170,20 +171,18 @@
               <i-select style="width:140px" placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit">
                 <i-option v-for="item in depositCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
-              <i-input style="width:180px" type="text" v-model="chooseBuyModel.depositCash">
+              <i-input style="width:180px" v-model="chooseBuyModel.depositCash" readonly>
               </i-input>
             </i-row>
           </i-form-item>
         </i-col>
         <i-col span="12">
-          <i-form-item label="尾付金额" prop="finalCash">
+          <i-form-item label="尾付总额" prop="finalCash">
             <i-row>
-              <!--<i-input placeholder="请输入尾付本金" type="text" v-model="chooseBuyModel.finalprincipal">
-              </i-input>-->
-              <i-select style="width:140px" placeholder="请选择尾付金额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash">
+              <i-select style="width:140px" placeholder="请选择尾付总额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash">
                 <i-option v-for="item in finalCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
-              <i-input style="width:180px" type="text" placeholder="尾付总额" v-model="chooseBuyModel.finalCash">
+              <i-input style="width:180px" v-model="chooseBuyModel.finalCash" readonly>
               </i-input>
             </i-row>
           </i-form-item>
@@ -194,7 +193,7 @@
               <i-select style="width:140px" placeholder="请选择管理费比例" v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost">
                 <i-option v-for="item in manageCostData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
-              <i-input style="width:180px" placeholder="请输入管理费" type="text" v-model="chooseBuyModel.manageCost">
+              <i-input style="width:180px" v-model="chooseBuyModel.manageCost" readonly>
               </i-input>
             </i-row>
           </i-form-item>
@@ -235,6 +234,12 @@
             </i-input>
           </i-form-item>
         </i-col>
+        <i-col span="24">
+          <i-form-item label="融资总额" prop="financeTotalMoney">
+            <i-input type="text" v-model="chooseBuyModel.financeTotalMoney" readonly>
+            </i-input>
+          </i-form-item>
+        </i-col>
         <i-col :span="24">
           <div v-show="changePrdShow">
             <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
@@ -264,9 +269,6 @@
     <template>
       <i-modal v-model="addProductModal" title="添加产品" width="1000" class="add-car">
         <add-product @currentRowData="currentRowData" @close="addProductModal=false" @productPlanissue="productPlanissue"></add-product>
-        <!--<div slot="footer">
-          <i-button @click="confirmAndBackPrd" class="blueButton">确认并返回</i-button>
-        </div>-->
       </i-modal>
     </template>
   </section>
@@ -275,31 +277,17 @@
 <script lang="tsx">
   import Vue from "vue";
   import Component from "vue-class-component";
-  import {
-    State,
-    Mutation,
-    namespace
-  } from "vuex-class";
-  import {
-    ApplyQueryService
-  } from "~/services/business-service/apply-query.service";
-  import {
-    Dependencies
-  } from "~/core/decorator";
+  import { State, Mutation, namespace } from "vuex-class";
+  import { ApplyQueryService } from "~/services/business-service/apply-query.service";
+  import { Dependencies } from "~/core/decorator";
   import AddCar from "~/components/purchase-manage/add-car.tsx.vue"
   import SvgIcon from '~/components/common/svg-icon.vue'
   import DataBox from "~/components/common/data-box.vue"
   import SimulateCalculate from "~/components/common/simulate-calculate.vue"
   import AddProduct from '~/components/purchase-manage/add-product.tsx.vue'
-  import {
-    CompanyService
-  } from "~/services/manage-service/company.service";
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import {
-    Emit
-  } from "vue-property-decorator";
+  import { CompanyService } from "~/services/manage-service/company.service";
+  import { Prop } from "vue-property-decorator";
+  import { Emit } from "vue-property-decorator";
   const ModuleMutation = namespace('purchase', Mutation)
   @Component({
     components: {
@@ -355,101 +343,28 @@
       vehicleAmount: 0, // 车辆参考总价
       finalprincipal: '', // 尾付本金
       initialPayment: '', // 首付金额
-      otherFee: '', // 其他费用
+      otherFee: 0, // 其他费用
+      depositCash: '',
+      manageCost: '',
+      insuranceMoney: 0,
+      purchaseMoney: 0,
+      licenseMoney: 0,
+      GpsMoney: 0
     };
     private rulesdata: any = {
-      //   moneyPay: [{
-      //     required: true,
-      //     message: '请输入月供金额',
-      //     trigger: 'blur',
-      //   }],
-      //   vehicleAmount: [{
-      //     required: true,
-      //     message: '请输入车辆参考总价',
-      //     trigger: 'blur',
-      //   }],
-      //   payWay: [{
-      //     required: true,
-      //     message: '请输入还款方式',
-      //     trigger: 'blur',
-      //   }],
-      //   prdInterestRate: [{
-      //     required: true,
-      //     message: '请输入产品利率',
-      //     trigger: 'blur',
-      //   }],
-      //   periods: [{
-      //     required: true,
-      //     message: '请输入产品期数',
-      //     trigger: 'blur',
-      //   }],
-      //   name: [{
-      //     required: true,
-      //     message: '请输入产品名称',
-      //     trigger: 'blur',
-      //   }],
-      //   prdSeriods: [{
-      //     required: true,
-      //     message: '请输入产品系列',
-      //     trigger: 'blur',
-      //   }],
-      financeTotalMoney: [{
-        required: true,
-        message: '请输入融资总额',
-        trigger: 'blur',
-      }],
+      // financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
     };
     private rules: any = {
-      intentionPeriods: [{
-        required: true,
-        message: '请输入意向期限',
-        trigger: 'blur',
-        type:'number'
-      }],
-      //   rentPayable: [{
-      //     required: true,
-      //     message: '请输入租金支付',
-      //     trigger: 'blur',
-      //     type: 'number'
-      //   }],
-      province: [{
-        required: true,
-        message: '请选择申请省份',
-        trigger: 'change',
-        type: 'number',
-      }],
-      city: [{
-        required: true,
-        message: '请选择申请城市',
-        trigger: 'change',
-        type: 'number',
-      }],
-      companyId: [{
-        required: true,
-        message: '请选择申请公司',
-        trigger: 'change',
-        type: 'number',
-      }],
-      orderServiceList: [{
-        required: true,
-        message: '请选择自缴费用',
-        trigger: 'change',
-        type: 'array',
-      }],
-      financingUse: [{
-        required: true,
-        message: '请输入融资租赁用途',
-        trigger: 'blur',
-      }],
-      financeTotalMoney: [{
-        required: true,
-        message: '请输入融资总额',
-        trigger: 'blur',
-      }],
+      intentionPeriods: [{ required: true, message: '请输入意向期限', trigger: 'blur', type:'number' }],
+      province: [{ required: true, message: '请选择申请省份', trigger: 'change', type: 'number' }],
+      city: [{ required: true, message: '请选择申请城市', trigger: 'change', type: 'number'}],
+      companyId: [{ required: true, message: '请选择申请公司', trigger: 'change', type: 'number' }],
+      orderServiceList: [{ required: true, message: '请选择自缴费用', trigger: 'change', type: 'array' }],
+      financingUse: [{ required: true, message: '请输入融资租赁用途', trigger: 'blur' }],
+      financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
+      intentionPaymentRatio: [{ pattern: /^\d$/,message: '请输入数字', trigger: 'blur' }]
     };
 
-    // @Emit('productData')
-    // productData(productId) {}
     @Prop()
     disabledStatus: String;
     disabledChange() {
@@ -470,39 +385,25 @@
      * 数据反显
      */
     Reverse(data) {
+      console.log('reverse')
       data.orderServiceList = data.orderServices.map(v => v.service)
       data.intentionPeriods = Number(data.intentionPeriods)
       this.chooseBuyModel = data
     }
     /**
-     * 
-     */
-    financeTotalRemind() {
-      this.$Message.warning(`融资总额应在${this.DataSet.financingAmount}区间内`)
-    }
-    /**
      * 融资总额
      */
-    financeTotalMoneyChange() {
-      // 尾付本金=车辆参考总价-首付金额-融资总额
-      if (!this.chooseBuyModel.vehicleAmount) {
-        this.chooseBuyModel.vehicleAmount = 0
+    getFinanceTotalMoney() {
+      if(this.chooseBuyModel.vehicleAmount&&this.chooseBuyModel.finalprincipal&&this.chooseBuyModel.initialPayment){
+        this.chooseBuyModel.financeTotalMoney = Number(this.chooseBuyModel.vehicleAmount) - Number(this.chooseBuyModel.finalprincipal) - Number(this.chooseBuyModel.initialPayment)
+      } else {
+        this.chooseBuyModel.financeTotalMoney = ''
       }
-      if (!this.chooseBuyModel.initialPayment) {
-        this.chooseBuyModel.initialPayment = 0
-      }
-      //   if (!this.chooseBuyModel.financeTotalMoney) {
-      //     this.chooseBuyModel.financeTotalMoney = 0
-      //   }
-      this.chooseBuyModel.finalprincipal = (Number(this.chooseBuyModel.vehicleAmount) - Number(this.chooseBuyModel.initialPayment)) -
-        Number(this.chooseBuyModel.financeTotalMoney)
-      // 尾付总额
-      if (this.chooseBuyModel.final) {
-        this.choosefinalCash()
-      }
-      //   管理费
-      if (this.chooseBuyModel.manageData) {
-        this.choosemanageCost()
+      this.chooseBuyModel.deposit = ''
+      this.chooseBuyModel.manageData = ''
+      this.chooseBuyModel.moneyPay = ''
+      if(this.chooseBuyModel.financeTotalMoney) {
+        this.chooseBuyModel.moneyPay = this.chooseBuyModel.financeTotalMoney * (1 + Number(this.DataSet.productRate) * 0.01) / Number(this.$dict.getDictName(this.DataSet.periods))
       }
     }
     /**
@@ -510,82 +411,63 @@
      */
     choosemanageCost() {
       // 管理费=融资总额*管理费率
-      //   if (this.chooseBuyModel.financeTotalMoney) {
-      //     this.chooseBuyModel.financeTotalMoney = 0
-      //   }
-      this.chooseBuyModel.manageCost = Number(this.chooseBuyModel.financeTotalMoney) * (Number(this.chooseBuyModel.manageData) *
-        0.01)
+      if(this.chooseBuyModel.financeTotalMoney&&this.chooseBuyModel.manageData){
+        this.chooseBuyModel.manageCost = Number(this.chooseBuyModel.financeTotalMoney) * (Number(this.chooseBuyModel.manageData) * 0.01)
+      } else {
+        this.chooseBuyModel.manageCost = ''
+      }
+      this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel))
+    }
+    /**
+     * 尾付本金
+     */
+    finalprincipalChange() {
+      if (Number(this.chooseBuyModel.finalprincipal)>0) {
+      } else {
+        this.chooseBuyModel.finalprincipal = ''
+      }
+      this.getFinanceTotalMoney()
     }
     /**
      * 车辆参考总价更改
      */
     vehicleAmountChange() {
-      this.chooseBuyModel.vehicleAmount = Number(this.chooseBuyModel.vehicleAmount)
-      if (this.chooseBuyModel.initialPayment) {
-        // 首付金额改变
-        this.chooseinitialPayment()
+      if (Number(this.chooseBuyModel.vehicleAmount)>0) {
+      } else {
+        this.chooseBuyModel.vehicleAmount = ''
       }
-      if (this.chooseBuyModel.depositCash) {
-        //   保证金金额改变
-        this.choosedeposit()
-      }
-    }
-    /**
-     * 首付金额改变融资总额变化
-     */
-    initialPaymentChange() {
-      // 融资总额=车辆参考总价-首付金额-尾付金额
-      if (!this.chooseBuyModel.vehicleAmount) {
-        this.chooseBuyModel.vehicleAmount = 0
-      }
-      if (!this.chooseBuyModel.initialPayment) {
-        this.chooseBuyModel.initialPayment = 0
-      }
-      if (!this.chooseBuyModel.finalprincipal) {
-        this.chooseBuyModel.finalprincipal = 0
-      }
-      this.chooseBuyModel.financeTotalMoney = (Number(this.chooseBuyModel.vehicleAmount) - Number(this.chooseBuyModel
-        .initialPayment)) - Number(this.chooseBuyModel.finalprincipal)
-      this.chooseBuyModel.financeTotalMoney = this.chooseBuyModel.financeTotalMoney.toString()
-    }
-    initialChange() {
-      this.initialPaymentChange()
+      this.getFinanceTotalMoney()
     }
     /**
      * 首付金额
      */
     chooseinitialPayment() {
       // 首付金额=车辆参考总价*首付比例
-      console.log(this.chooseBuyModel.vehicleAmount,'this.chooseBuyModel.vehicleAmount')
-      if(this.chooseBuyModel.vehicleAmount>0){
-     this.chooseBuyModel.initialPayment = (Number(this.chooseBuyModel.vehicleAmount)) * (Number(this.chooseBuyModel
-          .Payment) *
-        0.01)
-      // 融资总额
-      this.initialPaymentChange()
-      }else{
-       this.$Message.warning('请先输入车辆参考总价')
+      if(this.chooseBuyModel.Payment !== '' && this.chooseBuyModel.vehicleAmount){
+        this.chooseBuyModel.initialPayment = (Number(this.chooseBuyModel.vehicleAmount)) * (Number(this.chooseBuyModel.Payment) * 0.01)
+      } else {
+        this.chooseBuyModel.initialPayment = ''
       }
+      this.getFinanceTotalMoney()      
     }
     /**
      * 保证金金额
      */
     choosedeposit() {
-      // 保证金金额=车辆参考总价*保证金比例
-      this.chooseBuyModel.depositCash = (Number(this.chooseBuyModel.vehicleAmount)) * (Number(this.chooseBuyModel
-          .deposit) *
-        0.01)
+      // 保证金金额=融资总额*保证金比例
+      if(this.chooseBuyModel.deposit !== '' && this.chooseBuyModel.financeTotalMoney){
+        this.chooseBuyModel.depositCash = Number(this.chooseBuyModel.financeTotalMoney) * Number(this.chooseBuyModel.deposit) * 0.01
+      } else {
+        this.chooseBuyModel.depositCash = ''
+      }
+      this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel))      
     }
     /**
      * 尾付总额
      */
     choosefinalCash() {
-        console.log(78365946574865)
-      // 尾付利息(尾款本金*年利率*期数)
-      let finalCashinterest: any = Number(this.chooseBuyModel.finalprincipal) * (Number(this.chooseBuyModel.final) *
-        0.01) * Number(this.chooseBuyModel.periods)
       // 尾付总额（尾款本金+尾付利息）
-      this.chooseBuyModel.finalCash = finalCashinterest + Number(this.chooseBuyModel.finalprincipal)
+      this.chooseBuyModel.finalCash = Number(this.chooseBuyModel.finalprincipal) * (1 + Number(this.DataSet.finalCash) * 0.01)
     }
     /**
      * 添加车辆信息
@@ -594,7 +476,7 @@
       this.addcarData = data
       let sum:any=0
       data.forEach(v=>{
-          sum=sum+(Number(v.carAmount)||0)
+        sum=sum+(Number(v.carAmount)||0)
       })
       this.totalPrice=sum
     }

@@ -76,10 +76,8 @@
       <div class="submitBar">
         <i-row type="flex" align="middle" style="padding:5px">
           <i-col :span="8" push="1">
-            <span>申请人：administrator</span>
           </i-col>
           <i-col :span="10" pull="4">
-            <span>申请时间： 2017-12-01 13:56:45</span>
           </i-col>
           <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
             <i-button size="large" class="highDefaultButton" @click="draftsaveAndSubmit(true)">保存草稿</i-button>
@@ -385,8 +383,11 @@
         financingUse: choosebuymaterials.chooseBuyModel.financingUse, // 融资租赁用途
         intentionFinancingAmount: choosebuymaterials.chooseBuyModel.intentionFinancingAmount, // 意向融资金额
         intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods, // 意向期限
-        rentPayable: choosebuymaterials.chooseBuyModel.rentPayable, // 租金支付
-        intentionPaymentRatio: choosebuymaterials.chooseBuyModel.intentionPaymentRatio, // 意向首付比例
+        rentPayable: Number(choosebuymaterials.chooseBuyModel.rentPayable), // 租金支付
+        intentionPaymentRatio: Number(choosebuymaterials.chooseBuyModel.intentionPaymentRatio), // 意向首付比例
+        manageCostPercent: choosebuymaterials.chooseBuyModel.manageCostPercent, // 管理比例
+        depositPercent: choosebuymaterials.chooseBuyModel.depositPercent, // 保证金比例
+        paymentScale: choosebuymaterials.chooseBuyModel.paymentScale, // 首付比例
         // orderCar: choosebuymaterials.addcarData, // 添加车辆信息
         // 产品信息
         productId: choosebuymaterials.DataSet.productId, // 产品id
@@ -561,8 +562,12 @@
                         financingUse: choosebuymaterials.chooseBuyModel.financingUse, // 融资租赁用途
                         intentionFinancingAmount: choosebuymaterials.chooseBuyModel.intentionFinancingAmount, // 意向融资金额
                         intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods, // 意向期限
-                        rentPayable: choosebuymaterials.chooseBuyModel.rentPayable, // 租金支付
-                        intentionPaymentRatio: choosebuymaterials.chooseBuyModel.intentionPaymentRatio, // 意向首付比例
+                        rentPayable: Number(choosebuymaterials.chooseBuyModel.rentPayable), // 租金支付
+                        finalPayment: choosebuymaterials.chooseBuyModel.finalPayment, // 尾付本金
+                        manageCostPercent: choosebuymaterials.chooseBuyModel.manageCostPercent, // 管理比例
+                        depositPercent: choosebuymaterials.chooseBuyModel.depositPercent, // 保证金比例
+                        paymentScale: choosebuymaterials.chooseBuyModel.paymentScale, // 首付比例
+                        intentionPaymentRatio: Number(choosebuymaterials.chooseBuyModel.intentionPaymentRatio), // 意向首付比例
                         // orderCar: choosebuymaterials.addcarData, // 添加车辆信息
                         // 产品信息
                         productId: choosebuymaterials.DataSet.productId, // 产品id
