@@ -362,7 +362,7 @@
       orderServiceList: [{ required: true, message: '请选择自缴费用', trigger: 'change', type: 'array' }],
       financingUse: [{ required: true, message: '请输入融资租赁用途', trigger: 'blur' }],
       financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
-      intentionPaymentRatio: [{ pattern: /^\d$/,message: '请输入数字', trigger: 'blur' }]
+      intentionPaymentRatio: [{ pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }]
     };
 
     @Prop()
