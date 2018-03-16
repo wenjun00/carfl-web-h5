@@ -66,7 +66,7 @@
           <td>{{orderInfo.initialPayment}}</td>
         </tr>
         <tr>
-          <td bgColor="#F5F5F5">保证金额</td>
+          <td bgColor="#F5F5F5">保证金金额</td>
           <td>{{orderInfo.depositCash}}</td>
           <td bgColor="#F5F5F5">尾付金额</td>
           <td>{{orderInfo.finalCash}}</td>
@@ -80,12 +80,14 @@
           <td>{{orderInfo.purchaseTax}}</td>
           <td bgColor="#F5F5F5">上牌费</td>
           <td>{{orderInfo.installLicenseFee}}</td>
-          <td bgColor="#F5F5F5">GPS</td>
+          <td bgColor="#F5F5F5">GPS费</td>
           <td>{{orderInfo.gpsFee}}</td>
-          <td></td>
-          <td></td>
+          <td bgColor="#F5F5F5">其他费用</td>
+          <td>{{orderInfo.otherFee}}</td>
         </tr>
         <tr>
+          <td bgColor="#F5F5F5">车辆参考总价</td>
+          <td>{{orderInfo.vehicleAmount}}</td>
           <td bgColor="#F5F5F5">备注</td>
           <td colspan="7">{{orderInfo.remark}}</td>
         </tr>
@@ -430,17 +432,26 @@ export default class Approve extends Vue {
    */
   getApproveData() {
     let approveData: any = {};
-    approveData.intentionFinancingAmount = this.orderInfo.intentionFinancingAmount; // 融资金额
-    approveData.initialPayment = this.orderInfo.initialPayment; // 首付金额
-    approveData.depositCash = this.orderInfo.depositCash; // 保证金额
-    approveData.finalCash = this.orderInfo.finalCash; // 尾付金额
+    approveData.financingAmount = this.orderInfo.financingAmount; // 融资金额1
+    approveData.initialPayment = this.orderInfo.initialPayment; // 首付金额1
+    approveData.depositCash = this.orderInfo.depositCash; // 保证金额1
+    approveData.finalCash = this.orderInfo.finalCash; // 尾付金额1
     approveData.manageCost = this.orderInfo.manageCost; // 管理费金额
     approveData.insuranceExpenses = this.orderInfo.insuranceExpenses; // 保险费
     approveData.gpsFee = this.orderInfo.gpsFee; // GPS费
     approveData.installLicenseFee = this.orderInfo.installLicenseFee; // 上牌费
     approveData.purchaseTax = this.orderInfo.purchaseTax; // 购置税
     approveData.remark = this.orderInfo.remark; // 备注
-    approveData.vehicleAmount = this.orderInfo.vehicleAmount; // 车辆参考总价
+    approveData.vehicleAmount = this.orderInfo.vehicleAmount; // 车辆参考总价1
+    approveData.paymentScale = this.orderInfo.paymentScale; // 首付比例1
+    approveData.depositPercent = this.orderInfo.depositPercent; // 保证金比例1
+    approveData.finalPayment = this.orderInfo.finalPayment; // 尾付本金1
+    approveData.periods = this.orderInfo.periods; // 融资期数
+    approveData.monthlySupply = this.orderInfo.monthlySupply; // 月供金额
+    approveData.productRate = this.orderInfo.productRate; // 月利率
+    approveData.payWay = this.orderInfo.payWay; // 还款方式
+    approveData.otherFee = this.orderInfo.otherFee; // 其他费用
+    approveData.manageCostPercent = this.orderInfo.manageCostPercent; // 管理费率
     return approveData;
   }
 }

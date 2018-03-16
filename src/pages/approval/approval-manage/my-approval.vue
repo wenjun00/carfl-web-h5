@@ -260,6 +260,8 @@ export default class MyApproval extends Page {
   private compactEffect: String = "当月";
   private approvalOrderId: number = 0;
   private rejectOrBlackFlag: Boolean = false;
+
+  private getPasspple:any = ''
   private passModel: any = {
     remark: "",
     orderId: "",
@@ -300,9 +302,6 @@ export default class MyApproval extends Page {
   };
   private refuseReason: Array<Object> = []; // 拒单原因
   private refuseDetail: Array<Object> = []; // 拒单细节
-  mounted() {
-    this.getMyOrderList();
-  }
   created() {
     this.columns1 = [
       {
@@ -783,7 +782,8 @@ export default class MyApproval extends Page {
       let pageData = _approve.getApproveData();
       this.secendLastApproval = true;
       let _secondLast: any = this.$refs["second-last"];
-      _secondLast.getRate(this.approvalOrderId, pageData);
+      // _secondLast.getRate(this.approvalOrderId, pageData);
+      _secondLast.getPassData(pageData);
     } else if (this.approveStatue === 337) {
       this.meetConditionApproval = true;
       // 从approve组件里获取数据【pageData】传递给复审终审通过组件
@@ -849,6 +849,9 @@ export default class MyApproval extends Page {
     this.myOrderModel.timeSearch = val;
     this.getMyOrderList();
     this.myOrderModel.timeSearch = "";
+  }
+  activated () {
+    this.getMyOrderList()  
   }
 }
 </script>

@@ -79,12 +79,14 @@
           <td>{{orderInfo.purchaseTax}}</td>
           <td bgColor="#F5F5F5">上牌费</td>
           <td>{{orderInfo.installLicenseFee}}</td>
-          <td bgColor="#F5F5F5">GPS</td>
+          <td bgColor="#F5F5F5">GPS费</td>
           <td>{{orderInfo.gpsFee}}</td>
-          <td></td>
-          <td></td>
+          <td bgColor="#F5F5F5">其他费用</td>
+          <td>{{orderInfo.otherFee}}</td>
         </tr>
         <tr>
+          <td bgColor="#F5F5F5">车辆参考总价</td>
+          <td>{{orderInfo.vehicleAmount}}</td>
           <td bgColor="#F5F5F5">备注</td>
           <td colspan="7">{{orderInfo.remark}}</td>
         </tr>
