@@ -15,10 +15,6 @@
         <i-table ref="databox" :columns="treeColumns" :data="treeDatabox" :noDefaultRow="true" @on-selection-change="selectionChange"></i-table>
       </i-col>
     </i-row>
-    <!-- <div style="text-align:right">
-      <i-button type="ghost" @click="cancelClick">取消</i-button>
-      <i-button class="blueButton" @click="submitRole">确定</i-button>
-    </div> -->
   </section>
 </template>
 
@@ -43,6 +39,13 @@ export default class ModulePower extends Vue {
   @Dependencies(RoleResoService) private roleResoService: RoleResoService;
   @Dependencies(PageService) private pageService: PageService;
 
+  @Emit("close")
+  close() {}
+
+  private resourceData = [];
+  private menuResource = [];
+  private controlResource = [];
+  private roleId: Number = 0; // 角色id
   private treeData: Array<any> = [];
   private treeColumns: any;
   private treeDatabox: Array<any> = [];
@@ -52,20 +55,12 @@ export default class ModulePower extends Vue {
   private checkedId: any = [];
   private treeId: any = [];
   private expandData: any = [];
-  private id: any = "";
   private multipleSelection: any = [];
   private expand: any = [];
-  // private itemexpand: Boolean = false;
   private checkButtonIds: Array<any> = []; // 接口返回的已选按钮和输入框
   private checkMenuIds: Array<any> = []; // 接口返回的已选页面
-
   private tableCheckChangeId: Array<any> = []; // 表格checkId
   private treeCheckChangeId: Array<any> = []; // 树checkId
-
-  private roleId: Number = 0; // 角色id
-
-  @Emit("close")
-  close() {}
 
   created() {
     this.treeData = [];
@@ -90,17 +85,19 @@ export default class ModulePower extends Vue {
       }
     ];
   }
+
   refresh(rowId) {
-    this.id = rowId;
-    this.roleService
-      .findResourceByRoleId({
-        roleId: rowId
-      })
-      .subscribe(data => {
-        this.expandData = data;
-        this.getTreeDate();
-      });
+    // this.id = rowId;
+    // this.roleService
+    //   .findResourceByRoleId({
+    //     roleId: rowId
+    //   })
+    //   .subscribe(data => {
+    //     this.expandData = data;
+    //     this.getTreeDate();
+    //   });
   }
+
   getPageButton(val) {
     if (val.length) {
       this.roleResoService
@@ -124,18 +121,21 @@ export default class ModulePower extends Vue {
         );
     }
   }
+
   /**
    * 树勾选后change事件
    */
   treeCheckChange(data) {
     this.treeCheckChangeId = data.map(v => v.id);
   }
+
   /**
    * 表格checkbox的change事件
    */
   selectionChange(data) {
     this.tableCheckChangeId = data.map(v => v.id);
   }
+
   /**
    * 获取角色已有按钮输入框&&已有页面
    */
@@ -176,6 +176,7 @@ export default class ModulePower extends Vue {
   cancelClick() {
     this.close();
   }
+
   /**
    * 确定
    */
@@ -210,6 +211,7 @@ export default class ModulePower extends Vue {
         }
       );
   }
+
   /**
    * 获取树接口
    */
@@ -226,6 +228,7 @@ export default class ModulePower extends Vue {
       }
     );
   }
+
   /**
    * 生成树
    */
@@ -247,6 +250,7 @@ export default class ModulePower extends Vue {
       this.treeData.push(node);
     });
   }
+
   /**
    * 获取相对根元素的子元素
    */
@@ -271,38 +275,57 @@ export default class ModulePower extends Vue {
     });
     return child;
   }
+
+  getResourceData() {
+    this.roleResoService.getAllResource().subscribe(data => {
+      // 全部资源数据
+      this.resourceData = data;
+      // 菜单资源数据
+      this.menuResource = data.filter(x =>
+        [422, 421, 429].includes(x.resoFiletype)
+      );
+      // 菜单资源数据
+      this.controlResource = data.filter(x => [423].includes(x.resoFiletype));
+    });
+  }
+
   /**
-   * 点击模块权限节点 显示模块功能
+   * 生成菜单资源数据
+   * 生成树形结构
    */
-  // showdesi(item, checked, indeterminate) {
-  //   if (item[0].nodeKey === 3) {
-  //     this.treeDatabox = item[0].children;
-  //   } else {
-  //     this.treeDatabox = [];
-  //   }
-  // }
+  getMenuResourceData() {
+    let parents = this.menuResource.find(x => x.resoPid === 1000);
+
+    let fun = item => {
+      let children = this.menuResource.find(x => x.resoPid === item.id);
+
+      if (children && children.length) {
+        item.children = children.map(fun);
+      }
+
+      return item;
+    };
+
+    return parents.map(fun);
+  }
+
   /**
-   * 通过角色id查询资源 (获取该角色已配置过的模块)
+   * 获取组件资源数据
    */
-  // findRoleResource() {
-  // 	this.roleService
-  // 		.findResourceByRoleId({
-  // 			roleId: this.rowId,
-  // 		})
-  // 		.subscribe(val => {
-  // 			this.checkedId = val.map(v => v.id);
-  // 			this.treeId = this.allData.map(v => v.id);
-  // 			this.allData.forEach(v => {
-  // 				this.checkedId.forEach(checkVal => {
-  // 					if (v.id === checkVal) {
-  // 						this.checkBoolen = true;
-  // 					} else {
-  // 						this.checkBoolen = false;
-  // 					}
-  // 				});
-  // 			});
-  // 		});
-  // 	console.log(this.treeData, 222);
-  // }
+  getControlResourceData(id) {
+    return this.controlResource.find(x => x.resoPid === id);
+  }
+
+  /**
+   * 获取角色资源数据
+   */
+  getResourceDataByRole() {}
+
+  mounted() {
+    // 获取所有资源数据
+    this.getResourceData();
+    // 获取角色资源数据
+    this.getResourceDataByRole();
+  }
 }
 </script>
