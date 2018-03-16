@@ -76,6 +76,7 @@
           <i-form-item label="意向首付比例" prop="intentionPaymentRatio">
             <i-input type="text" v-model="chooseBuyModel.intentionPaymentRatio">
             </i-input>
+            <span style="position:absolute;left:300px">%</span>
           </i-form-item>
         </i-col>
       </i-form>
@@ -360,7 +361,8 @@
       companyId: [{ required: true, message: '请选择申请公司', trigger: 'change', type: 'number' }],
       orderServiceList: [{ required: true, message: '请选择自缴费用', trigger: 'change', type: 'array' }],
       financingUse: [{ required: true, message: '请输入融资租赁用途', trigger: 'blur' }],
-      financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }]
+      financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
+      intentionPaymentRatio: [{ pattern: /^\d$/,message: '请输入数字', trigger: 'blur' }]
     };
 
     @Prop()
