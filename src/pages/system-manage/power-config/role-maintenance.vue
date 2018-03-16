@@ -19,6 +19,7 @@
         </div>
       </div>
     </i-row>
+
     <data-box :id="20" :columns="columns1" :data="roleList" @onPageChange="getRoleListByCondition" :page="pageService"></data-box>
 
     <template>
@@ -32,8 +33,8 @@
     </template>
 
     <template>
-      <i-modal v-model="modulePowerModal" title="模块权限" width="600" @on-visible-change="modulePoweropen">
-        <module-power @close="modulePowerModal=false" ref="module-power"></module-power>
+      <i-modal v-model="modulePowerModal" title="模块权限" width="600">
+        <module-power :roleId="currentRoleId"></module-power>
         <div slot="footer">
           <i-button @click="modulePowerModal=false">取消</i-button>
           <i-button @click="saveModulePower" class="blueButton">确定</i-button>
@@ -115,34 +116,36 @@ export default class RoleMaintenance extends Page {
   private openCreateCompact: Boolean = false;
   private openColumnsConfig: Boolean = false;
   private openCompact: Boolean = false;
-  private columns2: any;
   private data2: Array<Object> = [];
   private data3: Array<Object> = [];
   private checkRadio: String = "融资租赁合同";
-  private columns3: any;
+
   private modifyRoleModal: Boolean = false; // 修改角色
   private modulePowerModal: Boolean = false; // 模块权限
   private userListModal: Boolean = false; // 用户列表
   private waitHandleCaseModal: Boolean = false; // 待办事项配置
   private addRoleModal: Boolean = false; // 新增角色
-  private roleModel: any;
-  private modifyRoleModel: any;
+
   private rowIdFun: any = "";
   private roleId: Number = 0;
+  private currentRoleId:number|null = null
+  private roleModel = {
+    roleName: "",
+    roleStatus: "",
+    userId: ""
+  };
+
+  private modifyRoleModel = {
+    roleName: "",
+    roleStatus: "",
+    roleRemark: ""
+  };
+
   mounted() {
     this.getRoleListByCondition();
   }
+
   created() {
-    this.roleModel = {
-      roleName: "",
-      roleStatus: "",
-      userId: ""
-    };
-    this.modifyRoleModel = {
-      roleName: "",
-      roleStatus: "",
-      roleRemark: ""
-    };
     this.columns1 = [
       {
         title: "操作",
@@ -195,9 +198,7 @@ export default class RoleMaintenance extends Page {
                   color: "#265EA2"
                 },
                 on: {
-                  click: () => {
-                    this.modulePower(row);
-                  }
+                  click: () => this.showModulePower(row)
                 }
               },
               "模块权限"
@@ -291,9 +292,11 @@ export default class RoleMaintenance extends Page {
     let _modulePower: any = this.$refs["module-power"];
     _modulePower.submitRole();
   }
+
   addNewRole() {
     this.addRoleModal = true;
   }
+
   closeAndRefresh() {
     this.modifyRoleModal = false;
     this.getRoleListByCondition();
@@ -380,16 +383,15 @@ export default class RoleMaintenance extends Page {
 
     modifyRole.updateRole();
   }
+
   /**
-   * 点击模块权限 按钮
+   * 显示模块权限
    */
-  modulePower(row) {
-    this.modulePowerModal = true;
-    this.rowIdFun = row.id;
-    let roleOpen: any = this.$refs["module-power"];
-    roleOpen.getTreeDate();
-    roleOpen.getRoleButtonAndMenu(row.id);
+  showModulePower(row) {
+    this.currentRoleId = row.id
+    this.modulePowerModal = true
   }
+
   userList(row) {
     this.userListModal = true;
     let _userList = <Modal>this.$refs["user-list"];
