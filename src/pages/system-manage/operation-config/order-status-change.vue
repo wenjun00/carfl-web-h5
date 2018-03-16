@@ -3,21 +3,21 @@
   <section class="page order-status-change">
     <span class="form-title">订单状态变更</span>
     <i-row style="margin:6px;">
-     <div style="float:right;margin-right:10px;margin-top:-48px;">
-      <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-        <svg-icon iconClass="dayin"></svg-icon>
-        <span style="font-size: 12px;">打印</span>
+      <div style="float:right;margin-right:10px;margin-top:-48px;">
+        <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+          <svg-icon iconClass="dayin"></svg-icon>
+          <span style="font-size: 12px;">打印</span>
+        </div>
+        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+          <svg-icon iconClass="daochu"></svg-icon>
+          <span style="font-size: 12px;">导出</span>
+        </div>
       </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size: 12px;">导出</span>
-      </div>
-    </div>
       <i-input style="display:inline-block;width:14%;margin-left:5px;min-width:260px;" placeholder="请录入客户姓名\证件号码\手机号\订单号查询" v-model="orderInfo"></i-input>
       <i-button class="blueButton" style="margin-left:10px;" @click="getOrderStatusChangeList">搜索</i-button>
       <!-- <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button> -->
     </i-row>
-    <data-box :columns="columns1" :data="orderStatusChangeList" @onPageChange="getOrderStatusChangeList" :page="pageService"></data-box>
+    <data-box :id="48" :columns="columns1" :data="orderStatusChangeList" @onPageChange="getOrderStatusChangeList" :page="pageService"></data-box>
     <!--Model-->
 
     <template>
@@ -58,9 +58,9 @@ export default class OrderStatusChange extends Page {
   private columns1: any;
   private orderStatusChangeList: Array<any> = [];
   private orderInfo: String = "";
-  private orderLink:Number=0;
-  private orderStatusList:Array<any>=[]
-  private orderId:Number = 0;
+  private orderLink: Number = 0;
+  private orderStatusList: Array<any> = [];
+  private orderId: Number = 0;
 
   mounted() {
     this.getOrderStatusChangeList();
@@ -95,10 +95,12 @@ export default class OrderStatusChange extends Page {
       {
         title: "客户姓名",
         key: "personalName",
+        editable: true,
         align: "center"
       },
       {
-         title: "环节",
+        title: "环节",
+        editable: true,
         key: "orderLink",
         align: "center",
         render: (h, { row, columns, index }) => {
@@ -107,18 +109,21 @@ export default class OrderStatusChange extends Page {
       },
       {
         title: "证件号码",
+        editable: true,
         key: "idCard",
         align: "center"
       },
       {
         title: "联系号码",
+        editable: true,
         key: "mobileMain",
         align: "center"
       },
       {
         title: "订单创建时间",
+        editable: true,
         key: "createTime",
-        align: "center" , 
+        align: "center",
         render: (h, { row, column, index }) => {
           return h(
             "span",
@@ -128,11 +133,13 @@ export default class OrderStatusChange extends Page {
       },
       {
         title: "订单编号",
+        editable: true,
         key: "orderNumber",
         align: "center"
       },
       {
         title: "订单类型",
+        editable: true,
         key: "orderType",
         align: "center",
         render: (h, { row, columns, index }) => {
@@ -141,21 +148,25 @@ export default class OrderStatusChange extends Page {
       },
       {
         title: "产品名称",
+        editable: true,
         key: "productName",
         align: "center"
       },
       {
         title: "产品期数",
+        editable: true,
         key: "periods",
         align: "center"
       },
       {
         title: "利率（月）",
+        editable: true,
         key: "productRate",
         align: "center"
       },
       {
         title: "还款方式",
+        editable: true,
         key: "payWay",
         align: "center",
         render: (h, { row, columns, index }) => {
@@ -164,11 +175,13 @@ export default class OrderStatusChange extends Page {
       },
       {
         title: "融资总额",
+        editable: true,
         key: "financingAmount",
         align: "center"
       },
       {
         title: "订单状态",
+        editable: true,
         key: "orderStatus",
         align: "center",
         render: (h, { row, columns, index }) => {
@@ -181,16 +194,21 @@ export default class OrderStatusChange extends Page {
    * 确定改变状态
    */
   confirmChangeStatus() {
-    this.productOrderService.changeOrderStatus({
-      orderId:this.orderId,
-      linkId:this.orderLink
-    }).subscribe(data=>{
-      this.$Message.success('更改成功！')
-      this.changeStatusOpen = false
-      this.getOrderStatusChangeList()
-    },({msg})=>{
-      this.$Message.error(msg)
-    })
+    this.productOrderService
+      .changeOrderStatus({
+        orderId: this.orderId,
+        linkId: this.orderLink
+      })
+      .subscribe(
+        data => {
+          this.$Message.success("更改成功！");
+          this.changeStatusOpen = false;
+          this.getOrderStatusChangeList();
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
   }
   /**
    * 订单状态变更列表
@@ -216,16 +234,21 @@ export default class OrderStatusChange extends Page {
    * 更改状态
    */
   changeStatus(row) {
-    this.orderLink = row.orderLink
-    this.orderId = row.orderId
+    this.orderLink = row.orderLink;
+    this.orderId = row.orderId;
     this.changeStatusOpen = true;
-    this.productOrderService.getPreProcess({
-      orderId:row.orderId
-    }).subscribe(data=>{
-      this.orderStatusList = data
-    },({msg})=>{
-      this.$Message.error(msg)
-    })
+    this.productOrderService
+      .getPreProcess({
+        orderId: row.orderId
+      })
+      .subscribe(
+        data => {
+          this.orderStatusList = data;
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
   }
   /**
    * 重置搜索

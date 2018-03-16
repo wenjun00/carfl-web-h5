@@ -20,7 +20,7 @@
           </div>
         </div>
       </i-poptip>
-      <span style="color:#fff;font-size:12px;margin-left:6px;margin-right:50px;position:relative;top:2px;">{{loginPerson}}</span>
+      <span style="color:#fff;font-size:12px;margin-left:6px;margin-right:50px;position:relative;top:2px;">{{loginName}}</span>
     </div>
 
     <template>
@@ -59,12 +59,14 @@ import { LoginService } from "~/services/manage-service/login.service";
 export default class WorkHeader extends Vue {
   @Dependencies(LoginService) private loginService: LoginService;
   private modifyPwdModal: Boolean = false;
-  private loginPerson: Boolean = false;
+  private loginPerson: String = "";
+  private loginName: String = "";
   @Prop() person;
   @Action select;
 
   created() {
     this.loginPerson = this.$store.state.userData.username;
+    this.loginName = this.$store.state.userData.realname;
   }
   modifyPwd() {
     this.modifyPwdModal = true;
