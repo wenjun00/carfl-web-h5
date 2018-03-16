@@ -13,15 +13,15 @@
       <i-button class="blueButton" style="margin-left:10px;" @click="search">搜索</i-button>
       <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
       <div style="float:right;margin-right:10px;margin-top:-48px;">
-      <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-        <svg-icon iconClass="dayin"></svg-icon>
-        <span style="font-size: 12px;">打印</span>
+        <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+          <svg-icon iconClass="dayin"></svg-icon>
+          <span style="font-size: 12px;">打印</span>
+        </div>
+        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" @click="exportLogs">
+          <svg-icon iconClass="daochu"></svg-icon>
+          <span style="font-size: 12px;">导出</span>
+        </div>
       </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" @click="exportLogs">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size: 12px;">导出</span>
-      </div>
-    </div>
     </i-row>
     <data-box :id="57" :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService" ref="databox"></data-box>
   </section>
@@ -68,10 +68,10 @@ export default class SystemLogDownload extends Page {
 
     this.columns1 = [
       {
-        type:'selection',
-        align:'center',
-        width:60,
-        fixed:'left'
+        type: "selection",
+        align: "center",
+        width: 60,
+        fixed: "left"
       },
       {
         title: "操作时间",
@@ -163,8 +163,8 @@ export default class SystemLogDownload extends Page {
   /**
    * 导出系统日志列表
    */
-  exportLogs(){
-   let databox = this.$refs["databox"] as DataBox;
+  exportLogs() {
+    let databox = this.$refs["databox"] as DataBox;
     let multipleSelection = databox.getCurrentSelection();
     if (multipleSelection && multipleSelection.length) {
       let sysLogsIds = multipleSelection.map(v => v.id);
