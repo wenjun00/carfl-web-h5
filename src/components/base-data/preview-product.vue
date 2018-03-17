@@ -15,7 +15,7 @@
       </data-grid-item>
       <data-grid-item label="产品期数" :span="4">
         <div>
-          {{productDetailView.periods}}
+          {{$dict.getDictName(productDetailView.periods)}}
         </div>
       </data-grid-item>
       <data-grid-item label="产品利率" :span="4">

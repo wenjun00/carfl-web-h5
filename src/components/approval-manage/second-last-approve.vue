@@ -118,6 +118,8 @@ export default class SecondLastApprove extends Vue {
   private finalCash :any = ''; // 尾付金额1
   private payWay :any = ''; // 还款方式
   private manageCostPercent :any = ''; // 管理费率
+  private orderId:any = ''
+
 
   private pageData: any = {};
   private passModel: any = {
@@ -141,6 +143,7 @@ export default class SecondLastApprove extends Vue {
    finalCash : '',
    payWay : '',
    manageCostPercent : '',
+    orderId:''
   };
   @Prop() row: Object;
 
@@ -170,6 +173,7 @@ export default class SecondLastApprove extends Vue {
     this.payWay = pageData.payWay; // 还款方式
     this.otherFee = pageData.otherFee; // 其他费用
     this.manageCostPercent = pageData.manageCostPercent; // 管理费率
+    this.orderId = pageData.id;//订单Id
   }
 
   /**
@@ -202,6 +206,7 @@ export default class SecondLastApprove extends Vue {
    * 复审终审确定通过
    */
   confirmPass() {
+    console.log(this.orderId)
     this.passModel.financingAmount = this.financingAmount; // 融资金额1
     this.passModel.initialPayment = this.initialPayment; // 首付金额1
     this.passModel.depositCash = this.depositCash; // 保证金额1
@@ -222,6 +227,7 @@ export default class SecondLastApprove extends Vue {
     this.passModel.payWay = this.payWay; // 还款方式
     this.passModel.otherFee = this.otherFee; // 其他费用
     this.passModel.manageCostPercent = this.manageCostPercent; // 管理费率
+    this.passModel.orderId = this.orderId
     if (
       this.passModel.paymentScale !==undefined &&
       this.passModel.depositPercent!==undefined &&
