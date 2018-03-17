@@ -426,6 +426,9 @@
       data.personal.city2 = CityService.getCityParent(Number(data.personal.cityOwnhouseAddress))[1]
       data.personal.province2 = CityService.getCityParent(Number(data.personal.cityOwnhouseAddress))[0]
       this.customerMaterialsForm = data.personal
+      console.log(data, 'person')
+      this.customerMaterialsForm.id = data.personalId || null
+      delete data.personalId
     }
     getinfo(customerModel) {
       this.customerMaterialsForm = Object.assign({}, customerModel)
