@@ -62,6 +62,11 @@ export default class DataBox extends Vue {
   @Prop()
   page: PageService;
 
+  @Emit('on-selection-change')
+  emitSelectionChange(section){}
+
+  // @Emit('on-selection-change')
+  // emitSelectionChange(){}
   // @Prop({
   //   default: false
   // })
@@ -243,6 +248,7 @@ export default class DataBox extends Vue {
 
   currentSelect(selection) {
     this.multipleSelection = selection;
+    this.emitSelectionChange(selection)
   }
 
   /**

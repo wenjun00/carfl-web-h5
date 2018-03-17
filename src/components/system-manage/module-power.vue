@@ -6,13 +6,13 @@
       <i-col :span="10">
         <span>模块名</span>
         <div style="height:600px;overflow:auto">
-          <data-tree ref="data-tree" show-checkbox :data="menuResourceData" @on-select-change="getControlResourcesById"></data-tree>
+          <data-tree  ref="data-tree" show-checkbox :data="menuResourceData" @on-select-change="getControlResourcesById"></data-tree>
         </div>
       </i-col>
       <!--表格-->
       <i-col :span="14" style="padding:0 10px">
         <span>模块功能</span>
-        <data-box ref="data-box" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
+        <data-box @on-selection-change="onSelectionChange"  ref="data-box" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
       </i-col>
     </i-row>
   </section>
@@ -68,22 +68,10 @@ export default class ModulePower extends Vue {
       },
       {
         align: "center",
+        type: "selection",
         key: "checked",
         title: "选择",
-        width: "60",
-        render: (h, { row, index }) => {
-          return h("i-checkbox", {
-            props: {
-              value: row.checked
-            },
-            on: {
-              "on-change": (value) => {
-                row.checked = value
-                this.controlResourceData.find(x=>x.id===row.id).checked = value
-              }
-            }
-          });
-        }
+        width: "60"
       },
       {
         align: "center",
@@ -130,6 +118,12 @@ export default class ModulePower extends Vue {
     });
   }
 
+  onSelectionChange(section){
+    this.controlResourceData.forEach(x=>{
+      x._checked = !!section.find(item=>item.id === x.id)
+    })
+  }
+
   /**
    * 生成菜单资源数据
    * 生成树形结构
@@ -169,7 +163,7 @@ export default class ModulePower extends Vue {
 
       // 筛选资源选中项
       this.controlResource.forEach(item => {
-        item.checked = !!controlItems.find(x => item.id === x.id);
+        item._checked = !!controlItems.find(x => item.id === x.id);
       });
 
       let dataTree = this.$refs["data-tree"] as DataTree;
@@ -185,8 +179,8 @@ export default class ModulePower extends Vue {
   public submit(){
     let dataTree = this.$refs['data-tree'] as DataTree
     let menuResourceIds = dataTree.getCheckedKeys()
-    let controlResourceIds = this.controlResource.filter(x=>x.checked).map(x=>x.id)
-    console.log([...menuResourceIds,...controlResourceIds])
+    let controlResourceIds = this.controlResource.filter(x=>x._checked).map(x=>x.id)
+
     this.roleService.roleAllocateResources({
       roleId:this.roleId,
       resourcesId:[...menuResourceIds,...controlResourceIds]
