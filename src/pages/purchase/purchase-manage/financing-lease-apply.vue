@@ -385,6 +385,7 @@
         manageCostPercent: choosebuymaterials.chooseBuyModel.manageData||0, // 管理比例
         depositPercent: choosebuymaterials.chooseBuyModel.deposit||0, // 保证金比例
         paymentScale: choosebuymaterials.chooseBuyModel.Payment||0, // 首付比例
+        finalPayment: choosebuymaterials.chooseBuyModel.finalprincipal, // 尾付本金        
         // orderCar: choosebuymaterials.addcarData, // 添加车辆信息
         // 产品信息
         productId: choosebuymaterials.DataSet.productId, // 产品id
@@ -549,7 +550,7 @@
                         intentionFinancingAmount: choosebuymaterials.chooseBuyModel.intentionFinancingAmount, // 意向融资金额
                         intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods, // 意向期限
                         rentPayable: Number(choosebuymaterials.chooseBuyModel.rentPayable), // 租金支付
-                        finalPayment: choosebuymaterials.chooseBuyModel.finalPayment, // 尾付本金
+                        finalPayment: choosebuymaterials.chooseBuyModel.finalprincipal, // 尾付本金
                         manageCostPercent: choosebuymaterials.chooseBuyModel.manageData||0, // 管理比例
                         depositPercent: choosebuymaterials.chooseBuyModel.deposit||0, // 保证金比例
                         paymentScale: choosebuymaterials.chooseBuyModel.Payment||0, // 首付比例
