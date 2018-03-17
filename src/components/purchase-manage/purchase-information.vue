@@ -50,43 +50,43 @@
           <td bgColor="#F5F5F5">产品名称</td>
           <td>{{orderInfo.product?orderInfo.product.name:''}}</td>
           <td bgColor="#F5F5F5">产品期数</td>
-          <td>{{orderInfo.periods}}</td>
+          <td>{{orderInfo.periods === undefined?0:orderInfo.periods}}</td>
           <td bgColor="#F5F5F5">产品利率</td>
-          <td>{{orderInfo.productRate}}</td>
+          <td>{{orderInfo.productRate === undefined?0:orderInfo.productRate+'%'}}</td>
         </tr>
         <tr>
           <td bgColor="#F5F5F5">还款方式</td>
           <td>{{$dict.getDictName(orderInfo.payWay)}}</td>
           <td bgColor="#F5F5F5">融资总额</td>
-          <td>{{orderInfo.financingAmount}}</td>
+          <td>{{orderInfo.financingAmount === undefined?0:orderInfo.financingAmount}}</td>
           <td bgColor="#F5F5F5">月供金额</td>
-          <td>{{orderInfo.monthlySupply}}</td>
+          <td>{{orderInfo.monthlySupply === undefined?0:orderInfo.monthlySupply}}</td>
           <td bgColor="#F5F5F5">首付金额</td>
-          <td>{{orderInfo.initialPayment}}</td>
+          <td>{{orderInfo.initialPayment === undefined?0:orderInfo.initialPayment}}</td>
         </tr>
         <tr>
           <td bgColor="#F5F5F5">保证金金额</td>
-          <td>{{orderInfo.depositCash}}</td>
+          <td>{{orderInfo.depositCash === undefined?0:orderInfo.depositCash}}</td>
           <td bgColor="#F5F5F5">尾付金额</td>
-          <td>{{orderInfo.finalCash}}</td>
+          <td>{{orderInfo.finalCash === undefined?0:orderInfo.finalCash}}</td>
           <td bgColor="#F5F5F5">管理费</td>
-          <td>{{orderInfo.manageCost}}</td>
+          <td>{{orderInfo.manageCost === undefined?0:orderInfo.manageCost}}</td>
           <td bgColor="#F5F5F5">保险费</td>
-          <td>{{orderInfo.insuranceExpenses}}</td>
+          <td>{{orderInfo.insuranceExpenses === undefined?0:orderInfo.insuranceExpenses}}</td>
         </tr>
         <tr>
           <td bgColor="#F5F5F5">购置税</td>
-          <td>{{orderInfo.purchaseTax}}</td>
+          <td>{{orderInfo.purchaseTax === undefined?0:orderInfo.purchaseTax}}</td>
           <td bgColor="#F5F5F5">上牌费</td>
-          <td>{{orderInfo.installLicenseFee}}</td>
+          <td>{{orderInfo.installLicenseFee === undefined?0:orderInfo.installLicenseFee}}</td>
           <td bgColor="#F5F5F5">GPS费</td>
-          <td>{{orderInfo.gpsFee}}</td>
+          <td>{{orderInfo.gpsFee === undefined?0:orderInfo.gpsFee}}</td>
           <td bgColor="#F5F5F5">其他费用</td>
-          <td>{{orderInfo.otherFee}}</td>
+          <td>{{orderInfo.otherFee === undefined?0:orderInfo.otherFee}}</td>
         </tr>
         <tr>
           <td bgColor="#F5F5F5">车辆参考总价</td>
-          <td>{{orderInfo.vehicleAmount}}</td>
+          <td>{{orderInfo.vehicleAmount === undefined?0:orderInfo.vehicleAmount}}</td>
           <td bgColor="#F5F5F5">备注</td>
           <td colspan="7">{{orderInfo.remark}}</td>
         </tr>

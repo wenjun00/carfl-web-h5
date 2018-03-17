@@ -43,6 +43,7 @@ export default class AddApprovalReason extends Vue {
 				val => {
 					this.$emit('close');
 					this.$Message.success('新增类别成功！');
+					this.restForm()
 				},
 				({ msg }) => {
 					this.$Message.error(msg);

@@ -6,7 +6,7 @@
       <i-col :span="10">
         <span>模块名</span>
         <div style="height:600px;overflow:auto">
-          <i-tree show-checkbox :data="menuResource" @on-select-change="getControlResourcesById" @on-check-change="updateMenuResourcesState"></i-tree>
+          <i-tree show-checkbox :data="menuResourceData" @on-select-change="getControlResourcesById" @on-check-change="updateMenuResourcesState"></i-tree>
         </div>
       </i-col>
       <!--表格-->
@@ -50,7 +50,7 @@ export default class ModulePower extends Vue {
   private resourceData = [];
   private menuResource = [];
   private controlResource = [];
-
+  private menuResourceData = [];
   private treeData: Array<any> = [];
   private treeColumns: any;
   private treeDatabox: Array<any> = [];
@@ -115,7 +115,10 @@ export default class ModulePower extends Vue {
       // 菜单资源数据
       this.menuResource = data.filter(x =>
         [422, 421, 429].includes(x.resoFiletype)
-      );
+      ).map(x=>{
+        x.title = x.resoName
+        return x
+      })
 
       // 菜单资源数据
       this.controlResource = data.filter(x =>
@@ -128,8 +131,8 @@ export default class ModulePower extends Vue {
    * 生成菜单资源数据
    * 生成树形结构
    */
-  getMenuResourceData() {
-    let parents = this.menuResource.filter(x => x.resoPid === 1000);
+  createMenuResourceData() {
+    let parents = this.menuResource.filter(x => x.resoPid === 10000);
 
     let fun = item => {
       let children = this.menuResource.filter(x => x.resoPid === item.id);
@@ -141,7 +144,7 @@ export default class ModulePower extends Vue {
       return item;
     };
 
-    return parents.map(fun);
+    this.menuResourceData =  parents.map(fun);
   }
 
   /**
@@ -164,14 +167,19 @@ export default class ModulePower extends Vue {
       })
     ).subscribe(([controlItems,menuItems])=>{
       // 筛选资源选中项
-      this.controlResource.forEach((item)=>
-        item.checked = controlItems.find(x=>item.id===x.id)
+      this.controlResource
+      .forEach((item)=>
+        item.checked = !!controlItems.find(x=>item.id===x.id)
       )
 
       // 筛选菜单选中项
-      this.menuResource.forEach((item)=>
-        item.checked = menuItems.find(x=>item.id===x.id)
+      this.menuResource.forEach((item)=>{
+          item.checked = item.resoFiletype === 421 && !!menuItems.find(x=>item.id===x.id)
+          // item.expand = false
+        }
       )
+
+      this.createMenuResourceData()
     })
   }
 

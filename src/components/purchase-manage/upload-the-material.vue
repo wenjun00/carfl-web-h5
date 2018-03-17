@@ -7,7 +7,6 @@
       <span style="margin-left:15px;">建议文件大小100M以内</span>
     </i-row>
     <i-row style="margin-left:50px;">
-
       <i-col span="6">
         <br>
         <h3>文件数量({{dataList.length}})</h3>
@@ -18,7 +17,6 @@
               <i-button type="text" icon="arrow-down-a" @click="download(item)"></i-button>
               <i-button type="text" icon="eye" @click="preview(item)"></i-button>
               <i-button type="text" icon="close" @click="handleRemove(item)"></i-button>
-
             </div>
           </li>
         </ul>
@@ -47,7 +45,6 @@
     <template>
       <i-modal title="预览" v-model="previewModel" width="800" class-name="no-footer">
         <img :src="url" style="width: 100%">
-        </Modal>
       </i-modal>
     </template>
 
