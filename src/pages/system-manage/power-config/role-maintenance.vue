@@ -33,8 +33,8 @@
     </template>
 
     <template>
-      <i-modal v-model="modulePowerModal" title="模块权限" width="600">
-        <module-power :roleId="currentRoleId"></module-power>
+      <i-modal  v-model="modulePowerModal" title="模块权限" width="600">
+        <module-power @close="modulePowerModal=false" ref="module-power" :roleId="currentRoleId"></module-power>
         <div slot="footer">
           <i-button @click="modulePowerModal=false">取消</i-button>
           <i-button @click="saveModulePower" class="blueButton">确定</i-button>
@@ -289,8 +289,8 @@ export default class RoleMaintenance extends Page {
    * 保存角色的模块权限
    */
   saveModulePower() {
-    let _modulePower: any = this.$refs["module-power"];
-    _modulePower.submitRole();
+    let modulePower: any = this.$refs["module-power"] as ModulePower;
+    modulePower.submit();
   }
 
   addNewRole() {

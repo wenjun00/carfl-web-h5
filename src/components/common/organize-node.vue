@@ -26,7 +26,7 @@
         </small>
       </div>
       <div v-show="expanded" class="sub-node" v-if="data.children">
-        <organize-node v-for="(item,index) in data.children" :key="item.id" :data="item"></organize-node>
+        <organize-node v-for="(item) in data.children" :key="item.id" :data="item"></organize-node>
       </div>
     </div>
   </div>

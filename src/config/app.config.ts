@@ -5,6 +5,6 @@ export default {
     server: process.env.URL_SERVER
   },
   mock: process.env.MOCK,
-  timeout: 3000,
+  timeout: 60000,
   debug: process.env.ENV === 'dev'
 }

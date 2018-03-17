@@ -6,13 +6,13 @@
       <i-col :span="10">
         <span>模块名</span>
         <div style="height:600px;overflow:auto">
-          <i-tree show-checkbox :data="menuResourceData" @on-select-change="getControlResourcesById" @on-check-change="updateMenuResourcesState"></i-tree>
+          <data-tree ref="data-tree" show-checkbox :data="menuResourceData" @on-select-change="getControlResourcesById"></data-tree>
         </div>
       </i-col>
       <!--表格-->
       <i-col :span="14" style="padding:0 10px">
         <span>模块功能</span>
-        <i-table ref="databox" :columns="treeColumns" :data="treeDatabox" :noDefaultRow="true"></i-table>
+        <data-box ref="data-box" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
       </i-col>
     </i-row>
   </section>
@@ -22,16 +22,18 @@
 import Vue from "vue";
 import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
-import {Observable} from 'rxjs'
+import { Observable } from "rxjs";
 import { RoleService } from "~/services/manage-service/role.service";
-import { Prop,Watch } from "vue-property-decorator";
+import { Prop, Watch } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { RoleResoService } from "~/services/manage-service/role-reso.service";
 import { PageService } from "~/utils/page.service";
+import DataTree from "~/components/common/data-tree.vue";
 
 @Component({
   components: {
-    DataBox
+    DataBox,
+    DataTree
   }
 })
 export default class ModulePower extends Vue {
@@ -40,43 +42,48 @@ export default class ModulePower extends Vue {
   @Dependencies(PageService) private pageService: PageService;
 
   // 角色id
-  @Prop() roleId
+  @Prop() roleId;
 
   @Watch("roleId")
-  onRoleIdChange(value){
-    this.getResourceDataByRole()
+  onRoleIdChange(value) {
+    this.getResourceDataByRole();
+    this.controlResourceData = []
   }
 
   private resourceData = [];
   private menuResource = [];
   private controlResource = [];
   private menuResourceData = [];
-  private treeData: Array<any> = [];
-  private treeColumns: any;
-  private treeDatabox: Array<any> = [];
+  private controlResourceData = [];
 
-  private allData: Array<any> = [];
-  private resoPid: number = 0;
-  private checkBoolen: Boolean = false;
-  private checkedId: any = [];
-  private treeId: any = [];
-  private expandData: any = [];
-  private multipleSelection: any = [];
-  private expand: any = [];
-  private checkButtonIds: Array<any> = []; // 接口返回的已选按钮和输入框
-  private checkMenuIds: Array<any> = []; // 接口返回的已选页面
-  private tableCheckChangeId: Array<any> = []; // 表格checkId
-  private treeCheckChangeId: Array<any> = []; // 树checkId
+  private columns = [];
 
   created() {
-    this.treeData = [];
-    //   this.getTreeDate();
-    this.treeColumns = [
+    this.columns = [
       {
         align: "center",
-        type: "selection",
+        type: "index",
+        title: "序号",
+        width: "30"
+      },
+      {
+        align: "center",
+        key: "checked",
         title: "选择",
-        width: "60"
+        width: "60",
+        render: (h, { row, index }) => {
+          return h("i-checkbox", {
+            props: {
+              value: row.checked
+            },
+            on: {
+              "on-change": (value) => {
+                row.checked = value
+                this.controlResourceData.find(x=>x.id===row.id).checked = value
+              }
+            }
+          });
+        }
       },
       {
         align: "center",
@@ -92,19 +99,13 @@ export default class ModulePower extends Vue {
     ];
   }
 
-  updateMenuResourcesState(){
-
-  }
-
   /**
    * 获取控件资源通过id
    */
-  getControlResourcesById(id){
-    // 菜单资源数据
-      return this.controlResource.filter(x =>
-        [423].includes(x.resoFiletype) &&
-        x.resoPid === id
-      )
+  getControlResourcesById({ id }) {
+    this.controlResourceData = this.controlResource.filter(
+      x => [423, 424, 425].includes(x.resoFiletype) && x.resoPid === id
+    );
   }
 
   getResourceData() {
@@ -113,17 +114,19 @@ export default class ModulePower extends Vue {
       this.resourceData = data;
 
       // 菜单资源数据
-      this.menuResource = data.filter(x =>
-        [422, 421, 429].includes(x.resoFiletype)
-      ).map(x=>{
-        x.title = x.resoName
-        return x
-      })
+      this.menuResource = data
+        .filter(x => [422, 421, 429].includes(x.resoFiletype))
+        .map(x => {
+          x.title = x.resoName;
+          return x;
+        });
 
       // 菜单资源数据
       this.controlResource = data.filter(x =>
-        [423].includes(x.resoFiletype)
+        [423, 424, 425].includes(x.resoFiletype)
       );
+
+      this.createMenuResourceData();
     });
   }
 
@@ -144,14 +147,7 @@ export default class ModulePower extends Vue {
       return item;
     };
 
-    this.menuResourceData =  parents.map(fun);
-  }
-
-  /**
-   * 获取组件资源数据
-   */
-  getControlResourceData(id) {
-    return this.controlResource.filter(x => x.resoPid === id);
+    this.menuResourceData = parents.map(fun);
   }
 
   /**
@@ -160,32 +156,43 @@ export default class ModulePower extends Vue {
   getResourceDataByRole() {
     Observable.zip(
       this.roleResoService.findRoleResoResourceByRoleId({
-        roleIds:[this.roleId]
+        roleIds: [this.roleId]
       }),
       this.roleResoService.findRoleResoMenuByRoleId({
-        roleIds:[this.roleId]
+        roleIds: [this.roleId]
       })
-    ).subscribe(([controlItems,menuItems])=>{
-      // 筛选资源选中项
-      this.controlResource
-      .forEach((item)=>
-        item.checked = !!controlItems.find(x=>item.id===x.id)
-      )
-
+    ).subscribe(([controlItems, menuItems]) => {
       // 筛选菜单选中项
-      this.menuResource.forEach((item)=>{
-          item.checked = item.resoFiletype === 421 && !!menuItems.find(x=>item.id===x.id)
-          // item.expand = false
-        }
-      )
+      let menuCheckedKeys = this.menuResource
+        .filter(item => menuItems.find(x => item.id === x.id))
+        .map(x => x.id);
 
-      this.createMenuResourceData()
-    })
+      // 筛选资源选中项
+      this.controlResource.forEach(item => {
+        item.checked = !!controlItems.find(x => item.id === x.id);
+      });
+
+      let dataTree = this.$refs["data-tree"] as DataTree;
+      dataTree.setCheckedKeys(menuCheckedKeys);
+    });
   }
 
   mounted() {
     // 获取所有资源数据
     this.getResourceData();
+  }
+
+  public submit(){
+    let dataTree = this.$refs['data-tree'] as DataTree
+    let menuResourceIds = dataTree.getCheckedKeys()
+    let controlResourceIds = this.controlResource.filter(x=>x.checked).map(x=>x.id)
+    console.log([...menuResourceIds,...controlResourceIds])
+    this.roleService.roleAllocateResources({
+      roleId:this.roleId,
+      resourcesId:[...menuResourceIds,...controlResourceIds]
+    }).subscribe(()=>{
+      this.$emit('close')
+    })
   }
 }
 </script>

@@ -8,6 +8,7 @@ import router from './router'
 import bootstrap from '~/core/bootstrap'
 
 import SvgIcon from "~/components/common/svg-icon.vue";
+import {Checkbox} from 'iview'
 
 async function startUp() {
   // 启动主体业务逻辑
@@ -24,9 +25,10 @@ async function startUp() {
     template: '<App/>',
     components: { App }
   })
-
+  // console.log(i-checkbox)
   // 添加全局变量
   Vue.component('svg-icon', SvgIcon)
+  Vue.component('i-checkbox',Checkbox)
 }
 
 // 打印版本发布信息
