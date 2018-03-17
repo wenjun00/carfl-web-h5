@@ -302,9 +302,6 @@ export default class MyApproval extends Page {
   };
   private refuseReason: Array<Object> = []; // 拒单原因
   private refuseDetail: Array<Object> = []; // 拒单细节
-  mounted() {
-    this.getMyOrderList();
-  }
   created() {
     this.columns1 = [
       {
@@ -852,6 +849,9 @@ export default class MyApproval extends Page {
     this.myOrderModel.timeSearch = val;
     this.getMyOrderList();
     this.myOrderModel.timeSearch = "";
+  }
+  activated () {
+    this.getMyOrderList()  
   }
 }
 </script>
