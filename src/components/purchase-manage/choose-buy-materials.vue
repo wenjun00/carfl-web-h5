@@ -348,6 +348,9 @@
       manageCost: '',
       insuranceMoney: 0,
       purchaseMoney: 0,
+      manageCostPercent: '',
+      depositPercent: '',
+      paymentScale: '',
       licenseMoney: 0,
       GpsMoney: 0
     };
@@ -358,7 +361,6 @@
       intentionPeriods: [{ required: true, message: '请输入意向期限', trigger: 'blur', type:'number' }],
       province: [{ required: true, message: '请选择申请省份', trigger: 'change', type: 'number' }],
       city: [{ required: true, message: '请选择申请城市', trigger: 'change', type: 'number'}],
-      companyId: [{ required: true, message: '请选择申请公司', trigger: 'change', type: 'number' }],
       orderServiceList: [{ required: true, message: '请选择自缴费用', trigger: 'change', type: 'array' }],
       financingUse: [{ required: true, message: '请输入融资租赁用途', trigger: 'blur' }],
       financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
@@ -395,7 +397,7 @@
      */
     getFinanceTotalMoney() {
       if(this.chooseBuyModel.vehicleAmount&&this.chooseBuyModel.finalprincipal&&this.chooseBuyModel.initialPayment){
-        this.chooseBuyModel.financeTotalMoney = Number(this.chooseBuyModel.vehicleAmount) - Number(this.chooseBuyModel.finalprincipal) - Number(this.chooseBuyModel.initialPayment)
+        this.chooseBuyModel.financeTotalMoney = (Number(this.chooseBuyModel.vehicleAmount) - Number(this.chooseBuyModel.finalprincipal) - Number(this.chooseBuyModel.initialPayment)).toFixed(2)
       } else {
         this.chooseBuyModel.financeTotalMoney = ''
       }
@@ -403,7 +405,7 @@
       this.chooseBuyModel.manageData = ''
       this.chooseBuyModel.moneyPay = ''
       if(this.chooseBuyModel.financeTotalMoney) {
-        this.chooseBuyModel.moneyPay = this.chooseBuyModel.financeTotalMoney * (1 + Number(this.DataSet.productRate) * 0.01) / Number(this.$dict.getDictName(this.DataSet.periods))
+        this.chooseBuyModel.moneyPay = (this.chooseBuyModel.financeTotalMoney * (1 + Number(this.DataSet.productRate) * 0.01) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
       }
     }
     /**
@@ -412,7 +414,7 @@
     choosemanageCost() {
       // 管理费=融资总额*管理费率
       if(this.chooseBuyModel.financeTotalMoney&&this.chooseBuyModel.manageData){
-        this.chooseBuyModel.manageCost = Number(this.chooseBuyModel.financeTotalMoney) * (Number(this.chooseBuyModel.manageData) * 0.01)
+        this.chooseBuyModel.manageCost = (Number(this.chooseBuyModel.financeTotalMoney) * (Number(this.chooseBuyModel.manageData) * 0.01)).toFixed(2)
       } else {
         this.chooseBuyModel.manageCost = ''
       }
@@ -444,7 +446,7 @@
     chooseinitialPayment() {
       // 首付金额=车辆参考总价*首付比例
       if(this.chooseBuyModel.Payment !== '' && this.chooseBuyModel.vehicleAmount){
-        this.chooseBuyModel.initialPayment = (Number(this.chooseBuyModel.vehicleAmount)) * (Number(this.chooseBuyModel.Payment) * 0.01)
+        this.chooseBuyModel.initialPayment = ((Number(this.chooseBuyModel.vehicleAmount)) * (Number(this.chooseBuyModel.Payment) * 0.01)).toFixed(2)
       } else {
         this.chooseBuyModel.initialPayment = ''
       }
@@ -456,7 +458,7 @@
     choosedeposit() {
       // 保证金金额=融资总额*保证金比例
       if(this.chooseBuyModel.deposit !== '' && this.chooseBuyModel.financeTotalMoney){
-        this.chooseBuyModel.depositCash = Number(this.chooseBuyModel.financeTotalMoney) * Number(this.chooseBuyModel.deposit) * 0.01
+        this.chooseBuyModel.depositCash = (Number(this.chooseBuyModel.financeTotalMoney) * Number(this.chooseBuyModel.deposit) * 0.01).toFixed(2)
       } else {
         this.chooseBuyModel.depositCash = ''
       }
@@ -467,7 +469,7 @@
      */
     choosefinalCash() {
       // 尾付总额（尾款本金+尾付利息）
-      this.chooseBuyModel.finalCash = Number(this.chooseBuyModel.finalprincipal) * (1 + Number(this.DataSet.finalCash) * 0.01)
+      this.chooseBuyModel.finalCash = (Number(this.chooseBuyModel.finalprincipal) * (1 + Number(this.DataSet.finalCash) * 0.01)).toFixed(2)
     }
     /**
      * 添加车辆信息

@@ -55,7 +55,7 @@
                 <div class="boxContainerTitle">
                   <div style="height:48px;display:inline-block;position:relative;bottom:2px;font-size:12px;margin-left:10px;">No.{{item.id}}</div>
                   <div style="position:relative;left:63px;display:inline-block">
-                    <span style="font-size:18px;font-weight:bold;">{{item.periods}}</span>
+                    <span style="font-size:18px;font-weight:bold;">{{$dict.getDictName(item.periods)}}</span>
                     <span>月/期</span>
                   </div>
                   <div :class="[item.isPublish===361 ?'pulishCss':'Publish']">

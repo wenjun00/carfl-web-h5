@@ -296,9 +296,9 @@
           }
         },
         {
-          title: "销售单号",
+          title: "订单号",
           align: "center",
-          width: 100,
+          width: 150,
           render: (h, params) => {
             return h("div", [
               h(
@@ -406,7 +406,14 @@
           align: "center",
           title: "产品期数",
           key: "periods",
-          width: 100
+          width: 100,
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.periods));
+          }
         },
         {
           align: "center",

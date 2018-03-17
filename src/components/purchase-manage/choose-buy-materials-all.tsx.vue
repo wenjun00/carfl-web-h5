@@ -110,12 +110,6 @@
         message: '请选择申请城市',
         trigger: 'change',
         type: 'number',
-      }],
-      companyId: [{
-        required: true,
-        message: '请选择所属公司',
-        trigger: 'change',
-        type: 'number',
       }]
     };
     @Prop()

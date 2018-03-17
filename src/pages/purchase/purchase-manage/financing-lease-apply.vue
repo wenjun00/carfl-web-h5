@@ -353,21 +353,18 @@
       choosebuymaterials.addcarData.forEach(v=>delete v.id)
       let addcarDatas = Array.from(new Set(this.addcarData))
       console.log(uploadTheMaterial.dataList,'uploadTheMaterial.dataList')
-      for (let material of uploadTheMaterial.dataList) {
-        this.PersonalData.push({
+      this.PersonalData = uploadTheMaterial.dataList.map(material=>{
+        return {
           materialType: uploadTheMaterial.model1, // 客户素材类型
           uploadName: material.name, // 资料上传名称
-          id: material.id,
+          // id: material.id,
           materialUrl:material.url,
-        })
-      }
+        }
+      })
       let resourceType = Array.from(new Set(customerOrigin.OriginModel.resourceType))
-      //   customerJobMessage.job.accessCompanyTime = FilterService.dateFormat(customerJobMessage.job.accessCompanyTime,
-      //     'yyyy-MM')
-      //   customerMaterials.customerMaterialsForm.birthTime = FilterService.dateFormat(customerMaterials.customerMaterialsForm
-      //     .birthTime,
-      //     'yyyy-MM-dd')
       let orderServiceList = Array.from(new Set(choosebuymaterials.chooseBuyModel.orderServiceList))
+      console.log(choosebuymaterials.chooseBuyModel.depositPercent, choosebuymaterials.chooseBuyModel,'99')
+      delete customerMaterials.customerMaterialsForm.personalDatas
       let savesubmitDataset: any = {
         orderStatus: this.orderStatus,
         idCard: this.customerModel.idCard,
@@ -385,9 +382,9 @@
         intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods, // 意向期限
         rentPayable: Number(choosebuymaterials.chooseBuyModel.rentPayable), // 租金支付
         intentionPaymentRatio: Number(choosebuymaterials.chooseBuyModel.intentionPaymentRatio), // 意向首付比例
-        manageCostPercent: choosebuymaterials.chooseBuyModel.manageCostPercent, // 管理比例
-        depositPercent: choosebuymaterials.chooseBuyModel.depositPercent, // 保证金比例
-        paymentScale: choosebuymaterials.chooseBuyModel.paymentScale, // 首付比例
+        manageCostPercent: choosebuymaterials.chooseBuyModel.manageData||0, // 管理比例
+        depositPercent: choosebuymaterials.chooseBuyModel.deposit||0, // 保证金比例
+        paymentScale: choosebuymaterials.chooseBuyModel.Payment||0, // 首付比例
         // orderCar: choosebuymaterials.addcarData, // 添加车辆信息
         // 产品信息
         productId: choosebuymaterials.DataSet.productId, // 产品id
@@ -397,10 +394,10 @@
         payWay: choosebuymaterials.chooseBuyModel.payWay, // 还款方式
         vehicleAmount: choosebuymaterials.chooseBuyModel.vehicleAmount, // 车辆参考总价
         financingAmount: choosebuymaterials.chooseBuyModel.financeTotalMoney, // 融资总额
-        initialPayment: choosebuymaterials.chooseBuyModel.initialPayment, // 首付金额
-        depositCash: choosebuymaterials.chooseBuyModel.depositCash, // 保证金金额
+        initialPayment: choosebuymaterials.chooseBuyModel.initialPayment||0, // 首付金额
+        depositCash: choosebuymaterials.chooseBuyModel.depositCash||0, // 保证金金额
         finalCash: choosebuymaterials.chooseBuyModel.finalCash, // 尾付金额
-        manageCost: choosebuymaterials.chooseBuyModel.manageCost, // 管理费
+        manageCost: choosebuymaterials.chooseBuyModel.manageCost||0, // 管理费
         insuranceExpenses: choosebuymaterials.chooseBuyModel.insuranceMoney, // 保险费
         purchaseTax: choosebuymaterials.chooseBuyModel.purchaseMoney, // 购置费
         installLicenseFee: choosebuymaterials.chooseBuyModel.licenseMoney, // 上牌费
@@ -420,7 +417,7 @@
         personalResourceIntroduce: customerOrigin.customerOriginModel, // 通过介绍
         resourceTypes: resourceType, // 通过宣传
         // 上传素材
-        personalDatas: this.PersonalData,
+        personalDatas: this.PersonalData
       };
       this.productOrderService.saveFinanceApplyInfo(savesubmitDataset).subscribe(data => {
         this.$Message.success('保存成功！');
@@ -481,18 +478,6 @@
                       } else {
                         this.orderStatus = 304;
                       }
-                      //   customerMaterials.customerMaterialsForm.idCardAddress = CityService.getCityName(customerMaterials.customerMaterialsForm
-                      //       .province) +
-                      //     CityService.getCityName(customerMaterials.customerMaterialsForm.city) + CityService.getCityName(
-                      //       customerMaterials.customerMaterialsForm.idCardAddress)
-                      //   customerMaterials.customerMaterialsForm.localHomeAddr = CityService.getCityName(customerMaterials.customerMaterialsForm
-                      //       .province1) +
-                      //     CityService.getCityName(customerMaterials.customerMaterialsForm.city1) + CityService.getCityName(
-                      //       customerMaterials.customerMaterialsForm.localHomeAddr)
-                      //   customerMaterials.customerMaterialsForm.cityOwnhouseAddress = CityService.getCityName(customerMaterials.customerMaterialsForm
-                      //       .province2) +
-                      //     CityService.getCityName(customerMaterials.customerMaterialsForm.city2) + CityService.getCityName(
-                      //       customerMaterials.customerMaterialsForm.cityOwnhouseAddress)
                       for (let item of choosebuymaterials.addcarData) {
                         this.addcarData.push({
                           //   id: item.id,
@@ -513,14 +498,14 @@
                           v.vehicleEmissions = v.carEmissions
                       })
                       let addcarDatas = Array.from(new Set(this.addcarData))
-                      for (let material of uploadTheMaterial.dataList) {
-                        this.PersonalData.push({
+                      this.PersonalData = uploadTheMaterial.dataList.map(material=>{
+                        return {
                           materialType: uploadTheMaterial.model1, // 客户素材类型
                           uploadName: material.name, // 资料上传名称
+                          // id: material.id,
                           materialUrl:material.url,
-                          //   id: material.response.id,
-                        })
-                      }
+                        }
+                      })
                       if (choosebuymaterials.addcarData.length === 0) {
                         this.$Message.warning('请添加车辆信息');
                         return
@@ -547,6 +532,7 @@
                       choosebuymaterials.addcarData.forEach(v=>delete v.id)
                       console.log(choosebuymaterials.addcarData,'choosebuymaterials.addcarData')
                       let orderServiceList = Array.from(new Set(choosebuymaterials.chooseBuyModel.orderServiceList))
+                      delete customerMaterials.customerMaterialsForm.personalDatas
                       let savesubmitDataset: any = {
                         orderStatus: this.orderStatus,
                         idCard: this.customerModel.idCard,
@@ -564,9 +550,9 @@
                         intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods, // 意向期限
                         rentPayable: Number(choosebuymaterials.chooseBuyModel.rentPayable), // 租金支付
                         finalPayment: choosebuymaterials.chooseBuyModel.finalPayment, // 尾付本金
-                        manageCostPercent: choosebuymaterials.chooseBuyModel.manageCostPercent, // 管理比例
-                        depositPercent: choosebuymaterials.chooseBuyModel.depositPercent, // 保证金比例
-                        paymentScale: choosebuymaterials.chooseBuyModel.paymentScale, // 首付比例
+                        manageCostPercent: choosebuymaterials.chooseBuyModel.manageData||0, // 管理比例
+                        depositPercent: choosebuymaterials.chooseBuyModel.deposit||0, // 保证金比例
+                        paymentScale: choosebuymaterials.chooseBuyModel.Payment||0, // 首付比例
                         intentionPaymentRatio: Number(choosebuymaterials.chooseBuyModel.intentionPaymentRatio), // 意向首付比例
                         // orderCar: choosebuymaterials.addcarData, // 添加车辆信息
                         // 产品信息
@@ -577,10 +563,10 @@
                         payWay: choosebuymaterials.chooseBuyModel.payWay, // 还款方式
                         vehicleAmount: choosebuymaterials.chooseBuyModel.vehicleAmount, // 车辆参考总价
                         financingAmount: choosebuymaterials.chooseBuyModel.financeTotalMoney, // 融资总额
-                        initialPayment: choosebuymaterials.chooseBuyModel.initialPayment, // 首付金额
-                        depositCash: choosebuymaterials.chooseBuyModel.depositCash, // 保证金金额
+                        initialPayment: choosebuymaterials.chooseBuyModel.initialPayment||0, // 首付金额
+                        depositCash: choosebuymaterials.chooseBuyModel.depositCash||0, // 保证金金额
                         finalCash: choosebuymaterials.chooseBuyModel.finalCash, // 尾付金额
-                        manageCost: choosebuymaterials.chooseBuyModel.manageCost, // 管理费
+                        manageCost: choosebuymaterials.chooseBuyModel.manageCost||0, // 管理费
                         insuranceExpenses: choosebuymaterials.chooseBuyModel.insuranceMoney, // 保险费
                         purchaseTax: choosebuymaterials.chooseBuyModel.purchaseMoney, // 购置费
                         installLicenseFee: choosebuymaterials.chooseBuyModel.licenseMoney, // 上牌费
@@ -600,7 +586,7 @@
                         personalResourceIntroduce: customerOrigin.customerOriginModel, // 通过介绍
                         resourceTypes: resourceType, // 通过宣传
                         // 上传素材
-                        personalDatas: this.PersonalData,
+                        personalDatas: this.PersonalData
                       };
                       this.productOrderService.saveFinanceApplyInfo(savesubmitDataset).subscribe(data => {
                         this.$Message.success('保存成功！');
