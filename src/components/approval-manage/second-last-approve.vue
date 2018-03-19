@@ -42,7 +42,7 @@
         <div>{{manageCost === undefined?0:manageCost}}</div>
       </data-grid-item>
       <data-grid-item label="融资期数" :span="6">
-        <div>{{periods === undefined?0:periods}}</div>
+        <div>{{periods?0:$dict.getDictName(periods)}}</div>
       </data-grid-item>
       <data-grid-item label="月供金额" :span="6">
         <div>{{monthlySupply === undefined?0:monthlySupply}}</div>

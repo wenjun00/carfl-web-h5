@@ -61,7 +61,7 @@
           <i-col span="12">
             <i-form-item label="意向期限" prop="intentionPeriods">
             <i-select v-model="chooseBuyModel.intentionPeriods">
-              <i-option v-for="{value,label} in $dict.getDictData('0314')" :key="value" :label="label" :value="value"></i-option>
+              <i-option v-for="{value,label} in $dict.getDictData('0435')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
             </i-form-item>
           </i-col>
