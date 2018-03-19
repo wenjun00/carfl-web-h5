@@ -43,6 +43,7 @@
   import Component from 'vue-class-component';
   import SvgIcon from '~/components/common/svg-icon.vue';
   import AddProductPackage from '~/components/base-data/add-product-package.vue';
+  import { CommonService } from "~/utils/common.service";
   import {
     Dependencies
   } from '~/core/decorator';
@@ -274,6 +275,7 @@
         })
         .subscribe(
           val => {
+            CommonService.downloadFile(val.url,"文件下载")
             this.$Message.success('下载成功！');
           },
           ({

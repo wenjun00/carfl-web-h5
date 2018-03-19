@@ -125,7 +125,7 @@ export default class Register extends Vue {
   checkUserPhone(){
     if(!((/^1(3|4|5|7|8)\d{9}$/).test(this.registerModel.userPhone.toString()))){
       this.$Message.error("手机号码为11位且不能为汉字以及特殊字符,请重新输入！");
-      // this.registerModel.userPhone = "";
+      this.registerModel.userPhone = "";
       return false;
     }
   }
@@ -144,6 +144,8 @@ export default class Register extends Vue {
         this.$Message.error("两次密码输入不一致，请重新输入!");
         return false;
       }
+      this.registerModel.userPassword = md5(this.registerModel.userPassword);
+      this.registerModel.confirmPwd = md5(this.registerModel.confirmPwd);
       this.userService.userRegister({
         userUsername: this.registerModel.userUsername,
         userRealname: this.registerModel.userRealname,
