@@ -91,6 +91,7 @@
       if(StorageService.getItem('account') !== null){
         this.loginModel.username = StorageService.getItem('account').username
         this.loginModel.password = StorageService.getItem('account').password
+        this.loginModel.remember = true
       }
     }
     created() {

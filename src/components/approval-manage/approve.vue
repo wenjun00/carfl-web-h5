@@ -19,8 +19,8 @@
         </data-grid-item>
         <data-grid-item label="意向融资金额" :span="3">{{orderInfo.intentionFinancingAmount}}</data-grid-item>
         <data-grid-item label="租金支付" :span="3">{{orderInfo.rentPayable}}</data-grid-item>
-        <data-grid-item label="意向期限" :span="3">{{orderInfo.intentionPeriods}}</data-grid-item>
-        <data-grid-item label="意向首付比例" :span="3">{{orderInfo.intentionPaymentRatio}}</data-grid-item>
+        <data-grid-item label="意向期限" :span="3">{{ orderInfo.intentionPeriods?$dict.getDictName(orderInfo.intentionPeriods):''}}</data-grid-item>
+        <data-grid-item label="意向首付比例" :span="3">{{orderInfo.intentionPaymentRatio?orderInfo.intentionPaymentRatio+'%':''}}</data-grid-item>
       </data-grid>
     </i-row>
     <!--车辆信息-->
@@ -51,7 +51,7 @@
           <td bgColor="#F5F5F5">产品名称</td>
           <td>{{orderInfo.product?orderInfo.product.name:''}}</td>
           <td bgColor="#F5F5F5">产品期数</td>
-          <td>{{orderInfo.periods === undefined?0:orderInfo.periods}}</td>
+          <td>{{orderInfo.periods === undefined?0:$dict.getDictName(orderInfo.periods)}}</td>
           <td bgColor="#F5F5F5">产品利率</td>
           <td>{{orderInfo.productRate === undefined?0:orderInfo.productRate+'%'}}</td>
         </tr>
@@ -334,7 +334,15 @@
       </div>
       <i-row style="margin-top:10px">
         <i-col :span="24">
-          <img v-for="item in materialInfo" :key="item.id" style="height:200px;width:200px;border:1px solid #C2C2C2;margin-left:10px" :src="item.materialUrl">
+          <div class="outFalg" v-for="item in materialInfoImg" :key="item.id" v-if="materialInfoImg.length > 0">
+            <img  :src="item.materialUrl" class="imgFlag">
+            <div class="blackFlag"><i-button type="text" icon="arrow-down-a" @click="download(item)" class="buttonFlag"></i-button></div>
+          </div>
+        </i-col>
+      </i-row>
+      <i-row style="margin-top:10px">
+        <i-col :span="24">
+          <i-button type="text" v-for="item in materialInfoOther" :key="item.id" style="margin-left:10px;font-size:16px;" v-text="item.uploadName" @click="upLoadFile(item)" v-if="materialInfoOther.length > 0"></i-button>
         </i-col>
       </i-row>
     </i-row>
@@ -349,6 +357,7 @@ import { ProductOrderService } from "~/services/manage-service/product-order.ser
 import { Prop } from "vue-property-decorator";
 import { Action } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
+import { CommonService } from "~/utils/common.service";
 @Component({
   components: {
     DataGrid,
@@ -371,8 +380,12 @@ export default class Approve extends Vue {
   private personalJobInfo: any = {}; // 职业信息
   private personalResourcePublicity: any = {}; // 客户来源相关信息
   private personalResourceIntroduce: any = {}; // 客户来源介绍相关信息
-  private materialInfo: any = {}; // 素材资料相关信息
+  private materialInfoImg: any = []; // 素材资料相关图片信息
+  private materialInfoOther:any = [];//素材资料相关其他信息
   private byAdvertise: Array<any> = []; // 客户来源通过宣传
+  private ImgArray: Array<any> = [];
+  private OtherArray: Array<any> = [];
+  private NewArray: Array<any> = [];
   @Prop() person;
   @Action select;
 
@@ -409,7 +422,18 @@ export default class Approve extends Vue {
               v => v.resourceType
             );
           }
-          this.materialInfo = this.personal.personalDatas; // 素材相关信息
+          this.personal.personalDatas.forEach( (value)=>{
+           this.NewArray.push(value.uploadName)
+          })
+          for(let i in this.NewArray){
+            if(this.NewArray[i].search('jpg'|| 'png'|| 'JPG' || 'PNG') !== -1){
+              this.ImgArray.push (this.NewArray[i])
+            }else{
+              this.OtherArray.push (this.NewArray[i])
+            }
+          }
+          this.materialInfoImg = this.personal.personalDatas.filter(x=>this.ImgArray.includes(x.uploadName))
+          this.materialInfoOther = this.personal.personalDatas.filter(x=>this.OtherArray.includes(x.uploadName))
           this.immediateContacts = this.contactsInfo.filter(
             v => v.relation === 56 || v.relation === 57 || v.relation === 58
           );
@@ -455,6 +479,12 @@ export default class Approve extends Vue {
     approveData.id = this.orderInfo.id; // 管理费率
     return approveData;
   }
+  upLoadFile(item){
+    CommonService.downloadFile(item.materialUrl, "资料文件下载");
+  }
+  download(item){
+    CommonService.downloadFile(item.materialUrl, "资料图片下载");
+  }
 }
 </script>
 
@@ -465,4 +495,36 @@ export default class Approve extends Vue {
     padding: 5px;
   }
 }
+  .outFalg{
+    height:200px;
+    width:200px;
+    margin-left:10px;
+    position: relative;
+    border:1px solid #C2C2C2;
+    float: left;
+  }
+  .imgFlag{
+    height:100%;
+    width:100%;
+  }
+  .blackFlag{
+    position: absolute;
+    top:0;
+    left:0;
+    width:200px;
+    height:30px;
+    background: aquamarine;
+    opacity: .4;
+    display: none;
+  }
+  .outFalg:hover .blackFlag{
+    display: block;
+  }
+  .buttonFlag{
+    position: absolute;
+    top:-5px;
+    left:150px;
+    display: block;
+    font-size:20px;
+  }
 </style>

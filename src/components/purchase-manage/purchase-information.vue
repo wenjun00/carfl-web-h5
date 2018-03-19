@@ -18,8 +18,8 @@
         </data-grid-item>
         <data-grid-item label="意向融资金额" :span="3">{{orderInfo.intentionFinancingAmount}}</data-grid-item>
         <data-grid-item label="租金支付" :span="3">{{orderInfo.rentPayable}}</data-grid-item>
-        <data-grid-item label="意向期限" :span="3">{{orderInfo.intentionPeriods}}</data-grid-item>
-        <data-grid-item label="意向首付比例" :span="3">{{orderInfo.intentionPaymentRatio}}</data-grid-item>
+        <data-grid-item label="意向期限" :span="3">{{ orderInfo.intentionPeriods?$dict.getDictName(orderInfo.intentionPeriods):''}}</data-grid-item>
+        <data-grid-item label="意向首付比例" :span="3">{{orderInfo.intentionPaymentRatio?orderInfo.intentionPaymentRatio+'%':''}}</data-grid-item>
       </data-grid>
     </i-row>
     <!-- 车辆信息 -->
@@ -50,7 +50,7 @@
           <td bgColor="#F5F5F5">产品名称</td>
           <td>{{orderInfo.product?orderInfo.product.name:''}}</td>
           <td bgColor="#F5F5F5">产品期数</td>
-          <td>{{orderInfo.periods === undefined?0:orderInfo.periods}}</td>
+          <td>{{orderInfo.periods === undefined?0:$dict.getDictName(orderInfo.periods)}}</td>
           <td bgColor="#F5F5F5">产品利率</td>
           <td>{{orderInfo.productRate === undefined?0:orderInfo.productRate+'%'}}</td>
         </tr>
@@ -315,14 +315,22 @@
     </i-row>
 
     <!--素材资料-->
-    <i-row style="margin-top:20px;" v-if="materialInfo.length">
+    <i-row style="margin-top:20px;">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
         <a name="sucaiziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">素材资料</a>
       </div>
       <i-row style="margin-top:10px">
         <i-col :span="24">
-          <img v-for="item in materialInfo" :key="item.id" style="height:200px;width:200px;border:1px solid #C2C2C2;margin-left:10px" :src="item.materialUrl">
+          <div class="outFalg" v-for="item in materialInfoImg" :key="item.id" v-if="materialInfoImg.length ">
+            <img  :src="item.materialUrl" class="imgFlag">
+            <div class="blackFlag"><i-button type="text" icon="arrow-down-a" @click="download(item)" class="buttonFlag"></i-button></div>
+          </div>
+        </i-col>
+      </i-row>
+      <i-row style="margin-top:10px">
+        <i-col :span="24">
+          <i-button type="text" v-for="item in materialInfoOther" :key="item.id" style="margin-left:10px;font-size:16px;" v-text="item.uploadName" @click="upLoadFile(item)" v-if="materialInfoOther.length"></i-button>
         </i-col>
       </i-row>
     </i-row>
@@ -335,7 +343,7 @@
         <a href="#zhiyexinxi " class="quick-link " :class="{color:getClassName.a5} ">职业信息</a>
         <a href="#lianxirenxinxi " class="quick-link " :class="{color:getClassName.a6} ">联系人信息</a>
         <a href="#kehulaiyuan " class="quick-link " :class="{color:getClassName.a7} ">客户来源</a>
-        <a href="#sucaiziliao " v-if="materialInfo.length" class="quick-link " :class="{color:getClassName.a8} ">素材资料</a>
+        <a href="#sucaiziliao "  class="quick-link " :class="{color:getClassName.a8} ">素材资料</a>
       </div>
     </div>
     <!--<Slider v-model="sliderStep " :step="1 " show-stops :min="2 " :max="7 " style="transform: rotate(90deg);position: absolute;top: 242px;right: 15px;width:280px "></Slider>-->
@@ -350,6 +358,7 @@ import { Dependencies } from "~/core/decorator";
 import { Prop } from "vue-property-decorator";
 import { Action } from "vuex-class";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
+import { CommonService } from "~/utils/common.service";
 @Component({
   components: {
     DataGrid,
@@ -382,8 +391,12 @@ export default class PurchaseInformation extends Vue {
   private personalJobInfo: any = {}; // 职业信息
   private personalResourcePublicity: any = {}; // 客户来源相关信息
   private personalResourceIntroduce: any = {}; // 客户来源介绍相关信息
-  private materialInfo: Array<any> = []; // 素材资料相关信息
   private byAdvertise: Array<any> = []; // 客户来源通过宣传
+  private ImgArray: Array<any> = [];
+  private OtherArray: Array<any> = [];
+  private NewArray: Array<any> = [];
+  private materialInfoImg: any = []; // 素材资料相关图片信息
+  private materialInfoOther:any = [];//素材资料相关其他信息
 
   @Prop({
     default: 0
@@ -426,7 +439,6 @@ export default class PurchaseInformation extends Vue {
         orderNumber: row.orderNumber
       })
       .subscribe(data => {
-        console.log(data, "data");
         let allData = JSON.stringify(data);
         this.orderInfo = JSON.parse(allData);
         this.personal = this.orderInfo.personal; // 个人资料
@@ -450,9 +462,18 @@ export default class PurchaseInformation extends Vue {
             v => v.resourceType
           );
         }
-        if (this.personal.personalDatas) {
-          this.materialInfo = this.personal.personalDatas; // 素材相关信息
+        this.personal.personalDatas.forEach( (value)=>{
+          this.NewArray.push(value.uploadName)
+        })
+        for(let i in this.NewArray){
+          if(this.NewArray[i].search('jpg'|| 'png'|| 'JPG' || 'PNG') !== -1){
+            this.ImgArray.push (this.NewArray[i])
+          }else{
+            this.OtherArray.push (this.NewArray[i])
+          }
         }
+        this.materialInfoImg = this.personal.personalDatas.filter(x=>this.ImgArray.includes(x.uploadName))
+        this.materialInfoOther = this.personal.personalDatas.filter(x=>this.OtherArray.includes(x.uploadName))
         // console.log(this.orderInfo.personalJob, 1234)
         this.immediateContacts = this.contactsInfo.filter(
           v => v.relation === 56 || v.relation === 57 || v.relation === 58
@@ -467,6 +488,12 @@ export default class PurchaseInformation extends Vue {
             v.relation === 62
         );
       });
+  }
+  upLoadFile(item){
+    CommonService.downloadFile(item.materialUrl, "资料文件下载");
+  }
+  download(item){
+    CommonService.downloadFile(item.materialUrl, "资料图片下载");
   }
 }
 </script>
@@ -497,5 +524,37 @@ td {
   background-repeat: no-repeat;
   position: relative;
   left: 0px;
+}
+.outFalg{
+  height:200px;
+  width:200px;
+  margin-left:10px;
+  position: relative;
+  border:1px solid #C2C2C2;
+  float: left;
+}
+.imgFlag{
+  height:100%;
+  width:100%;
+}
+.blackFlag{
+  position: absolute;
+  top:0;
+  left:0;
+  width:200px;
+  height:30px;
+  background: aquamarine;
+  opacity: .4;
+  display: none;
+}
+.outFalg:hover .blackFlag{
+  display: block;
+}
+.buttonFlag{
+  position: absolute;
+  top:-5px;
+  left:150px;
+  display: block;
+  font-size:20px;
 }
 </style>

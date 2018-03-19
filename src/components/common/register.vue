@@ -144,9 +144,14 @@ export default class Register extends Vue {
         this.$Message.error("两次密码输入不一致，请重新输入!");
         return false;
       }
-      this.registerModel.userPassword = md5(this.registerModel.userPassword);
-      this.registerModel.confirmPwd = md5(this.registerModel.confirmPwd);
-      this.userService.userRegister(this.registerModel).subscribe(
+      this.userService.userRegister({
+        userUsername: this.registerModel.userUsername,
+        userRealname: this.registerModel.userRealname,
+        userPassword: md5(this.registerModel.confirmPwd),
+        confirmPwd:  md5(this.registerModel.confirmPwd),
+        userPhone: this.registerModel.userPhone,
+        company: this.registerModel.company
+      }).subscribe(
         data => {
           this.$Message.success("注册成功!");
           this.$emit("close");
