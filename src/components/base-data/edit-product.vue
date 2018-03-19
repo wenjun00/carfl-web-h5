@@ -340,7 +340,7 @@ export default class AddProduct extends Vue {
 			],
 			stagingPeriods: [
 				{ required: true, message: '请输入管理费分期期数', trigger: 'blur' },
-				{ pattern: /^[\d]+$/, message: '请输入数字', trigger: 'blur' }                                        
+				{ pattern: /^[\d]+$/, message: '请输入整数', trigger: 'blur' }                                        
 			],
 			creditProtectDays: [
 				{ required: true, message: '请输入征信保护天数', trigger: 'blur' },

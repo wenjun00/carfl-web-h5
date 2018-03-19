@@ -65,7 +65,7 @@
         </i-form>
         <div slot="footer">
           <i-button @click="cancelAddData">取消</i-button>
-          <i-button class="blueButton" @click="submitAddData">添加</i-button>
+          <i-button class="blueButton" @click="submitAddData">确定</i-button>
         </div>
       </i-modal>
     </template>
