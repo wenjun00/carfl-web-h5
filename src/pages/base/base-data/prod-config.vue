@@ -631,6 +631,7 @@
     /**
      * 新增提交按钮
      */
+
     submiteButton() {
       let periodsModal: any = this.$refs['add-periods-ref'];
       periodsModal.confirmPeriods();
@@ -705,7 +706,7 @@
           this.$Message.error('温馨提示：不能在产品中添加产品系列！');
         }
       } else {
-        this.addSericeModal = true;        
+        this.addSericeModal = true;
       }
     }
     /**
@@ -736,7 +737,7 @@
       this.personalMaterialService
         .select(obj).subscribe(data => {
           this.$Message.success('操作成功！')
-          this.customerFodderConfigModal = false      
+          this.customerFodderConfigModal = false
         }, ({
           msg
         }) => {
@@ -788,36 +789,36 @@
   .prod-config {
     // height: 100%;
   }
-  
+
   .maintainCss {
     background: #e4f4fa;
   }
-  
+
   .boxContainerContent {
     width: 300px;
     height: 370px;
     border-left: 1px solid rgb(221, 221, 222);
     border-right: 1px solid rgb(221, 221, 222);
   }
-  
+
   .boxContainerContent .itemContainer:first-child {
     padding-top: 35px;
   }
-  
+
   .itemContainer {
     margin: 0 15px 15px 15px;
     display: flex;
     justify-content: space-between;
   }
-  
+
   .itemName {
     color: #999999;
   }
-  
+
   .item {
     margin-left: 20px;
   }
-  
+
   .addPeriods {
     width: 300px;
     height: 450px;
@@ -829,14 +830,14 @@
     justify-content: center;
     margin-right: 20px;
   }
-  
+
   .addPeriods>div {
     display: flex;
     align-items: center;
     flex-direction: column;
     color: rgb(169, 168, 170);
   }
-  
+
   .pulishCss {
     background: url('./../../../../static/images/common/no-publish.png') no-repeat;
     width: 90px;
@@ -846,7 +847,7 @@
     bottom: 39px;
     z-index: 999;
   }
-  
+
   .Publish {
     background: url('./../../../../static/images/common/publish.png') no-repeat;
     width: 90px;
@@ -856,7 +857,7 @@
     bottom: 39px;
     z-index: 999;
   }
-  
+
   .PublishContent {
     width: 300px;
     height: 50px;
@@ -869,13 +870,13 @@
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
   }
-  
+
   .PublishButton {
     line-height: 50px;
     font-size: 14px;
     color: rgb(104, 138, 188);
   }
-  
+
   .boxContainerTitle {
     width: 300px;
     height: 50px;
@@ -886,20 +887,20 @@
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
   }
-  
+
   .ivu-tree-empty {
     height: 50px;
     line-height: 50px;
     text-indent: 14px;
   }
-  
+
   .periods {
     .ivu-modal-body {
       height: 600px !important;
       overflow: auto !important;
     }
   }
-  
+
   .empty_text {
     height: 400px;
     line-height: 400px;

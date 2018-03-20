@@ -110,7 +110,7 @@ export default class DataDict extends Page {
   private checkModal: Boolean = false;
   private id: any = "";
   private rulesAddDate: any = {};
-  private rulesAddDataType: any = {};
+  private rulesAddDataType: any = {};;
   private dataModal: Boolean = false;
   private typeCodes: any = 0;
   private addModel: any = {
@@ -176,8 +176,8 @@ export default class DataDict extends Page {
                 on: {
                   click: () => {
                     this.checkModal = true;
-                    this.addModel.name = row.name;
                     this.addNameModal = true;
+                    this.addModel.name = row.name;
                     this.id = row.id;
                   }
                 }
@@ -232,6 +232,10 @@ export default class DataDict extends Page {
    * 确定
    */
   confirmmadd() {
+    if(this.addModel.name === ''){
+      this.$Message.warning("请输入名称！");
+      return
+    }
     if (this.checkModal) {
       this.addModel.id = this.id;
     } else {
@@ -241,7 +245,6 @@ export default class DataDict extends Page {
         this.addModel.sort = 0;
       }
     }
-    console.log(this.dictAguments, 998989);
     this.addModel.typeCode = this.dictAguments.typeCode;
     this.dataDictService.createOrModifyDataDict(this.addModel).subscribe(
       val => {

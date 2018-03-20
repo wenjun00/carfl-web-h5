@@ -144,8 +144,8 @@
     </data-grid>
     <div style="margin-right:10px;display:inline-block" class="addPeriodsItem">状态</div>
     <i-radio-group v-model="productDetailView.isPublish">
-      <i-radio :label="361">未发布</i-radio>
-      <i-radio :label="360">已发布</i-radio> 
+      <i-radio :label="361" disabled>未发布</i-radio>
+      <i-radio :label="360" disabled>已发布</i-radio>
     </i-radio-group>
   </section>
 </template>

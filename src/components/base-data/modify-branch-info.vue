@@ -3,32 +3,32 @@
   <section class="component modify-branch-info">
     <i-form ref="branch-form" :model="formItemParent" :rules="formRules" :label-width="85" label-position="left">
       <i-form-item label="公司简称：" prop="companyChinaname">
-        <i-input v-model="formItemParent.companyChinaname" placeholder="请输入公司简称"></i-input>
+        <i-input v-model="formItemParent.companyChinaname" placeholder="请输入公司简称" :maxlength="20"></i-input>
       </i-form-item>
       <i-form-item label="所在省份：" prop="companyProvince">
         <i-select style="width:100%" placeholder="选择省" v-model="formItemParent.companyProvince" clearable>
           <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
-      <i-form-item label="所在市" prop="companyCity">
+      <i-form-item label="所在市：" prop="companyCity">
         <i-select style="width:100%" placeholder="选择市" v-model="formItemParent.companyCity" clearable>
           <i-option v-for="{value,label} in this.formItemParent.companyProvince ? this.$city.getCityData({ level: 1, id: this.formItemParent.companyProvince }) : []"
             :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
       <i-form-item label="银行户名：" prop="bankAccount">
-        <i-input v-model="formItemParent.bankAccount" placeholder="请输入银行户名"></i-input>
+        <i-input v-model="formItemParent.bankAccount" placeholder="请输入银行户名" :maxlength="30"></i-input>
       </i-form-item>
       <i-form-item label="开户银行：" prop="depositBank">
         <i-input v-model="formItemParent.depositBank" placeholder="请输入开户银行"></i-input>
       </i-form-item>
       <i-form-item label="银行卡号：" prop="cardNumber">
-        <i-input v-model="formItemParent.cardNumber" placeholder="请输入银行卡号"></i-input>
+        <i-input v-model="formItemParent.cardNumber" placeholder="请输入银行卡号" :maxlength="19"></i-input>
       </i-form-item>
       <i-form-item label="支行名称：" prop="branchName">
-        <i-input v-model="formItemParent.branchName" placeholder="请输入支行名称"></i-input>
+        <i-input v-model="formItemParent.branchName" placeholder="请输入支行名称" :maxlength="20"></i-input>
       </i-form-item>
-      <i-form-item label="状态：">
+      <i-form-item label="是否启用：">
         <i-switch size="large" @on-change="change" v-model="formItemParent.companyStatus">
           <span slot="open">启用</span>
           <span slot="close">停用</span>

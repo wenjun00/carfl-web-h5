@@ -54,7 +54,7 @@
     </template>
     <template>
       <i-modal title="新增素材类型" v-model="MaterialTypeModel">
-        <add-material-type @close="closeMaterialType" ref="add-material-type"></add-material-type>
+        <add-material-type @close="closeMaterialType" ref="add-material-type" :maintains = "maintains"></add-material-type>
         <div slot="footer">
           <i-button class="Ghost" @click="cancelAddMaterialType">取消</i-button>
           <i-button class="blueButton" @click="addMatrialTypeSure">确定</i-button>
@@ -391,7 +391,7 @@
   .maintainCss {
     background: #e4f4fa;
   }
-  
+
   .rightTable {
     width: calc(100% - 280px);
     margin: -10px;

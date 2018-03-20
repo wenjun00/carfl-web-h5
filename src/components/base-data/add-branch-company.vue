@@ -1,34 +1,34 @@
 <!--新增分公司-->
 <template>
   <section class="component add-branch-company">
-    <i-form :label-width="80" class="addCompany" :model="addBranchModel" ref="add-company" :rules="rules" label-position="left">
-      <i-form-item label="公司简称" prop="companyChinaname">
-        <i-input v-model="addBranchModel.companyChinaname"></i-input>
+    <i-form :label-width="85" class="addCompany" :model="addBranchModel" ref="add-company" :rules="rules" label-position="left">
+      <i-form-item label="公司简称：" prop="companyChinaname">
+        <i-input v-model="addBranchModel.companyChinaname" :maxlength="20"></i-input>
       </i-form-item>
-      <i-form-item label="户名" prop="bankAccount">
-        <i-input v-model="addBranchModel.bankAccount" :maxLength="30"></i-input>
-      </i-form-item>
-      <i-form-item label="所在省" prop="companyProvince">
+      <i-form-item label="所在省份：" prop="companyProvince">
         <i-select style="100%" placeholder="选择省" v-model="addBranchModel.companyProvince" clearable>
           <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
-      <i-form-item label="所在市" prop="companyCity">
+      <i-form-item label="所在市：" prop="companyCity">
         <i-select style="100%" placeholder="选择市" v-model="addBranchModel.companyCity" clearable>
           <i-option v-for="{value,label} in this.addBranchModel.companyProvince ? this.$city.getCityData({ level: 1, id: this.addBranchModel.companyProvince }) : []"
-            :key="value" :label="label" :value="value"></i-option>
+                    :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
-      <i-form-item label="开户银行" prop="depositBank">
+      <i-form-item label="银行户名：" prop="bankAccount" >
+        <i-input v-model="addBranchModel.bankAccount" :maxLength="30"></i-input>
+      </i-form-item>
+      <i-form-item label="开户银行：" prop="depositBank">
         <i-input v-model="addBranchModel.depositBank"></i-input>
       </i-form-item>
-      <i-form-item label="银行卡号" prop="cardNumber">
-        <i-input v-model="addBranchModel.cardNumber"></i-input>
+      <i-form-item label="银行卡号：" prop="cardNumber">
+        <i-input v-model="addBranchModel.cardNumber" :maxlength="20"></i-input>
       </i-form-item>
-      <i-form-item label="支行名称" prop="branchName">
-        <i-input v-model="addBranchModel.branchName"></i-input>
+      <i-form-item label="支行名称：" prop="branchName">
+        <i-input v-model="addBranchModel.branchName" :maxlength="20"></i-input>
       </i-form-item>
-      <i-form-item label="是否启用">
+      <i-form-item label="是否启用：">
         <i-switch v-model="status"></i-switch>
       </i-form-item>
     </i-form>

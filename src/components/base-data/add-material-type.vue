@@ -22,6 +22,7 @@ import { PersonalMaterialService } from '~/services/manage-service/personal-mate
 export default class AddMaterialType extends Vue {
 	@Dependencies(PersonalMaterialService) private personalMaterialService: PersonalMaterialService;
 	@Prop() propId: any;
+  @Prop() maintains: any;
 	private addMaterialType: any = {};
 	private rulesMaterial: any = {};
 	created() {
@@ -33,9 +34,16 @@ export default class AddMaterialType extends Vue {
 		};
 	}
 	formRules() {
+	  // console.log(this.maintains)
+	  // console.log(this.maintains.find(v => v.name === this.addMaterialType.name ),3424)
+
 		let form = <Form>this.$refs['add-material-type'];
 		form.validate(valid => {
 			if (!valid) return false;
+
+      if(this.maintains.find(v => v.name === this.addMaterialType.name)!== undefined){
+          return this.$Message.warning('此素材类型已存在!')
+      }
 			this.addMaterialType.typeCode = '0309';
 			this.personalMaterialService.createOrModifyType(this.addMaterialType).subscribe(
 				val => {
@@ -50,7 +58,7 @@ export default class AddMaterialType extends Vue {
 		});
 	}
 	reset() {
-		let formSet: any = <Form>this.$refs['add-material'];
+		let formSet: any = <Form>this.$refs['add-material-type'];
 		formSet.resetFields();
 	}
 }

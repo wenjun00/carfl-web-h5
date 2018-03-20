@@ -30,7 +30,8 @@
               <div v-for="item in carTypes" :key="item.id" @click="paramDetail(item)" :class="{'carTypesCss':checkId===item.id}">{{item.paramName}}</div>
               <span class="textButton" @click="addType" v-if="carId" style="margin-top:10px">+添加类别</span>
             </i-col>
-            <i-col :span="22" v-if="dataLength" style="margin-left:20px;">
+            <div style="margin-left:70px;overflow: auto;height:450px;position: relative">
+            <i-col :span="22" v-if="dataLength">
               <i-table v-if="viewStatus" :columns="carColumns" :data="paramList"></i-table>
               <i-form class="table_container" v-else>
                 <i-row type="flex">
@@ -50,10 +51,13 @@
                   </i-col>
                 </i-row>
               </i-form>
-              <i-button type="text" style="color:#265ea2;position: absolute;" @click="addItem">+添加参数</i-button>
+              <i-button type="text" style="color:#265ea2;" @click="addItem">+添加参数</i-button>
             </i-col>
+              <div v-if="!dataLength" class="empty_text">空空如也，请选择车辆^_^</div>
+
+            </div>
           </i-row>
-          <div v-if="!dataLength" class="empty_text">空空如也，请选择车辆^_^</div>
+
         </i-row>
       </i-col>
     </i-row>
@@ -666,6 +670,9 @@ export default class VehicleMaintenance extends Page {
   height: 300px;
   text-align: center;
   line-height: 400px;
+  position: absolute;
+  top:0;
+  left:350px;
 }
 
 .delete {

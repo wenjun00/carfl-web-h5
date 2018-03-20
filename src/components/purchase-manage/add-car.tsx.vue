@@ -169,7 +169,7 @@
             };
             return (<i-radio onOn-change={radioChange} value={row.radio}></i-radio>)
             }
-          }, 
+          },
         {
           title: '车辆品牌',
           key: 'brandName',
@@ -237,7 +237,7 @@
       this.multipleSelection = this.$refs['databox'];
       this.multipleSelection = this.multipleSelection.data;
       if (this.multipleSelection === undefined) {
-        this.$Message.warning('请选择车辆！')
+        this.$Message.warning
         return
       } else {
         if (this.rowData) {
@@ -337,23 +337,23 @@
     max-width: auto;
     overflow: hidden;
   }
-  
+
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-  
+
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-  
+
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-  
+
   .arrowButton {
     line-height: 570px;
     height: 100%;

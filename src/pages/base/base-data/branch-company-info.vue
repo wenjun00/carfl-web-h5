@@ -134,6 +134,13 @@ export default class BranchCompanyInfo extends Page {
 				fixed: 'left',
 				width: 160,
 				editable: true,
+        render: (h, { row, column, index }) => {
+          if(row.companyChinaname.length>10){
+            return h('span', {}, row.companyChinaname.substring(0,9) + '...');
+          }else{
+            return h('span', {}, row.companyChinaname);
+          }
+        },
 			},
 			{
 				title: '省份',
@@ -151,9 +158,6 @@ export default class BranchCompanyInfo extends Page {
 				align: 'center',
 				width: 160,
 				editable: true,
-				render: (h, { row, column, index }) => {
-					return h('span', CityService.getCityName(row.companyCity));
-				},
 			},
 			{
 				title: '户名',
@@ -161,6 +165,13 @@ export default class BranchCompanyInfo extends Page {
 				align: 'center',
 				width: 260,
 				editable: true,
+        render: (h, { row, column, index }) => {
+          if(row.bankAccount.length>10){
+            return h('span', {}, row.bankAccount.substring(0,20) + '...');
+          }else{
+            return h('span', {}, row.bankAccount);
+          }
+        },
 			},
 			{
 				title: '开户银行',

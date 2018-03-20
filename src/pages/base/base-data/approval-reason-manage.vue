@@ -351,7 +351,6 @@
      * 编辑审批原因管理
      */
     showEditApproval(row) {
-      console.log(row, 'bianji')
       this.editApprovalReasonModel = true;
       let openApproval: any = this.$refs['edit-approval-reason'];
       openApproval.rowParms(row);
@@ -400,6 +399,7 @@
       this.appReasonModel.first = '';
       this.appReasonModel.second = '';
       this.approveReasonService.getApproveReasonByCondition(this.appReasonModel).subscribe(val => {
+        console.log(val)
         let optionArray = val.map(v => v.first);
         let set1 = new Set(optionArray);
         this.firstOption = Array.from(set1);
