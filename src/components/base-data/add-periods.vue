@@ -293,22 +293,23 @@ export default class AddPeriods extends Vue {
 			],
 			initialPayment: [
 				{ required: true, message: '请输入首付款比例', trigger: 'blur' },
-				{ pattern: /^((0|[1-9][0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100整数', trigger: 'blur' }
+				{ pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100整数', trigger: 'blur' }
+          // [1-9]\d*|0)(\.\d{1,2}
 			],
 			depositCash: [
         { required: true, message: '请输入保证金比例', trigger: 'blur' },
-				{ pattern: /^((0|[1-9][0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100整数', trigger: 'blur' }
+				{ pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100整数', trigger: 'blur' }
 			],
 			depositCashType: [
 				{ required: true, message: '请选择退还方式', trigger: 'change', type: 'number' }
 			],
 			finalCash: [
 				{ required: true, message: '请输入尾付款年利率', trigger: 'blur' },
-				{ pattern: /^((0|[1-9][0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100整数', trigger: 'blur' }
+				{ pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100整数', trigger: 'blur' }
 			],
 			manageCost: [
 				{ required: true, message: '请输入管理费比例', trigger: 'blur' },
-				{ pattern: /^((0|[1-9][0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100整数', trigger: 'blur' }
+				{ pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100整数', trigger: 'blur' }
 			],
 			stagingPeriods: [
 				{ required: true, message: '请输入管理费分期期数', trigger: 'blur' },
