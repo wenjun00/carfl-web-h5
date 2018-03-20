@@ -275,7 +275,7 @@
         })
         .subscribe(
           val => {
-            CommonService.downloadFile(val.url,"文件下载")
+            CommonService.downloadFile(val,"文件下载")
             this.$Message.success('下载成功！');
           },
           ({

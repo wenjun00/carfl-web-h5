@@ -53,7 +53,7 @@
             <!--<i-table :columns="columns3" :data="data3" border stripe></i-table>-->
             <!--</i-row>-->
           </i-radio-group>
-          <i-table :columns="columns3" :data="data3"></i-table>
+          <i-table :columns="columns3" :data="data3"  @on-selection-change="currentSelect" ref="changeTable"></i-table>
         </i-row>
         <div slot="footer">
           <i-button class="blueButton" @click="printPreview">打印预览</i-button>
@@ -137,6 +137,7 @@
     private rowData: any;
     private type: any;
     private contectEnum: any;
+    private multipleSelection:any  // 多选数据
     private customerSignModel: any = {
       orderInfo: "",
       timeSearch: "",
@@ -538,19 +539,28 @@
         orderId: this.rowData.orderId,
         contectEnum: this.contectEnum
       }
-      this.contractService
-        .createOneContract(printData)
-        .subscribe(
-          data => {
-            window.open(data.resultJson.contractInfo[0].pdfUrl);
-            this.openCreateCompact = false
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg);
-          }
-        );
+      if (this.multipleSelection){
+        this.contractService
+          .createOneContract(printData)
+          .subscribe(
+            data => {
+              window.open(data.resultJson.contractInfo[0].pdfUrl);
+              this.openCreateCompact = false
+              // this.multipleSelection = []
+            },
+            ({
+               msg
+             }) => {
+              this.$Message.error(msg);
+            }
+          );
+      }else{
+        this.$Message.warning('请选择文件！')
+      }
+
+    }
+    currentSelect(selection) {
+      this.multipleSelection = selection;
     }
     /**
      * 确定
