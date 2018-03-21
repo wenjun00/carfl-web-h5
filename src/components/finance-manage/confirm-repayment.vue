@@ -62,7 +62,16 @@
         <td>已还罚息</td>
         <td>{{repaymentObj.penaltyReceived}}</td>
         <td>剩余罚息</td>
-        <td><span style="color:red;text-decoration:line-through;margin-right:6px;">{{repaymentObj.penaltyReceivable}}</span><span>{{repaymentObj.penaltySurplus}}</span></td>
+        <td><span style="color:red;text-decoration:line-through;margin-right:6px;" v-if="repaymentObj.penaltyReceivable!==repaymentObj.penaltySurplus">{{repaymentObj.penaltyReceivable}}</span><span>{{repaymentObj.penaltySurplus}}</span></td>
+      </tr>
+      <tr height="40">
+        <td bgcolor="#F2F2F2">管理费</td>
+        <td>应收管理费</td>
+        <td>{{repaymentObj.manageFeeReceivable}}</td>
+        <td>实收管理费</td>
+        <td>{{repaymentObj.manageFeeReceived}}</td>
+        <td>剩余管理费</td>
+        <td>{{repaymentObj.manageFeeSurplus}}</td>
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">合计</td>
@@ -102,7 +111,10 @@
         </td>
         <td>
           <i-select placeholder="选择收款方式" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel">
-            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+            <i-option label="剩余本金" :value="156"></i-option>
+            <i-option label="剩余利息" :value="154"></i-option>
+            <i-option label="剩余罚息" :value="155"></i-option>
+            <i-option label="剩余管理费" :value="157"></i-option>
           </i-select>
         </td>
         <td>
