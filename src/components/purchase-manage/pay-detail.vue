@@ -30,7 +30,7 @@
     </table>
     <div>
       <Icon type="plus" style="position:relative;left:16px;top:5px;color:#265ea2"></Icon>
-      <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">添加收款项</i-button>
+      <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">添加付款项</i-button>
     </div>
     <div class="form-title">账户信息</div>
     <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1;margin-bottom:60px;">

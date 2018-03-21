@@ -306,7 +306,7 @@ export default class MyApproval extends Page {
     this.columns1 = [
       {
         title: "操作",
-        width: 100,
+        width: 70,
         fixed: "left",
         align: "center",
         render: (h, { row, column, index }) => {
@@ -382,6 +382,7 @@ export default class MyApproval extends Page {
         title: "订单编号",
         key: "orderNumber",
         editable: true,
+        width: 115,
         align: "center",
         render: (h, { row, columns, index }) => {
           return h(
@@ -404,6 +405,7 @@ export default class MyApproval extends Page {
         align: "center",
         title: "订单创建时间",
         editable: true,
+        width: 135,        
         key: "createTime",
         render: (h, { row, column, index }) => {
           return h(
@@ -417,6 +419,7 @@ export default class MyApproval extends Page {
         title: "领取时间",
         editable: true,
         key: "receiveDate",
+        width: 135,                
         render: (h, { row, column, index }) => {
           return h(
             "span",
@@ -428,6 +431,7 @@ export default class MyApproval extends Page {
         align: "center",
         title: "处理时间",
         editable: true,
+        width: 135,                
         key: "approvalDate",
         render: (h, { row, column, index }) => {
           return h(
@@ -479,12 +483,14 @@ export default class MyApproval extends Page {
         align: "center",
         editable: true,
         title: "证件号码",
+        width: 115,                
         key: "idCard"
       },
       {
         align: "center",
         editable: true,
         title: "手机号",
+        width: 85,                        
         key: "mobileMain"
       }
     ];
