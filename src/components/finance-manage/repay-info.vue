@@ -169,13 +169,19 @@
           width: 90
         },
         {
+          title: '罚息费率',
+          key: 'penaltyRate ',
+          align: 'center',
+          width: 90
+        },
+        {
           title: '每日罚息',
           key: 'penaltyDay',
           align: 'center',
           width: 90
         },
         {
-          title: '金额',
+          title: '应收总金额',
           key: 'sum',
           align: 'center',
           width: 90
@@ -206,6 +212,12 @@
           width: 90
         },
         {
+          title: '应收本金',
+          key: 'principalReceivable',
+          align: 'center',
+          width: 90
+        },
+        {
           title: '应收利息',
           key: 'interestReceivable',
           align: 'center',
@@ -214,6 +226,24 @@
         {
           title: '应收罚息',
           key: 'penaltyReceivable',
+          align: 'center',
+          width: 90
+        },
+        {
+          title: '应收管理费',
+          key: 'manageFeeReceivable',
+          align: 'center',
+          width: 90
+        },
+        {
+          title: '减免本金',
+          key: 'principalDerate',
+          align: 'center',
+          width: 90
+        },
+        {
+          title: '减免利息',
+          key: 'interestDerate',
           align: 'center',
           width: 90
         },
@@ -248,6 +278,12 @@
           width: 90
         },
         {
+          title: '实收管理费',
+          key: 'manageFeeReceived',
+          align: 'center',
+          width: 90
+        },
+        {
           title: '剩余本金',
           key: 'principalSurplus',
           align: 'center',
@@ -262,6 +298,12 @@
         {
           title: '剩余罚息',
           key: 'penaltySurplus',
+          align: 'center',
+          width: 90
+        },
+        {
+          title: '剩余管理费',
+          key: 'manageFeeSurplus',
           align: 'center',
           width: 90
         }

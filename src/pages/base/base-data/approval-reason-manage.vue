@@ -330,7 +330,6 @@
      * 删除审批原因管理
      */
     deleteApproval(row) {
-      console.log(row)
       this.approveReasonService
         .deleteApproveReason({
           id: row.id,

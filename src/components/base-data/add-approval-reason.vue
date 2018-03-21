@@ -44,7 +44,13 @@
   })
   export default class AddApprovalReason extends Vue {
     @Dependencies(ApproveReasonService) private approveReasonService: ApproveReasonService;
-    private addApproval: any = {};
+    private addApproval: any = {
+      type:'',
+      first:'',
+      second:'',
+      crc:'',
+      detail:''
+    };
     private rulesApproval: any = {};
     created() {
       this.rulesApproval = {
@@ -77,6 +83,7 @@
       };
     }
     reset() {
+      console.log(32423424)
       let _addapproval: any = this.$refs['add-approval']
       _addapproval.resetFields()
     }
