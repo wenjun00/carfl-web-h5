@@ -1,11 +1,11 @@
 //新增产品系列
 <template>
   <i-form ref="add-series" :model="addSeries" :rules="rulesAdd" :label-width="80">
-    <i-form-item label="产品序号" prop="number">
-      <i-input v-model="addSeries.number"></i-input>
+    <i-form-item label="系列序号" prop="number">
+      <i-input v-model="addSeries.number" :maxlength="10"></i-input>
     </i-form-item>
-    <i-form-item label="产品名称" prop="name">
-      <i-input v-model="addSeries.name"></i-input>
+    <i-form-item label="系列名称" prop="name">
+      <i-input v-model="addSeries.name" :maxlength="20"></i-input>
     </i-form-item>
   </i-form>
 </template>
@@ -34,19 +34,23 @@ export default class addSeries extends Vue {
 			name: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
 		};
 	}
+	reset(){
+    let _addseries: any = this.$refs['add-series']
+    _addseries.resetFields()
+  }
 	vaildFun(seriesId) {
     delete this.addSeries.parentId
 		let form = <Form>this.$refs['add-series'];
     if(seriesId !== -1) {
 		  this.addSeries.parentId = seriesId;
     }
-		console.log(seriesId, 345);
 		form.validate(valid => {
 			if (!valid) return false;
 			this.productSeriesService.createOrModifyProductSeries(this.addSeries).subscribe(
 				val => {
 					this.$emit('close');
 					this.$Message.success('新增产品系列成功！');
+					this.reset()
 				},
 				({ msg }) => {
 					this.$Message.error(msg);

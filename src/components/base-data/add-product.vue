@@ -40,6 +40,10 @@ export default class AddProduct extends Vue {
 			capitaChannels: [{ required: true, message: '请选择资金渠道', trigger: 'change' }],
 		};
 	}
+	reset(){
+    let _addproduct: any = this.$refs['add-product']
+    _addproduct.resetFields()
+  }
 	vaildFun(seriesId) {
 		let form = <Form>this.$refs['add-product'];
 		this.addProduct.seriesId = seriesId;
@@ -49,6 +53,7 @@ export default class AddProduct extends Vue {
 				val => {
 					this.$emit('close');
 					this.$Message.success('新增产品成功！');
+					this.reset()
 				},
 				({ msg }) => {
 					this.$Message.error(msg);

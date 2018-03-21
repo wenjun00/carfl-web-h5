@@ -174,20 +174,22 @@
     </template>
 
     <template>
-      <i-modal v-model="addProductModal" title="新增产品">
+      <i-modal v-model="addProductModal" title="新增产品" @on-visible-change="applyDerateModalOpen">
         <add-product ref="add-product" @close="closeAddProductModal"></add-product>
         <div slot="footer">
-          <i-button class="Ghost" @click="addProductModal=false">取消</i-button>
+          <!--<i-button class="Ghost" @click="AddProduct=false">取消</i-button>-->
+          <i-button class="Ghost" @click="cancelAddProduct">取消</i-button>
           <i-button class="blueButton" @click="submintAddProduct">确认</i-button>
         </div>
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="addSericeModal" title="新增产品系列">
+      <i-modal v-model="addSericeModal" title="新增产品系列" @on-visible-change="addProductSeries">
         <add-series ref="add-series" @close="closeSericeModal"></add-series>
         <div slot="footer">
-          <i-button class="Ghost" @click="addSericeModal=false">取消</i-button>
+          <!--<i-button class="Ghost" @click="addSericeModal=false">取消</i-button>-->
+          <i-button class="Ghost" @click="cancelAddSerice">取消</i-button>
           <i-button class="blueButton" @click="submitAddSerice">确认</i-button>
         </div>
       </i-modal>
@@ -687,6 +689,15 @@
       let openAddProduct: any = this.$refs['add-product'];
       openAddProduct.vaildFun(this.seriId);
     }
+    cancelAddProduct(){
+      this.addProductModal = false
+    }
+    applyDerateModalOpen(val){
+      if(!val){
+        let openAddProduct: any = this.$refs['add-product'];
+        openAddProduct.reset();
+      }
+    }
     /**
      * 关闭新增产品窗口
      */
@@ -715,6 +726,15 @@
     submitAddSerice() {
       let openAddSerice: any = this.$refs['add-series'];
       openAddSerice.vaildFun(this.seriId);
+    }
+    cancelAddSerice(){
+      this.addSericeModal = false
+    }
+    addProductSeries(val){
+      if(!val){
+        let openAddSerice: any = this.$refs['add-series'];
+        openAddSerice.reset();
+      }
     }
     /**
      * 关闭新增产品系列窗口

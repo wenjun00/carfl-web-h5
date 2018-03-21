@@ -36,7 +36,7 @@
     </i-row>
     <template>
       <i-modal title="新增素材" v-model="materialModel">
-        <add-material @close="closeMaterial" ref="add-material"></add-material>
+        <add-material @close="closeMaterial" ref="add-material" :data1="data1"></add-material>
         <div slot="footer">
           <i-button class="Ghost" @click="cancelAddMaterial">取消</i-button>
           <i-button class="blueButton" @click="newAdd">新增</i-button>
@@ -382,6 +382,7 @@
     resetSeach() {
       this.personalModel = {
         name: '',
+        type: 376,
       };
     }
   }

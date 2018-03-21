@@ -138,7 +138,6 @@
         if (!success) {
           return;
         }
-
         this.loginService
           .login({
             username: this.loginModel.username,

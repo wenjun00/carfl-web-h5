@@ -232,7 +232,7 @@ export default class DataDict extends Page {
    * 确定
    */
   confirmmadd() {
-    if(this.addModel.name === ''){
+    if(this.addModel.name.indexOf(" ") >= 0 || this.addModel.name === ''){
       this.$Message.warning("请输入名称！");
       return
     }
@@ -367,6 +367,10 @@ export default class DataDict extends Page {
     this.addDataModel.name = this.addDataModel.name;
     form.validate(valid => {
       if (!valid) return false;
+      if(this.addDataModel.name.indexOf(" ") >= 0){
+        this.$Message.warning("请输入名称！");
+        return
+      }
       this.dataDictService.createOrModifyDataDict(this.addDataModel).subscribe(
         val => {
           this.$Message.success("新增数据成功！");

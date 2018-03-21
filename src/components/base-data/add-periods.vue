@@ -137,12 +137,10 @@
           </div>
         </data-grid-item>
         <data-grid-item label="管理费收取方式" :span="12" v-if="manageMoneyParams==='有'">
-          <i-form-item prop="manageCostType" style="margin-top:15px;">
             <i-radio-group v-model="formItems.manageCostType">
               <i-radio :label="394">一次性收取</i-radio>
               <i-radio :label="395">分期数收取</i-radio>
             </i-radio-group>
-          </i-form-item>
           <div v-if="formItems.manageCostType===395" class="initialPayment" style="margin-top:15px;">
             <i-form-item prop="stagingPeriods" label="期数">
               <i-input v-model="formItems.stagingPeriods"></i-input>
