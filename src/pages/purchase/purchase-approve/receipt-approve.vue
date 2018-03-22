@@ -95,6 +95,9 @@ export default class ReceiptApprove extends Page {
       render: h => h(AddApply)
     });
   }
+  activated () {
+      this.searchReceiptapprove();
+  }
   created() {
     this.searchReceiptapprove();
     this.columns1 = [

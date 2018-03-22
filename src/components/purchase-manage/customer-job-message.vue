@@ -16,7 +16,7 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">单位信息</span>
       </div>
-      <i-form ref="form-job" :model="job" :label-width="110" label-position="left" style="position:relative;left:16px;">
+      <i-form ref="form-job" :model="job" :rules="rules" :label-width="110" label-position="left" style="position:relative;left:16px;">
         <i-row>
 
           <i-col :span="12">
@@ -120,7 +120,7 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">收入信息</span>
       </div>
-      <i-form ref="revenue-form" :model="job" :label-width="110" label-position="left">
+      <i-form ref="revenue-form" :rules="rules" :model="job" :label-width="110" label-position="left">
         <i-col span="12">
           <i-form-item label="基本月薪(元)" prop="basicSalary">
             <i-input type="text" v-model="job.basicSalary" placeholder="请输入基本月薪">
@@ -277,6 +277,28 @@
     };
     private jobType: any = 37;
     private typeList: Array < String > ;
+    private rules:any={
+        basicSalary:[{
+            pattern: /^[0-9]{1,9}$/g, 
+            message: '请输入1~9位数字', 
+            trigger: 'blur'
+        }],
+        yearlySalaries:[{
+            pattern: /^[0-9]{1,9}$/g, 
+            message: '请输入1~9位数字', 
+            trigger: 'blur'
+        }],
+        payDay:[{
+            pattern: /^[0-9]{1,9}$/g, 
+            message: '请输入1~9位数字', 
+            trigger: 'blur'
+        }],
+        monthOtherIncome:[{
+            pattern: /^[0-9]{1,9}$/g, 
+            message: '请输入1~9位数字', 
+            trigger: 'blur'
+        }]
+    }
     Reverse(data) {
       if (data.personal.personalJob) {
           if(data.personal.personalJob.identity){

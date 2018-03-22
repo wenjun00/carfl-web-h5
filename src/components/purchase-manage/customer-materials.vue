@@ -378,6 +378,16 @@
         trigger: 'change',
         type: 'number'
       }],
+      cityLiveTime:[{
+          pattern: /^[0-9]{1,9}$/g,
+          message: '请输入1~9位数字',
+          trigger: 'blur'
+      }],
+      localLiveTime:[{
+         pattern: /^[0-9]{1,9}$/g,
+         message: '请输入1~9位数字',
+         trigger: 'blur' 
+      }],
       //   birthTime: [{
       //     required: true,
       //     message: '请选择出生日期',
