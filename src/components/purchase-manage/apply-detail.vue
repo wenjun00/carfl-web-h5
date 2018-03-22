@@ -133,8 +133,12 @@ export default class ApplyDetail extends Vue {
   }
   getparentreceipt(val) {
     console.log(val);
-    this.addNewApplyModal = val.customerName; // 客户姓名
-    this.refundType = val.applicationType; // 付款类型
+    this.addNewApplyModal.name = val.customerName; // 客户姓名
+    this.refundType = val.applicationType  ? this.$dict.getDictName(val.applicationType)
+      : ""; // 付款类型
+    this.addNewApplyModal.idCard = val.idCard; // 证件号
+    this.remark = val.remark;
+    this.orderNumber = val.orderNumber;
     if (val.collectMoneyItemModels) {
       val.collectMoneyItemModels.map(v => {
         v.refundAmount = v.itemMoney;
@@ -146,13 +150,11 @@ export default class ApplyDetail extends Vue {
     //   this.accountDetail[0].depositBank = val.personalBank.depositBank
     let personalBank: any = [];
     personalBank.push({
-      personalName: val.personalBank.personalName
-        ? val.personalBank.personalName
-        : "",
-      depositBank: val.personalBank.depositBank,
-      cardNumber: val.personalBank.cardNumber,
-      depositBranch: val.personalBank.depositBranch,
-      clientNumber: val.personalBank.clientNumber
+      personalName: val.personalBank?(val.personalBank.personalName?val.personalBank.personalName:''):'',
+      depositBank: val.personalBank?(val.personalBank.depositBank?val.personalBank.depositBank:''):'',
+      cardNumber: val.personalBank?(val.personalBank.cardNumber?val.personalBank.cardNumber:''):'',
+      depositBranch: val.personalBank?(val.personalBank.depositBranch?val.personalBank.depositBranch:''):'',
+      clientNumber: val.personalBank?(val.personalBank.clientNumber?val.personalBank.clientNumber:''):''
     });
     this.accountDetail = personalBank;
     this.fileList = val.financeUploadResources;

@@ -141,7 +141,7 @@
           <td>{{orderInfo.personal?orderInfo.personal.localHomePhone:''}}</td>
           <td bgColor="#F5F5F5">本市生活时长</td>
           <td>{{orderInfo.personal?orderInfo.personal.cityLiveTime:''}}</td>
-          <td bgColor="#F5F5F5" colspan="2">现居住地生活时常</td>
+          <td bgColor="#F5F5F5" colspan="2">现居住地生活时长</td>
           <td>{{orderInfo.personal?orderInfo.personal.localLiveTime:''}}</td>
         </tr>
         <tr>
@@ -211,7 +211,7 @@
         <tr>
           <td bgColor="#F5F5F5">基本月薪(元)</td>
           <td>{{personalJobInfo.basicSalary}}</td>
-          <td bgColor="#F5F5F5">每月发薪日(元)</td>
+          <td bgColor="#F5F5F5">每月发薪日</td>
           <td>{{personalJobInfo.payDay}}</td>
         </tr>
         <tr>

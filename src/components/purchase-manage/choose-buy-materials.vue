@@ -205,7 +205,7 @@
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
-          <i-form-item label="购置费" prop="purchaseMoney">
+          <i-form-item label="购置税" prop="purchaseMoney">
             <i-input type="text" v-model="chooseBuyModel.purchaseMoney">
             </i-input>
           </i-form-item>

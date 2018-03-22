@@ -185,6 +185,7 @@ export default class FaceApproval extends Page {
         title: "订单编号",
         key: "orderNumber",
         editable: true,
+        width: 115,
         align: "center",
         render: (h, { row, column, index }) => {
           if (row && row.orderNumber) {
@@ -212,6 +213,7 @@ export default class FaceApproval extends Page {
         title: "订单创建时间",
         editable: true,
         key: "createTime",
+        width: 135,        
         render: (h, { row, column, index }) => {
           return h(
             "span",
@@ -224,6 +226,7 @@ export default class FaceApproval extends Page {
         title: "进入资源池时间",
         editable: true,
         key: "intoPoolDate",
+        width: 135,        
         render: (h, { row, column, index }) => {
           return h(
             "span",
@@ -274,12 +277,14 @@ export default class FaceApproval extends Page {
         align: "center",
         editable: true,
         title: "证件号",
+        width: 115,        
         key: "idCard"
       },
       {
         align: "center",
         editable: true,
         title: "手机号",
+        width: 85,        
         key: "mobileMain"
       }
     ];

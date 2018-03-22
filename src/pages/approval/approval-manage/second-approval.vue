@@ -184,6 +184,7 @@ export default class SecondApproval extends Page {
         title: "订单编号",
         key: "orderNumber",
         editable: true,
+        width: 115,
         align: "center",
         render: (h, { row, column, index }) => {
           if (row && row.orderNumber) {
@@ -210,6 +211,7 @@ export default class SecondApproval extends Page {
         align: "center",
         title: "订单创建时间",
         editable: true,
+        width: 135,        
         key: "createTime",
         render: (h, { row, column, index }) => {
           return h(
@@ -222,6 +224,7 @@ export default class SecondApproval extends Page {
         align: "center",
         title: "进入资源池时间",
         editable: true,
+        width: 135,        
         key: "intoPoolDate",
         render: (h, { row, column, index }) => {
           return h(
@@ -273,12 +276,14 @@ export default class SecondApproval extends Page {
         align: "center",
         editable: true,
         title: "证件号",
+        width: 115,        
         key: "idCard"
       },
       {
         align: "center",
         editable: true,
         title: "手机号",
+        width: 85,        
         key: "mobileMain"
       }
     ];
