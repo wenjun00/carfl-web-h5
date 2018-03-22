@@ -11,7 +11,7 @@
       <i-button class="blueButton" style="margin-left:10px;" @click="getProductPackage">搜索</i-button>
       <i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>
       <div style="float:right;margin-right:10px;margin-top:10px;">
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <div style="font-size:16px;cursor:pointer;margin-left:10px;color:#3367A7">
           <svg-icon iconClass="xiazai"></svg-icon>
           <i-button type="text" style="font-size: 12px;" @click="QuotationTemplatedownload">报价模板下载</i-button>
         </div>
@@ -20,7 +20,7 @@
     <data-box :id="91" :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="bottom" justify="end">
-        <i-col :span="6" style="text-align:right;margin-top:12px;margin-right:15px;">
+        <i-col :span="6" style="text-align:right;">
           <i-button @click="pPackageModel=true" class="highButton">新增产品包</i-button>
         </i-col>
       </i-row>
@@ -217,7 +217,7 @@
     QuotationTemplatedownload() {
       this.productPackageService.downloadTemplate().subscribe(
         val => {
-          console.log(val)
+          CommonService.downloadFile(val,'报价模版下载')
         },
         ({
           msg

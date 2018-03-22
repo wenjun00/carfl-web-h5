@@ -30,7 +30,8 @@
           <span style="font-size:8px;">导入</span>
         </div>
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon iconClass="xiazai" style="font-size:16px;"></svg-icon>
+          <svg-icon iconClass="xiazai" style="
+          font-size:16px;"></svg-icon>
           <span style="font-size: 8px;">模版下载</span>
         </div>
       </div>
@@ -59,7 +60,7 @@
     </div> -->
     <!--新增报价-->
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:14px">
+      <i-row type="flex" align="middle">
         <i-col :span="24" style="text-align:right;">
           <i-button @click="addquoteFun" class="highButton">新增报价</i-button>
         </i-col>

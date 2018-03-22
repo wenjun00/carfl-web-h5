@@ -170,7 +170,7 @@
         },
         {
           title: '罚息费率',
-          key: 'penaltyRate ',
+          key: 'penaltyRate',
           align: 'center',
           width: 90
         },

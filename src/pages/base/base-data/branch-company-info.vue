@@ -10,7 +10,7 @@
     </i-row>
     <data-box :id="175" :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:14px">
+      <i-row type="flex" align="middle" style="padding:0px">
         <i-col :span="24" style="text-align:right;">
           <i-button @click="addNewBranchFirmClick" class="highButton">新增分公司</i-button>
         </i-col>
@@ -134,13 +134,7 @@ export default class BranchCompanyInfo extends Page {
 				fixed: 'left',
 				width: 160,
 				editable: true,
-        render: (h, { row, column, index }) => {
-          if(row.companyChinaname.length>10){
-            return h('span', {}, row.companyChinaname.substring(0,9) + '...');
-          }else{
-            return h('span', {}, row.companyChinaname);
-          }
-        },
+        ellipsis:true,
 			},
 			{
 				title: '省份',
@@ -165,13 +159,7 @@ export default class BranchCompanyInfo extends Page {
 				align: 'center',
 				width: 260,
 				editable: true,
-        render: (h, { row, column, index }) => {
-          if(row.bankAccount.length>10){
-            return h('span', {}, row.bankAccount.substring(0,20) + '...');
-          }else{
-            return h('span', {}, row.bankAccount);
-          }
-        },
+        ellipsis:true,
 			},
 			{
 				title: '开户银行',

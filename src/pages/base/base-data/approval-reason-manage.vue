@@ -28,7 +28,7 @@
       <div style="float:right;margin-right:12px;margin-top:10px;">
         <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon iconClass="daoru" style="font-size:16px;"></svg-icon>
-          <span style="font-size:14px;">导入</span>
+          <span style="font-size:14px;" @click="enterInto">导入</span>
         </div>
         <div style="font-size:14px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" @click="downloadTemplate">
           <svg-icon iconClass="xiazai"></svg-icon>
@@ -62,6 +62,17 @@
         </div>
       </i-modal>
     </template>
+    <template>
+      <i-modal title="审批原因导入" v-model="enterIntoReasonModel">
+        <!--<edit-approval-reason ref="edit-approval-reason" @close="closeEditApproval" :AppRoveReasonList="AppRoveReasonList"></edit-approval-reason>-->
+        <enter-approval-reason ref="enter-approval-reason" @close="closeEnterApproval"></enter-approval-reason>
+        <div slot="footer">
+          <i-button class="Ghost" @click="entercancel">取消</i-button>
+          <i-button class="blueButton" @click="enterApproval">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
   </section>
 </template>
 
@@ -78,7 +89,7 @@
   } from '~/core/decorator';
   import AddApprovalReason from '~/components/base-data/add-approval-reason.vue';
   import EditApprovalReason from '~/components/base-data/edit-approval-reason.vue';
-
+  import EnterApprovalReason from '~/components/base-data/enter-approval-reason.vue';
   import {
     ApproveReasonService
   } from '~/services/manage-service/approve-reason.service';
@@ -88,6 +99,7 @@
   import {
     FilterService
   } from '~/utils/filter.service';
+  import { CommonService } from "~/utils/common.service";
   @Layout('workspace')
   @Component({
     components: {
@@ -95,6 +107,7 @@
       SvgIcon,
       AddApprovalReason,
       EditApprovalReason,
+      EnterApprovalReason
     },
   })
   export default class ApprovalReasonManage extends Page {
@@ -105,12 +118,12 @@
     private appReasonModel: any = {};
     private data2: Array < any > = [];
     private searchOptions: Boolean = false;
-    private approvalReasonModal: Boolean = false;
     private isDisabled: Boolean = true;
     private fileDataOpen: Boolean = false;
     private AppRoveReasonList: Array < any > = [];
     private approvalReasonModel: Boolean = false;
     private editApprovalReasonModel: Boolean = false;
+    private enterIntoReasonModel:Boolean = false;
     private userData: any = {};
     private firstOption: any = [];
     private secondOption: any = [];
@@ -236,6 +249,19 @@
       };
     }
     /**
+     * 取消导入审批原因
+     */
+    entercancel(){
+      this.enterIntoReasonModel = false
+    }
+    /**
+     * 确定导入审批原因
+     */
+    enterApproval(){
+
+    }
+
+    /**
      * 取消编辑
      */
     editcancel() {
@@ -256,12 +282,7 @@
       this.searchOptions = !this.searchOptions;
     }
     exportMonthReport() {}
-    /**
-     * 导入审批原因
-     */
-    importApprovalReason() {
-      this.approvalReasonModal = true;
-    }
+
     /**
      * selectChange
      */
@@ -366,17 +387,27 @@
       this.seach(); //刷新
     }
     /**
+     * 审批原因导入成功 关闭窗口
+     */
+    closeEnterApproval(){
+      this.enterIntoReasonModel = false;
+      this.seach(); //刷新
+    }
+    /**
      * 模板下载
      */
     downloadTemplate() {
-      this.approveReasonService.downloadApproveReasonTemplate().subscribe(
-        val => {},
-        ({
-          msg
-        }) => {
-          this.$Message.error(msg);
-        }
-      );
+      this.approveReasonService.downloadApproveReasonTemplate().subscribe(data => {
+        CommonService.downloadFile(data,'模版下载')
+      },(msg)=>{
+        this.$Message.error(msg);
+      })
+    }
+    /**
+     * 导入审批原因
+     */
+    enterInto(){
+      this.enterIntoReasonModel = true
     }
     /**
      * 重置搜索

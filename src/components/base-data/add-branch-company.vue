@@ -29,7 +29,10 @@
         <i-input v-model="addBranchModel.branchName" :maxlength="20"></i-input>
       </i-form-item>
       <i-form-item label="是否启用：">
-        <i-switch v-model="status"></i-switch>
+        <i-switch v-model="status" size="large">
+          <span slot="open">启用</span>
+          <span slot="close">停用</span>
+        </i-switch>
       </i-form-item>
     </i-form>
   </section>
@@ -82,7 +85,7 @@
         }],
         bankAccount: [{
           required: true,
-          message: '请输入户名',
+          message: '请输入银行户名',
           trigger: 'blur',
         }],
         companyProvince: [{
