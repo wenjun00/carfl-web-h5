@@ -272,6 +272,51 @@
                     "申请收款"
                   )
                 ]);
+              }else if (row.orderStatus === 314){
+               // 查看&&收款
+                return h("div", [
+                  h(
+                    "i-button", {
+                      props: {
+                        type: "text"
+                      },
+                      style: {
+                        color: "#265EA2"
+                      },
+                      on: {
+                        click: () => {
+                          this.processData(row)
+                        }
+                      }
+                    },
+                    "进度查询"
+                  ),
+                  h(
+                    "i-button", {
+                      props: {
+                        type: "text"
+                      },
+                      style: {
+                        color: "#265EA2"
+                      },
+                      on: {
+                        click: () => {
+                          this.$Modal.confirm({
+                            title: "提示",
+                            content: "确认申请收款吗？",
+                            onOk: () => {
+                              this.openPage({
+                                title: "销售收款申请",
+                                path: "purchase/finance-account/sale-gathering-apply"
+                              });
+                            }
+                          });
+                        }
+                      }
+                    },
+                    "申请收款"
+                  )
+                ]);
               } else {
                 return h(
                   "i-button", {

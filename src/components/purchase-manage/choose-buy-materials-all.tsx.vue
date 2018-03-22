@@ -202,6 +202,11 @@
           }) => {
             let removeHandle = (ss) => {
               this.addcarData[index].carNumber = ss.target.value
+              let patt1:any = /[0-9]+/;
+              if(!patt1.test(ss.target.value)){
+                  ss.target.value=0
+                  this.addcarData[index].carNumber = ss.target.value
+              }
             };
             return ( 
                 <i-input style="width:80px" onOn-blur={removeHandle} value={row.carNumber}> </i-input>);

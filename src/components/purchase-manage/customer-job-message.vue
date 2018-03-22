@@ -81,19 +81,19 @@
           <i-col :span="12">
             <i-form-item label="单位地址" prop="companyAddress">
               <i-row>
-                <i-col :span="5">
-                  <i-select style="width: 96px;" placeholder="省" v-model="job.province">
+                <i-col :span="4">
+                  <i-select style="width: 87px;" placeholder="省" v-model="job.province">
                     <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                   </i-select>
                 </i-col>
                 <i-col :span="5">
-                  <i-select style="width: 96px;" placeholder="市" v-model="job.city">
+                  <i-select style="width: 110px;" placeholder="市" v-model="job.city">
                     <i-option v-for="{value,label} in this.job.province ? this.$city.getCityData({ level: 1, id: this.job.province }) : []" :key="value"
                       :label="label" :value="value"></i-option>
                   </i-select>
                 </i-col>
                 <i-col :span="5">
-                  <i-select style="width: 96px;" placeholder="区" v-model="job.companyAddress">
+                  <i-select style="width: 120px;" placeholder="区" v-model="job.companyAddress">
                     <i-option v-for="{value,label} in this.job.city ? this.$city.getCityData({ level: 1, id: this.job.city }) : []" :key="value"
                       :label="label" :value="value"></i-option>
                   </i-select>
