@@ -18,7 +18,7 @@
           <i-form-item style="width:70%;" prop="periods">
             <i-select v-model="productDetail.periods" placeholder="请输入产品期数">
               <i-option v-for="{value,label} in $dict.getDictData('0435')" :key="value" :label="label" :value="value"></i-option>
-            </i-select>          
+            </i-select>
           </i-form-item>
         </data-grid-item>
         <data-grid-item label="产品利率" :span="4">
@@ -181,7 +181,7 @@
       <i-form-item prop="isPublish">
         <i-radio-group v-model="productDetail.isPublish">
           <i-radio :label="361">未发布</i-radio>
-          <i-radio :label="360">已发布</i-radio>        
+          <i-radio :label="360">已发布</i-radio>
         </i-radio-group>
       </i-form-item>-->
     </i-form>
@@ -321,46 +321,46 @@ export default class AddProduct extends Vue {
 			],
 			initialPayment: [
 				{ required: true, message: '请输入首付款比例', trigger: 'blur' },
-				{ pattern: /^((0|[1-9][0-9]{0,1}|100);?)+$/g, message: '请输入0~100整数', trigger: 'blur' }        
+        { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
 			],
 			depositCash: [
         { required: true, message: '请输入保证金比例', trigger: 'blur' },
-				{ pattern: /^((0|[1-9][0-9]{0,1}|100);?)+$/g, message: '请输入0~100整数', trigger: 'blur' }        
+        { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
 			],
 			depositCashType: [
 				{ required: true, message: '请选择退还方式', trigger: 'change', type: 'number' }
 			],
 			finalCash: [
 				{ required: true, message: '请输入尾付款年利率', trigger: 'blur' },
-				{ pattern: /^((0|[1-9][0-9]{0,1}|100);?)+$/g, message: '请输入0~100整数', trigger: 'blur' }        
+        { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
 			],
 			manageCost: [
 				{ required: true, message: '请输入管理费比例', trigger: 'blur' },
-				{ pattern: /^((0|[1-9][0-9]{0,1}|100);?)+$/g, message: '请输入0~100整数', trigger: 'blur' }        
+        { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
 			],
 			stagingPeriods: [
 				{ required: true, message: '请输入管理费分期期数', trigger: 'blur' },
-				{ pattern: /^[\d]+$/, message: '请输入整数', trigger: 'blur' }                                        
+				{ pattern: /^[\d]+$/, message: '请输入整数', trigger: 'blur' }
 			],
 			creditProtectDays: [
 				{ required: true, message: '请输入征信保护天数', trigger: 'blur' },
-				{ pattern: /^(0|[1-9][0-9]{0,3})$/g, message: '请输入0~9999整数', trigger: 'blur' }        
+				{ pattern: /^(0|[1-9][0-9]{0,3})$/g, message: '请输入0~9999整数', trigger: 'blur' }
 			],
 			overdueProtectDays: [
 				{ required: true, message: '请输入逾期保护天数', trigger: 'blur' },
-				{ pattern: /^(0|[1-9][0-9]{0,3})$/g, message: '请输入0~9999整数', trigger: 'blur' }        
+				{ pattern: /^(0|[1-9][0-9]{0,3})$/g, message: '请输入0~9999整数', trigger: 'blur' }
 			],
 			contractBreakRate: [
 				{ required: true, message: '请输入合同违约金费率', trigger: 'blur' },
-				{ pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }                                                    
+				{ pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }
 			],
 			prepaymentRate: [
 				{ required: true, message: '请输入提前还款费率', trigger: 'blur' },
-				{ pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }                                                    
+				{ pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }
 			],
 			penaltyRate: [
 				{ required: true, message: '请输入罚期费率', trigger: 'blur' },
-				{ pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }                                                    
+				{ pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }
 			]
 		};
 		this.productDetail = {
