@@ -68,7 +68,7 @@
         <enter-approval-reason ref="enter-approval-reason" @close="closeEnterApproval"></enter-approval-reason>
         <div slot="footer">
           <i-button class="Ghost" @click="entercancel">取消</i-button>
-          <i-button class="blueButton" @click="enterApproval">确定</i-button>
+          <i-button class="blueButton" @click="enterApproval">导入</i-button>
         </div>
       </i-modal>
     </template>
