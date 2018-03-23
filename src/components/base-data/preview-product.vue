@@ -87,7 +87,7 @@
           <i-radio label="有" disabled></i-radio>
         </i-radio-group>
         <div v-show="residueParams==='有'" style="float:left;margin-top:4px;">
-          <span>年利率：</span>
+          <span>月利率：</span>
           <span>{{productDetailView.finalCash}}</span>
           <span style="color:red">%</span>
         </div>

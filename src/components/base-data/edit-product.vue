@@ -112,7 +112,7 @@
             <i-radio label="有"></i-radio>
           </i-radio-group>
           <div v-if="residueParams==='有'" class="initialPayment" style="margin-top:27px;">
-            <i-form-item style="width:37%;" prop="finalCash" label="年利率">
+            <i-form-item style="width:37%;" prop="finalCash" label="月利率">
               <i-input v-model="productDetail.finalCash"></i-input>
             </i-form-item>
             <span style="color:red" class="after_text">%</span>
@@ -375,7 +375,7 @@ export default class AddProduct extends Vue {
 			initialPayment: '', // 首付款比例
 			depositCash: '', // 保证金比例
 			depositCashType: '', //缴纳方式
-			finalCash: '', // 尾付款年利率
+			finalCash: '', // 尾付款月利率
 			manageCost: '', //管理费比例
 			manageCostType: '', //管理费收取方式
 			stagingPeriods: '', // 管理费分期 期数
