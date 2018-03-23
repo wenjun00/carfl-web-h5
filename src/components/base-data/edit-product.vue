@@ -331,7 +331,7 @@ export default class AddProduct extends Vue {
 				{ required: true, message: '请选择退还方式', trigger: 'change', type: 'number' }
 			],
 			finalCash: [
-				{ required: true, message: '请输入尾付款年利率', trigger: 'blur' },
+				{ required: true, message: '请输入尾付款月利率', trigger: 'blur' },
         { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
 			],
 			manageCost: [
