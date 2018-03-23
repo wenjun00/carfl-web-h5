@@ -79,11 +79,8 @@
     private actions: String = "0";
     created() {
       this.rulesProduct = {
-        name: [
-          { required: true, message: '请上传文件', trigger: 'blur' },
-        ],
         dataType: [
-          { required: true, message: '请选择文件类型', trigger: 'blur' },
+          { required: true, message: '请选择文件类型', trigger: 'change',type: 'number'  },
         ],
       }
     }
