@@ -133,7 +133,6 @@
      */
     handleUpload(file) {
       this.files = file;
-      console.log(file, 999);
     }
     action() {
       this.fileUploadControllerService.uploadFileGrid().subscribe(val => {

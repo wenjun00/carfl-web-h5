@@ -28,7 +28,7 @@
     <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
       <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
       <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>        
+        <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
         <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
@@ -174,12 +174,12 @@
       let _repayment: any = this.$refs['confirm-repayment']
       let data: any = {}
       data.financeUploadResource = _repayment.financeUploadResources
-      data.collectMoneyDetails = _repayment.collectMoneyDetails.map(v=> { delete v.id; return v })
+      data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
       data.paymentScheduleId = _repayment.repaymentObj.paymentScheduleId
       data.collectMoneyId = _repayment.collectMoneyId
-      data.historyId = _repayment.repaymentObj.historyId      
-      data.collectMoneySum = _repayment.collectMoneySum 
+      data.historyId = _repayment.repaymentObj.historyId
+      data.collectMoneySum = _repayment.collectMoneySum
       this.paymentScheduleService.saveCustomerPaymentInfoAsDraft(data).subscribe(data => {
         this.$Message.info('保存草稿成功！')
         this.confirmRepaymentModal = false
@@ -196,7 +196,7 @@
       let _repayment: any = this.$refs['confirm-repayment']
       let data: any = {}
       data.financeUploadResource = _repayment.financeUploadResources
-      data.collectMoneyDetails = _repayment.collectMoneyDetails.map(v=> { delete v.id; return v })
+      data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
       data.paymentScheduleId = _repayment.repaymentObj.paymentScheduleId
       data.historyId = _repayment.repaymentObj.historyId
@@ -207,7 +207,7 @@
         this.$Message.info('还款成功！')
         this.confirmRepaymentModal = false
         this.pageService.reset()
-        this.getCustomerRepayList() 
+        this.getCustomerRepayList()
       }, ({
         msg
       }) => {
@@ -303,7 +303,7 @@
           align: "center",
           title: "客户结算号",
           key: "clientNumber",
-          editable: true,          
+          editable: true,
           width: 150,
           render: (h, {
             row,
@@ -327,28 +327,28 @@
         {
           align: "center",
           title: "客户姓名",
-          editable: true,          
+          editable: true,
           key: "name",
           width: 100
         },
         {
           align: "center",
           title: " 证件号",
-          editable: true,          
+          editable: true,
           key: "idCard",
           width: 160
         },
         {
           align: "center",
           title: " 手机号",
-          editable: true,          
+          editable: true,
           key: "mobileMain",
           width: 120
         },
         {
           align: "center",
           title: " 订单创建时间",
-          editable: true,          
+          editable: true,
           key: "createTime",
           width: 160,
           render: (h, {
@@ -362,7 +362,7 @@
         {
           align: "center",
           title: " 合同生效日",
-          editable: true,          
+          editable: true,
           key: "contractDate",
           width: 160,
           render: (h, {
@@ -376,35 +376,35 @@
         {
           align: "center",
           title: " 待还本金",
-          editable: true,          
+          editable: true,
           key: "principalReceivable",
           width: 90
         },
         {
           align: "center",
           title: " 待还利息",
-          editable: true,          
+          editable: true,
           key: "interestReceivable",
           width: 90
         },
         {
           align: "center",
           title: " 待还罚息",
-          editable: true,          
+          editable: true,
           key: "penaltyReceivable",
           width: 90
         },
         {
           align: "center",
           title: " 利率%/月",
-          editable: true,          
+          editable: true,
           key: "productRate",
           width: 90
         },
         {
           align: "center",
           title: " 结算通道",
-          editable: true,          
+          editable: true,
           key: "settlementChannel",
           width: 100,
           render: (h, {
@@ -419,7 +419,7 @@
           align: "center",
           title: " 归属公司",
           width: 100,
-          editable: true,          
+          editable: true,
           key: "companyChinaName"
         }
       ];

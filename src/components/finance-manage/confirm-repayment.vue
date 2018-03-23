@@ -62,7 +62,7 @@
         <td>已还罚息</td>
         <td>{{repaymentObj.penaltyReceived}}</td>
         <td>剩余罚息</td>
-        <td><span style="color:red;text-decoration:line-through;margin-right:6px;" v-if="repaymentObj.penaltyReceivable!==repaymentObj.penaltySurplus">{{repaymentObj.penaltyReceivable}}</span><span>{{repaymentObj.penaltySurplus}}</span></td>
+        <td><span style="color:red;text-decoration:line-through;margin-right:6px;" >{{repaymentObj.penaltyReceivable}}</span><span>{{repaymentObj.penaltySurplus}}</span></td>
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">管理费</td>
@@ -111,7 +111,7 @@
           </div>
         </td>
         <td>
-          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel"  :disabled="check">
+          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
@@ -134,7 +134,7 @@
       <tr height="40">
         <td></td>
         <td width="25%">合计（元）</td>
-        <td colspan="2" style="font-weight:700;font-size:14px">{{collectMoneySum}}</td>
+        <td colspan="3" style="font-weight:700;font-size:14px">{{collectMoneySum}}</td>
       </tr>
     </table>
     <i-form>
