@@ -1,7 +1,7 @@
 <template>
   <div class="component purchase-information row">
     <!--选购信息-->
-    <i-row style="margin-top:20px;">
+    <i-row style="margin-top:20px;width:900px;">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
         <a name="xuangouxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">选购信息</a>
@@ -38,7 +38,7 @@
       </data-grid>
     </i-row>
     <!--产品信息-->
-    <i-row style="margin-top:20px;">
+    <i-row style="margin-top:20px;width:900px;">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
         <a name="chanpinxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">产品信息</a>
@@ -93,7 +93,7 @@
       </table>
     </i-row>
     <!--个人资料-->
-    <i-row style="margin-top:20px;">
+    <i-row style="margin-top:20px;width:900px;">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
         <a name="gerenziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">个人资料</a>
@@ -175,7 +175,7 @@
       </table>
     </i-row>
     <!--职业信息-->
-    <i-row style="margin-top:20px;">
+    <i-row style="margin-top:20px;width:900px;">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
         <a name="zhiyexinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">职业信息</a>
@@ -228,7 +228,7 @@
       </table>
     </i-row>
     <!--联系人信息-->
-    <i-row style="margin-top:20px;">
+    <i-row style="margin-top:20px;width:900px;">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
         <a name="lianxirenxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">联系人信息</a>
@@ -268,7 +268,7 @@
       </table>
     </i-row>
     <!--客户来源-->
-    <i-row style="margin-top:20px;">
+    <i-row style="margin-top:20px;width:900px;">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
         <a name="kehulaiyuan" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">客户来源</a>
@@ -315,7 +315,7 @@
     </i-row>
 
     <!--素材资料-->
-    <i-row style="margin-top:20px;">
+    <i-row style="margin-top:20px;width:900px;">
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
         <a name="sucaiziliao" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">素材资料</a>

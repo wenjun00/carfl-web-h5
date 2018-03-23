@@ -95,6 +95,9 @@ export default class ReceiptApprove extends Page {
       render: h => h(AddApply)
     });
   }
+  activated () {
+      this.searchReceiptapprove();
+  }
   created() {
     this.searchReceiptapprove();
     this.columns1 = [
@@ -183,7 +186,13 @@ export default class ReceiptApprove extends Page {
         title: "处理时间",
         editable: true,
         key: "dealDate",
-        align: "center"
+        align: "center",
+        render: (h, { row, columns, index }) => {
+          return h(
+            "span",
+            FilterService.dateFormat(row.operatorTime, "yyyy-MM-dd hh:mm:ss")
+          );
+        }
       },
       {
         title: "处理人",

@@ -16,7 +16,7 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">单位信息</span>
       </div>
-      <i-form ref="form-job" :model="job" :label-width="110" label-position="left" style="position:relative;left:16px;">
+      <i-form ref="form-job" :model="job" :rules="rules" :label-width="110" label-position="left" style="position:relative;left:16px;">
         <i-row>
 
           <i-col :span="12">
@@ -81,19 +81,19 @@
           <i-col :span="12">
             <i-form-item label="单位地址" prop="companyAddress">
               <i-row>
-                <i-col :span="5">
-                  <i-select style="width: 96px;" placeholder="省" v-model="job.province">
+                <i-col :span="4">
+                  <i-select style="width: 87px;" placeholder="省" v-model="job.province">
                     <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                   </i-select>
                 </i-col>
                 <i-col :span="5">
-                  <i-select style="width: 96px;" placeholder="市" v-model="job.city">
+                  <i-select style="width: 110px;" placeholder="市" v-model="job.city">
                     <i-option v-for="{value,label} in this.job.province ? this.$city.getCityData({ level: 1, id: this.job.province }) : []" :key="value"
                       :label="label" :value="value"></i-option>
                   </i-select>
                 </i-col>
                 <i-col :span="5">
-                  <i-select style="width: 96px;" placeholder="区" v-model="job.companyAddress">
+                  <i-select style="width: 120px;" placeholder="区" v-model="job.companyAddress">
                     <i-option v-for="{value,label} in this.job.city ? this.$city.getCityData({ level: 1, id: this.job.city }) : []" :key="value"
                       :label="label" :value="value"></i-option>
                   </i-select>
@@ -120,7 +120,7 @@
       <div>
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">收入信息</span>
       </div>
-      <i-form ref="revenue-form" :model="job" :label-width="110" label-position="left">
+      <i-form ref="revenue-form" :rules="rules" :model="job" :label-width="110" label-position="left">
         <i-col span="12">
           <i-form-item label="基本月薪(元)" prop="basicSalary">
             <i-input type="text" v-model="job.basicSalary" placeholder="请输入基本月薪">
@@ -277,6 +277,28 @@
     };
     private jobType: any = 37;
     private typeList: Array < String > ;
+    private rules:any={
+        basicSalary:[{
+            pattern: /^[0-9]{1,9}$/g, 
+            message: '请输入1~9位数字', 
+            trigger: 'blur'
+        }],
+        yearlySalaries:[{
+            pattern: /^[0-9]{1,9}$/g, 
+            message: '请输入1~9位数字', 
+            trigger: 'blur'
+        }],
+        payDay:[{
+            pattern: /^[0-9]{1,9}$/g, 
+            message: '请输入1~9位数字', 
+            trigger: 'blur'
+        }],
+        monthOtherIncome:[{
+            pattern: /^[0-9]{1,9}$/g, 
+            message: '请输入1~9位数字', 
+            trigger: 'blur'
+        }]
+    }
     Reverse(data) {
       if (data.personal.personalJob) {
           if(data.personal.personalJob.identity){

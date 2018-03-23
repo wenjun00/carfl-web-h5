@@ -115,6 +115,9 @@ export default class PaymentApprove extends Page {
         }
       );
   }
+  activated () {
+      this.openSearch()
+  }
   /**
    * 搜索
    */

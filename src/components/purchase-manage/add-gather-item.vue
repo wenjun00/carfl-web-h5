@@ -160,8 +160,13 @@
     changeItem() {
       console.log(this.multipleSelection, "multipleSelection");
       if (this.multipleSelection) {
-        let moneyList = this.multipleSelection.map(v => v.itemMoney);
-        let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
+        // let moneyList = this.multipleSelection.map(v => v.itemMoney);
+        // let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
+        let sum:any=0
+        this.multipleSelection.forEach(v=>{
+            sum=sum+(Number(v.itemMoney))
+        })
+        let totalPayment:any=sum
         let total = {
           itemLabel: "合计（元）",
           itemMoney: totalPayment,
@@ -176,9 +181,13 @@
       }
     }
     changeItemdata() {
-      console.log(this.multipleSelection, "multipleSelection");
-      let moneyList = this.multipleSelection.map(v => v.itemMoney);
-      let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
+    //   let moneyList = this.multipleSelection.map(v => v.itemMoney);
+    //   let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
+            let sum:any=0
+        this.multipleSelection.forEach(v=>{
+            sum=sum+(Number(v.itemMoney))
+        })
+        let totalPayment:any=sum
       let total = {
         refundItem: "合计（元）",
         refundAmount: totalPayment,

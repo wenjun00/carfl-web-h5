@@ -112,7 +112,7 @@
             <i-radio label="有"></i-radio>
           </i-radio-group>
           <div v-if="residueParams==='有'" class="initialPayment" style="margin-top:27px;">
-            <i-form-item style="width:37%;" prop="finalCash" label="年利率">
+            <i-form-item style="width:37%;" prop="finalCash" label="月利率">
               <i-input v-model="productDetail.finalCash"></i-input>
             </i-form-item>
             <span style="color:red" class="after_text">%</span>
@@ -388,7 +388,8 @@
         id: '',
       };
     }
-  }
+}
+
 </script>
 
 <style lang="less" scoped>

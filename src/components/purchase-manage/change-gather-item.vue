@@ -77,10 +77,14 @@ export default class ChangeGatherItem extends Vue {
     this.multipleSelection = selection;
   }
   changeItem() {
-    console.log(this.multipleSelection, 8787);
     if (this.multipleSelection) {
-      let moneyList = this.multipleSelection.map(v => v.itemMoney);
-      let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
+    //   let moneyList = this.multipleSelection.map(v => v.itemMoney);
+      let sum:any=0
+      this.multipleSelection.forEach(v=>{
+          sum=sum+(Number(v.itemMoney)||0)
+      })
+      let totalPayment:any=sum
+    //   let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
       let total = {
         itemMoney: totalPayment,
         itemLabel: "合计（元）",

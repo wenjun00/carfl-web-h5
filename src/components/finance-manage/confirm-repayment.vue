@@ -99,7 +99,8 @@
             <i-icon type="plus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
         </td>
-        <td bgcolor="#F2F2F2" colspan="1" width="25%">收款方式</td>
+        <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
+        <td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
         <td bgcolor="#F2F2F2" colspan="1">状态</td>
       </tr>
@@ -110,7 +111,12 @@
           </div>
         </td>
         <td>
-          <i-select placeholder="选择收款方式" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel">
+          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel"  :disabled="check">
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </td>
+        <td>
+          <i-select placeholder="选择收款项" style="display:inline-block;width:90%" v-model="v.collectItem">
             <i-option label="剩余本金" :value="156"></i-option>
             <i-option label="剩余利息" :value="154"></i-option>
             <i-option label="剩余罚息" :value="155"></i-option>
@@ -275,7 +281,8 @@
       console.log('add')
       this.collectMoneyDetails.push({
         collectMoneyAmount: '',
-        collectMoneyChannel: ''
+        collectMoneyChannel: '',
+        collectItem: ''
       })
     }
     /**
