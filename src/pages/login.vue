@@ -10,15 +10,14 @@
         </div>
         <div class="loginContainer">
           <div style="font-size:20px;color:#1D4F8B;font-weight:bold;margin-bottom:20px;margin-left:56px;font-family:AdobeHeitiStd-Regular">登录</div>
-          <div style="display:flex;justify-content:center">
-            <i-form ref="login-form" :model="loginModel" :rules="loginRule" :label-width="80" style="position:relative;right:0px;">
+          <div style="display:flex;justify-content:center;">
+            <i-form ref="login-form" :model="loginModel" :rules="loginRule" :label-width="0" style="position:relative;">
               <i-form-item prop="username">
                 <i-input type="text" size="large" v-model="loginModel.username" placeholder="用户名" @on-keyup.enter="submitForm" @on-change="checkAccount">
                 </i-input>
               </i-form-item>
               <i-form-item prop="password">
-                <i-input type="password" size="large" v-model="loginModel.password" placeholder="密码" @on-keyup.enter="submitForm">
-                </i-input>
+                <i-input type="password" size="large" v-model="loginModel.password" placeholder="密码" @on-keyup.enter="submitForm"></i-input>
               </i-form-item>
               <i-form-item class="remember">
                 <i-checkbox v-model="loginModel.remember">

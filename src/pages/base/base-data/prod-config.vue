@@ -12,7 +12,7 @@
                 <svg-icon iconClass="tianjiawenjian"></svg-icon>
               </div>
               <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;margin-right:7px;color:rgb(38, 94, 162)"
-                @click="addSericeFun">
+                   @click="addSericeFun">
                 <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
               </div>
             </div>
@@ -335,9 +335,9 @@
         id: '',
       };
       this.maintains = [{
-          id: 1,
-          name: '个人基本资料',
-        },
+        id: 1,
+        name: '个人基本资料',
+      },
         {
           id: 2,
           name: '资产证明',
@@ -360,11 +360,11 @@
         },
       ];
       this.columns1 = [{
-          title: '序号',
-          width: 60,
-          type: 'index',
-          align: 'center',
-        },
+        title: '序号',
+        width: 60,
+        type: 'index',
+        align: 'center',
+      },
         {
           title: '操作',
           align: 'center',
@@ -464,8 +464,8 @@
           this.$Message.success('发布成功！');
         },
         ({
-          msg
-        }) => {
+           msg
+         }) => {
           this.$Message.error(msg);
         }
       );
@@ -593,8 +593,8 @@
           this.$Message.success('数据保存成功！');
         },
         ({
-          msg
-        }) => {
+           msg
+         }) => {
           this.$Message.error(msg);
         }
       );
@@ -615,8 +615,8 @@
           this.$Message.success('操作成功！');
         },
         ({
-          msg
-        }) => {
+           msg
+         }) => {
           this.$Message.error(msg);
         }
       );
@@ -756,13 +756,13 @@
       }
       this.personalMaterialService
         .select(obj).subscribe(data => {
-          this.$Message.success('操作成功！')
-          this.customerFodderConfigModal = false
-        }, ({
-          msg
-        }) => {
-          this.$Message.error(msg)
-        })
+        this.$Message.success('操作成功！')
+        this.customerFodderConfigModal = false
+      }, ({
+            msg
+          }) => {
+        this.$Message.error(msg)
+      })
     }
     /**
      * 客户素材配置

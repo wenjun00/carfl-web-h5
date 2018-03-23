@@ -285,7 +285,7 @@
         message: '请选择是否启用',
         trigger: 'change',
         type: 'number',
-      }, ],
+      }],
     };
     private check: Boolean = true;
 
@@ -376,7 +376,7 @@
       flex: 50%;
     }
   }
-  
+
   .title_info {
     width: 100%;
     background: rgb(236, 235, 235);

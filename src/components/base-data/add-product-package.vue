@@ -1,6 +1,6 @@
 <template>
   <section class="component add-product-package">
-    <i-form ref="form" :model="productPackage" :rules="rulesProduct" :label-width="60">
+    <i-form ref="form" :model="productPackage" :rules="rulesProduct" :label-width="70">
       <i-row>
         <i-col span="18">
           <i-form-item label="文件名" prop="name">
@@ -77,26 +77,39 @@
     private files: any = {};
     private fileList: any = [];
     private actions: String = "0";
-    created() {}
+    created() {
+      this.rulesProduct = {
+        name: [
+          { required: true, message: '请上传文件', trigger: 'blur' },
+        ],
+        dataType: [
+          { required: true, message: '请选择文件类型', trigger: 'blur' },
+        ],
+      }
+    }
     reset() {
       let _form: any = this.$refs['form']
       _form.resetFields()
       this.files = {}
     }
     addproductpackage() {
-      this.productPackage.fileName = this.files.name
-      this.productPackage.fileId = this.files.response.id
-      this.productPackageService.createProductPackage(this.productPackage).subscribe(
-        val => {
-          this.$emit('close')
-          this.reset()
-        },
-        ({
-          msg
-        }) => {
-          this.$Message.error(msg);
-        }
-      );
+      let form = <Form>this.$refs['form'];
+      form.validate(valid => {
+        if (!valid) return false;
+        this.productPackage.fileName = this.files.name
+        this.productPackage.fileId = this.files.response.id
+        this.productPackageService.createProductPackage(this.productPackage).subscribe(
+          val => {
+            this.$emit('close')
+            this.reset()
+          },
+          ({
+             msg
+           }) => {
+            this.$Message.error(msg);
+          }
+        );
+      })
     }
     /**
      * 上传文件成功回调

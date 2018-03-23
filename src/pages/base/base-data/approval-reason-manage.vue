@@ -38,7 +38,7 @@
     </i-row>
     <data-box :id="109" :columns="columns" :data="AppRoveReasonList" @onPageChange="seach" :page="pageService"></data-box>
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:5px">
+      <i-row type="flex" align="middle" style="padding:10px">
         <i-col :span="24" style="text-align:right;">
           <i-button class="highButton" @click="addapprovalReasonBtn">新增审批原因</i-button>
         </i-col>
@@ -63,16 +63,14 @@
       </i-modal>
     </template>
     <template>
-      <i-modal title="审批原因导入" v-model="enterIntoReasonModel">
-        <!--<edit-approval-reason ref="edit-approval-reason" @close="closeEditApproval" :AppRoveReasonList="AppRoveReasonList"></edit-approval-reason>-->
-        <enter-approval-reason ref="enter-approval-reason" @close="closeEnterApproval"></enter-approval-reason>
+      <i-modal title="审批原因导入" v-model="enterIntoReasonModel" :transfer="false">
+        <enter-approval-reason ref="enter-approval-reason" @close="closeEnterApproval" ></enter-approval-reason>
         <div slot="footer">
           <i-button class="Ghost" @click="entercancel">取消</i-button>
           <i-button class="blueButton" @click="enterApproval">导入</i-button>
         </div>
       </i-modal>
     </template>
-
   </section>
 </template>
 

@@ -152,6 +152,9 @@ export default class BranchCompanyInfo extends Page {
 				align: 'center',
 				width: 160,
 				editable: true,
+        render: (h, { row, column, index }) => {
+          return h("span", CityService.getCityName(row.companyCity));
+        }
 			},
 			{
 				title: '户名',
