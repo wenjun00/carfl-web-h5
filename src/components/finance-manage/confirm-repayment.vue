@@ -111,12 +111,12 @@
           </div>
         </td>
         <td>
-          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="v.refundChannel"  :disabled="check">
+          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel"  :disabled="check">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-select placeholder="选择收款项" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel">
+          <i-select placeholder="选择收款项" style="display:inline-block;width:90%" v-model="v.collectItem">
             <i-option label="剩余本金" :value="156"></i-option>
             <i-option label="剩余利息" :value="154"></i-option>
             <i-option label="剩余罚息" :value="155"></i-option>
@@ -281,7 +281,8 @@
       console.log('add')
       this.collectMoneyDetails.push({
         collectMoneyAmount: '',
-        collectMoneyChannel: ''
+        collectMoneyChannel: '',
+        collectItem: ''
       })
     }
     /**
