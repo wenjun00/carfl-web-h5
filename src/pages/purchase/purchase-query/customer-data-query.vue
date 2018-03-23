@@ -17,7 +17,7 @@
       <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" style="display:inline-block;width:20%;" placeholder="请输入订单编号/客户姓名/证件号码/联系号码查询"></i-input>
       <i-button style="margin-left:10px;" class="blueButton" @click="refreshData">搜索</i-button>
     </i-row>
-    <data-box :id="376" :columns="columns1" :data="customerDataSet" :page="pageService"></data-box>
+    <data-box :id="376" :columns="columns1" :data="customerDataSet" :page="pageService" @onPageChange="refreshData"></data-box>
     <!--Model-->
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置">

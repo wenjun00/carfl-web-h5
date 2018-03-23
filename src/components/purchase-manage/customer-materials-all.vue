@@ -1,7 +1,7 @@
 <!--全额付款申请客户资料-->
 <template>
   <section class="component customer-materials-all">
-    <i-tab-pane name="customerItem" label="客户资料">
+    <i-tab-pane name="customerItem" label="客户资料" style="height:500px">
       <span class="form-title">个人信息</span>
       <i-row>
         <i-form ref="parchase-form" :rules="rules" :model="customerData" :label-width="110">
@@ -20,8 +20,9 @@
           <i-row>
             <i-col span="12">
               <i-form-item label="证件类型" prop="certificateType">
-                <i-input type="text" v-model="customerData.certificateType">
-                </i-input>
+                <i-select v-model="customerData.certificateType">
+                 <i-option v-for="{value,label} in $dict.getDictData('0433')" :key="value" :label="label" :value="value"></i-option>
+                </i-select>
               </i-form-item>
             </i-col>
             <i-col span="12" pull="3">

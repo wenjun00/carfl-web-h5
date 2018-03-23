@@ -24,7 +24,7 @@
             </i-col>
             <i-col span="12">
               <i-form-item label="客户姓名" prop="name">
-                <i-input type="text" v-model="customerModel.name" @on-blur="ReverseData">
+                <i-input type="text" :maxlength="13" v-model="customerModel.name" @on-blur="ReverseData">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -36,7 +36,7 @@
             </i-col>
             <i-col span="12">
               <i-form-item label="归属业务员" prop="salesmanName">
-                <i-input type="text" v-model="customerModel.salesmanName">
+                <i-input type="text" :maxlength="13" v-model="customerModel.salesmanName">
                 </i-input>
               </i-form-item>
             </i-col>
@@ -155,7 +155,8 @@
         required: true,
         message: '请输入证件号码',
         trigger: 'blur',
-      }],
+      },
+      { validator: this.$validator.idCard, trigger: "blur" }],
       name: [{
         required: true,
         message: '请输入客户姓名',
@@ -165,7 +166,8 @@
         required: true,
         message: '请输入客户电话',
         trigger: 'blur',
-      }],
+      },
+      { validator: this.$validator.phoneNumber, trigger: "blur" }],
       salesmanName: [{
         required: true,
         message: '请输入归属业务员',
@@ -299,6 +301,9 @@
       //   jobform.resetFields()
     }
     created() {}
+    /**
+     * 添加新申请
+     */
     addNewApply() {
       this.$Modal.confirm({
         title: "提示",
@@ -307,6 +312,7 @@
           let resetData: any = this.$refs["customer-form"];
           resetData.resetFields();
           this.resethistory()
+          this.disabledStatus=''
         },
         onCancel: () => {
           this.$Message.info("取消成功！");

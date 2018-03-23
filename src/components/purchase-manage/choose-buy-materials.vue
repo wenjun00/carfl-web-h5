@@ -27,6 +27,7 @@
             <i-form-item label="所属公司" prop="companyId">
               <i-select v-model="chooseBuyModel.companyId" clearable>
                 <i-option v-for="item in companyObject" :key="item.id" :value="item.id" :label="item.companyChinaname"></i-option>
+                 <!--<i-option v-if="companyObject.length===0" value="暂无数据" readonly>暂无数据</i-option>-->
               </i-select>
             </i-form-item>
           </i-col>
@@ -404,8 +405,9 @@
       this.chooseBuyModel.deposit = ''
       this.chooseBuyModel.manageData = ''
       this.chooseBuyModel.moneyPay = ''
+      //   月供金额
       if(this.chooseBuyModel.financeTotalMoney) {
-        this.chooseBuyModel.moneyPay = (this.chooseBuyModel.financeTotalMoney * (1 + Number(this.DataSet.productRate) * 0.01) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
+        this.chooseBuyModel.moneyPay = (this.chooseBuyModel.financeTotalMoney * (1 + Number(this.DataSet.productRate) * 0.01*this.$dict.getDictName(this.chooseBuyModel.periods)) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
       }
     }
     /**
@@ -469,7 +471,7 @@
      */
     choosefinalCash() {
       // 尾付总额（尾款本金+尾付利息）
-      this.chooseBuyModel.finalCash = (Number(this.chooseBuyModel.finalprincipal) * (1 + Number(this.DataSet.finalCash) * 0.01)).toFixed(2)
+      this.chooseBuyModel.finalCash = (Number(this.chooseBuyModel.finalprincipal) * (1 + Number(this.DataSet.finalCash) * 0.01)*this.$dict.getDictName(this.chooseBuyModel.periods)).toFixed(2)
     }
     /**
      * 添加车辆信息
@@ -500,6 +502,7 @@
     created() {
       // 获取公司名称
       this.companyService.getAllCompany().subscribe(val => {
+          console.log(val,'val')
         this.companyObject = val
       })
       this.carColumns = [{

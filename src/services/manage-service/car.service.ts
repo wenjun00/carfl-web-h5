@@ -19,11 +19,13 @@ export class CarService {
   /**
    * 查询车辆系列下所有车辆
    */
-  findAllCarBySeries({ seriesId }) {
+  findAllCarBySeries({ seriesId, brandId, carId }) {
     return this.netService.send({
       server: manageService.carController.findAllCarBySeries,
       data: {
-        seriesId: seriesId
+        seriesId: seriesId,
+        brandId : brandId,
+        carId : carId
       }
     })
   }

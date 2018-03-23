@@ -55,10 +55,10 @@
               </i-form-item>
               <i-form-item label="在我司是否成功购车" prop="isBuyCar">
                 <!--<i-input type="text"></i-input>-->
-                <RadioGroup v-model="customerOriginModel.isBuyCar">
-                  <Radio :label="0" :value="0">是</Radio>
-                  <Radio :label="1" :value="1">否</Radio>
-                </RadioGroup>
+                <i-radio-group v-model="customerOriginModel.isBuyCar">
+                  <i-radio :label="0" :value="0" :key="0">是</i-radio>
+                  <i-radio :label="1" :value="1" :key="1">否</i-radio>
+                </i-radio-group>
               </i-form-item>
             </i-form>
           </div>
@@ -106,11 +106,6 @@
     private OriginModel: any = {
       resourceType: [], // 来源
     }
-    // private customerOriginModel: any = {
-    //   customerName: '', // 客户姓名
-    //   customerPhone: '', // 联系方式
-    //   isBuyCar: '', // 在我司是否成功购车
-    // };
     private company: any = {
       identity: "",
       year: "",
@@ -126,7 +121,6 @@
     private ischecked: any = '';
     private isTrue: Boolean = false;
     private isShow: Boolean = false;
-    private isBuyCar: String = '是';
     private disabled: Boolean = false;
 
     resetRadio(){

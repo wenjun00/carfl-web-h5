@@ -9,6 +9,7 @@ declare module 'vue/types/vue' {
     $city: any
     $filter: any
     $validate: any
+    $validator: any
     $Message: any
     $Modal: any
   }

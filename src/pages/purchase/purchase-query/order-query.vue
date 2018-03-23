@@ -110,8 +110,11 @@
     FilterService
   } from "~/utils/filter.service";
   import {
+    State,
+    namespace,
     Mutation
   } from "vuex-class";
+  const ModuleMutation = namespace('purchase', Mutation)
   @Layout("workspace")
   @Component({
     components: {
@@ -128,6 +131,7 @@
     private productOrderService: ProductOrderService;
     @Dependencies(PersonalService) private personalService: PersonalService;
     @Dependencies(PageService) private pageService: PageService;
+    @ModuleMutation('collectionRowData') collectionRowData
     private queryColumns: any;
     @Mutation openPage;
     private columns2: any;
@@ -161,6 +165,9 @@
     }
     cancel() {
       this.modal2 = false;
+    }
+    activated () {
+      this.getOrderQuery()
     }
     created() {
       this.getOrderQuery();
@@ -260,6 +267,7 @@
                             title: "提示",
                             content: "确认申请收款吗？",
                             onOk: () => {
+                             this.collectionRowData(row)
                               this.openPage({
                                 title: "销售收款申请",
                                 path: "purchase/finance-account/sale-gathering-apply"
@@ -305,6 +313,7 @@
                             title: "提示",
                             content: "确认申请收款吗？",
                             onOk: () => {
+                              this.collectionRowData(row)
                               this.openPage({
                                 title: "销售收款申请",
                                 path: "purchase/finance-account/sale-gathering-apply"

@@ -2,9 +2,13 @@ export default {
   namespaced: true,
   state: {
     productId: '',
-    paymentRecordFlag:''
+    paymentRecordFlag:'',
+    collectiondata:''
   },
   mutations: {
+      collectionRowData(state,data){
+          state.collectiondata=data
+      },
     updateProductId(state, id) {
       state.productId = id
     },
