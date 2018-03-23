@@ -103,6 +103,7 @@ export default class SaleGatheringApply extends Page {
   @Dependencies(WithdrawApplicationService)
   private withdrawApplicationService: WithdrawApplicationService;
   @ModuleMutation updatePaymentRecord
+  @ModuleMutation collectionRowData
   private applyData: any = {
     idCard: "",
     customerName: "",

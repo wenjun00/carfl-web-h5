@@ -139,8 +139,8 @@
             <i-row>
               <i-checkbox label="长期" :value="14" :checked.sync="single" @on-change="ValidityPeriodChange">长期</i-checkbox>
             </i-row>
-            <i-row v-show="customerMaterialsForm.idCardValidityPeriodType === 15">
-              <i-input type="text" placeholder="有效期截止日期" v-model="customerMaterialsForm.idCardValidityPeriodSection">
+            <i-row>
+              <i-input type="text" placeholder="有效期截止日期" v-model="customerMaterialsForm.idCardValidityPeriodSection" :readonly="customerMaterialsForm.idCardValidityPeriodType===14">
               </i-input>
             </i-row>
           </i-form-item>
@@ -196,12 +196,14 @@
           <i-form-item label="本市生活时长" prop="cityLiveTime">
             <i-input type="text" placeholder="请输入本市生活时长" v-model="customerMaterialsForm.cityLiveTime">
             </i-input>
+            <span style="position:absolute;left:300px">年</span>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="现居住地生活时长" prop="localLiveTime">
             <i-input type="text" placeholder="请输入现居住地生活时长" v-model="customerMaterialsForm.localLiveTime">
             </i-input>
+            <span style="position:absolute;left:300px">年</span>
           </i-form-item>
         </i-col>
       </i-row>
@@ -399,6 +401,7 @@
         message: '请输入手机号码',
         trigger: 'blur',
       }],
+      mobileMinor:[{ validator: this.$validator.phoneNumber, trigger: "blur" }],
       education: [{
         required: true,
         message: '请选择教育程度',

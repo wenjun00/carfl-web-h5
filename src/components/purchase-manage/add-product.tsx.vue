@@ -17,7 +17,7 @@
           </i-col>
           <i-col span="22" style="overflow:auto">
             <div style="margin-left:50px;font-size:16px;margin-bottom:10px"><span style="margin-right:200px;"><span style="color:#ccc">产品名称：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].title:''):''}}</span>
-              <span><span style="color:#ccc">资金渠道：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].capitaChannels:''):''}}</span>
+              <span><span style="color:#ccc">资金渠道：</span>{{productDataModel?(productDataModel[0]?$dict.getDictName(productDataModel[0].capitaChannels):''):''}}</span>
             </div>
             <div style="margin-bottom:20px;margin-left:50px;font-size:16px"><span style="color:#ccc">产品序号：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].productNumber:''):''}}</div>
             <div style="position:relative;bottom:10px;padding-left:10px">
@@ -90,6 +90,10 @@
     productPlanissue(productPlanissueData) {}
     @Emit('close')
     close() {}
+    
+    activited(){
+      this.treeList()  
+    }
 
     created() {
       this.treeList()

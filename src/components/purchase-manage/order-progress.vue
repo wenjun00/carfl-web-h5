@@ -1,7 +1,7 @@
 <template>
   <div class="component order-progress">
     <i-row style="margin-top:20px">
-      <Steps :current="stepList.length" size="small" status="error" style="width:100%">
+      <Steps :current="progressData.length" size="small" status="error" style="width:100%">
         <Step v-for="item in stepList" :key="item.id" :title="item.processName" :content="$dict.getDictName(item.approvalStatus)"></Step>
       </Steps>
       <i-table :columns="progressColumns" :data="progressData" :page="pageService" @page-change="updateData(page)" :height="400"

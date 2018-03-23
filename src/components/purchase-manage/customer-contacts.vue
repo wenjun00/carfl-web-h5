@@ -129,7 +129,8 @@
         required: true,
         message: "电话不能为空",
         trigger: "blur"
-      }],
+      },
+      { validator: this.$validator.phoneNumber, trigger: "blur" }],
     }
     // private othercontactsModel: any = {
     //   relation: '',

@@ -21,7 +21,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="客户姓名" prop="name">
-              <i-input type="text" v-model="applyData.name" placeholder="请输入客户姓名" @on-blur="ReverseData">
+              <i-input type="text" :maxlength="13" v-model="applyData.name" placeholder="请输入客户姓名" @on-blur="ReverseData">
               </i-input>
             </i-form-item>
           </i-col>
@@ -137,8 +137,9 @@
         required: true,
         message: '请输入证件号码',
         trigger: 'blur',
-      }],
-      name: [{
+      },
+      { validator: this.$validator.idCard, trigger: "blur" }],
+      name: [{  
         required: true,
         message: '请输入客户姓名',
         trigger: 'blur',
@@ -147,7 +148,8 @@
         required: true,
         message: '请输入客户电话',
         trigger: 'blur',
-      }],
+      },
+       { validator: this.$validator.phoneNumber, trigger: "blur" }],
       salesmanName: [{
         required: true,
         message: '请输入归属业务员',
@@ -195,7 +197,8 @@
         onOk: () => {
           let resetData: any = this.$refs['customer-form'];
           resetData.resetFields();
-          this.resethistory()
+          this.resethistory();
+          this.disabledStatus=''
         },
         onCancel: () => {
           this.$Message.info('取消成功！');

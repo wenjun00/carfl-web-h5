@@ -80,7 +80,10 @@
     private treeId: any;
     private multipleSelection: any = [];
     private treeDatas: any = [];
-    private vv:any=1
+    private vv:any=1;
+    private seriesId:any='';
+    private brandId:any='';
+    private carId:any='';
 
     @Emit('distributionData')
     distributionData(multipleSelection) {}
@@ -254,16 +257,18 @@
      */
     cartreeChange(data) {
       if (data[0].seriesId) {
-        this.treeId = data[0].seriesId;
+        this.seriesId= data[0].seriesId;
       }
       if (data[0].brandId) {
-        this.treeId = data[0].brandId;
+        this.brandId = data[0].brandId;
       }
       if (data[0].carId) {
-        this.treeId = data[0].carId;
+        this.carId = data[0].carId;
       }
       this.carService.findAllCarBySeries({
-        seriesId: this.treeId
+        seriesId: this.seriesId,
+        brandId: this.brandId,
+        carId: this.carId
       }).subscribe(
         data => {
           this.carDataModel = data;
