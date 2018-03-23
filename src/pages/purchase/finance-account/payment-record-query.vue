@@ -151,14 +151,14 @@
         }
       }, {
         title: '申请状态',
-        key: 'processStatus',
+        key: 'applicationStatus',
         align: 'center',
         render: (h, {
           row,
           column,
           index
         }) => {
-          return h("span", {}, this.$dict.getDictName(row.processStatus));
+          return h("span", {}, this.$dict.getDictName(row.applicationStatus));
         }
       }, {
         title: '付款客户名',
