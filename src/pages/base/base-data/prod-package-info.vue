@@ -17,11 +17,11 @@
         </div>
       </div>
     </i-row>
-    <data-box :id="91" :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService"></data-box>
+    <data-box :id="91" :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService" ></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:10px">
         <i-col :span="24" style="text-align:right;">
-          <i-button  @click="pPackageModel=true" class="highButton">新增审批原因</i-button>
+          <i-button  @click="pPackageModel=true" class="highButton">新增产品包</i-button>
         </i-col>
       </i-row>
     </div>

@@ -16,6 +16,7 @@ export class ApplyQueryService {
       data: {}
     })
   }
+  @Debounce()
   addCarQueryData() {
     return this.netService.send({
       server: businessService.applyQueryController.addCarQueryData,

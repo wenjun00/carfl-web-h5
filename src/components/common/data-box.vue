@@ -279,6 +279,8 @@ export default class DataBox extends Vue {
 .data-box {
   & > * {
     padding: 10px;
+    /*height:600px;*/
+    /*overflow: auto;*/
   }
 }
 
@@ -288,4 +290,8 @@ export default class DataBox extends Vue {
     width: 78px;
   }
 }
+  /*.table{*/
+    /*height:600px;*/
+    /*overflow: auto;*/
+  /*}*/
 </style>

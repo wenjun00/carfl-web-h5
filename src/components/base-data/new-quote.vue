@@ -195,104 +195,125 @@
     private brandList: any = []; // 品牌
     private SeriesList: any = []; // 系列
     private carList: any = []; // 型号
-    private rulesQuote: any = {
-      quotationName: [{
-        required: true,
-        message: '请输入经销商',
-        trigger: 'blur',
-      }],
-      productPackageId: [{
-        required: true,
-        message: '请输入产品包',
-        trigger: 'change',
-        type: 'number',
-      }],
-      carBrandId: [{
-        required: true,
-        message: '请输入品牌',
-        trigger: 'change',
-        type: 'number',
-      }],
-      carId: [{
-        required: true,
-        message: '请输入车型',
-        trigger: 'change',
-        type: 'number',
-      }],
-      carSeriesName: [{
-        required: true,
-        message: '请输入车系',
-        trigger: 'change',
-        type: 'number',
-      }],
-      carColor: [{
-        required: true,
-        message: '请输入颜色',
-        trigger: 'blur',
-      }],
-      marketGuidingPrice: [{
-        required: true,
-        message: '请输入市场指导价',
-        trigger: 'blur',
-      }],
-      monthPay: [{
-        required: true,
-        message: '请输入租金',
-        trigger: 'blur',
-      }],
-      dealerGuidingPrice: [{
-        required: true,
-        message: '请输入经销商报价',
-        trigger: 'blur',
-      }],
-      purchaseTaxMoney: [{
-        required: true,
-        message: '请输入购置税',
-        trigger: 'blur',
-      }],
-      firstPayment: [{
-        required: true,
-        message: '请输入首期金额',
-        trigger: 'blur',
-      }],
-      roadBridgeFee: [{
-        required: true,
-        message: '请输入路桥费',
-        trigger: 'blur',
-      }],
-      financeAmount: [{
-        required: true,
-        message: '请输入融资金额',
-        trigger: 'blur',
-      }],
-      annualAmount: [{
-        required: true,
-        message: '请输入保险费',
-        trigger: 'blur',
-      }],
-      periods: [{
-        required: true,
-        message: '请输入融资期数',
-        trigger: 'blur',
-      }],
-      gpsFee: [{
-        required: true,
-        message: '请输入GPS费',
-        trigger: 'blur',
-      }],
-      status: [{
-        required: true,
-        message: '请选择是否启用',
-        trigger: 'change',
-        type: 'number',
-      }],
-    };
+    private rulesQuote: Object = {};
     private check: Boolean = true;
 
     @Emit('seachBusiness')
     seachBusiness() {}
-
     created() {
+      this.rulesQuote = {
+        quotationName: [{
+          required: true,
+          message: '请输入经销商',
+          trigger: 'blur',
+        }],
+        productPackageId: [{
+          required: true,
+          message: '请输入产品包',
+          trigger: 'change',
+          type: 'number',
+        }],
+        carBrandId: [{
+          required: true,
+          message: '请输入品牌',
+          trigger: 'change',
+          type: 'number',
+        }],
+        carId: [{
+          required: true,
+          message: '请输入车型',
+          trigger: 'change',
+          type: 'number',
+        }],
+        carSeriesName: [{
+          required: true,
+          message: '请输入车系',
+          trigger: 'change',
+          type: 'number',
+        }],
+        carColor: [{
+          required: true,
+          message: '请输入颜色',
+          trigger: 'blur',
+        }],
+        marketGuidingPrice: [{
+          required: true,
+          message: '请输入市场指导价',
+          trigger: 'blur',
+        },
+          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+        ],
+        monthPay: [{
+          required: true,
+          message: '请输入租金',
+          trigger: 'blur',
+        },
+          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+        ],
+        dealerGuidingPrice: [{
+          required: true,
+          message: '请输入经销商报价',
+          trigger: 'blur',
+        },
+          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+        ],
+        purchaseTaxMoney: [{
+          required: true,
+          message: '请输入购置税',
+          trigger: 'blur',
+        },
+          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+        ],
+        firstPayment: [{
+          required: true,
+          message: '请输入首期金额',
+          trigger: 'blur',
+        },
+          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+        ],
+        roadBridgeFee: [{
+          required: true,
+          message: '请输入路桥费',
+          trigger: 'blur',
+        },
+          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+        ],
+        financeAmount: [{
+          required: true,
+          message: '请输入融资金额',
+          trigger: 'blur',
+        },
+          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+        ],
+        annualAmount: [{
+          required: true,
+          message: '请输入保险费',
+          trigger: 'blur',
+        },
+          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+        ],
+        periods: [{
+          required: true,
+          message: '请输入融资期数',
+          trigger: 'blur',
+        },
+          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+        ],
+        gpsFee: [{
+          required: true,
+          message: '请输入GPS费',
+          trigger: 'blur',
+        },
+          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+        ],
+        otherFee:[{ pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur'}],
+        status: [{
+          required: true,
+          message: '请选择是否启用',
+          trigger: 'change',
+          type: 'number',
+        }],
+      };
       // 获取品牌
       this.carService.getAllBrand().subscribe(
         data => {

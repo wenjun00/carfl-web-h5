@@ -60,7 +60,7 @@
     </div> -->
     <!--新增报价-->
     <div class="submitBar">
-      <i-row type="flex" align="middle">
+      <i-row type="flex" align="middle" style="padding:10px">
         <i-col :span="24" style="text-align:right;">
           <i-button @click="addquoteFun" class="highButton">新增报价</i-button>
         </i-col>
