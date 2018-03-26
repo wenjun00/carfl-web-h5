@@ -405,7 +405,7 @@ export default class MyApproval extends Page {
         align: "center",
         title: "订单创建时间",
         editable: true,
-        width: 135,        
+        width: 135,
         key: "createTime",
         render: (h, { row, column, index }) => {
           return h(
@@ -419,7 +419,7 @@ export default class MyApproval extends Page {
         title: "领取时间",
         editable: true,
         key: "receiveDate",
-        width: 135,                
+        width: 135,
         render: (h, { row, column, index }) => {
           return h(
             "span",
@@ -431,7 +431,7 @@ export default class MyApproval extends Page {
         align: "center",
         title: "处理时间",
         editable: true,
-        width: 135,                
+        width: 135,
         key: "approvalDate",
         render: (h, { row, column, index }) => {
           return h(
@@ -483,14 +483,14 @@ export default class MyApproval extends Page {
         align: "center",
         editable: true,
         title: "证件号码",
-        width: 115,                
+        width: 115,
         key: "idCard"
       },
       {
         align: "center",
         editable: true,
         title: "手机号",
-        width: 85,                        
+        width: 85,
         key: "mobileMain"
       }
     ];
@@ -572,6 +572,9 @@ export default class MyApproval extends Page {
    */
   meetConditionPassCancel() {
     this.meetConditionApproval = false;
+    this.passModel.remark = ''
+    this.passModel.contractDate = ''
+    this.passModel.effectiveType = 1160
   }
   /**
    * 合规通过确定
@@ -588,6 +591,9 @@ export default class MyApproval extends Page {
         this.meetConditionApproval = false;
         this.approveModal = false;
         this.getMyOrderList();
+        this.passModel.remark = ''
+        this.passModel.contractDate = ''
+        this.passModel.effectiveType = 1160
       },
       ({ msg }) => {
         this.$Message.error(msg);
@@ -857,7 +863,10 @@ export default class MyApproval extends Page {
     this.myOrderModel.timeSearch = "";
   }
   activated () {
-    this.getMyOrderList()  
+    this.getMyOrderList()
+  }
+  mounted(){
+    this.getMyOrderList()
   }
 }
 </script>

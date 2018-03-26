@@ -18,20 +18,20 @@
       </i-button>
     </i-row>
     <i-row v-if="searchOptions" style="margin:6px;position;relative;right:16px;">
-      <i-select placeholder="全部状态" style="margin-left:20px;width:10%" v-model="approvalRecordModel.type" @on-change="changeSelectOne">
+      <i-select placeholder="全部状态" style="margin-left:20px;width:10%" v-model="approvalRecordModel.type" @on-change="changeSelectOne" clearable>
         <i-option label="通过" :value="0" :key="0"></i-option>
         <i-option label="退件" :value="374" :key="374"></i-option>
         <i-option label="拒绝" :value="375" :key="375"></i-option>
       </i-select>
-      <i-select placeholder="通过类型" v-if="passSelect" style="margin-left:20px;width:12%" v-model="approvalRecordModel.second">
+      <i-select placeholder="通过类型" v-if="passSelect" style="margin-left:20px;width:12%" v-model="approvalRecordModel.second" clearable>
         <i-option label="通过" :key="310" :value="310"></i-option>
         <i-option label="提交内审/通过" :key="321" :value="321"></i-option>
         <i-option label="灰名单/通过" :key="322" :value="322"></i-option>
       </i-select>
-      <i-select placeholder="全部拒单原因" v-if="!passSelect" style="margin-left:20px;width:12%;display:inline-block" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
+      <i-select placeholder="全部拒单原因" v-if="!passSelect" style="margin-left:20px;width:12%;display:inline-block" v-model="approvalRecordModel.second" @on-change="changeSelectTwo" clearable>
         <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
       </i-select>
-      <i-select placeholder="全部拒单细节" v-if="!passSelect" style="margin-left:20px;width:12%;display:inline-block" v-model="approvalRecordModel.detail">
+      <i-select placeholder="全部拒单细节" v-if="!passSelect" style="margin-left:20px;width:12%;display:inline-block" v-model="approvalRecordModel.detail" clearable>
         <i-option v-for="item in refuseDetail" :key="item.detail" :label="item.detail" :value="item.detail"></i-option>
       </i-select>
       <span style="margin-left:10px;">日期：</span>
@@ -191,60 +191,60 @@ export default class ApprovalRecordTable extends Page {
           return h("span", {}, this.$dict.getDictName(row.approveStatus));
         }
       },
-      {
-        align: "center",
-        editable: true,
-        title: "是否提车",
-        key: "isDeliveryCar"
-        // ,
-        // render: (h, {
-        //   row,
-        //   columns,
-        //   index
-        // }) => {
-        //   if (row.approvalStatus === '拒绝') {
-        //     return h('Tooltip', {
-        //       props: {
-        //         content: row.content
-        //       },
-        //     }, [h('span', {}, row.isDeliveryCar),
-        //       h('Icon', {
-        //         props: {
-        //           type: 'ios-information',
-        //           size: '20',
-        //           color: '#F9435D'
-        //         },
-        //         style: {
-        //           position: 'relative',
-        //           top: '2px',
-        //           left: '6px',
-        //           cursor: 'pointer'
-        //         }
-        //       })
-        //     ])
-        //   } else {
-        //     return h('Tooltip', {
-        //       props: {
-        //         content: row.content
-        //       },
-        //     }, [h('span', {}, row.isDeliveryCar),
-        //       h('Icon', {
-        //         props: {
-        //           type: 'ios-information',
-        //           size: '20',
-        //           color: '#666666'
-        //         },
-        //         style: {
-        //           position: 'relative',
-        //           top: '2px',
-        //           left: '6px',
-        //           cursor: 'pointer'
-        //         }
-        //       })
-        //     ])
-        //   }
-        // }
-      },
+      // {
+      //   align: "center",
+      //   editable: true,
+      //   title: "是否提车",
+      //   key: "isDeliveryCar"
+      //   ,
+      //   render: (h, {
+      //     row,
+      //     columns,
+      //     index
+      //   }) => {
+      //     if (row.approvalStatus === '拒绝') {
+      //       return h('Tooltip', {
+      //         props: {
+      //           content: row.content
+      //         },
+      //       }, [h('span', {}, row.isDeliveryCar),
+      //         h('Icon', {
+      //           props: {
+      //             type: 'ios-information',
+      //             size: '20',
+      //             color: '#F9435D'
+      //           },
+      //           style: {
+      //             position: 'relative',
+      //             top: '2px',
+      //             left: '6px',
+      //             cursor: 'pointer'
+      //           }
+      //         })
+      //       ])
+      //     } else {
+      //       return h('Tooltip', {
+      //         props: {
+      //           content: row.content
+      //         },
+      //       }, [h('span', {}, row.isDeliveryCar),
+      //         h('Icon', {
+      //           props: {
+      //             type: 'ios-information',
+      //             size: '20',
+      //             color: '#666666'
+      //           },
+      //           style: {
+      //             position: 'relative',
+      //             top: '2px',
+      //             left: '6px',
+      //             cursor: 'pointer'
+      //           }
+      //         })
+      //       ])
+      //     }
+      //   }
+      // },
       {
         align: "center",
         editable: true,

@@ -23,7 +23,7 @@
       </data-grid-item>
       <data-grid-item label="期数" :span="2">
         <template>
-          <div>{{repaySumObj.productOrder?repaySumObj.productOrder.periods:''}}</div>
+          <div>{{repaySumObj.productOrder?$dict.getDictName(repaySumObj.productOrder.periods):''}}</div>
         </template>
       </data-grid-item>
       <data-grid-item label="利率%/月" :span="2">
@@ -64,7 +64,7 @@
         <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltyReceived:0}}</td>
         <td>剩余罚息</td>
         <td>
-          <span style="text-decoration:line-through;margin-right:6px">{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltyReceivable:0}}</span>
+          <span style="text-decoration:line-through;margin-right:6px">{{repaySumObj.paymentSchedule?(repaySumObj.paymentSchedule.penaltyFreeze + repaySumObj.paymentSchedule.interestDerate):0}}</span>
           <span style="color:red;">{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltySurplus:''}}</span>
         </td>
       </tr>

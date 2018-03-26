@@ -3,10 +3,10 @@
   <section class="component register">
     <i-form :label-width="70" ref="register-form" :model="registerModel" class="register-form" label-position="left" :rules="rules">
       <i-form-item label="用户名" prop="userUsername">
-        <i-input v-model="registerModel.userUsername" style="width:80%;" :maxlength="50" @on-blur="checkUserName"></i-input>
+        <i-input v-model="registerModel.userUsername" style="width:80%;" :maxlength="20" @on-blur="checkUserName"></i-input>
       </i-form-item>
       <i-form-item label="姓名" prop="userRealname">
-        <i-input v-model="registerModel.userRealname" style="width:80%;" :maxlength="8"></i-input>
+        <i-input v-model="registerModel.userRealname" style="width:80%;" :maxlength="20" @on-blur="checkRealname"></i-input>
       </i-form-item>
       <i-form-item label="电话" prop="userPhone">
         <i-input v-model="registerModel.userPhone" style="width:80%;" :maxlength="11"  @on-blur="checkUserPhone"></i-input>
@@ -100,11 +100,21 @@ export default class Register extends Vue {
     // }
   }
   /**
+   * 检查姓名
+   */
+  checkRealname() {
+    if (this.registerModel.userRealname.length < 6 || !(/^[A-Za-z\u4e00-\u9fa5]+$/).test(this.registerModel.userRealname.toString())) {
+      this.$Message.error("姓名为6到20位汉字或者与英文组合,请重新输入！");
+      this.registerModel.userRealname = "";
+      return false;
+    }
+  }
+  /**
    * 检查用户名
    */
-  checkUserName() {
-    if (this.registerModel.userUsername.length < 6 || (/[\u4e00-\u9fa5]+/).test(this.registerModel.userUsername.toString())) {
-      this.$Message.error("用户名长度为6到50位且不能为汉字,请重新输入！");
+  checkUserName(){
+    if (this.registerModel.userUsername.length < 6 || !(/^[0-9a-zA-Z]+$/).test(this.registerModel.userUsername.toString())) {
+      this.$Message.error("用户名为6到20位英文或者与数字组合,请重新输入！");
       this.registerModel.userUsername = "";
       return false;
     }
@@ -124,7 +134,7 @@ export default class Register extends Vue {
    */
   checkUserPhone(){
     if(!((/^1(3|4|5|7|8)\d{9}$/).test(this.registerModel.userPhone.toString()))){
-      this.$Message.error("手机号码为11位且不能为汉字以及特殊字符,请重新输入！");
+      this.$Message.error("手机号码为11位数字,请重新输入！");
       this.registerModel.userPhone = "";
       return false;
     }
