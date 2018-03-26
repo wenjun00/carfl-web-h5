@@ -101,13 +101,13 @@
   </section>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
   import Page from "~/core/page";
   import Component from "vue-class-component";
   import {
     Dependencies
   } from "~/core/decorator";
-  import ChooseBuyMaterials from "~/components/purchase-manage/choose-buy-materials.vue";
+  import ChooseBuyMaterials from "~/components/purchase-manage/choose-buy-materials.tsx.vue";
   import CustomerMaterials from "~/components/purchase-manage/customer-materials.vue";
   import CustomerJobMessage from "~/components/purchase-manage/customer-job-message.vue";
   import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
@@ -526,10 +526,10 @@
                         return
                       }
                 
-                      if (customerOrigin.OriginModel.resourceType.length === 0) {
-                        this.$Message.warning('请完善客户来源信息');
-                        return
-                      }
+                    //   if (customerOrigin.OriginModel.resourceType.length === 0) {
+                    //     this.$Message.warning('请完善客户来源信息');
+                    //     return
+                    //   }
                       let resourceType = Array.from(new Set(customerOrigin.OriginModel.resourceType))
                       //   customerJobMessage.job.accessCompanyTime = FilterService.dateFormat(customerJobMessage.job.accessCompanyTime,
                       //     'yyyy-MM')

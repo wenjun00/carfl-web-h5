@@ -32,12 +32,12 @@
     <div>
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
       <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
-      <span style="margin-left:155px;font-weight:bold">总价</span><span style="margin-left:340px;font-weight:bold;">{{totalPrice}}</span>
+      <span style="margin-left:155px;font-weight:bold">总价</span><span style="margin-left:325px;font-weight:bold;">{{totalPrice}}</span>
     </div>
     <!--添加车辆弹框-->
     <template>
       <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="1200" v-model="editCarModal" :trandfer="false" class="add-car">
-        <add-car :addOpen="addOpen"  @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
+        <add-car ref="add-car" :addOpen="addOpen"  @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
       </i-modal>
     </template>
   </section>
@@ -191,6 +191,28 @@
           title: '单价（元）',
           key: 'carAmount',
           align: 'center',
+           render: (h, {
+              row,
+              column,
+              index
+            }) => {
+       let removeHandle = (ss) => {
+            let ssf:any=ss.target.value
+              this.addcarData[index].carAmount = ssf
+              let patt1:any = /[0-9]+/;
+              if(!patt1.test(ssf)){
+                  ss.target.value=0
+                  this.addcarData[index].carAmount = ssf
+              }
+             let sum:any=0;
+             this.addcarData.forEach(v=>{
+                    sum=sum+(Number(v.carAmount)||0)
+                }); 
+            this.totalPrice=sum
+            };
+            return ( 
+                <i-input style="width:80px" onOn-blur={removeHandle} value={row.carAmount}> </i-input>);
+            }
         }, {
           title: '数量',
           key: 'carNumber',
@@ -207,9 +229,10 @@
                   ss.target.value=0
                   this.addcarData[index].carNumber = ss.target.value
               }
+              console.log(this.addcarData,'addcarData')
             };
             return ( 
-                <i-input style="width:80px" onOn-blur={removeHandle} value={row.carNumber}> </i-input>);
+                <i-input index={index} style="width:80px" onOn-blur={removeHandle} value={row.carNumber}> </i-input>);
             }
         },{
             title: '车牌号码',
@@ -226,6 +249,10 @@
         this.addOpen=true
         this.addOrEditFlag = true
         this.editCarModal = true
+        // 清空添加车辆信息
+        let addcarRefresh:any=this.$refs['add-car']
+        addcarRefresh.getCarseries()
+        addcarRefresh.resetcarDataModel()
       }
       distributionData(data) {
         data.vehicleColour = data.map(v => v.carColour)

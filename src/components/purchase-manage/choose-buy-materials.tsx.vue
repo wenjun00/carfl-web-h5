@@ -86,7 +86,7 @@
     <div>
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
       <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
-      <span style="margin-left:115px;font-weight:bold">总价</span><span style="margin-left:340px;font-weight:bold;">{{totalPrice}}</span>
+      <span style="margin-left:115px;font-weight:bold">总价</span><span style="margin-left:328px;font-weight:bold;">{{totalPrice}}</span>
     </div>
     <i-col span="24" style="line-height:30px;margin-top:20px;" class="form-title">
       <span>产品信息</span>
@@ -263,7 +263,7 @@
 
     <template>
       <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="80" v-model="editCarModal" :trandfer="false" class="add-car">
-        <add-car :addOpen="addOpen" @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
+        <add-car ref="add-car" :addOpen="addOpen" @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
       </i-modal>
     </template>
 
@@ -289,6 +289,10 @@
   import { CompanyService } from "~/services/manage-service/company.service";
   import { Prop } from "vue-property-decorator";
   import { Emit } from "vue-property-decorator";
+  import {
+    Input,
+    Button
+  } from "iview";
   const ModuleMutation = namespace('purchase', Mutation)
   @Component({
     components: {
@@ -356,16 +360,24 @@
       GpsMoney: 0
     };
     private rulesdata: any = {
-      // financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
+      prdSeriods: [{ required: true, message: '请输入产品系列', trigger: 'blur' }],
+      name:[{ required: true, message: '请输入产品名称', trigger: 'blur' }],
+      periods:[{ required: true, message: '请输入产品期数', trigger: 'blur',type:'number' }],
+      prdInterestRate:[{ required: true, message: '请输入产品利率', trigger: 'blur',type:'number' }],
+      payWay:[{ required: true, message: '请输入还款方式', trigger: 'blur',type:'number' }],
+      vehicleAmount:[{ required: true, message: '请输入还款方式', trigger: 'blur',type:'number' }],
     };
     private rules: any = {
-      intentionPeriods: [{ required: true, message: '请输入意向期限', trigger: 'blur', type:'number' }],
+      intentionPeriods: [{ required: true, message: '请输入意向期限', trigger: 'change', type:'number' }],
       province: [{ required: true, message: '请选择申请省份', trigger: 'change', type: 'number' }],
       city: [{ required: true, message: '请选择申请城市', trigger: 'change', type: 'number'}],
       orderServiceList: [{ required: true, message: '请选择自缴费用', trigger: 'change', type: 'array' }],
       financingUse: [{ required: true, message: '请输入融资租赁用途', trigger: 'blur' }],
       financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
-      intentionPaymentRatio: [{ pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }]
+      intentionPaymentRatio: [{ required: true, message: '请输入意向首付比例', trigger: 'blur' },
+                              { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
+      intentionFinancingAmount:[{ required: true, message: '请输入意向融资金额', trigger: 'blur' },
+                                { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }]
     };
 
     @Prop()
@@ -579,31 +591,28 @@
           title: '单价（元）',
           key: 'carAmount',
           align: 'center',
-          //   render: (h, {
-          //     row,
-          //     column,
-          //     index
-          //   }) => {
-          //     return h("div", [
-          //       h(
-          //         "i-input", {
-          //           props: {
-          //             type: "text"
-          //           },
-          //           style: {
-          //             color: "#265EA2"
-          //           },
-          //           on: {
-          //             click: () => {
-          //               console.log(row, 88777)
-          //               this.totalPrice = this.totalPrice + row.carAmount
-          //             }
-          //           }
-          //         },
-          //         "carAmount"
-          //       ),
-          //     ]);
-          //   }
+            render: (h, {
+              row,
+              column,
+              index
+            }) => {
+       let removeHandle = (ss) => {
+            let ssf:any=ss.target.value
+              this.addcarData[index].carAmount = ssf
+              let patt1:any = /[0-9]+/;
+              if(!patt1.test(ssf)){
+                  ss.target.value=0
+                  this.addcarData[index].carAmount = ssf
+              }
+             let sum:any=0;
+             this.addcarData.forEach(v=>{
+                    sum=sum+(Number(v.carAmount)||0)
+                }); 
+            this.totalPrice=sum
+            };
+            return ( 
+                <i-input style="width:80px" onOn-blur={removeHandle} value={row.carAmount}> </i-input>);
+            }
         }, {
           title: '车辆配置',
           key: 'vehicleConfiguration',
@@ -640,6 +649,10 @@
       this.addOpen=true
       this.addOrEditFlag = true
       this.editCarModal = true
+      // 清空添加车辆信息
+      let addcarRefresh:any=this.$refs['add-car']
+      addcarRefresh.getCarseries()
+      addcarRefresh.resetcarDataModel()
     }
     confirmAndBack() {
       this.editCarModal = false

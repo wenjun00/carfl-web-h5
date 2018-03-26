@@ -230,6 +230,9 @@
     showCategory() {
       this.isShown = !this.isShown;
     }
+    /**
+     * 清空车辆信息列表
+     */
     resetcarDataModel(){
         this.carDataModel=[]
     }
@@ -240,7 +243,7 @@
       this.multipleSelection = this.$refs['databox'];
       this.multipleSelection = this.multipleSelection.data;
       if (this.multipleSelection === undefined) {
-        this.$Message.warning
+        this.$Message.warning('请选择车辆！')
         return
       } else {
         if (this.rowData) {
@@ -250,6 +253,7 @@
           this.multipleSelection = [];
         }
         this.close();
+        this.getCarseries()
       }
     }
     /**
@@ -331,7 +335,8 @@
       this.treeData = [{
         title: "所有品牌",
         expand: true,
-        children: this.treeDatas
+        children: this.treeDatas,
+
       }];
     }
   }

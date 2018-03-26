@@ -135,7 +135,7 @@
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
-          <i-form-item label="身份证有效期">
+          <i-form-item label="身份证有效期" prop="idCardValidityPeriodSection">
             <i-row>
               <i-checkbox label="长期" :value="14" :checked.sync="single" @on-change="ValidityPeriodChange">长期</i-checkbox>
             </i-row>
@@ -390,12 +390,12 @@
          message: '请输入1~9位数字',
          trigger: 'blur' 
       }],
-      //   birthTime: [{
-      //     required: true,
-      //     message: '请选择出生日期',
-      //     trigger: 'change',
-      //     type: 'date'
-      //   }],
+        birthTime: [{
+          required: true,
+          message: '请选择出生日期',
+          trigger: 'change',
+          type: 'date'
+        }],
       mobileMain: [{
         required: true,
         message: '请输入手机号码',
@@ -408,11 +408,26 @@
         trigger: 'change',
         type: 'number'
       }],
-      school: [{
+      idCard: [{
         required: true,
-        message: '请输入毕业院校',
+        message: '请输入身份证号码',
         trigger: 'blur',
       }],
+      idCardAddressDetail:[{
+        required: true,
+        message: '请输入身份证地址',
+        trigger: 'blur',
+      }],
+    //   idCardValidityPeriodSection:[{
+    //     required: true,
+    //     message: '请输入身份证有效期',
+    //     trigger: 'blur',
+    //   }],
+    localHomeAddrDetail:[{
+        required: true,
+        message: '请输入现居住地址',
+        trigger: 'blur',
+    }],
       marital: [{
         required: true,
         message: '请选择婚姻状况',
