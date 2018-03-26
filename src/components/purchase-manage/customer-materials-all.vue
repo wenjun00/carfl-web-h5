@@ -118,7 +118,8 @@
       certificateType: [{
         required: true,
         message: '请输入证件类型',
-        trigger: 'blur',
+        trigger: 'change',
+        type:'number'
       }],
       idCardAddressDetail: [{
         required: true,

@@ -88,6 +88,7 @@ import { State, Mutation, namespace } from "vuex-class";
 import UploadTheFodder from "~/components/purchase-manage/upload-the-fodder.vue";
 import GatherDetail from "~/components/purchase-manage/gather-detail.vue";
 import { WithdrawApplicationService } from "~/services/manage-service/withdraw-application.service";
+ const ModuleState = namespace('purchase', State)
  const ModuleMutation = namespace('purchase', Mutation)
 @Layout("workspace")
 @Component({
@@ -103,7 +104,7 @@ export default class SaleGatheringApply extends Page {
   @Dependencies(WithdrawApplicationService)
   private withdrawApplicationService: WithdrawApplicationService;
   @ModuleMutation updatePaymentRecord
-  @ModuleMutation collectionRowData
+  @ModuleState collectiondata
   private applyData: any = {
     idCard: "",
     customerName: "",
@@ -148,6 +149,13 @@ export default class SaleGatheringApply extends Page {
     totalPayment: 0
   };
   private saveDraftDisabled: Boolean = false;
+  mounted () {
+      if(this.$store.state.pageList.find(v=>v.title==='销售收款申请').flag){
+          console.log(this.collectiondata)
+         this.applyData=this.collectiondata
+         this.showTab()
+      }
+  }
 
   created() {
     this.applyPerson = this.$store.state.userData.username;

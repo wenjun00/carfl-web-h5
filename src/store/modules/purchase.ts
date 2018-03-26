@@ -3,7 +3,7 @@ export default {
   state: {
     productId: '',
     paymentRecordFlag:'',
-    collectiondata:''
+    collectiondata:{}
   },
   mutations: {
       collectionRowData(state,data){

@@ -3,13 +3,13 @@
   <section class="page receipt-record-query">
     <span class="form-title">收款记录查询</span>
     <span style="margin-left:10px">申请日期：</span>
-    <i-date-picker v-model="receiptModel.startTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
-    <i-date-picker v-model="receiptModel.endTime" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
+    <i-date-picker v-model="receiptModel.queryStartDate" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
+    <i-date-picker v-model="receiptModel.queryEndDate" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
     <i-input placeholder="请录入订单编号" style="display:inline-block;width:10%;margin-left:10px;" v-model="receiptModel.orderNumber"></i-input>
-    <i-select placeholder="全部收款类型" style="width:10%;margin-left:10px;" v-model="receiptModel.applicationType">
-      <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
+    <i-select placeholder="全部收款类型" style="width:10%;margin-left:10px;" v-model="receiptModel.applicationType" clearable>
+      <i-option v-for="{value,label} in $dict.getDictData('0101')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
-    <i-select placeholder="申请状态" style="width:10%;margin-left:10px;" v-model="receiptModel.approvalStatus">
+    <i-select placeholder="申请状态" style="width:10%;margin-left:10px;" v-model="receiptModel.approvalStatus" clearable>
       <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
     <i-checkbox style="margin-left:10px;" v-model="status">包含已归档订单</i-checkbox>
@@ -84,8 +84,8 @@
     private checkApplyModal: Boolean = false;
     private status: Boolean = false;
     private receiptModel: any = {
-      startTime: '',
-      endTime: '',
+      queryStartDate: '',
+      queryEndDate: '',
       applicationType: '', // 收款类型
       approvalStatus: '', // 申请状态
       orderNumber: '' // 订单编号
@@ -228,11 +228,11 @@
       } else {
         this.receiptModel.isInclude = 0
       }
-      this.receiptModel.startTime = FilterService.dateFormat(
-        this.receiptModel.startTime
+      this.receiptModel.queryStartDate = FilterService.dateFormat(
+        this.receiptModel.queryStartDate
       );
-      this.receiptModel.endTime = FilterService.dateFormat(
-        this.receiptModel.endTime
+      this.receiptModel.queryEndDate = FilterService.dateFormat(
+        this.receiptModel.queryEndDate
       );
       this.withdrawApplicationService
         .getGatheringApprovalList(this.receiptModel, this.pageService)

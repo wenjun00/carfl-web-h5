@@ -160,7 +160,8 @@
       this.modal2 = false;
       this.openPage({
         title: "融资租赁申请",
-        path: "purchase/purchase-manage/financing-lease-apply"
+        path: "purchase/purchase-manage/financing-lease-apply",
+        flag: true
       });
     }
     cancel() {
@@ -270,7 +271,8 @@
                              this.collectionRowData(row)
                               this.openPage({
                                 title: "销售收款申请",
-                                path: "purchase/finance-account/sale-gathering-apply"
+                                path: "purchase/finance-account/sale-gathering-apply",
+                                flag: true
                               });
                             }
                           });
@@ -316,7 +318,8 @@
                               this.collectionRowData(row)
                               this.openPage({
                                 title: "销售收款申请",
-                                path: "purchase/finance-account/sale-gathering-apply"
+                                path: "purchase/finance-account/sale-gathering-apply",
+                                flag: true
                               });
                             }
                           });
@@ -569,12 +572,10 @@
     }
     getOrderQuery() {
       this.approvalModel.startTime = FilterService.dateFormat(
-        this.approvalModel.startTime,
-        "yyyy-MM-dd"
+        this.approvalModel.startTime
       );
       this.approvalModel.endTime = FilterService.dateFormat(
-        this.approvalModel.endTime,
-        "yyyy-MM-dd"
+        this.approvalModel.endTime
       );
       this.productOrderService
         .orderSearch(this.approvalModel, this.pageService)
