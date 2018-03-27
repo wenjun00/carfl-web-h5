@@ -208,6 +208,18 @@
      * 根据客户三项查询历史订单
      */
     checkcustomerinfo() {
+        console.log(this.customerModel.idCard)
+        let idcard:any=this.customerModel.idCard
+        if(parseInt(idcard.substr(16, 1)) % 2 == 1){
+            this.customerModel.sex=1
+            this.ReverseData()
+        }else{
+            this.customerModel.sex=2
+            this.ReverseData()
+        }
+        // this.customerModel.birthTime=idcard.substring(6, 10) + "-" + idcard.substring(10, 12) + "-" + idcard.substring(12, 14)
+        // this.customerModel.birthTime=FilterService.dateFormat(this.customerModel.birthTime, 'yyyy-MM-dd')
+        // this.ReverseData()
       this.customerModel.name = ''
       this.customerModel.mobileMain = ''
       this.customerModel.salesmanName = ''
