@@ -68,7 +68,7 @@
         </i-col>
         <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
           <i-button class="highDefaultButton" @click="saveDraft" :disabled="saveDraftDisabled">保存草稿</i-button>
-          <i-button class="highButton" @click="saveAndCommit" :disabled="hasorder">保存并提交</i-button>
+          <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
         </i-col>
       </i-row>
     </div>
@@ -155,7 +155,6 @@
       remark: "" // 备注
     };
     private saveDraftDisabled: Boolean = false;
-    private hasorder:Boolean=false;
     private msg:any=''
 
     created() {
@@ -254,6 +253,16 @@
       this.saveDraftModel.totalPayment = totalPayment ?
         totalPayment.itemMoney :
         0;
+
+  let _uploadFodder:any = this.$refs['upload-the-fodder']
+    this.saveDraftModel.financeUploadResources=_uploadFodder.fodderList.map(v=>{
+        return {
+            materialUrl:v.response.url,
+            // type:v.response.type,
+            // name:v.name,
+            // id:v.response.id
+        }
+    })
     }
     /**
      * 保存草稿

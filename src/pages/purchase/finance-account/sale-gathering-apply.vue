@@ -149,6 +149,7 @@ export default class SaleGatheringApply extends Page {
     totalPayment: 0
   };
   private saveDraftDisabled: Boolean = false;
+  private msg:any='';
   mounted () {
       if(this.$store.state.pageList.find(v=>v.title==='销售收款申请').flag){
           console.log(this.collectiondata)
@@ -320,6 +321,10 @@ export default class SaleGatheringApply extends Page {
    * 保存并提交
    */
   saveAndCommit() {
+       if(this.msg==='该订单已有一个未处理的提前结清申请'){
+            this.$Message.warning('请先审批未处理的申请订单！')
+            return false
+        }
     this.getSaveModel();
     if (this.applyData.orderId) {
       let saveAndCommitModel = this.saveDraftModel;
@@ -393,7 +398,12 @@ export default class SaleGatheringApply extends Page {
           _gatherDetail.makeList(data);
           let _uploadMaterial: any = this.$refs["upload-the-fodder"];
           _uploadMaterial.makeList(data);
-        });
+        },({
+              msg
+            }) => {
+              this.$Message.error(msg);
+              this.msg=msg
+            });
     }
   }
   /**

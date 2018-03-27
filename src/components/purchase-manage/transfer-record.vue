@@ -6,7 +6,7 @@
       <span>{{customerName}}</span>
       <div style="float:right;display:inline-block;margin-right:10px;">
         <span>订单编号：</span>
-        <span>{{orderNumber}}</span>
+        <span>{{orderId}}</span>
       </div>
     </div>
     <i-table :columns="columns1" :data="transferrecordDataSet"></i-table>

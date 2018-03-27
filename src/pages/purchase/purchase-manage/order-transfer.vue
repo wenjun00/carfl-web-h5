@@ -78,7 +78,7 @@
     <!--转交记录-->
     <template>
       <i-modal title="转交记录" v-model="transferRecordModal" class-name="no-footer">
-        <transfer-record ref="transfer" :customerName="customerName" :orderId="orderId"></transfer-record>
+        <transfer-record ref="transfer" :customerName="customerName" :orderId="orderNumber"></transfer-record>
       </i-modal>
     </template>
   </section>
@@ -141,6 +141,7 @@ export default class OrderTransfer extends Page {
   };
   private mulipleSelection: any = [];
   private currentRowuserId: any = null;
+  private orderNumber:any='';
 
   activated() {}
   created() {
@@ -284,7 +285,7 @@ export default class OrderTransfer extends Page {
         render: (h, { row, columns, index }) => {
           return h(
             "span",
-            FilterService.dateFormat(row.createTime, "yyyy-MM-dd")
+            FilterService.dateFormat(row.createTime, "yyyy-MM-dd hh:mm:ss")
           );
         }
       },
@@ -536,6 +537,7 @@ export default class OrderTransfer extends Page {
   transferRecord(row) {
     this.customerName = row.personalName;
     this.orderId = row.orderId;
+    this.orderNumber=row.orderNumber;
     let _transfer: any = this.$refs["transfer"];
     _transfer.refreshData(row.orderId);
   }

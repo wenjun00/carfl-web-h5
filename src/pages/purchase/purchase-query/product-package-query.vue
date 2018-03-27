@@ -76,6 +76,7 @@
   import {
     FilterService
   } from '~/utils/filter.service';
+  import { CommonService } from "~/utils/common.service";
 
   @Layout('workspace')
   @Component({
@@ -128,6 +129,7 @@
                         })
                         .subscribe(
                           val => {
+                            CommonService.downloadFile(val,'产品包下载')
                             this.$Message.success('下载成功！');
                           },
                           ({
