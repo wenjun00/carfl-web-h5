@@ -92,6 +92,9 @@
         this.fodderList = data.applicationPhaseResources;
       }
     }
+    reset(){
+        this.fodderList=[]
+    }
 
     uploadFile() {
       this.openUpload = true;

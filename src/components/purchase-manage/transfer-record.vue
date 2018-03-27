@@ -6,7 +6,7 @@
       <span>{{customerName}}</span>
       <div style="float:right;display:inline-block;margin-right:10px;">
         <span>订单编号：</span>
-        <span>{{orderId}}</span>
+        <span>{{orderNumber}}</span>
       </div>
     </div>
     <i-table :columns="columns1" :data="transferrecordDataSet"></i-table>
@@ -69,7 +69,7 @@ export default class TransferRecord extends Vue {
         render: (h, { row, columns, index }) => {
           return h(
             "span",
-            FilterService.dateFormat(row.handoverDate, "yyyy-MM-dd")
+            FilterService.dateFormat(row.handoverDate, "yyyy-MM-dd hh:mm:ss")
           );
         }
       },

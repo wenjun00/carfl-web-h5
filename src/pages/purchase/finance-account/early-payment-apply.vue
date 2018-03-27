@@ -53,7 +53,7 @@
         <gather-detail-early-pay :checkOrderId="checkOrderId" ref="gather-detail-early-pay"></gather-detail-early-pay>
       </i-tab-pane>
       <i-tab-pane name="upload-the-fodder" label="上传素材">
-        <upload-the-fodder></upload-the-fodder>
+        <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
       </i-tab-pane>
     </i-tabs>
     <div class="shade" :style="{display:disabledStatus}">
@@ -68,7 +68,7 @@
         </i-col>
         <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
           <i-button class="highDefaultButton" @click="saveDraft" :disabled="saveDraftDisabled">保存草稿</i-button>
-          <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
+          <i-button class="highButton" @click="saveAndCommit" :disabled="hasorder">保存并提交</i-button>
         </i-col>
       </i-row>
     </div>
@@ -155,6 +155,8 @@
       remark: "" // 备注
     };
     private saveDraftDisabled: Boolean = false;
+    private hasorder:Boolean=false;
+    private msg:any=''
 
     created() {
       this.applyPerson = this.$store.state.userData.username;
@@ -201,6 +203,7 @@
               msg
             }) => {
               this.$Message.error(msg);
+              this.msg=msg
             }
           );
       }
@@ -274,6 +277,10 @@
      * 保存并提交
      */
     saveAndCommit() {
+        if(this.msg==='该订单已有一个未处理的提前结清申请'){
+            this.$Message.warning('请先审批未处理的申请订单！')
+            return false
+        }
       this.getModel();
       let saveAndCommitModel = this.saveDraftModel;
       this.withdrawApplicationService
@@ -353,6 +360,8 @@
       this.applyData.orderId = "";
       let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
       _gatherDetail.resetTable();
+      let _uploadthefodder:any=this.$refs['upload-the-fodder']
+      _uploadthefodder.reset()
     }
   }
 

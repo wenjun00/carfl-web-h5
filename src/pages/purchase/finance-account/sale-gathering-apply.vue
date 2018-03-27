@@ -233,7 +233,15 @@ export default class SaleGatheringApply extends Page {
      * 获取上传素材信息start
      */
     let _uploadFodder = this.$refs['upload-the-fodder'] as UploadTheFodder
-    let uploadList = _uploadFodder.getUploadItem()
+    this.saveDraftModel.financeUploadResources=_uploadFodder.fodderList.map(v=>{
+        return {
+            materialUrl:v.response.url,
+            // type:v.response.type,
+            // name:v.name,
+            // id:v.response.id
+        }
+    })
+    console.log(_uploadFodder,'_uploadFodder')
     /**
      * 获取上传素材信息end
      */
@@ -323,6 +331,7 @@ export default class SaleGatheringApply extends Page {
             this.updatePaymentRecord(new Date())
             this.$Message.success("保存并提交成功！");
             this.saveDraftDisabled = true;
+            this.resetAll()
           },
           ({ msg }) => {
             this.$Message.error(msg);

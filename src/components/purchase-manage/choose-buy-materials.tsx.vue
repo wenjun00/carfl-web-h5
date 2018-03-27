@@ -365,7 +365,16 @@
       periods:[{ required: true, message: '请输入产品期数', trigger: 'blur',type:'number' }],
       prdInterestRate:[{ required: true, message: '请输入产品利率', trigger: 'blur',type:'number' }],
       payWay:[{ required: true, message: '请输入还款方式', trigger: 'blur',type:'number' }],
-      vehicleAmount:[{ required: true, message: '请输入还款方式', trigger: 'blur',type:'number' }],
+      vehicleAmount:[{ required: true, message: '请输入车辆参考总价', trigger: 'blur' },
+                     { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
+      finalprincipal:[{ required: true, message: '请输入尾付本金', trigger: 'blur' },
+                      { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
+      financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
+      moneyPay:[{ required: true, message: '请输入月供金额', trigger: 'blur' }],
+      initialPayment:[{ required: true, message: '请输入首付金额', trigger: 'blur' }],
+      depositCash:[{ required: true, message: '请输入保证金金额', trigger: 'blur' }],
+      finalCash:[{ required: true, message: '请输入尾付总额', trigger: 'blur' }],
+      manageCost:[{ required: true, message: '请输入管理费', trigger: 'blur' }],
     };
     private rules: any = {
       intentionPeriods: [{ required: true, message: '请输入意向期限', trigger: 'change', type:'number' }],
@@ -373,7 +382,6 @@
       city: [{ required: true, message: '请选择申请城市', trigger: 'change', type: 'number'}],
       orderServiceList: [{ required: true, message: '请选择自缴费用', trigger: 'change', type: 'array' }],
       financingUse: [{ required: true, message: '请输入融资租赁用途', trigger: 'blur' }],
-      financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
       intentionPaymentRatio: [{ required: true, message: '请输入意向首付比例', trigger: 'blur' },
                               { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
       intentionFinancingAmount:[{ required: true, message: '请输入意向融资金额', trigger: 'blur' },
@@ -403,6 +411,8 @@
       console.log('reverse')
       data.orderServiceList = data.orderServices.map(v => v.service)
       data.intentionPeriods = Number(data.intentionPeriods)
+      data.intentionPaymentRatio=data.intentionPaymentRatio.toString()
+      data.intentionFinancingAmount=data.intentionFinancingAmount.toString()
       this.chooseBuyModel = data
     }
     /**
@@ -411,7 +421,8 @@
     getFinanceTotalMoney() {
       if(this.chooseBuyModel.vehicleAmount&&this.chooseBuyModel.finalprincipal&&this.chooseBuyModel.initialPayment){
         this.chooseBuyModel.financeTotalMoney = (Number(this.chooseBuyModel.vehicleAmount) - Number(this.chooseBuyModel.finalprincipal) - Number(this.chooseBuyModel.initialPayment)).toFixed(2)
-      } else {
+        this.chooseBuyModel.financeTotalMoney.toString()
+    } else {
         this.chooseBuyModel.financeTotalMoney = ''
       }
       this.chooseBuyModel.deposit = ''
@@ -419,8 +430,9 @@
       this.chooseBuyModel.moneyPay = ''
       //   月供金额
       if(this.chooseBuyModel.financeTotalMoney) {
-        this.chooseBuyModel.moneyPay = (this.chooseBuyModel.financeTotalMoney * (1 + Number(this.DataSet.productRate) * 0.01*this.$dict.getDictName(this.chooseBuyModel.periods)) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
-      }
+        this.chooseBuyModel.moneyPay = (Number(this.chooseBuyModel.financeTotalMoney) * (1 + Number(this.DataSet.productRate) * 0.01*this.$dict.getDictName(this.chooseBuyModel.periods)) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
+        this.chooseBuyModel.moneyPay.toString()
+    }
     }
     /**
      * 管理费
@@ -429,7 +441,8 @@
       // 管理费=融资总额*管理费率
       if(this.chooseBuyModel.financeTotalMoney&&this.chooseBuyModel.manageData){
         this.chooseBuyModel.manageCost = (Number(this.chooseBuyModel.financeTotalMoney) * (Number(this.chooseBuyModel.manageData) * 0.01)).toFixed(2)
-      } else {
+        this.chooseBuyModel.manageCost.toString()
+    } else {
         this.chooseBuyModel.manageCost = ''
       }
       this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel))
@@ -461,7 +474,8 @@
       // 首付金额=车辆参考总价*首付比例
       if(this.chooseBuyModel.Payment !== '' && this.chooseBuyModel.vehicleAmount){
         this.chooseBuyModel.initialPayment = ((Number(this.chooseBuyModel.vehicleAmount)) * (Number(this.chooseBuyModel.Payment) * 0.01)).toFixed(2)
-      } else {
+        this.chooseBuyModel.initialPayment.toString()
+    } else {
         this.chooseBuyModel.initialPayment = ''
       }
       this.getFinanceTotalMoney()      
@@ -473,6 +487,7 @@
       // 保证金金额=融资总额*保证金比例
       if(this.chooseBuyModel.deposit !== '' && this.chooseBuyModel.financeTotalMoney){
         this.chooseBuyModel.depositCash = (Number(this.chooseBuyModel.financeTotalMoney) * Number(this.chooseBuyModel.deposit) * 0.01).toFixed(2)
+        this.chooseBuyModel.depositCash.toString()
       } else {
         this.chooseBuyModel.depositCash = ''
       }
@@ -484,7 +499,8 @@
     choosefinalCash() {
       // 尾付总额（尾款本金+尾付利息）
       this.chooseBuyModel.finalCash = (Number(this.chooseBuyModel.finalprincipal) * (1 + Number(this.DataSet.finalCash) * 0.01)*this.$dict.getDictName(this.chooseBuyModel.periods)).toFixed(2)
-    }
+      this.chooseBuyModel.finalCash.toString()
+}
     /**
      * 添加车辆信息
      */
@@ -686,7 +702,7 @@
       this.chooseBuyModel.GpsMoney = data.GpsMoney
       this.chooseBuyModel.otherFee = data.otherFee
       this.chooseBuyModel.remark = data.remark
-      this.chooseBuyModel.vehicleAmount = this.totalPrice
+      this.chooseBuyModel.vehicleAmount = this.totalPrice.toString()
       this.chooseBuyModel.seriesId = productDataModel.seriesId
     }
     productPlanissue(data) {
