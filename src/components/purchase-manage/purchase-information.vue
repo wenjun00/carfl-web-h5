@@ -197,7 +197,7 @@
           <td bgColor="#F5F5F5">职级</td>
           <td>{{$dict.getDictName(personalJobInfo.rank)}}</td>
           <td bgColor="#F5F5F5">单位地址</td>
-          <td>{{personalJobInfo.companyAddress}}</td>
+          <td>{{personalJobInfo.companyAddressDetail}}</td>
         </tr>
         <tr>
         </tr>

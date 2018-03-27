@@ -103,8 +103,8 @@ export default class Register extends Vue {
    * 检查姓名
    */
   checkRealname() {
-    if (this.registerModel.userRealname.length < 6 || !(/^[A-Za-z\u4e00-\u9fa5]+$/).test(this.registerModel.userRealname.toString())) {
-      this.$Message.error("姓名为6到20位汉字或者与英文组合,请重新输入！");
+    if (!(/^[A-Za-z\u4e00-\u9fa5]+$/).test(this.registerModel.userRealname.toString())) {
+      this.$Message.error("姓名汉字或者与英文组合,请重新输入！");
       this.registerModel.userRealname = "";
       return false;
     }

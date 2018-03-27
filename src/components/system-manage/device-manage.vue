@@ -24,6 +24,7 @@ export default class DeviceManage extends Vue {
   private columns1: any;
   private deviceList: Array<any> = [];
   private userName: String = "";
+  private id:any = '';
   mounted() {}
   created() {
     this.columns1 = [
@@ -155,13 +156,14 @@ export default class DeviceManage extends Vue {
   }
   makeData(row) {
     this.userName = row.userUsername;
+    this.id = row.id
     this.getDeviceList();
   }
   getDeviceList() {
-    let userId = this.$store.state.userData.id;
+    // let userId = this.$store.state.userData.id;
     this.loginService
       .getUserDevice({
-        userId: userId
+        userId: this.id
       })
       .subscribe(
         data => {

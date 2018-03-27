@@ -12,7 +12,7 @@
         </i-select>
       </i-form-item>
       <i-form-item label="备注" prop="roleRemark">
-        <i-input type="textarea" v-model="modifyModel.roleRemark"></i-input>
+        <i-input type="textarea" v-model="modifyModel.roleRemark" :maxlength="100"></i-input>
       </i-form-item>
     </i-form>
   </section>
@@ -44,20 +44,7 @@
       roleRemark: ''
     }
 
-    created() {
-      // this.formRules = {
-      //   roleName: [
-      //     {required: true, message: '请输入角色名称', trigger: 'blur'},
-      //     {pattern: /^[a-zA-Z\d\u4e00-\u9fa5]/g, message: '请不要输入特殊字符', trigger: 'blur'}
-      //   ],
-      //   roleStatus: [
-      //     {required: true, message: '请选择状态', trigger: 'blur'},
-      //   ],
-      //   roleRemark: [
-      //     {required: true, message: '请输入备注', trigger: 'blur'},
-      //   ],
-      // }
-    }
+    created() {}
 
     makeData(row) {
       this.modifyModel.id = row.id

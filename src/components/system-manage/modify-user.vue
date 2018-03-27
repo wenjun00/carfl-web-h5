@@ -71,7 +71,7 @@
         </i-col>
         <i-col :span="24">
           <i-form-item label="备注" prop="userRemark">
-            <i-input type="textarea" v-model="modifyModel.userRemark"></i-input>
+            <i-input type="textarea" v-model="modifyModel.userRemark" :maxlength="100"></i-input>
           </i-form-item>
         </i-col>
       </i-row>

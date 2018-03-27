@@ -5,7 +5,7 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="用户名" prop="userUsername">
-            <i-input v-model="addUserModel.userUsername" :maxlength="50" @on-blur="checkUserName"></i-input>
+            <i-input v-model="addUserModel.userUsername" :maxlength="50"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -67,7 +67,7 @@
         </i-col>
         <i-col :span="24">
           <i-form-item label="备注" prop="userRemark">
-            <i-input type="textarea" v-model="addUserModel.userRemark"></i-input>
+            <i-input type="textarea" v-model="addUserModel.userRemark" :maxlength="100"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -125,14 +125,20 @@
           required: true,
           message: "用户名不能为空",
           trigger: "blur"
-        }],
+        },
+          {
+            message: "用户名为6到50位英文数字组合",
+            trigger: "blur",
+            pattern: /^[0-9a-zA-Z]{6,50}$/
+          }
+        ],
         userRealname: [{
             required: true,
             message: "姓名不能为空",
             trigger: "blur"
           },
           {
-            message: "请输入汉字或英文字母",
+            message: "姓名为汉字或英文",
             trigger: "blur",
             pattern: /^([\u4e00-\u9fa5]+|([a-zA-Z]+\s?)+)$/
           }
@@ -173,16 +179,16 @@
         }]
       };
     }
-    /**
-     * 检查用户名长度
-     */
-    checkUserName() {
-      if (this.addUserModel.userUsername.length < 6) {
-        this.$Message.error("用户名长度为6到50位,请重新输入！");
-        this.addUserModel.userUsername = "";
-        return;
-      }
-    }
+    // /**
+    //  * 检查用户名长度
+    //  */
+    // checkUserName() {
+    //   if (this.addUserModel.userUsername.length < 6) {
+    //     this.$Message.error("用户名长度为6到50位,请重新输入！");
+    //     this.addUserModel.userUsername = "";
+    //     return;
+    //   }
+    // }
     makeData(obj) {
       this.addUserModel.deptName = obj.deptName;
       this.addUserModel.companyName = obj.companyName;
