@@ -232,7 +232,7 @@ export default class SaleGatheringApply extends Page {
     /**
      * 获取上传素材信息start
      */
-    let _uploadFodder = this.$refs['upload-the-fodder'] as UploadTheFodder
+    let _uploadFodder:any = this.$refs['upload-the-fodder']
     this.saveDraftModel.financeUploadResources=_uploadFodder.fodderList.map(v=>{
         return {
             materialUrl:v.response.url,
