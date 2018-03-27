@@ -27,15 +27,19 @@
       <i-modal v-model="modifyPwdModal" title="修改密码">
         <i-form :label-width="110">
           <i-form-item label="请输入原密码">
-            <i-input></i-input>
+            <i-input type="password" v-model="repairModel.name1"></i-input>
           </i-form-item>
           <i-form-item label="请输入新密码">
-            <i-input></i-input>
+            <i-input type="password" v-model="repairModel.name2"></i-input>
           </i-form-item>
           <i-form-item label="确认新密码">
-            <i-input></i-input>
+            <i-input type="password" v-model="repairModel.name3"></i-input>
           </i-form-item>
         </i-form>
+        <template slot="footer">
+          <i-button @click="workCancel">取消</i-button>
+          <i-button @click="workRole" class="blueButton">确定</i-button>
+        </template>
       </i-modal>
     </template>
   </div>
@@ -58,6 +62,11 @@ import { LoginService } from "~/services/manage-service/login.service";
 })
 export default class WorkHeader extends Vue {
   @Dependencies(LoginService) private loginService: LoginService;
+  private repairModel :any = {
+    name1:'',
+    name2:'',
+    name3:''
+  }
   private modifyPwdModal: Boolean = false;
   private loginPerson: String = "";
   private loginName: String = "";
@@ -85,6 +94,12 @@ export default class WorkHeader extends Vue {
         this.$router.push("/");
       }
     });
+  }
+  workCancel(){
+
+  }
+  workRole(){
+
   }
 }
 </script>

@@ -72,11 +72,11 @@ export default class DataBox extends Vue {
   // })
   // hideColumnsConfig: boolean; // 隐藏列配置
   // 表格高度
-  // @Prop({
-  //   type: [Boolean, Number],
-  //   default: 528
-  // })
-  // height: Number;
+  @Prop({
+    type: [Boolean, Number],
+    default: 550
+  })
+  height: Number;
 
   // tableID
   @Prop({
@@ -102,7 +102,7 @@ export default class DataBox extends Vue {
   getRowInfo(currentRow, oldRow) {}
 
   @Prop() width: Number;
-  @Prop() height: Number;
+  // @Prop() height: Number;
 
   private dialog = {
     dataBoxConfig: false
@@ -283,15 +283,10 @@ export default class DataBox extends Vue {
     /*overflow: auto;*/
   }
 }
-
 .pagination {
   .ivu-select,
   .ivu-select-single .ivu-select-selection {
     width: 78px;
   }
 }
-  /*.table{*/
-    /*height:600px;*/
-    /*overflow: auto;*/
-  /*}*/
 </style>

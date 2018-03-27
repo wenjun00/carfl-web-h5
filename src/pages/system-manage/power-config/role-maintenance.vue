@@ -380,8 +380,7 @@ export default class RoleMaintenance extends Page {
    */
   submitEditRole() {
     let modifyRole = <Modal>this.$refs["modify-role"];
-
-    modifyRole.updateRole();
+    modifyRole.changeRole();
   }
 
   /**
