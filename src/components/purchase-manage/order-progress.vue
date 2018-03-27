@@ -98,7 +98,7 @@
         {
           align: "center",
           title: "操作人",
-          key: "operator"
+          key: "operatorName"
         },
         {
           align: "center",

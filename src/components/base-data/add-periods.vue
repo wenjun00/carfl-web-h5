@@ -76,7 +76,7 @@
               <i-input v-model="formItems.initialPayment" style="width:80%;"></i-input>
             </i-form-item>
             <span style="color:red;margin-left:-30px;" class="after_text">%</span>
-            <span style="color:blue;" class="after_text">如果有多个则用分号隔开</span>
+            <span style="color:blue;" class="after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
       </data-grid>
@@ -100,7 +100,7 @@
                 <i-option :value="397">不退还</i-option>
               </i-select>
             </i-form-item>
-            <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
+            <span style="color:blue" class="after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
       </data-grid>
@@ -117,7 +117,7 @@
               <i-input v-model="formItems.finalCash"></i-input>
             </i-form-item>
             <span style="color:red" class="after_text">%</span>
-            <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
+            <span style="color:blue" class="after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
       </data-grid>
@@ -133,7 +133,7 @@
               <i-input v-model="formItems.manageCost"></i-input>
             </i-form-item>
             <span style="color:red" class="after_text">%</span>
-            <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
+            <span style="color:blue" class="after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
         <data-grid-item label="管理费收取方式" :span="12" v-if="manageMoneyParams==='有'">

@@ -8,7 +8,7 @@
       <data-grid-item label="创建时间" :span="6">{{row.createTime}}</data-grid-item>
       <data-grid-item label="归属公司" :span="6">{{row.companyName}}</data-grid-item>
 
-      <data-grid-item label="证件号码" :span="6">{{row.certificateNumber}}</data-grid-item>
+      <data-grid-item label="证件号码" :span="6">{{row.idCard}}</data-grid-item>
       <data-grid-item label="归属部门" :span="6">{{row.deptName}}</data-grid-item>
 
       <data-grid-item label="联系号码" :span="6">{{row.mobileNumber}}</data-grid-item>

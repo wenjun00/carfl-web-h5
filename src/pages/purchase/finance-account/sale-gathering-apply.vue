@@ -242,7 +242,6 @@ export default class SaleGatheringApply extends Page {
             // id:v.response.id
         }
     })
-    console.log(_uploadFodder,'_uploadFodder')
     /**
      * 获取上传素材信息end
      */
@@ -337,6 +336,7 @@ export default class SaleGatheringApply extends Page {
             this.$Message.success("保存并提交成功！");
             this.saveDraftDisabled = true;
             this.resetAll()
+            this.disabledStatus=''
           },
           ({ msg }) => {
             this.$Message.error(msg);
@@ -434,6 +434,9 @@ export default class SaleGatheringApply extends Page {
     this.applyData.orderId = "";
     let _gatherDetail: any = this.$refs["gather-detail"];
     _gatherDetail.resetTable();
+    let _uploadFodder:any = this.$refs['upload-the-fodder'];
+    _uploadFodder.reset()
+
   }
 }
 </script>
