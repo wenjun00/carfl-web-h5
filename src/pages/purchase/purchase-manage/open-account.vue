@@ -402,8 +402,9 @@
           align: "center"
         },
         {
+          title: "验卡失败原因",
           key: "faileReason",
-          // editable: true,
+          editable: true,
           width: 140,
           renderHeader: (h, {
             column,

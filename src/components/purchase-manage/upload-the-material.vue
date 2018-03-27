@@ -134,7 +134,6 @@
       this.$nextTick(() => {
         let fileUpload = this.$refs["file-upload"] as FileUpload;
         fileUpload.reset();
-        console.log(fileUpload.makeList(), 'fileUpload.makeList()')
         for (let item of fileUpload.makeList()) {
           this.dataList.push({
             name: item.name,

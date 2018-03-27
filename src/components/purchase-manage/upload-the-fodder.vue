@@ -13,7 +13,7 @@
         </div>
         <div v-for="item in fodderList" :key="item.uid">
           <div class="demo-upload-list" style="margin-left:10px;">
-            <img style="height:200px;width:200px;border:1px solid #dddddd;" :src="item.response.url">
+            <img style="height:200px;width:200px;border:1px solid #dddddd;" :src="item.url">
           </div>
           <div class="demo-upload-list-cover">
             <i-icon type="ios-trash-outline" size="18" @click.native="handleRemove(item)"></i-icon>
@@ -116,8 +116,21 @@
       this.$nextTick(() => {
         let fileUpload = this.$refs["file-upload"] as FileUpload;
         fileUpload.reset();
-
-        this.fodderList = fileUpload.makeList()
+        console.log(fileUpload.makeList(),'fileUpload.makeList()')
+   for (let item of fileUpload.makeList()) {
+          this.fodderList.push({
+            name: item.name,
+            uid: item.uid,
+            url: item.response.url,
+            localUrl: item.response.localUrl,
+            type: item.response.type,
+            id: item.response.id,
+            size: item.size,
+            status: item.status,
+            createTime: item.response.createTime
+          })
+        }
+        // this.fodderList = fileUpload.makeList()
       });
     }
     getUploadItem(){

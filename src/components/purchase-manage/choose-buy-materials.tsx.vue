@@ -145,7 +145,7 @@
         </i-col>
         <i-col span="12">
           <i-form-item label="尾付本金" prop="finalprincipal">
-            <i-input type="text" v-model="chooseBuyModel.finalprincipal" @on-change="finalprincipalChange">
+            <i-input type="text" v-model="chooseBuyModel.finalprincipal" @on-change="finalprincipalChange" :disabled="!chooseBuyModel.vehicleAmount">
             </i-input>
           </i-form-item>
         </i-col>
@@ -158,7 +158,7 @@
         <i-col span="12">
           <i-form-item label="首付金额" prop="initialPayment">
             <i-row>
-              <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment">
+              <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment" :disabled="!chooseBuyModel.vehicleAmount">
                 <i-option v-for="item in initialPaymentData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
               <i-input style="width:180px" type="text" v-model="chooseBuyModel.initialPayment" readonly>
@@ -169,7 +169,7 @@
         <i-col span="12" pull="3">
           <i-form-item label="保证金金额" prop="depositCash">
             <i-row>
-              <i-select style="width:140px" placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit">
+              <i-select style="width:140px" placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit" :disabled="!chooseBuyModel.vehicleAmount">
                 <i-option v-for="item in depositCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
               <i-input style="width:180px" v-model="chooseBuyModel.depositCash" readonly>
@@ -180,7 +180,7 @@
         <i-col span="12">
           <i-form-item label="尾付总额" prop="finalCash">
             <i-row>
-              <i-select style="width:140px" placeholder="请选择尾付总额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash">
+              <i-select style="width:140px" placeholder="请选择尾付总额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash" :disabled="!chooseBuyModel.finalprincipal">
                 <i-option v-for="item in finalCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
               <i-input style="width:180px" v-model="chooseBuyModel.finalCash" readonly>
@@ -191,7 +191,7 @@
         <i-col span="12" pull="3">
           <i-form-item label="管理费" prop="manageCost">
             <i-row>
-              <i-select style="width:140px" placeholder="请选择管理费比例" v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost">
+              <i-select style="width:140px" placeholder="请选择管理费比例" v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost" :disabled="!chooseBuyModel.vehicleAmount">
                 <i-option v-for="item in manageCostData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
               <i-input style="width:180px" v-model="chooseBuyModel.manageCost" readonly>
@@ -262,13 +262,13 @@
     </template>
 
     <template>
-      <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="80" v-model="editCarModal" :trandfer="false" class="add-car">
+      <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="80" v-model="editCarModal" :mask-closable="false" :trandfer="false" class="add-car">
         <add-car ref="add-car" :addOpen="addOpen" @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="addProductModal" title="添加产品" width="1000" class="add-car">
+      <i-modal v-model="addProductModal" :mask-closable="false" title="添加产品" width="1000" class="add-car">
         <add-product @currentRowData="currentRowData" @close="addProductModal=false" @productPlanissue="productPlanissue"></add-product>
       </i-modal>
     </template>
@@ -345,7 +345,7 @@
       deposit: '',
       final: '',
       manageData: '',
-      vehicleAmount: 0, // 车辆参考总价
+      vehicleAmount: '', // 车辆参考总价
       finalprincipal: '', // 尾付本金
       initialPayment: '', // 首付金额
       otherFee: 0, // 其他费用
