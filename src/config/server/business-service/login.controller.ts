@@ -12,7 +12,7 @@ export default {
     type: 'POST'
   },
   /**
-   * 用户登录
+   * 通过token获取用户信息
    */
   getUserByToken: {
     service: SERVICE,

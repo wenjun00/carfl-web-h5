@@ -1,4 +1,4 @@
-import { manageService } from '~/config/server'
+import {businessService, manageService} from '~/config/server'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import md5 from 'md5'
@@ -100,6 +100,15 @@ export class LoginService {
   logout() {
     return this.netService.send({
       server: manageService.loginController.logout
+    })
+  }
+  /**
+   * 修改密码
+   */
+  modifyPassword(data) {
+    return this.netService.send({
+      server: manageService.loginController.modifyPassword,
+      data:data
     })
   }
 }

@@ -75,5 +75,14 @@ export default {
     controller: CONTROLLER,
     action: 'logout',
     type: requestType.Post
+  },
+  /**
+   * 修改密码
+   */
+  modifyPassword: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'modifyPassword',
+    type: 'POST'
   }
 }

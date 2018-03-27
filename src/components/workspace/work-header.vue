@@ -54,6 +54,7 @@ import WorkMenu from "~/components/workspace/work-menu.vue";
 import WorkTheme from "~/components/workspace/work-theme.vue";
 import { Dependencies } from "~/core/decorator";
 import { LoginService } from "~/services/manage-service/login.service";
+import md5 from 'md5'
 @Component({
   components: {
     WorkMenu,
@@ -101,7 +102,23 @@ export default class WorkHeader extends Vue {
     _changePassword.resetFields();
   }
   workRole(){
-
+    if(this.repairModel.newPassword !== this.repairModel.newPasswordOne){
+      this.$Message.warning('两次密码输入不一致，请重新输入！')
+      return
+    }else{
+      this.loginService.modifyPassword({
+        newPassword:md5(this.repairModel.newPassword),
+        oldPassword:md5(this.repairModel.oldPassword)
+      })
+      .subscribe( data => {
+        this.modifyPwdModal = false;
+        let _changePassword: any = this.$refs["change-password"];
+        _changePassword.resetFields();
+        this.$Message.success('操作成功')
+      },({msg})=> {
+        this.$Message.error(msg)
+      })
+    }
   }
 }
 </script>

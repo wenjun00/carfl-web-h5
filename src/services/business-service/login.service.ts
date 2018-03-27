@@ -21,7 +21,7 @@ export class LoginService {
   }
 
   /**
-   * 登录
+   * 通过token获取用户信息
    */
   getUserByToken(token) {
     return this.netService.send({
