@@ -25,15 +25,15 @@
 
     <template>
       <i-modal v-model="modifyPwdModal" title="修改密码">
-        <i-form :label-width="110">
-          <i-form-item label="请输入原密码">
-            <i-input type="password" v-model="repairModel.name1"></i-input>
+        <i-form :label-width="110" ref="change-password" :model="repairModel">
+          <i-form-item label="请输入原密码" prop="oldPassword">
+            <i-input type="password" v-model="repairModel.oldPassword"></i-input>
           </i-form-item>
-          <i-form-item label="请输入新密码">
-            <i-input type="password" v-model="repairModel.name2"></i-input>
+          <i-form-item label="请输入新密码" prop="newPasswordOne">
+            <i-input type="password" v-model="repairModel.newPasswordOne"></i-input>
           </i-form-item>
-          <i-form-item label="确认新密码">
-            <i-input type="password" v-model="repairModel.name3"></i-input>
+          <i-form-item label="确认新密码" prop="newPassword">
+            <i-input type="password" v-model="repairModel.newPassword"></i-input>
           </i-form-item>
         </i-form>
         <template slot="footer">
@@ -63,9 +63,9 @@ import { LoginService } from "~/services/manage-service/login.service";
 export default class WorkHeader extends Vue {
   @Dependencies(LoginService) private loginService: LoginService;
   private repairModel :any = {
-    name1:'',
-    name2:'',
-    name3:''
+    newPassword:'',
+    oldPassword:'',
+    newPasswordOne:''
   }
   private modifyPwdModal: Boolean = false;
   private loginPerson: String = "";
@@ -96,7 +96,9 @@ export default class WorkHeader extends Vue {
     });
   }
   workCancel(){
-
+    this.modifyPwdModal = false;
+    let _changePassword: any = this.$refs["change-password"];
+    _changePassword.resetFields();
   }
   workRole(){
 
