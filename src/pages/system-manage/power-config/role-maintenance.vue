@@ -433,12 +433,11 @@ export default class RoleMaintenance extends Page {
     this.roleList.forEach(val=>{
       this.ids.push(val.id)
     })
-    // this.roleService.exportRole({
-    //   roleIds:this.ids
-    // }).subscribe( data => {
-    //   CommonService.downloadFile(data,'导出角色维护a')
-    // })
-    this.roleService.getOwnPropertyDescriptors()
+    this.roleService.exportRole({
+      roleIds:this.ids
+    }).subscribe( data => {
+      CommonService.downloadFile(data,'导出角色维护')
+    })
   }
 }
 </script>
