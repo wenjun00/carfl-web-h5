@@ -75,7 +75,7 @@
         <gather-detail-early-pay :checkOrderId="checkOrderId" :typeData="typeData" ref="gather-detail-early-pay"></gather-detail-early-pay>
       </i-tab-pane>
       <i-tab-pane name="upload-the-fodder" label="上传素材">
-        <upload-the-fodder></upload-the-fodder>
+        <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
       </i-tab-pane>
     </i-tabs>
     <div class="shade" :style="{display:disabledStatus}">
@@ -211,6 +211,7 @@
     private single: Boolean = false;
     private type: Boolean = false;
     private typeData: Boolean = true;
+    private msg:any='';
     private saveDraftModel: any = {
       addFinanceUploadResources: [], // 新增上传资料列表
       delFinanceUploadResources: [], // 删除上传资料Id列表
@@ -499,6 +500,8 @@
       this.applyData.orderId = "";
       let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
       _gatherDetail.resetTable();
+       let _uploadFodder:any = this.$refs['upload-the-fodder'];
+      _uploadFodder.reset()
     }
     showTab1() {
       if (this.applyData.idCard.length === 18) {
@@ -570,6 +573,7 @@
             ({
               msg
             }) => {
+              this.msg=msg
               this.$Message.error(msg);
             }
           );
@@ -578,10 +582,17 @@
     getgather() {
       let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
       let itemList = _gatherDetail.getItem();
-      console.log(itemList, 'itemList')
+      let _uploadthefodder:any=this.$refs['upload-the-fodder']
+      this.saveDraftModel.financeUploadResources=_uploadthefodder.fodderList.map(v=>{
+        return {
+            materialUrl:v.url,
+            // type:v.response.type,
+            // name:v.name,
+            // id:v.response.id
+        }
+    })
       this.saveDraftModel.otherFee = _gatherDetail.getOtherFee();
       this.saveDraftModel.remark = this.applyData.remark;
-      // console.log(itemList, "itemList");
       let surplusManageFee = itemList.find(
         v => v.itemName === "surplusManageFee"
       );
@@ -637,6 +648,10 @@
      * 保存并提交
      */
     saveAndCommit() {
+        if(this.msg==='该订单有为完成的提前收回申请'){
+            this.$Message.warning('请先审批未处理的申请订单！')
+            return false
+        }
       this.saveDraftModel.withdrawType = this.applyData.withdrawType
       let saveAndCommitModel = this.saveDraftModel;
       this.withdrawApplicationService

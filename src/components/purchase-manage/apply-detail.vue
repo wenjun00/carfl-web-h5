@@ -209,7 +209,14 @@ export default class ApplyDetail extends Vue {
       {
         title: "项目名称",
         key: "refundItem",
-        align: "center"
+        align: "center",
+            render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h("span", {}, this.$dict.getDictName(row.refundItem));
+          }
       },
       {
         title: "金额",
