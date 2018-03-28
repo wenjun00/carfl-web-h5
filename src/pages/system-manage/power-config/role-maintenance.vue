@@ -33,7 +33,7 @@
     </template>
 
     <template>
-      <i-modal  v-model="modulePowerModal" title="模块权限" width="600">
+      <i-modal v-model="modulePowerModal" title="模块权限" width="600">
         <module-power @close="modulePowerModal=false" ref="module-power" :roleId="currentRoleId"></module-power>
         <div slot="footer">
           <i-button @click="modulePowerModal=false">取消</i-button>
@@ -84,7 +84,7 @@ import SvgIcon from "~/components/common/svg-icon.vue";
 import { Dependencies } from "~/core/decorator";
 import { ManageService } from "~/services/manage-service/manage.service";
 import { OrderService } from "~/services/business-service/order.service";
-import { RoleService } from "~/services/role-service/role.service";
+import { RoleService } from "~/services/manage-service/role.service";
 import { BackLogService } from "~/services/manage-service/back-log.service";
 import { Layout } from "~/core/decorator";
 import { Modal } from "iview";
@@ -112,8 +112,8 @@ export default class RoleMaintenance extends Page {
   @Dependencies(BackLogService) private backLogService: BackLogService;
 
   private columns1: any;
-  private ids :any = [];
-  private roleList:any = [];
+  private ids: any = [];
+  private roleList: any = [];
   // private roleList: Array<Object> = [];
   private searchOptions: Boolean = false;
   private openCreateCompact: Boolean = false;
@@ -131,7 +131,7 @@ export default class RoleMaintenance extends Page {
 
   private rowIdFun: any = "";
   private roleId: Number = 0;
-  private currentRoleId:number|null = null
+  private currentRoleId: number | null = null;
   private roleModel = {
     roleName: "",
     roleStatus: "",
@@ -324,7 +324,7 @@ export default class RoleMaintenance extends Page {
       )
       .subscribe(
         data => {
-          console.log(data)
+          console.log(data);
           this.roleList = data;
         },
         ({ msg }) => {
@@ -391,8 +391,8 @@ export default class RoleMaintenance extends Page {
    * 显示模块权限
    */
   showModulePower(row) {
-    this.currentRoleId = row.id
-    this.modulePowerModal = true
+    this.currentRoleId = row.id;
+    this.modulePowerModal = true;
   }
 
   userList(row) {
@@ -429,15 +429,17 @@ export default class RoleMaintenance extends Page {
   /**
    * 导出角色维护
    */
-  exportRole(){
-    this.roleList.forEach(val=>{
-      this.ids.push(val.id)
-    })
-    this.roleService.exportRole({
-      roleIds:this.ids
-    }).subscribe( data => {
-      CommonService.downloadFile(data,'导出角色维护')
-    })
+  exportRole() {
+    this.roleList.forEach(val => {
+      this.ids.push(val.id);
+    });
+    this.roleService
+      .exportRole({
+        roleIds: this.ids
+      })
+      .subscribe(data => {
+        CommonService.downloadFile(data, "导出角色维护");
+      });
   }
 }
 </script>
