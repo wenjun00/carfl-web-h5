@@ -83,7 +83,7 @@ export default class ChangeGatherItem extends Vue {
       this.multipleSelection.forEach(v=>{
           sum=sum+(Number(v.itemMoney)||0)
       })
-      let totalPayment:any=sum
+      let totalPayment:any=sum.toFixed()
     //   let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
       let total = {
         itemMoney: totalPayment,

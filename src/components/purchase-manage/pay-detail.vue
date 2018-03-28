@@ -137,7 +137,7 @@
         this.gatherItemList.forEach(v=>{
             sum=sum+(Number(v.refundAmount)||0)
         }); // 获取合计
-        totalPayment=sum
+        totalPayment=sum.toFixed()
         let total = {
           refundItem: "合计（元）",
           refundAmount: totalPayment,

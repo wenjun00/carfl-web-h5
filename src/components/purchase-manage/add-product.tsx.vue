@@ -191,6 +191,9 @@
     showCategory() {
       this.isShown = !this.isShown
     }
+    resetcarData(){
+        this.carData=[]
+    }
     /**
      * 获取树形结构
      */

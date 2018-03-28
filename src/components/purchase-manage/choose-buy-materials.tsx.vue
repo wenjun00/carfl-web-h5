@@ -269,7 +269,7 @@
 
     <template>
       <i-modal v-model="addProductModal" :mask-closable="false" title="添加产品" width="1000" class="add-car">
-        <add-product @resetProductData="resetProductData" @currentRowData="currentRowData" @close="addProductModal=false" @productPlanissue="productPlanissue"></add-product>
+        <add-product ref="add-product" @resetProductData="resetProductData" @currentRowData="currentRowData" @close="addProductModal=false" @productPlanissue="productPlanissue"></add-product>
       </i-modal>
     </template>
   </section>
@@ -556,6 +556,10 @@
      */
     changePrd() {
       this.addProductModal = true
+      let addProductRefresh:any=this.$refs['add-product']
+      addProductRefresh.treeList()
+      addProductRefresh.resetcarData()
+
     }
     mounted() {}
     created() {
@@ -711,6 +715,9 @@
       this.buttonShow = false
       this.addPrdShow = false
       this.changePrdShow = true
+      let addProductRefresh:any=this.$refs['add-product']
+      addProductRefresh.treeList()
+      addProductRefresh.resetcarData()
     }
     /**
      * 获取添加产品信息

@@ -166,7 +166,7 @@
         this.multipleSelection.forEach(v=>{
             sum=sum+(Number(v.itemMoney))
         })
-        let totalPayment:any=sum
+        let totalPayment:any=sum.toFixed()
         let total = {
           itemLabel: "合计（元）",
           itemMoney: totalPayment,
