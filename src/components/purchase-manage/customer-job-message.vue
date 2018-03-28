@@ -18,7 +18,6 @@
       </div>
       <i-form ref="form-job" :model="job" :rules="rules" :label-width="110" label-position="left" style="position:relative;left:16px;">
         <i-row>
-
           <i-col :span="12">
             <i-form-item label="单位名称" prop="companyName">
               <i-input type="text" v-model="job.companyName" placeholder="请输入单位名称">
@@ -279,32 +278,37 @@
     private typeList: Array < String > ;
     private rules:any={
         basicSalary:[{
-            pattern: /^[0-9]{1,9}$/g, 
-            message: '请输入1~9位数字', 
+            pattern: /^[0-9]{1,9}$/g,
+            message: '请输入1~9位数字',
             trigger: 'blur'
         }],
         yearlySalaries:[{
-            pattern: /^[0-9]{1,9}$/g, 
-            message: '请输入1~9位数字', 
+            pattern: /^[0-9]{1,9}$/g,
+            message: '请输入1~9位数字',
             trigger: 'blur'
         }],
         payDay:[{
-            pattern: /^[0-9]{1,9}$/g, 
-            message: '请输入1~9位数字', 
+            pattern: /^[0-9]{1,9}$/g,
+            message: '请输入1~9位数字',
             trigger: 'blur'
         }],
         monthOtherIncome:[{
-            pattern: /^[0-9]{1,9}$/g, 
-            message: '请输入1~9位数字', 
+            pattern: /^[0-9]{1,9}$/g,
+            message: '请输入1~9位数字',
             trigger: 'blur'
-        }]
+        }],
+      companyAddress:[{
+        required: true,
+        message: '请输入单位地址',
+        trigger: 'blur',
+      }]
     }
     Reverse(data) {
       if (data.personal.personalJob) {
           if(data.personal.personalJob.identity){
           this.jobType=38
           }else{
-          this.jobType=37 
+          this.jobType=37
           }
         data.personal.personalJob.accessCompanyTime = FilterService.dateFormat(data.personal.personalJob.accessCompanyTime,
           'yyyy-MM-dd')
