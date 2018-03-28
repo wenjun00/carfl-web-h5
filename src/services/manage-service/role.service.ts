@@ -75,4 +75,13 @@ export class RoleService {
             }
         })
     }
+  /**
+   * 导出
+   */
+  exportRole(data) {
+    return this.netService.send({
+      server: manageService.roleController.exportRole,
+      data: data
+    })
+  }
 }

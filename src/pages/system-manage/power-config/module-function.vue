@@ -86,7 +86,7 @@
       <i-modal v-model="modifyNameModal" width="500" title="修改资源名称" class="toViewModalClass">
         <i-form :label-width="60" style="margin-top:20px;">
           <i-form-item label="资源名称" prop="resoName">
-            <i-input v-model="modifyNameDataset.resoName"></i-input>
+            <i-input v-model="modifyNameDataset.resoName" :maxlength="20"></i-input>
           </i-form-item>
         </i-form>
         <div style="text-align:right;">
@@ -99,7 +99,7 @@
       <i-modal v-model="modifyIconModal" width="500" title="修改资源图标" class="toViewModalClass">
         <i-form :label-width="60" style="margin-top:20px;">
           <i-form-item label="资源图标" prop="resoIcon">
-            <i-input v-model="modifyIconData.resoIcon"></i-input>
+            <i-input v-model="modifyIconData.resoIcon" :maxlength="15"></i-input>
           </i-form-item>
         </i-form>
         <div style="text-align:right;">

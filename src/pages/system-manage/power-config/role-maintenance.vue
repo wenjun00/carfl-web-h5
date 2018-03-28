@@ -15,7 +15,7 @@
       <div style="float:right;margin-right:10px;margin-top:10px;">
         <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
           <svg-icon iconClass="daochu"></svg-icon>
-          <span style="font-size: 12px;">导出</span>
+          <span style="font-size: 12px;" @click="exportRole">导出</span>
         </div>
       </div>
     </i-row>
@@ -90,6 +90,7 @@ import { Layout } from "~/core/decorator";
 import { Modal } from "iview";
 import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
+import { CommonService } from "~/utils/common.service";
 
 @Layout("workspace")
 @Component({
@@ -111,7 +112,9 @@ export default class RoleMaintenance extends Page {
   @Dependencies(BackLogService) private backLogService: BackLogService;
 
   private columns1: any;
-  private roleList: Array<Object> = [];
+  private ids :any = [];
+  private roleList:any = [];
+  // private roleList: Array<Object> = [];
   private searchOptions: Boolean = false;
   private openCreateCompact: Boolean = false;
   private openColumnsConfig: Boolean = false;
@@ -321,6 +324,7 @@ export default class RoleMaintenance extends Page {
       )
       .subscribe(
         data => {
+          console.log(data)
           this.roleList = data;
         },
         ({ msg }) => {
@@ -421,6 +425,20 @@ export default class RoleMaintenance extends Page {
   submitRole() {
     let _waitHandle: any = this.$refs["wait-handle"];
     _waitHandle.configWaitHandle(this.roleId);
+  }
+  /**
+   * 导出角色维护
+   */
+  exportRole(){
+    this.roleList.forEach(val=>{
+      this.ids.push(val.id)
+    })
+    // this.roleService.exportRole({
+    //   roleIds:this.ids
+    // }).subscribe( data => {
+    //   CommonService.downloadFile(data,'导出角色维护a')
+    // })
+    this.roleService.getOwnPropertyDescriptors()
   }
 }
 </script>

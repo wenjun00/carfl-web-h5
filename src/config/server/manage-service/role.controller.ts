@@ -66,5 +66,14 @@ export default {
     controller: CONTROLLER,
     action: 'roleAllocateResources',
     type: requestType.Post
+  },
+  /**
+   * 导出角色维护
+   */
+  exportRole: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'exportRole',
+    type: requestType.Post
   }
 }
