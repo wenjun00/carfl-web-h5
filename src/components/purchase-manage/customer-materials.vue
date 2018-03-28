@@ -388,7 +388,7 @@
       localLiveTime:[{
          pattern: /^[0-9]{1,9}$/g,
          message: '请输入1~9位数字',
-         trigger: 'blur' 
+         trigger: 'blur'
       }],
         birthTime: [{
           required: true,
@@ -433,6 +433,11 @@
         message: '请选择婚姻状况',
         trigger: 'change',
         type: 'number'
+      }],
+      cityOwnhouseAddressDetail:[{
+        required: true,
+        message: '请输入本市房产地址',
+        trigger: 'blur',
       }]
     }
     @Prop()
