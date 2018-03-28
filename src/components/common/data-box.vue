@@ -1,7 +1,7 @@
 <template>
   <section class="component data-box">
     <div class="table">
-      <i-table ref="table" :show-header="showHeader" class="i-table" :columns="tableColumns" :data="data" stripe :highlight-row="highlightRow" @on-row-click="rowClick" :width="width" height="550" @on-current-change="currentChange" @on-selection-change="currentSelect" size="small"></i-table>
+      <i-table ref="table" :show-header="showHeader" class="i-table" :columns="tableColumns" :data="data" stripe :highlight-row="highlightRow" @on-row-click="rowClick" :width="width" :height="height" @on-current-change="currentChange" @on-selection-change="currentSelect" size="small"></i-table>
     </div>
     <div v-if="page" class="row end-span" :style="{'width':`${width}px`}">
       <i-page class="pagination" size="small" show-total show-sizer :show-elevator="page.showElevator" :current.sync="page.pageIndex" :total="page.total" :page-size-opts="pageSizeOpts" :page-size.sync="page.pageSize" @on-change="pageChange" @on-page-size-change="pageSizeChange"></i-page>
@@ -66,11 +66,11 @@ export default class DataBox extends Vue {
   @Prop() width: Number;
 
   // 表格高度
-  // @Prop({
-  //   type: [Boolean, Number, String],
-  //   default: "150"
-  // })
-  // height: number|string|boolean;
+  @Prop({
+    type: [Boolean, Number, String],
+    default: "550"
+  })
+  height: number|string|boolean;
 
   // 数据表主键
   @Prop({
@@ -270,11 +270,17 @@ export default class DataBox extends Vue {
 
   mounted() {
     this.table = this.$refs["table"];
+    
     if(!!this.id){
       this.getFilterColumns();
     }else{
       this.getTableColumns()
     }
+
+    // 解决table高度计算错误问题
+    this.table.$options.mounted.push(()=>{
+      this.table.fixedHeader()
+    })
   }
 }
 </script>
