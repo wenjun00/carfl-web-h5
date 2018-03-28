@@ -1,7 +1,7 @@
 <template>
   <section class="component data-box">
     <div class="table">
-      <i-table ref="table" class="i-table" :columns="tableColumns" :data="data" stripe :highlight-row="highlightRow" @on-row-click="rowClick" :width="width" :height="height" @on-current-change="currentChange" @on-selection-change="currentSelect" size="small"></i-table>
+      <i-table ref="table" :show-header="showHeader" class="i-table" :columns="tableColumns" :data="data" stripe :highlight-row="highlightRow" @on-row-click="rowClick" :width="width" :height="height" @on-current-change="currentChange" @on-selection-change="currentSelect" size="small"></i-table>
     </div>
     <div v-if="page" class="row end-span" :style="{'width':`${width}px`}">
       <i-page class="pagination" size="small" show-total show-sizer :show-elevator="page.showElevator" :current.sync="page.pageIndex" :total="page.total" :page-size-opts="pageSizeOpts" :page-size.sync="page.pageSize" @on-change="pageChange" @on-page-size-change="pageSizeChange"></i-page>
@@ -62,15 +62,9 @@ export default class DataBox extends Vue {
   @Prop()
   page: PageService;
 
-  @Emit('on-selection-change')
-  emitSelectionChange(section){}
+  // 表格高度
+  @Prop() width: Number;
 
-  // @Emit('on-selection-change')
-  // emitSelectionChange(){}
-  // @Prop({
-  //   default: false
-  // })
-  // hideColumnsConfig: boolean; // 隐藏列配置
   // 表格高度
   @Prop({
     type: [Boolean, Number, String],
@@ -78,16 +72,23 @@ export default class DataBox extends Vue {
   })
   height: number|string|boolean;
 
-  // tableID
+  // 数据表主键
   @Prop({
     type: Number
   })
   id;
 
+  // 是否显示配置列
   @Prop({
     default: true
   })
   showConfigColumn;
+
+  // 是否显示配置列
+  @Prop({
+    default: false
+  })
+  autoHiddenHeader;
 
   // 分页更新事件
   @Emit("onPageChange")
@@ -100,9 +101,10 @@ export default class DataBox extends Vue {
   // 当前选择行改变事件
   @Emit("currentChange")
   getRowInfo(currentRow, oldRow) {}
+  
+  @Emit('on-selection-change')
+  emitSelectionChange(section){}
 
-  @Prop() width: Number;
-  // @Prop() height: Number;
 
   private dialog = {
     dataBoxConfig: false
@@ -114,6 +116,14 @@ export default class DataBox extends Vue {
   private tableColumns: Array<any> | null = [];
   private pageSizeOpts: Array<any> = [10, 30, 50];
 
+  // 是否显示列头
+  get showHeader(){
+    if(this.autoHiddenHeader&&(!this.data||!this.data.length)){
+      return false
+    }else{
+      return true
+    }
+  }
   /**
    * 添加默认显示列
    */
@@ -218,12 +228,6 @@ export default class DataBox extends Vue {
       this.getFilterColumns();
     });
   }
-
-  /**
-   * 监听绑定数据变化
-   */
-  // @Watch("data")
-  // onDataChanged(newVal: string, oldVal: string) {}
 
   /**
    * 通知分页数据更新
