@@ -64,7 +64,7 @@
         <pay-detail :checkOrderId="checkOrderId" ref="payDetail"></pay-detail>
       </i-tab-pane>
       <i-tab-pane name="upload-the-fodder" label="上传素材">
-        <upload-the-fodder></upload-the-fodder>
+        <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
       </i-tab-pane>
     </i-tabs>
     <div class="shade" :style="{display:disabledStatus}">
@@ -209,6 +209,8 @@
       this.applyData = {};
       let _gatherDetail: any = this.$refs["payDetail"];
       _gatherDetail.resetTable();
+      let _uploadFodder:any = this.$refs['upload-the-fodder'];
+      _uploadFodder.reset()
     }
     /**
      * 证件号、订单号、客户姓名查询订单/账户/付款信息
@@ -275,13 +277,21 @@
       let _message: any = this.$refs['payDetail']
       this.saveData.bankListk = _message.accountInfoList
       let gatherItem: any = Object.assign(_message.gatherItemList)
-      console.log(gatherItem, 'gatherItem')
       if (gatherItem) {
         this.saveData.refundTotalAmount = gatherItem.find(v => v.itemName === 'totalPayment').refundAmount
       }
       this.saveData.recordStatus = 1129
       this.saveData.refundType = this.applyData.refundType
       this.saveData.itemList = gatherItem.splice(0, (_message.gatherItemList.length - 1))
+      let _uploadthefodder:any=this.$refs['upload-the-fodder']
+      this.saveData.resourceList=_uploadthefodder.fodderList.map(v=>{
+        return {
+            materialUrl:v.url,
+            // type:v.response.type,
+            // name:v.name,
+            // id:v.response.id
+        }
+    })
       this.refundApplicationService
         .saveSubmitApplication(this.saveData)
         .subscribe(

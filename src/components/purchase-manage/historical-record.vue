@@ -54,6 +54,8 @@
 
     @Emit('distributionData')
     distributionData(multipleSelection) {}
+    @Emit('closeProduct')
+    closeProduct(){}
     @Emit('close')
     close() {}
     @Prop() rowData: any;
@@ -106,6 +108,7 @@
       this.productOrderService.findOrderInfoByOrderNumber({
         orderNumber: this.currentRow.orderNumber
       }).subscribe(data => {
+        this.closeProduct()
         this.distributionData(data)
       })
       this.close()

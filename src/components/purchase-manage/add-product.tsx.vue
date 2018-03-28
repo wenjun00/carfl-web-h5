@@ -86,6 +86,8 @@
     @Prop() row: Object;
     @Emit('currentRowData')
     currentRowData(currentRow, data) {}
+    @Emit('resetProductData')
+    resetProductData(){}
     @Emit('productPlanissue')
     productPlanissue(productPlanissueData) {}
     @Emit('close')
@@ -304,6 +306,7 @@
     confirmAndBackPrd() {
       let radioData:any=this.carData.find(v=>v.radio===true)
       if (radioData) {
+        this.resetProductData()
         this.currentRowData(radioData, this.productDataModel[0])
         this.close()
       } else {

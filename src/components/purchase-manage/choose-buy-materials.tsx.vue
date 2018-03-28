@@ -269,7 +269,7 @@
 
     <template>
       <i-modal v-model="addProductModal" :mask-closable="false" title="添加产品" width="1000" class="add-car">
-        <add-product @currentRowData="currentRowData" @close="addProductModal=false" @productPlanissue="productPlanissue"></add-product>
+        <add-product @resetProductData="resetProductData" @currentRowData="currentRowData" @close="addProductModal=false" @productPlanissue="productPlanissue"></add-product>
       </i-modal>
     </template>
   </section>
@@ -403,6 +403,37 @@
         this.disabled = false
         this.disabled1 = false
       }
+    }
+    resetProductData(){
+        this.chooseBuyModel.prdSeriods=''
+        this.chooseBuyModel.name=''
+        this.chooseBuyModel.periods=''
+        this.chooseBuyModel.prdInterestRate=''
+        this.chooseBuyModel.payWay=''
+        this.chooseBuyModel.vehicleAmount=''
+        this.chooseBuyModel.finalprincipal=''
+        this.chooseBuyModel.moneyPay=''
+        this.chooseBuyModel.initialPayment=''
+        this.chooseBuyModel.depositCash=''
+        this.chooseBuyModel.finalCash=''
+        this.chooseBuyModel.manageCost=''
+        this.chooseBuyModel.insuranceMoney=''
+        this.chooseBuyModel.purchaseMoney=''
+        this.chooseBuyModel.licenseMoney=''
+        this.chooseBuyModel.GpsMoney=''
+        this.chooseBuyModel.otherFee=''
+        this.chooseBuyModel.remark=''
+        this.chooseBuyModel.financeTotalMoney=''
+        this.chooseBuyModel.Payment=''
+        this.chooseBuyModel.deposit=''
+        this.chooseBuyModel.final=''
+        this.chooseBuyModel.manageData=''
+    }
+    closeProductForm(){
+    this.prdInfoShow=false
+    this.changePrdShow=false
+    this.addPrdShow=true
+    this.resetProductData()
     }
     /**
      * 数据反显
@@ -674,6 +705,7 @@
       this.editCarModal = false
     }
     addNewPrd() {
+      this.resetProductData()
       this.addProductModal = true
       this.prdInfoShow = true
       this.buttonShow = false

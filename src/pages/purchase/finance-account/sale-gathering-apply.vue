@@ -236,10 +236,7 @@ export default class SaleGatheringApply extends Page {
     let _uploadFodder:any = this.$refs['upload-the-fodder']
     this.saveDraftModel.financeUploadResources=_uploadFodder.fodderList.map(v=>{
         return {
-            materialUrl:v.response.url,
-            // type:v.response.type,
-            // name:v.name,
-            // id:v.response.id
+            materialUrl:v.url,
         }
     })
     /**

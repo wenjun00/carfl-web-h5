@@ -88,7 +88,7 @@
     </div>
     <template>
       <i-modal title="历史记录" width="1200" v-model="historicalModal" :trandfer="false" class="historical">
-        <historical-record @close="historicalModal=false" :historicalDataset="historicalDataset" @distributionData="distributionData"></historical-record>
+        <historical-record @closeProduct="closeProduct" @close="historicalModal=false" :historicalDataset="historicalDataset" @distributionData="distributionData"></historical-record>
       </i-modal>
     </template>
 
@@ -203,6 +203,11 @@
     ReverseData() {
       let customermodel: any = this.$refs['customer-materials']
       customermodel.getinfo(this.customerModel)
+    }
+
+    closeProduct(){
+        let choose:any=this.$refs['choose-buy-materials']
+        choose.closeProductForm()
     }
     /**
      * 根据客户三项查询历史订单
@@ -403,6 +408,7 @@
         manageCostPercent: choosebuymaterials.chooseBuyModel.manageData||0, // 管理比例
         depositPercent: choosebuymaterials.chooseBuyModel.deposit||0, // 保证金比例
         paymentScale: choosebuymaterials.chooseBuyModel.Payment||0, // 首付比例
+        final:choosebuymaterials.chooseBuyModel.final||0, // 尾付比例
         finalPayment: choosebuymaterials.chooseBuyModel.finalprincipal, // 尾付本金        
         // orderCar: choosebuymaterials.addcarData, // 添加车辆信息
         // 产品信息
