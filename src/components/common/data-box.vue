@@ -73,10 +73,10 @@ export default class DataBox extends Vue {
   // hideColumnsConfig: boolean; // 隐藏列配置
   // 表格高度
   @Prop({
-    type: [Boolean, Number],
-    default: 550
+    type: [Boolean, Number, String],
+    default: "550px"
   })
-  height: Number;
+  height: number|string|boolean;
 
   // tableID
   @Prop({
