@@ -111,13 +111,19 @@ export default class OrderStatusChange extends Page {
         title: "证件号码",
         editable: true,
         key: "idCard",
-        align: "center"
+        align: "center",
+        // render: (h, { row, columns, index }) => {
+        //   return h("span", {}, row.orderType | encryptIDCardFour);
+        // }
       },
       {
         title: "联系号码",
         editable: true,
         key: "mobileMain",
-        align: "center"
+        align: "center",
+        // render: (h, { row, columns, index }) => {
+        //   return h("span", {}, this.$dict.getDictName(row.orderType));
+        // }
       },
       {
         title: "订单创建时间",

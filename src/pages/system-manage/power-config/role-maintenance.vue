@@ -20,7 +20,7 @@
       </div>
     </i-row>
 
-    <data-box :id="20" :columns="columns1" :data="roleList" @onPageChange="getRoleListByCondition" :page="pageService"></data-box>
+    <data-box :id="20" :columns="columns1" :data="roleList" @onPageChange="getRoleListByCondition" :page="pageService" ref="databox"></data-box>
 
     <template>
       <i-modal v-model="modifyRoleModal" title="修改角色" class="modify-role">
@@ -150,6 +150,12 @@ export default class RoleMaintenance extends Page {
 
   created() {
     this.columns1 = [
+      {
+        type: "selection",
+        align: "center",
+        width: 60,
+        fixed: "left"
+      },
       {
         title: "操作",
         width: 420,
@@ -430,16 +436,20 @@ export default class RoleMaintenance extends Page {
    * 导出角色维护
    */
   exportRole() {
-    this.roleList.forEach(val => {
-      this.ids.push(val.id);
-    });
-    this.roleService
-      .exportRole({
-        roleIds: this.ids
-      })
-      .subscribe(data => {
-        CommonService.downloadFile(data, "导出角色维护");
-      });
+    let databox = this.$refs["databox"] as DataBox;
+    let multipleSelection = databox.getCurrentSelection();
+    if (multipleSelection && multipleSelection.length) {
+      let sysLogsIds = multipleSelection.map(v => v.id);
+      this.roleService
+        .exportRole({
+          roleIds: sysLogsIds
+        })
+        .subscribe(data => {
+          CommonService.downloadFile(data, "导出角色维护");
+        });
+    }else {
+      this.$Message.info("请先选择角色再导出！");
+    }
   }
 }
 </script>

@@ -185,6 +185,7 @@ export default class ModulePower extends Vue {
       roleId:this.roleId,
       resourcesId:[...menuResourceIds,...controlResourceIds]
     }).subscribe(()=>{
+      this.$Message.success('模块权限配置成功！')
       this.$emit('close')
     })
   }

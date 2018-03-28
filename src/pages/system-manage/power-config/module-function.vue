@@ -257,12 +257,12 @@ export default class ModuleFunction extends Page {
         key: "resoIcon",
         title: "资源图标"
       },
-      {
-        align: "center",
-        editable: true,
-        key: "resoStatus",
-        title: "状态"
-      },
+      // {
+      //   align: "center",
+      //   editable: true,
+      //   key: "resoStatus",
+      //   title: "状态"
+      // },
       {
         align: "center",
         editable: true,

@@ -125,6 +125,9 @@ export default class CustomerRepayRevert extends Page {
               props: {
                 type: "text"
               },
+              style: {
+                color: "#265EA2"
+              },
               on: {
                 click: () => {
                   this.purchaseInfoModal = true;
