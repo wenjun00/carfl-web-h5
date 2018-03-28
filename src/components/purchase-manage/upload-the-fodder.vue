@@ -11,15 +11,13 @@
           </div>
           <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
         </div>
-        <div v-for="item in fodderList" :key="item.uid">
-          <div class="demo-upload-list" style="margin-left:10px;">
-            <img style="height:200px;width:200px;border:1px solid #dddddd;" :src="item.url">
+         <div class="demo-upload-list" v-for="(item,id) in fodderList" :key="id">
+            <img style="height:200px;width:200px;border:1px solid #C2C2C2;" :src="item.url">
+            <div class="demo-upload-list-cover">
+              <i-icon type="arrow-down-a" @click.native="download(item)"></i-icon>
+              <i-icon type="ios-trash-outline" @click.native="handleRemove(item)"></i-icon>
+            </div>
           </div>
-          <div class="demo-upload-list-cover">
-            <i-icon type="ios-trash-outline" size="18" @click.native="handleRemove(item)"></i-icon>
-            <i-icon type="ios-download-outline" size="18"></i-icon>
-          </div>
-        </div>
       </div>
     </i-row>
 
@@ -51,6 +49,9 @@
     Prop
   } from "vue-property-decorator";
   import FileUpload from "~/components/common/file-upload.tsx.vue";
+    import {
+    CommonService
+  } from "~/utils/common.service";
   const ModuleState = namespace("purchaseManage", State);
 
   @Component({
@@ -71,7 +72,18 @@
     private uploadData: any = {
       url: ""
     };
-
+    /**
+     * 下载
+     */
+ download(file){
+      CommonService.downloadFile(file.url, '');
+  }
+  /**
+   *删除附件
+   */
+  handleRemove(file) {
+    this.fodderList.splice(this.fodderList.indexOf(file), 1);
+  }
     openClick() {
       this.personalMaterialService
         .getAllPersonalMaterialNoPage({
@@ -141,14 +153,39 @@
 </script>
 
 <style lang="less" scope>
-  .demo-upload-list-cover {
-    display: none;
+ .demo-upload-list{
+        display: inline-block;
+        // width: 60px;
+        // height: 60px;
+        text-align: center;
+        // line-height: 60px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        overflow: hidden;
+        // background: #fff;
+        position: relative;
+        box-shadow: 0 1px 1px rgba(0,0,0,.2);
+        margin-right: 4px;
+    }
+  .demo-upload-list-cover i{
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 0 2px;
   }
 
-  .demo-upload-list:focus {
-    .demo-upload-list-cover {
-      display: inline-block;
+  .demo-upload-list-cover{
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,.6);
     }
-  }
+
+  .demo-upload-list:hover .demo-upload-list-cover{
+        display: block;
+    }
 
 </style>

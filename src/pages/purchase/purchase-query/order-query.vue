@@ -25,7 +25,7 @@
       <i-button style="margin-left:10px" class="blueButton" @click="getOrderQuery">搜索</i-button>
     </i-row>
     <i-row style="margin-top:20px">
-      <data-box :columns="queryColumns" :data="queryData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
+      <data-box :id="466" :columns="queryColumns" :data="queryData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
     </i-row>
     <!--列配置-->
     <template>
@@ -354,7 +354,9 @@
         },
         {
           title: "订单号",
+          expand: true,
           align: "center",
+          key: "orderNumber",
           width: 150,
           render: (h, params) => {
             return h("div", [
@@ -391,6 +393,7 @@
         {
           align: "center",
           title: "订单创建时间",
+          expand: true,
           key: "createTime",
           width: 150,
           render: (h, {
@@ -407,6 +410,8 @@
         {
           align: "center",
           title: "客户",
+          expand: true,
+          key:'personalName',
           width: 100,
           render: (h, params) => {
             return h("div", [
@@ -443,6 +448,7 @@
         {
           align: "center",
           title: "订单类型",
+          expand: true,
           width: 100,
           key: "orderType",
           render: (h, {
@@ -457,12 +463,14 @@
           align: "center",
           width: 100,
           title: "产品名称",
+          expand: true,
           key: "productName"
         },
         {
           align: "center",
           title: "产品期数",
           key: "periods",
+          expand: true,
           width: 100,
           render: (h, {
             row,
@@ -475,12 +483,14 @@
         {
           align: "center",
           title: "利率(月)",
+          expand: true,
           key: "productRate",
           width: 100
         },
         {
           align: "center",
           title: "还款方式",
+          expand: true,
           key: "payWay",
           width: 100,
           render: (h, {
@@ -494,12 +504,14 @@
         {
           align: "center",
           title: "融资总额",
+          expand: true,
           key: "financingAmount",
           width: 100
         },
         {
           align: "center",
           title: "环节",
+          expand: true,
           key: "orderLink",
           width: 100,
           render: (h, {
@@ -513,6 +525,7 @@
         {
           align: "center",
           title: "订单状态",
+          expand: true,
           key: "orderStatus",
           width: 100,
           render: (h, {

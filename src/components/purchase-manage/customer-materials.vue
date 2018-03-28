@@ -1,6 +1,6 @@
 <!--客户资料-->
 <template>
-  <section class="component customer-materials">
+  <section class="component customer-materials" style="height:1300px">
     <i-col span="24" style="line-height:30px" class="form-title">个人信息</i-col>
     <i-form :rules="rules" ref="job-form" :model="customerMaterialsForm" :label-width="110" label-position="left" style="position:relative;left:16px;margin-top:10px;">
       <div>

@@ -107,7 +107,7 @@
      * 下载
      */
     download(file) {
-      CommonService.downloadFile(file.url, "订单查询");
+      CommonService.downloadFile(file.url, file.name);
     }
     /**
      * 预览

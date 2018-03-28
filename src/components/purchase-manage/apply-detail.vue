@@ -48,6 +48,7 @@
           <div class="demo-upload-list" v-for="(item, id) in fileList" :key="id">
             <img style="height:200px;width:200px;border:1px solid #C2C2C2;" :src="item.materialUrl">
             <div class="demo-upload-list-cover">
+              <i-icon type="arrow-down-a" @click.native="download(item)"></i-icon>
               <i-icon type="ios-trash-outline" @click.native="handleRemove(item)"></i-icon>
             </div>
           </div>
@@ -71,6 +72,9 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import DataBox from "~/components/common/data-box.vue";
 import { Prop } from "vue-property-decorator";
+  import {
+    CommonService
+  } from "~/utils/common.service";
 @Component({
   components: {
     DataBox
@@ -158,6 +162,9 @@ export default class ApplyDetail extends Vue {
     });
     this.accountDetail = personalBank;
     this.fileList = val.financeUploadResources;
+  }
+  download(file){
+      CommonService.downloadFile(file.materialUrl, '');
   }
   /**
    *删除附件
@@ -285,4 +292,22 @@ export default class ApplyDetail extends Vue {
   font-size: 14px;
   font-weight: bold;
 }
+// .demo-upload-list-cover{
+//         display: none;
+//         position: absolute;
+//         top: 0;
+//         bottom: 0;
+//         left: 0;
+//         right: 0;
+//         background: rgba(0,0,0,.6);
+//     }
+    .demo-upload-list:hover .demo-upload-list-cover{
+        display: block;
+    }
+    .demo-upload-list-cover i{
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 0 2px;
+    }
 </style>

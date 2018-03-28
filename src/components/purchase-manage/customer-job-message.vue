@@ -204,7 +204,7 @@
         </i-row>
         <i-col span="12">
           <i-form-item label="注册资本(万元)" prop="registeredCapital">
-            <i-input type="text" v-model="job.registeredCapital" placeholder="请输入注册资本">
+            <i-input :maxlength="14" type="text" v-model="job.registeredCapital" placeholder="请输入注册资本">
             </i-input>
           </i-form-item>
         </i-col>
