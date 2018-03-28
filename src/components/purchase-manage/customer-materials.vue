@@ -137,7 +137,7 @@
         <i-col span="12" pull="3">
           <i-form-item label="身份证有效期" prop="idCardValidityPeriodSection">
             <i-row>
-              <i-checkbox label="长期" :value="14" :checked.sync="single" @on-change="ValidityPeriodChange">长期</i-checkbox>
+              <i-checkbox label="长期" v-model="idCardvalidity" :value="14" :checked.sync="single" @on-change="ValidityPeriodChange">长期</i-checkbox>
             </i-row>
             <i-row>
               <i-input type="text" placeholder="有效期截止日期" v-model="customerMaterialsForm.idCardValidityPeriodSection" :readonly="customerMaterialsForm.idCardValidityPeriodType===14">
@@ -157,7 +157,7 @@
         <i-col span="12">
           <i-form-item label="现居住地址" prop="localHomeAddrDetail">
             <i-row>
-              <i-checkbox label="身份证地址" :value="14" :checked.sync="checked" @on-change="idCardChange">身份证地址</i-checkbox>
+              <i-checkbox v-model="idCardads" label="身份证地址" :value="14" :checked.sync="checked" @on-change="idCardChange">身份证地址</i-checkbox>
             </i-row>
             <i-row>
               <i-col :span="4">
@@ -269,8 +269,8 @@
               <!--<i-checkbox-group v-model="customerMaterialsForm.cityAddressValue" @on-change="cityAddressChange">-->
               <!--<i-checkbox :label="29" :value="29">身份证地址</i-checkbox>
               <i-checkbox :label="30" :value="30">现居住地址</i-checkbox>-->
-              <i-checkbox label="身份证地址" :value="29" :checked.sync="checked" @on-change="cityidcardChange">身份证地址</i-checkbox>
-              <i-checkbox label="现居住地址" :value="30" @on-change="liveChange">现居住地址</i-checkbox>
+              <i-checkbox label="身份证地址" v-model="idcardOwn" :value="29" :checked.sync="checked" @on-change="cityidcardChange">身份证地址</i-checkbox>
+              <i-checkbox label="现居住地址" v-model="liveads" :value="30" @on-change="liveChange">现居住地址</i-checkbox>
               <!--</i-checkbox-group>-->
             </i-row>
             <i-row>
@@ -332,6 +332,10 @@
     private cityValue: Boolean = false;
     private liveValue: Boolean = false;
     private ValidityPeriodValue: Boolean = false;
+    private idCardads:Boolean = false;
+    private idcardOwn:Boolean = false;
+    private liveads:Boolean = false;
+    private idCardvalidity:Boolean = false;
     private customerMaterialsForm: any = {
       name: '', // 姓名
       sex: '', // 性别
@@ -447,6 +451,18 @@
       //   身份证地址回显
       data.personal.birthTime = FilterService.dateFormat(data.personal.birthTime, 'yyyy-MM-dd')
       console.log(data.personal.birthTime)
+      if(data.personal.localHomeAddr===data.personal.idCardAddress){
+          this.idCardads=true
+      }
+      if(data.personal.cityOwnhouseAddress===data.personal.idCardAddress){
+          this.idcardOwn=true
+      }
+      if(data.personal.cityOwnhouseAddress===data.personal.localHomeAddr){
+          this.liveads=true
+      }
+      if(!this.customerMaterialsForm.idCardValidityPeriodSection){
+        this.idCardvalidity=true
+      }
       data.personal.idCardAddress = Number(data.personal.idCardAddress)
       data.personal.city = CityService.getCityParent(Number(data.personal.idCardAddress))[1]
       data.personal.province = CityService.getCityParent(Number(data.personal.idCardAddress))[0]
@@ -467,6 +483,7 @@
       this.customerMaterialsForm = Object.assign({}, customerModel)
     }
     idCardChange(value) {
+        console.log(this.idCardads,'idCardads')
       if (value) {
         this.customerMaterialsForm.province1 = this.customerMaterialsForm.province
         this.customerMaterialsForm.city1 = this.customerMaterialsForm.city

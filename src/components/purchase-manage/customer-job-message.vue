@@ -312,9 +312,9 @@
           }
         data.personal.personalJob.accessCompanyTime = FilterService.dateFormat(data.personal.personalJob.accessCompanyTime,
           'yyyy-MM-dd')
-        data.personal.personalJob.companyAddress = Number(data.personal.companyAddress)
-        data.personal.personalJob.city = CityService.getCityParent(Number(data.personal.companyAddress))[1]
-        data.personal.personalJob.province = CityService.getCityParent(Number(data.personal.companyAddress))[0]
+        data.personal.personalJob.companyAddress = Number(data.personal.personalJob.companyAddress)
+        data.personal.personalJob.city = CityService.getCityParent(Number(data.personal.personalJob.companyAddress))[1]
+        data.personal.personalJob.province = CityService.getCityParent(Number(data.personal.personalJob.companyAddress))[0]
         this.job = data.personal.personalJob
       }
     }
