@@ -379,6 +379,12 @@
           this.formItems.financingAmount = this.amount.financingAmount1 + "~" + this.amount.financingAmount2;
           this.formItems.productId = this.pNameTitle.id;
           this.formItems.productStatus = this.pNameTitle.status;
+          this.formItems.creditProtectDays =  String(this.formItems.creditProtectDays);
+          this.formItems.overdueProtectDays = String(this.formItems.overdueProtectDays);
+          this.formItems.productRate = this.formItems.productRate*0.01;
+          this.formItems.contractBreakRate = String(this.formItems.contractBreakRate*0.01);
+          this.formItems.prepaymentRate =  String(this.formItems.prepaymentRate*0.01);
+          this.formItems.penaltyRate = String(this.formItems.penaltyRate*0.01);
           this.ProductPlanIssueService.createOrModifyProductPlan(this.formItems).subscribe(val => {
             this.$Message.success("新增成功！");
             this.$emit("close", this.formItems);

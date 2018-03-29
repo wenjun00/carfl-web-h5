@@ -69,7 +69,7 @@
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">产品利率</span>
-                    <span class="item">{{item.productRate}} %/月</span>
+                    <span class="item">{{item.productRate*100}} %/月</span>
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">还款方式</span>
@@ -77,23 +77,23 @@
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">融资金额</span>
-                    <span class="item">{{item.financingAmount}}元</span>
+                    <span class="item">{{item.financingAmount === '~'?0:item.financingAmount}}元</span>
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">首付款</span>
-                    <span class="item">{{item.initialPayment}} %</span>
+                    <span class="item">{{item.initialPayment === undefined?0:item.initialPayment}} %</span>
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">保证金</span>
-                    <span class="item">{{item.depositCash}} %</span>
+                    <span class="item">{{item.depositCash === undefined?0:item.depositCash}} %</span>
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">尾付款</span>
-                    <span class="item">{{item.finalCash}} %</span>
+                    <span class="item">{{item.finalCash === undefined?0:item.finalCash}} %</span>
                   </div>
                   <div class="itemContainer">
                     <span class="itemName">管理费</span>
-                    <span class="item">{{item.manageCost}} %</span>
+                    <span class="item">{{item.manageCost === undefined?0:item.manageCost}} %</span>
                   </div>
                   <div v-if="item.isPublish===360" class="itemContainer">
                     <span class="itemName">启用/停用</span>
@@ -151,7 +151,7 @@
     </template>
     <template>
       <i-modal v-model="editModal" title="编辑期数" width="900" class="purchaseInformation">
-        <edit-periods :productDetail="productDetails" :pNameTitle="productMessage" ref="edit-periods" @close="closeEditModal"></edit-periods>
+        <edit-periods :productDetails="productDetails" :pNameTitle="productMessage" ref="edit-periods" @close="closeEditModal"></edit-periods>
         <div slot="footer">
           <i-button type="primary" @click="editSubmit">保存并退出</i-button>
         </div>

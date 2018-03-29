@@ -20,7 +20,7 @@
       </data-grid-item>
       <data-grid-item label="产品利率" :span="4">
         <div>
-          {{productDetailView.productRate}}%/月
+          {{productDetailView.productRate*100}}%/月
         </div>
       </data-grid-item>
       <data-grid-item label="还款方式" :span="4">
@@ -128,17 +128,17 @@
       </data-grid-item>
       <data-grid-item :span="6" label="合同违约金费率">
         <div>
-          {{productDetailView.contractBreakRate}}%
+          {{productDetailView.contractBreakRate*100}}%
         </div>
       </data-grid-item>
       <data-grid-item :span="6" label="提前还款费率">
         <div>
-          {{productDetailView.prepaymentRate}}%
+          {{productDetailView.prepaymentRate*100}}%
         </div>
       </data-grid-item>
       <data-grid-item :span="12" label="罚息费率">
         <div>
-          {{productDetailView.penaltyRate}}%/天
+          {{productDetailView.penaltyRate*100}}%/天
         </div>
       </data-grid-item>
     </data-grid>
