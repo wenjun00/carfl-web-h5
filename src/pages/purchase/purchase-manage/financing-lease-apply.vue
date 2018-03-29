@@ -405,10 +405,10 @@
         intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods, // 意向期限
         rentPayable: Number(choosebuymaterials.chooseBuyModel.rentPayable), // 租金支付
         intentionPaymentRatio: Number(choosebuymaterials.chooseBuyModel.intentionPaymentRatio), // 意向首付比例
-        manageCostPercent: choosebuymaterials.chooseBuyModel.manageData||0, // 管理比例
-        depositPercent: choosebuymaterials.chooseBuyModel.deposit||0, // 保证金比例
-        paymentScale: choosebuymaterials.chooseBuyModel.Payment||0, // 首付比例
-        final:choosebuymaterials.chooseBuyModel.final||0, // 尾付比例
+        manageCostPercent: Number(choosebuymaterials.chooseBuyModel.manageData)*0.01||0, // 管理比例
+        depositPercent: Number(choosebuymaterials.chooseBuyModel.deposit)*0.01||0, // 保证金比例
+        paymentScale: Number(choosebuymaterials.chooseBuyModel.Payment)*0.01||0, // 首付比例
+        final:Number(choosebuymaterials.chooseBuyModel.final)*0.01||0, // 尾付比例
         finalPayment: choosebuymaterials.chooseBuyModel.finalprincipal, // 尾付本金        
         // orderCar: choosebuymaterials.addcarData, // 添加车辆信息
         // 产品信息
@@ -575,9 +575,10 @@
                         intentionPeriods: choosebuymaterials.chooseBuyModel.intentionPeriods, // 意向期限
                         rentPayable: Number(choosebuymaterials.chooseBuyModel.rentPayable), // 租金支付
                         finalPayment: choosebuymaterials.chooseBuyModel.finalprincipal, // 尾付本金
-                        manageCostPercent: choosebuymaterials.chooseBuyModel.manageData||0, // 管理比例
-                        depositPercent: choosebuymaterials.chooseBuyModel.deposit||0, // 保证金比例
-                        paymentScale: choosebuymaterials.chooseBuyModel.Payment||0, // 首付比例
+                        manageCostPercent: Number(choosebuymaterials.chooseBuyModel.manageData)*0.01||0, // 管理比例
+                        depositPercent: Number(choosebuymaterials.chooseBuyModel.deposit)*0.01||0, // 保证金比例
+                        paymentScale: Number(choosebuymaterials.chooseBuyModel.Payment)*0.01||0, // 首付比例
+                        final:Number(choosebuymaterials.chooseBuyModel.final)*0.01||0, // 尾付比例
                         intentionPaymentRatio: Number(choosebuymaterials.chooseBuyModel.intentionPaymentRatio), // 意向首付比例
                         // orderCar: choosebuymaterials.addcarData, // 添加车辆信息
                         // 产品信息
