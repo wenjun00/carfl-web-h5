@@ -691,6 +691,8 @@
     }
     cancelAddProduct(){
       this.addProductModal = false
+      let openAddProduct: any = this.$refs['add-product'];
+      openAddProduct.reset();
     }
     applyDerateModalOpen(val){
       if(!val){

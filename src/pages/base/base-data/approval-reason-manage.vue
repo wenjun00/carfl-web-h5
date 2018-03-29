@@ -148,7 +148,6 @@
                   },
                   on: {
                     click: () => {
-                      console.log(row, '编辑')
                       this.showEditApproval(row);
                     },
                   },
