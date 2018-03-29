@@ -535,7 +535,7 @@
      */
     choosefinalCash() {
       // 尾付总额（尾款本金+尾付利息）
-      this.chooseBuyModel.finalCash = (Number(this.chooseBuyModel.finalprincipal) * (1 + Number(this.chooseBuyModel.final) * 0.01)*this.$dict.getDictName(this.chooseBuyModel.periods)).toFixed(2)
+      this.chooseBuyModel.finalCash = (Number(this.chooseBuyModel.finalprincipal) * (1 + Number(this.chooseBuyModel.final) * 0.01 * this.$dict.getDictName(this.chooseBuyModel.periods))).toFixed(2)
       console.log(this.chooseBuyModel.finalprincipal,this.chooseBuyModel.final,this.chooseBuyModel.periods)
       console.log(this.chooseBuyModel.finalCash,'this.chooseBuyModel.finalCash')
       this.chooseBuyModel.finalCash.toString()
