@@ -45,4 +45,13 @@ export class CompanyService {
             data: data
         })
     }
+  /**
+   * 查询公司
+   */
+  getAllEnableCompany(data?) {
+    return this.netService.send({
+      server: manageService.companyController.getAllEnableCompany,
+      data: data
+    })
+  }
 }

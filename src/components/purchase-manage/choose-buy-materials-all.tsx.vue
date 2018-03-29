@@ -120,7 +120,7 @@
       //   console.log(this.currentRowData.addcarData, 800)
       //   this.addcarData = this.currentRowData.addcarData
       // 获取公司名称
-      this.companyService.getAllCompany().subscribe(val => {
+      this.companyService.getAllEnableCompany().subscribe(val => {
         this.companyObject = val
       })
       this.carService.findAllCarSeries().subscribe(val => {
@@ -207,10 +207,10 @@
              let sum:any=0;
              this.addcarData.forEach(v=>{
                     sum=sum+(Number(v.carAmount)||0)
-                }); 
+                });
             this.totalPrice=sum
             };
-            return ( 
+            return (
                 <i-input style="width:80px" onOn-blur={removeHandle} value={row.carAmount}> </i-input>);
             }
         }, {
@@ -231,7 +231,7 @@
               }
               console.log(this.addcarData,'addcarData')
             };
-            return ( 
+            return (
                 <i-input index={index} style="width:80px" onOn-blur={removeHandle} value={row.carNumber}> </i-input>);
             }
         },{

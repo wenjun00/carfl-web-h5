@@ -40,5 +40,14 @@ export default {
     controller: CONTROLLER,
     action: 'createOrModifyCompany',
     type: requestType.Post
+  },
+  /**
+   * 查询公司
+   */
+  getAllEnableCompany:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getAllEnableCompany',
+    type: requestType.Get
   }
 }
