@@ -122,7 +122,7 @@
       <i-form ref="revenue-form" :rules="rules" :model="job" :label-width="110" label-position="left">
         <i-col span="12">
           <i-form-item label="基本月薪(元)" prop="basicSalary">
-            <i-input type="text" v-model="job.basicSalary" placeholder="请输入基本月薪">
+            <i-input :maxlength="14" type="text" v-model="job.basicSalary" placeholder="请输入基本月薪">
             </i-input>
           </i-form-item>
         </i-col>
@@ -140,13 +140,13 @@
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="年收入(万元)" prop="yearlySalaries">
-            <i-input type="text" v-model="job.yearlySalaries" placeholder="请输入年收入">
+            <i-input :maxlength="14" type="text" v-model="job.yearlySalaries" placeholder="请输入年收入">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="每月其他收入(元)" prop="monthOtherIncome">
-            <i-input type="text" v-model="job.monthOtherIncome" placeholder="请输入每月其他收入">
+            <i-input :maxlength="14" type="text" v-model="job.monthOtherIncome" placeholder="请输入每月其他收入">
             </i-input>
           </i-form-item>
         </i-col>
@@ -182,7 +182,7 @@
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="企业经营年限" prop="enterpriseManageYears">
-              <i-input type="text" v-model="job.enterpriseManageYears" placeholder="请输入企业经营年限">
+              <i-input :maxlength="4" type="text" v-model="job.enterpriseManageYears" placeholder="请输入企业经营年限">
               </i-input>
             </i-form-item>
           </i-col>
@@ -197,7 +197,7 @@
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="员工人数" prop="employeesNumber">
-              <i-input type="text" v-model="job.employeesNumber" placeholder="请输入员工人数">
+              <i-input :maxlength="4" type="text" v-model="job.employeesNumber" placeholder="请输入员工人数">
               </i-input>
             </i-form-item>
           </i-col>
@@ -216,13 +216,13 @@
         </i-col>
         <i-col span="12">
           <i-form-item label="过去一年营业收入(万元)" prop="pastyearIncome">
-            <i-input type="text" v-model="job.pastyearIncome" placeholder="请输入过去一年营业收入">
+            <i-input :maxlength="14" type="text" v-model="job.pastyearIncome" placeholder="请输入过去一年营业收入">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="过去一年利润" prop="pastyearProfit">
-            <i-input type="text" v-model="job.pastyearProfit" placeholder="请输入过去一年利润">
+            <i-input :maxlength="14" type="text" v-model="job.pastyearProfit" placeholder="请输入过去一年利润">
             </i-input>
           </i-form-item>
         </i-col>
