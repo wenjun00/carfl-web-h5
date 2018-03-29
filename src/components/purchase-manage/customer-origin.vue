@@ -137,13 +137,12 @@
     }
 
     Reverse(data) {
-      if (data.personal.personalResourcePublicity) {
+      if (data.personal&&data.personal.personalResourcePublicity) {
         this.OriginModel.resourceType = data.personal.personalResourcePublicity.map(v => v.resourceType)
       }
+      if(data.personal&&data.personal.personalResourceIntroduce){
       this.customerOriginModel = data.personal.personalResourceIntroduce
-      //   if (data.personal.personalResourceIntroduce.id) {
-      //     this.disabled = true
-      //   }
+      }
     }
     reset() {
       this.OriginModel.resourceType = []

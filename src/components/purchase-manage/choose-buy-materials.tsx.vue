@@ -439,8 +439,13 @@
      * 数据反显
      */
     Reverse(data) {
-      console.log('reverse')
       data.orderServiceList = data.orderServices.map(v => v.service)
+      if (data.orderServiceList.find(v => v === 368)) {
+          this.disabled1 = true
+        }
+      if (data.orderServiceList.find(v => v !== 368)) {
+          this.disabled = true
+        }
       data.intentionPeriods = Number(data.intentionPeriods)
       data.intentionPaymentRatio=data.intentionPaymentRatio.toString()
       data.intentionFinancingAmount=data.intentionFinancingAmount.toString()
