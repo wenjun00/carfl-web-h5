@@ -53,7 +53,7 @@
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="意向融资金额" prop="intentionFinancingAmount">
-              <i-input type="text" v-model="chooseBuyModel.intentionFinancingAmount">
+              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.intentionFinancingAmount">
               </i-input>
             </i-form-item>
           </i-col>
@@ -68,14 +68,14 @@
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="租金支付" prop="rentPayable">
-              <i-input type="text" v-model="chooseBuyModel.rentPayable">
+              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.rentPayable">
               </i-input>
             </i-form-item>
           </i-col>
         </i-row>
         <i-col span="12">
           <i-form-item label="意向首付比例" prop="intentionPaymentRatio">
-            <i-input type="text" v-model="chooseBuyModel.intentionPaymentRatio">
+            <i-input :maxlength="4" type="text" v-model="chooseBuyModel.intentionPaymentRatio">
             </i-input>
             <span style="position:absolute;left:300px">%</span>
           </i-form-item>
@@ -139,13 +139,13 @@
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="车辆参考总价" prop="vehicleAmount">
-            <i-input type="text" v-model="chooseBuyModel.vehicleAmount" @on-blur="vehicleAmountChange">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.vehicleAmount" @on-blur="vehicleAmountChange">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="尾付本金" prop="finalprincipal">
-            <i-input type="text" v-model="chooseBuyModel.finalprincipal" @on-change="finalprincipalChange" :disabled="!chooseBuyModel.vehicleAmount">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.finalprincipal" @on-change="finalprincipalChange">
             </i-input>
           </i-form-item>
         </i-col>
@@ -158,7 +158,7 @@
         <i-col span="12">
           <i-form-item label="首付金额" prop="initialPayment">
             <i-row>
-              <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment" :disabled="!chooseBuyModel.vehicleAmount">
+              <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment">
                 <i-option v-for="item in initialPaymentData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
               <i-input style="width:180px" type="text" v-model="chooseBuyModel.initialPayment" readonly>
@@ -169,7 +169,7 @@
         <i-col span="12" pull="3">
           <i-form-item label="保证金金额" prop="depositCash">
             <i-row>
-              <i-select style="width:140px" placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit" :disabled="!chooseBuyModel.vehicleAmount">
+              <i-select style="width:140px" placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit">
                 <i-option v-for="item in depositCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
               <i-input style="width:180px" v-model="chooseBuyModel.depositCash" readonly>
@@ -180,7 +180,7 @@
         <i-col span="12">
           <i-form-item label="尾付总额" prop="finalCash">
             <i-row>
-              <i-select style="width:140px" placeholder="请选择尾付总额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash" :disabled="!chooseBuyModel.finalprincipal">
+              <i-select style="width:140px" placeholder="请选择尾付总额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash">
                 <i-option v-for="item in finalCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
               <i-input style="width:180px" v-model="chooseBuyModel.finalCash" readonly>
@@ -191,7 +191,7 @@
         <i-col span="12" pull="3">
           <i-form-item label="管理费" prop="manageCost">
             <i-row>
-              <i-select style="width:140px" placeholder="请选择管理费比例" v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost" :disabled="!chooseBuyModel.vehicleAmount">
+              <i-select style="width:140px" placeholder="请选择管理费比例" v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost">
                 <i-option v-for="item in manageCostData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
               <i-input style="width:180px" v-model="chooseBuyModel.manageCost" readonly>
@@ -201,31 +201,31 @@
         </i-col>
         <i-col span="12">
           <i-form-item label="保险费" prop="insuranceMoney">
-            <i-input type="text" v-model="chooseBuyModel.insuranceMoney">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.insuranceMoney">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="购置税" prop="purchaseMoney">
-            <i-input type="text" v-model="chooseBuyModel.purchaseMoney">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.purchaseMoney">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="上牌费" prop="licenseMoney">
-            <i-input type="text" v-model="chooseBuyModel.licenseMoney">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.licenseMoney">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="GPS费" prop="GpsMoney">
-            <i-input type="text" v-model="chooseBuyModel.GpsMoney">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.GpsMoney">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="其他费用" prop="otherFee">
-            <i-input type="text" v-model="chooseBuyModel.otherFee">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.otherFee">
             </i-input>
           </i-form-item>
         </i-col>
@@ -497,10 +497,10 @@
      * 车辆参考总价更改
      */
     vehicleAmountChange() {
-      if (Number(this.chooseBuyModel.vehicleAmount)>0) {
-      } else {
-        this.chooseBuyModel.vehicleAmount = ''
-      }
+    //   if (Number(this.chooseBuyModel.vehicleAmount)>0) {
+    //   } else {
+    //     this.chooseBuyModel.vehicleAmount = ''
+    //   }
       this.getFinanceTotalMoney()
     }
     /**
@@ -511,6 +511,7 @@
       if(this.chooseBuyModel.Payment !== '' && this.chooseBuyModel.vehicleAmount){
         this.chooseBuyModel.initialPayment = ((Number(this.chooseBuyModel.vehicleAmount)) * (Number(this.chooseBuyModel.Payment) * 0.01)).toFixed(2)
         this.chooseBuyModel.initialPayment.toString()
+        console.log(this.chooseBuyModel.initialPayment,'this.chooseBuyModel.initialPayment')
     } else {
         this.chooseBuyModel.initialPayment = ''
       }
@@ -534,7 +535,9 @@
      */
     choosefinalCash() {
       // 尾付总额（尾款本金+尾付利息）
-      this.chooseBuyModel.finalCash = (Number(this.chooseBuyModel.finalprincipal) * (1 + Number(this.DataSet.finalCash) * 0.01)*this.$dict.getDictName(this.chooseBuyModel.periods)).toFixed(2)
+      this.chooseBuyModel.finalCash = (Number(this.chooseBuyModel.finalprincipal) * (1 + Number(this.chooseBuyModel.final) * 0.01)*this.$dict.getDictName(this.chooseBuyModel.periods)).toFixed(2)
+      console.log(this.chooseBuyModel.finalprincipal,this.chooseBuyModel.final,this.chooseBuyModel.periods)
+      console.log(this.chooseBuyModel.finalCash,'this.chooseBuyModel.finalCash')
       this.chooseBuyModel.finalCash.toString()
 }
     /**
