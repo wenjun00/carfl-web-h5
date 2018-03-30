@@ -54,11 +54,10 @@
                 <i-input type="text" v-model="customerOriginModel.customerPhone"></i-input>
               </i-form-item>
               <i-form-item label="在我司是否成功购车" prop="isBuyCar">
-                <!--<i-input type="text"></i-input>-->
-                <i-radio-group v-model="customerOriginModel.isBuyCar">
-                  <i-radio :label="0" :value="0" :key="0">是</i-radio>
-                  <i-radio :label="1" :value="1" :key="1">否</i-radio>
-                </i-radio-group>
+          <i-radio-group v-model="customerOriginModel.isBuyCar">
+          <i-radio :label="0" :value="0" :key="0">是</i-radio>
+          <i-radio :label="1" :value="1" :key="1">否</i-radio>
+        </i-radio-group>
               </i-form-item>
             </i-form>
           </div>
@@ -93,6 +92,7 @@
       peerName: '', // 同行姓名
       peerCompany: '', // 同行公司
       peerPhone: '', // 同行联系方式
+      resourceType1:'',
 
       customerName: '', // 客户姓名
       customerPhone: '', // 联系方式
@@ -130,7 +130,7 @@
 
       this.customerOriginModel.customerName= '', // 客户姓名
       this.customerOriginModel.customerPhone= '', // 联系方式
-      this.customerOriginModel.isBuyCar= '', // 在我司是否成功购车
+      this.customerOriginModel.isBuyCar= null, // 在我司是否成功购车
 
       this.customerOriginModel.organizationNames= '', // 机构名称
       this.customerOriginModel.referrer= '' // 推荐人
@@ -159,6 +159,12 @@
     }
     created() {
       this.typeList = ["机关事业", "国有企业", "社会团体", "外资", "合资", "私营有限公司", "个体户"]
+    }
+    onchange(val){
+        console.log(this.customerOriginModel.isBuyCar,667)
+    }
+    radioChange(val){
+        console.log(val,665)
     }
 
   }

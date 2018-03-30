@@ -148,9 +148,11 @@ import { State, Mutation, namespace } from "vuex-class";
   })
   export default class FinancingLeaseApply extends Page {
     @Dependencies(PersonalService) private personalService: PersonalService;
-    @Dependencies(ProductOrderService)
+    @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
     @ModuleState collectiondata
-    private productOrderService: ProductOrderService;
+     
+
+    
 
     private customerRule: Object = {
       idCard: [{
@@ -195,9 +197,8 @@ import { State, Mutation, namespace } from "vuex-class";
     // private productId: any;
   mounted () {
       if(this.$store.state.pageList.find(v=>v.resoname==='融资租赁申请').flag){
-          let storeData:any=this.$store.state.purchase.collectiondata
-         this.customerModel=storeData
-         this.customerModel.name=storeData.personalName
+         this.customerModel=this.collectiondata
+         this.customerModel.name=this.collectiondata.personalName
          this.showTab()
       }
   }
@@ -454,6 +455,7 @@ import { State, Mutation, namespace } from "vuex-class";
         // 上传素材
         personalDatas: this.PersonalData
       };
+      console.log(666666666666666666666)
       this.productOrderService.saveFinanceApplyInfo(savesubmitDataset).subscribe(data => {
         this.$Message.success('保存成功！');
       }, ({
@@ -624,6 +626,7 @@ import { State, Mutation, namespace } from "vuex-class";
                         // 上传素材
                         personalDatas: this.PersonalData
                       };
+                      console.log(666666666666666666666)
                       this.productOrderService.saveFinanceApplyInfo(savesubmitDataset).subscribe(data => {
                         this.$Message.success('保存成功！');
                       }, ({
