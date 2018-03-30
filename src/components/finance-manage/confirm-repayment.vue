@@ -62,7 +62,11 @@
         <td>已还罚息</td>
         <td>{{repaymentObj.penaltyReceived}}</td>
         <td>剩余罚息</td>
-        <td><span style="color:red;text-decoration:line-through;margin-right:6px;" >{{repaymentObj.penaltyReceivable}}</span><span>{{repaymentObj.penaltySurplus}}</span></td>
+        <td>
+          <span style="text-decoration:line-through;margin-right:6px">{{repaymentObj.penaltyFreezeAddDerate}}</span>
+          <span style="color:red;">{{repaymentObj.penaltySurplus}}</span>
+        </td>
+        <!--<td><span style="color:red;text-decoration:line-through;margin-right:6px;" >{{repaymentObj.penaltyReceivable}}</span><span>{{repaymentObj.penaltySurplus}}</span></td>-->
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">管理费</td>

@@ -14,7 +14,7 @@
       </data-grid-item>
       <data-grid-item label="可冻结罚息" :span="6">
         <template>
-          <div>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltyCanFreeze:0}}</div>
+          <div>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltySurplus:0}}</div>
         </template>
       </data-grid-item>
       <data-grid-item label="冻结罚息" :span="6">
