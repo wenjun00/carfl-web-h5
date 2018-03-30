@@ -162,7 +162,7 @@
                 <i-option v-for="item in initialPaymentData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
           </i-form-item>
-          <i-form-item prop="initialPayment" style="display:inline-block">
+          <i-form-item prop="initialPayment" style="display:inline-block;margin-left:-110px">
               <i-input style="width:180px" type="text" v-model="chooseBuyModel.initialPayment" readonly>
               </i-input>
                </i-form-item>
@@ -175,7 +175,7 @@
                 <i-option v-for="item in depositCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
           </i-form-item>
-             <i-form-item prop="depositCash" style="display:inline-block">  
+             <i-form-item prop="depositCash" style="display:inline-block;margin-left:-110px">  
               <i-input style="width:180px" v-model="chooseBuyModel.depositCash" readonly>
               </i-input>
         </i-form-item>
@@ -188,7 +188,7 @@
                 <i-option v-for="item in finalCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
           </i-form-item>
-               <i-form-item  prop="finalCash" style="display:inline-block">
+               <i-form-item  prop="finalCash" style="display:inline-block;margin-left:-110px">
               <i-input style="width:180px" v-model="chooseBuyModel.finalCash" readonly>
               </i-input>
                </i-form-item>
@@ -201,7 +201,7 @@
                 <i-option v-for="item in manageCostData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
           </i-form-item>
-              <i-form-item prop="manageCost" style="display:inline-block">
+              <i-form-item prop="manageCost" style="display:inline-block;margin-left:-110px">
               <i-input style="width:180px" v-model="chooseBuyModel.manageCost" readonly>
               </i-input>
               </i-form-item>
@@ -485,7 +485,7 @@
     //   this.chooseBuyModel.moneyPay = ''
       //   月供金额
       if(this.chooseBuyModel.financeTotalMoney) {
-        this.chooseBuyModel.moneyPay = (Number(this.chooseBuyModel.financeTotalMoney) * (1 + Number(this.DataSet.productRate) * 0.01*this.$dict.getDictName(this.chooseBuyModel.periods)) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
+        this.chooseBuyModel.moneyPay = (Number(this.chooseBuyModel.financeTotalMoney) * (1 + Number(this.chooseBuyModel.prdInterestRate) * this.$dict.getDictName(this.chooseBuyModel.periods)) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
         this.chooseBuyModel.moneyPay.toString()
     }
     }
