@@ -209,8 +209,8 @@
       </i-row>
       <i-row>
         <i-col span="12">
-          <i-form-item label="现居住地房产归属" prop="localLiveHouseOwner">
             <i-row>
+          <i-form-item label="现居住地房产归属" prop="localLiveHouseOwner">
               <i-select v-model="customerMaterialsForm.localLiveHouseOwner" clearable>
                 <i-option label="本人名下" :value="16"></i-option>
                 <i-option label="配偶名下" :value="17"></i-option>
@@ -224,12 +224,14 @@
                 <i-option label="宅基地" :value="25"></i-option>
                 <i-option label="其他" :value="26"></i-option>
               </i-select>
+          </i-form-item>
             </i-row>
             <i-row>
+                <i-form-item prop="localLiveHouseMoney">
               <i-input type="text" placeholder="每月租金" v-model="customerMaterialsForm.localLiveHouseMoney">
               </i-input>
+                </i-form-item>
             </i-row>
-          </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="本市自有房产状况及归属" prop="cityOwnhouseCondition">
@@ -406,6 +408,7 @@
         trigger: 'blur',
       }],
       mobileMinor:[{ validator: this.$validator.phoneNumber, trigger: "blur" }],
+      localHomePhone:[{pattern: /^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/, message: '请输入正确的座机号', trigger: 'blur'}],
       education: [{
         required: true,
         message: '请选择教育程度',
@@ -422,6 +425,7 @@
         message: '请输入身份证地址',
         trigger: 'blur',
       }],
+      localLiveHouseMoney:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur'}],
     //   idCardValidityPeriodSection:[{
     //     required: true,
     //     message: '请输入身份证有效期',

@@ -151,8 +151,7 @@ export default class SaleGatheringApply extends Page {
   private saveDraftDisabled: Boolean = false;
   private msg:any='';
   mounted () {
-      if(this.$store.state.pageList.find(v=>v.title==='销售收款申请').flag){
-          console.log(this.collectiondata)
+      if(this.$store.state.pageList.find(v=>v.resoname==='销售收款申请').flag){
          this.applyData=this.collectiondata
          this.showTab()
       }

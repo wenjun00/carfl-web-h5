@@ -301,7 +301,8 @@
         required: true,
         message: '请输入单位地址',
         trigger: 'blur',
-      }]
+      }],
+      companyPhone:[{pattern: /^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/, message: '请输入正确的固定电话', trigger: 'blur'}]
     }
     Reverse(data) {
       if (data.personal.personalJob) {

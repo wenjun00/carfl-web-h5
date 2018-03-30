@@ -41,13 +41,6 @@
     </template>
     <template>
       <i-modal v-model="modal2" width="360" title="编辑订单">
-        <div style="text-align:center;margin: 10px">
-          融资租赁申请中有您未保存的内容，建议先保存在做编辑，是否继续编辑？
-        </div>
-        <div slot="footer" style="text-align:center;">
-          <i-button class="blueButton" @click="confirm">确定</i-button>
-          <i-button @click="cancel">取消</i-button>
-        </div>
       </i-modal>
     </template>
     <!--客户chaxun-->
@@ -131,7 +124,8 @@
     private productOrderService: ProductOrderService;
     @Dependencies(PersonalService) private personalService: PersonalService;
     @Dependencies(PageService) private pageService: PageService;
-    @ModuleMutation('collectionRowData') collectionRowData
+    @ModuleMutation('collectionRowData') collectionRowData;
+    
     private queryColumns: any;
     @Mutation openPage;
     private columns2: any;
@@ -147,6 +141,7 @@
     private openCustomerInformation: Boolean = false;
     private orderProgressModal: Boolean = false;
     private purchaseInfoModal: Boolean = false;
+    private editData:any='';
     private orderInfo: any;
     private startTime: any;
     private endTime: any;
@@ -156,14 +151,6 @@
       startTime: "",
       endTime: ""
     };
-    confirm() {
-      this.modal2 = false;
-      this.openPage({
-        title: "融资租赁申请",
-        path: "purchase/purchase-manage/financing-lease-apply",
-        flag: true
-      });
-    }
     cancel() {
       this.modal2 = false;
     }
@@ -212,7 +199,20 @@
                       },
                       on: {
                         click: () => {
-                          this.modal2 = true;
+                          this.$Modal.confirm({
+                            title: "提示",
+                            content: "融资租赁申请中有您未保存的内容，建议先保存在做编辑，是否继续编辑？",
+                            onOk: () => {
+                             this.collectionRowData(row)
+                             this.$nextTick(()=>{
+                                this.openPage({
+                                   resoname: "融资租赁申请",
+                                   path: "purchase/purchase-manage/financing-lease-apply",
+                                   flag: true
+                              });
+                             })
+                            }
+                          });
                         }
                       }
                     },
@@ -246,9 +246,22 @@
                       style: {
                         color: "#265EA2"
                       },
-                      on: {
+                       on: {
                         click: () => {
-                          this.modal2 = true;
+                          this.$Modal.confirm({
+                            title: "提示",
+                            content: "融资租赁申请中有您未保存的内容，建议先保存在做编辑，是否继续编辑？",
+                            onOk: () => {
+                             this.collectionRowData(row)
+                               this.$nextTick(()=>{
+                                this.openPage({
+                                   resoname: "融资租赁申请",
+                                   path: "purchase/purchase-manage/financing-lease-apply",
+                                   flag: true
+                              });
+                             })
+                            }
+                          });
                         }
                       }
                     },
@@ -270,7 +283,7 @@
                             onOk: () => {
                              this.collectionRowData(row)
                               this.openPage({
-                                title: "销售收款申请",
+                                resoname: "销售收款申请",
                                 path: "purchase/finance-account/sale-gathering-apply",
                                 flag: true
                               });
@@ -317,7 +330,7 @@
                             onOk: () => {
                               this.collectionRowData(row)
                               this.openPage({
-                                title: "销售收款申请",
+                                resoname: "销售收款申请",
                                 path: "purchase/finance-account/sale-gathering-apply",
                                 flag: true
                               });
@@ -354,7 +367,7 @@
         },
         {
           title: "订单号",
-          expand: true,
+          editable: true,
           align: "center",
           key: "orderNumber",
           width: 150,
@@ -393,7 +406,7 @@
         {
           align: "center",
           title: "订单创建时间",
-          expand: true,
+          editable: true,
           key: "createTime",
           width: 150,
           render: (h, {
@@ -410,7 +423,7 @@
         {
           align: "center",
           title: "客户",
-          expand: true,
+          editable: true,
           key:'personalName',
           width: 100,
           render: (h, params) => {
@@ -448,7 +461,7 @@
         {
           align: "center",
           title: "订单类型",
-          expand: true,
+          editable: true,
           width: 100,
           key: "orderType",
           render: (h, {
@@ -463,14 +476,14 @@
           align: "center",
           width: 100,
           title: "产品名称",
-          expand: true,
+          editable: true,
           key: "productName"
         },
         {
           align: "center",
           title: "产品期数",
           key: "periods",
-          expand: true,
+          editable: true,
           width: 100,
           render: (h, {
             row,
@@ -483,14 +496,14 @@
         {
           align: "center",
           title: "利率(月)",
-          expand: true,
+          editable: true,
           key: "productRate",
           width: 100
         },
         {
           align: "center",
           title: "还款方式",
-          expand: true,
+          editable: true,
           key: "payWay",
           width: 100,
           render: (h, {
@@ -504,14 +517,14 @@
         {
           align: "center",
           title: "融资总额",
-          expand: true,
+          editable: true,
           key: "financingAmount",
           width: 100
         },
         {
           align: "center",
           title: "环节",
-          expand: true,
+          editable: true,
           key: "orderLink",
           width: 100,
           render: (h, {
@@ -525,7 +538,7 @@
         {
           align: "center",
           title: "订单状态",
-          expand: true,
+          editable: true,
           key: "orderStatus",
           width: 100,
           render: (h, {

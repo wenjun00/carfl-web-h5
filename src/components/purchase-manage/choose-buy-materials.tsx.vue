@@ -27,7 +27,7 @@
             <i-form-item label="所属公司" prop="companyId">
               <i-select v-model="chooseBuyModel.companyId" clearable>
                 <i-option v-for="item in companyObject" :key="item.id" :value="item.id" :label="item.companyChinaname"></i-option>
-                 <!--<i-option v-if="companyObject.length===0" value="暂无数据" readonly>暂无数据</i-option>-->
+                 <!--<i-option v-if="companyObject.length===0" value="" readonly>暂无数据</i-option>-->
               </i-select>
             </i-form-item>
           </i-col>
@@ -388,6 +388,11 @@
       depositCash:[{ required: true, message: '请输入保证金金额', trigger: 'blur' }],
       finalCash:[{ required: true, message: '请输入尾付总额', trigger: 'blur' }],
       manageCost:[{ required: true, message: '请输入管理费', trigger: 'blur' }],
+      insuranceMoney:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
+      purchaseMoney:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
+      licenseMoney:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
+      GpsMoney:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
+      otherFee:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur'}]
     };
     private rules: any = {
       intentionPeriods: [{ required: true, message: '请输入意向期限', trigger: 'change', type:'number' }],
@@ -398,7 +403,8 @@
       intentionPaymentRatio: [{ required: true, message: '请输入意向首付比例', trigger: 'blur' },
                               { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
       intentionFinancingAmount:[{ required: true, message: '请输入意向融资金额', trigger: 'blur' },
-                                { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }]
+                                { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
+      rentPayable:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur'}]
     };
 
     @Prop()

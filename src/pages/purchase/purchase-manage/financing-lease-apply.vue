@@ -121,7 +121,7 @@
   import {
     ProductOrderService
   } from "~/services/manage-service/product-order.service";
-
+import { State, Mutation, namespace } from "vuex-class";
   import {
     Layout
   } from "~/core/decorator";
@@ -131,6 +131,7 @@
   import {
     FilterService
   } from "~/utils/filter.service"
+ const ModuleState = namespace('purchase', State)
 
   @Layout("workspace")
   @Component({
@@ -148,6 +149,7 @@
   export default class FinancingLeaseApply extends Page {
     @Dependencies(PersonalService) private personalService: PersonalService;
     @Dependencies(ProductOrderService)
+    @ModuleState collectiondata
     private productOrderService: ProductOrderService;
 
     private customerRule: Object = {
@@ -191,6 +193,14 @@
     private type: Boolean = false;
     private orderStatus: any = '';
     // private productId: any;
+  mounted () {
+      if(this.$store.state.pageList.find(v=>v.resoname==='融资租赁申请').flag){
+          let storeData:any=this.$store.state.purchase.collectiondata
+         this.customerModel=storeData
+         this.customerModel.name=storeData.personalName
+         this.showTab()
+      }
+  }
     print() {
       window.print();
     }
