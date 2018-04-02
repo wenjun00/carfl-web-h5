@@ -134,7 +134,7 @@
             <i-option :label="item.day" :key="item.key" :value="item.value" v-for="item in monthDay"></i-option>
           </i-select>
           </i-form-item>
-              
+
         </i-col>
         <i-col span="12">
           <i-form-item label="发薪方式" prop="payWay">
@@ -302,19 +302,11 @@
             message: '请输入1~9位数字',
             trigger: 'blur'
         }],
-<<<<<<< HEAD
-      companyAddress:[{
-        required: false,
-        message: '请输入单位地址',
-        trigger: 'blur',
-      }],
-=======
-    //   companyAddress:[{
-    //     required: true,
-    //     message: '请输入单位地址',
-    //     trigger: 'blur',
-    //   }],
->>>>>>> 33b148f46f055dcc4ee683c8df98cf52c9e591e3
+      // companyAddress:[{
+      //   required: false,
+      //   message: '请输入单位地址',
+      //   trigger: 'blur',
+      // }],
       companyPhone:[{pattern: /^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/, message: '请输入正确的固定电话', trigger: 'blur'}]
     }
     Reverse(data) {
