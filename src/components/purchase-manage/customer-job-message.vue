@@ -128,9 +128,13 @@
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="每月发薪日" prop="payDay">
-            <i-input type="text" v-model="job.payDay" placeholder="请输入每月发薪日">
-            </i-input>
+            <!--<i-input type="text" v-model="job.payDay" placeholder="请输入每月发薪日">
+            </i-input>-->
+             <i-select v-model="job.payDay" placeholder="请选择每月发薪日" clearable>
+            <i-option :label="item.day" :key="item.key" :value="item.value" v-for="item in monthDay"></i-option>
+          </i-select>
           </i-form-item>
+              
         </i-col>
         <i-col span="12">
           <i-form-item label="发薪方式" prop="payWay">
@@ -274,6 +278,7 @@
       pastyearProfit: '', // 过去一年利润
       stockScale:''
     };
+    private monthDay: any;
     private jobType: any = 37;
     private typeList: Array < String > ;
     private rules:any={
@@ -297,11 +302,11 @@
             message: '请输入1~9位数字',
             trigger: 'blur'
         }],
-      companyAddress:[{
-        required: true,
-        message: '请输入单位地址',
-        trigger: 'blur',
-      }],
+    //   companyAddress:[{
+    //     required: true,
+    //     message: '请输入单位地址',
+    //     trigger: 'blur',
+    //   }],
       companyPhone:[{pattern: /^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/, message: '请输入正确的固定电话', trigger: 'blur'}]
     }
     Reverse(data) {
@@ -322,8 +327,23 @@
     jobchange() {
       this.job={}
     }
+    /**
+     * 获取月份天数
+     */
+    monthDayFun() {
+      let arr: any = 31;
+      for (let i = 1; i <= arr; i++) {
+        this.monthDay.push({
+          day: i + "日",
+          key: i + "日",
+          value: i
+        });
+      }
+    }
 
     created() {
+      this.monthDay = [];
+      this.monthDayFun();
       this.typeList = ["机关事业", "国有企业", "社会团体", "外资", "合资", "私营有限公司", "个体户"]
     }
 

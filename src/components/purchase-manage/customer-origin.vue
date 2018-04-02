@@ -96,7 +96,7 @@
 
       customerName: '', // 客户姓名
       customerPhone: '', // 联系方式
-      isBuyCar: '', // 在我司是否成功购车
+      isBuyCar: null, // 在我司是否成功购车
 
       organizationNames: '', // 机构名称
       referrer: '', // 推荐人

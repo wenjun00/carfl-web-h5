@@ -100,6 +100,9 @@
         render: h => h(AddApply)
       })
     }
+    activated(){
+      this.searchPaymentrecord()   
+    }
     created() {
       this.searchPaymentrecord()
       this.columns2 = [{}]
