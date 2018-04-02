@@ -149,7 +149,6 @@
                         this.addOpen=false
                       this.editCarModal = true;
                       this.rowData = row
-                      console.log(this.rowData, 88777)
                     }
                   }
                 },
@@ -170,6 +169,7 @@
                         content: '确定删除吗？',
                         onOk: () => {
                           this.addcarData.splice(index, 1);
+                          this.complutedtotalPrice()
                         }
                       })
                     }
@@ -204,11 +204,7 @@
                   ss.target.value=0
                   this.addcarData[index].carAmount = ssf
               }
-             let sum:any=0;
-             this.addcarData.forEach(v=>{
-                    sum=sum+(Number(v.carAmount)*(Number(v.carNumber)||1)||0)
-                });
-            this.totalPrice=sum
+             this.complutedtotalPrice()
             };
             return (
                 <i-input style="width:80px" onOn-blur={removeHandle} value={row.carAmount}> </i-input>);
@@ -226,14 +222,10 @@
               this.addcarData[index].carNumber = ss.target.value
               let patt1:any = /[0-9]+/;
               if(!patt1.test(ss.target.value)){
-                  ss.target.value=0
+                  ss.target.value=1
                   this.addcarData[index].carNumber = ss.target.value
               }
-             let sum:any=0;
-             this.addcarData.forEach(v=>{
-                    sum=sum+(Number(v.carAmount)*(Number(v.carNumber)||1)||0)
-                });
-            this.totalPrice=sum
+             this.complutedtotalPrice()
             };
             return (
                 <i-input index={index} style="width:80px" onOn-blur={removeHandle} value={row.carNumber}> </i-input>);
@@ -243,6 +235,16 @@
             key: 'vehicleLicence',
             align: 'center'
         }]
+      }
+      /**
+       * 计算车辆总价
+       */
+      complutedtotalPrice(){
+       let sum:any=0;
+             this.addcarData.forEach(v=>{
+                    sum=sum+(Number(v.carAmount)*(Number(v.carNumber)||0)||0)
+                });
+            this.totalPrice=sum    
       }
       Reverse(data) {
         this.choosebusyData.companyId = data.companyId

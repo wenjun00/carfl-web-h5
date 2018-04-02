@@ -650,6 +650,7 @@
                         content: '确定删除吗？',
                         onOk: () => {
                           this.addcarData.splice(index, 1);
+                          this.complutedtotalPrice()
                         }
                       })
 
@@ -694,11 +695,7 @@
                   ss.target.value=0
                   this.addcarData[index].carAmount = ssf
               }
-             let sum:any=0;
-             this.addcarData.forEach(v=>{
-                    sum=sum+(Number(v.carAmount)||0)
-                }); 
-            this.totalPrice=sum
+             this.complutedtotalPrice()
             };
             return ( 
                 <i-input style="width:80px" onOn-blur={removeHandle} value={row.carAmount}> </i-input>);
@@ -734,6 +731,21 @@
       ]
 
       this.carData = []
+    }
+    /**
+     * 计算车辆总价
+     */
+    complutedtotalPrice(){
+     let sum:any=0;
+     this.addcarData.forEach(v=>{
+         sum=sum+(Number(v.carAmount)||0)
+         }); 
+     this.totalPrice=sum
+     this.chooseBuyModel.vehicleAmount=this.totalPrice
+     this.chooseinitialPayment()
+     this.choosedeposit()
+     this.choosefinalCash()
+     this.choosemanageCost()
     }
     addModalOpen() {
       this.addOpen=true
