@@ -56,6 +56,7 @@
       this.areaArr = this.$city.getCityData({ level: 1, id: this.newBankModel.openAccountProvince })
       console.log('aa')
     }
+
     created() {
       this.newBankModel = {
         companyCustomerId: '152000015110001',

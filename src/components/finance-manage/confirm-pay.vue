@@ -12,7 +12,7 @@
           <i-form-item label="付款类型" prop="refundType">
             <i-select v-model="repaymentObj.refundType" disabled>
               <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
-            </i-select>          
+            </i-select>
           </i-form-item>
         </i-col>
       </i-row>
@@ -73,7 +73,7 @@
           <div @click="addObj">
             <i-icon type="plus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
-        </td>        
+        </td>
         <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
         <td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
@@ -81,7 +81,7 @@
       </tr>
       <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
         <td  v-if="!check">
-          <div @click="deleteObj(i)">          
+          <div @click="deleteObj(i)">
             <i-icon type="minus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
         </td>
@@ -138,7 +138,7 @@
       <i-modal title="订单详情" v-model="purchaseInfoModel" width="1000" class="purchaseInformation">
         <purchase-information :scrollTopHeight="scrollTopHeight"></purchase-information>
         <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
+          <i-button class="blueButton" @click="purchaseInfoModel=false">返回</i-button>
         </div>
       </i-modal>
     </template>
@@ -237,7 +237,7 @@
         this.productOrder = data.productOrder
         this.itemList = data.itemList
         this.repaymentObj = data
-        this.collectMoneyDetails = data.refundRecordItems 
+        this.collectMoneyDetails = data.refundRecordItems
         this.personalBanks = data.bankListk
         console.log(this.personalBanks)
         this.financeUploadResources = data.resourceList.filter(v => v.materialType === 1163)
@@ -258,7 +258,7 @@
         sum = sum + (Number(v.refundAmount) || 0)
       })
       console.log(sum)
-      this.paymentAmount = sum 
+      this.paymentAmount = sum
     }
     mounted() {
       let target = document.querySelector(".purchaseInformation .ivu-modal-body")

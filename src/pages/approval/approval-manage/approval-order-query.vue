@@ -94,7 +94,7 @@ export default class ApprovalOrderQuery extends Page {
       {
         type: "selection",
         fixed: "left",
-        width: 60,
+        width: 100,
         align: "center"
       },
       {
@@ -338,6 +338,7 @@ export default class ApprovalOrderQuery extends Page {
       this.approvalModel.endTime,
       "yyyy-MM-dd"
     );
+
     this.approvalService
       .approvalOrderSearch(this.approvalModel, this.pageService)
       .subscribe(
@@ -348,6 +349,7 @@ export default class ApprovalOrderQuery extends Page {
           this.$Message.error(msg);
         }
       );
+    console.log(this.approvalModel)
   }
   getTimeSearch(val) {
     this.approvalModel.startTime = "";

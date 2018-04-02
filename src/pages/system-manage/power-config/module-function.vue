@@ -357,7 +357,9 @@ export default class ModuleFunction extends Page {
    * 生成树
    */
   createNewTree(allData) {
-    let root = allData.filter(v => v.pid === 10000); // 获取树根
+    let root = allData.filter(v => v.pid === 10000).sort(function (a,b) {
+      return a.sort>b.sort
+    }); // 获取树根
     this.treeData = [];
     // 遍历根对象push进树中
     root.forEach(item => {
@@ -378,9 +380,9 @@ export default class ModuleFunction extends Page {
         expand: true,
         children: this.getChild(item)
       };
+
       this.treeData.push(node1);
     });
-    console.log(this.treeData, 222);
   }
   /**
    * 获取相对根元素的子元素
