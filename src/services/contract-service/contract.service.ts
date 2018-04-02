@@ -17,4 +17,13 @@ export class ContractService {
             data
         })
     }
+  /**
+   * 合同资料的上传
+   */
+  uploadContractResource(data) {
+    return this.netService.send({
+      server: contractService.contractController.uploadContractResource,
+      data
+    })
+  }
 }

@@ -137,7 +137,10 @@ export default class FrozenApplyRecord extends Page {
         align: "center",
         editable: true,
         title: "订单环节",
-        key: "orderLink"
+        key: "orderLink",
+        render: (h, { row, column, index }) => {
+          return h("span", {}, this.$dict.getDictName(row.orderLink));
+        }
       },
       {
         align: "center",

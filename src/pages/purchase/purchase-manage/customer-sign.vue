@@ -70,7 +70,7 @@
           <span>文件数量({{dataList.length}})</span>
           <div style="display:inline-block;float:right;">
             <svg-icon style="font-size:24px;cursor:pointer;position:relative;left:18px;" iconClass="xiazai"></svg-icon>
-            <i-button type="text">全部下载</i-button>
+            <i-button type="text" @click="downloadAll">全部下载</i-button>
           </div>
         </div>
         <ul style="margin-top:20px;margin-left:20px">
@@ -83,6 +83,10 @@
             </div>
           </li>
         </ul>
+        <div slot="footer">
+          <i-button @click="cancelButton">取消</i-button>
+          <i-button class="blueButton" @click="confirm">确定</i-button>
+        </div>
       </i-modal>
     </template>
     <template>
@@ -165,6 +169,7 @@
     private openUpload: Boolean = false;
     private dataList: Array < any > = [];
     private url: any = "";
+    private orderId:any = '';
     private customerSignModel: any = {
       orderInfo: "",
       timeSearch: "",
@@ -441,6 +446,7 @@
       this.openCreateCompact = true;
     }
     openCompactInfos(row) {
+      this.orderId = row.orderId
       this.openCompact = true;
     }
     /**
@@ -647,10 +653,37 @@
     handleRemove(file) {
       this.dataList.splice(this.dataList.indexOf(file), 1);
     };
+    cancelButton(){
+      this.openCompact = false;
+      this.dataList = [];
+    }
+    /**
+     * 全部下载
+     */
+    downloadAll(){
+      console.log(this.dataList)
+      this.dataList.forEach((v) => {
+        CommonService.downloadFile(v.url, v.name);
+      })
+    }
     /**
      * 确定
      */
-    confirm() {}
+    confirm() {
+      let materialUrl:any = this.dataList.forEach((v)=>v.localUrl)
+      console.log(materialUrl)
+      // this.contractService.uploadContractResource({
+      //   orderId:this.orderId
+      //
+      // })
+      //   .subscribe( data => {
+      //     this.openCompact = false;
+      //     this.dataList = [];
+      //     this.$Message.success('上传成功！')
+      //   },({msg})=>{
+      //     this.$Message.error(msg);
+      //   })
+    }
   }
 
 </script>
