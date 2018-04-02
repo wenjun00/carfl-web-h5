@@ -298,7 +298,7 @@
             trigger: 'blur'
         }],
       companyAddress:[{
-        required: true,
+        required: false,
         message: '请输入单位地址',
         trigger: 'blur',
       }],

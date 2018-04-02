@@ -150,9 +150,9 @@ import { State, Mutation, namespace } from "vuex-class";
     @Dependencies(PersonalService) private personalService: PersonalService;
     @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
     @ModuleState collectiondata
-     
 
-    
+
+
 
     private customerRule: Object = {
       idCard: [{
@@ -420,7 +420,7 @@ import { State, Mutation, namespace } from "vuex-class";
         depositPercent: Number(choosebuymaterials.chooseBuyModel.deposit)*0.01||0, // 保证金比例
         paymentScale: Number(choosebuymaterials.chooseBuyModel.Payment)*0.01||0, // 首付比例
         final:Number(choosebuymaterials.chooseBuyModel.final)*0.01||0, // 尾付比例
-        finalPayment: choosebuymaterials.chooseBuyModel.finalprincipal, // 尾付本金        
+        finalPayment: choosebuymaterials.chooseBuyModel.finalprincipal, // 尾付本金
         // orderCar: choosebuymaterials.addcarData, // 添加车辆信息
         // 产品信息
         productId: choosebuymaterials.DataSet.productId, // 产品id
@@ -555,7 +555,7 @@ import { State, Mutation, namespace } from "vuex-class";
                         this.$Message.warning('请完善客户职业信息');
                         return
                       }
-                
+
                     //   if (customerOrigin.OriginModel.resourceType.length === 0) {
                     //     this.$Message.warning('请完善客户来源信息');
                     //     return
@@ -656,11 +656,11 @@ import { State, Mutation, namespace } from "vuex-class";
   .header {
     border-bottom: 1px solid #cccccc;
   }
-  
+
   .page {
     height: 1750px!important;
   }
-  
+
   .submitBar {
     line-height: 70px;
     height: 70px;
@@ -673,7 +673,7 @@ import { State, Mutation, namespace } from "vuex-class";
     box-shadow: -3px 2px 20px #dddddd;
     padding-right: 24px;
   }
-  
+
   .specialInput {
     .ivu-input {
       border-style: none;
@@ -681,7 +681,7 @@ import { State, Mutation, namespace } from "vuex-class";
       border-radius: 0; // width: 257%;
     }
   }
-  
+
   .financing-lease-apply {
     .ivu-select-selection {
       display: inline-block;
@@ -699,7 +699,7 @@ import { State, Mutation, namespace } from "vuex-class";
       z-index: 999;
     }
   }
-  
+
   .finance-lease-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #dddee1;
@@ -714,13 +714,13 @@ import { State, Mutation, namespace } from "vuex-class";
       }
     }
   }
-  
+
   .historical {
     .ivu-modal-footer {
       display: none !important;
     }
   }
-  
+
   .yewuliucheng-bg {
     width: 1000px;
     height: 375px;

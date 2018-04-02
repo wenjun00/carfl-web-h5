@@ -125,7 +125,7 @@
     @Dependencies(PersonalService) private personalService: PersonalService;
     @Dependencies(PageService) private pageService: PageService;
     @ModuleMutation('collectionRowData') collectionRowData;
-    
+
     private queryColumns: any;
     @Mutation openPage;
     private columns2: any;

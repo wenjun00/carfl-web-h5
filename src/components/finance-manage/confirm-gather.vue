@@ -51,7 +51,7 @@
           <div @click="addObj">
             <i-icon type="plus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
-        </td>        
+        </td>
         <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
         <td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
@@ -59,7 +59,7 @@
       </tr>
       <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
         <td v-if="!check">
-          <div @click="deleteObj(i)">          
+          <div @click="deleteObj(i)">
             <i-icon type="minus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
         </td>
@@ -117,7 +117,7 @@
       <i-modal title="订单详情" v-model="purchaseInfoModel" width="1000" class="purchaseInformation">
         <purchase-information ref="purchase-info" :scrollTopHeight="scrollTopHeight"></purchase-information>
         <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
+          <i-button class="blueButton" @click="purchaseInfoModel=false">返回</i-button>
         </div>
       </i-modal>
     </template>
@@ -217,7 +217,7 @@
         console.log(data)
         this.repaymentObj = data
         this.collectMoneyDetails = data.collectMoneyDetails || []
-        this.personalBanks = data.personalBanks 
+        this.personalBanks = data.personalBanks
         this.financeUploadResources = data.collectMoneyPhaseUploadResources
         this.applicationPhaseResources = data.applicationPhaseUploadResources
         this.collectMoneyItemModels = data.collectMoneyItemModels
@@ -237,7 +237,7 @@
         sum = sum + (Number(v.collectMoneyAmount) || 0)
       })
       console.log(sum)
-      this.paymentAmount = sum 
+      this.paymentAmount = sum
     }
     mounted() {
       let target = document.querySelector(".purchaseInformation .ivu-modal-body")

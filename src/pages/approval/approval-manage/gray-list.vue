@@ -121,6 +121,7 @@ export default class GrayList extends Page {
                 on: {
                   click: () => {
                     this.purchaseInfoModal = true;
+                    this.checkOrderInfo(row);
                   }
                 }
               },

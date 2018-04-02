@@ -28,7 +28,7 @@
     <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
       <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
       <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>        
+        <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
         <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
@@ -127,7 +127,7 @@
   export default class EarlyPay extends Page {
     @Dependencies(AdvancePayoffService) private advancePayoffService: AdvancePayoffService;
     @Dependencies(PageService) private pageService: PageService;
-      
+
     private scrollTopHeight = 0;
     private customerRepayList: Array < Object > = [];
     private columns1: any;
@@ -171,7 +171,7 @@
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.withdrawId
       data.totalPayment = _repayment.paymentAmount
-      data.collectMoneyId = _repayment.collectMoneyId      
+      data.collectMoneyId = _repayment.collectMoneyId
       this.advancePayoffService.saveCollectMoneyHistoryAsDraft(data).subscribe(data => {
         this.$Message.info('保存草稿成功！')
         this.confirmRepaymentModal = false
@@ -246,7 +246,7 @@
                 on: {
                   click: () => {
                     this.confirmRepaymentModal = true
-                    let _repayment: any = this.$refs['confirm-early-pay']                    
+                    let _repayment: any = this.$refs['confirm-early-pay']
                     _repayment.refresh(row)
                   }
                 },
@@ -315,7 +315,7 @@
         {
           align: "center",
           title: "客户结算号",
-          editable: true,          
+          editable: true,
           key: "clientNumber",
           width: 150,
           render: (h, {
@@ -339,7 +339,7 @@
         },
         {
           align: "center",
-          editable: true,          
+          editable: true,
           title: "客户姓名",
           key: "name",
           width: 100
@@ -347,7 +347,7 @@
         {
           align: "center",
           title: " 证件号",
-          editable: true,          
+          editable: true,
           key: "idCard",
           width: 160
         },
@@ -355,13 +355,13 @@
           align: "center",
           title: " 手机号",
           key: "mobileMain",
-          editable: true,          
+          editable: true,
           width: 120
         },
         {
           align: "center",
           title: " 订单创建时间",
-          editable: true,          
+          editable: true,
           key: "createTime",
           width: 160,
           render: (h, {
@@ -376,7 +376,7 @@
           align: "center",
           title: " 合同生效日",
           key: "contractDate",
-          editable: true,          
+          editable: true,
           width: 160,
           render: (h, {
             row,
@@ -390,33 +390,33 @@
           align: "center",
           title: " 待还本金",
           key: "principalReceivable",
-          editable: true,          
+          editable: true,
           width: 90
         },
         {
           align: "center",
           title: " 待还利息",
           key: "interestReceivable",
-          editable: true,          
+          editable: true,
           width: 90
         },
         {
           align: "center",
           title: " 待还罚息",
           key: "penaltyReceivable",
-          editable: true,          
+          editable: true,
           width: 90
         },
         {
           align: "center",
           title: " 利率%/月",
           key: "productRate",
-          editable: true,          
+          editable: true,
           width: 90
         },
         {
           align: "center",
-          editable: true,          
+          editable: true,
           title: " 结算通道",
           key: "settlementChannel",
           width: 100,
@@ -431,7 +431,7 @@
         {
           align: "center",
           title: " 归属公司",
-          editable: true,          
+          editable: true,
           width: 100,
           key: "companyChinaName"
         }
