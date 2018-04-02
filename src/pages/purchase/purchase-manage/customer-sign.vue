@@ -62,23 +62,41 @@
     </template>
     <template>
       <i-modal v-model="openCompact" title="上传合同">
-        <i-upload action="//jsonplaceholder.typicode.com/posts/">
-          <i-button type="ghost" icon="ios-cloud-upload-outline">上传</i-button>
-        </i-upload>
+        <i-row>
+          <i-button class="blueButton" @click="openClick">上传</i-button>
+          <span style="margin-left:15px;">建议文件大小100M以内</span>
+        </i-row>
         <div style="font-size:18px;font-weight:bold;margin-top:10px">
-          <span>文件数量（3）</span>
+          <span>文件数量({{dataList.length}})</span>
           <div style="display:inline-block;float:right;">
             <svg-icon style="font-size:24px;cursor:pointer;position:relative;left:18px;" iconClass="xiazai"></svg-icon>
             <i-button type="text">全部下载</i-button>
           </div>
         </div>
-        <div style="margin-top:6px;font-size:14px;">
-          <span>身份证-001fdawdeklvkje...</span>
-          <span style="margin-left:10px;">驾驶证-001fdawdeklvkje...</span>
-        </div>
-        <div style="margin-top:6px;font-size:14px;">
-          <span>结婚证-001fdawdeklvkje...</span>
-        </div>
+        <ul style="margin-top:20px;margin-left:20px">
+          <li v-for="item in dataList" :key="item.uid">
+            <p>{{item.name}}</p>
+            <div>
+              <i-button type="text" icon="arrow-down-a" @click="download(item)"></i-button>
+              <i-button type="text" icon="eye" @click="preview(item)"></i-button>
+              <i-button type="text" icon="close" @click="handleRemove(item)"></i-button>
+            </div>
+          </li>
+        </ul>
+      </i-modal>
+    </template>
+    <template>
+      <i-modal :loading="true" v-model="openUpload" @on-ok="postFile">
+        <i-row>
+          <i-col span="24">
+            <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
+          </i-col>
+        </i-row>
+      </i-modal>
+    </template>
+    <template>
+      <i-modal title="预览" v-model="previewModel" width="800" class-name="no-footer">
+        <img :src="url" style="width: 100%">
       </i-modal>
     </template>
   </section>
@@ -89,6 +107,7 @@
   import DataBox from "~/components/common/data-box.vue";
   import Component from "vue-class-component";
   import SvgIcon from "~/components/common/svg-icon.vue";
+  import FileUpload from "~/components/common/file-upload.tsx.vue";
   import {
     Dependencies
   } from "~/core/decorator";
@@ -110,18 +129,23 @@
   import {
     ContractService
   } from '~/services/contract-service/contract.service';
+  import {
+    CommonService
+  } from "~/utils/common.service";
 
   @Layout("workspace")
   @Component({
     components: {
       DataBox,
-      SvgIcon
+      SvgIcon,
+      FileUpload
     }
   })
   export default class CustomerSign extends Page {
     @Dependencies(ContractService) private contractService: ContractService;
     @Dependencies(PersonalService) private personalService: PersonalService;
     @Dependencies(PageService) private pageService: PageService;
+    private previewModel: Boolean = false;
     private columns1: any;
     private customerSignList: Array < Object > = [];
     private searchOptions: Boolean = false;
@@ -138,6 +162,9 @@
     private type: any;
     private contectEnum: any;
     private multipleSelection:any  // 多选数据
+    private openUpload: Boolean = false;
+    private dataList: Array < any > = [];
+    private url: any = "";
     private customerSignModel: any = {
       orderInfo: "",
       timeSearch: "",
@@ -564,6 +591,62 @@
     currentSelect(selection) {
       this.multipleSelection = selection;
     }
+    openClick(){
+      this.openUpload = true
+    }
+    /**
+     * 上传文件
+     */
+    postFile() {
+      let fileUpload = this.$refs["file-upload"] as FileUpload;
+      fileUpload.upload();
+    }
+    /**
+     * 上传文件成功回调
+     */
+    uploadSuccess() {
+      this.openUpload = false;
+      this.$nextTick(() => {
+        let fileUpload = this.$refs["file-upload"] as FileUpload;
+        fileUpload.reset();
+        for (let item of fileUpload.makeList()) {
+          this.dataList.push({
+            name: item.name,
+            uid: item.uid,
+            url: item.response.url,
+            localUrl: item.response.localUrl,
+            type: item.response.type,
+            id: item.response.id,
+            size: item.size,
+            status: item.status,
+            createTime: item.response.createTime
+          })
+        }
+      });
+    }
+    /**
+     * 下载
+     */
+    download(file) {
+      CommonService.downloadFile(file.url, file.name);
+    }
+    /**
+     * 预览
+     */
+    preview(file) {
+      if (file.type === 'jpg' || file.type === 'png' || file.type === "JPG" || file.type === 'PNG') {
+        this.url = file.url
+        this.previewModel = true
+      } else {
+        window.open(file.url)
+      }
+    }
+    /**
+     * 删除
+     */
+    handleRemove(file) {
+      this.dataList.splice(this.dataList.indexOf(file), 1);
+    };
     /**
      * 确定
      */

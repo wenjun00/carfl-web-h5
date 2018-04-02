@@ -124,34 +124,34 @@ export default class FrozenApplyRecord extends Page {
       {
         align: "center",
         editable: true,
-        title: "应还罚息",
-        key: "penaltyReceivable"
+        title: "冻结金额",
+        key: "remitAmount"
       },
       {
         align: "center",
         editable: true,
-        title: "申请冻结罚息",
-        key: "penaltyFreeze"
+        title: "冻结期数",
+        key: "periods"
       },
       {
         align: "center",
         editable: true,
-        title: "剩余罚息",
-        key: "leftPenalty"
+        title: "订单环节",
+        key: "orderLink"
       },
       {
         align: "center",
         editable: true,
-        title: "冻结还款状态",
-        key: "paymentStatus",
+        title: "订单状态",
+        key: "orderStatus",
         render: (h, { row, column, index }) => {
-          return h("span", {}, this.$dict.getDictName(row.paymentStatus));
+          return h("span", {}, this.$dict.getDictName(row.orderStatus));
         }
       },
       {
         align: "center",
         editable: true,
-        title: "冻结申请日期",
+        title: "申请时间",
         key: "applyDate",
         render: (h, { row, column, index }) => {
           return h(
@@ -182,12 +182,18 @@ export default class FrozenApplyRecord extends Page {
         align: "center",
         editable: true,
         title: "订单创建时间",
-        key: "orderCreateTime"
+        key: "orderCreateTime",
+        render: (h, { row, column, index }) => {
+          return h(
+            "span",
+            FilterService.dateFormat(row.orderCreateTime, "yyyy-MM-dd hh:mm:ss")
+          );
+        }
       },
       {
         align: "center",
         editable: true,
-        title: "订单编号",
+        title: "订单号",
         key: "orderNumber",
         render: (h, { row, column, index }) => {
           return h(
@@ -210,12 +216,18 @@ export default class FrozenApplyRecord extends Page {
         align: "center",
         editable: true,
         title: "合同生效日期",
-        key: "contractDate"
+        key: "contractDate",
+        render: (h, { row, column, index }) => {
+          return h(
+            "span",
+            FilterService.dateFormat(row.contractDate, "yyyy-MM-dd hh:mm:ss")
+          );
+        }
       },
       {
         align: "center",
         editable: true,
-        title: "冻结备注",
+        title: "备注",
         key: "remitRemark"
       }
     ];

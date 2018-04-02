@@ -71,7 +71,7 @@ export default class DerateApplyRecord extends Page {
   private remitApplicationService: RemitApplicationService;
   @Dependencies(PageService) private pageService: PageService;
   private columns1: any;
-  private derateList: Array<Object> = [];
+  private derateList: Array<any> = [];
   private repayInfo: Boolean = false;
   private purchaseInfoModal: Boolean = false;
   private searchOptions: Boolean = false;
@@ -125,24 +125,33 @@ export default class DerateApplyRecord extends Page {
       {
         align: "center",
         editable: true,
-        title: "应还罚息",
-        key: "penaltyReceivable"
+        title: "减免金额",
+        key: "remitAmount"
       },
       {
         align: "center",
         editable: true,
-        title: "申请减免罚息",
-        key: "penaltyDerate"
+        title: "减免期数",
+        key: "periods"
       },
       {
         align: "center",
         editable: true,
-        title: "剩余罚息",
-        key: "leftPenalty"
+        title: "订单环节",
+        key: "orderLink"
       },
       {
         align: "center",
-        title: " 减免申请日期",
+        editable: true,
+        title: "订单状态",
+        key: "orderStatus",
+        render: (h, { row, column, index }) => {
+          return h("span", {}, this.$dict.getDictName(row.orderStatus));
+        }
+      },
+      {
+        align: "center",
+        title: " 申请时间",
         editable: true,
         key: "applyDate",
         render: (h, { row, column, index }) => {
@@ -185,7 +194,7 @@ export default class DerateApplyRecord extends Page {
       {
         align: "center",
         editable: true,
-        title: " 订单编号",
+        title: " 订单号",
         key: "orderNumber",
         render: (h, { row, column, index }) => {
           return h(
@@ -219,7 +228,7 @@ export default class DerateApplyRecord extends Page {
       {
         align: "center",
         editable: true,
-        title: " 减免备注",
+        title: " 备注",
         key: "remitRemark"
       }
     ];

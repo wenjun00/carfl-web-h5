@@ -473,15 +473,15 @@ export default class OrgUserManage extends Page {
           );
         }
       },
-      // {
-      //   align: "center",
-      //   title: "数据权限",
-      //   editable: true,
-      //   key: "userManager",
-      //   render: (h, { row, column, index }) => {
-      //     return h("span",{}, this.$dict.getDictName(row.userManager));
-      //   }
-      // }
+      {
+        align: "center",
+        title: "数据权限",
+        editable: true,
+        key: "userManager",
+        render: (h, { row, column, index }) => {
+          return h("span",{}, this.$dict.getDictName(row.userManager));
+        }
+      }
     ];
     this.columns2 = [
       {
