@@ -15,7 +15,7 @@
         </div>
         <div :style="{color:item.color}" class="iconName">{{item.iconName}}</div>
         <div class="verticalLine"></div>
-        <div v-for="val in item.pageList" :key="val.pageName" style="margin-left:100px;">
+        <div v-for="val in item.pageList" :key="val.pageName" style="margin-left:80px;">
           <div class="pageList_pageName" @click="redirectToPage(val)">{{val.pageName}}</div>
           <div @click="val.isAttention=!val.isAttention" style="display:inline-block;cursor:pointer">
             <svg-icon iconClass="yiguanzhu" style="font-size:16px;color:#F8B551" v-show="val.isAttention"></svg-icon>
@@ -44,7 +44,7 @@
     @Mutation("openPage") openPage;
     redirectToPage(val) {
       this.openPage({
-        title: val.pageName,
+        resoname: val.pageName,
         path: val.path
       })
     }
@@ -114,6 +114,14 @@
           pageName: '收款记录查询',
           isAttention: false,
           path: 'purchase/finance-account/receipt-record-query'
+        }, {
+          pageName: '付款申请',
+          isAttention: false,
+          path: 'purchase/finance-account/pay-apply'
+        }, {
+          pageName: '付款记录查询',
+          isAttention: false,
+          path: 'purchase/finance-account/payment-record-querypurchase/finance-account/payment-record-query'
         }]
       }, {
         index: 4,
@@ -124,6 +132,10 @@
           pageName: '收款审批',
           isAttention: false,
           path: 'purchase/purchase-approve/receipt-approve'
+        },{
+          pageName: '付款审批',
+          isAttention: false,
+          path: 'purchase/purchase-approve/payment-approve'
         }]
       }, {
         index: 5,

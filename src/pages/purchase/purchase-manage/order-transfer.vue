@@ -38,10 +38,10 @@
     <div class="submitBar" style="z-index:200">
       <i-row type="flex" align="middle" style="padding:14px">
         <i-col :span="8" push="1">
-          <span>申请人：administrator</span>
+          <span>申请人：{{applyPerson}}</span>
         </i-col>
         <i-col :span="10" pull="4">
-          <span>申请时间：2017-12-01 13:56:45</span>
+          <span>申请时间：{{applyTime}}</span>
         </i-col>
         <i-col :span="6" style="text-align:right;">
           <i-button @click="oneKeyToConnect" class="highButton">一键交接</i-button>
@@ -130,6 +130,8 @@ export default class OrderTransfer extends Page {
     endTime: "", // 终止日期
     timeSearch: ""
   };
+  private applyPerson: String = ""; // 申请人
+  private applyTime: String = ""; // 申请时间
   private openColumnsConfig: Boolean = false;
   private openOneKeyToConnect: Boolean = false;
   private transferRecordModal: Boolean = false;
@@ -145,6 +147,20 @@ export default class OrderTransfer extends Page {
 
   activated() {}
   created() {
+      this.applyPerson = this.$store.state.userData.username;
+      let time = new Date();
+      this.applyTime =
+        time.getFullYear() +
+        "-" +
+        (time.getMonth() + 1) +
+        "-" +
+        time.getDate() +
+        " " +
+        time.getHours() +
+        ":" +
+        time.getMinutes() +
+        ":" +
+        time.getSeconds();
     this.refreshData();
     this.getTree();
     this.treeData = [

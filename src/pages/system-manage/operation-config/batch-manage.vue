@@ -6,7 +6,7 @@
     </i-row>
     <data-box :id="63" :columns="columns1" :data="batchList" @onPageChange="getBatchManageList" :page="pageService"></data-box>
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:14px">
+      <i-row type="flex" align="middle" >
         <i-col :span="24" style="text-align:right;">
           <i-button class="highButton" @click="batchManage">批量管理</i-button>
         </i-col>

@@ -92,18 +92,18 @@
 
     <template>
       <i-modal :title="rejectOrBlackFlag?'拒绝':'黑名单'" v-model="blackListModal">
-        <i-form>
-          <!--<i-form-item>-->
-            <!--<i-select placeholder="请选择结果" style="width:20%" @on-change="changeSelectOne">-->
-              <!--<i-option label="拒绝" :value="375" :key="375"></i-option>-->
-            <!--</i-select>-->
-            <!--<i-select placeholder="全部拒单原因" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">-->
-              <!--<i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>-->
-            <!--</i-select>-->
-            <!--<i-select placeholder="全部拒单细节" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.approveReasonId">-->
-              <!--<i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id"></i-option>-->
-            <!--</i-select>-->
-          <!--</i-form-item>-->
+        <i-form >
+          <i-form-item v-if="rejectOrBlackFlag">
+            <i-select placeholder="请选择结果" style="width:20%" @on-change="changeSelectOne">
+              <i-option label="拒绝" :value="375" :key="375"></i-option>
+            </i-select>
+            <i-select placeholder="全部拒单原因" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
+              <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
+            </i-select>
+            <i-select placeholder="全部拒单细节" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.approveReasonId">
+              <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id"></i-option>
+            </i-select>
+          </i-form-item>
           <i-form-item>
             <i-input type="textarea" v-model="approvalRecordModel.remark" placeholder="请录入详细原因（非必填，限制1000字以内）" :maxlength="1000"></i-input>
           </i-form-item>
@@ -718,6 +718,7 @@ export default class MyApproval extends Page {
    * 取消提交内审
    */
   cancelAddInternal() {
+    this.submitToInternalModal = false;
     this.internalModel.remark = "";
   }
   /**
@@ -734,14 +735,55 @@ export default class MyApproval extends Page {
    */
   confirmAddBlackOrIntenal() {
     this.approvalRecordModel.orderId = this.approvalOrderId;
-    if (this.approvalRecordModel.approveReasonId) {
-      // 黑名单
-      if (!this.rejectOrBlackFlag) {
-        this.approvalRecordModel.operateType = 2;
-      } else {
-        // 拒绝
-        this.approvalRecordModel.operateType = 3;
+    // if (this.approvalRecordModel.approveReasonId) {
+    //   // 黑名单
+    //   if (!this.rejectOrBlackFlag) {
+    //     this.approvalRecordModel.operateType = 2;
+    //   } else {
+    //     // 拒绝
+    //     this.approvalRecordModel.operateType = 3;
+    //   }
+    //   this.approvalService
+    //     .submitBlackListOrRefuse(this.approvalRecordModel)
+    //     .subscribe(
+    //       val => {
+    //         this.$Message.success("提交拒单成功！");
+    //         this.blackListModal = false;
+    //         this.approveModal = false;
+    //         this.cancelAddBlack();
+    //         this.getMyOrderList();
+    //         this.approvalRecordModel.remark = "";
+    //       },
+    //       ({ msg }) => {
+    //         this.$Message.error(msg);
+    //       }
+    //     );
+    // } else {
+    //   this.$Message.error("拒单原因和拒单细节必须选择！");
+    // }
+    if(this.rejectOrBlackFlag){
+      if (!this.approvalRecordModel.approveReasonId) {
+        this.$Message.error("拒单原因和拒单细节必须选择！");
+        return
       }
+      this.approvalRecordModel.operateType = 3;
+        this.approvalService
+          .submitBlackListOrRefuse(this.approvalRecordModel)
+          .subscribe(
+            val => {
+              this.$Message.success("提交拒单成功！");
+              this.blackListModal = false;
+              this.approveModal = false;
+              this.cancelAddBlack();
+              this.getMyOrderList();
+              this.approvalRecordModel.remark = "";
+            },
+            ({ msg }) => {
+              this.$Message.error(msg);
+            });
+      }else{
+      this.approvalRecordModel.operateType = 2;
+      delete this.approvalRecordModel.approveReasonId;
       this.approvalService
         .submitBlackListOrRefuse(this.approvalRecordModel)
         .subscribe(
@@ -751,14 +793,12 @@ export default class MyApproval extends Page {
             this.approveModal = false;
             this.cancelAddBlack();
             this.getMyOrderList();
+            this.approvalRecordModel.remark = "";
           },
           ({ msg }) => {
             this.$Message.error(msg);
-          }
-        );
-    } else {
-      this.$Message.error("拒单原因和拒单细节必须选择！");
-    }
+          });
+      }
   }
   backToResource() {
     this.$Modal.confirm({

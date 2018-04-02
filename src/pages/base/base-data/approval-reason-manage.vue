@@ -54,14 +54,14 @@
       </i-modal>
     </template>
     <template>
-      <i-modal title="编辑审批原因" v-model="editApprovalReasonModel">
-        <edit-approval-reason ref="edit-approval-reason" @close="closeEditApproval" :AppRoveReasonList="AppRoveReasonList"></edit-approval-reason>
-        <div slot="footer">
-          <i-button class="Ghost" @click="editcancel">取消</i-button>
-          <i-button class="blueButton" @click="editApproval">保存并退出</i-button>
-        </div>
-      </i-modal>
-    </template>
+    <i-modal title="编辑审批原因" v-model="editApprovalReasonModel">
+      <edit-approval-reason ref="edit-approval-reason" @close="closeEditApproval" :AppRoveReasonList="AppRoveReasonList"></edit-approval-reason>
+      <div slot="footer">
+        <i-button class="Ghost" @click="editcancel">取消</i-button>
+        <i-button class="blueButton" @click="editApproval">保存并退出</i-button>
+      </div>
+    </i-modal>
+  </template>
     <template>
       <i-modal title="审批原因导入" v-model="enterIntoReasonModel" :transfer="false">
         <enter-approval-reason ref="enter-approval-reason" @close="closeEnterApproval" ></enter-approval-reason>

@@ -93,7 +93,7 @@
     @Emit('close')
     close() {}
     
-    activited(){
+    activated(){
       this.treeList()  
     }
 

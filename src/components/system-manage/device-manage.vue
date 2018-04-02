@@ -134,7 +134,10 @@ export default class DeviceManage extends Vue {
       {
         align: "center",
         title: "类型",
-        key: "name"
+        key: "type",
+        render: (h, { row, column, index }) => {
+          return h("span", {}, this.$dict.getDictName(row.type));
+        }
       },
       {
         align: "center",

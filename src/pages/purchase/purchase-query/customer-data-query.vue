@@ -181,7 +181,7 @@
         {
           title: '订单编号',
           editable: true,
-          key: 'orderId',
+          key: 'orderNumber',
           align: 'center'
         },
         {
@@ -328,6 +328,7 @@
      * 补充资料
      */
     addFiles(row) {
+        console.log(row,'row')
       this.openUpload = true
       this.uploadOrAddFlag = false
     }

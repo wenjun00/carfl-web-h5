@@ -515,6 +515,9 @@ td {
 .quick-link:active {
   color: #333333;
 }
+/*.quick-link:visited{
+  color: #333333;
+}*/
 
 .material {
   height: 200px;

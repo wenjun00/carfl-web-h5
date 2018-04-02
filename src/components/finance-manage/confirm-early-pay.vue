@@ -88,7 +88,7 @@
           <div @click="addObj">
             <i-icon type="plus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
-        </td>        
+        </td>
         <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
         <td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
@@ -96,7 +96,7 @@
       </tr>
       <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
         <td>
-          <div @click="deleteObj(i)">          
+          <div @click="deleteObj(i)">
             <i-icon type="minus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
         </td>
@@ -253,7 +253,7 @@
         sum = sum + (Number(v.collectMoneyAmount) || 0)
       })
       console.log(sum)
-      this.paymentAmount = sum 
+      this.paymentAmount = sum
     }
     created() {
       this.columns1 = [{

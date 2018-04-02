@@ -2,11 +2,11 @@
 <template>
   <section class="component file-upload">
     <Upload :on-progress="onProgress" :on-success="onSuccess" :show-upload-list="false" :accept="acceptFileType" :headers="{'authorization':$store.token}" ref="upload" :action="uploadUrl" :before-upload="beforeUpload">
-      <!--<i-row>-->
-        <!--<i-col>-->
+      <i-row>
+        <i-col>
           <Button class="blueButton">选择文件</Button>
-        <!--</i-col>-->
-      <!--</i-row>-->
+        </i-col>
+      </i-row>
     </Upload>
     <i-table :columns="uploadColumns" :data="uploadList"></i-table>
   </section>

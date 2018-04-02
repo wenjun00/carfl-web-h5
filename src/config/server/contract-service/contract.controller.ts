@@ -11,5 +11,14 @@ export default {
         controller: CONTROLLER,
         action: 'createOneContract',
         type: requestType.Get
-    }
+    },
+  /**
+   * 合同资料的上传
+   */
+  uploadContractResource: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'uploadContractResource',
+    type: requestType.Post
+  },
 }
