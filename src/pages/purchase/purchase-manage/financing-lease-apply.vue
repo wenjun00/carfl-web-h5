@@ -455,7 +455,6 @@ import { State, Mutation, namespace } from "vuex-class";
         // 上传素材
         personalDatas: this.PersonalData
       };
-      console.log(666666666666666666666)
       this.productOrderService.saveFinanceApplyInfo(savesubmitDataset).subscribe(data => {
         this.$Message.success('保存成功！');
       }, ({
