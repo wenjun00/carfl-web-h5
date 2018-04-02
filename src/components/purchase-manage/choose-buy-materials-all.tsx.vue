@@ -206,7 +206,7 @@
               }
              let sum:any=0;
              this.addcarData.forEach(v=>{
-                    sum=sum+(Number(v.carAmount)||0)
+                    sum=sum+(Number(v.carAmount)*(Number(v.carNumber)||1)||0)
                 });
             this.totalPrice=sum
             };
@@ -229,7 +229,11 @@
                   ss.target.value=0
                   this.addcarData[index].carNumber = ss.target.value
               }
-              console.log(this.addcarData,'addcarData')
+             let sum:any=0;
+             this.addcarData.forEach(v=>{
+                    sum=sum+(Number(v.carAmount)*(Number(v.carNumber)||1)||0)
+                });
+            this.totalPrice=sum
             };
             return (
                 <i-input index={index} style="width:80px" onOn-blur={removeHandle} value={row.carNumber}> </i-input>);
