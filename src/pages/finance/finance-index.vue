@@ -122,19 +122,21 @@
           pageName: '月还款报表',
           isAttention: false,
           path: 'finance/finance-statistics/month-repay-report'
-        }, {
-          pageName: '收款信息导出',
-          isAttention: false,
-          path: 'finance/finance-statistics/gathering-info-export'
-        }, {
-          pageName: '订单信息导出',
-          isAttention: false,
-          path: 'finance/finance-statistics/order-info-export'
-        }, {
-          pageName: '导出模板管理',
-          isAttention: false,
-          path: 'finance/finance-statistics/query-template-manage'
-        }]
+        },
+        //   {
+          //   pageName: '收款信息导出',
+          //   isAttention: false,
+          //   path: 'finance/finance-statistics/gathering-info-export'
+          // }, {
+          //   pageName: '订单信息导出',
+          //   isAttention: false,
+          //   path: 'finance/finance-statistics/order-info-export'
+          // }, {
+          //   pageName: '导出模板管理',
+          //   isAttention: false,
+          //   path: 'finance/finance-statistics/query-template-manage'
+          // }
+        ]
       }]
     }
   }

@@ -21,4 +21,13 @@ export default {
     action: 'uploadContractResource',
     type: requestType.Post
   },
+  /**
+   * 查看订单合同资料
+   */
+  getContractResourceAll: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getContractResourceAll',
+    type: requestType.Get
+  },
 }

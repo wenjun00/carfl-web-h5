@@ -67,13 +67,23 @@
           <span style="margin-left:15px;">建议文件大小100M以内</span>
         </i-row>
         <div style="font-size:18px;font-weight:bold;margin-top:10px">
-          <span>文件数量({{dataList.length}})</span>
+          <span>文件数量({{dataList.length+mertialList.length}})</span>
           <div style="display:inline-block;float:right;">
             <svg-icon style="font-size:24px;cursor:pointer;position:relative;left:18px;" iconClass="xiazai"></svg-icon>
             <i-button type="text" @click="downloadAll">全部下载</i-button>
           </div>
         </div>
         <ul style="margin-top:20px;margin-left:20px">
+          <li v-for="item in mertialList" >
+            <p>{{item.contractName}}</p>
+            <div>
+              <i-button type="text" icon="arrow-down-a" @click="downloadOne(item)"></i-button>
+              <i-button type="text" icon="eye" @click="previewOne(item)"></i-button>
+              <i-button type="text" icon="close" @click="handleRemoveOne(item)"></i-button>
+            </div>
+          </li>
+        </ul>
+        <ul style="margin-top:10px;margin-left:20px">
           <li v-for="item in dataList" :key="item.uid">
             <p>{{item.name}}</p>
             <div>
@@ -170,6 +180,8 @@
     private dataList: Array < any > = [];
     private url: any = "";
     private orderId:any = '';
+    private materialUrl:any = [];
+    private mertialList:any = [];
     private customerSignModel: any = {
       orderInfo: "",
       timeSearch: "",
@@ -448,6 +460,14 @@
     openCompactInfos(row) {
       this.orderId = row.orderId
       this.openCompact = true;
+      this.contractService.getContractResourceAll({
+        orderId:this.orderId
+      })
+        .subscribe( data => {
+          this.mertialList = data
+        },({msg}) => {
+          this.$Message.error(msg)
+        })
     }
     /**
      * 多选
@@ -661,28 +681,40 @@
      * 全部下载
      */
     downloadAll(){
-      console.log(this.dataList)
       this.dataList.forEach((v) => {
         CommonService.downloadFile(v.url, v.name);
+      })
+      this.mertialList.forEach((v) => {
+        CommonService.downloadFile(v.pdfUrl, v.contractName);
       })
     }
     /**
      * 确定
      */
     confirm() {
-      let materialUrl:any = this.dataList.forEach((v)=>v.localUrl)
-      console.log(materialUrl)
-      // this.contractService.uploadContractResource({
-      //   orderId:this.orderId
-      //
-      // })
-      //   .subscribe( data => {
-      //     this.openCompact = false;
-      //     this.dataList = [];
-      //     this.$Message.success('上传成功！')
-      //   },({msg})=>{
-      //     this.$Message.error(msg);
-      //   })
+      this.dataList.forEach((v)=>{
+        this.materialUrl.push(v.url)
+      })
+      this.contractService.uploadContractResource({
+        orderId:this.orderId,
+        materialUrl:this.materialUrl
+      })
+        .subscribe( data => {
+          this.openCompact = false;
+          this.dataList = [];
+          this.$Message.success('上传成功！')
+        },({msg})=>{
+          this.$Message.error(msg);
+        })
+    }
+    downloadOne(file){
+      CommonService.downloadFile(file.pdfUrl, file.contractName);
+    }
+    previewOne(){
+
+    }
+    handleRemoveOne(file){
+      this.mertialList.splice(this.mertialList.indexOf(file), 1);
     }
   }
 

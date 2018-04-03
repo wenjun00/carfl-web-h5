@@ -102,6 +102,11 @@ export default class BaseIndex extends Vue {
 						isAttention: false,
 						path: 'base/base-data/dealer-quotes',
 					},
+          {
+            pageName: '导出模版管理',
+            isAttention: false,
+            path: 'base/base-data/export-template-manage',
+          },
 				],
 			},
 		];

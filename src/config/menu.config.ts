@@ -228,16 +228,18 @@ export default [
             }, {
                 title: '月还款报表',
                 path: 'finance/finance-statistics/month-repay-report'
-            }, {
-                title: '收款信息导出',
-                path: 'finance/finance-statistics/gathering-info-export'
-            }, {
-                title: '订单信息导出',
-                path: 'finance/finance-statistics/order-info-export'
-            }, {
-                title: '导出模板管理',
-                path: 'finance/finance-statistics/query-template-manage'
-            }]
+            },
+            //   {
+            //     title: '收款信息导出',
+            //     path: 'finance/finance-statistics/gathering-info-export'
+            // }, {
+            //     title: '订单信息导出',
+            //     path: 'finance/finance-statistics/order-info-export'
+            // }, {
+            //     title: '导出模板管理',
+            //     path: 'finance/finance-statistics/query-template-manage'
+            // }
+            ]
         }
         ]
     },
@@ -280,6 +282,9 @@ export default [
             }, {
                 title: '经销商报价',
                 path: 'base/base-data/dealer-quotes'
+            }, {
+                title: '导出模版管理',
+                path: 'base/base-data/export-template-manage'
             }]
         }]
     },

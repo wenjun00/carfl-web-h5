@@ -18,20 +18,20 @@
       <i-input style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
       <i-button class="blueButton">搜索</i-button>
     </i-row>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="data1" @onPageChange="getSignList"></data-box>
 
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置">
-        <!--<i-table :columns="columns2" :data="data2" border stripe @on-select="multipleSelect"></i-table>-->
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
+    <!--<template>-->
+      <!--<i-modal v-model="openColumnsConfig" title="列配置">-->
+        <!--&lt;!&ndash;<i-table :columns="columns2" :data="data2" border stripe @on-select="multipleSelect"></i-table>&ndash;&gt;-->
+        <!--<i-table :columns="columns2" :data="data2"></i-table>-->
+        <!--<div slot="footer">-->
+          <!--<i-button>上移</i-button>-->
+          <!--<i-button>下移</i-button>-->
+          <!--<i-button>恢复默认</i-button>-->
+          <!--<i-button @click="openColumnsConfig=false">关闭</i-button>-->
+        <!--</div>-->
+      <!--</i-modal>-->
+    <!--</template>-->
   </section>
 </template>
 
@@ -68,36 +68,37 @@
     private openColumnsConfig: Boolean = false;
 
     created() {
-      this.columns1 = [{
-          title: "序号",
-          width: 60,
-          align: 'center',
-          type: 'index',
-          renderHeader: (h, {
-            column,
-            index
-          }) => {
-            return h(
-              "div", {
-                on: {
-                  click: () => {
-                    this.columnsConfig();
-                  }
-                },
-                style: {
-                  cursor: "pointer"
-                }
-              }, [
-                h("Icon", {
-                  props: {
-                    type: "gear-b",
-                    size: "20"
-                  }
-                })
-              ]
-            );
-          }
-        },
+      this.columns1 = [
+        // {
+        //   title: "序号",
+        //   width: 60,
+        //   align: 'center',
+        //   type: 'index',
+        //   renderHeader: (h, {
+        //     column,
+        //     index
+        //   }) => {
+        //     return h(
+        //       "div", {
+        //         on: {
+        //           click: () => {
+        //             this.columnsConfig();
+        //           }
+        //         },
+        //         style: {
+        //           cursor: "pointer"
+        //         }
+        //       }, [
+        //         h("Icon", {
+        //           props: {
+        //             type: "gear-b",
+        //             size: "20"
+        //           }
+        //         })
+        //       ]
+        //     );
+        //   }
+        // },
         {
           title: "收款账户名称",
           key: "gatheringAccountName",
@@ -194,7 +195,11 @@
           columnsName: "处理部门"
         }
       ];
-
+    }
+    mounted() {
+      this.getSignList();
+    }
+    getSignList(){
       this.data1 = [{
         gatheringAccountName: '上海协通众明汽车销售服务有限公司',
         gatheringAccountType: '销售收款',

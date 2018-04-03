@@ -26,4 +26,13 @@ export class ContractService {
       data
     })
   }
+  /**
+   * 查看订单合同资料
+   */
+  getContractResourceAll(data) {
+    return this.netService.send({
+      server: contractService.contractController.getContractResourceAll,
+      data
+    })
+  }
 }

@@ -155,11 +155,12 @@
       <i-button class="blueButton" style="float:right">全部下载</i-button>-->
 
       <i-row>
-        <i-col :span="8" style="display:flex;justify-content:center;;margin-top:10px">
-          <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;" @click="openUpload=true">
-            <Icon type="plus-circled" style="display:block;margin-top:53px;" color="#265ea2" size="40"></Icon>
-            <div>点击添加附件</div>
-            <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
+        <i-col :span="8" style="display:flex;justify-content:center;margin-top:10px">
+          <div style="height:200px;width:200px;cursor:pointer;text-align:center;background-color: rgb(244,244,244);" @click="openUpload=true">
+            <Icon type="plus-circled" style="display:block;margin-top:40px;" color="#265ea2" size="40"></Icon>
+            <h2 style="margin-top:5px">点击添加附件</h2>
+            <h3 style="color:gray">支持jpg/png格式</h3>
+            <h3 style="color:gray">建议大小不超过10M</h3>
           </div>
         </i-col>
         <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id" style="display:flex;justify-content:center;margin-top:10px">
