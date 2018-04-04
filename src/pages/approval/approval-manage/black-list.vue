@@ -123,6 +123,7 @@ export default class BlackList extends Page {
                 on: {
                   click: () => {
                     this.purchaseInfoModal = true;
+                    this.checkOrderInfo(row);
                   }
                 }
               },

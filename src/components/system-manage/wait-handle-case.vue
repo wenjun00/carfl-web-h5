@@ -1,7 +1,13 @@
 <!--待办事项配置-->
 <template>
   <section class="component wait-handle-case">
-    <i-checkbox-group v-model="waitHanleList">
+    <div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
+      <Checkbox
+        :indeterminate="isIndeterminate"
+        :value="checkAll"
+        @on-change="handleCheckAllChange">全选</Checkbox>
+    </div>
+    <i-checkbox-group v-model="waitHanleList" @on-change="handleCheckedItemChange">
       <i-checkbox v-for="item in checkboxList" :key="item.id" :label="item.id" style="width:400px;">{{item.type?$dict.getDictName(item.type):''}}</i-checkbox>
     </i-checkbox-group>
   </section>
@@ -41,11 +47,18 @@
     private data1: Array < any > = [];
     private checkboxList: Array < any > = [];
     private waitHanleList: Array < any > = [];
+    private checkAll: Boolean = false;
+    private isIndeterminate: Boolean = false;
+    private checkAllGroup : Array <any> = [];
+    private indeterminate : Boolean = false;
     private roleConfig: any = {
       backlogIds: [],
       roleId: ""
     };
-    created() {}
+    created() {
+
+    }
+
     /**
      * 获取所有待办事项和已选待办事项
      */
@@ -54,6 +67,7 @@
       this.backLogService.queryBacklog().subscribe(
         data => {
           this.checkboxList = data;
+          console.log(data)
         },
         ({
           msg
@@ -89,7 +103,6 @@
     configWaitHandle(roleId) {
       this.roleConfig.backlogIds = this.waitHanleList;
       this.roleConfig.roleId = roleId;
-      console.log(this.roleConfig, 99998);
       this.backLogService.roleAllocateBacklogs(this.roleConfig).subscribe(
         val => {
           this.$Message.success("配置成功！");
@@ -102,6 +115,24 @@
         }
       );
     }
+
+    /**
+     * 全选功能
+     */
+    handleCheckAllChange(val){
+      this.checkboxList.forEach((item,index)=>{
+        this.checkAllGroup.push(item.id)
+      });
+      this.waitHanleList = val ? this.checkAllGroup : [];
+      this.isIndeterminate = false;
+    }
+    handleCheckedItemChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.checkboxList.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.checkboxList.length;
+    }
+
+
   }
 
 </script>
