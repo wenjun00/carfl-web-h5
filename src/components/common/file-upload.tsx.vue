@@ -101,7 +101,7 @@ export default class FileUpload extends Vue {
           // 移除按钮
           return (
             <i-button
-              type="text"
+              type="primary"
               disabled={row.state !== "ready"}
               style="#265ea2"
               onClick={removeHandle}

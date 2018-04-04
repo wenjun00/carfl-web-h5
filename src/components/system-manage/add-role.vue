@@ -34,6 +34,7 @@
   import {
     Form
   } from "iview"
+
   @Component({
     components: {
       DataBox
@@ -65,6 +66,7 @@
         }]
       }
     }
+
     addRole() {
       let registerForm = < Form > this.$refs['add-role']
       registerForm.validate(valid => {
@@ -73,10 +75,13 @@
             this.$Message.success('新增成功')
             this.$emit('refreshRoleList')
             this.reset()
+          }, ({msg}) => {
+            this.$Message.error(msg);
           })
         }
       })
     }
+
     reset() {
       let _addRole = < Form > this.$refs['add-role']
       _addRole.resetFields()
