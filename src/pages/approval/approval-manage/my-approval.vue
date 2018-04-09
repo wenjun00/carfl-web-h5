@@ -100,7 +100,7 @@
             <i-select placeholder="全部拒单原因" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
               <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
             </i-select>
-            <i-select placeholder="全部拒单细节" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.approveReasonId">
+            <i-select placeholder="全部拒单细节" style="margin-left:20px;width:45%;display:inline-block" v-model="approvalRecordModel.approveReasonId">
               <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id"></i-option>
             </i-select>
           </i-form-item>

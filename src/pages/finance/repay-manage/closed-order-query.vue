@@ -190,9 +190,9 @@
         },
         {
           align: "center",
-          title: "订单号",
+          title: "订单编号",
           width: 160,
-          key: 'orderId',
+          key: 'orderNumber',
           editable: true,
           render: (h, {
             row,
@@ -209,10 +209,9 @@
                   let _purchaseInfo: any = this.$refs["purchase-info"];
                   // row.orderNumber = row.orderId
                   _purchaseInfo.getOrderDetail(row);
-                  console.log(row)
                 }
               }
-            }, row.orderId)
+            }, row.orderNumber)
           }
         },
         {
