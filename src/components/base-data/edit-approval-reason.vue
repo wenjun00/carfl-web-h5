@@ -14,7 +14,7 @@
       <i-input v-model="editApproval.second"></i-input>
     </i-form-item>
     <i-form-item label="CRC编码" prop="crc">
-      <i-input v-model="editApproval.crc"></i-input>
+      <i-input v-model="editApproval.crc" disabled></i-input>
     </i-form-item>
     <i-form-item label="详细内容" prop="detail">
       <i-input v-model="editApproval.detail" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></i-input>
@@ -108,9 +108,9 @@
     }
     validFun() {
       console.log( this.AppRoveReasonList)
-      if(this.AppRoveReasonList.find(x=>x.crc ===this.editApproval.crc) !== undefined){
-        return this.$Message.warning('此CRC编码已存在！')
-      }else{
+      // if(this.AppRoveReasonList.find(x=>x.crc ===this.editApproval.crc) !== undefined){
+      //   return this.$Message.warning('此CRC编码已存在！')
+      // }else{
         let form = < Form > this.$refs['edit-approval'];
         form.validate(valid => {
           if (!valid) return false;
@@ -126,7 +126,7 @@
             }
           );
         });
-      }
+      // }
     }
   }
 

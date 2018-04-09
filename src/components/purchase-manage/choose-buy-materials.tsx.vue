@@ -67,7 +67,7 @@
             </i-form-item>
           </i-col>
           <i-col span="12" pull="3">
-            <i-form-item label="租金支付（元）" prop="rentPayable">
+            <i-form-item label="意向月供（元）" prop="rentPayable">
               <i-input :maxlength="14" type="text" v-model="chooseBuyModel.rentPayable">
               </i-input>
             </i-form-item>
@@ -174,7 +174,7 @@
                 <i-option v-for="item in depositCashData" :key="item" :value="item" :label="item"></i-option>
               </i-select>
           </i-form-item>
-             <i-form-item prop="depositCash" style="display:inline-block;">  
+             <i-form-item prop="depositCash" style="display:inline-block;">
               <i-input style="width:180px" v-model="chooseBuyModel.depositCash" readonly>
               </i-input>
         </i-form-item>
@@ -378,20 +378,20 @@
       prdInterestRate:[{ required: true, message: '请输入产品利率', trigger: 'blur',type:'number' }],
       payWay:[{ required: true, message: '请输入还款方式', trigger: 'blur',type:'number' }],
       vehicleAmount:[{ required: true, message: '请输入车辆参考总价', trigger: 'blur' },
-                     { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
+                     { pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
       finalprincipal:[{ required: true, message: '请输入尾付本金', trigger: 'blur' },
-                      { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
+                      { pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
       financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
       moneyPay:[{ required: true, message: '请输入月供金额', trigger: 'blur' }],
       initialPayment:[{ required: true, message: '请输入首付金额', trigger: 'blur' }],
       depositCash:[{ required: true, message: '请输入保证金金额', trigger: 'blur' }],
       finalCash:[{ required: true, message: '请输入尾付总额', trigger: 'blur' }],
       manageCost:[{ required: true, message: '请输入管理费', trigger: 'blur' }],
-      insuranceMoney:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
-      purchaseMoney:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
-      licenseMoney:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
-      GpsMoney:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
-      otherFee:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur'}]
+      insuranceMoney:[{pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
+      purchaseMoney:[{pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
+      licenseMoney:[{pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
+      GpsMoney:[{pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
+      otherFee:[{pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur'}]
     };
     private rules: any = {
       intentionPeriods: [{ required: true, message: '请输入意向期限', trigger: 'change', type:'number' }],
@@ -400,10 +400,10 @@
       orderServiceList: [{ required: true, message: '请选择自缴费用', trigger: 'change', type: 'array' }],
       financingUse: [{ required: true, message: '请输入融资租赁用途', trigger: 'blur' }],
       intentionPaymentRatio: [{ required: true, message: '请输入意向首付比例', trigger: 'blur' },
-                              { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
+                              { pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
       intentionFinancingAmount:[{ required: true, message: '请输入意向融资金额', trigger: 'blur' },
-                                { pattern: /^\d+$/,message: '请输入数字', trigger: 'blur' }],
-      rentPayable:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur'}]
+                                { pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
+      rentPayable:[{pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur'}]
     };
 
     @Prop()
@@ -546,8 +546,8 @@
         this.chooseBuyModel.initialPayment.toString()
         console.log(this.chooseBuyModel.initialPayment,'this.chooseBuyModel.initialPayment')
     }
-    this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel))   
-      this.getFinanceTotalMoney()      
+    this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel))
+      this.getFinanceTotalMoney()
     }
     /**
      * 保证金金额
@@ -558,7 +558,7 @@
         this.chooseBuyModel.depositCash = (Number(this.chooseBuyModel.financeTotalMoney) * Number(this.chooseBuyModel.deposit) * 0.01).toFixed(2)
         this.chooseBuyModel.depositCash.toString()
       }
-      this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel))      
+      this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel))
     }
     /**
      * 尾付总额
@@ -697,7 +697,7 @@
               }
              this.complutedtotalPrice()
             };
-            return ( 
+            return (
                 <i-input style="width:80px" onOn-blur={removeHandle} value={row.carAmount}> </i-input>);
             }
         }, {
@@ -739,7 +739,7 @@
      let sum:any=0;
      this.addcarData.forEach(v=>{
          sum=sum+(Number(v.carAmount)||0)
-         }); 
+         });
      this.totalPrice=sum
      this.chooseBuyModel.vehicleAmount=this.totalPrice
      this.chooseinitialPayment()
@@ -795,7 +795,7 @@
       if(this.totalPrice){
       this.chooseBuyModel.vehicleAmount = this.totalPrice.toString()
       }else{
-      this.chooseBuyModel.vehicleAmount=''  
+      this.chooseBuyModel.vehicleAmount=''
     }
       console.log(data.depositCash,'data.depositCash')
       if(data.depositCash===undefined){
@@ -824,7 +824,7 @@
           if(this.chooseBuyModel.vehicleAmount){
           this.Paymentdisabled=false
         }else{
-           this.Paymentdisabled=true 
+           this.Paymentdisabled=true
         }
      }
      if(data.manageCost===undefined){
@@ -838,7 +838,7 @@
           if(this.chooseBuyModel.vehicleAmount){
           this.manageDatadisabled=false
         }else{
-          this.manageDatadisabled=true  
+          this.manageDatadisabled=true
         }
      }
       if(data.finalCash===undefined){
@@ -855,7 +855,7 @@
           this.finaldisabled=false
         }else{
           this.finaldisabled=true
-          this.finalorddisabled=true  
+          this.finalorddisabled=true
         }
       }
     // if(this.chooseBuyModel.vehicleAmount===''){
@@ -889,13 +889,13 @@
       border-radius: 0;
     }
   }
-  
+
   .calculate {
     .ivu-modal-footer {
       display: none!important;
     }
   }
-  
+
   .add-car {
     .ivu-modal-footer {
       display: none!important;

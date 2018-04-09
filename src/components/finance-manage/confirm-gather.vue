@@ -114,7 +114,7 @@
     </i-row>
 
     <template>
-      <i-modal title="订单详情" v-model="purchaseInfoModel" width="1000" class="purchaseInformation">
+      <i-modal title="申请单详情" v-model="purchaseInfoModel" width="1000" class="purchaseInformation">
         <purchase-information ref="purchase-info" :scrollTopHeight="scrollTopHeight"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModel=false">返回</i-button>

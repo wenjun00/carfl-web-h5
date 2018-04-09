@@ -387,13 +387,13 @@
         type: 'number'
       }],
       cityLiveTime:[{
-          pattern: /^[0-9]{1,9}$/g,
-          message: '请输入1~9位数字',
+          pattern: /^[0-9]{1,2}$/g,
+          message: '请输入1~2位整数',
           trigger: 'blur'
       }],
       localLiveTime:[{
-         pattern: /^[0-9]{1,9}$/g,
-         message: '请输入1~9位数字',
+         pattern: /^[0-9]{1,2}$/g,
+         message: '请输入1~2位整数',
          trigger: 'blur'
       }],
         birthTime: [{
@@ -425,7 +425,7 @@
         message: '请输入身份证地址',
         trigger: 'blur',
       }],
-      localLiveHouseMoney:[{pattern: /^\d+$/,message: '请输入数字', trigger: 'blur'}],
+      localLiveHouseMoney:[{pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur'}],
     //   idCardValidityPeriodSection:[{
     //     required: true,
     //     message: '请输入身份证有效期',

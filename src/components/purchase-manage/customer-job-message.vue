@@ -283,12 +283,12 @@
     private typeList: Array < String > ;
     private rules:any={
         basicSalary:[{
-            pattern: /^[0-9]{1,9}$/g,
+            pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
             message: '请输入1~9位数字',
             trigger: 'blur'
         }],
         yearlySalaries:[{
-            pattern: /^[0-9]{1,9}$/g,
+            pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
             message: '请输入1~9位数字',
             trigger: 'blur'
         }],
@@ -298,7 +298,7 @@
             trigger: 'blur'
         }],
         monthOtherIncome:[{
-            pattern: /^[0-9]{1,9}$/g,
+            pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
             message: '请输入1~9位数字',
             trigger: 'blur'
         }],
