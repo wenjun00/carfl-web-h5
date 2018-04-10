@@ -278,7 +278,7 @@
           align: "center",
           title: "订单号",
           editable: true,
-          width: 160,
+          // width: 160,
           key: 'orderNumber',
           render: (h, {
             row,
@@ -304,7 +304,7 @@
           title: "客户结算号",
           key: "clientNumber",
           editable: true,
-          width: 150,
+          // width: 150,
           render: (h, {
             row,
             column,
@@ -329,28 +329,28 @@
           title: "客户姓名",
           editable: true,
           key: "name",
-          width: 100
+          // width: 100
         },
         {
           align: "center",
           title: " 证件号",
           editable: true,
           key: "idCard",
-          width: 160
+          // width: 160
         },
         {
           align: "center",
           title: " 手机号",
           editable: true,
           key: "mobileMain",
-          width: 120
+          // width: 120
         },
         {
           align: "center",
           title: " 订单创建时间",
           editable: true,
           key: "createTime",
-          width: 160,
+          // width: 160,
           render: (h, {
             row,
             column,
@@ -364,7 +364,7 @@
           title: " 合同生效日",
           editable: true,
           key: "contractDate",
-          width: 160,
+          // width: 160,
           render: (h, {
             row,
             column,
@@ -378,35 +378,35 @@
           title: " 待还本金",
           editable: true,
           key: "principalReceivable",
-          width: 90
+          // width: 90
         },
         {
           align: "center",
           title: " 待还利息",
           editable: true,
           key: "interestReceivable",
-          width: 90
+          // width: 90
         },
         {
           align: "center",
           title: " 待还罚息",
           editable: true,
           key: "penaltyReceivable",
-          width: 90
+          // width: 90
         },
         {
           align: "center",
           title: " 利率%/月",
           editable: true,
           key: "productRate",
-          width: 90
+          // width: 90
         },
         {
           align: "center",
           title: " 结算通道",
           editable: true,
           key: "settlementChannel",
-          width: 100,
+          // width: 100,
           render: (h, {
             row,
             column,
@@ -418,7 +418,7 @@
         {
           align: "center",
           title: " 归属公司",
-          width: 100,
+          // width: 100,
           editable: true,
           key: "companyChinaName"
         }

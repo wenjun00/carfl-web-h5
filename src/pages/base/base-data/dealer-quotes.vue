@@ -228,7 +228,7 @@
           key: "productPackageName",
           align: "center",
           fixed: "left",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
@@ -236,119 +236,119 @@
           key: "quotationName",
           align: "center",
           fixed: "left",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "品牌",
           key: "carBrandName",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "系列",
           key: "carSeriesName",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "型号",
           key: "carName",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "颜色",
           key: "carColor",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "市场指导价",
           key: "marketGuidingPrice",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "经销商价格",
           key: "dealerGuidingPrice",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "首期金额",
           key: "firstPayment",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "融资金额",
           key: "financeAmount",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "融资期数",
           key: "periods",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "租金（月）",
           key: "monthPay",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "购置税",
           key: "purchaseTaxMoney",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "路桥费",
           key: "roadBridgeFee",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "保险费",
           key: "annualAmount",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "GPS费",
           key: "gpsFee",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "其他费用",
           key: "otherFee",
           align: "center",
-          width: 160,
+          // width: 160,
           editable: true
         },
         {
           title: "状态",
           key: "status",
           align: "center",
-          width: 90,
+          // width: 90,
           editable: true,
           render: (h, {
             row,

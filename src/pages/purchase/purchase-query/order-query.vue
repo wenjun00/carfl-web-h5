@@ -370,7 +370,7 @@
           editable: true,
           align: "center",
           key: "orderNumber",
-          width: 150,
+          // width: 150,
           render: (h, params) => {
             return h("div", [
               h(
@@ -408,7 +408,7 @@
           title: "订单创建时间",
           editable: true,
           key: "createTime",
-          width: 150,
+          // width: 150,
           render: (h, {
             row,
             column,
@@ -425,7 +425,7 @@
           title: "客户",
           editable: true,
           key:'personalName',
-          width: 100,
+          // width: 100,
           render: (h, params) => {
             return h("div", [
               h(
@@ -462,7 +462,7 @@
           align: "center",
           title: "订单类型",
           editable: true,
-          width: 100,
+          // width: 100,
           key: "orderType",
           render: (h, {
             row,
@@ -474,7 +474,7 @@
         },
         {
           align: "center",
-          width: 100,
+          // width: 100,
           title: "产品名称",
           editable: true,
           key: "productName"
@@ -484,7 +484,7 @@
           title: "产品期数",
           key: "periods",
           editable: true,
-          width: 100,
+          // width: 100,
           render: (h, {
             row,
             column,
@@ -498,14 +498,14 @@
           title: "利率(月)",
           editable: true,
           key: "productRate",
-          width: 100
+          // width: 100
         },
         {
           align: "center",
           title: "还款方式",
           editable: true,
           key: "payWay",
-          width: 100,
+          // width: 100,
           render: (h, {
             row,
             column,
@@ -519,14 +519,14 @@
           title: "融资总额",
           editable: true,
           key: "financingAmount",
-          width: 100
+          // width: 100
         },
         {
           align: "center",
           title: "环节",
           editable: true,
           key: "orderLink",
-          width: 100,
+          // width: 100,
           render: (h, {
             row,
             column,
@@ -540,7 +540,7 @@
           title: "订单状态",
           editable: true,
           key: "orderStatus",
-          width: 100,
+          // width: 100,
           render: (h, {
             row,
             column,

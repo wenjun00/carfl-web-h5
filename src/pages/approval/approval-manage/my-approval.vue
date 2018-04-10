@@ -93,14 +93,14 @@
     <template>
       <i-modal :title="rejectOrBlackFlag?'拒绝':'黑名单'" v-model="blackListModal">
         <i-form >
-          <i-form-item v-if="rejectOrBlackFlag">
+          <i-form-item >
             <i-select placeholder="请选择结果" style="width:20%" @on-change="changeSelectOne">
               <i-option label="拒绝" :value="375" :key="375"></i-option>
             </i-select>
             <i-select placeholder="全部拒单原因" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
               <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
             </i-select>
-            <i-select placeholder="全部拒单细节" style="margin-left:20px;width:25%;display:inline-block" v-model="approvalRecordModel.approveReasonId">
+            <i-select placeholder="全部拒单细节" style="margin-left:20px;width:45%;display:inline-block" v-model="approvalRecordModel.approveReasonId">
               <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id"></i-option>
             </i-select>
           </i-form-item>

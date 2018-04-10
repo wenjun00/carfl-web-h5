@@ -88,7 +88,7 @@
     </div>
     <template>
       <i-modal title="历史记录" width="1200" v-model="historicalModal" :trandfer="false" class="historical">
-        <historical-record @closeProduct="closeProduct" @close="historicalModal=false" :historicalDataset="historicalDataset" @distributionData="distributionData"></historical-record>
+        <historical-record @closeProduct="closeProduct" @close="historicalModal=false;disabledStatus = 'none'" :historicalDataset="historicalDataset" @distributionData="distributionData"></historical-record>
       </i-modal>
     </template>
 
@@ -643,8 +643,8 @@ import { State, Mutation, namespace } from "vuex-class";
       })
     }
     showTab() {
-      if (this.customerModel.idCard.length === 18) {
-        this.disabledStatus = "none";
+      if(this.customerModel.idCard.length !== 18){
+        this.disabledStatus = "";
       }
     }
   }

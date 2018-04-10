@@ -28,7 +28,7 @@
     <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
       <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
       <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>        
+        <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
       <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
         <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
@@ -179,6 +179,7 @@
                     this.repayInfoModal = true
                     let _repay: any = this.$refs['repay-info']
                     _repay.refresh(row)
+                    console.log(row)
                   }
                 },
                 style: {
@@ -189,9 +190,9 @@
         },
         {
           align: "center",
-          title: "订单号",
+          title: "订单编号",
           width: 160,
-          key: 'orderId',
+          key: 'orderNumber',
           editable: true,
           render: (h, {
             row,
@@ -206,11 +207,11 @@
                 click: () => {
                   this.purchaseInformationModal = true;
                   let _purchaseInfo: any = this.$refs["purchase-info"];
-                  row.orderNumber = row.orderId
+                  // row.orderNumber = row.orderId
                   _purchaseInfo.getOrderDetail(row);
                 }
               }
-            }, row.orderId)
+            }, row.orderNumber)
           }
         },
         {
@@ -218,7 +219,7 @@
           title: "客户结算号",
           key: "clientNumber",
           width: 150,
-          editable: true,          
+          editable: true,
           render: (h, {
             row,
             column,
@@ -242,13 +243,13 @@
           align: "center",
           title: "客户姓名",
           key: "customerName",
-          editable: true,          
+          editable: true,
           width: 100
         },
         {
           align: "center",
           title: " 证件号",
-          editable: true,          
+          editable: true,
           key: "idCard",
           width: 160
         },
@@ -256,14 +257,14 @@
           align: "center",
           title: " 手机号",
           key: "mobileMain",
-          editable: true,          
+          editable: true,
           width: 120
         },
         {
           align: "center",
           title: " 合同生效日",
           key: "contractDate",
-          editable: true,          
+          editable: true,
           width: 160,
           render: (h, {
             row,
@@ -291,12 +292,12 @@
           align: "center",
           title: " 利率%/月",
           key: "productRate",
-          editable: true,          
+          editable: true,
           width: 90
         },
         {
           align: "center",
-          editable: true,          
+          editable: true,
           title: " 结算通道",
           key: "settlementChannel",
           width: 100,
@@ -312,7 +313,7 @@
           align: "center",
           title: " 结清状态",
           key: "settlementType",
-          editable: true,        
+          editable: true,
           width: 100,
           render: (h, {
             row,
@@ -326,11 +327,11 @@
           align: "center",
           title: " 归属公司",
           width: 100,
-          editable: true,          
+          editable: true,
           key: "companyChinaName"
         }
       ];
-      
+
     }
     columnsConfig() {
       this.openColumnsConfig = true;
