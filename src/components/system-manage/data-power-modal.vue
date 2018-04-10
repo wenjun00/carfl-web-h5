@@ -8,7 +8,7 @@
         </div>
       </i-col>
       <i-col :span="18">
-        <div style="border:1px solid #D7D7D7;height:380px;">
+        <div style="border:1px solid #D7D7D7;height:380px;overflow: auto">
           <i-tree show-checkbox :data="treeData" @on-check-change="treeCheckChange"></i-tree>
         </div>
       </i-col>

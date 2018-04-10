@@ -140,8 +140,8 @@
               <i-checkbox label="长期" v-model="idCardvalidity" :value="14" :checked.sync="single" @on-change="ValidityPeriodChange">长期</i-checkbox>
             </i-row>
             <i-row>
-              <i-input type="text" placeholder="有效期截止日期" v-model="customerMaterialsForm.idCardValidityPeriodSection" :readonly="customerMaterialsForm.idCardValidityPeriodType===14">
-              </i-input>
+              <i-date-picker type="date" placeholder="有效期截止日期" v-model="customerMaterialsForm.idCardValidityPeriodSection" :readonly="customerMaterialsForm.idCardValidityPeriodType===14">
+              </i-date-picker>
             </i-row>
           </i-form-item>
         </i-col>

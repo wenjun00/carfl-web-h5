@@ -253,6 +253,7 @@
       fileUpload.upload();
     }
     refresh(row) {
+      this.remark = ''
       this.collectMoneyId = ''
       this.repaymentObj = {}
       this.collectMoneyDetails = []
