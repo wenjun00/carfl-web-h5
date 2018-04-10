@@ -305,6 +305,8 @@ import { State, Mutation, namespace } from "vuex-class";
       customerform.resetFields()
       _choosebuymaterials.addcarData = []
       _choosebuymaterials.chooseBuyModel = {}
+      _choosebuymaterials.disabled1=false
+      _choosebuymaterials.disabled=false
       //   客户联系人重置
       let _customercontacts: any = this.$refs['customer-contacts']
       _customercontacts.reset()

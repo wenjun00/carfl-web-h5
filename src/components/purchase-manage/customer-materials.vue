@@ -230,6 +230,7 @@
                 <i-form-item prop="localLiveHouseMoney">
               <i-input type="text" placeholder="每月租金" v-model="customerMaterialsForm.localLiveHouseMoney">
               </i-input>
+              <span style="position:absolute;left:300px">元</span>
                 </i-form-item>
             </i-row>
         </i-col>

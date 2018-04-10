@@ -38,10 +38,10 @@
     <div class="submitBar" style="z-index:200">
       <i-row type="flex" align="middle" style="padding:14px">
         <i-col :span="8" push="1">
-          <span>申请人：{{applyPerson}}</span>
+          <!--<span>申请人：{{applyPerson}}</span>-->
         </i-col>
         <i-col :span="10" pull="4">
-          <span>申请时间：{{applyTime}}</span>
+          <!--<span>申请时间：{{applyTime}}</span>-->
         </i-col>
         <i-col :span="6" style="text-align:right;">
           <i-button @click="oneKeyToConnect" class="highButton">一键交接</i-button>
