@@ -307,6 +307,12 @@ import { State, Mutation, namespace } from "vuex-class";
       _choosebuymaterials.chooseBuyModel = {}
       _choosebuymaterials.disabled1=false
       _choosebuymaterials.disabled=false
+    //   隐藏产品信息
+      _choosebuymaterials.prdInfoShow=false
+      _choosebuymaterials.addPrdShow=true
+      _choosebuymaterials.changePrdShow=false
+    //   车辆总价置空
+      _choosebuymaterials.totalPrice=''
       //   客户联系人重置
       let _customercontacts: any = this.$refs['customer-contacts']
       _customercontacts.reset()
