@@ -648,6 +648,7 @@
      * 保存并提交
      */
     saveAndCommit() {
+        this.getgather()
         if(this.msg==='该订单有为完成的提前收回申请'){
             this.$Message.warning('请先审批未处理的申请订单！')
             return false

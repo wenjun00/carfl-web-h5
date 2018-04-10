@@ -516,7 +516,7 @@
         },
         {
           align: "center",
-          title: "融资总额",
+          title: "融资总额(元)",
           editable: true,
           key: "financingAmount",
           // width: 100

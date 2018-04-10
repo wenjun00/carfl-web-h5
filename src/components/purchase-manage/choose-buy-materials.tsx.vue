@@ -158,7 +158,7 @@
             <i-row>
           <i-form-item label="首付金额（元）" prop="Payment" style="display:inline-block">
               <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment" :disabled="Paymentdisabled">
-                <i-option v-for="item in initialPaymentData" :key="item" :value="item" :label="item"></i-option>
+                <i-option v-for="item in initialPaymentData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
           <i-form-item prop="initialPayment" style="display:inline-block;">
@@ -171,10 +171,10 @@
             <i-row>
           <i-form-item label="保证金金额（元）" prop="deposit" style="display:inline-block">
               <i-select style="width:140px" placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit" :disabled="depositdisabled">
-                <i-option v-for="item in depositCashData" :key="item" :value="item" :label="item"></i-option>
+                <i-option v-for="item in depositCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-             <i-form-item prop="depositCash" style="display:inline-block;">
+             <i-form-item prop="depositCash" style="display:inline-block;">  
               <i-input style="width:180px" v-model="chooseBuyModel.depositCash" readonly>
               </i-input>
         </i-form-item>
@@ -184,7 +184,7 @@
             <i-row>
           <i-form-item label="尾付总额（元）" prop="final" style="display:inline-block">
               <i-select style="width:140px" placeholder="请选择尾付总额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash" :disabled="finalorddisabled">
-                <i-option v-for="item in finalCashData" :key="item" :value="item" :label="item"></i-option>
+                <i-option v-for="item in finalCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
                <i-form-item  prop="finalCash" style="display:inline-block;">
@@ -197,7 +197,7 @@
             <i-row>
           <i-form-item label="管理费（元）" prop="manageData" style="display:inline-block">
               <i-select style="width:140px" placeholder="请选择管理费比例" v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost" :disabled="manageDatadisabled">
-                <i-option v-for="item in manageCostData" :key="item" :value="item" :label="item"></i-option>
+                <i-option v-for="item in manageCostData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
               <i-form-item prop="manageCost" style="display:inline-block;">
@@ -740,7 +740,7 @@
      this.addcarData.forEach(v=>{
          sum=sum+(Number(v.carAmount)||0)
          });
-     this.totalPrice=sum
+     this.totalPrice=sum.toFixed(2)
      this.chooseBuyModel.vehicleAmount=this.totalPrice
      this.chooseinitialPayment()
      this.choosedeposit()
@@ -775,10 +775,46 @@
      */
     currentRowData(data, productDataModel) {
       this.DataSet = data
-      this.depositCashData = data.depositCash ? (data.depositCash.split(';')) : ''
-      this.finalCashData = data.finalCash ? (data.finalCash.split(';')) : ''
-      this.initialPaymentData = data.initialPayment ? (data.initialPayment.split(';')) : ''
-      this.manageCostData = data.manageCost ? (data.manageCost.split(';')) : ''
+         if(data.depositCash){
+      let deposit:any = data.depositCash ? (data.depositCash.split(';')) : ''
+      for(let i=0;i<deposit.length;i++){
+          this.depositCashData.push({
+              key:deposit[i]+'%',
+              value:deposit[i]||0
+          })
+      }
+      }
+    if(data.finalCash){
+     let rr:any = data.finalCash ? (data.finalCash.split(';')) : ''
+      for(let i=0;i<rr.length;i++){
+          this.finalCashData.push({
+              key:rr[i]+'%',
+              value:rr[i]||0
+          })
+      }
+    }
+     if(data.initialPayment) {
+     let initial:any = data.initialPayment ? (data.initialPayment.split(';')) : ''
+         for(let i=0;i<initial.length;i++){
+          this.initialPaymentData.push({
+              key:initial[i]+'%',
+              value:initial[i]||0
+          })
+      }
+     }
+      if(data.manageCost){
+      let manage:any = data.manageCost ? (data.manageCost.split(';')) : ''
+         for(let i=0;i<manage.length;i++){
+          this.manageCostData.push({
+              key:manage[i]+'%',
+              value:manage[i]||0
+          })
+      }
+      }
+    //   this.depositCashData = data.depositCash ? (data.depositCash.split(';')) : ''
+    //   this.finalCashData = data.finalCash ? (data.finalCash.split(';')) : ''
+    //   this.initialPaymentData = data.initialPayment ? (data.initialPayment.split(';')) : ''
+    //   this.manageCostData = data.manageCost ? (data.manageCost.split(';')) : ''
       this.updateProductId(data.productId)
       this.chooseBuyModel.name = productDataModel.title // 产品名称
       this.chooseBuyModel.prdSeriods = productDataModel.series // 产品系列

@@ -244,7 +244,7 @@
              this.addcarData.forEach(v=>{
                     sum=sum+(Number(v.carAmount)*(Number(v.carNumber)||0)||0)
                 });
-            this.totalPrice=sum    
+            this.totalPrice=sum.toFixed(2)   
       }
       Reverse(data) {
         this.choosebusyData.companyId = data.companyId
