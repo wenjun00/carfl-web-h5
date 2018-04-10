@@ -415,12 +415,14 @@ export default class PurchaseInformation extends Vue {
     return this.c;
   }
 
-  activated() {
-    document
-      .getElementsByClassName("purchase-information")[0]
-      .addEventListener("scroll", this.handleScroll);
+  mounted() {
+    document.getElementsByClassName("purchase-information")[0].addEventListener("scroll", this.handleScroll);
   }
-  handleScroll() {}
+  handleScroll() {
+    console.log(1321)
+    let target = document.getElementsByClassName("purchase-information")[0].scrollTop
+    console.log(target)
+  }
   created() {
     this.sliderStep = 2;
   }

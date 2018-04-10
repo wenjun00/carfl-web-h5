@@ -114,8 +114,10 @@
     </i-row>
 
     <template>
-      <i-modal title="订单详情" v-model="purchaseInfoModel" width="1000" class="purchaseInformation">
-        <purchase-information ref="purchase-info" :scrollTopHeight="scrollTopHeight"></purchase-information>
+      <i-modal title="订单详情" v-model="purchaseInfoModel" width="1000" >
+        <div ref="purchaseInformation1">
+          <purchase-information ref="purchase-info" :scrollTopHeight="scrollTopHeight"></purchase-information>
+        </div>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModel=false">返回</i-button>
         </div>
@@ -165,6 +167,7 @@
     private collectMoneyItemModels: any = []
     private collectMoneyId: any = ''
     private openUpload: Boolean = false;
+    private box:any = ''
 
     @Prop({
       default: false
@@ -240,17 +243,16 @@
       this.paymentAmount = sum
     }
     mounted() {
-      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
-      if (target) {
-        target.addEventListener('scroll', this.monitorScorll)
-      }
+      this.box = this.$refs.purchaseInformation1
+      this.box.addEventListener("scroll", ()=>{
+        console.log(this.box.scrollTop)
+      })
     }
     monitorScorll() {
-      let target = document.querySelector(".purchaseInformation .ivu-modal-body")
-      if (target) {
+      console.log(123123)
+      let target = document.getElementsByClassName("purchaseInformation1")[0]
         this.scrollTopHeight = target.scrollTop
-        console.log(this.scrollTopHeight)
-      }
+         console.log(target.scrollTop)
     }
     /**
      * 增加还款对象
