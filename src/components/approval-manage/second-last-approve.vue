@@ -12,7 +12,7 @@
         <!--<i-select v-model="passModel.paymentScale" clearable @on-change="initialChange">-->
           <!--<i-option v-for="item in initialPayment" :key="item" :value="item" :label="item+'%'"></i-option>-->
         <!--</i-select>-->
-        <div>{{paymentScale === undefined?0:paymentScale+'%'}}</div>
+        <div>{{paymentScale === undefined?0:paymentScale}}</div>
       </data-grid-item>
       <data-grid-item label="首付金额" :span="6">
         <div>{{initialPayment === undefined?0:initialPayment}}</div>
@@ -21,7 +21,7 @@
         <!--<i-select v-model="passModel.depositPercent" clearable @on-change="depositChange">-->
           <!--<i-option v-for="item in depositCash" :key="item" :value="item" :label="item+'%'"></i-option>-->
         <!--</i-select>-->
-        <div>{{depositPercent === undefined?0:depositPercent+'%'}}</div>
+        <div>{{depositPercent === undefined?0:depositPercent}}</div>
       </data-grid-item>
       <data-grid-item label="保证金额" :span="6">
         <div>{{depositCash === undefined?0:depositCash}}</div>
@@ -36,7 +36,7 @@
         <!--<i-select v-model="passModel.manageCostPercent" clearable @on-change="manageChange">-->
           <!--<i-option v-for="item in manageCost" :key="item" :value="item" :label="item+'%'"></i-option>-->
         <!--</i-select>-->
-        <div>{{manageCostPercent === undefined?0:manageCostPercent+'%'}}</div>
+        <div>{{manageCostPercent === undefined?0:manageCostPercent}}</div>
       </data-grid-item>
       <data-grid-item label="管理费金额" :span="6">
         <div>{{manageCost === undefined?0:manageCost}}</div>
@@ -48,7 +48,7 @@
         <div>{{monthlySupply === undefined?0:monthlySupply}}</div>
       </data-grid-item>
       <data-grid-item label="月利率" :span="6">
-        <div>{{productRate === undefined?0:productRate+'%'}}</div>
+        <div>{{productRate === undefined?0:productRate}}</div>
       </data-grid-item>
       <data-grid-item label="还款方式" :span="6">
         <!--<i-select v-model="passModel.payWay" clearable>-->
