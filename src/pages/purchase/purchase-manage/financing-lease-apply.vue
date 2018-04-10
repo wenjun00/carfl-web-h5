@@ -643,8 +643,8 @@ import { State, Mutation, namespace } from "vuex-class";
       })
     }
     showTab() {
-      if(this.customerModel.idCard.length !== 18){
-        this.disabledStatus = "";
+      if(this.customerModel.idCard.length === 18){
+        this.disabledStatus = 'none';
       }
     }
   }
