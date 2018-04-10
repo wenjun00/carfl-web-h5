@@ -49,7 +49,7 @@ export default class DataBoxConfig extends Vue {
 
   getTableColumn() {
     this.tableColumn = this.dataColumns
-      .filter(x => x.key !== "index" && x.type !== "selection")
+      .filter(x => x.key !== "index" && x.type !== "selection" && x.title!=="操作")
       .map(x => {
         if (!x.editable) {
           x.check = true;

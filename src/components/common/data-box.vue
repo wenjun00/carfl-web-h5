@@ -101,7 +101,7 @@ export default class DataBox extends Vue {
   // 当前选择行改变事件
   @Emit("currentChange")
   getRowInfo(currentRow, oldRow) {}
-
+  
   @Emit('on-selection-change')
   emitSelectionChange(section){}
 
@@ -270,7 +270,7 @@ export default class DataBox extends Vue {
 
   mounted() {
     this.table = this.$refs["table"];
-
+    
     if(!!this.id){
       this.getFilterColumns();
     }else{
