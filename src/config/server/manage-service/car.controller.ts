@@ -112,5 +112,14 @@ export default {
     controller: CONTROLLER,
     action: 'createCarBrand',
     type: requestType.Post
+  },
+  /**
+   * 修改车辆品牌和系列
+   */
+  modifyCarInfo : {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'modifyCarInfo',
+    type: requestType.Put
   }
 }

@@ -127,4 +127,13 @@ export class CarService {
       server: manageService.carController.createCarBrand,
     })
   }
+  /**
+   * 修改车辆品牌和系列
+   */
+  modifyCarInfo(data) {
+    return this.netService.send({
+      server: manageService.carController.modifyCarInfo,
+      data:data
+    })
+  }
 }

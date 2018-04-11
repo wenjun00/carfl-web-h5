@@ -51,10 +51,9 @@
                   </i-col>
                 </i-row>
               </i-form>
-              <i-button type="text" style="color:#265ea2;" @click="addItem">+添加参数</i-button>
+              <i-button type="text" style="color:#265ea2;" @click="addItem" v-if="!viewStatus">+添加参数</i-button>
             </i-col>
               <div v-if="!dataLength" class="empty_text">空空如也，请选择车辆^_^</div>
-
             </div>
           </i-row>
 
@@ -105,6 +104,36 @@
         </div>
       </i-modal>
     </template>
+
+    <template>
+      <i-modal v-model="repairModal" title="修改品牌">
+        <i-form>
+          <i-form-item label="品牌名称">
+            <i-input v-model="repairName" style="width:80%;"></i-input>
+          </i-form-item>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="cancleRepair">取消</i-button>
+          <i-button class="blueButton" @click="confirmRepair">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="repairServiceModal" title="修改车系">
+        <i-form>
+          <i-form-item label="车系名称">
+            <i-input v-model="repairServiceName" style="width:80%;"></i-input>
+          </i-form-item>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="cancleServiceRepair">取消</i-button>
+          <i-button class="blueButton" @click="confirmServiceRepair">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+
   </section>
 </template>
 <script lang="ts">
@@ -167,9 +196,15 @@ export default class VehicleMaintenance extends Page {
   private addSeriesModal: Boolean = false;
   private addBrandModal: Boolean = false;
   private addCategoryModal: Boolean = false;
+  private repairModal:Boolean = false;
+  private repairServiceModal:Boolean = false;
   private carData: any = {};
   private brandId: Number = 0;
   private addBrandName: String = ""; // 新增品牌的名称
+  private repairName:String = ''; //修改品牌名称
+  private repairServiceName:String = ''; //修改车系名称
+  private brandOneId:any = '';
+  private serviceOneId:any = '';
 
   created() {
     this.getCarseries();
@@ -350,23 +385,57 @@ export default class VehicleMaintenance extends Page {
         brandId: item.id,
         expand: true,
         render: (h, { root, node, data }) => {
-          return h(
-            "span",
-            {
-              style: {
-                display: "inline-block",
-                width: "100%"
-              },
+          return h('span',[
+            h('span',{},data.title),
+            h('span',{
               on: {
                 click: () => {
                   this.addSeries(data);
                 }
               }
-            },
-            [
-              h("span", [
-                h("span", data.title),
-                h("Icon", {
+            },[h('Icon',{
+              props: {
+                type: "android-add"
+              },
+              style: {
+                marginLeft: "8px",
+                color: "#265ea2",
+                cursor: "pointer"
+              }
+            })]),
+            h('span',{
+              on: {
+                click: () => {
+                  this.repairCar(data);
+                }
+              }
+            },[h('Icon',{
+              props: {
+                type: "android-create"
+              },
+              style: {
+                marginLeft: "8px",
+                color: "#265ea2",
+                cursor: "pointer"
+              }
+            })])
+          ])
+        },
+        children: item.series.map(v => {
+          return {
+            title: v.seriesName,
+            seriesId: v.id,
+            expand: true,
+            render: (h, { root, node, data }) => {
+              return h('span',[
+                h('span',{},data.title),
+                h('span',{
+                  on: {
+                    click: () => {
+                      this.addVehicle(data);
+                    }
+                  }
+                },[h('Icon',{
                   props: {
                     type: "android-add"
                   },
@@ -375,46 +444,24 @@ export default class VehicleMaintenance extends Page {
                     color: "#265ea2",
                     cursor: "pointer"
                   }
-                })
-              ])
-            ]
-          );
-        },
-        children: item.series.map(v => {
-          return {
-            title: v.seriesName,
-            seriesId: v.id,
-            expand: true,
-            render: (h, { root, node, data }) => {
-              return h(
-                "span",
-                {
-                  style: {
-                    display: "inline-block",
-                    width: "100%"
-                  },
+                })]),
+                h('span',{
                   on: {
                     click: () => {
-                      this.addVehicle(data);
+                      this.repairServiceCar(data);
                     }
                   }
-                },
-                [
-                  h("span", [
-                    h("span", data.title),
-                    h("Icon", {
-                      props: {
-                        type: "android-add"
-                      },
-                      style: {
-                        marginLeft: "8px",
-                        color: "#265ea2",
-                        cursor: "pointer"
-                      }
-                    })
-                  ])
-                ]
-              );
+                },[h('Icon',{
+                  props: {
+                    type: "android-create"
+                  },
+                  style: {
+                    marginLeft: "8px",
+                    color: "#265ea2",
+                    cursor: "pointer"
+                  }
+                })])
+              ])
             },
             children: v.cars.map(m => {
               return {
@@ -429,39 +476,28 @@ export default class VehicleMaintenance extends Page {
     });
     this.treeData = [
       {
-        title: "所有品牌",
         expand: true,
         children: this.treeDatas,
-        render: (h, { root, node, data }) => {
-          return h(
-            "span",
-            {
-              style: {
-                display: "inline-block",
-                width: "100%"
-              },
-              on: {
-                click: () => {
-                  this.addBrand();
-                }
-              }
-            },
-            [
-              h("span", [
-                h("span", data.title),
-                h("Icon", {
-                  props: {
-                    type: "android-add"
-                  },
-                  style: {
-                    marginLeft: "8px",
-                    color: "#265ea2",
-                    cursor: "pointer"
-                  }
-                })
-              ])
-            ]
-          );
+        render:(h,{root,node,data})=>{
+         return h('span',[
+           h('span',{},'所有品牌'),
+           h('span',{
+             on:{
+               click:()=>{
+                 this.addBrand();
+               }
+             }
+           },[h('Icon',{
+             props:{
+               type: "android-add"
+             },
+             style:{
+               marginLeft: "8px",
+               color: "#265ea2",
+               cursor: "pointer"
+             }
+           })])
+         ])
         }
       }
     ];
@@ -619,6 +655,57 @@ export default class VehicleMaintenance extends Page {
    */
   addType() {
     this.addCategoryModal = true;
+  }
+  /**
+   * 取消修改品牌和车系
+   */
+  cancleRepair(){
+    this.repairModal = false
+    this.repairName = ''
+  }
+  cancleServiceRepair(){
+    this.repairServiceModal = false
+    this.repairServiceName = ''
+  }
+  /**
+   * 确定修改品牌和车系
+   */
+  confirmRepair(){
+    this.carService.modifyCarInfo({
+      flag:0,
+      id:this.brandOneId,
+      name:this.repairName
+    })
+    .subscribe(data => {
+      this.$Message.success('修改成功')
+      this.repairName = ''
+      this.repairModal = false
+      this.getCarseries()
+    })
+  }
+  confirmServiceRepair(){
+    this.carService.modifyCarInfo({
+      flag:1,
+      id:this.serviceOneId,
+      name:this.repairServiceName
+    })
+      .subscribe(data => {
+        this.$Message.success('修改成功')
+        this.repairServiceName = ''
+        this.repairServiceModal = false
+        this.getCarseries()
+      })
+  }
+  /**
+   * 修改品牌和车系
+   */
+  repairCar(data){
+    this.repairModal = true
+    this.brandOneId = data.brandId
+  }
+  repairServiceCar(data){
+    this.repairServiceModal = true
+    this.serviceOneId = data.seriesId
   }
 }
 </script>
