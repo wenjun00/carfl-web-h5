@@ -680,7 +680,9 @@
         .getUsersByDeptPage(this.userListModel, this.pageService)
         .subscribe(
           data => {
-            this.userList = data;
+            this.userList = data.filter(x=>{
+              return x.userStatus === 0
+            });
           },
           ({msg}) => {
             this.$Message.error(msg);
@@ -700,7 +702,7 @@
         .getUsersByDeptPage(this.userListModel, this.pageService)
         .subscribe(
           data => {
-            this.userList = data;
+            this.userList = data
           },
           ({msg}) => {
             this.$Message.error(msg);
