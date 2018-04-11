@@ -36,8 +36,10 @@
             </i-col>
             <i-col span="12">
               <i-form-item label="归属业务员" prop="salesmanName">
-                <i-input type="text" :maxlength="13" v-model="customerModel.salesmanName">
-                </i-input>
+                <i-input type="text" :maxlength="13" v-model="customerModel.salesmanName"></i-input>
+                <!--<i-select v-model="customerModel.salesmanName">-->
+                  <!--<i-option v-for="{value,label} in customerModel.salesmanName" :key="value" :label="label" :value="value"></i-option>-->
+                <!--</i-select>-->
               </i-form-item>
             </i-col>
           </i-form>

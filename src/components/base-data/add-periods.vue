@@ -292,6 +292,7 @@
         initialPayment: [
           { required: true, message: '请输入首付款比例', trigger: 'blur' },
           { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
+          // { pattern: /^(100|[0-9]{1,2}(\.{1}[0-9]{0,4})?(;|；)?){0,1}$/g, message: '请输入0~100的数字', trigger: 'blur' }
         ],
         depositCash: [
           { required: true, message: '请输入保证金比例', trigger: 'blur' },

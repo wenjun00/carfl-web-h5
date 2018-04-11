@@ -139,7 +139,7 @@
         trigger: 'blur',
       },
       { validator: this.$validator.idCard, trigger: "blur" }],
-      name: [{  
+      name: [{
         required: true,
         message: '请输入客户姓名',
         trigger: 'blur',
@@ -574,18 +574,18 @@
   .header {
     border-bottom: 1px solid #cccccc;
   }
-  
+
   .open {
     max-width: auto;
     overflow: hidden;
   }
-  
+
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-  
+
   .case-list {
     position: fixed;
     right: 0px;
@@ -596,21 +596,21 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     height: 100%;
   }
-  
+
   .case-list.flag {
     right: -348px;
     box-shadow: none;
     background: none;
   }
-  
+
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowButton {
     line-height: 570px;
     height: 100%;
@@ -618,7 +618,7 @@
     text-align: center;
     width: 30px;
   }
-  
+
   .submitBar {
     height: 70px;
     width: 100%;
@@ -629,7 +629,7 @@
     border: 1px solid #ddd;
     box-shadow: -3px 2px 20px #dddddd;
   }
-  
+
   .specialInput {
     .ivu-input {
       border-style: none;
@@ -637,7 +637,7 @@
       border-radius: 0; // width: 240%;
     }
   }
-  
+
   .bigSelect {
     .ivu-select-selection {
       width: 240%;
@@ -647,7 +647,7 @@
       border-radius: 0;
     }
   }
-  
+
   .proCity .ivu-select-selection {
     width: 358%;
     display: inline-block;
@@ -655,7 +655,7 @@
     border-bottom-style: solid;
     border-radius: 0;
   }
-  
+
   .belongSalers {
     .ivu-select-selection {
       width: 240%;
@@ -665,7 +665,7 @@
       border-radius: 0;
     }
   }
-  
+
   .full-payment-apply {
     .ivu-select,
     .ivu-select-single {
@@ -681,7 +681,7 @@
       z-index: 999;
     }
   }
-  
+
   .fulls-pay-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #dddee1;
@@ -696,7 +696,7 @@
       }
     }
   }
-  
+
   .customer-lease-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #dddee1;
@@ -711,7 +711,7 @@
       }
     }
   }
-  
+
   .historical {
     .ivu-modal-footer {
       display: none !important;

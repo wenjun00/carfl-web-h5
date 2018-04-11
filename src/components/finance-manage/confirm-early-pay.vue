@@ -101,12 +101,12 @@
           </div>
         </td>
         <td>
-          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel">
+          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="selectOne.collectMoneyChannel">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="v.collectItem">
+          <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="selectOne.collectItem">
             <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
@@ -125,7 +125,8 @@
       </tr>
     </table>
     <i-form>
-      <i-form-item label="备注">
+      <div style="margin:5px 0px">备注</div>
+      <i-form-item>
         <i-input type="textarea" v-model="remark" style="width:100%;display:block;"></i-input>
       </i-form-item>
     </i-form>
@@ -195,19 +196,22 @@
     private financeUploadResources: any = [];
     private data2: any = [];
     private deductRecordModal: Boolean = false
-    private remark: String = ''
+    private remark: any = ''
     private paymentAmount: any = 0
     private delFinanceUploadResource: any = []
     private addFinanceUploadResource: any = []
     private applicationPhaseResources: any = []
     private collectMoneyId: any = ''
+    private selectOne :any = {
+      collectMoneyChannel:'',
+      collectItem:''
+    }
 
     refresh(row) {
       this.rowObj = row
       this.advancePayoffService.getAdvancePayoffBillInfo({
         orderId: row.orderId
       }).subscribe(data => {
-        console.log(data)
         this.collectMoneyId = data.collectMoneyHistory?data.collectMoneyHistory.id:''
         this.repaymentObj = data
         this.collectMoneyDetails = data.collectMoneyDetails || []
@@ -254,6 +258,17 @@
       })
       console.log(sum)
       this.paymentAmount = sum
+    }
+    earlyClear(){
+      // if(this.$dict.getDictName(this.selectOne.collectItem) === '提前结清总额'){
+      //   this.collectMoneyDetails.forEach(v => {
+      //     // if(v.collectMoneyAmount < this.repaymentObj.totalPayment){
+      //     if(v.collectMoneyAmount < 10){
+      //       this.$Message.error('失败')
+      //     }
+      //   })
+      // }
+      // return
     }
     created() {
       this.columns1 = [{

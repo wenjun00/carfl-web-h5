@@ -185,6 +185,8 @@
      * 确认还款
      */
     confirmRepayment() {
+      // let earlyClear: any = this.$refs['confirm-early-pay']
+      // earlyClear.earlyClear()
       let _repayment: any = this.$refs['confirm-early-pay']
       let data: any = {}
       data.addFinanceUploadResource = _repayment.addFinanceUploadResource
