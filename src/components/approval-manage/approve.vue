@@ -128,12 +128,20 @@
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">身份证地址</td>
-          <td colspan="6" v-if="orderInfo.personal&&orderInfo.personal.idCardAddress">{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[0]):''}}{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[1]):''}}{{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.idCardAddress)):''}}{{orderInfo.personal?orderInfo.personal.idCardAddressDetail:''}}</td>
+          <td colspan="6" v-if="orderInfo.personal&&orderInfo.personal.idCardAddress">
+              <!--{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[0]):''}}
+              {{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[1]):''}}
+              {{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.idCardAddress)):''}}-->
+              {{orderInfo.personal?orderInfo.personal.idCardAddressDetail:''}}</td>
           <td v-else colspan="6"></td>
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">现居住地址</td>
-          <td v-if="orderInfo.personal&&orderInfo.personal.localHomeAddr" colspan="6">{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[0]):''}}{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[1]):''}}{{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.localHomeAddr)):''}}{{orderInfo.personal?orderInfo.personal.localHomeAddrDetail:''}}</td>
+          <td v-if="orderInfo.personal&&orderInfo.personal.localHomeAddr" colspan="6">
+              <!--{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[0]):''}}
+              {{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[1]):''}}
+              {{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.localHomeAddr)):''}}-->
+              {{orderInfo.personal?orderInfo.personal.localHomeAddrDetail:''}}</td>
           <td v-else colspan="6"></td>
         </tr>
         <tr>

@@ -27,7 +27,7 @@
             <i-form-item label="所属公司" prop="companyId">
               <i-select v-model="chooseBuyModel.companyId" clearable>
                 <i-option v-for="item in companyObject" :key="item.id" :value="item.id" :label="item.companyChinaname"></i-option>
-                 <!--<i-option v-if="companyObject.length===0" value="" readonly>暂无数据</i-option>-->
+                <i-option v-if="companyObject.length===0" value="" readonly>暂无数据</i-option>
               </i-select>
             </i-form-item>
           </i-col>
