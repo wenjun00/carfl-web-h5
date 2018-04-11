@@ -121,7 +121,7 @@
                     applicationId: row.applicationId
                   }).subscribe(val => {
                     let _applyInfo: any = this.$refs['applyDetail']
-                    _applyInfo.getparentreceipt(val)
+                    _applyInfo.getparentreceipt(val,0)
                   })
                 }
               },

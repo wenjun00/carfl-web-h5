@@ -220,13 +220,14 @@
         .getAllMessageByParams(this.applyData)
         .subscribe(
           data => {
-            console.log(data, 'data')
+            if(data){
             this.orderList = data.filter(v => v.orderId)
             if (data[0] && data[0].orderNumber) {
               this.applyData.name = data[0].name;
               this.applyData.mobileNumber = data[0].mobileNumber;
             }
             this.dataSet = data
+              }
           },
           ({
             msg
@@ -251,6 +252,7 @@
       this.saveData.refundTotalAmount = gatherItem.find(v => v.itemLabel === '合计（元）').refundAmount
       this.saveData.recordStatus = 1128
       this.saveData.refundType = this.applyData.refundType
+      this.saveData.remark=this.applyData.remark
       this.saveData.itemList = gatherItem.splice(0, (_message.gatherItemList.length - 1))
       this.refundApplicationService
         .saveSubmitApplication(this.saveData)
@@ -282,6 +284,7 @@
       }
       this.saveData.recordStatus = 1129
       this.saveData.refundType = this.applyData.refundType
+      this.saveData.remark=this.applyData.remark
       this.saveData.itemList = gatherItem.splice(0, (_message.gatherItemList.length - 1))
       let _uploadthefodder:any=this.$refs['upload-the-fodder']
       this.saveData.resourceList=_uploadthefodder.fodderList.map(v=>{

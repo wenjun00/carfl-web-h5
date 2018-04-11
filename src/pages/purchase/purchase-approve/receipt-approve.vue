@@ -22,7 +22,7 @@
     </template>
 
     <template>
-      <i-modal v-model="checkApplyModal" class="addApply" title="销售收款申请" width="800">
+      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'收款申请':'查看'" width="800">
         <!--<add-apply></add-apply>-->
         <apply-detail ref="applyDetail"></apply-detail>
         <div slot="footer">
@@ -131,9 +131,9 @@ export default class ReceiptApprove extends Page {
                           console.log(val, "val");
                           this.applyInformation = val;
                           let _applyInfo: any = this.$refs["applyDetail"];
-                          _applyInfo.getparentData(this.applyInformation, row);
+                          _applyInfo.getparentData(this.applyInformation, row,1);
                         });
-                    }
+                     }
                   }
                 },
                 "审批"
@@ -152,17 +152,16 @@ export default class ReceiptApprove extends Page {
                   },
                   on: {
                     click: () => {
-                      console.log(row);
+                      this.type=0
                       this.checkApplyModal = true;
                       this.financeApprovalHistoryService
                         .withdrawApplicationDetail({
                           withdrawId: row.applicationId
                         })
                         .subscribe(val => {
-                          console.log(val, "val");
                           this.applyInformation = val;
                           let _applyInfo: any = this.$refs["applyDetail"];
-                          _applyInfo.getparentData(this.applyInformation, row);
+                          _applyInfo.getparentData(this.applyInformation, row,0);
                         });
                     }
                   }

@@ -94,6 +94,10 @@
           return h("span", {}, this.$dict.getDictName(row.orderStatus));
         }
       },{
+        title: '订单环节',
+        key: 'orderLink',
+        align: 'center'
+      },{
         title: '订单创建时间',
         key: 'createTime',
         align: 'center',
