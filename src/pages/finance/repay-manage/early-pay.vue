@@ -147,6 +147,9 @@
     mounted() {
       this.getEarlyPayList();
     }
+    activated () {
+      this.getEarlyPayList();
+    }
     visibleChange() {
       let target = document.querySelector(".purchaseInformation .ivu-modal-body");
       if (target) {

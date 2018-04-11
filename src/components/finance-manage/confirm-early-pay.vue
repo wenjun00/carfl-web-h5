@@ -37,25 +37,9 @@
         <td bgcolor="#F2F2F2" colspan="1" width="40%">项目</td>
         <td bgcolor="#F2F2F2" colspan="1" width="60%">金额（元）</td>
       </tr>
-      <tr height="40">
-        <td>剩余未还总额</td>
-        <td>{{repaymentObj.surplusPrincipal}}</td>
-      </tr>
-      <tr height="40">
-        <td>剩余未还罚息</td>
-        <td>{{repaymentObj.surplusPenalty}}</td>
-      </tr>
-      <tr height="40">
-        <td>剩余冻结罚息</td>
-        <td>{{repaymentObj.surplusPenaltyFreeze}}</td>
-      </tr>
-      <tr height="40">
-        <td>提前结清手续费</td>
-        <td>{{repaymentObj.advancePayoffFee}}</td>
-      </tr>
-      <tr height="40">
-        <td>剩余管理费</td>
-        <td>{{repaymentObj.surplusManageFee}}</td>
+      <tr height="40" v-for="item in collectMoneyItemModel" :key="item.itemCode">
+        <td>{{item.itemLabel}}</td>
+        <td>{{item.itemMoney}}</td>
       </tr>
       <tr height="40">
         <td>合计</td>
@@ -101,13 +85,13 @@
           </div>
         </td>
         <td>
-          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="selectOne.collectMoneyChannel">
+          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="selectOne.collectItem">
-            <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>
+          <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="v.collectItem" @on-change="selectWay($event, v)">
+            <i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>
           </i-select>
         </td>
         <td>
@@ -139,24 +123,29 @@
       <i-button class="blueButton" style="float:right">全部下载</i-button>-->
 
       <i-row>
-        <i-col :span="8" style="display:flex;justify-content:center;;margin-top:10px">
-          <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;">
-            <Icon type="plus-circled" style="display:block;margin-top:53px;" color="#265ea2" size="40"></Icon>
-            <div>点击添加附件</div>
-            <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
+        <i-col :span="8" style="display:flex;justify-content:center;margin-top:10px">
+          <div style="height:200px;width:200px;cursor:pointer;text-align:center;background-color: rgb(244,244,244);" @click="openUpload=true">
+            <Icon type="plus-circled" style="display:block;margin-top:40px;" color="#265ea2" size="40"></Icon>
+            <h2 style="margin-top:5px">点击添加附件</h2>
+            <h3 style="color:gray">支持jpg/png格式</h3>
+            <h3 style="color:gray">建议大小不超过10M</h3>
           </div>
         </i-col>
         <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id" style="display:flex;justify-content:center;margin-top:10px">
-          <div :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
-          </div>
+          <img  :src="v.materialUrl" style="height:200px;width:200px;">
         </i-col>
+
       </i-row>
     </div>
-    <!--<data-box :columns="columns1" :data="data1"></data-box>-->
-
     <template>
       <i-modal title="划扣记录" v-model="deductRecordModal" width="1200">
         <deduct-record ref="deduct-record"></deduct-record>
+      </i-modal>
+    </template>
+    <!-- 弹出框 -->
+    <template>
+      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
+        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
       </i-modal>
     </template>
   </section>
@@ -167,6 +156,7 @@
   import Component from "vue-class-component";
   import DataBox from "~/components/common/data-box.vue";
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
+  import FileUpload from "~/components/common/file-upload.tsx.vue";
   import {
     DataGrid,
     DataGridItem
@@ -183,7 +173,8 @@
       DataBox,
       DataGrid,
       DataGridItem,
-      DeductRecord
+      DeductRecord,
+      FileUpload
     }
   })
   export default class ConfirmEarlyPay extends Vue {
@@ -202,11 +193,35 @@
     private addFinanceUploadResource: any = []
     private applicationPhaseResources: any = []
     private collectMoneyId: any = ''
-    private selectOne :any = {
-      collectMoneyChannel:'',
-      collectItem:''
-    }
+    private collectMoneyItemModel:any = []
+    private openUpload: Boolean = false;
 
+
+    /**
+     * 上传文件成功回调
+     */
+    uploadSuccess() {
+      this.openUpload = false;
+      this.$nextTick(() => {
+        let fileUpload: any = this.$refs["file-upload"];
+        this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
+          return {
+            id: v.response.id,
+            materialUrl: v.response.url,
+            orderId: this.rowObj.orderId,
+            businessId: this.rowObj.businessId
+          }
+        }))
+        fileUpload.reset();
+      });
+    }
+    /**
+     * 上传文件
+     */
+    postFile() {
+      let fileUpload = this.$refs["file-upload"] as FileUpload;
+      fileUpload.upload();
+    }
     refresh(row) {
       this.rowObj = row
       this.advancePayoffService.getAdvancePayoffBillInfo({
@@ -217,6 +232,7 @@
         this.collectMoneyDetails = data.collectMoneyDetails || []
         this.financeUploadResources = data.collectMoneyPhaseResources
         this.applicationPhaseResources = data.applicationPhaseResources
+        this.collectMoneyItemModel = data.collectMoneyItemModel.filter((v)=>v.itemMoney !==0)
         this.inputBlur()
         this.remark = data.collectMoneyHistory.remark
       }, ({
@@ -234,7 +250,6 @@
      * 增加还款对象
      */
     addObj() {
-      console.log('add')
       this.collectMoneyDetails.push({
         collectMoneyAmount: '',
         collectMoneyMethod: ''
@@ -244,7 +259,6 @@
      * 删除还款对象
      */
     deleteObj(index) {
-      console.log('add')
       this.collectMoneyDetails.splice(index, 1)
       this.inputBlur()
     }
@@ -256,8 +270,14 @@
       this.collectMoneyDetails.forEach(v => {
         sum = sum + (Number(v.collectMoneyAmount) || 0)
       })
-      console.log(sum)
       this.paymentAmount = sum
+    }
+    selectWay(code,item){
+      let target:any = this.collectMoneyItemModel.find((d)=>d.itemCode === code)
+      if(target){
+        item.collectMoneyAmount = target.itemMoney
+        this.inputBlur()
+      }
     }
     earlyClear(){
       // if(this.$dict.getDictName(this.selectOne.collectItem) === '提前结清总额'){
