@@ -37,7 +37,8 @@
       <i-table :columns="columns3" :data="accountDetail" :noDefaultRow="true"></i-table>
       <span class="title">附件</span>
       <i-row>
-        <i-col :span="12">
+         <upload-the-fodder :type="type" ref="upload-the-fodder"></upload-the-fodder>
+        <!--<i-col :span="12">
           <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;" @click="addAttachment">
             <Icon type="plus-circled" style="display:block;margin-top:60px;" size="40"></Icon>
             <div>点击添加附件</div>
@@ -52,7 +53,7 @@
               <i-icon type="ios-trash-outline" @click.native="handleRemove(item)"></i-icon>
             </div>
           </div>
-        </i-col>
+        </i-col>-->
       </i-row>
     </i-row>
     <!--提前结清申请-->
@@ -72,12 +73,14 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import DataBox from "~/components/common/data-box.vue";
 import { Prop } from "vue-property-decorator";
+import UploadTheFodder from "~/components/purchase-manage/upload-the-fodder.vue";
   import {
     CommonService
   } from "~/utils/common.service";
 @Component({
   components: {
-    DataBox
+    DataBox,
+    UploadTheFodder
   }
 })
 export default class ApplyDetail extends Vue {
@@ -101,6 +104,7 @@ export default class ApplyDetail extends Vue {
   private refundType: String = "";
   private remark: String = "";
   private orderNumber: String = "";
+  private type:any="";
   /**
    * 添加附件
    */
@@ -108,18 +112,27 @@ export default class ApplyDetail extends Vue {
   /**
    *打开页面获取申请数据
    */
-  getparent(val) {
+  getparent(val,type) {
+      console.log(type,'type')
+    this.type=type
     this.refundList = val;
     this.addNewApplyModal = val.personal;
     this.payDetail = val.itemList;
     this.accountDetail = val.bankListk;
     this.fileList = val.resourceList;
+       //   上传资料反显
+      let _uploadFodder:any = this.$refs['upload-the-fodder']
+      _uploadFodder.Reverse(val.resourceList)
     this.refundType = this.$dict.getDictName(val.refundType);
     this.remark = val.remark;
     this.orderNumber = val.productOrder.orderNumber;
   }
-  getparentData(val, row) {
-    console.log(val, row);
+  getparentData(val, row ,type) {
+    //   上传资料反显
+    this.type=type
+    console.log(type,'typedfdgfdgd')
+      let _uploadFodder:any = this.$refs['upload-the-fodder']
+      _uploadFodder.Reverse(val.applicationPhaseUploadResources)
     this.orderNumber = val.orderNumber; // 订单号
     val.collectMoneyItemModels.map(v => {
       v.refundAmount = v.itemMoney;
@@ -132,11 +145,11 @@ export default class ApplyDetail extends Vue {
     this.refundType = val.applicationType
       ? this.$dict.getDictName(val.applicationType)
       : ""; // 付款类型
-    this.accountDetail = val.personalBank; // 账户信息
-    this.fileList = val.applicationPhaseUploadResources;
+    this.accountDetail = val.personalBank||[]; // 账户信息
+    // this.fileList = val.applicationPhaseUploadResources;
   }
-  getparentreceipt(val) {
-    console.log(val);
+  getparentreceipt(val,type) {
+    this.type=type
     this.addNewApplyModal.name = val.customerName; // 客户姓名
     this.refundType = val.applicationType  ? this.$dict.getDictName(val.applicationType)
       : ""; // 付款类型

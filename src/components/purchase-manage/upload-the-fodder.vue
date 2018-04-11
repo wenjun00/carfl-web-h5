@@ -1,10 +1,10 @@
 <!--上传素材 通用组件-->
 <template>
   <section class="component upload-the-fodder ">
-    <span class="form-title">文件数量</span>
+    <span v-if="type!==0" class="form-title">文件数量</span>
     <i-row>
       <div style="display:flex;justify-content:flex-start;">
-        <div style="height:200px;width:200px;border:1px solid #dddddd;cursor:pointer;text-align:center;">
+        <div v-if="type!==0" style="height:200px;width:200px;border:1px solid #dddddd;cursor:pointer;text-align:center;">
           <div @click="uploadFile">
             <Icon type="plus-circled" style="display:block;margin-top:60px;" size="40" color="#265ea2"></Icon>
             <div>点击添加附件</div>
@@ -64,6 +64,7 @@
     @Dependencies(PersonalMaterialService)
     private personalMaterialService: PersonalMaterialService;
     @ModuleState("productId") productId;
+    @Prop() type;
     private model1: String = "";
     private cityList: Array < object > = [];
     private dataList: Array < any > = [];
@@ -103,6 +104,17 @@
       if (data.applicationPhaseResources) {
         this.fodderList = data.applicationPhaseResources;
       }
+    }
+    Reverse(data){
+        if(data){
+       let Dset:any=data.map(v=>{
+            return{
+                id:v.id,
+                url:v.materialUrl
+            }
+        })
+        this.fodderList=Dset
+        }
     }
     reset(){
         this.fodderList=[]

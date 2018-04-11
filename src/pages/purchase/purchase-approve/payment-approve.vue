@@ -33,7 +33,7 @@
     </template> -->
 
     <template>
-      <i-modal v-model="checkApplyModal" class="addApply" title="申请详情" width="800">
+      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'付款审批':'查看'" width="800">
         <apply-detail ref="applyDetail"></apply-detail>
         <div slot="footer">
           <i-button class="highDefaultButton" style="width:80px" @click="backApply" v-if="type===1">退回</i-button>
@@ -184,9 +184,9 @@ export default class PaymentApprove extends Page {
                   },
                   on: {
                     click: () => {
+                      this.type = 1;
                       this.refundId = row.refundApplicationId;
                       this.checkApplyModal = true;
-                      this.type = 1;
                       this.refundApplicationService
                         .getRefundApplicationById({
                           refundId: row.refundApplicationId
@@ -194,7 +194,7 @@ export default class PaymentApprove extends Page {
                         .subscribe(val => {
                           this.applyInformation = val;
                           let _applyInfo: any = this.$refs["applyDetail"];
-                          _applyInfo.getparent(this.applyInformation);
+                          _applyInfo.getparent(this.applyInformation,1);
                         });
                     }
                   }
@@ -215,8 +215,8 @@ export default class PaymentApprove extends Page {
                   },
                   on: {
                     click: () => {
+                      this.type=0
                       this.refundId = row.refundApplicationId;
-                      console.log(this.refundId, 77777);
                       this.checkApplyModal = true;
                       this.refundApplicationService
                         .getRefundApplicationById({
@@ -225,7 +225,7 @@ export default class PaymentApprove extends Page {
                         .subscribe(val => {
                           this.applyInformation = val;
                           let _applyInfo: any = this.$refs["applyDetail"];
-                          _applyInfo.getparent(this.applyInformation);
+                          _applyInfo.getparent(this.applyInformation,0);
                         });
                     }
                   }
