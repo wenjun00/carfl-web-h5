@@ -23,7 +23,7 @@
         <i-input v-model="addBranchModel.depositBank"></i-input>
       </i-form-item>
       <i-form-item label="银行卡号：" prop="cardNumber">
-        <i-input v-model="addBranchModel.cardNumber" :maxlength="20"></i-input>
+        <i-input type="text" v-model="addBranchModel.cardNumber" :maxlength="20"></i-input>
       </i-form-item>
       <i-form-item label="支行名称：" prop="branchName">
         <i-input v-model="addBranchModel.branchName" :maxlength="20"></i-input>
@@ -109,6 +109,9 @@
           required: true,
           message: '请输入银行卡号',
           trigger: 'blur',
+        },{
+          validator: this.validatorBank,
+          trigger: "blur"
         }],
         branchName: [{
           required: true,
@@ -116,6 +119,13 @@
           trigger: 'blur',
         }]
       };
+    }
+    validatorBank(rule,value,callback){
+      if (!(/^\+?[1-9][0-9]*$/).test(value)) {
+        callback(new Error('请输入正确的银行卡号'));
+      } else {
+        callback();
+      }
     }
     /**
      * 确认新增公司

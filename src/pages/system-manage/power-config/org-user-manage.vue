@@ -208,6 +208,7 @@
         data => {
           this.deptObject = data[0];
           this.dataList = data;
+          console.log(data,'dataList')
         },
         ({msg}) => {
           this.$Message.error(msg);

@@ -96,7 +96,7 @@
 
       customerName: '', // 客户姓名
       customerPhone: '', // 联系方式
-      isBuyCar: null, // 在我司是否成功购车
+      isBuyCar: '', // 在我司是否成功购车
 
       organizationNames: '', // 机构名称
       referrer: '', // 推荐人
@@ -130,7 +130,7 @@
 
       this.customerOriginModel.customerName= '', // 客户姓名
       this.customerOriginModel.customerPhone= '', // 联系方式
-      this.customerOriginModel.isBuyCar= null, // 在我司是否成功购车
+    //   this.customerOriginModel.isBuyCar= '', // 在我司是否成功购车
 
       this.customerOriginModel.organizationNames= '', // 机构名称
       this.customerOriginModel.referrer= '' // 推荐人
