@@ -181,6 +181,7 @@
       let component: any = this.$refs['materials-all'];
       let _parchaseform: any = component.$refs['parchase-form']
       component.addcarData = []
+      component.totalPrice=''
       _parchaseform.resetFields()
       //   客户资料清空
       let materials: any = this.$refs['materials'];
