@@ -27,7 +27,7 @@
             <i-form-item label="所属公司" prop="companyId">
               <i-select v-model="chooseBuyModel.companyId" clearable>
                 <i-option v-for="item in companyObject" :key="item.id" :value="item.id" :label="item.companyChinaname"></i-option>
-                 <!--<i-option v-if="companyObject.length===0" value="" readonly>暂无数据</i-option>-->
+                <i-option v-if="companyObject.length===0" value="" readonly>暂无数据</i-option>
               </i-select>
             </i-form-item>
           </i-col>
@@ -158,7 +158,7 @@
             <i-row>
           <i-form-item label="首付金额（元）" prop="Payment" style="float:left">
               <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment" :disabled="Paymentdisabled">
-                <i-option v-for="item in initialPaymentData" :key="item" :value="item" :label="item"></i-option>
+                <i-option v-for="item in initialPaymentData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
           <i-form-item prop="initialPayment" style="float:left">
@@ -171,7 +171,7 @@
             <i-row>
           <i-form-item label="保证金金额（元）" prop="deposit" style="display:inline-block">
               <i-select style="width:140px" placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit" :disabled="depositdisabled">
-                <i-option v-for="item in depositCashData" :key="item" :value="item" :label="item"></i-option>
+                <i-option v-for="item in depositCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
              <i-form-item prop="depositCash" style="display:inline-block;">  
@@ -184,7 +184,7 @@
             <i-row>
           <i-form-item label="尾付总额（元）" prop="final" style="display:inline-block">
               <i-select style="width:140px" placeholder="请选择尾付总额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash" :disabled="finalorddisabled">
-                <i-option v-for="item in finalCashData" :key="item" :value="item" :label="item"></i-option>
+                <i-option v-for="item in finalCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
                <i-form-item  prop="finalCash" style="display:inline-block;">
@@ -197,7 +197,7 @@
             <i-row>
           <i-form-item label="管理费（元）" prop="manageData" style="display:inline-block">
               <i-select style="width:140px" placeholder="请选择管理费比例" v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost" :disabled="manageDatadisabled">
-                <i-option v-for="item in manageCostData" :key="item" :value="item" :label="item"></i-option>
+                <i-option v-for="item in manageCostData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
               <i-form-item prop="manageCost" style="display:inline-block;">
@@ -695,6 +695,9 @@
                   ss.target.value=0
                   this.addcarData[index].carAmount = ssf
               }
+              if(!this.chooseBuyModel.finalprincipal){
+                  this.finalorddisabled=true
+              }
              this.complutedtotalPrice()
             };
             return (
@@ -774,91 +777,95 @@
      * 获取添加产品信息
      */
     currentRowData(data, productDataModel) {
+        this.depositCashData=[]
+        this.finalCashData=[]
+        this.initialPaymentData=[]
+        this.manageCostData=[]
       this.DataSet = data
-    // if(data.depositCash){
-    //   let deposit:any = data.depositCash ? (data.depositCash.split(';')) : ''
-    //   deposit.forEach((v)=>{
-    //       this.depositCashData.push({
-    //           key:v+'%',
-    //           value:v||0
-    //       })
-    //   })
-    //     for (let i = 0; i < this.depositCashData.length - 1; i++) {
-    //         for (let j = 1; j < this.depositCashData.length; j++) {
-    //             if (i != j) {
-    //                 if (this.depositCashData[i].key == this.depositCashData[j].key) {
-    //                     this.depositCashData.splice(j, 1)
-    //                 }
-    //             }
+    if(data.depositCash){
+      let deposit:any = data.depositCash ? (data.depositCash.split(';')) : ''
+      deposit.forEach((v)=>{
+          this.depositCashData.push({
+              key:v+'%',
+              value:v||0
+          })
+      })
+        for (let i = 0; i < this.depositCashData.length - 1; i++) {
+            for (let j = 1; j < this.depositCashData.length; j++) {
+                if (i != j) {
+                    if (this.depositCashData[i].key == this.depositCashData[j].key) {
+                        this.depositCashData.splice(j, 1)
+                    }
+                }
 
-    //         }
-    //     }
-    // }
+            }
+        }
+    }
     
-    // if(data.finalCash){
-    //  let rr:any = data.finalCash ? (data.finalCash.split(';')) : ''
-    //       rr.forEach((v)=>{
-    //       this.finalCashData.push({
-    //           key:v+'%',
-    //           value:v||0
-    //       })
-    //   })
-    //     for (let i = 0; i < this.finalCashData.length - 1; i++) {
-    //         for (let j = 1; j < this.finalCashData.length; j++) {
-    //             if (i != j) {
-    //                 if (this.finalCashData[i].key == this.finalCashData[j].key) {
-    //                     this.finalCashData.splice(j, 1)
-    //                 }
-    //             }
+    if(data.finalCash){
+     let rr:any = data.finalCash ? (data.finalCash.split(';')) : ''
+          rr.forEach((v)=>{
+          this.finalCashData.push({
+              key:v+'%',
+              value:v||0
+          })
+      })
+        for (let i = 0; i < this.finalCashData.length - 1; i++) {
+            for (let j = 1; j < this.finalCashData.length; j++) {
+                if (i != j) {
+                    if (this.finalCashData[i].key == this.finalCashData[j].key) {
+                        this.finalCashData.splice(j, 1)
+                    }
+                }
 
-    //         }
-    //     }
+            }
+        }
       
-    // }
+    }
     
-    //  if(data.initialPayment) {
-    //  let initial:any = data.initialPayment ? (data.initialPayment.split(';')) : ''
-    //           initial.forEach((v)=>{
-    //       this.initialPaymentData.push({
-    //           key:v+'%',
-    //           value:v||0
-    //       })
-    //   })
-    //     for (let i = 0; i < this.initialPaymentData.length - 1; i++) {
-    //         for (let j = 1; j < this.initialPaymentData.length; j++) {
-    //             if (i != j) {
-    //                 if (this.initialPaymentData[i].key == this.initialPaymentData[j].key) {
-    //                     this.initialPaymentData.splice(j, 1)
-    //                 }
-    //             }
+     if(data.initialPayment) {
+     let initial:any = data.initialPayment ? (data.initialPayment.split(';')) : ''
+              initial.forEach((v)=>{
+          this.initialPaymentData.push({
+              key:v+'%',
+              value:v||0
+          })
+      })
+        for (let i = 0; i < this.initialPaymentData.length - 1; i++) {
+            for (let j = 1; j < this.initialPaymentData.length; j++) {
+                if (i != j) {
+                    if (this.initialPaymentData[i].key == this.initialPaymentData[j].key) {
+                        this.initialPaymentData.splice(j, 1)
+                    }
+                }
 
-    //         }
-    //     }
-    //  }
-    //   if(data.manageCost){ 
-    //   let manage:any = data.manageCost ? (data.manageCost.split(';')) : ''
-    //      manage.forEach((v)=>{
-    //       this.manageCostData.push({
-    //           key:v+'%',
-    //           value:v||0
-    //       })
-    //   })
-    //     for (let i = 0; i < this.manageCostData.length - 1; i++) {
-    //         for (let j = 1; j < this.manageCostData.length; j++) {
-    //             if (i != j) {
-    //                 if (this.manageCostData[i].key == this.manageCostData[j].key) {
-    //                     this.manageCostData.splice(j, 1)
-    //                 }
-    //             }
+            }
+        }
+     }
+      if(data.manageCost){ 
+      let manage:any = data.manageCost ? (data.manageCost.split(';')) : ''
+         manage.forEach((v)=>{
+          this.manageCostData.push({
+              key:v+'%',
+              value:v||0
+          })
+      })
+        for (let i = 0; i < this.manageCostData.length - 1; i++) {
+            for (let j = 1; j < this.manageCostData.length; j++) {
+                if (i != j) {
+                    if (this.manageCostData[i].key == this.manageCostData[j].key) {
+                        this.manageCostData.splice(j, 1)
+                    }
+                }
 
-    //         }
-    //     }
-    // }
+            }
+        }
+    }
     
-      this.depositCashData = data.depositCash ? (data.depositCash.split(';')) : ''
-      this.finalCashData = data.finalCash ? (data.finalCash.split(';')) : ''
-      this.initialPaymentData = data.initialPayment ? (data.initialPayment.split(';')) : ''
-      this.manageCostData = data.manageCost ? (data.manageCost.split(';')) : ''
+    //   this.depositCashData = data.depositCash ? (data.depositCash.split(';')) : ''
+    //   this.finalCashData = data.finalCash ? (data.finalCash.split(';')) : ''
+    //   this.initialPaymentData = data.initialPayment ? (data.initialPayment.split(';')) : ''
+    //   this.manageCostData = data.manageCost ? (data.manageCost.split(';')) : ''
       this.updateProductId(data.productId)
       this.chooseBuyModel.name = productDataModel.title // 产品名称
       this.chooseBuyModel.prdSeriods = productDataModel.series // 产品系列

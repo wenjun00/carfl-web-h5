@@ -220,10 +220,10 @@
           }) => {
             let removeHandle = (ss) => {
               this.addcarData[index].carNumber = ss.target.value
-              let patt1:any = /[0-9]+/;
+              let patt1:any = /^[1-9]\d*$/;
               if(!patt1.test(ss.target.value)){
-                  ss.target.value=1
-                  this.addcarData[index].carNumber = ss.target.value
+                ss.target.value=1
+                this.addcarData[index].carNumber = ss.target.value
               }
              this.complutedtotalPrice()
             };

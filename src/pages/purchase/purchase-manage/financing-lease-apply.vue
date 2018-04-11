@@ -235,9 +235,8 @@ import { State, Mutation, namespace } from "vuex-class";
             this.customerModel.sex=2
             this.ReverseData()
         }
-        // this.customerModel.birthTime=idcard.substring(6, 10) + "-" + idcard.substring(10, 12) + "-" + idcard.substring(12, 14)
-        // this.customerModel.birthTime=FilterService.dateFormat(this.customerModel.birthTime, 'yyyy-MM-dd')
-        // this.ReverseData()
+        this.customerModel.birthTime=new Date(idcard.substring(6, 10),idcard.substring(10, 12)-1,idcard.substring(12, 14))
+        this.ReverseData()
       this.customerModel.name = ''
       this.customerModel.mobileMain = ''
       this.customerModel.salesmanName = ''
