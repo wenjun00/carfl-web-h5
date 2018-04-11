@@ -209,6 +209,7 @@
 
     refresh(row) {
       this.rowObj = row
+      console.log(row)
       this.advancePayoffService.getAdvancePayoffBillInfo({
         orderId: row.orderId
       }).subscribe(data => {

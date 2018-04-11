@@ -317,6 +317,10 @@
       form.validate(valid => {
         formVal.validate(vali => {
           if(!vali || !valid) return false;
+          if(this.amount.financingAmount1>=this.amount.financingAmount2){
+            this.$Message.error("请输入正确的融资金额");
+            return false;
+          }
           if (this.manageMoneyParams === "无") {
             delete this.productDetail.manageCost;
             delete this.productDetail.manageCostType;
