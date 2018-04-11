@@ -1,4 +1,4 @@
-<!--审批资源池-->
+<!--审批资源池--> 
 <template>
   <section class="page approval-resource-pool">
     <span class="form-title">审核资源池</span>
@@ -392,7 +392,7 @@ export default class ApprovalResourcePool extends Page {
     this.resourcePoolModel.startTime = startTime;
     this.resourcePoolModel.endTime = endTime;
   }
-  clearTime() {}
+//   clearTime() {}
   checkOrderInfo(row) {
     this.purchaseInformationModal = true;
     let _purchaseInfo: any = this.$refs["purchase-info"];
