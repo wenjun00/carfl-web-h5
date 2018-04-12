@@ -67,5 +67,14 @@ export default {
         controller: CONTROLLER,
         action: 'getCustomerDataOrder',
         type: requestType.Get
+    },
+    /**
+     * 上传客户审批资料
+     */
+    uploadPersonalApproveFile:{
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'uploadPersonalApproveFile',
+        type: requestType.Post
     }
 }

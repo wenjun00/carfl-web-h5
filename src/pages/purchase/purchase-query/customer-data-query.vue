@@ -48,6 +48,10 @@
         <div style="margin-top:6px;font-size:14px;">
           <span>结婚证-001fdawdeklvkje...</span>
         </div>-->
+          <div slot="footer">
+          <i-button class="highDefaultButton" style="width:80px" @click="openUpload=false">取消</i-button>
+          <i-button class="highButton" style="width:80px" @click="confirm">确定</i-button>
+        </div>
       </i-modal>
     </template>
 
@@ -269,6 +273,35 @@
       }, {
         columnsName: '联系号码'
       }]
+    }
+    /**
+     * 补充资料确定
+     */
+    confirm(){
+        let uploadTheMaterial: any = this.$refs['upload-the-material'];
+        let MaterialData:any=uploadTheMaterial.dataList.map(v=>{
+            return{
+                id:v.id,
+                materialUrl:v.url,
+                uploadName:v.name,
+                materialType:v.type,
+                operateTime:v.createTime,
+                dataSize:v.size
+            }
+        })
+        console.log(MaterialData,'uploadTheMaterial.dataList')
+         this.personalService
+        .uploadPersonalApproveFile(MaterialData)
+        .subscribe(
+          data => {
+            this.openUpload=false
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
     }
     refreshData() {
       this.ordertransferModel.startTime = FilterService.dateFormat(
