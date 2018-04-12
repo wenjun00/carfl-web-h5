@@ -484,7 +484,7 @@ export default class Approve extends Vue {
     approveData.payWay = this.orderInfo.payWay; // 还款方式
     approveData.otherFee = this.orderInfo.otherFee; // 其他费用
     approveData.manageCostPercent = this.orderInfo.manageCostPercent; // 管理费率
-    approveData.id = this.orderInfo.id; // 管理费率
+    approveData.id = this.orderInfo.id; // 管理费率1
     return approveData;
   }
   upLoadFile(item){
