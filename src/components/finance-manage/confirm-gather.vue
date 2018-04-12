@@ -240,16 +240,16 @@
       this.paymentAmount = sum
     }
     mounted() {
-      this.box = this.$refs.purchaseInformation1
-      this.box.addEventListener("scroll", ()=>{
-        console.log(this.box.scrollTop)
-      })
+      // this.box = this.$refs.purchaseInformation1
+      // this.box.addEventListener("scroll", ()=>{
+      //   console.log(this.box.scrollTop)
+      // })
     }
     monitorScorll() {
-      console.log(123123)
-      let target = document.getElementsByClassName("purchaseInformation1")[0]
-        this.scrollTopHeight = target.scrollTop
-         console.log(target.scrollTop)
+      // console.log(123123)
+      // let target = document.getElementsByClassName("purchaseInformation1")[0]
+      //   this.scrollTopHeight = target.scrollTop
+      //    console.log(target.scrollTop)
     }
     /**
      * 增加还款对象

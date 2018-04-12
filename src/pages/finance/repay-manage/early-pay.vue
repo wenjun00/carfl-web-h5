@@ -171,6 +171,7 @@
       data.addFinanceUploadResource = _repayment.addFinanceUploadResource
       data.delFinanceUploadResource = _repayment.delFinanceUploadResource
       data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.financeUploadResources = _repayment.financeUploadResources
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.withdrawId
       data.totalPayment = _repayment.paymentAmount

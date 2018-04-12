@@ -99,9 +99,9 @@ export default class SystemLogDownload extends Page {
         align: "center"
       },
       {
-        title: "执行参数",
+        title: "执行方法",
         editable: true,
-        key: "exeParams",
+        key: "exeMethod",
         align: "center"
       },
       {

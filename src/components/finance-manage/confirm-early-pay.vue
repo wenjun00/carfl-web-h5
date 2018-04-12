@@ -22,7 +22,7 @@
       </data-grid-item>
       <data-grid-item label="期数" :span="2">
         <template>
-          <div>{{repaymentObj.periods}}</div>
+          <div>{{$dict.getDictName(repaymentObj.periods)}}</div>
         </template>
       </data-grid-item>
       <data-grid-item label="月供（元）" :span="2">
@@ -235,7 +235,7 @@
         this.applicationPhaseResources = data.applicationPhaseResources
         this.collectMoneyItemModel = data.collectMoneyItemModel.filter((v)=>v.itemMoney !==0)
         this.inputBlur()
-        this.remark = data.collectMoneyHistory.remark
+        // this.remark = data.collectMoneyHistory.remark
       }, ({
         msg
       }) => {
@@ -253,7 +253,6 @@
     addObj() {
       this.collectMoneyDetails.push({
         collectMoneyAmount: '',
-        collectMoneyMethod: ''
       })
     }
     /**
