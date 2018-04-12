@@ -271,14 +271,14 @@ import { State, Mutation, namespace } from "vuex-class";
     /**
      * 客户信息反显
      */
-    distributionData(data) {
+    distributionData(data,orderStatus) {
       console.log(data, '信息反显')
       this.customerModel.name = data.personal.name;
       this.customerModel.mobileMain = data.personal.mobileMain;
       this.customerModel.salesmanName = data.salesmanName;
       //   选购资料反显
       let _choosebuymaterials: any = this.$refs['choose-buy-materials']
-      _choosebuymaterials.Reverse(data)
+      _choosebuymaterials.Reverse(data,orderStatus)
       //   客户联系人反显
       let _customercontacts: any = this.$refs['customer-contacts']
       _customercontacts.Reverse(data)
@@ -652,8 +652,12 @@ import { State, Mutation, namespace } from "vuex-class";
       })
     }
     showTab() {
-      if(this.customerModel.idCard.length === 18){
+        let pat:any= /(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$)|(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)/;
+      if(this.customerModel.idCard.length === 18 && pat.test(this.customerModel.idCard)){
         this.disabledStatus = 'none';
+        console.log(this.disabledStatus,'this.disabledStatus')
+      }else{
+          this.disabledStatus = '';
       }
     }
   }

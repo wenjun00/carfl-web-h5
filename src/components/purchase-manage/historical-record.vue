@@ -53,7 +53,7 @@
     private currentRow: any = {};
 
     @Emit('distributionData')
-    distributionData(multipleSelection) {}
+    distributionData(multipleSelection,dd) {}
     @Emit('closeProduct')
     closeProduct(){}
     @Emit('close')
@@ -131,7 +131,7 @@
         orderNumber: this.currentRow.orderNumber
       }).subscribe(data => {
         this.closeProduct()
-        this.distributionData(data)
+        this.distributionData(data,this.currentRow.orderStatus)
       })
       this.close()
     }

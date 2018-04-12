@@ -118,16 +118,16 @@
         .subscribe(
           data => {
             this.progressData = data;
-            if(this.progressData[this.progressData.length-1].orderLink===332){
+            if(data[data.length-1].orderLink===332){
             this.currentLength=0
             }
-            if(this.progressData[this.progressData.length-1].orderLink===333){
+            if(data[data.length-1].orderLink===333){
                 this.currentLength=1
             }
-            if(this.progressData[this.progressData.length-1].orderLink===334){
+            if(data[data.length-1].orderLink===334){
                 this.currentLength=2
             }
-            if(this.progressData[this.progressData.length-1].orderLink===337){
+            if(data[data.length-1].orderLink===337){
                 this.currentLength=3
             }
           },

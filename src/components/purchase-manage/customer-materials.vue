@@ -467,7 +467,7 @@
           this.idcardOwn=29
       }
       if(data.personal.cityOwnhouseAddress===data.personal.localHomeAddr){
-          this.liveads=30
+          this.idcardOwn = 30
       }
       if(!this.customerMaterialsForm.idCardValidityPeriodSection){
         this.idCardvalidity=true
