@@ -10,7 +10,7 @@
     </i-row>
     <data-box :id="175" :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:0px">
+      <i-row type="flex" align="middle" style="padding:10px">
         <i-col :span="24" style="text-align:right;">
           <i-button @click="addNewBranchFirmClick" class="highButton">新增分公司</i-button>
         </i-col>

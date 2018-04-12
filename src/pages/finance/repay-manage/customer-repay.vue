@@ -389,6 +389,20 @@
         },
         {
           align: "center",
+          title: " 待还管理费",
+          editable: true,
+          key: "manageFeeReceivable",
+          // width: 90
+        },
+        {
+          align: "center",
+          title: " 待还总金额",
+          editable: true,
+          key: "sumReceivable",
+          // width: 90
+        },
+        {
+          align: "center",
           title: " 待还罚息",
           editable: true,
           key: "penaltyReceivable",

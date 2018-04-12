@@ -17,7 +17,7 @@
           </i-checkbox-group>
         </data-grid-item>
         <data-grid-item label="意向融资金额" :span="3">{{orderInfo.intentionFinancingAmount}}</data-grid-item>
-        <data-grid-item label="租金支付" :span="3">{{orderInfo.rentPayable}}</data-grid-item>
+        <data-grid-item label="租金支付" :span="3">{{$dict.getDictName(orderInfo.rentPayable)}}</data-grid-item>
         <data-grid-item label="意向期限" :span="3">{{ orderInfo.intentionPeriods?$dict.getDictName(Number(orderInfo.intentionPeriods)):''}}</data-grid-item>
         <data-grid-item label="意向首付比例" :span="3">{{orderInfo.intentionPaymentRatio?orderInfo.intentionPaymentRatio+'%':''}}</data-grid-item>
       </data-grid>

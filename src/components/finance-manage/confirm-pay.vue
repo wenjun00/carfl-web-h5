@@ -14,6 +14,7 @@
               <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
+          <i-button style="float:right;color:#265ea2" type="text" @click="saleApplyInfo">销售申请详情</i-button>
         </i-col>
       </i-row>
       <i-row>
@@ -136,7 +137,7 @@
 
     <template>
       <i-modal title="订单详情" v-model="purchaseInfoModel" width="1000" class="purchaseInformation">
-        <purchase-information :scrollTopHeight="scrollTopHeight"></purchase-information>
+        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModel=false">返回</i-button>
         </div>
@@ -416,6 +417,8 @@
     }
     saleApplyInfo() {
       this.purchaseInfoModel = true
+      let _purchaseInfo: any = this.$refs["purchase-info"];
+      _purchaseInfo.getOrderDetail(this.rowObj);
     }
   }
 
