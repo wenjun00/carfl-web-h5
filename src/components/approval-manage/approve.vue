@@ -7,7 +7,7 @@
         <!-- <span>选购信息</span> -->
         <a name="xuangouxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">选购信息</a>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px">
+      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px;font-size: 14px">
         <data-grid-item label="申请省份：" :span="3">{{orderInfo.province?$city.getCityName(orderInfo.province):''}}</data-grid-item>
         <data-grid-item label="申请城市：" :span="3">{{orderInfo.city?$city.getCityName(orderInfo.city):''}}</data-grid-item>
         <data-grid-item label="所属公司：" :span="6">{{orderInfo.company?orderInfo.company.companyChinaname:''}}</data-grid-item>
@@ -29,7 +29,7 @@
         <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
         <a name="cheliangxinxi" style="color:#333333;cursor:auto;font-size:16px;font-family:MicrosoftYaHei">车辆信息</a>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px" v-for="item in carOrderInfo" :key="item.id">
+      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top:10px;width:760px;font-size: 14px" v-for="item in carOrderInfo" :key="item.id">
         <data-grid-item label="车辆型号" :span="4">{{item.modelName?item.modelName:''}}</data-grid-item>
         <data-grid-item label="上牌地区" :span="4">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>
         <data-grid-item label="车身颜色" :span="4">{{item.vehicleColour?item.vehicleColour:''}}</data-grid-item>

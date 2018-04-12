@@ -137,16 +137,6 @@
           isAttention: false,
           path: 'purchase/purchase-approve/payment-approve'
         }]
-      }, {
-        index: 5,
-        color: '#CCCCCC',
-        iconName: '苏健',
-        icon: 'shenpiguanli',
-        pageList: [{
-          pageName: '苏健-子菜单',
-          isAttention: false,
-          path: 'purchase/purchase-approve/receipt-approve'
-        }]
       }]
     }
   }
