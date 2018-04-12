@@ -361,7 +361,6 @@
      * 补充资料
      */
     addFiles(row) {
-        console.log(row,'row')
       this.openUpload = true
       this.uploadOrAddFlag = false
     }
