@@ -53,7 +53,7 @@
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="意向融资金额（元）" prop="intentionFinancingAmount">
-              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.intentionFinancingAmount">
+              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.intentionFinancingAmount" @on-blur="intentionFinancingAmountBlur">
               </i-input>
             </i-form-item>
           </i-col>
@@ -68,7 +68,7 @@
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="意向月供（元）" prop="rentPayable">
-              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.rentPayable">
+              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.rentPayable" @on-blur="rentPayableBlur">
               </i-input>
             </i-form-item>
           </i-col>
@@ -144,7 +144,7 @@
         </i-col>
         <i-col span="12">
           <i-form-item label="尾付本金（元）" prop="finalprincipal">
-            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.finalprincipal" @on-change="finalprincipalChange" :readonly="finaldisabled">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.finalprincipal" @on-change="finalprincipalChange" :readonly="finaldisabled" @on-blur="finalprincipalBlur">
             </i-input>
           </i-form-item>
         </i-col>
@@ -208,31 +208,31 @@
         </i-col>
         <i-col span="12">
           <i-form-item label="保险费（元）" prop="insuranceMoney">
-            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.insuranceMoney">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.insuranceMoney" @on-blur="insuranceMoneyBlur">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="购置税（元）" prop="purchaseMoney">
-            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.purchaseMoney">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.purchaseMoney" @on-blur="purchaseMoneyBlur">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="上牌费（元）" prop="licenseMoney">
-            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.licenseMoney">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.licenseMoney" @on-blur="licenseMoneyBlur">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="GPS费（元）" prop="GpsMoney">
-            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.GpsMoney">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.GpsMoney" @on-blur="GpsMoneyBlur">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="其他费用（元）" prop="otherFee">
-            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.otherFee">
+            <i-input :maxlength="14" type="text" v-model="chooseBuyModel.otherFee" @on-blur="otherFeeBlur">
             </i-input>
           </i-form-item>
         </i-col>
@@ -452,6 +452,55 @@
     this.changePrdShow=false
     this.addPrdShow=true
     this.resetProductData()
+}
+    /**
+     * 意向月供金额（小数点保留两位）
+     */
+    rentPayableBlur(){
+        this.chooseBuyModel.rentPayable=Number(this.chooseBuyModel.rentPayable).toFixed(2).toString()
+    }
+    /**
+     * 意向融资金额（小数点保留两位）
+     */
+    intentionFinancingAmountBlur(){
+        this.chooseBuyModel.intentionFinancingAmount=Number(this.chooseBuyModel.intentionFinancingAmount).toFixed(2).toString()
+    }
+    /**
+     * 尾付本金（小数点保留两位）
+     */
+    finalprincipalBlur(){
+        this.chooseBuyModel.finalprincipal=Number(this.chooseBuyModel.finalprincipal).toFixed(2).toString()
+}
+    /**
+     * 保险费（小数点保留两位）
+     */
+    insuranceMoneyBlur(){
+        this.chooseBuyModel.insuranceMoney=Number(this.chooseBuyModel.insuranceMoney).toFixed(2).toString()
+    }
+    /**
+     * 购置税（小数点保留两位）
+     */
+    purchaseMoneyBlur(){
+        this.chooseBuyModel.purchaseMoney=Number(this.chooseBuyModel.purchaseMoney).toFixed(2).toString()
+        console.log(this.chooseBuyModel.purchaseMoney,'this.chooseBuyModel.purchaseMoney')
+    }
+    /**
+     * 上牌费（小数点保留两位）
+     */
+    licenseMoneyBlur(){
+        this.chooseBuyModel.licenseMoney=Number(this.chooseBuyModel.licenseMoney).toFixed(2).toString()
+    }
+    /**
+     * GPS费（小数点保留两位）
+     */
+    GpsMoneyBlur(){
+        this.chooseBuyModel.GpsMoney=Number(this.chooseBuyModel.GpsMoney).toFixed(2).toString()
+    }
+    /**
+     * 其他费用(小数点保留两位)
+     */
+    otherFeeBlur(){
+        this.chooseBuyModel.otherFee=Number(this.chooseBuyModel.otherFee).toFixed(2).toString()
     }
     /**
      * 数据反显
@@ -530,10 +579,7 @@
      * 车辆参考总价更改
      */
     vehicleAmountBlur() {
-    //   if (Number(this.chooseBuyModel.vehicleAmount)>0) {
-    //   } else {
-    //     this.chooseBuyModel.vehicleAmount = ''
-    //   }
+    this.chooseBuyModel.vehicleAmount=Number(this.chooseBuyModel.vehicleAmount).toFixed(2).toString()
       this.getFinanceTotalMoney()
     }
     /**
@@ -885,11 +931,15 @@
       this.chooseBuyModel.vehicleAmount=''
     }
       console.log(data.depositCash,'data.depositCash')
-      if(data.depositCash===undefined){
-         this.chooseBuyModel.depositCash= '0' // 保证金金额
+      if(data.depositCash===undefined||data.depositCash===null){
+         this.chooseBuyModel.depositCash= '0.00' // 保证金金额
          setTimeout(()=>{
-         this.depositCashData=['0']
-         this.chooseBuyModel.deposit= '0'
+        //  this.depositCashData=['0']
+         this.depositCashData.push({
+              key:0+'%',
+              value:0
+          })
+         this.chooseBuyModel.deposit= this.depositCashData[0].value
           },100)
           this.depositdisabled=true
       }else{
@@ -900,11 +950,15 @@
           this.depositdisabled=false
         }
       }
-     if(data.initialPayment===undefined){
-         this.chooseBuyModel.initialPayment='0' // 首付金额
+     if(data.initialPayment===undefined||data.initialPayment===null){
+         this.chooseBuyModel.initialPayment='0.00' // 首付金额
          setTimeout(()=>{
-         this.initialPaymentData=['0']
-         this.chooseBuyModel.Payment='0'
+        //  this.initialPaymentData=['0']
+        this.initialPaymentData.push({
+              key:0+'%',
+              value:0
+          })
+         this.chooseBuyModel.Payment=this.initialPaymentData[0].value
           },100)
           this.Paymentdisabled=true
      }else{
@@ -914,11 +968,15 @@
            this.Paymentdisabled=true
         }
      }
-     if(data.manageCost===undefined){
-         this.chooseBuyModel.manageCost='0' // 管理费
+     if(data.manageCost===undefined||data.manageCost===null){
+         this.chooseBuyModel.manageCost='0.00' // 管理费
          setTimeout(()=>{
-         this.manageCostData=['0']
-         this.chooseBuyModel.manageData='0'
+        //  this.manageCostData=['0']
+           this.manageCostData.push({
+              key:0+'%',
+              value:0
+          })
+         this.chooseBuyModel.manageData=this.manageCostData[0].value
           },100)
         this.manageDatadisabled=true
      }else{
@@ -928,12 +986,16 @@
           this.manageDatadisabled=true
         }
      }
-      if(data.finalCash===undefined){
-        this.chooseBuyModel.finalprincipal='0' // 尾付本金
-         this.chooseBuyModel.finalCash='0' // 尾付总额
+      if(data.finalCash===undefined||data.finalCash===null){
+        this.chooseBuyModel.finalprincipal='0.00' // 尾付本金
+         this.chooseBuyModel.finalCash='0.00' // 尾付总额
           setTimeout(()=>{
-         this.finalCashData=['0']
-         this.chooseBuyModel.final='0'
+        //  this.finalCashData=['0']
+          this.finalCashData.push({
+              key:0+'%',
+              value:0
+          })
+         this.chooseBuyModel.final=this.finalCashData[0].value
           },100)
         this.finaldisabled=true
         this.finalorddisabled=true

@@ -81,4 +81,13 @@ export class PersonalService {
             page: page
         })
     }
+    /**
+     * 上传客户审批资料
+     */
+    uploadPersonalApproveFile(data){
+         return this.netService.send({
+            server: manageService.personalController.uploadPersonalApproveFile,
+            data: data
+        })
+    }
 }

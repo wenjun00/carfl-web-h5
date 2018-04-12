@@ -260,14 +260,21 @@
      * 根据车系列树获取车列表
      */
     cartreeChange(data) {
+        console.log(data,'data')
       if (data[0].seriesId) {
         this.seriesId= data[0].seriesId;
+      }else{
+          this.seriesId=''
       }
       if (data[0].brandId) {
         this.brandId = data[0].brandId;
+      }else{
+        this.brandId=''  
       }
       if (data[0].carId) {
         this.carId = data[0].carId;
+      }else{
+        this.carId=''  
       }
       this.carService.findAllCarBySeries({
         seriesId: this.seriesId,

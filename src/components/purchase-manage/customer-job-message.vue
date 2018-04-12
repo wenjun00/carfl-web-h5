@@ -122,7 +122,7 @@
       <i-form ref="revenue-form" :rules="rules" :model="job" :label-width="110" label-position="left">
         <i-col span="12">
           <i-form-item label="基本月薪(元)" prop="basicSalary">
-            <i-input :maxlength="14" type="text" v-model="job.basicSalary" placeholder="请输入基本月薪">
+            <i-input :maxlength="14" type="text" v-model="job.basicSalary" placeholder="请输入基本月薪" @on-blur="basicSalaryBlur">
             </i-input>
           </i-form-item>
         </i-col>
@@ -144,13 +144,13 @@
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="年收入(万元)" prop="yearlySalaries">
-            <i-input :maxlength="14" type="text" v-model="job.yearlySalaries" placeholder="请输入年收入">
+            <i-input :maxlength="14" type="text" v-model="job.yearlySalaries" placeholder="请输入年收入" @on-blur="yearlySalariesBlur">
             </i-input>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="每月其他收入(元)" prop="monthOtherIncome">
-            <i-input :maxlength="14" type="text" v-model="job.monthOtherIncome" placeholder="请输入每月其他收入">
+            <i-input :maxlength="14" type="text" v-model="job.monthOtherIncome" placeholder="请输入每月其他收入" @on-blur="monthOtherIncomeBlur">
             </i-input>
           </i-form-item>
         </i-col>
@@ -326,6 +326,24 @@
     }
     jobchange() {
       this.job={}
+    }
+    /**
+     * 基本月薪(保留两位小数)
+     */
+    basicSalaryBlur(){
+        this.job.basicSalary=Number(this.job.basicSalary).toFixed(2).toString()
+    }
+    /**
+     * 年收入(保留两位小数)
+     */
+    yearlySalariesBlur(){
+        this.job.yearlySalaries=Number(this.job.yearlySalaries).toFixed(2).toString()
+    }
+    /**
+     * 每月其他收入(保留两位小数)
+     */
+    monthOtherIncomeBlur(){
+        this.job.monthOtherIncome=Number(this.job.monthOtherIncome).toFixed(2).toString()
     }
     /**
      * 获取月份天数
