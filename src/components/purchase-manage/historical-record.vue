@@ -82,7 +82,18 @@
         }) => {
           return h("span", {}, this.$dict.getDictName(row.orderType));
         }
-      }, {
+      },{
+        title: '订单环节',
+        key: 'orderLink',
+        align: 'center',
+         render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h("span", {}, this.$dict.getDictName(row.orderLink));
+        }
+      },{
         title: '订单状态',
         key: 'orderStatus',
         align: 'center',
@@ -93,10 +104,6 @@
         }) => {
           return h("span", {}, this.$dict.getDictName(row.orderStatus));
         }
-      },{
-        title: '订单环节',
-        key: 'orderLink',
-        align: 'center'
       },{
         title: '订单创建时间',
         key: 'createTime',
