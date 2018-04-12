@@ -31,8 +31,8 @@
           <i-button class="blueButton" style="margin-left:20px;" @click="getUserListByCondition">搜索</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="refreshRoleList">重置</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="addNewUser">新增用户</i-button>
-          <i-button class="blueButton" style="margin-left:20px;" @click="batchAllotRole">批量分配角色</i-button>
-          <i-button class="blueButton" style="margin-left:20px;" @click="buttonOnlyOne">批量管理设备</i-button>
+          <i-button class="blueButton" style="margin-left:20px;" @click="buttonOnlyOne1">批量分配角色</i-button>
+          <i-button class="blueButton" style="margin-left:20px;" @click="buttonOnlyOne2">批量管理设备</i-button>
         </i-row>
         <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition"
                   :page="pageService"></data-box>
@@ -627,7 +627,11 @@
       let multiple: any = this.$refs["databox"];
       this.multipleUserId = multiple.getCurrentSelection();
       if (!this.multipleUserId || !this.multipleUserId.length) {
-        this.$Message.error("请选择用户");
+          this.warnStatus=true;
+          setTimeout(() => {
+            this.warnStatus = false;
+          }, 2000);
+          return this.$Message.error("请选择用户");
       } else {
         this.allotRoleModal = true;
         let _allotRole = <Modal>this.$refs["allot-role-modal"];
@@ -647,8 +651,12 @@
       this.addNewOrgModal = false;
       this.getTree();
     }
-
-    buttonOnlyOne() {
+    buttonOnlyOne1() {
+      if (!this.warnStatus) {
+        this.batchManageDevice()
+      }
+    }
+    buttonOnlyOne2() {
       if (!this.warnStatus) {
         this.batchManageDevice()
       }
@@ -665,7 +673,7 @@
         setTimeout(() => {
           this.warnStatus = false;
         }, 2000);
-        return this.$Message.error("请选择用户！");
+        return this.$Message.error("请选择用户");
       } else {
         this.batchManageDeviceModal = true;
         this.userIds = this.multipleUserId.map(v => v.id);

@@ -1,7 +1,7 @@
 <template>
   <div class="component order-progress">
     <i-row style="margin-top:20px">
-      <Steps :current="progressData.length" size="small" status="process" style="width:100%">
+      <Steps :current="currentLength" size="small" status="process" style="width:100%">
         <Step v-for="item in stepList" :key="item.id" :title="item.processName" :content="$dict.getDictName(item.approvalStatus)"></Step>
       </Steps>
       <i-table :columns="progressColumns" :data="progressData" :page="pageService" @page-change="updateData(page)" :height="400"
@@ -44,6 +44,7 @@
 
     private progressColumns: Array < Object > = [];
     private progressData: Array < Object > = [];
+    private currentLength:any=0;
     private stepList: Array < any > = [];
     private page: any;
     private orderId: any;
@@ -117,6 +118,18 @@
         .subscribe(
           data => {
             this.progressData = data;
+            if(data[data.length-1].orderLink===332){
+            this.currentLength=0
+            }
+            if(data[data.length-1].orderLink===333){
+                this.currentLength=1
+            }
+            if(data[data.length-1].orderLink===334){
+                this.currentLength=2
+            }
+            if(data[data.length-1].orderLink===337){
+                this.currentLength=3
+            }
           },
           ({
             msg

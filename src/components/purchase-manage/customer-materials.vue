@@ -272,8 +272,12 @@
               <!--<i-checkbox-group v-model="customerMaterialsForm.cityAddressValue" @on-change="cityAddressChange">-->
               <!--<i-checkbox :label="29" :value="29">身份证地址</i-checkbox>
               <i-checkbox :label="30" :value="30">现居住地址</i-checkbox>-->
-              <i-checkbox label="身份证地址" v-model="idcardOwn" :value="29" :checked.sync="checked" @on-change="cityidcardChange">身份证地址</i-checkbox>
-              <i-checkbox label="现居住地址" v-model="liveads" :value="30" @on-change="liveChange">现居住地址</i-checkbox>
+              <!--<i-checkbox label="身份证地址" v-model="idcardOwn" :value="29" :checked.sync="checked" @on-change="cityidcardChange">身份证地址</i-checkbox>
+              <i-checkbox label="现居住地址" v-model="liveads" :value="30" @on-change="liveChange">现居住地址</i-checkbox>-->
+                <i-radio-group v-model="idcardOwn" @on-change="cityidcardChange">
+                    <i-radio :label="29" :value="29">身份证地址</i-radio>
+                    <i-radio :label="30" :value="30">现居住地址</i-radio>
+               </i-radio-group>
               <!--</i-checkbox-group>-->
             </i-row>
             <i-row>
@@ -336,7 +340,7 @@
     private liveValue: Boolean = false;
     private ValidityPeriodValue: Boolean = false;
     private idCardads:Boolean = false;
-    private idcardOwn:Boolean = false;
+    private idcardOwn:any='';
     private liveads:Boolean = false;
     private idCardvalidity:Boolean = false;
     private customerMaterialsForm: any = {
@@ -460,10 +464,10 @@
           this.idCardads=true
       }
       if(data.personal.cityOwnhouseAddress===data.personal.idCardAddress){
-          this.idcardOwn=true
+          this.idcardOwn=29
       }
       if(data.personal.cityOwnhouseAddress===data.personal.localHomeAddr){
-          this.liveads=true
+          this.idcardOwn = 30
       }
       if(!this.customerMaterialsForm.idCardValidityPeriodSection){
         this.idCardvalidity=true
@@ -509,31 +513,39 @@
       this.customerMaterialsForm.cityOwnhouseAddressDetail = ''
     }
     cityidcardChange(value) {
-      this.cityValue = value
-      this.liveValue = false
-      if (value) {
+        this.idcardOwn=value
+        console.log(value,'value')
+    //   this.cityValue = value
+    //   this.liveValue = false
+      if (value===29) {
         this.customerMaterialsForm.province2 = this.customerMaterialsForm.province
         this.customerMaterialsForm.city2 = this.customerMaterialsForm.city
         this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.idCardAddress
         this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.idCardAddressDetail
         this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
-      } else {
-        this.reset()
-      }
-    }
-    liveChange(value) {
-      this.liveValue = value
-      this.cityValue = false
-      if (value) {
+      } else if(value===30){
         this.customerMaterialsForm.province2 = this.customerMaterialsForm.province1
         this.customerMaterialsForm.city2 = this.customerMaterialsForm.city1
         this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.localHomeAddr
         this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.localHomeAddrDetail
         this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
-      } else {
+      }else{
         this.reset()
       }
     }
+    // liveChange(value) {
+    //   this.liveValue = value
+    //   this.cityValue = false
+    //   if (value) {
+    //     this.customerMaterialsForm.province2 = this.customerMaterialsForm.province1
+    //     this.customerMaterialsForm.city2 = this.customerMaterialsForm.city1
+    //     this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.localHomeAddr
+    //     this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.localHomeAddrDetail
+    //     this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
+    //   } else {
+    //     this.reset()
+    //   }
+    // }
     ValidityPeriodChange(value) {
       if (value) {
 

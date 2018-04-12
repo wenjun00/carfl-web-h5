@@ -386,7 +386,7 @@
     /**
      * 客户信息反显
      */
-    distributionData(data) {
+    distributionData(data,orderStatus) {
       console.log(data, 80800);
       this.applyData.name = data.personal.name;
       this.applyData.customerPhone = data.personal.mobileMain;

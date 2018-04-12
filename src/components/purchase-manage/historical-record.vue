@@ -53,7 +53,7 @@
     private currentRow: any = {};
 
     @Emit('distributionData')
-    distributionData(multipleSelection) {}
+    distributionData(multipleSelection,dd) {}
     @Emit('closeProduct')
     closeProduct(){}
     @Emit('close')
@@ -82,7 +82,18 @@
         }) => {
           return h("span", {}, this.$dict.getDictName(row.orderType));
         }
-      }, {
+      },{
+        title: '订单环节',
+        key: 'orderLink',
+        align: 'center',
+         render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h("span", {}, this.$dict.getDictName(row.orderLink));
+        }
+      },{
         title: '订单状态',
         key: 'orderStatus',
         align: 'center',
@@ -93,10 +104,6 @@
         }) => {
           return h("span", {}, this.$dict.getDictName(row.orderStatus));
         }
-      },{
-        title: '订单环节',
-        key: 'orderLink',
-        align: 'center'
       },{
         title: '订单创建时间',
         key: 'createTime',
@@ -124,7 +131,7 @@
         orderNumber: this.currentRow.orderNumber
       }).subscribe(data => {
         this.closeProduct()
-        this.distributionData(data)
+        this.distributionData(data,this.currentRow.orderStatus)
       })
       this.close()
     }
