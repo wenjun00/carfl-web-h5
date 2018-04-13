@@ -27,7 +27,7 @@
             <i-option label="启用" :value="0" :key="0"></i-option>
             <i-option label="停用" :value="1" :key="1"></i-option>
           </i-select>
-          <i-button class="blueButton" style="margin-left:20px;" @click="getUserListByCondition">搜索</i-button>
+          <i-button class="blueButton" style="margin-left:20px;" @click="searchUserListByCondition">搜索</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="refreshRoleList">重置</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="addNewUser">新增用户</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="buttonOnlyOne1">批量分配角色</i-button>
@@ -206,14 +206,12 @@
         data => {
           this.deptObject = data[0];
           this.dataList = data;
-          this.userList = this.userList;
         },
         ({msg}) => {
           this.$Message.error(msg);
         }
       );
       this.getUserListByCondition();
-
       this.getTree();
     }
 
@@ -642,6 +640,8 @@
       }
     }
 
+
+
     closeEditOrg() {
       this.editNewOrgModal = false;
       this.getTree();
@@ -688,6 +688,20 @@
         .getUsersByDeptPage(this.userListModel, this.pageService)
         .subscribe(
           data => {
+            this.userList = data.filter(x=>{
+              return x.userStatus==0;
+            })
+          },
+          ({msg}) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+    searchUserListByCondition(){
+      this.manageService
+        .getUsersByDeptPage(this.userListModel, this.pageService)
+        .subscribe(
+          data => {
             this.userList = data
           },
           ({msg}) => {
@@ -695,6 +709,7 @@
           }
         );
     }
+
 
     /**
      * 树change
