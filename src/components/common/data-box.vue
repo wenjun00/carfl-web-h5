@@ -111,7 +111,7 @@ export default class DataBox extends Vue {
   };
 
   public table; // table对象
-  private multipleSelection; // 多选数据
+  private multipleSelection:Array<any> = []; // 多选数据
   private filterColumns: Array<any> | null = null;
   private tableColumns: Array<any> | null = [];
   private pageSizeOpts: Array<any> = [10, 30, 50];
@@ -265,6 +265,8 @@ export default class DataBox extends Vue {
   }
 
   getCurrentSelection() {
+    console.log(this)
+    console.log(this.multipleSelection, 'selection1')
     return this.multipleSelection;
   }
 
