@@ -21,12 +21,12 @@
           </i-col>
          <i-col span="22" style="overflow:hidden" v-show="addOpen===true">
             <div>
-              <data-box :height="540" ref="databox" :columns="carColumns" :data="carDataModel" :noDefaultRow="true"></data-box>
+              <data-box :height="540" ref="databox-add" :columns="carColumns" :data="carDataModel" :noDefaultRow="true"></data-box>
             </div>
           </i-col>
             <i-col span="22" style="overflow:hidden" v-show="addOpen===false">
             <div>
-              <data-box :height="540" ref="databox" :columns="carColumns1" :data="carDataModel" :noDefaultRow="true"></data-box>
+              <data-box :height="540" ref="databox-edit" :columns="carColumns1" :data="carDataModel" :noDefaultRow="true"></data-box>
             </div>
           </i-col>
         </i-row>
@@ -94,6 +94,7 @@
     updateRowData(row) {}
     @Prop() addcarData: any;
     @Prop() addOpen:any;
+    @Prop() editOpen:any;
 
     @Prop() row: Object;
     created() {
@@ -240,14 +241,19 @@
      * 选择并返回
      */
     chooseback() {
-      this.multipleSelection = this.$refs['databox'];
-      this.multipleSelection = this.multipleSelection.data;
+      if(this.addOpen===true){
+      let databox:any = this.$refs['databox-add'];
+      this.multipleSelection = databox.getCurrentSelection();
+        }else{
+            let radioRowData=this.carDataModel.find(v=>v.radio===true)
+            this.multipleSelection=radioRowData
+        }
       if (this.multipleSelection === undefined) {
         this.$Message.warning('请选择车辆！')
         return
       } else {
         if (this.rowData) {
-          Object.assign(this.rowData, this.multipleSelection[0]);
+          Object.assign(this.rowData, this.multipleSelection);
         } else {
           this.distributionData(this.addcarData.concat(this.multipleSelection));
           this.multipleSelection = [];
@@ -260,7 +266,6 @@
      * 根据车系列树获取车列表
      */
     cartreeChange(data) {
-        console.log(data,'data')
       if (data[0].seriesId) {
         this.seriesId= data[0].seriesId;
       }else{

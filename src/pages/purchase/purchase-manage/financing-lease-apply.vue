@@ -36,7 +36,7 @@
             </i-col>
             <i-col span="12">
               <i-form-item label="归属业务员" prop="salesmanName">
-                <i-input type="text" :maxlength="13" v-model="customerModel.salesmanName"></i-input>
+                <i-input type="text" :maxlength="13" readonly v-model="customerModel.salesmanName" @on-focus="salesmanNamefocus"></i-input>
                 <!--<i-select v-model="customerModel.salesmanName">-->
                   <!--<i-option v-for="{value,label} in customerModel.salesmanName" :key="value" :label="label" :value="value"></i-option>-->
                 <!--</i-select>-->
@@ -95,6 +95,12 @@
     </template>
 
     <template>
+      <i-modal title="归属业务员" width="800" v-model="salesmanModal" :trandfer="false" class="historical">
+        <salesman-name @choosecurrentData="choosecurrentData" @close="salesmanModal=false"></salesman-name>
+      </i-modal>
+    </template>
+
+    <template>
       <i-modal title="业务流程图" width="1000" height="628" v-model="BusinessFlowDiagramModel" :trandfer="false">
         <div class="yewuliucheng-bg">
         </div>
@@ -117,6 +123,8 @@
   import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue";
   import SvgIcon from "~/components/common/svg-icon.vue";
   import HistoricalRecord from "~/components/purchase-manage/historical-record.vue";
+  import SalesmanName from "~/components/purchase-manage/salesman-name.tsx.vue";
+  
   import {
     PersonalService
   } from "~/services/manage-service/personal.service";
@@ -145,7 +153,8 @@ import { State, Mutation, namespace } from "vuex-class";
       UploadTheMaterial,
       CustomerContacts,
       SvgIcon,
-      HistoricalRecord
+      HistoricalRecord,
+      SalesmanName
     }
   })
   export default class FinancingLeaseApply extends Page {
@@ -196,6 +205,7 @@ import { State, Mutation, namespace } from "vuex-class";
     private addcarData: any = [];
     private type: Boolean = false;
     private orderStatus: any = '';
+    private salesmanModal:Boolean = false;
     // private productId: any;
   mounted () {
       if(this.$store.state.pageList.find(v=>v.resoname==='融资租赁申请').flag){
@@ -206,6 +216,16 @@ import { State, Mutation, namespace } from "vuex-class";
   }
     print() {
       window.print();
+    }
+    choosecurrentData(data){
+        this.customerModel.salesmanName=data.userRealname
+        this.customerModel.salesmanId=data.id
+    }
+    /**
+     * 归属业务员
+     */
+    salesmanNamefocus(){
+        this.salesmanModal=true
     }
     /**
      * 业务流程图
@@ -414,6 +434,7 @@ import { State, Mutation, namespace } from "vuex-class";
         name: this.customerModel.name,
         mobileMain: this.customerModel.customerPhone,
         salesmanName: this.customerModel.salesmanName,
+        salesmanId:this.customerModel.salesmanId,
         // 选购资料
         orderCars: choosebuymaterials.addcarData,
         province: choosebuymaterials.chooseBuyModel.province,
@@ -584,6 +605,7 @@ import { State, Mutation, namespace } from "vuex-class";
                         name: this.customerModel.name,
                         mobileMain: this.customerModel.customerPhone,
                         salesmanName: this.customerModel.salesmanName,
+                        salesmanId:this.customerModel.salesmanId,
                         // 选购资料
                         orderCars: choosebuymaterials.addcarData,
                         province: choosebuymaterials.chooseBuyModel.province,
