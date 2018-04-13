@@ -27,8 +27,7 @@
             <i-option label="启用" :value="0" :key="0"></i-option>
             <i-option label="停用" :value="1" :key="1"></i-option>
           </i-select>
-
-          <i-button class="blueButton" style="margin-left:20px;" @click="getUserListByCondition">搜索</i-button>
+          <i-button class="blueButton" style="margin-left:20px;" @click="searchUserListByCondition">搜索</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="refreshRoleList">重置</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="addNewUser">新增用户</i-button>
           <i-button class="blueButton" style="margin-left:20px;" @click="buttonOnlyOne1">批量分配角色</i-button>
@@ -202,13 +201,11 @@
       companyId: ""
     };
     private companyId: any = 0;
-
     mounted() {
       this.manageService.getAllDepartment().subscribe(
         data => {
           this.deptObject = data[0];
           this.dataList = data;
-          console.log(data,'dataList')
         },
         ({msg}) => {
           this.$Message.error(msg);
@@ -461,7 +458,8 @@
           align: "center",
           editable: true,
           title: "备注",
-          key: "userRemark"
+          key: "userRemark",
+          ellipsis:true
         },
 
         {
@@ -566,14 +564,7 @@
       this.getUserListByCondition();
     }
 
-    allotRole(row) {
-      this.allotRoleModal = true;
-      this.batchAllotFlag = false;
-      let _allotRole = <Modal>this.$refs["allot-role-modal"];
-      _allotRole.makeData(row);
-      _allotRole.getRoleList();
-      this.userId = row.id;
-    }
+
 
     /**
      * 添加机构
@@ -620,6 +611,14 @@
       _addUser.makeData(this.deptObject);
     }
 
+    allotRole(row) {
+      this.allotRoleModal = true;
+      this.batchAllotFlag = false;
+      let _allotRole = <Modal>this.$refs["allot-role-modal"];
+      _allotRole.makeData(row);
+      _allotRole.getRoleList();
+      this.userId = row.id;
+    }
     /**
      * 批量分配角色
      */
@@ -636,11 +635,12 @@
         this.allotRoleModal = true;
         let _allotRole = <Modal>this.$refs["allot-role-modal"];
         _allotRole.getRoleList();
-        this.allotRoleModal = true;
         this.batchAllotFlag = true;
         this.userIds = this.multipleUserId.map(v => v.id);
       }
     }
+
+
 
     closeEditOrg() {
       this.editNewOrgModal = false;
@@ -653,7 +653,7 @@
     }
     buttonOnlyOne1() {
       if (!this.warnStatus) {
-        this.batchManageDevice()
+        this.batchAllotRole()
       }
     }
     buttonOnlyOne2() {
@@ -689,14 +689,27 @@
         .subscribe(
           data => {
             this.userList = data.filter(x=>{
-              return x.userStatus === 0
-            });
+              return x.userStatus==0;
+            })
           },
           ({msg}) => {
             this.$Message.error(msg);
           }
         );
     }
+    searchUserListByCondition(){
+      this.manageService
+        .getUsersByDeptPage(this.userListModel, this.pageService)
+        .subscribe(
+          data => {
+            this.userList = data
+          },
+          ({msg}) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+
 
     /**
      * 树change

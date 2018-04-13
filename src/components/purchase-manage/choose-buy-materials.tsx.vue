@@ -505,7 +505,7 @@
     /**
      * 数据反显
      */
-    Reverse(data,orderStatus) {
+    Reverse(data) {
       data.orderServiceList = data.orderServices.map(v => v.service)
       if (data.orderServiceList.find(v => v === 368)) {
           this.disabled1 = true
@@ -514,19 +514,9 @@
           this.disabled = true
         }
       data.intentionPeriods = Number(data.intentionPeriods)
-      data.intentionPaymentRatio=data.intentionPaymentRatio?data.intentionPaymentRatio.toString():''
-      data.intentionFinancingAmount=data.intentionFinancingAmount?data.intentionFinancingAmount.toString():''
+      data.intentionPaymentRatio=data.intentionPaymentRatio.toString()
+      data.intentionFinancingAmount=data.intentionFinancingAmount.toString()
       this.chooseBuyModel = data
-      if(orderStatus===303){
-          console.log(data,'666')
-          this.addcarData=data.orderCars
-          if(data.payWay){
-              this.addPrdShow=false
-              this.prdInfoShow=true
-              this.changePrdShow=true
-              this.totalPrice=data.vehicleAmount
-          }
-      }
     }
     /**
      * 融资总额

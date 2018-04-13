@@ -50,8 +50,8 @@
           <span style="margin-left:10px;font-size:16px;color:#333333;position:relative;bottom:3px;">待办事项</span>
           <div v-for="item in waitToHandle" :key="item.index" style="min-width:270px;width:96%;height:42px;margin-top:10px;background:#F5F5F5;text-align:center;line-height:12px;">
             <div style="padding-top:6px;">
-              <div style="font-size:12px;color:#666666;margin-right:118px;display:inline-block">{{item.name}}</div>
-              <i-button type="text" style="color:#265EA2;font-size:14px;text-align:right" @click="pageToOrderQuery">{{item.number}}</i-button>
+              <div style="font-size:12px;color:#666666;margin-right:118px;display:inline-block">{{$dict.getDictName(item.itemCode)}}</div>
+              <i-button type="text" style="color:#265EA2;font-size:14px;text-align:right" @click="pageToOrderQuery">{{item.itemValue}}</i-button>
             </div>
           </div>
         </div>
@@ -69,6 +69,10 @@ import Map from "~/components/common/map.vue";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { Layout } from "~/core/decorator";
 import { Mutation } from "vuex-class";
+import { Dependencies } from "~/core/decorator";
+  import {
+    BackLogService
+  } from "~/services/manage-service/back-log.service";
 
 @Layout("workspace")
 @Component({
@@ -80,22 +84,34 @@ import { Mutation } from "vuex-class";
   }
 })
 export default class Home extends Vue {
-  private waitToHandle: Array<any> = [];
+  @Dependencies(BackLogService) private backLogService: BackLogService;
+  private waitToHandle: any = [];
   @Mutation openPage;
 
   created() {
-    this.waitToHandle = [
-      {
-        index: 1,
-        name: "待提交销售申请",
-        number: 6
-      },
-      {
-        index: 2,
-        name: "退回的销售申请",
-        number: 8
-      }
-    ];
+       this.backLogService.queryUserBacklog().subscribe(
+                          val => {
+                            this.waitToHandle = val;
+                            console.log(val,99900000)
+                          },
+                          ({
+                            msg
+                          }) => {
+                            this.$Message.error(msg);
+                          }
+                        );
+    // this.waitToHandle = [
+    //   {
+    //     index: 1,
+    //     name: "待提交销售申请",
+    //     number: 6
+    //   },
+    //   {
+    //     index: 2,
+    //     name: "退回的销售申请",
+    //     number: 8
+    //   }
+    // ];
   }
   pageToOrderQuery() {
     this.openPage({

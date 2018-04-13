@@ -29,5 +29,14 @@ export default {
     controller: CONTROLLER,
     action: 'findBacklogByRoleId',
     type: requestType.Post
+  },
+  /**
+   * 查询当前用户的待办事项
+   */
+  queryUserBacklog:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'queryUserBacklog',
+    type: requestType.Get
   }
 }

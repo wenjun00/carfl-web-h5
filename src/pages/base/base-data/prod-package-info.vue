@@ -184,6 +184,7 @@
           key: 'remark',
           align: 'center',
           editable: true,
+          ellipsis:true
         },
       ];
       this.productModel = {

@@ -36,5 +36,13 @@ export class BackLogService {
       }
     })
   }
+  /**
+   * 查询当前用户的待办事项
+   */
+  queryUserBacklog(){
+     return this.netService.send({
+      server: manageService.backLogController.queryUserBacklog
+    })  
+  }
 
 }

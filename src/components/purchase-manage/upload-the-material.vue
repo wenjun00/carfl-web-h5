@@ -160,7 +160,7 @@
       this.personalMaterialService.getAllPersonalMaterialNoPage({
         productId: this.productId
       }).subscribe(data => {
-        this.cityList = data
+        this.cityList = data.filter(x=>x.isSelect==0)
       })
       this.openUpload = true
     }
