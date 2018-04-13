@@ -19,6 +19,10 @@
     <template>
       <i-modal v-model="addAttachmentModal" title="补传凭证" width="900">
         <add-attachment></add-attachment>
+        <div slot="footer">
+          <i-button @click="cancelOne">取消</i-button>
+          <i-button @click="confirmOne" class="blueButton">确定</i-button>
+        </div>
       </i-modal>
     </template>
   </section>
@@ -309,7 +313,12 @@
         }
       ]
     }
+    cancelOne(){
+      this.addAttachmentModal = false
+    }
+    confirmOne(){
 
+    }
   }
 
 </script>

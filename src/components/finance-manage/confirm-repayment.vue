@@ -164,8 +164,7 @@
           </div>
         </i-col>
         <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id" style="display:flex;justify-content:center;margin-top:10px">
-          <div :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
-          </div>
+          <img  :src="v.materialUrl" style="height:200px;width:200px;">
         </i-col>
       </i-row>
     </div>

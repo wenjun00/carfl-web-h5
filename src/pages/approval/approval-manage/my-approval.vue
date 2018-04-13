@@ -93,7 +93,7 @@
     <template>
       <i-modal :title="rejectOrBlackFlag?'拒绝':'黑名单'" v-model="blackListModal">
         <i-form >
-          <i-form-item >
+          <i-form-item>
             <i-select placeholder="请选择结果" style="width:20%" @on-change="changeSelectOne">
               <i-option label="拒绝" :value="375" :key="375"></i-option>
             </i-select>
