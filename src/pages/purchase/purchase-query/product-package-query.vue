@@ -24,7 +24,7 @@
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin-top:20px;">
-      <i-input style="display:inline-block;width:10%;" v-model="seachParams.fileName" placeholder="请输入客户姓名"></i-input>
+      <i-input style="display:inline-block;width:10%;" v-model="seachParams.fileName" placeholder="文件名查询"></i-input>
       <i-date-picker style="display:inline-block;width:10%;" v-model="seachParams.minDate" placeholder="起始日期"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%;" v-model="seachParams.maxDate" placeholder="终止日期"></i-date-picker>
       <i-button class="blueButton" @click="productSeach">搜索</i-button>

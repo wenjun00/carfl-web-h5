@@ -174,7 +174,7 @@
                 <i-option v-for="item in depositCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-             <i-form-item prop="depositCash" style="display:inline-block;">  
+             <i-form-item prop="depositCash" style="display:inline-block;">
               <i-input style="width:180px" v-model="chooseBuyModel.depositCash" readonly>
               </i-input>
         </i-form-item>
@@ -382,7 +382,7 @@
       finalprincipal:[{ required: true, message: '请输入尾付本金', trigger: 'blur' },
                       { pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
       financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
-      moneyPay:[{ required: true, message: '请输入月供金额', trigger: 'blur' }],
+      moneyPay:[{ required: true, message: ' ', trigger: 'blur' }],
       initialPayment:[{ required: true, message: '请输入首付金额', trigger: 'blur' }],
       depositCash:[{ required: true, message: '请输入保证金金额', trigger: 'blur' }],
       finalCash:[{ required: true, message: '请输入尾付总额', trigger: 'blur' }],
@@ -857,7 +857,7 @@
             }
         }
     }
-    
+
     if(data.finalCash){
      let rr:any = data.finalCash ? (data.finalCash.split(';')) : ''
           rr.forEach((v)=>{
@@ -876,9 +876,9 @@
 
             }
         }
-      
+
     }
-    
+
      if(data.initialPayment) {
      let initial:any = data.initialPayment ? (data.initialPayment.split(';')) : ''
               initial.forEach((v)=>{
@@ -898,7 +898,7 @@
             }
         }
      }
-      if(data.manageCost){ 
+      if(data.manageCost){
       let manage:any = data.manageCost ? (data.manageCost.split(';')) : ''
          manage.forEach((v)=>{
           this.manageCostData.push({
@@ -917,7 +917,7 @@
             }
         }
     }
-    
+
     //   this.depositCashData = data.depositCash ? (data.depositCash.split(';')) : ''
     //   this.finalCashData = data.finalCash ? (data.finalCash.split(';')) : ''
     //   this.initialPaymentData = data.initialPayment ? (data.initialPayment.split(';')) : ''

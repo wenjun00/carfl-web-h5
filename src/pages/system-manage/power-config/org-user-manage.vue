@@ -206,9 +206,7 @@
         data => {
           this.deptObject = data[0];
           this.dataList = data;
-          this.userList = this.userList.filter(x => {
-            return x.userStatus === 0
-          });
+          this.userList = this.userList;
         },
         ({msg}) => {
           this.$Message.error(msg);
