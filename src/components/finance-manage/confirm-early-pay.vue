@@ -134,7 +134,6 @@
         <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id" style="display:flex;justify-content:center;margin-top:10px">
            <img  :src="v.materialUrl" style="height:200px;width:200px;">
         </i-col>
-
       </i-row>
     </div>
     <template>
@@ -233,7 +232,7 @@
         this.collectMoneyDetails = data.collectMoneyDetails || []
         this.financeUploadResources = data.collectMoneyPhaseResources
         this.applicationPhaseResources = data.applicationPhaseResources
-        this.collectMoneyItemModel = data.collectMoneyItemModel.filter((v)=>v.itemMoney !==0)
+        this.collectMoneyItemModel = data.collectMoneyItemModel
         this.inputBlur()
         // this.remark = data.collectMoneyHistory.remark
       }, ({

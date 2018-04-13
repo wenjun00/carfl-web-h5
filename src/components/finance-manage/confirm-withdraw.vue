@@ -22,7 +22,7 @@
       </data-grid-item>
       <data-grid-item label="期数" :span="2">
         <template>
-          <div>{{repaymentObj.periods}}</div>
+          <div>{{$dict.getDictName(repaymentObj.periods)}}</div>
         </template>
       </data-grid-item>
       <data-grid-item label="月供（元）" :span="2">
@@ -37,13 +37,9 @@
         <td bgcolor="#F2F2F2" colspan="1" width="40%">项目</td>
         <td bgcolor="#F2F2F2" colspan="1" width="60%">金额（元）</td>
       </tr>
-      <tr height="40">
-        <td>违约费</td>
-        <td>{{repaymentObj.violateAmount}}</td>
-      </tr>
-      <tr height="40">
-        <td>手续费</td>
-        <td>{{repaymentObj.advanceRevokeFee}}</td>
+      <tr height="40" v-for="item in collectMoneyItemModel" :key="item.itemCode">
+        <td>{{item.itemLabel}}</td>
+        <td>{{item.itemMoney}}</td>
       </tr>
       <tr height="40">
         <td>合计</td>
@@ -76,7 +72,7 @@
           <div @click="addObj">
             <i-icon type="plus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
-        </td>        
+        </td>
         <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
         <td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
@@ -84,7 +80,7 @@
       </tr>
       <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
         <td>
-          <div @click="deleteObj(i)">          
+          <div @click="deleteObj(i)">
             <i-icon type="minus" style="color:#199ED8;cursor:pointer"></i-icon>
           </div>
         </td>
@@ -93,9 +89,14 @@
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
+        <!--<td>-->
+          <!--<i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="v.collectItem">-->
+            <!--<i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>-->
+          <!--</i-select>-->
+        <!--</td>-->
         <td>
-          <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="v.collectItem">
-            <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>
+          <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="v.collectItem" @on-change="selectWay($event, v)">
+            <i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>
           </i-select>
         </td>
         <td>
@@ -125,23 +126,42 @@
       <!--<i-button class="blueButton" style="float:right">凭证上传</i-button>
       <i-button class="blueButton" style="float:right">全部下载</i-button>-->
 
+      <!--<i-row>-->
+        <!--<i-col :span="8" style="display:flex;justify-content:center;;margin-top:10px">-->
+          <!--<div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;">-->
+            <!--<Icon type="plus-circled" style="display:block;margin-top:53px;" color="#265ea2" size="40"></Icon>-->
+            <!--<div>点击添加附件</div>-->
+            <!--<span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>-->
+          <!--</div>-->
+        <!--</i-col>-->
+        <!--<i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id" style="display:flex;justify-content:center;margin-top:10px">-->
+          <!--<div :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">-->
+          <!--</div>-->
+        <!--</i-col>-->
+      <!--</i-row>-->
       <i-row>
-        <i-col :span="8" style="display:flex;justify-content:center;;margin-top:10px">
-          <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;">
-            <Icon type="plus-circled" style="display:block;margin-top:53px;" color="#265ea2" size="40"></Icon>
-            <div>点击添加附件</div>
-            <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
+        <i-col :span="8" style="display:flex;justify-content:center;margin-top:10px">
+          <div style="height:200px;width:200px;cursor:pointer;text-align:center;background-color: rgb(244,244,244);" @click="openUpload=true">
+            <Icon type="plus-circled" style="display:block;margin-top:40px;" color="#265ea2" size="40"></Icon>
+            <h2 style="margin-top:5px">点击添加附件</h2>
+            <h3 style="color:gray">支持jpg/png格式</h3>
+            <h3 style="color:gray">建议大小不超过10M</h3>
           </div>
         </i-col>
         <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id" style="display:flex;justify-content:center;margin-top:10px">
-          <div :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
-          </div>
+          <img  :src="v.materialUrl" style="height:200px;width:200px;">
         </i-col>
       </i-row>
     </div>
     <template>
       <i-modal title="划扣记录" v-model="deductRecordModal" width="1200">
         <deduct-record ref="deduct-record"></deduct-record>
+      </i-modal>
+    </template>
+    <!-- 弹出框 -->
+    <template>
+      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload" :transfer="false">
+        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
       </i-modal>
     </template>
   </section>
@@ -162,13 +182,15 @@
   import {
     AdvanceRevokeService
   } from "~/services/manage-service/advance-revoke.service";
+  import FileUpload from "~/components/common/file-upload.tsx.vue";
 
   @Component({
     components: {
       DataBox,
       DataGrid,
       DataGridItem,
-      DeductRecord
+      DeductRecord,
+      FileUpload
     }
   })
   export default class ConfirmWithdraw extends Vue {
@@ -185,18 +207,20 @@
     private addFinanceUploadResource: any = []
     private applicationPhaseResources: any = []
     private collectMoneyId: any = ''
+    private collectMoneyItemModel:any = []
+    private openUpload: Boolean = false;
 
     refresh(row) {
       this.rowObj = row
       this.advanceRevokeService.getAdvanceRevokeBillInfo({
         orderId: row.orderId
       }).subscribe(data => {
-        console.log(data)
         this.collectMoneyId = data.collectMoneyHistory?data.collectMoneyHistory.id:''
         this.repaymentObj = data
         this.collectMoneyDetails = data.collectMoneyDetails || []
         this.financeUploadResources = data.collectMoneyPhaseResources
         this.applicationPhaseResources = data.applicationPhaseResources
+        this.collectMoneyItemModel = data.collectMoneyItemModel
         this.inputBlur()
         this.remark = data.collectMoneyHistory?data.collectMoneyHistory.remark:''
       }, ({
@@ -237,9 +261,39 @@
         sum = sum + (Number(v.collectMoneyAmount) || 0)
       })
       console.log(sum)
-      this.paymentAmount = sum 
+      this.paymentAmount = sum
     }
-    created() {
+    selectWay(code,item){
+      let target:any = this.collectMoneyItemModel.find((d)=>d.itemCode === code)
+      if(target){
+        item.collectMoneyAmount = target.itemMoney
+        this.inputBlur()
+      }
+    }
+    /**
+     * 上传文件成功回调
+     */
+    uploadSuccess() {
+      this.openUpload = false;
+      this.$nextTick(() => {
+        let fileUpload: any = this.$refs["file-upload"];
+        this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
+          return {
+            id: v.response.id,
+            materialUrl: v.response.url,
+            orderId: this.rowObj.orderId,
+            businessId: this.rowObj.businessId
+          }
+        }))
+        fileUpload.reset();
+      });
+    }
+    /**
+     * 上传文件
+     */
+    postFile() {
+      let fileUpload = this.$refs["file-upload"] as FileUpload;
+      fileUpload.upload();
     }
 
   }

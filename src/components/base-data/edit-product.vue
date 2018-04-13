@@ -418,15 +418,15 @@
         ],
         contractBreakRate: [
           { required: true, message: '请输入合同违约金费率', trigger: 'blur' },
-          { pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }
+          { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }
         ],
         prepaymentRate: [
           { required: true, message: '请输入提前还款费率', trigger: 'blur' },
-          { pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }
+          { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }
         ],
         penaltyRate: [
           { required: true, message: '请输入罚期费率', trigger: 'blur' },
-          { pattern: /^(\d{1,2}(\.\d{1,2})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }
+          { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或两位小数', trigger: 'blur' }
         ]
       };
     }
