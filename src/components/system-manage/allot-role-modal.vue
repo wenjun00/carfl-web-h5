@@ -76,7 +76,9 @@ export default class AllotRoleModal extends Vue {
       .queryRolePage(this.roleListModel, this.pageService)
       .subscribe(
         data => {
-          this.roleList = data;
+          this.roleList = data.filter(x=>{
+            return x.roleStatus==0
+          });
           this.checkRoleId = data.filter(v => v._checked).map(x => x.id);
         },
         ({ msg }) => {

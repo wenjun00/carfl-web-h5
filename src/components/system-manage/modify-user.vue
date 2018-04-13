@@ -5,7 +5,7 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="用户名" prop="userUsername">
-            <i-input v-model="modifyModel.userUsername"></i-input>
+            <i-input v-model="modifyModel.userUsername" disabled="true"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
