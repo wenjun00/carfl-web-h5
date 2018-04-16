@@ -156,12 +156,12 @@
         </i-col>
         <i-col span="12">
             <i-row>
-          <i-form-item label="首付金额（元）" prop="Payment" style="float:left">
+          <i-form-item label="首付金额（元）" prop="Payment" style="display:inline-block">
               <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment" :disabled="Paymentdisabled">
                 <i-option v-for="item in initialPaymentData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-          <i-form-item prop="initialPayment" style="float:left">
+          <i-form-item prop="initialPayment" style="display:inline-block">
               <i-input style="width:180px" type="text" v-model="chooseBuyModel.initialPayment" readonly>
               </i-input>
           </i-form-item>
@@ -174,7 +174,7 @@
                 <i-option v-for="item in depositCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-             <i-form-item prop="depositCash" style="display:inline-block;">  
+             <i-form-item prop="depositCash" style="display:inline-block">  
               <i-input style="width:180px" v-model="chooseBuyModel.depositCash" readonly>
               </i-input>
         </i-form-item>
@@ -187,7 +187,7 @@
                 <i-option v-for="item in finalCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-               <i-form-item  prop="finalCash" style="display:inline-block;">
+               <i-form-item  prop="finalCash" style="display:inline-block">
               <i-input style="width:180px" v-model="chooseBuyModel.finalCash" readonly>
               </i-input>
                </i-form-item>
@@ -200,7 +200,7 @@
                 <i-option v-for="item in manageCostData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-              <i-form-item prop="manageCost" style="display:inline-block;">
+              <i-form-item prop="manageCost" style="display:inline-block">
               <i-input style="width:180px" v-model="chooseBuyModel.manageCost" readonly>
               </i-input>
               </i-form-item>
@@ -270,7 +270,7 @@
 
     <template>
       <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="80" v-model="editCarModal" :mask-closable="false" :trandfer="false" class="add-car">
-        <add-car ref="add-car" :addOpen="addOpen" @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
+        <add-car @complutedtotalPrice="complutedtotalPrice" ref="add-car" :addOpen="addOpen" @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" :index="index" @close="editCarModal=false,rowData=null"></add-car>
       </i-modal>
     </template>
 
@@ -332,7 +332,7 @@
     private initialPaymentData: any = []; // 首付款
     private manageCostData: any = []; // 管理费
     private totalPrice: any = '';
-    private DataSet: any = '';
+    private DataSet: any = {};
     private disabled: Boolean = false;
     private disabled1: Boolean = false;
     private depositdisabled:Boolean = false;
@@ -341,6 +341,7 @@
     private finalorddisabled:Boolean = false;
     private manageDatadisabled:Boolean = false;
     private addOpen:Boolean = false;
+    private index:any='';
     private chooseBuyModel: any = {
       name: '', // 产品名称
       prdSeriods: '', // 产品系列
@@ -382,7 +383,7 @@
       finalprincipal:[{ required: true, message: '请输入尾付本金', trigger: 'blur' },
                       { pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
       financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
-      moneyPay:[{ required: true, message: '请输入月供金额', trigger: 'blur' }],
+    //   moneyPay:[{ required: true, message: '请输入月供金额', trigger: 'blur' }],
       initialPayment:[{ required: true, message: '请输入首付金额', trigger: 'blur' }],
       depositCash:[{ required: true, message: '请输入保证金金额', trigger: 'blur' }],
       finalCash:[{ required: true, message: '请输入尾付总额', trigger: 'blur' }],
@@ -505,7 +506,7 @@
     /**
      * 数据反显
      */
-    Reverse(data) {
+    Reverse(data,orderStatus) {
       data.orderServiceList = data.orderServices.map(v => v.service)
       if (data.orderServiceList.find(v => v === 368)) {
           this.disabled1 = true
@@ -514,9 +515,91 @@
           this.disabled = true
         }
       data.intentionPeriods = Number(data.intentionPeriods)
-      data.intentionPaymentRatio=data.intentionPaymentRatio.toString()
-      data.intentionFinancingAmount=data.intentionFinancingAmount.toString()
+      data.intentionPaymentRatio=data.intentionPaymentRatio?data.intentionPaymentRatio.toString():''
+      data.intentionFinancingAmount=data.intentionFinancingAmount?data.intentionFinancingAmount.toString():''
       this.chooseBuyModel = data
+      if(orderStatus===303){
+          console.log(data,'666')
+          this.addcarData=data.orderCars
+          if(data.payWay){
+              this.flag=false
+              this.addPrdShow=false
+              this.prdInfoShow=true
+              this.changePrdShow=true
+           
+              this.chooseBuyModel.moneyPay=data.monthlySupply.toFixed(2).toString() // 月供金额
+              this.totalPrice=data.vehicleAmount.toFixed(2).toString()
+              this.chooseBuyModel.vehicleAmount=this.totalPrice
+              this.chooseBuyModel.GpsMoney=data.gpsFee.toFixed(2).toString() // GPS费
+              this.chooseBuyModel.insuranceMoney=data.insuranceExpenses.toFixed(2).toString() // 保险费
+              this.chooseBuyModel.purchaseMoney=data.purchaseTax.toFixed(2).toString() // 购置税
+              this.chooseBuyModel.licenseMoney=data.installLicenseFee.toFixed(2).toString() // 上牌费
+              this.chooseBuyModel.name=data.product.name // 产品名称
+              this.chooseBuyModel.prdInterestRate=data.productRate // 产品利率
+              this.chooseBuyModel.financeTotalMoney=data.financingAmount.toFixed(2).toString() // 融资总额
+              this.chooseBuyModel.finalprincipal=data.finalPayment.toFixed(2).toString() // 尾付本金
+             
+        //       this.chooseBuyModel.moneyPay = (Number(this.chooseBuyModel.financeTotalMoney) * (1 + Number(this.chooseBuyModel.prdInterestRate) * this.$dict.getDictName(this.chooseBuyModel.periods)) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
+        // this.chooseBuyModel.moneyPay.toString()
+   
+                setTimeout(()=>{
+             this.initialPaymentData.push({
+              key:data.paymentScale*100+'%',
+              value:data.paymentScale*100
+          })
+            for (let i = 0; i < this.initialPaymentData.length - 1; i++) {
+            for (let j = 1; j < this.initialPaymentData.length; j++) {
+                if (i != j) {
+                    if (this.initialPaymentData[i].key == this.initialPaymentData[j].key) {
+                        this.initialPaymentData.splice(j, 1)
+                    }
+                }
+
+            }
+        }
+         this.chooseBuyModel.Payment=this.initialPaymentData[0].value // 首付比例
+          },100)
+               setTimeout(()=>{
+           this.manageCostData.push({
+              key:data.manageCostPercent*100+'%',
+              value:data.manageCostPercent*100
+          })
+             for (let i = 0; i < this.manageCostData.length - 1; i++) {
+            for (let j = 1; j < this.manageCostData.length; j++) {
+                if (i != j) {
+                    if (this.manageCostData[i].key == this.manageCostData[j].key) {
+                        this.manageCostData.splice(j, 1)
+                    }
+                }
+
+            }
+        }
+         this.chooseBuyModel.manageData=this.manageCostData[0].value // 管理费比例
+          },100)
+              setTimeout(()=>{
+         this.depositCashData.push({
+              key:data.depositPercent*100+'%',
+              value:data.depositPercent*100
+          })
+             for (let i = 0; i < this.depositCashData.length - 1; i++) {
+            for (let j = 1; j < this.depositCashData.length; j++) {
+                if (i != j) {
+                    if (this.depositCashData[i].key == this.depositCashData[j].key) {
+                        this.depositCashData.splice(j, 1)
+                    }
+                }
+
+            }
+        }
+         this.chooseBuyModel.deposit= this.depositCashData[0].value // 保证金比例
+          },100)
+          console.log(data.productId,'productId')
+              this.chooseBuyModel.prdSeriods=data.productSeries.name // 产品系列
+              this.DataSet.productId=data.productId // 产品id
+              this.DataSet.id=data.productIssueId // 期数id
+              this.chooseBuyModel.seriesId=data.seriesId // 系列id
+          }
+      }
     }
     /**
      * 融资总额
@@ -532,10 +615,13 @@
     //   this.chooseBuyModel.manageData = ''
     //   this.chooseBuyModel.moneyPay = ''
       //   月供金额
-      if(this.chooseBuyModel.financeTotalMoney) {
-        this.chooseBuyModel.moneyPay = (Number(this.chooseBuyModel.financeTotalMoney) * (1 + Number(this.chooseBuyModel.prdInterestRate) * this.$dict.getDictName(this.chooseBuyModel.periods)) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
-        this.chooseBuyModel.moneyPay.toString()
-    }
+       if(this.flag){
+          this.flag=true
+        if(this.chooseBuyModel.financeTotalMoney) {
+                this.chooseBuyModel.moneyPay = (Number(this.chooseBuyModel.financeTotalMoney) * (1 + Number(this.chooseBuyModel.prdInterestRate) * this.$dict.getDictName(this.chooseBuyModel.periods)) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
+                this.chooseBuyModel.moneyPay.toString()
+            }
+      }
     }
     /**
      * 管理费
@@ -676,6 +762,7 @@
                       this.addOpen=false
                       this.editCarModal = true
                       this.rowData = row
+                      this.index=index
                     }
                   }
                 },

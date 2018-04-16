@@ -14,23 +14,10 @@
     </i-select>
     <i-checkbox style="margin-left:10px;" v-model="status">包含已归档订单</i-checkbox>
     <i-button style="margin-left:10px" class="blueButton" @click="receiptRecordSearch">搜索</i-button>
-    <data-box :columns="columns1" :data="receiptDataSet" :page="pageService"></data-box>
+    <data-box :id="447" :columns="columns1" :data="receiptDataSet" :page="pageService" @onPageChange="receiptRecordSearch"></data-box>
     <!--Model-->
     <template>
-      <i-modal v-model="openColumnsConfig" title="列配置">
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
-
-    <template>
       <i-modal v-model="checkApplyModal" title="查看" width="800">
-        <!--<add-apply></add-apply>-->
         <apply-detail ref="applyDetail"></apply-detail>
       </i-modal>
     </template>
@@ -80,7 +67,6 @@
     private receiptDataSet: Array < Object > = [];
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
-    private openColumnsConfig: Boolean = false;
     private checkApplyModal: Boolean = false;
     private status: Boolean = false;
     private receiptModel: any = {
@@ -251,12 +237,7 @@
     openSearch() {
       this.searchOptions = !this.searchOptions
     }
-    /**
-     * 列配置
-     */
-    columnsConfig() {
-      this.openColumnsConfig = true
-    }
+
     /**
      * 多选
      */

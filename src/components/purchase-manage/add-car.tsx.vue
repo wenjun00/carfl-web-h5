@@ -89,12 +89,16 @@
     distributionData(multipleSelection) {}
     @Emit('close')
     close() {}
+    @Emit('complutedtotalPrice')
+    complutedtotalPrice(){}
     @Prop() rowData: any;
     @Emit('update:rowData')
     updateRowData(row) {}
     @Prop() addcarData: any;
     @Prop() addOpen:any;
     @Prop() editOpen:any;
+    @Prop() index:any;
+
 
     @Prop() row: Object;
     created() {
@@ -242,8 +246,8 @@
      */
     chooseback() {
       if(this.addOpen===true){
-      let databox:any = this.$refs['databox-add'];
-      this.multipleSelection = databox.getCurrentSelection();
+      let databoxadd:any = this.$refs['databox-add'];
+      this.multipleSelection = databoxadd.getCurrentSelection();
         }else{
             let radioRowData=this.carDataModel.find(v=>v.radio===true)
             this.multipleSelection=radioRowData
@@ -254,6 +258,8 @@
       } else {
         if (this.rowData) {
           Object.assign(this.rowData, this.multipleSelection);
+          this.addcarData[this.index]=this.multipleSelection
+          this.complutedtotalPrice()
         } else {
           this.distributionData(this.addcarData.concat(this.multipleSelection));
           this.multipleSelection = [];
