@@ -14,19 +14,8 @@
     </i-select>
     <i-checkbox style="margin-left:10px;" v-model="status">包含已归档订单</i-checkbox>
     <i-button style="margin-left:10px" class="blueButton" @click="searchPaymentrecord">搜索</i-button>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :id="455" :columns="columns1" :data="data1" :page="pageService" @onPageChange="searchPaymentrecord"></data-box>
     <!--Model-->
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置">
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
 
     <template>
       <i-modal v-model="checkApplyModal" title="查看" width="800">
@@ -81,7 +70,6 @@
     private data1: Array < Object > = [];
     private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
-    private openColumnsConfig: Boolean = false;
     private checkApplyModal: Boolean = false;
     private status: Boolean = false;
     private paymentModel: any = {
@@ -101,7 +89,7 @@
       })
     }
     activated(){
-      this.searchPaymentrecord()   
+      this.searchPaymentrecord()
     }
     created() {
       this.searchPaymentrecord()
@@ -140,11 +128,13 @@
       }, {
         title: '订单编号',
         key: 'orderNumber',
-        align: 'center'
+        align: 'center',
+        editable: true,
       }, {
         title: '付款类型',
         key: 'refundType',
         align: 'center',
+        editable: true,
         render: (h, {
           row,
           column,
@@ -156,6 +146,7 @@
         title: '申请状态',
         key: 'applicationStatus',
         align: 'center',
+        editable: true,
         render: (h, {
           row,
           column,
@@ -166,15 +157,18 @@
       }, {
         title: '付款客户名',
         key: 'customerName',
-        align: 'center'
+        align: 'center',
+        editable: true,
       }, {
         title: '付款金额',
         key: 'refundTotalAmount',
-        align: 'center'
+        align: 'center',
+        editable: true,
       }, {
         title: '申请时间',
         key: 'operateTime',
         align: 'center',
+        editable: true,
         render: (h, {
           row,
           column,
@@ -185,7 +179,8 @@
       }, {
         title: '制单人',
         key: 'operator',
-        align: 'center'
+        align: 'center',
+        editable: true,
       }]
       this.data2 = [{
         columnsName: '申请类型'
@@ -240,12 +235,7 @@
     openSearch() {
       this.searchOptions = !this.searchOptions
     }
-    /**
-     * 列配置
-     */
-    columnsConfig() {
-      this.openColumnsConfig = true
-    }
+
     /**
      * 多选
      */

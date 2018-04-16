@@ -5,7 +5,7 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="用户名" prop="userUsername">
-            <i-input v-model="modifyModel.userUsername" disabled="true"></i-input>
+            <i-input v-model="modifyModel.userUsername" :disabled="true"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -36,7 +36,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="公司名称" prop="companyName">
-            <i-input v-model="modifyModel.companyName" disabled></i-input>
+            <i-input v-model="modifyModel.companyName" :disabled="true"></i-input>
           </i-form-item>
         </i-col>
       </i-row>

@@ -89,29 +89,13 @@ export default class Home extends Vue {
   @Mutation openPage;
 
   created() {
-       this.backLogService.queryUserBacklog().subscribe(
-                          val => {
-                            this.waitToHandle = val;
-                            console.log(val,99900000)
-                          },
-                          ({
-                            msg
-                          }) => {
-                            this.$Message.error(msg);
-                          }
-                        );
-    // this.waitToHandle = [
-    //   {
-    //     index: 1,
-    //     name: "待提交销售申请",
-    //     number: 6
-    //   },
-    //   {
-    //     index: 2,
-    //     name: "退回的销售申请",
-    //     number: 8
-    //   }
-    // ];
+       this.backLogService
+         .queryUserBacklog()
+         .subscribe(val => {
+           this.waitToHandle = val;
+           },({msg}) => {
+              this.$Message.error(msg);
+           });
   }
   pageToOrderQuery() {
     this.openPage({

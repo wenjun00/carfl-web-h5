@@ -34,7 +34,7 @@
               </i-form-item>
             </i-col>
             <i-col span="12">
-              <i-form-item label="选择订单" prop="worker">
+              <i-form-item label="选择订单" prop="orderId">
                 <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
                   <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
                 </i-select>
@@ -113,7 +113,30 @@ export default class SaleGatheringApply extends Page {
   };
   private applyPerson: String = ""; // 申请人
   private applyTime: String = ""; // 申请时间
-  applyRule: Object = {};
+  applyRule: Object = {
+      idCard: [{
+        required: true,
+        message: '请输入证件号码',
+        trigger: 'blur',
+      },
+      { validator: this.$validator.idCard, trigger: "blur" }],
+      customerName: [{
+        required: true,
+        message: '请输入客户姓名',
+        trigger: 'blur',
+      }],
+      mobileMain: [{
+        required: true,
+        message: '请输入客户电话',
+        trigger: 'blur',
+      },
+      { validator: this.$validator.phoneNumber, trigger: "blur" }],
+      orderId: [{
+        required: true,
+        message: '请选择订单',
+        trigger:'change'
+      }],
+  };
   private purchaseData: Object = {
     province: "",
     city: "",
@@ -316,7 +339,12 @@ export default class SaleGatheringApply extends Page {
    * 保存并提交
    */
   saveAndCommit() {
-       if(this.msg==='该订单已有一个未处理的提前结清申请'){
+      let customerform: any = this.$refs['customer-form']
+      customerform.validate(valid=>{
+          if(!valid){
+              return false
+          }else{
+    if(this.msg==='该订单已有一个未处理的提前结清申请'){
             this.$Message.warning('请先审批未处理的申请订单！')
             return false
         }
@@ -341,6 +369,8 @@ export default class SaleGatheringApply extends Page {
     } else {
       this.$Message.info("请先选择订单！");
     }
+          }
+      })
   }
   showTab() {
     if (this.applyData.idCard.length === 18) {

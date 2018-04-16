@@ -184,7 +184,37 @@
       remark: '', // 备注
       isAddToBlackList: []
     };
-    applyRule: Object = {};
+    private applyRule: Object = {
+         idCard: [{
+        required: true,
+        message: '请输入证件号码',
+        trigger: 'blur',
+      },
+      { validator: this.$validator.idCard, trigger: "blur" }],
+      customerName: [{
+        required: true,
+        message: '请输入客户姓名',
+        trigger: 'blur',
+      }],
+      mobileMain: [{
+        required: true,
+        message: '请输入客户电话',
+        trigger: 'blur',
+      },
+      { validator: this.$validator.phoneNumber, trigger: "blur" }],
+      orderId: [{
+        required: true,
+        message: '请选择订单',
+        trigger:'change'
+      }],
+      withdrawType:[{
+        required: true,
+        message: '请选择订单',
+        trigger:'change',
+        type:'number'
+      }]
+
+    };
     private purchaseData: Object = {
       province: '',
       city: '',
@@ -601,7 +631,7 @@
       }
       let surplusPenalty = itemList.find(v => v.itemName === "surplusPenalty");
       if (surplusPenalty) {
-        this.saveDraftModel.surplusPenalty = surplusPenalty.itemMoney;
+        this.saveDraftModel.violateAmount = surplusPenalty.itemMoney;
       }
       let surplusPenaltyFreeze = itemList.find(
         v => v.itemName === "surplusPenaltyFreeze"
@@ -648,6 +678,11 @@
      * 保存并提交
      */
     saveAndCommit() {
+         let customerform: any = this.$refs['customer-form']
+      customerform.validate(valid=>{
+          if(!valid){
+              return false
+          }else{
         this.getgather()
         if(this.msg==='该订单有为完成的提前收回申请'){
             this.$Message.warning('请先审批未处理的申请订单！')
@@ -669,6 +704,8 @@
             this.$Message.error(msg);
           }
         );
+          }
+      })
     }
   }
 
@@ -678,18 +715,18 @@
   .header {
     border-bottom: 1px solid #cccccc;
   }
-  
+
   .open {
     max-width: auto;
     overflow: hidden;
   }
-  
+
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-  
+
   .case-list {
     position: fixed;
     right: 0px;
@@ -700,21 +737,21 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     height: 100%;
   }
-  
+
   .case-list.flag {
     right: -348px;
     box-shadow: none;
     background: none;
   }
-  
+
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowButton {
     line-height: 570px;
     height: 100%;
@@ -722,7 +759,7 @@
     text-align: center;
     width: 30px;
   }
-  
+
   .submitBar {
     height: 70px;
     width: 100%;
@@ -732,7 +769,7 @@
     left: 0;
     border: 1px solid #ddd;
   }
-  
+
   .specialInput {
     .ivu-input {
       border-style: none;
@@ -740,7 +777,7 @@
       border-radius: 0;
     }
   }
-  
+
   .bigSelect {
     .ivu-select-selection {
       display: inline-block;
@@ -749,7 +786,7 @@
       border-radius: 0;
     }
   }
-  
+
   .early-recover-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #dddee1;
@@ -764,7 +801,7 @@
       }
     }
   }
-  
+
   .early-recover-apply {
     .ivu-select-selection {
       border-style: none;

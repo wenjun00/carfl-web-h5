@@ -122,7 +122,30 @@
       orderId: "",
       remark: ""
     };
-    applyRule: Object = {};
+    applyRule: Object = {
+         idCard: [{
+        required: true,
+        message: '请输入证件号码',
+        trigger: 'blur',
+      },
+      { validator: this.$validator.idCard, trigger: "blur" }],
+      customerName: [{
+        required: true,
+        message: '请输入客户姓名',
+        trigger: 'blur',
+      }],
+      mobileMain: [{
+        required: true,
+        message: '请输入客户电话',
+        trigger: 'blur',
+      },
+      { validator: this.$validator.phoneNumber, trigger: "blur" }],
+      orderId: [{
+        required: true,
+        message: '请选择订单',
+        trigger:'change'
+      }],
+    };
     private purchaseData: Object = {
       province: "",
       city: "",
@@ -286,7 +309,12 @@
      * 保存并提交
      */
     saveAndCommit() {
-        if(this.msg==='该订单已有一个未处理的提前结清申请'){
+            let customerform: any = this.$refs['customer-form']
+      customerform.validate(valid=>{
+          if(!valid){
+              return false
+          }else{
+   if(this.msg==='该订单已有一个未处理的提前结清申请'){
             this.$Message.warning('请先审批未处理的申请订单！')
             return false
         }
@@ -306,6 +334,8 @@
             this.$Message.error(msg);
           }
         );
+          }
+     })
     }
     /**
      * 显示tab页，去掉遮罩

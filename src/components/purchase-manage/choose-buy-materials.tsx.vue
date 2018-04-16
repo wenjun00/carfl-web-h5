@@ -149,13 +149,7 @@
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
-          <i-form-item label="月供金额（元）" prop="moneyPay">
-            <i-input type="text" v-model="chooseBuyModel.moneyPay" readonly>
-            </i-input>
-          </i-form-item>
-        </i-col>
-        <i-col span="12">
-            <i-row>
+             <i-row>
           <i-form-item label="首付金额（元）" prop="Payment" style="display:inline-block">
               <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment" :disabled="Paymentdisabled">
                 <i-option v-for="item in initialPaymentData" :key="item.key" :value="item.value" :label="item.key"></i-option>
@@ -166,6 +160,12 @@
               </i-input>
           </i-form-item>
             </i-row>
+        </i-col>
+        <i-col span="12">
+           <i-form-item label="月供金额（元）" prop="moneyPay">
+            <i-input type="text" v-model="chooseBuyModel.moneyPay" readonly>
+            </i-input>
+          </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
             <i-row>
@@ -341,6 +341,7 @@
     private finalorddisabled:Boolean = false;
     private manageDatadisabled:Boolean = false;
     private addOpen:Boolean = false;
+    private flag:Boolean = true;
     private index:any='';
     private chooseBuyModel: any = {
       name: '', // 产品名称

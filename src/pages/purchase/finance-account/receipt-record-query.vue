@@ -120,11 +120,13 @@
       }, {
         title: '订单编号',
         key: 'orderNumber',
-        align: 'center'
+        align: 'center',
+        editable: true
       }, {
         title: '收款类型',
         key: 'applicationType',
         align: 'center',
+        editable: true,
         render: (h, {
           row,
           column,
@@ -136,6 +138,7 @@
         title: '申请状态',
         key: 'approvalStatus',
         align: 'center',
+        editable: true,
         render: (h, {
           row,
           column,
@@ -146,15 +149,18 @@
       }, {
         title: '收款客户名',
         key: 'accountName',
-        align: 'center'
+        align: 'center',
+        editable: true,
       }, {
         title: '收款金额',
         key: 'totalPayment',
-        align: 'center'
+        align: 'center',
+        editable: true,
       }, {
         title: '申请时间',
         key: 'operatorTime',
         align: 'center',
+        editable: true,
         render: (h, {
           row,
           column,
@@ -165,21 +171,25 @@
       }, {
         title: '制单人',
         key: 'userUserName',
-        align: 'center'
+        align: 'center',
+        editable: true,
       }]
       this.columns2 = [{
         title: '序号',
         type: 'index',
         width: 80,
-        align: 'center'
+        align: 'center',
+        editable: true,
       }, {
         title: '列名',
         key: 'columnsName',
-        align: 'center'
+        align: 'center',
+        editable: true
       }, {
         type: 'selection',
         width: 80,
-        align: 'center'
+        align: 'center',
+        editable: true,
       }]
       this.data2 = [{
         columnsName: '申请类型'

@@ -185,8 +185,7 @@ import { State, Mutation, namespace } from "vuex-class";
       { validator: this.$validator.phoneNumber, trigger: "blur" }],
       salesmanName: [{
         required: true,
-        message: '请选择归属业务员',
-        trigger: 'blur',
+        message: '请选择归属业务员'
       }],
     };
     private customerModel: any = {
