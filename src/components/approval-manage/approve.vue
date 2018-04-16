@@ -122,7 +122,8 @@
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">身份证有效期</td>
-          <td colspan="2">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.idCardValidityPeriodType):''}}</td>
+          <td colspan="2">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? orderInfo.personal.idCardValidityPeriodType :orderInfo.personal.idCardValidityPeriodSection):''}}</td>
+          
           <td bgColor="#F5F5F5">发证机关</td>
           <td colspan="4">{{orderInfo.personal?orderInfo.personal.issuer:''}}</td>
         </tr>

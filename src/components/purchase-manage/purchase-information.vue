@@ -121,7 +121,8 @@
         </tr>
         <tr>
           <td colspan="2" bgColor="#F5F5F5">身份证有效期</td>
-          <td colspan="2">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.idCardValidityPeriodType):''}}</td>
+           <td colspan="2">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? orderInfo.personal.idCardValidityPeriodType :orderInfo.personal.idCardValidityPeriodSection):''}}</td>
+          
           <td bgColor="#F5F5F5">发证机关</td>
           <td colspan="4">{{orderInfo.personal?orderInfo.personal.issuer:''}}</td>
         </tr>
@@ -443,6 +444,7 @@ export default class PurchaseInformation extends Vue {
       .subscribe(data => {
         let allData = JSON.stringify(data);
         this.orderInfo = JSON.parse(allData);
+        console.log('在这里333333333333333333333333333333333333333')
         this.personal = this.orderInfo.personal; // 个人资料
         if (this.orderInfo.orderServices) {
           this.fee = this.orderInfo.orderServices.map(v => v.service);
