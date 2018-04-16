@@ -113,6 +113,11 @@
      * 补充资料反显
      */
     supplement(data){
+        data.map(v=>{
+            v.name=v.uploadName,
+            v.url=v.materialUrl,
+            v.type=v.materialType
+        })
         this.dataList=data
     }
     /**
