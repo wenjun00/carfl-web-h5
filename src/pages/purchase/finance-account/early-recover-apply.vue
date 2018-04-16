@@ -184,7 +184,37 @@
       remark: '', // 备注
       isAddToBlackList: []
     };
-    applyRule: Object = {};
+    private applyRule: Object = {
+         idCard: [{
+        required: true,
+        message: '请输入证件号码',
+        trigger: 'blur',
+      },
+      { validator: this.$validator.idCard, trigger: "blur" }],
+      customerName: [{
+        required: true,
+        message: '请输入客户姓名',
+        trigger: 'blur',
+      }],
+      mobileMain: [{
+        required: true,
+        message: '请输入客户电话',
+        trigger: 'blur',
+      },
+      { validator: this.$validator.phoneNumber, trigger: "blur" }],
+      orderId: [{
+        required: true,
+        message: '请选择订单',
+        trigger:'change'
+      }],
+      withdrawType:[{
+        required: true,
+        message: '请选择订单',
+        trigger:'change',
+        type:'number'
+      }]
+
+    };
     private purchaseData: Object = {
       province: '',
       city: '',
@@ -648,6 +678,11 @@
      * 保存并提交
      */
     saveAndCommit() {
+         let customerform: any = this.$refs['customer-form']
+      customerform.validate(valid=>{
+          if(!valid){
+              return false
+          }else{
         this.getgather()
         if(this.msg==='该订单有为完成的提前收回申请'){
             this.$Message.warning('请先审批未处理的申请订单！')
@@ -669,6 +704,8 @@
             this.$Message.error(msg);
           }
         );
+          }
+      })
     }
   }
 

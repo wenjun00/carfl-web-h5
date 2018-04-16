@@ -36,14 +36,14 @@
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="选择订单">
+            <i-form-item label="选择订单" prop="orderNumber">
               <i-select v-model="applyData.orderNumber" placeholder="请选择订单" @on-change="changeOrder($event)">
                 <i-option v-for="item in orderList" :value="item.orderNumber" :label="item.orderNumber" :key="item.orderId"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-form-item label="付款类型">
+            <i-form-item label="付款类型" prop="refundType">
               <i-select v-model="applyData.refundType" placeholder="请选择付款类型">
                 <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
               </i-select>
@@ -154,7 +154,36 @@
       recordStatus: '',
       refundTotalAmount: ''
     };
-    applyRule: Object = {};
+    private applyRule: Object = {
+         certificateNumber: [{
+        required: true,
+        message: '请输入证件号码',
+        trigger: 'blur',
+      },
+      { validator: this.$validator.idCard, trigger: "blur" }],
+      name: [{
+        required: true,
+        message: '请输入客户姓名',
+        trigger: 'blur',
+      }],
+      mobileNumber: [{
+        required: true,
+        message: '请输入客户电话',
+        trigger: 'blur',
+      },
+      { validator: this.$validator.phoneNumber, trigger: "blur" }],
+      orderNumber: [{
+        required: true,
+        message: '请选择订单',
+        trigger:'change'
+      }],
+      refundType:[{
+        required: true,
+        message: '请选择付款类型',
+        trigger:'change',
+        type:'number'
+      }]
+    };
     private purchaseData: Object = {
       province: '',
       city: '',
@@ -249,7 +278,7 @@
       let _message: any = this.$refs['payDetail']
       this.saveData.bankListk = _message.accountInfoList
       let gatherItem: any = Object.assign(_message.gatherItemList)
-      this.saveData.refundTotalAmount = gatherItem.find(v => v.itemLabel === '合计（元）').refundAmount
+      this.saveData.refundTotalAmount = gatherItem.length>0?gatherItem.find(v => v.itemLabel === '合计（元）').refundAmount:''
       this.saveData.recordStatus = 1128
       this.saveData.refundType = this.applyData.refundType
       this.saveData.remark=this.applyData.remark
@@ -272,21 +301,21 @@
      * 保存并提交
      */
     saveSubmit() {
-      if (!this.applyData.refundType) {
-        this.$Message.warning('请选择付款类型！')
-        return false
-      }
+    let customerform: any = this.$refs['customer-form']
+      customerform.validate(valid=>{
+          if(!valid){
+              return false
+          }else{
       let _message: any = this.$refs['payDetail']
       this.saveData.bankListk = _message.accountInfoList
       let gatherItem: any = Object.assign(_message.gatherItemList)
-      if (gatherItem) {
-        this.saveData.refundTotalAmount = gatherItem.find(v => v.itemName === 'totalPayment').refundAmount
-      }
+        this.saveData.refundTotalAmount = gatherItem.length>0?gatherItem.find(v => v.itemName === 'totalPayment').refundAmount:''
       this.saveData.recordStatus = 1129
       this.saveData.refundType = this.applyData.refundType
       this.saveData.remark=this.applyData.remark
       this.saveData.itemList = gatherItem.splice(0, (_message.gatherItemList.length - 1))
       let _uploadthefodder:any=this.$refs['upload-the-fodder']
+              console.log('dhfjgdfjgdjf')
       this.saveData.resourceList=_uploadthefodder.fodderList.map(v=>{
         return {
             materialUrl:v.url,
@@ -308,6 +337,8 @@
             this.$Message.error(msg);
           }
         );
+          }
+      })
     }
     /**
      * 输入姓名搜索
