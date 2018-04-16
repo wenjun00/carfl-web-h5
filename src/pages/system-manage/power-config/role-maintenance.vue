@@ -301,8 +301,7 @@ export default class RoleMaintenance extends Page {
     let modulePower: any = this.$refs["module-power"] as ModulePower;
     modulePower.submit();
   }
-
-  addNewRole() {
+  addNewRole() {                     
     this.addRoleModal = true;
   }
 
@@ -353,7 +352,7 @@ export default class RoleMaintenance extends Page {
    */
   addRole() {
     let _addRole = <Modal>this.$refs["add-role"];
-    _addRole.addRole();
+    _addRole.addChangeRole();
   }
   openSearch() {
     this.searchOptions = !this.searchOptions;

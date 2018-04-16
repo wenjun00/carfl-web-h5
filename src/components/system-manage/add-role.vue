@@ -53,6 +53,10 @@
 
     created() {
       this.rules = {
+        //  roleName: [    在输入框里面的验证
+        //   { required: true, message: '请输入角色名称', trigger: 'blur' },
+        //   { pattern: /^[A-Za-z0-9\u4e00-\u9fa5]+$/g, message: '角色名称存在特殊字符，请重新输入！', trigger: 'blur' }
+        // ],
         roleName: [{
           trigger: 'blur',
           message: '请输入角色名称',
@@ -81,6 +85,14 @@
         }
       })
     }
+    // 新增角色 点击确定
+      addChangeRole(){
+        if(!/^[A-Za-z0-9\u4e00-\u9fa5]+$/.test(this.addRoleModel.roleName.toString())){
+            this.$Message.warning('角色名称存在特殊字符，请重新输入！')
+        }
+        return
+        
+      }
 
     reset() {
       let _addRole = < Form > this.$refs['add-role']
