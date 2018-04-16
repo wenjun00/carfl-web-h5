@@ -124,7 +124,7 @@ export default class AddOrg extends Vue {
    * 获取所有公司
    */
   getCompanys() {
-    this.companyService.getAllCompany(this.getAllCompany).subscribe(
+    this.companyService.getAllEnableCompany(this.getAllCompany).subscribe(
       data => {
         this.companyObject = data;
       },
