@@ -114,7 +114,6 @@
      */
     supplement(data){
         this.dataList=data
-        console.log(this.dataList,'dataList')
     }
     /**
      * 预览

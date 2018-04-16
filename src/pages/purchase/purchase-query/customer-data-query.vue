@@ -361,10 +361,13 @@
      * 补充资料
      */
     addFiles(row) {
+        let _uploadthematerial:any=this.$refs['upload-the-material']
+        _uploadthematerial.resetfileList()
       this.openUpload = true
       this.uploadOrAddFlag = false
-      let _uploadthematerial:any=this.$refs['upload-the-material']
+      if(row.personalMateriaList){
       _uploadthematerial.supplement(row.personalMateriaList)
+      }
     }
     /**
      * 列配置
