@@ -227,7 +227,7 @@
           title: "产品包名称",
           key: "productPackageName",
           align: "center",
-          fixed: "left",
+          // fixed: "left",
           // width: 160,
           editable: true
         },
@@ -235,7 +235,7 @@
           title: "经销商",
           key: "quotationName",
           align: "center",
-          fixed: "left",
+          // fixed: "left",
           // width: 160,
           editable: true
         },

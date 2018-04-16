@@ -8,7 +8,7 @@
       <work-theme></work-theme>
     </div>
     <div class="row">
-      <i-poptip trigger="hover" placement="bottom">
+      <i-poptip trigger="click" placement="bottom" style="cursor: pointer">
         <div class="headPortrait"></div>
         <div slot="content" style="text-align:left">
           <div style="font-size:18px;border-bottom:1px solid #F5F5F5;padding-bottom:6px;">{{loginPerson}}</div>

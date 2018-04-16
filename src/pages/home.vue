@@ -50,8 +50,8 @@
           <span style="margin-left:10px;font-size:16px;color:#333333;position:relative;bottom:3px;">待办事项</span>
           <div v-for="item in waitToHandle" :key="item.index" style="min-width:270px;width:96%;height:42px;margin-top:10px;background:#F5F5F5;text-align:center;line-height:12px;">
             <div style="padding-top:6px;">
-              <div style="font-size:12px;color:#666666;margin-right:118px;display:inline-block">{{$dict.getDictName(item.itemCode)}}</div>
-              <i-button type="text" style="color:#265EA2;font-size:14px;text-align:right" @click="pageToOrderQuery">{{item.itemValue}}</i-button>
+              <div style="font-size:12px;color:#666666;line-height: 35px;margin-left: 45px;float:left">{{$dict.getDictName(item.itemCode)}}</div>
+              <i-button type="text" style="color:#265EA2;font-size:14px;float:right;margin-right:10px;" @click="pageToOrderQuery">{{item.itemValue}}</i-button>
             </div>
           </div>
         </div>
@@ -96,6 +96,7 @@ export default class Home extends Vue {
            },({msg}) => {
               this.$Message.error(msg);
            });
+
   }
   pageToOrderQuery() {
     this.openPage({

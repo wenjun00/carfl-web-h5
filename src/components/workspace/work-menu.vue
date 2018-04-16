@@ -35,7 +35,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Prop } from "vue-property-decorator";
+import { Prop,Watch } from "vue-property-decorator";
 import { State, Mutation, Action } from "vuex-class";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import menuConfig from "~/config/menu.config";
@@ -62,15 +62,12 @@ export default class WorkMenu extends Vue {
       if (children && children.length) {
         item.children = children;
       }
-
       return item;
     };
-
     let menus = this.menuResource
       .filter(x => x.filetype === 429)
       .sort((x: any, y: any) => x.sort - y.sort)
       .map(createMenus)
-
     return menus;
   }
 

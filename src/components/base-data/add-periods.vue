@@ -1,5 +1,5 @@
 <!--新增期数-->
-<template> 
+<template>
   <i-form ref="formItems" :model="formItems" :rules="formRules" :label-width="100">
     <section class="component add-periods">
       <div class="addPeriodsItem">自然参数</div>
@@ -22,8 +22,8 @@
           </i-form-item>
         </data-grid-item>
         <data-grid-item label="产品利率" :span="4">
-          <i-form-item prop="productRate" style="width:70%;">
-            <i-input v-model="formItems.productRate" placeholder="请输入产品利率"></i-input>
+          <i-form-item prop="productRates" style="width:70%;">
+            <i-input v-model="formItems.productRates" placeholder="请输入产品利率"></i-input>
           </i-form-item>
           <div class="after_text">%/月</div>
         </data-grid-item>
@@ -161,18 +161,18 @@
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="6" label="合同违约金费率">
-          <i-form-item prop="contractBreakRate" style="margin-top:15px;">
-            <i-input v-model="formItems.contractBreakRate"></i-input>&nbsp;%
+          <i-form-item prop="contractBreakRates" style="margin-top:15px;">
+            <i-input v-model="formItems.contractBreakRates"></i-input>&nbsp;%
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="6" label="提前还款费率">
-          <i-form-item prop="prepaymentRate" style="margin-top:15px;">
-            <i-input v-model="formItems.prepaymentRate"></i-input>&nbsp;%
+          <i-form-item prop="prepaymentRates" style="margin-top:15px;">
+            <i-input v-model="formItems.prepaymentRates"></i-input>&nbsp;%
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="12" label="罚息费率">
-          <i-form-item prop="penaltyRate" style="margin-top:15px;">
-            <i-input v-model="formItems.penaltyRate"></i-input>
+          <i-form-item prop="penaltyRates" style="margin-top:15px;">
+            <i-input v-model="formItems.penaltyRates"></i-input>
           </i-form-item>
           <span>&nbsp;%/天</span>
         </data-grid-item>
@@ -220,7 +220,7 @@
       periodType: "",
       paymentType: "",
       paymentDay: "",
-      productRate: "",
+      productRates: "",
       payWay: "",
       financingAmount: "",
       initialPayment: "",
@@ -231,12 +231,17 @@
       stagingPeriods: "", // 期数
       creditProtectDays: '0',
       overdueProtectDays: '0',
-      penaltyRate: '1',
-      contractBreakRate: '0',
-      prepaymentRate: '0',
+      penaltyRates: '1',
+      contractBreakRates: '0',
+      prepaymentRates: '0',
       productStatus: "",
       // isPublish: '',
-      manageCost: ""
+      manageCost: "",
+
+      penaltyRate: '',
+      contractBreakRate: '',
+      prepaymentRate: '',
+      productRate: "",
     };
     private amountRules: Object = {};
     private amount: any = {
@@ -276,7 +281,7 @@
         periods: [
           { required: true, message: '请输入产品期数', type: 'number', trigger: 'change' }
         ],
-        productRate: [
+        productRates: [
           { required: true, message: '请输入产品利率', trigger: 'blur' },
           { pattern: /^[0-9]{1,3}([.]{1}[0-9]{0,4}){0,1}$/g, message: '请输入0~999整数或四位小数', trigger: 'blur' }
         ],
@@ -322,15 +327,15 @@
           { required: true, message: '请输入逾期保护天数', trigger: 'blur' },
           { pattern: /^(0|[1-9][0-9]{0,3})$/g, message: '请输入0~9999整数', trigger: 'blur' }
         ],
-        contractBreakRate: [
+        contractBreakRates: [
           { required: true, message: '请输入合同违约金费率', trigger: 'blur' },
           { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或四位小数', trigger: 'blur' }
         ],
-        prepaymentRate: [
+        prepaymentRates: [
           { required: true, message: '请输入提前还款费率', trigger: 'blur' },
           { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或四位小数', trigger: 'blur' }
         ],
-        penaltyRate: [
+        penaltyRates: [
           { required: true, message: '请输入罚期费率', trigger: 'blur' },
           { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或四位小数', trigger: 'blur' }
         ]
@@ -387,10 +392,10 @@
           this.formItems.productStatus = this.pNameTitle.status;
           this.formItems.creditProtectDays =  String(this.formItems.creditProtectDays);
           this.formItems.overdueProtectDays = String(this.formItems.overdueProtectDays);
-          this.formItems.productRate = this.formItems.productRate*0.01;
-          this.formItems.contractBreakRate = String(this.formItems.contractBreakRate*0.01);
-          this.formItems.prepaymentRate =  String(this.formItems.prepaymentRate*0.01);
-          this.formItems.penaltyRate = String(this.formItems.penaltyRate*0.01);
+          this.formItems.productRate = this.formItems.productRates*0.01;
+          this.formItems.contractBreakRate = String(this.formItems.contractBreakRates*0.01);
+          this.formItems.prepaymentRate =  String(this.formItems.prepaymentRates*0.01);
+          this.formItems.penaltyRate = String(this.formItems.penaltyRates*0.01);
           this.ProductPlanIssueService.createOrModifyProductPlan(this.formItems).subscribe(val => {
             this.$Message.success("新增成功！");
             this.$emit("close", this.formItems);
