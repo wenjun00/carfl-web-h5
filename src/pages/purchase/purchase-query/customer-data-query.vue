@@ -354,6 +354,8 @@
      * 上传资料
      */
     uploadFiles(row) {
+        let _uploadthematerial:any=this.$refs['upload-the-material']
+        _uploadthematerial.resetfileList()
       this.uploadOrAddFlag = true
       this.openUpload = true
     }
