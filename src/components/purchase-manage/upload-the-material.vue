@@ -110,6 +110,13 @@
       CommonService.downloadFile(file.url, file.name);
     }
     /**
+     * 补充资料反显
+     */
+    supplement(data){
+        this.dataList=data
+        console.log(this.dataList,'dataList')
+    }
+    /**
      * 预览
      */
     preview(file) {
@@ -157,12 +164,18 @@
       fileUpload.upload();
     }
     openClick() {
-      this.personalMaterialService.getAllPersonalMaterialNoPage({
+        if(this.productId){
+        this.personalMaterialService.getAllPersonalMaterialNoPage({
         productId: this.productId
       }).subscribe(data => {
         this.cityList = data.filter(x=>x.isSelect==0)
       })
       this.openUpload = true
+        }else{
+            this.$Message.warning('请先选择产品信息！')
+            return false
+        }
+      
     }
     hhh(response, file, fileList) {
       this.dataList = fileList

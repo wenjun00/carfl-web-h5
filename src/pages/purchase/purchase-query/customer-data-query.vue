@@ -363,6 +363,8 @@
     addFiles(row) {
       this.openUpload = true
       this.uploadOrAddFlag = false
+      let _uploadthematerial:any=this.$refs['upload-the-material']
+      _uploadthematerial.supplement(row.personalMateriaList)
     }
     /**
      * 列配置
