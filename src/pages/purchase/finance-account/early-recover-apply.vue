@@ -601,7 +601,7 @@
       }
       let surplusPenalty = itemList.find(v => v.itemName === "surplusPenalty");
       if (surplusPenalty) {
-        this.saveDraftModel.surplusPenalty = surplusPenalty.itemMoney;
+        this.saveDraftModel.violateAmount = surplusPenalty.itemMoney;
       }
       let surplusPenaltyFreeze = itemList.find(
         v => v.itemName === "surplusPenaltyFreeze"
@@ -678,18 +678,18 @@
   .header {
     border-bottom: 1px solid #cccccc;
   }
-  
+
   .open {
     max-width: auto;
     overflow: hidden;
   }
-  
+
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-  
+
   .case-list {
     position: fixed;
     right: 0px;
@@ -700,21 +700,21 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     height: 100%;
   }
-  
+
   .case-list.flag {
     right: -348px;
     box-shadow: none;
     background: none;
   }
-  
+
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowButton {
     line-height: 570px;
     height: 100%;
@@ -722,7 +722,7 @@
     text-align: center;
     width: 30px;
   }
-  
+
   .submitBar {
     height: 70px;
     width: 100%;
@@ -732,7 +732,7 @@
     left: 0;
     border: 1px solid #ddd;
   }
-  
+
   .specialInput {
     .ivu-input {
       border-style: none;
@@ -740,7 +740,7 @@
       border-radius: 0;
     }
   }
-  
+
   .bigSelect {
     .ivu-select-selection {
       display: inline-block;
@@ -749,7 +749,7 @@
       border-radius: 0;
     }
   }
-  
+
   .early-recover-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #dddee1;
@@ -764,7 +764,7 @@
       }
     }
   }
-  
+
   .early-recover-apply {
     .ivu-select-selection {
       border-style: none;
