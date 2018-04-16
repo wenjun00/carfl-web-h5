@@ -156,12 +156,12 @@
         </i-col>
         <i-col span="12">
             <i-row>
-          <i-form-item label="首付金额（元）" prop="Payment" style="float:left">
+          <i-form-item label="首付金额（元）" prop="Payment" style="display:inline-block">
               <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment" :disabled="Paymentdisabled">
                 <i-option v-for="item in initialPaymentData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-          <i-form-item prop="initialPayment" style="float:left">
+          <i-form-item prop="initialPayment" style="display:inline-block;margin-left:-130px">
               <i-input style="width:180px" type="text" v-model="chooseBuyModel.initialPayment" readonly>
               </i-input>
           </i-form-item>
@@ -174,7 +174,7 @@
                 <i-option v-for="item in depositCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-             <i-form-item prop="depositCash" style="display:inline-block;">  
+             <i-form-item prop="depositCash" style="display:inline-block;margin-left:-130px">  
               <i-input style="width:180px" v-model="chooseBuyModel.depositCash" readonly>
               </i-input>
         </i-form-item>
@@ -187,7 +187,7 @@
                 <i-option v-for="item in finalCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-               <i-form-item  prop="finalCash" style="display:inline-block;">
+               <i-form-item  prop="finalCash" style="display:inline-block;margin-left:-130px">
               <i-input style="width:180px" v-model="chooseBuyModel.finalCash" readonly>
               </i-input>
                </i-form-item>
@@ -200,7 +200,7 @@
                 <i-option v-for="item in manageCostData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-              <i-form-item prop="manageCost" style="display:inline-block;">
+              <i-form-item prop="manageCost" style="display:inline-block;margin-left:-130px">
               <i-input style="width:180px" v-model="chooseBuyModel.manageCost" readonly>
               </i-input>
               </i-form-item>
@@ -270,7 +270,7 @@
 
     <template>
       <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="80" v-model="editCarModal" :mask-closable="false" :trandfer="false" class="add-car">
-        <add-car ref="add-car" :addOpen="addOpen" @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
+        <add-car @complutedtotalPrice="complutedtotalPrice" ref="add-car" :addOpen="addOpen" @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" :index="index" @close="editCarModal=false,rowData=null"></add-car>
       </i-modal>
     </template>
 
@@ -341,6 +341,7 @@
     private finalorddisabled:Boolean = false;
     private manageDatadisabled:Boolean = false;
     private addOpen:Boolean = false;
+    private index:any='';
     private chooseBuyModel: any = {
       name: '', // 产品名称
       prdSeriods: '', // 产品系列
@@ -382,7 +383,7 @@
       finalprincipal:[{ required: true, message: '请输入尾付本金', trigger: 'blur' },
                       { pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
       financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
-      moneyPay:[{ required: true, message: '请输入月供金额', trigger: 'blur' }],
+    //   moneyPay:[{ required: true, message: '请输入月供金额', trigger: 'blur' }],
       initialPayment:[{ required: true, message: '请输入首付金额', trigger: 'blur' }],
       depositCash:[{ required: true, message: '请输入保证金金额', trigger: 'blur' }],
       finalCash:[{ required: true, message: '请输入尾付总额', trigger: 'blur' }],
@@ -676,6 +677,7 @@
                       this.addOpen=false
                       this.editCarModal = true
                       this.rowData = row
+                      this.index=index
                     }
                   }
                 },

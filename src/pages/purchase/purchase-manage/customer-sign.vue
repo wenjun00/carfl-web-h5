@@ -192,6 +192,9 @@
     mounted() {
       this.getSignList();
     }
+       activated () {
+      this.getSignList();
+    }
     created() {
       this.columns1 = [{
           title: "操作",
