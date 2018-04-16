@@ -70,19 +70,19 @@ export default class FileUpload extends Vue {
         key: "type",
         align: "center"
       },
-      {
-        title: "状态",
-        align: "center",
-        key: "percentage",
-        render: (h, { row, column, index }) => {
-          let state = {
-            ready: "准备",
-            finish: "完成"
-          };
+    //   {
+    //     title: "状态",
+    //     align: "center",
+    //     key: "percentage",
+    //     render: (h, { row, column, index }) => {
+    //       let state = {
+    //         ready: "准备",
+    //         finish: "完成"
+    //       };
 
-          return <span>{state[row.state] || row.percentage}</span>;
-        }
-      },
+    //       return <span>{state[row.state] || row.percentage}</span>;
+    //     }
+    //   },
       {
         title: "操作",
         align: "center",
