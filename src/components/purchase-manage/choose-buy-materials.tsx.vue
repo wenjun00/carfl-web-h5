@@ -594,11 +594,11 @@
         }
          this.chooseBuyModel.deposit= this.depositCashData[0].value // 保证金比例
           },100)
-          console.log(data.productId,'productId')
               this.chooseBuyModel.prdSeriods=data.productSeries.name // 产品系列
               this.DataSet.productId=data.productId // 产品id
               this.DataSet.id=data.productIssueId // 期数id
               this.chooseBuyModel.seriesId=data.seriesId // 系列id
+              this.chooseBuyModel.finalCash=this.chooseBuyModel.finalCash.toString()
           }
       }
     }
@@ -699,8 +699,6 @@
     choosefinalCash() {
       // 尾付总额（尾款本金+尾付利息）
       this.chooseBuyModel.finalCash = (Number(this.chooseBuyModel.finalprincipal) * (1 + Number(this.chooseBuyModel.final) * 0.01 * this.$dict.getDictName(this.chooseBuyModel.periods))).toFixed(2)
-      console.log(this.chooseBuyModel.finalprincipal,this.chooseBuyModel.final,this.chooseBuyModel.periods)
-      console.log(this.chooseBuyModel.finalCash,'this.chooseBuyModel.finalCash')
       this.chooseBuyModel.finalCash.toString()
       this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel))
 }

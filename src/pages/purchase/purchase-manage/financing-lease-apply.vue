@@ -87,6 +87,9 @@
           </i-col>
         </i-row>
       </div>
+      <Spin size="large" class="circular" fix v-if="spinShow">
+           <Icon type="load-c" class="demo-spin-icon-load"></Icon>
+      </Spin>
     </div>
     <template>
       <i-modal title="历史记录" width="1200" v-model="historicalModal" :trandfer="false" class="historical">
@@ -205,6 +208,7 @@ import { State, Mutation, namespace } from "vuex-class";
     private type: Boolean = false;
     private orderStatus: any = '';
     private salesmanModal:Boolean = false;
+    private spinShow:Boolean = false;
     // private productId: any;
   mounted () {
       if(this.$store.state.pageList.find(v=>v.resoname==='融资租赁申请').flag){
@@ -486,7 +490,12 @@ import { State, Mutation, namespace } from "vuex-class";
         personalDatas: this.PersonalData
       };
       this.productOrderService.saveFinanceApplyInfo(savesubmitDataset).subscribe(data => {
+          this.spinShow=true
+          setTimeout(()=>{
         this.$Message.success('保存成功！');
+        this.spinShow=false
+          },1000)
+        
       }, ({
         msg
       }) => {
@@ -656,9 +665,12 @@ import { State, Mutation, namespace } from "vuex-class";
                         // 上传素材
                         personalDatas: this.PersonalData
                       };
-                      console.log(666666666666666666666)
                       this.productOrderService.saveFinanceApplyInfo(savesubmitDataset).subscribe(data => {
+                        this.spinShow=true
+                        setTimeout(()=>{
                         this.$Message.success('保存成功！');
+                        this.spinShow=true
+                        },1000)
                       }, ({
                         msg
                       }) => {
@@ -764,5 +776,9 @@ import { State, Mutation, namespace } from "vuex-class";
     background-repeat: no-repeat;
     background-size: 1000px 375px;
   }
+
+  .demo-spin-icon-load{
+        animation: ani-demo-spin 1s linear infinite;
+    }
 
 </style>
