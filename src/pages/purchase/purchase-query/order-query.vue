@@ -27,18 +27,6 @@
     <i-row style="margin-top:20px">
       <data-box :id="466" :columns="queryColumns" :data="queryData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
     </i-row>
-    <!--列配置-->
-    <template>
-      <i-modal v-model="columnsManage" title="列配置">
-        <i-table :columns="columns2" :data="data2" border stripe></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
     <template>
       <i-modal v-model="modal2" width="360" title="编辑订单">
       </i-modal>
@@ -136,7 +124,6 @@
     private customName: String = "";
     private loading: Boolean = false;
     private openCreateCompact: Boolean = false;
-    private columnsManage: Boolean = false;
     private modal2: Boolean = false;
     private openCustomerInformation: Boolean = false;
     private orderProgressModal: Boolean = false;
@@ -521,20 +508,20 @@
           key: "financingAmount",
           // width: 100
         },
-        {
-          align: "center",
-          title: "环节",
-          editable: true,
-          key: "orderLink",
-          // width: 100,
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h("span", {}, this.$dict.getDictName(row.orderLink));
-          }
-        },
+        // {
+        //   align: "center",
+        //   title: "环节",
+        //   editable: true,
+        //   key: "orderLink",
+        //   // width: 100,
+        //   render: (h, {
+        //     row,
+        //     column,
+        //     index
+        //   }) => {
+        //     return h("span", {}, this.$dict.getDictName(row.orderLink));
+        //   }
+        // },
         {
           align: "center",
           title: "订单状态",
