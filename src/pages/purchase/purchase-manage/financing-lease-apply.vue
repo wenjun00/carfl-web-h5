@@ -223,7 +223,6 @@ import { State, Mutation, namespace } from "vuex-class";
     choosecurrentData(data){
         this.customerModel.salesmanName=data.userRealname
         this.customerModel.salesmanId=data.id
-        console.log(this.customerModel.salesmanName,'customerModel.salesmanName')
     }
     /**
      * 归属业务员

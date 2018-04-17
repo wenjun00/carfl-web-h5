@@ -646,6 +646,10 @@
     if(this.chooseBuyModel.finalprincipal&&this.DataSet.finalCash){
         this.finalorddisabled=false
     }
+    if(this.chooseBuyModel.finalprincipal>=this.chooseBuyModel.vehicleAmount){
+        this.$Message.warning('尾付本金应小于车辆参考总价！')
+        this.chooseBuyModel.finalprincipal=''
+    }
       this.getFinanceTotalMoney()
     }
     vehicleAmountChange(){
