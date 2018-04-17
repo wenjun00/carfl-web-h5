@@ -120,11 +120,8 @@
           </i-select>
         </td>
         <td>
-          <i-select placeholder="选择收款项" style="display:inline-block;width:90%" v-model="v.collectItem">
-            <i-option label="剩余本金" :value="156"></i-option>
-            <i-option label="剩余利息" :value="154"></i-option>
-            <i-option label="剩余罚息" :value="155"></i-option>
-            <i-option label="剩余管理费" :value="157"></i-option>
+          <i-select placeholder="选择收款项" style="display:inline-block;width:90%" v-model="v.collectItem" @on-change="selectWay($event, v)">
+            <i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>
           </i-select>
         </td>
         <td>
@@ -225,6 +222,7 @@
     private remark: String = ''
     private collectMoneySum: any = 0
     private collectMoneyId: any = ''
+    private collectMoneyItemModel:any = []
 
     /**
      * 上传文件成功回调
@@ -267,6 +265,7 @@
         this.repaymentObj = data
         this.collectMoneyDetails = data.collectMoneyDetails || []
         this.financeUploadResources = data.financeUploadResources || []
+        this.collectMoneyItemModel = data.collectMoneyItemModel
         this.inputBlur()
       }, ({
         msg
@@ -308,6 +307,13 @@
       })
       console.log(sum)
       this.collectMoneySum = sum
+    }
+    selectWay(code,item){
+      let target:any = this.collectMoneyItemModel.find((d)=>d.itemCode === code)
+      if(target){
+        item.collectMoneyAmount = target.itemMoney
+        this.inputBlur()
+      }
     }
     created() {
       this.columns1 = [{

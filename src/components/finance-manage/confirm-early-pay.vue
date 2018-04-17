@@ -90,7 +90,7 @@
           </i-select>
         </td>
         <td>
-          <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="v.collectItem" @on-change="selectWay($event, v)">
+          <i-select placeholder="选择收款项" style="display:inline-block;width:90%" v-model="v.collectItem" @on-change="selectWay($event, v)">
             <i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>
           </i-select>
         </td>
@@ -194,6 +194,7 @@
     private collectMoneyId: any = ''
     private collectMoneyItemModel:any = []
     private openUpload: Boolean = false;
+    private withdrawApplicationId:any = ''
 
 
     /**
@@ -223,7 +224,6 @@
     }
     refresh(row) {
       this.rowObj = row
-      console.log(row)
       this.advancePayoffService.getAdvancePayoffBillInfo({
         orderId: row.orderId
       }).subscribe(data => {
@@ -233,6 +233,7 @@
         this.financeUploadResources = data.collectMoneyPhaseResources
         this.applicationPhaseResources = data.applicationPhaseResources
         this.collectMoneyItemModel = data.collectMoneyItemModel
+        this.withdrawApplicationId = data.withdrawApplicationId
         this.inputBlur()
         // this.remark = data.collectMoneyHistory.remark
       }, ({
