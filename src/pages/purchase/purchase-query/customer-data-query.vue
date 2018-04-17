@@ -32,7 +32,7 @@
     </template>
     <!--上传资料、补充资料-->
     <template>
-      <i-modal v-model="openUpload" :transfer="false" width="700" :title="uploadOrAddFlag?'上传资料':'补充资料'">
+      <i-modal v-model="openUpload" :transfer="false" width="700" title="补充资料">
             <upload-the-material ref="upload-the-material"></upload-the-material>
         <!--<i-button @click="uploadDialog">上传</i-button>
         <div style="font-size:18px;font-weight:bold;margin-top:10px">
@@ -142,21 +142,6 @@
             column,
             index
           }) => {
-            if (row.isUploadFile=== 0) {
-              return h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    this.uploadFiles(row)
-                  }
-                }
-              }, '上传资料')
-            } else {
               return h('i-button', {
                 props: {
                   type: 'text'
@@ -170,18 +155,17 @@
                   }
                 }
               }, '补充资料')
-            }
           }
         },
-        {
-          title: '资料上传',
-          editable: true,
-          key: 'isUploadFile',
-          align: 'center',
-            render: (h, { row, column, index }) => {
-          return h("span", {}, row.isUploadFile === 0 ? "未上传" : "已上传");
-        }
-        },
+        // {
+        //   title: '资料上传',
+        //   editable: true,
+        //   key: 'isUploadFile',
+        //   align: 'center',
+        //     render: (h, { row, column, index }) => {
+        //   return h("span", {}, row.isUploadFile === 0 ? "未上传" : "已上传");
+        // }
+        // },
         {
           title: '订单编号',
           editable: true,
