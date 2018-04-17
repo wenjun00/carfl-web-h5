@@ -140,11 +140,11 @@
         trigger: 'blur',
       },
       { validator: this.$validator.phoneNumber, trigger: "blur" }],
-      orderId: [{
-        required: true,
-        message: '请选择订单',
-        trigger:'change'
-      }],
+    //   orderId: [{
+    //     required: true,
+    //     message: '请选择订单',
+    //     trigger:'change'
+    //   }],
     };
     private purchaseData: Object = {
       province: "",
