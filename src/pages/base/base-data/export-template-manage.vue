@@ -1,7 +1,7 @@
-<template>
+<template> 
   <section class="page customer-fodder-maintain">
     <i-row style="margin-top:20px;">
-      <i-col>
+      <i-col >
         <span style="font-size:18px;font-weight:bold;margin-left:8px;margin-right:5%;">导出模版管理</span>
         <span style="margin-left:100px;">模块功能</span>
         <i-input style="width:20%;margin-left:10px" v-model="personalModel.name" placeholder="请输入模版、页面、功能名称查询"></i-input>
@@ -10,7 +10,7 @@
         <i-button class="blueButton" style="margin-left:10px;position:absolute;right:11px;" @click="materialModelOne" v-if="addMater === true">新增模版</i-button>
       </i-col>
       <i-row type="flex" style="margin-top:10px;">
-        <i-col>
+        <i-col span="4" style="margin-top:10px;">
           <div style="width:250px;height:30px;border:1px solid #dddd;line-height:30px;font-size:16px;background-color: #f8f8f9">
             <div style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>
             <span style="position:relative;left:10px;">模版类型</span>
@@ -22,7 +22,7 @@
             </div>
           </div>
         </i-col>
-        <i-col class="rightTable">
+        <i-col span="19" class="rightTable">
           <data-box :id="474" :columns="columns" :data="data1" @onPageChange="search" :page="pageService"></data-box>
         </i-col>
       </i-row>
