@@ -41,10 +41,10 @@
         <td>{{item.itemLabel}}</td>
         <td>{{item.itemMoney}}</td>
       </tr>
-      <!--<tr height="40">-->
-        <!--<td>合计</td>-->
-        <!--<td style="font-weight:700;font-size:14px">{{repaymentObj.totalPayment}}</td>-->
-      <!--</tr>-->
+      <tr height="40">
+        <td>合计</td>
+        <td style="font-weight:700;font-size:14px">{{repaymentObj.totalPayment}}</td>
+      </tr>
     </table>
     <div style="margin-top:10px;" v-if="applicationPhaseResources.length">
       <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>附件</span>
