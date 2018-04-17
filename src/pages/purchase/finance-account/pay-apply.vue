@@ -172,11 +172,11 @@
         trigger: 'blur',
       },
       { validator: this.$validator.phoneNumber, trigger: "blur" }],
-      orderNumber: [{
-        required: true,
-        message: '请选择订单',
-        trigger:'change'
-      }],
+    //   orderNumber: [{
+    //     required: true,
+    //     message: '请选择订单',
+    //     trigger:'change'
+    //   }],
       refundType:[{
         required: true,
         message: '请选择付款类型',

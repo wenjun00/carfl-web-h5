@@ -1,6 +1,7 @@
 <!--全款销售申请-->
 <template>
   <section class="page full-payment-apply specialInput">
+      <div>
     <div class="header">
       <span class="form-title">全款销售申请</span>
       <div style="float:right;margin-top: 10px;margin-right:10px">
@@ -36,7 +37,7 @@
               <!--<i-select>
                 <i-option label="吴小川" value="吴小川" key="吴小川"></i-option>
               </i-select>-->
-              <i-input type="text" v-model="applyData.salesmanName">
+              <i-input type="text" readonly v-model="applyData.salesmanName"  @on-focus="salesmanNamefocus">
               </i-input>
             </i-form-item>
           </i-col>
@@ -71,9 +72,19 @@
         </i-col>
       </i-row>
     </div>
+          <Spin size="large" class="circular" fix v-if="spinShow">
+           <Icon type="load-c" class="demo-spin-icon-load"></Icon>
+      </Spin>
+      </div>
     <template>
       <i-modal title="历史记录" width="1200" v-model="historicalModal" :trandfer="false" class="historical">
         <historical-record @close="historicalModal=false" :historicalDataset="historicalDataset" @distributionData="distributionData"></historical-record>
+      </i-modal>
+    </template>
+
+     <template>
+      <i-modal title="归属业务员" width="800" v-model="salesmanModal" :trandfer="false" class="historical">
+        <salesman-name @choosecurrentData="choosecurrentData" @close="salesmanModal=false"></salesman-name>
       </i-modal>
     </template>
   </section>
@@ -107,6 +118,7 @@
 
   import ChooseBuyMaterialsAll from '~/components/purchase-manage/choose-buy-materials-all.tsx.vue';
   import CustomerMaterialsAll from '~/components/purchase-manage/customer-materials-all.vue';
+  import SalesmanName from "~/components/purchase-manage/salesman-name.tsx.vue";
 
   @Layout('workspace')
   @Component({
@@ -117,6 +129,7 @@
       ChooseBuyMaterialsAll,
       CustomerMaterialsAll,
       HistoricalRecord,
+      SalesmanName
     },
   })
   export default class FullPaymentApply extends Page {
@@ -153,7 +166,6 @@
       salesmanName: [{
         required: true,
         message: '请输入归属业务员',
-        trigger: 'blur',
       }]
     };
 
@@ -172,7 +184,20 @@
     private addcarData: any = [];
     private type: Boolean = false;
     private orderStatus: any = '';
+    private spinShow:Boolean = false;
+    private salesmanModal:Boolean = false;
     // private currentRowData: any = {};
+
+    /**
+     * 归属业务员
+     */
+    salesmanNamefocus(){
+        this.salesmanModal=true
+    }
+    choosecurrentData(data){
+        this.applyData.salesmanName=data.userRealname
+        this.applyData.salesmanId=data.id
+    }
     /**
      * 清空数据
      */
@@ -445,6 +470,7 @@
         name: this.applyData.name,
         mobileMain: this.applyData.customerPhone,
         salesmanName: this.applyData.salesmanName,
+        salesmanId:this.applyData.salesmanId,
         city: choosebusyData.city,
         companyId: choosebusyData.companyId,
         province: choosebusyData.province,
@@ -455,7 +481,11 @@
       };
       this.productOrderService.createFullPaymentOrder(savesubmitDataset).subscribe(
         data => {
-          this.$Message.success('保存成功！');
+                        this.spinShow=true
+                        setTimeout(()=>{
+                        this.$Message.success('保存成功！');
+                        this.spinShow=false
+                        },1000)
         },
         ({
           msg
@@ -528,6 +558,7 @@
                     name: this.applyData.name,
                     mobileMain: this.applyData.customerPhone,
                     salesmanName: this.applyData.salesmanName,
+                    salesmanId:this.applyData.salesmanId,
                     city: choosebusyData.city,
                     companyId: choosebusyData.companyId,
                     province: choosebusyData.province,
@@ -539,7 +570,11 @@
                   console.log(savesubmitDataset, 8888);
                   this.productOrderService.createFullPaymentOrder(savesubmitDataset).subscribe(
                     data => {
-                      this.$Message.success('保存成功！');
+                       this.spinShow=true
+                        setTimeout(()=>{
+                        this.$Message.success('保存成功！');
+                        this.spinShow=false
+                        },1000)
                     },
                     ({
                       msg

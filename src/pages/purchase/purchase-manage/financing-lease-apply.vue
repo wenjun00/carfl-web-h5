@@ -669,7 +669,7 @@ import { State, Mutation, namespace } from "vuex-class";
                         this.spinShow=true
                         setTimeout(()=>{
                         this.$Message.success('保存成功！');
-                        this.spinShow=true
+                        this.spinShow=false
                         },1000)
                       }, ({
                         msg
