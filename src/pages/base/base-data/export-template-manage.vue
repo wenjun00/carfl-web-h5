@@ -1,28 +1,26 @@
-<template> 
+<template>
   <section class="page customer-fodder-maintain">
-    <i-row style="margin-top:20px;">
-      <i-col >
-        <span style="font-size:18px;font-weight:bold;margin-left:8px;margin-right:5%;">导出模版管理</span>
-        <span style="margin-left:100px;">模块功能</span>
-        <i-input style="width:20%;margin-left:10px" v-model="personalModel.name" placeholder="请输入模版、页面、功能名称查询"></i-input>
-        <i-button class="blueButton" style="margin-left:10px" @click="search">搜索</i-button>
-        <!--<i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>-->
-        <i-button class="blueButton" style="margin-left:10px;position:absolute;right:11px;" @click="materialModelOne" v-if="addMater === true">新增模版</i-button>
-      </i-col>
-      <i-row type="flex" style="margin-top:10px;">
-        <i-col span="4" style="margin-top:10px;">
-          <div style="width:250px;height:30px;border:1px solid #dddd;line-height:30px;font-size:16px;background-color: #f8f8f9">
-            <div style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>
-            <span style="position:relative;left:10px;">模版类型</span>
+    <i-row>
+      <span class="form-title">导出模版管理</span>
+      <!--<i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>-->
+      <i-row class="data-form">
+        <i-col span="4">
+          <div class="data-form-item">
+            <div class="data-form-item-icon"></div>
+            <span>模版类型</span>
           </div>
-          <div style="width:250px;height:538px;border:1px solid #dddd;border-top:0;overflow: auto">
-            <div v-for="{value,label} in $dict.getDictData('0428')" :key="value" :label="label" :value="value" :class="{'maintainCss':value===checkId}" style="cursor:pointer;width:100%;padding-left:20px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto"
-                 @click="checkMaintain(value)">
+          <div class="data-form-list">
+            <div class="data-form-list-template" v-for="{value,label} in $dict.getDictData('0428')" :key="value" :label="label" :value="value"
+              :class="{'maintainCss':value===checkId}" @click="checkMaintain(value)">
               <span>{{label}}</span>
             </div>
           </div>
         </i-col>
-        <i-col span="19" class="rightTable">
+        <i-col class="command" span="19" offset="1">
+          <span>模块功能</span>
+          <i-input class="command-item" v-model="personalModel.name" placeholder="请输入模版、页面、功能名称查询"></i-input>
+          <i-button class="blueButton" @click="search">搜索</i-button>
+          <i-button class="blueButton" @click="materialModelOne" v-if="addMater === true">新增模版</i-button>
           <data-box :id="474" :columns="columns" :data="data1" @onPageChange="search" :page="pageService"></data-box>
         </i-col>
       </i-row>
@@ -47,13 +45,27 @@
   import AddMaterial from '~/components/base-data/add-material.vue';
   import EditMaterial from '~/components/base-data/edit-material.vue';
   import AddManageExport from '~/components/base-data/add-manage-export.vue'
-  import { Form } from 'iview';
-  import { Dependencies } from '~/core/decorator';
-  import { DataDictService } from '~/services/manage-service/data-dict.service';
-  import { PersonalMaterialService } from '~/services/manage-service/personal-material.service';
-  import { PageService } from '~/utils/page.service';
-  import { TemplateService } from "~/services/manage-service/template.service";
-  import { Layout } from '~/core/decorator';
+  import {
+    Form
+  } from 'iview';
+  import {
+    Dependencies
+  } from '~/core/decorator';
+  import {
+    DataDictService
+  } from '~/services/manage-service/data-dict.service';
+  import {
+    PersonalMaterialService
+  } from '~/services/manage-service/personal-material.service';
+  import {
+    PageService
+  } from '~/utils/page.service';
+  import {
+    TemplateService
+  } from "~/services/manage-service/template.service";
+  import {
+    Layout
+  } from '~/core/decorator';
 
   @Layout('workspace')
   @Component({
@@ -89,39 +101,39 @@
         name: '',
       };
       this.columns = [{
-        title: '操作',
-        align: 'center',
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
-          return h('div', [
-            h(
-              'i-button', {
-                props: {
-                  type: 'text',
-                },
-                style: {
-                  color: '#265EA2',
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '提示',
-                      content: '您确定要删除吗？',
-                      onOk: () => {
-                        this.delectMaintain(row);
-                      },
-                    });
+          title: '操作',
+          align: 'center',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('div', [
+              h(
+                'i-button', {
+                  props: {
+                    type: 'text',
+                  },
+                  style: {
+                    color: '#265EA2',
+                  },
+                  on: {
+                    click: () => {
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '您确定要删除吗？',
+                        onOk: () => {
+                          this.delectMaintain(row);
+                        },
+                      });
+                    },
                   },
                 },
-              },
-              '删除'
-            ),
-          ]);
+                '删除'
+              ),
+            ]);
+          },
         },
-      },
         {
           title: '模版名称',
           key: 'templateName',
@@ -136,32 +148,36 @@
         },
       ];
     }
-    checkMaintain(value){
+    checkMaintain(value) {
       this.addMater = true
       this.checkId = value
-      this.templateService.selectTemplate({templateType:this.checkId},this.pageService).subscribe( data => {
+      this.templateService.selectTemplate({
+        templateType: this.checkId
+      }, this.pageService).subscribe(data => {
         this.data1 = data;
-      },({msg}) => {
+      }, ({
+        msg
+      }) => {
         this.$Message.error(msg)
       })
     }
-    search(){
+    search() {
 
     }
-    closeMaterial(){
+    closeMaterial() {
       this.materialModel = false
       this.checkMaintain(this.checkId);
     }
-    cancelAddMaterial(){
+    cancelAddMaterial() {
       this.materialModel = false
     }
-    newAdd(){
-      let _addManage :any = this.$refs['add-manage']
+    newAdd() {
+      let _addManage: any = this.$refs['add-manage']
       _addManage.saveButton(this.checkId)
     }
-    materialModelOne(){
+    materialModelOne() {
       this.materialModel = true
-      let _addManage :any = this.$refs['add-manage']
+      let _addManage: any = this.$refs['add-manage']
       _addManage.start()
     }
     /**
@@ -173,16 +189,65 @@
           templateId: row.id,
         })
         .subscribe(val => {
-            this.$Message.success('删除成功！');
-            this.checkMaintain(this.checkId);
-          }, ({ msg }) => {
-            this.$Message.error(msg);
-          }
-        );
+          this.$Message.success('删除成功！');
+          this.checkMaintain(this.checkId);
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        });
     }
   }
+
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+  .page.customer-fodder-maintain {
+    .data-form {
+      .data-form-item {
+        width: 250px;
+        height: 30px;
+        border: 1px solid #dddd;
+        line-height: 30px;
+        font-size: 16px;
+        background-color: #f8f8f9;
+        .data-form-item-icon {
+          width: 4px;
+          height: 15px;
+          background: rgb(38, 94, 162);
+          display: inline-block;
+          margin-left: 10px;
+          position: relative;
+          top: 2px;
+        }
+      }
+      .command {
+        .command-item {
+          width: 20%;
+          margin-left: 10px
+        }
+      }
+      .data-form-list {
+        width: 250px;
+        height: 538px;
+        border: 1px solid #dddd;
+        border-top: 0;
+        overflow: auto;
+        .data-form-list-template {
+          cursor: pointer;
+          width: 100%;
+          padding-left: 20px;
+          height: 40px;
+          line-height: 40px;
+          font-size: 16px;
+          postion: relative;
+          margin: auto
+        }
+      }
+    }
+    .maintainCss{
+        background: #e4f4fa;
+    }
+  }
 
 </style>

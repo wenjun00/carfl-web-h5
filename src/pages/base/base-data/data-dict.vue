@@ -1,36 +1,33 @@
 <!--数据字典-->
 <template>
   <section class="page data-dict">
-    <i-row>
+    <i-row class="data-form">
       <span class="form-title">数据字典</span>
       <i-row type="flex" align="top" justify="start">
-        <i-col>
-          <div style="width:250px;height:30px;border:1px solid #dddd;line-height:30px;font-size:16px;">
-            <div
-              style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>
+        <i-col :span="4">
+          <div class="data-form-item">
+            <div class="data-form-item-icon"></div>
             <span>数据类型</span>
-            <span @click="addVehicle" style="float: right;margin-right: 12px;color:#265ea2;">
+            <span @click="addVehicle" class="data-form-item-add">
               <svg-icon iconClass="tianjiawenjian"></svg-icon>
             </span>
           </div>
-          <div style="width:250px;height:600px;border:1px solid #dddd;border-top:0;overflow:auto;">
-            <div v-for="item in dataType" :key="item.id" :value="item.name" :class="{'dataTypeCss':checkId===item.id}"
-                 style="cursor:pointer;width:100%;padding-left:10px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto"
-                 @click="checkDataType(item)">
+          <div class="data-form-list">
+            <div class="data-form-datatypelist" v-for="item in dataType" :key="item.id" :value="item.name" :class="{'dataTypeCss':checkId===item.id}"
+              @click="checkDataType(item)">
               <span style="">{{item.name}}</span>
             </div>
           </div>
         </i-col>
-        <i-col class="rightTable">
+        <i-col class="command" :span="19" offset="1">
           <span>数据名称：</span>
-          <i-input style="width:20%;" v-model="dictAguments.name"></i-input>
-          <i-button class="blueButton" style="margin-left:10px" @click="seach">搜索</i-button>
-          <i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>
-          <i-button class="blueButton" style="margin-left:10px;position:absolute;right:13px;" @click="dataModal=true">
+          <i-input class="command-item" v-model="dictAguments.name"></i-input>
+          <i-button class="blueButton" @click="seach">搜索</i-button>
+          <i-button class="blueButton" @click="resetSeach">重置</i-button>
+          <i-button class="blueButton command-add" @click="dataModal=true">
             新增数据
           </i-button>
-          <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService"
-                    :noDefaultRow="true"></data-box>
+          <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService" :noDefaultRow="true"></data-box>
         </i-col>
       </i-row>
     </i-row>
@@ -51,8 +48,7 @@
 
     <template>
       <i-modal v-model="adddatatypeModal" width="500" title="新增数据字典类型" class="toViewModalClass">
-        <i-form :label-width="60" style="margin-top:20px;" :model="addDataType" :rules="rulesAddDataType"
-                ref="add-data-type">
+        <i-form :label-width="60" style="margin-top:20px;" :model="addDataType" :rules="rulesAddDataType" ref="add-data-type">
           <i-form-item label="名称" prop="name">
             <i-input v-model="addDataType.name"></i-input>
           </i-form-item>
@@ -84,13 +80,27 @@
   import DataBox from "~/components/common/data-box.vue";
   import Component from "vue-class-component";
   import SvgIcon from "~/components/common/svg-icon.vue";
-  import {Form} from "iview";
-  import {Dependencies} from "~/core/decorator";
-  import {OrderService} from "~/services/business-service/order.service";
-  import {Layout} from "~/core/decorator";
-  import {DataDictTypeService} from "~/services/manage-service/data-dict-type.service";
-  import {DataDictService} from "~/services/manage-service/data-dict.service";
-  import {PageService} from "~/utils/page.service";
+  import {
+    Form
+  } from "iview";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    OrderService
+  } from "~/services/business-service/order.service";
+  import {
+    Layout
+  } from "~/core/decorator";
+  import {
+    DataDictTypeService
+  } from "~/services/manage-service/data-dict-type.service";
+  import {
+    DataDictService
+  } from "~/services/manage-service/data-dict.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
 
   @Layout("workspace")
   @Component({
@@ -104,9 +114,9 @@
     private dataDictTypeService: DataDictTypeService;
     @Dependencies(DataDictService) private dataDictService: DataDictService;
     @Dependencies(PageService) private pageService: PageService;
-    private data1: Array<Object> = [];
-    private dataType: Array<any> = [];
-    private dataNames: Array<any> = [];
+    private data1: Array < Object > = [];
+    private dataType: Array < any > = [];
+    private dataNames: Array < any > = [];
     private searchOptions: Boolean = false;
     private adddatatypeModal: Boolean = false;
     private checkId: Number = 1;
@@ -136,19 +146,29 @@
 
     created() {
       this.rulesAddDate = {
-        name: [
-          {required: true, message: "请输入数据名称", trigger: "change"},
-          {max: 20, message: "长度不能超过20个字符", trigger: "blur"}
+        name: [{
+            required: true,
+            message: "请输入数据名称",
+            trigger: "change"
+          },
+          {
+            max: 20,
+            message: "长度不能超过20个字符",
+            trigger: "blur"
+          }
         ]
       };
       this.rulesAddDataType = {
-        name: [
-          {
+        name: [{
             required: true,
             message: "请输入数据字典类型名称",
             trigger: "change"
           },
-          {max: 20, message: "长度不能超过20个字符", trigger: "blur"}
+          {
+            max: 20,
+            message: "长度不能超过20个字符",
+            trigger: "blur"
+          }
         ]
       };
       this.dataNames = [];
@@ -161,8 +181,7 @@
       };
       this.getAllDictType();
       this.checkDataType(this.item);
-      this.columns1 = [
-        {
+      this.columns1 = [{
           title: "序号",
           type: "index",
           fixed: "left",
@@ -172,11 +191,14 @@
           title: "操作",
           fixed: "left",
           align: "center",
-          render: (h, {row, column, index}) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h("div", [
               h(
-                "i-button",
-                {
+                "i-button", {
                   props: {
                     type: "text"
                   },
@@ -195,8 +217,7 @@
                 "编辑"
               ),
               h(
-                "i-button",
-                {
+                "i-button", {
                   props: {
                     type: "text"
                   },
@@ -228,15 +249,13 @@
       _addData.resetFields();
     }
 
-    getOrderInfoByTime() {
-    }
+    getOrderInfoByTime() {}
 
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
 
-    exportMonthReport() {
-    }
+    exportMonthReport() {}
 
     /**
      * 新增数据
@@ -250,7 +269,7 @@
      * 点击一次判断
      */
     buttonOnlyOne() {
-      if(!this.warnStatus){
+      if (!this.warnStatus) {
         this.confirmmadd()
       }
     }
@@ -260,7 +279,7 @@
      */
     confirmmadd() {
       if (this.addModel.name.indexOf(" ") >= 0 || this.addModel.name === '') {
-        this.warnStatus=true;
+        this.warnStatus = true;
         setTimeout(() => {
           this.warnStatus = false;
         }, 2000);
@@ -286,7 +305,9 @@
           this.addModel.id = "";
           this.addModel.typeCode = "";
         },
-        ({msg}) => {
+        ({
+          msg
+        }) => {
           this.$Message.error(msg);
         }
       );
@@ -303,8 +324,7 @@
     /**
      * 编辑
      */
-    editDict(val) {
-    }
+    editDict(val) {}
 
     /**
      * 添加数据字典类型
@@ -325,7 +345,7 @@
      * 确定
      */
     confirmmaddtype() {
-      let formValid = <Form>this.$refs["add-data-type"];
+      let formValid = < Form > this.$refs["add-data-type"];
       formValid.validate(valid => {
         if (!valid) return false;
         this.dataDictTypeService
@@ -337,7 +357,9 @@
               this.adddatatypeModal = false;
               this.addDataType.name = "";
             },
-            ({msg}) => {
+            ({
+              msg
+            }) => {
               this.$Message.error(msg);
             }
           );
@@ -385,7 +407,9 @@
                 this.$Message.success("操作成功！");
                 this.seach();
               },
-              ({msg}) => {
+              ({
+                msg
+              }) => {
                 this.$Message.error(msg);
               }
             );
@@ -404,7 +428,7 @@
      * 新增数据按钮
      */
     submitAddData() {
-      let form = <Form>this.$refs["add-data"];
+      let form = < Form > this.$refs["add-data"];
       this.addDataModel.typeCode = this.typeCodes;
       this.addDataModel.name = this.addDataModel.name;
       form.validate(valid => {
@@ -420,7 +444,9 @@
             this.dataModal = false;
             this.checkDataType(this.checked);
           },
-          ({msg}) => {
+          ({
+            msg
+          }) => {
             this.$Message.error(msg);
           }
         );
@@ -441,21 +467,76 @@
       this.checkId = 1;
     }
   }
+
 </script>
 <style lang="less" scoped>
+  .page.data-dict {
+    .data-form {
+      .data-form-item {
+        width: 250px;
+        height: 30px;
+        border: 1px solid #dddd;
+        line-height: 30px;
+        font-size: 16px;
+        .data-form-item-icon {
+          width: 4px;
+          height: 15px;
+          background: rgb(38, 94, 162);
+          display: inline-block;
+          margin-left: 10px;
+          position: relative;
+          top: 2px;
+        }
+        .data-form-item-add {
+          float: right;
+          margin-right: 12px;
+          color: #265ea2;
+        }
+      }
+      .command {
+        .command-item {
+          width: 20%;
+        }
+        .command-add {
+          margin-left: 10px;
+          position: absolute;
+          right: 13px;
+        }
+      }
+      .data-form-list {
+        width: 250px;
+        height: 600px;
+        border: 1px solid #dddd;
+        border-top: 0;
+        overflow: auto;
+        .data-form-datatypelist {
+          cursor: pointer;
+          width: 100%;
+          padding-left: 10px;
+          height: 40px;
+          line-height: 40px;
+          font-size: 16px;
+          postion: relative;
+          margin: auto
+        }
+      }
+    }
+  }
+  
   .dataTypeCss {
     background: #e4f4fa;
   }
-
+  
   .toViewModalClass {
     .ivu-modal-footer {
       display: none !important;
     }
   }
+  
+  //   .rightTable {
+  //     width: calc(~ "100% - 280px");
+  //     margin: -10px;
+  //     margin-left: 20px;
+  //   }
 
-  .rightTable {
-    width: calc(~ "100% - 280px");
-    margin: -10px;
-    margin-left: 20px;
-  }
 </style>

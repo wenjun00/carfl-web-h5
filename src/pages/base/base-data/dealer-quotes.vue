@@ -1,38 +1,37 @@
 <!--经销商报价-->
 <template>
-  <section class="page">
-    <div style="margin-top:10px;display: flex;align-items: baseline;justify-content: space-between;">
-      <div style="margin-top:10px;display: flex;align-items: baseline;">
-        <span class="form-title">经销商报价</span>
-        <span style="margin-left:20px;margin-right:5px;">经销商</span>
-        <i-input style="width:14%;" placeholder="请输入经销商" v-model="busModal.quotationName"></i-input>
-        <span style="margin-left:20px;margin-right:5px;">品牌</span>
-        <i-input style="width:12%" placeholder="请输入品牌" v-model="busModal.carBrandName"></i-input>
-        <span style="margin-left:20px;margin-right:5px;">系列</span>
-        <i-input style="width:12%" placeholder="请输入系列" v-model="busModal.carSeriesName"></i-input>
-        <span style="margin-left:20px;margin-right:5px;">型号</span>
-        <i-input style="width:12%" placeholder="请输入型号" v-model="busModal.carName"></i-input>
-        <i-button class="blueButton" style="margin-left:10px;" @click="seachBusiness">搜索</i-button>
-        <i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>
+  <section class="page dealer-quotes">
+    <div class="form">
+      <div class="data-form">
+        <span class="form-title title">经销商报价</span>
+        <span>经销商</span>
+        <i-input class="data-form-item" placeholder="请输入经销商" v-model="busModal.quotationName"></i-input>
+        <span>品牌</span>
+        <i-input class="data-form-item" placeholder="请输入品牌" v-model="busModal.carBrandName"></i-input>
+        <span>系列</span>
+        <i-input class="data-form-item" placeholder="请输入系列" v-model="busModal.carSeriesName"></i-input>
+        <span>型号</span>
+        <i-input class="data-form-item" placeholder="请输入型号" v-model="busModal.carName"></i-input>
+        <i-button class="blueButton" @click="seachBusiness">搜索</i-button>
+        <i-button class="blueButton" @click="resetSeach">重置</i-button>
 
       </div>
-      <div style="float:right;margin-right:10px;margin-top:10px;width:280px;">
-        <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon style="font-size:16px;" iconClass="dayin"></svg-icon>
-          <span style="font-size:12px;">打印</span>
+      <div class="command">
+        <div class="command-item">
+          <svg-icon iconClass="dayin"></svg-icon>
+          <span>打印</span>
         </div>
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon iconClass="daochu" style="font-size:14px;"></svg-icon>
-          <span style="font-size: 8px;">导出</span>
+        <div class="command-item">
+          <svg-icon iconClass="daochu"></svg-icon>
+          <span>导出</span>
         </div>
-        <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon style="font-size:16px;" iconClass="daoru"></svg-icon>
-          <span style="font-size:8px;">导入</span>
+        <div class="command-item">
+          <svg-icon iconClass="daoru"></svg-icon>
+          <span>导入</span>
         </div>
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon iconClass="xiazai" style="
-          font-size:16px;"></svg-icon>
-          <span style="font-size: 8px;">模版下载</span>
+        <div class="command-item">
+          <svg-icon iconClass="xiazai"></svg-icon>
+          <span>模版下载</span>
         </div>
       </div>
     </div>
@@ -60,8 +59,8 @@
     </div> -->
     <!--新增报价-->
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:10px">
-        <i-col :span="24" style="text-align:right;">
+      <i-row type="flex" align="middle">
+        <i-col :span="1" :offset="23">
           <i-button @click="addquoteFun" class="highButton">新增报价</i-button>
         </i-col>
       </i-row>
@@ -493,6 +492,44 @@
 
 </script>
 <style lang="less" scope>
+  .page.dealer-quotes {
+    .form {
+      margin-top: 10px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      .title {
+        margin-right: 10px;
+      }
+      .data-form {
+        margin-top: 10px;
+        display: flex;
+        align-items: baseline;
+        .data-form-item {
+          width: 14%;
+          margin-right: 20px;
+          margin-left: 4px;
+        }
+      }
+      .command {
+        float: right;
+        margin-right: 10px;
+        margin-top: 10px;
+        width: 280px;
+        .command-item {
+          font-size: 16px;
+          cursor: pointer;
+          display: inline-block;
+          margin-left: 10px;
+          color: #3367A7;
+          span {
+            font-size: 8px
+          }
+        }
+      }
+    }
+  }
+  
   .bottom_addPrice {
     width: 100%;
     height: 80px;

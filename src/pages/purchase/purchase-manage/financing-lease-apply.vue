@@ -223,7 +223,6 @@ import { State, Mutation, namespace } from "vuex-class";
     choosecurrentData(data){
         this.customerModel.salesmanName=data.userRealname
         this.customerModel.salesmanId=data.id
-        console.log(this.customerModel.salesmanName,'customerModel.salesmanName')
     }
     /**
      * 归属业务员
@@ -250,7 +249,8 @@ import { State, Mutation, namespace } from "vuex-class";
      * 根据客户三项查询历史订单
      */
     checkcustomerinfo() {
-        console.log(this.customerModel.idCard)
+         let pat:any= /(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$)|(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)/;
+      if(this.customerModel.idCard.length === 18 && pat.test(this.customerModel.idCard)){
         let idcard:any=this.customerModel.idCard
         if(parseInt(idcard.substr(16, 1)) % 2 == 1){
             this.customerModel.sex=1
@@ -290,6 +290,7 @@ import { State, Mutation, namespace } from "vuex-class";
               this.$Message.error(msg);
             }
           );
+      }
       }
     }
     /**

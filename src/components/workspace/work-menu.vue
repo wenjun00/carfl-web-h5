@@ -49,7 +49,7 @@ export default class WorkMenu extends Vue {
   @State("pageList") pageList;
   @Mutation("openPage") openPage;
   @State("menuResource") menuResource;
-
+  // @Watch('menuResource')
   get menuConfig() {
     let createMenus = item => {
       let children = this.menuResource

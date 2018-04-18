@@ -10,19 +10,19 @@
     <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
     <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
     <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2">
+    <i-button class="open-search" @click="openSearch">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
-    <div style="float:right;margin-right:10px;margin-top:10px;">
-      <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+    <div class="command">
+      <div class="command-item dayin">
         <svg-icon iconClass="dayin"></svg-icon>
-        <span style="font-size: 12px;">打印</span>
+        <span>打印</span>
       </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+      <div class="command-item daochu">
         <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size: 12px;">导出</span>
+        <span>导出</span>
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
@@ -211,7 +211,7 @@ export default class SecondApproval extends Page {
         align: "center",
         title: "订单创建时间",
         editable: true,
-        width: 135,        
+        width: 135,
         key: "createTime",
         render: (h, { row, column, index }) => {
           return h(
@@ -224,7 +224,7 @@ export default class SecondApproval extends Page {
         align: "center",
         title: "进入资源池时间",
         editable: true,
-        width: 135,        
+        width: 135,
         key: "intoPoolDate",
         render: (h, { row, column, index }) => {
           return h(
@@ -276,14 +276,14 @@ export default class SecondApproval extends Page {
         align: "center",
         editable: true,
         title: "证件号",
-        width: 115,        
+        width: 115,
         key: "idCard"
       },
       {
         align: "center",
         editable: true,
         title: "手机号",
-        width: 85,        
+        width: 85,
         key: "mobileMain"
       }
     ];
@@ -374,6 +374,53 @@ export default class SecondApproval extends Page {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+  .page.second-approval{
+    .open-search {
+      color: #265EA2
+    }
+    .command {
+      float: right;
+      margin-right: 10px;
+      margin-top: 10px;
+      .command-item {
+        cursor: pointer;
+        display: inline-block;
+        margin-left: 10px;
+        color: #3367A7;
+        span {
+          font-size: 12px;
+        }
+        &.dayin {
+          font-size: 18px;
+        }
+        &.daochu {
+          font-size: 16px;
+        }
+      }
+    }
+    /*.data-form{*/
+    /*margin-top:6px;position:relative;right:10px;*/
+    /*.data-form-item{*/
+    /*&.search-input{*/
+    /*display:inline-block;width:14%;margin-left:20px;min-width:230px;*/
+    /*}*/
+    /*&.date .province-city .product-type .serch-button {*/
+    /*margin-left:10px*/
+    /*}*/
+    /*&.date-picker{*/
+    /*display:inline-block;width:10%*/
+    /*}*/
+    /*&.select{*/
+    /*&.province .city{*/
+    /*width:100px;margin-left:10px;*/
+    /*}*/
+    /*&.product-type{*/
+    /*width:120px;*/
+    /*}*/
+    /*}*/
+    /*}*/
+    /*}*/
 
+  }
 </style>
