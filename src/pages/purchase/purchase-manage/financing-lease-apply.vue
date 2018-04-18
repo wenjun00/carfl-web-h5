@@ -861,7 +861,7 @@ export default class FinancingLeaseApply extends Page {
 }
 </style>
 
-<style lang="less">
+<style lang="less" scoped>
 .page.finance-lease-tabs {
   .ivu-tabs-bar {
     border-bottom: 1px solid #dddee1;

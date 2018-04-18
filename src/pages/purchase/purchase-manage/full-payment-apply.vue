@@ -1,19 +1,19 @@
 <!--全款销售申请-->
 <template>
-  <section class="page full-payment-apply specialInput">
+  <section class="page full-payment-apply">
       <div>
-    <div class="header">
-      <span class="form-title">全款销售申请</span>
-      <div style="float:right;margin-top: 10px;margin-right:10px">
-        <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
-          <span style="font-size:12px;">打印</span>
+        <div class="header">
+            <span class="form-title">全款销售申请</span>
+            <div class="command" >
+                <div>
+                    <svg-icon class="dayin-img" iconClass="dayin"></svg-icon>
+                    <span>打印</span>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <i-row type="flex">
+    <i-row type="flex" class="form-data">
       <i-col span="18">
-        <i-form ref="customer-form" :model="applyData" :rules="applyRule" label-position="left" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
+        <i-form class="form-data-item" ref="customer-form" :model="applyData" :rules="applyRule" label-position="left" :label-width="110">
           <i-col span="12">
             <i-form-item label="证件号码" prop="idCard">
               <i-input type="text" :maxlength="18" v-model="applyData.idCard" autofocus placeholder="请输入证件号码" @on-change="showTab" @on-blur="checkcustomerinfo">
@@ -58,15 +58,15 @@
         <customer-materials-all ref="materials"></customer-materials-all>
       </i-tab-pane>
     </i-tabs>
-    <div class="submitBar">
+    <div class="submit-bar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="8" push="1">
-          <span style="height:40px;display:inline-block;line-height:3">申请人：administrator</span>
+          <span class="submit-bar-proposer">申请人：administrator</span>
         </i-col>
         <i-col :span="10" pull="4">
           <span>申请时间：2017-12-01 13:56:56</span>
         </i-col>
-        <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
+        <i-col :span="6" class="submit-bar-draft">
           <i-button size="large" class="highDefaultButton" @click="draftsaveAndSubmit(true)">保存草稿</i-button>
           <i-button class="highButton" @click="saveAndSubmit(false)">保存并提交</i-button>
         </i-col>
@@ -608,135 +608,95 @@
 
 <style lang="less" scoped>
   .page.full-payment-apply{
-      .ivu-input {
-        border-style: none;
-        border-bottom-style: solid;
-        border-radius: 0; // width: 240%;
-     }
+      .header{
+        border-bottom: 1px solid #cccccc;
+        .command{
+            float:right;
+            margin-top: 10px;
+            margin-right:10px;
+            div{
+            cursor:pointer;
+            display:inline-block;
+            margin-left:10px;
+            color:#3367A7;
+            .dayin-img{
+                font-size:24px;
+            }
+            span{
+                font-size:12px;
+            }
+            }
+      }
+      }
+      .form-data{
+        .form-data-item{
+          margin-top:20px;
+          position:relative;
+          left:16px;
+        }
+      }
+      .shade {
+        width: 98%;
+        height: 666px;
+        background: rgba(250, 250, 250, 0.4);
+        position: absolute;
+        left: 21px;
+        top: 257px;
+        z-index: 999;
+      }
+      .submit-bar{
+         height: 70px;
+         width: 100%;
+         background: #fff;
+         position: fixed;
+         bottom: 0;
+         left: 0;
+         border: 1px solid #ddd;
+         box-shadow: -3px 2px 20px #dddddd;
+         .submit-bar-proposer{
+          height:40px;
+          display:inline-block;
+          line-height:3;
+         }
+         .submit-bar-draft{
+          text-align:right;
+          position:relative;
+          bottom:6px;
+         }
+      }
+     
 
   }
 
 
 
-
-
-
-
-
-
-
-  .header {
-    border-bottom: 1px solid #cccccc;
-  }
-
-  .open {
-    max-width: auto;
-    overflow: hidden;
-  }
-
-  .close {
-    max-width: 0;
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  .case-list {
-    position: fixed;
-    right: 0px;
-    top: 0px;
-    background: #fff;
-    z-index: 2000;
-    width: 368px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    height: 100%;
-  }
-
-  .case-list.flag {
-    right: -348px;
-    box-shadow: none;
-    background: none;
-  }
-
-  .arrowUp {
-    transform: rotate(0deg); // transition: transform ease-in 0.2s;
-  }
-
-  .arrowDown {
-    transform: rotate(180deg); // transition: transform ease-in 0.2s;
-  }
-
-  .arrowButton {
-    line-height: 570px;
-    height: 100%;
-    background: #e4e4e4;
-    text-align: center;
-    width: 30px;
-  }
-
-  .submitBar {
-    height: 70px;
-    width: 100%;
-    background: #fff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border: 1px solid #ddd;
-    box-shadow: -3px 2px 20px #dddddd;
-  }
-
-  .specialInput {
-    .ivu-input {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0; // width: 240%;
-    }
-  }
-
-  .bigSelect {
-    .ivu-select-selection {
-      width: 240%;
-      display: inline-block;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-
-  .proCity .ivu-select-selection {
-    width: 358%;
-    display: inline-block;
-    border-style: none;
-    border-bottom-style: solid;
-    border-radius: 0;
-  }
-
-  .belongSalers {
-    .ivu-select-selection {
-      width: 240%;
-      display: inline-block;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-
-  .full-payment-apply {
+</style>
+<style lang="less">
+  .page.full-payment-apply{
     .ivu-select,
     .ivu-select-single {
       width: 100px;
     }
-    .shade {
-      width: 98%;
-      height: 666px;
-      background: rgba(250, 250, 250, 0.4);
-      position: absolute;
-      left: 21px;
-      top: 257px;
-      z-index: 999;
+     .ivu-input {
+      border-style: none;
+      border-bottom-style: solid;
+      border-radius: 0; // width: 240%;
     }
-  }
-
-  .fulls-pay-tabs {
+    .historical {
+      .ivu-modal-footer {
+       display: none !important;
+     }
+   }
+    .belongSalers {
+        .ivu-select-selection {
+        width: 240%;
+        display: inline-block;
+        border-style: none;
+        border-bottom-style: solid;
+        border-radius: 0;
+        }
+    }
+   .fulls-pay-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #dddee1;
       .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
@@ -751,25 +711,20 @@
     }
   }
 
-  .customer-lease-tabs {
-    .ivu-tabs-bar {
-      border-bottom: 1px solid #dddee1;
-      .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
-        margin: 0;
-        margin-right: 4px;
-        padding: 5px 16px 4px;
-        border: 1px solid #dddee1;
-        border-bottom: 0;
-        border-radius: 4px 4px 0 0;
-        transition: all 0.3s ease-in-out;
-      }
-    }
-  }
 
-  .historical {
-    .ivu-modal-footer {
-      display: none !important;
-    }
   }
-
+//   .customer-lease-tabs {
+//     .ivu-tabs-bar {
+//       border-bottom: 1px solid #dddee1;
+//       .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
+//         margin: 0;
+//         margin-right: 4px;
+//         padding: 5px 16px 4px;
+//         border: 1px solid #dddee1;
+//         border-bottom: 0;
+//         border-radius: 4px 4px 0 0;
+//         transition: all 0.3s ease-in-out;
+//       }
+//     }
+//   }
 </style>
