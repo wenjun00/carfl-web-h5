@@ -1,5 +1,5 @@
 <template>
-  <section class="home-page theme-default">
+  <section class="page home-page">
     <div style="width:100%;background:#EFF3F5;display:flex;justify-content:space-around">
       <div style="width:76%;">
         <!--左上-->

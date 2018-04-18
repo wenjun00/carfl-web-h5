@@ -1,7 +1,7 @@
 <template>
   <div class="layout col full" :class="[theme]">
     <work-header></work-header>
-    <div class="row-span" style="background:#EFF3F5;padding-top:0">
+    <div class="row-span" style="background:#EFF3F5;padding:0;">
       <router-view></router-view>
     </div>
   </div>

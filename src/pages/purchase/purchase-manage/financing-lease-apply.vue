@@ -704,10 +704,6 @@ import { State, Mutation, namespace } from "vuex-class";
     border-bottom: 1px solid #cccccc;
   }
 
-  .page {
-    height: 1750px!important;
-  }
-
   .submitBar {
     line-height: 70px;
     height: 70px;
