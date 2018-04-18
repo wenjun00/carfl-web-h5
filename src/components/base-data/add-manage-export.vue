@@ -1,69 +1,69 @@
 <!--订单信息导出-->
 <template>
   <section class="component add-manage-export">
-    <i-row  style="margin:6px;">
-      <span >模版名称</span>
-      <i-input style="width:30%;margin-left:10px"  placeholder="请输入模版名称" v-model="personalModel.name"></i-input>
-      <div style="margin-top:10px" >
+    <i-row class="data-form">
+      <span>模版名称</span>
+      <i-input class="data-form-item" placeholder="请输入模版名称" v-model="personalModel.name"></i-input>
+      <div class="data-form-title">
         <svg-icon iconClass="jisuanqi"></svg-icon>
-        <span class="exportTitle">选购信息</span>
+        <span>选购信息</span>
       </div>
-      <div style="padding-bottom:6px;margin:6px 0px 6px 15px;">
+      <div class="data-form-checkbox">
         <Checkbox :indeterminate="buyInfoIndeterminate" :value="buyInfoCheckAll" @click.prevent.native="buyInfoHandleCheckAll">全选</Checkbox>
       </div>
-      <div style="margin:0px 0px 0px 15px;">
+      <div class="data-form-checkboxgroup">
         <CheckboxGroup v-model="buyInfoCheckAllGroup" @on-change="buyInfoCheckAllGroupChange">
           <Checkbox v-for="item in checkBuyList" :label="item.name" :key="item.index"></Checkbox>
         </CheckboxGroup>
       </div>
 
-      <div style="margin-top:10px" >
+      <div class="data-form-title">
         <svg-icon iconClass="jisuanqi"></svg-icon>
-        <span class="exportTitle">产品信息</span>
+        <span>产品信息</span>
       </div>
-      <div style="padding-bottom:6px;margin:6px 0px 6px 15px;">
+      <div class="data-form-checkbox">
         <Checkbox :indeterminate="prdInfoIndeterminate" :value="prdInfoCheckAll" @click.prevent.native="prdInfoHandleCheckAll">全选</Checkbox>
       </div>
-      <div style="margin:0px 0px 0px 15px;">
+      <div class="data-form-checkboxgroup">
         <CheckboxGroup v-model="prdInfoCheckAllGroup" @on-change="prdInfoCheckAllGroupChange">
           <Checkbox v-for="item in prdInfoList" :label="item.name" :key="item.index"></Checkbox>
         </CheckboxGroup>
       </div>
 
-      <div style="margin-top:10px" >
+      <div class="data-form-title">
         <svg-icon iconClass="jisuanqi"></svg-icon>
-        <span class="exportTitle">金融方案</span>
+        <span>金融方案</span>
       </div>
-      <div style="padding-bottom:6px;margin:6px 0px 6px 15px;">
+      <div class="data-form-checkbox">
         <Checkbox :indeterminate="financeIndeterminate" :value="financeCheckAll" @click.prevent.native="financeHandleCheckAll">全选</Checkbox>
       </div>
-      <div style="margin:0px 0px 0px 15px;">
+      <div class="data-form-checkboxgroup">
         <CheckboxGroup v-model="financeCheckAllGroup" @on-change="financeCheckAllGroupChange">
           <Checkbox v-for="item in financeInfoList" :label="item.name" :key="item.index"></Checkbox>
         </CheckboxGroup>
       </div>
 
-      <div style="margin-top:10px" >
+      <div class="data-form-title">
         <svg-icon iconClass="jisuanqi"></svg-icon>
-        <span class="exportTitle">客户信息</span>
+        <span>客户信息</span>
       </div>
-      <div style="padding-bottom:6px;margin:6px 0px 6px 15px;">
+      <div class="data-form-checkbox">
         <Checkbox :indeterminate="customerIndeterminate" :value="customerCheckAll" @click.prevent.native="customerHandleCheckAll">全选</Checkbox>
       </div>
-      <div style="margin:0px 0px 0px 15px;">
+      <div class="data-form-checkboxgroup">
         <CheckboxGroup v-model="customerCheckAllGroup" @on-change="customerCheckAllGroupChange">
           <Checkbox v-for="item in customerInfoList" :label="item.name" :key="item.index"></Checkbox>
         </CheckboxGroup>
       </div>
 
-      <div style="margin-top:10px" >
+      <div class="data-form-title">
         <svg-icon iconClass="jisuanqi"></svg-icon>
-        <span class="exportTitle">订单信息</span>
+        <span>订单信息</span>
       </div>
-      <div style="padding-bottom:6px;margin:6px 0px 6px 15px;">
+      <div class="data-form-checkbox">
         <Checkbox :indeterminate="orderIndeterminate" :value="orderCheckAll" @click.prevent.native="orderHandleCheckAll">全选</Checkbox>
       </div>
-      <div style="margin:0px 0px 0px 15px;">
+      <div class="data-form-checkboxgroup">
         <CheckboxGroup v-model="orderCheckAllGroup" @on-change="orderCheckAllGroupChange">
           <Checkbox v-for="item in orderInfoList" :label="item.name" :key="item.index"></Checkbox>
         </CheckboxGroup>
@@ -77,10 +77,18 @@
   import DataBox from "../common/data-box.vue";
   import Component from "vue-class-component";
   import SvgIcon from '../common/svg-icon.vue'
-  import { PageService } from "../../utils/page.service";
-  import { Dependencies } from "../../core/decorator";
-  import { TemplateService } from "../../services/manage-service/template.service";
-  import { Layout } from "../../core/decorator";
+  import {
+    PageService
+  } from "../../utils/page.service";
+  import {
+    Dependencies
+  } from "../../core/decorator";
+  import {
+    TemplateService
+  } from "../../services/manage-service/template.service";
+  import {
+    Layout
+  } from "../../core/decorator";
 
   @Layout("workspace")
   @Component({
@@ -95,7 +103,7 @@
     @Dependencies(PageService) private pageService: PageService;
 
     private personalModel: any = {
-      name:''
+      name: ''
     };
 
     // 选购信息checkbox相关
@@ -286,41 +294,48 @@
         this.orderCheckAll = false;
       }
     }
-    start(){
-      this.buyInfoCheckAllGroup = ['租赁用途','自缴费用','租赁支付','意向期限','购车型号','购车颜色','购车配置','车辆排量','上牌地区','车牌号码','意向融资金额','意向首付比例']
-      this.prdInfoCheckAllGroup = ['产品系列','产品名称','产品期数','产品利率','还款方式','融资额度']
-      this.financeCheckAllGroup = ['首付比例','首付金额','融资额','融资期数','月供','尾付款','路桥费','合同金额']
-      this.customerCheckAllGroup = ['姓名','性别','出生日期','微信号码','手机号（主）','手机号（次）','婚属状况','教育程度','家庭座机','电费账号','电费密码','毕业院校','身份证号码','证件有效期','发证机关','身份证地址','现居住地址','现居住地生活时长','现居住地房产归属','本市自有房产状况及归属','本市房产地址','本市生活时长','职业信息','客户来源']
-      this.orderCheckAllGroup = ['订单创建日期','合同生效日期','提车日期','合同编号','订单状态','订单创建人','订单创建人归属部门']
+    start() {
+      this.buyInfoCheckAllGroup = ['租赁用途', '自缴费用', '租赁支付', '意向期限', '购车型号', '购车颜色', '购车配置', '车辆排量', '上牌地区', '车牌号码',
+        '意向融资金额', '意向首付比例'
+      ]
+      this.prdInfoCheckAllGroup = ['产品系列', '产品名称', '产品期数', '产品利率', '还款方式', '融资额度']
+      this.financeCheckAllGroup = ['首付比例', '首付金额', '融资额', '融资期数', '月供', '尾付款', '路桥费', '合同金额']
+      this.customerCheckAllGroup = ['姓名', '性别', '出生日期', '微信号码', '手机号（主）', '手机号（次）', '婚属状况', '教育程度', '家庭座机', '电费账号',
+        '电费密码', '毕业院校', '身份证号码', '证件有效期', '发证机关', '身份证地址', '现居住地址', '现居住地生活时长', '现居住地房产归属', '本市自有房产状况及归属', '本市房产地址',
+        '本市生活时长', '职业信息', '客户来源'
+      ]
+      this.orderCheckAllGroup = ['订单创建日期', '合同生效日期', '提车日期', '合同编号', '订单状态', '订单创建人', '订单创建人归属部门']
       this.buyInfoCheckAll = true
       this.prdInfoCheckAll = true
       this.financeCheckAll = true
       this.customerCheckAll = true
       this.orderCheckAll = true
     }
-    saveButton(value){
-      if(this.personalModel.name === ''){
+    saveButton(value) {
+      if (this.personalModel.name === '') {
         this.$Message.warning("请输入模版名称")
         return
       }
       this.templateService.createTemplate({
-        dataInfo:{
-          productInfo:this.buyInfoCheckAllGroup,
-          personalInfo:this.customerCheckAllGroup,
-          orderInfo:this.orderCheckAllGroup,
-          financialInfo:this.financeCheckAllGroup,
-          purchaseInfo:this.prdInfoCheckAllGroup
-        },
-        templateName:this.personalModel.name,
-        templateType:value
-      })
-      .subscribe( data => {
-        this.$emit("close")
-        this.$Message.success("新增模版成功！")
-        this.personalModel.name = ''
-      },({msg}) => {
-        this.$Message.error(msg)
-      })
+          dataInfo: {
+            productInfo: this.buyInfoCheckAllGroup,
+            personalInfo: this.customerCheckAllGroup,
+            orderInfo: this.orderCheckAllGroup,
+            financialInfo: this.financeCheckAllGroup,
+            purchaseInfo: this.prdInfoCheckAllGroup
+          },
+          templateName: this.personalModel.name,
+          templateType: value
+        })
+        .subscribe(data => {
+          this.$emit("close")
+          this.$Message.success("新增模版成功！")
+          this.personalModel.name = ''
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        })
     }
     created() {
       /**
@@ -362,7 +377,7 @@
       }, {
         index: 12,
         name: '意向首付比例'
-      },]
+      }, ]
       /**
        * 产品信息
        */
@@ -519,11 +534,30 @@
 
 </script>
 
-<style>
-  .exportTitle {
-    font-size: 14px;
-    font-weight: bold;
-    margin-top: 20px;
+<style lang="less" scoped>
+  .component.add-manage-export {
+    .data-form {
+      margin: 6px;
+      .data-form-item {
+        width: 30%;
+        margin-left: 10px;
+      }
+      .data-form-title {
+        margin-top: 10px;
+        span {
+          font-size: 14px;
+          font-weight: bold;
+          margin-top: 20px;
+        }
+      }
+      .data-form-checkbox {
+        padding-bottom: 6px;
+        margin: 6px 0px 6px 15px;
+      }
+      .data-form-checkboxgroup{
+          margin:0px 0px 0px 15px;
+      }
+    }
   }
 
 </style>
