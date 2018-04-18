@@ -84,10 +84,12 @@ export class PersonalService {
     /**
      * 上传客户审批资料
      */
-    uploadPersonalApproveFile(data){
+    uploadPersonalApproveFile({personalDataModel}){
          return this.netService.send({
             server: manageService.personalController.uploadPersonalApproveFile,
-            data: data
+            data: {
+                personalDataModel:personalDataModel
+            }
         })
     }
 }
