@@ -10,38 +10,38 @@
     <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
     <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
     <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2">
+    <i-button @click="openSearch" class="open-search">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
-    <div style="float:right;margin-right:10px;margin-top:10px;">
-      <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+    <div class="command">
+      <div class="command-item dayin">
         <svg-icon iconClass="dayin"></svg-icon>
-        <span style="font-size: 12px;">打印</span>
+        <span>打印</span>
       </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" @click="exportFaceApprovalList">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size: 12px;">导出</span>
+      <div class="command-item daochu">
+        <svg-icon iconClass="daochu" @click="exportFaceApprovalList"></svg-icon>
+        <span>导出</span>
       </div>
     </div>
-    <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
-      <i-input style="display:inline-block;width:14%;margin-left:20px;min-width:230px;" placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.personalInfo"></i-input>
-      <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%" v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%" v-model="resourcePoolModel.endTime" placeholder="终止日期"></i-date-picker>
-      <span style="margin-left:10px;">省市：</span>
-      <i-select style="width:100px;margin-left:10px;" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
+    <i-row class="data-form" v-if="searchOptions">
+      <i-input class="data-form-item search-input" placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.personalInfo"></i-input>
+      <span class="data-form-item date">日期：</span>
+      <i-date-picker class="data-form-item date-picker" v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker>~
+      <i-date-picker class="data-form-item date-picker" v-model="resourcePoolModel.endTime" placeholder="终止日期"></i-date-picker>
+      <span class="data-form-item province-city">省市：</span>
+      <i-select class="data-form-item select province"  placeholder="选择省" v-model="resourcePoolModel.province" clearable>
         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-select style="width:100px;margin-left:10px;" placeholder="选择市" v-model="resourcePoolModel.city" clearable>
+      <i-select class="data-form-item select city"  placeholder="选择市" v-model="resourcePoolModel.city" clearable>
         <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <span style="margin-left:10px;">产品类型</span>
-      <i-select placeholder="产品类型" style="width:120px;" v-model="resourcePoolModel.productType" clearable>
+      <span class="data-form-item product-type" >产品类型</span>
+      <i-select class="data-form-item select product-type" placeholder="产品类型" v-model="resourcePoolModel.productType" clearable>
         <i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-button style="margin-left:10px" class="blueButton" @click="getFaceApprovalList">搜索</i-button>
+      <i-button class="data-form-item serch-button blueButton" @click="getFaceApprovalList">搜索</i-button>
     </i-row>
     <data-box :id="244" :columns="columns1" :data="faceList" @onPageChange="getFaceApprovalList" :page="pageService"></data-box>
     <!--Modal-->
@@ -213,7 +213,7 @@ export default class FaceApproval extends Page {
         title: "订单创建时间",
         editable: true,
         key: "createTime",
-        width: 135,        
+        width: 135,
         render: (h, { row, column, index }) => {
           return h(
             "span",
@@ -226,7 +226,7 @@ export default class FaceApproval extends Page {
         title: "进入资源池时间",
         editable: true,
         key: "intoPoolDate",
-        width: 135,        
+        width: 135,
         render: (h, { row, column, index }) => {
           return h(
             "span",
@@ -277,14 +277,14 @@ export default class FaceApproval extends Page {
         align: "center",
         editable: true,
         title: "证件号",
-        width: 115,        
+        width: 115,
         key: "idCard"
       },
       {
         align: "center",
         editable: true,
         title: "手机号",
-        width: 85,        
+        width: 85,
         key: "mobileMain"
       }
     ];
@@ -377,6 +377,58 @@ export default class FaceApproval extends Page {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+  .page.face-approval{
+    .open-search {
+      color: #265EA2
+    }
+    .command {
+      float: right;
+      margin-right: 10px;
+      margin-top: 10px;
+      .command-item {
+        cursor: pointer;
+        display: inline-block;
+        margin-left: 10px;
+        color: #3367A7;
+        span {
+          font-size: 12px;
+        }
+        &.dayin {
+          font-size: 18px;
+        }
+        &.daochu {
+          font-size: 16px;
+        }
+      }
+    }
+    .data-form{
+      margin-top:6px;position:relative;right:10px;
+      .data-form-item{
+        &.search-input{
+          display:inline-block;width:14%;margin-left:20px;min-width:230px;
+        }
+        &.date .province-city .product-type .serch-button {
+          margin-left:10px
+        }
+        &.date-picker{
+          display:inline-block;width:10%
+        }
+        &.select{
+          &.province{
+            width: 100px;
+            margin-left: 10px;
+          }
+          &.city{
+            width: 100px;
+            margin-left: 10px;
+          }
+          &.product-type{
+            width:120px;
+          }
+        }
+      }
+    }
 
+  }
 </style>
