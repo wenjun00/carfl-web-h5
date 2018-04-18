@@ -2,7 +2,7 @@
 <template>
   <section class="component add-periods">
     <i-form ref="productref" :model="productDetail" :rules="formRules">
-      <div class="addPeriodsItem">自然参数</div>
+      <div class="add-periods-item">自然参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="产品序号" :span="4">
           <div>
@@ -15,20 +15,20 @@
           </div>
         </data-grid-item>
         <data-grid-item label="产品期数" :span="4">
-          <i-form-item style="width:70%;" prop="periods">
+          <i-form-item class="select" prop="periods">
             <i-select v-model="productDetail.periods" placeholder="请输入产品期数">
               <i-option v-for="{value,label} in $dict.getDictData('0435')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </data-grid-item>
         <data-grid-item label="产品利率" :span="4">
-          <i-form-item style="width:70%;" prop="productRates">
+          <i-form-item class="select" prop="productRates">
             <i-input v-model="productDetail.productRates" placeholder="请输入产品利率"></i-input>
           </i-form-item>
           <div class="after_text">%/月</div>
         </data-grid-item>
         <data-grid-item label="还款方式" :span="4">
-          <i-form-item style="width:70%;" prop="payWay">
+          <i-form-item class="select" prop="payWay">
             <i-select v-model="productDetail.payWay">
               <i-option label="等本等息" :value="384" :key="384"></i-option>
               <!--<i-option label="等额等息" :value="385" :key="385"></i-option>-->
@@ -36,7 +36,7 @@
           </i-form-item>
         </data-grid-item>
         <data-grid-item label="周期类型" :span="4">
-          <i-form-item style="width:70%;" prop="periodType">
+          <i-form-item class="select" prop="periodType">
             <i-select v-model="productDetail.periodType">
               <i-option label="月" :value="388" :key="388"></i-option>
             </i-select>
@@ -64,7 +64,7 @@
           </i-select>
         </data-grid-item>
       </data-grid>
-      <div class="addPeriodsItem">首付款参数</div>
+      <div class="add-periods-item">首付款参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="首付款" :span="12">
           <i-radio-group style="margin-top:6px;" v-model="initialParams">
@@ -80,7 +80,7 @@
           </div>
         </data-grid-item>
       </data-grid>
-      <div class="addPeriodsItem">保证金参数</div>
+      <div class="add-periods-item">保证金参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="保证金" :span="12">
           <i-radio-group style="margin-top:6px;" v-model="promiseMoenyParams">
@@ -104,7 +104,7 @@
           </div>
         </data-grid-item>
       </data-grid>
-      <div class="addPeriodsItem">尾付款参数</div>
+      <div class="add-periods-item">尾付款参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="尾付款" :span="12">
           <i-radio-group style="float:left;margin-top:6px;" v-model="residueParams">
@@ -120,7 +120,7 @@
           </div>
         </data-grid-item>
       </data-grid>
-      <div class="addPeriodsItem">管理费参数</div>
+      <div class="add-periods-item">管理费参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="管理费" :span="12">
           <i-radio-group style="margin-top:6px;" v-model="manageMoneyParams">
@@ -147,7 +147,7 @@
           </div>
         </data-grid-item>
       </data-grid>
-      <div class="addPeriodsItem">逾期违约惩罚参数</div>
+      <div class="add-periods-item">逾期违约惩罚参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item :span="6" label="征信保护天数">
           <i-form-item prop="creditProtectDays" style="margin-top:15px;">
@@ -175,7 +175,7 @@
           </i-form-item><span >&nbsp;%/天</span>
         </data-grid-item>
       </data-grid>
-      <!--<div style="margin-right:10px;display:inline-block" class="addPeriodsItem">状态</div>
+      <!--<div style="margin-right:10px;display:inline-block" class="add-periods-item">状态</div>
       <i-form-item prop="isPublish">
         <i-radio-group v-model="productDetail.isPublish">
           <i-radio :label="361">未发布</i-radio>
@@ -438,10 +438,13 @@
 </script>
 
 <style lang="less" scoped>
-  .addPeriodsItem {
+  .add-periods-item {
     font-size: 14px;
     font-weight: bold;
     margin-top: 16px;
+    .select{
+        width: 70%;
+    }
   }
 
   .ivu-form-item-content {

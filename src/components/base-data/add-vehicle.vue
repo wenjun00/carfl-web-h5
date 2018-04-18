@@ -1,26 +1,26 @@
 <!--新增车辆-->
 <template>
   <section class="component add-vehicle">
-    <i-form :label-width="110" style="margin-top:20px;" ref="add-vehicle" :model="addVehicleModel" :rules="rules">
+    <i-form :label-width="110" ref="add-vehicle" :model="addVehicleModel" :rules="rules">
       <i-form-item label="车辆品牌" prop="brandId">
-        <i-select style="width:260px;" v-model="addVehicleModel.brandId" @on-change="changeBrand" disabled>
+        <i-select class="data-form-item" v-model="addVehicleModel.brandId" @on-change="changeBrand" disabled>
           <i-option v-for="item in allBrand" :key="item.id" :value="item.id" :label="item.brandName"></i-option>
         </i-select>
       </i-form-item>
       <i-form-item label="车辆系列" prop="seriesId">
-        <i-select style="width:260px;" v-model="addVehicleModel.seriesId" disabled>
+        <i-select class="data-form-item" v-model="addVehicleModel.seriesId" disabled>
           <i-option v-for="item in allSeries" :key="item.id" :value="item.id" :label="item.seriesName"></i-option>
         </i-select>
       </i-form-item>
       <i-form-item label="车辆型号" prop="modelName">
-        <i-input style="width:260px;" v-model="addVehicleModel.modelName"></i-input>
+        <i-input class="data-form-item" v-model="addVehicleModel.modelName"></i-input>
       </i-form-item>
       <i-form-item label="车辆颜色" prop="carColour">
-        <i-input style="width:260px;" v-model="addVehicleModel.carColour"></i-input>
+        <i-input class="data-form-item" v-model="addVehicleModel.carColour"></i-input>
         <span style="color:red">多种颜色请用；隔开</span>
       </i-form-item>
       <i-form-item label="车辆排量" prop="carEmissions">
-        <i-input style="width:260px;" v-model="addVehicleModel.carEmissions"></i-input>
+        <i-input class="data-form-item" v-model="addVehicleModel.carEmissions"></i-input>
       </i-form-item>
     </i-form>
   </section>
@@ -155,3 +155,11 @@ export default class AddVehicle extends Vue {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.component.add-vehicle{
+    .data-form-item{
+        width: 260px;
+    }
+}
+</style>

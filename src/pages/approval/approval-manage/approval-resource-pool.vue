@@ -42,7 +42,7 @@
           v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []"
           :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-select class="data-form-item select product-type" placeholder="订单类型" v-model="resourcePoolModel.productType" clearable>
+      <i-select class="data-form-item select product-type" placeholder="订单类型" v-model="resourcePoolModel.orderType" clearable>
         <i-option v-for="{value,label} in $dict.getDictData('0301')" :key="value" :label="label"
                   :value="value"></i-option>
       </i-select>
@@ -114,7 +114,7 @@
       city: "",
       personalInfo: "",
       timeSearch: "",
-      productType: ""
+      orderType: ""
     };
     private getOrderModel: any;
     private endDisabeldOptions: any = {
@@ -384,7 +384,7 @@
       this.resourcePoolModel.city = "";
       this.resourcePoolModel.province = "";
       this.resourcePoolModel.personalInfo = "";
-      this.resourcePoolModel.productType = "";
+      this.resourcePoolModel.orderType = "";
       this.resourcePoolModel.timeSearch = val;
       this.getApprovalListByCondition();
       this.resourcePoolModel.timeSearch = "";

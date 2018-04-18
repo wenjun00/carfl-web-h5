@@ -37,10 +37,11 @@
       <i-select style="width:100px;margin-left:10px;" placeholder="选择市" v-model="resourcePoolModel.city" clearable>
         <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <span style="margin-left:10px;">产品类型</span>
-      <i-select placeholder="产品类型" style="width:120px;" v-model="resourcePoolModel.productType" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
+      <span style="margin-left:10px;">产品名称</span>
+      <!--<i-select placeholder="产品类型" style="width:120px;" v-model="resourcePoolModel.productType" clearable>-->
+        <!--<i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>-->
+      <!--</i-select>-->
+      <i-input style="width:120px;"  v-model="resourcePoolModel.productType"></i-input>
       <i-button style="margin-left:10px" class="blueButton" @click="getSecondList">搜索</i-button>
     </i-row>
 

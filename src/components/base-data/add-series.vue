@@ -1,9 +1,9 @@
 //新增产品系列
 <template>
   <i-form ref="add-series" :model="addSeries" :rules="rulesAdd" :label-width="80">
-    <i-form-item label="系列序号" prop="number">
-      <i-input v-model="addSeries.number" :maxlength="10"></i-input>
-    </i-form-item>
+    <!--<i-form-item label="系列序号" prop="number">-->
+      <!--<i-input v-model="addSeries.number" :maxlength="10"></i-input>-->
+    <!--</i-form-item>-->
     <i-form-item label="系列名称" prop="name">
       <i-input v-model="addSeries.name" :maxlength="20"></i-input>
     </i-form-item>
@@ -30,7 +30,7 @@ export default class addSeries extends Vue {
 	private rulesAdd: any = {};
 	created() {
 		this.rulesAdd = {
-			number: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
+			// number: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
 			name: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
 		};
 	}

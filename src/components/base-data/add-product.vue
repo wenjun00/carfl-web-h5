@@ -1,9 +1,9 @@
 //新增产品
 <template>
   <i-form ref="add-product" :model="addProduct" :rules="rulesAdd" :label-width="80">
-    <i-form-item label="产品序号" prop="number">
-      <i-input v-model="addProduct.number"></i-input>
-    </i-form-item>
+    <!--<i-form-item label="产品序号" prop="number">-->
+      <!--<i-input v-model="addProduct.number"></i-input>-->
+    <!--</i-form-item>-->
     <i-form-item label="产品名称" prop="name">
       <i-input v-model="addProduct.name"></i-input>
     </i-form-item>
@@ -35,7 +35,7 @@ export default class AddProduct extends Vue {
 	private rulesAdd: any = {};
 	created() {
 		this.rulesAdd = {
-			number: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
+			// number: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
 			name: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
 			capitaChannels: [{ required: true, message: '请选择资金渠道', trigger: 'change' }],
 		};

@@ -1,7 +1,7 @@
 <template>
-  <div class="layout col full" :class="[theme]">
-    <work-header></work-header>
-    <div class="row-span" style="background:#EFF3F5;padding:0;">
+  <div class="layout full" :class="[theme]">
+    <work-header class="work-header"></work-header>
+    <div class="work-content">
       <router-view></router-view>
     </div>
   </div>
@@ -35,16 +35,19 @@ export default class WorkSpace extends Vue {
 </script>
 <style lang="less" scoped>
 .layout {
-  flex-wrap: nowrap; // background: #EFF3F5;
+  // display: grid;
+  // grid-template-rows: 60px auto;
+}
+.work-header {
+  // grid-row-start: 1;
+  // grid-row-end: 2;
 }
 
-.header-area {
-  grid-row-start: 1;
-  grid-row-end: 2;
-}
-
-.content-area {
-  grid-row-start: 2;
-  grid-row-end: 3;
+.work-content {
+  background: #eff3f5;
+  padding: 0;
+  height: calc(~"100% - 60px");
+  // grid-row-start: 2;
+  // grid-row-end: 3;
 }
 </style>
