@@ -263,7 +263,7 @@ export default class OrderStatusChange extends Page {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
   .page.order-status-change{
     .data-form{
       margin:6px;

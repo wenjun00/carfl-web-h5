@@ -464,7 +464,7 @@ export default class ModuleFunction extends Page {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
   .page.module-function{
     .data-form{
       .form-item{

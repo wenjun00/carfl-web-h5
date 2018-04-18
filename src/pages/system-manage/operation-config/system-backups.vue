@@ -225,7 +225,7 @@ export default class SystemBackups extends Page {
 	}
 }
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
   .page.system-backups{
     .data-form{
         .form-input{

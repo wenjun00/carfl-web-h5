@@ -166,7 +166,7 @@
   }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
   .page.org-frame-syn{
     .data-form{
       margin:6px;

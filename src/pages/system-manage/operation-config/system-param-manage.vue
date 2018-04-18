@@ -194,7 +194,7 @@ export default class OrderTransfer extends Page {
   }
 }
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
   .page.system-param-manage{
       .data-form{
         .title{

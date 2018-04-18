@@ -889,7 +889,7 @@
   }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .page.org-user-manage{
     .data-form{
       .data-form-item{
