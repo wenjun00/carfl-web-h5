@@ -453,7 +453,7 @@ export default class RoleMaintenance extends Page {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .page.role-maintenance{
     .data-form{
       margin-bottom:10px;

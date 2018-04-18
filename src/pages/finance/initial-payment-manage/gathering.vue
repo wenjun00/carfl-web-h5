@@ -10,27 +10,27 @@
     <i-button type="text" @click="getTimeSearch(5)" v-auth="401">最近三月</i-button>
     <i-button type="text" @click="getTimeSearch(6)" v-auth="401">本季度</i-button>
     <i-button type="text" @click="getTimeSearch(7)" v-auth="401">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2" v-auth="400">
+    <i-button @click="openSearch" class="form-button" v-auth="400">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
     <div class="importBtn">
-      <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="402">
-        <svg-icon style="font-size:18px;" iconClass="dayin"></svg-icon>
-        <span style="font-size:12px;">打印</span>
+      <div class="importBtn-item" v-auth="402">
+        <svg-icon iconClass="dayin" class="importBtn-item-one"></svg-icon>
+        <span class="importBtn-item-two">打印</span>
       </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="403">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size:12px;">导出</span>
+      <div class="importBtn-item" v-auth="403">
+        <svg-icon iconClass="daochu" class="importBtn-item-one"></svg-icon>
+        <span class="importBtn-item-two">导出</span>
       </div>
     </div>
-    <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" v-model="gatherModel.accountName" placeholder="请录入收款账户名查询"></i-input>
-      <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%" v-model="gatherModel.queryStartDate"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%" v-model="gatherModel.queryEndDate"></i-date-picker>
-      <i-button style="margin-left:10px" class="blueButton" @click="getGatherListByCondition">搜索</i-button>
+    <i-row v-if="searchOptions" class="second-data">
+      <i-input  v-model="gatherModel.accountName" class="form-input" placeholder="请录入收款账户名查询" ></i-input>
+      <span class="title">日期：</span>
+      <i-date-picker v-model="gatherModel.queryStartDate" class="title-item"></i-date-picker> ~
+      <i-date-picker v-model="gatherModel.queryEndDate" class="title-item"></i-date-picker>
+      <i-button class="blueButton" @click="getGatherListByCondition">搜索</i-button>
     </i-row>
     <data-box :id="399" :columns="columns1" :data="gatherList" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
 
@@ -99,7 +99,7 @@
     saveDraft() {
       let _repayment: any = this.$refs['confirm-gather']
       let data: any = {}
-      data.collectMoneyId = _repayment.collectMoneyId      
+      data.collectMoneyId = _repayment.collectMoneyId
       data.financeUploadResource = _repayment.financeUploadResources
       data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
@@ -120,7 +120,7 @@
     confirmRepayment() {
       let _repayment: any = this.$refs['confirm-gather']
       let data: any = {}
-      data.collectMoneyId = _repayment.collectMoneyId      
+      data.collectMoneyId = _repayment.collectMoneyId
       data.financeUploadResource = _repayment.financeUploadResources
       data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
@@ -130,7 +130,7 @@
         this.$Message.info('操作成功！')
         this.confirmGatherModal = false
         this.pageService.reset()
-        this.getGatherListByCondition() 
+        this.getGatherListByCondition()
       }, ({
         msg
       }) => {
@@ -149,7 +149,7 @@
         this.$Message.info('操作成功！')
         this.confirmGatherModal = false
         this.pageService.reset()
-        this.getGatherListByCondition()      
+        this.getGatherListByCondition()
       }, ({
         msg
       }) => {
@@ -199,7 +199,7 @@
                     click: () => {
                       let _repayment: any = this.$refs['confirm-gather']
                       _repayment.refresh(row)
-                      this.check = false                      
+                      this.check = false
                       this.confirmGatherModal = true
                     }
                   }
@@ -224,7 +224,7 @@
         {
           align: "center",
           title: "处理时间",
-          editable: true,          
+          editable: true,
           key: "dealTime",
           width: 180,
           render: (h, {
@@ -238,13 +238,13 @@
         {
           align: "center",
           title: "处理人",
-          editable: true,          
+          editable: true,
           key: "dealerName"
         },
         {
           align: "center",
           title: "收款类型",
-          editable: true,          
+          editable: true,
           key: "applicationType",
           render: (h, {
             row,
@@ -257,19 +257,19 @@
         {
           align: "center",
           title: "收款总金额",
-          editable: true,        
+          editable: true,
           key: "totalPayment"
         },
         {
           align: "center",
           title: "收款账户名",
-          editable: true,          
+          editable: true,
           key: "accountName"
         },
         {
           align: "center",
           title: "申请日期",
-          editable: true,          
+          editable: true,
           key: "operatorTime",
           render: (h, {
             row,
@@ -282,7 +282,7 @@
         {
           align: "center",
           title: "申请人",
-          editable: true,          
+          editable: true,
           key: "operatorName"
         }
       ];
@@ -304,15 +304,49 @@
 </script>
 
 <style lang="less">
+  .page.gathering{
+    .form-button{
+      color:#265EA2
+    }
+    .importBtn {
+      float: right;
+      margin-right: 13px;
+      margin-top: 10px;
+      .importBtn-item{
+        cursor:pointer;
+        display:inline-block;
+        margin-left:10px;
+        color:#3367A7;
+        .importBtn-item-one{
+          font-size:18px;
+        }
+        .importBtn-item-two{
+          font-size:12px;
+        }
+      }
+    }
+    .second-data{
+      margin:6px;
+      position:relative;
+      right:16px;
+      .form-input{
+        display:inline-block;
+        width:18%;
+        margin-left:20px;
+      }
+      .title{
+        margin-left:10px;
+      }
+      .title-item{
+        display:inline-block;
+        width:10%
+      }
+    }
+  }
   .confirmGather {
     .ivu-modal-body {
       height: 600px;
       overflow: auto;
     }
   }
-.gathering .importBtn {
-	float: right;
-	margin-right: 13px;
-	margin-top: 10px;
-}
 </style>

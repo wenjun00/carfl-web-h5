@@ -187,7 +187,7 @@ export default class SystemLogDownload extends Page {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
   .page.system-log-download{
     .data-form{
         margin: 6px;

@@ -289,7 +289,7 @@
   }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
   .page.customer-repay-revert{
     .data-form{
         margin:6px;

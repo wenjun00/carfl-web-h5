@@ -6,12 +6,12 @@
         <i-input v-model="formItemParent.companyChinaname" placeholder="请输入公司简称" :maxlength="20"></i-input>
       </i-form-item>
       <i-form-item label="所在省份：" prop="companyProvince">
-        <i-select style="width:100%" placeholder="选择省" v-model="formItemParent.companyProvince" clearable>
+        <i-select placeholder="选择省" v-model="formItemParent.companyProvince" clearable>
           <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
       <i-form-item label="所在市：" prop="companyCity">
-        <i-select style="width:100%" placeholder="选择市" v-model="formItemParent.companyCity" clearable>
+        <i-select placeholder="选择市" v-model="formItemParent.companyCity" clearable>
           <i-option v-for="{value,label} in this.formItemParent.companyProvince ? this.$city.getCityData({ level: 1, id: this.formItemParent.companyProvince }) : []"
             :key="value" :label="label" :value="value"></i-option>
         </i-select>

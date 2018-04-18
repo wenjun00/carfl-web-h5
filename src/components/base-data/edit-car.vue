@@ -1,7 +1,7 @@
 <!--编辑经销商报价-->
 <template>
-  <section>
-    <i-form ref="form" class="editcar" :model="carFormItem" :rules="ruleValidate" :label-width="85" label-position="left">
+  <section class="edit-car">
+    <i-form ref="form" :model="carFormItem" :rules="ruleValidate" :label-width="85" label-position="left">
       <i-row>
         <i-col :span="11">
           <i-form-item label="经销商" prop="quotationName">
@@ -17,7 +17,7 @@
         </i-col>
       </i-row>
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <div class="data-form-icon"></div>
         <span>车辆信息</span>
       </div>
       <i-row>
@@ -51,7 +51,7 @@
         </i-col>
       </i-row>
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <div class="data-form-icon"></div>
         <span>报价信息</span>
       </div>
       <i-row>
@@ -387,7 +387,17 @@
   }
 
 </script>
-<style lang="less">
-
+<style lang="less" scoped>
+  .edit-car {
+    .data-form-icon {
+      width: 7px;
+      height: 20px;
+      background: #265EA2;
+      display: inline-block;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+    }
+  }
 
 </style>

@@ -221,7 +221,7 @@
 
   }
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
   .page.allot-role{
     .data-form{
       margin-bottom:10px;

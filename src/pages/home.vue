@@ -1,57 +1,57 @@
 <template>
   <section class="page home-page">
-    <div class="row" style="width:100%;background:#EFF3F5;display:flex;justify-content:space-around">
+    <div class="row command">
       <div class="col-span">
         <!--左上-->
-        <div style="width:100%;border:1px solid #DDDDDD;height:200px;background:#fff">
-          <div style="margin-top:20px;margin-left:20px;">
-            <div style="width:7px;height:18px;background:#265EA2;display:inline-block"></div>
-            <span style="margin-left:10px;font-size:16px;color:#333333;position:relative;bottom:3px;">快速上手</span>
-            <div style="width:600px;height:145px;display:flex;justify-content:space-around;align-items:center">
-              <div class="quickStartContainer" @click="financeLeaseApply">
-                <div class="quickStart">
+        <div class="command-left">
+          <div class="command-left-up">
+            <div class="command-left-up-icon"></div>
+            <span>快速上手</span>
+            <div class="command-left-up-item">
+              <div class="quick-start-container" @click="financeLeaseApply">
+                <div class="quick-start">
                   <svg-icon class="svg" iconClass="tianxie"></svg-icon>
                 </div>
-                <div class="quickText">融资租赁申请</div>
+                <div class="quick-text">融资租赁申请</div>
               </div>
 
-              <div class="quickStartContainer" @click="fullPayClick">
-                <div class="quickStart">
+              <div class="quick-start-container" @click="fullPayClick">
+                <div class="quick-start">
                   <svg-icon class="svg" iconClass="shenqingbaoming"></svg-icon>
                 </div>
-                <div class="quickText">全额付款申请</div>
+                <div class="quick-text">全额付款申请</div>
               </div>
 
-              <div class="quickStartContainer" @click="customerAccountClick">
-                <div class="quickStart">
+              <div class="quick-start-container" @click="customerAccountClick">
+                <div class="quick-start">
                   <svg-icon class="svg" iconClass="tianxie"></svg-icon>
                 </div>
-                <div class="quickText">客户开户</div>
+                <div class="quick-text">客户开户</div>
               </div>
 
-              <div class="quickStartContainer" @click="customerSignClick">
-                <div class="quickStart">
+              <div class="quick-start-container" @click="customerSignClick">
+                <div class="quick-start">
                   <svg-icon class="svg" iconClass="tianxie"></svg-icon>
                 </div>
-                <div class="quickText">客户签约</div>
+                <div class="quick-text">客户签约</div>
               </div>
             </div>
           </div>
         </div>
         <!--左下-->
-        <div style="width:100%;border:1px solid #DDDDDD;height:630px;margin-top:10px;background:#fff;padding:10px;">
+        <div class="command-down">
           <zmap></zmap>
         </div>
       </div>
       <!--右边待办事项 洒洒水-->
-      <div style="border:1px solid #DDDDDD;height:840px;background:#fff;">
-        <div style="margin:10px;">
-          <div style="width:7px;height:18px;background:#265EA2;display:inline-block"></div>
-          <span style="margin-left:10px;font-size:16px;color:#333333;position:relative;bottom:3px;">待办事项</span>
-          <div v-for="item in waitToHandle" :key="item.index" style="min-width:200px;width:100%;height:42px;margin-top:10px;background:#F5F5F5;text-align:center;line-height:12px;">
-            <div style="padding-top:6px;flex-wrap:nowarp;" class="row between-span">
-              <div style="font-size:12px;color:#666666;line-height: 35px;margin-left: 45px;float:left">{{$dict.getDictName(item.itemCode)}}</div>
-              <i-button type="text" style="color:#265EA2;font-size:14px;float:right;margin-right:10px;" @click="pageToOrderQuery">{{item.itemValue}}</i-button>
+      <div class="command-right">
+        <div class="container">
+          <div class="command-right-icon"></div>
+          <span>待办事项</span>
+          <div class="command-right-content" v-for="item in waitToHandle" :key="item.index">
+            <div class="row between-span command-right-content-item">
+              <div class="command-right-content-item-code">{{$dict.getDictName(item.itemCode)}}</div>
+              <i-button class="command-right-content-item-value" type="text" @click="pageToOrderQuery">{{item.itemValue}}</i-button>
             </div>
           </div>
         </div>
@@ -61,112 +61,219 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import Test2 from "./test2.vue";
-import SvgIcon from "~/components/common/svg-icon.vue";
-import Map from "~/components/common/map.vue";
-import { DataGrid, DataGridItem } from "@zct1989/vue-component";
-import { Layout } from "~/core/decorator";
-import { Mutation } from "vuex-class";
-import { Dependencies } from "~/core/decorator";
-import { BackLogService } from "~/services/manage-service/back-log.service";
-
-@Layout("workspace")
-@Component({
-  components: {
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import Test2 from "./test2.vue";
+  import SvgIcon from "~/components/common/svg-icon.vue";
+  import Map from "~/components/common/map.vue";
+  import {
     DataGrid,
-    DataGridItem,
-    SvgIcon,
-    zmap: Map
-  }
-})
-export default class Home extends Vue {
-  @Dependencies(BackLogService) private backLogService: BackLogService;
-  private waitToHandle: any = [];
-  @Mutation openPage;
+    DataGridItem
+  } from "@zct1989/vue-component";
+  import {
+    Layout
+  } from "~/core/decorator";
+  import {
+    Mutation
+  } from "vuex-class";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    BackLogService
+  } from "~/services/manage-service/back-log.service";
 
-  created() {
-    this.backLogService.queryUserBacklog().subscribe(
-      val => {
-        this.waitToHandle = val;
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
-    );
-  }
-  pageToOrderQuery() {
-    this.openPage({
-      title: "订单查询",
-      path: "purchase/purchase-query/order-query"
-    });
-  }
-  financeLeaseApply() {
-    this.openPage({
-      title: "融资租赁申请",
-      path: "purchase/purchase-manage/financing-lease-apply"
-    });
-  }
-  fullPayClick() {
-    this.openPage({
-      title: "全额付款申请",
-      path: "purchase/purchase-manage/full-payment-apply"
-    });
-  }
-  customerAccountClick() {
-    this.openPage({
-      title: "客户开户",
-      path: "purchase/purchase-manage/open-account"
-    });
-  }
-  customerSignClick() {
-    this.openPage({
-      title: "客户签约",
-      path: "purchase/purchase-manage/customer-sign"
-    });
-  }
-}
-</script>
+  @Layout("workspace")
+  @Component({
+    components: {
+      DataGrid,
+      DataGridItem,
+      SvgIcon,
+      zmap: Map
+    }
+  })
+  export default class Home extends Vue {
+    @Dependencies(BackLogService) private backLogService: BackLogService;
+    private waitToHandle: any = [];
+    @Mutation openPage;
 
-<style lang="less">
-.home-page {
-  .body {
-    border: none;
-  }
-}
-
-.quickStartContainer {
-  text-align: center;
-  cursor: pointer;
-  .quickStart {
-    background: #598ac5;
-    border-radius: 50%;
-    width: 56px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .svg {
-      font-size: 30px;
-      color: #fff;
+    created() {
+      this.backLogService.queryUserBacklog().subscribe(
+        val => {
+          this.waitToHandle = val;
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
+    }
+    pageToOrderQuery() {
+      this.openPage({
+        title: "订单查询",
+        path: "purchase/purchase-query/order-query"
+      });
+    }
+    financeLeaseApply() {
+      this.openPage({
+        title: "融资租赁申请",
+        path: "purchase/purchase-manage/financing-lease-apply"
+      });
+    }
+    fullPayClick() {
+      this.openPage({
+        title: "全额付款申请",
+        path: "purchase/purchase-manage/full-payment-apply"
+      });
+    }
+    customerAccountClick() {
+      this.openPage({
+        title: "客户开户",
+        path: "purchase/purchase-manage/open-account"
+      });
+    }
+    customerSignClick() {
+      this.openPage({
+        title: "客户签约",
+        path: "purchase/purchase-manage/customer-sign"
+      });
     }
   }
 
-  .quickText {
-    margin-top: 6px;
-  }
-  .quickText:hover {
-    color: #265ea2;
-  }
-}
+</script>
 
-.mapContainer {
-  margin: 10px;
-  width: 98%;
-  height: 98%;
-  background-repeat: no-repeat !important;
-  background-size: 100% 98%;
-  background-image: url("/static/images/common/china.png");
-}
+<style lang="less">
+  .home-page {
+    .body {
+      border: none;
+    }
+  }
+  
+  .page.home-page {
+    .command {
+      width: 100%;
+      background: #EFF3F5;
+      display: flex;
+      justify-content: space-around;
+      .command-left {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        height: 200px;
+        background: #fff;
+        .command-left-up {
+          margin-top: 20px;
+          margin-left: 20px;
+          span {
+            margin-left: 10px;
+            font-size: 16px;
+            color: #333333;
+            position: relative;
+            bottom: 3px;
+          }
+          .command-left-up-icon {
+            width: 7px;
+            height: 18px;
+            background: #265EA2;
+            display: inline-block;
+          }
+          .command-left-up-item {
+            width: 600px;
+            height: 145px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            .quick-start-container {
+              text-align: center;
+              cursor: pointer;
+              .quick-start {
+                background: #598ac5;
+                border-radius: 50%;
+                width: 56px;
+                height: 56px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                .svg {
+                  font-size: 30px;
+                  color: #fff;
+                }
+              }
+              .quick-text {
+                margin-top: 6px;
+              }
+              .quick-text:hover {
+                color: #265ea2;
+              }
+            }
+          }
+        }
+      }
+      .command-down {
+        width: 100%;
+        border: 1px solid #DDDDDD;
+        height: 630px;
+        margin-top: 10px;
+        background: #fff;
+        padding: 10px;
+      }
+      .command-right {
+        border: 1px solid #DDDDDD;
+        height: 840px;
+        background: #fff;
+        .container {
+          margin: 10px;
+        }
+        .command-right-icon {
+          width: 7px;
+          height: 18px;
+          background: #265EA2;
+          display: inline-block;
+        }
+        span {
+          margin-left: 10px;
+          font-size: 16px;
+          color: #333333;
+          position: relative;
+          bottom: 3px;
+        }
+        .command-right-content {
+          min-width: 200px;
+          width: 100%;
+          height: 42px;
+          margin-top: 10px;
+          background: #F5F5F5;
+          text-align: center;
+          line-height: 12px;
+          .command-right-content-item {
+            padding-top: 6px;
+            flex-wrap: nowarp;
+            .command-right-content-item-code {
+              font-size: 12px;
+              color: #666666;
+              line-height: 35px;
+              margin-left: 45px;
+              float: left
+            }
+            .command-right-content-item-value {
+              color: #265EA2;
+              font-size: 14px;
+              float: right;
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .mapContainer {
+    margin: 10px;
+    width: 98%;
+    height: 98%;
+    background-repeat: no-repeat !important;
+    background-size: 100% 98%;
+    background-image: url("/static/images/common/china.png");
+  }
+
 </style>

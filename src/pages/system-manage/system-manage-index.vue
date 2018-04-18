@@ -1,5 +1,5 @@
 <template>
-  <section class="system-manage-index">
+  <section class="page system-manage-index">
     <!--#EFF3F5-->
     <div class="data-form-menu">
       <div class="form-menu-item">
@@ -109,16 +109,18 @@
 
 </script>
 
-<style lang="less">
-  .system-manage-index{
+<style lang="less" scoped>
+  .page.system-manage-index{
     height: 846px;
     .data-form-menu{
+    margin:0 auto;
+    margin-top: 20px;
     width:96%;
     height:60px;
     background:#F5F5F5;
     margin-top:10px;
     border:1px solid #DDDDDD;
-    margin:0 auto;
+    
     .form-menu-item{
       font-size:14px;
       margin-top: 18px;

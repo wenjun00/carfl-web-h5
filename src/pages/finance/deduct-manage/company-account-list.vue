@@ -1,8 +1,8 @@
 <!--企业开户列表-->
 <template>
   <section class="page company-account-list">
-    <i-row style="margin-top:10px">
-      <span style="font-size:18px;font-weight:bold">企业开户列表</span>
+    <i-row class="data-form">
+      <span class="commend">企业开户列表</span>
       <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
       <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
       <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
@@ -11,23 +11,23 @@
       <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
       <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
       <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
-      <i-button @click="openSearch" style="color:#265EA2">
+      <i-button @click="openSearch" class="commend.item">
         <span v-if="!searchOptions">展开</span>
         <span v-if="searchOptions">收起</span>
         <span>高级搜索</span>
       </i-button>
     </i-row>
-    <i-row v-if="searchOptions" style="margin:6px;">
-      <i-input placeholder="请录入门店\员工姓名查询" style="display:inline-block;width:16%;margin-left:10px;"></i-input>
-      <span style="margin-left:10px;">下载日期：</span>
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
-      <i-select style="display:inline-block;width:10%;margin-left:10px;" placeholder="全部状态">
+    <i-row v-if="searchOptions"  class="second-data-form">
+      <i-input placeholder="请录入门店\员工姓名查询" class="second-data-one"></i-input>
+      <span  class="second-data-two">下载日期：</span>
+      <i-date-picker class="second-data-three"></i-date-picker> ~
+      <i-date-picker class="second-data-three"></i-date-picker>
+      <i-select class="second-data-four" placeholder="全部状态">
         <i-option value="拒绝" label="拒绝" key="拒绝"></i-option>
         <i-option value="退单" label="退单" key="退单"></i-option>
         <i-option value="通过" label="通过" key="通过"></i-option>
       </i-select>
-      <i-select style="display:inline-block;width:10%;margin-left:10px;" placeholder="全部拒单原因">
+      <i-select class="second-data-four" placeholder="全部拒单原因">
         <i-option value="不符合进件操作" label="不符合进件操作" key="不符合进件操作"></i-option>
         <i-option value="欺诈" label="欺诈" key="欺诈"></i-option>
         <i-option value="黑名单" label="黑名单" key="黑名单"></i-option>
@@ -35,19 +35,19 @@
         <i-option value="还款能力不足" label="还款能力不足" key="还款能力不足"></i-option>
         <i-option value="其他" label="其他" key="其他"></i-option>
       </i-select>
-      <i-select style="display:inline-block;width:10%;margin-left:10px;" placeholder="全部拒单细节">
+      <i-select class="second-data-four" placeholder="全部拒单细节">
         <i-option value="行业限制" label="拒绝" key="拒绝"></i-option>
         <i-option value="信用卡开户数超标" label="退单" key="退单"></i-option>
         <i-option value="话单非本人名下且不满两年" label="通过" key="通过"></i-option>
         <i-option value="话单本人名下但不满半年" label="通过" key="通过"></i-option>
       </i-select>
-      <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%"></i-date-picker>
+      <span class="second-data-two">日期：</span>
+      <i-date-picker class="second-data-three"></i-date-picker>~
+      <i-date-picker class="second-data-three"></i-date-picker>
       <i-button class="blueButton">搜索</i-button>
     </i-row>
-    <!--<i-table :columns="columns1" :data="data1" border stripe></i-table>-->
     <data-box :columns="columns1" :data="data1"></data-box>
+
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:5px">
         <i-col :span="8" push="1">
@@ -121,7 +121,7 @@
                 <i-form-item label="税务登记证号">
                   <i-input style="width:160px;"></i-input>
                 </i-form-item>
-              </i-col>              
+              </i-col>
               <i-col :span="12">
                 <i-form-item label="企业名称">
                   <i-input style="width:160px;"></i-input>
@@ -312,7 +312,7 @@
             <i-select>
               <i-option  label="向商户收取" value="向商户收取"></i-option>
               <i-option  label="向用户收取" value="向用户收取"></i-option>
-            </i-select>          
+            </i-select>
           </i-form-item>
           <i-form-item label="手续费收取子账户">
             <i-input style="width:160px;"></i-input>
@@ -385,7 +385,6 @@
           </i-form-item>
           <i-form-item label="入账账户余额">
             <i-input style="width:160px;"></i-input><span>元</span>
-          </i-form-item>
           </i-form-item>
           <i-form-item label="转账金额">
             <i-input style="width:160px;"></i-input><span>元</span>
@@ -848,6 +847,39 @@
 </script>
 
 <style lang="less">
+  .page.company-account-list{
+    .data-form{
+      margin-top:10px;
+      .commend{
+        font-size:18px;
+        font-weight:bold;
+      }
+      .commend.item{
+        color:#265EA2
+      }
+    }
+    .second-data-form{
+      margin:6px;
+      .second-data-one{
+        display:inline-block;
+        width:15%;
+      }
+      .second-data-two{
+        margin-left:10px;
+      }
+      .second-data-three{
+        display:inline-block;
+        width:10%
+      }
+      .second-data-four{
+        display:inline-block;
+        width:10%;
+        margin-left:10px;
+      }
+    }
+  }
+
+
   .openAccount_modal {
     .ivu-form {
       position: relative;

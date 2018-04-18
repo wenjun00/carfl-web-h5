@@ -606,7 +606,25 @@
 
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
+  .page.full-payment-apply{
+      .ivu-input {
+        border-style: none;
+        border-bottom-style: solid;
+        border-radius: 0; // width: 240%;
+     }
+
+  }
+
+
+
+
+
+
+
+
+
+
   .header {
     border-bottom: 1px solid #cccccc;
   }

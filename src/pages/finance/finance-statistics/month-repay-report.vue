@@ -1,29 +1,29 @@
 <!--月还款报表-->
 <template>
   <section class="page month-repay-report">
-    <i-row style="margin-top:10px;">
-      <span style="font-size:18px;font-weight:bold">月还款报表</span>
-      <span style="margin-left:10px;">统计机构：</span>
-      <i-select style="margin-left:10px;width:10%;">
+    <i-row class="data-form">
+      <span class="title">月还款报表</span>
+      <span class="form-input">统计机构：</span>
+      <i-select class="form-select">
         <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
         <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
         <i-option label="群泰武汉" value="群泰武汉" key="群泰武汉"></i-option>
       </i-select>
-      <span style="margin-left:10px;">统计通道：</span>
-      <i-select style="margin-left:10px;width:10%;">
+      <span class="form-input">统计通道：</span>
+      <i-select class="form-select">
         <i-option label="汇付" value="汇付" key="汇付"></i-option>
         <i-option label="富友" value="富友" key="富友"></i-option>
       </i-select>
-      <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
-      <div style="float:right;margin-right:10px;margin-top:10px;">
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+      <i-button class="blueButton">搜索</i-button>
+      <div class="commend">
+        <div class="commend-item">
           <svg-icon iconClass="daochu"></svg-icon>
-          <span style="font-size: 12px;">导出</span>
+          <span class="commend-item-one">导出</span>
         </div>
       </div>
     </i-row>
-    <i-row v-if="searchOptions" style="margin:6px;">
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
+    <i-row v-if="searchOptions" class="search">
+      <i-input  placeholder="请输入客户姓名" class="search-item"></i-input>
       <i-button class="blueButton">搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
@@ -279,3 +279,45 @@
   }
 
 </script>
+<style lang="less">
+  .page.month-repay-report{
+    .data-form{
+      margin-top:10px;
+      .title{
+        font-size:18px;
+        font-weight:bold
+      }
+      .form-input{
+        margin-left:10px;
+      }
+      .form-select{
+        margin-left:10px;
+        width:10%;
+      }
+      .commend{
+        float:right;
+        margin-right:10px;
+        margin-top:10px;
+        .commend-item{
+          font-size:16px;
+          cursor:pointer;
+          display:inline-block;
+          margin-left:10px;
+          color:#3367A7;
+          .commend-item-one{
+            font-size:12px;
+          }
+        }
+      }
+    }
+    .search{
+      margin:6px;
+      .search-item{
+        display:inline-block;
+        width:10%;
+      }
+    }
+  }
+
+</style>
+

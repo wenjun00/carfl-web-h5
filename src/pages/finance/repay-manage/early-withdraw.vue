@@ -10,34 +10,34 @@
     <i-button type="text" @click="getTimeSearch(5)" v-auth="430">最近三月</i-button>
     <i-button type="text" @click="getTimeSearch(6)" v-auth="430">本季度</i-button>
     <i-button type="text" @click="getTimeSearch(7)" v-auth="430">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2" v-auth="429">
+    <i-button @click="openSearch" class="form-button" v-auth="429">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
     <div class="importBtn">
-      <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="431">
-        <svg-icon style="font-size:18px;" iconClass="dayin"></svg-icon>
-        <span style="font-size:12px;">打印</span>
+      <div class="importBtn-item" v-auth="431">
+        <svg-icon class="importBtn-item-one" iconClass="dayin"></svg-icon>
+        <span class="importBtn-item-two">打印</span>
       </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="432">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size:12px;">导出</span>
+      <div class="importBtn-item" v-auth="432">
+        <svg-icon iconClass="daochu" class="importBtn-item-one"></svg-icon>
+        <span class="importBtn-item-two">导出</span>
       </div>
     </div>
-    <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
-      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码"></i-input>
-      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态">
+    <i-row v-if="searchOptions" class="second-data">
+      <i-input class="second-input" placeholder="请录入客户姓名\证件号码"></i-input>
+      <i-select class="second-select" placeholder="全部还款状态">
         <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
         <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
       </i-select>
-      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道">
+      <i-select class="second-select" placeholder="全部结算通道">
         <i-option value="汇付" key="汇付" label="汇付"></i-option>
         <i-option value="富友" key="富友" label="富友"></i-option>
         <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
         <i-option value="现金" key="现金" label="现金"></i-option>
       </i-select>
-      <i-button style="margin-left:10px" class="blueButton" @click="getEarlyPayList">搜索</i-button>
+      <i-button  class="blueButton" @click="getEarlyPayList">搜索</i-button>
     </i-row>
     <data-box :id="428" :columns="columns1" :data="data1" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
 
@@ -67,7 +67,7 @@
         <repay-info ref="repay-info"></repay-info>
       </i-modal>
     </template>
-    
+
     <template>
       <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
         <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
@@ -207,7 +207,7 @@
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.withdrawId
       data.totalPayment = _repayment.paymentAmount
-      data.collectMoneyId = _repayment.collectMoneyId      
+      data.collectMoneyId = _repayment.collectMoneyId
       this.advanceRevokeService.saveCollectMoneyHistory(data).subscribe(data => {
         this.$Message.info('操作成功！')
         this.confirmWithdrawModal = false
@@ -293,7 +293,7 @@
           align: "center",
           title: "客户结算号",
           key: "clientNumber",
-          editable: true,          
+          editable: true,
           width: 150,
           render: (h, {
             row,
@@ -317,28 +317,28 @@
         {
           align: "center",
           title: "客户姓名",
-          editable: true,          
+          editable: true,
           key: "name",
           width: 100
         },
         {
           align: "center",
           title: " 证件号",
-          editable: true,          
+          editable: true,
           key: "idCard",
           width: 160
         },
         {
           align: "center",
           title: " 手机号",
-          editable: true,          
+          editable: true,
           key: "mobileMain",
           width: 120
         },
         {
           align: "center",
           title: " 订单创建时间",
-          editable: true,          
+          editable: true,
           key: "createTime",
           width: 160,
           render: (h, {
@@ -352,7 +352,7 @@
         {
           align: "center",
           title: " 合同生效日",
-          editable: true,          
+          editable: true,
           key: "contractDate",
           width: 160,
           render: (h, {
@@ -366,7 +366,7 @@
         {
           align: "center",
           title: " 结算通道",
-          editable: true,          
+          editable: true,
           key: "settlementChannel",
           width: 100,
           render: (h, {
@@ -381,7 +381,7 @@
           align: "center",
           title: " 归属公司",
           width: 100,
-          editable: true,          
+          editable: true,
           key: "companyChinaName"
         }
       ];
@@ -395,15 +395,47 @@
 </script>
 
 <style lang="less">
+  .page.early-withdraw{
+    .form-button{
+      color:#265EA2
+    }
+    .importBtn{
+      float: right;
+      margin-right: 13px;
+      margin-top: 10px;
+      .importBtn-item{
+        cursor:pointer;
+        display:inline-block;
+        margin-left:10px;
+        color:#3367A7;
+        .importBtn-item-one{
+          font-size:18px;
+        }
+        .importBtn-item-two{
+          font-size:12px;
+        }
+      }
+    }
+    .second-data{
+      margin:6px;
+      position:relative;
+      right:16px;
+      .second-input{
+        display:inline-block;
+        margin-left:20px;
+        width:16%
+      }
+      .second-select{
+        margin-left:10px;
+        width:10%
+      }
+    }
+  }
   .confirmWithdraw {
     .ivu-modal-body {
       height: 600px;
       overflow: auto;
     }
   }
-.early-withdraw .importBtn {
-	float: right;
-	margin-right: 13px;
-	margin-top: 10px;
-}
+
 </style>
