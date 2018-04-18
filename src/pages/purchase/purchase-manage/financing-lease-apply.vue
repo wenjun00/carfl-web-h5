@@ -1,85 +1,73 @@
 <!--融资租赁申请-->
 <template>
   <section class="page financing-lease-apply">
-    <div class="page-container">
-      <div class="header">
-        <div class="form-title">融资租赁申请
-          <div class="applications-for">
-            <div class="command">
-              <span class="flow-img" @click="BusinessFlowDiagram">业务流程图</span>
-              <svg-icon class="dayin" iconClass="dayin"></svg-icon>
-              <span class="dayin-font" @click="print">打印</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <i-row class="data-form" type="flex">
-        <i-col span="18">
-          <i-form ref="customer-form" class="data-form-num" :model="customerModel" label-position="left" :rules="customerRule" :label-width="110">
-            <i-col span="12">
-              <i-form-item label="证件号码" prop="idCard">
-                <i-input type="text" :maxlength="18" v-model="customerModel.idCard" autofocus @on-change="showTab" @on-blur="checkcustomerinfo">
-                </i-input>
-              </i-form-item>
-            </i-col>
-            <i-col span="12">
-              <i-form-item label="客户姓名" prop="name">
-                <i-input type="text" :maxlength="13" v-model="customerModel.name" @on-blur="ReverseData">
-                </i-input>
-              </i-form-item>
-            </i-col>
-            <i-col span="12">
-              <i-form-item label="客户电话" prop="mobileMain">
-                <i-input type="text" v-model="customerModel.mobileMain" @on-blur="ReverseData">
-                </i-input>
-              </i-form-item>
-            </i-col>
-            <i-col span="12">
-              <i-form-item label="归属业务员" prop="salesmanName">
-                <i-input type="text" :maxlength="13" readonly v-model="customerModel.salesmanName" @on-focus="salesmanNamefocus"></i-input>
-              </i-form-item>
-            </i-col>
-          </i-form>
-        </i-col>
-        <i-button class="add-new-applyfor" @click="addNewApply">添加新申请</i-button>
-      </i-row>
-  
-      <i-tabs type="card" v-show="!disabledStatus" v-model="materialTabs" class="finance-lease-tabs">
-        <i-tab-pane label="选购资料" name="choose-buy-materials">
-          <choose-buy-materials ref="choose-buy-materials"></choose-buy-materials>
-        </i-tab-pane>
-        <i-tab-pane label="客户资料" name="customer-materials">
-          <customer-materials ref="customer-materials"></customer-materials>
-        </i-tab-pane>
-        <i-tab-pane label="客户职业" name="customer-job-message">
-          <customer-job-message ref="customer-job-message"></customer-job-message>
-        </i-tab-pane>
-        <i-tab-pane label="客户联系人" name="customer-contacts">
-          <customer-contacts ref="customer-contacts"></customer-contacts>
-        </i-tab-pane>
-        <i-tab-pane label="客户来源" name="customer-origin">
-          <customer-origin ref="customer-origin"></customer-origin>
-        </i-tab-pane>
-        <i-tab-pane label="上传素材" name="upload-the-material">
-          <upload-the-material ref="upload-the-material"></upload-the-material>
-        </i-tab-pane>
-      </i-tabs>
-      <div class="submit-bar">
-        <i-row type="flex" align="middle" style="padding:5px">
-          <i-col :span="8" push="1">
+    <page-header title="融资租赁申请">
+      <command-button label="添加新申请" @click="addNewApply"></command-button>
+      <command-button label="业务流程图" @click="onOpenFlowModal"></command-button>
+    </page-header>
+    <!-- 搜索表单-start -->
+    <div class="search-container">
+      <i-form :label-width="90" ref="customer-form" class="search-form" :model="customerModel" label-position="left" :rules="customerRule">
+        <i-row :gutter="20">
+          <i-col span="10">
+            <i-form-item label="证件号码" prop="idCard">
+              <i-input type="text" :maxlength="18" v-model="customerModel.idCard" autofocus @on-change="showTab" @on-blur="checkcustomerinfo">
+              </i-input>
+            </i-form-item>
           </i-col>
-          <i-col :span="10" pull="4">
-          </i-col>
-          <i-col :span="6" class="save-line">
-            <i-button size="large" class="highDefaultButton" @click="draftsaveAndSubmit(true)">保存草稿</i-button>
-            <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit(false)">保存并提交</i-button>
+          <i-col span="10">
+            <i-form-item label="客户姓名" prop="name">
+              <i-input type="text" :maxlength="13" v-model="customerModel.name" @on-blur="ReverseData">
+              </i-input>
+            </i-form-item>
           </i-col>
         </i-row>
-      </div>
-      <Spin size="large" class="circular" fix v-if="spinShow">
-        <Icon type="load-c" class="demo-spin-icon-load"></Icon>
-      </Spin>
+        <i-row :gutter="20">
+          <i-col span="10">
+            <i-form-item label="客户电话" prop="mobileMain">
+              <i-input type="text" v-model="customerModel.mobileMain" @on-blur="ReverseData">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col span="10">
+            <i-form-item label="归属业务员" prop="salesmanName">
+              <i-input type="text" :maxlength="13" readonly v-model="customerModel.salesmanName" @on-focus="salesmanNamefocus"></i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+      </i-form>
     </div>
+    <!-- 搜索表单-end -->
+
+    <!-- 资料选项卡-start -->
+    <i-tabs type="card" v-show="!disabledStatus" v-model="materialTabs" class="material-tabs">
+      <i-tab-pane label="选购资料" name="choose-buy-materials">
+        <choose-buy-materials ref="choose-buy-materials" v-show="materialTabs==='choose-buy-materials'"></choose-buy-materials>
+      </i-tab-pane>
+      <i-tab-pane label="客户资料" name="customer-materials">
+        <customer-materials ref="customer-materials" v-show="materialTabs==='customer-materials'"></customer-materials>
+      </i-tab-pane>
+      <i-tab-pane label="客户职业" name="customer-job-message">
+        <customer-job-message ref="customer-job-message" v-show="materialTabs==='customer-job-message'"></customer-job-message>
+      </i-tab-pane>
+      <i-tab-pane label="客户联系人" name="customer-contacts">
+        <customer-contacts ref="customer-contacts" v-show="materialTabs==='customer-contacts'"></customer-contacts>
+      </i-tab-pane>
+      <i-tab-pane label="客户来源" name="customer-origin">
+        <customer-origin ref="customer-origin" v-show="materialTabs==='customer-origin'"></customer-origin>
+      </i-tab-pane>
+      <i-tab-pane label="上传素材" name="upload-the-material">
+        <upload-the-material ref="upload-the-material" v-show="materialTabs==='upload-the-material'"></upload-the-material>
+      </i-tab-pane>
+    </i-tabs>
+    <!-- 资料选项卡-end -->
+
+    <!--底部操作栏-start-->
+    <div class="fixed-container">
+      <i-button size="large" class="highDefaultButton" @click="draftsaveAndSubmit(true)">保存草稿</i-button>
+      <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit(false)">保存并提交</i-button>
+    </div>
+    <!--底部操作栏-end-->
 
     <template>
       <i-modal title="历史记录" width="1200" v-model="historicalModal" :trandfer="false" class="historical">
@@ -94,7 +82,7 @@
     </template>
 
     <template>
-      <i-modal title="业务流程图" width="1000" height="628" v-model="BusinessFlowDiagramModel" :trandfer="false">
+      <i-modal title="业务流程图" width="1000" height="628" v-model="showFlowModel" :trandfer="false">
         <div class="yewuliucheng-bg">
         </div>
       </i-modal>
@@ -181,7 +169,7 @@ export default class FinancingLeaseApply extends Page {
     mobileMain: "", // 客户电话
     salesmanName: "" // 归属业务员
   };
-  private BusinessFlowDiagramModel: Boolean = false;
+  private showFlowModel: boolean = false;
   private addCar: Boolean = false;
   private disabledStatus: String = ""; // 子组件中输入框禁用flag
   private materialTabs: String = "choose-buy-materials";
@@ -206,6 +194,7 @@ export default class FinancingLeaseApply extends Page {
   print() {
     window.print();
   }
+
   choosecurrentData(data) {
     this.customerModel.salesmanName = data.userRealname;
     this.customerModel.salesmanId = data.id;
@@ -219,8 +208,28 @@ export default class FinancingLeaseApply extends Page {
   /**
    * 业务流程图
    */
-  BusinessFlowDiagram() {
-    this.BusinessFlowDiagramModel = true;
+  onOpenFlowModal() {
+    this.$Modal.info({
+      width: "90%",
+      scrollable: true,
+      render: h => {
+        return h(
+          "div",
+          {
+            style: {
+              overflow:"auto"
+            }
+          },
+          [
+            h("img", {
+              attrs: {
+                src: "/static/images/common/yewuliucheng-bg.jpg"
+              }
+            })
+          ]
+        );
+      }
+    });
   }
   ReverseData() {
     let customermodel: any = this.$refs["customer-materials"];
@@ -765,35 +774,8 @@ export default class FinancingLeaseApply extends Page {
 
 <style lang="less" scoped>
 .page.financing-lease-apply {
-  .ivu-input {
-    border-style: none;
-    border-bottom-style: solid;
-    border-radius: 0; // width: 257%;
-  }
-  .page-container {
-    height: 820px;
-    overflow:hidden .header {
-      border-bottom: 1px solid #cccccc;
-    }
-    .applications-for {
-      float: right;
-      margin-right: 20px;
-      .command {
-        cursor: pointer;
-        display: inline-block;
-        margin-left: 10px;
-        color: #3367a7;
-        .flow-img {
-          font-size: 14px;
-        }
-        .dayin {
-          font-size: 24px;
-        }
-        .dayin-font {
-          font-size: 12px;
-        }
-      }
-    }
+  .search-container {
+    padding: 15px;
     .data-form {
       .data-form-num {
         margin-top: 20px;
@@ -808,23 +790,22 @@ export default class FinancingLeaseApply extends Page {
         color: #fff;
       }
     }
-    .submit-bar {
-      line-height: 70px;
-      height: 70px;
-      width: 100%;
-      background: #fff;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      border: 1px solid #ddd;
-      box-shadow: -3px 2px 20px #dddddd;
-      padding-right: 24px;
-    }
-    .save-line {
-      text-align: right;
-      position: relative;
-      bottom: 6px;
-    }
+  }
+  .ivu-tabs {
+    margin-bottom: 70px;
+  }
+
+  .fixed-container {
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 10;
+    text-align: right;
+    padding: 10px 20px;
+    box-shadow: 0px -5px 10px #ccc;
   }
 }
 
@@ -834,15 +815,6 @@ export default class FinancingLeaseApply extends Page {
     border-style: none;
     border-bottom-style: solid;
     border-radius: 0;
-  }
-  .shade {
-    width: 98%;
-    height: 2000px;
-    background: rgba(250, 250, 250, 0.4);
-    position: absolute;
-    left: 21px;
-    top: 257px;
-    z-index: 999;
   }
 
   .yewuliucheng-bg {
@@ -863,6 +835,11 @@ export default class FinancingLeaseApply extends Page {
 
 <style lang="less">
 .page.finance-lease-tabs {
+  .ivu-input {
+    border-style: none;
+    border-bottom-style: solid;
+    border-radius: 0; // width: 257%;
+  }
   .ivu-tabs-bar {
     border-bottom: 1px solid #dddee1;
     .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {

@@ -1,5 +1,5 @@
 <template>
-  <svg class="svg-icon" aria-hidden="true">
+  <svg class="svg-icon" aria-hidden="true" :style="iconStyle">
     <use :xlink:href="iconName"></use>
   </svg>
 </template>
@@ -20,8 +20,17 @@ export default class SvgIcon extends Vue {
   @Prop({ required: true })
   iconClass: String;
 
+  @Prop({})
+  iconColor: String;
+
   get iconName() {
     return `#icon-${this.iconClass}`;
+  }
+
+  get iconStyle() {
+    return {
+      color: this.iconColor
+    };
   }
 }
 </script>
