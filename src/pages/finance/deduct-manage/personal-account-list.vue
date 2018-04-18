@@ -1,8 +1,8 @@
 <!--个人开户列表-->
 <template>
   <section class="page personal-account-list">
-    <i-row style="margin-top:10px">
-      <span style="font-size:18px;font-weight:bold">个人开户列表</span>
+    <i-row class="data-form">
+      <span class="commend">个人开户列表</span>
       <i-button @click="getTimeSearch(1)" type="text" v-auth="458">昨日</i-button>
       <i-button @click="getTimeSearch(2)" type="text" v-auth="458">今日</i-button>
       <i-button @click="getTimeSearch(3)" type="text" v-auth="458">本周</i-button>
@@ -11,23 +11,23 @@
       <i-button @click="getTimeSearch(6)" type="text" v-auth="458">最近三月</i-button>
       <i-button @click="getTimeSearch(7)" type="text" v-auth="458">本季度</i-button>
       <i-button @click="getTimeSearch(8)" type="text" v-auth="458">本年</i-button>
-      <i-button @click="openSearch" style="color:#265EA2" v-auth="457">
+      <i-button @click="openSearch" class="commend.item" v-auth="457">
         <span v-if="!searchOptions">展开</span>
         <span v-if="searchOptions">收起</span>
         <span>高级搜索</span>
       </i-button>
-      <div style="float:right;margin-right:10px;margin-top:10px;" v-auth="459">
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+      <div class="second-commend" v-auth="459">
+        <div class="second-commend-item">
           <svg-icon iconClass="daochu"></svg-icon>
-          <span style="font-size: 12px;">导出</span>
+          <span class="second-commend-item-son">导出</span>
         </div>
       </div>
     </i-row>
-    <i-row v-if="searchOptions" style="margin:6px;position:relative;right:6px;">
-      <i-input style="display:inline-block;width:18%;margin-left:20px;" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="gatherModel.orderInfo"></i-input>
-      <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%" v-model="gatherModel.createDateStart"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%" v-model="gatherModel.createDateEnd"></i-date-picker>
+    <i-row v-if="searchOptions"  class="second-data-form">
+      <i-input class="second-data-one" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="gatherModel.orderInfo"></i-input>
+      <span class="second-data-two">日期：</span>
+      <i-date-picker class="second-data-three" v-model="gatherModel.createDateStart"></i-date-picker>~
+      <i-date-picker class="second-data-three"v-model="gatherModel.createDateEnd"></i-date-picker>
       <i-button class="blueButton" @click="getGatherListByCondition">搜索</i-button>
     </i-row>
     <data-box :id="456" :columns="columns1" :data="data1" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
@@ -117,7 +117,7 @@
     }
     getTimeSearch(val) {
       this.gatherModel.orderInfo = ''
-      this.gatherModel.createDateStart = ''      
+      this.gatherModel.createDateStart = ''
       this.gatherModel.createDateEnd = ''
       this.gatherModel.timeSearch = val
       this.getGatherListByCondition()
@@ -251,6 +251,50 @@
 </script>
 
 <style lang="less">
+  .page.personal-account-list{
+    .data-form{
+      margin-top:10px;
+      .commend{
+        font-size:18px;
+        font-weight:bold
+      }
+      .commend.item{
+        color:#265EA2
+      }
+      .second-commend{
+        float:right;
+        margin-right:10px;
+        margin-top:10px;
+        .second-commend-item{
+          font-size:16px;
+          cursor:pointer;
+          display:inline-block;
+          margin-left:10px;
+          color:#3367A7;
+          .second-commend-item-son{
+            font-size: 12px;
+          }
+        }
+      }
+    }
+    .second-data-form{
+      margin:6px;
+      position:relative;
+      right:6px;
+      .second-data-one{
+        display:inline-block;
+        width:18%;
+        margin-left:20px;
+      }
+      .second-data-two{
+        margin-left:10px;
+      }
+      .second-data-three{
+        display:inline-block;
+        width:10%
+      }
+    }
+  }
   .bankCardInfo {
     .ivu-modal-footer {
       display: none;

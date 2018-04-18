@@ -1,4 +1,4 @@
-<!--个人客户开户-->
+<!--个人客户开户注释-->
 <template>
   <section class="page personal-open-account">
     <span style="font-size:18px;font-weight:bold">个人客户开户</span>
@@ -66,7 +66,6 @@
         </div>
       </i-modal>
     </template>
-
   </section>
 </template>
 

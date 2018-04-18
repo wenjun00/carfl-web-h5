@@ -2,32 +2,32 @@
 <template>
   <section class="page clear-account-report">
     <span class="form-title">清结算日报表</span>
-    <i-select style="margin-left:10px;width:10%;" placeholder="统计机构"  v-model="model.companyId" clearable>
+    <i-select class="form-select" placeholder="统计机构"  v-model="model.companyId" clearable>
       <i-option :label="companyChinaname" :value="id" :key="id" v-for="{id, companyChinaname} in company"></i-option>
     </i-select>
-    <i-button class="blueButton" style="margin-left:10px;" @click="getData">搜索</i-button>
-    <i-button @click="openSearch" style="color:#265EA2">
+    <i-button class="blueButton"  @click="getData">搜索</i-button>
+    <i-button @click="openSearch" class="form-button">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
-    <div style="float:right;margin-right:10px;margin-top:10px;">
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+    <div class="export">
+      <div class="export-item">
         <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size: 12px;">导出</span>
+        <span class="export-item-one">导出</span>
       </div>
     </div>
-    <i-row v-if="searchOptions" style="margin-top:6px;">
-      <i-select placeholder="统计通道" style="margin-left:10px;width:10%;" v-model="model.channel">
+    <i-row v-if="searchOptions" class="form-second">
+      <i-select placeholder="统计通道" class="form-second-one" v-model="model.channel">
         <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <span style="margin-left:10px;">结算日期：</span>
-      <i-date-picker v-model="model.minSettlementDate"></i-date-picker>~
+      <span class="title">结算日期：</span>
+      <i-date-picker v-model="model.minSettlementDate"></i-date-picker> ~
       <i-date-picker v-model="model.maxSettlementDate"></i-date-picker>
     </i-row>
     <!--<table border="1" width="100%" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
-        <td bgcolor="#F2F2F2" rowspan="2" width="5%">公司简称</td>        
+        <td bgcolor="#F2F2F2" rowspan="2" width="5%">公司简称</td>
         <td bgcolor="#F2F2F2" colspan="10" width="20%">汇付</td>
         <td bgcolor="#F2F2F2" colspan="10" width="20%">富友</td>
       </tr>
@@ -102,7 +102,7 @@
         this.data1 = arr
       }, ({ msg }) => {
         this.$Message.error(msg)
-      })    
+      })
     }
     /**
      * 获取公司
@@ -231,7 +231,42 @@
 
 </script>
 
-<style>
+<style lang="less">
+  .page.clear-account-report{
+    .form-select{
+      margin-left:10px;
+      width:10%;
+    }
+    .form-button{
+      color:#265EA2;
+      margin-left:10px;
+    }
+    .export{
+      float:right;
+      margin-right:10px;
+      margin-top:10px;
+      .export-item{
+        font-size:16px;
+        cursor:pointer;
+        display:inline-block;
+        margin-left:10px;
+        color:#3367A7;
+        .export-item-one{
+          font-size:12px;
+        }
+      }
+    }
+    .form-second{
+      margin-top:6px;
+      .form-second-one{
+        margin-left:10px;
+        width:10%;
+      }
+      .title{
+        margin-left:10px;
+      }
+    }
+  }
   .ivu-table-cell {
     padding-left: 0;
     padding-right: 0;

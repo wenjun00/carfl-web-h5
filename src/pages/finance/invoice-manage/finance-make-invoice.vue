@@ -2,56 +2,58 @@
 <template>
   <section class="page finance-make-invoice">
     <span class="form-title">财务开票</span>
-    <span style="margin-left:10px;">关键字：</span>
-    <i-input style="display:inline-block;width:10%" placeholder="客户姓名\发票号" v-model="model.dynamicCondition"></i-input>
-    <i-select placeholder="开票状态" style="margin-left:10px;width:10%" v-model="model.invoicingStatus">
+    <span class="title">关键字：</span>
+    <i-input placeholder="客户姓名\发票号" v-model="model.dynamicCondition" class="form-input"></i-input>
+    <i-select placeholder="开票状态"  v-model="model.invoicingStatus" class="form-select">
       <i-option label="已开票" value="已开票" key="已开票"></i-option>
       <i-option label="未开票" value="未开票" key="未开票"></i-option>
     </i-select>
-    <i-button style="margin-left:10px" class="blueButton" @click="query">搜索</i-button>
-    <i-button @click="openSearch" style="margin-left:10px;color:#265EA2">
+    <i-button class="blueButton" @click="query">搜索</i-button>
+    <i-button @click="openSearch" class="form-button">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
-    <i-row v-if="searchOptions" style="margin:6px;">
+    <i-row v-if="searchOptions" class="second-data">
       <span>所属公司：</span>
-      <i-select style="margin-left:10px;width:15%" placeholder="全部机构" v-model="model.companyId">
+      <i-select placeholder="全部机构" v-model="model.companyId" class="second-select">
         <i-option value="群泰上海" key="群泰上海" label="群泰上海"></i-option>
         <i-option value="群泰西安" key="群泰西安" label="群泰西安"></i-option>
       </i-select>
       <span>状态筛选：</span>
-      <i-select style="margin-left:10px;width:15%" placeholder="全部项目" v-model="model.collectItem">
+      <i-select placeholder="全部项目" v-model="model.collectItem" class="second-select">
         <i-option value="汇付" key="汇付" label="汇付"></i-option>
         <i-option value="富友" key="富友" label="富友"></i-option>
         <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
         <i-option value="现金" key="现金" label="现金"></i-option>
       </i-select>
-      <i-select style="margin-left:10px;width:15%" placeholder="全部状态" v-model="model.collectMoneyChannel">
+      <i-select placeholder="全部状态" v-model="model.collectMoneyChannel" class="second-select">
         <i-option value="汇付" key="汇付" label="汇付"></i-option>
         <i-option value="富友" key="富友" label="富友"></i-option>
         <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
         <i-option value="现金" key="现金" label="现金"></i-option>
       </i-select>
       <span>付款日期：</span>
-      <i-date-picker style="width:10%" v-model="model.startDate"></i-date-picker>~
-      <i-date-picker style="width:10%" v-model="model.endDate"></i-date-picker>
+      <i-date-picker v-model="model.startDate" class="second-picker"></i-date-picker>~
+      <i-date-picker v-model="model.endDate" class="second-picker"></i-date-picker>
     </i-row>
     <data-box :columns="columns1" :data="data1" :page="pageService"></data-box>
+
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:5px">
+      <i-row type="flex" align="middle">
         <i-col :span="8" push="1">
           <span>申请人：administrator</span>
         </i-col>
         <i-col :span="10" pull="4">
           <span>申请时间： 2017-12-01 13:56:45</span>
         </i-col>
-        <i-col :span="6" style="text-align:right;">
+        <i-col :span="6" class="bottom">
           <!--<i-button @click="oneKeyToConnect" class="highButton">一键交接</i-button>-->
           <i-button class="highButton" @click="confirmMakeInvoice">确认开票</i-button>
         </i-col>
       </i-row>
     </div>
+
     <template>
       <i-modal v-model="makeInvoiceModal" title="确认开票" width="600" class="confirmMakeInvoice">
         <confirm-make-invoice></confirm-make-invoice>
@@ -277,6 +279,36 @@
 </script>
 
 <style lang="less">
-
+  .page.finance-make-invoice{
+    .title{
+      margin-left:10px
+    }
+    .form-input{
+      display:inline-block;
+      width:10%
+    }
+    .form-select{
+      margin-left:10px;
+      width:10%
+    }
+    .form-button{
+      margin-left:10px;
+      color:#265EA2
+    }
+    .second-data{
+      margin:6px;
+      .second-select{
+        margin-left:10px;
+        width:15%;
+      }
+      .second-picker{
+        width:10%;
+      }
+    }
+  }
+  .bottom{
+    text-align:right;
+    padding:10px;
+  }
 
 </style>

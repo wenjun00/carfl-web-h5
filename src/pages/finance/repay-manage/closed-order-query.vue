@@ -10,30 +10,30 @@
     <i-button type="text" @click="getTimeSearch(5)" v-auth="437">最近三月</i-button>
     <i-button type="text" @click="getTimeSearch(6)" v-auth="437">本季度</i-button>
     <i-button type="text" @click="getTimeSearch(7)" v-auth="437">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2" v-auth="436">
+    <i-button @click="openSearch" v-auth="436" class="form-button">
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
     <div class="importBtn">
-      <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="438">
-        <svg-icon style="font-size:18px;" iconClass="dayin"></svg-icon>
-        <span style="font-size:12px;">打印</span>
+      <div v-auth="438" class="importBtn-item">
+        <svg-icon iconClass="dayin" class="importBtn-item-one"></svg-icon>
+        <span class="importBtn-item-two">打印</span>
       </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" v-auth="439">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size:12px;">导出</span>
+      <div v-auth="439" class="importBtn-item">
+        <svg-icon iconClass="daochu" class="importBtn-item-one"></svg-icon>
+        <span class="importBtn-item-two">导出</span>
       </div>
     </div>
-    <i-row v-if="searchOptions" style="margin:6px;position:relative;right:16px;">
-      <i-input style="display:inline-block;margin-left:20px;width:16%" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
-      <i-select style="margin-left:10px;width:10%" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
+    <i-row v-if="searchOptions" class="second-data">
+      <i-input placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam" class="second-input"></i-input>
+      <i-select placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable class="second-select">
         <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-select style="margin-left:10px;width:10%" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
+      <i-select placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable class="second-select">
         <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-button style="margin-left:10px" class="blueButton" @click="getEarlyPayList">搜索</i-button>
+      <i-button class="blueButton" @click="getEarlyPayList">搜索</i-button>
     </i-row>
     <data-box :id="435" :columns="columns1" :data="data1" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
 
@@ -344,9 +344,41 @@
 
 </script>
 <style lang="less">
-.closed-order-query .importBtn {
-	float: right;
-	margin-right: 13px;
-	margin-top: 10px;
-}
+  .page.closed-order-query{
+    .form-button{
+      color:#265EA2
+    }
+    .importBtn{
+      float: right;
+      margin-right: 13px;
+      margin-top: 10px;
+      .importBtn-item{
+        cursor:pointer;
+        display:inline-block;
+        margin-left:10px;
+        color:#3367A7;
+        .importBtn-item-one{
+          font-size:18px;
+        }
+        .importBtn-item-two{
+          font-size:12px;
+        }
+      }
+    }
+    .second-data{
+      margin:6px;
+      position:relative;
+      right:16px;
+      .second-input{
+        display:inline-block;
+        margin-left:20px;
+        width:16%
+      }
+      .second-select{
+        margin-left:10px;
+        width:10%
+      }
+    }
+  }
+
 </style>
