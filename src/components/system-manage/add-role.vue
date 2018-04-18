@@ -91,9 +91,7 @@
             this.$Message.warning('角色名称存在特殊字符，请重新输入！')
         }
         return
-        
       }
-
     reset() {
       let _addRole = < Form > this.$refs['add-role']
       _addRole.resetFields()

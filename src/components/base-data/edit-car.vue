@@ -30,7 +30,7 @@
         </i-col>
         <i-col :span="12" :push="1">
           <i-form-item label="车型" prop="carName">
-            <i-select v-model="carFormItem.carName">
+            <i-select v-model="carFormItem.carName" @on-change="carListNumber">
               <i-option v-for="item in carList" :value="item.modelName" :label="item.modelName" :key="item.id"></i-option>
             </i-select>
           </i-form-item>
@@ -130,10 +130,6 @@
         </i-col>
       </i-row>
     </i-form>
-    <!-- <div style="text-align:right">
-      <i-button class="Ghost" @click="close()">取消</i-button>
-      <i-button class="blueButton" @click="submitButton">确定</i-button>
-    </div> -->
   </section>
 </template>
 <script lang="ts">
@@ -160,6 +156,7 @@
   import {
     Emit
   } from 'vue-property-decorator';
+  import clone from "clone";
 
   @Component({
     components: {},
@@ -168,7 +165,6 @@
     @Dependencies(CarQuotationService) private carQuotationService: CarQuotationService;
     @Dependencies(CarService) private carService: CarService;
     @Dependencies(ProductPackageService) private productPackageService: ProductPackageService;
-    // @Prop() carFormItem: any;
 
     @Emit('close')
     close() {}
@@ -198,6 +194,7 @@
       gpsFee: '', // GPS费
       otherFee: '', // 其他费用
       status: '', // 是否启用
+      carId:''
     };
     private ruleValidate: any = {
       quotationName: [{
@@ -238,61 +235,51 @@
         required: true,
         message: '请输入市场指导价',
         trigger: 'blur',
-        type: 'number',
       }],
       monthPay: [{
         required: true,
         message: '请输入租金',
         trigger: 'blur',
-        type: 'number',
       }],
       dealerGuidingPrice: [{
         required: true,
         message: '请输入经销商报价',
         trigger: 'blur',
-        type: 'number',
       }],
       purchaseTaxMoney: [{
         required: true,
         message: '请输入购置税',
         trigger: 'blur',
-        type: 'number',
       }],
       firstPayment: [{
         required: true,
         message: '请输入首期金额',
         trigger: 'blur',
-        type: 'number',
       }],
       roadBridgeFee: [{
         required: true,
         message: '请输入路桥费',
         trigger: 'blur',
-        type: 'number',
       }],
       financeAmount: [{
         required: true,
         message: '请输入融资金额',
         trigger: 'blur',
-        type: 'number',
       }],
       annualAmount: [{
         required: true,
         message: '请输入保险费',
         trigger: 'blur',
-        type: 'number',
       }],
       periods: [{
         required: true,
         message: '请输入融资期数',
         trigger: 'blur',
-        type: 'number',
       }],
       gpsFee: [{
         required: true,
         message: '请输入GPS费',
         trigger: 'blur',
-        type: 'number',
       }],
       status: [{
         required: true,
@@ -301,7 +288,6 @@
         type: 'number',
       }, ],
     };
-
     created() {
       // 获取品牌
       this.carService.getAllBrand().subscribe(
@@ -342,6 +328,12 @@
       let formVal: any = this.$refs['form'];
       formVal.resetFields();
     }
+    carListNumber(val){
+      let target:any = this.carList.find((d)=>d.modelName === val)
+      if(target){
+        this.carFormItem.carId = target.id
+      }
+    }
     /**
      * 确定
      */
@@ -351,7 +343,6 @@
         if (!valid) {
           return false
         } else {
-          this.carFormItem.carRemark = this.carFormItem.carColor;
           this.carQuotationService.updateCarQuotation(this.carFormItem).subscribe(
             data => {
               this.$Message.success('修改成功！');
@@ -370,9 +361,18 @@
      * 获取所有产品包
      */
     getAllProdPackage(row) {
-      console.log(row, 'productPackageId')
-      this.carFormItem = Object.assign({}, row)
-      console.log(this.carFormItem, 'carformitem')
+      console.log(row)
+      this.carFormItem = clone(row)
+      this.carFormItem.marketGuidingPrice = String(this.carFormItem.marketGuidingPrice)
+      this.carFormItem.monthPay = String(this.carFormItem.monthPay)
+      this.carFormItem.dealerGuidingPrice = String(this.carFormItem.dealerGuidingPrice)
+      this.carFormItem.purchaseTaxMoney = String(this.carFormItem.purchaseTaxMoney)
+      this.carFormItem.firstPayment = String(this.carFormItem.firstPayment)
+      this.carFormItem.roadBridgeFee = String(this.carFormItem.roadBridgeFee)
+      this.carFormItem.financeAmount = String(this.carFormItem.financeAmount)
+      this.carFormItem.annualAmount = String(this.carFormItem.annualAmount)
+      this.carFormItem.periods = String(this.carFormItem.periods)
+      this.carFormItem.gpsFee = String(this.carFormItem.gpsFee)
       this.productPackageService.getAllProductPackageNoPage().subscribe(
         data => {
           this.allProdPackage = data;

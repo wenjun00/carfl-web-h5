@@ -301,7 +301,7 @@ export default class RoleMaintenance extends Page {
     let modulePower: any = this.$refs["module-power"] as ModulePower;
     modulePower.submit();
   }
-  addNewRole() {                     
+  addNewRole() {
     this.addRoleModal = true;
   }
 
@@ -352,7 +352,7 @@ export default class RoleMaintenance extends Page {
    */
   addRole() {
     let _addRole = <Modal>this.$refs["add-role"];
-    _addRole.addChangeRole();
+    _addRole.addRole();
   }
   openSearch() {
     this.searchOptions = !this.searchOptions;
@@ -465,7 +465,7 @@ export default class RoleMaintenance extends Page {
       }
       .form-input{
         display:inline-block;
-        width:10%;    
+        width:10%;
       }
       .blue-button{
         margin-left: 20px;

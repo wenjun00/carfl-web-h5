@@ -37,10 +37,11 @@
       <i-select class="data-form-item select city"  placeholder="选择市" v-model="resourcePoolModel.city" clearable>
         <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <span class="data-form-item product-type" >产品类型</span>
-      <i-select class="data-form-item select product-type" placeholder="产品类型" v-model="resourcePoolModel.productType" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
+      <span class="data-form-item product-type" >产品名称</span>
+      <!--<i-select class="data-form-item select product-type" placeholder="产品类型" v-model="resourcePoolModel.productType" clearable>-->
+        <!--<i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>-->
+      <!--</i-select>-->
+      <i-input class="data-form-item select product-type"  v-model="resourcePoolModel.productType"></i-input>
       <i-button class="data-form-item serch-button blueButton" @click="getFaceApprovalList">搜索</i-button>
     </i-row>
     <data-box :id="244" :columns="columns1" :data="faceList" @onPageChange="getFaceApprovalList" :page="pageService"></data-box>
