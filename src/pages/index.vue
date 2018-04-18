@@ -1,5 +1,5 @@
 <template>
-  <section class="main-container">
+  <section class="main-container full">
     <work-tab></work-tab>
   </section>
 </template>
@@ -19,21 +19,5 @@ import { Layout } from "~/core/decorator";
 export default class extends Vue {}
 </script>
 
-<style lang="less">
-.full-height() {
-  height: 100%;
-}
-
-.main-container {
-  .full-height();
-  & > * {
-    .full-height();
-    & > .ivu-tabs {
-      .full-height();
-      & > .ivu-tabs-content {
-        min-height: 100%;
-      }
-    }
-  }
-}
+<style lang="less" scoped>
 </style>

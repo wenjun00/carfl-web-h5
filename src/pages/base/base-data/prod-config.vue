@@ -1,27 +1,26 @@
 <!--产品配置-->
 <template>
   <section class="page prod-config">
-    <i-row style="margin-top:20px;">
+    <i-row class="data-form">
       <i-row>
-        <i-col style="margin-left:10px;width:260px;float:left;">
-          <div style="width:250px;height:30px;border:1px solid #dddd;line-height:30px;font-size:16px;">
-            <div style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>
-            <span style="position:relative;left:5px;">产品类目</span>
-            <div style="float:right;display:inline-block;font-weight:bold">
-              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:rgb(38, 94, 162)" @click="addProductFun">
+        <i-col :span="4">
+          <div class="data-form-item">
+            <div class="data-form-item-icon"></div>
+            <span>产品类目</span>
+            <div class="data-form-item-add">
+              <div class="data-form-item-add-wenjian" @click="addProductFun">
                 <svg-icon iconClass="tianjiawenjian"></svg-icon>
               </div>
-              <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;margin-right:7px;color:rgb(38, 94, 162)"
-                   @click="addSericeFun">
+              <div class="data-form-item-add-wenjianjia" @click="addSericeFun">
                 <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
               </div>
             </div>
           </div>
-          <div style="width:250px;height:600px;border:1px solid #dddd;border-top:0;position:relative;bottom:8px;">
+          <div class="data-form-tree">
             <i-tree :data="treeData" @on-select-change="productNameDetail"></i-tree>
           </div>
         </i-col>
-        <i-col :span="18">
+        <i-col :span="19" offset="1">
           <i-row>
             <i-col :span="12">
               <data-grid :labelWidth="100" labelAlign="left" contentAlign="left;">
@@ -39,72 +38,72 @@
                                 <Radio label="自有资金"></Radio>
                                 <Radio label="第三方"></Radio>
                             </RadioGroup> -->
-              <i-button class="blueButton" style="margin-left:10px;" @click="customerFodderConfig">{{productMessage.isConfig=0 ? "已配置" : "客户素材配置" }}</i-button>
+              <i-button class="blueButton data-form-button" @click="customerFodderConfig">{{productMessage.isConfig=0 ? "已配置" : "客户素材配置" }}</i-button>
               <!--<i-button class="blueButton" @click="chargeAgainstOrderConfig">冲抵顺序配置</i-button>-->
             </i-col>
           </i-row>
-          <i-row style="margin-top:20px;width:auto;display:flex;flex-wrap:wrap;">
-            <div class="addPeriods" @click="addPeriods" v-show="addPeriodsBox">
+          <i-row class="data-form-addperiods">
+            <div class="add-periods" @click="addPeriods" v-show="addPeriodsBox">
               <div>
-                <i-icon type="plus" style="font-size:50px;"></i-icon>
+                <i-icon class="add-periods-icon" type="plus"></i-icon>
                 <p>添加新增期数</p>
               </div>
             </div>
-            <i-col v-for="item in prdConfig" :key="item.id" style="margin-bottom:10px;felx:1;margin-right:20px;" v-show="productShow">
+            <i-col class="publish-form" v-for="item in prdConfig" :key="item.id" v-show="productShow">
               <div>
-                <div class="boxContainerTitle">
-                  <div style="height:48px;display:inline-block;position:relative;bottom:2px;font-size:12px;margin-left:10px;">No.{{item.id}}</div>
-                  <div style="position:relative;left:63px;display:inline-block">
-                    <span style="font-size:18px;font-weight:bold;">{{$dict.getDictName(item.periods)}}</span>
+                <div class="box-container-title">
+                  <div class="box-container-title-id">No.{{item.id}}</div>
+                  <div class="box-container-title-periods">
+                    <span class="periods-font">{{$dict.getDictName(item.periods)}}</span>
                     <span>月/期</span>
                   </div>
                   <div :class="[item.isPublish===361 ?'pulishCss':'Publish']">
                   </div>
                 </div>
-                <div class="boxContainerContent">
-                  <div class="itemContainer">
-                    <span class="itemName">账期类型</span>
+                <div class="box-container-content">
+                  <div class="item-container">
+                    <span class="item-name">账期类型</span>
                     <!-- item.paymentType="387" ? "固定账期" : "正常账期" -->
                     <span class="item">{{getPaymentType(item)}}</span>
                   </div>
-                  <div class="itemContainer">
-                    <span class="itemName">产品利率</span>
+                  <div class="item-container">
+                    <span class="item-name">产品利率</span>
                     <span class="item">{{item.productRate*100}} %/月</span>
                   </div>
-                  <div class="itemContainer">
-                    <span class="itemName">还款方式</span>
+                  <div class="item-container">
+                    <span class="item-name">还款方式</span>
                     <span class="item">{{$dict.getDictName(item.payWay)}}</span>
                   </div>
-                  <div class="itemContainer">
-                    <span class="itemName">融资金额</span>
+                  <div class="item-container">
+                    <span class="item-name">融资金额</span>
                     <span class="item">{{item.financingAmount === '~'?0:item.financingAmount}}元</span>
                   </div>
-                  <div class="itemContainer">
-                    <span class="itemName">首付款</span>
+                  <div class="item-container">
+                    <span class="item-name">首付款</span>
                     <span class="item">{{item.initialPayment === undefined?0:item.initialPayment}} %</span>
                   </div>
-                  <div class="itemContainer">
-                    <span class="itemName">保证金</span>
+                  <div class="item-container">
+                    <span class="item-name">保证金</span>
                     <span class="item">{{item.depositCash === undefined?0:item.depositCash}} %</span>
                   </div>
-                  <div class="itemContainer">
-                    <span class="itemName">尾付款</span>
+                  <div class="item-container">
+                    <span class="item-name">尾付款</span>
                     <span class="item">{{item.finalCash === undefined?0:item.finalCash}} %</span>
                   </div>
-                  <div class="itemContainer">
-                    <span class="itemName">管理费</span>
+                  <div class="item-container">
+                    <span class="item-name">管理费</span>
                     <span class="item">{{item.manageCost === undefined?0:item.manageCost}} %</span>
                   </div>
-                  <div v-if="item.isPublish===360" class="itemContainer">
-                    <span class="itemName">启用/停用</span>
+                  <div v-if="item.isPublish===360" class="item-container">
+                    <span class="item-name">启用/停用</span>
                     <i-switch class="item" v-model="item.productStatus" size="large" :true-value="0" :false-value="1" @on-change="switchStatus(item)">
                       <span slot="open">启用</span>
                       <span slot="close">停用</span>
 
                     </i-switch>
                   </div>
-                  <div v-if="item.isPublish===361" class="itemContainer">
-                    <span class="itemName">操作</span>
+                  <div v-if="item.isPublish===361" class="item-container">
+                    <span class="item-name">操作</span>
                     <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;" @click="showDetail(item)">
                       <svg-icon iconClass="tianxie" class="item"></svg-icon>
                     </div>
@@ -119,7 +118,7 @@
               </div>
             </i-col>
           </i-row>
-          <div class="empty_text" v-if="noData">空空如也，请选择产品！</div>
+          <div class="empty-text" v-if="noData">空空如也，请选择产品！</div>
         </i-col>
       </i-row>
     </i-row>
@@ -335,9 +334,9 @@
         id: '',
       };
       this.maintains = [{
-        id: 1,
-        name: '个人基本资料',
-      },
+          id: 1,
+          name: '个人基本资料',
+        },
         {
           id: 2,
           name: '资产证明',
@@ -360,11 +359,11 @@
         },
       ];
       this.columns1 = [{
-        title: '序号',
-        width: 60,
-        type: 'index',
-        align: 'center',
-      },
+          title: '序号',
+          width: 60,
+          type: 'index',
+          align: 'center',
+        },
         {
           title: '操作',
           align: 'center',
@@ -464,8 +463,8 @@
           this.$Message.success('发布成功！');
         },
         ({
-           msg
-         }) => {
+          msg
+        }) => {
           this.$Message.error(msg);
         }
       );
@@ -593,8 +592,8 @@
           this.$Message.success('数据保存成功！');
         },
         ({
-           msg
-         }) => {
+          msg
+        }) => {
           this.$Message.error(msg);
         }
       );
@@ -610,13 +609,16 @@
      * 停用启用状态
      */
     switchStatus(item) {
-      this.productPlanIssueService.ableOrUnable({ id: item.id, status: item.productStatus }).subscribe(
+      this.productPlanIssueService.ableOrUnable({
+        id: item.id,
+        status: item.productStatus
+      }).subscribe(
         val => {
           this.$Message.success('操作成功！');
         },
         ({
-           msg
-         }) => {
+          msg
+        }) => {
           this.$Message.error(msg);
         }
       );
@@ -689,13 +691,13 @@
       let openAddProduct: any = this.$refs['add-product'];
       openAddProduct.vaildFun(this.seriId);
     }
-    cancelAddProduct(){
+    cancelAddProduct() {
       this.addProductModal = false
       let openAddProduct: any = this.$refs['add-product'];
       openAddProduct.reset();
     }
-    applyDerateModalOpen(val){
-      if(!val){
+    applyDerateModalOpen(val) {
+      if (!val) {
         let openAddProduct: any = this.$refs['add-product'];
         openAddProduct.reset();
       }
@@ -712,7 +714,7 @@
      * 树形结构 新增产品系列
      */
     addSericeFun() {
-      if(this.scopes) {
+      if (this.scopes) {
         if (typeof this.scopes[0].flag === 'undefined' || this.scopes[0].flag !== '产品') {
           this.addSericeModal = true;
         } else {
@@ -729,11 +731,11 @@
       let openAddSerice: any = this.$refs['add-series'];
       openAddSerice.vaildFun(this.seriId);
     }
-    cancelAddSerice(){
+    cancelAddSerice() {
       this.addSericeModal = false
     }
-    addProductSeries(val){
-      if(!val){
+    addProductSeries(val) {
+      if (!val) {
         let openAddSerice: any = this.$refs['add-series'];
         openAddSerice.reset();
       }
@@ -758,19 +760,19 @@
       }
       this.personalMaterialService
         .select(obj).subscribe(data => {
-        this.$Message.success('操作成功！')
-        this.customerFodderConfigModal = false
-      }, ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      })
+          this.$Message.success('操作成功！')
+          this.customerFodderConfigModal = false
+        }, ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        })
     }
     /**
      * 客户素材配置
      */
     customerFodderConfig() {
-      if(!this.productMessage.id) {
+      if (!this.productMessage.id) {
         this.$Message.error('请选择产品！');
         return
       }
@@ -783,7 +785,7 @@
           let typeArr: any = data.map(v => v.type)
           let arr: any = []
           typeArr.forEach(v => {
-            if(!arr.find(val => val === v)) {
+            if (!arr.find(val => val === v)) {
               arr.push(v)
             }
           })
@@ -807,59 +809,146 @@
   }
 
 </script>
-<style lang="less">
-  .prod-config {
-    // height: 100%;
-  }
-
-  .maintainCss {
-    background: #e4f4fa;
-  }
-
-  .boxContainerContent {
+<style lang="less" scoped>
+  .page.prod-config {
+    .data-form {
+      margin-top: 20px;
+      .data-form-item {
+        width: 250px;
+        height: 30px;
+        border: 1px solid #dddd;
+        line-height: 30px;
+        font-size: 16px;
+        .data-form-item-icon {
+          width: 4px;
+          height: 15px;
+          background: rgb(38, 94, 162);
+          display: inline-block;
+          margin-left: 10px;
+          position: relative;
+          top: 2px;
+        }
+        .data-form-item-add {
+          float: right;
+          display: inline-block;
+          font-weight: bold;
+          .data-form-item-add-wenjian {
+            font-size: 18px;
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 10px;
+            color: rgb(38, 94, 162)
+          }
+          .data-form-item-add-wenjianjia {
+            font-size: 18px;
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 10px;
+            margin-right: 7px;
+            color: rgb(38, 94, 162)
+          }
+        }
+      }
+      .data-form-tree {
+        width: 250px;
+        height: 600px;
+        border: 1px solid #dddd;
+        border-top: 0;
+        position: relative;
+        bottom: 8px;
+      }
+      .data-form-button {
+        margin-left: 10px;
+      }
+      .data-form-addperiods {
+        margin-top: 20px;
+        width: auto;
+        display: flex;
+        flex-wrap: wrap;
+        .add-periods {
+          width: 300px;
+          height: 450px;
+          border: 1px solid rgb(221, 221, 222);
+          border-radius: 3px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 20px;
+          .add-periods-icon {
+            font-size: 50px;
+          }
+        }
+        .add-periods>div {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          color: rgb(169, 168, 170);
+        }
+        .publish-form {
+          margin-bottom: 10px;
+          felx: 1;
+          margin-right: 20px;
+          .box-container-title {
+            width: 300px;
+            height: 50px;
+            border: 1px solid rgb(221, 221, 222);
+            border-top: 2px solid rgb(104, 138, 188);
+            line-height: 50px;
+            background: rgb(245, 245, 245);
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            .box-container-title-id {
+              height: 48px;
+              display: inline-block;
+              position: relative;
+              bottom: 2px;
+              font-size: 12px;
+              margin-left: 10px;
+            }
+            .box-container-title-periods {
+              position: relative;
+              left: 63px;
+              display: inline-block;
+              .periods-font {
+                font-size: 18px;
+                font-weight:bold;
+              }
+            }
+          }
+.box-container-content {
     width: 300px;
     height: 370px;
     border-left: 1px solid rgb(221, 221, 222);
     border-right: 1px solid rgb(221, 221, 222);
-  }
-
-  .boxContainerContent .itemContainer:first-child {
-    padding-top: 35px;
-  }
-
-  .itemContainer {
+        .item-container {
     margin: 0 15px 15px 15px;
     display: flex;
     justify-content: space-between;
-  }
-
-  .itemName {
+    .item-name {
     color: #999999;
   }
+  }
+  }
+  
+  .box-container-content .item-container:first-child {
+    padding-top: 35px;
+  }
 
+
+        }
+      }
+    }
+  }
+  
+  .maintainCss {
+    background: #e4f4fa;
+  }
+  
   .item {
     margin-left: 20px;
   }
-
-  .addPeriods {
-    width: 300px;
-    height: 450px;
-    border: 1px solid rgb(221, 221, 222);
-    border-radius: 3px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 20px;
-  }
-
-  .addPeriods>div {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    color: rgb(169, 168, 170);
-  }
-
+  
   .pulishCss {
     background: url('./../../../../static/images/common/no-publish.png') no-repeat;
     width: 90px;
@@ -869,7 +958,7 @@
     bottom: 39px;
     z-index: 999;
   }
-
+  
   .Publish {
     background: url('./../../../../static/images/common/publish.png') no-repeat;
     width: 90px;
@@ -879,7 +968,7 @@
     bottom: 39px;
     z-index: 999;
   }
-
+  
   .PublishContent {
     width: 300px;
     height: 50px;
@@ -892,38 +981,27 @@
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
   }
-
+  
   .PublishButton {
     line-height: 50px;
     font-size: 14px;
     color: rgb(104, 138, 188);
   }
-
-  .boxContainerTitle {
-    width: 300px;
-    height: 50px;
-    border: 1px solid rgb(221, 221, 222);
-    border-top: 2px solid rgb(104, 138, 188);
-    line-height: 50px;
-    background: rgb(245, 245, 245);
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-  }
-
+  
   .ivu-tree-empty {
     height: 50px;
     line-height: 50px;
     text-indent: 14px;
   }
-
+  
   .periods {
     .ivu-modal-body {
       height: 600px !important;
       overflow: auto !important;
     }
   }
-
-  .empty_text {
+  
+  .empty-text {
     height: 400px;
     line-height: 400px;
     text-align: center;

@@ -1,25 +1,25 @@
 <!--系统备份-->
 <template>
   <section class="page system-backups">
-    <i-row>
+    <i-row class="data-form">
       <div class="form-title">系统备份</div>
-      <span style="margin-left:20px;">mysql文件名：</span>
-      <i-input style="display:inline-block;width:10%;" v-model="systemBackUpModel.mysqlName"></i-input>
-      <span style="margin-left:20px;">mongodb文件名：</span>
-      <i-input style="display:inline-block;width:10%;" v-model="systemBackUpModel.mongdbName"></i-input>
-      <span style="margin-left:20px;">备份类型：</span>
+      <span >mysql文件名：</span>
+      <i-input class="form-input" v-model="systemBackUpModel.mysqlName"></i-input>
+      <span>mongodb文件名：</span>
+      <i-input class="form-input" v-model="systemBackUpModel.mongdbName"></i-input>
+      <span>备份类型：</span>
       <!--<i-input style="display:inline-block;width:10%;" ></i-input>-->
-      <i-select v-model="systemBackUpModel.type" style="display:inline-block;width:10%;" clearable>
+      <i-select v-model="systemBackUpModel.type" class="form-input" clearable>
         <i-option label="自动" :value="0" :key="0"></i-option>
         <i-option label="手动" :value="1" :key="1"></i-option>
       </i-select>
-      <span style="margin-left:20px;">备份时间：</span>
+      <span class="title" >备份时间：</span>
       <!--<i-date-picker type="datetimerange" v-model="backupTimeRange" @on-change="changeBackupTime" @on-clear="clearDateTime"></i-date-picker>-->
-      <i-date-picker style="display:inline-block;width:10%" v-model="systemBackUpModel.startTime"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%" v-model="systemBackUpModel.endTime"></i-date-picker>
-      <i-button style="margin-left:10px;" class="blueButton" @click="getSystemBackupList">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
-      <i-button style="margin-left:10px;" class="blueButton" @click="addNewBackups">新增备份</i-button>
+      <i-date-picker class="form-item"  v-model="systemBackUpModel.startTime"></i-date-picker>~
+      <i-date-picker class="form-item"  v-model="systemBackUpModel.endTime"></i-date-picker>
+      <i-button class="form-button"  @click="getSystemBackupList">搜索</i-button>
+      <i-button class="form-button"  @click="refreshRoleList">重置</i-button>
+      <i-button class="form-button"  @click="addNewBackups">新增备份</i-button>
     </i-row>
     <data-box :id="69" :columns="columns1" :data="systemBackUpList" @onPageChange="getSystemBackupList" :page="pageService"></data-box>
   </section>
@@ -225,3 +225,26 @@ export default class SystemBackups extends Page {
 	}
 }
 </script>
+<style lang="less" scoped>
+  .page.system-backups{
+    .data-form{
+        .form-input{
+          display:inline-block;
+          width:10%;
+          margin-right:20px
+        }
+        .title{
+          margin-left:20px
+        }
+        .form-item{
+          display:inline-block;
+          width:10%
+        }
+        .form-button{
+          margin-left:10px;
+          background: #265EA2;
+          color: #fff;
+        }
+    }
+  }
+</style>

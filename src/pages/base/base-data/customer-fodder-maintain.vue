@@ -1,34 +1,34 @@
 <!--客户素材维护-->
 <template>
   <section class="page customer-fodder-maintain">
-    <i-row style="margin-top:20px;">
+    <i-row class="data-form">
       <i-col>
-        <span style="font-size:18px;font-weight:bold;margin-left:8px;margin-right:5%;">客户素材维护</span>
-        <span>素材名称：</span>
-        <i-input style="width:20%" v-model="personalModel.name"></i-input>
-        <i-button class="blueButton" style="margin-left:10px" @click="search">搜索</i-button>
-        <i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>
-        <i-button class="blueButton" style="margin-left:10px;position:absolute;right:11px;" @click="materialModel=true">新增素材</i-button>
+        <span class="form-title">客户素材维护</span>
       </i-col>
-      <i-row type="flex" style="margin-top:10px;">
-        <i-col>
-          <div style="width:250px;height:30px;border:1px solid #dddd;line-height:30px;font-size:16px;">
-            <div style="width: 4px; height: 15px; background: rgb(38, 94, 162); display: inline-block; margin-left:10px;position:relative;top:2px;"></div>
-            <span style="position:relative;left:10px;">素材类型</span>
-            <div style="float:right;display:inline-block;font-weight:bold">
-              <div style="font-size:20px;cursor:pointer;display:inline-block;margin-right: 7px;color:rgb(38, 94, 162)" @click="MaterialTypeModel=true">
+      <i-row type="flex">
+        <i-col :span="4">
+          <div class="data-form-item">
+            <div class="data-form-item-icon"></div>
+            <span>素材类型</span>
+            <div class="data-form-item-wenjian">
+              <div class="data-form-item-wenjianicon" @click="MaterialTypeModel=true">
                 <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
               </div>
             </div>
           </div>
-          <div style="width:250px;height:600px;border:1px solid #dddd;border-top:0;">
-            <div v-for="item in maintains" :key="item.id" :value="item.name" :class="{'maintainCss':item.id===checkId}" style="cursor:pointer;width:100%;padding-left:10px;height:40px;line-height:40px;font-size:16px;postion:relative;margin:auto"
+          <div class="data-form-list">
+            <div class="data-form-list-maintain" v-for="item in maintains" :key="item.id" :value="item.name" :class="{'maintainCss':item.id===checkId}"
               @click="checkMaintain(item)">
               <span>{{item.name}}</span>
             </div>
           </div>
         </i-col>
-        <i-col class="rightTable">
+        <i-col class="command" :span="19" :offset="1">
+          <span>素材名称：</span>
+          <i-input class="command-item" v-model="personalModel.name"></i-input>
+          <i-button class="blueButton" @click="search">搜索</i-button>
+          <i-button class="blueButton" @click="resetSeach">重置</i-button>
+          <i-button class="blueButton command-item-add" @click="materialModel=true">新增素材</i-button>
           <data-box :id="144" :columns="columns" :data="data1" @onPageChange="search" :page="pageService">
           </data-box>
         </i-col>
@@ -54,7 +54,7 @@
     </template>
     <template>
       <i-modal title="新增素材类型" v-model="MaterialTypeModel">
-        <add-material-type @close="closeMaterialType" ref="add-material-type" :maintains = "maintains"></add-material-type>
+        <add-material-type @close="closeMaterialType" ref="add-material-type" :maintains="maintains"></add-material-type>
         <div slot="footer">
           <i-button class="Ghost" @click="cancelAddMaterialType">取消</i-button>
           <i-button class="blueButton" @click="addMatrialTypeSure">确定</i-button>
@@ -388,15 +388,70 @@
   }
 
 </script>
-<style>
+<style lang="less" scoped>
+  .page.customer-fodder-maintain {
+    .data-form {
+      margin-top: 10px;
+      .data-form-item {
+        width: 250px;
+        height: 30px;
+        border: 1px solid #dddd;
+        line-height: 30px;
+        font-size: 16px;
+        .data-form-item-icon {
+          width: 4px;
+          height: 15px;
+          background: rgb(38, 94, 162);
+          display: inline-block;
+          margin-left: 10px;
+          position: relative;
+          top: 2px;
+        }
+        .data-form-item-wenjian {
+          float: right;
+          display: inline-block;
+          font-weight: bold;
+          .data-form-item-wenjianicon {
+            font-size: 20px;
+            cursor: pointer;
+            display: inline-block;
+            margin-right: 7px;
+            color: rgb(38, 94, 162)
+          }
+        }
+      }
+      .data-form-list {
+        width: 250px;
+        height: 600px;
+        border: 1px solid #dddd;
+        border-top: 0;
+        .data-form-list-maintain {
+          cursor: pointer;
+          width: 100%;
+          padding-left: 10px;
+          height: 40px;
+          line-height: 40px;
+          font-size: 16px;
+          postion: relative;
+          margin: auto
+        }
+      }
+      .command {
+        .command-item {
+          width: 20%;
+          margin-right: 10px;
+        }
+        .command-item-add {
+          margin-left: 10px;
+          position: absolute;
+          right: 11px;
+        }
+      }
+    }
+  }
+  
   .maintainCss {
     background: #e4f4fa;
-  }
-
-  .rightTable {
-    width: calc(100% - 280px);
-    margin: -10px;
-    margin-left: 20px;
   }
 
 </style>

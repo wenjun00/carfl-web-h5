@@ -5,10 +5,10 @@
       <div class="form-title">批量管理</div>
     </i-row>
     <data-box :id="63" :columns="columns1" :data="batchList" @onPageChange="getBatchManageList" :page="pageService"></data-box>
-    <div class="submitBar">
+    <div class="submit-bar">
       <i-row type="flex" align="middle" >
-        <i-col :span="24" style="text-align:right;">
-          <i-button class="highButton" @click="batchManage">批量管理</i-button>
+        <i-col :span="24" class="text-right">
+          <i-button class="high-button" @click="batchManage">批量管理</i-button>
         </i-col>
       </i-row>
     </div>
@@ -197,3 +197,4 @@ export default class SystemBackups extends Page {
   stopUse() {}
 }
 </script>
+

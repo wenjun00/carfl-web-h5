@@ -2,15 +2,15 @@
 <template>
   <section class="page org-frame-syn">
     <span class="form-title">组织架构同步</span>
-    <i-row style="margin:6px;">
+    <i-row class="data-form" >
       <span>工号：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入工号"></i-input>
-      <span style="margin-left:10px;">姓名：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入姓名"></i-input>
-      <span style="margin-left:10px;">所属部门：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入所属部门"></i-input>
-      <i-button class="blueButton" style="margin-left:10px;">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;">执行同步</i-button>
+      <i-input class="form-input" placeholder="请输入工号"></i-input>
+      <span>姓名：</span>
+      <i-input class="form-input" placeholder="请输入姓名"></i-input>
+      <span >所属部门：</span>
+      <i-input class="form-input" placeholder="请输入所属部门"></i-input>
+      <i-button class="form-button">搜索</i-button>
+      <i-button class="form-button">执行同步</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
     <!--Model-->
@@ -166,6 +166,21 @@
   }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
+  .page.org-frame-syn{
+    .data-form{
+      margin:6px;
+      .form-input{
+        display:inline-block;
+        width:10%;
+        margin-right:10px
+      }
+      .form-button{
+        margin-left:10px;
+        background: #265EA2;
+        color: #fff;
 
+      }
+    }
+  }
 </style>

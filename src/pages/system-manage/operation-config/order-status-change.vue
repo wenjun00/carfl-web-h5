@@ -2,19 +2,19 @@
 <template>
   <section class="page order-status-change">
     <span class="form-title">订单状态变更</span>
-    <i-row style="margin:6px;">
-      <div style="float:right;margin-right:10px;margin-top:-48px;">
-        <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+    <i-row  class="data-form">
+      <div class="command" >
+        <div class="command-item dayin">
           <svg-icon iconClass="dayin"></svg-icon>
-          <span style="font-size: 12px;">打印</span>
+          <span>打印</span>
         </div>
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <div class="command-item daochu">
           <svg-icon iconClass="daochu"></svg-icon>
-          <span style="font-size: 12px;">导出</span>
+          <span>导出</span>
         </div>
       </div>
-      <i-input style="display:inline-block;width:14%;margin-left:5px;min-width:260px;" placeholder="请录入客户姓名\证件号码\手机号\订单号查询" v-model="orderInfo"></i-input>
-      <i-button class="blueButton" style="margin-left:10px;" @click="getOrderStatusChangeList">搜索</i-button>
+      <i-input class="form-input" placeholder="请录入客户姓名\证件号码\手机号\订单号查询" v-model="orderInfo"></i-input>
+      <i-button class="blue-button" @click="getOrderStatusChangeList">搜索</i-button>
       <!-- <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button> -->
     </i-row>
     <data-box :id="48" :columns="columns1" :data="orderStatusChangeList" @onPageChange="getOrderStatusChangeList" :page="pageService"></data-box>
@@ -263,6 +263,46 @@ export default class OrderStatusChange extends Page {
 }
 </script>
 
-<style lang="less" scope>
-
+<style lang="less" scoped>
+  .page.order-status-change{
+    .data-form{
+      margin:6px;
+      .command{
+          float:right;
+          margin-right:10px;
+          margin-top:-48px;
+          .command-item{
+            display:inline-block;
+            color:#3367A7;
+            margin-left:10px;
+            cursor:pointer;
+             &.dayin{
+              font-size:18px;
+               span{
+                font-size: 12px;
+                }
+            }
+             &.daochu{
+              font-size:16px;
+               span{
+                font-size: 12px;
+                }
+            }
+           
+          }
+      }
+      .form-input{
+          display:inline-block;
+          width:14%;
+          margin-left:5px;
+          min-width:260px;
+          margin-right:10px
+      }
+      .blue-button{
+        margin-left:10px;
+        background: #265EA2;
+        color: #fff;
+      }
+    }
+  }
 </style>

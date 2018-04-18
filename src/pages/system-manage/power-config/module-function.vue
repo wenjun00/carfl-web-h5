@@ -2,13 +2,13 @@
 <template>
   <section class="page module-function">
     <span class="form-title">模块功能</span>
-    <i-row>
+    <i-row class="data-form">
       <!--树-->
-      <i-col :span="4" style="border:1px solid #DDDEE1;height:567px;margin-top:9px;">
-        <div style="text-align:center;font-size: 14px;font-weight: bold;width: 100%;background: #F8F8F9;height: 41px;top: 1px;">
-          <span style="position:relative;top:10px;">模块名称</span>
+      <i-col :span="4" class="form-item">
+        <div class="form-item-name">
+          <span>模块名称</span>
         </div>
-        <div style="overflow:auto;height:524px; ">
+        <div class="form-item-tree">
           <i-tree :data="treeData" @on-select-change="prdTreeChange"></i-tree>
         </div>
       </i-col>
@@ -78,12 +78,12 @@
       </i-modal>
     </template>
     <template>
-      <i-modal v-model="toViewModal" width="500" title="查看" class="toViewModalClass">
+      <i-modal v-model="toViewModal" width="500" title="查看" class="to-view-modal-class">
         <to-view :ToviewrowData="ToviewrowData"></to-view>
       </i-modal>
     </template>
     <template>
-      <i-modal v-model="modifyNameModal" width="500" title="修改资源名称" class="toViewModalClass">
+      <i-modal v-model="modifyNameModal" width="500" title="修改资源名称" class="to-view-modal-class">
         <i-form :label-width="60" style="margin-top:20px;">
           <i-form-item label="资源名称" prop="resoName">
             <i-input v-model="modifyNameDataset.resoName" :maxlength="20"></i-input>
@@ -96,7 +96,7 @@
       </i-modal>
     </template>
     <template>
-      <i-modal v-model="modifyIconModal" width="500" title="修改资源图标" class="toViewModalClass">
+      <i-modal v-model="modifyIconModal" width="500" title="修改资源图标" class="to-view-modal-class">
         <i-form :label-width="60" style="margin-top:20px;">
           <i-form-item label="资源图标" prop="resoIcon">
             <i-input v-model="modifyIconData.resoIcon" :maxlength="15"></i-input>
@@ -464,14 +464,45 @@ export default class ModuleFunction extends Page {
 }
 </script>
 
-<style lang="less" scope>
-.input {
-  width: 60%;
-}
-
-.toViewModalClass {
-  .ivu-modal-footer {
-    display: none !important;
+<style lang="less" scoped>
+  .page.module-function{
+    .data-form{
+      .form-item{
+        border:1px solid #DDDEE1;
+        height:567px;
+        margin-top:9px;
+        .form-item-name{
+         text-align:center;
+         font-size: 14px;
+         font-weight: bold;
+         width: 100%;
+         background: #F8F8F9;
+         height: 41px;
+         top: 1px;
+         span{
+           position:relative;
+           top:10px; 
+         }
+        }
+        .form-item-tree{
+          overflow:auto;
+          height:524px;
+        }
+      }
+    }
+    .input {
+      width: 60%;
+    }
+    .toViewModalClass {
+      .ivu-modal-footer {
+          display: none !important;
+      }
+    }
   }
-}
+
+
+
+
+
+
 </style>

@@ -2,14 +2,14 @@
 <template>
   <section class="page allot-role">
     <span class="form-title">分配角色</span>
-    <i-row style="margin-bottom:10px;margin-left:25px;">
-      <span style="margin-left:20px;">工号：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入工号"></i-input>
-      <span style="margin-left:10px;">姓名：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入姓名"></i-input>
-      <span style="margin-left:10px;">所属部门：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入所属部门"></i-input>
-      <i-button class="blueButton" style="margin-left:20px;">搜索</i-button>
+    <i-row class="data-form">
+      <span class="title">工号：</span>
+      <i-input class="form-input" placeholder="请输入工号"></i-input>
+      <span class="title" >姓名：</span>
+      <i-input class="form-input" placeholder="请输入姓名"></i-input>
+      <span class="title" >所属部门：</span>
+      <i-input class="form-input" placeholder="请输入所属部门"></i-input>
+      <i-button class="form-button"  >搜索</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1"></data-box>
 
@@ -221,3 +221,23 @@
 
   }
 </script>
+<style lang="less" scoped>
+  .page.allot-role{
+    .data-form{
+      margin-bottom:10px;
+      margin-left:25px;
+      .title{
+          margin-left: 10px;
+      }
+      .form-input{
+          display:inline-block;
+          width:10%;
+      }
+      .form-button{
+          margin-left: 10px;
+          background: #265EA2;
+          color: #fff;
+      }
+    }
+  }
+</style>

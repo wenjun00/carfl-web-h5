@@ -1,36 +1,34 @@
 <!--审批原因管理-->
 <template>
   <section class="page approval-reason-manage">
-    <i-row style="margin-top:10px;margin-left:10px;">
-      <span style="font-size:18px;font-weight:bold">审批原因管理</span>
-      <span style="margin-left:10px;">类型：</span>
-      <i-select style="margin-left:10px;width:10%;" placeholder="全部" v-model="appReasonModel.type" clearable @on-change="selectType">
+    <i-row class="data-form">
+      <span class="span">审批原因管理</span>
+      <span>类型：</span>
+      <i-select class="data-form-item" placeholder="全部" v-model="appReasonModel.type" clearable @on-change="selectType">
         <i-option label="退回" :value="374" :key="374"></i-option>
         <i-option label="拒绝" :value="375" :key="375"></i-option>
       </i-select>
-      <span style="margin-left:10px;">一级：</span>
-      <i-select style="margin-left:10px;width:10%;" placeholder="全部" v-model="appReasonModel.first" clearable @on-change="firstSelect">
+      <span>一级：</span>
+      <i-select class="data-form-item" placeholder="全部" v-model="appReasonModel.first" clearable @on-change="firstSelect">
         <i-option :label="item" :value="item" :key="item" v-for="item in firstOption"></i-option>
       </i-select>
-      <span style="margin-left:10px;">二级：</span>
-      <i-select style="margin-left:10px;width:10%;" placeholder="全部" v-model="appReasonModel.second" clearable @on-change="secondSelect">
+      <span>二级：</span>
+      <i-select class="data-form-item" placeholder="全部" v-model="appReasonModel.second" clearable @on-change="secondSelect">
         <i-option :label="item" :value="item" :key="item" v-for="item in secondOption"></i-option>
       </i-select>
-      <span style="margin-left:10px;">CRC编码：</span>
-      <i-input style="width:10%;" v-model="appReasonModel.CRC"></i-input>
-      <span style="margin-left:10px;">详细内容：</span>
-      <i-input style="width:10%;" v-model="appReasonModel.detail"></i-input>
-      <i-button class="blueButton" style="margin-left:10px;" @click="seach">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;" @click="resetSeach">重置</i-button>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;">
-        <span></span>
-      </div>
-      <div style="float:right;margin-right:12px;margin-top:10px;">
-        <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon iconClass="daoru" style="font-size:16px;"></svg-icon>
-          <span style="font-size:14px;" @click="enterInto">导入</span>
+      <span>CRC编码：</span>
+      <i-input class="data-form-item" v-model="appReasonModel.CRC"></i-input>
+      <span>详细内容：</span>
+      <i-input class="data-form-item" v-model="appReasonModel.detail"></i-input>
+      <i-button class="blueButton" @click="seach">搜索</i-button>
+      <i-button class="blueButton" @click="resetSeach">重置</i-button>
+
+      <div class="command">
+        <div class="command-in">
+          <svg-icon iconClass="daoru"></svg-icon>
+          <span @click="enterInto">导入</span>
         </div>
-        <div style="font-size:14px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" @click="downloadTemplate">
+        <div class="command-in" @click="downloadTemplate">
           <svg-icon iconClass="xiazai"></svg-icon>
           <span>模版下载</span>
         </div>
@@ -54,17 +52,17 @@
       </i-modal>
     </template>
     <template>
-    <i-modal title="编辑审批原因" v-model="editApprovalReasonModel">
-      <edit-approval-reason ref="edit-approval-reason" @close="closeEditApproval" :AppRoveReasonList="AppRoveReasonList"></edit-approval-reason>
-      <div slot="footer">
-        <i-button class="Ghost" @click="editcancel">取消</i-button>
-        <i-button class="blueButton" @click="editApproval">保存并退出</i-button>
-      </div>
-    </i-modal>
-  </template>
+      <i-modal title="编辑审批原因" v-model="editApprovalReasonModel">
+        <edit-approval-reason ref="edit-approval-reason" @close="closeEditApproval" :AppRoveReasonList="AppRoveReasonList"></edit-approval-reason>
+        <div slot="footer">
+          <i-button class="Ghost" @click="editcancel">取消</i-button>
+          <i-button class="blueButton" @click="editApproval">保存并退出</i-button>
+        </div>
+      </i-modal>
+    </template>
     <template>
       <i-modal title="审批原因导入" v-model="enterIntoReasonModel" :transfer="false">
-        <enter-approval-reason ref="enter-approval-reason" @close="closeEnterApproval" ></enter-approval-reason>
+        <enter-approval-reason ref="enter-approval-reason" @close="closeEnterApproval"></enter-approval-reason>
         <div slot="footer">
           <i-button class="Ghost" @click="entercancel">取消</i-button>
           <i-button class="blueButton" @click="enterApproval">导入</i-button>
@@ -97,7 +95,9 @@
   import {
     FilterService
   } from '~/utils/filter.service';
-  import { CommonService } from "~/utils/common.service";
+  import {
+    CommonService
+  } from "~/utils/common.service";
   @Layout('workspace')
   @Component({
     components: {
@@ -121,7 +121,7 @@
     private AppRoveReasonList: Array < any > = [];
     private approvalReasonModel: Boolean = false;
     private editApprovalReasonModel: Boolean = false;
-    private enterIntoReasonModel:Boolean = false;
+    private enterIntoReasonModel: Boolean = false;
     private userData: any = {};
     private firstOption: any = [];
     private secondOption: any = [];
@@ -248,13 +248,13 @@
     /**
      * 取消导入审批原因
      */
-    entercancel(){
+    entercancel() {
       this.enterIntoReasonModel = false
     }
     /**
      * 确定导入审批原因
      */
-    enterApproval(){
+    enterApproval() {
 
     }
 
@@ -386,7 +386,7 @@
     /**
      * 审批原因导入成功 关闭窗口
      */
-    closeEnterApproval(){
+    closeEnterApproval() {
       this.enterIntoReasonModel = false;
       this.seach(); //刷新
     }
@@ -395,15 +395,15 @@
      */
     downloadTemplate() {
       this.approveReasonService.downloadApproveReasonTemplate().subscribe(data => {
-        CommonService.downloadFile(data,'模版下载')
-      },(msg)=>{
+        CommonService.downloadFile(data, '模版下载')
+      }, (msg) => {
         this.$Message.error(msg);
       })
     }
     /**
      * 导入审批原因
      */
-    enterInto(){
+    enterInto() {
       this.enterIntoReasonModel = true
     }
     /**
@@ -453,6 +453,39 @@
 
 </script>
 <style lang="less" scoped>
-
+  .page.approval-reason-manage {
+    .data-form {
+      .span {
+        font-size: 18px;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+      margin-top:10px !important;
+      margin-left:10px !important;
+      .data-form-item {
+        margin-right: 10px;
+        width: 10% !important;
+        .ivu-select .ivu-select-single {
+          display: inline-block;
+          width: 10% !important;
+        }
+      }
+      .command {
+        float: right;
+        margin-right: 12px;
+        margin-top: 10px;
+        .command-in {
+          cursor: pointer;
+          display: inline-block;
+          margin-left: 10px;
+          color: #3367A7;
+        }
+      }
+    }
+    // .data-form-item .ivu-select .ivu-select-single{
+    //     display: inline-block;
+    //     width: 10% !important;
+    // }
+  }
 
 </style>

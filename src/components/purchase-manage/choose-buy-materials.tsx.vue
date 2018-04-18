@@ -472,6 +472,10 @@
      */
     finalprincipalBlur(){
         this.chooseBuyModel.finalprincipal=Number(this.chooseBuyModel.finalprincipal).toFixed(2).toString()
+         if(Number(this.chooseBuyModel.finalprincipal)>=Number(this.chooseBuyModel.vehicleAmount)){
+        this.$Message.warning('尾付本金应小于车辆参考总价！')
+        this.chooseBuyModel.finalprincipal=''
+    }
 }
     /**
      * 保险费（小数点保留两位）
@@ -645,10 +649,6 @@
     //   }
     if(this.chooseBuyModel.finalprincipal&&this.DataSet.finalCash){
         this.finalorddisabled=false
-    }
-    if(this.chooseBuyModel.finalprincipal>=this.chooseBuyModel.vehicleAmount){
-        this.$Message.warning('尾付本金应小于车辆参考总价！')
-        this.chooseBuyModel.finalprincipal=''
     }
       this.getFinanceTotalMoney()
     }

@@ -2,24 +2,24 @@
 <template>
   <section class="page system-log-download">
     <span class="form-title">系统日志下载</span>
-    <i-row style="margin:6px;">
-      <span style="margin-left:10px;">操作人：</span>
-      <i-input style="display:inline-block;width:10%;" v-model="systemLogModel.realName"></i-input>
-      <span style="margin-left:10px;">客户端IP：</span>
-      <i-input style="display:inline-block;width:10%;" v-model="systemLogModel.clientIp"></i-input>
-      <span style="margin-left:10px;">操作时间：</span>
-      <i-date-picker style="display:inline-block;width:10%;" v-model="systemLogModel.startTime"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%;" v-model="systemLogModel.endTime"></i-date-picker>
-      <i-button class="blueButton" style="margin-left:10px;" @click="search">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
-      <div style="float:right;margin-right:10px;margin-top:-48px;">
-        <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+    <i-row class="data-form">
+      <span>操作人：</span>
+      <i-input class="form-input" v-model="systemLogModel.realName"></i-input>
+      <span >客户端IP：</span>
+      <i-input class="form-input" v-model="systemLogModel.clientIp"></i-input>
+      <span class="title">操作时间：</span>
+      <i-date-picker class="form-item"  v-model="systemLogModel.startTime"></i-date-picker>~
+      <i-date-picker class="form-item"  v-model="systemLogModel.endTime"></i-date-picker>
+      <i-button class="blue-button"  @click="search">搜索</i-button>
+      <i-button class="blue-button"  @click="refreshRoleList">重置</i-button>
+      <div class="command" >
+        <div class="command-item dayin">
           <svg-icon iconClass="dayin"></svg-icon>
-          <span style="font-size: 12px;">打印</span>
+          <span >打印</span>
         </div>
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7" @click="exportLogs">
+        <div class="command-item daochu" @click="exportLogs">
           <svg-icon iconClass="daochu"></svg-icon>
-          <span style="font-size: 12px;">导出</span>
+          <span>导出</span>
         </div>
       </div>
     </i-row>
@@ -187,6 +187,49 @@ export default class SystemLogDownload extends Page {
 }
 </script>
 
-<style lang="less" scope>
-
+<style lang="less" scoped>
+  .page.system-log-download{
+    .data-form{
+        margin: 6px;
+        .form-input{
+          display:inline-block;
+          width:10%;
+          margin-right: 10px;
+        }
+        .title{
+          margin-left:20px
+        }
+        .form-item{
+          display:inline-block;
+          width:10%;
+        }
+        .blue-button{
+          margin-left:10px;
+          background: #265EA2;
+          color: #fff;
+        }
+        .command{
+          float:right;
+          margin-right:10px;
+          margin-top:-48px;
+           .command-item{
+              color:#3367A7;
+              cursor:pointer;
+              margin-left:10px;
+              display:inline-block;
+              &.dayin{
+                font-size:18px;
+              }
+              &.daochu{
+                font-size:16px;
+              } 
+              span{
+                  font-size: 12px;
+              }
+          }
+        
+         
+        }
+    }
+  }
 </style>

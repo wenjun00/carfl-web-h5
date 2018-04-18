@@ -1,21 +1,21 @@
 <template>
   <section class="page role-maintenance">
-    <i-row style="margin-bottom:10px;">
+    <i-row class="data-form" >
       <span class="form-title">角色维护</span>
-      <span style="margin-left:20px;">角色名称：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入角色姓名" v-model="roleModel.roleName"></i-input>
-      <span style="margin-left:10px;">状态：</span>
-      <i-select style="display:inline-block;width:10%" v-model="roleModel.roleStatus" clearable>
+      <span class="title">角色名称：</span>
+      <i-input class="form-input" placeholder="请输入角色姓名" v-model="roleModel.roleName"></i-input>
+      <span class="title-little">状态：</span>
+      <i-select class="form-input" v-model="roleModel.roleStatus" clearable>
         <i-option label="启用" :value="0" :key="0"></i-option>
         <i-option label="停用" :value="1" :key="1"></i-option>
       </i-select>
-      <i-button class="blueButton" style="margin-left:20px;" @click="getRoleListByCondition">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
-      <i-button class="blueButton" style="margin-left:10px;" @click="addNewRole">新增角色</i-button>
-      <div style="float:right;margin-right:10px;margin-top:10px;">
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+      <i-button class="blue-button"  @click="getRoleListByCondition">搜索</i-button>
+      <i-button class="blue-button blue-button-little"  @click="refreshRoleList">重置</i-button>
+      <i-button class="blue-button blue-button-little"  @click="addNewRole">新增角色</i-button>
+      <div class="command">
+        <div class="command-item">
           <svg-icon iconClass="daochu"></svg-icon>
-          <span style="font-size: 12px;" @click="exportRole">导出</span>
+          <span @click="exportRole">导出</span>
         </div>
       </div>
     </i-row>
@@ -453,17 +453,55 @@ export default class RoleMaintenance extends Page {
 }
 </script>
 
-<style lang="less">
-.modify-role {
-  .ivu-form {
-    position: relative;
-    right: 16px;
+<style lang="less" scoped>
+  .page.role-maintenance{
+    .data-form{
+      margin-bottom:10px;
+      .title{
+        margin-left:20px;
+      }
+      .title-little{
+        margin-left: 10px
+      }
+      .form-input{
+        display:inline-block;
+        width:10%;    
+      }
+      .blue-button{
+        margin-left: 20px;
+        background: #265EA2;
+        color: #fff;
+      }
+      .blue-button-little{
+          margin-left:10px;
+      }
+      .command{
+          float:right;
+          margin-right:10px;
+          margin-top:10px;
+          .command-item{
+            font-size:16px;
+            cursor:pointer;
+            display:inline-block;
+            margin-left:10px;
+            color:#3367A7;
+            span{
+              font-size: 12px;
+            }
+          }
+      }
+    }
+    .modify-role {
+      .ivu-form {
+          position: relative;
+          right: 16px;
+      }
+    }
+    .user-list {
+      .ivu-modal-footer {
+          display: none;
+      }
+      }
   }
-}
 
-.user-list {
-  .ivu-modal-footer {
-    display: none;
-  }
-}
 </style>
