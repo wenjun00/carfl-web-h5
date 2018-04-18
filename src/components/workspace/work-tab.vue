@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    <Tabs v-model="currentPage" type="card" closable :animated="false" @on-tab-remove="closePage" class="workTabs">
+  <section class="component work-tab full">
+    <Tabs v-model="currentPage" type="card" closable :animated="false" @on-tab-remove="closePage">
       <TabPane v-for="page in pageList" :key="page.path" :label="page.resoname" :name="page.path" :closable="page.path !== 'home'">
         <component ref="pages" :is="getComponentName(page)"></component>
       </TabPane>
@@ -8,7 +8,7 @@
     <div @click="closeAllTabs" style="position:absolute;top:70px;right:10px;border-bottom-style:none;font-size:14px;cursor:pointer;" title="关闭所有">
       <Icon type="close"></Icon>
     </div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -81,9 +81,11 @@ export default class WorkTab extends Vue {
   onPageChanged(val: string, oldVal: string) {
     let components = <Array<Vue>>this.$refs["pages"];
     let component = components.find(
-      x => x.$options.name === this.getComponentName({
-        path: val
-      })
+      x =>
+        x.$options.name ===
+        this.getComponentName({
+          path: val
+        })
     );
 
     if (
@@ -106,18 +108,35 @@ export default class WorkTab extends Vue {
 </script>
 
 <style lang="less">
-.workTabs {
-  // .ivu-tabs-nav-scroll {
-  //   width: 93%;
-  // }
-  .ivu-tabs-bar {
-    background: #fff;
-    border-bottom: 1px solid #fff;
-    height: 43px;
-    padding: 10px 0;
-    .ivu-tabs-nav-container {
+.component.work-tab {
+  & > .ivu-tabs {
+    height: 100%;
+    @tab-bar-height: 45px;
+    & > .ivu-tabs-bar {
       background: #fff;
-      width: 98%;
+      border-bottom: 1px solid #dedede;
+      height: @tab-bar-height;
+      padding: 10px 0;
+      margin-bottom: 0;
+
+      .ivu-tabs-nav-container {
+        background: #fff;
+        width: 95%;
+
+        .ivu-tabs-tab {
+          min-width: 100px;
+          text-align: center;
+        }
+      }
+    }
+    & > .ivu-tabs-content {
+      height: calc(~"100% - @{tab-bar-height}");
+      padding: 10px;
+      overflow: auto;
+      & > .ivu-tabs-tabpane {
+        height: 100%;
+        min-height: 100%;
+      }
     }
   }
 }

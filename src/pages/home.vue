@@ -1,7 +1,7 @@
 <template>
-  <section class="home-page theme-default">
-    <div style="width:100%;background:#EFF3F5;display:flex;justify-content:space-around">
-      <div style="width:76%;">
+  <section class="page home-page">
+    <div class="row" style="width:100%;background:#EFF3F5;display:flex;justify-content:space-around">
+      <div class="col-span">
         <!--左上-->
         <div style="width:100%;border:1px solid #DDDDDD;height:200px;background:#fff">
           <div style="margin-top:20px;margin-left:20px;">
@@ -44,12 +44,12 @@
         </div>
       </div>
       <!--右边待办事项 洒洒水-->
-      <div style="width:23%;border:1px solid #DDDDDD;height:840px;background:#fff;">
-        <div style="margin-top:20px;margin-left:20px;">
+      <div style="border:1px solid #DDDDDD;height:840px;background:#fff;">
+        <div style="margin:10px;">
           <div style="width:7px;height:18px;background:#265EA2;display:inline-block"></div>
           <span style="margin-left:10px;font-size:16px;color:#333333;position:relative;bottom:3px;">待办事项</span>
-          <div v-for="item in waitToHandle" :key="item.index" style="min-width:270px;width:96%;height:42px;margin-top:10px;background:#F5F5F5;text-align:center;line-height:12px;">
-            <div style="padding-top:6px;">
+          <div v-for="item in waitToHandle" :key="item.index" style="min-width:200px;width:100%;height:42px;margin-top:10px;background:#F5F5F5;text-align:center;line-height:12px;">
+            <div style="padding-top:6px;flex-wrap:nowarp;" class="row between-span">
               <div style="font-size:12px;color:#666666;line-height: 35px;margin-left: 45px;float:left">{{$dict.getDictName(item.itemCode)}}</div>
               <i-button type="text" style="color:#265EA2;font-size:14px;float:right;margin-right:10px;" @click="pageToOrderQuery">{{item.itemValue}}</i-button>
             </div>
@@ -70,9 +70,7 @@ import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { Layout } from "~/core/decorator";
 import { Mutation } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
-  import {
-    BackLogService
-  } from "~/services/manage-service/back-log.service";
+import { BackLogService } from "~/services/manage-service/back-log.service";
 
 @Layout("workspace")
 @Component({
@@ -89,14 +87,14 @@ export default class Home extends Vue {
   @Mutation openPage;
 
   created() {
-       this.backLogService
-         .queryUserBacklog()
-         .subscribe(val => {
-           this.waitToHandle = val;
-           },({msg}) => {
-              this.$Message.error(msg);
-           });
-
+    this.backLogService.queryUserBacklog().subscribe(
+      val => {
+        this.waitToHandle = val;
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
+    );
   }
   pageToOrderQuery() {
     this.openPage({
