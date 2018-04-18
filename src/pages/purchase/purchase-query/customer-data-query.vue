@@ -33,7 +33,7 @@
     <!--上传资料、补充资料-->
     <template>
       <i-modal v-model="openUpload" :transfer="false" width="700" title="补充资料">
-            <upload-the-material ref="upload-the-material"></upload-the-material>
+        <upload-the-material ref="upload-the-material"></upload-the-material>
         <!--<i-button @click="uploadDialog">上传</i-button>
         <div style="font-size:18px;font-weight:bold;margin-top:10px">
           <span>文件数量（3）</span>
@@ -48,7 +48,7 @@
         <div style="margin-top:6px;font-size:14px;">
           <span>结婚证-001fdawdeklvkje...</span>
         </div>-->
-          <div slot="footer">
+        <div slot="footer">
           <i-button class="highDefaultButton" style="width:80px" @click="openUpload=false">取消</i-button>
           <i-button class="highButton" style="width:80px" @click="confirm">确定</i-button>
         </div>
@@ -101,7 +101,7 @@
   import {
     Layout
   } from "~/core/decorator";
-   import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
+  import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
 
   @Layout("workspace")
   @Component({
@@ -142,19 +142,19 @@
             column,
             index
           }) => {
-              return h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    this.addFiles(row)
-                  }
+            return h('i-button', {
+              props: {
+                type: 'text'
+              },
+              style: {
+                color: '#265EA2'
+              },
+              on: {
+                click: () => {
+                  this.addFiles(row)
                 }
-              }, '补充资料')
+              }
+            }, '补充资料')
           }
         },
         // {
@@ -261,24 +261,28 @@
     /**
      * 补充资料确定
      */
-    confirm(){
-        let uploadTheMaterial: any = this.$refs['upload-the-material'];
-        let MaterialData:any=uploadTheMaterial.dataList.map(v=>{
-            return{
-                id:v.id,
-                materialUrl:v.url,
-                uploadName:v.name,
-                materialType:v.type,
-                operateTime:v.createTime,
-                dataSize:v.size
-            }
+    confirm() {
+      let uploadTheMaterial: any = this.$refs['upload-the-material'];
+      let MaterialData: any = uploadTheMaterial.dataList.map(v => {
+        return {
+          id: v.id,
+          materialUrl: v.url,
+          uploadName: v.name,
+          materialType: v.type,
+          operateTime: v.createTime,
+          dataSize: v.size,
+          personalId: v.personalId
+        }
+      })
+      console.log(MaterialData, 'uploadTheMaterial.dataList')
+      this.personalService
+        .uploadPersonalApproveFile({
+          personalDataModel: MaterialData
         })
-        console.log(MaterialData,'uploadTheMaterial.dataList')
-         this.personalService
-        .uploadPersonalApproveFile(MaterialData)
         .subscribe(
           data => {
-            this.openUpload=false
+            this.$Message.success('上传成功！')
+            this.openUpload = false
           },
           ({
             msg
@@ -338,8 +342,8 @@
      * 上传资料
      */
     uploadFiles(row) {
-        let _uploadthematerial:any=this.$refs['upload-the-material']
-        _uploadthematerial.resetfileList()
+      let _uploadthematerial: any = this.$refs['upload-the-material']
+      _uploadthematerial.resetfileList()
       this.uploadOrAddFlag = true
       this.openUpload = true
     }
@@ -347,12 +351,12 @@
      * 补充资料
      */
     addFiles(row) {
-        let _uploadthematerial:any=this.$refs['upload-the-material']
-        _uploadthematerial.resetfileList()
+      let _uploadthematerial: any = this.$refs['upload-the-material']
+      _uploadthematerial.resetfileList()
       this.openUpload = true
       this.uploadOrAddFlag = false
-      if(row.personalMateriaList){
-      _uploadthematerial.supplement(row.personalMateriaList)
+      if (row.personalMateriaList) {
+        _uploadthematerial.supplement(row.personalMateriaList)
       }
     }
     /**

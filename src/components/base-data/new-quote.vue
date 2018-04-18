@@ -1,6 +1,6 @@
 <!--新增报价-->
 <template>
-  <section>
+  <section class="new-quote">
     <i-form ref="quoteForm" :model="quoteForm" :rules="rulesQuote" :label-width="85" class="quoteForm" label-position="left">
       <i-row>
         <i-col :span="11">
@@ -17,7 +17,7 @@
         </i-col>
       </i-row>
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <div class="data-form-icon"></div>
         <span>车辆信息</span>
       </div>
       <i-row>
@@ -51,7 +51,7 @@
         </i-col>
       </i-row>
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <div class="data-form-icon"></div>
         <span>报价信息</span>
       </div>
       <i-row>
@@ -237,76 +237,120 @@
           trigger: 'blur',
         }],
         marketGuidingPrice: [{
-          required: true,
-          message: '请输入市场指导价',
-          trigger: 'blur',
-        },
-          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+            required: true,
+            message: '请输入市场指导价',
+            trigger: 'blur',
+          },
+          {
+            pattern: /^[0-9]*$/g,
+            message: '请输入数字',
+            trigger: 'blur'
+          }
         ],
         monthPay: [{
-          required: true,
-          message: '请输入租金',
-          trigger: 'blur',
-        },
-          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+            required: true,
+            message: '请输入租金',
+            trigger: 'blur',
+          },
+          {
+            pattern: /^[0-9]*$/g,
+            message: '请输入数字',
+            trigger: 'blur'
+          }
         ],
         dealerGuidingPrice: [{
-          required: true,
-          message: '请输入经销商报价',
-          trigger: 'blur',
-        },
-          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+            required: true,
+            message: '请输入经销商报价',
+            trigger: 'blur',
+          },
+          {
+            pattern: /^[0-9]*$/g,
+            message: '请输入数字',
+            trigger: 'blur'
+          }
         ],
         purchaseTaxMoney: [{
-          required: true,
-          message: '请输入购置税',
-          trigger: 'blur',
-        },
-          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+            required: true,
+            message: '请输入购置税',
+            trigger: 'blur',
+          },
+          {
+            pattern: /^[0-9]*$/g,
+            message: '请输入数字',
+            trigger: 'blur'
+          }
         ],
         firstPayment: [{
-          required: true,
-          message: '请输入首期金额',
-          trigger: 'blur',
-        },
-          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+            required: true,
+            message: '请输入首期金额',
+            trigger: 'blur',
+          },
+          {
+            pattern: /^[0-9]*$/g,
+            message: '请输入数字',
+            trigger: 'blur'
+          }
         ],
         roadBridgeFee: [{
-          required: true,
-          message: '请输入路桥费',
-          trigger: 'blur',
-        },
-          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+            required: true,
+            message: '请输入路桥费',
+            trigger: 'blur',
+          },
+          {
+            pattern: /^[0-9]*$/g,
+            message: '请输入数字',
+            trigger: 'blur'
+          }
         ],
         financeAmount: [{
-          required: true,
-          message: '请输入融资金额',
-          trigger: 'blur',
-        },
-          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+            required: true,
+            message: '请输入融资金额',
+            trigger: 'blur',
+          },
+          {
+            pattern: /^[0-9]*$/g,
+            message: '请输入数字',
+            trigger: 'blur'
+          }
         ],
         annualAmount: [{
-          required: true,
-          message: '请输入保险费',
-          trigger: 'blur',
-        },
-          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+            required: true,
+            message: '请输入保险费',
+            trigger: 'blur',
+          },
+          {
+            pattern: /^[0-9]*$/g,
+            message: '请输入数字',
+            trigger: 'blur'
+          }
         ],
         periods: [{
-          required: true,
-          message: '请输入融资期数',
-          trigger: 'blur',
-        },
-          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+            required: true,
+            message: '请输入融资期数',
+            trigger: 'blur',
+          },
+          {
+            pattern: /^[0-9]*$/g,
+            message: '请输入数字',
+            trigger: 'blur'
+          }
         ],
         gpsFee: [{
-          required: true,
-          message: '请输入GPS费',
-          trigger: 'blur',
-        },
-          { pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur' }
+            required: true,
+            message: '请输入GPS费',
+            trigger: 'blur',
+          },
+          {
+            pattern: /^[0-9]*$/g,
+            message: '请输入数字',
+            trigger: 'blur'
+          }
         ],
-        otherFee:[{ pattern: /^[0-9]*$/g, message: '请输入数字', trigger: 'blur'}],
+        otherFee: [{
+          pattern: /^[0-9]*$/g,
+          message: '请输入数字',
+          trigger: 'blur'
+        }],
         status: [{
           required: true,
           message: '请选择是否启用',
@@ -388,7 +432,19 @@
   }
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
+  .new-quote {
+    .data-form-icon {
+      width: 7px;
+      height: 20px;
+      background: #265EA2;
+      display: inline-block;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+    }
+  }
+  
   .flex {
     display: flex;
     align-items: center;
@@ -397,7 +453,7 @@
       flex: 50%;
     }
   }
-
+  
   .title_info {
     width: 100%;
     background: rgb(236, 235, 235);

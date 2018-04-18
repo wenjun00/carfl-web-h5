@@ -148,7 +148,7 @@ export default class WorkMenu extends Vue {
     }
 
     .menu-popue {
-      z-index: 1;
+      z-index: 10;
       position: absolute;
       top: 60px;
       width: 100%;

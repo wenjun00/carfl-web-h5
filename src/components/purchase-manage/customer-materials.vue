@@ -1,10 +1,11 @@
 <!--客户资料-->
 <template>
-  <section class="component customer-materials" style="height:1300px">
+  <section class="component customer-materials">
     <i-col span="24" style="line-height:30px" class="form-title">个人信息</i-col>
     <i-form :rules="rules" ref="job-form" :model="customerMaterialsForm" :label-width="110" label-position="left" style="position:relative;left:16px;margin-top:10px;">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">基础信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <span style="font-size:16px;">基础信息</span>
       </div>
       <i-row>
         <i-col span="12">
@@ -89,7 +90,8 @@
 
       <!--<i-col span="24" style="line-height:30px;background:#ddd">身份证信息</i-col>-->
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">身份证信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <span style="font-size:16px;">身份证信息</span>
       </div>
       <!--<i-form :label-width="110">-->
       <i-row>
@@ -117,14 +119,12 @@
               </i-col>
               <i-col :span="5">
                 <i-select style="width: 110px;" placeholder="市" v-model="customerMaterialsForm.city">
-                  <i-option v-for="{value,label} in this.customerMaterialsForm.province ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province }) : []"
-                    :key="value" :label="label" :value="value"></i-option>
+                  <i-option v-for="{value,label} in this.customerMaterialsForm.province ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="5">
                 <i-select style="width: 120px;" placeholder="区" v-model="customerMaterialsForm.idCardAddress">
-                  <i-option v-for="{value,label} in this.customerMaterialsForm.city ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city }) : []"
-                    :key="value" :label="label" :value="value"></i-option>
+                  <i-option v-for="{value,label} in this.customerMaterialsForm.city ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
             </i-row>
@@ -150,7 +150,8 @@
 
       <!--<i-col span="24" style="line-height:30px;background:#ddd">居住信息</i-col>-->
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">居住信息</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <span style="font-size:16px;">居住信息</span>
       </div>
       <!--<i-form :label-width="110">-->
       <i-row>
@@ -167,14 +168,12 @@
               </i-col>
               <i-col :span="5">
                 <i-select style="width: 110px;" placeholder="市" v-model="customerMaterialsForm.city1">
-                  <i-option v-for="{value,label} in this.customerMaterialsForm.province1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province1 }) : []"
-                    :key="value" :label="label" :value="value"></i-option>
+                  <i-option v-for="{value,label} in this.customerMaterialsForm.province1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province1 }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="5">
                 <i-select style="width: 120px;" placeholder="区" v-model="customerMaterialsForm.localHomeAddr">
-                  <i-option v-for="{value,label} in this.customerMaterialsForm.city1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city1 }) : []"
-                    :key="value" :label="label" :value="value"></i-option>
+                  <i-option v-for="{value,label} in this.customerMaterialsForm.city1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city1 }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
             </i-row>
@@ -209,8 +208,8 @@
       </i-row>
       <i-row>
         <i-col span="12">
-            <i-row>
-          <i-form-item label="现居住地房产归属" prop="localLiveHouseOwner">
+          <i-row>
+            <i-form-item label="现居住地房产归属" prop="localLiveHouseOwner">
               <i-select v-model="customerMaterialsForm.localLiveHouseOwner" clearable>
                 <i-option label="本人名下" :value="16"></i-option>
                 <i-option label="配偶名下" :value="17"></i-option>
@@ -224,15 +223,15 @@
                 <i-option label="宅基地" :value="25"></i-option>
                 <i-option label="其他" :value="26"></i-option>
               </i-select>
-          </i-form-item>
-            </i-row>
-            <i-row>
-                <i-form-item prop="localLiveHouseMoney">
+            </i-form-item>
+          </i-row>
+          <i-row>
+            <i-form-item prop="localLiveHouseMoney">
               <i-input type="text" placeholder="每月租金" v-model="customerMaterialsForm.localLiveHouseMoney">
               </i-input>
               <span style="position:absolute;left:300px">元</span>
-                </i-form-item>
-            </i-row>
+            </i-form-item>
+          </i-row>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="本市自有房产状况及归属" prop="cityOwnhouseCondition">
@@ -274,10 +273,10 @@
               <i-checkbox :label="30" :value="30">现居住地址</i-checkbox>-->
               <!--<i-checkbox label="身份证地址" v-model="idcardOwn" :value="29" :checked.sync="checked" @on-change="cityidcardChange">身份证地址</i-checkbox>
               <i-checkbox label="现居住地址" v-model="liveads" :value="30" @on-change="liveChange">现居住地址</i-checkbox>-->
-                <i-radio-group v-model="idcardOwn" @on-change="cityidcardChange">
-                    <i-radio :label="29" :value="29">身份证地址</i-radio>
-                    <i-radio :label="30" :value="30">现居住地址</i-radio>
-               </i-radio-group>
+              <i-radio-group v-model="idcardOwn" @on-change="cityidcardChange">
+                <i-radio :label="29" :value="29">身份证地址</i-radio>
+                <i-radio :label="30" :value="30">现居住地址</i-radio>
+              </i-radio-group>
               <!--</i-checkbox-group>-->
             </i-row>
             <i-row>
@@ -288,14 +287,12 @@
               </i-col>
               <i-col :span="5">
                 <i-select style="width: 110px;" placeholder="市" v-model="customerMaterialsForm.city2">
-                  <i-option v-for="{value,label} in this.customerMaterialsForm.province2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province2 }) : []"
-                    :key="value" :label="label" :value="value"></i-option>
+                  <i-option v-for="{value,label} in this.customerMaterialsForm.province2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province2 }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="5">
                 <i-select style="width: 120px;" placeholder="区" v-model="customerMaterialsForm.cityOwnhouseAddress">
-                  <i-option v-for="{value,label} in this.customerMaterialsForm.city2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city2 }) : []"
-                    :key="value" :label="label" :value="value"></i-option>
+                  <i-option v-for="{value,label} in this.customerMaterialsForm.city2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city2 }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
             </i-row>
@@ -307,7 +304,8 @@
         </i-col>
       </i-row>
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">勘察请求</span>
+        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
+        <span style="font-size:16px;">勘察请求</span>
       </div>
       <span>是否接受现场勘察</span>
       <i-radio-group v-model="customerMaterialsForm.houseProspecting">
@@ -315,262 +313,313 @@
         <i-radio :label="30" :value="30">否</i-radio>
       </i-radio-group>
     </i-form>
-
-    <!--<i-col span="24" style="line-height:30px;background:#ddd">勘察请求</i-col>-->
   </section>
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import {
-    CityService
-  } from "~/utils/city.service";
-  import {
-    FilterService
-  } from "~/utils/filter.service"
-  import {
-    Prop
-  } from "vue-property-decorator";
-  @Component({})
-  export default class CustomerMaterials extends Vue {
-    private single: Boolean = false;
-    private checked: Boolean = false;
-    private cityValue: Boolean = false;
-    private liveValue: Boolean = false;
-    private ValidityPeriodValue: Boolean = false;
-    private idCardads:Boolean = false;
-    private idcardOwn:any='';
-    private liveads:Boolean = false;
-    private idCardvalidity:Boolean = false;
-    private customerMaterialsForm: any = {
-      name: '', // 姓名
-      sex: '', // 性别
-      birthTime: '', // 出生日期
-      wechat: '', // 微信号码
-      mobileMain: '', // 手机号码（主）
-      mobileMinor: '', // 手机号码（次）
-      education: '', // 教育程度
-      school: '', // 毕业院校
-      marital: '', // 婚姻状况
-      idCard: '', // 身份证号
-      issuer: '', // 发证机关
-      idCardAddressDetail: '', // 身份证地址
-      localHomeAddrDetail: '', // 现居住地址
-      localHomePhone: '', // 居住地家庭座机
-      cityLiveTime: '', // 本市生活时长
-      cityOwnhouseAddressDetail: '', // 现居住地生活时长
-      houseProspecting: '', // 是否接受现场勘查
-      idCardValidityPeriodType: 15, // 身份证有效期（长期）
-      idCardValidityPeriodSection: '', // 身份证有效期（非长期）
-      province: '', // 省
-      city: '', // 市
-      province1: '', // 省
-      city1: '', // 市
-      province2: '', // 省
-      city2: '', // 市
-      localLiveHouseOwner: '', // 现居住地房产归属
-      cityOwnhouseCondition: '', // 本市子属房产状况
-      cityOwnhouseOther: '', // 本市子属房产状况(其他)
-      electricityAccount: '', // 电费账号
-      electricityPassword: '', // 电费密码
-      localLiveHouseMoney: '', // 每月租金
-      idCardAddress: '', // 身份证地址（区）
-      localHomeAddr: '', // 先居住地址（区）
-      cityOwnhouseAddress: '', // 本市房产地址（区）
-    }
-    private rules: any = {
-      name: [{
+import Vue from "vue";
+import Component from "vue-class-component";
+import { CityService } from "~/utils/city.service";
+import { FilterService } from "~/utils/filter.service";
+import { Prop } from "vue-property-decorator";
+@Component({})
+export default class CustomerMaterials extends Vue {
+  private single: Boolean = false;
+  private checked: Boolean = false;
+  private cityValue: Boolean = false;
+  private liveValue: Boolean = false;
+  private ValidityPeriodValue: Boolean = false;
+  private idCardads: Boolean = false;
+  private idcardOwn: any = "";
+  private liveads: Boolean = false;
+  private idCardvalidity: Boolean = false;
+  private customerMaterialsForm: any = {
+    name: "", // 姓名
+    sex: "", // 性别
+    birthTime: "", // 出生日期
+    wechat: "", // 微信号码
+    mobileMain: "", // 手机号码（主）
+    mobileMinor: "", // 手机号码（次）
+    education: "", // 教育程度
+    school: "", // 毕业院校
+    marital: "", // 婚姻状况
+    idCard: "", // 身份证号
+    issuer: "", // 发证机关
+    idCardAddressDetail: "", // 身份证地址
+    localHomeAddrDetail: "", // 现居住地址
+    localHomePhone: "", // 居住地家庭座机
+    cityLiveTime: "", // 本市生活时长
+    cityOwnhouseAddressDetail: "", // 现居住地生活时长
+    houseProspecting: "", // 是否接受现场勘查
+    idCardValidityPeriodType: 15, // 身份证有效期（长期）
+    idCardValidityPeriodSection: "", // 身份证有效期（非长期）
+    province: "", // 省
+    city: "", // 市
+    province1: "", // 省
+    city1: "", // 市
+    province2: "", // 省
+    city2: "", // 市
+    localLiveHouseOwner: "", // 现居住地房产归属
+    cityOwnhouseCondition: "", // 本市子属房产状况
+    cityOwnhouseOther: "", // 本市子属房产状况(其他)
+    electricityAccount: "", // 电费账号
+    electricityPassword: "", // 电费密码
+    localLiveHouseMoney: "", // 每月租金
+    idCardAddress: "", // 身份证地址（区）
+    localHomeAddr: "", // 先居住地址（区）
+    cityOwnhouseAddress: "" // 本市房产地址（区）
+  };
+  private rules: any = {
+    name: [
+      {
         required: true,
-        message: '请输入姓名',
-        trigger: 'blur',
-      }],
-      sex: [{
+        message: "请输入姓名",
+        trigger: "blur"
+      }
+    ],
+    sex: [
+      {
         required: true,
-        message: '请选择性别',
-        trigger: 'change',
-        type: 'number'
-      }],
-      cityLiveTime:[{
-          pattern: /^[0-9]{1,2}$/g,
-          message: '请输入1~2位整数',
-          trigger: 'blur'
-      }],
-      localLiveTime:[{
-         pattern: /^[0-9]{1,2}$/g,
-         message: '请输入1~2位整数',
-         trigger: 'blur'
-      }],
-        birthTime: [{
-          required: true,
-          message: '请选择出生日期',
-          trigger: 'change',
-          type: 'date'
-        }],
-      mobileMain: [{
+        message: "请选择性别",
+        trigger: "change",
+        type: "number"
+      }
+    ],
+    cityLiveTime: [
+      {
+        pattern: /^[0-9]{1,2}$/g,
+        message: "请输入1~2位整数",
+        trigger: "blur"
+      }
+    ],
+    localLiveTime: [
+      {
+        pattern: /^[0-9]{1,2}$/g,
+        message: "请输入1~2位整数",
+        trigger: "blur"
+      }
+    ],
+    birthTime: [
+      {
         required: true,
-        message: '请输入手机号码',
-        trigger: 'blur',
-      }],
-      mobileMinor:[{ validator: this.$validator.phoneNumber, trigger: "blur" }],
-      localHomePhone:[{pattern: /^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/, message: '请输入正确的座机号', trigger: 'blur'}],
-      education: [{
+        message: "请选择出生日期",
+        trigger: "change",
+        type: "date"
+      }
+    ],
+    mobileMain: [
+      {
         required: true,
-        message: '请选择教育程度',
-        trigger: 'change',
-        type: 'number'
-      }],
-      idCard: [{
+        message: "请输入手机号码",
+        trigger: "blur"
+      }
+    ],
+    mobileMinor: [{ validator: this.$validator.phoneNumber, trigger: "blur" }],
+    localHomePhone: [
+      {
+        pattern: /^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/,
+        message: "请输入正确的座机号",
+        trigger: "blur"
+      }
+    ],
+    education: [
+      {
         required: true,
-        message: '请输入身份证号码',
-        trigger: 'blur',
-      }],
-      idCardAddressDetail:[{
+        message: "请选择教育程度",
+        trigger: "change",
+        type: "number"
+      }
+    ],
+    idCard: [
+      {
         required: true,
-        message: '请输入身份证地址',
-        trigger: 'blur',
-      }],
-      localLiveHouseMoney:[{pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur'}],
+        message: "请输入身份证号码",
+        trigger: "blur"
+      }
+    ],
+    idCardAddressDetail: [
+      {
+        required: true,
+        message: "请输入身份证地址",
+        trigger: "blur"
+      }
+    ],
+    localLiveHouseMoney: [
+      {
+        pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+        message: "请输入数字",
+        trigger: "blur"
+      }
+    ],
     //   idCardValidityPeriodSection:[{
     //     required: true,
     //     message: '请输入身份证有效期',
     //     trigger: 'blur',
     //   }],
-    localHomeAddrDetail:[{
+    localHomeAddrDetail: [
+      {
         required: true,
-        message: '请输入现居住地址',
-        trigger: 'blur',
-    }],
-      marital: [{
+        message: "请输入现居住地址",
+        trigger: "blur"
+      }
+    ],
+    marital: [
+      {
         required: true,
-        message: '请选择婚姻状况',
-        trigger: 'change',
-        type: 'number'
-      }],
-      cityOwnhouseAddressDetail:[{
+        message: "请选择婚姻状况",
+        trigger: "change",
+        type: "number"
+      }
+    ],
+    cityOwnhouseAddressDetail: [
+      {
         required: true,
-        message: '请输入本市房产地址',
-        trigger: 'blur',
-      }]
-    }
-    @Prop()
-    disabled: Boolean;
-    Reverse(data) {
-      console.log(data, 'dsdhsjhdskjd')
-      //   身份证地址回显
-      data.personal.birthTime = FilterService.dateFormat(data.personal.birthTime, 'yyyy-MM-dd')
-      console.log(data.personal.birthTime)
-      if(data.personal.localHomeAddr===data.personal.idCardAddress){
-          this.idCardads=true
+        message: "请输入本市房产地址",
+        trigger: "blur"
       }
-      if(data.personal.cityOwnhouseAddress===data.personal.idCardAddress){
-          this.idcardOwn=29
-      }
-      if(data.personal.cityOwnhouseAddress===data.personal.localHomeAddr){
-          this.idcardOwn = 30
-      }
-      if(!this.customerMaterialsForm.idCardValidityPeriodSection){
-        this.idCardvalidity=true
-      }
-      data.personal.idCardAddress = Number(data.personal.idCardAddress)
-      data.personal.city = CityService.getCityParent(Number(data.personal.idCardAddress))[1]
-      data.personal.province = CityService.getCityParent(Number(data.personal.idCardAddress))[0]
-      // 现居住地址
-      data.personal.localHomeAddr = Number(data.personal.localHomeAddr)
-      data.personal.city1 = CityService.getCityParent(Number(data.personal.localHomeAddr))[1]
-      data.personal.province1 = CityService.getCityParent(Number(data.personal.localHomeAddr))[0]
-      // 本市房产地址
-      data.personal.cityOwnhouseAddress = Number(data.personal.cityOwnhouseAddress)
-      data.personal.city2 = CityService.getCityParent(Number(data.personal.cityOwnhouseAddress))[1]
-      data.personal.province2 = CityService.getCityParent(Number(data.personal.cityOwnhouseAddress))[0]
-      this.customerMaterialsForm = data.personal
-      console.log(data, 'person')
-      this.customerMaterialsForm.id = data.personalId || null
-      delete data.personalId
+    ]
+  };
+  @Prop() disabled: Boolean;
+  Reverse(data) {
+    console.log(data, "dsdhsjhdskjd");
+    //   身份证地址回显
+    data.personal.birthTime = FilterService.dateFormat(
+      data.personal.birthTime,
+      "yyyy-MM-dd"
+    );
+    console.log(data.personal.birthTime);
+    if (data.personal.localHomeAddr === data.personal.idCardAddress) {
+      this.idCardads = true;
     }
-    getinfo(customerModel) {
-      this.customerMaterialsForm = Object.assign({}, customerModel)
+    if (data.personal.cityOwnhouseAddress === data.personal.idCardAddress) {
+      this.idcardOwn = 29;
     }
-    idCardChange(value) {
-        console.log(this.idCardads,'idCardads')
-      if (value) {
-        this.customerMaterialsForm.province1 = this.customerMaterialsForm.province
-        this.customerMaterialsForm.city1 = this.customerMaterialsForm.city
-        this.customerMaterialsForm.localHomeAddr = this.customerMaterialsForm.idCardAddress
-        this.customerMaterialsForm.localHomeAddrDetail = this.customerMaterialsForm.idCardAddressDetail
-        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
-      } else {
-        this.customerMaterialsForm.province1 = ''
-        this.customerMaterialsForm.city1 = ''
-        this.customerMaterialsForm.localHomeAddr = ''
-        this.customerMaterialsForm.localHomeAddrDetail = ''
-      }
+    if (data.personal.cityOwnhouseAddress === data.personal.localHomeAddr) {
+      this.idcardOwn = 30;
     }
-    reset() {
-      this.customerMaterialsForm.province2 = ''
-      this.customerMaterialsForm.city2 = ''
-      this.customerMaterialsForm.cityOwnhouseAddress = ''
-      this.customerMaterialsForm.cityOwnhouseAddressDetail = ''
+    if (!this.customerMaterialsForm.idCardValidityPeriodSection) {
+      this.idCardvalidity = true;
     }
-    cityidcardChange(value) {
-        this.idcardOwn=value
-        console.log(value,'value')
+    data.personal.idCardAddress = Number(data.personal.idCardAddress);
+    data.personal.city = CityService.getCityParent(
+      Number(data.personal.idCardAddress)
+    )[1];
+    data.personal.province = CityService.getCityParent(
+      Number(data.personal.idCardAddress)
+    )[0];
+    // 现居住地址
+    data.personal.localHomeAddr = Number(data.personal.localHomeAddr);
+    data.personal.city1 = CityService.getCityParent(
+      Number(data.personal.localHomeAddr)
+    )[1];
+    data.personal.province1 = CityService.getCityParent(
+      Number(data.personal.localHomeAddr)
+    )[0];
+    // 本市房产地址
+    data.personal.cityOwnhouseAddress = Number(
+      data.personal.cityOwnhouseAddress
+    );
+    data.personal.city2 = CityService.getCityParent(
+      Number(data.personal.cityOwnhouseAddress)
+    )[1];
+    data.personal.province2 = CityService.getCityParent(
+      Number(data.personal.cityOwnhouseAddress)
+    )[0];
+    this.customerMaterialsForm = data.personal;
+    console.log(data, "person");
+    this.customerMaterialsForm.id = data.personalId || null;
+    delete data.personalId;
+  }
+  getinfo(customerModel) {
+    this.customerMaterialsForm = Object.assign({}, customerModel);
+  }
+  idCardChange(value) {
+    console.log(this.idCardads, "idCardads");
+    if (value) {
+      this.customerMaterialsForm.province1 = this.customerMaterialsForm.province;
+      this.customerMaterialsForm.city1 = this.customerMaterialsForm.city;
+      this.customerMaterialsForm.localHomeAddr = this.customerMaterialsForm.idCardAddress;
+      this.customerMaterialsForm.localHomeAddrDetail = this.customerMaterialsForm.idCardAddressDetail;
+      this.customerMaterialsForm = JSON.parse(
+        JSON.stringify(this.customerMaterialsForm)
+      );
+    } else {
+      this.customerMaterialsForm.province1 = "";
+      this.customerMaterialsForm.city1 = "";
+      this.customerMaterialsForm.localHomeAddr = "";
+      this.customerMaterialsForm.localHomeAddrDetail = "";
+    }
+  }
+  reset() {
+    this.customerMaterialsForm.province2 = "";
+    this.customerMaterialsForm.city2 = "";
+    this.customerMaterialsForm.cityOwnhouseAddress = "";
+    this.customerMaterialsForm.cityOwnhouseAddressDetail = "";
+  }
+  cityidcardChange(value) {
+    this.idcardOwn = value;
+    console.log(value, "value");
     //   this.cityValue = value
     //   this.liveValue = false
-      if (value===29) {
-        this.customerMaterialsForm.province2 = this.customerMaterialsForm.province
-        this.customerMaterialsForm.city2 = this.customerMaterialsForm.city
-        this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.idCardAddress
-        this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.idCardAddressDetail
-        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
-      } else if(value===30){
-        this.customerMaterialsForm.province2 = this.customerMaterialsForm.province1
-        this.customerMaterialsForm.city2 = this.customerMaterialsForm.city1
-        this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.localHomeAddr
-        this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.localHomeAddrDetail
-        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
-      }else{
-        this.reset()
-      }
+    if (value === 29) {
+      this.customerMaterialsForm.province2 = this.customerMaterialsForm.province;
+      this.customerMaterialsForm.city2 = this.customerMaterialsForm.city;
+      this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.idCardAddress;
+      this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.idCardAddressDetail;
+      this.customerMaterialsForm = JSON.parse(
+        JSON.stringify(this.customerMaterialsForm)
+      );
+    } else if (value === 30) {
+      this.customerMaterialsForm.province2 = this.customerMaterialsForm.province1;
+      this.customerMaterialsForm.city2 = this.customerMaterialsForm.city1;
+      this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.localHomeAddr;
+      this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.localHomeAddrDetail;
+      this.customerMaterialsForm = JSON.parse(
+        JSON.stringify(this.customerMaterialsForm)
+      );
+    } else {
+      this.reset();
     }
-    // liveChange(value) {
-    //   this.liveValue = value
-    //   this.cityValue = false
-    //   if (value) {
-    //     this.customerMaterialsForm.province2 = this.customerMaterialsForm.province1
-    //     this.customerMaterialsForm.city2 = this.customerMaterialsForm.city1
-    //     this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.localHomeAddr
-    //     this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.localHomeAddrDetail
-    //     this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
-    //   } else {
-    //     this.reset()
-    //   }
-    // }
-    ValidityPeriodChange(value) {
-      if (value) {
-
-        this.customerMaterialsForm.idCardValidityPeriodType = 14
-        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
-      } else {
-        this.customerMaterialsForm.idCardValidityPeriodType = 15
-        this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
-      }
-      this.ValidityPeriodValue = value
-    }
-    mounted() {}
   }
-
+  // liveChange(value) {
+  //   this.liveValue = value
+  //   this.cityValue = false
+  //   if (value) {
+  //     this.customerMaterialsForm.province2 = this.customerMaterialsForm.province1
+  //     this.customerMaterialsForm.city2 = this.customerMaterialsForm.city1
+  //     this.customerMaterialsForm.cityOwnhouseAddress = this.customerMaterialsForm.localHomeAddr
+  //     this.customerMaterialsForm.cityOwnhouseAddressDetail = this.customerMaterialsForm.localHomeAddrDetail
+  //     this.customerMaterialsForm = JSON.parse(JSON.stringify(this.customerMaterialsForm))
+  //   } else {
+  //     this.reset()
+  //   }
+  // }
+  ValidityPeriodChange(value) {
+    if (value) {
+      this.customerMaterialsForm.idCardValidityPeriodType = 14;
+      this.customerMaterialsForm = JSON.parse(
+        JSON.stringify(this.customerMaterialsForm)
+      );
+    } else {
+      this.customerMaterialsForm.idCardValidityPeriodType = 15;
+      this.customerMaterialsForm = JSON.parse(
+        JSON.stringify(this.customerMaterialsForm)
+      );
+    }
+    this.ValidityPeriodValue = value;
+  }
+  mounted() {}
+}
 </script>
 
 <style lang="less" scope>
-  .customer-materials {
-    .ivu-select-selection {
-      width: 100%!important;
-      display: inline-block;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
+.customer-materials {
+  .ivu-select-selection {
+    width: 100% !important;
+    display: inline-block;
+    border-style: none;
+    border-bottom-style: solid;
+    border-radius: 0;
   }
-
+}
 </style>

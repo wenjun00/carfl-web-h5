@@ -2,7 +2,7 @@
 <template>
   <i-form ref="formItems" :model="formItems" :rules="formRules" :label-width="100">
     <section class="component add-periods">
-      <div class="addPeriodsItem">自然参数</div>
+      <div class="add-periods-item">自然参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="产品序号" :span="4">
           <div>
@@ -64,7 +64,7 @@
           </i-select>
         </data-grid-item>
       </data-grid>
-      <div class="addPeriodsItem">首付款参数</div>
+      <div class="add-periods-item">首付款参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item ref label="首付款" :span="12">
           <i-radio-group style="margin-top:6px;" v-model="initialParams">
@@ -80,7 +80,7 @@
           </div>
         </data-grid-item>
       </data-grid>
-      <div class="addPeriodsItem">保证金参数</div>
+      <div class="add-periods-item">保证金参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="保证金" :span="12">
           <i-radio-group style="float:left;margin-top:6px;" v-model="promiseMoenyParams">
@@ -104,7 +104,7 @@
           </div>
         </data-grid-item>
       </data-grid>
-      <div class="addPeriodsItem">尾付款参数</div>
+      <div class="add-periods-item">尾付款参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="尾付款" :span="12">
           <i-radio-group style="margin-top:6px;" v-model="residueParams">
@@ -121,7 +121,7 @@
           </div>
         </data-grid-item>
       </data-grid>
-      <div class="addPeriodsItem">管理费参数</div>
+      <div class="add-periods-item">管理费参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="管理费" :span="12">
           <i-radio-group style="margin-top:6px;" v-model="manageMoneyParams">
@@ -148,7 +148,7 @@
           </div>
         </data-grid-item>
       </data-grid>
-      <div class="addPeriodsItem">逾期违约惩罚参数</div>
+      <div class="add-periods-item">逾期违约惩罚参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item :span="6" label="征信保护天数">
           <i-form-item prop="creditProtectDays" style="margin-top:15px;">
@@ -177,7 +177,7 @@
           <span>&nbsp;%/天</span>
         </data-grid-item>
       </data-grid>
-      <!--<div style="margin-right:10px;display:inline-block" class="addPeriodsItem">状态</div>
+      <!--<div style="margin-right:10px;display:inline-block" class="add-periods-item">状态</div>
       <i-form-item prop="isPublish">
         <i-radio-group v-model="formItems.isPublish">
           <i-radio :label="361">未发布</i-radio>
@@ -410,7 +410,7 @@
 </script>
 
 <style lang="less">
-  .addPeriodsItem {
+  .add-periods-item {
     font-size: 14px;
     font-weight: bold;
     margin-top: 16px;
