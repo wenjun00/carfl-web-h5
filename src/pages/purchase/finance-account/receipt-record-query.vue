@@ -1,19 +1,19 @@
 <!--收款记录查询-->
 <template>
   <section class="page receipt-record-query">
-    <span class="form-title">收款记录查询</span>
-    <span style="margin-left:10px">申请日期：</span>
-    <i-date-picker v-model="receiptModel.queryStartDate" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
-    <i-date-picker v-model="receiptModel.queryEndDate" type="date" placeholder="yyy/mm/dd" style="width: 200px"></i-date-picker>
-    <i-input placeholder="请录入订单编号" style="display:inline-block;width:10%;margin-left:10px;" v-model="receiptModel.orderNumber"></i-input>
-    <i-select placeholder="全部收款类型" style="width:10%;margin-left:10px;" v-model="receiptModel.applicationType" clearable>
+    <span class="form-title title">收款记录查询</span>
+    <span>申请日期：</span>
+    <i-date-picker class="data-form-item" v-model="receiptModel.queryStartDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>
+    <i-date-picker class="data-form-item" v-model="receiptModel.queryEndDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>
+    <i-input class="data-form-item" placeholder="请录入订单编号" v-model="receiptModel.orderNumber"></i-input>
+    <i-select placeholder="全部收款类型" class="data-form-item" v-model="receiptModel.applicationType" clearable>
       <i-option v-for="{value,label} in $dict.getDictData('0101')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
-    <i-select placeholder="申请状态" style="width:10%;margin-left:10px;" v-model="receiptModel.approvalStatus" clearable>
+    <i-select placeholder="申请状态" class="data-form-item" v-model="receiptModel.approvalStatus" clearable>
       <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
     </i-select>
-    <i-checkbox style="margin-left:10px;" v-model="status">包含已归档订单</i-checkbox>
-    <i-button style="margin-left:10px" class="blueButton" @click="receiptRecordSearch">搜索</i-button>
+    <i-checkbox class="command-item" v-model="status">包含已归档订单</i-checkbox>
+    <i-button class="blueButton command-item" @click="receiptRecordSearch">搜索</i-button>
     <data-box :id="447" :columns="columns1" :data="receiptDataSet" :page="pageService" @onPageChange="receiptRecordSearch"></data-box>
     <!--Model-->
     <template>
@@ -107,7 +107,7 @@
                     applicationId: row.applicationId
                   }).subscribe(val => {
                     let _applyInfo: any = this.$refs['applyDetail']
-                    _applyInfo.getparentreceipt(val,0)
+                    _applyInfo.getparentreceipt(val, 0)
                   })
                 }
               },
@@ -261,3 +261,19 @@
   }
 
 </script>
+<style lang="less" scoped>
+  .page.receipt-record-query {
+    .title {
+      margin-right: 10px;
+    }
+    .data-form-item {
+      display: inline-block;
+      width: 10%;
+      margin-left: 10px;
+    }
+    .command-item {
+      margin-left: 10px;
+    }
+  }
+
+</style>
