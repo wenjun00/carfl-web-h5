@@ -1,21 +1,21 @@
 <!--融资租赁申请-->
 <template>
-  <section class="pageContainer financing-lease-apply specialInput">
-    <div class="page" style="height:820px;overflow:hidden">
+  <section class="page financing-lease-apply">
+    <div class="page-container">
       <div class="header">
         <div class="form-title">融资租赁申请
-          <div style="float:right;margin-right:20px;">
-            <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-              <span style="font-size:12px;margin-right:10px" @click="BusinessFlowDiagram">业务流程图</span>
-              <svg-icon iconClass="dayin" style="font-size:24px;"></svg-icon>
-              <span style="font-size:12px;" @click="print">打印</span>
+          <div class="applications-for">
+            <div class="command" >
+              <span class="flow-img"  @click="BusinessFlowDiagram">业务流程图</span>
+              <svg-icon class="dayin" iconClass="dayin"></svg-icon>
+              <span class="dayin-font" @click="print">打印</span>
             </div>
           </div>
         </div>
       </div>
-      <i-row type="flex">
+      <i-row class="data-form" type="flex">
         <i-col span="18">
-          <i-form ref="customer-form" :model="customerModel" label-position="left" :rules="customerRule" :label-width="110" style="margin-top:20px;position:relative;left:16px;">
+          <i-form ref="customer-form" class="data-form-num" :model="customerModel" label-position="left" :rules="customerRule" :label-width="110" >
             <i-col span="12">
               <i-form-item label="证件号码" prop="idCard">
                 <i-input type="text" :maxlength="18" v-model="customerModel.idCard" autofocus @on-change="showTab" @on-blur="checkcustomerinfo">
@@ -45,7 +45,7 @@
           </i-form>
         </i-col>
         <!-- <i-col span="6" style="display: flex;justify-content: center;align-items: center;position:absolute;top:12%;right:18%;" pull="6"> -->
-        <i-button class="blueButton" @click="addNewApply" style="height:40px;position:relative;top:60px;">添加新申请</i-button>
+        <i-button class="add-new-applyfor" @click="addNewApply" >添加新申请</i-button>
         <!-- </i-col> -->
       </i-row>
       <div class="shade" :style="{display:disabledStatus}">
@@ -75,13 +75,13 @@
         </div>
         <component :is="materialTabs"></component>
       </div>-->
-      <div class="submitBar">
+      <div class="submit-bar">
         <i-row type="flex" align="middle" style="padding:5px">
           <i-col :span="8" push="1">
           </i-col>
           <i-col :span="10" pull="4">
           </i-col>
-          <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
+          <i-col :span="6" class="save-line">
             <i-button size="large" class="highDefaultButton" @click="draftsaveAndSubmit(true)">保存草稿</i-button>
             <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit(false)">保存并提交</i-button>
           </i-col>
@@ -699,34 +699,88 @@ import { State, Mutation, namespace } from "vuex-class";
 </script>
 
 <style lang="less" scope>
-  .header {
-    border-bottom: 1px solid #cccccc;
-  }
-
-  .page {
-    height: 1750px!important;
-  }
-
-  .submitBar {
-    line-height: 70px;
-    height: 70px;
-    width: 100%;
-    background: #fff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border: 1px solid #ddd;
-    box-shadow: -3px 2px 20px #dddddd;
-    padding-right: 24px;
-  }
-
-  .specialInput {
+  .page.financing-lease-apply{
     .ivu-input {
       border-style: none;
       border-bottom-style: solid;
       border-radius: 0; // width: 257%;
     }
+    .page-container{
+      height:820px;
+      overflow:hidden
+      .header{
+         border-bottom: 1px solid #cccccc;
+      }
+      .applications-for{
+          float:right;
+          margin-right:20px;
+          .command{
+            cursor:pointer;
+            display:inline-block;
+            margin-left:10px;
+            color:#3367A7;
+            .flow-img{
+                font-size: 14px;
+            }
+            .dayin{
+                font-size: 24px;
+            }
+            .dayin-font{
+                font-size: 12px;
+            }
+          }
+         }
+        .data-form{
+          .data-form-num{
+              margin-top:20px;
+              position:relative;
+              left:16px;
+          }
+          .add-new-applyfor{
+            height:40px;
+            position:relative;
+            top:60px;
+            background: #265EA2;
+            color: #fff;
+          }
+        } 
+        .submit-bar{
+          line-height: 70px;
+          height: 70px;
+          width: 100%;
+          background: #fff;
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          border: 1px solid #ddd;
+          box-shadow: -3px 2px 20px #dddddd;
+          padding-right: 24px;
+        }
+        .save-line{
+          text-align:right;
+          position:relative;
+          bottom:6px;  
+        }
+    }
+
+  } 
+
+
+
+
+
+
+
+
+
+
+
+  .page {
+    height: 1750px!important;
   }
+
+
+ 
 
   .financing-lease-apply {
     .ivu-select-selection {

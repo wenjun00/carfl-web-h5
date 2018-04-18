@@ -2,36 +2,36 @@
 <template>
   <section class="page org-user-manage">
     <span class="form-title">机构与用户管理</span>
-    <i-row>
-      <i-col :span="4" style="border:1px solid #dddddd;padding:20px 0;height:590px;">
-        <i-row style="border-bottom:1px solid #dddddd;display:flex;align-items:center;justify-content:flex-end">
-          <i-button class="blueButton" @click="addDept" style="position:relative;bottom:10px;right:8px;">添加机构</i-button>
+    <i-row class="data-form">
+      <i-col :span="4" class="data-form-item">
+        <i-row class="add-agency">
+          <i-button class="blue-button" @click="addDept">添加机构</i-button>
         </i-row>
-        <i-row>
-          <div style="overflow:auto;height:540px">
+        <i-row >
+          <div class="add-org-tree">
             <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept"
                            @edit="editDept"></organize-tree>
           </div>
         </i-row>
       </i-col>
       <i-col :span="20">
-        <i-row>
-          <span style="margin-left:20px;">用户名：</span>
-          <i-input style="display:inline-block;width:10%;" v-model="userListModel.userName"
+        <i-row  class="data-form-multifunction">
+          <span class="title">用户名：</span>
+          <i-input class="form-input" v-model="userListModel.userName"
                    placeholder="请输入用户名"></i-input>
-          <span style="margin-left:20px;">姓名：</span>
-          <i-input style="display:inline-block;width:10%;" v-model="userListModel.realName"
+          <span class="title">姓名：</span>
+          <i-input class="form-input" v-model="userListModel.realName"
                    placeholder="请输入姓名"></i-input>
-          <span style="margin-left:10px;">状态：</span>
-          <i-select style="display:inline-block;width:10%" v-model="userListModel.status">
+          <span class="title">状态：</span>
+          <i-select class="form-input" v-model="userListModel.status">
             <i-option label="启用" :value="0" :key="0"></i-option>
             <i-option label="停用" :value="1" :key="1"></i-option>
           </i-select>
-          <i-button class="blueButton" style="margin-left:20px;" @click="searchUserListByCondition">搜索</i-button>
-          <i-button class="blueButton" style="margin-left:20px;" @click="refreshRoleList">重置</i-button>
-          <i-button class="blueButton" style="margin-left:20px;" @click="addNewUser">新增用户</i-button>
-          <i-button class="blueButton" style="margin-left:20px;" @click="buttonOnlyOne1">批量分配角色</i-button>
-          <i-button class="blueButton" style="margin-left:20px;" @click="buttonOnlyOne2">批量管理设备</i-button>
+          <i-button class="blue-button"  @click="searchUserListByCondition">搜索</i-button>
+          <i-button class="blue-button"  @click="refreshRoleList">重置</i-button>
+          <i-button class="blue-button"  @click="addNewUser">新增用户</i-button>
+          <i-button class="blue-button"  @click="buttonOnlyOne1">批量分配角色</i-button>
+          <i-button class="blue-button"  @click="buttonOnlyOne2">批量管理设备</i-button>
         </i-row>
         <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition"
                   :page="pageService"></data-box>
@@ -890,9 +890,58 @@
 </script>
 
 <style lang="less">
-  .batch-manage-device {
-    .ivu-modal-footer {
-      display: none;
+  .page.org-user-manage{
+    .data-form{
+      .data-form-item{
+        border:1px solid #dddddd;
+        padding:20px 0;
+        height:590px;
+        .add-agency{
+          border-bottom:1px solid #dddddd;
+          display:flex;
+          align-items:center;
+          justify-content:flex-end;
+          .blue-button{
+            position:relative;
+            bottom:10px;
+            right:8px;
+            background: #265EA2;
+            color: #fff;
+          }
+        }
+        .add-org-tree{
+          overflow:auto;
+          height:540px;
+        }
+      }
+      .data-form-multifunction{
+        .title{
+          margin-left: 20px;
+        }
+        .form-input{
+          display:inline-block;
+          width:10%;
+        }
+        .blue-button{
+          background: #265EA2;
+          color: #fff;
+          margin-left:20px;
+        }
+      }
+    }
+    .batch-manage-device {
+      .ivu-modal-footer {
+        display: none;
+      }
     }
   }
+
+
+
+
+
+
+
+
+  
 </style>

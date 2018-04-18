@@ -2,27 +2,27 @@
 <template>
   <section class="page customer-repay-revert">
     <span class="form-title">客户还款撤销</span>
-    <i-row style="margin:6px;">
-        <div style="float:right;margin-right:10px;margin-top:-48px;">
-      <div style="font-size:18px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-        <svg-icon iconClass="dayin"></svg-icon>
-        <span style="font-size: 12px;">打印</span>
-      </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size: 12px;">导出</span>
-      </div>
-    </div>
+    <i-row class="data-form">
+        <div class="command">
+            <div class="command-item dayin">
+                <svg-icon iconClass="dayin"></svg-icon>
+                <span>打印</span>
+            </div>
+            <div class="command-item daochu">
+                <svg-icon iconClass="daochu"></svg-icon>
+                <span>导出</span>
+            </div>
+        </div>
       <span>客户姓名：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入客户姓名"></i-input>
-      <span style="margin-left:10px;">证件号码：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入证件号码"></i-input>
-      <span style="margin-left:10px;">联系号码：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入联系号码"></i-input>
-      <span style="margin-left:10px;">订单编号：</span>
-      <i-input style="display:inline-block;width:10%;" placeholder="请输入订单编号"></i-input>
-      <i-button class="blueButton" style="margin-left:10px;" @click="getCustomerRepayList">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
+      <i-input class="form-input" placeholder="请输入客户姓名"></i-input>
+      <span>证件号码：</span>
+      <i-input class="form-input" placeholder="请输入证件号码"></i-input>
+      <span >联系号码：</span>
+      <i-input class="form-input" placeholder="请输入联系号码"></i-input>
+      <span>订单编号：</span>
+      <i-input class="form-input" placeholder="请输入订单编号"></i-input>
+      <i-button class="form-button"  @click="getCustomerRepayList">搜索</i-button>
+      <i-button class="form-button"  @click="refreshRoleList">重置</i-button>
     </i-row>
     <data-box :columns="columns1" :data="data1" @rowClick="rowClick" @onPageChange="getCustomerRepayList" :page="pageService"></data-box>
 
@@ -36,7 +36,7 @@
       <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
         <purchase-information></purchase-information>
         <div slot="footer">
-          <i-button style="background:#265ea2;color:#fff" @click="purchaseInfoModal=false">返回</i-button>
+          <i-button class="pop-up-button" @click="purchaseInfoModal=false">返回</i-button>
         </div>
       </i-modal>
     </template>
@@ -279,8 +279,48 @@ export default class CustomerRepayRevert extends Page {
    */
   refreshRoleList() {}
 }
-</script>
+</script> 
 
 <style lang="less" scope>
+  .page.customer-repay-revert{
+    .data-form{
+        margin:6px;
+        .command{
+          float:right;
+          margin-right:10px;
+          margin-top:-48px;
+          .command-item{
+            display:inline-block;
+            margin-left:10px;
+            cursor:pointer;
+            color:#3367A7;
+              &.dayin{
+              font-size:18px;
+            }
+             &.daochu{
+              font-size:16px;
+            }
+             span{
+              font-size: 12px
+            }
+          }
+        }
+        .form-input{
+          display:inline-block;
+          width:10%;
+          margin-right:10px;
+        }
+        .form-button{
+          margin-left:10px;
+          background: #265EA2;
+          color: #fff;
 
+        }
+    }
+    .pop-up-button{
+        background:#265ea2;
+        color:#fff;
+    }
+  }
+ 
 </style>

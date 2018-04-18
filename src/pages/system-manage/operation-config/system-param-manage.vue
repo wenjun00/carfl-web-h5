@@ -1,17 +1,17 @@
 <!--系统参数管理-->
 <template>
   <section class="page system-param-manage">
-    <i-row>
+    <i-row class="data-form">
       <div class="form-title">系统参数管理</div>
-      <span style="margin-left:10px;">参数名称</span>
-      <i-input v-model="systemParameterModel.paramName" style="display:inline-block;width:8%;"></i-input>
-      <span>是否启用</span>
-      <i-select style="width:10%;" v-model="systemParameterModel.paramStatus" clearable>
+      <span class="title">参数名称</span>
+      <i-input class="form-input" v-model="systemParameterModel.paramName" ></i-input>
+      <span class="title">是否启用</span>
+      <i-select class="form-input"  v-model="systemParameterModel.paramStatus" clearable>
         <i-option label="启用" :value="0" :key="0"></i-option>
         <i-option label="停用" :value="1" :key="1"></i-option>
       </i-select>
-      <i-button style="margin-left:10px;" class="blueButton" @click="getSystemParam">搜索</i-button>
-      <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button>
+      <i-button class="form-button"  @click="getSystemParam">搜索</i-button>
+      <i-button class="form-button"  @click="refreshRoleList">重置</i-button>
     </i-row>
     <data-box :id="77" :columns="columns1" :data="systemParamsData" @onPageChange="getSystemParam" :page="pageService"></data-box>
 
@@ -194,3 +194,22 @@ export default class OrderTransfer extends Page {
   }
 }
 </script>
+<style lang="less" scope>
+  .page.system-param-manage{
+      .data-form{
+        .title{
+            margin-left: 10px;
+        }
+        .form-input{
+          display:inline-block;
+          width:8%;
+        }
+        .form-button{
+          margin-left:10px;
+          background: #265EA2;
+          color: #fff;
+        }
+      }
+  }
+
+</style>
