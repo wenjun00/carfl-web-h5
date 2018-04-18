@@ -14,30 +14,30 @@
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
-    <div style="float:right;margin-right:10px;margin-top:10px;">
-      <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-        <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
-        <span style="font-size:12px;">打印</span>
+    <div class="command">
+      <div class="command-item dayin">
+        <svg-icon  iconClass="dayin"></svg-icon>
+        <span >打印</span>
       </div>
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+      <div class="command-item daochu">
         <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size: 12px;">导出</span>
+        <span >导出</span>
       </div>
     </div>
-    <i-row v-if="searchOptions" style="margin:6px;">
-      <span style="margin-left:10px">日期：</span>
-      <i-date-picker style="display:inline-block;width:10%" v-model="customerSignModel.startTime"></i-date-picker>~
-      <i-date-picker style="display:inline-block;width:10%" v-model="customerSignModel.endTime"></i-date-picker>
-      <i-input v-model="customerSignModel.orderInfo" style="display:inline-block;width:20%;" placeholder="请输入订单编号\客户姓名\证件号码\联系号码"></i-input>
-      <i-button class="blueButton" style="margin-left:10px;" @click="getSignList">搜索</i-button>
+    <i-row class="data-form-data" v-if="searchOptions">
+      <span>日期：</span>
+      <i-date-picker class="data-picker" v-model="customerSignModel.startTime"></i-date-picker>~
+      <i-date-picker class="data-picker" v-model="customerSignModel.endTime"></i-date-picker>
+      <i-input class="data-input" v-model="customerSignModel.orderInfo" placeholder="请输入订单编号\客户姓名\证件号码\联系号码"></i-input>
+      <i-button class="blue-button"  @click="getSignList">搜索</i-button>
     </i-row>
     <data-box :id="184" :columns="columns1" :data="customerSignList" @onPageChange="getSignList" :page="pageService"></data-box>
     <!--弹出框-->
-    <template>
+    <template class="contract-types">
       <!--生成合同-->
       <i-modal v-model="openCreateCompact" title="合同生成">
         <i-row>
-          <span style="position:relative;bottom:6px;margin-right:10px;">订单类型</span>
+          <span  style="position:relative;bottom:6px;margin-right:10px;">订单类型</span>
           <i-radio-group v-model="checkRadio" @on-change="changeCompactType">
             <i-row>
               <i-col :span="12">
@@ -722,3 +722,53 @@
   }
 
 </script>
+<style lang="less" scope>
+  .page.customer-sign{
+    .command{
+      float:right;
+      margin-right:10px;
+      margin-top:10px;
+      .command-item{
+        cursor:pointer;
+        display:inline-block;
+        margin-left:10px;
+        color:#3367A7;
+        &.dayin{
+            font-size: 24px;
+            span{
+                font-size: 12px;
+            }
+        }
+        &.daochu{
+            font-size: 12px;
+            span{
+                font-size: 12px;
+            }
+        }
+      }
+    } 
+    .data-form-data{
+      margin:6px;
+      span{
+          margin-left:10px
+      }
+      .data-picker{
+          display:inline-block;
+          width:10%
+      }
+      .data-input{
+          display:inline-block;
+          width:20%;
+      }
+      .blue-button{
+          margin-left:10px;
+          background: #265EA2;
+          color: #fff;
+      }
+
+    } 
+
+
+  }  
+
+</style>
