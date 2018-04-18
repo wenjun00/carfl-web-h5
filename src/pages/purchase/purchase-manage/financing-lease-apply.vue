@@ -80,13 +80,6 @@
         <salesman-name @choosecurrentData="choosecurrentData" @close="salesmanModal=false"></salesman-name>
       </i-modal>
     </template>
-
-    <template>
-      <i-modal title="业务流程图" width="1000" height="628" v-model="showFlowModel" :trandfer="false">
-        <div class="yewuliucheng-bg">
-        </div>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -169,7 +162,6 @@ export default class FinancingLeaseApply extends Page {
     mobileMain: "", // 客户电话
     salesmanName: "" // 归属业务员
   };
-  private showFlowModel: boolean = false;
   private addCar: Boolean = false;
   private disabledStatus: String = ""; // 子组件中输入框禁用flag
   private materialTabs: String = "choose-buy-materials";
@@ -191,20 +183,19 @@ export default class FinancingLeaseApply extends Page {
       this.showTab();
     }
   }
-  print() {
-    window.print();
-  }
 
   choosecurrentData(data) {
     this.customerModel.salesmanName = data.userRealname;
     this.customerModel.salesmanId = data.id;
   }
+
   /**
    * 归属业务员
    */
   salesmanNamefocus() {
     this.salesmanModal = true;
   }
+
   /**
    * 业务流程图
    */
@@ -217,7 +208,7 @@ export default class FinancingLeaseApply extends Page {
           "div",
           {
             style: {
-              overflow:"auto"
+              overflow: "auto"
             }
           },
           [
@@ -231,6 +222,8 @@ export default class FinancingLeaseApply extends Page {
       }
     });
   }
+
+
   ReverseData() {
     let customermodel: any = this.$refs["customer-materials"];
     customermodel.getinfo(this.customerModel);
@@ -240,6 +233,7 @@ export default class FinancingLeaseApply extends Page {
     let choose: any = this.$refs["choose-buy-materials"];
     choose.closeProductForm();
   }
+
   /**
    * 根据客户三项查询历史订单
    */
