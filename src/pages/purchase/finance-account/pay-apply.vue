@@ -1,22 +1,22 @@
 <!--付款申请-->
 <template>
-  <section class="page early-payment-apply specialInput">
+  <section class="page early-payment-apply special-input">
     <div class="header">
       <span class="form-title">付款申请</span>
-      <div style="float:right;margin-top: 10px;margin-right:10px">
-        <div style="cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
-          <svg-icon style="font-size:24px;" iconClass="dayin"></svg-icon>
-          <span style="font-size:12px;">打印</span>
+      <div class="command">
+        <div class="command-item">
+          <svg-icon iconClass="dayin"></svg-icon>
+          <span>打印</span>
         </div>
-        <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+        <div class="command-item">
           <svg-icon iconClass="daochu"></svg-icon>
-          <span style="font-size: 12px;">导出</span>
+          <span>导出</span>
         </div>
       </div>
     </div>
     <i-row type="flex">
       <i-col span="18">
-        <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80" style="margin-top:20px;">
+        <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
           <i-col span="12">
             <i-form-item label="证件号码" prop="certificateNumber">
               <i-input type="text" v-model="applyData.certificateNumber" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
@@ -57,7 +57,7 @@
           </i-col>
         </i-form>
       </i-col>
-      <i-button style="height:40px;position:relative;top:60px;" class="blueButton" @click="clearAll">清空</i-button>
+      <i-button class="blueButton clear-button" @click="clearAll">清空</i-button>
     </i-row>
     <i-tabs v-model="materialTabs" type="card" class="early-pay-tabs">
       <i-tab-pane name="pay-detail" label="付款明细">
@@ -69,15 +69,15 @@
     </i-tabs>
     <div class="shade" :style="{display:disabledStatus}">
     </div>
-    <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:5px">
+    <div class="submit-bar">
+      <i-row type="flex" align="middle" class="submit-bar-item">
         <i-col :span="8" push="1">
-          <span style="height:40px;display:inline-block;line-height:3">申请人：administrator</span>
+          <span>申请人：{{applyPerson}}</span>
         </i-col>
-        <i-col :span="10" pull="4">
-          <span>申请时间：2017-12-01 13:56:56</span>
+        <i-col :span="12" pull="4">
+          <span>申请时间：{{applyTime}}</span>
         </i-col>
-        <i-col :span="6" style="text-align:right;position:relative;bottom:6px;">
+        <i-col :span="4">
           <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
           <i-button class="highButton" @click="saveSubmit">保存并提交</i-button>
         </i-col>
@@ -155,33 +155,41 @@
       refundTotalAmount: ''
     };
     private applyRule: Object = {
-         certificateNumber: [{
-        required: true,
-        message: '请输入证件号码',
-        trigger: 'blur',
-      },
-      { validator: this.$validator.idCard, trigger: "blur" }],
+      certificateNumber: [{
+          required: true,
+          message: '请输入证件号码',
+          trigger: 'blur',
+        },
+        {
+          validator: this.$validator.idCard,
+          trigger: "blur"
+        }
+      ],
       name: [{
         required: true,
         message: '请输入客户姓名',
         trigger: 'blur',
       }],
       mobileNumber: [{
-        required: true,
-        message: '请输入客户电话',
-        trigger: 'blur',
-      },
-      { validator: this.$validator.phoneNumber, trigger: "blur" }],
-    //   orderNumber: [{
-    //     required: true,
-    //     message: '请选择订单',
-    //     trigger:'change'
-    //   }],
-      refundType:[{
+          required: true,
+          message: '请输入客户电话',
+          trigger: 'blur',
+        },
+        {
+          validator: this.$validator.phoneNumber,
+          trigger: "blur"
+        }
+      ],
+      //   orderNumber: [{
+      //     required: true,
+      //     message: '请选择订单',
+      //     trigger:'change'
+      //   }],
+      refundType: [{
         required: true,
         message: '请选择付款类型',
-        trigger:'change',
-        type:'number'
+        trigger: 'change',
+        type: 'number'
       }]
     };
     private purchaseData: Object = {
@@ -189,6 +197,8 @@
       city: '',
       company: ''
     };
+    private applyPerson: String = ""; // 申请人
+    private applyTime: String = ""; // 申请时间
     private data1: Array < Object > = [];
     private data2: Array < Object > = [];
     private data3: Array < Object > = [];
@@ -212,7 +222,22 @@
       resourceList: [], // 上传资料
     };
 
-    created() {}
+    created() {
+      this.applyPerson = this.$store.state.userData.username;
+      let time = new Date();
+      this.applyTime =
+        time.getFullYear() +
+        "-" +
+        (time.getMonth() + 1) +
+        "-" +
+        time.getDate() +
+        " " +
+        time.getHours() +
+        ":" +
+        time.getMinutes() +
+        ":" +
+        time.getSeconds();
+    }
     /**
      * 清空
      */
@@ -238,7 +263,7 @@
       this.applyData = {};
       let _gatherDetail: any = this.$refs["payDetail"];
       _gatherDetail.resetTable();
-      let _uploadFodder:any = this.$refs['upload-the-fodder'];
+      let _uploadFodder: any = this.$refs['upload-the-fodder'];
       _uploadFodder.reset()
     }
     /**
@@ -249,14 +274,14 @@
         .getAllMessageByParams(this.applyData)
         .subscribe(
           data => {
-            if(data){
-            this.orderList = data.filter(v => v.orderId)
-            if (data[0] && data[0].orderNumber) {
-              this.applyData.name = data[0].name;
-              this.applyData.mobileNumber = data[0].mobileNumber;
-            }
-            this.dataSet = data
+            if (data) {
+              this.orderList = data.filter(v => v.orderId)
+              if (data[0] && data[0].orderNumber) {
+                this.applyData.name = data[0].name;
+                this.applyData.mobileNumber = data[0].mobileNumber;
               }
+              this.dataSet = data
+            }
           },
           ({
             msg
@@ -278,10 +303,11 @@
       let _message: any = this.$refs['payDetail']
       this.saveData.bankListk = _message.accountInfoList
       let gatherItem: any = Object.assign(_message.gatherItemList)
-      this.saveData.refundTotalAmount = gatherItem.length>0?gatherItem.find(v => v.itemLabel === '合计（元）').refundAmount:''
+      this.saveData.refundTotalAmount = gatherItem.length > 0 ? gatherItem.find(v => v.itemLabel === '合计（元）').refundAmount :
+        ''
       this.saveData.recordStatus = 1128
       this.saveData.refundType = this.applyData.refundType
-      this.saveData.remark=this.applyData.remark
+      this.saveData.remark = this.applyData.remark
       this.saveData.itemList = gatherItem.splice(0, (_message.gatherItemList.length - 1))
       this.refundApplicationService
         .saveSubmitApplication(this.saveData)
@@ -301,43 +327,44 @@
      * 保存并提交
      */
     saveSubmit() {
-    let customerform: any = this.$refs['customer-form']
-      customerform.validate(valid=>{
-          if(!valid){
-              return false
-          }else{
-      let _message: any = this.$refs['payDetail']
-      this.saveData.bankListk = _message.accountInfoList
-      let gatherItem: any = Object.assign(_message.gatherItemList)
-        this.saveData.refundTotalAmount = gatherItem.length>0?gatherItem.find(v => v.itemName === 'totalPayment').refundAmount:''
-      this.saveData.recordStatus = 1129
-      this.saveData.refundType = this.applyData.refundType
-      this.saveData.remark=this.applyData.remark
-      this.saveData.itemList = gatherItem.splice(0, (_message.gatherItemList.length - 1))
-      let _uploadthefodder:any=this.$refs['upload-the-fodder']
-              console.log('dhfjgdfjgdjf')
-      this.saveData.resourceList=_uploadthefodder.fodderList.map(v=>{
-        return {
-            materialUrl:v.url,
-            // type:v.response.type,
-            // name:v.name,
-            // id:v.response.id
+      let customerform: any = this.$refs['customer-form']
+      customerform.validate(valid => {
+        if (!valid) {
+          return false
+        } else {
+          let _message: any = this.$refs['payDetail']
+          this.saveData.bankListk = _message.accountInfoList
+          let gatherItem: any = Object.assign(_message.gatherItemList)
+          this.saveData.refundTotalAmount = gatherItem.length > 0 ? gatherItem.find(v => v.itemName ===
+            'totalPayment').refundAmount : ''
+          this.saveData.recordStatus = 1129
+          this.saveData.refundType = this.applyData.refundType
+          this.saveData.remark = this.applyData.remark
+          this.saveData.itemList = gatherItem.splice(0, (_message.gatherItemList.length - 1))
+          let _uploadthefodder: any = this.$refs['upload-the-fodder']
+          console.log('dhfjgdfjgdjf')
+          this.saveData.resourceList = _uploadthefodder.fodderList.map(v => {
+            return {
+              materialUrl: v.url,
+              // type:v.response.type,
+              // name:v.name,
+              // id:v.response.id
+            }
+          })
+          this.refundApplicationService
+            .saveSubmitApplication(this.saveData)
+            .subscribe(
+              data => {
+                this.$Message.success("保存并提交成功！");
+                this.resetAll()
+              },
+              ({
+                msg
+              }) => {
+                this.$Message.error(msg);
+              }
+            );
         }
-    })
-      this.refundApplicationService
-        .saveSubmitApplication(this.saveData)
-        .subscribe(
-          data => {
-            this.$Message.success("保存并提交成功！");
-            this.resetAll()
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg);
-          }
-        );
-          }
       })
     }
     /**
@@ -381,8 +408,51 @@
 </script>
 
 <style lang="less" scope>
-  .header {
-    border-bottom: 1px solid #cccccc;
+  .special-input {
+    .ivu-input {
+      border-style: none;
+      border-bottom-style: solid;
+      border-radius: 0;
+    }
+  }
+  
+  .page.early-payment-apply {
+    .header {
+      border-bottom: 1px solid #cccccc;
+      margin-bottom: 20px;
+      .command {
+        float: right;
+        margin-top: 10px;
+        margin-right: 10px;
+        .command-item {
+          font-size: 16px;
+          cursor: pointer;
+          display: inline-block;
+          margin-left: 10px;
+          color: #3367A7;
+          span {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+    .clear-button {
+      height: 40px;
+      position: relative;
+      top: 60px;
+    }
+    .submit-bar {
+      height: 70px;
+      width: 100%;
+      background: #fff;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      border: 1px solid #ddd;
+      .submit-bar-item {
+        padding: 10px;
+      }
+    }
   }
   
   .open {
@@ -427,24 +497,6 @@
     background: #e4e4e4;
     text-align: center;
     width: 30px;
-  }
-  
-  .submitBar {
-    height: 70px;
-    width: 100%;
-    background: #fff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border: 1px solid #ddd;
-  }
-  
-  .specialInput {
-    .ivu-input {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
   }
   
   .bigSelect {
