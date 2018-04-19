@@ -199,6 +199,7 @@
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.withdrawId
       data.totalPayment = _repayment.paymentAmount
+      data.withdrawApplicationId = _repayment.rowObj.withdrawId
       data.collectMoneyId = _repayment.collectMoneyId
       this.advanceRevokeService.saveCollectMoneyHistory(data).subscribe(data => {
         this.$Message.info('操作成功！')
@@ -425,7 +426,7 @@
       }
     }
   }
-  
+
   .confirmWithdraw {
     .ivu-modal-body {
       height: 600px;

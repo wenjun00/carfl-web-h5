@@ -22,11 +22,17 @@
           </div>
         </i-col>
         <i-col class="command" :span="19" :offset="1">
-          <span>素材名称：</span>
-          <i-input class="command-item" v-model="personalModel.name"></i-input>
-          <i-button class="blueButton" @click="search">搜索</i-button>
-          <i-button class="blueButton" @click="resetSeach">重置</i-button>
-          <i-button class="blueButton command-item-add" @click="materialModel=true">新增素材</i-button>
+          <data-form hidden-date-search :model="personalModel" @on-search="search" hidden-reset>
+            <template slot="input">
+              <i-form-item prop="name" label="素材名称">
+                <i-input v-model="personalModel.name"></i-input>
+              </i-form-item>
+            </template>
+            <template slot="button">
+              <i-button class="blueButton command-item-add" @click="materialModel=true">新增素材</i-button>
+            </template>
+          </data-form>
+
           <data-box :id="144" :columns="columns" :data="data1" @onPageChange="search" :page="pageService">
           </data-box>
         </i-col>

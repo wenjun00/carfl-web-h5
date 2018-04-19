@@ -1,6 +1,6 @@
 <template>
   <section class="page customer-fodder-maintain">
-      <page-header title="导出模板管理" hiddenPrint hiddenExport></page-header>
+    <page-header title="导出模板管理" hiddenPrint hiddenExport></page-header>
     <i-row>
       <!--<i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>-->
       <i-row class="data-form">
@@ -17,10 +17,16 @@
           </div>
         </i-col>
         <i-col class="command" span="19" offset="1">
-          <span>模块功能</span>
-          <i-input class="command-item" v-model="personalModel.name" placeholder="请输入模版、页面、功能名称查询"></i-input>
-          <i-button class="blueButton" @click="search">搜索</i-button>
-          <i-button class="blueButton" @click="materialModelOne" v-if="addMater === true">新增模版</i-button>
+          <data-form hidden-date-search :model="personalModel" @on-search="search">
+            <template slot="input">
+              <i-form-item prop="name" label="模块功能">
+                <i-input v-model="personalModel.name" placeholder="请输入模版、页面、功能名称查询"></i-input>
+              </i-form-item>
+            </template>
+            <template slot="button">
+              <i-button class="blueButton" @click="materialModelOne" v-if="addMater === true">新增模版</i-button>
+            </template>
+          </data-form>
           <data-box :id="474" :columns="columns" :data="data1" @onPageChange="search" :page="pageService"></data-box>
         </i-col>
       </i-row>
@@ -204,7 +210,7 @@
 <style lang="less" scoped>
   .page.customer-fodder-maintain {
     .data-form {
-        margin-top: 10px;
+      margin-top: 10px;
       .data-form-item {
         width: 250px;
         height: 30px;
@@ -246,8 +252,8 @@
         }
       }
     }
-    .maintainCss{
-        background: #e4f4fa;
+    .maintainCss {
+      background: #e4f4fa;
     }
   }
 

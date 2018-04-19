@@ -1,7 +1,7 @@
 <!--收款-->
 <template>
   <section class="page gathering">
-    <page-header title="付款"></page-header>
+    <page-header title="收款"></page-header>
     <div class="data-form">
       <i-button type="text" @click="getTimeSearch(0)" v-auth="401">昨日</i-button>
       <i-button type="text" @click="getTimeSearch(1)" v-auth="401">今日</i-button>
@@ -130,6 +130,7 @@
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.applicationId
       data.totalPayment = _repayment.paymentAmount
+      data.withdrawApplicationId = _repayment.rowObj.applicationId
       this.collectMoneyHistoryService.saveCollectMoneyHistory(data).subscribe(data => {
         this.$Message.info('操作成功！')
         this.confirmGatherModal = false
@@ -349,7 +350,7 @@
       }
     }
   }
-  
+
   .confirmGather {
     .ivu-modal-body {
       height: 600px;

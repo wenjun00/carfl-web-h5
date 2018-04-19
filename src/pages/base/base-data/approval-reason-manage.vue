@@ -1,31 +1,46 @@
 <!--审批原因管理-->
 <template>
   <section class="page approval-reason-manage">
-      <page-header title="审批原因管理" hiddenPrint hiddenExport>
-          <command-button label="导入" icon="daoru" @click="enterInto"></command-button>
-          <command-button label="模板下载" icon="xiazai" @click="downloadTemplate"></command-button>
-      </page-header>
-    <i-row class="data-form">
-      <span>类型：</span>
-      <i-select class="data-form-item" placeholder="全部" v-model="appReasonModel.type" clearable @on-change="selectType">
-        <i-option label="退回" :value="374" :key="374"></i-option>
-        <i-option label="拒绝" :value="375" :key="375"></i-option>
-      </i-select>
-      <span>一级：</span>
-      <i-select class="data-form-item" placeholder="全部" v-model="appReasonModel.first" clearable @on-change="firstSelect">
-        <i-option :label="item" :value="item" :key="item" v-for="item in firstOption"></i-option>
-      </i-select>
-      <span>二级：</span>
-      <i-select class="data-form-item" placeholder="全部" v-model="appReasonModel.second" clearable @on-change="secondSelect">
-        <i-option :label="item" :value="item" :key="item" v-for="item in secondOption"></i-option>
-      </i-select>
-      <span>CRC编码：</span>
-      <i-input class="data-form-item" v-model="appReasonModel.CRC"></i-input>
-      <span>详细内容：</span>
-      <i-input class="data-form-item" v-model="appReasonModel.detail"></i-input>
-      <i-button class="blueButton" @click="seach">搜索</i-button>
-      <i-button class="blueButton" @click="resetSeach">重置</i-button>
-    </i-row>
+    <page-header title="审批原因管理" hiddenPrint hiddenExport>
+      <command-button label="导入" icon="daoru" @click="enterInto"></command-button>
+      <command-button label="模板下载" icon="xiazai" @click="downloadTemplate"></command-button>
+    </page-header>
+    <!--<data-form :model="appReasonModel" @on-search="seach">
+         <template slot="input" >
+      <i-form-item prop="type" label="类型">
+        <i-select class="data-form-item" placeholder="全部" v-model="appReasonModel.type" clearable @on-change="selectType">
+          <i-option label="退回" :value="374" :key="374"></i-option>
+          <i-option label="拒绝" :value="375" :key="375"></i-option>
+        </i-select>
+      </i-form-item>
+      </template>
+    </data-form>-->
+    <data-form hidden-date-search :model="appReasonModel" @on-search="seach">
+      <template slot="input">
+        <i-form-item prop="dynamicParam" label="类型">
+          <i-select placeholder="全部" v-model="appReasonModel.type" clearable @on-change="selectType">
+            <i-option label="退回" :value="374" :key="374"></i-option>
+            <i-option label="拒绝" :value="375" :key="375"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="first" label="一级">
+          <i-select placeholder="全部" v-model="appReasonModel.first" clearable @on-change="firstSelect">
+            <i-option :label="item" :value="item" :key="item" v-for="item in firstOption"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="second" label="二级">
+          <i-select placeholder="全部" v-model="appReasonModel.second" clearable @on-change="secondSelect">
+            <i-option :label="item" :value="item" :key="item" v-for="item in secondOption"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="CRC" label="CRC编码">
+         <i-input v-model="appReasonModel.CRC"></i-input>
+        </i-form-item>
+         <i-form-item prop="detail" label="详细内容">
+          <i-input v-model="appReasonModel.detail"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
     <data-box :id="109" :columns="columns" :data="AppRoveReasonList" @onPageChange="seach" :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:10px">
@@ -446,34 +461,34 @@
 </script>
 <style lang="less" scoped>
   .page.approval-reason-manage {
-    .data-form {
-      .span {
-        font-size: 18px;
-        font-weight: bold;
-        margin-right: 10px;
-      }
-      margin-top:10px !important;
-      margin-left:10px !important;
-      .data-form-item {
-        margin-right: 10px;
-        width: 10% !important;
-        .ivu-select .ivu-select-single {
-          display: inline-block;
-          width: 10% !important;
-        }
-      }
-      .command {
-        float: right;
-        margin-right: 12px;
-        margin-top: 10px;
-        .command-in {
-          cursor: pointer;
-          display: inline-block;
-          margin-left: 10px;
-          color: #3367A7;
-        }
-      }
-    }
+    // .data-form {
+    //   .span {
+    //     font-size: 18px;
+    //     font-weight: bold;
+    //     margin-right: 10px;
+    //   }
+    //   margin-top:10px !important;
+    //   margin-left:10px !important;
+    //   //   .data-form-item {
+    //   //     margin-right: 10px;
+    //   //     width: 10% !important;
+    //   //     .ivu-select .ivu-select-single {
+    //   //       display: inline-block;
+    //   //       width: 10% !important;
+    //   //     }
+    //   //   }
+    //   .command {
+    //     float: right;
+    //     margin-right: 12px;
+    //     margin-top: 10px;
+    //     .command-in {
+    //       cursor: pointer;
+    //       display: inline-block;
+    //       margin-left: 10px;
+    //       color: #3367A7;
+    //     }
+    //   }
+    // }
     // .data-form-item .ivu-select .ivu-select-single{
     //     display: inline-block;
     //     width: 10% !important;

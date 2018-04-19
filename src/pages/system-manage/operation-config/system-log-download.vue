@@ -1,23 +1,18 @@
 <!--系统日志下载-->
 <template>
     <section class="page system-log-download">
-        <page-header title="系统日志下载"></page-header>
-         <data-form hiddenDateSearch :model="systemLogModel" @on-search="search" @on-reset="refreshRoleList">
-            <template slot="input">
-                <i-form-item prop="realName" label="操作人：">
-                    <i-input v-model="systemLogModel.realName"></i-input>
-                </i-form-item>
-                <i-form-item prop="clientIp" label="客户端IP：">
-                    <i-input v-model="systemLogModel.clientIp"></i-input>
-                </i-form-item>
-                 <i-form-item prop="startTime" label="操作时间：">
-                    <i-date-picker v-model="systemLogModel.startTime"></i-date-picker>~
-                </i-form-item>
-                 <i-form-item prop="endTime">
-                    <i-date-picker v-model="systemLogModel.endTime"></i-date-picker>
-                </i-form-item>
-            </template>
-        </data-form>
+        <page-header title="系统日志下载" @on-export="exportLogs"></page-header>
+        <i-row class="data-form">
+            <span>操作人：</span>
+            <i-input class="form-input" v-model="systemLogModel.realName"></i-input>
+            <span>客户端IP：</span>
+            <i-input class="form-input" v-model="systemLogModel.clientIp"></i-input>
+            <span class="title">操作时间：</span>
+            <i-date-picker class="form-item" v-model="systemLogModel.startTime"></i-date-picker>~
+            <i-date-picker class="form-item" v-model="systemLogModel.endTime"></i-date-picker>
+            <i-button class="blue-button" @click="search">搜索</i-button>
+            <i-button class="blue-button" @click="refreshRoleList">重置</i-button>
+        </i-row>
         <data-box :id="57" :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService" ref="databox"></data-box>
     </section>
 </template>

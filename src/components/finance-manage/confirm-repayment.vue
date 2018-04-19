@@ -130,8 +130,7 @@
           </i-select>
         </td>
         <td>
-          <i-input class="modal-item-input" v-model="v.collectMoneyAmount"
-                   @on-blur="inputBlur"></i-input>
+          <i-input style="display:inline-block;width:30%;margin-right:10px" v-model="v.collectMoneyAmount" @on-blur="inputBlur" readonly></i-input>
           <i-button class="blueButton">确认划扣</i-button>
         </td>
         <td><span>已处理</span>
@@ -277,6 +276,7 @@
         this.collectMoneyDetails = data.collectMoneyDetails || []
         this.financeUploadResources = data.financeUploadResources || []
         this.collectMoneyItemModel = data.collectMoneyItemModel
+        this.remark = data.remark
         this.inputBlur()
       }, ({
             msg
