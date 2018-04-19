@@ -102,14 +102,5 @@ export default {
     controller: CONTROLLER,
     action: 'findUserPrivileges',
     type: requestType.Get
-  },
-  /**
-   * 导出用户列表
-   */
-  exportUserList:{
-    service: SERVICE,
-    controller: CONTROLLER,
-    action: 'exportUserList',
-    type: requestType.Post
   }
 }
