@@ -168,6 +168,7 @@
       data.businessId = _repayment.rowObj.withdrawId
       data.totalPayment = _repayment.paymentAmount
       data.collectMoneyId = _repayment.repaymentObj.withdrawApplicationId
+      data.withdrawApplicationId = _repayment.withdrawApplicationId
       this.advancePayoffService.saveCollectMoneyHistoryAsDraft(data).subscribe(data => {
         this.$Message.info('保存草稿成功！')
         this.confirmRepaymentModal = false
