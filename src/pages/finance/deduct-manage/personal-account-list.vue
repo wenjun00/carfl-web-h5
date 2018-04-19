@@ -1,8 +1,8 @@
 <!--个人开户列表-->
 <template>
   <section class="page personal-account-list">
+      <page-header title="个人开户列表" hiddenPrint></page-header>
     <i-row class="data-form">
-      <span class="commend">个人开户列表</span>
       <i-button @click="getTimeSearch(1)" type="text" v-auth="458">昨日</i-button>
       <i-button @click="getTimeSearch(2)" type="text" v-auth="458">今日</i-button>
       <i-button @click="getTimeSearch(3)" type="text" v-auth="458">本周</i-button>
@@ -16,12 +16,6 @@
         <span v-if="searchOptions">收起</span>
         <span>高级搜索</span>
       </i-button>
-      <div class="second-commend" v-auth="459">
-        <div class="second-commend-item">
-          <svg-icon iconClass="daochu"></svg-icon>
-          <span class="second-commend-item-son">导出</span>
-        </div>
-      </div>
     </i-row>
     <i-row v-if="searchOptions"  class="second-data-form">
       <i-input class="second-data-one" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="gatherModel.orderInfo"></i-input>

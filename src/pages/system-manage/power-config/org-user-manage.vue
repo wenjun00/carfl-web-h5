@@ -1,9 +1,7 @@
 <!--机构与用户管理-->
 <template>
   <section class="page org-user-manage">
-    <page-header title="机构与用户管理" hiddenPrint >
-
-    </page-header>
+    <page-header title="机构与用户管理" hiddenPrint @onExport="exportName"></page-header>
     <i-row class="data-form">
       <i-col :span="4" class="data-form-item">
         <i-row class="add-agency">
@@ -490,50 +488,10 @@
           }
         }
       ];
-      this.columns2 = [
-        {
-          title: "序号",
-          type: "index",
-          width: 80,
-          align: "center"
-        },
-        {
-          title: "列名",
-          key: "columnsName",
-          align: "center"
-        },
-        {
-          type: "selection",
-          width: 80,
-          align: "center"
-        }
-      ];
-
-      this.data2 = [
-        {
-          columnsName: "订单编号"
-        },
-        {
-          columnsName: "订单创建时间"
-        },
-        {
-          columnsName: "订单类型"
-        },
-        {
-          columnsName: "产品名称"
-        },
-        {
-          columnsName: "客户姓名"
-        },
-        {
-          columnsName: "证件号码"
-        },
-        {
-          columnsName: "最近合同生成日期"
-        }
-      ];
     }
-
+    exportName(){
+      console.log(234234)
+    }
     dataPowerModalChange(flag) {
       if (!flag) {
         let _dataPower: any = this.$refs["data-power"];

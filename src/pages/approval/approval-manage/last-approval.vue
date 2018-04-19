@@ -27,7 +27,7 @@
     </div>
     <i-row class="data-form" v-if="searchOptions">
       <i-input class="data-form-item search-input" placeholder="请录入客户姓名\证件号码\手机号查询"
-               v-model="resourcePoolModel.resourcePoolModel"></i-input>
+               v-model="resourcePoolModel.personalInfo"></i-input>
       <span class="data-form-item date">日期：</span>
       <i-date-picker class="data-form-item date-picker" v-model="resourcePoolModel.startTime"
                      placeholder="起始日期"></i-date-picker>

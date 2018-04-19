@@ -15,12 +15,11 @@
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
     </i-button>
-    <data-form>
-      <template slot="input">
-        <i-input class="second-input" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
-      </template>
-      <template slot="button">
-        <i-button>123</i-button>
+    <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList">
+      <template slot="input" >
+        <i-form-item prop="dynamicParam">
+          <i-input class="second-input" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
+        </i-form-item>
       </template>
     </data-form>
     <div class="importBtn">
@@ -151,6 +150,7 @@ export default class CustomerRepay extends Page {
     this.getCustomerRepayList();
     this.customerRepayModel.timeSearch = "";
   }
+
   visibleChange() {
     let target = document.querySelector(".purchaseInformation .ivu-modal-body");
     if (target) {
@@ -455,6 +455,7 @@ export default class CustomerRepay extends Page {
    * 获取客户还款查询
    */
   getCustomerRepayList() {
+    this.customerRepayModel.
     this.paymentScheduleService
       .getCustomerPayments(this.customerRepayModel, this.pageService)
       .subscribe(

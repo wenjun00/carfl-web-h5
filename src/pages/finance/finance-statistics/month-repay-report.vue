@@ -1,8 +1,8 @@
 <!--月还款报表-->
 <template>
   <section class="page month-repay-report">
+      <page-header title="月还款报表" hiddenPrint></page-header>
     <i-row class="data-form">
-      <span class="title">月还款报表</span>
       <span class="form-input">统计机构：</span>
       <i-select class="form-select">
         <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
@@ -15,12 +15,6 @@
         <i-option label="富友" value="富友" key="富友"></i-option>
       </i-select>
       <i-button class="blueButton">搜索</i-button>
-      <div class="commend">
-        <div class="commend-item">
-          <svg-icon iconClass="daochu"></svg-icon>
-          <span class="commend-item-one">导出</span>
-        </div>
-      </div>
     </i-row>
     <i-row v-if="searchOptions" class="search">
       <i-input  placeholder="请输入客户姓名" class="search-item"></i-input>
