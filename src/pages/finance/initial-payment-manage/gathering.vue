@@ -130,6 +130,7 @@
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.applicationId
       data.totalPayment = _repayment.paymentAmount
+      data.withdrawApplicationId = _repayment.rowObj.applicationId
       this.collectMoneyHistoryService.saveCollectMoneyHistory(data).subscribe(data => {
         this.$Message.info('操作成功！')
         this.confirmGatherModal = false
