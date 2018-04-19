@@ -1,7 +1,7 @@
 <!--数据字典-->
 <template>
   <section class="page data-dict">
-      <page-header title="数据字典" hiddenPrint hiddenExport></page-header>
+    <page-header title="数据字典" hiddenPrint hiddenExport></page-header>
     <i-row class="data-form">
       <i-row type="flex" align="top" justify="start">
         <i-col :span="4">
@@ -20,13 +20,16 @@
           </div>
         </i-col>
         <i-col class="command" :span="19" offset="1">
-          <span>数据名称：</span>
-          <i-input class="command-item" v-model="dictAguments.name"></i-input>
-          <i-button class="blueButton" @click="seach">搜索</i-button>
-          <i-button class="blueButton" @click="resetSeach">重置</i-button>
-          <i-button class="blueButton command-add" @click="dataModal=true">
-            新增数据
-          </i-button>
+          <data-form hidden-date-search :model="dictAguments" @on-search="seach">
+            <template slot="input">
+              <i-form-item prop="name" label="数据名称">
+                <i-input v-model="dictAguments.name"></i-input>
+              </i-form-item>
+            </template>
+            <template slot="button">
+              <i-button class="blueButton command-add" @click="dataModal=true">新增数据</i-button>
+            </template>
+          </data-form>
           <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService" :noDefaultRow="true"></data-box>
         </i-col>
       </i-row>
@@ -472,7 +475,7 @@
 <style lang="less" scoped>
   .page.data-dict {
     .data-form {
-        margin-top: 10px;
+      margin-top: 10px;
       .data-form-item {
         width: 250px;
         height: 30px;

@@ -1,24 +1,22 @@
 <!--产品包管理-->
 <template>
   <section class="page prod-package-info">
-      <page-header title="产品包管理" hiddenPrint hiddenExport>
-          <command-button label="报价模板下载" icon="xiazai" @click="QuotationTemplatedownload"></command-button>
-      </page-header>
-    <i-row class="data-form">
-      <span>文件名：</span>
-      <i-input class="data-form-item" v-model="productModel.fileName"></i-input>
-      <span>上传时间：</span>
-      <i-date-picker class="data-form-item" v-model="productModel.minDate"></i-date-picker>~
-      <i-date-picker class="data-form-item" v-model="productModel.maxDate"></i-date-picker>
-      <i-button class="blueButton" @click="getProductPackage">搜索</i-button>
-      <i-button class="blueButton" @click="resetSeach">重置</i-button>
-      <!--<div class="command">
-        <div class="command-item">
-          <svg-icon iconClass="xiazai"></svg-icon>
-          <i-button type="text" @click="QuotationTemplatedownload">报价模板下载</i-button>
-        </div>
-      </div>-->
-    </i-row>
+    <page-header title="产品包管理" hiddenPrint hiddenExport>
+      <command-button label="报价模板下载" icon="xiazai" @click="QuotationTemplatedownload"></command-button>
+    </page-header>
+    <data-form hidden-date-search :model="productModel" @on-search="getProductPackage">
+      <template slot="input">
+        <i-form-item prop="fileName" label="文件名">
+          <i-input v-model="productModel.fileName"></i-input>
+        </i-form-item>
+        <i-form-item prop="minDate" label="上传时间">
+          <i-date-picker v-model="productModel.minDate"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="maxDate">
+          <i-date-picker v-model="productModel.maxDate"></i-date-picker>
+        </i-form-item>
+      </template>
+    </data-form>
     <data-box :id="91" :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:10px">
@@ -330,29 +328,29 @@
 </script>
 <style lang="less" scoped>
   .page.prod-package-info {
-    .data-form {
-      margin-top: 10px;
-      margin-left: 10px;
-      .title {
-        margin-right: 10px;
-      }
-      .data-form-item {
-        display: inline-block;
-        width: 10%;
-        margin-right: 10px;
-      }
-      .command {
-        float: right;
-        margin-right: 10px;
-        margin-top: 10px;
-        .command-item {
-          font-size: 16px;
-          cursor: pointer;
-          margin-left: 10px;
-          color: #3367A7
-        }
-      }
-    }
+    // .data-form {
+    //   margin-top: 10px;
+    //   margin-left: 10px;
+    //   .title {
+    //     margin-right: 10px;
+    //   }
+    //   .data-form-item {
+    //     display: inline-block;
+    //     width: 10%;
+    //     margin-right: 10px;
+    //   }
+    //   .command {
+    //     float: right;
+    //     margin-right: 10px;
+    //     margin-top: 10px;
+    //     .command-item {
+    //       font-size: 16px;
+    //       cursor: pointer;
+    //       margin-left: 10px;
+    //       color: #3367A7
+    //     }
+    //   }
+    // }
   }
   
   .ivu-table-fixed-body {

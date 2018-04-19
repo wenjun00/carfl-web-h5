@@ -29,7 +29,7 @@
             <span style="line-height:36px;">文件类型</span>
           </i-col>
           <i-col span="6">
-            <i-select v-model="model1" @on-change="filetype">
+            <i-select v-model="model1">
               <i-option v-for="item in cityList" :label="item.name" :value="item.id" :key="item.id"></i-option>
             </i-select>
           </i-col>
@@ -81,22 +81,17 @@
     @Dependencies(PersonalMaterialService) private personalMaterialService: PersonalMaterialService;
     @ModuleState('productId') productId
     private model1: String = '';
-    private cityList: Array < object > = [];
+    private cityList: any = [];
     private dataList: Array < any > = [];
 
     private openUpload: Boolean = false;
     private previewModel: Boolean = false;
-    private typeup:any='';
     private url: any = "";
     /**
      * 重置
      */
     resetfileList(){
     this.dataList=[]
-}
-filetype(){
-    this.typeup=this.cityList.find(v=>v.id===this.model1).type
-    
 }
     /**
      * 反显
@@ -162,7 +157,7 @@ filetype(){
             size: item.size,
             status: item.status,
             createTime: item.response.createTime,
-            typeup:this.typeup
+            typeup:this.cityList.find(v=>v.id===this.model1).type||''
 
           })
         }

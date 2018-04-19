@@ -1,14 +1,15 @@
 <!--分公司信息-->
 <template>
   <section class="page branch-company-info">
-      <page-header title="分公司管理">
-      </page-header>
-    <i-row class="data-form">
-      <span>关键字搜索：</span>
-      <i-input class="data-form-item" placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyWord"></i-input>
-      <i-button class="blueButton" @click="seachCompany">搜索</i-button>
-      <i-button class="blueButton" @click="resetSeach">重置</i-button>
-    </i-row>
+    <page-header title="分公司管理">
+    </page-header>
+    <data-form hidden-date-search :model="companyModel" @on-search="seachCompany">
+      <template slot="input">
+        <i-form-item prop="keyWord" label="关键字搜索">
+          <i-input placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyWord"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
     <data-box :id="175" :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:10px">
@@ -324,18 +325,18 @@
 </script>
 <style lang="less" scoped>
   .page.branch-company-info {
-    .data-form {
-      margin-top: 10px;
-      .span {
-        font-size: 18px;
-        font-weight: bold;
-        margin-right: 10px;
-        margin-left: 10px;
-      }
-      .data-form-item {
-        width: 15%;
-      }
-    }
+    // .data-form {
+    //   margin-top: 10px;
+    //   .span {
+    //     font-size: 18px;
+    //     font-weight: bold;
+    //     margin-right: 10px;
+    //     margin-left: 10px;
+    //   }
+    //   .data-form-item {
+    //     width: 15%;
+    //   }
+    // }
   }
 
 </style>
