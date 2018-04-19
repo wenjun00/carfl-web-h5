@@ -2,28 +2,20 @@
 <template>
   <section class="page payment">
     <page-header title="付款"></page-header>
-    <div class="data-form">
-      <i-button type="text" @click="getTimeSearch(0)" v-auth="407">昨日</i-button>
-      <i-button type="text" @click="getTimeSearch(1)" v-auth="407">今日</i-button>
-      <i-button type="text" @click="getTimeSearch(2)" v-auth="407">本周</i-button>
-      <i-button type="text" @click="getTimeSearch(3)" v-auth="407">本月</i-button>
-      <i-button type="text" @click="getTimeSearch(4)" v-auth="407">上月</i-button>
-      <i-button type="text" @click="getTimeSearch(5)" v-auth="407">最近三月</i-button>
-      <i-button type="text" @click="getTimeSearch(6)" v-auth="407">本季度</i-button>
-      <i-button type="text" @click="getTimeSearch(7)" v-auth="407">本年</i-button>
-      <i-button @click="openSearch" class="form-button" v-auth="406">
-        <span v-if="!searchOptions">展开</span>
-        <span v-if="searchOptions">收起</span>
-        <span>高级搜索</span>
-      </i-button>
-      <i-row v-if="searchOptions" class="second-data">
-        <i-input class="form-input" v-model="approvalModel.refundName" placeholder="请录入付款账户名查询"></i-input>
-        <span class="title">日期：</span>
-        <i-date-picker type="date" class="title-item" v-model="approvalModel.startTime"></i-date-picker> ~
-        <i-date-picker type="date" class="title-item" v-model="approvalModel.endTime"></i-date-picker>
-        <i-button @click="getOrderQuery" class="blueButton">搜索</i-button>
-      </i-row>
-    </div>
+    <data-form data-prop="timeSearch" hidden-reset :model="approvalModel" @on-search="getOrderQuery">
+      <template slot="input">
+        <i-form-item prop="refundName">
+          <i-input class="form-input" v-model="approvalModel.refundName" placeholder="请录入付款账户名查询"></i-input>
+        </i-form-item>
+        <i-form-item prop="startTime" label="日期：">
+          <i-date-picker type="date" class="title-item" v-model="approvalModel.startTime"></i-date-picker> ~
+        </i-form-item>
+        <i-form-item prop="endTime">
+          <i-date-picker type="date" class="title-item" v-model="approvalModel.endTime"></i-date-picker>
+        </i-form-item>
+        <!--<i-button @click="getOrderQuery" class="blueButton">搜索</i-button>-->
+      </template>
+    </data-form>
     <data-box :id="405" :columns="columns1" :data="paymentData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
 
     <template>
@@ -342,7 +334,7 @@
       }
     }
   }
-  
+
   .confirmGather {
     .ivu-modal-body {
       height: 600px;
