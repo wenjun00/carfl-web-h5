@@ -46,7 +46,7 @@
         </i-col>
         <i-col :span="12" :push="1">
           <i-form-item label="颜色" prop="carColor">
-            <i-input v-model="carFormItem.carColor"></i-input>
+            <i-input v-model="carFormItem.carColor" readonly></i-input>
           </i-form-item>
         </i-col>
       </i-row>
