@@ -277,9 +277,12 @@ export default class CustomerDataQuery extends Page {
       }
     })
     console.log(MaterialData, 'uploadTheMaterial.dataList')
-    this.personalService.uploadPersonalApproveFile(MaterialData).subscribe(
+    this.personalService.uploadPersonalApproveFile({
+        personalDataModel: MaterialData
+    }).subscribe(
       data => {
         this.openUpload = false
+        this.$Message.success('上传成功！')
       },
       ({ msg }) => {
         this.$Message.error(msg)
