@@ -96,13 +96,13 @@ import RepayInfo from "~/components/finance-manage/repay-info.vue";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import CustomerSettleModal from "~/components/finance-manage/customer-settle-modal.vue";
 import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
-
 import { Tooltip } from "iview";
 import { Dependencies } from "~/core/decorator";
 import { Layout } from "~/core/decorator";
 import { PaymentScheduleService } from "~/services/manage-service/payment-schedule.service";
 import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
+
 @Layout("workspace")
 @Component({
   components: {
@@ -455,7 +455,6 @@ export default class CustomerRepay extends Page {
    * 获取客户还款查询
    */
   getCustomerRepayList() {
-    this.customerRepayModel.
     this.paymentScheduleService
       .getCustomerPayments(this.customerRepayModel, this.pageService)
       .subscribe(
