@@ -1,18 +1,16 @@
 <template>
   <section class="component data-form">
-    <div class="date-query-list">
+    <div class="date-query-list row">
       <div v-for="(value, key) in timeQueryTypes" :key="key" class="data-query-item" :class="{active:currentTimeType===key}" @click="onSelectQueryTime(key)"></div>
     </div>
     <i-form ref="data-form" inline :rules="rules" label-position="left" :model="model">
       <div class="row" style="flex-wrap:nowrap;width:100%;">
         <div class="row middle-span col-span">
-          <slot name="default-input"></slot>
-          <slot name="collapse-input" v-if="showCollapseContext"></slot>
+          <slot name="input"></slot>
           <el-button v-if="!hiddenSearch" @click="onSubmitForm" class="search-button" style="vertical-align:top">搜索</el-button>
           <el-button v-if="showResetButton" @click="onResetForm" class="reset-button" style="vertical-align:top">重置</el-button>
           <div :style="{width:buttonWrap?'100%':'10px'}"></div>
-          <slot name="default-button"></slot>
-          <slot name="collapse-button" v-if="showCollapseContext"></slot>
+          <slot name="button"></slot>
           <div class="col-span" v-show="showAppendContext">
           </div>
           <slot name="append">

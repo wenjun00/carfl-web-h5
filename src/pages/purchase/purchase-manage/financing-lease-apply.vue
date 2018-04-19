@@ -299,7 +299,21 @@ export default class FinancingLeaseApply extends Page {
   /**
    * 显示历史订单
    */
-  showHistoryOrder(data) {}
+  showHistoryOrder(data) {
+    this.$Modal.info({
+      render: h => {
+        return h(HistoricalRecord, {
+          props: {
+            data
+          },
+          on: {
+            submit: () => {},
+            cancel: () => {}
+          }
+        });
+      }
+    });
+  }
 
   resetApplicationTab() {}
 
