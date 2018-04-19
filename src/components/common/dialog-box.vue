@@ -2,6 +2,9 @@
   <section class="component dialog">
     <i-modal :class-name="getClassName()" :title="title" v-model="value" :transfer="transfer" :mask-closable="maskClosable">
       <slot></slot>
+      <div slot="footer">
+        <slot name="footer"></slot>
+      </div>
     </i-modal>
   </section>
 </template>
@@ -92,6 +95,7 @@ export default class DialogBox extends Vue {
 
     .ivu-modal {
       top: 0;
+      min-width: 70%;
     }
 
     .ivu-modal-close {

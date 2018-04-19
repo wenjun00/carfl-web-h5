@@ -85,7 +85,7 @@
     </template>
 
     <template>
-      <dialog-box v-model="aaa">
+      <dialog-box v-model="aaa" transfer>
         asdasdasdasd
       </dialog-box>
     </template>
@@ -309,7 +309,7 @@ export default class FinancingLeaseApply extends Page {
    */
   showHistoryOrder(data) {
     this.$dialog.show({
-      title:"asdasd",
+      title: "asdasd",
       render: h => {
         return h(HistoricalRecord, {
           props: {

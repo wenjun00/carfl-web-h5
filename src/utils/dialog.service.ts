@@ -12,13 +12,17 @@ export class DialogService {
     const Instance = new Vue({
       render(h) {
         let bodyVNodes = [option.render(h)]
-
+        let footerVNodes = []
+        if (option.footer) {
+          footerVNodes.push(h('div', { slot: 'footer' }, [option.footer(h)]))
+        }
         return h(DialogBox, {
           props: {
-            title: option.title
+            title: option.title,
           }
         }, [
-            ...bodyVNodes
+            ...bodyVNodes,
+            ...footerVNodes
           ])
       },
       computed: {
