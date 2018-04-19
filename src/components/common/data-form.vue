@@ -1,6 +1,6 @@
 <template>
   <section class="component data-form">
-    <div class="date-query-list row middle-span" v-if="hiddenDateSearch">
+    <div class="date-query-list row middle-span" v-if="!hiddenDateSearch">
       <div v-for="(value, key) in dateQueryTypes" :key="key" class="data-query-item" :class="{active:currentDateType===key}" @click="onSelectQueryDate(key)">
         <label>{{value}}</label>
       </div>
@@ -10,7 +10,7 @@
     </div>
     <i-form ref="data-form" inline :rules="rules" label-position="left" :model="model">
       <div class="row" style="flex-wrap:nowrap;width:100%;">
-        <div class="row middle-span col-span form-item-container" v-show="showCollapseContext">
+        <div class="row middle-span col-span form-item-container" v-show="showCollapseContext||hiddenDateSearch">
           <slot name="input"></slot>
           <i-button v-if="!hiddenSearch" @click="onSubmitForm" class="search-button" style="vertical-align:top">搜索</i-button>
           <i-button v-if="showResetButton" @click="onResetForm" class="reset-button" style="vertical-align:top">重置</i-button>

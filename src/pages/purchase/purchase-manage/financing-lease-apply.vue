@@ -40,7 +40,7 @@
     <!-- 搜索表单-end -->
 
     <!-- 资料申请选项卡-start -->
-    <i-tabs type="card" v-show="!showApplicationTab" v-model="materialTabs" class="application-tabs">
+    <i-tabs type="card" v-show="showApplicationTab" v-model="materialTabs" class="application-tabs">
       <i-tab-pane label="选购资料" name="choose-buy-materials">
         <choose-buy-materials ref="choose-buy-materials" v-show="materialTabs==='choose-buy-materials'"></choose-buy-materials>
       </i-tab-pane>
@@ -60,6 +60,9 @@
         <upload-the-material ref="upload-the-material" v-show="materialTabs==='upload-the-material'"></upload-the-material>
       </i-tab-pane>
     </i-tabs>
+    <div v-show="!showApplicationTab" class="emptyText">
+      请先填写证件信息
+    </div>
     <!-- 资料选项卡-end -->
 
     <!--底部操作栏-start-->
@@ -249,9 +252,7 @@ export default class FinancingLeaseApply extends Page {
 
     // 验证身份证信息
     let result = await new Promise((reslove, reject) => {
-      customerForm.validateField("idCard", error => {
-        return error ? reject() : reslove(true);
-      });
+      customerForm.validateField("idCard", error => reslove(!error));
     });
 
     // TODO: 18个1仅用于测试F
@@ -279,7 +280,7 @@ export default class FinancingLeaseApply extends Page {
           }
 
           // 判断是否需要重置信息
-          if (this.historyId !== this.customerModel.idCard) {
+          if (this.historyId && this.historyId !== this.customerModel.idCard) {
             this.$Modal.confirm({
               title: "提醒",
               content: "证件号码更新,是否要重置申请信息?",
@@ -289,6 +290,7 @@ export default class FinancingLeaseApply extends Page {
 
           // 更新历史查询身份证号
           this.historyId = this.customerModel.idCard;
+          this.showApplicationTab = true;
         },
         ({ msg }) => {
           this.$Message.error(msg);
@@ -311,6 +313,9 @@ export default class FinancingLeaseApply extends Page {
             cancel: () => {}
           }
         });
+      },
+      onOK:()=>{
+        return false
       }
     });
   }
@@ -878,6 +883,18 @@ export default class FinancingLeaseApply extends Page {
     padding: 10px 20px;
     box-shadow: 0px -5px 10px #ccc;
   }
+
+  .emptyText {
+    font-size: 32px;
+    color: #ccc;
+    font-weight: bold;
+    background: #f2f2f2;
+    height: 500px;
+    text-align: center;
+    line-height: 500px;
+    letter-spacing: 1px;
+    box-shadow: 0px 0px 5px #ccc;
+  }
 }
 
 .financing-lease-apply {
@@ -904,7 +921,7 @@ export default class FinancingLeaseApply extends Page {
 }
 </style>
 
-<style lang="less" scoped>
+<style lang="less">
 .page.finance-lease-tabs {
   .ivu-input {
     border-style: none;
