@@ -83,6 +83,12 @@
         <salesman-name @choosecurrentData="choosecurrentData" @close="salesmanModal=false"></salesman-name>
       </i-modal>
     </template>
+
+    <template>
+      <dialog-box v-model="aaa">
+        asdasdasdasd
+      </dialog-box>
+    </template>
   </section>
 </template>
 
@@ -139,7 +145,7 @@ export default class FinancingLeaseApply extends Page {
   private orderStatus: any = "";
   private salesmanModal: Boolean = false;
   private spinShow: Boolean = false;
-
+  private aaa = false;
   // 客户信息表单数据
   private customerModel: any = {
     idCard: "", // 证件号码
@@ -302,7 +308,8 @@ export default class FinancingLeaseApply extends Page {
    * 显示历史订单
    */
   showHistoryOrder(data) {
-    this.$Modal.info({
+    this.$dialog.show({
+      title:"asdasd",
       render: h => {
         return h(HistoricalRecord, {
           props: {
@@ -313,11 +320,24 @@ export default class FinancingLeaseApply extends Page {
             cancel: () => {}
           }
         });
-      },
-      onOK:()=>{
-        return false
       }
     });
+    // this.$Modal.info({
+    //   render: h => {
+    //     return h(HistoricalRecord, {
+    //       props: {
+    //         data
+    //       },
+    //       on: {
+    //         submit: () => {},
+    //         cancel: () => {}
+    //       }
+    //     });
+    //   },
+    //   onOK: () => {
+    //     return false;
+    //   }
+    // });
   }
 
   resetApplicationTab() {}

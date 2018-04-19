@@ -5,11 +5,13 @@ import dictPlugin from './dict.plugin'
 import filterPlugin from './filter.plugin'
 import helperPlugin from './helper.plugin'
 import validatorPlugin from './validator.plugin'
+import dialogPlugin from './dialog.plugin'
 
 export default ({ store }) => ({
   cityPlugin,
   dictPlugin,
   filterPlugin,
   helperPlugin,
-  validatorPlugin
+  validatorPlugin,
+  dialogPlugin
 })

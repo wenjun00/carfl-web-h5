@@ -142,9 +142,9 @@ export default class DataForm extends Vue {
   }
 
   onSelectQueryDate(key) {
+    this.onResetForm();
     this.currentDateType = key;
     this.model[this.dateProp] = key;
-    this.onResetForm();
     this.emitSearch();
   }
 

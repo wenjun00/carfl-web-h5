@@ -23,7 +23,7 @@ export default class AddCar extends Vue {
   // @Dependencies(ProductOrderService)
   // private productOrderService: ProductOrderService;
   @Prop() data: any;
-  
+
   private currentRow: any;
   private orderDataSet: Array<any> = [];
 

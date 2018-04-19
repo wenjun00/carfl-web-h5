@@ -1,15 +1,41 @@
 import validator from 'async-validator'
-import { Modal } from 'iview'
+import DialogBox from '~/components/common/dialog-box.vue'
+import Vue from 'vue'
 
-export class dialogService {
+export class DialogService {
   /**
    * 显示弹出框
    * @param type 
    * @param option 
    */
-  static show(type: "info" | "confirm" = "info", option) {
-    Modal[type](Object.assign({
-      width: "70%"
-    }), option)
+  static show(option) {
+    const Instance = new Vue({
+      render(h) {
+        let bodyVNodes = [option.render(h)]
+
+        return h(DialogBox, {
+          props: {
+            title: option.title
+          }
+        }, [
+            ...bodyVNodes
+          ])
+      },
+      computed: {
+
+      },
+      methods: {
+
+      }
+    });
+
+    const component = Instance.$mount();
+    document.body.appendChild(component.$el);
+    const modal: any = Instance.$children[0];
+    console.log(modal)
+    // modal.$parent.onRemove = props.onRemove;
+
+    modal.show()
+
   }
 }
