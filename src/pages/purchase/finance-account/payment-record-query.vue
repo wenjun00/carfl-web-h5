@@ -66,9 +66,7 @@
     @Dependencies(PageService) private pageService: PageService;
 
     private columns1: any;
-    private columns2: any;
     private data1: Array < Object > = [];
-    private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private checkApplyModal: Boolean = false;
     private status: Boolean = false;
@@ -93,7 +91,6 @@
     }
     created() {
       this.searchPaymentrecord()
-      this.columns2 = [{}]
       this.columns1 = [{
         title: '操作',
         align: 'center',
@@ -181,29 +178,6 @@
         key: 'operator',
         align: 'center',
         editable: true,
-      }]
-      this.data2 = [{
-        columnsName: '申请类型'
-      }, {
-        columnsName: '环节'
-      }, {
-        columnsName: '状态'
-      }, {
-        columnsName: '订单编号'
-      }, {
-        columnsName: '订单创建时间'
-      }, {
-        columnsName: '收款金额'
-      }, {
-        columnsName: '收款类型'
-      }, {
-        columnsName: '产品名称'
-      }, {
-        columnsName: '客户姓名'
-      }, {
-        columnsName: '证件号码'
-      }, {
-        columnsName: '联系号码'
       }]
     }
     searchPaymentrecord() {

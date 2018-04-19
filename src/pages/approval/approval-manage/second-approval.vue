@@ -26,7 +26,7 @@
       </div>
     </div>
     <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
-      <i-input style="display:inline-block;width:14%;margin-left:20px;min-width:230px;" placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.resourcePoolModel"></i-input>
+      <i-input style="display:inline-block;width:14%;margin-left:20px;min-width:230px;" placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.personalInfo"></i-input>
       <span style="margin-left:10px">日期：</span>
       <i-date-picker style="display:inline-block;width:10%" v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker>~
       <i-date-picker style="display:inline-block;width:10%" v-model="resourcePoolModel.endTime" placeholder="终止日期"></i-date-picker>

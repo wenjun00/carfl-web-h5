@@ -31,11 +31,7 @@
       </i-select>
       <i-button class="data-form-item serch-button blueButton" @click="getCustomerRepayList">搜索</i-button>
     </i-row>
-    <data-box :id="331" :columns="columns1" :data="customerRepayList" @onPageChange="getCustomerRepayList"
-              :page="pageService"></data-box>
-    <div>
-    </div>
-
+    <data-box :id="331" :columns="columns1" :data="customerRepayList" @onPageChange="getCustomerRepayList" :page="pageService"></data-box>
     <template>
       <i-modal title="还款详情" :transfer="false" v-model="repayInfoModal" width="1300" class="repay-info">
         <repay-info ref="repay-info"></repay-info>
