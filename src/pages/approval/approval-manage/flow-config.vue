@@ -1,103 +1,105 @@
-<!--流程配置-->
+<!--审批流程配置-->
 <template>
-  <section class="page flow-config">
-    <span class="form-title">审批流程配置</span>
-    <i-row :gutter="20">
-      <i-col :span="4" style="border:1px solid #dddddd;height:500px;margin-left:30px">
-        <div style="font-size:14px;font-weight:bold">产品分类</div>
-        <i-tree :data="treeData" @on-select-change="prdTreeChange"></i-tree>
-      </i-col>
-      <i-col :span="19">
-        <div class="rightPageContainer">
-          <div style="width:80%;height:80px;background:#F2F2F2;display:flex;align-items:center">
-            <div class="prdName">
-              <span>群泰融资</span>
-            </div>
-            <div style="font-size:30px;">群泰融资</div>
-          </div>
-          <div style="margin-top:10px;width:80%;">
-            <i-select style="width:94%;" @on-change="processChange" v-model="processNumber" clearable placeholder="请选择审批流程">
-              <i-option label="面审" :key="389" :value="389"></i-option>
-              <i-option label="复审" :key="390" :value="390"></i-option>
-            </i-select>
-            <i-button class="blueButton" @click="addNewProcess">添加</i-button>
-          </div>
-          <div v-for="item in approvaFlowList" :key="item.id" class="approvalContainer">
-            <div style="display:inline-block;margin-left:40px;">{{item.processOrderNumber}}</div>
-            <div style="display:inline-block;margin-left:40px;">{{item.processName}}</div>
-            <div class="verticalLine"></div>
-            <div class="moveUp">
-              <div style="margin-left:40px;" v-if="item.processOrderNumber===1||item.processName==='合规' ||item.processName==='终审'">
-                <Icon type="arrow-up-b" size="20" color="gray"></Icon>
-              </div>
-              <div style="margin-left:40px;cursor:pointer" @click="approvalMoveUp(item)" v-else>
-                <Icon type="arrow-up-b" size="20"></Icon>
-              </div>
-            </div>
-            <div class="moveDown">
-              <div style="margin-left:40px;" v-if="item.processOrderNumber===2||item.processName==='合规' ||item.processName==='终审'">
-                <Icon type="arrow-down-b" size="20" color="gray"></Icon>
-              </div>
-              <div style="margin-left:40px;cursor:pointer" v-else @click="approvalMoveDown(item)">
-                <Icon type="arrow-down-b" size="20"></Icon>
-              </div>
-            </div>
-            <div class="delete">
-              <div v-if="item.processName==='合规' ||item.processName==='终审'" style="margin-left:40px;">
-                <Icon type="trash-a" size="20" color='gray'></Icon>
-              </div>
-              <div v-else style="margin-left:40px;cursor:pointer" @click="approvalDelete(item)">
-                <Icon type="trash-a" size="20"></Icon>
-              </div>
-            </div>
-          </div>
-        </div>
-      </i-col>
-    </i-row>
+    <section class="page flow-config">
+        <page-header title="审批流程配置">
 
-  </section>
+        </page-header>
+        <i-row :gutter="20" class="data-form">
+            <i-col class="form-type" :span="4">
+                <div class="form-type-item" >产品分类</div>
+                <i-tree :data="treeData" @on-select-change="prdTreeChange"></i-tree>
+            </i-col>
+            <i-col :span="19">
+                <div class="right-page-container">
+                    <div class="right-conter" >
+                        <div class="prd-name">
+                            <span>群泰融资</span>
+                        </div>
+                        <div class="prd-financing">群泰融资</div>
+                    </div>
+                    <div class="approval-process">
+                        <i-select class="approval-process-select" @on-change="processChange" v-model="processNumber" clearable placeholder="请选择审批流程">
+                            <i-option label="面审" :key="389" :value="389"></i-option>
+                            <i-option label="复审" :key="390" :value="390"></i-option>
+                        </i-select>
+                        <i-button class="blueButton" @click="addNewProcess">添加</i-button>
+                    </div>
+                    <div class="compliance" v-for="item in approvaFlowList" :key="item.id" >
+                        <div class="compliance-one">{{item.processOrderNumber}}</div>
+                        <div class="compliance-one">{{item.processName}}</div>
+                        <div class="verticalLine"></div>
+                        <div>
+                            <div class="move-up one"  v-if="item.processOrderNumber===1||item.processName==='合规' ||item.processName==='终审'">
+                                <Icon type="arrow-up-b" size="20" color="gray"></Icon>
+                            </div>
+                            <div class="move-up tow"  @click="approvalMoveUp(item)" v-else>
+                                <Icon type="arrow-up-b" size="20"></Icon>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="move-down one"  v-if="item.processOrderNumber===2||item.processName==='合规' ||item.processName==='终审'">
+                                <Icon type="arrow-down-b" size="20" color="gray"></Icon>
+                            </div>
+                            <div class="move-down two"  v-else @click="approvalMoveDown(item)">
+                                <Icon type="arrow-down-b" size="20"></Icon>
+                            </div>
+                        </div>
+                        <div class="delete">
+                            <div class="delete-item one" v-if="item.processName==='合规' ||item.processName==='终审'">
+                                <Icon type="trash-a" size="20" color='gray'></Icon>
+                            </div>
+                            <div  class="delete-item two" v-else  @click="approvalDelete(item)">
+                                <Icon type="trash-a" size="20"></Icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </i-col>
+        </i-row>
+
+    </section>
 </template>
 
 <script lang="ts">
-import DataBox from "~/components/common/data-box.vue";
-import Page from "~/core/page";
-import Component from "vue-class-component";
-import { Dependencies } from "~/core/decorator";
-import { Layout } from "~/core/decorator";
-import { ProductService } from "~/services/manage-service/product.service";
+import DataBox from '~/components/common/data-box.vue'
+import Page from '~/core/page'
+import Component from 'vue-class-component'
+import { Dependencies } from '~/core/decorator'
+import { Layout } from '~/core/decorator'
+import { ProductService } from '~/services/manage-service/product.service'
 
-@Layout("workspace")
+@Layout('workspace')
 @Component({
   components: {
     DataBox
   }
 })
 export default class FlowConfig extends Page {
-  @Dependencies(ProductService) private productService: ProductService;
-  private treeData: Array<any> = [];
-  private approvaFlowList: Array<Object> = [];
-  private allData: Array<any> = [];
-  private processNumber: number = 0;
-  private productId: number = 0;
-  private upOrDown: number = 0;
-  private processId: number = 0;
-  private root: Array<any> = [];
+  @Dependencies(ProductService) private productService: ProductService
+  private treeData: Array<any> = []
+  private approvaFlowList: Array<Object> = []
+  private allData: Array<any> = []
+  private processNumber: number = 0
+  private productId: number = 0
+  private upOrDown: number = 0
+  private processId: number = 0
+  private root: Array<any> = []
   created() {
     this.productService.getProductTree().subscribe(data => {
-      this.allData = data;
+      this.allData = data
       // this.productId = val.object[0].productId
-      this.getDefaultProcess();
+      this.getDefaultProcess()
       // 生成树
       // this.createPrdTree(this.allData);
-      this.createNewTree(this.allData);
-    });
+      this.createNewTree(this.allData)
+    })
   }
   /**
    * 生成树
    */
   createNewTree(allData) {
-    let root = allData.filter(v => !v.parent); // 获取树根
-    this.treeData = [];
+    let root = allData.filter(v => !v.parent) // 获取树根
+    this.treeData = []
     // 遍历根对象push进树中
     root.forEach(item => {
       let node1 = {
@@ -105,48 +107,48 @@ export default class FlowConfig extends Page {
         seriesId: item.id,
         expand: true,
         children: this.getChild(item)
-      };
-      this.treeData.push(node1);
-    });
+      }
+      this.treeData.push(node1)
+    })
   }
   /**
    * 获取相对根元素的子元素
    */
   getChild(item) {
-    let child: any = [];
+    let child: any = []
     // 判断子的父id与全部数据的id相等
     this.allData.map(val => {
       if (item.id === val.parent) {
-        if (val.flag === "产品") {
+        if (val.flag === '产品') {
           let node2 = {
             title: val.name,
             productId: val.id,
             expand: true,
             children: this.getChild(val) // 迭代产生根
-          };
-          child.push(node2);
-        } else if (val.flag === "产品系列") {
+          }
+          child.push(node2)
+        } else if (val.flag === '产品系列') {
           let node2 = {
             title: val.name,
             seriesId: val.id,
             expand: true,
             children: this.getChild(val)
-          };
-          child.push(node2);
+          }
+          child.push(node2)
         }
       }
-    });
-    return child;
+    })
+    return child
   }
   approvalMoveUp(item) {
-    this.processId = item.id;
-    this.upOrDown = 0;
-    this.processMove();
+    this.processId = item.id
+    this.upOrDown = 0
+    this.processMove()
   }
   approvalMoveDown(item) {
-    this.processId = item.id;
-    this.upOrDown = 1;
-    this.processMove();
+    this.processId = item.id
+    this.upOrDown = 1
+    this.processMove()
   }
   /**
    * 审批流程上下移动
@@ -156,34 +158,34 @@ export default class FlowConfig extends Page {
       processId: this.processId,
       productId: this.productId,
       upOrDown: this.upOrDown
-    };
+    }
     this.productService.configureProductProcessMove(moveModel).subscribe(
       val => {
-        this.$Message.success("移动成功");
-        this.getDefaultProcess();
+        this.$Message.success('移动成功')
+        this.getDefaultProcess()
       },
       ({ msg }) => {
-        this.$Message.error(msg);
+        this.$Message.error(msg)
       }
-    );
+    )
   }
   approvalDelete(item) {
     let prdProcessModel = {
       processId: item.id,
       productId: item.productId
-    };
+    }
     this.$Modal.confirm({
-      title: "提示",
-      content: "确定删除吗？",
+      title: '提示',
+      content: '确定删除吗？',
       onOk: () => {
         this.productService
           .configureProductProcessDelete(prdProcessModel)
           .subscribe(val => {
-            this.$Message.success("删除成功！");
-            this.getDefaultProcess();
-          });
+            this.$Message.success('删除成功！')
+            this.getDefaultProcess()
+          })
       }
-    });
+    })
   }
   /**
    * 获取页面加载时的产品审批流程
@@ -195,38 +197,38 @@ export default class FlowConfig extends Page {
       })
       .subscribe(
         data => {
-          this.approvaFlowList = data;
+          this.approvaFlowList = data
         },
         ({ msg }) => {
-          this.$Message.error(msg);
+          this.$Message.error(msg)
         }
-      );
+      )
   }
   /**
    * 树change事件
    */
   prdTreeChange(val) {
     if (val[0].productId) {
-      this.productId = val[0].productId;
+      this.productId = val[0].productId
       this.productService
         .getProductConfigProcess({
           productId: val[0].productId
         })
         .subscribe(
           data => {
-            this.approvaFlowList = data;
+            this.approvaFlowList = data
           },
           ({ msg }) => {
-            this.$Message.error(msg);
+            this.$Message.error(msg)
           }
-        );
+        )
     }
   }
   /**
    * 下拉框change
    */
   processChange(val) {
-    this.processNumber = val;
+    this.processNumber = val
   }
   /**
    * 增加流程
@@ -235,58 +237,122 @@ export default class FlowConfig extends Page {
     let addProcessModel = {
       processNumber: this.processNumber,
       productId: this.productId
-    };
+    }
     if (this.processNumber) {
       this.productService.configureProductProcessAdd(addProcessModel).subscribe(
         val => {
-          this.$Message.success("添加成功");
-          this.getDefaultProcess();
+          this.$Message.success('添加成功')
+          this.getDefaultProcess()
         },
         ({ msg }) => {
-          this.$Message.error(msg);
+          this.$Message.error(msg)
         }
-      );
+      )
     } else {
-      this.$Message.error("请先选择流程！");
+      this.$Message.error('请先选择流程！')
     }
   }
 }
 </script>
 
-<style lang="less">
-.rightPageContainer {
-  // display: flex;
+<style lang="less" scoped>
+.page.flow-config {
+    .data-form{
+        margin-top: 10px;
+        .form-type{
+            border:1px solid #dddddd;
+            height:500px;
+            margin-left:30px;
+            .form-type-item{
+                font-size:14px;
+                font-weight:bold;
+            }
+        }
+        .right-page-container{
+            .right-conter{
+                width:80%;
+                height:80px;
+                background:#F2F2F2;
+                display:flex;
+                align-items:center;
+                .prd-name{
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: #265ea2;
+                color: #fff;
+                margin: auto 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: 10px;
+                }
+                .prd-financing{
+                    font-size:30px;
+                }
+            }
+            .approval-process{
+              margin-top:10px;
+              width:80%;
+              .approval-process-select{
+                  width:94%;
+              }
+            }
+            .compliance{
+                width: 80%;
+                height: 60px;
+                background: #f2f2f2;
+                margin-top: 10px;
+                display: flex;
+                align-items: center;
+                .compliance-one{
+                  display:inline-block;
+                  margin-left:40px;
+                }
+                .move-up{
+                    margin-left:40px;
+                    &.two{
+                        cursor:pointer;
+                    }
+                }
+                .move-down{
+                    margin-left:40px;
+                    &.two{
+                      cursor:pointer;  
+                    }
+                }
+                .delete-item{
+                    margin-left:40px;
+                    &.two{
+                       cursor:pointer;   
+                    }
+                }
+            }
+
+        }
+    }
+
 }
 
-.prdName {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: #265ea2;
-  color: #fff;
-  margin: auto 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 10px;
-}
 
-.approvalContainer {
-  width: 80%;
-  height: 60px;
-  background: #f2f2f2;
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .verticalLine {
   width: 1px;
   height: 40px;
   background: #fff;
   margin-left: 40px;
-}
-
-.forbid {
 }
 </style>

@@ -1,30 +1,26 @@
 <!--灰名单-->
 <template>
   <section class="page gray-list">
-    <span class="form-title">灰名单</span>
-    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-    <i-button class="open-search" @click="openSearch">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">收起</span>
-      <span>高级搜索</span>
-    </i-button>
-    <div class="command">
-      <div class="command-item dayin">
-        <svg-icon iconClass="dayin"></svg-icon>
-        <span>打印</span>
+       <page-header title="灰名单">
+
+       </page-header>
+      <div class="seek-day">
+            <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+            <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+            <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+            <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+            <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+            <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+            <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+            <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
+            <i-button class="open-search" @click="openSearch">
+            <span v-if="!searchOptions">展开</span>
+            <span v-if="searchOptions">收起</span>
+            <span>高级搜索</span>
+            </i-button>
       </div>
-      <div class="command-item daochu">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span>导出</span>
-      </div>
-    </div>
+  
+    
     <i-row class="data-form" v-if="searchOptions">
       <i-input class="data-form-item search-input" placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>
       <span class="data-form-item date">日期：</span>
@@ -392,6 +388,9 @@ export default class GrayList extends Page {
 
 <style lang="less" scoped>
   .page.gray-list{
+    .seek-day{
+        margin-top: 10px;
+    }
     .open-search {
       color: #265EA2
     }

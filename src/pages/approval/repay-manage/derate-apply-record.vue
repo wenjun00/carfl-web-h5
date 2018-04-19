@@ -1,26 +1,25 @@
 <!--减免申请记录-->
 <template>
   <section class="page derate-apply-record">
-    <span class="form-title">减免申请记录</span>
-    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-    <i-button @click="openSearch" class="open-search">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">收起</span>
-      <span>高级搜索</span>
-    </i-button>
-    <div class="command">
-      <div class="command-item">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span class="command-item daochu">导出</span>
-      </div>
+        <page-header title="减免申请记录" hiddenPrint>
+
+        </page-header>
+    <div class="seek-day">
+         <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+        <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+        <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+        <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+        <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+        <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+        <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+        <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
+        <i-button @click="openSearch" class="open-search">
+        <span v-if="!searchOptions">展开</span>
+        <span v-if="searchOptions">收起</span>
+        <span>高级搜索</span>
+        </i-button>
     </div>
+ 
     <i-row class="data-form" v-if="searchOptions">
       <i-input class="data-form-item search-input" v-model="derateModel.orderInfo"
                placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
@@ -320,6 +319,9 @@
 </script>
 <style lang="less" scoped>
   .page.derate-apply-record {
+    .seek-day{
+        margin-top: 10px;
+    }
     .open-search {
       color: #265EA2;
     }
