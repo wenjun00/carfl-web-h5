@@ -210,15 +210,15 @@
                 <i-date-picker placeholder="请选择" v-model="passModel.contractDate"></i-date-picker>
               </i-form-item>
             </i-col>
-            <i-col>
-              <i-form-item label="合同生效类型">
-                <i-radio-group v-model="passModel.effectiveType">
-                  <i-radio v-for="{value,label} in $dict.getDictData('0431')" :key="value" :label="value"
-                           :value="value">{{label}}
-                  </i-radio>
-                </i-radio-group>
-              </i-form-item>
-            </i-col>
+            <!--<i-col>-->
+              <!--<i-form-item label="合同生效类型">-->
+                <!--<i-radio-group v-model="passModel.effectiveType">-->
+                  <!--<i-radio v-for="{value,label} in $dict.getDictData('0431')" :key="value" :label="value"-->
+                           <!--:value="value">{{label}}-->
+                  <!--</i-radio>-->
+                <!--</i-radio-group>-->
+              <!--</i-form-item>-->
+            <!--</i-col>-->
           </i-row>
           <i-row>
             <i-col>
@@ -293,7 +293,7 @@
       remark: "",
       orderId: "",
       contractDate: "",
-      effectiveType: 1160
+      // effectiveType: 1160
     };
     private myOrderModel: any = {
       startTime: "",
@@ -609,7 +609,7 @@
       this.meetConditionApproval = false;
       this.passModel.remark = ''
       this.passModel.contractDate = ''
-      this.passModel.effectiveType = 1160
+      // this.passModel.effectiveType = 1160
     }
 
     /**
@@ -629,7 +629,7 @@
           this.getMyOrderList();
           this.passModel.remark = ''
           this.passModel.contractDate = ''
-          this.passModel.effectiveType = 1160
+          // this.passModel.effectiveType = 1160
         },
         ({msg}) => {
           this.$Message.error(msg);
