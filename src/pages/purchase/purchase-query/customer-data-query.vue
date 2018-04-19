@@ -269,11 +269,11 @@ export default class CustomerDataQuery extends Page {
     let uploadTheMaterial: any = this.$refs['upload-the-material']
     let MaterialData: any = uploadTheMaterial.dataList.map(v => {
       return {
-        id: v.id,
+        id: v.upid,
         materialUrl: v.url,
         uploadName: v.name,
         personalId:v.personalId,
-        materialType: v.type,
+        materialType: v.typeup,
         operateTime: v.createTime,
         dataSize: v.size
       }

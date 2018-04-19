@@ -29,7 +29,7 @@
             <span style="line-height:36px;">文件类型</span>
           </i-col>
           <i-col span="6">
-            <i-select v-model="model1">
+            <i-select v-model="model1" @on-change="filetype">
               <i-option v-for="item in cityList" :label="item.name" :value="item.id" :key="item.id"></i-option>
             </i-select>
           </i-col>
@@ -86,13 +86,18 @@
 
     private openUpload: Boolean = false;
     private previewModel: Boolean = false;
+    private typeup:any='';
     private url: any = "";
     /**
      * 重置
      */
     resetfileList(){
     this.dataList=[]
-    }
+}
+filetype(){
+    this.typeup=this.cityList.find(v=>v.id===this.model1).type
+    
+}
     /**
      * 反显
      */
@@ -116,7 +121,8 @@
         data.map(v=>{
             v.name=v.uploadName,
             v.url=v.materialUrl,
-            v.type=v.materialType
+            v.typeup=v.materialType,
+            v.upid=v.id
         })
         this.dataList=data
     }
@@ -155,7 +161,9 @@
             id: item.response.id,
             size: item.size,
             status: item.status,
-            createTime: item.response.createTime
+            createTime: item.response.createTime,
+            typeup:this.typeup
+
           })
         }
       });
