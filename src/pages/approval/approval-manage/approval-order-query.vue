@@ -1,9 +1,7 @@
 <!--订单查询-->
 <template>
     <section class="page approval-order-query">
-        <page-header title="订单查询">
-
-        </page-header>
+        <page-header title="订单查询"></page-header>
         <div class="seek-day">
             <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
             <i-button type="text" @click="getTimeSearch(1)">今日</i-button>

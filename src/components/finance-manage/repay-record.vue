@@ -1,7 +1,9 @@
 <!--划扣记录-->
 <template>
   <section class="component repay-record">
-    <div style="line-height:40px;font-size:14px;height:40px"><span>客户姓名：{{repayObj.customerName}}</span><span style="float:right;">出账客户号：{{repayObj.clientNumber}}</span></div>
+    <div class="modal-item"><span>客户姓名：{{repayObj.customerName}}</span>
+      <span class="modal-item-kehuhao">出账客户号：{{repayObj.clientNumber}}</span>
+    </div>
     <i-table ref="table" class="i-table" :columns="columns1" :data="data1" stripe size="small"></i-table>
   </section>
 </template>
@@ -20,6 +22,7 @@
   import {
     FilterService
   } from "~/utils/filter.service"
+
   @Component({
     components: {
       DataBox,
@@ -33,7 +36,8 @@
       clientNumber: ''
     };
     private columns1: any;
-    private data1: Array < Object >= [];
+    private data1: Array<Object> = [];
+
     refresh(row, obj) {
       this.paymentScheduleService.getPaymentRecordDetail({
         personalId: row.personalId,
@@ -44,18 +48,19 @@
         this.repayObj.clientNumber = data.clientNumber
         this.data1 = data.paymentRecordModels
       }, ({
-        msg
-      }) => {
+            msg
+          }) => {
         this.$Message.error(msg)
       })
     }
+
     created() {
       this.columns1 = [{
-          title: '期数',
-          type: 'index',
-          width: 60,
-          align: 'center'
-        },
+        title: '期数',
+        type: 'index',
+        width: 60,
+        align: 'center'
+      },
         {
           title: '还款日期',
           width: 120,
@@ -74,7 +79,7 @@
           width: 165,
           key: 'payChannel',
           align: 'center',
-          render: (h, { row, column, index }) => {
+          render: (h, {row, column, index}) => {
             return h("span", {}, this.$dict.getDictName(row.collectMoneyChannel));
           }
         },
@@ -82,7 +87,7 @@
           title: '还款方式',
           key: 'payWay',
           align: 'center',
-          render: (h, { row, column, index }) => {
+          render: (h, {row, column, index}) => {
             return h("span", {}, this.$dict.getDictName(row.collectMoneyMethod));
           }
         },
@@ -120,7 +125,19 @@
 
 </script>
 
-<style>
+<style lang="less" scoped>
+  .component.repay-record {
 
+    .modal-item {
+      line-height: 40px;
+      font-size: 14px;
+      height: 40px
+    }
+
+    .modal-item-kehuhao {
+      float: right;
+    }
+
+  }
 
 </style>

@@ -112,6 +112,7 @@ export default class CustomerDataQuery extends Page {
   @Dependencies(PersonalService) private personalService: PersonalService
 
   private searchOptions: Boolean = false
+  private rowData:any=''
   private openUpload: Boolean = false
   private uploadList: Boolean = false
   private customName: String = ''
@@ -268,18 +269,20 @@ export default class CustomerDataQuery extends Page {
     let uploadTheMaterial: any = this.$refs['upload-the-material']
     let MaterialData: any = uploadTheMaterial.dataList.map(v => {
       return {
-        id: v.id,
+        id: v.upid,
         materialUrl: v.url,
         uploadName: v.name,
         personalId:v.personalId,
-        materialType: v.type,
+        materialType: v.typeup,
         operateTime: v.createTime,
         dataSize: v.size
       }
     })
-    this.personalService.uploadPersonalApproveFile({
-        personalDataModel: MaterialData
-    }).subscribe(
+    let uploadData:any={
+        personalDataModel:MaterialData,
+        personalId:this.rowData.personalId
+    }
+    this.personalService.uploadPersonalApproveFile(uploadData).subscribe(
       data => {
         this.openUpload = false
         this.$Message.success('上传成功！')
@@ -347,6 +350,7 @@ export default class CustomerDataQuery extends Page {
    * 补充资料
    */
   addFiles(row) {
+      this.rowData=row
     let _uploadthematerial: any = this.$refs['upload-the-material']
     _uploadthematerial.resetfileList()
     this.openUpload = true
