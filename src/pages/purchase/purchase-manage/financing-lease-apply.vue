@@ -11,13 +11,13 @@
         <i-row :gutter="20">
           <i-col span="10">
             <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" :maxlength="18" v-model="customerModel.idCard" autofocus @on-change="showTab" @on-blur="checkcustomerinfo">
+              <i-input type="text" :maxlength="18" v-model="customerModel.idCard" autofocus @on-change="onCheckHistoryOrder">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="10">
             <i-form-item label="客户姓名" prop="name">
-              <i-input type="text" :maxlength="13" v-model="customerModel.name" @on-blur="ReverseData">
+              <i-input type="text" :maxlength="13" v-model="customerModel.name">
               </i-input>
             </i-form-item>
           </i-col>
@@ -25,7 +25,7 @@
         <i-row :gutter="20">
           <i-col span="10">
             <i-form-item label="客户电话" prop="mobileMain">
-              <i-input type="text" v-model="customerModel.mobileMain" @on-blur="ReverseData">
+              <i-input type="text" v-model="customerModel.mobileMain">
               </i-input>
             </i-form-item>
           </i-col>
@@ -39,8 +39,8 @@
     </div>
     <!-- 搜索表单-end -->
 
-    <!-- 资料选项卡-start -->
-    <i-tabs type="card" v-show="!disabledStatus" v-model="materialTabs" class="material-tabs">
+    <!-- 资料申请选项卡-start -->
+    <i-tabs type="card" v-show="!showApplicationTab" v-model="materialTabs" class="application-tabs">
       <i-tab-pane label="选购资料" name="choose-buy-materials">
         <choose-buy-materials ref="choose-buy-materials" v-show="materialTabs==='choose-buy-materials'"></choose-buy-materials>
       </i-tab-pane>
@@ -93,16 +93,16 @@ import CustomerJobMessage from "~/components/purchase-manage/customer-job-messag
 import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
 import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue";
 import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue";
-import SvgIcon from "~/components/common/svg-icon.vue";
 import HistoricalRecord from "~/components/purchase-manage/historical-record.vue";
 import SalesmanName from "~/components/purchase-manage/salesman-name.tsx.vue";
-
 import { PersonalService } from "~/services/manage-service/personal.service";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { State, Mutation, namespace } from "vuex-class";
 import { Layout } from "~/core/decorator";
 import { CityService } from "~/utils/city.service";
 import { FilterService } from "~/utils/filter.service";
+import { Form } from "iview";
+
 const ModuleState = namespace("purchase", State);
 
 @Layout("workspace")
@@ -114,7 +114,6 @@ const ModuleState = namespace("purchase", State);
     CustomerOrigin,
     UploadTheMaterial,
     CustomerContacts,
-    SvgIcon,
     HistoricalRecord,
     SalesmanName
   }
@@ -125,7 +124,29 @@ export default class FinancingLeaseApply extends Page {
   private productOrderService: ProductOrderService;
   @ModuleState collectiondata;
 
-  private customerRule: Object = {
+  private showApplicationTab = false; // 申请选项卡显示状态
+  private historyId = ""; // 上次查询的身份证号
+  private addCar: Boolean = false;
+  private materialTabs: String = "choose-buy-materials";
+  private historicalModal: Boolean = false;
+  private historicalDataset: any = [];
+  private PersonalData: any = [];
+  private addcarData: any = [];
+  private type: Boolean = false;
+  private orderStatus: any = "";
+  private salesmanModal: Boolean = false;
+  private spinShow: Boolean = false;
+
+  // 客户信息表单数据
+  private customerModel: any = {
+    idCard: "", // 证件号码
+    name: "", // 客户姓名
+    mobileMain: "", // 客户电话
+    salesmanName: "" // 归属业务员
+  };
+
+  // 客户信息表单校验
+  private customerRule: any = {
     idCard: [
       {
         required: true,
@@ -156,24 +177,7 @@ export default class FinancingLeaseApply extends Page {
       }
     ]
   };
-  private customerModel: any = {
-    idCard: "", // 证件号码
-    name: "", // 客户姓名
-    mobileMain: "", // 客户电话
-    salesmanName: "" // 归属业务员
-  };
-  private addCar: Boolean = false;
-  private disabledStatus: String = ""; // 子组件中输入框禁用flag
-  private materialTabs: String = "choose-buy-materials";
-  private historicalModal: Boolean = false;
-  private historicalDataset: any = [];
-  private PersonalData: any = [];
-  private addcarData: any = [];
-  private type: Boolean = false;
-  private orderStatus: any = "";
-  private salesmanModal: Boolean = false;
-  private spinShow: Boolean = false;
-  // private productId: any;
+
   mounted() {
     if (
       this.$store.state.pageList.find(v => v.resoname === "融资租赁申请").flag
@@ -223,7 +227,6 @@ export default class FinancingLeaseApply extends Page {
     });
   }
 
-
   ReverseData() {
     let customermodel: any = this.$refs["customer-materials"];
     customermodel.getinfo(this.customerModel);
@@ -233,6 +236,72 @@ export default class FinancingLeaseApply extends Page {
     let choose: any = this.$refs["choose-buy-materials"];
     choose.closeProductForm();
   }
+
+  /**
+   * 检测身份证信息
+   */
+  async checkIdCardValid() {
+    if (this.customerModel.idCard.length < 18) {
+      return;
+    }
+    // 客户表单
+    let customerForm = this.$refs["customer-form"] as Form;
+
+    // 验证身份证信息
+    let result = await new Promise((reslove, reject) => {
+      customerForm.validateField("idCard", error => {
+        return error ? reject() : reslove(true);
+      });
+    });
+
+    // TODO: 18个1仅用于测试F
+    return result || this.customerModel.idCard === "1".repeat(18);
+  }
+
+  /**
+   * 检测历史订单
+   */
+  async onCheckHistoryOrder() {
+    // 检测身份证
+    if (!await this.checkIdCardValid()) {
+      return;
+    }
+
+    // 查询历史数据
+    this.personalService
+      .getCustomerHistoryFinanceInfo({
+        idCard: this.customerModel.idCard
+      })
+      .subscribe(
+        data => {
+          if (data.length) {
+            return this.showHistoryOrder(data);
+          }
+
+          // 判断是否需要重置信息
+          if (this.historyId !== this.customerModel.idCard) {
+            this.$Modal.confirm({
+              title: "提醒",
+              content: "证件号码更新,是否要重置申请信息?",
+              onOk: this.resetApplicationTab
+            });
+          }
+
+          // 更新历史查询身份证号
+          this.historyId = this.customerModel.idCard;
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+
+  /**
+   * 显示历史订单
+   */
+  showHistoryOrder(data) {}
+
+  resetApplicationTab() {}
 
   /**
    * 根据客户三项查询历史订单
@@ -269,16 +338,9 @@ export default class FinancingLeaseApply extends Page {
           .subscribe(
             data => {
               this.historicalDataset = data;
-              console.log(data, "data");
               if (this.historicalDataset.length) {
                 this.historicalModal = true;
               }
-              //    else {
-              //     this.customerModel.name = ''
-              //     this.customerModel.mobileMain = ''
-              //     this.customerModel.salesmanName = ''
-              //     this.resethistory()
-              //   }
             },
             ({ msg }) => {
               this.$Message.error(msg);
@@ -355,7 +417,7 @@ export default class FinancingLeaseApply extends Page {
     //   let jobform: any = _customerjobmessage.$refs['company-form']
     //   jobform.resetFields()
   }
-  created() {}
+
   /**
    * 添加新申请
    */
@@ -367,7 +429,7 @@ export default class FinancingLeaseApply extends Page {
         let resetData: any = this.$refs["customer-form"];
         resetData.resetFields();
         this.resethistory();
-        this.disabledStatus = "";
+        this.show = "";
       },
       onCancel: () => {
         this.$Message.info("取消成功！");
@@ -751,6 +813,7 @@ export default class FinancingLeaseApply extends Page {
       }
     });
   }
+
   showTab() {
     let pat: any = /(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$)|(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)/;
     if (
