@@ -1,19 +1,21 @@
 <!--付款记录查询-->
 <template>
   <section class="page payment-record-query">
-    <span class="form-title title">付款记录查询</span>
-    <span>申请日期：</span>
-    <i-date-picker class="data-form-item" v-model="paymentModel.startTime" type="date" placeholder="yyy/mm/dd"></i-date-picker>
-    <i-date-picker class="data-form-item" v-model="paymentModel.endTime" type="date" placeholder="yyy/mm/dd"></i-date-picker>
-    <i-input class="data-form-item" placeholder="请录入订单编号" v-model="paymentModel.orderNumber"></i-input>
-    <i-select placeholder="全部付款类型" clearable class="data-form-item"v-model="paymentModel.refundType">
-      <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
-    </i-select>
-    <i-select placeholder="申请状态" clearable class="data-form-item" v-model="paymentModel.applicationStatus">
-      <i-option v-for="{value,label} in $dict.getDictData('0415')" :key="value" :label="label" :value="value"></i-option>
-    </i-select>
-    <i-checkbox class="command-item" v-model="status">包含已归档订单</i-checkbox>
-    <i-button class="blueButton command-item" @click="searchPaymentrecord">搜索</i-button>
+    <page-header title="付款记录查询" hiddenPrint hiddenExport></page-header>
+    <div class="data-form">
+      <span>申请日期：</span>
+      <i-date-picker class="data-form-item" v-model="paymentModel.startTime" type="date" placeholder="yyy/mm/dd"></i-date-picker>
+      <i-date-picker class="data-form-item" v-model="paymentModel.endTime" type="date" placeholder="yyy/mm/dd"></i-date-picker>
+      <i-input class="data-form-item" placeholder="请录入订单编号" v-model="paymentModel.orderNumber"></i-input>
+      <i-select placeholder="全部付款类型" clearable class="data-form-item" v-model="paymentModel.refundType">
+        <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
+      </i-select>
+      <i-select placeholder="申请状态" clearable class="data-form-item" v-model="paymentModel.applicationStatus">
+        <i-option v-for="{value,label} in $dict.getDictData('0415')" :key="value" :label="label" :value="value"></i-option>
+      </i-select>
+      <i-checkbox class="command-item" v-model="status">包含已归档订单</i-checkbox>
+      <i-button class="blueButton command-item" @click="searchPaymentrecord">搜索</i-button>
+    </div>
     <data-box :id="455" :columns="columns1" :data="data1" :page="pageService" @onPageChange="searchPaymentrecord"></data-box>
     <!--Model-->
 
@@ -66,9 +68,7 @@
     @Dependencies(PageService) private pageService: PageService;
 
     private columns1: any;
-    private columns2: any;
     private data1: Array < Object > = [];
-    private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private checkApplyModal: Boolean = false;
     private status: Boolean = false;
@@ -88,12 +88,11 @@
         render: h => h(AddApply)
       })
     }
-    activated(){
+    activated() {
       this.searchPaymentrecord()
     }
     created() {
       this.searchPaymentrecord()
-      this.columns2 = [{}]
       this.columns1 = [{
         title: '操作',
         align: 'center',
@@ -182,29 +181,6 @@
         align: 'center',
         editable: true,
       }]
-      this.data2 = [{
-        columnsName: '申请类型'
-      }, {
-        columnsName: '环节'
-      }, {
-        columnsName: '状态'
-      }, {
-        columnsName: '订单编号'
-      }, {
-        columnsName: '订单创建时间'
-      }, {
-        columnsName: '收款金额'
-      }, {
-        columnsName: '收款类型'
-      }, {
-        columnsName: '产品名称'
-      }, {
-        columnsName: '客户姓名'
-      }, {
-        columnsName: '证件号码'
-      }, {
-        columnsName: '联系号码'
-      }]
     }
     searchPaymentrecord() {
       if (this.status) {
@@ -251,18 +227,22 @@
 </script>
 
 <style lang="less" scoped>
-.page.payment-record-query{
-    .title{
-        margin-right: 10px;
+  .page.payment-record-query {
+    .title {
+      margin-right: 10px;
     }
-    .data-form-item{
+    .data-form {
+      margin-top: 10px;
+      margin-left: 10px;
+      .data-form-item {
         display: inline-block;
         width: 10%;
         margin-right: 10px;
+      }
     }
-    .command-item{
-        margin-left: 10px;
+    .command-item {
+      margin-left: 10px;
     }
+  }
 
-}
 </style>

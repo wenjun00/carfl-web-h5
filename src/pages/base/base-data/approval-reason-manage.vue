@@ -1,8 +1,11 @@
 <!--审批原因管理-->
 <template>
   <section class="page approval-reason-manage">
+      <page-header title="审批原因管理" hiddenPrint hiddenExport>
+          <command-button label="导入" icon="daoru" @click="enterInto"></command-button>
+          <command-button label="模板下载" icon="xiazai" @click="downloadTemplate"></command-button>
+      </page-header>
     <i-row class="data-form">
-      <span class="span">审批原因管理</span>
       <span>类型：</span>
       <i-select class="data-form-item" placeholder="全部" v-model="appReasonModel.type" clearable @on-change="selectType">
         <i-option label="退回" :value="374" :key="374"></i-option>
@@ -22,17 +25,6 @@
       <i-input class="data-form-item" v-model="appReasonModel.detail"></i-input>
       <i-button class="blueButton" @click="seach">搜索</i-button>
       <i-button class="blueButton" @click="resetSeach">重置</i-button>
-
-      <div class="command">
-        <div class="command-in">
-          <svg-icon iconClass="daoru"></svg-icon>
-          <span @click="enterInto">导入</span>
-        </div>
-        <div class="command-in" @click="downloadTemplate">
-          <svg-icon iconClass="xiazai"></svg-icon>
-          <span>模版下载</span>
-        </div>
-      </div>
     </i-row>
     <data-box :id="109" :columns="columns" :data="AppRoveReasonList" @onPageChange="seach" :page="pageService"></data-box>
     <div class="submitBar">

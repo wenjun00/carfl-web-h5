@@ -1,41 +1,33 @@
 <!--提前结清-->
 <template>
   <section class="page early-pay">
-    <span class="form-title">提前结清</span>
-    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-    <i-button @click="openSearch" class="form-button">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">收起</span>
-      <span>高级搜索</span>
-    </i-button>
-    <div class="importBtn">
-      <div class="importBtn-item" v-auth="408">
-        <svg-icon class="importBtn-item-one" iconClass="dayin"></svg-icon>
-        <span class="importBtn-item-two">打印</span>
-      </div>
-      <div class="importBtn-item" v-auth="409">
-        <svg-icon iconClass="daochu" class="importBtn-item-one"></svg-icon>
-        <span class="importBtn-item-two">导出</span>
-      </div>
+    <page-header title="提前结清"></page-header>
+    <div class="data-form">
+      <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+      <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+      <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+      <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+      <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+      <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+      <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+      <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
+      <i-button @click="openSearch" class="form-button">
+        <span v-if="!searchOptions">展开</span>
+        <span v-if="searchOptions">收起</span>
+        <span>高级搜索</span>
+      </i-button>
+      <i-row v-if="searchOptions" class="second-data">
+        <i-input class="second-input" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
+        <i-select class="second-select" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
+          <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
+        </i-select>
+        <i-select class="second-select" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
+          <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+        </i-select>
+        <i-button class="blueButton" @click="getEarlyPayList">搜索</i-button>
+      </i-row>
     </div>
-    <i-row v-if="searchOptions" class="second-data">
-      <i-input class="second-input" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
-      <i-select class="second-select" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
-      <i-select class="second-select" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
-      <i-button  class="blueButton" @click="getEarlyPayList">搜索</i-button>
-    </i-row>
-    <data-box :id="420" :columns="columns1" :data="customerRepayList"  @onPageChange="getEarlyPayList" :page="pageService"></data-box>
+    <data-box :id="420" :columns="columns1" :data="customerRepayList" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
 
     <template>
       <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认结清" width="900">
@@ -147,7 +139,7 @@
     mounted() {
       this.getEarlyPayList();
     }
-    activated () {
+    activated() {
       this.getEarlyPayList();
     }
     visibleChange() {
@@ -235,8 +227,7 @@
       })
     }
     created() {
-      this.columns1 = [
-        {
+      this.columns1 = [{
           title: "操作",
           width: 210,
           align: "center",
@@ -246,21 +237,21 @@
             column,
             index
           }) => {
-            let arr = (row.approvalStatus === 108)?[h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                on: {
-                  click: () => {
-                    this.confirmRepaymentModal = true
-                    let _repayment: any = this.$refs['confirm-early-pay']
-                    _repayment.refresh(row)
-                  }
-                },
-                style: {
-                  color: '#265EA2'
+            let arr = (row.approvalStatus === 108) ? [h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.confirmRepaymentModal = true
+                  let _repayment: any = this.$refs['confirm-early-pay']
+                  _repayment.refresh(row)
                 }
-              }, '确认结清')] : [
+              },
+              style: {
+                color: '#265EA2'
+              }
+            }, '确认结清')] : [
               h('i-button', {
                 props: {
                   type: 'text'
@@ -275,22 +266,23 @@
                 style: {
                   color: '#265EA2'
                 }
-              }, '划扣记录')]
-              arr.push(h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                on: {
-                  click: () => {
-                    this.repayInfoModal = true
-                    let _repay: any = this.$refs['repay-info']
-                    _repay.refresh(row)
-                  }
-                },
-                style: {
-                  color: '#265EA2'
+              }, '划扣记录')
+            ]
+            arr.push(h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.repayInfoModal = true
+                  let _repay: any = this.$refs['repay-info']
+                  _repay.refresh(row)
                 }
-              }, '还款详情'))
+              },
+              style: {
+                color: '#265EA2'
+              }
+            }, '还款详情'))
             return h('div', arr)
           }
         },
@@ -453,40 +445,44 @@
 </script>
 
 <style lang="less">
-  .page.early-pay{
-    .form-button{
-      color:#265EA2
+  .page.early-pay {
+    .data-form {
+      margin-top: 10px;
     }
-    .importBtn{
+    .form-button {
+      color: #265EA2
+    }
+    .importBtn {
       float: right;
       margin-right: 13px;
       margin-top: 10px;
-      .importBtn-item{
-        cursor:pointer;
-        display:inline-block;
-        margin-left:10px;
-        color:#3367A7;
-        .importBtn-item-one{
-          font-size:18px;
+      .importBtn-item {
+        cursor: pointer;
+        display: inline-block;
+        margin-left: 10px;
+        color: #3367A7;
+        .importBtn-item-one {
+          font-size: 18px;
         }
-        .importBtn-item-two{
-          font-size:12px;
+        .importBtn-item-two {
+          font-size: 12px;
         }
       }
     }
-    .second-data{
-      margin:6px;
-      position:relative;
-      right:16px;
-      .second-input{
-        display:inline-block;
-        margin-left:20px;
-        width:16%
+    .second-data {
+      margin: 6px;
+      position: relative;
+      right: 16px;
+      .second-input {
+        display: inline-block;
+        margin-left: 20px;
+        width: 16%
       }
-      .second-select{
-        margin-left:10px;
-        width:10%
+      .second-select {
+        margin-left: 10px;
+        width: 10%
       }
     }
   }
+
 </style>

@@ -1,37 +1,29 @@
 <!--付款-->
 <template>
   <section class="page payment">
-    <span class="form-title">付款</span>
-    <i-button type="text" @click="getTimeSearch(0)" v-auth="407">昨日</i-button>
-    <i-button type="text" @click="getTimeSearch(1)" v-auth="407">今日</i-button>
-    <i-button type="text" @click="getTimeSearch(2)" v-auth="407">本周</i-button>
-    <i-button type="text" @click="getTimeSearch(3)" v-auth="407">本月</i-button>
-    <i-button type="text" @click="getTimeSearch(4)" v-auth="407">上月</i-button>
-    <i-button type="text" @click="getTimeSearch(5)" v-auth="407">最近三月</i-button>
-    <i-button type="text" @click="getTimeSearch(6)" v-auth="407">本季度</i-button>
-    <i-button type="text" @click="getTimeSearch(7)" v-auth="407">本年</i-button>
-    <i-button @click="openSearch" class="form-button" v-auth="406">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">收起</span>
-      <span>高级搜索</span>
-    </i-button>
-    <div class="importBtn">
-      <div v-auth="408" class="importBtn-item">
-        <svg-icon iconClass="dayin" class="importBtn-item-one"></svg-icon>
-        <span class="importBtn-item-two">打印</span>
-      </div>
-      <div class="importBtn-item" v-auth="409">
-        <svg-icon iconClass="daochu" class="importBtn-item-one"></svg-icon>
-        <span class="importBtn-item-two">导出</span>
-      </div>
+    <page-header title="付款"></page-header>
+    <div class="data-form">
+      <i-button type="text" @click="getTimeSearch(0)" v-auth="407">昨日</i-button>
+      <i-button type="text" @click="getTimeSearch(1)" v-auth="407">今日</i-button>
+      <i-button type="text" @click="getTimeSearch(2)" v-auth="407">本周</i-button>
+      <i-button type="text" @click="getTimeSearch(3)" v-auth="407">本月</i-button>
+      <i-button type="text" @click="getTimeSearch(4)" v-auth="407">上月</i-button>
+      <i-button type="text" @click="getTimeSearch(5)" v-auth="407">最近三月</i-button>
+      <i-button type="text" @click="getTimeSearch(6)" v-auth="407">本季度</i-button>
+      <i-button type="text" @click="getTimeSearch(7)" v-auth="407">本年</i-button>
+      <i-button @click="openSearch" class="form-button" v-auth="406">
+        <span v-if="!searchOptions">展开</span>
+        <span v-if="searchOptions">收起</span>
+        <span>高级搜索</span>
+      </i-button>
+      <i-row v-if="searchOptions" class="second-data">
+        <i-input class="form-input" v-model="approvalModel.refundName" placeholder="请录入付款账户名查询"></i-input>
+        <span class="title">日期：</span>
+        <i-date-picker type="date" class="title-item" v-model="approvalModel.startTime"></i-date-picker> ~
+        <i-date-picker type="date" class="title-item" v-model="approvalModel.endTime"></i-date-picker>
+        <i-button @click="getOrderQuery" class="blueButton">搜索</i-button>
+      </i-row>
     </div>
-    <i-row v-if="searchOptions" class="second-data">
-      <i-input class="form-input" v-model="approvalModel.refundName" placeholder="请录入付款账户名查询"></i-input>
-      <span class="title">日期：</span>
-      <i-date-picker type="date" class="title-item" v-model="approvalModel.startTime"></i-date-picker> ~
-      <i-date-picker type="date" class="title-item" v-model="approvalModel.endTime"></i-date-picker>
-      <i-button @click="getOrderQuery" class="blueButton">搜索</i-button>
-    </i-row>
     <data-box :id="405" :columns="columns1" :data="paymentData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
 
     <template>
@@ -104,7 +96,9 @@
     }
     sendBack() {
       let _repayment: any = this.$refs['confirm-pay']
-      this.refundApplicationService.returnRefundApplication({refundId:_repayment.rowObj.refundApplicationId}).subscribe(data => {
+      this.refundApplicationService.returnRefundApplication({
+        refundId: _repayment.rowObj.refundApplicationId
+      }).subscribe(data => {
         this.$Message.info('操作成功！')
         this.confirmGatherModal = false
         this.pageService.reset()
@@ -167,8 +161,7 @@
     }
     created() {
       this.getOrderQuery()
-      this.columns1 = [
-        {
+      this.columns1 = [{
           title: "操作",
           width: 120,
           align: "center",
@@ -307,49 +300,54 @@
 </script>
 
 <style lang="less">
-  .page.payment{
-    .form-button{
-      color:#265EA2
+  .page.payment {
+    .data-form {
+      margin-top: 10px;
+    }
+    .form-button {
+      color: #265EA2
     }
     .importBtn {
       float: right;
       margin-right: 13px;
       margin-top: 10px;
-      .importBtn-item{
-        cursor:pointer;
-        display:inline-block;
-        margin-left:10px;
-        color:#3367A7;
-        .importBtn-item-one{
-          font-size:18px;
+      .importBtn-item {
+        cursor: pointer;
+        display: inline-block;
+        margin-left: 10px;
+        color: #3367A7;
+        .importBtn-item-one {
+          font-size: 18px;
         }
-        .importBtn-item-two{
-          font-size:12px;
+        .importBtn-item-two {
+          font-size: 12px;
         }
       }
     }
-    .second-data{
-      margin:6px;
-      position:relative;
-      right:16px;
-      .form-input{
-        display:inline-block;
-        width:18%;
-        margin-left:20px;
+    .second-data {
+      margin: 6px;
+      position: relative;
+      right: 16px;
+      .form-input {
+        display: inline-block;
+        width: 18%;
+        margin-left: 20px;
       }
-      .title{
-        margin-left:10px;
+      .title {
+        margin-left: 10px;
       }
-      .title-item{
-        display:inline-block;
-        width:10%
+      .title-item {
+        display: inline-block;
+        width: 10%
       }
     }
   }
+  
   .confirmGather {
     .ivu-modal-body {
       height: 600px;
       overflow: auto;
     }
   }
+
 </style>

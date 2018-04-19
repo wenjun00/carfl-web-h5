@@ -1,44 +1,36 @@
 <!--客户还款-->
 <template>
   <section class="page early-withdraw">
-    <span class="form-title">提前收回</span>
-    <i-button type="text" @click="getTimeSearch(0)" v-auth="430">昨日</i-button>
-    <i-button type="text" @click="getTimeSearch(1)" v-auth="430">今日</i-button>
-    <i-button type="text" @click="getTimeSearch(2)" v-auth="430">本周</i-button>
-    <i-button type="text" @click="getTimeSearch(3)" v-auth="430">本月</i-button>
-    <i-button type="text" @click="getTimeSearch(4)" v-auth="430">上月</i-button>
-    <i-button type="text" @click="getTimeSearch(5)" v-auth="430">最近三月</i-button>
-    <i-button type="text" @click="getTimeSearch(6)" v-auth="430">本季度</i-button>
-    <i-button type="text" @click="getTimeSearch(7)" v-auth="430">本年</i-button>
-    <i-button @click="openSearch" class="form-button" v-auth="429">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">收起</span>
-      <span>高级搜索</span>
-    </i-button>
-    <div class="importBtn">
-      <div class="importBtn-item" v-auth="431">
-        <svg-icon class="importBtn-item-one" iconClass="dayin"></svg-icon>
-        <span class="importBtn-item-two">打印</span>
-      </div>
-      <div class="importBtn-item" v-auth="432">
-        <svg-icon iconClass="daochu" class="importBtn-item-one"></svg-icon>
-        <span class="importBtn-item-two">导出</span>
-      </div>
+    <page-header title="提前收回"></page-header>
+    <div class="data-form">
+      <i-button type="text" @click="getTimeSearch(0)" v-auth="430">昨日</i-button>
+      <i-button type="text" @click="getTimeSearch(1)" v-auth="430">今日</i-button>
+      <i-button type="text" @click="getTimeSearch(2)" v-auth="430">本周</i-button>
+      <i-button type="text" @click="getTimeSearch(3)" v-auth="430">本月</i-button>
+      <i-button type="text" @click="getTimeSearch(4)" v-auth="430">上月</i-button>
+      <i-button type="text" @click="getTimeSearch(5)" v-auth="430">最近三月</i-button>
+      <i-button type="text" @click="getTimeSearch(6)" v-auth="430">本季度</i-button>
+      <i-button type="text" @click="getTimeSearch(7)" v-auth="430">本年</i-button>
+      <i-button @click="openSearch" class="form-button" v-auth="429">
+        <span v-if="!searchOptions">展开</span>
+        <span v-if="searchOptions">收起</span>
+        <span>高级搜索</span>
+      </i-button>
+      <i-row v-if="searchOptions" class="second-data">
+        <i-input class="second-input" placeholder="请录入客户姓名\证件号码"></i-input>
+        <i-select class="second-select" placeholder="全部还款状态">
+          <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
+          <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
+        </i-select>
+        <i-select class="second-select" placeholder="全部结算通道">
+          <i-option value="汇付" key="汇付" label="汇付"></i-option>
+          <i-option value="富友" key="富友" label="富友"></i-option>
+          <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
+          <i-option value="现金" key="现金" label="现金"></i-option>
+        </i-select>
+        <i-button class="blueButton" @click="getEarlyPayList">搜索</i-button>
+      </i-row>
     </div>
-    <i-row v-if="searchOptions" class="second-data">
-      <i-input class="second-input" placeholder="请录入客户姓名\证件号码"></i-input>
-      <i-select class="second-select" placeholder="全部还款状态">
-        <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
-        <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
-      </i-select>
-      <i-select class="second-select" placeholder="全部结算通道">
-        <i-option value="汇付" key="汇付" label="汇付"></i-option>
-        <i-option value="富友" key="富友" label="富友"></i-option>
-        <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
-        <i-option value="现金" key="现金" label="现金"></i-option>
-      </i-select>
-      <i-button  class="blueButton" @click="getEarlyPayList">搜索</i-button>
-    </i-row>
     <data-box :id="428" :columns="columns1" :data="data1" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
 
     <!--确认收回-->
@@ -220,8 +212,7 @@
       })
     }
     created() {
-      this.columns1 = [
-        {
+      this.columns1 = [{
           title: "操作",
           width: 220,
           align: "center",
@@ -231,36 +222,36 @@
             column,
             index
           }) => {
-             let arr = (row.approvalStatus === 108)?[h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                on: {
-                  click: () => {
-                    this.confirmWithdrawModal = true
-                    let _repayment: any = this.$refs['confirm-withdraw']
-                    _repayment.refresh(row)
-                  }
-                },
-                style: {
-                  color: '#265EA2'
+            let arr = (row.approvalStatus === 108) ? [h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.confirmWithdrawModal = true
+                  let _repayment: any = this.$refs['confirm-withdraw']
+                  _repayment.refresh(row)
                 }
-              }, '确认收回')] : []
-              arr.push(h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                on: {
-                  click: () => {
-                    this.repayInfoModal = true
-                    let _repay: any = this.$refs['repay-info']
-                    _repay.refresh(row)
-                  }
-                },
-                style: {
-                  color: '#265EA2'
+              },
+              style: {
+                color: '#265EA2'
+              }
+            }, '确认收回')] : []
+            arr.push(h('i-button', {
+              props: {
+                type: 'text'
+              },
+              on: {
+                click: () => {
+                  this.repayInfoModal = true
+                  let _repay: any = this.$refs['repay-info']
+                  _repay.refresh(row)
                 }
-              }, '还款详情'))
+              },
+              style: {
+                color: '#265EA2'
+              }
+            }, '还款详情'))
             return h('div', arr)
           }
         },
@@ -395,42 +386,46 @@
 </script>
 
 <style lang="less">
-  .page.early-withdraw{
-    .form-button{
-      color:#265EA2
+  .page.early-withdraw {
+    .data-form {
+      margin-top: 10px;
     }
-    .importBtn{
+    .form-button {
+      color: #265EA2
+    }
+    .importBtn {
       float: right;
       margin-right: 13px;
       margin-top: 10px;
-      .importBtn-item{
-        cursor:pointer;
-        display:inline-block;
-        margin-left:10px;
-        color:#3367A7;
-        .importBtn-item-one{
-          font-size:18px;
+      .importBtn-item {
+        cursor: pointer;
+        display: inline-block;
+        margin-left: 10px;
+        color: #3367A7;
+        .importBtn-item-one {
+          font-size: 18px;
         }
-        .importBtn-item-two{
-          font-size:12px;
+        .importBtn-item-two {
+          font-size: 12px;
         }
       }
     }
-    .second-data{
-      margin:6px;
-      position:relative;
-      right:16px;
-      .second-input{
-        display:inline-block;
-        margin-left:20px;
-        width:16%
+    .second-data {
+      margin: 6px;
+      position: relative;
+      right: 16px;
+      .second-input {
+        display: inline-block;
+        margin-left: 20px;
+        width: 16%
       }
-      .second-select{
-        margin-left:10px;
-        width:10%
+      .second-select {
+        margin-left: 10px;
+        width: 10%
       }
     }
   }
+  
   .confirmWithdraw {
     .ivu-modal-body {
       height: 600px;

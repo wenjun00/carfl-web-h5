@@ -1,7 +1,7 @@
 <template>
   <section class="page customer-fodder-maintain">
+      <page-header title="导出模板管理" hiddenPrint hiddenExport></page-header>
     <i-row>
-      <span class="form-title">导出模版管理</span>
       <!--<i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>-->
       <i-row class="data-form">
         <i-col span="4">
@@ -204,6 +204,7 @@
 <style lang="less" scoped>
   .page.customer-fodder-maintain {
     .data-form {
+        margin-top: 10px;
       .data-form-item {
         width: 250px;
         height: 30px;

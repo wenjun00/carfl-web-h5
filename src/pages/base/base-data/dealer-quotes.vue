@@ -1,9 +1,9 @@
 <!--经销商报价-->
 <template>
   <section class="page dealer-quotes">
+      <page-header title="经销商报价" hiddenPrint></page-header>
     <div class="form">
       <div class="data-form">
-        <span class="form-title title">经销商报价</span>
         <span>经销商</span>
         <i-input class="data-form-item" placeholder="请输入经销商" v-model="busModal.quotationName"></i-input>
         <span>品牌</span>
@@ -21,10 +21,10 @@
           <!--<svg-icon iconClass="dayin"></svg-icon>-->
           <!--<span>打印</span>-->
         <!--</div>-->
-        <div class="command-item">
+        <!--<div class="command-item">
           <svg-icon iconClass="daochu"></svg-icon>
           <span>导出</span>
-        </div>
+        </div>-->
         <!--<div class="command-item">-->
           <!--<svg-icon iconClass="daoru"></svg-icon>-->
           <!--<span>导入</span>-->

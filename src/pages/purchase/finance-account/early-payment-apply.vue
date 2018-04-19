@@ -1,7 +1,8 @@
 <!--提前结清申请-->
 <template>
   <section class="page early-payment-apply special-input">
-    <div class="header">
+      <page-header title="提前结清申请" hiddenExport></page-header>
+    <!--<div class="header">
       <span class="form-title">提前结清申请</span>
       <div class="command">
         <div class="command-item">
@@ -9,8 +10,8 @@
           <span>打印</span>
         </div>
       </div>
-    </div>
-    <i-row type="flex">
+    </div>-->
+    <i-row type="flex" class="data-form">
       <i-col span="18">
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
           <i-col span="12">
@@ -419,6 +420,9 @@
 
 <style lang="less" scope>
   .page.early-payment-apply {
+      .data-form{
+          margin-top: 10px;
+      }
     .header {
       border-bottom: 1px solid #cccccc;
       margin-bottom: 20px;
