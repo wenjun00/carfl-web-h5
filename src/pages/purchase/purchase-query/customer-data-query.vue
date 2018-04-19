@@ -1,6 +1,5 @@
 <!--客户资料查询-->
 <template>
-<<<<<<< HEAD
     <section class="page customer-data-query">
         <span class="form-title">客户资料查询</span>
         <i-button type="text" @click="getOrderInfoByTime(0)">昨日</i-button>
@@ -38,43 +37,6 @@
             <i-modal v-model="openUpload" :transfer="false" width="700" title="补充资料">
                 <upload-the-material ref="upload-the-material"></upload-the-material>
                 <!--<i-button @click="uploadDialog">上传</i-button>
-=======
-  <section class="page customer-data-query">
-    <span class="form-title">客户资料查询</span>
-    <i-button type="text" @click="getOrderInfoByTime(0)">昨日</i-button>
-    <i-button type="text" @click="getOrderInfoByTime(1)">今日</i-button>
-    <i-button type="text" @click="getOrderInfoByTime(2)">本周</i-button>
-    <i-button type="text" @click="getOrderInfoByTime(3)">本月</i-button>
-    <i-button type="text" @click="getOrderInfoByTime(4)">上月</i-button>
-    <i-button type="text" @click="getOrderInfoByTime(5)">最近三月</i-button>
-    <i-button type="text" @click="getOrderInfoByTime(6)">本季度</i-button>
-    <i-button type="text" @click="getOrderInfoByTime(7)">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">收起</span>高级搜索</i-button>
-    <i-row v-if="searchOptions" style="margin:6px;">
-      <i-date-picker v-model="ordertransferModel.startTime" type="date" @on-change="startTimeChange" placeholder="起始日期(始)" style="width: 200px"></i-date-picker>
-      <i-date-picker v-model="ordertransferModel.endTime" type="date" @on-change="endTimeChange" placeholder="终止日期(止)" style="width: 200px"></i-date-picker>
-      <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" style="display:inline-block;width:20%;" placeholder="请输入订单编号/客户姓名/证件号码/联系号码查询"></i-input>
-      <i-button style="margin-left:10px;" class="blueButton" @click="refreshData">搜索</i-button>
-    </i-row>
-    <data-box :id="376" :columns="columns1" :data="customerDataSet" :page="pageService" @onPageChange="refreshData"></data-box>
-    <!--Model-->
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置">
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
-    <!--上传资料、补充资料-->
-    <template>
-      <i-modal v-model="openUpload" :transfer="false" width="700" title="补充资料">
-        <upload-the-material ref="upload-the-material"></upload-the-material>
-        <!--<i-button @click="uploadDialog">上传</i-button>
->>>>>>> 773ee2a7ff05a40515a7b62f13f33bba010712f1
         <div style="font-size:18px;font-weight:bold;margin-top:10px">
           <span>文件数量（3）</span>
           <div style="display:inline-block;float:right;">
@@ -88,21 +50,12 @@
         <div style="margin-top:6px;font-size:14px;">
           <span>结婚证-001fdawdeklvkje...</span>
         </div>-->
-<<<<<<< HEAD
                 <div slot="footer">
                     <i-button class="highDefaultButton" style="width:80px" @click="openUpload=false">取消</i-button>
                     <i-button class="highButton" style="width:80px" @click="confirm">确定</i-button>
                 </div>
             </i-modal>
         </template>
-=======
-        <div slot="footer">
-          <i-button class="highDefaultButton" style="width:80px" @click="openUpload=false">取消</i-button>
-          <i-button class="highButton" style="width:80px" @click="confirm">确定</i-button>
-        </div>
-      </i-modal>
-    </template>
->>>>>>> 773ee2a7ff05a40515a7b62f13f33bba010712f1
 
         <template>
             <i-modal v-model="uploadList" title="上传合同">
@@ -132,7 +85,6 @@
 </template>
 
 <script lang="ts">
-<<<<<<< HEAD
 import Page from '~/core/page'
 import Component from 'vue-class-component'
 import DataBox from '~/components/common/data-box.vue'
@@ -142,27 +94,6 @@ import { PageService } from '~/utils/page.service'
 import { FilterService } from '~/utils/filter.service'
 import { Layout } from '~/core/decorator'
 import UploadTheMaterial from '~/components/purchase-manage/upload-the-material.vue'
-=======
-  import Page from "~/core/page";
-  import Component from "vue-class-component";
-  import DataBox from "~/components/common/data-box.vue"
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    PersonalService
-  } from "~/services/manage-service/personal.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  import {
-    FilterService
-  } from "~/utils/filter.service";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
->>>>>>> 773ee2a7ff05a40515a7b62f13f33bba010712f1
 
 @Layout('workspace')
 @Component({
@@ -192,7 +123,6 @@ export default class CustomerDataQuery extends Page {
     timeSearch: ''
   }
 
-<<<<<<< HEAD
   created() {
     this.refreshData()
     this.columns1 = [
@@ -204,20 +134,6 @@ export default class CustomerDataQuery extends Page {
           return h(
             'i-button',
             {
-=======
-    created() {
-      this.refreshData()
-      this.columns1 = [{
-          title: '操作',
-          width: '100',
-          align: 'center',
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h('i-button', {
->>>>>>> 773ee2a7ff05a40515a7b62f13f33bba010712f1
               props: {
                 type: 'text'
               },
@@ -229,7 +145,6 @@ export default class CustomerDataQuery extends Page {
                   this.addFiles(row)
                 }
               }
-<<<<<<< HEAD
             },
             '补充资料'
           )
@@ -269,78 +184,6 @@ export default class CustomerDataQuery extends Page {
         align: 'center',
         render: (h, { row, column, index }) => {
           return h('span', {}, this.$dict.getDictName(row.orderType))
-=======
-            }, '补充资料')
-          }
-        },
-        // {
-        //   title: '资料上传',
-        //   editable: true,
-        //   key: 'isUploadFile',
-        //   align: 'center',
-        //     render: (h, { row, column, index }) => {
-        //   return h("span", {}, row.isUploadFile === 0 ? "未上传" : "已上传");
-        // }
-        // },
-        {
-          title: '订单编号',
-          editable: true,
-          key: 'orderNumber',
-          align: 'center'
-        },
-        {
-          title: '订单创建时间',
-          editable: true,
-          key: 'createTime',
-          align: 'center',
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h(
-              "span",
-              FilterService.dateFormat(row.createTime, "yyyy-MM-dd hh:mm:ss")
-            );
-          }
-        },
-        {
-          title: '订单类型',
-          editable: true,
-          key: 'orderType',
-          align: 'center',
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h("span", {}, this.$dict.getDictName(row.orderType));
-          }
-        },
-        {
-          title: '产品名称',
-          editable: true,
-          key: 'productName',
-          align: 'center'
-        },
-        {
-          title: '客户姓名',
-          editable: true,
-          key: 'personalName',
-          align: 'center'
-        },
-        {
-          title: '证件号码',
-          editable: true,
-          key: 'idCard',
-          align: 'center'
-        },
-        {
-          title: '联系号码',
-          editable: true,
-          key: 'mobileMain',
-          align: 'center'
->>>>>>> 773ee2a7ff05a40515a7b62f13f33bba010712f1
         }
       },
       {
@@ -410,110 +253,6 @@ export default class CustomerDataQuery extends Page {
       },
       {
         columnsName: '联系号码'
-<<<<<<< HEAD
-=======
-      }]
-    }
-    /**
-     * 补充资料确定
-     */
-    confirm() {
-      let uploadTheMaterial: any = this.$refs['upload-the-material'];
-      let MaterialData: any = uploadTheMaterial.dataList.map(v => {
-        return {
-          id: v.id,
-          materialUrl: v.url,
-          uploadName: v.name,
-          materialType: v.type,
-          operateTime: v.createTime,
-          dataSize: v.size,
-          personalId: v.personalId
-        }
-      })
-      console.log(MaterialData, 'uploadTheMaterial.dataList')
-      this.personalService
-        .uploadPersonalApproveFile({
-          personalDataModel: MaterialData
-        })
-        .subscribe(
-          data => {
-            this.$Message.success('上传成功！')
-            this.openUpload = false
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg);
-          }
-        );
-    }
-    refreshData() {
-      this.ordertransferModel.startTime = FilterService.dateFormat(
-        this.ordertransferModel.startTime
-      );
-      this.ordertransferModel.endTime = FilterService.dateFormat(
-        this.ordertransferModel.endTime
-      );
-      this.personalService
-        .getCustomerDataOrder(this.ordertransferModel, this.pageService)
-        .subscribe(
-          data => {
-            this.customerDataSet = data;
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg);
-          }
-        );
-    }
-    /**
-     * 清空timeSearch
-     */
-    startTimeChange(val) {
-      //   this.ordertransferModel.startTime = FilterService.dateFormat(this.ordertransferModel.startTime)
-      this.ordertransferModel.timeSearch = "";
-    }
-    endTimeChange(val) {
-      //   this.ordertransferModel.endTime = FilterService.dateFormat(this.ordertransferModel.endTime)
-      this.ordertransferModel.timeSearch = "";
-    }
-    orderInfochange() {
-      this.ordertransferModel.timeSearch = "";
-    }
-    openSearch() {
-      this.searchOptions = !this.searchOptions
-    }
-    /**
-     *根据日月年查询
-     */
-    getOrderInfoByTime(val) {
-      this.ordertransferModel.startTime = "";
-      this.ordertransferModel.endTime = "";
-      this.ordertransferModel.orderInfo = "";
-      this.ordertransferModel.timeSearch = val;
-      this.refreshData();
-    }
-    /**
-     * 上传资料
-     */
-    uploadFiles(row) {
-      let _uploadthematerial: any = this.$refs['upload-the-material']
-      _uploadthematerial.resetfileList()
-      this.uploadOrAddFlag = true
-      this.openUpload = true
-    }
-    /**
-     * 补充资料
-     */
-    addFiles(row) {
-      let _uploadthematerial: any = this.$refs['upload-the-material']
-      _uploadthematerial.resetfileList()
-      this.openUpload = true
-      this.uploadOrAddFlag = false
-      if (row.personalMateriaList) {
-        _uploadthematerial.supplement(row.personalMateriaList)
->>>>>>> 773ee2a7ff05a40515a7b62f13f33bba010712f1
       }
     ]
   }
