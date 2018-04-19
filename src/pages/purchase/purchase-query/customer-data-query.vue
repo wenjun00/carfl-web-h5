@@ -271,12 +271,12 @@ export default class CustomerDataQuery extends Page {
         id: v.id,
         materialUrl: v.url,
         uploadName: v.name,
+        personalId:v.personalId,
         materialType: v.type,
         operateTime: v.createTime,
         dataSize: v.size
       }
     })
-    console.log(MaterialData, 'uploadTheMaterial.dataList')
     this.personalService.uploadPersonalApproveFile({
         personalDataModel: MaterialData
     }).subscribe(
