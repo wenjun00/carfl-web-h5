@@ -1,7 +1,7 @@
 <!--新增银行卡-->
 <template>
   <section class="component add-new-bank">
-    <i-row style="margin-top:20px">
+    <i-row class="modal-item">
       <i-form :label-width="120">
         <i-form-item label="企业客户号">
           <i-input v-model="newBankModel.companyCustomerId" disabled></i-input>
@@ -74,7 +74,10 @@
 
 </script>
 
-<style>
-
-
+<style lang="less" scoped>
+  .component.add-new-bank{
+    .modal-item{
+      margin-top:20px
+    }
+  }
 </style>

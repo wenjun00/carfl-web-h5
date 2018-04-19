@@ -1,9 +1,9 @@
 <!--还款详情-->
 <template>
   <section class="component repay-info">
-    <i-row style="line-height:25px;font-size:14px;padding-bottom:10px">
+    <i-row class="modal-item">
       <span>客户姓名：{{repayObj.customerName}}</span>
-      <span style="margin-left:10px">订单号：{{repayObj.orderNumber}}</span>
+      <span class="modal-item-dingdanhao">订单号：{{repayObj.orderNumber}}</span>
     </i-row>
     <i-table ref="table" class="i-table" :columns="columns1" :data="repayList" stripe size="small"></i-table>
 
@@ -43,6 +43,7 @@
   import {
     FilterService
   } from "~/utils/filter.service"
+
   @Component({
     components: {
       DataBox,
@@ -58,9 +59,10 @@
     };
     private rowObj: any = {};
     private columns1: any;
-    private repayList: Array < Object >= [];
+    private repayList: Array<Object> = [];
     private repayRecordModal: Boolean = false;
     private addAttachmentModal: Boolean = false;
+
     refresh(row) {
       this.repayList = []
       this.repayObj.customerName = ''
@@ -68,6 +70,7 @@
       this.rowObj = row
       this.getRepayInfo()
     }
+
     getRepayInfo() {
       this.paymentScheduleService.getPaymentScheduleDetail({
         orderId: this.rowObj.orderId
@@ -77,18 +80,19 @@
         this.repayObj.orderNumber = data.orderNumber
         this.repayList = data.paymentDetails
       }, ({
-        msg
-      }) => {
+            msg
+          }) => {
         this.$Message.error(msg)
       })
     }
+
     created() {
       this.columns1 = [{
-          key: "periods",
-          title: '序号',
-          align: 'center',
-          width: 50
-        },
+        key: "periods",
+        title: '序号',
+        align: 'center',
+        width: 50
+      },
         {
           title: "操作",
           width: 150,
@@ -136,7 +140,7 @@
           key: 'paymentStatus',
           align: 'center',
           width: 90,
-          render: (h, { row, column, index }) => {
+          render: (h, {row, column, index}) => {
             return h("span", {}, this.$dict.getDictName(row.paymentStatus));
           }
         },
@@ -313,17 +317,28 @@
         }
       ]
     }
-    cancelOne(){
+
+    cancelOne() {
       this.addAttachmentModal = false
     }
-    confirmOne(){
+
+    confirmOne() {
 
     }
   }
 
 </script>
 
-<style>
-
+<style lang="less" scoped>
+  .component.repay-info {
+    .modal-item {
+      line-height: 25px;
+      font-size: 14px;
+      padding-bottom: 10px
+    }
+    .modal-item-dingdanhao{
+      margin-left:10px
+    }
+  }
 
 </style>

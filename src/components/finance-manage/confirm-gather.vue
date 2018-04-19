@@ -2,22 +2,23 @@
 <template>
   <section class="component confirm-gather">
     <i-form :label-width="110" label-position="left">
-      <i-row style="background:#F5F5F5">
-        <i-col :span="24" style="padding:6px;">
-          <span>收款类型：</span><span style="margin-left:10px;">{{$dict.getDictName(repaymentObj.applicationType)}}</span>
-          <i-button style="float:right;color:#265ea2" type="text" @click="saleApplyInfo">销售申请详情</i-button>
+      <i-row class="modal-item-shenqing">
+        <i-col class="modal-item-col" :span="24">
+          <span>收款类型：</span><span class="modal-item-leixing">{{$dict.getDictName(repaymentObj.applicationType)}}</span>
+          <i-button class="modal-item-button" type="text" @click="saleApplyInfo">销售申请详情</i-button>
         </i-col>
-        <i-col :span="24" style="margin-top:10px;margin-left:10px">
+        <i-col class="modal-item-beizhu" :span="24">
           <i-form-item>
             <span>备注：</span>
-            <i-input type="textarea" v-model="repaymentObj.remark" style="display:inline-block;width:80%;" disabled></i-input>
+            <i-input class="modal-item-input" type="textarea" v-model="repaymentObj.remark" disabled></i-input>
           </i-form-item>
         </i-col>
       </i-row>
     </i-form>
 
     <div v-if="applicationPhaseResources.length">
-      <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>附件</span>
+      <div class="modal-item-fujian"></div>
+      <span>附件</span>
     </div>
 
     <div class="invoiceContainer">
@@ -28,9 +29,10 @@
     </div>
 
     <div>
-      <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>收款明细</span>
+      <div class="modal-item-mingxi"></div>
+      <span>收款明细</span>
     </div>
-    <table border="1" width="850" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
+    <table class="modal-item-table" border="1" width="850">
       <tr height="40">
         <td bgcolor="#F2F2F2" colspan="1" width="40%">项目</td>
         <td bgcolor="#F2F2F2" colspan="1" width="60%">金额（元）</td>
@@ -42,14 +44,15 @@
     </table>
 
     <div>
-      <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>收款方式</span>
+      <div class="modal-item-fangshi"></div>
+      <span>收款方式</span>
     </div>
 
-    <table border="1" width="850" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
+    <table class="modal-item-table" border="1" width="850">
       <tr height="40">
         <td bgcolor="#F2F2F2" colspan="1" width="5%" v-if="!check">
           <div @click="addObj">
-            <i-icon type="plus" style="color:#199ED8;cursor:pointer"></i-icon>
+            <i-icon type="plus" class="modal-item-icon"></i-icon>
           </div>
         </td>
         <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
@@ -60,55 +63,63 @@
       <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
         <td v-if="!check">
           <div @click="deleteObj(i)">
-            <i-icon type="minus" style="color:#199ED8;cursor:pointer"></i-icon>
+            <i-icon type="minus" class="modal-item-icon"></i-icon>
           </div>
         </td>
         <td>
-          <i-select placeholder="选择结算通道" style="display:inline-block;width:90%" v-model="v.collectMoneyChannel" :disabled="check">
-            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="v.collectMoneyChannel"
+                    :disabled="check">
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label"
+                      :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-select placeholder="选择收款项目" style="display:inline-block;width:90%" v-model="v.collectItem" :disabled="check">
-            <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>
+          <i-select class="modal-item-select" placeholder="选择收款项目" v-model="v.collectItem"
+                    :disabled="check">
+            <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label"
+                      :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-input style="display:inline-block;width:30%;margin-right:10px" v-model="v.collectMoneyAmount" @on-blur="inputBlur" :readonly="check"></i-input>
+          <i-input class="modal-item-huakou" v-model="v.collectMoneyAmount"
+                   @on-blur="inputBlur" :readonly="check"></i-input>
           <i-button class="blueButton" v-if="!check">确认划扣</i-button>
         </td>
         <td><span>已处理</span>
-          <i-icon type="loop" size="20" color="#199ED8" style="margin-left:6px;cursor:pointer"></i-icon>
+          <i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
       <tr height="40">
         <td v-if="!check"></td>
         <td width="25%">合计（元）</td>
-        <td  colspan="3" style="font-weight:700;font-size:14px">{{paymentAmount}}</td>
+        <td colspan="3" class="modal-item-td">{{paymentAmount}}</td>
       </tr>
     </table>
 
     <!--<i-table :columns3="columns3" :data3="data3"></i-table>-->
     <div>
-      <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;margin-top:10px;"></div><span>账户信息</span>
+      <div class="modal-item-xinxi"></div>
+      <span>账户信息</span>
     </div>
     <i-table :columns="columns2" :data="personalBanks"></i-table>
 
     <div v-if="!check||financeUploadResources.length">
-      <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;margin-top:10px;"></div><span>收款凭证</span>
+      <div class="modal-item-xinxi"></div>
+      <span>收款凭证</span>
     </div>
 
-    <i-row style="margin-top:10px">
+    <i-row class="modal-item-fujian2">
       <i-col :span="12" v-if="!check">
-        <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;"
-           @click="openUpload=true">
-          <Icon type="plus-circled" style="display:block;margin-top:53px;" size="40" color="#265ea2"></Icon>
+        <div class="modal-item-fujian2-div" @click="openUpload=true">
+          <Icon type="plus-circled" class="modal-item-fujian2-circled" size="40" color="#265ea2"></Icon>
           <div>点击添加附件</div>
-          <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
+          <span class="modal-item-fujian2-text">支持jpg/pdf/png格式建议大小不超过10M</span>
         </div>
       </i-col>
-      <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id" style="display:flex;justify-content:center;margin-top:10px">
-        <div :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
+      <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id"
+             class="modal-item-resources">
+        <div
+          :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
         </div>
       </i-col>
     </i-row>
@@ -142,7 +153,7 @@
   import {
     CollectMoneyHistoryService
   } from "~/services/manage-service/collect-money-history.service";
-  import { Prop } from "vue-property-decorator";
+  import {Prop} from "vue-property-decorator";
   import FileUpload from "~/components/common/file-upload.tsx.vue";
 
   @Component({
@@ -164,7 +175,7 @@
     private collectMoneyItemModels: any = []
     private collectMoneyId: any = ''
     private openUpload: Boolean = false;
-    private box:any = ''
+    private box: any = ''
 
     @Prop({
       default: false
@@ -173,9 +184,9 @@
 
 
     private columns2: any;
-    private personalBanks: Array < Object > = [];
+    private personalBanks: Array<Object> = [];
     private columns3: any;
-    private data3: Array < Object > = [];
+    private data3: Array<Object> = [];
     private purchaseInfoModel: Boolean = false;
     private gatherModal: Object = {
       gatherType: '销售收款',
@@ -183,6 +194,7 @@
     }
     private payType = ''
     private scrollTopHeight = 0
+
     /**
      * 上传文件成功回调
      */
@@ -201,6 +213,7 @@
         fileUpload.reset();
       });
     }
+
     /**
      * 上传文件
      */
@@ -208,6 +221,7 @@
       let fileUpload = this.$refs["file-upload"] as FileUpload;
       fileUpload.upload();
     }
+
     refresh(row) {
       this.rowObj = row
       this.collectMoneyHistoryService.withdrawApplicationDetail({
@@ -223,11 +237,12 @@
         this.collectMoneyItemModels = data.collectMoneyItemModels
         this.inputBlur()
       }, ({
-        msg
-      }) => {
+            msg
+          }) => {
         this.$Message.error(msg)
       })
     }
+
     /**
      * 计算总计
      */
@@ -239,18 +254,21 @@
       console.log(sum)
       this.paymentAmount = sum
     }
+
     mounted() {
       // this.box = this.$refs.purchaseInformation1
       // this.box.addEventListener("scroll", ()=>{
       //   console.log(this.box.scrollTop)
       // })
     }
+
     monitorScorll() {
       // console.log(123123)
       // let target = document.getElementsByClassName("purchaseInformation1")[0]
       //   this.scrollTopHeight = target.scrollTop
       //    console.log(target.scrollTop)
     }
+
     /**
      * 增加还款对象
      */
@@ -261,6 +279,7 @@
         collectMoneyMethod: ''
       })
     }
+
     /**
      * 删除还款对象
      */
@@ -269,6 +288,7 @@
       this.collectMoneyDetails.splice(index, 1)
       this.inputBlur()
     }
+
     created() {
       this.columns3 = [{
         align: "center",
@@ -377,9 +397,11 @@
         key: 'clientNumber'
       }]
     }
+
     changeBankCard() {
 
     }
+
     addRow() {
       // let tr: any = document.createElement('tr');
       // let tb: any = document.getElementsByClassName('gather_type_table')[0]
@@ -392,6 +414,7 @@
       // }
       // tb.tBodies[0].appendChild(tr);
     }
+
     saleApplyInfo() {
       this.purchaseInfoModel = true
       let _purchaseInfo: any = this.$refs["purchase-info"];
@@ -401,7 +424,7 @@
 
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .invoiceContainer {
     display: flex;
     justify-content: flex-start;
@@ -420,4 +443,116 @@
     }
   }
 
+  .component.confirm-gather {
+    .modal-item-shenqing {
+      background: #F5F5F5
+    }
+    .modal-item-col {
+      padding: 6px;
+    }
+    .modal-item-leixing {
+      margin-left: 10px;
+    }
+    .modal-item-button {
+      float: right;
+      color: #265ea2
+    }
+    .modal-item-beizhu {
+      margin-top: 10px;
+      margin-left: 10px
+    }
+    .modal-item-input {
+      display: inline-block;
+      width: 80%;
+    }
+    .modal-item-fujian {
+      width: 7px;
+      height: 20px;
+      background: #265EA2;
+      display: inline-block;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+    }
+    .modal-item-mingxi {
+      width: 7px;
+      height: 20px;
+      background: #265EA2;
+      display: inline-block;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+    }
+    .modal-item-table {
+      margin-top: 10px;
+      text-align: center;
+      border: 1px solid #DDDEE1
+    }
+    .modal-item-fangshi {
+      width: 7px;
+      height: 20px;
+      background: #265EA2;
+      display: inline-block;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+    }
+    .modal-item-icon {
+      color: #199ED8;
+      cursor: pointer;
+    }
+    .modal-item-select {
+      display: inline-block;
+      width: 90%
+    }
+    .modal-item-input2 {
+      display: inline-block;
+      width: 80%;
+    }
+    .modal-item-huakou {
+      display: inline-block;
+      width: 30%;
+      margin-right: 10px
+    }
+    .modal-item-icon2 {
+      margin-left: 6px;
+      cursor: pointer
+    }
+    .modal-item-td {
+      font-weight: 700;
+      font-size: 14px
+    }
+    .modal-item-zhanghuxinxi {
+      width: 7px;
+      height: 20px;
+      background: #265EA2;
+      display: inline-block;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+      margin-top: 10px;
+    }
+    .modal-item-fujian2 {
+      margin-top: 10px;
+      .modal-item-fujian2-div {
+        height: 200px;
+        width: 200px;
+        border: 1px solid #C2C2C2;
+        cursor: pointer;
+        text-align: center;
+        position: relative;
+        left: 40px;
+      }
+      .modal-item-fujian2-circled{
+        display:block;margin-top:53px;
+      }
+      .modal-item-fujian2-text{
+        color:gray
+      }
+      .modal-item-resources{
+        display:flex;justify-content:center;margin-top:10px
+      }
+    }
+
+  }
 </style>

@@ -1,7 +1,9 @@
 <!--划扣记录-->
 <template>
   <section class="component deduct-record">
-    <div style="line-height:40px;font-size:14px;height:40px"><span>客户姓名：{{customerRepayObj.customerName}}</span><span style="float:right;">出账客户号：{{customerRepayObj.clientNumber}}</span></div>
+    <div class="modal-item"><span>客户姓名：{{customerRepayObj.customerName}}</span>
+      <span style="float:right;">出账客户号：{{customerRepayObj.clientNumber}}</span>
+    </div>
     <i-table ref="table" class="i-table" :columns="columns1" :data="data1" stripe size="small"></i-table>
   </section>
 </template>
@@ -53,7 +55,7 @@
         msg
       }) => {
         this.$Message.error(msg)
-      })    
+      })
     }
     created() {
       this.columns1 = [
@@ -121,7 +123,12 @@
 
 </script>
 
-<style>
+<style lang="less" scoped>
+  .component.deduct-record{
+    .modal-item{
+      line-height:40px;font-size:14px;height:40px
+    }
+  }
 
 
 </style>
