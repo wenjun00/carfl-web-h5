@@ -2,9 +2,7 @@
 <template>
     <section class="page system-log-download">
 
-        <page-header title="系统日志下载">
-
-        </page-header>
+        <page-header title="系统日志下载" @on-export="exportLogs"></page-header>
 
         <i-row class="data-form">
             <span>操作人：</span>

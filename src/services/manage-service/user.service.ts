@@ -21,7 +21,7 @@ export class UserService {
   }
   /**
    * 用户注册
-   * @param data 
+   * @param data
    */
   userRegister(data) {
     return this.netService.send({
@@ -72,6 +72,15 @@ export class UserService {
       data: {
         userId: userId
       }
+    })
+  }
+  /**
+   * 导出用户
+   */
+  exportUserList(data) {
+    return this.netService.send({
+      server: manageService.userController.exportUserList,
+      data: data
     })
   }
 }
