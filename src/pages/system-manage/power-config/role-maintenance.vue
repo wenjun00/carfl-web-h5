@@ -1,7 +1,9 @@
 <template>
   <section class="page role-maintenance">
+        <page-header title="角色维护" hiddenPrint>
+       
+        </page-header>
     <i-row class="data-form" >
-      <span class="form-title">角色维护</span>
       <span class="title">角色名称：</span>
       <i-input class="form-input" placeholder="请输入角色姓名" v-model="roleModel.roleName"></i-input>
       <span class="title-little">状态：</span>
@@ -456,7 +458,7 @@ export default class RoleMaintenance extends Page {
 <style lang="less" scoped>
   .page.role-maintenance{
     .data-form{
-      margin-bottom:10px;
+      margin-top:10px;
       .title{
         margin-left:20px;
       }

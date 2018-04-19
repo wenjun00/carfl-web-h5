@@ -2,27 +2,21 @@
 <template>
     <section class="page order-transfer">
         <i-row class="data-form">
-            <span class="form-title">订单交接</span>
-            <i-button @click="getOrderInfoByTime(0)" type="text">昨日</i-button>
-            <i-button @click="getOrderInfoByTime(1)" type="text">今日</i-button>
-            <i-button @click="getOrderInfoByTime(2)" type="text">本周</i-button>
-            <i-button @click="getOrderInfoByTime(3)" type="text">本月</i-button>
-            <i-button @click="getOrderInfoByTime(4)" type="text">上月</i-button>
-            <i-button @click="getOrderInfoByTime(5)" type="text">最近三月</i-button>
-            <i-button @click="getOrderInfoByTime(6)" type="text">本季度</i-button>
-            <i-button @click="getOrderInfoByTime(7)" type="text">本年</i-button>
-            <i-button @click="openSearch" style="color:#265EA2">
-                <span v-if="!searchOptions">展开</span>
-                <span v-if="searchOptions">收起</span>高级搜索</i-button>
-            <div class="command">
-                <div class="command-item dayin">
-                    <svg-icon iconClass="dayin"></svg-icon>
-                    <span>打印</span>
-                </div>
-                <div class="command-item daochu">
-                    <svg-icon iconClass="daochu"></svg-icon>
-                    <span>导出</span>
-                </div>
+            <page-header title="订单交接">
+
+            </page-header>
+            <div class="seek-day">
+                <i-button @click="getOrderInfoByTime(0)" type="text">昨日</i-button>
+                <i-button @click="getOrderInfoByTime(1)" type="text">今日</i-button>
+                <i-button @click="getOrderInfoByTime(2)" type="text">本周</i-button>
+                <i-button @click="getOrderInfoByTime(3)" type="text">本月</i-button>
+                <i-button @click="getOrderInfoByTime(4)" type="text">上月</i-button>
+                <i-button @click="getOrderInfoByTime(5)" type="text">最近三月</i-button>
+                <i-button @click="getOrderInfoByTime(6)" type="text">本季度</i-button>
+                <i-button @click="getOrderInfoByTime(7)" type="text">本年</i-button>
+                <i-button @click="openSearch" style="color:#265EA2">
+                    <span v-if="!searchOptions">展开</span>
+                    <span v-if="searchOptions">收起</span>高级搜索</i-button>
             </div>
         </i-row>
         <!--搜索项-->
@@ -562,6 +556,9 @@ export default class OrderTransfer extends Page {
 
 <style lang="less" scope>
 .page.order-transfer {
+  .seek-day {
+    margin-top: 10px;
+  }
   .data-form {
     .command {
       float: right;
@@ -590,6 +587,7 @@ export default class OrderTransfer extends Page {
   }
   .search-term {
     margin: 6px;
+    margin-left: 10px;
     .search-term-picker {
       width: 200px;
     }
@@ -613,7 +611,6 @@ export default class OrderTransfer extends Page {
     }
   }
 }
-
 </style>
 
 <style lang="less" scoped>

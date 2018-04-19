@@ -1,28 +1,22 @@
 <template>
     <section class="page customer-sign">
-        <span class="form-title">客户签约</span>
-        <i-button @click="getOrderInfoByTime(0)" type="text">昨日</i-button>
-        <i-button @click="getOrderInfoByTime(1)" type="text">今日</i-button>
-        <i-button @click="getOrderInfoByTime(2)" type="text">本周</i-button>
-        <i-button @click="getOrderInfoByTime(3)" type="text">本月</i-button>
-        <i-button @click="getOrderInfoByTime(4)" type="text">上月</i-button>
-        <i-button @click="getOrderInfoByTime(5)" type="text">最近三月</i-button>
-        <i-button @click="getOrderInfoByTime(6)" type="text">本季度</i-button>
-        <i-button @click="getOrderInfoByTime(7)" type="text">本年</i-button>
-        <i-button @click="openSearch" style="color:#265EA2">
-            <span v-if="!searchOptions">展开</span>
-            <span v-if="searchOptions">收起</span>
-            <span>高级搜索</span>
-        </i-button>
-        <div class="command">
-            <div class="command-item dayin">
-                <svg-icon iconClass="dayin"></svg-icon>
-                <span>打印</span>
-            </div>
-            <div class="command-item daochu">
-                <svg-icon iconClass="daochu"></svg-icon>
-                <span>导出</span>
-            </div>
+        <page-header title="客户签约">
+
+        </page-header>
+        <div class="seek-day">
+            <i-button @click="getOrderInfoByTime(0)" type="text">昨日</i-button>
+            <i-button @click="getOrderInfoByTime(1)" type="text">今日</i-button>
+            <i-button @click="getOrderInfoByTime(2)" type="text">本周</i-button>
+            <i-button @click="getOrderInfoByTime(3)" type="text">本月</i-button>
+            <i-button @click="getOrderInfoByTime(4)" type="text">上月</i-button>
+            <i-button @click="getOrderInfoByTime(5)" type="text">最近三月</i-button>
+            <i-button @click="getOrderInfoByTime(6)" type="text">本季度</i-button>
+            <i-button @click="getOrderInfoByTime(7)" type="text">本年</i-button>
+            <i-button @click="openSearch" style="color:#265EA2">
+                <span v-if="!searchOptions">展开</span>
+                <span v-if="searchOptions">收起</span>
+                <span>高级搜索</span>
+            </i-button>
         </div>
         <i-row class="data-form-data" v-if="searchOptions">
             <span>日期：</span>
@@ -68,12 +62,12 @@
                 </i-row>
                 <div class="upload-count">
                     <span>文件数量({{dataList.length+mertialList.length}})</span>
-                    <div class="upload-count-item" >
+                    <div class="upload-count-item">
                         <svg-icon class="upload-count-icon" iconClass="xiazai"></svg-icon>
                         <i-button type="text" @click="downloadAll">全部下载</i-button>
                     </div>
                 </div>
-                <ul class="upload-count-ul one" >
+                <ul class="upload-count-ul one">
                     <li v-for="item in mertialList">
                         <p>{{item.contractName}}</p>
                         <div>
@@ -706,6 +700,9 @@ export default class CustomerSign extends Page {
 </script>
 <style lang="less" scoped>
 .page.customer-sign {
+  .seek-day {
+    margin-top: 10px;
+  }
   .command {
     float: right;
     margin-right: 10px;
@@ -748,8 +745,8 @@ export default class CustomerSign extends Page {
       color: #fff;
     }
   }
-  .preview{
-      width: 100%;
+  .preview {
+    width: 100%;
   }
 }
 </style>
@@ -776,30 +773,28 @@ export default class CustomerSign extends Page {
     }
   }
   .upload-count {
-      font-size:18px;
-      font-weight:bold;
-      margin-top:10px;
-      .upload-count-item{
-          display:inline-block;
-          float:right;
-          .upload-count-icon{
-              font-size:24px;
-              cursor:pointer;
-              position:relative;
-              left:18px;
-
-          }
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    .upload-count-item {
+      display: inline-block;
+      float: right;
+      .upload-count-icon {
+        font-size: 24px;
+        cursor: pointer;
+        position: relative;
+        left: 18px;
       }
+    }
   }
-  .upload-count-ul{
-      margin-left:20px;
-      &.one{
-        margin-top:20px;
-      }
-      &.two{
-        margin-top:10px;
-      }
+  .upload-count-ul {
+    margin-left: 20px;
+    &.one {
+      margin-top: 20px;
+    }
+    &.two {
+      margin-top: 10px;
+    }
   }
-
 }
 </style>

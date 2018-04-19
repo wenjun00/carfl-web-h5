@@ -1,26 +1,21 @@
 <template>
     <section class="page open-account">
-        <span class="form-title">客户开户</span>
-        <i-button @click="getOrderInfoByTime(0)" type="text">昨日</i-button>
-        <i-button @click="getOrderInfoByTime(1)" type="text">今日</i-button>
-        <i-button @click="getOrderInfoByTime(2)" type="text">本周</i-button>
-        <i-button @click="getOrderInfoByTime(3)" type="text">本月</i-button>
-        <i-button @click="getOrderInfoByTime(4)" type="text">上月</i-button>
-        <i-button @click="getOrderInfoByTime(5)" type="text">最近三月</i-button>
-        <i-button @click="getOrderInfoByTime(6)" type="text">本季度</i-button>
-        <i-button @click="getOrderInfoByTime(7)" type="text">本年</i-button>
-        <i-button @click="openSearch" style="color:#265EA2">
-            <span v-if="!searchOptions">展开</span>
-            <span v-if="searchOptions">收起</span>高级搜索</i-button>
-        <div class="command">
-            <div class="command-item dayin" @click="printPage">
-                <svg-icon iconClass="dayin"></svg-icon>
-                <span>打印</span>
-            </div>
-            <div class="command-item">
-                <svg-icon iconClass="daochu"></svg-icon>
-                <span @click="exportDatabox">导出</span>
-            </div>
+        <page-header title="客户开户">
+
+        </page-header>
+        <div class="seek-day">
+            <i-button @click="getOrderInfoByTime(0)" type="text">昨日</i-button>
+            <i-button @click="getOrderInfoByTime(1)" type="text">今日</i-button>
+            <i-button @click="getOrderInfoByTime(2)" type="text">本周</i-button>
+            <i-button @click="getOrderInfoByTime(3)" type="text">本月</i-button>
+            <i-button @click="getOrderInfoByTime(4)" type="text">上月</i-button>
+            <i-button @click="getOrderInfoByTime(5)" type="text">最近三月</i-button>
+            <i-button @click="getOrderInfoByTime(6)" type="text">本季度</i-button>
+            <i-button @click="getOrderInfoByTime(7)" type="text">本年</i-button>
+            <i-button @click="openSearch" style="color:#265EA2">
+                <span v-if="!searchOptions">展开</span>
+                <span v-if="searchOptions">收起</span>高级搜索
+            </i-button>
         </div>
         <i-row class="data-form" v-if="searchOptions">
             <i-input class="form-input" v-model="openAccountModel.personalInfo" placeholder="请输入客户姓名\证件号码\联系号码查询"></i-input>
@@ -28,7 +23,7 @@
         </i-row>
         <data-box :id="180" :columns="columns1" :data="openAccountList" ref="databox" @onPageChange="getCustomerOpenAccount" :page="pageService"></data-box>
         <!--开户弹窗-->
-        <template >
+        <template>
             <i-modal class="open-account-window" v-model="openCreateAccount" title="开户申请" width="500">
                 <i-form class="form-window" :label-width="110">
                     <i-form-item label="开户渠道">
@@ -71,7 +66,7 @@
                         </i-select>
                     </i-form-item>
                     <i-form-item label="银行卡号">
-                        <i-input class="open-input" v-model="bankCardId" ></i-input>
+                        <i-input class="open-input" v-model="bankCardId"></i-input>
                     </i-form-item>
                     <i-form-item label="银行预留手机号">
                         <i-input class="open-input" v-model="bankLeavePhone"></i-input>
@@ -91,22 +86,22 @@
 
         <!--绑卡弹窗-->
         <template>
-            <i-modal class="open-account-window"  v-model="openBindCard" title="绑定银行卡" width="400">
+            <i-modal class="open-account-window" v-model="openBindCard" title="绑定银行卡" width="400">
                 <i-form :label-width="110">
                     <i-form-item label="账户类型">
                         <i-input class="open-input" v-model="accountType"></i-input>
                     </i-form-item>
                     <i-form-item label="客户姓名">
-                        <i-input class="open-input" v-model="customerName" ></i-input>
+                        <i-input class="open-input" v-model="customerName"></i-input>
                     </i-form-item>
                     <i-form-item label="客户手机号">
-                        <i-input class="open-input"  v-model="customPhone" ></i-input>
+                        <i-input class="open-input" v-model="customPhone"></i-input>
                     </i-form-item>
                     <i-form-item label="身份证号码">
-                        <i-input class="open-input" v-model="idCard" ></i-input>
+                        <i-input class="open-input" v-model="idCard"></i-input>
                     </i-form-item>
                     <i-form-item label="开户银行">
-                        <i-input class="open-input" v-model="bank" ></i-input>
+                        <i-input class="open-input" v-model="bank"></i-input>
                     </i-form-item>
                     <i-form-item label="开户省市">
                         <i-select class="select-pull-down">
@@ -126,10 +121,10 @@
                         </i-select>
                     </i-form-item>
                     <i-form-item label="银行卡号">
-                        <i-input class="open-input" v-model="bankCardId" ></i-input>
+                        <i-input class="open-input" v-model="bankCardId"></i-input>
                     </i-form-item>
                     <i-form-item label="银行预留手机号">
-                        <i-input class="open-input" v-model="bankLeavePhone" ></i-input>
+                        <i-input class="open-input" v-model="bankLeavePhone"></i-input>
                     </i-form-item>
                 </i-form>
                 <div slot="footer">
@@ -156,33 +151,33 @@
 
         <!--更换银行卡-->
         <template>
-            <i-modal v-model="openChangeBankCard" title="更换银行卡" width="480">
-                <i-steps :current="current" style="margin-left:40px;">
+            <i-modal class="bank-popover" v-model="openChangeBankCard" title="更换银行卡" width="480">
+                <i-steps :current="current" class="binding-choose" >
                     <i-step title="解绑"></i-step>
                     <i-step title="绑卡"></i-step>
                 </i-steps>
-                <i-form :label-width="110" style="margin-top:20px;">
+                <i-form class="back-type" :label-width="110">
                     <i-form-item label="账户类型">
-                        <i-input v-model="accountType" style="width:160px;"></i-input>
+                        <i-input class="input-form" v-model="accountType" ></i-input>
                     </i-form-item>
                     <i-form-item label="客户姓名">
-                        <i-input v-model="customerName" style="width:160px;"></i-input>
+                        <i-input class="input-form"  v-model="customerName" ></i-input>
                     </i-form-item>
                     <i-form-item label="证件类型" v-if="current===2">
-                        <i-input v-model="certificateType" style="width:160px;"></i-input>
+                        <i-input class="input-form" v-model="certificateType" ></i-input>
                     </i-form-item>
                     <i-form-item label="证件号码" v-if="current===2">
-                        <i-input v-model="certificateId" style="width:160px;"></i-input>
+                        <i-input class="input-form" v-model="certificateId" ></i-input>
                     </i-form-item>
                     <i-form-item label="身份证号码" v-if="current===0">
-                        <i-input v-model="idCard" style="width:160px;"></i-input>
+                        <i-input class="input-form" v-model="idCard" ></i-input>
                     </i-form-item>
                     <i-form-item label="开户银行">
-                        <i-input v-model="bank" style="width:160px;"></i-input>
+                        <i-input class="input-form" v-model="bank" ></i-input>
                     </i-form-item>
                     <i-form-item label="开户省市">
                         <!--<i-input v-model="province" style="width:80px;" placeholder="请选择省份"></i-input><i-input v-model="city" placeholder="请选择城市" style="width:80px;"></i-input>-->
-                        <i-select style="width:80px;">
+                        <i-select class="select-city">
                             <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
                         </i-select>
                         <i-select style="width:80px;">
@@ -199,11 +194,11 @@
                         </i-select>
                     </i-form-item>
                     <i-form-item label="银行预留手机号">
-                        <i-input v-model="bankLeavePhone" style="width:160px;"></i-input>
+                        <i-input class="input-form" v-model="bankLeavePhone" ></i-input>
                     </i-form-item>
                     <i-form-item label="验证码" v-if="current===0">
-                        <i-input v-model="qCode" style="width:160px;"></i-input>
-                        <i-button style="display:inline-block;margin-left:8px;" @click='sendQcode' class="blueButton">发送验证码
+                        <i-input class="input-form" v-model="qCode" ></i-input>
+                        <i-button class="back-button" @click='sendQcode' >发送验证码
                             <span>60</span>
                         </i-button>
                     </i-form-item>
@@ -641,6 +636,9 @@ export default class OpenAccount extends Page {
 </script>
 <style lang="less" scoped>
 .page.open-account {
+  .seek-day {
+    margin-top: 10px;
+  }
   .command {
     float: right;
     margin-right: 10px;
@@ -666,6 +664,7 @@ export default class OpenAccount extends Page {
   }
   .data-form {
     margin: 6px;
+    margin-left: 10px;
     .form-input {
       display: inline-block;
       width: 16%;
@@ -674,36 +673,52 @@ export default class OpenAccount extends Page {
     .blue-button {
       background: #265ea2;
       color: #fff;
-      display:inline-block;
-      margin-left:8px;
+      display: inline-block;
+      margin-left: 8px;
     }
   }
- 
 }
-
 </style>
 
 <style lang="less" scoped>
-    .open-account-window {
-        .form-window {
-            position: relative;
-            left: 30px;
-            .open-input {
-            width: 160px;
-            }
-            .select-pull-down{
-                width: 80px; 
-            }
-            .blue-button{
-                background: #265EA2;
-                color: #fff;
-            }
-        }
-        .blue-button{
-           background: #265EA2;
-           color: #fff; 
-        }
-       
+.open-account-window {
+  .form-window {
+    position: relative;
+    left: 30px;
+    .open-input {
+      width: 160px;
     }
+    .select-pull-down {
+      width: 80px;
+    }
+    .blue-button {
+      background: #265ea2;
+      color: #fff;
+    }
+  }
+  .blue-button {
+    background: #265ea2;
+    color: #fff;
+  }
+}
+.bank-popover{
+    .binding-choose{
+        margin-left:40px;
+    }
+    .back-type{
+        margin-top:20px;
+    }
+    .input-form{
+        width:160px;
+    }
+    .select-city{
+        width:80px;
+    }
+    .back-button{
+        display:inline-block;
+        margin-left:8px;
+    }
+
+}
 </style>
 

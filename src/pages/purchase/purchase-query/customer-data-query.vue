@@ -1,18 +1,23 @@
 <!--客户资料查询-->
 <template>
     <section class="page customer-data-query">
-        <span class="form-title">客户资料查询</span>
-        <i-button type="text" @click="getOrderInfoByTime(0)">昨日</i-button>
-        <i-button type="text" @click="getOrderInfoByTime(1)">今日</i-button>
-        <i-button type="text" @click="getOrderInfoByTime(2)">本周</i-button>
-        <i-button type="text" @click="getOrderInfoByTime(3)">本月</i-button>
-        <i-button type="text" @click="getOrderInfoByTime(4)">上月</i-button>
-        <i-button type="text" @click="getOrderInfoByTime(5)">最近三月</i-button>
-        <i-button type="text" @click="getOrderInfoByTime(6)">本季度</i-button>
-        <i-button type="text" @click="getOrderInfoByTime(7)">本年</i-button>
-        <i-button class="unfold-button" @click="openSearch">
-            <span v-if="!searchOptions">展开</span>
-            <span v-if="searchOptions">收起</span>高级搜索</i-button>
+        <page-header title="客户资料查询" hiddenPrint hiddenExport>
+
+        </page-header>
+        <div class="seek-day">
+            <i-button type="text" @click="getOrderInfoByTime(0)">昨日</i-button>
+            <i-button type="text" @click="getOrderInfoByTime(1)">今日</i-button>
+            <i-button type="text" @click="getOrderInfoByTime(2)">本周</i-button>
+            <i-button type="text" @click="getOrderInfoByTime(3)">本月</i-button>
+            <i-button type="text" @click="getOrderInfoByTime(4)">上月</i-button>
+            <i-button type="text" @click="getOrderInfoByTime(5)">最近三月</i-button>
+            <i-button type="text" @click="getOrderInfoByTime(6)">本季度</i-button>
+            <i-button type="text" @click="getOrderInfoByTime(7)">本年</i-button>
+            <i-button class="unfold-button" @click="openSearch">
+                <span v-if="!searchOptions">展开</span>
+                <span v-if="searchOptions">收起</span>高级搜索</i-button>
+        </div>
+
         <i-row class="seek-line" v-if="searchOptions">
             <i-date-picker class="seek-line-picker" v-model="ordertransferModel.startTime" type="date" @on-change="startTimeChange" placeholder="起始日期(始)"></i-date-picker>
             <i-date-picker class="seek-line-picker" v-model="ordertransferModel.endTime" type="date" @on-change="endTimeChange" placeholder="终止日期(止)"></i-date-picker>
@@ -361,11 +366,15 @@ export default class CustomerDataQuery extends Page {
 
 <style lang="less" scoped>
 .page.customer-data-query {
+  .seek-day {
+    margin-top: 10px;
+  }
   .unfold-button {
     color: #265ea2;
   }
   .seek-line {
     margin: 6px;
+    margin-left: 10px;
     .seek-line-picker {
       width: 200px;
     }

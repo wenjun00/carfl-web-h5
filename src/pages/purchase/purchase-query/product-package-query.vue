@@ -1,27 +1,21 @@
 <!--产品包查询-->
 <template>
     <section class="page product-package-query">
-        <span class="form-title">产品包查询</span>
-        <i-button @click="getOrderInfoByTime(1)" type="text" v-auth="394">昨日</i-button>
-        <i-button @click="getOrderInfoByTime(2)" type="text" v-auth="394">今日</i-button>
-        <i-button @click="getOrderInfoByTime(3)" type="text" v-auth="394">本周</i-button>
-        <i-button @click="getOrderInfoByTime(4)" type="text" v-auth="394">本月</i-button>
-        <i-button @click="getOrderInfoByTime(5)" type="text" v-auth="394">上月</i-button>
-        <i-button @click="getOrderInfoByTime(6)" type="text" v-auth="394">最近三月</i-button>
-        <i-button @click="getOrderInfoByTime(7)" type="text" v-auth="394">本季度</i-button>
-        <i-button @click="getOrderInfoByTime(8)" type="text" v-auth="394">本年</i-button>
-        <i-button @click="openSearch" style="color:#265EA2" v-auth="393">
-            <span v-if="!searchOptions">展开</span>
-            <span v-if="searchOptions">收起</span>高级搜索</i-button>
-        <div class="command">
-            <div class="command-item dayin" v-auth="395">
-                <svg-icon iconClass="dayin"></svg-icon>
-                <span>打印</span>
-            </div>
-            <div class="command-item daochu" v-auth="396">
-                <svg-icon iconClass="daochu"></svg-icon>
-                <span>导出</span>
-            </div>
+        <page-header title="产品包查询">
+
+        </page-header>
+        <div class="seek-day">
+            <i-button @click="getOrderInfoByTime(1)" type="text" v-auth="394">昨日</i-button>
+            <i-button @click="getOrderInfoByTime(2)" type="text" v-auth="394">今日</i-button>
+            <i-button @click="getOrderInfoByTime(3)" type="text" v-auth="394">本周</i-button>
+            <i-button @click="getOrderInfoByTime(4)" type="text" v-auth="394">本月</i-button>
+            <i-button @click="getOrderInfoByTime(5)" type="text" v-auth="394">上月</i-button>
+            <i-button @click="getOrderInfoByTime(6)" type="text" v-auth="394">最近三月</i-button>
+            <i-button @click="getOrderInfoByTime(7)" type="text" v-auth="394">本季度</i-button>
+            <i-button @click="getOrderInfoByTime(8)" type="text" v-auth="394">本年</i-button>
+            <i-button @click="openSearch" style="color:#265EA2" v-auth="393">
+                <span v-if="!searchOptions">展开</span>
+                <span v-if="searchOptions">收起</span>高级搜索</i-button>
         </div>
         <i-row class="document-query" v-if="searchOptions">
             <i-input class="document-query-input" v-model="seachParams.fileName" placeholder="文件名查询"></i-input>
@@ -283,6 +277,9 @@ export default class ProductPackageQuery extends Page {
 
 <style lang="less" scoped>
 .page.product-package-query {
+  .seek-day {
+    margin-top: 10px;
+  }
   .command {
     float: right;
     margin-right: 13px;
@@ -311,6 +308,7 @@ export default class ProductPackageQuery extends Page {
     .document-query-input {
       display: inline-block;
       width: 10%;
+      margin-left: 10px;
     }
     .document-query-picker {
       display: inline-block;

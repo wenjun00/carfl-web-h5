@@ -1,45 +1,47 @@
 <!--系统参数管理-->
 <template>
-  <section class="page system-param-manage">
-    <i-row class="data-form">
-      <div class="form-title">系统参数管理</div>
-      <span class="title">参数名称</span>
-      <i-input class="form-input" v-model="systemParameterModel.paramName" ></i-input>
-      <span class="title">是否启用</span>
-      <i-select class="form-input"  v-model="systemParameterModel.paramStatus" clearable>
-        <i-option label="启用" :value="0" :key="0"></i-option>
-        <i-option label="停用" :value="1" :key="1"></i-option>
-      </i-select>
-      <i-button class="form-button"  @click="getSystemParam">搜索</i-button>
-      <i-button class="form-button"  @click="refreshRoleList">重置</i-button>
-    </i-row>
-    <data-box :id="77" :columns="columns1" :data="systemParamsData" @onPageChange="getSystemParam" :page="pageService"></data-box>
+    <section class="page system-param-manage">
+        <page-header title="系统参数管理" hiddenPrint hiddenExport>
 
-    <template>
-      <i-modal v-model="editSysParamsModal" title="修改系统参数">
-        <modify-system-params :modifySysParamsModel="modifySysParamsModel" ref="modify-sys-param" @close="closeBtn"></modify-system-params>
-        <div slot="footer">
-          <i-button @click="editSysParamsModal=false">取消</i-button>
-          <i-button @click="confirmModifySysParams" class="blueButton">确定</i-button>
-        </div>
-      </i-modal>
-    </template>
-  </section>
+        </page-header>
+        <i-row class="data-form">
+            <span class="title">参数名称</span>
+            <i-input class="form-input" v-model="systemParameterModel.paramName"></i-input>
+            <span class="title">是否启用</span>
+            <i-select class="form-input" v-model="systemParameterModel.paramStatus" clearable>
+                <i-option label="启用" :value="0" :key="0"></i-option>
+                <i-option label="停用" :value="1" :key="1"></i-option>
+            </i-select>
+            <i-button class="form-button" @click="getSystemParam">搜索</i-button>
+            <i-button class="form-button" @click="refreshRoleList">重置</i-button>
+        </i-row>
+        <data-box :id="77" :columns="columns1" :data="systemParamsData" @onPageChange="getSystemParam" :page="pageService"></data-box>
+
+        <template>
+            <i-modal v-model="editSysParamsModal" title="修改系统参数">
+                <modify-system-params :modifySysParamsModel="modifySysParamsModel" ref="modify-sys-param" @close="closeBtn"></modify-system-params>
+                <div slot="footer">
+                    <i-button @click="editSysParamsModal=false">取消</i-button>
+                    <i-button @click="confirmModifySysParams" class="blueButton">确定</i-button>
+                </div>
+            </i-modal>
+        </template>
+    </section>
 </template>
 
 <script lang="ts">
-import Page from "~/core/page";
-import Component from "vue-class-component";
-import DataBox from "~/components/common/data-box.vue";
-import { PageService } from "~/utils/page.service";
-import { Dependencies } from "~/core/decorator";
-import { OrderService } from "~/services/business-service/order.service";
-import SvgIcon from "~/components/common/svg-icon.vue";
-import { Layout } from "~/core/decorator";
-import ModifySystemParams from "~/components/system-manage/modify-system-params.vue";
-import { SystemParameterService } from "~/services/manage-service/system-parameter.service";
+import Page from '~/core/page'
+import Component from 'vue-class-component'
+import DataBox from '~/components/common/data-box.vue'
+import { PageService } from '~/utils/page.service'
+import { Dependencies } from '~/core/decorator'
+import { OrderService } from '~/services/business-service/order.service'
+import SvgIcon from '~/components/common/svg-icon.vue'
+import { Layout } from '~/core/decorator'
+import ModifySystemParams from '~/components/system-manage/modify-system-params.vue'
+import { SystemParameterService } from '~/services/manage-service/system-parameter.service'
 
-@Layout("workspace")
+@Layout('workspace')
 @Component({
   components: {
     DataBox,
@@ -48,102 +50,102 @@ import { SystemParameterService } from "~/services/manage-service/system-paramet
   }
 })
 export default class OrderTransfer extends Page {
-  @Dependencies() private pageService: PageService;
+  @Dependencies() private pageService: PageService
   @Dependencies(SystemParameterService)
-  private systemParameterService: SystemParameterService;
-  private columns1: any;
-  private columns2: any;
-  private systemParamsData: Array<Object> = [];
-  private customName: String = "";
-  private openColumnsConfig: Boolean = false;
-  private openOneKeyToConnect: Boolean = false;
-  private editSysParamsModal: Boolean = false;
+  private systemParameterService: SystemParameterService
+  private columns1: any
+  private columns2: any
+  private systemParamsData: Array<Object> = []
+  private customName: String = ''
+  private openColumnsConfig: Boolean = false
+  private openOneKeyToConnect: Boolean = false
+  private editSysParamsModal: Boolean = false
   private systemParameterModel: any = {
-    paramName: "",
-    paramStatus: ""
-  };
-  private checkRadio: String = "";
-  private modifySysParamsModel: any;
+    paramName: '',
+    paramStatus: ''
+  }
+  private checkRadio: String = ''
+  private modifySysParamsModel: any
   mounted() {
-    this.getSystemParam();
+    this.getSystemParam()
   }
   created() {
     this.modifySysParamsModel = {
-      paramCode: "",
-      paramName: "",
-      paramValue: "",
-      paramStatus: ""
-    };
+      paramCode: '',
+      paramName: '',
+      paramValue: '',
+      paramStatus: ''
+    }
     this.columns1 = [
       {
-        title: "操作",
-        align: "center",
-        fixed: "left",
+        title: '操作',
+        align: 'center',
+        fixed: 'left',
         width: 120,
         render: (h, { row, columns, index }) => {
           return h(
-            "i-button",
+            'i-button',
             {
               props: {
-                type: "text"
+                type: 'text'
               },
               on: {
                 click: () => {
-                  this.modifySysParams(row);
+                  this.modifySysParams(row)
                 }
               },
               style: {
-                color: "#265EA2"
+                color: '#265EA2'
               }
             },
-            "修改"
-          );
+            '修改'
+          )
         }
       },
       {
-        title: "参数代码",
+        title: '参数代码',
         editable: true,
-        key: "paramCode",
-        align: "center"
+        key: 'paramCode',
+        align: 'center'
       },
       {
-        title: "参数名称",
+        title: '参数名称',
         editable: true,
-        key: "paramName",
-        align: "center"
+        key: 'paramName',
+        align: 'center'
       },
       {
-        title: "参数值",
+        title: '参数值',
         editable: true,
-        key: "paramValue",
-        align: "center"
+        key: 'paramValue',
+        align: 'center'
       },
       {
-        title: "是否启用",
+        title: '是否启用',
         editable: true,
-        key: "paramStatus",
-        align: "center",
+        key: 'paramStatus',
+        align: 'center',
         render: (h, { row, columns, index }) => {
-          return h("span", {}, row.paramStatus === 0 ? "启用" : "停用");
+          return h('span', {}, row.paramStatus === 0 ? '启用' : '停用')
         }
       },
       {
-        title: "说明",
+        title: '说明',
         editable: true,
-        key: "paramRemark",
-        align: "center"
+        key: 'paramRemark',
+        align: 'center'
       }
-    ];
+    ]
   }
   getOrderInfoByTime() {}
   oneKeyToConnect() {
-    this.openOneKeyToConnect = true;
+    this.openOneKeyToConnect = true
   }
   /**
    * 列配置
    */
   columnsConfig() {
-    this.openColumnsConfig = true;
+    this.openColumnsConfig = true
   }
   /**
    * 多选
@@ -153,10 +155,10 @@ export default class OrderTransfer extends Page {
    * 修改按钮
    */
   modifySysParams(row) {
-    this.editSysParamsModal = true;
-    this.modifySysParamsModel = row;
-    let _sysParams: any = this.$refs["modify-sys-param"];
-    _sysParams.makeData(row);
+    this.editSysParamsModal = true
+    this.modifySysParamsModel = row
+    let _sysParams: any = this.$refs['modify-sys-param']
+    _sysParams.makeData(row)
   }
   /**
    * 获取分页查询系统参数
@@ -166,20 +168,20 @@ export default class OrderTransfer extends Page {
       .querySystemParameterPage(this.systemParameterModel, this.pageService)
       .subscribe(
         val => {
-          this.systemParamsData = val;
+          this.systemParamsData = val
         },
         ({ msg }) => {
-          this.$Message.error(msg);
+          this.$Message.error(msg)
         }
-      );
+      )
   }
   confirmModifySysParams() {
-    let _modify: any = this.$refs["modify-sys-param"];
-    _modify.confirmModify();
+    let _modify: any = this.$refs['modify-sys-param']
+    _modify.confirmModify()
   }
   closeBtn() {
-    this.editSysParamsModal = false;
-    this.getSystemParam();
+    this.editSysParamsModal = false
+    this.getSystemParam()
   }
   /**
    * 重置搜索
@@ -189,27 +191,27 @@ export default class OrderTransfer extends Page {
     //   paramName: "",
     //   paramStatus: ""
     // };
-    this.systemParameterModel.paramName = "";
-    this.systemParameterModel.paramStatus = "";
+    this.systemParameterModel.paramName = ''
+    this.systemParameterModel.paramStatus = ''
   }
 }
 </script>
 <style lang="less" scoped>
-  .page.system-param-manage{
-      .data-form{
-        .title{
-            margin-left: 10px;
-        }
-        .form-input{
-          display:inline-block;
-          width:8%;
-        }
-        .form-button{
-          margin-left:10px;
-          background: #265EA2;
-          color: #fff;
-        }
-      }
+.page.system-param-manage {
+  .data-form {
+      margin-top: 10px;
+    .title {
+      margin-left: 10px;
+    }
+    .form-input {
+      display: inline-block;
+      width: 8%;
+    }
+    .form-button {
+      margin-left: 10px;
+      background: #265ea2;
+      color: #fff;
+    }
   }
-
+}
 </style>
