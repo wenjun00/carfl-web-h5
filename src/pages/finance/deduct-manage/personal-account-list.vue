@@ -1,29 +1,22 @@
 <!--个人开户列表-->
 <template>
   <section class="page personal-account-list">
-      <page-header title="个人开户列表" hiddenPrint></page-header>
-    <i-row class="data-form">
-      <i-button @click="getTimeSearch(1)" type="text" v-auth="458">昨日</i-button>
-      <i-button @click="getTimeSearch(2)" type="text" v-auth="458">今日</i-button>
-      <i-button @click="getTimeSearch(3)" type="text" v-auth="458">本周</i-button>
-      <i-button @click="getTimeSearch(4)" type="text" v-auth="458">本月</i-button>
-      <i-button @click="getTimeSearch(5)" type="text" v-auth="458">上月</i-button>
-      <i-button @click="getTimeSearch(6)" type="text" v-auth="458">最近三月</i-button>
-      <i-button @click="getTimeSearch(7)" type="text" v-auth="458">本季度</i-button>
-      <i-button @click="getTimeSearch(8)" type="text" v-auth="458">本年</i-button>
-      <i-button @click="openSearch" class="commend.item" v-auth="457">
-        <span v-if="!searchOptions">展开</span>
-        <span v-if="searchOptions">收起</span>
-        <span>高级搜索</span>
-      </i-button>
-    </i-row>
-    <i-row v-if="searchOptions"  class="second-data-form">
-      <i-input class="second-data-one" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="gatherModel.orderInfo"></i-input>
-      <span class="second-data-two">日期：</span>
-      <i-date-picker class="second-data-three" v-model="gatherModel.createDateStart"></i-date-picker>~
-      <i-date-picker class="second-data-three"v-model="gatherModel.createDateEnd"></i-date-picker>
-      <i-button class="blueButton" @click="getGatherListByCondition">搜索</i-button>
-    </i-row>
+    <page-header title="个人开户列表" hiddenPrint></page-header>
+    <data-form  data-prop="timeSearch" :model="gatherModel" @on-search="getGatherListByCondition" hidden-reset >
+      <template slot="input">
+        <i-form-item prop="orderInfo">
+          <i-input class="second-data-one" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="gatherModel.orderInfo"></i-input>
+        </i-form-item>
+        <i-form-item prop="createDateStart" label="日期：">
+          <i-date-picker class="second-data-three" v-model="gatherModel.createDateStart"></i-date-picker>~
+        </i-form-item>
+        <i-form-item prop="createDateEnd">
+          <i-date-picker class="second-data-three"v-model="gatherModel.createDateEnd"></i-date-picker>
+        </i-form-item>
+        <!--<i-button class="blueButton" @click="getEarlyPayList">搜索</i-button>-->
+      </template>
+    </data-form>
+
     <data-box :id="456" :columns="columns1" :data="data1" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
 
     <!--<div class="submitBar">

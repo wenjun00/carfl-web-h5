@@ -1,47 +1,24 @@
 <!--客户还款-->
 <template>
   <section class="page customer-repay">
-    <span class="form-title">客户还款</span>
-    <i-button type="text" @click="getTimeSearch(0)" v-auth="414">昨日</i-button>
-    <i-button type="text" @click="getTimeSearch(1)" v-auth="414">今日</i-button>
-    <i-button type="text" @click="getTimeSearch(2)" v-auth="414">本周</i-button>
-    <i-button type="text" @click="getTimeSearch(3)" v-auth="414">本月</i-button>
-    <i-button type="text" @click="getTimeSearch(4)" v-auth="414">上月</i-button>
-    <i-button type="text" @click="getTimeSearch(5)" v-auth="414">最近三月</i-button>
-    <i-button type="text" @click="getTimeSearch(6)" v-auth="414">本季度</i-button>
-    <i-button type="text" @click="getTimeSearch(7)" v-auth="414">本年</i-button>
-    <i-button @click="openSearch" v-auth="413" class="form-button">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">收起</span>
-      <span>高级搜索</span>
-    </i-button>
-    <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList">
-      <template slot="input" >
+    <page-header title="客户还款"></page-header>
+    <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList" hidden-reset>
+      <template slot="input">
         <i-form-item prop="dynamicParam">
           <i-input class="second-input" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
         </i-form-item>
+        <i-form-item prop="paymentStatus">
+          <i-select class="second-select" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="settlementChannel">
+          <i-select class="second-select" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
       </template>
     </data-form>
-    <div class="importBtn">
-      <div class="importBtn-item" v-auth="415">
-        <svg-icon class="importBtn-item-one" iconClass="dayin"></svg-icon>
-        <span class="importBtn-item-two">打印</span>
-      </div>
-      <div class="importBtn-item" v-auth="416">
-        <svg-icon iconClass="daochu" class="importBtn-item-one"></svg-icon>
-        <span class="importBtn-item-two">导出</span>
-      </div>
-    </div>
-    <i-row v-if="searchOptions" class="second-data">
-      <i-input class="second-input" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
-      <i-select class="second-select" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
-      <i-select class="second-select" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
-      <i-button class="blueButton" @click="getCustomerRepayList">搜索</i-button>
-    </i-row>
     <data-box :id="412" :columns="columns1" :data="customerRepayList" @onPageChange="getCustomerRepayList" :page="pageService"></data-box>
 
     <template>

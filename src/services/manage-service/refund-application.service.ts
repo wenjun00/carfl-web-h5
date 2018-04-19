@@ -29,6 +29,7 @@ export class RefundApplicationService {
                 getApprovalRecord: data.getApprovalRecord,
                 refundName: data.refundName,
                 timeSearch: data.timeSearch,
+                dynamicParams:data.dynamicParams,
                 processStatus: data.processStatus,
                 startDate: FilterService.dateFormat(data.startDate, 'yyyy-MM-dd'),
                 endDate: FilterService.dateFormat(data.endDate, 'yyyy-MM-dd')

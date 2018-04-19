@@ -1,44 +1,35 @@
 <!--复审-->
 <template>
     <section class="page second-approval">
-        <page-header title="复审">
+        <page-header title="复审"></page-header>
+          <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getSecondList" hidden-reset>
+            <template slot="input">
+                <i-form-item prop="resourcePoolModel">
+                     <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.resourcePoolModel"></i-input>
+                </i-form-item>
+                <i-form-item prop="startTime" label="日期：">
+                     <i-date-picker v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker> ~
+                </i-form-item>
+                <i-form-item prop="endTime">
+                    <i-date-picker v-model="resourcePoolModel.endTime" placeholder="终止日期"></i-date-picker>
+                </i-form-item>
+                <i-form-item prop="province" label="省市：">
+                      <i-select placeholder="选择省" v-model="resourcePoolModel.province" clearable>
+                        <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+                    </i-select>
+                </i-form-item>
+                <i-form-item prop="city">
+                   <i-select placeholder="选择市" v-model="resourcePoolModel.city" clearable>
+                        <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
+                    </i-select>
+                </i-form-item>
+                <i-form-item prop="productType" label="产品名称：">
+                     <i-input v-model="resourcePoolModel.productType"></i-input>
+                </i-form-item>
+            </template>
+        </data-form>  
 
-        </page-header>
-        <div class="seek-day">
-            <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-            <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-            <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-            <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-            <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-            <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-            <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-            <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-            <i-button class="open-search" @click="openSearch">
-                <span v-if="!searchOptions">展开</span>
-                <span v-if="searchOptions">收起</span>
-                <span>高级搜索</span>
-            </i-button>
-        </div>
 
-        <i-row v-if="searchOptions" style="margin-top:6px;position:relative;right:10px;">
-            <i-input style="display:inline-block;width:14%;margin-left:20px;min-width:230px;" placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.resourcePoolModel"></i-input>
-            <span style="margin-left:10px">日期：</span>
-            <i-date-picker style="display:inline-block;width:10%" v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker>~
-            <i-date-picker style="display:inline-block;width:10%" v-model="resourcePoolModel.endTime" placeholder="终止日期"></i-date-picker>
-            <span style="margin-left:10px;">省市：</span>
-            <i-select style="width:100px;margin-left:10px;" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
-                <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-            <i-select style="width:100px;margin-left:10px;" placeholder="选择市" v-model="resourcePoolModel.city" clearable>
-                <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-            <span style="margin-left:10px;">产品名称</span>
-            <!--<i-select placeholder="产品类型" style="width:120px;" v-model="resourcePoolModel.productType" clearable>-->
-            <!--<i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>-->
-            <!--</i-select>-->
-            <i-input style="width:120px;" v-model="resourcePoolModel.productType"></i-input>
-            <i-button style="margin-left:10px" class="blueButton" @click="getSecondList">搜索</i-button>
-        </i-row>
 
         <data-box :id="253" :columns="columns1" :data="secondList" @onPageChange="getSecondList" :page="pageService"></data-box>
         <!--Modal-->

@@ -1,44 +1,36 @@
 <!--我的审核-->
 <template>
     <section class="page my-approval">
-        <page-header title="我的审核">
+        <page-header title="我的审核"></page-header>
+          <data-form date-prop="timeSearch" :model="myOrderModel" @on-search="getMyOrderList" hidden-reset>
+            <template slot="input">
+                <i-form-item prop="personalInfo">
+                    <i-input v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
+                </i-form-item>
+                <i-form-item prop="startTime" label="日期：">
+                    <i-date-picker v-model="myOrderModel.startTime" placeholder="起始日期"></i-date-picker> ~
+                </i-form-item>
+                <i-form-item prop="endTime">
+                    <i-date-picker v-model="myOrderModel.endTime" placeholder="终止日期"></i-date-picker>
+                </i-form-item>
+                <i-form-item prop="province" label="省市：">
+                      <i-select placeholder="选择省" v-model="myOrderModel.province" clearable>
+                        <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+                    </i-select>
+                </i-form-item>
+                <i-form-item prop="city">
+                   <i-select placeholder="选择市" v-model="myOrderModel.city" clearable>
+                        <i-option v-for="{value,label} in this.myOrderModel.province ? this.$city.getCityData({ level: 1, id: this.myOrderModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
+                    </i-select>
+                </i-form-item>
+                <i-form-item prop="productType" label="产品类型">
+                     <i-select placeholder="产品类型" v-model="myOrderModel.productType" clearable>
+                        <i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>
+                    </i-select>
+                </i-form-item>
+            </template>
+        </data-form>
 
-        </page-header>
-        <div class="seek-day">
-            <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-            <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-            <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-            <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-            <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-            <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-            <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-            <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-            <i-button @click="openSearch" class="open-search">
-                <span v-if="!searchOptions">展开</span>
-                <span v-if="searchOptions">收起</span>
-                <span>高级搜索</span>
-            </i-button>
-        </div>
-
-        <i-row class="data-form" v-if="searchOptions">
-            <i-input class="data-form-item search-input" v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
-            <span>日期：</span>
-            <i-date-picker class="data-form-item date-picker" v-model="myOrderModel.startTime" placeholder="起始日期"></i-date-picker>
-            ~
-            <i-date-picker class="data-form-item date-picker" v-model="myOrderModel.endTime" placeholder="终止日期"></i-date-picker>
-            <span class="data-form-item province">省市：</span>
-            <i-select class="data-form-item select province" placeholder="选择省" v-model="myOrderModel.province" clearable>
-                <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-            <i-select class="data-form-item select city" placeholder="选择市" v-model="myOrderModel.city" clearable>
-                <i-option v-for="{value,label} in this.myOrderModel.province ? this.$city.getCityData({ level: 1, id: this.myOrderModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-            <span class="data-form-item product-type">产品类型：</span>
-            <i-select class="data-form-item select product-type" placeholder="产品类型" v-model="myOrderModel.productType" clearable>
-                <i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-            <i-button class="data-form-item serch-button blueButton" @click="getMyOrderList">搜索</i-button>
-        </i-row>
         <data-box :id="280" :columns="columns1" :data="myOrderList" @onPageChange="getMyOrderList" :page="pageService"></data-box>
         <!--Modal-->
         <template>

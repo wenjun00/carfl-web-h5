@@ -1,36 +1,26 @@
 <!--冻结申请记录-->
 <template>
     <section class="page frozen-apply-record">
-        <page-header title="冻结申请记录" hiddenPrint>
+        <page-header title="冻结申请记录" hiddenPrint></page-header>
+        <data-form date-prop="timeSearch" :model="frozenModel" @on-search="getFrozenList" hidden-reset>
+            <template slot="input">
+                <i-form-item prop="orderInfo">
+                     <i-input v-model="frozenModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
+                </i-form-item>
+                <i-form-item prop="applyDateStart" label="日期：">
+                     <i-date-picker v-model="frozenModel.applyDateStart" placeholder="起始日期"></i-date-picker> ~
+                </i-form-item>
+                <i-form-item prop="applyDateEnd">
+                    <i-date-picker v-model="frozenModel.applyDateEnd" placeholder="终止日期"></i-date-picker>
+                </i-form-item>
+                <i-form-item prop="collectMoneyMethod">
+                     <i-select placeholder="全部结算通道" v-model="frozenModel.collectMoneyMethod" clearable>
+                        <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+                    </i-select>
+                </i-form-item>
+            </template>
+        </data-form>
 
-        </page-header>
-        <div class="seek-day">
-            <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-            <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-            <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-            <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-            <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-            <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-            <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-            <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-            <i-button @click="openSearch" class="open-search">
-                <span v-if="!searchOptions">展开</span>
-                <span v-if="searchOptions">收起</span>
-                <span>高级搜索</span>
-            </i-button>
-        </div>
-
-        <i-row class="data-form" v-if="searchOptions">
-            <i-input class="data-form-item search-input" v-model="frozenModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
-            <span class="data-form-item date">日期：</span>
-            <i-date-picker class="data-form-item date-picker" v-model="frozenModel.applyDateStart" placeholder="起始日期"></i-date-picker>
-            ~
-            <i-date-picker class="data-form-item date-picker" v-model="frozenModel.applyDateEnd" placeholder="终止日期"></i-date-picker>
-            <i-select class="data-form-item collect" placeholder="全部结算通道" v-model="frozenModel.collectMoneyMethod" clearable>
-                <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-            <i-button class="data-form-item serch-button blueButton" @click="getFrozenList">搜索</i-button>
-        </i-row>
         <data-box :id="348" :columns="columns1" :data="frozenList" @onPageChange="getFrozenList" :page="pageService"></data-box>
 
         <template>

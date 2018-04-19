@@ -2,14 +2,21 @@
 <template>
   <section class="page receipt-approve">
     <page-header title="收款审批" hiddenPrint></page-header>
-    <div class="data-form">
-      <i-input class="data-form-item" placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="receipt.dynamicCondition"></i-input>
-      <i-select placeholder="全部申请类型" class="data-form-item" v-model="receipt.applicationType" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
-      <i-checkbox class="command-item" v-model="receipt.isIncludeDealt">包含已处理</i-checkbox>
-      <i-button class="blueButton command-item" @click="searchReceiptapprove">搜索</i-button>
-    </div>
+    <data-form hidden-date-search :model="receipt" @on-search="searchReceiptapprove">
+      <template slot="input">
+        <i-form-item prop="dynamicCondition">
+          <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="receipt.dynamicCondition"></i-input>
+        </i-form-item>
+        <i-form-item prop="applicationType">
+          <i-select placeholder="全部申请类型" v-model="receipt.applicationType" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+      </template>
+      <template slot="button">
+        <i-checkbox v-model="receipt.isIncludeDealt">包含已处理</i-checkbox>
+      </template>
+    </data-form>
     <data-box :id="381" :columns="columns1" :data="data1" :page="pageService"></data-box>
     <!--Model-->
 

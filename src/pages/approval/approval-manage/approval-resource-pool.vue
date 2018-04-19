@@ -1,41 +1,36 @@
 <!--审批资源池-->
 <template>
     <section class="page approval-resource-pool">
-        <page-header title="审核资源池">
+        <page-header title="审核资源池"> </page-header>
+        <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getApprovalListByCondition" hidden-reset>
+            <template slot="input">
+                <i-form-item prop="personalInfo">
+                    <i-input v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
+                </i-form-item>
+                <i-form-item prop="startTime" label="日期：">
+                    <i-date-picker v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker>
+                </i-form-item>
+                <i-form-item prop="endTime">
+                    <i-date-picker v-model="resourcePoolModel.endTime" placeholder="终止日期" :options="endDisabeldOptions"></i-date-picker>
+                </i-form-item>
+                <i-form-item prop="province">
+                    <i-select placeholder="选择省" v-model="resourcePoolModel.province" clearable>
+                        <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+                    </i-select>
+                </i-form-item>
+                <i-form-item prop="city">
+                    <i-select placeholder="选择市" v-model="resourcePoolModel.city" clearable>
+                        <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
+                    </i-select>
+                </i-form-item>
+                <i-form-item prop="orderType">
+                    <i-select  placeholder="订单类型" v-model="resourcePoolModel.orderType" clearable>
+                        <i-option v-for="{value,label} in $dict.getDictData('0301')" :key="value" :label="label" :value="value"></i-option>
+                    </i-select>
+                </i-form-item>
+            </template>
+        </data-form>
 
-        </page-header>
-        <div class="seek-day">
-            <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-            <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-            <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-            <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-            <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-            <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-            <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-            <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-            <i-button @click="openSearch" class="open-search">
-                <span v-if="!searchOptions">展开</span>
-                <span v-if="searchOptions">收起</span>
-                <span>高级搜索</span>
-            </i-button>
-        </div>
-
-        <i-row class="data-form" v-if="searchOptions">
-            <i-input class="data-form-item searchinput" v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
-            <span style="margin-left:10px">日期：</span>
-            <i-date-picker class="data-form-item date-picker" v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker>
-            <i-date-picker class="data-form-item date-picker" v-model="resourcePoolModel.endTime" placeholder="终止日期" :options="endDisabeldOptions"></i-date-picker>
-            <i-select class="data-form-item select province" placeholder="选择省" v-model="resourcePoolModel.province" clearable>
-                <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-            <i-select class="data-form-item select city" placeholder="选择市" v-model="resourcePoolModel.city" clearable>
-                <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-            <i-select class="data-form-item select product-type" placeholder="订单类型" v-model="resourcePoolModel.orderType" clearable>
-                <i-option v-for="{value,label} in $dict.getDictData('0301')" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-            <i-button class="data-form-item serch-button blueButton" @click="getApprovalListByCondition">搜索</i-button>
-        </i-row>
         <data-box :id="235" :columns="columns1" :data="resourcePoolList" @onPageChange="getApprovalListByCondition" ref="databox" :page="pageService"></data-box>
 
         <!--Modal-->
@@ -415,8 +410,8 @@ export default class ApprovalResourcePool extends Page {
   .open-search {
     color: #265ea2;
   }
-  .seek-day{
-      margin-top: 10px;
+  .seek-day {
+    margin-top: 10px;
   }
   .command {
     float: right;
