@@ -1,26 +1,13 @@
 <template>
     <section class="page open-account">
-        <page-header title="客户开户">
-
-        </page-header>
-        <div class="seek-day">
-            <i-button @click="getOrderInfoByTime(0)" type="text">昨日</i-button>
-            <i-button @click="getOrderInfoByTime(1)" type="text">今日</i-button>
-            <i-button @click="getOrderInfoByTime(2)" type="text">本周</i-button>
-            <i-button @click="getOrderInfoByTime(3)" type="text">本月</i-button>
-            <i-button @click="getOrderInfoByTime(4)" type="text">上月</i-button>
-            <i-button @click="getOrderInfoByTime(5)" type="text">最近三月</i-button>
-            <i-button @click="getOrderInfoByTime(6)" type="text">本季度</i-button>
-            <i-button @click="getOrderInfoByTime(7)" type="text">本年</i-button>
-            <i-button @click="openSearch" style="color:#265EA2">
-                <span v-if="!searchOptions">展开</span>
-                <span v-if="searchOptions">收起</span>高级搜索
-            </i-button>
-        </div>
-        <i-row class="data-form" v-if="searchOptions">
-            <i-input class="form-input" v-model="openAccountModel.personalInfo" placeholder="请输入客户姓名\证件号码\联系号码查询"></i-input>
-            <i-button class="blue-button" @click="getCustomerOpenAccount">搜索</i-button>
-        </i-row>
+        <page-header title="客户开户"></page-header>
+         <data-form date-prop="timeSearch" :model="openAccountModel" @on-search="getCustomerOpenAccount" hidden-reset>
+      <template slot="input">
+        <i-form-item prop="personalInfo">
+          <i-input v-model="openAccountModel.personalInfo" placeholder="请输入客户姓名\证件号码\联系号码查询"></i-input>
+        </i-form-item>
+      </template>
+    </data-form> 
         <data-box :id="180" :columns="columns1" :data="openAccountList" ref="databox" @onPageChange="getCustomerOpenAccount" :page="pageService"></data-box>
         <!--开户弹窗-->
         <template>
