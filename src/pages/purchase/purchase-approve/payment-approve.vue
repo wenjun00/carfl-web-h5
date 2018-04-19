@@ -3,9 +3,9 @@
   <section class="page payment-approve">
     <span class="form-title">付款审批</span>
     <i-input class="data-form-item" placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="approvalModel.dynamicParams"></i-input>
-    <i-select placeholder="全部申请类型" class="data-form-item" clearable>
-      <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
-    </i-select>
+    <!--<i-select placeholder="全部申请类型" class="data-form-item" clearable>-->
+      <!--<i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>-->
+    <!--</i-select>-->
     <i-checkbox class="command-item" v-model="status">包含已处理</i-checkbox>
     <i-button @click="openSearch" class="blueButton command-item">搜索</i-button>
     <div class="command-item-sinout">
@@ -107,13 +107,11 @@
       });
     }
     getApproval() {
-      console.log(this.status);
       if (this.status) {
         this.approvalModel.processStatus = "";
       } else {
         this.approvalModel.processStatus = 1130;
       }
-      console.log(this.approvalModel, "this.approvalModel");
       this.refundApplicationService
         .getApprovalRecord(this.approvalModel, this.pageService)
         .subscribe(
@@ -430,7 +428,7 @@
       }
     }
   }
-  
+
   .addApply {
     .ivu-modal-body {
       height: 600px;

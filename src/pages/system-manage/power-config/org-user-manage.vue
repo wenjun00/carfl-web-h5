@@ -9,9 +9,7 @@
         </i-row>
         <i-row >
           <div class="add-org-tree">
-            <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept"
-                           @edit="editDept"></organize-tree>
-          </div>
+            <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree></div>
         </i-row>
       </i-col>
       <i-col :span="20">
