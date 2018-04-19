@@ -1,6 +1,6 @@
 <template>
   <section class="component data-form">
-    <div class="date-query-list row middle-span">
+    <div class="date-query-list row middle-span" v-if="hiddenDateSearch">
       <div v-for="(value, key) in dateQueryTypes" :key="key" class="data-query-item" :class="{active:currentDateType===key}" @click="onSelectQueryDate(key)">
         <label>{{value}}</label>
       </div>
@@ -65,6 +65,20 @@ export default class DataForm extends Vue {
   })
   hiddenReset: boolean;
 
+  // 隐藏日期列表
+  @Prop({
+    type: Boolean,
+    default: false
+  })
+  hiddenDateSearch: boolean;
+
+  // 隐藏日期列表
+  @Prop({
+    type: String,
+    default: "timeSearch"
+  })
+  dateProp: string;
+
   // 发送查询事件
   @Emit("on-search")
   emitSearch(option: { dateSearchType?: number } = {}) {}
@@ -101,7 +115,8 @@ export default class DataForm extends Vue {
       if (this.page) {
         this.page.reset();
       }
-      this.currentDateType = null;
+      this.currentDateType = undefined;
+      this.model[this.dateProp] = undefined;
       this.emitSearch();
     });
   }
@@ -113,7 +128,8 @@ export default class DataForm extends Vue {
     let dataForm = <Form>this.$refs["data-form"];
     dataForm.resetFields();
     this.emitReset();
-    this.currentDateType = null;
+    this.currentDateType = undefined;
+    this.model[this.dateProp] = undefined;
   }
 
   /**
@@ -126,9 +142,10 @@ export default class DataForm extends Vue {
   }
 
   onSelectQueryDate(key) {
-    this.onResetForm();
     this.currentDateType = key;
-    this.emitSearch(this.currentDateType);
+    this.model[this.dateProp] = key;
+    this.onResetForm();
+    this.emitSearch();
   }
 
   /**
