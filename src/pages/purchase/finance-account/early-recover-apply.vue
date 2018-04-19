@@ -1,7 +1,8 @@
 <!--提前收回申请-->
 <template>
   <section class="page early-recover-apply special-input">
-    <div class="header">
+      <page-header title="提前收回申请"></page-header>
+    <!--<div class="header">
       <span class="form-title">提前收回申请</span>
       <div class="command">
         <div class="command-item">
@@ -13,8 +14,8 @@
           <span>导出</span>
         </div>
       </div>
-    </div>
-    <i-row type="flex">
+    </div>-->
+    <i-row type="flex" class="data-form">
       <i-col :span="18">
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
           <i-row>
@@ -745,6 +746,9 @@
   }
   
   .page.early-recover-apply {
+      .data-form{
+          margin-top: 10px;
+      }
     .header {
       border-bottom: 1px solid #cccccc;
       margin-bottom: 20px;

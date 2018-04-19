@@ -1,8 +1,10 @@
 <!--产品包管理-->
 <template>
   <section class="page prod-package-info">
+      <page-header title="产品包管理" hiddenPrint hiddenExport>
+          <command-button label="报价模板下载" icon="xiazai" @click="QuotationTemplatedownload"></command-button>
+      </page-header>
     <i-row class="data-form">
-      <span class="form-title title">产品包管理</span>
       <span>文件名：</span>
       <i-input class="data-form-item" v-model="productModel.fileName"></i-input>
       <span>上传时间：</span>
@@ -10,12 +12,12 @@
       <i-date-picker class="data-form-item" v-model="productModel.maxDate"></i-date-picker>
       <i-button class="blueButton" @click="getProductPackage">搜索</i-button>
       <i-button class="blueButton" @click="resetSeach">重置</i-button>
-      <div class="command">
+      <!--<div class="command">
         <div class="command-item">
           <svg-icon iconClass="xiazai"></svg-icon>
           <i-button type="text" @click="QuotationTemplatedownload">报价模板下载</i-button>
         </div>
-      </div>
+      </div>-->
     </i-row>
     <data-box :id="91" :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService"></data-box>
     <div class="submitBar">

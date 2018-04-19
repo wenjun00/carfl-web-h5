@@ -1,16 +1,14 @@
 <!--收款审批-->
 <template>
   <section class="page receipt-approve">
-    <span class="form-title">收款审批</span>
-    <i-input class="data-form-item" placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="receipt.dynamicCondition"></i-input>
-    <i-select placeholder="全部申请类型" class="data-form-item" v-model="receipt.applicationType" clearable>
-      <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
-    </i-select>
-    <i-checkbox class="command-item" v-model="receipt.isIncludeDealt">包含已处理</i-checkbox>
-    <i-button class="blueButton command-item" @click="searchReceiptapprove">搜索</i-button>
-    <div class="command-item-sinout">
-      <svg-icon iconClass="daochu"></svg-icon>
-      <span>导出</span>
+    <page-header title="收款审批" hiddenPrint></page-header>
+    <div class="data-form">
+      <i-input class="data-form-item" placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="receipt.dynamicCondition"></i-input>
+      <i-select placeholder="全部申请类型" class="data-form-item" v-model="receipt.applicationType" clearable>
+        <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
+      </i-select>
+      <i-checkbox class="command-item" v-model="receipt.isIncludeDealt">包含已处理</i-checkbox>
+      <i-button class="blueButton command-item" @click="searchReceiptapprove">搜索</i-button>
     </div>
     <data-box :id="381" :columns="columns1" :data="data1" :page="pageService"></data-box>
     <!--Model-->
@@ -395,10 +393,14 @@
 
 <style lang="less" scoped>
   .page.receipt-approve {
-    .data-form-item {
-      display: inline-block;
-      width: 10%;
+    .data-form {
+      margin-top: 10px;
       margin-left: 10px;
+      .data-form-item {
+        display: inline-block;
+        width: 10%;
+        margin-left: 10px;
+      }
     }
     .command-item {
       margin-left: 10px;
@@ -411,8 +413,8 @@
       float: right;
       margin-right: 10px;
       margin-top: 10px;
-      span{
-          font-size:12px;
+      span {
+        font-size: 12px;
       }
     }
   }

@@ -1,16 +1,18 @@
 <!--进件收款申请-->
 <template>
   <section class="page purchase-receipt-apply">
-    <span class="form-title">进件收款申请</span>
-    <i-input class="data-form-item" placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询"></i-input>
-    <i-select class="data-form-item" placeholder="全部申请类型">
-      <i-option label="销售收款申请" value="销售收款申请" key="销售收款申请"></i-option>
-      <i-option label="提前结清申请" value="提前结清申请" key="提前结清申请"></i-option>
-      <i-option label="销售收回申请" value="销售收回申请" key="销售收回申请"></i-option>
-    </i-select>
-    <i-checkbox class="command-item">包含已处理</i-checkbox>
-    <i-button class="blueButton command-item">搜索</i-button>
-    <i-button class="blueButton command-item" @click="addNewApply">新增申请</i-button>
+    <page-header title="进件收款申请" hiddenPrint hiddenExport></page-header>
+    <div class="data-form">
+      <i-input class="data-form-item" placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询"></i-input>
+      <i-select class="data-form-item" placeholder="全部申请类型">
+        <i-option label="销售收款申请" value="销售收款申请" key="销售收款申请"></i-option>
+        <i-option label="提前结清申请" value="提前结清申请" key="提前结清申请"></i-option>
+        <i-option label="销售收回申请" value="销售收回申请" key="销售收回申请"></i-option>
+      </i-select>
+      <i-checkbox class="command-item">包含已处理</i-checkbox>
+      <i-button class="blueButton command-item">搜索</i-button>
+      <i-button class="blueButton command-item" @click="addNewApply">新增申请</i-button>
+    </div>
     <data-box :columns="columns1" :data="data1"></data-box>
     <!--Model-->
     <template>
@@ -289,13 +291,17 @@
 </script>
 <style lang="less" scoped>
   .page.purchase-receipt-apply {
-    .data-form-item {
-      display: inline-block;
-      width: 10%;
+    .data-form {
       margin-left: 10px;
+      margin-top: 10px;
+      .data-form-item {
+        display: inline-block;
+        width: 10%;
+        margin-left: 10px;
+      }
     }
-    .command-item{
-        margin-left:10px;
+    .command-item {
+      margin-left: 10px;
     }
   }
 
