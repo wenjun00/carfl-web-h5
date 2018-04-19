@@ -1,6 +1,5 @@
 <!--新增角色-->
 <template>
-  <section class="component add-role">
     <i-form :label-width="110" style="margin-top:20px;" ref="add-role" :model="addRoleModel" :rules="rules">
       <i-form-item label="角色名称" prop="roleName">
         <i-input style="width:260px;" v-model="addRoleModel.roleName"></i-input>
@@ -15,7 +14,6 @@
         <i-input type="textarea" style="width:260px;" v-model="addRoleModel.roleRemark"></i-input>
       </i-form-item>
     </i-form>
-  </section>
 </template>
 
 <script lang="ts">
