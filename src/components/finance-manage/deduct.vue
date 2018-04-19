@@ -31,7 +31,7 @@
         </template>
       </data-grid-item>
     </data-grid>
-    <table border="1" width="900" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
+    <table border="1" width="900" class="modal-item-table">
       <tr height="40">
         <td bgcolor="#F2F2F2" colspan="2">收款方式</td>
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
@@ -40,19 +40,21 @@
       <tr height="40">
         <td colspan="2">汇付</td>
         <td colspan="1">
-          <i-input style="display:inline-block;width:30%;margin-right:10px"></i-input>
+          <i-input class="modal-item-querenhuakou"></i-input>
           <i-button class="blueButton">确认划扣</i-button>
         </td>
         <td colspan="1"><span>已处理</span>
-          <i-icon type="loop" size="20" color="#199ED8" style="margin-left:6px;cursor:pointer"></i-icon>
+          <i-icon type="loop" size="20" color="#199ED8" class="modal-item-chuli"></i-icon>
         </td>
       </tr>
     </table>
 
-    <div style="margin:5px 0px">
-      <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span>划扣记录</span>
+    <div class="modal-item-huakou">
+      <div class="modal-item-huakoujilu"></div>
+      <span>划扣记录</span>
     </div>
-    <data-box :columns="columns1" :data="data1" width="900" style="position:relative;right:10px;" @onPageChange="getRecord" :page="pageService" :noDefaultRow="true"></data-box>
+    <data-box :columns="columns1" :data="data1" width="900" class="modal-item-databox"
+              @onPageChange="getRecord" :page="pageService" :noDefaultRow="true"></data-box>
   </section>
 </template>
 
@@ -61,13 +63,14 @@
   import Component from "vue-class-component";
   import ChangeCard from "~/components/purchase-manage/change-card.vue"
   import DataBox from "~/components/common/data-box.vue";
-  import { ChargeBackService } from "~/services/manage-service/charge-back.service";
-  import { PageService } from "~/utils/page.service";
-  import { Dependencies } from "~/core/decorator";
+  import {ChargeBackService} from "~/services/manage-service/charge-back.service";
+  import {PageService} from "~/utils/page.service";
+  import {Dependencies} from "~/core/decorator";
   import {
     DataGrid,
     DataGridItem
   } from "@zct1989/vue-component";
+
   @Component({
     components: {
       ChangeCard,
@@ -80,23 +83,26 @@
     @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
     @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
-    private data1: Array < Object > = [];
+    private data1: Array<Object> = [];
     private rowObj: any = {};
+
     refresh(row) {
       this.rowObj = row
       this.pageService.reset()
       this.getRecord()
     }
+
     /**
      * 获取划扣记录
      */
     getRecord() {
-      this.chargeBackService.getChargeRecordList({ personalId: this.rowObj.personalId }, this.pageService).subscribe(data => {
+      this.chargeBackService.getChargeRecordList({personalId: this.rowObj.personalId}, this.pageService).subscribe(data => {
         this.data1 = data
-      }, ({ msg }) => {
+      }, ({msg}) => {
         this.$Message.error(msg)
       })
     }
+
     created() {
 
       this.columns1 = [{
@@ -179,4 +185,39 @@
     }
   }
 
+</style>
+<style lang="less" scoped>
+  .component.deduct {
+    .modal-item-table {
+      margin-top: 10px;
+      text-align: center;
+      border: 1px solid #DDDEE1
+    }
+    .modal-item-querenhuakou {
+      display: inline-block;
+      width: 30%;
+      margin-right: 10px
+    }
+    .modal-item-chuli {
+      margin-left: 6px;
+      cursor: pointer
+    }
+    .modal-item-huakou {
+      margin: 5px 0px;
+      .modal-item-huakoujilu {
+        width: 7px;
+        height: 20px;
+        background: #265EA2;
+        display: inline-block;
+        margin-right: 6px;
+        position: relative;
+        top: 4px;
+      }
+    }
+
+    .modal-item-databox{
+      position:relative;right:10px;
+    }
+
+  }
 </style>

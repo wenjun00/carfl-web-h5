@@ -1,44 +1,27 @@
 <!--经销商报价-->
 <template>
   <section class="page dealer-quotes">
-      <page-header title="经销商报价" hiddenPrint></page-header>
-    <div class="form">
-      <div class="data-form">
-        <span>经销商</span>
-        <i-input class="data-form-item" placeholder="请输入经销商" v-model="busModal.quotationName"></i-input>
-        <span>品牌</span>
-        <i-input class="data-form-item" placeholder="请输入品牌" v-model="busModal.carBrandName"></i-input>
-        <span>系列</span>
-        <i-input class="data-form-item" placeholder="请输入系列" v-model="busModal.carSeriesName"></i-input>
-        <span>型号</span>
-        <i-input class="data-form-item" placeholder="请输入型号" v-model="busModal.carName"></i-input>
-        <i-button class="blueButton" @click="seachBusiness">搜索</i-button>
-        <i-button class="blueButton" @click="resetSeach">重置</i-button>
-
-      </div>
-      <div class="command">
-        <!--<div class="command-item">-->
-          <!--<svg-icon iconClass="dayin"></svg-icon>-->
-          <!--<span>打印</span>-->
-        <!--</div>-->
-        <!--<div class="command-item">
-          <svg-icon iconClass="daochu"></svg-icon>
-          <span>导出</span>
-        </div>-->
-        <!--<div class="command-item">-->
-          <!--<svg-icon iconClass="daoru"></svg-icon>-->
-          <!--<span>导入</span>-->
-        <!--</div>-->
-        <!--<div class="command-item">-->
-          <!--<svg-icon iconClass="xiazai"></svg-icon>-->
-          <!--<span>模版下载</span>-->
-        <!--</div>-->
-      </div>
-    </div>
+    <page-header title="经销商报价" hiddenPrint></page-header>
+    <data-form hidden-date-search :model="busModal" @on-search="seachBusiness">
+      <template slot="input">
+        <i-form-item prop="name" label="经销商">
+          <i-input placeholder="请输入经销商" v-model="busModal.quotationName"></i-input>
+        </i-form-item>
+        <i-form-item prop="carBrandName" label="品牌">
+          <i-input placeholder="请输入经销商" v-model="busModal.carBrandName"></i-input>
+        </i-form-item>
+        <i-form-item prop="carSeriesName" label="系列">
+          <i-input placeholder="请输入经销商" v-model="busModal.carSeriesName"></i-input>
+        </i-form-item>
+        <i-form-item prop="carName" label="型号">
+          <i-input placeholder="请输入经销商" v-model="busModal.carName"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
     <data-box :id="154" :columns="columns" :data="carList" @onPageChange="seachBusiness" :page="pageService"></data-box>
     <template>
       <i-modal v-model="editModal" title="编辑报价" width="600" :mask-closable="false" class="edit_class">
-        <edit-car  @seachBusiness="seachBusiness" @close="closeAndRefreshEdit" ref="edit-car"></edit-car>
+        <edit-car @seachBusiness="seachBusiness" @close="closeAndRefreshEdit" ref="edit-car"></edit-car>
         <div slot="footer">
           <i-button @click="cancelEditQuote">取消</i-button>
           <i-button class="blueButton" @click="confirmEditQuote">确定</i-button>
@@ -520,7 +503,7 @@
       }
     }
   }
-
+  
   .bottom_addPrice {
     width: 100%;
     height: 80px;

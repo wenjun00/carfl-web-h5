@@ -26,7 +26,7 @@
                                 </i-input>
                             </i-form-item>
                         </i-col>
-                        <i-col span="12" class="belongSalers">
+                        <i-col span="12" class="belong-salers">
                             <i-form-item label="归属业务员" prop="salesmanName">
                                 <!--<i-select>
                 <i-option label="吴小川" value="吴小川" key="吴小川"></i-option>
@@ -679,7 +679,7 @@ export default class FullPaymentApply extends Page {
       display: none !important;
     }
   }
-  .belongSalers {
+  .belong-salers {
     .ivu-select-selection {
       width: 240%;
       display: inline-block;
@@ -703,18 +703,5 @@ export default class FullPaymentApply extends Page {
     }
   }
 }
-//   .customer-lease-tabs {
-//     .ivu-tabs-bar {
-//       border-bottom: 1px solid #dddee1;
-//       .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
-//         margin: 0;
-//         margin-right: 4px;
-//         padding: 5px 16px 4px;
-//         border: 1px solid #dddee1;
-//         border-bottom: 0;
-//         border-radius: 4px 4px 0 0;
-//         transition: all 0.3s ease-in-out;
-//       }
-//     }
-//   }
+
 </style>

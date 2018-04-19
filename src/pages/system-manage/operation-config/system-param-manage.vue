@@ -1,20 +1,21 @@
 <!--系统参数管理-->
 <template>
     <section class="page system-param-manage">
-        <page-header title="系统参数管理" hiddenPrint hiddenExport>
+        <page-header title="系统参数管理" hiddenPrint hiddenExport></page-header>
+        <data-form hiddenDateSearch :model="systemParameterModel" @on-search="getSystemParam" @on-reset="refreshRoleList">
+            <template slot="input">
+                <i-form-item prop="paramName" label="参数名称：">
+                    <i-input class="form-input" v-model="systemParameterModel.paramName"></i-input>
+                </i-form-item>
+                <i-form-item prop="paramStatus" label="是否启用：">
+                    <i-select class="form-input" v-model="systemParameterModel.paramStatus" clearable>
+                        <i-option label="启用" :value="0" :key="0"></i-option>
+                        <i-option label="停用" :value="1" :key="1"></i-option>
+                    </i-select>
+                </i-form-item>
+            </template>
+        </data-form>
 
-        </page-header>
-        <i-row class="data-form">
-            <span class="title">参数名称</span>
-            <i-input class="form-input" v-model="systemParameterModel.paramName"></i-input>
-            <span class="title">是否启用</span>
-            <i-select class="form-input" v-model="systemParameterModel.paramStatus" clearable>
-                <i-option label="启用" :value="0" :key="0"></i-option>
-                <i-option label="停用" :value="1" :key="1"></i-option>
-            </i-select>
-            <i-button class="form-button" @click="getSystemParam">搜索</i-button>
-            <i-button class="form-button" @click="refreshRoleList">重置</i-button>
-        </i-row>
         <data-box :id="77" :columns="columns1" :data="systemParamsData" @onPageChange="getSystemParam" :page="pageService"></data-box>
 
         <template>
@@ -199,7 +200,7 @@ export default class OrderTransfer extends Page {
 <style lang="less" scoped>
 .page.system-param-manage {
   .data-form {
-      margin-top: 10px;
+    margin-top: 10px;
     .title {
       margin-left: 10px;
     }

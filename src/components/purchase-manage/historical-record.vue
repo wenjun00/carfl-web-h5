@@ -1,9 +1,6 @@
 <template>
   <section class="component historical-record">
-    <i-table height="500" highlight-row @on-current-change="getCurrentSelectionData" ref="databox" :columns="carColumns" :data="historicalDataset"></i-table>
-    <i-row style="margin-top:20px;">
-      <i-button class="blueButton" style="float:right" @click="chooseback">选择并返回</i-button>
-    </i-row>
+    <i-table height="500" highlight-row @on-current-change="onCurrentChange" ref="databox" :columns="orderColumns" :data="orderDataSet"></i-table>
   </section>
 </template>
 
@@ -13,7 +10,6 @@ import DataBox from "~/components/common/data-box.vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
-import { CarService } from "~/services/manage-service/car.service";
 import { Emit } from "vue-property-decorator";
 import { FilterService } from "~/utils/filter.service";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
@@ -24,30 +20,14 @@ import { ProductOrderService } from "~/services/manage-service/product-order.ser
   }
 })
 export default class AddCar extends Vue {
-  @Dependencies(ProductOrderService)
-  private productOrderService: ProductOrderService;
-  @Dependencies(CarService) private carService: CarService;
-  private isShown: Boolean = true;
-  private dataList: any = [];
-  private treeData: any = [];
-  private treeId: any;
-  private multipleSelection: any = [];
-  private currentRow: any = {};
+  // @Dependencies(ProductOrderService)
+  // private productOrderService: ProductOrderService;
+  @Prop() data: any;
 
-  @Emit("distributionData")
-  distributionData(multipleSelection, dd) {}
-  @Emit("closeProduct")
-  closeProduct() {}
-  @Emit("close")
-  close() {}
-  @Prop() rowData: any;
-  @Emit("update:rowData")
-  updateRowData(row) {}
-  @Prop() addcarData: any;
-  @Prop() historicalDataset: any;
-  @Prop() row: Object;
+  private currentRow: any;
+  private orderDataSet: Array<any> = [];
 
-  private carColumns: any = [
+  private orderColumns: any = [
     {
       title: "订单号",
       key: "orderNumber",
@@ -90,26 +70,41 @@ export default class AddCar extends Vue {
     }
   ];
 
-  showCategory() {
-    this.isShown = !this.isShown;
-  }
-  getCurrentSelectionData(currentRow) {
+  /**
+   * 当前选中行变化处理
+   */
+  onCurrentChange(currentRow) {
     this.currentRow = currentRow;
   }
-  
+
   /**
-   * 选择并返回
+   * 获取当前选中项
    */
-  chooseback() {
-    this.productOrderService
-      .findOrderInfoByOrderNumber({
-        orderNumber: this.currentRow.orderNumber
-      })
-      .subscribe(data => {
-        this.closeProduct();
-        this.distributionData(data, this.currentRow.orderStatus);
-      });
-    this.close();
+  getCurrentRow() {
+    if (!this.currentRow) {
+      this.$Message.error("未选中任何数据。");
+    } else {
+      return this.currentRow;
+    }
+  }
+
+  // /**
+  //  * 选择并返回
+  //  */
+  // chooseback() {
+  //   this.productOrderService
+  //     .findOrderInfoByOrderNumber({
+  //       orderNumber: this.currentRow.orderNumber
+  //     })
+  //     .subscribe(data => {
+  //       this.closeProduct();
+  //       this.distributionData(data, this.currentRow.orderStatus);
+  //     });
+  //   this.close();
+  // }
+
+  mounted() {
+    this.orderDataSet = this.data;
   }
 }
 </script>

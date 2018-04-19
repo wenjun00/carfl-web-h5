@@ -10,7 +10,7 @@
     </div>
     <i-form ref="data-form" inline :rules="rules" label-position="left" :model="model">
       <div class="row" style="flex-wrap:nowrap;width:100%;">
-        <div class="row middle-span col-span form-item-container" v-show="showCollapseContext">
+        <div class="row middle-span col-span form-item-container" v-show="showCollapseContext||hiddenDateSearch">
           <slot name="input"></slot>
           <i-button v-if="!hiddenSearch" @click="onSubmitForm" class="search-button" style="vertical-align:top">搜索</i-button>
           <i-button v-if="showResetButton" @click="onResetForm" class="reset-button" style="vertical-align:top">重置</i-button>
@@ -142,9 +142,9 @@ export default class DataForm extends Vue {
   }
 
   onSelectQueryDate(key) {
+    this.onResetForm();
     this.currentDateType = key;
     this.model[this.dateProp] = key;
-    this.onResetForm();
     this.emitSearch();
   }
 
@@ -219,6 +219,9 @@ export default class DataForm extends Vue {
   .form-item-container {
     & > * {
       margin: 0 5px;
+    }
+    .ivu-form-item-content {
+      display: inline;
     }
   }
 }

@@ -1,35 +1,40 @@
 <!--系统备份-->
 <template>
     <section class="page system-backups">
-           <page-header title="系统备份"></page-header>
+        <page-header title="系统备份"></page-header>
         <!-- <i-row class="data-form">
-            <span class="span-heand">mysql文件名：</span>
-            <i-input class="form-input" v-model="systemBackUpModel.mysqlName"></i-input>
-            <span>mongodb文件名：</span>
-            <i-input class="form-input" v-model="systemBackUpModel.mongdbName"></i-input>
-            <span>备份类型：</span>
-            <i-select v-model="systemBackUpModel.type" class="form-input" clearable>
-                <i-option label="自动" :value="0" :key="0"></i-option>
-                <i-option label="手动" :value="1" :key="1"></i-option>
-            </i-select>
-            <span class="title">备份时间：</span>
-            <i-date-picker class="form-item" v-model="systemBackUpModel.startTime"></i-date-picker>~
-            <i-date-picker class="form-item" v-model="systemBackUpModel.endTime"></i-date-picker>
+    
             <i-button class="form-button" @click="getSystemBackupList">搜索</i-button>
             <i-button class="form-button" @click="refreshRoleList">重置</i-button>
             <i-button class="form-button" @click="addNewBackups">新增备份</i-button>
         </i-row> -->
-         <data-form :model="systemBackUpModel" @on-search="getSystemBackupList">
-            <template slot="input" >
+        <data-form hiddenDateSearch :model="systemBackUpModel" @on-search="getSystemBackupList">
+            <template slot="input">
                 <i-form-item prop="mysqlName" label="mysql文件名：">
-                   <i-input class="form-input" v-model="systemBackUpModel.mysqlName"></i-input>
+                    <i-input v-model="systemBackUpModel.mysqlName"></i-input>
                 </i-form-item>
                 <i-form-item prop="mongdbName" label="mongodb文件名：">
-                   <i-input class="form-input" v-model="systemBackUpModel.mongdbName"></i-input>
+                    <i-input v-model="systemBackUpModel.mongdbName"></i-input>
                 </i-form-item>
+                <i-form-item prop="type" label="备份类型：">
+                    <i-select v-model="systemBackUpModel.type" clearable>
+                        <i-option label="自动" :value="0" :key="0"></i-option>
+                        <i-option label="手动" :value="1" :key="1"></i-option>
+                    </i-select>
+                </i-form-item>
+                <i-form-item prop="startTime" label="备份时间：">
+                    <i-date-picker v-model="systemBackUpModel.startTime"></i-date-picker>~
+                </i-form-item>
+                <i-form-item prop="endTime">
+                    <i-date-picker v-model="systemBackUpModel.endTime"></i-date-picker>
+                </i-form-item>
+    
+                <i-button class="form-button" @click="addNewBackups">新增备份</i-button>
+
+
             </template>
         </data-form>
-        <i-button class="form-button" @click="addNewBackups">新增备份</i-button>
+        
         <data-box :id="69" :columns="columns1" :data="systemBackUpList" @onPageChange="getSystemBackupList" :page="pageService"></data-box>
     </section>
 </template>
@@ -250,8 +255,8 @@ export default class SystemBackups extends Page {
 <style lang="less" scoped>
 .page.system-backups {
   .data-form {
-    .span-heand{
-        margin-left: 10px;
+    .span-heand {
+      margin-left: 10px;
     }
     .form-input {
       display: inline-block;

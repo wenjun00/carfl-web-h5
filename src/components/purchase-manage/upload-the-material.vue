@@ -81,7 +81,7 @@
     @Dependencies(PersonalMaterialService) private personalMaterialService: PersonalMaterialService;
     @ModuleState('productId') productId
     private model1: String = '';
-    private cityList: Array < object > = [];
+    private cityList: any = [];
     private dataList: Array < any > = [];
 
     private openUpload: Boolean = false;
@@ -92,7 +92,7 @@
      */
     resetfileList(){
     this.dataList=[]
-    }
+}
     /**
      * 反显
      */
@@ -116,7 +116,8 @@
         data.map(v=>{
             v.name=v.uploadName,
             v.url=v.materialUrl,
-            v.type=v.materialType
+            v.typeup=v.materialType,
+            v.upid=v.id
         })
         this.dataList=data
     }
@@ -155,7 +156,9 @@
             id: item.response.id,
             size: item.size,
             status: item.status,
-            createTime: item.response.createTime
+            createTime: item.response.createTime,
+            typeup:this.cityList.find(v=>v.id===this.model1).type||''
+
           })
         }
       });

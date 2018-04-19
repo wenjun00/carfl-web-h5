@@ -2,21 +2,26 @@
 <template>
   <section class="component deduct-record-has-search">
     <span>支付日期：</span>
-    <i-date-picker type="date" style="display:inline-block;width:10%" v-model="customerRepayModel.startTime"></i-date-picker>~
-    <i-date-picker type="date" style="display:inline-block;width:10%" v-model="customerRepayModel.endTime"></i-date-picker>
-    <span style="margin-left:10px;">期数：</span>
-    <i-input style="width:10%;display:inline-block" v-model="customerRepayModel.periods"></i-input>
-    <i-select placeholder="全部交易状态" style="width:14%;display:inline-block;margin-left:10px;" v-model="customerRepayModel.dealStatus" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0115')" :key="value" :label="label" :value="value"></i-option>
+    <i-date-picker class="modal-item-date-picker" type="date" v-model="customerRepayModel.startTime"></i-date-picker>
+    ~
+    <i-date-picker class="modal-item-date-picker" type="date" v-model="customerRepayModel.endTime"></i-date-picker>
+    <span class="modal-item-qishu">期数：</span>
+    <i-input class="modal-item-periods" v-model="customerRepayModel.periods"></i-input>
+    <i-select placeholder="全部交易状态" class="modal-item-deal-status"
+              v-model="customerRepayModel.dealStatus" clearable>
+      <i-option v-for="{value,label} in $dict.getDictData('0115')" :key="value" :label="label"
+                :value="value"></i-option>
     </i-select>
     <i-button class="blueButton" @click="query">搜索</i-button>
-    <div style="float:right;margin-right:10px;margin-top:10px;">
-      <div style="font-size:16px;cursor:pointer;display:inline-block;margin-left:10px;color:#3367A7">
+    <div class="modal-item">
+      <div class="modal-item-daochu">
         <svg-icon iconClass="daochu"></svg-icon>
-        <span style="font-size: 12px;">导出</span>
+        <span>导出</span>
       </div>
     </div>
-    <div style="line-height:40px;font-size:14px;height:40px"><span>客户姓名：{{customerRepayObj.customerName}}</span><span style="float:right;">出账客户号：{{customerRepayObj.clientNumber}}</span></div>
+    <div class="modal-item-kehu">
+      <span>客户姓名：{{customerRepayObj.customerName}}</span>
+      <span class="modal-item-kehuhao" >出账客户号：{{customerRepayObj.clientNumber}}</span></div>
     <i-table ref="table" class="i-table" :columns="columns1" :data="data1" stripe size="small"></i-table>
   </section>
 </template>
@@ -38,6 +43,7 @@
   import {
     PaymentScheduleService
   } from "~/services/manage-service/payment-schedule.service";
+
   @Component({
     components: {
       DataBox,
@@ -49,7 +55,7 @@
     @Dependencies(PageService) private pageService: PageService;
     private columns1: any;
     private customerRepayModel: any = {
-      personalId:'',
+      personalId: '',
       orderId: '',
       startDate: '',
       endDate: '',
@@ -60,7 +66,8 @@
       customerName: '',
       clientNumber: '',
     };
-    private data1: Array < Object >= [];
+    private data1: Array<Object> = [];
+
     refresh(row) {
       this.customerRepayModel = {
         personalId: row.personalId,
@@ -75,24 +82,26 @@
       this.data1 = []
       this.query()
     }
+
     query() {
       this.paymentScheduleService.getCustomerDeductionRecord(this.customerRepayModel).subscribe(data => {
         this.customerRepayObj.customerName = data.customerName
         this.customerRepayObj.clientNumber = data.clientNumber
         this.data1 = data.deductionRecordDetailModels
       }, ({
-        msg
-      }) => {
+            msg
+          }) => {
         this.$Message.error(msg)
       })
     }
+
     created() {
       this.columns1 = [{
-          title: '序号',
-          type: 'index',
-          width: 60,
-          align: 'center'
-        },
+        title: '序号',
+        type: 'index',
+        width: 60,
+        align: 'center'
+      },
         {
           title: '期数',
           key: 'periods',
@@ -163,7 +172,45 @@
 
 </script>
 
-<style>
-
+<style lang="less" scoped>
+  .component.deduct-record-has-search {
+    .modal-item-date-picker {
+      display: inline-block;
+      width: 10%
+    }
+    .modal-item-qishu {
+      margin-left: 10px;
+    }
+    .modal-item-periods {
+      width: 10%;
+      display: inline-block
+    }
+    .modal-item-deal-status {
+      width: 14%;
+      display: inline-block;
+      margin-left: 10px;
+    }
+    .modal-item {
+      float: right;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+    .modal-item-daochu {
+      font-size: 16px;
+      cursor: pointer;
+      display: inline-block;
+      margin-left: 10px;
+      color: #3367A7;
+      span{
+        font-size: 12px;
+      }
+    }
+    .modal-item-kehu{
+      line-height:40px;font-size:14px;height:40px
+    }
+    .modal-item-kehuhao{
+      float:right;
+    }
+  }
 
 </style>

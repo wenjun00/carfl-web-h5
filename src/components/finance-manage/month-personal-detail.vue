@@ -1,7 +1,7 @@
 <!--月还款报表个人详情-->
 <template>
   <section class="component month-personal-detail">
-    <data-box :data="data1" :columns="columns1"></data-box>
+    <data-box :data="data1" :columns="columns1"> </data-box>
   </section>
 </template>
 

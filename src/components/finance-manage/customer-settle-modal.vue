@@ -1,12 +1,12 @@
 <!--客户还款查询（客户结算号）-->
 <template>
   <section class="component customer-settle-modal">
-    <i-select style="margin-top:10px;" v-model="settleChannel" @on-change="changeSettle">
+    <i-select class="modal-item" v-model="settleChannel" @on-change="changeSettle">
       <i-option label="汇付" :key="162" :value="162"></i-option>
       <i-option label="富友" :key="163" :value="163"></i-option>
       <i-option label="对公转账" :key="164" :value="164"></i-option>
     </i-select>
-    <data-grid style="margin-top:10px;" :labelWidth="120">
+    <data-grid  class="modal-item" :labelWidth="120">
       <data-grid-item label="账户类型" :span="12">
         <template>
           <div>
@@ -148,7 +148,11 @@
   }
 
 </script>
-<style>
-
+<style lang="less" scoped>
+  .component.customer-settle-modal{
+    .modal-item{
+      margin-top:10px;
+    }
+  }
 
 </style>

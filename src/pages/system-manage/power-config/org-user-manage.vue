@@ -185,7 +185,6 @@
     private deptLevel: number | null = null;
     private deptCode: String = "";
     // private deptPid: number | null = null;
-    private openColumnsConfig: Boolean = false;
     private editNewOrgModal: Boolean = false;
     private batchManageDeviceModal: Boolean = false;
     private warnStatus: any = null;
@@ -215,283 +214,282 @@
       this.getUserListByCondition();
       this.getTree();
     }
-
-    created() {
-      this.deptObject = {
-        deptName: "",
-        deptId: "",
-        company: ""
-      };
-      this.modifyUserModel = {
-        userName: "",
-        realName: "",
-        companyName: "",
-        status: "",
-        phone: ""
-      };
-      this.manageService.getAllDepartment().subscribe(data => {
-        this.deptObject = data[0];
-        this.dataList = data;
-      });
-      this.userListModel = {
-        userName: "",
-        realName: "",
-        status: "",
-        deptId: 1
-      };
-      this.columns1 = [
-        {
-          align: "center",
-          type: "selection",
-          fixed: "left",
-          width: 60
-        },
-        {
-          title: "操作",
-          width: 360,
-          fixed: "left",
-          align: "center",
-          render: (h, {row, column, index}) => {
-            if (row.userManager === 417) {
-              return h("div", [
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.allotRole(row);
-                      }
-                    }
+  created() {
+    this.deptObject = {
+      deptName: '',
+      deptId: '',
+      company: ''
+    }
+    this.modifyUserModel = {
+      userName: '',
+      realName: '',
+      companyName: '',
+      status: '',
+      phone: ''
+    }
+    this.manageService.getAllDepartment().subscribe(data => {
+      this.deptObject = data[0]
+      this.dataList = data
+    })
+    this.userListModel = {
+      userName: '',
+      realName: '',
+      status: '',
+      deptId: 1
+    }
+    this.columns1 = [
+      {
+        align: 'center',
+        type: 'selection',
+        fixed: 'left',
+        width: 60
+      },
+      {
+        title: '操作',
+        width: 360,
+        fixed: 'left',
+        align: 'center',
+        render: (h, { row, column, index }) => {
+          if (row.userManager === 417) {
+            return h('div', [
+              h(
+                'i-button',
+                {
+                  props: {
+                    type: 'text'
                   },
-                  "分配角色"
-                ),
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.modifyUser(row);
-                      }
-                    }
+                  style: {
+                    color: '#265EA2'
                   },
-                  "修改"
-                ),
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.resetPwd(row);
-                      }
+                  on: {
+                    click: () => {
+                      this.allotRole(row)
                     }
+                  }
+                },
+                '分配角色'
+              ),
+              h(
+                'i-button',
+                {
+                  props: {
+                    type: 'text'
                   },
-                  "重置密码"
-                ),
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.deviceManageOpen(row);
-                      }
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.modifyUser(row)
                     }
+                  }
+                },
+                '修改'
+              ),
+              h(
+                'i-button',
+                {
+                  props: {
+                    type: 'text'
                   },
-                  "设备管理"
-                ),
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.dataPowerClick(row);
-                      }
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.resetPwd(row)
                     }
+                  }
+                },
+                '重置密码'
+              ),
+              h(
+                'i-button',
+                {
+                  props: {
+                    type: 'text'
                   },
-                  "数据权限"
-                )
-              ]);
-            } else {
-              return h("div", [
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.allotRole(row);
-                      }
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.deviceManageOpen(row)
                     }
+                  }
+                },
+                '设备管理'
+              ),
+              h(
+                'i-button',
+                {
+                  props: {
+                    type: 'text'
                   },
-                  "分配角色"
-                ),
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.modifyUser(row);
-                      }
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.dataPowerClick(row)
                     }
+                  }
+                },
+                '数据权限'
+              )
+            ])
+          } else {
+            return h('div', [
+              h(
+                'i-button',
+                {
+                  props: {
+                    type: 'text'
                   },
-                  "修改"
-                ),
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.resetPwd(row);
-                      }
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.allotRole(row)
                     }
+                  }
+                },
+                '分配角色'
+              ),
+              h(
+                'i-button',
+                {
+                  props: {
+                    type: 'text'
                   },
-                  "重置密码"
-                ),
-                h(
-                  "i-button",
-                  {
-                    props: {
-                      type: "text"
-                    },
-                    style: {
-                      color: "#265EA2"
-                    },
-                    on: {
-                      click: () => {
-                        this.deviceManageOpen(row);
-                      }
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.modifyUser(row)
                     }
+                  }
+                },
+                '修改'
+              ),
+              h(
+                'i-button',
+                {
+                  props: {
+                    type: 'text'
                   },
-                  "设备管理"
-                )
-              ]);
-            }
-          }
-        },
-        {
-          align: "center",
-          title: "用户名",
-          key: "userUsername",
-          editable: true,
-          width: 90
-        },
-        {
-          align: "center",
-          title: "姓名",
-          editable: true,
-          key: "userRealname",
-          width: 90
-        },
-        {
-          align: "center",
-          title: "所属机构",
-          editable: true,
-          key: "deptName",
-          width: 90
-        },
-        {
-          align: "center",
-          editable: true,
-          title: "状态",
-          key: "status",
-          width: 90,
-          render: (h, {row, columns, index}) => {
-            if (row.userStatus === 0) {
-              return h("span", {}, "启用");
-            } else if (row.userStatus === 1) {
-              return h("span", {}, "停用");
-            }
-          }
-        },
-        {
-          align: "center",
-          editable: true,
-          title: "电话",
-          key: "userPhone"
-        },
-        {
-          align: "center",
-          editable: true,
-          title: "备注",
-          key: "userRemark",
-          ellipsis:true
-        },
-
-        {
-          align: "center",
-          editable: true,
-          title: "创建人",
-          key: "operatorName"
-        },
-        {
-          align: "center",
-          editable: true,
-          title: "创建时间",
-          key: "operateTime",
-          render: (h, {row, columns, index}) => {
-            return h(
-              "span",
-              FilterService.dateFormat(row.operateTime, "yyyy-MM-dd hh:mm:ss")
-            );
-          }
-        },
-        {
-          align: "center",
-          title: "数据权限",
-          editable: true,
-          key: "userManager",
-          render: (h, {row, column, index}) => {
-            return h("span", {}, this.$dict.getDictName(row.userManager));
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.resetPwd(row)
+                    }
+                  }
+                },
+                '重置密码'
+              ),
+              h(
+                'i-button',
+                {
+                  props: {
+                    type: 'text'
+                  },
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.deviceManageOpen(row)
+                    }
+                  }
+                },
+                '设备管理'
+              )
+            ])
           }
         }
-      ];
-    }
+      },
+      {
+        align: 'center',
+        title: '用户名',
+        key: 'userUsername',
+        editable: true,
+        width: 90
+      },
+      {
+        align: 'center',
+        title: '姓名',
+        editable: true,
+        key: 'userRealname',
+        width: 90
+      },
+      {
+        align: 'center',
+        title: '所属机构',
+        editable: true,
+        key: 'deptName',
+        width: 90
+      },
+      {
+        align: 'center',
+        editable: true,
+        title: '状态',
+        key: 'status',
+        width: 90,
+        render: (h, { row, columns, index }) => {
+          if (row.userStatus === 0) {
+            return h('span', {}, '启用')
+          } else if (row.userStatus === 1) {
+            return h('span', {}, '停用')
+          }
+        }
+      },
+      {
+        align: 'center',
+        editable: true,
+        title: '电话',
+        key: 'userPhone'
+      },
+      {
+        align: 'center',
+        editable: true,
+        title: '备注',
+        key: 'userRemark',
+        ellipsis: true
+      },
+
+      {
+        align: 'center',
+        editable: true,
+        title: '创建人',
+        key: 'operatorName'
+      },
+      {
+        align: 'center',
+        editable: true,
+        title: '创建时间',
+        key: 'operateTime',
+        render: (h, { row, columns, index }) => {
+          return h(
+            'span',
+            FilterService.dateFormat(row.operateTime, 'yyyy-MM-dd hh:mm:ss')
+          )
+        }
+      },
+      {
+        align: 'center',
+        title: '数据权限',
+        editable: true,
+        key: 'userManager',
+        render: (h, { row, column, index }) => {
+          return h('span', {}, this.$dict.getDictName(row.userManager))
+        }
+      }
+    ]
+  }
    onSelectionChange(selection){
       this.multipleSelection = selection
    }
@@ -509,408 +507,393 @@
           })
       }
     }
-    dataPowerModalChange(flag) {
-      if (!flag) {
-        let _dataPower: any = this.$refs["data-power"];
-        _dataPower.resetTree();
-      }
-    }
-
-    /**
-     * 确定数据权限
-     */
-    confirmDataPower() {
-      let _dataPower: any = this.$refs["data-power"];
-      _dataPower.allotUserDataPower(this.userId);
-    }
-
-    closeAndRefreshBatch() {
-      this.batchManageDeviceModal = false;
-      this.getUserListByCondition();
-    }
-
-    modifyUserClose() {
-      this.modifyUserModal = false;
-      this.getUserListByCondition();
-    }
-
-    closeAdd() {
-      this.addNewUserModal = false;
-      this.getUserListByCondition();
-    }
-
-
-
-    /**
-     * 添加机构
-     */
-    addNewOrg() {
-      this.addNewOrgModal = true;
-      let _add: any = this.$refs["add-org"];
-      _add.getCompanys();
-    }
-
-    /**
-     * 修改用户
-     */
-    modifyUser(row) {
-      this.modifyUserModal = true;
-      this.modifyUserModel = row;
-      let _modifyUser: any = this.$refs["modify-user"];
-      _modifyUser.getData(this.modifyUserModel);
-    }
-
-    resetPwd(row) {
-      this.loginService
-        .resetPassword({
-          userId: row.id
-        })
-        .subscribe(val => {
-          this.$Message.success("重置成功");
-        });
-    }
-
-    deviceManageOpen(row) {
-      this.deviceManageModal = true;
-      this.userName = row.userName;
-      let _deviceManage: any = this.$refs["device-manage"];
-      _deviceManage.makeData(row);
-    }
-
-    /**
-     * 新增用户
-     */
-    addNewUser() {
-      this.addNewUserModal = true;
-      let _addUser: any = this.$refs["add-user"];
-      _addUser.makeData(this.deptObject);
-    }
-
-    allotRole(row) {
-      this.allotRoleModal = true;
-      this.batchAllotFlag = false;
-      let _allotRole = <Modal>this.$refs["allot-role-modal"];
-      _allotRole.makeData(row);
-      _allotRole.getRoleList();
-      this.userId = row.id;
-    }
-    /**
-     * 批量分配角色
-     */
-    batchAllotRole() {
-      let multiple: any = this.$refs["databox"];
-      this.multipleUserId = multiple.getCurrentSelection();
-      if (!this.multipleUserId || !this.multipleUserId.length) {
-          this.warnStatus=true;
-          setTimeout(() => {
-            this.warnStatus = false;
-          }, 2000);
-          return this.$Message.error("请选择用户");
-      } else {
-        this.allotRoleModal = true;
-        let _allotRole = <Modal>this.$refs["allot-role-modal"];
-        _allotRole.getRoleList();
-        this.batchAllotFlag = true;
-        this.userIds = this.multipleUserId.map(v => v.id);
-      }
-    }
-
-
-
-    closeEditOrg() {
-      this.editNewOrgModal = false;
-      this.getTree();
-    }
-
-    closeOrg() {
-      this.addNewOrgModal = false;
-      this.getTree();
-    }
-    buttonOnlyOne1() {
-      if (!this.warnStatus) {
-        this.batchAllotRole()
-      }
-    }
-    buttonOnlyOne2() {
-      if (!this.warnStatus) {
-        this.batchManageDevice()
-      }
-    }
-
-    /**
-     * 批量管理设备
-     */
-    batchManageDevice() {
-      let multiple: any = this.$refs["databox"];
-      this.multipleUserId = multiple.getCurrentSelection();
-      if (!this.multipleUserId || !this.multipleUserId.length) {
-        this.warnStatus=true;
-        setTimeout(() => {
-          this.warnStatus = false;
-        }, 2000);
-        return this.$Message.error("请选择用户");
-      } else {
-        this.batchManageDeviceModal = true;
-        this.userIds = this.multipleUserId.map(v => v.id);
-        let _batchManage: any = this.$refs["batch-manage-device"];
-        _batchManage.makeData(this.multipleUserId);
-      }
-    }
-
-    getUserListByCondition() {
-      // let deptId =
-      this.manageService
-        .getUsersByDeptPage(this.userListModel, this.pageService)
-        .subscribe(
-          data => {
-            this.userList = data.filter(x=>{
-              return x.userStatus==0;
-            })
-          },
-          ({msg}) => {
-            this.$Message.error(msg);
-          }
-        );
-    }
-    searchUserListByCondition(){
-      this.manageService
-        .getUsersByDeptPage(this.userListModel, this.pageService)
-        .subscribe(
-          data => {
-            this.userList = data
-          },
-          ({msg}) => {
-            this.$Message.error(msg);
-          }
-        );
-    }
-
-
-    /**
-     * 树change
-     */
-    onChange(value) {
-      this.userListModel.deptId = value.id;
-      this.deptLevel = value.deptLevel;
-      this.deptObject = value;
-      this.addOrgModel = value;
-      this.manageService
-        .getUsersByDeptPage(this.userListModel, this.pageService)
-        .subscribe(
-          data => {
-            this.userList = data
-          },
-          ({msg}) => {
-            this.$Message.error(msg);
-          }
-        );
-    }
-
-    /**
-     * 数据权限
-     */
-    dataPowerClick(row) {
-      this.dataPowerModal = true;
-      this.userId = row.id;
-      let _dataPower: any = this.$refs["data-power"];
-      _dataPower.getAllOrg(this.userId);
-    }
-
-    /**
-     * 确认分配角色
-     */
-    allotRoleClick() {
-      let _addRole = <Modal>this.$refs["allot-role-modal"];
-      _addRole.allotRole();
-    }
-
-    removeDept(value) {
-      this.$Modal.confirm({
-        title: "提示",
-        content: "确定删除此组织机构吗？",
-        onOk: () => {
-          this.departmentService
-            .deleteDept({
-              deptId: value.id
-            })
-            .subscribe(
-              val => {
-                this.$Message.success("删除成功！");
-                this.getTree();
-              },
-              ({msg}) => {
-                this.$Message.error(msg);
-              }
-            );
-        }
-      });
-    }
-
-    getTree() {
-      this.manageService.getAllDepartment().subscribe(
-        data => {
-          this.deptObject = data[0];
-          this.dataList = data;
-        },
-        ({msg}) => {
-          this.$Message.error(msg);
-        }
-      );
-    }
-
-    /**
-     * 添加机构
-     */
-    addDept(val) {
-      let companyId = val.companyId;
-      this.addNewOrgModal = true;
-      if (this.deptLevel) {
-        this.addOrgModel.deptLevel = this.deptLevel;
-      } else {
-        this.addOrgModel.deptLevel = 401;
-      }
-      let _add: any = this.$refs["add-org"];
-      _add.addDept(companyId);
-    }
-
-    /**
-     * 确定添加机构
-     */
-    confirmAddOrg() {
-      let _confirmAdd: any = this.$refs["add-org"];
-      _confirmAdd.confirmAddOrg();
-    }
-
-    /**
-     * 确定编辑机构
-     */
-    confirmEditOrg() {
-      let _confirmEdit: any = this.$refs["edit-org"];
-      _confirmEdit.confirmEditOrg();
-    }
-
-    closeAndRefreshTree() {
-      this.allotRoleModal = false;
-      this.getTree();
-    }
-
-    editDept(val) {
-      console.log(val, 778);
-      this.editNewOrgModal = true;
-      let _edit: any = this.$refs["edit-org"];
-      _edit.getDeptInfo(val);
-    }
-
-    cancelAddOrg() {
-      this.addNewOrgModal = false;
-      let _confirmAdd: any = this.$refs["add-org"];
-      _confirmAdd.resetInput();
-    }
-
-    cancelEditOrg() {
-      this.editNewOrgModal = false;
-    }
-
-    confirmModifyUser() {
-      let _modifyUser: any = this.$refs["modify-user"];
-      _modifyUser.updateUser();
-    }
-
-    visiableChange(val) {
-      if (!val) {
-        let _allotRole = <Modal>this.$refs["allot-role-modal"];
-        _allotRole.resetForm();
-      }
-    }
-
-    newUserModalChange(val) {
-      if (!val) {
-        let _addUser = <Modal>this.$refs["add-user"];
-        _addUser.resetForm();
-      }
-    }
-
-    confirmAddUser() {
-      let _addUser = <Modal>this.$refs["add-user"];
-      _addUser.confirmAddUser();
-    }
-
-    /**
-     * 确定批量管理设备
-     */
-    confirmBatchManageDevice() {
-      let _batchManage: any = this.$refs["batch-manage-device"];
-      _batchManage.confirmBatchMange();
-    }
-
-    /**
-     * 列配置
-     */
-    columnsConfig() {
-      this.openColumnsConfig = true;
-    }
-
-    /**
-     * 重置搜索
-     */
-    refreshRoleList() {
-      this.userListModel = {
-        userName: "",
-        realName: "",
-        status: "",
-        deptId: 1
-      };
+  dataPowerModalChange(flag) {
+    if (!flag) {
+      let _dataPower: any = this.$refs['data-power']
+      _dataPower.resetTree()
     }
   }
+
+  /**
+   * 确定数据权限
+   */
+  confirmDataPower() {
+    let _dataPower: any = this.$refs['data-power']
+    _dataPower.allotUserDataPower(this.userId)
+  }
+
+  closeAndRefreshBatch() {
+    this.batchManageDeviceModal = false
+    this.getUserListByCondition()
+  }
+
+  modifyUserClose() {
+    this.modifyUserModal = false
+    this.getUserListByCondition()
+  }
+
+  closeAdd() {
+    this.addNewUserModal = false
+    this.getUserListByCondition()
+  }
+
+  /**
+   * 添加机构
+   */
+  addNewOrg() {
+    this.addNewOrgModal = true
+    let _add: any = this.$refs['add-org']
+    _add.getCompanys()
+  }
+
+  /**
+   * 修改用户
+   */
+  modifyUser(row) {
+    this.modifyUserModal = true
+    this.modifyUserModel = row
+    let _modifyUser: any = this.$refs['modify-user']
+    _modifyUser.getData(this.modifyUserModel)
+  }
+
+  resetPwd(row) {
+    this.loginService
+      .resetPassword({
+        userId: row.id
+      })
+      .subscribe(val => {
+        this.$Message.success('重置成功')
+      })
+  }
+
+  deviceManageOpen(row) {
+    this.deviceManageModal = true
+    this.userName = row.userName
+    let _deviceManage: any = this.$refs['device-manage']
+    _deviceManage.makeData(row)
+  }
+
+  /**
+   * 新增用户
+   */
+  addNewUser() {
+    this.addNewUserModal = true
+    let _addUser: any = this.$refs['add-user']
+    _addUser.makeData(this.deptObject)
+  }
+
+  allotRole(row) {
+    this.allotRoleModal = true
+    this.batchAllotFlag = false
+    let _allotRole = <Modal>this.$refs['allot-role-modal']
+    _allotRole.makeData(row)
+    _allotRole.getRoleList()
+    this.userId = row.id
+  }
+  /**
+   * 批量分配角色
+   */
+  batchAllotRole() {
+    let multiple: any = this.$refs['databox']
+    this.multipleUserId = multiple.getCurrentSelection()
+    if (!this.multipleUserId || !this.multipleUserId.length) {
+      this.warnStatus = true
+      setTimeout(() => {
+        this.warnStatus = false
+      }, 2000)
+      return this.$Message.error('请选择用户')
+    } else {
+      this.allotRoleModal = true
+      let _allotRole = <Modal>this.$refs['allot-role-modal']
+      _allotRole.getRoleList()
+      this.batchAllotFlag = true
+      this.userIds = this.multipleUserId.map(v => v.id)
+    }
+  }
+
+  closeEditOrg() {
+    this.editNewOrgModal = false
+    this.getTree()
+  }
+
+  closeOrg() {
+    this.addNewOrgModal = false
+    this.getTree()
+  }
+  buttonOnlyOne1() {
+    if (!this.warnStatus) {
+      this.batchAllotRole()
+    }
+  }
+  buttonOnlyOne2() {
+    if (!this.warnStatus) {
+      this.batchManageDevice()
+    }
+  }
+
+  /**
+   * 批量管理设备
+   */
+  batchManageDevice() {
+    let multiple: any = this.$refs['databox']
+    this.multipleUserId = multiple.getCurrentSelection()
+    if (!this.multipleUserId || !this.multipleUserId.length) {
+      this.warnStatus = true
+      setTimeout(() => {
+        this.warnStatus = false
+      }, 2000)
+      return this.$Message.error('请选择用户')
+    } else {
+      this.batchManageDeviceModal = true
+      this.userIds = this.multipleUserId.map(v => v.id)
+      let _batchManage: any = this.$refs['batch-manage-device']
+      _batchManage.makeData(this.multipleUserId)
+    }
+  }
+
+  getUserListByCondition() {
+    // let deptId =
+    this.manageService
+      .getUsersByDeptPage(this.userListModel, this.pageService)
+      .subscribe(
+        data => {
+          this.userList = data.filter(x => {
+            return x.userStatus == 0
+          })
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
+      )
+  }
+  searchUserListByCondition() {
+    this.manageService
+      .getUsersByDeptPage(this.userListModel, this.pageService)
+      .subscribe(
+        data => {
+          this.userList = data
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
+      )
+  }
+
+  /**
+   * 树change
+   */
+  onChange(value) {
+    this.userListModel.deptId = value.id
+    this.deptLevel = value.deptLevel
+    this.deptObject = value
+    this.addOrgModel = value
+    this.manageService
+      .getUsersByDeptPage(this.userListModel, this.pageService)
+      .subscribe(
+        data => {
+          this.userList = data
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
+      )
+  }
+
+  /**
+   * 数据权限
+   */
+  dataPowerClick(row) {
+    this.dataPowerModal = true
+    this.userId = row.id
+    let _dataPower: any = this.$refs['data-power']
+    _dataPower.getAllOrg(this.userId)
+  }
+
+  /**
+   * 确认分配角色
+   */
+  allotRoleClick() {
+    let _addRole = <Modal>this.$refs['allot-role-modal']
+    _addRole.allotRole()
+  }
+
+  removeDept(value) {
+    this.$Modal.confirm({
+      title: '提示',
+      content: '确定删除此组织机构吗？',
+      onOk: () => {
+        this.departmentService
+          .deleteDept({
+            deptId: value.id
+          })
+          .subscribe(
+            val => {
+              this.$Message.success('删除成功！')
+              this.getTree()
+            },
+            ({ msg }) => {
+              this.$Message.error(msg)
+            }
+          )
+      }
+    })
+  }
+
+  getTree() {
+    this.manageService.getAllDepartment().subscribe(
+      data => {
+        this.deptObject = data[0]
+        this.dataList = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
+    )
+  }
+
+  /**
+   * 添加机构
+   */
+  addDept(val) {
+    let companyId = val.companyId
+    this.addNewOrgModal = true
+    if (this.deptLevel) {
+      this.addOrgModel.deptLevel = this.deptLevel
+    } else {
+      this.addOrgModel.deptLevel = 401
+    }
+    let _add: any = this.$refs['add-org']
+    _add.addDept(companyId)
+  }
+
+  /**
+   * 确定添加机构
+   */
+  confirmAddOrg() {
+    let _confirmAdd: any = this.$refs['add-org']
+    _confirmAdd.confirmAddOrg()
+  }
+
+  /**
+   * 确定编辑机构
+   */
+  confirmEditOrg() {
+    let _confirmEdit: any = this.$refs['edit-org']
+    _confirmEdit.confirmEditOrg()
+  }
+
+  closeAndRefreshTree() {
+    this.allotRoleModal = false
+    this.getTree()
+  }
+
+  editDept(val) {
+    console.log(val, 778)
+    this.editNewOrgModal = true
+    let _edit: any = this.$refs['edit-org']
+    _edit.getDeptInfo(val)
+  }
+
+  cancelAddOrg() {
+    this.addNewOrgModal = false
+    let _confirmAdd: any = this.$refs['add-org']
+    _confirmAdd.resetInput()
+  }
+
+  cancelEditOrg() {
+    this.editNewOrgModal = false
+  }
+
+  confirmModifyUser() {
+    let _modifyUser: any = this.$refs['modify-user']
+    _modifyUser.updateUser()
+  }
+
+  visiableChange(val) {
+    if (!val) {
+      let _allotRole = <Modal>this.$refs['allot-role-modal']
+      _allotRole.resetForm()
+    }
+  }
+
+  newUserModalChange(val) {
+    if (!val) {
+      let _addUser = <Modal>this.$refs['add-user']
+      _addUser.resetForm()
+    }
+  }
+
+  confirmAddUser() {
+    let _addUser = <Modal>this.$refs['add-user']
+    _addUser.confirmAddUser()
+  }
+
+  /**
+   * 确定批量管理设备
+   */
+  confirmBatchManageDevice() {
+    let _batchManage: any = this.$refs['batch-manage-device']
+    _batchManage.confirmBatchMange()
+  }
+  /**
+   * 重置搜索
+   */
+  refreshRoleList() {
+    this.userListModel = {
+      userName: '',
+      realName: '',
+      status: '',
+      deptId: 1
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
-  .page.org-user-manage{
-    .data-form{
-        margin-top: 10px;
-      .data-form-item{
-        border:1px solid #dddddd;
-        padding:20px 0;
-        height:590px;
-        .add-agency{
-          border-bottom:1px solid #dddddd;
-          display:flex;
-          align-items:center;
-          justify-content:flex-end;
-          .blue-button{
-            position:relative;
-            bottom:10px;
-            right:8px;
-            background: #265EA2;
-            color: #fff;
-          }
-        }
-        .add-org-tree{
-          overflow:auto;
-          height:540px;
+.page.org-user-manage {
+  .data-form {
+    margin-top: 10px;
+    .data-form-item {
+      border: 1px solid #dddddd;
+      padding: 20px 0;
+      height: 590px;
+      .add-agency {
+        border-bottom: 1px solid #dddddd;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .blue-button {
+          position: relative;
+          bottom: 10px;
+          right: 8px;
+          background: #265ea2;
+          color: #fff;
         }
       }
-      .data-form-multifunction{
-        .title{
-          margin-left: 20px;
-        }
-        .form-input{
-          display:inline-block;
-          width:10%;
-        }
-        .blue-button{
-          background: #265EA2;
-          color: #fff;
-          margin-left:20px;
-        }
+      .add-org-tree {
+        overflow: auto;
+        height: 540px;
       }
     }
-    .batch-manage-device {
-      .ivu-modal-footer {
-        display: none;
+    .data-form-multifunction {
+      .title {
+        margin-left: 20px;
+      }
+      .form-input {
+        display: inline-block;
+        width: 10%;
+      }
+      .blue-button {
+        background: #265ea2;
+        color: #fff;
+        margin-left: 20px;
       }
     }
   }
-
-
+  .batch-manage-device {
+    .ivu-modal-footer {
+      display: none;
+    }
+  }
+}
 </style>
