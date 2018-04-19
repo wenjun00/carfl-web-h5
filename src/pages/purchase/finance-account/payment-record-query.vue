@@ -2,20 +2,32 @@
 <template>
   <section class="page payment-record-query">
     <page-header title="付款记录查询" hiddenPrint hiddenExport></page-header>
-    <div class="data-form">
-      <span>申请日期：</span>
-      <i-date-picker class="data-form-item" v-model="paymentModel.startTime" type="date" placeholder="yyy/mm/dd"></i-date-picker>
-      <i-date-picker class="data-form-item" v-model="paymentModel.endTime" type="date" placeholder="yyy/mm/dd"></i-date-picker>
-      <i-input class="data-form-item" placeholder="请录入订单编号" v-model="paymentModel.orderNumber"></i-input>
-      <i-select placeholder="全部付款类型" clearable class="data-form-item" v-model="paymentModel.refundType">
-        <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
-      <i-select placeholder="申请状态" clearable class="data-form-item" v-model="paymentModel.applicationStatus">
-        <i-option v-for="{value,label} in $dict.getDictData('0415')" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
-      <i-checkbox class="command-item" v-model="status">包含已归档订单</i-checkbox>
-      <i-button class="blueButton command-item" @click="searchPaymentrecord">搜索</i-button>
-    </div>
+    <data-form hidden-date-search :model="paymentModel" @on-search="searchPaymentrecord">
+      <template slot="input">
+        <i-form-item prop="startTime" label="申请日期">
+          <i-date-picker v-model="paymentModel.startTime" type="date" placeholder="yyy/mm/dd"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="endTime">
+          <i-date-picker v-model="paymentModel.endTime" type="date" placeholder="yyy/mm/dd"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="orderNumber">
+          <i-input placeholder="请录入订单编号" v-model="paymentModel.orderNumber"></i-input>
+        </i-form-item>
+        <i-form-item prop="refundType">
+          <i-select placeholder="全部付款类型" clearable v-model="paymentModel.refundType">
+            <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="applicationStatus">
+          <i-select placeholder="申请状态" clearable v-model="paymentModel.applicationStatus">
+            <i-option v-for="{value,label} in $dict.getDictData('0415')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+      </template>
+      <template slot="button">
+        <i-checkbox class="command-item" v-model="status">包含已归档订单</i-checkbox>
+      </template>
+    </data-form>
     <data-box :id="455" :columns="columns1" :data="data1" :page="pageService" @onPageChange="searchPaymentrecord"></data-box>
     <!--Model-->
 

@@ -169,6 +169,7 @@
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.withdrawId
       data.totalPayment = _repayment.paymentAmount
+      data.withdrawApplicationId = _repayment.rowObj.withdrawId
       this.advanceRevokeService.saveCollectMoneyHistoryAsDraft(data).subscribe(data => {
         this.$Message.info('保存草稿成功！')
         this.confirmWithdrawModal = false
@@ -190,7 +191,13 @@
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.withdrawId
       data.totalPayment = _repayment.paymentAmount
+      data.withdrawApplicationId = _repayment.rowObj.withdrawId
       data.collectMoneyId = _repayment.collectMoneyId
+      let name:any = data.collectMoneyDetails.map(v=>v.collectItem)
+      if(!name.length || name[0] === undefined){
+        this.$Message.warning("请选择收款方式!")
+        return
+      }
       this.advanceRevokeService.saveCollectMoneyHistory(data).subscribe(data => {
         this.$Message.info('操作成功！')
         this.confirmWithdrawModal = false

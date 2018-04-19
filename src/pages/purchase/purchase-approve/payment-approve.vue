@@ -2,14 +2,23 @@
 <template>
   <section class="page payment-approve">
     <page-header title="付款审批" hiddenPrint></page-header>
-    <div class="data-form">
-      <i-input class="data-form-item" placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="approvalModel.dynamicParams"></i-input>
+    <data-form hidden-date-search :model="approvalModel" @on-search="openSearch">
+      <template slot="input">
+        <i-form-item prop="dynamicParams">
+          <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="approvalModel.dynamicParams"></i-input>
+        </i-form-item>
+      </template>
+      <template slot="button">
+        <i-checkbox v-model="status">包含已处理</i-checkbox>
+      </template>
+    </data-form>
+    <!--<div class="data-form">-->
+
       <!--<i-select placeholder="全部申请类型" class="data-form-item" clearable>-->
       <!--<i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>-->
       <!--</i-select>-->
-      <i-checkbox class="command-item" v-model="status">包含已处理</i-checkbox>
-      <i-button @click="openSearch" class="blueButton command-item">搜索</i-button>
-    </div>
+
+    <!--</div>-->
     <data-box :id="390" :columns="columns1" :data="refundApproval"></data-box>
     <!--Model-->
     <!-- <template>
@@ -90,7 +99,6 @@
     // private approvalModal: Boolean = false;
     private checkApplyModal: Boolean = false;
     private addAttachmentShow: Boolean = false;
-    private dynamicParams: String = "";
     private refundId: String = "";
     private type: any = "";
     private status: Boolean = false;
@@ -105,6 +113,7 @@
       });
     }
     getApproval() {
+        console.log(this.approvalModel.dynamicParams,'dynamicParams')
       if (this.status) {
         this.approvalModel.processStatus = "";
       } else {
@@ -405,30 +414,30 @@
 
 <style lang="less" scoped>
   .page.payment-approve {
-    .data-form {
-      margin-left: 10px;
-      margin-top: 10px;
-      .data-form-item {
-        display: inline-block;
-        width: 10%;
-        margin-left: 10px;
-      }
-    }
-    .command-item {
-      margin-left: 10px;
-    }
-    .command-item-sinout {
-      font-size: 16px;
-      cursor: pointer;
-      display: inline-block;
-      color: #3367A7;
-      float: right;
-      margin-right: 10px;
-      margin-top: 10px;
-      span {
-        font-size: 12px;
-      }
-    }
+    // .data-form {
+    //   margin-left: 10px;
+    //   margin-top: 10px;
+    //   .data-form-item {
+    //     display: inline-block;
+    //     width: 10%;
+    //     margin-left: 10px;
+    //   }
+    // }
+    // .command-item {
+    //   margin-left: 10px;
+    // }
+    // .command-item-sinout {
+    //   font-size: 16px;
+    //   cursor: pointer;
+    //   display: inline-block;
+    //   color: #3367A7;
+    //   float: right;
+    //   margin-right: 10px;
+    //   margin-top: 10px;
+    //   span {
+    //     font-size: 12px;
+    //   }
+    // }
   }
   
   .addApply {
