@@ -55,27 +55,25 @@
     <data-box :id="280" :columns="columns1" :data="myOrderList" @onPageChange="getMyOrderList"
               :page="pageService"></data-box>
     <!--Modal-->
-    <template class="modal">
-      <i-modal v-model="approveModal" title="审批" width="800" class="approve">
+    <template>
+      <i-modal class="modal" v-model="approveModal" title="审批" width="800">
         <approve ref="approve"></approve>
         <div slot="footer">
-          <i-button class="modal-item left-button" @click="backToResource">退回资源池</i-button>
-          <div
-            style="height: 32px;background-color: #dddddd;width: 1px;display: inline-block;margin: 0 10px;position: relative;top: 10px;"></div>
-          <i-button class="modal-item left-button" @click="submitToGray">灰名单</i-button>
-          <i-button class="modal-item left-button" @click="submitToblack">黑名单</i-button>
-          <i-button class="modal-item left-button" @click="submitToInternal">
+          <i-button class="left-button" @click="backToResource">退回资源池</i-button>
+          <div class="cutline"></div>
+          <i-button class="left-button" @click="submitToGray">灰名单</i-button>
+          <i-button class="left-button" @click="submitToblack">黑名单</i-button>
+          <i-button class="left-button" @click="submitToInternal">
             提交内审
           </i-button>
-          <div
-            style="height:32px;background-color:#dddddd;width:1px;display:inline-block;margin:0 10px;position:relative;top:10px;"></div>
-          <i-button class="modal-item right-button" size="large" style="background:#265ea2;color:#fff"
+          <div class="cutline"></div>
+          <i-button class="right-button" size="large"
                     @click="rejectOrder">拒绝
           </i-button>
-          <i-button class="modal-item right-button" size="large" style="background:#265ea2;color:#fff"
+          <i-button class="right-button" size="large"
                     @click="rebackModal=true">退件
           </i-button>
-          <i-button class="modal-item right-button" size="large" style="background:#265ea2;color:#fff" @click="pass">
+          <i-button class="right-button" size="large" @click="pass">
             通过
           </i-button>
         </div>
@@ -114,15 +112,15 @@
       <i-modal :title="rejectOrBlackFlag?'拒绝':'黑名单'" v-model="blackListModal">
         <i-form>
           <i-form-item v-if="rejectOrBlackFlag">
-            <i-select placeholder="请选择结果" style="width:20%" @on-change="changeSelectOne">
+            <i-select placeholder="请选择结果" class="modal-result" @on-change="changeSelectOne">
               <i-option label="拒绝" :value="375" :key="375"></i-option>
             </i-select>
-            <i-select placeholder="全部拒单原因" style="margin-left:20px;width:25%;display:inline-block"
+            <i-select placeholder="全部拒单原因" class="modal-reason"
                       v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
               <i-option v-for="item in refuseReason" :key="item.second" :label="item.second"
                         :value="item.second"></i-option>
             </i-select>
-            <i-select placeholder="全部拒单细节" style="margin-left:20px;width:45%;display:inline-block"
+            <i-select placeholder="全部拒单细节" class="modal-detail"
                       v-model="approvalRecordModel.approveReasonId">
               <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id"></i-option>
             </i-select>
@@ -152,15 +150,15 @@
       <i-modal title="退回申请" v-model="rebackModal" @on-ok="approveModal=false">
         <i-form>
           <i-form-item>
-            <i-select placeholder="请选择结果" style="width:20%" @on-change="changeSelectOne">
+            <i-select placeholder="请选择结果" class="modal-result" @on-change="changeSelectOne">
               <i-option label="退件" :value="374" :key="374"></i-option>
             </i-select>
-            <i-select placeholder="全部拒单原因" style="margin-left:20px;width:25%;display:inline-block"
+            <i-select placeholder="全部拒单原因" class="modal-reason"
                       v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
               <i-option v-for="item in refuseReason" :key="item.second" :label="item.second"
                         :value="item.second"></i-option>
             </i-select>
-            <i-select placeholder="全部拒单细节" style="margin-left:20px;width:25%;display:inline-block"
+            <i-select placeholder="全部拒单细节" class="modal-detail"
                       v-model="approvalRecordModel.approveReasonId">
               <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id"></i-option>
             </i-select>
@@ -212,15 +210,15 @@
                 <i-date-picker placeholder="请选择" v-model="passModel.contractDate"></i-date-picker>
               </i-form-item>
             </i-col>
-            <i-col>
-              <i-form-item label="合同生效类型">
-                <i-radio-group v-model="passModel.effectiveType">
-                  <i-radio v-for="{value,label} in $dict.getDictData('0431')" :key="value" :label="value"
-                           :value="value">{{label}}
-                  </i-radio>
-                </i-radio-group>
-              </i-form-item>
-            </i-col>
+            <!--<i-col>-->
+              <!--<i-form-item label="合同生效类型">-->
+                <!--<i-radio-group v-model="passModel.effectiveType">-->
+                  <!--<i-radio v-for="{value,label} in $dict.getDictData('0431')" :key="value" :label="value"-->
+                           <!--:value="value">{{label}}-->
+                  <!--</i-radio>-->
+                <!--</i-radio-group>-->
+              <!--</i-form-item>-->
+            <!--</i-col>-->
           </i-row>
           <i-row>
             <i-col>
@@ -295,7 +293,7 @@
       remark: "",
       orderId: "",
       contractDate: "",
-      effectiveType: 1160
+      // effectiveType: 1160
     };
     private myOrderModel: any = {
       startTime: "",
@@ -611,7 +609,7 @@
       this.meetConditionApproval = false;
       this.passModel.remark = ''
       this.passModel.contractDate = ''
-      this.passModel.effectiveType = 1160
+      // this.passModel.effectiveType = 1160
     }
 
     /**
@@ -631,7 +629,7 @@
           this.getMyOrderList();
           this.passModel.remark = ''
           this.passModel.contractDate = ''
-          this.passModel.effectiveType = 1160
+          // this.passModel.effectiveType = 1160
         },
         ({msg}) => {
           this.$Message.error(msg);
@@ -973,6 +971,8 @@
 </script>
 
 <style lang="less" scoped>
+
+
   .page.my-approval {
     .open-search {
       color: #265EA2;
@@ -1030,12 +1030,8 @@
         }
       }
     }
-    .modal {
-      .modal-item .left-button {
-        background: #E7EBEE;
-        color: #666666;
-      }
-    }
+
+
 
     .bigButtonErr {
       height: 46px;
@@ -1053,5 +1049,37 @@
       height: 600px;
       overflow: auto;
     }
+  }
+  .cutline {
+    height: 32px;
+    background-color: #dddddd;
+    width: 1px;
+    display: inline-block;
+    margin: 0 10px;
+    position: relative;
+    top: 10px;
+  }
+  .left-button {
+    background: #E7EBEE;
+    color: #666666;
+  }
+  .right-button {
+    background: #265ea2;
+    color: #fff;
+  }
+
+  .modal-result {
+    width: 20%
+  }
+
+  .modal-reason {
+    margin-left: 20px;
+    width: 25%;
+    display: inline-block
+  }
+  .modal-detail {
+    margin-left: 20px;
+    width: 25%;
+    display: inline-block
   }
 </style>

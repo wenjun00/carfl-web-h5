@@ -1,10 +1,8 @@
 <!--客户素材维护-->
 <template>
   <section class="page customer-fodder-maintain">
+    <page-header title="客户素材维护" hiddenPrint hiddenExport></page-header>
     <i-row class="data-form">
-      <i-col>
-        <span class="form-title">客户素材维护</span>
-      </i-col>
       <i-row type="flex">
         <i-col :span="4">
           <div class="data-form-item">

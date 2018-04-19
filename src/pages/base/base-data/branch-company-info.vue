@@ -1,8 +1,9 @@
 <!--分公司信息-->
 <template>
   <section class="page branch-company-info">
+      <page-header title="分公司管理">
+      </page-header>
     <i-row class="data-form">
-      <span class="span">分公司管理</span>
       <span>关键字搜索：</span>
       <i-input class="data-form-item" placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyWord"></i-input>
       <i-button class="blueButton" @click="seachCompany">搜索</i-button>

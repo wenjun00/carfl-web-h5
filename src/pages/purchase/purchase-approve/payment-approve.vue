@@ -1,16 +1,14 @@
 <!--付款审批-->
 <template>
   <section class="page payment-approve">
-    <span class="form-title">付款审批</span>
-    <i-input class="data-form-item" placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="approvalModel.dynamicParams"></i-input>
-    <i-select placeholder="全部申请类型" class="data-form-item" clearable>
-      <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
-    </i-select>
-    <i-checkbox class="command-item" v-model="status">包含已处理</i-checkbox>
-    <i-button @click="openSearch" class="blueButton command-item">搜索</i-button>
-    <div class="command-item-sinout">
-      <svg-icon iconClass="daochu"></svg-icon>
-      <span>导出</span>
+    <page-header title="付款审批" hiddenPrint></page-header>
+    <div class="data-form">
+      <i-input class="data-form-item" placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="approvalModel.dynamicParams"></i-input>
+      <!--<i-select placeholder="全部申请类型" class="data-form-item" clearable>-->
+      <!--<i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>-->
+      <!--</i-select>-->
+      <i-checkbox class="command-item" v-model="status">包含已处理</i-checkbox>
+      <i-button @click="openSearch" class="blueButton command-item">搜索</i-button>
     </div>
     <data-box :id="390" :columns="columns1" :data="refundApproval"></data-box>
     <!--Model-->
@@ -107,13 +105,11 @@
       });
     }
     getApproval() {
-      console.log(this.status);
       if (this.status) {
         this.approvalModel.processStatus = "";
       } else {
         this.approvalModel.processStatus = 1130;
       }
-      console.log(this.approvalModel, "this.approvalModel");
       this.refundApplicationService
         .getApprovalRecord(this.approvalModel, this.pageService)
         .subscribe(
@@ -409,10 +405,14 @@
 
 <style lang="less" scoped>
   .page.payment-approve {
-    .data-form-item {
-      display: inline-block;
-      width: 10%;
+    .data-form {
       margin-left: 10px;
+      margin-top: 10px;
+      .data-form-item {
+        display: inline-block;
+        width: 10%;
+        margin-left: 10px;
+      }
     }
     .command-item {
       margin-left: 10px;
@@ -425,8 +425,8 @@
       float: right;
       margin-right: 10px;
       margin-top: 10px;
-      span{
-          font-size:12px;
+      span {
+        font-size: 12px;
       }
     }
   }

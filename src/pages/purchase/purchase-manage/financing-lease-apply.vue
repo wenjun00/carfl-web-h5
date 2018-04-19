@@ -904,7 +904,7 @@ export default class FinancingLeaseApply extends Page {
 }
 </style>
 
-<style lang="less">
+<style lang="less" scoped>
 .page.finance-lease-tabs {
   .ivu-input {
     border-style: none;

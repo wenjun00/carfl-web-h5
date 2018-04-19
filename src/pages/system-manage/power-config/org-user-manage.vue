@@ -1,7 +1,9 @@
 <!--机构与用户管理-->
 <template>
   <section class="page org-user-manage">
-    <span class="form-title">机构与用户管理</span>
+    <page-header title="机构与用户管理" hiddenPrint >
+
+    </page-header>
     <i-row class="data-form">
       <i-col :span="4" class="data-form-item">
         <i-row class="add-agency">
@@ -9,9 +11,7 @@
         </i-row>
         <i-row >
           <div class="add-org-tree">
-            <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept"
-                           @edit="editDept"></organize-tree>
-          </div>
+            <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree></div>
         </i-row>
       </i-col>
       <i-col :span="20">
@@ -892,6 +892,7 @@
 <style lang="less" scoped>
   .page.org-user-manage{
     .data-form{
+        margin-top: 10px;
       .data-form-item{
         border:1px solid #dddddd;
         padding:20px 0;
@@ -937,11 +938,4 @@
   }
 
 
-
-
-
-
-
-
-  
 </style>

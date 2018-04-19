@@ -1,9 +1,9 @@
 <!--经销商报价-->
 <template>
   <section class="page dealer-quotes">
+      <page-header title="经销商报价" hiddenPrint></page-header>
     <div class="form">
       <div class="data-form">
-        <span class="form-title title">经销商报价</span>
         <span>经销商</span>
         <i-input class="data-form-item" placeholder="请输入经销商" v-model="busModal.quotationName"></i-input>
         <span>品牌</span>
@@ -17,28 +17,28 @@
 
       </div>
       <div class="command">
-        <div class="command-item">
-          <svg-icon iconClass="dayin"></svg-icon>
-          <span>打印</span>
-        </div>
-        <div class="command-item">
+        <!--<div class="command-item">-->
+          <!--<svg-icon iconClass="dayin"></svg-icon>-->
+          <!--<span>打印</span>-->
+        <!--</div>-->
+        <!--<div class="command-item">
           <svg-icon iconClass="daochu"></svg-icon>
           <span>导出</span>
-        </div>
-        <div class="command-item">
-          <svg-icon iconClass="daoru"></svg-icon>
-          <span>导入</span>
-        </div>
-        <div class="command-item">
-          <svg-icon iconClass="xiazai"></svg-icon>
-          <span>模版下载</span>
-        </div>
+        </div>-->
+        <!--<div class="command-item">-->
+          <!--<svg-icon iconClass="daoru"></svg-icon>-->
+          <!--<span>导入</span>-->
+        <!--</div>-->
+        <!--<div class="command-item">-->
+          <!--<svg-icon iconClass="xiazai"></svg-icon>-->
+          <!--<span>模版下载</span>-->
+        <!--</div>-->
       </div>
     </div>
     <data-box :id="154" :columns="columns" :data="carList" @onPageChange="seachBusiness" :page="pageService"></data-box>
     <template>
       <i-modal v-model="editModal" title="编辑报价" width="600" :mask-closable="false" class="edit_class">
-        <edit-car :carFormItem="carformitem" @seachBusiness="seachBusiness" @close="closeAndRefreshEdit" ref="edit-car"></edit-car>
+        <edit-car  @seachBusiness="seachBusiness" @close="closeAndRefreshEdit" ref="edit-car"></edit-car>
         <div slot="footer">
           <i-button @click="cancelEditQuote">取消</i-button>
           <i-button class="blueButton" @click="confirmEditQuote">确定</i-button>
@@ -364,9 +364,8 @@
       ];
     }
     editQuotes(row) {
-      console.log(row, 'row')
-      this.carformitem = row;
       this.editModal = true;
+      // this.carformitem = row;
       let _edit: any = this.$refs["edit-car"];
       _edit.getAllProdPackage(row);
     }
@@ -453,13 +452,6 @@
           }
         );
     }
-    /**@augments
-     * 编辑
-     */
-    editCarFun(row) {
-      this.editModal = true;
-      this.carformitem = row;
-    }
     /**
      * 新增报价
      */
@@ -515,7 +507,6 @@
         float: right;
         margin-right: 10px;
         margin-top: 10px;
-        width: 280px;
         .command-item {
           font-size: 16px;
           cursor: pointer;
@@ -529,7 +520,7 @@
       }
     }
   }
-  
+
   .bottom_addPrice {
     width: 100%;
     height: 80px;
