@@ -1,49 +1,45 @@
 <!--审核记录表-->
 <template>
     <section class="page approval-record-table">
-        <page-header title="审核记录表" hiddenPrint hiddenExport>
+        <page-header title="审核记录表" hiddenPrint hiddenExport></page-header>
+         <data-form date-prop="timeSearch" :model="approvalRecordModel" @on-search="getApprovaRecordList" hidden-reset>
+            <template slot="input">
+                <i-form-item prop="type">
+                     <i-select  placeholder="全部状态" v-model="approvalRecordModel.type" @on-change="changeSelectOne" clearable>
+                        <i-option label="通过" :value="0" :key="0"></i-option>
+                        <i-option label="退件" :value="374" :key="374"></i-option>
+                        <i-option label="拒绝" :value="375" :key="375"></i-option>
+                    </i-select>
+                </i-form-item>
+                <i-form-item prop="second">
+                     <i-select placeholder="通过类型" v-if="passSelect" v-model="approvalRecordModel.second" clearable>
+                        <i-option label="通过" :key="310" :value="310"></i-option>
+                        <i-option label="提交内审/通过" :key="321" :value="321"></i-option>
+                        <i-option label="灰名单/通过" :key="322" :value="322"></i-option>
+                    </i-select>
+                </i-form-item>
+                <i-form-item prop="second">
+                    <i-select placeholder="全部拒单原因" v-if="!passSelect" v-model="approvalRecordModel.second" @on-change="changeSelectTwo" clearable>
+                        <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
+                    </i-select>
+                </i-form-item>
+                  <i-form-item prop="second">
+                    <i-select placeholder="全部拒单细节" v-if="!passSelect" v-model="approvalRecordModel.detail" clearable>
+                            <i-option v-for="item in refuseDetail" :key="item.detail" :label="item.detail" :value="item.detail"></i-option>
+                        </i-select>
+                </i-form-item>
+               
+                <i-form-item prop="startTime" label="日期">
+                     <i-date-picker v-model="approvalRecordModel.startTime" placeholder="起始日期"></i-date-picker> ~
+                </i-form-item>
+                 <i-form-item prop="endTime">
+                    <i-date-picker  v-model="approvalRecordModel.endTime" placeholder="终止日期"></i-date-picker>
+                </i-form-item>
 
-        </page-header>
-        <i-row class="command">
-            <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-            <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-            <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-            <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-            <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-            <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-            <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-            <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-            <i-button @click="openSearch" class="open-search">
-                <span v-if="!searchOptions">展开</span>
-                <span v-if="searchOptions">收起</span>
-                <span>高级搜索</span>
-            </i-button>
-        </i-row>
-        <i-row class="data-form" v-if="searchOptions">
-            <i-select class="data-form-item state" placeholder="全部状态" v-model="approvalRecordModel.type" @on-change="changeSelectOne" clearable>
-                <i-option label="通过" :value="0" :key="0"></i-option>
-                <i-option label="退件" :value="374" :key="374"></i-option>
-                <i-option label="拒绝" :value="375" :key="375"></i-option>
-            </i-select>
-            <i-select class="data-form-item type" placeholder="通过类型" v-if="passSelect" v-model="approvalRecordModel.second" clearable>
-                <i-option label="通过" :key="310" :value="310"></i-option>
-                <i-option label="提交内审/通过" :key="321" :value="321"></i-option>
-                <i-option label="灰名单/通过" :key="322" :value="322"></i-option>
-            </i-select>
-            <i-select class="data-form-item reason" placeholder="全部拒单原因" v-if="!passSelect" v-model="approvalRecordModel.second" @on-change="changeSelectTwo" clearable>
-                <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
-            </i-select>
-            <i-select class="data-form-item detail" placeholder="全部拒单细节" v-if="!passSelect" v-model="approvalRecordModel.detail" clearable>
-                <i-option v-for="item in refuseDetail" :key="item.detail" :label="item.detail" :value="item.detail"></i-option>
-            </i-select>
-            <span class="data-form-item date" style="margin-left:10px;">日期：</span>
-            <i-date-picker class="data-form-item date-picker" v-model="approvalRecordModel.startTime" placeholder="起始日期"></i-date-picker>
-            ~
-            <i-date-picker class="data-form-item date-picker" v-model="approvalRecordModel.endTime" placeholder="终止日期"></i-date-picker>
-            <i-button class="data-form-item search-button blueButton" @click="getApprovaRecordList">
-                搜索
-            </i-button>
-        </i-row>
+            </template>
+        </data-form>
+
+        
         <data-box :id="356" :columns="columns1" :data="approvalRecordList" @onPageChange="getApprovaRecordList" :page="pageService"></data-box>
 
         <!--进度查询-->

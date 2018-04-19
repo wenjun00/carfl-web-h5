@@ -2,30 +2,19 @@
 <template>
     <section class="page approval-order-query">
         <page-header title="订单查询"></page-header>
-        <div class="seek-day">
-            <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-            <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-            <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-            <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-            <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-            <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-            <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-            <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-            <i-button @click="openSearch" class="open-search">
-                <span v-if="!searchOptions">展开</span>
-                <span v-if="searchOptions">收起</span>
-                <span>高级搜索</span>
-            </i-button>
-        </div>
-
-        <i-row class="data-form" v-if="searchOptions">
-            <i-input class="data-form-item search-input" placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>
-            <span class="data-form-item date">日期：</span>
-            <i-date-picker class="data-form-item date-picker" v-model="approvalModel.startTime" placeholder="起始日期"></i-date-picker>
-            ~
-            <i-date-picker class="data-form-item date-picker" v-model="approvalModel.endTime" placeholder="终止日期"></i-date-picker>
-            <i-button class="data-form-item search-button bluebutton" @click="getAllOrderList">搜索</i-button>
-        </i-row>
+        <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getAllOrderList" hidden-reset>
+            <template slot="input">
+                <i-form-item prop="personalInfo">
+                    <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>
+                </i-form-item>
+                <i-form-item prop="startTime" label="日期：">
+                    <i-date-picker v-model="approvalModel.startTime" placeholder="起始日期"></i-date-picker> ~
+                </i-form-item>
+                <i-form-item prop="endTime">
+                    <i-date-picker v-model="approvalModel.endTime" placeholder="终止日期"></i-date-picker>
+                </i-form-item>
+            </template>
+        </data-form>
         <data-box :id="322" :columns="columns1" :data="allOrderList" @onPageChange="getAllOrderList" :page="pageService" ref="databox"></data-box>
 
         <template>

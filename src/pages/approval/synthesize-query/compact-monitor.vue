@@ -1,37 +1,29 @@
 <!--合同监控-->
 <template>
     <section class="page compact-monitor">
-        <page-header title="合同下载监控" hiddenPrint hiddenExport>
+        <page-header title="合同下载监控" hiddenPrint hiddenExport></page-header>
+        <data-form :model="approvalModel" @on-search="getAllOrderList" hidden-reset>
+            <template slot="input">
 
-        </page-header>
-        <div class="seek-day">
-            <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
-            <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
-            <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
-            <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
-            <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
-            <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
-            <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
-            <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
-            <i-button @click="openSearch" class="open-search">
-                <span v-if="!searchOptions">展开</span>
-                <span v-if="searchOptions">收起</span>
-                <span>高级搜索</span>
-            </i-button>
-        </div>
+                <i-form-item label="日期：">
+                    <i-date-picker placeholder="起始日期"></i-date-picker> ~
+                </i-form-item>
+                <i-form-item>
+                    <i-date-picker placeholder="终止日期"></i-date-picker>
+                </i-form-item>
+                <i-form-item>
+                    <i-input placeholder="请输入员工姓名"></i-input>
+                </i-form-item>
+                <i-form-item>
+                    <i-select class="data-form-item store" placeholder="全部门店">
+                        <i-option label="吴小川" value="吴小川" key="吴小川"></i-option>
+                        <i-option label="黄瑞" value="黄瑞" key="黄瑞"></i-option>
+                        <i-option label="祁吉贵" value="祁吉贵" key="祁吉贵"></i-option>
+                    </i-select>
+                </i-form-item>
+            </template>
+        </data-form>
 
-        <i-row class="data-form" v-if="searchOptions">
-            <i-date-picker class="data-form-item date-picker" placeholder="起始日期"></i-date-picker>
-            ~
-            <i-date-picker class="data-form-item date-picker" placeholder="终止日期"></i-date-picker>
-            <i-input class="data-form-item name" placeholder="请输入员工姓名"></i-input>
-            <i-select class="data-form-item store" placeholder="全部门店">
-                <!-- <i-option label="吴小川" value="吴小川" key="吴小川"></i-option>
-        <i-option label="黄瑞" value="黄瑞" key="黄瑞"></i-option>
-        <i-option label="祁吉贵" value="祁吉贵" key="祁吉贵"></i-option> -->
-            </i-select>
-            <i-button class="data-form-item search-button blueButton" @click="getCompactMonitorList">搜索</i-button>
-        </i-row>
         <data-box :columns="columns1" :data="compactList" @onPageChange="getCompactMonitorList" :page="pageService" :noDefaultRow="true"></data-box>
 
         <template>
@@ -149,9 +141,9 @@ export default class CompactMonitor extends Page {
 </script>
 <style lang="less" scoped>
 .page.compact-monitor {
-    .seek-day{
-        margin-top: 10px;
-    }
+  .seek-day {
+    margin-top: 10px;
+  }
   .open-search {
     color: #265ea2;
   }
