@@ -2,43 +2,27 @@
 <template>
   <section class="page clear-account-report">
     <page-header title="清结算日报表" hiddenPrint></page-header>
-    <div class="data-form">
-      <i-select class="form-select" placeholder="统计机构" v-model="model.companyId" clearable>
-        <i-option :label="companyChinaname" :value="id" :key="id" v-for="{id, companyChinaname} in company"></i-option>
-      </i-select>
-      <i-button class="blueButton" @click="getData">搜索</i-button>
-      <i-button @click="openSearch" class="form-button">
-        <span v-if="!searchOptions">展开</span>
-        <span v-if="searchOptions">收起</span>
-        <span>高级搜索</span>
-      </i-button>
-      <i-row v-if="searchOptions" class="form-second">
-        <i-select placeholder="统计通道" class="form-second-one" v-model="model.channel">
-          <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
-        </i-select>
-        <span class="title">结算日期：</span>
-        <i-date-picker v-model="model.minSettlementDate"></i-date-picker> ~
-        <i-date-picker v-model="model.maxSettlementDate"></i-date-picker>
-      </i-row>
-    </div>
-    <!--<table border="1" width="100%" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
-      <tr height="40">
-        <td bgcolor="#F2F2F2" rowspan="2" width="5%">公司简称</td>
-        <td bgcolor="#F2F2F2" colspan="10" width="20%">汇付</td>
-        <td bgcolor="#F2F2F2" colspan="10" width="20%">富友</td>
-      </tr>
-      <tr height="40">
-        <td bgcolor="#F2F2F2" v-for="(v,i) in columnsFuyou" :key="'a'+i">{{v.title}}</td>
-        <td bgcolor="#F2F2F2" v-for="(v,i) in columnsFuyou" :key="'b'+i">{{v.title}}</td>
-      </tr>
-      <tr height="40" v-for="(val,index) in data1" :key="index">
-        <td>{{val.companyProfile}}</td>
-        <td v-for="(v,i) in columnsFuyou" :key="'c'+i">{{val.huifu[v.key]}}</td>
-        <td v-for="(v,i) in columnsFuyou" :key="'d'+i">{{val.fuyou[v.key]}}</td>
-      </tr>
-    </table>-->
+    <data-form hiddenDateSearch hidden-reset @on-search="getData" :model="model" >
+      <template slot="input"  >
+        <i-form-item prop="companyId">
+          <i-select class="form-select" placeholder="统计机构" v-model="model.companyId" clearable>
+            <i-option :label="companyChinaname" :value="id" :key="id" v-for="{id, companyChinaname} in company"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="channel">
+          <i-select placeholder="统计通道" class="form-second-one" v-model="model.channel">
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="minSettlementDate" label="结算日期：">
+          <i-date-picker v-model="model.minSettlementDate"></i-date-picker> ~
+        </i-form-item>
+        <i-form-item prop="minSettlementDate">
+          <i-date-picker v-model="model.maxSettlementDate"></i-date-picker>
+        </i-form-item>
+      </template>
+    </data-form>
     <i-table :columns="columns1" :data="data1" style="margin-top:10px;margin-right:10px"></i-table>
-
   </section>
 </template>
 
@@ -270,7 +254,7 @@
       }
     }
   }
-  
+
   .ivu-table-cell {
     padding-left: 0;
     padding-right: 0;

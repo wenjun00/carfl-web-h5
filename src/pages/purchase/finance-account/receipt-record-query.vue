@@ -3,20 +3,29 @@
   <section class="page receipt-record-query">
     <page-header title="收款记录查询" hiddenPrint hiddenExport>
     </page-header>
-    <div class="data-form">
-      <span>申请日期：</span>
-      <i-date-picker class="data-form-item" v-model="receiptModel.queryStartDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>
-      <i-date-picker class="data-form-item" v-model="receiptModel.queryEndDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>
-      <i-input class="data-form-item" placeholder="请录入订单编号" v-model="receiptModel.orderNumber"></i-input>
-      <i-select placeholder="全部收款类型" class="data-form-item" v-model="receiptModel.applicationType" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0101')" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
-      <i-select placeholder="申请状态" class="data-form-item" v-model="receiptModel.approvalStatus" clearable>
+    <data-form hidden-date-search :model="receiptModel" @on-search="receiptRecordSearch">
+      <template slot="input">
+        <i-form-item prop="queryStartDate" label="申请日期">
+          <i-date-picker v-model="receiptModel.queryStartDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="queryEndDate">
+          <i-date-picker class="data-form-item" v-model="receiptModel.queryEndDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="applicationType">
+          <i-select placeholder="全部收款类型" v-model="receiptModel.applicationType" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0101')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="approvalStatus">
+           <i-select placeholder="申请状态" v-model="receiptModel.approvalStatus" clearable>
         <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
       </i-select>
-      <i-checkbox class="command-item" v-model="status">包含已归档订单</i-checkbox>
-      <i-button class="blueButton command-item" @click="receiptRecordSearch">搜索</i-button>
-    </div>
+        </i-form-item>
+      </template>
+      <template slot="button">
+         <i-checkbox v-model="status">包含已归档订单</i-checkbox>
+      </template>
+    </data-form>
     <data-box :id="447" :columns="columns1" :data="receiptDataSet" :page="pageService" @onPageChange="receiptRecordSearch"></data-box>
     <!--Model-->
     <template>
@@ -266,21 +275,21 @@
 </script>
 <style lang="less" scoped>
   .page.receipt-record-query {
-    .title {
-      margin-right: 10px;
-    }
-    .data-form {
-      margin-left: 10px;
-      margin-top: 10px;
-      .data-form-item {
-        display: inline-block;
-        width: 10%;
-        margin-left: 10px;
-      }
-    }
-    .command-item {
-      margin-left: 10px;
-    }
+    // .title {
+    //   margin-right: 10px;
+    // }
+    // .data-form {
+    //   margin-left: 10px;
+    //   margin-top: 10px;
+    //   .data-form-item {
+    //     display: inline-block;
+    //     width: 10%;
+    //     margin-left: 10px;
+    //   }
+    // }
+    // .command-item {
+    //   margin-left: 10px;
+    // }
   }
 
 </style>

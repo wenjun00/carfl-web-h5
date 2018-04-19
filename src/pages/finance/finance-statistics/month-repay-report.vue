@@ -1,25 +1,27 @@
 <!--月还款报表-->
 <template>
   <section class="page month-repay-report">
-      <page-header title="月还款报表" hiddenPrint></page-header>
-    <i-row class="data-form">
-      <span class="form-input">统计机构：</span>
-      <i-select class="form-select">
-        <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
-        <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
-        <i-option label="群泰武汉" value="群泰武汉" key="群泰武汉"></i-option>
-      </i-select>
-      <span class="form-input">统计通道：</span>
-      <i-select class="form-select">
-        <i-option label="汇付" value="汇付" key="汇付"></i-option>
-        <i-option label="富友" value="富友" key="富友"></i-option>
-      </i-select>
-      <i-button class="blueButton">搜索</i-button>
-    </i-row>
-    <i-row v-if="searchOptions" class="search">
-      <i-input  placeholder="请输入客户姓名" class="search-item"></i-input>
-      <i-button class="blueButton">搜索</i-button>
-    </i-row>
+    <page-header title="月还款报表" hiddenPrint></page-header>
+    <data-form hiddenDateSearch hidden-reset >
+      <template slot="input">
+        <i-form-item label="统计机构：">
+          <i-select class="form-select">
+            <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
+            <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
+            <i-option label="群泰武汉" value="群泰武汉" key="群泰武汉"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item label="统计通道：">
+          <i-select class="form-select">
+            <i-option label="汇付" value="汇付" key="汇付"></i-option>
+            <i-option label="富友" value="富友" key="富友"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item>
+          <i-input  placeholder="请输入客户姓名" class="search-item"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
     <data-box :columns="columns1" :data="data1"></data-box>
 
     <template>
