@@ -108,8 +108,7 @@
           </i-select>
         </td>
         <td>
-          <i-input class="modal-item-querenhuakou-input" v-model="v.collectMoneyAmount"
-                   @on-blur="inputBlur"></i-input>
+          <i-input class="modal-item-querenhuakou-input" v-model="v.collectMoneyAmount" @on-blur="inputBlur" readonly></i-input>
           <i-button class="blueButton">确认划扣</i-button>
         </td>
         <td><span>已处理</span>
@@ -253,7 +252,6 @@
       console.log('add')
       this.collectMoneyDetails.push({
         collectMoneyAmount: '',
-        collectMoneyMethod: ''
       })
     }
 
