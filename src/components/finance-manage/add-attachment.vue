@@ -1,7 +1,7 @@
 <!--补传附件-->
 <template>
   <section class="component add-attachment">
-    <i-row style="margin-top:20px">
+    <i-row class="modal-item">
         <i-col :span="8" style="display:flex;justify-content:center;margin-top:10px">
           <div style="height:200px;width:200px;cursor:pointer;text-align:center;background-color: rgb(244,244,244);" @click="openUpload=true">
             <Icon type="plus-circled" style="display:block;margin-top:40px;" color="#265ea2" size="40"></Icon>
@@ -63,7 +63,11 @@
 
 </script>
 
-<style>
-
+<style lang="less" scoped>
+  .component.add-attachment{
+    .modal-item{
+      margin-top:20px
+    }
+  }
 
 </style>

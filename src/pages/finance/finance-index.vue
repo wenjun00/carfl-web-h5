@@ -1,25 +1,25 @@
 <template>
-  <section class="finance-index">
+  <section class="page finance-index">
     <!--#EFF3F5-->
-    <div style="width:96%;height:60px;background:#F5F5F5;margin-top:10px;border:1px solid #DDDDDD;margin:0 auto">
-      <div style="font-size:14px;margin-top: 18px;margin-left: 57px;">
+    <div class="data-form-menu">
+      <div class="form-menu-item">
         <span>点击</span>
-        <svg-icon iconClass="weiguanzhu" style="font-size:16px;"></svg-icon>
+        <svg-icon iconClass="weiguanzhu"  class="weiguanzhu"></svg-icon>
         <span>可加入常用菜单</span>
       </div>
     </div>
     <div v-for="item in finance" :key="item.index">
-      <div class="purchaseContainer">
-        <div class="iconContainer" :style="{background:item.color}">
-          <svg-icon :iconClass="item.icon" style="color:#fff;font-size:50px;position:relative;left:6px;top:4px"></svg-icon>
+      <div class="purchase-container">
+        <div class="icon-container" :style="{background:item.color}">
+          <svg-icon :iconClass="item.icon" class="icon-img"></svg-icon>
         </div>
         <div :style="{color:item.color}" class="iconName">{{item.iconName}}</div>
-        <div class="verticalLine"></div>
-        <div v-for="val in item.pageList" :key="val.pageName" style="margin-left:100px;">
+        <div class="vertical-line"></div>
+        <div v-for="val in item.pageList" :key="val.pageName" class="item-pagename">
           <div class="pageList_pageName" @click="redirectToPage(val)">{{val.pageName}}</div>
-          <div @click="val.isAttention=!val.isAttention" style="display:inline-block;cursor:pointer">
-            <svg-icon iconClass="yiguanzhu" style="font-size:16px;color:#F8B551" v-show="val.isAttention"></svg-icon>
-            <svg-icon iconClass="weiguanzhu" style="font-size:16px;" v-show="!val.isAttention"></svg-icon>
+          <div @click="val.isAttention=!val.isAttention" class="item-attention">
+            <svg-icon iconClass="yiguanzhu" class="yiguangzhu" v-show="val.isAttention"></svg-icon>
+            <svg-icon iconClass="weiguanzhu" class="weiguanzhu" v-show="!val.isAttention"></svg-icon>
           </div>
         </div>
       </div>
@@ -131,7 +131,89 @@
 </script>
 
 <style lang="less">
-  .purchaseContainer {
+  .page.finance-index {
+    .data-form-menu {
+      width: 96%;
+      height: 60px;
+      background: #f5f5f5;
+      margin-top: 10px;
+      border: 1px solid #dddddd;
+      margin: 0 auto;
+      .form-menu-item {
+        font-size: 14px;
+        margin-top: 18px;
+        margin-left: 57px;
+        .weiguanzhu {
+          font-size: 16px;
+        }
+      }
+    }
+    .purchase-container {
+      width: 96%;
+      height: 130px;
+      background: #fff;
+      margin: 30px auto;
+      border: 1px solid #dddddd;
+      display: flex;
+      align-items: center;
+      .icon-container {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin-left: 60px;
+        .icon-img {
+          color: #fff;
+          font-size: 50px;
+          position: relative;
+          left: 6px;
+          top: 4px;
+        }
+      }
+      .vertical-line {
+        width: 1px;
+        height: 78px;
+        background-color: #dddddd;
+        position: relative;
+        left: 60px;
+      }
+      .item-pagename {
+        margin-left: 80px;
+        .page-list-page-name {
+          font-size: 14px;
+          display: inline-block;
+        }
+        .page-list-page-name:hover {
+          font-size: 14px;
+          color: #265ea2;
+          cursor: pointer;
+        }
+        .item-attention {
+          display: inline-block;
+          cursor: pointer;
+          .icon-yiguanzhu {
+            font-size: 16px;
+            color: #f8b551;
+          }
+          .icon-weiguanzhu {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  .yiguangzhu{
+    font-size:16px;color:#F8B551
+  }
+  .iconName {
+    font-size: 18px;
+    margin-left: 10px;
+  }
+
+  .purchase-index {
+    height: 846px;
+  }
+  .purchase-container {
     width: 96%;
     height: 130px;
     background: #fff;
@@ -141,14 +223,14 @@
     align-items: center;
   }
 
-  .iconContainer {
+  .icon-container {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     margin-left: 60px;
   }
 
-  .verticalLine {
+  .vertical-line {
     width: 1px;
     height: 78px;
     background-color: #DDDDDD;
@@ -156,7 +238,7 @@
     left: 60px;
   }
 
-  .iconName {
+  .icon-name {
     font-size: 18px;
     margin-left: 10px;
   }
