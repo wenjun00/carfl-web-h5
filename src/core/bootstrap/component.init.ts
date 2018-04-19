@@ -9,6 +9,6 @@ export default async function () {
   Vue.component('svg-icon', SvgIcon)
   Vue.component('page-header', PageHeader)
   Vue.component('command-button', CommandButton)
-  Vue.component('data-box', CommandButton)
-  Vue.component('data-form', CommandButton)
+  Vue.component('data-box', DataBox)
+  Vue.component('data-form', DataForm)
 }

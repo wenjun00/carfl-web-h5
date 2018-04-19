@@ -1,23 +1,25 @@
 <template>
   <section class="component data-form">
-    <div class="date-query-list row">
-      <div v-for="(value, key) in timeQueryTypes" :key="key" class="data-query-item" :class="{active:currentTimeType===key}" @click="onSelectQueryTime(key)"></div>
+    <div class="date-query-list row middle-span">
+      <div v-for="(value, key) in dateQueryTypes" :key="key" class="data-query-item" :class="{active:currentDateType===key}" @click="onSelectQueryDate(key)">
+        <label>{{value}}</label>
+      </div>
+      <div class="row middle-span center-span collapse-icon" style="flex-basis:40px;" @click="onCollapseChange">
+        <svg-icon :class="[showCollapseContext ? 'arrow-up':'arrow-down']" v-if="showCollapseIcon" iconClass="xiala"></svg-icon>
+      </div>
     </div>
     <i-form ref="data-form" inline :rules="rules" label-position="left" :model="model">
       <div class="row" style="flex-wrap:nowrap;width:100%;">
-        <div class="row middle-span col-span">
+        <div class="row middle-span col-span form-item-container" v-show="showCollapseContext">
           <slot name="input"></slot>
-          <el-button v-if="!hiddenSearch" @click="onSubmitForm" class="search-button" style="vertical-align:top">搜索</el-button>
-          <el-button v-if="showResetButton" @click="onResetForm" class="reset-button" style="vertical-align:top">重置</el-button>
+          <i-button v-if="!hiddenSearch" @click="onSubmitForm" class="search-button" style="vertical-align:top">搜索</i-button>
+          <i-button v-if="showResetButton" @click="onResetForm" class="reset-button" style="vertical-align:top">重置</i-button>
           <div :style="{width:buttonWrap?'100%':'10px'}"></div>
           <slot name="button"></slot>
           <div class="col-span" v-show="showAppendContext">
           </div>
           <slot name="append">
           </slot>
-        </div>
-        <div class="row middle-span center-span collapse-icon" style="flex-basis:40px;" @click="onCollapseChange">
-          <svg-icon :class="[showCollapseContext ? 'arrow-up':'arrow-down']" v-if="showCollapseIcon" iconName="xiala"></svg-icon>
         </div>
       </div>
     </i-form>
@@ -30,12 +32,9 @@ import Component from "vue-class-component";
 import { Watch, Prop, Emit } from "vue-property-decorator";
 import { Form } from "iview";
 import { PageService } from "~/utils/page.service";
-import SvgIcon from "~/components/common/svg-icon.vue";
 
 @Component({
-  components: {
-    SvgIcon
-  }
+  components: {}
 })
 export default class DataForm extends Vue {
   // 验证规则
@@ -67,17 +66,17 @@ export default class DataForm extends Vue {
   hiddenReset: boolean;
 
   // 发送查询事件
-  @Emit("onSearch")
-  emitSearch() {}
+  @Emit("on-search")
+  emitSearch(option: { dateSearchType?: number } = {}) {}
   // 发送重置事件
-  @Emit("onReset") // 手动清空输入框
+  @Emit("on-reset") // 手动清空输入框
   emitReset() {}
 
   private showCollapseIcon: boolean = false;
   private showResetButton: boolean = false;
   private showCollapseContext: boolean = false;
   private showAppendContext: boolean = false;
-  private timeQueryTypes = {
+  private dateQueryTypes = {
     0: "昨日",
     1: "今日",
     2: "本周",
@@ -87,7 +86,7 @@ export default class DataForm extends Vue {
     6: "本季度",
     7: "本年"
   };
-  private currentTimeType = null;
+  private currentDateType = null;
 
   /**
    * 提交输入表单
@@ -102,7 +101,7 @@ export default class DataForm extends Vue {
       if (this.page) {
         this.page.reset();
       }
-
+      this.currentDateType = null;
       this.emitSearch();
     });
   }
@@ -114,6 +113,7 @@ export default class DataForm extends Vue {
     let dataForm = <Form>this.$refs["data-form"];
     dataForm.resetFields();
     this.emitReset();
+    this.currentDateType = null;
   }
 
   /**
@@ -125,20 +125,21 @@ export default class DataForm extends Vue {
     }
   }
 
-  onSelectQueryTime(key) {
-    this.currentTimeType = key;
+  onSelectQueryDate(key) {
+    this.onResetForm();
+    this.currentDateType = key;
+    this.emitSearch(this.currentDateType);
   }
 
   /**
    * 初始化
    */
   mounted() {
-    if (this.$slots["collapse-input"] || this.$slots["collapse-button"]) {
+    if (this.$slots["input"] || this.$slots["button"]) {
       this.showCollapseIcon = true;
-    }
-    if (this.$slots["collapse-input"] || this.$slots["default-input"]) {
       this.showResetButton = !this.hiddenReset && true;
     }
+
     if (this.$slots["append"]) {
       this.showAppendContext = true;
     }
@@ -149,17 +150,40 @@ export default class DataForm extends Vue {
 <style lang="less" scoped>
 .component.data-form {
   padding: 0 10px;
-}
-.arrow-down {
-  transform: rotate(0deg);
-  transition: transform ease-in 0.2s;
-}
-.arrow-up {
-  transform: rotate(180deg);
-  transition: transform ease-in 0.2s;
-}
-.collapse-icon {
-  height: 30px;
+
+  .date-query-list {
+    padding: 5px 0;
+    .data-query-item {
+      & > * {
+        cursor: pointer;
+      }
+      height: 35px;
+      line-height: 35px;
+      padding: 0 15px;
+      border-style: solid;
+      border-width: 1px;
+      border-color: transparent;
+      &.active {
+        border-color: #ccc;
+        border-radius: 5px;
+      }
+      &:hover {
+        color: rgb(56, 188, 250);
+      }
+    }
+  }
+
+  .arrow-down {
+    transform: rotate(0deg);
+    transition: transform ease-in 0.2s;
+  }
+  .arrow-up {
+    transform: rotate(180deg);
+    transition: transform ease-in 0.2s;
+  }
+  .collapse-icon {
+    height: 40px;
+  }
 }
 </style>
 
@@ -167,6 +191,18 @@ export default class DataForm extends Vue {
 .component.data-form {
   .el-radio-group {
     padding-left: 10px;
+  }
+
+  .date-query-list {
+    .ivu-btn {
+      outline-color: red;
+    }
+  }
+
+  .form-item-container {
+    & > * {
+      margin: 0 5px;
+    }
   }
 }
 </style>
