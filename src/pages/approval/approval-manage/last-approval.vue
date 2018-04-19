@@ -1,30 +1,26 @@
 <!--终审-->
 <template>
   <section class="page last-approval">
-    <span class="form-title">终审</span>
-    <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-    <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-    <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-    <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-    <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-    <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-    <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-    <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-    <i-button class="open-search" @click="openSearch">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">收起</span>
-      <span>高级搜索</span>
-    </i-button>
-    <div class="command">
-      <div class="command-item dayin">
-        <svg-icon iconClass="dayin"></svg-icon>
-        <span>打印</span>
-      </div>
-      <div class="command-item daochu">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span>导出</span>
-      </div>
-    </div>
+     <page-header title="终审">
+
+     </page-header>
+     <div class="seek-day">
+         <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+        <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+        <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+        <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+        <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+        <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+        <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+        <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
+        <i-button class="open-search" @click="openSearch">
+        <span v-if="!searchOptions">展开</span>
+        <span v-if="searchOptions">收起</span>
+        <span>高级搜索</span>
+        </i-button>
+     </div>
+    
+
     <i-row class="data-form" v-if="searchOptions">
       <i-input class="data-form-item search-input" placeholder="请录入客户姓名\证件号码\手机号查询"
                v-model="resourcePoolModel.personalInfo"></i-input>
@@ -393,6 +389,9 @@
 
 <style lang="less" scoped>
   .page.last-approval {
+      .seek-day{
+          margin-top: 10px;
+      }
     .open-search {
       color: #265EA2
     }

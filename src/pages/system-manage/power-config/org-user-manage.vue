@@ -1,7 +1,7 @@
 <!--机构与用户管理-->
 <template>
   <section class="page org-user-manage">
-    <page-header title="机构与用户管理" hiddenPrint @onExport="exportName"></page-header>
+    <page-header title="机构与用户管理" hiddenPrint @on-export="exportName"></page-header>
     <i-row class="data-form">
       <i-col :span="4" class="data-form-item">
         <i-row class="add-agency">
@@ -31,8 +31,7 @@
           <i-button class="blue-button"  @click="buttonOnlyOne1">批量分配角色</i-button>
           <i-button class="blue-button"  @click="buttonOnlyOne2">批量管理设备</i-button>
         </i-row>
-        <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition"
-                  :page="pageService"></data-box>
+        <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService" @on-selection-change="onSelectionChange"></data-box>
       </i-col>
     </i-row>
 
@@ -136,6 +135,8 @@
   import {PageService} from "~/utils/page.service";
   import {FilterService} from "~/utils/filter.service";
   import {LoginService} from "~/services/manage-service/login.service";
+  import {UserService} from "~/services/manage-service/user.service";
+  import { CommonService } from "~/utils/common.service";
   import {Modal} from "iview";
 
   @Layout("workspace")
@@ -162,6 +163,7 @@
     @Dependencies(DepartmentService) private departmentService: DepartmentService;
     @Dependencies(PageService) private pageService: PageService;
     @Dependencies(LoginService) private loginService: LoginService;
+    @Dependencies(UserService) private userService: UserService;
     private columns1: any;
     private userList: Array<Object> = [];
     private columns2: any;
@@ -188,6 +190,7 @@
     private batchManageDeviceModal: Boolean = false;
     private warnStatus: any = null;
     private dataPowerModal: Boolean = false; // 数据权限弹出框
+    private multipleSelection: any = []
     private addOrgModel: any = {
       deptName: "",
       deptStatus: 0,
@@ -489,8 +492,22 @@
         }
       ];
     }
+    onSelectionChange(selection){
+      this.multipleSelection = selection
+    }
     exportName(){
-      console.log(234234)
+      if(this.multipleSelection.length === 0){
+        this.$Message.warning("请选择导出项！")
+      }else{
+        let id:any = this.multipleSelection.map(v=>v.id)
+        this.userService.exportUserList({userIds:id})
+          .subscribe( data => {
+            CommonService.downloadFile(data,"导出用户")
+            this.$Message.success("导出成功！")
+          },({msg}) => {
+            this.$Message.error(msg)
+          })
+      }
     }
     dataPowerModalChange(flag) {
       if (!flag) {
