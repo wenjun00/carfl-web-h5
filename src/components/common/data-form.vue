@@ -220,6 +220,11 @@ export default class DataForm extends Vue {
     & > * {
       margin: 0 5px;
     }
+
+    .ivu-form-item {
+      margin: 5px;
+    }
+
     .ivu-form-item-content {
       display: inline;
     }

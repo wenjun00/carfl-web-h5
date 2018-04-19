@@ -1,9 +1,12 @@
 <template>
   <section class="component dialog">
-    <i-modal :class-name="getClassName()" :title="title" v-model="value" :transfer="transfer" :mask-closable="maskClosable">
+    <i-modal :class-name="getClassName()" :okText="okText" :cancelText="cancelText" :title="title" v-model="visible" :transfer="transfer" :mask-closable="maskClosable">
       <slot></slot>
       <div slot="footer">
-        <slot name="footer"></slot>
+        <slot name="footer">
+          <i-button @click="onCancelClick">{{cancelText}}</i-button>
+          <i-button type="primary" @click="onOkClick">{{okText}}</i-button>
+        </slot>
       </div>
     </i-modal>
   </section>
@@ -36,47 +39,81 @@ export default class DialogBox extends Vue {
   @Prop({
     default: false
   })
-  footer: boolean;
+  footer;
 
-  private alwayShow;
+  @Prop({
+    default: "确定"
+  })
+  okText;
 
-  @Model("on-visible-change") _visible: boolean;
+  @Prop({
+    default: "取消"
+  })
+  cancelText;
+
+  @Prop({})
+  onOk;
+
+  @Prop({})
+  onCancel;
+
+  @Model("on-visible-change") value: boolean;
 
   @Emit("on-visible-change")
-  emitVisibleChange(value) {}
+  emitVisibleChange(value) {
+    this.state = value;
+  }
 
-  @Watch("_visible")
+  @Emit("on-remove")
+  emitRemove() {}
+
+  @Watch("value")
   onVisibleChange(value) {
-    this.visible = value;
+    this.state = value;
   }
 
-  private visible = false;
+  public state = false;
 
-  get value() {
-    return this.visible;
+  get visible() {
+    return this.state;
   }
 
-  set value(value) {
-    this.visible = value;
-    this.onVisibleChange(value);
+  set visible(value) {
+    if (value === false) {
+      this.emitRemove();
+    }
+    this.emitVisibleChange(value);
   }
 
+  /**
+   * 获取类名称
+   */
   getClassName() {
     let classes = ["dialog-modal"];
 
-    if (!this.footer) {
+    if (this.footer === false) {
       classes.push("no-footer");
     }
 
     return classes.join(" ");
   }
 
-  show() {
-    this.visible = true;
+  async onOkClick() {
+    if (!this.onOk || (this.onOk && (await this.onOk.call())) !== false) {
+      this.visible = false;
+    }
+  }
+
+  onCancelClick() {
+    if (this.onCancel) {
+      this.onCancel.call(this);
+    }
+
+    this.visible = false;
   }
 
   mounted() {
-    this.value = this._visible;
+    this.state = !!this.value;
   }
 }
 </script>

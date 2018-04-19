@@ -73,15 +73,9 @@
     <!--底部操作栏-end-->
 
     <template>
-      <i-modal title="历史记录" width="1200" v-model="historicalModal" :trandfer="false" class="historical">
-        <historical-record @closeProduct="closeProduct" @close="historicalModal=false;disabledStatus = 'none'" :historicalDataset="historicalDataset" @distributionData="distributionData"></historical-record>
-      </i-modal>
-    </template>
-
-    <template>
-      <i-modal title="归属业务员" width="800" v-model="salesmanModal" :trandfer="false" class="historical">
-        <salesman-name @choosecurrentData="choosecurrentData" @close="salesmanModal=false"></salesman-name>
-      </i-modal>
+      <dialog-box title="归属业务员" width="800" v-model="salesmanModal">
+        <salesman-name @choosecurrentData="choosecurrentData"></salesman-name>
+      </dialog-box>
     </template>
 
     <template>
@@ -308,36 +302,28 @@ export default class FinancingLeaseApply extends Page {
    * 显示历史订单
    */
   showHistoryOrder(data) {
-    this.$dialog.show({
+    let historyRecord;
+    let dialog = this.$dialog.show({
       title: "asdasd",
+      footer: true,
+      onOk: () => {
+        let instance = historyRecord.componentInstance;
+        let currentRow = instance.getCurrentRow();
+
+        if (!currentRow) {
+          return false;
+        }
+      },
       render: h => {
-        return h(HistoricalRecord, {
+        historyRecord = h(HistoricalRecord, {
           props: {
             data
-          },
-          on: {
-            submit: () => {},
-            cancel: () => {}
           }
         });
+
+        return historyRecord;
       }
     });
-    // this.$Modal.info({
-    //   render: h => {
-    //     return h(HistoricalRecord, {
-    //       props: {
-    //         data
-    //       },
-    //       on: {
-    //         submit: () => {},
-    //         cancel: () => {}
-    //       }
-    //     });
-    //   },
-    //   onOK: () => {
-    //     return false;
-    //   }
-    // });
   }
 
   resetApplicationTab() {}
