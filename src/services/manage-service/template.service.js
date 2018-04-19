@@ -1,0 +1,64 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { NetService } from '~/utils/net.service';
+import { Inject } from "~/core/decorator";
+import { manageService } from '~/config/server/manage-service';
+var TemplateService = /** @class */ (function () {
+    function TemplateService() {
+    }
+    /**
+     * 查询模板
+     */
+    TemplateService.prototype.selectTemplate = function (data, page) {
+        return this.netService.send({
+            server: manageService.templateController.selectTemplate,
+            data: data,
+            page: page
+        });
+    };
+    /**
+     * 查看当前模板
+     */
+    TemplateService.prototype.getTemplateMessage = function (data) {
+        return this.netService.send({
+            server: manageService.templateController.getTemplateMessage,
+            data: data
+        });
+    };
+    /**
+     * 生成模板
+     */
+    TemplateService.prototype.createTemplate = function (data) {
+        return this.netService.send({
+            server: manageService.templateController.createTemplate,
+            data: data
+        });
+    };
+    /**
+     * 删除模板
+     */
+    TemplateService.prototype.deleteTemplate = function (data) {
+        return this.netService.send({
+            server: manageService.templateController.deleteTemplate,
+            data: data
+        });
+    };
+    /**
+     * 修改模板
+     */
+    TemplateService.prototype.updateTemplate = function (data) {
+        return this.netService.send({
+            server: manageService.templateController.updateTemplate,
+            data: data
+        });
+    };
+    __decorate([
+        Inject(NetService)
+    ], TemplateService.prototype, "netService", void 0);
+    return TemplateService;
+}());
+export { TemplateService };
