@@ -1,6 +1,6 @@
 <template>
   <section class="component data-form">
-    <div class="date-query-list row middle-span" v-if="hiddenDateSearch">
+    <div class="date-query-list row middle-span" v-if="!hiddenDateSearch">
       <div v-for="(value, key) in dateQueryTypes" :key="key" class="data-query-item" :class="{active:currentDateType===key}" @click="onSelectQueryDate(key)">
         <label>{{value}}</label>
       </div>

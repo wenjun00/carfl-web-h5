@@ -14,7 +14,7 @@
       <span v-if="!searchOptions">展开</span>
       <span v-if="searchOptions">收起</span>
       <span>高级搜索</span>
-    </i-button>
+    </i-button> 
     <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList">
       <template slot="input" >
         <i-form-item prop="dynamicParam">
