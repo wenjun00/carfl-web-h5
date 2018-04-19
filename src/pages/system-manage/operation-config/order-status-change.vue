@@ -1,18 +1,12 @@
 <!--订单状态变更-->
 <template>
   <section class="page order-status-change">
-    <span class="form-title">订单状态变更</span>
+      <page-header title="订单状态变更" >
+
+      </page-header>
+
+
     <i-row  class="data-form">
-      <div class="command" >
-        <div class="command-item dayin">
-          <svg-icon iconClass="dayin"></svg-icon>
-          <span>打印</span>
-        </div>
-        <div class="command-item daochu">
-          <svg-icon iconClass="daochu"></svg-icon>
-          <span>导出</span>
-        </div>
-      </div>
       <i-input class="form-input" placeholder="请录入客户姓名\证件号码\手机号\订单号查询" v-model="orderInfo"></i-input>
       <i-button class="blue-button" @click="getOrderStatusChangeList">搜索</i-button>
       <!-- <i-button class="blueButton" style="margin-left:10px;" @click="refreshRoleList">重置</i-button> -->

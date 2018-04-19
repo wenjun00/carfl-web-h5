@@ -2,20 +2,25 @@
 <template>
     <section class="page order-query">
         <i-row>
-            <span class="form-title">订单查询</span>
-            <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-            <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-            <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-            <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-            <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-            <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-            <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-            <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-            <i-button @click="openSearch" style="color:#265EA2">
-                <span v-if="!searchOptions">展开</span>
-                <span v-if="searchOptions">收起</span>
-                <span>高级搜索</span>
-            </i-button>
+            <page-header title="订单查询" hiddenPrint hiddenExport>
+
+            </page-header>
+
+            <div class="seek-day">
+                <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
+                <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
+                <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
+                <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
+                <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
+                <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
+                <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
+                <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
+                <i-button @click="openSearch" style="color:#265EA2">
+                    <span v-if="!searchOptions">展开</span>
+                    <span v-if="searchOptions">收起</span>
+                    <span>高级搜索</span>
+                </i-button>
+            </div>
         </i-row>
         <i-row class="data-from-seek" v-if="searchOptions">
             <i-input class="data-from-input" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.orderInfo"></i-input>
@@ -596,6 +601,9 @@ export default class OrderQuery extends Page {
 
 <style lang="less" scoped>
 .page.order-query {
+  .seek-day {
+    margin-top: 10px;
+  }
   .data-from-seek {
     margin-top: 6px;
     position: relative;

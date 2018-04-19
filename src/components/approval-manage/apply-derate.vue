@@ -19,12 +19,12 @@
       </data-grid-item>
       <data-grid-item label="减免罚息" :span="6">
         <template>
-          <i-input style="width:90%" v-model="applyDerateModel.remitAmount"></i-input>
+          <i-input class="input" v-model="applyDerateModel.remitAmount"></i-input>
         </template>
       </data-grid-item>
       <data-grid-item label="备注" :span="12">
         <template>
-          <i-input style="width:90%" type="textarea" v-model="applyDerateModel.remark"></i-input>
+          <i-input class="input" type="textarea" v-model="applyDerateModel.remark"></i-input>
         </template>
       </data-grid-item>
     </data-grid>
@@ -108,3 +108,8 @@ export default class ApplyDerate extends Vue {
   }
 }
 </script>
+<style lang="less" scoped>
+  .input{
+    width:90%
+  }
+</style>

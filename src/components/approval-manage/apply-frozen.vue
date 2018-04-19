@@ -19,12 +19,12 @@
       </data-grid-item>
       <data-grid-item label="冻结罚息" :span="6">
         <template>
-          <i-input style="width:90%" v-model="applyFrozenModel.remitAmount"></i-input>
+          <i-input class="input" v-model="applyFrozenModel.remitAmount"></i-input>
         </template>
       </data-grid-item>
       <data-grid-item label="备注" :span="12">
         <template>
-          <i-input style="width:90%" type="textarea" v-model="applyFrozenModel.remark"></i-input>
+          <i-input class="input" type="textarea" v-model="applyFrozenModel.remark"></i-input>
         </template>
       </data-grid-item>
     </data-grid>
@@ -105,3 +105,8 @@ export default class ApplyFrozen extends Vue {
   }
 }
 </script>
+<style lang="less" scoped>
+  .input{
+    width:90%
+  }
+</style>
