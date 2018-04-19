@@ -1,51 +1,96 @@
 <!--企业开户列表-->
 <template>
   <section class="page company-account-list">
-      <page-header title="企业开户列表" hiddenPrint hiddenExport></page-header>
-    <i-row class="data-form">
-      <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
-      <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
-      <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
-      <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
-      <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
-      <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
-      <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
-      <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
-      <i-button @click="openSearch" class="commend.item">
-        <span v-if="!searchOptions">展开</span>
-        <span v-if="searchOptions">收起</span>
-        <span>高级搜索</span>
-      </i-button>
-    </i-row>
-    <i-row v-if="searchOptions"  class="second-data-form">
-      <i-input placeholder="请录入门店\员工姓名查询" class="second-data-one"></i-input>
-      <span  class="second-data-two">下载日期：</span>
-      <i-date-picker class="second-data-three"></i-date-picker> ~
-      <i-date-picker class="second-data-three"></i-date-picker>
-      <i-select class="second-data-four" placeholder="全部状态">
-        <i-option value="拒绝" label="拒绝" key="拒绝"></i-option>
-        <i-option value="退单" label="退单" key="退单"></i-option>
-        <i-option value="通过" label="通过" key="通过"></i-option>
-      </i-select>
-      <i-select class="second-data-four" placeholder="全部拒单原因">
-        <i-option value="不符合进件操作" label="不符合进件操作" key="不符合进件操作"></i-option>
-        <i-option value="欺诈" label="欺诈" key="欺诈"></i-option>
-        <i-option value="黑名单" label="黑名单" key="黑名单"></i-option>
-        <i-option value="法院执行" label="法院执行" key="法院执行"></i-option>
-        <i-option value="还款能力不足" label="还款能力不足" key="还款能力不足"></i-option>
-        <i-option value="其他" label="其他" key="其他"></i-option>
-      </i-select>
-      <i-select class="second-data-four" placeholder="全部拒单细节">
-        <i-option value="行业限制" label="拒绝" key="拒绝"></i-option>
-        <i-option value="信用卡开户数超标" label="退单" key="退单"></i-option>
-        <i-option value="话单非本人名下且不满两年" label="通过" key="通过"></i-option>
-        <i-option value="话单本人名下但不满半年" label="通过" key="通过"></i-option>
-      </i-select>
-      <span class="second-data-two">日期：</span>
-      <i-date-picker class="second-data-three"></i-date-picker>~
-      <i-date-picker class="second-data-three"></i-date-picker>
-      <i-button class="blueButton">搜索</i-button>
-    </i-row>
+    <page-header title="企业开户列表" hiddenPrint hiddenExport></page-header>
+    <data-form hidden-reset hiddenDateSearch >
+      <template slot="input">
+        <i-form-item>
+          <i-input placeholder="请录入门店\员工姓名查询" class="second-data-one"></i-input>
+        </i-form-item>
+        <i-form-item label="下载日期：">
+          <i-date-picker class="second-data-three"></i-date-picker> ~
+        </i-form-item>
+        <i-form-item>
+          <i-date-picker class="second-data-three"></i-date-picker>
+        </i-form-item>
+        <i-form-item>
+          <i-select class="second-data-four" placeholder="全部状态">
+            <i-option value="拒绝" label="拒绝" key="拒绝"></i-option>
+            <i-option value="退单" label="退单" key="退单"></i-option>
+            <i-option value="通过" label="通过" key="通过"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item>
+          <i-select class="second-data-four" placeholder="全部拒单原因">
+            <i-option value="不符合进件操作" label="不符合进件操作" key="不符合进件操作"></i-option>
+            <i-option value="欺诈" label="欺诈" key="欺诈"></i-option>
+            <i-option value="黑名单" label="黑名单" key="黑名单"></i-option>
+            <i-option value="法院执行" label="法院执行" key="法院执行"></i-option>
+            <i-option value="还款能力不足" label="还款能力不足" key="还款能力不足"></i-option>
+            <i-option value="其他" label="其他" key="其他"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item>
+          <i-select class="second-data-four" placeholder="全部拒单细节">
+            <i-option value="行业限制" label="拒绝" key="拒绝"></i-option>
+            <i-option value="信用卡开户数超标" label="退单" key="退单"></i-option>
+            <i-option value="话单非本人名下且不满两年" label="通过" key="通过"></i-option>
+            <i-option value="话单本人名下但不满半年" label="通过" key="通过"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item label="日期：">
+          <i-date-picker class="second-data-three"></i-date-picker>~
+        </i-form-item>
+        <i-form-item>
+          <i-date-picker class="second-data-three"></i-date-picker>
+        </i-form-item>
+
+      </template>
+    </data-form>
+    <!--<i-row class="data-form">-->
+      <!--<i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>-->
+      <!--<i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>-->
+      <!--<i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>-->
+      <!--<i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>-->
+      <!--<i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>-->
+      <!--<i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>-->
+      <!--<i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>-->
+      <!--<i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>-->
+      <!--<i-button @click="openSearch" class="commend.item">-->
+        <!--<span v-if="!searchOptions">展开</span>-->
+        <!--<span v-if="searchOptions">收起</span>-->
+        <!--<span>高级搜索</span>-->
+      <!--</i-button>-->
+    <!--</i-row>-->
+    <!--<i-row v-if="searchOptions"  class="second-data-form">-->
+      <!--<i-input placeholder="请录入门店\员工姓名查询" class="second-data-one"></i-input>-->
+      <!--<span  class="second-data-two">下载日期：</span>-->
+      <!--<i-date-picker class="second-data-three"></i-date-picker> ~-->
+      <!--<i-date-picker class="second-data-three"></i-date-picker>-->
+      <!--<i-select class="second-data-four" placeholder="全部状态">-->
+        <!--<i-option value="拒绝" label="拒绝" key="拒绝"></i-option>-->
+        <!--<i-option value="退单" label="退单" key="退单"></i-option>-->
+        <!--<i-option value="通过" label="通过" key="通过"></i-option>-->
+      <!--</i-select>-->
+      <!--<i-select class="second-data-four" placeholder="全部拒单原因">-->
+        <!--<i-option value="不符合进件操作" label="不符合进件操作" key="不符合进件操作"></i-option>-->
+        <!--<i-option value="欺诈" label="欺诈" key="欺诈"></i-option>-->
+        <!--<i-option value="黑名单" label="黑名单" key="黑名单"></i-option>-->
+        <!--<i-option value="法院执行" label="法院执行" key="法院执行"></i-option>-->
+        <!--<i-option value="还款能力不足" label="还款能力不足" key="还款能力不足"></i-option>-->
+        <!--<i-option value="其他" label="其他" key="其他"></i-option>-->
+      <!--</i-select>-->
+      <!--<i-select class="second-data-four" placeholder="全部拒单细节">-->
+        <!--<i-option value="行业限制" label="拒绝" key="拒绝"></i-option>-->
+        <!--<i-option value="信用卡开户数超标" label="退单" key="退单"></i-option>-->
+        <!--<i-option value="话单非本人名下且不满两年" label="通过" key="通过"></i-option>-->
+        <!--<i-option value="话单本人名下但不满半年" label="通过" key="通过"></i-option>-->
+      <!--</i-select>-->
+      <!--<span class="second-data-two">日期：</span>-->
+      <!--<i-date-picker class="second-data-three"></i-date-picker>~-->
+      <!--<i-date-picker class="second-data-three"></i-date-picker>-->
+      <!--<i-button class="blueButton">搜索</i-button>-->
+    <!--</i-row>-->
     <data-box :columns="columns1" :data="data1"></data-box>
 
     <div class="submitBar">

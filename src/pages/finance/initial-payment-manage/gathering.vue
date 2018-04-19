@@ -2,28 +2,42 @@
 <template>
   <section class="page gathering">
     <page-header title="收款"></page-header>
-    <div class="data-form">
-      <i-button type="text" @click="getTimeSearch(0)" v-auth="401">昨日</i-button>
-      <i-button type="text" @click="getTimeSearch(1)" v-auth="401">今日</i-button>
-      <i-button type="text" @click="getTimeSearch(2)" v-auth="401">本周</i-button>
-      <i-button type="text" @click="getTimeSearch(3)" v-auth="401">本月</i-button>
-      <i-button type="text" @click="getTimeSearch(4)" v-auth="401">上月</i-button>
-      <i-button type="text" @click="getTimeSearch(5)" v-auth="401">最近三月</i-button>
-      <i-button type="text" @click="getTimeSearch(6)" v-auth="401">本季度</i-button>
-      <i-button type="text" @click="getTimeSearch(7)" v-auth="401">本年</i-button>
-      <i-button @click="openSearch" class="form-button" v-auth="400">
-        <span v-if="!searchOptions">展开</span>
-        <span v-if="searchOptions">收起</span>
-        <span>高级搜索</span>
-      </i-button>
-      <i-row v-if="searchOptions" class="second-data">
-        <i-input v-model="gatherModel.accountName" class="form-input" placeholder="请录入收款账户名查询"></i-input>
-        <span class="title">日期：</span>
-        <i-date-picker v-model="gatherModel.queryStartDate" class="title-item"></i-date-picker> ~
-        <i-date-picker v-model="gatherModel.queryEndDate" class="title-item"></i-date-picker>
-        <i-button class="blueButton" @click="getGatherListByCondition">搜索</i-button>
-      </i-row>
-    </div>
+    <data-form data-prop="timeSearch" hidden-reset :model="gatherModel" @on-search="getGatherListByCondition">
+      <template slot="input">
+        <i-form-item prop="accountName">
+          <i-input v-model="gatherModel.accountName" class="form-input" placeholder="请录入收款账户名查询"></i-input>
+        </i-form-item>
+        <i-form-item prop="queryStartDate" label="日期：">
+          <i-date-picker v-model="gatherModel.queryStartDate" class="title-item"></i-date-picker> ~
+        </i-form-item>
+        <i-form-item prop="queryEndDate">
+          <i-date-picker v-model="gatherModel.queryEndDate" class="title-item"></i-date-picker>
+        </i-form-item>
+        <!--<i-button class="blueButton" @click="getGatherListByCondition">搜索</i-button>-->
+      </template>
+    </data-form>
+    <!--<div class="data-form">-->
+      <!--<i-button type="text" @click="getTimeSearch(0)" v-auth="401">昨日</i-button>-->
+      <!--<i-button type="text" @click="getTimeSearch(1)" v-auth="401">今日</i-button>-->
+      <!--<i-button type="text" @click="getTimeSearch(2)" v-auth="401">本周</i-button>-->
+      <!--<i-button type="text" @click="getTimeSearch(3)" v-auth="401">本月</i-button>-->
+      <!--<i-button type="text" @click="getTimeSearch(4)" v-auth="401">上月</i-button>-->
+      <!--<i-button type="text" @click="getTimeSearch(5)" v-auth="401">最近三月</i-button>-->
+      <!--<i-button type="text" @click="getTimeSearch(6)" v-auth="401">本季度</i-button>-->
+      <!--<i-button type="text" @click="getTimeSearch(7)" v-auth="401">本年</i-button>-->
+      <!--<i-button @click="openSearch" class="form-button" v-auth="400">-->
+        <!--<span v-if="!searchOptions">展开</span>-->
+        <!--<span v-if="searchOptions">收起</span>-->
+        <!--<span>高级搜索</span>-->
+      <!--</i-button>-->
+      <!--<i-row v-if="searchOptions" class="second-data">-->
+        <!--<i-input v-model="gatherModel.accountName" class="form-input" placeholder="请录入收款账户名查询"></i-input>-->
+        <!--<span class="title">日期：</span>-->
+        <!--<i-date-picker v-model="gatherModel.queryStartDate" class="title-item"></i-date-picker> ~-->
+        <!--<i-date-picker v-model="gatherModel.queryEndDate" class="title-item"></i-date-picker>-->
+        <!--<i-button class="blueButton" @click="getGatherListByCondition">搜索</i-button>-->
+      <!--</i-row>-->
+    <!--</div>-->
     <data-box :id="399" :columns="columns1" :data="gatherList" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
 
 

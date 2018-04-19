@@ -2,31 +2,24 @@
 <template>
   <section class="page early-pay">
     <page-header title="提前结清"></page-header>
-    <div class="data-form">
-      <i-button type="text" @click="getTimeSearch(0)">昨日</i-button>
-      <i-button type="text" @click="getTimeSearch(1)">今日</i-button>
-      <i-button type="text" @click="getTimeSearch(2)">本周</i-button>
-      <i-button type="text" @click="getTimeSearch(3)">本月</i-button>
-      <i-button type="text" @click="getTimeSearch(4)">上月</i-button>
-      <i-button type="text" @click="getTimeSearch(5)">最近三月</i-button>
-      <i-button type="text" @click="getTimeSearch(6)">本季度</i-button>
-      <i-button type="text" @click="getTimeSearch(7)">本年</i-button>
-      <i-button @click="openSearch" class="form-button">
-        <span v-if="!searchOptions">展开</span>
-        <span v-if="searchOptions">收起</span>
-        <span>高级搜索</span>
-      </i-button>
-      <i-row v-if="searchOptions" class="second-data">
-        <i-input class="second-input" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
-        <i-select class="second-select" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
-          <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
-        </i-select>
-        <i-select class="second-select" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
-          <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
-        </i-select>
-        <i-button class="blueButton" @click="getEarlyPayList">搜索</i-button>
-      </i-row>
-    </div>
+    <data-form data-prop="timeSearch" @on-search="getEarlyPayList" :model="customerRepayModel" hiddenReset>
+      <template slot="input">
+        <i-form-item prop="dynamicParam">
+          <i-input class="second-input" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
+        </i-form-item>
+        <i-form-item prop="paymentStatus">
+          <i-select class="second-select" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="settlementChannel">
+          <i-select class="second-select" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+      </template>
+    </data-form>
+
     <data-box :id="420" :columns="columns1" :data="customerRepayList" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
 
     <template>
