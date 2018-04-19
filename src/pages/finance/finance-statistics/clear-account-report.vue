@@ -1,30 +1,26 @@
 <!--清结算日报表-->
 <template>
   <section class="page clear-account-report">
-    <span class="form-title">清结算日报表</span>
-    <i-select class="form-select" placeholder="统计机构"  v-model="model.companyId" clearable>
-      <i-option :label="companyChinaname" :value="id" :key="id" v-for="{id, companyChinaname} in company"></i-option>
-    </i-select>
-    <i-button class="blueButton"  @click="getData">搜索</i-button>
-    <i-button @click="openSearch" class="form-button">
-      <span v-if="!searchOptions">展开</span>
-      <span v-if="searchOptions">收起</span>
-      <span>高级搜索</span>
-    </i-button>
-    <div class="export">
-      <div class="export-item">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span class="export-item-one">导出</span>
-      </div>
-    </div>
-    <i-row v-if="searchOptions" class="form-second">
-      <i-select placeholder="统计通道" class="form-second-one" v-model="model.channel">
-        <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+    <page-header title="清结算日报表" hiddenPrint></page-header>
+    <div class="data-form">
+      <i-select class="form-select" placeholder="统计机构" v-model="model.companyId" clearable>
+        <i-option :label="companyChinaname" :value="id" :key="id" v-for="{id, companyChinaname} in company"></i-option>
       </i-select>
-      <span class="title">结算日期：</span>
-      <i-date-picker v-model="model.minSettlementDate"></i-date-picker> ~
-      <i-date-picker v-model="model.maxSettlementDate"></i-date-picker>
-    </i-row>
+      <i-button class="blueButton" @click="getData">搜索</i-button>
+      <i-button @click="openSearch" class="form-button">
+        <span v-if="!searchOptions">展开</span>
+        <span v-if="searchOptions">收起</span>
+        <span>高级搜索</span>
+      </i-button>
+      <i-row v-if="searchOptions" class="form-second">
+        <i-select placeholder="统计通道" class="form-second-one" v-model="model.channel">
+          <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+        </i-select>
+        <span class="title">结算日期：</span>
+        <i-date-picker v-model="model.minSettlementDate"></i-date-picker> ~
+        <i-date-picker v-model="model.maxSettlementDate"></i-date-picker>
+      </i-row>
+    </div>
     <!--<table border="1" width="100%" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
       <tr height="40">
         <td bgcolor="#F2F2F2" rowspan="2" width="5%">公司简称</td>
@@ -95,12 +91,14 @@
         this.allData = data
         let arr: any = []
         data.forEach(v => {
-          if(!arr.find(val => val.companyName === v.companyName)){
+          if (!arr.find(val => val.companyName === v.companyName)) {
             arr.push(v)
           }
         })
         this.data1 = arr
-      }, ({ msg }) => {
+      }, ({
+        msg
+      }) => {
         this.$Message.error(msg)
       })
     }
@@ -115,8 +113,7 @@
     created() {
       this.getCompany()
       this.getData()
-      this.columns1 = [
-        {
+      this.columns1 = [{
           title: "公司简介",
           align: 'center',
           key: 'companyName',
@@ -131,18 +128,20 @@
               props: {
                 columns: this.columnsFuyou,
                 width: 890,
-                data: [ this.allData.find(v => (v.companyName === params.row.companyName) && (v.type === 162)) || {
-                  depositCash: '-',
-                  initialPayment: '-',
-                  purchaseTax: '-',
-                  insuranceExpenses: '-',
-                  otherFee: '-',
-                  principalReceived: '-',
-                  interestReceived: '-',
-                  penaltyReceived: '-',
-                  param: '-',
-                  sum: '-'
-                }],
+                data: [this.allData.find(v => (v.companyName === params.row.companyName) && (v.type === 162)) ||
+                  {
+                    depositCash: '-',
+                    initialPayment: '-',
+                    purchaseTax: '-',
+                    insuranceExpenses: '-',
+                    otherFee: '-',
+                    principalReceived: '-',
+                    interestReceived: '-',
+                    penaltyReceived: '-',
+                    param: '-',
+                    sum: '-'
+                  }
+                ],
                 // border: true,
                 stripe: true
               }
@@ -158,18 +157,20 @@
               props: {
                 columns: this.columnsFuyou,
                 width: 890,
-                data: [ this.allData.find(v => (v.companyName === params.row.companyName) && (v.type === 163)) || {
-                  depositCash: '-',
-                  initialPayment: '-',
-                  purchaseTax: '-',
-                  insuranceExpenses: '-',
-                  otherFee: '-',
-                  principalReceived: '-',
-                  interestReceived: '-',
-                  penaltyReceived: '-',
-                  param: '-',
-                  sum: '-'
-                }],
+                data: [this.allData.find(v => (v.companyName === params.row.companyName) && (v.type === 163)) ||
+                  {
+                    depositCash: '-',
+                    initialPayment: '-',
+                    purchaseTax: '-',
+                    insuranceExpenses: '-',
+                    otherFee: '-',
+                    principalReceived: '-',
+                    interestReceived: '-',
+                    penaltyReceived: '-',
+                    param: '-',
+                    sum: '-'
+                  }
+                ],
                 // border: true,
                 stripe: true
               }
@@ -225,48 +226,51 @@
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
-    exportMonthReport() {
-    }
+    exportMonthReport() {}
   }
 
 </script>
 
 <style lang="less">
-  .page.clear-account-report{
-    .form-select{
-      margin-left:10px;
-      width:10%;
-    }
-    .form-button{
-      color:#265EA2;
-      margin-left:10px;
-    }
-    .export{
-      float:right;
-      margin-right:10px;
-      margin-top:10px;
-      .export-item{
-        font-size:16px;
-        cursor:pointer;
-        display:inline-block;
-        margin-left:10px;
-        color:#3367A7;
-        .export-item-one{
-          font-size:12px;
+  .page.clear-account-report {
+    .data-form {
+      margin-top: 10px;
+      .form-select {
+        margin-left: 10px;
+        width: 10%;
+      }
+      .form-button {
+        color: #265EA2;
+        margin-left: 10px;
+      }
+      .form-second {
+        margin-top: 6px;
+        .form-second-one {
+          margin-left: 10px;
+          width: 10%;
+        }
+        .title {
+          margin-left: 10px;
         }
       }
     }
-    .form-second{
-      margin-top:6px;
-      .form-second-one{
-        margin-left:10px;
-        width:10%;
-      }
-      .title{
-        margin-left:10px;
+    .export {
+      float: right;
+      margin-right: 10px;
+      margin-top: 10px;
+      .export-item {
+        font-size: 16px;
+        cursor: pointer;
+        display: inline-block;
+        margin-left: 10px;
+        color: #3367A7;
+        .export-item-one {
+          font-size: 12px;
+        }
       }
     }
   }
+  
   .ivu-table-cell {
     padding-left: 0;
     padding-right: 0;

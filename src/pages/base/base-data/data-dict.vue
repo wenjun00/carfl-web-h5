@@ -1,8 +1,8 @@
 <!--数据字典-->
 <template>
   <section class="page data-dict">
+      <page-header title="数据字典" hiddenPrint hiddenExport></page-header>
     <i-row class="data-form">
-      <span class="form-title">数据字典</span>
       <i-row type="flex" align="top" justify="start">
         <i-col :span="4">
           <div class="data-form-item">
@@ -472,6 +472,7 @@
 <style lang="less" scoped>
   .page.data-dict {
     .data-form {
+        margin-top: 10px;
       .data-form-item {
         width: 250px;
         height: 30px;

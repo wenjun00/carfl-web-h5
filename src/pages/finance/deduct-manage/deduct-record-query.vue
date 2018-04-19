@@ -1,11 +1,11 @@
 <!--划扣记录查询-->
 <template>
   <section class="page deduct-record-query">
-    <span class="form-title">划扣记录查询</span>
+    <page-header title="划扣记录查询" hiddenPrint></page-header>
     <i-row class="data-form" v-auth="464">
       <span class="title">支付日期：</span>
       <i-date-picker class="form-picker-one" v-model="model.startTime"></i-date-picker>~
-      <i-date-picker class="form-picker-one"v-model="model.endTime"></i-date-picker>
+      <i-date-picker class="form-picker-one" v-model="model.endTime"></i-date-picker>
       <i-input class="form-input" placeholder="请输入客户姓名、客户号查询" v-model="model.personalInfo"></i-input>
       <i-select class="form-select-one" placeholder="全部" v-model="model.payStatus">
         <i-option label="初始" value="西安市" key="西安市"></i-option>
@@ -14,10 +14,6 @@
         <i-option label="处理中" value="渭南市" key="渭南市"></i-option>
       </i-select>
       <i-button class="blueButton form-search-on" @click="getRecord">搜索</i-button>
-      <div class="commend" v-auth="465">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span class="export-one">导出</span>
-      </div>
     </i-row>
     <data-box :id="463" :columns="columns1" :data="data1" @onPageChange="getRecord" :page="pageService"></data-box>
   </section>
@@ -28,9 +24,15 @@
   import Page from "~/core/page";
   import Component from "vue-class-component";
   import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
-  import { ChargeBackService } from "~/services/manage-service/charge-back.service";
-  import { PageService } from "~/utils/page.service";
-  import { FilterService } from "~/utils/filter.service"
+  import {
+    ChargeBackService
+  } from "~/services/manage-service/charge-back.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
   import SvgIcon from '~/components/common/svg-icon.vue';
 
   import {
@@ -69,7 +71,9 @@
     getRecord() {
       this.chargeBackService.getChargeRecordList(this.model, this.pageService).subscribe(data => {
         this.data1 = data
-      }, ({ msg }) => {
+      }, ({
+        msg
+      }) => {
         this.$Message.error(msg)
       })
     }
@@ -78,8 +82,7 @@
     }
     created() {
       this.getRecord()
-      this.columns1 = [
-        {
+      this.columns1 = [{
           title: "出账日期",
           align: "center",
           key: "paymentDate",
@@ -198,38 +201,38 @@
 </script>
 
 <style lang="less">
-  .page.deduct-record-query{
-    .data-form{
-      margin:6px;
-      .title{
-        margin-left:10px
+  .page.deduct-record-query {
+    .data-form {
+      margin: 6px;
+      .title {
+        margin-left: 10px
       }
-      .form-picker{
-        display:inline-block;
-        width:10%
+      .form-picker {
+        display: inline-block;
+        width: 10%
       }
-      .form-input{
-        display:inline-block;
-        width:18%;
-        margin-left:20px;
+      .form-input {
+        display: inline-block;
+        width: 18%;
+        margin-left: 20px;
       }
-      .form-select-one{
-        width:120px;
-        margin-left:10px;
+      .form-select-one {
+        width: 120px;
+        margin-left: 10px;
       }
-      .form-search-one{
-        margin-left:20px
+      .form-search-one {
+        margin-left: 20px
       }
-      .commend{
-        font-size:16px;
-        cursor:pointer;
-        display:inline-block;
-        margin-right:10px;
-        color:#3367A7;
+      .commend {
+        font-size: 16px;
+        cursor: pointer;
+        display: inline-block;
+        margin-right: 10px;
+        color: #3367A7;
         float: right;
-        .export-one{
-           font-size:12px;
-         }
+        .export-one {
+          font-size: 12px;
+        }
       }
     }
   }

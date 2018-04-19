@@ -1,8 +1,8 @@
 <!--企业开户列表-->
 <template>
   <section class="page company-account-list">
+      <page-header title="企业开户列表" hiddenPrint hiddenExport></page-header>
     <i-row class="data-form">
-      <span class="commend">企业开户列表</span>
       <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
       <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
       <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>

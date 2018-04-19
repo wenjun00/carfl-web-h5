@@ -1,6 +1,6 @@
 <template>
   <section class="page vehicle-maintenance">
-    <span class="form-title">车辆维护</span>
+      <page-header title="车辆维护" hiddenPrint hiddenExport></page-header>
     <i-row class="form">
       <i-col class="data-form" :span="4">
         <i-row class="data-form-item">
@@ -753,6 +753,7 @@
 <style lang="less" scope>
   .page.vehicle-maintenance {
     .form {
+        margin-top: 10px;
       .data-form {
         border: 1px solid #dddddd;
         padding: 20px 0;

@@ -1,16 +1,8 @@
 <!--销售收款申请-->
 <template>
   <section class="page sale-gathering-apply special-input">
-    <div>
-      <div class="header">
-        <span class="form-title">销售收款申请</span>
-        <div class="data-form">
-          <div class="data-form-item">
-            <svg-icon iconClass="dayin"></svg-icon>
-            <span>打印</span>
-          </div>
-        </div>
-      </div>
+    <page-header title="销售收款申请" hiddenExport></page-header>
+    <div class="data-command">
       <i-row type="flex">
         <i-col span="18">
           <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
@@ -502,6 +494,9 @@
   }
   
   .page.sale-gathering-apply {
+    .data-command {
+      margin-top: 10px;
+    }
     .header {
       border-bottom: 1px solid #cccccc;
       margin-bottom: 20px;
@@ -535,8 +530,8 @@
       left: 0;
       border: 1px solid #ddd;
       padding-right: 24px;
-      .submit-bar-item{
-          padding: 10px;
+      .submit-bar-item {
+        padding: 10px;
       }
     }
   }
