@@ -142,6 +142,3 @@ export default class CustomerSettleModal extends Vue {
   }
 }
 </script>
-<style>
-
-</style>

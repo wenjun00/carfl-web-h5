@@ -1,8 +1,8 @@
 <!--还款总览-->
 <template>
   <section class="component repay-sum">
-    <div style="text-align:right">
-      <i-button @click="applyDerate" class="blueButton" size="small" style="margin:10px;">申请减免</i-button>
+    <div class="zonglan">
+      <i-button class="jianmian blueButton" @click="applyDerate" size="small">申请减免</i-button>
       <i-button @click="applyFrozen" class="blueButton" size="small">申请冻结</i-button>
     </div>
     <data-grid :labelWidth="110" labelAlign="left" contentAlign="left">
@@ -33,7 +33,7 @@
       </data-grid-item>
     </data-grid>
 
-    <table border="1" width="1018" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
+    <table border="1" width="1018" class="mingxi">
       <tr height="40">
         <td bgcolor="#F2F2F2" colspan="3">还款</td>
         <td bgcolor="#F2F2F2" colspan="4">明细</td>
@@ -64,8 +64,9 @@
         <td>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltyReceived:0}}</td>
         <td>剩余罚息</td>
         <td>
-          <span style="text-decoration:line-through;margin-right:6px">{{repaySumObj.paymentSchedule?(repaySumObj.paymentSchedule.penaltyFreezeAddDerate):0}}</span>
-          <span style="color:red;">{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltySurplus:''}}</span>
+          <span
+            class="shengyu1">{{repaySumObj.paymentSchedule?(repaySumObj.paymentSchedule.penaltyFreezeAddDerate):0}}</span>
+          <span class="shengyu2">{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltySurplus:''}}</span>
         </td>
       </tr>
       <tr height="40">
@@ -102,102 +103,136 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import ApplyDerate from "~/components/approval-manage/apply-derate.vue";
-import ApplyFrozen from "~/components/approval-manage/apply-frozen.vue";
-import { PaymentScheduleService } from "~/services/manage-service/payment-schedule.service";
-import { DataGrid, DataGridItem } from "@zct1989/vue-component";
-import { Prop } from "vue-property-decorator";
-import { Dependencies } from "~/core/decorator";
-@Component({
-  components: {
-    DataGrid,
-    DataGridItem,
-    ApplyDerate,
-    ApplyFrozen
-  }
-})
-export default class RepaySum extends Vue {
-  @Dependencies(PaymentScheduleService)
-  private paymentScheduleService: PaymentScheduleService;
-  private applyDerateOpen: Boolean = false;
-  private applyFrozenOpen: Boolean = false;
-  private repaySumObj: any = {};
-  private orderId: number = 0;
-  @Prop() row: Object;
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import ApplyDerate from "~/components/approval-manage/apply-derate.vue";
+  import ApplyFrozen from "~/components/approval-manage/apply-frozen.vue";
+  import {PaymentScheduleService} from "~/services/manage-service/payment-schedule.service";
+  import {DataGrid, DataGridItem} from "@zct1989/vue-component";
+  import {Prop} from "vue-property-decorator";
+  import {Dependencies} from "~/core/decorator";
 
-  created() {}
-  applyDerate() {
-    this.applyDerateOpen = true;
-    let _appDerate: any = this.$refs["apply-derate"];
-    _appDerate.resetInput();
-  }
-  applyFrozen() {
-    this.applyFrozenOpen = true;
-    let _appFrozen: any = this.$refs["apply-frozen"];
-    _appFrozen.resetInput();
-  }
-  getRepaySum(orderId) {
-    this.orderId = orderId;
-    this.paymentScheduleService
-      .getRepaymentOverview({
-        orderId: orderId
-      })
-      .subscribe(
-        data => {
-          this.repaySumObj = data;
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
-      );
-  }
-  applyDerateModalOpen(val) {
-    if (val) {
+  @Component({
+    components: {
+      DataGrid,
+      DataGridItem,
+      ApplyDerate,
+      ApplyFrozen
+    }
+  })
+  export default class RepaySum extends Vue {
+    @Dependencies(PaymentScheduleService)
+    private paymentScheduleService: PaymentScheduleService;
+    private applyDerateOpen: Boolean = false;
+    private applyFrozenOpen: Boolean = false;
+    private repaySumObj: any = {};
+    private orderId: number = 0;
+    @Prop() row: Object;
+
+    created() {
+    }
+
+    applyDerate() {
+      this.applyDerateOpen = true;
+      let _appDerate: any = this.$refs["apply-derate"];
+      _appDerate.resetInput();
+    }
+
+    applyFrozen() {
+      this.applyFrozenOpen = true;
+      let _appFrozen: any = this.$refs["apply-frozen"];
+      _appFrozen.resetInput();
+    }
+
+    getRepaySum(orderId) {
+      this.orderId = orderId;
+      this.paymentScheduleService
+        .getRepaymentOverview({
+          orderId: orderId
+        })
+        .subscribe(
+          data => {
+            this.repaySumObj = data;
+          },
+          ({msg}) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
+
+    applyDerateModalOpen(val) {
+      if (val) {
+        let _applyDerate: any = this.$refs["apply-derate"];
+        _applyDerate.getInterestInfo(this.repaySumObj, this.orderId);
+      }
+    }
+
+    applyFrozenModalOpen(val) {
+      if (val) {
+        let _applyFrozen: any = this.$refs["apply-frozen"];
+        _applyFrozen.getInterestInfo(this.repaySumObj, this.orderId);
+      }
+    }
+
+    /**
+     * 取消申请减免
+     */
+    cancelApplyDerate() {
+      this.applyDerateOpen = false;
+    }
+
+    /**
+     * 确定申请减免
+     */
+    confirmApplyDerate() {
       let _applyDerate: any = this.$refs["apply-derate"];
-      _applyDerate.getInterestInfo(this.repaySumObj, this.orderId);
+      _applyDerate.confirmApplyDerate();
     }
-  }
-  applyFrozenModalOpen(val) {
-    if (val) {
-      let _applyFrozen: any = this.$refs["apply-frozen"];
-      _applyFrozen.getInterestInfo(this.repaySumObj, this.orderId);
-    }
-  }
-  /**
-   * 取消申请减免
-   */
-  cancelApplyDerate() {
-    this.applyDerateOpen = false;
-  }
-  /**
-   * 确定申请减免
-   */
-  confirmApplyDerate() {
-    let _applyDerate: any = this.$refs["apply-derate"];
-    _applyDerate.confirmApplyDerate();
-  }
-  closeAndRefreshDerate() {
-    this.applyDerateOpen = false;
-    this.getRepaySum(this.orderId);
-  }
-  cancelApplyFrozen() {
-    this.applyFrozenOpen = false;
-  }
-  /**
-   * 确定申请冻结
-   */
-  confirmApplyFrozen() {
-    let _applyFrozen: any = this.$refs["apply-frozen"];
-    _applyFrozen.confirmApplyFrozen();
-  }
-  closeAndRefreshFrozen() {
-    this.applyFrozenOpen = false;
-    this.getRepaySum(this.orderId);
-  }
-}
-</script>
-<style>
 
+    closeAndRefreshDerate() {
+      this.applyDerateOpen = false;
+      this.getRepaySum(this.orderId);
+    }
+
+    cancelApplyFrozen() {
+      this.applyFrozenOpen = false;
+    }
+
+    /**
+     * 确定申请冻结
+     */
+    confirmApplyFrozen() {
+      let _applyFrozen: any = this.$refs["apply-frozen"];
+      _applyFrozen.confirmApplyFrozen();
+    }
+
+    closeAndRefreshFrozen() {
+      this.applyFrozenOpen = false;
+      this.getRepaySum(this.orderId);
+    }
+  }
+</script>
+<style lang="less" scoped>
+  .zonglan {
+    text-align: right
+  }
+
+  .jianmian {
+    margin: 10px;
+  }
+
+  .mingxi {
+    margin-top: 10px;
+    text-align: center;
+    border: 1px solid #DDDEE1
+  }
+
+  .shengyu1 {
+    text-decoration: line-through;
+    margin-right: 6px
+  }
+
+  .shengyu2 {
+    color: red;
+  }
 </style>
