@@ -3,13 +3,13 @@
   <section class="page receipt-record-query">
     <page-header title="收款记录查询" hiddenPrint hiddenExport>
     </page-header>
-    <data-form hidden-date-search :model="receiptModel" @on-search="receiptRecordSearch">
+    <data-form hidden-date-search :model="receiptModel" :page="pageService" @on-search="receiptRecordSearch">
       <template slot="input">
         <i-form-item prop="queryStartDate" label="申请日期">
           <i-date-picker v-model="receiptModel.queryStartDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>
         </i-form-item>
         <i-form-item prop="queryEndDate">
-          <i-date-picker class="data-form-item" v-model="receiptModel.queryEndDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>
+          <i-date-picker v-model="receiptModel.queryEndDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>
         </i-form-item>
         <i-form-item prop="applicationType">
           <i-select placeholder="全部收款类型" v-model="receiptModel.applicationType" clearable>
@@ -17,13 +17,13 @@
           </i-select>
         </i-form-item>
         <i-form-item prop="approvalStatus">
-           <i-select placeholder="申请状态" v-model="receiptModel.approvalStatus" clearable>
-        <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
-      </i-select>
+          <i-select placeholder="申请状态" v-model="receiptModel.approvalStatus" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
         </i-form-item>
       </template>
       <template slot="button">
-         <i-checkbox v-model="status">包含已归档订单</i-checkbox>
+        <i-checkbox v-model="status">包含已归档订单</i-checkbox>
       </template>
     </data-form>
     <data-box :id="447" :columns="columns1" :data="receiptDataSet" :page="pageService" @onPageChange="receiptRecordSearch"></data-box>

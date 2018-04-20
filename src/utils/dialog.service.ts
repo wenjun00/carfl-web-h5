@@ -11,7 +11,8 @@ export class DialogService {
   static show(option) {
     const Instance = new Vue({
       render(h) {
-        let bodyVNodes = [option.render(h)]
+        let contentVNodes = option.render(h)
+        let bodyVNodes = [contentVNodes]
         let footerVNodes = []
         if (option.footer && typeof option.footer === 'function') {
           footerVNodes.push(h('template', { slot: 'footer' }, [option.footer(h)]))

@@ -2,23 +2,23 @@
 <template>
   <section class="page month-repay-report">
     <page-header title="月还款报表" hiddenPrint></page-header>
-    <data-form hiddenDateSearch hidden-reset >
+    <data-form hiddenDateSearch hidden-reset>
       <template slot="input">
         <i-form-item label="统计机构：">
-          <i-select class="form-select">
+          <i-select>
             <i-option label="群泰上海" value="群泰上海" key="群泰上海"></i-option>
             <i-option label="群泰西安" value="群泰西安" key="群泰西安"></i-option>
             <i-option label="群泰武汉" value="群泰武汉" key="群泰武汉"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item label="统计通道：">
-          <i-select class="form-select">
+          <i-select>
             <i-option label="汇付" value="汇付" key="汇付"></i-option>
             <i-option label="富友" value="富友" key="富友"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item>
-          <i-input  placeholder="请输入客户姓名" class="search-item"></i-input>
+          <i-input placeholder="请输入客户姓名"></i-input>
         </i-form-item>
       </template>
     </data-form>
@@ -276,44 +276,43 @@
 
 </script>
 <style lang="less">
-  .page.month-repay-report{
-    .data-form{
-      margin-top:10px;
-      .title{
-        font-size:18px;
-        font-weight:bold
+  .page.month-repay-report {
+    .data-form {
+      margin-top: 10px;
+      .title {
+        font-size: 18px;
+        font-weight: bold
       }
-      .form-input{
-        margin-left:10px;
+      .form-input {
+        margin-left: 10px;
       }
-      .form-select{
-        margin-left:10px;
-        width:10%;
+      .form-select {
+        margin-left: 10px;
+        width: 10%;
       }
-      .commend{
-        float:right;
-        margin-right:10px;
-        margin-top:10px;
-        .commend-item{
-          font-size:16px;
-          cursor:pointer;
-          display:inline-block;
-          margin-left:10px;
-          color:#3367A7;
-          .commend-item-one{
-            font-size:12px;
+      .commend {
+        float: right;
+        margin-right: 10px;
+        margin-top: 10px;
+        .commend-item {
+          font-size: 16px;
+          cursor: pointer;
+          display: inline-block;
+          margin-left: 10px;
+          color: #3367A7;
+          .commend-item-one {
+            font-size: 12px;
           }
         }
       }
     }
-    .search{
-      margin:6px;
-      .search-item{
-        display:inline-block;
-        width:10%;
+    .search {
+      margin: 6px;
+      .search-item {
+        display: inline-block;
+        width: 10%;
       }
     }
   }
 
 </style>
-

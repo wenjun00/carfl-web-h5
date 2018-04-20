@@ -2,7 +2,7 @@
 <template>
   <section class="page payment-record-query">
     <page-header title="付款记录查询" hiddenPrint hiddenExport></page-header>
-    <data-form hidden-date-search :model="paymentModel" @on-search="searchPaymentrecord">
+    <data-form hidden-date-search :model="paymentModel" :page="pageService" @on-search="searchPaymentrecord">
       <template slot="input">
         <i-form-item prop="startTime" label="申请日期">
           <i-date-picker v-model="paymentModel.startTime" type="date" placeholder="yyy/mm/dd"></i-date-picker>

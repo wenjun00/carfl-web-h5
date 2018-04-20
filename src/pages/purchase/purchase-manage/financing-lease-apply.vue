@@ -2,7 +2,7 @@
 <template>
   <section class="page financing-lease-apply">
     <page-header title="融资租赁申请">
-      <command-button label="添加新申请" @click="addNewApply"></command-button>
+      <command-button label="添加新申请" @click="onReset"></command-button>
       <command-button label="业务流程图" @click="onOpenFlowModal"></command-button>
     </page-header>
     <!-- 搜索表单-start -->
@@ -31,7 +31,7 @@
           </i-col>
           <i-col span="10">
             <i-form-item label="归属业务员" prop="salesmanName">
-              <i-input type="text" :maxlength="13" readonly v-model="customerModel.salesmanName" @on-focus="salesmanNamefocus"></i-input>
+              <i-input type="text" :maxlength="13" readonly v-model="customerModel.salesmanName" @on-focus="showSalemanList"></i-input>
             </i-form-item>
           </i-col>
         </i-row>
@@ -40,24 +40,24 @@
     <!-- 搜索表单-end -->
 
     <!-- 资料申请选项卡-start -->
-    <i-tabs type="card" v-show="showApplicationTab" v-model="materialTabs" class="application-tabs">
+    <i-tabs type="card" v-show="showApplicationTab" v-model="currentTab" class="application-tabs">
       <i-tab-pane label="选购资料" name="choose-buy-materials">
-        <choose-buy-materials ref="choose-buy-materials" v-show="materialTabs==='choose-buy-materials'"></choose-buy-materials>
+        <choose-buy-materials ref="choose-buy-materials" v-show="currentTab==='choose-buy-materials'"></choose-buy-materials>
       </i-tab-pane>
       <i-tab-pane label="客户资料" name="customer-materials">
-        <customer-materials ref="customer-materials" v-show="materialTabs==='customer-materials'"></customer-materials>
+        <customer-materials ref="customer-materials" v-show="currentTab==='customer-materials'"></customer-materials>
       </i-tab-pane>
       <i-tab-pane label="客户职业" name="customer-job-message">
-        <customer-job-message ref="customer-job-message" v-show="materialTabs==='customer-job-message'"></customer-job-message>
+        <customer-job-message ref="customer-job-message" v-show="currentTab==='customer-job-message'"></customer-job-message>
       </i-tab-pane>
       <i-tab-pane label="客户联系人" name="customer-contacts">
-        <customer-contacts ref="customer-contacts" v-show="materialTabs==='customer-contacts'"></customer-contacts>
+        <customer-contacts ref="customer-contacts" v-show="currentTab==='customer-contacts'"></customer-contacts>
       </i-tab-pane>
       <i-tab-pane label="客户来源" name="customer-origin">
-        <customer-origin ref="customer-origin" v-show="materialTabs==='customer-origin'"></customer-origin>
+        <customer-origin ref="customer-origin" v-show="currentTab==='customer-origin'"></customer-origin>
       </i-tab-pane>
       <i-tab-pane label="上传素材" name="upload-the-material">
-        <upload-the-material ref="upload-the-material" v-show="materialTabs==='upload-the-material'"></upload-the-material>
+        <upload-the-material ref="upload-the-material" v-show="currentTab==='upload-the-material'"></upload-the-material>
       </i-tab-pane>
     </i-tabs>
     <div v-show="!showApplicationTab" class="emptyText">
@@ -71,18 +71,6 @@
       <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit(false)">保存并提交</i-button>
     </div>
     <!--底部操作栏-end-->
-
-    <template>
-      <dialog-box title="归属业务员" width="800" v-model="salesmanModal">
-        <salesman-name @choosecurrentData="choosecurrentData"></salesman-name>
-      </dialog-box>
-    </template>
-
-    <template>
-      <dialog-box v-model="aaa" transfer>
-        asdasdasdasd
-      </dialog-box>
-    </template>
   </section>
 </template>
 
@@ -97,7 +85,7 @@ import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.
 import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue";
 import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue";
 import HistoricalRecord from "~/components/purchase-manage/historical-record.vue";
-import SalesmanName from "~/components/purchase-manage/salesman-name.tsx.vue";
+import SalesmanName from "~/components/purchase-manage/salesman-name.vue";
 import { PersonalService } from "~/services/manage-service/personal.service";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { State, Mutation, namespace } from "vuex-class";
@@ -128,9 +116,10 @@ export default class FinancingLeaseApply extends Page {
   @ModuleState collectiondata;
 
   private showApplicationTab = false; // 申请选项卡显示状态
-  private historyId = ""; // 上次查询的身份证号
+  private currentIdCard = ""; // 上次查询的身份证号
+
   private addCar: Boolean = false;
-  private materialTabs: String = "choose-buy-materials";
+  private currentTab: String = "choose-buy-materials";
   private historicalModal: Boolean = false;
   private historicalDataset: any = [];
   private PersonalData: any = [];
@@ -139,7 +128,7 @@ export default class FinancingLeaseApply extends Page {
   private orderStatus: any = "";
   private salesmanModal: Boolean = false;
   private spinShow: Boolean = false;
-  private aaa = false;
+
   // 客户信息表单数据
   private customerModel: any = {
     idCard: "", // 证件号码
@@ -187,21 +176,10 @@ export default class FinancingLeaseApply extends Page {
     ) {
       this.customerModel = this.collectiondata;
       this.customerModel.name = this.collectiondata.personalName;
-      this.showTab();
+      // this.showTab();
     }
   }
 
-  choosecurrentData(data) {
-    this.customerModel.salesmanName = data.userRealname;
-    this.customerModel.salesmanId = data.id;
-  }
-
-  /**
-   * 归属业务员
-   */
-  salesmanNamefocus() {
-    this.salesmanModal = true;
-  }
 
   /**
    * 业务流程图
@@ -280,7 +258,7 @@ export default class FinancingLeaseApply extends Page {
           }
 
           // 判断是否需要重置信息
-          if (this.historyId && this.historyId !== this.customerModel.idCard) {
+          if (this.currentIdCard && this.currentIdCard !== this.customerModel.idCard) {
             this.$Modal.confirm({
               title: "提醒",
               content: "证件号码更新,是否要重置申请信息?",
@@ -289,8 +267,10 @@ export default class FinancingLeaseApply extends Page {
           }
 
           // 更新历史查询身份证号
-          this.historyId = this.customerModel.idCard;
+          this.currentIdCard = this.customerModel.idCard;
           this.showApplicationTab = true;
+
+          // TODO: 根据身份证获取性别和生日信息
         },
         ({ msg }) => {
           this.$Message.error(msg);
@@ -302,83 +282,66 @@ export default class FinancingLeaseApply extends Page {
    * 显示历史订单
    */
   showHistoryOrder(data) {
-    let historyRecord;
     let dialog = this.$dialog.show({
-      title: "asdasd",
+      title: "历史订单",
       footer: true,
-      onOk: () => {
-        let instance = historyRecord.componentInstance;
-        let currentRow = instance.getCurrentRow();
+      onOk: historyRecord => {
+        let currentRow = historyRecord.getCurrentRow();
 
         if (!currentRow) {
+          this.$Message.error("请选择需要恢复的订单");
           return false;
         }
+
+        // TODO: 更新历史订单信息
       },
       render: h => {
-        historyRecord = h(HistoricalRecord, {
+        return h(HistoricalRecord, {
           props: {
             data
           }
         });
-
-        return historyRecord;
       }
     });
   }
 
-  resetApplicationTab() {}
 
   /**
-   * 根据客户三项查询历史订单
+   * 显示历史订单
    */
-  checkcustomerinfo() {
-    let pat: any = /(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$)|(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)/;
-    if (
-      this.customerModel.idCard.length === 18 &&
-      pat.test(this.customerModel.idCard)
-    ) {
-      let idcard: any = this.customerModel.idCard;
-      if (parseInt(idcard.substr(16, 1)) % 2 == 1) {
-        this.customerModel.sex = 1;
-        this.ReverseData();
-      } else {
-        this.customerModel.sex = 2;
-        this.ReverseData();
+  showSalemanList() {
+    let dialog = this.$dialog.show({
+      title: "销售员列表",
+      footer: true,
+      onOk: salesmanName => {
+        let currentRow = salesmanName.getCurrentRow();
+
+        if (!currentRow) {
+          this.$Message.error("请选择对应销售员");
+          return false;
+        }
+
+        // 更新销售人员信息
+        this.customerModel.salesmanName = currentRow.userRealname;
+        this.customerModel.salesmanId = currentRow.id;
+      },
+      render: h => {
+        return h(SalesmanName);
       }
-      this.customerModel.birthTime = new Date(
-        idcard.substring(6, 10),
-        idcard.substring(10, 12) - 1,
-        idcard.substring(12, 14)
-      );
-      this.ReverseData();
-      this.customerModel.name = "";
-      this.customerModel.mobileMain = "";
-      this.customerModel.salesmanName = "";
-      this.resethistory();
-      let customermodel: any = this.$refs["customer-materials"];
-      customermodel.getinfo(this.customerModel);
-      if (this.customerModel.idCard) {
-        this.personalService
-          .getCustomerHistoryFinanceInfo(this.customerModel)
-          .subscribe(
-            data => {
-              this.historicalDataset = data;
-              if (this.historicalDataset.length) {
-                this.historicalModal = true;
-              }
-            },
-            ({ msg }) => {
-              this.$Message.error(msg);
-            }
-          );
-      }
-    }
+    });
   }
+
+  /**
+   * 重置申请选项卡数据
+   */
+  resetApplicationTab() {
+
+  }
+
   /**
    * 客户信息反显
    */
   distributionData(data, orderStatus) {
-    console.log(data, "信息反显");
     this.customerModel.name = data.personal.name;
     this.customerModel.mobileMain = data.personal.mobileMain;
     this.customerModel.salesmanName = data.salesmanName;
@@ -401,6 +364,7 @@ export default class FinancingLeaseApply extends Page {
     let _uploadthematerial: any = this.$refs["upload-the-material"];
     _uploadthematerial.Reverse(data);
   }
+
   /**
    * 重置
    */
@@ -446,19 +410,15 @@ export default class FinancingLeaseApply extends Page {
   /**
    * 添加新申请
    */
-  addNewApply() {
+  onReset() {
     this.$Modal.confirm({
       title: "提示",
       content: "有未提交的申请，确定创建新申请吗？",
       onOk: () => {
-        let resetData: any = this.$refs["customer-form"];
-        resetData.resetFields();
-        this.resethistory();
-        this.show = "";
+        // TODO: 重置表单数据
+        // TODO: 重置选项卡数据
       },
-      onCancel: () => {
-        this.$Message.info("取消成功！");
-      }
+      onCancel: () => {}
     });
   }
 
@@ -471,7 +431,6 @@ export default class FinancingLeaseApply extends Page {
     let customerMaterials: any = this.$refs["customer-materials"];
     let customerJobMessage: any = this.$refs["customer-job-message"];
     let customerContacts: any = this.$refs["customer-contacts"];
-    console.log(customerOrigin, "OriginModel");
     let uploadTheMaterial: any = this.$refs["upload-the-material"];
     if (type) {
       this.orderStatus = 303;
@@ -499,7 +458,6 @@ export default class FinancingLeaseApply extends Page {
     });
     choosebuymaterials.addcarData.forEach(v => delete v.id);
     let addcarDatas = Array.from(new Set(this.addcarData));
-    console.log(uploadTheMaterial.dataList, "uploadTheMaterial.dataList");
     this.PersonalData = uploadTheMaterial.dataList.map(material => {
       return {
         materialType: uploadTheMaterial.model1, // 客户素材类型
@@ -513,11 +471,6 @@ export default class FinancingLeaseApply extends Page {
     );
     let orderServiceList = Array.from(
       new Set(choosebuymaterials.chooseBuyModel.orderServiceList)
-    );
-    console.log(
-      choosebuymaterials.chooseBuyModel.depositPercent,
-      choosebuymaterials.chooseBuyModel,
-      "99"
     );
     delete customerMaterials.customerMaterialsForm.personalDatas;
     let savesubmitDataset: any = {
@@ -601,10 +554,6 @@ export default class FinancingLeaseApply extends Page {
    */
   saveAndSubmit(type) {
     let customerOrigin: any = this.$refs["customer-origin"];
-    console.log(
-      customerOrigin.customerOriginModel,
-      "customerOrigin.customerOriginModel"
-    );
     let _customerform: any = this.$refs["customer-form"];
     _customerform.validate(valid => {
       if (!valid) {
@@ -625,9 +574,9 @@ export default class FinancingLeaseApply extends Page {
               } else {
                 let customerMaterials: any = this.$refs["customer-materials"];
                 let _jobform: any = customerMaterials.$refs["job-form"];
-                console.log(_jobform, "_jobform");
+
                 _jobform.validate(valid => {
-                  console.log(valid, "valid");
+
                   if (!valid) {
                     this.$Message.warning("请完善客户资料信息！");
                     return false;
@@ -637,7 +586,6 @@ export default class FinancingLeaseApply extends Page {
                     ];
                     let customerContacts: any = this.$refs["customer-contacts"];
                     let customerOrigin: any = this.$refs["customer-origin"];
-                    console.log(customerOrigin, "OriginModel");
                     let uploadTheMaterial: any = this.$refs[
                       "upload-the-material"
                     ];
@@ -718,10 +666,7 @@ export default class FinancingLeaseApply extends Page {
                     //     .birthTime,
                     //     'yyyy-MM-dd')
                     choosebuymaterials.addcarData.forEach(v => delete v.id);
-                    console.log(
-                      choosebuymaterials.addcarData,
-                      "choosebuymaterials.addcarData"
-                    );
+
                     let orderServiceList = Array.from(
                       new Set(
                         choosebuymaterials.chooseBuyModel.orderServiceList
@@ -837,19 +782,6 @@ export default class FinancingLeaseApply extends Page {
         });
       }
     });
-  }
-
-  showTab() {
-    let pat: any = /(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$)|(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)/;
-    if (
-      this.customerModel.idCard.length === 18 &&
-      pat.test(this.customerModel.idCard)
-    ) {
-      this.disabledStatus = "none";
-      console.log(this.disabledStatus, "this.disabledStatus");
-    } else {
-      this.disabledStatus = "";
-    }
   }
 }
 </script>

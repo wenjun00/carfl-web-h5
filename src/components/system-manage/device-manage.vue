@@ -1,7 +1,7 @@
 <!--设备管理-->
 <template>
   <section class="component device-manage">
-    <span style="margin-left:20px;">当前用户名：{{this.userName}}</span>
+    <span class="form-name" >当前用户名：{{this.userName}}</span>
     <i-table :columns="columns1" :data="deviceList"></i-table>
   </section>
 </template>
@@ -180,3 +180,11 @@ export default class DeviceManage extends Vue {
   moveOut(row) {}
 }
 </script>
+<style lang="less">
+    .component.device-manage{
+        .form-name{
+            margin-left:20px;
+        }
+    }
+
+</style>

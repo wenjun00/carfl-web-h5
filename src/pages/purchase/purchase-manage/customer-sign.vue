@@ -1,7 +1,7 @@
 <template>
   <section class="page customer-sign">
     <page-header title="客户签约"></page-header>
-    <data-form date-prop="timeSearch" :model="customerSignModel" @on-search="getSignList">
+    <data-form date-prop="timeSearch" :model="customerSignModel" @on-search="getSignList" :page="pageService">
       <template slot="input">
         <i-form-item prop="startTime" label="日期">
           <i-date-picker v-model="customerSignModel.startTime"></i-date-picker>
@@ -782,7 +782,7 @@
       color: #fff;
     }
   }
-  
+
   .upload-contract {
     .uploading {
       .blue-button {

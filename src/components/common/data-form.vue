@@ -13,7 +13,7 @@
         <div class="row middle-span col-span form-item-container" v-show="showCollapseContext||hiddenDateSearch">
           <slot name="input"></slot>
           <i-button v-if="!hiddenSearch" @click="onSubmitForm" class="search-button" style="vertical-align:top">搜索</i-button>
-          <i-button v-if="showResetButton" @click="onResetForm" class="reset-button" style="vertical-align:top">重置</i-button>
+          <i-button v-if="!hiddenReset" @click="onResetForm" class="reset-button" style="vertical-align:top">重置</i-button>
           <div :style="{width:buttonWrap?'100%':'10px'}"></div>
           <slot name="button"></slot>
           <div class="col-span" v-show="showAppendContext">
@@ -87,7 +87,6 @@ export default class DataForm extends Vue {
   emitReset() {}
 
   private showCollapseIcon: boolean = false;
-  private showResetButton: boolean = false;
   private showCollapseContext: boolean = false;
   private showAppendContext: boolean = false;
   private dateQueryTypes = {
@@ -154,7 +153,6 @@ export default class DataForm extends Vue {
   mounted() {
     if (this.$slots["input"] || this.$slots["button"]) {
       this.showCollapseIcon = true;
-      this.showResetButton = !this.hiddenReset && true;
     }
 
     if (this.$slots["append"]) {
@@ -216,17 +214,27 @@ export default class DataForm extends Vue {
     }
   }
 
-  .form-item-container {
-    & > * {
-      margin: 0 5px;
+  .ivu-form {
+    .form-item-container {
+      & > * {
+        margin: 0 5px;
+      }
+
+      .ivu-form-item {
+        margin: 5px 10px;
+      }
+
+      .ivu-form-item-content {
+        display: inline;
+      }
     }
 
-    .ivu-form-item {
-      margin: 5px;
-    }
-
-    .ivu-form-item-content {
-      display: inline;
+    .ivu-input-type,
+    .ivu-input-wrapper,
+    .ivu-select,
+    .ivu-select-single .ivu-select-selection {
+      width: 170px;
+      display: inline-block;
     }
   }
 }

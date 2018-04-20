@@ -2,25 +2,25 @@
 <template>
   <section class="page finance-make-invoice">
     <page-header title="财务开票" hiddenPrint hiddenExport></page-header>
-    <data-form :model="model" hiddenDateSearch hidden-reset>
+    <data-form :model="model" hiddenDateSearch hidden-reset :page="pageService">
       <template slot="input">
         <i-form-item label="关键字：" prop="dynamicCondition">
-          <i-input placeholder="客户姓名\发票号" v-model="model.dynamicCondition" class="form-input"></i-input>
+          <i-input placeholder="客户姓名\发票号" v-model="model.dynamicCondition"></i-input>
         </i-form-item>
         <i-form-item prop="invoicingStatus">
-          <i-select placeholder="开票状态"  v-model="model.invoicingStatus" class="form-select">
+          <i-select placeholder="开票状态" v-model="model.invoicingStatus">
             <i-option label="已开票" value="已开票" key="已开票"></i-option>
             <i-option label="未开票" value="未开票" key="未开票"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item prop="companyId" label="所属公司：">
-          <i-select placeholder="全部机构" v-model="model.companyId" class="second-select">
+          <i-select placeholder="全部机构" v-model="model.companyId">
             <i-option value="群泰上海" key="群泰上海" label="群泰上海"></i-option>
             <i-option value="群泰西安" key="群泰西安" label="群泰西安"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item prop="collectItem" label="状态筛选：">
-          <i-select placeholder="全部项目" v-model="model.collectItem" class="second-select">
+          <i-select placeholder="全部项目" v-model="model.collectItem">
             <i-option value="汇付" key="汇付" label="汇付"></i-option>
             <i-option value="富友" key="富友" label="富友"></i-option>
             <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
@@ -28,10 +28,10 @@
           </i-select>
         </i-form-item>
         <i-form-item prop="startDate" label="付款日期：">
-          <i-date-picker v-model="model.startDate" class="second-picker"></i-date-picker>~
+          <i-date-picker v-model="model.startDate"></i-date-picker>~
         </i-form-item>
         <i-form-item prop="endDate">
-          <i-date-picker v-model="model.endDate" class="second-picker"></i-date-picker>
+          <i-date-picker v-model="model.endDate"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -74,12 +74,24 @@
   import RepayInfo from "~/components/finance-manage/repay-info.vue";
   import CheckAttachment from '~/components/finance-manage/check-attachment.vue'
   import ConfirmMakeInvoice from '~/components/finance-manage/confirm-make-invoice.vue'
-  import { Tooltip } from 'iview'
-  import { Dependencies } from "~/core/decorator";
-  import { Layout } from "~/core/decorator";
-  import { FinanceInvoiceService } from "~/services/manage-service/finance-invoice.service";
-  import { PageService } from "~/utils/page.service";
-  import { FilterService } from "~/utils/filter.service"
+  import {
+    Tooltip
+  } from 'iview'
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    Layout
+  } from "~/core/decorator";
+  import {
+    FinanceInvoiceService
+  } from "~/services/manage-service/finance-invoice.service";
+  import {
+    PageService
+  } from "~/utils/page.service";
+  import {
+    FilterService
+  } from "~/utils/filter.service"
 
   @Layout("workspace")
   @Component({
@@ -115,7 +127,9 @@
     query() {
       this.financeInvoiceService.getFinanceInvoiceList(this.model, this.pageService).subscribe(val => {
         this.data1 = val
-      }, ({ msg }) => {
+      }, ({
+        msg
+      }) => {
         this.$Message.error(msg)
       })
     }
@@ -144,7 +158,11 @@
           width: 120,
           align: "center",
           fixed: 'left',
-          render: (h, { row, column, index }) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('div', [
               h('i-button', {
                 props: {
@@ -185,7 +203,11 @@
           title: "付款日期",
           key: "actualCollectDate",
           align: "center",
-          render: (h, { row, column, index }) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('span', FilterService.dateFormat(row.actualCollectDate, 'yyyy-MM-dd'))
           }
         },
@@ -198,7 +220,11 @@
           align: "center",
           title: "项目",
           key: "collectItem",
-          render: (h, { row, column, index }) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h("span", {}, this.$dict.getDictName(row.collectItem));
           }
         },
@@ -221,7 +247,11 @@
           align: "center",
           title: "结算通道",
           key: "colectMoneyChannel",
-          render: (h, { row, column, index }) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h("span", {}, this.$dict.getDictName(row.colectMoneyChannel));
           }
         },
@@ -229,7 +259,11 @@
           align: "center",
           title: "开票状态",
           key: "invoicingStatus",
-          render: (h, { row, column, index }) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h("span", {}, this.$dict.getDictName(row.invoicingStatus));
           }
         },
@@ -242,7 +276,11 @@
           align: "center",
           title: "开票日期",
           key: "invoicingDate",
-          render: (h, { row, column, index }) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('span', FilterService.dateFormat(row.invoicingDate, 'yyyy-MM-dd'))
           }
         },
@@ -276,36 +314,37 @@
 </script>
 
 <style lang="less">
-  .page.finance-make-invoice{
-    .title{
-      margin-left:10px
+  .page.finance-make-invoice {
+    .title {
+      margin-left: 10px
     }
-    .form-input{
-      display:inline-block;
-      width:10%
+    .form-input {
+      display: inline-block;
+      width: 10%
     }
-    .form-select{
-      margin-left:10px;
-      width:10%
+    .form-select {
+      margin-left: 10px;
+      width: 10%
     }
-    .form-button{
-      margin-left:10px;
-      color:#265EA2
+    .form-button {
+      margin-left: 10px;
+      color: #265EA2
     }
-    .second-data{
-      margin:6px;
-      .second-select{
-        margin-left:10px;
-        width:15%;
+    .second-data {
+      margin: 6px;
+      .second-select {
+        margin-left: 10px;
+        width: 15%;
       }
-      .second-picker{
-        width:10%;
+      .second-picker {
+        width: 10%;
       }
     }
   }
-  .bottom{
-    text-align:right;
-    padding:10px;
+  
+  .bottom {
+    text-align: right;
+    padding: 10px;
   }
 
 </style>

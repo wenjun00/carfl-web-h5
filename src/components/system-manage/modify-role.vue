@@ -1,7 +1,7 @@
 <!--修改角色-->
 <template>
   <section class="component modify-role">
-    <i-form :label-width="110" style="margin-top:20px;">
+    <i-form class="data-form" :label-width="110">
       <i-form-item label="角色名称" prop="roleName">
         <i-input v-model="modifyModel.roleName"></i-input>
       </i-form-item>
@@ -70,3 +70,11 @@
   }
 
 </script>
+<style lang="less">
+  .component.modify-role{
+      .data-form{
+          margin-top:20px;
+      }
+  }
+
+</style>

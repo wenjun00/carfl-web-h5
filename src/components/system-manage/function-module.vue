@@ -2,15 +2,15 @@
 <template>
   <section class="component function-module">
     <span>功能名称：</span>
-    <i-input style="width:10%;display:inline-block"></i-input>
-    <span style="margin-left:10px;">功能名称：</span>
-    <i-input style="width:10%;display:inline-block"></i-input>
-    <i-select placeholder="全部状态" style="margin-left:10px;width:10%;">
+    <i-input class="form-input"></i-input>
+    <span class="form-function-name" >功能名称：</span>
+    <i-input></i-input>
+    <i-select class="form-function-state" placeholder="全部状态">
       <i-option label="已启用" value="已启用" key="已启用"></i-option>
       <i-option label="未启用" value="未启用" key="未启用"></i-option>
     </i-select>
-    <i-button style="margin-left:10px;" class="blueButton">搜索</i-button>
-    <i-button style="margin-left:10px;" class="blueButton">添加</i-button>
+    <i-button class="blue-button">搜索</i-button>
+    <i-button class="blue-button">添加</i-button>
     <data-box :columns="columns1" :data="data1"></data-box>
   </section>
 </template>
@@ -113,3 +113,25 @@
     }
   }
 </script>
+<style lang="less">
+    .component.function-module{
+        .form-input{
+            width:10%;
+            display:inline-block;
+        }
+        .form-function-name{
+            margin-left:10px;
+        }
+        .form-function-state{
+            margin-left:10px;
+            width:10%;
+        }
+        .blue-button{
+            margin-left:10px;
+            background: #265ea2;
+            color: #fff;
+        }
+
+    }
+
+</style>

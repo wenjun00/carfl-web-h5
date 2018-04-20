@@ -5,7 +5,7 @@
         <component ref="pages" :is="getComponentName(page)"></component>
       </TabPane>
     </Tabs>
-    <div @click="closeAllTabs" style="position:absolute;top:70px;right:10px;border-bottom-style:none;font-size:14px;cursor:pointer;" title="关闭所有">
+    <div class="close-all-tabs" @click="closeAllTabs" title="关闭所有">
       <Icon type="close"></Icon>
     </div>
   </section>
@@ -109,6 +109,13 @@ export default class WorkTab extends Vue {
 
 <style lang="less">
 .component.work-tab {
+    .close-all-tabs{
+        position:absolute;
+        top:70px;
+        right:10px;
+        border-bottom-style:none;
+        font-size:14px;cursor:pointer;
+    }
   & > .ivu-tabs {
     height: 100%;
     @tab-bar-height: 45px;

@@ -58,17 +58,17 @@
 
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .data-form-item {
     margin-left: 5px;
     width: 20%;
   }
-  
+
   .data-form-input {
     width: 55%;
     margin-left: 10px
   }
-  
+
   .data-form-content {
     display: block;
     text-align: center;

@@ -1,12 +1,12 @@
 <template>
   <section class="component add-product">
     <i-row>
-      <i-input style="display:inline-block;width:20%;margin-right:10px" placeholder="请输入关键字"></i-input>
+      <i-input class="item-input-guanjian" placeholder="请输入关键字"></i-input>
       <i-button class="blueButton">搜索</i-button>
     </i-row>
-    <i-row style="margin-top:10px;">
-      <i-col :span="5" style="border:1px solid #DDDDDD;height:570px;overflow:auto" :class="{open:isShown,close:!isShown}">
-        <i-tree :data="treeData" @on-select-change="productPlanissueDetail" style="padding:10px;"></i-tree>
+    <i-row class="item-margin-top10">
+      <i-col :span="5" class="item-sousuo-col" :class="{open:isShown,close:!isShown}">
+        <i-tree :data="treeData" @on-select-change="productPlanissueDetail" class="item-padding10"></i-tree>
       </i-col>
       <i-col :span="19">
         <i-row type="flex" justify="start">
@@ -15,20 +15,23 @@
               <Icon type="android-arrow-dropleft-circle" color="white" size="16"></Icon>
             </div>
           </i-col>
-          <i-col span="22" style="overflow:auto">
-            <div style="margin-left:50px;font-size:16px;margin-bottom:10px"><span style="margin-right:200px;"><span style="color:#ccc">产品名称：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].title:''):''}}</span>
-              <span><span style="color:#ccc">资金渠道：</span>{{productDataModel?(productDataModel[0]?$dict.getDictName(productDataModel[0].capitaChannels):''):''}}</span>
+          <i-col span="22" class="item-overflow-auto">
+            <div class="item-chanpin-div">
+              <span class="item-margin-right200">
+              <span class="margin-chanpin-color">产品名称：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].title:''):''}}</span>
+              <span><span class="margin-chanpin-color" >资金渠道：</span>{{productDataModel?(productDataModel[0]?$dict.getDictName(productDataModel[0].capitaChannels):''):''}}</span>
             </div>
-            <div style="margin-bottom:20px;margin-left:50px;font-size:16px"><span style="color:#ccc">产品序号：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].productNumber:''):''}}</div>
-            <div style="position:relative;bottom:10px;padding-left:10px">
+            <div class="item-chanpin-xuhao">
+              <span class="margin-chanpin-color">产品序号：</span>{{productDataModel?(productDataModel[0]?productDataModel[0].productNumber:''):''}}</div>
+            <div class="item-chanpin-cardata">
               <i-table height="500" highlight-row @on-current-change="currenttrablerowdata" :columns="carColumns" :data="carData" :page="pageService"></i-table>
             </div>
           </i-col>
         </i-row>
       </i-col>
     </i-row>
-    <i-row style="margin-top:20px;">
-      <i-button style="float:right" @click="confirmAndBackPrd" class="blueButton">确认并返回</i-button>
+    <i-row class="item-margin-top20" >
+      <i-button class="item-float-right blueButton"  @click="confirmAndBackPrd">确认并返回</i-button>
     </i-row>
   </section>
 </template>
@@ -92,9 +95,9 @@
     productPlanissue(productPlanissueData) {}
     @Emit('close')
     close() {}
-    
+
     activated(){
-      this.treeList()  
+      this.treeList()
     }
 
     created() {
@@ -116,7 +119,7 @@
             };
             return (<i-radio onOn-change={radioChange} value={row.radio}></i-radio>)
             }
-          }, 
+          },
         {
           title: '期数(月)',
           key: 'periods',
@@ -301,7 +304,7 @@
         this.carData = data
       });
       }
-    
+
     }
     /**
      * 确定并返回
@@ -319,34 +322,71 @@
   }
 
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
   .open {
     max-width: auto;
     overflow: hidden;
   }
-  
+
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-  
+
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-  
+
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
     cursor: pointer;
   }
-  
+
   .arrowButton {
     line-height: 570px;
     height: 100%;
     background: #265EA2;
     text-align: center;
     width: 20px;
+  }
+  .item-input-guanjian{
+    display:inline-block;width:20%;margin-right:10px
+  }
+  .item-margin-top10{
+    margin-top: 10px;
+  }
+  .item-padding10{
+    padding:10px;
+  }
+
+  .item-sousuo-col{
+    border:1px solid #DDDDDD;height:570px;overflow:auto
+  }
+  .item-chanpin-div{
+    margin-left:50px;font-size:16px;margin-bottom:10px
+  }
+  .item-overflow-auto{
+    overflow: auto;
+  }
+  .margin-chanpin-color{
+    color:#ccc
+  }
+  .item-margin-right200{
+    margin-right: 200px;
+  }
+  .item-chanpin-xuhao{
+    margin-bottom:20px;margin-left:50px;font-size:16px
+  }
+  .item-chanpin-cardata{
+    position:relative;bottom:10px;padding-left:10px
+  }
+  .item-margin-top20{
+    margin-top:20px;
+  }
+  .item-float-right{
+    float: right;
   }
 
 </style>

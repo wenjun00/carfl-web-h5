@@ -2,9 +2,9 @@
   <section class="component work-menu">
     <div class="text-left row middle-span menu-container" @mouseleave="updatePoptipState(false)">
       <!-- 一级菜单-start -->
-      <div class="row middle-span" style="height:100%">
+      <div class="row middle-span  one-level">
         <div v-for="menu_lv1 in menuList" :key="menu_lv1.path" class="menu-level-1" @mouseenter="onCurrentMenuItemChange(menu_lv1)">
-          <div class="menu-level-1-title row middle-span center-span" style="height:100%" @click="redirect(menu_lv1)">
+          <div class="menu-level-1-title row middle-span center-span one-level" @click="redirect(menu_lv1)">
             <span>{{menu_lv1.resoname}}</span>
           </div>
         </div>
@@ -14,7 +14,7 @@
         <!-- 二级菜单-start -->
         <div v-for="menu_lv2 in currentMenuItem.children" :key="menu_lv2.path" class="menu-level-2 row">
           <div>
-            <div style="position:relative;right:32px;">
+            <div class="two-level">
               <div class="iconfont_container" :style="{background:menu_lv2.color}">
                 <svg-icon :iconClass="menu_lv2.icon" class="work_menu_iconfont"></svg-icon>
               </div>
@@ -184,6 +184,13 @@ export default class WorkMenu extends Vue {
 
 <style lang="less">
 .work-menu.component {
+    .one-level{
+        height:100%;
+    }
+    .two-level{
+        position:relative;
+        right:32px;
+    }
   .ivu-poptip {
     height: 100%;
   }

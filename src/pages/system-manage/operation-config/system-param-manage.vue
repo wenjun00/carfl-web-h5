@@ -1,14 +1,14 @@
 <!--系统参数管理-->
 <template>
     <section class="page system-param-manage">
-        <page-header title="系统参数管理" hiddenPrint hiddenExport></page-header>
-        <data-form hiddenDateSearch :model="systemParameterModel" @on-search="getSystemParam" @on-reset="refreshRoleList">
+        <page-header title="系统参数管理" hidden-print hidden-export></page-header>
+        <data-form hidden-date-search :model="systemParameterModel" @on-search="getSystemParam" :page="pageService">
             <template slot="input">
                 <i-form-item prop="paramName" label="参数名称：">
-                    <i-input class="form-input" v-model="systemParameterModel.paramName"></i-input>
+                    <i-input v-model="systemParameterModel.paramName"></i-input>
                 </i-form-item>
                 <i-form-item prop="paramStatus" label="是否启用：">
-                    <i-select class="form-input" v-model="systemParameterModel.paramStatus" clearable>
+                    <i-select v-model="systemParameterModel.paramStatus" clearable>
                         <i-option label="启用" :value="0" :key="0"></i-option>
                         <i-option label="停用" :value="1" :key="1"></i-option>
                     </i-select>

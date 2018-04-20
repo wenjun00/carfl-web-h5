@@ -34,8 +34,8 @@
     </div>
     <table class="modal-item-table" border="1" width="850">
       <tr height="40">
-        <td bgcolor="#F2F2F2" colspan="1" width="40%">项目</td>
-        <td bgcolor="#F2F2F2" colspan="1" width="60%">金额（元）</td>
+        <td class="bg-color" colspan="1" width="40%">项目</td>
+        <td class="bg-color" colspan="1" width="60%">金额（元）</td>
       </tr>
       <tr height="40" v-for="item in collectMoneyItemModels" :key="item.itemName">
         <td>{{item.itemLabel}}</td>
@@ -50,15 +50,15 @@
 
     <table class="modal-item-table" border="1" width="850">
       <tr height="40">
-        <td bgcolor="#F2F2F2" colspan="1" width="5%" v-if="!check">
+        <td class="bg-color" colspan="1" width="5%" v-if="!check">
           <div @click="addObj">
             <i-icon type="plus" class="modal-item-icon"></i-icon>
           </div>
         </td>
-        <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
-        <td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>
-        <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
-        <td bgcolor="#F2F2F2" colspan="1">状态</td>
+        <td class="bg-color" colspan="1" width="20%">结算通道</td>
+        <td class="bg-color" colspan="1" width="20%">收款项</td>
+        <td class="bg-color" colspan="1">金额（元）</td>
+        <td class="bg-color" colspan="1">状态</td>
       </tr>
       <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
         <td v-if="!check">
@@ -67,22 +67,17 @@
           </div>
         </td>
         <td>
-          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="v.collectMoneyChannel"
-                    :disabled="check">
-            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label"
-                      :value="value"></i-option>
+          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="v.collectMoneyChannel" :disabled="check">
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-select class="modal-item-select" placeholder="选择收款项目" v-model="v.collectItem"
-                    :disabled="check">
-            <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label"
-                      :value="value"></i-option>
+          <i-select class="modal-item-select" placeholder="选择收款项目" v-model="v.collectItem" :disabled="check">
+            <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-input class="modal-item-huakou" v-model="v.collectMoneyAmount"
-                   @on-blur="inputBlur" :readonly="check"></i-input>
+          <i-input class="modal-item-huakou" v-model="v.collectMoneyAmount" @on-blur="inputBlur" :readonly="check"></i-input>
           <i-button class="blueButton" v-if="!check">确认划扣</i-button>
         </td>
         <td><span>已处理</span>
@@ -116,10 +111,8 @@
           <span class="modal-item-fujian2-text">支持jpg/pdf/png格式建议大小不超过10M</span>
         </div>
       </i-col>
-      <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id"
-             class="modal-item-resources">
-        <div
-          :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
+      <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id" class="modal-item-resources">
+        <div>
         </div>
       </i-col>
     </i-row>
@@ -153,7 +146,9 @@
   import {
     CollectMoneyHistoryService
   } from "~/services/manage-service/collect-money-history.service";
-  import {Prop} from "vue-property-decorator";
+  import {
+    Prop
+  } from "vue-property-decorator";
   import FileUpload from "~/components/common/file-upload.tsx.vue";
 
   @Component({
@@ -184,9 +179,9 @@
 
 
     private columns2: any;
-    private personalBanks: Array<Object> = [];
+    private personalBanks: Array < Object > = [];
     private columns3: any;
-    private data3: Array<Object> = [];
+    private data3: Array < Object > = [];
     private purchaseInfoModel: Boolean = false;
     private gatherModal: Object = {
       gatherType: '销售收款',
@@ -237,8 +232,8 @@
         this.collectMoneyItemModels = data.collectMoneyItemModels
         this.inputBlur()
       }, ({
-            msg
-          }) => {
+        msg
+      }) => {
         this.$Message.error(msg)
       })
     }
@@ -442,7 +437,7 @@
       text-align: center;
     }
   }
-
+  
   .component.confirm-gather {
     .modal-item-shenqing {
       background: #F5F5F5
@@ -486,7 +481,10 @@
     .modal-item-table {
       margin-top: 10px;
       text-align: center;
-      border: 1px solid #DDDEE1
+      border: 1px solid #DDDEE1;
+      .bg-color{
+          background-color: #F2F2F2;
+      }
     }
     .modal-item-fangshi {
       width: 7px;
@@ -543,16 +541,26 @@
         position: relative;
         left: 40px;
       }
-      .modal-item-fujian2-circled{
-        display:block;margin-top:53px;
+      .modal-item-fujian2-circled {
+        display: block;
+        margin-top: 53px;
       }
-      .modal-item-fujian2-text{
-        color:gray
+      .modal-item-fujian2-text {
+        color: gray
       }
-      .modal-item-resources{
-        display:flex;justify-content:center;margin-top:10px
+      .modal-item-resources {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+        div {
+          height: 200px;
+          width: 200px;
+          border: 1px solid #C2C2C2;
+          background-image:url(${v.materialUrl});
+          background-repeat: no-repeat;
+        }
       }
     }
-
   }
+
 </style>

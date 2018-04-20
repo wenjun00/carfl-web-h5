@@ -89,10 +89,6 @@
     </div>
     <i-col span="24" style="line-height:30px;margin-top:20px;" class="form-title">
       <span>产品信息</span>
-      <!--<div style="font-size:14px;cursor:pointer;display:inline-block;color:#3367A7;position:absolute;left:52%;" @click="openSimulateCalculate">
-        <svg-icon iconClass="jisuanqi"></svg-icon>
-        <span style="font-size:12px;">月供模拟计算器</span>
-      </div>-->
     </i-col>
     <div v-show="addPrdShow">
       <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
@@ -102,37 +98,26 @@
       <i-form ref="form" :rules="rulesdata" :model="chooseBuyModel" :label-width="130" style="margin-top:20px;">
         <i-col span="12">
           <i-form-item label="产品系列" prop="prdSeriods">
-            <!--<i-input type="text" v-model="chooseBuyModel.prdSeriods" disabled>
-            </i-input>-->
             <span style="color:#ccc">{{chooseBuyModel.prdSeriods}}</span>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="产品名称" prop="name">
-            <!--<i-input type="text" v-model="chooseBuyModel.name" disabled>
-            </i-input>-->
             <span style="color:#ccc">{{chooseBuyModel.name}}</span>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="产品期数（期）" prop="periods">
-            <!--<i-input type="text" v-model="chooseBuyModel.periods" disabled>
-            </i-input>-->
             <span style="color:#ccc">{{$dict.getDictName(chooseBuyModel.periods)}}</span>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="产品利率" prop="prdInterestRate">
-            <!--<i-input type="text" v-model="chooseBuyModel.prdInterestRate" disabled>
-            </i-input>-->
             <span style="color:#ccc">{{chooseBuyModel.prdInterestRate}}</span>
           </i-form-item>
         </i-col>
         <i-col span="12">
           <i-form-item label="还款方式" prop="payWay">
-            <!--<i-select v-model="chooseBuyModel.payWay" disabled>
-              <i-option v-for="{value,label} in $dict.getDictData('0408')" :key="value" :label="label" :value="value"></i-option>
-            </i-select>-->
             <span style="color:#ccc">{{this.$dict.getDictName(chooseBuyModel.payWay)}}</span>
           </i-form-item>
         </i-col>
@@ -174,7 +159,7 @@
                 <i-option v-for="item in depositCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-             <i-form-item prop="depositCash" style="display:inline-block">  
+             <i-form-item prop="depositCash" style="display:inline-block">
               <i-input style="width:180px" v-model="chooseBuyModel.depositCash" readonly>
               </i-input>
         </i-form-item>
@@ -256,8 +241,7 @@
         </i-col>
         <i-col span="24">
           <div style="height:60px;">
-            <!--<input type="text" style="border:none;border-bottom-style:solid;outline:none">-->
-          </div>
+             </div>
         </i-col>
       </i-form>
     </i-row>
@@ -373,18 +357,56 @@
       licenseMoney: 0,
       GpsMoney: 0
     };
+
+    // 验证规则
     private rulesdata: any = {
-      prdSeriods: [{ required: true, message: '请输入产品系列', trigger: 'blur' }],
-      name:[{ required: true, message: '请输入产品名称', trigger: 'blur' }],
-      periods:[{ required: true, message: '请输入产品期数', trigger: 'blur',type:'number' }],
-      prdInterestRate:[{ required: true, message: '请输入产品利率', trigger: 'blur',type:'number' }],
-      payWay:[{ required: true, message: '请输入还款方式', trigger: 'blur',type:'number' }],
-      vehicleAmount:[{ required: true, message: '请输入车辆参考总价', trigger: 'blur' },
-                     { pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
-      finalprincipal:[{ required: true, message: '请输入尾付本金', trigger: 'blur' },
-                      { pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
-      financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
-    //   moneyPay:[{ required: true, message: '请输入月供金额', trigger: 'blur' }],
+      prdSeriods: [{
+        required: true,
+        message: '请输入产品系列',
+        trigger: 'blur'
+      }],
+      name:[{
+        required: true,
+        message: '请输入产品名称',
+        trigger: 'blur'
+      }],
+      periods:[{
+        required: true,
+        message: '请输入产品期数',
+        trigger: 'blur',
+        type:'number'
+      }],
+      prdInterestRate:[{
+        required: true,
+        message: '请输入产品利率',
+        trigger: 'blur',
+        type:'number'
+      }],
+      payWay:[{
+        required: true,
+        message: '请输入还款方式',
+        trigger: 'blur',
+        type:'number'
+      }],
+      vehicleAmount:[{
+        required: true,
+        message: '请输入车辆参考总价',
+        trigger: 'blur'
+        },{
+          pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+          message: '请输入数字',
+          trigger: 'blur'
+      }],
+      finalprincipal:[{
+        required: true,
+        message: '请输入尾付本金',
+        trigger: 'blur'
+        },{
+          pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+          message: '请输入数字', trigger: 'blur'
+      }],
+      financeTotalMoney: [{
+        required: true, message: '请输入融资总额', trigger: 'blur' }],
       initialPayment:[{ required: true, message: '请输入首付金额', trigger: 'blur' }],
       depositCash:[{ required: true, message: '请输入保证金金额', trigger: 'blur' }],
       finalCash:[{ required: true, message: '请输入尾付总额', trigger: 'blur' }],
@@ -531,7 +553,7 @@
               this.addPrdShow=false
               this.prdInfoShow=true
               this.changePrdShow=true
-           
+
               this.chooseBuyModel.moneyPay=data.monthlySupply.toFixed(2).toString() // 月供金额
               this.totalPrice=data.vehicleAmount.toFixed(2).toString()
               this.chooseBuyModel.vehicleAmount=this.totalPrice
@@ -543,10 +565,10 @@
               this.chooseBuyModel.prdInterestRate=data.productRate // 产品利率
               this.chooseBuyModel.financeTotalMoney=data.financingAmount.toFixed(2).toString() // 融资总额
               this.chooseBuyModel.finalprincipal=data.finalPayment.toFixed(2).toString() // 尾付本金
-             
+
         //       this.chooseBuyModel.moneyPay = (Number(this.chooseBuyModel.financeTotalMoney) * (1 + Number(this.chooseBuyModel.prdInterestRate) * this.$dict.getDictName(this.chooseBuyModel.periods)) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
         // this.chooseBuyModel.moneyPay.toString()
-   
+
                 setTimeout(()=>{
              this.initialPaymentData.push({
               key:data.paymentScale*100+'%',
@@ -937,7 +959,7 @@
             }
         }
     }
-    
+
     if(data.finalCash){
      let rr:any = data.finalCash ? (data.finalCash.split(';')) : ''
           rr.forEach((v)=>{
@@ -956,9 +978,9 @@
 
             }
         }
-      
+
     }
-    
+
      if(data.initialPayment) {
      let initial:any = data.initialPayment ? (data.initialPayment.split(';')) : ''
               initial.forEach((v)=>{
@@ -978,7 +1000,7 @@
             }
         }
      }
-      if(data.manageCost){ 
+      if(data.manageCost){
       let manage:any = data.manageCost ? (data.manageCost.split(';')) : ''
          manage.forEach((v)=>{
           this.manageCostData.push({
@@ -997,11 +1019,7 @@
             }
         }
     }
-    
-    //   this.depositCashData = data.depositCash ? (data.depositCash.split(';')) : ''
-    //   this.finalCashData = data.finalCash ? (data.finalCash.split(';')) : ''
-    //   this.initialPaymentData = data.initialPayment ? (data.initialPayment.split(';')) : ''
-    //   this.manageCostData = data.manageCost ? (data.manageCost.split(';')) : ''
+
       this.updateProductId(data.productId)
       this.chooseBuyModel.name = productDataModel.title // 产品名称
       this.chooseBuyModel.prdSeriods = productDataModel.series // 产品系列
@@ -1020,11 +1038,9 @@
       }else{
       this.chooseBuyModel.vehicleAmount=''
     }
-      console.log(data.depositCash,'data.depositCash')
       if(data.depositCash===undefined||data.depositCash===null){
          this.chooseBuyModel.depositCash= '0.00' // 保证金金额
          setTimeout(()=>{
-        //  this.depositCashData=['0']
          this.depositCashData.push({
               key:0+'%',
               value:0
@@ -1043,7 +1059,6 @@
      if(data.initialPayment===undefined||data.initialPayment===null){
          this.chooseBuyModel.initialPayment='0.00' // 首付金额
          setTimeout(()=>{
-        //  this.initialPaymentData=['0']
         this.initialPaymentData.push({
               key:0+'%',
               value:0
@@ -1061,7 +1076,6 @@
      if(data.manageCost===undefined||data.manageCost===null){
          this.chooseBuyModel.manageCost='0.00' // 管理费
          setTimeout(()=>{
-        //  this.manageCostData=['0']
            this.manageCostData.push({
               key:0+'%',
               value:0
@@ -1080,7 +1094,6 @@
         this.chooseBuyModel.finalprincipal='0.00' // 尾付本金
          this.chooseBuyModel.finalCash='0.00' // 尾付总额
           setTimeout(()=>{
-        //  this.finalCashData=['0']
           this.finalCashData.push({
               key:0+'%',
               value:0
@@ -1097,29 +1110,16 @@
           this.finalorddisabled=true
         }
       }
-    // if(this.chooseBuyModel.vehicleAmount===''){
-    //   this.depositdisabled=true
-    //   this.Paymentdisabled=true
-    //   this.manageDatadisabled=true
-    // }
-    // if(this.chooseBuyModel.finalprincipal===''){
-    //   this.finaldisabled=true
-    // }
       this.chooseBuyModel.seriesId = productDataModel.seriesId
-      console.log(this.chooseBuyModel,'chooseBuyModel.vehicleAmount')
     }
     productPlanissue(data) {
-      //   this.chooseBuyModel = {
-      //     name: data.title // 产品名称
-      //     // prdSeriods:
-      //   }
     }
   }
 
 </script>
 
 <style lang="less" scope>
-  .choose-buy-materials {
+  .component.choose-buy-materials {
     .ivu-select-selection {
       width: 100%!important;
       display: inline-block;

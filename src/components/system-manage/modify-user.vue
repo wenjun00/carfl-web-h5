@@ -1,7 +1,7 @@
 <!--修改用户-->
 <template>
   <section class="component modify-user">
-    <i-form :label-width="110" class="modifyUserForm" :model="modifyModel" ref="modify-user" :rules="rules">
+    <i-form :label-width="110" class="modify-user-form" :model="modifyModel" ref="modify-user" :rules="rules">
       <i-row>
         <i-col :span="12">
           <i-form-item label="用户名" prop="userUsername">
@@ -80,157 +80,164 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { Prop, Watch } from "vue-property-decorator";
-import { ManageService } from "~/services/manage-service/manage.service";
-import { Dependencies } from "~/core/decorator";
-import { DepartmentService } from "~/services/manage-service/department.service";
-@Component({
-  components: {}
-})
-export default class ModifyUser extends Vue {
-  @Dependencies(ManageService) private manageService: ManageService;
-  @Dependencies(DepartmentService) private departmentService: DepartmentService;
-  @Prop() modifyUserModel: any;
-  private modifyModel: any = {
-    userUsername: "",
-    userRealname: "",
-    userPhone: "",
-    userEmail: "",
-    companyName: "",
-    deptName: "",
-    userSex: "",
-    userManager: "",
-    userRemark: "",
-    userStatus: 0
-  };
-  private rules: any;
-  private allOrg: Array<any> = [];
-  created() {
-    this.rules = {
-      userUsername: [
-        {
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {
+    Prop,
+    Watch
+  } from "vue-property-decorator";
+  import {
+    ManageService
+  } from "~/services/manage-service/manage.service";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    DepartmentService
+  } from "~/services/manage-service/department.service";
+  @Component({
+    components: {}
+  })
+  export default class ModifyUser extends Vue {
+    @Dependencies(ManageService) private manageService: ManageService;
+    @Dependencies(DepartmentService) private departmentService: DepartmentService;
+    @Prop() modifyUserModel: any;
+    private modifyModel: any = {
+      userUsername: "",
+      userRealname: "",
+      userPhone: "",
+      userEmail: "",
+      companyName: "",
+      deptName: "",
+      userSex: "",
+      userManager: "",
+      userRemark: "",
+      userStatus: 0
+    };
+    private rules: any;
+    private allOrg: Array < any > = [];
+    created() {
+      this.rules = {
+        userUsername: [{
           required: true,
           message: "用户名不能为空",
           trigger: "blur"
-        }
-      ],
-      userRealname: [
-        {
+        }],
+        userRealname: [{
           required: true,
           message: "姓名不能为空",
           trigger: "blur"
-        }
-      ],
-      userPhone: [
-        {
-          required: true,
-          message: "电话号码不能为空",
-          trigger: "blur"
-        },
-        {
-          message: "请输入正确的电话号码",
-          trigger: "blur",
-          pattern: /^1(3|4|5|7|8)\d{9}$/
-        }
-      ],
-      userEmail: [
-        {
-          required: true,
-          message: "邮箱不能为空",
-          trigger: "blur"
-        },
-        {
-          message: "请输入正确的邮箱",
-          trigger: "blur",
-          type: "email"
-        }
-      ],
-      userSex: [
-        {
+        }],
+        userPhone: [{
+            required: true,
+            message: "电话号码不能为空",
+            trigger: "blur"
+          },
+          {
+            message: "请输入正确的电话号码",
+            trigger: "blur",
+            pattern: /^1(3|4|5|7|8)\d{9}$/
+          }
+        ],
+        userEmail: [{
+            required: true,
+            message: "邮箱不能为空",
+            trigger: "blur"
+          },
+          {
+            message: "请输入正确的邮箱",
+            trigger: "blur",
+            type: "email"
+          }
+        ],
+        userSex: [{
           required: true,
           message: "请选择性别",
           type: "number",
           trigger: "change"
-        }
-      ],
-      userManager: [
-        {
+        }],
+        userManager: [{
           required: true,
           type: "number",
           message: "请选择数据权限",
           trigger: "change"
+        }]
+      };
+    }
+    cancelUpdate() {
+      this.$emit("close");
+    }
+    updateUser() {
+      this.manageService.updateUser(this.modifyModel).subscribe(
+        val => {
+          this.$Message.success("修改成功！");
+          this.$emit("close");
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
         }
-      ]
-    };
-  }
-  cancelUpdate() {
-    this.$emit("close");
-  }
-  updateUser() {
-    this.manageService.updateUser(this.modifyModel).subscribe(
-      val => {
-        this.$Message.success("修改成功！");
-        this.$emit("close");
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
-    );
-  }
-  getData(data) {
-    this.modifyModel.userUsername = data.userUsername;
-    this.modifyModel.id = data.id;
-    this.modifyModel.deptId = data.deptId;
-    this.modifyModel.userRealname = data.userRealname;
-    this.modifyModel.userPhone = data.userPhone;
-    this.modifyModel.userEmail = data.userEmail;
-    this.modifyModel.companyName = data.companyName;
-    this.modifyModel.deptName = data.deptName;
-    this.modifyModel.userSex = data.userSex;
-    this.modifyModel.userManager = data.userManager;
-    this.modifyModel.userRemark = data.userRemark;
-    this.modifyModel.userStatus = data.userStatus
-    //获取所有组织机构
-    this.manageService.getAllDepartment().subscribe(
-      data => {
-        this.allOrg = data;
-        console.log(data, 888);
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
-    );
+      );
+    }
+    getData(data) {
+      this.modifyModel.userUsername = data.userUsername;
+      this.modifyModel.id = data.id;
+      this.modifyModel.deptId = data.deptId;
+      this.modifyModel.userRealname = data.userRealname;
+      this.modifyModel.userPhone = data.userPhone;
+      this.modifyModel.userEmail = data.userEmail;
+      this.modifyModel.companyName = data.companyName;
+      this.modifyModel.deptName = data.deptName;
+      this.modifyModel.userSex = data.userSex;
+      this.modifyModel.userManager = data.userManager;
+      this.modifyModel.userRemark = data.userRemark;
+      this.modifyModel.userStatus = data.userStatus
+      //获取所有组织机构
+      this.manageService.getAllDepartment().subscribe(
+        data => {
+          this.allOrg = data;
+          console.log(data, 888);
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg);
+        }
+      );
 
-    // 根据deptId获取公司名称
-    this.departmentService
-      .findCompanyByDeptId({
-        deptId: data.deptId
-      })
-      .subscribe(data => {
-        this.modifyModel.companyName = data.companyChinaname;
-      });
+      // 根据deptId获取公司名称
+      this.departmentService
+        .findCompanyByDeptId({
+          deptId: data.deptId
+        })
+        .subscribe(data => {
+          this.modifyModel.companyName = data.companyChinaname;
+        });
+    }
+    /**
+     * 根据机构查询公司
+     */
+    changeOrg(val) {
+      console.log(val, "val");
+      this.departmentService
+        .findCompanyByDeptId({
+          deptId: val
+        })
+        .subscribe(data => {
+          console.log(val, "data");
+          this.modifyModel.companyName = data.companyChinaname;
+        });
+    }
   }
-  /**
-   * 根据机构查询公司
-   */
-  changeOrg(val) {
-    console.log(val, "val");
-    this.departmentService
-      .findCompanyByDeptId({
-        deptId: val
-      })
-      .subscribe(data => {
-        console.log(val, "data");
-        this.modifyModel.companyName = data.companyChinaname;
-      });
-  }
-}
+
 </script>
 <style lang="less">
-.modifyUserForm {
-  position: relative;
-  right: 30px;
-}
+  .component.modify-user {
+    .modify-user-form {
+      position: relative;
+      right: 30px;
+    }
+  }
+
 </style>

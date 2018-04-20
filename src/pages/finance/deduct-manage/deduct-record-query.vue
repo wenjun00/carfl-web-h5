@@ -2,19 +2,19 @@
 <template>
   <section class="page deduct-record-query">
     <page-header title="划扣记录查询" hiddenPrint></page-header>
-    <data-form hiddenDateSearch hidden-reset :model="model" @on-search="getRecord">
+    <data-form hiddenDateSearch hidden-reset :model="model" :page="pageService" @on-search="getRecord">
       <template slot="input">
         <i-form-item label="支付日期" prop="startTime">
-          <i-date-picker class="form-picker-one" v-model="model.startTime"></i-date-picker>~
+          <i-date-picker v-model="model.startTime"></i-date-picker>~
         </i-form-item>
-        <i-form-item prop="endTime" >
-          <i-date-picker class="form-picker-one" v-model="model.endTime"></i-date-picker>
+        <i-form-item prop="endTime">
+          <i-date-picker v-model="model.endTime"></i-date-picker>
         </i-form-item>
         <i-form-item prop="personalInfo">
-          <i-input class="form-input" placeholder="请输入客户姓名、客户号查询" v-model="model.personalInfo"></i-input>
+          <i-input placeholder="请输入客户姓名、客户号查询" v-model="model.personalInfo"></i-input>
         </i-form-item>
         <i-form-item prop="payStatus">
-          <i-select class="form-select-one" placeholder="全部" v-model="model.payStatus">
+          <i-select placeholder="全部" v-model="model.payStatus">
             <i-option label="初始" value="西安市" key="西安市"></i-option>
             <i-option label="成功" value="宝鸡市" key="宝鸡市"></i-option>
             <i-option label="失败" value="咸阳市" key="咸阳市"></i-option>
@@ -24,17 +24,17 @@
       </template>
     </data-form>
     <!--<i-row class="data-form" v-auth="464">-->
-      <!--<span class="title">支付日期：</span>-->
-      <!--<i-date-picker class="form-picker-one" v-model="model.startTime"></i-date-picker>~-->
-      <!--<i-date-picker class="form-picker-one" v-model="model.endTime"></i-date-picker>-->
-      <!--<i-input class="form-input" placeholder="请输入客户姓名、客户号查询" v-model="model.personalInfo"></i-input>-->
-      <!--<i-select class="form-select-one" placeholder="全部" v-model="model.payStatus">-->
-        <!--<i-option label="初始" value="西安市" key="西安市"></i-option>-->
-        <!--<i-option label="成功" value="宝鸡市" key="宝鸡市"></i-option>-->
-        <!--<i-option label="失败" value="咸阳市" key="咸阳市"></i-option>-->
-        <!--<i-option label="处理中" value="渭南市" key="渭南市"></i-option>-->
-      <!--</i-select>-->
-      <!--<i-button class="blueButton form-search-on" @click="getRecord">搜索</i-button>-->
+    <!--<span class="title">支付日期：</span>-->
+    <!--<i-date-picker class="form-picker-one" v-model="model.startTime"></i-date-picker>~-->
+    <!--<i-date-picker class="form-picker-one" v-model="model.endTime"></i-date-picker>-->
+    <!--<i-input class="form-input" placeholder="请输入客户姓名、客户号查询" v-model="model.personalInfo"></i-input>-->
+    <!--<i-select class="form-select-one" placeholder="全部" v-model="model.payStatus">-->
+    <!--<i-option label="初始" value="西安市" key="西安市"></i-option>-->
+    <!--<i-option label="成功" value="宝鸡市" key="宝鸡市"></i-option>-->
+    <!--<i-option label="失败" value="咸阳市" key="咸阳市"></i-option>-->
+    <!--<i-option label="处理中" value="渭南市" key="渭南市"></i-option>-->
+    <!--</i-select>-->
+    <!--<i-button class="blueButton form-search-on" @click="getRecord">搜索</i-button>-->
     <!--</i-row>-->
     <data-box :id="463" :columns="columns1" :data="data1" @onPageChange="getRecord" :page="pageService"></data-box>
   </section>

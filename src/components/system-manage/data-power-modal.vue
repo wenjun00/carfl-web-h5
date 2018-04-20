@@ -2,13 +2,13 @@
 <template>
   <section class="component data-power-modal">
     <i-row :gutter="10">
-      <i-col :span="6">
-        <div style="border:1px solid #D7D7D7;height:380px;">
-          <span style="position:absolute;top:50%;left:34px;">可选机构</span>
+      <i-col :span="6" class="form-col">
+        <div class="form-title" >
+          <span>可选机构</span>
         </div>
       </i-col>
       <i-col :span="18">
-        <div style="border:1px solid #D7D7D7;height:380px;overflow: auto">
+        <div class="form-title-two">
           <i-tree show-checkbox :data="treeData" @on-check-change="treeCheckChange"></i-tree>
         </div>
       </i-col>
@@ -150,3 +150,24 @@ export default class DataPowerModal extends Vue {
   }
 }
 </script>
+<style lang="less">
+    .component.data-power-modal{
+        .form-col{
+            .form-title{
+                border:1px solid #D7D7D7;
+                height:380px;
+                span{
+                    position:absolute;
+                    top:50%;left:34px;
+                }
+            }
+        }
+         .form-title-two{
+                border:1px solid #D7D7D7;
+                height:380px;
+                overflow: auto;
+            }
+
+    }
+
+</style>

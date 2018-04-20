@@ -2,18 +2,18 @@
 <template>
   <section class="page closed-order-query">
     <page-header title="已结清订单查询"></page-header>
-    <data-form  data-prop="timeSearch" :model="customerRepayModel" @on-search="getEarlyPayList" hidden-reset >
+    <data-form data-prop="timeSearch" :model="customerRepayModel" @on-search="getEarlyPayList" hidden-reset>
       <template slot="input">
         <i-form-item prop="dynamicParam">
-          <i-input placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam" class="second-input"></i-input>
+          <i-input placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
         </i-form-item>
         <i-form-item prop="paymentStatus">
-          <i-select placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable class="second-select">
+          <i-select placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item prop="settlementChannel">
-          <i-select placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable class="second-select">
+          <i-select placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
