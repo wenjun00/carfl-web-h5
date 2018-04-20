@@ -86,7 +86,7 @@
         </tr>
         <tr>
           <td bgColor="#F5F5F5">车辆参考总价</td>
-          <td>{{!!orderInfo.vehicleAmount?orderInfo.vehicleAmount:0}}</td>n
+          <td>{{!!orderInfo.vehicleAmount?orderInfo.vehicleAmount:0}}</td>
           <td bgColor="#F5F5F5">备注</td>
           <td colspan="7">{{orderInfo.remark}}</td>
         </tr>
