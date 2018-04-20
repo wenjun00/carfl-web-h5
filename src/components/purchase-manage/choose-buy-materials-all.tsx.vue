@@ -33,7 +33,7 @@
       <Icon class="icon-module" type="plus"></Icon>
       <i-button class="add-rook" @click="addModalOpen" type="text">添加车辆</i-button>
       <span class="total-title">总价</span>
-      <span style="margin-left:325px;font-weight:bold;">{{totalPrice}}</span>
+      <span class="total-content">{{totalPrice}}</span>
     </div>
     <!--添加车辆弹框-->
     <template>
@@ -289,14 +289,19 @@
             margin-left:155px;
             font-weight:bold;
         }
+        .total-content{
+            margin-left:325px;
+            font-weight:bold;
+        }
+        .add-car {
+        .ivu-modal-footer {
+        display: none!important;
+        }
+     }
     } 
 
 
 
-  .add-car {
-    .ivu-modal-footer {
-      display: none!important;
-    }
-  }
+  
 
 </style>

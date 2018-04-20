@@ -1,9 +1,9 @@
 <!--选购材料-->
 <template>
   <section class="component choose-buy-materials">
-    <i-col span="24" style="line-height:30px" class="form-title">选购信息</i-col>
+    <i-col class="form-col form-title" span="24">选购信息</i-col>
     <i-row>
-      <i-form ref="customer-form" :rules="rules" :model="chooseBuyModel" :label-width="130" style="margin-top:20px;position:relative;left:16px;"
+      <i-form class="data-form" ref="customer-form" :rules="rules" :model="chooseBuyModel" :label-width="130"
         label-position="left">
         <i-row>
           <i-col span="12">
@@ -81,13 +81,13 @@
         </i-col>
       </i-form>
     </i-row>
-    <i-table :columns="carColumns" :data="addcarData" stripe style="margin:10px;" width="1100"></i-table>
+    <i-table class="table-one" :columns="carColumns" :data="addcarData" stripe width="1100"></i-table>
     <div>
-      <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
-      <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
-      <span style="margin-left:115px;font-weight:bold">总价</span><span style="margin-left:328px;font-weight:bold;">{{totalPrice}}</span>
+      <Icon class="icon-img" type="plus" ></Icon>
+      <i-button @click="addModalOpen" class="button-icon" type="text">添加车辆</i-button>
+      <span class="total-price">总价</span><span class="total-content">{{totalPrice}}</span>
     </div>
-    <i-col span="24" style="line-height:30px;margin-top:20px;" class="form-title">
+    <i-col class="form-col-two form-title" span="24">
       <span>产品信息</span>
       <!--<div style="font-size:14px;cursor:pointer;display:inline-block;color:#3367A7;position:absolute;left:52%;" @click="openSimulateCalculate">
         <svg-icon iconClass="jisuanqi"></svg-icon>
@@ -95,11 +95,11 @@
       </div>-->
     </i-col>
     <div v-show="addPrdShow">
-      <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
-      <i-button @click="addNewPrd" style="margin-left:10px;color:#265ea2" type="text">添加产品</i-button>
+      <Icon type="plus" class="icon-img"></Icon>
+      <i-button class="button-icon" @click="addNewPrd" style="" type="text">添加产品</i-button>
     </div>
     <i-row v-show="prdInfoShow">
-      <i-form ref="form" :rules="rulesdata" :model="chooseBuyModel" :label-width="130" style="margin-top:20px;">
+      <i-form class="iform-data" ref="form" :rules="rulesdata" :model="chooseBuyModel" :label-width="130">
         <i-col span="12">
           <i-form-item label="产品系列" prop="prdSeriods">
             <!--<i-input type="text" v-model="chooseBuyModel.prdSeriods" disabled>
@@ -150,13 +150,13 @@
         </i-col>
         <i-col span="12" pull="3">
              <i-row>
-          <i-form-item label="首付金额（元）" prop="Payment" style="display:inline-block">
-              <i-select style="width:140px" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment" :disabled="Paymentdisabled">
+          <i-form-item class="form-item-title" label="首付金额（元）" prop="Payment" >
+              <i-select class="form-item-one"  placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment" :disabled="Paymentdisabled">
                 <i-option v-for="item in initialPaymentData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-          <i-form-item prop="initialPayment" style="display:inline-block">
-              <i-input style="width:180px" type="text" v-model="chooseBuyModel.initialPayment" readonly>
+          <i-form-item prop="initialPayment" class="form-item-title">
+              <i-input class="form-item-two"  type="text" v-model="chooseBuyModel.initialPayment" readonly>
               </i-input>
           </i-form-item>
             </i-row>
@@ -169,39 +169,39 @@
         </i-col>
         <i-col span="12" pull="3">
             <i-row>
-          <i-form-item label="保证金金额（元）" prop="deposit" style="display:inline-block">
-              <i-select style="width:140px" placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit" :disabled="depositdisabled">
+          <i-form-item label="保证金金额（元）" prop="deposit" class="form-item-title">
+              <i-select class="form-item-one" placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit" :disabled="depositdisabled">
                 <i-option v-for="item in depositCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-             <i-form-item prop="depositCash" style="display:inline-block">  
-              <i-input style="width:180px" v-model="chooseBuyModel.depositCash" readonly>
+             <i-form-item prop="depositCash" class="form-item-title">  
+              <i-input class="form-item-two" v-model="chooseBuyModel.depositCash" readonly>
               </i-input>
         </i-form-item>
             </i-row>
         </i-col>
         <i-col span="12">
             <i-row>
-          <i-form-item label="尾付总额（元）" prop="final" style="display:inline-block">
-              <i-select style="width:140px" placeholder="请选择尾付总额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash" :disabled="finalorddisabled">
+          <i-form-item label="尾付总额（元）" prop="final" class="form-item-title">
+              <i-select class="form-item-one" placeholder="请选择尾付总额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash" :disabled="finalorddisabled">
                 <i-option v-for="item in finalCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-               <i-form-item  prop="finalCash" style="display:inline-block">
-              <i-input style="width:180px" v-model="chooseBuyModel.finalCash" readonly>
+               <i-form-item  prop="finalCash" class="form-item-title">
+              <i-input class="form-item-two" v-model="chooseBuyModel.finalCash" readonly>
               </i-input>
                </i-form-item>
             </i-row>
         </i-col>
         <i-col span="12" pull="3">
             <i-row>
-          <i-form-item label="管理费（元）" prop="manageData" style="display:inline-block">
-              <i-select style="width:140px" placeholder="请选择管理费比例" v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost" :disabled="manageDatadisabled">
+          <i-form-item label="管理费（元）" prop="manageData" class="form-item-title">
+              <i-select class="form-item-one" placeholder="请选择管理费比例" v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost" :disabled="manageDatadisabled">
                 <i-option v-for="item in manageCostData" :key="item.key" :value="item.value" :label="item.key"></i-option>
               </i-select>
           </i-form-item>
-              <i-form-item prop="manageCost" style="display:inline-block">
-              <i-input style="width:180px" v-model="chooseBuyModel.manageCost" readonly>
+              <i-form-item prop="manageCost" class="form-item-title">
+              <i-input class="form-item-two" v-model="chooseBuyModel.manageCost" readonly>
               </i-input>
               </i-form-item>
             </i-row>
@@ -250,8 +250,8 @@
         </i-col>
         <i-col :span="24">
           <div v-show="changePrdShow">
-            <Icon type="plus" style="position:relative;left:26px;color:#265ea2;"></Icon>
-            <i-button @click="changePrd" style="margin-left:10px;color:#265ea2" type="text">更改产品</i-button>
+            <Icon type="plus" class="change-icon"></Icon>
+            <i-button class="change-icon-button" @click="changePrd"  type="text">更改产品</i-button>
           </div>
         </i-col>
         <i-col span="24">
@@ -1119,26 +1119,79 @@
 </script>
 
 <style lang="less" scoped>
-  .choose-buy-materials {
-    .ivu-select-selection {
-      width: 100%!important;
-      display: inline-block;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
+    .component.choose-buy-materials{
+        .form-col{
+            line-height:30px;
+        }
+        .data-form{
+            margin-top:20px;
+            position:relative;
+            left:16px;
+        }
+        .ivu-select-selection {
+            width: 100%!important;
+            display: inline-block;
+            border-style: none;
+            border-bottom-style: solid;
+            border-radius: 0;
+            }
+        .ivu-modal-footer {
+            display: none!important;
+        }    
+         .add-car {
+            .ivu-modal-footer {
+            display: none!important;
+            }
+        }
+        .table-one{
+            margin:10px;
+        }
+        .icon-img{
+            position:relative;
+            left:26px;color:#265ea2;
+        }
+        .button-icon{
+            margin-left:10px;
+            color:#265ea2;
+        }
+        .total-price{
+            margin-left:115px;font-weight:bold;
+        }
+        .total-content{
+            margin-left:328px;font-weight:bold;
+        }
+        .form-col-two{
+            line-height:30px;
+            margin-top:20px;
+        }
+        .iform-data{
+            margin-top:20px;
+        }
+        .form-item-title{
+            display:inline-block;
+        }
+        .form-item-one{
+            width:140px;
+        }
+        .form-item-two{
+             width:180px;
+        }
+        .change-icon{
+            position:relative;
+            left:26px;color:#265ea2;
+        }
+        .change-icon-button{
+            margin-left:10px;color:#265ea2;
+        }
     }
-  }
 
-  .calculate {
-    .ivu-modal-footer {
-      display: none!important;
-    }
-  }
 
-  .add-car {
-    .ivu-modal-footer {
-      display: none!important;
-    }
-  }
+
+
+
+ 
+
+
+ 
 
 </style>
