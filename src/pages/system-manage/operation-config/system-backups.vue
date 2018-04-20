@@ -2,11 +2,7 @@
 <template>
     <section class="page system-backups">
         <page-header title="系统备份"></page-header>
-<<<<<<< HEAD
         <data-form hidden-date-search :model="systemBackUpModel" @on-search="getSystemBackupList" :page="pageService" >
-=======
-        <data-form hidden-date-search :model="systemBackUpModel"  :page="pageService" @on-search="getSystemBackupList">
->>>>>>> 7d84107aa39f6f9671136f90c5098969cd203fab
             <template slot="input">
                 <i-form-item prop="mysqlName" label="mysql文件名：">
                     <i-input v-model="systemBackUpModel.mysqlName"></i-input>
@@ -26,11 +22,6 @@
                 <i-form-item prop="endTime">
                     <i-date-picker v-model="systemBackUpModel.endTime"></i-date-picker>
                 </i-form-item>
-<<<<<<< HEAD
-=======
-
-                <i-button class="form-button" @click="addNewBackups">新增备份</i-button>
->>>>>>> 7d84107aa39f6f9671136f90c5098969cd203fab
             </template>
             <template slot="button">
                 <i-button @click="addNewBackups">新增备份</i-button>
