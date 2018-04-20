@@ -153,7 +153,7 @@ export default class CustomerRepay extends Page {
     data.collectMoneyId = _repayment.collectMoneyId;
     data.historyId = _repayment.repaymentObj.historyId;
     data.collectMoneySum = _repayment.collectMoneySum;
-    data.remark = _repayment.remark
+    data.remark = _repayment.remark;
     this.paymentScheduleService.saveCustomerPaymentInfoAsDraft(data).subscribe(
       data => {
         this.$Message.info("保存草稿成功！");
