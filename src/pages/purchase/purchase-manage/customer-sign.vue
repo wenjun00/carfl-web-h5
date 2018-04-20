@@ -1,11 +1,7 @@
 <template>
   <section class="page customer-sign">
     <page-header title="客户签约"></page-header>
-<<<<<<< HEAD
     <data-form date-prop="timeSearch" :model="customerSignModel" @on-search="getSignList" :page="pageService">
-=======
-    <data-form date-prop="timeSearch" :model="customerSignModel" :page="pageService" @on-search="getSignList">
->>>>>>> 7d84107aa39f6f9671136f90c5098969cd203fab
       <template slot="input">
         <i-form-item prop="startTime" label="日期">
           <i-date-picker v-model="customerSignModel.startTime"></i-date-picker>
