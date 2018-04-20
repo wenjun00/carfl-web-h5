@@ -40,33 +40,35 @@
     <!-- 搜索表单-end -->
 
     <!-- 资料申请选项卡-start -->
-    <i-tabs type="card" v-show="showApplicationTab" v-model="currentTab" class="application-tabs">
+    <i-tabs v-show="showApplicationTab" v-model="currentTab" class="application-tabs">
       <i-tab-pane label="选购资料" name="choose-buy-materials">
         <choose-buy-materials ref="choose-buy-materials" v-show="currentTab==='choose-buy-materials'"></choose-buy-materials>
       </i-tab-pane>
-      <i-tab-pane label="客户资料" name="customer-materials">
+      <i-tab-pane :disabled="currentStep < 1" label="客户资料" name="customer-materials">
         <customer-materials ref="customer-materials" v-show="currentTab==='customer-materials'"></customer-materials>
       </i-tab-pane>
-      <i-tab-pane label="客户职业" name="customer-job-message">
+      <i-tab-pane :disabled="currentStep < 2" label="客户职业" name="customer-job-message">
         <customer-job-message ref="customer-job-message" v-show="currentTab==='customer-job-message'"></customer-job-message>
       </i-tab-pane>
-      <i-tab-pane label="客户联系人" name="customer-contacts">
+      <i-tab-pane :disabled="currentStep < 3" label="客户联系人" name="customer-contacts">
         <customer-contacts ref="customer-contacts" v-show="currentTab==='customer-contacts'"></customer-contacts>
       </i-tab-pane>
-      <i-tab-pane label="客户来源" name="customer-origin">
+      <i-tab-pane :disabled="currentStep < 4" label="客户来源" name="customer-origin">
         <customer-origin ref="customer-origin" v-show="currentTab==='customer-origin'"></customer-origin>
       </i-tab-pane>
-      <i-tab-pane label="上传素材" name="upload-the-material">
+      <i-tab-pane :disabled="currentStep < 5" label="上传素材" name="upload-the-material">
         <upload-the-material ref="upload-the-material" v-show="currentTab==='upload-the-material'"></upload-the-material>
       </i-tab-pane>
+      <i-button size="small" type="ghost" @click="onNextStep" v-show="currentStep < 5" slot="extra">下一步</i-button>
     </i-tabs>
+
     <div v-show="!showApplicationTab" class="emptyText">
       请先填写证件信息
     </div>
     <!-- 资料选项卡-end -->
 
     <!--底部操作栏-start-->
-    <div class="fixed-container">
+    <div class="fixed-container" v-show="currentStep >= 5">
       <i-button size="large" class="highDefaultButton" @click="draftsaveAndSubmit(true)">保存草稿</i-button>
       <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit(false)">保存并提交</i-button>
     </div>
@@ -78,14 +80,7 @@
 import Page from "~/core/page";
 import Component from "vue-class-component";
 import { Dependencies } from "~/core/decorator";
-import ChooseBuyMaterials from "~/components/purchase-manage/choose-buy-materials.tsx.vue";
-import CustomerMaterials from "~/components/purchase-manage/customer-materials.vue";
-import CustomerJobMessage from "~/components/purchase-manage/customer-job-message.vue";
-import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
-import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue";
-import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue";
-import HistoricalRecord from "~/components/purchase-manage/historical-record.vue";
-import SalesmanName from "~/components/purchase-manage/salesman-name.vue";
+
 import { PersonalService } from "~/services/manage-service/personal.service";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { State, Mutation, namespace } from "vuex-class";
@@ -93,6 +88,15 @@ import { Layout } from "~/core/decorator";
 import { CityService } from "~/utils/city.service";
 import { FilterService } from "~/utils/filter.service";
 import { Form } from "iview";
+
+import HistoricalRecord from "~/components/purchase-manage/historical-record.vue";
+import SalesmanName from "~/components/purchase-manage/salesman-name.vue";
+import ChooseBuyMaterials from "~/components/purchase-manage/choose-buy-materials.tsx.vue"; // 选购资料
+import CustomerMaterials from "~/components/purchase-manage/customer-materials.vue"; // 客户资料
+import CustomerJobMessage from "~/components/purchase-manage/customer-job-message.vue"; // 客户职业
+import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue"; // 上传素材
+import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue"; // 客户联系人
+import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue"; // 客户来源
 
 const ModuleState = namespace("purchase", State);
 
@@ -117,6 +121,15 @@ export default class FinancingLeaseApply extends Page {
 
   private showApplicationTab = false; // 申请选项卡显示状态
   private currentIdCard = ""; // 上次查询的身份证号
+  private currentStep = 0;
+  private applicationTabList = [
+    "choose-buy-materials",
+    "customer-materials",
+    "customer-job-message",
+    "customer-contacts",
+    "customer-origin",
+    "upload-the-material"
+  ];
 
   private addCar: Boolean = false;
   private currentTab: String = "choose-buy-materials";
@@ -180,6 +193,12 @@ export default class FinancingLeaseApply extends Page {
     }
   }
 
+  onNextStep() {
+    // TODO: 验证当前页面
+
+    this.currentStep++;
+    this.currentTab = this.applicationTabList[this.currentStep];
+  }
 
   /**
    * 业务流程图
@@ -258,7 +277,10 @@ export default class FinancingLeaseApply extends Page {
           }
 
           // 判断是否需要重置信息
-          if (this.currentIdCard && this.currentIdCard !== this.customerModel.idCard) {
+          if (
+            this.currentIdCard &&
+            this.currentIdCard !== this.customerModel.idCard
+          ) {
             this.$Modal.confirm({
               title: "提醒",
               content: "证件号码更新,是否要重置申请信息?",
@@ -289,11 +311,15 @@ export default class FinancingLeaseApply extends Page {
         let currentRow = historyRecord.getCurrentRow();
 
         if (!currentRow) {
-          this.$Message.error("请选择需要恢复的订单");
+          this.$Message.error("请选择对应的订单");
           return false;
         }
 
         // TODO: 更新历史订单信息
+      },
+      onCancel: () => {
+        let customerForm = this.$refs["customer-form"] as Form;
+        customerForm.resetFields();
       },
       render: h => {
         return h(HistoricalRecord, {
@@ -305,7 +331,6 @@ export default class FinancingLeaseApply extends Page {
     });
   }
 
-
   /**
    * 显示历史订单
    */
@@ -315,7 +340,7 @@ export default class FinancingLeaseApply extends Page {
       footer: true,
       onOk: salesmanName => {
         let currentRow = salesmanName.getCurrentRow();
-
+        console.log(currentRow);
         if (!currentRow) {
           this.$Message.error("请选择对应销售员");
           return false;
@@ -334,9 +359,7 @@ export default class FinancingLeaseApply extends Page {
   /**
    * 重置申请选项卡数据
    */
-  resetApplicationTab() {
-
-  }
+  resetApplicationTab() {}
 
   /**
    * 客户信息反显
@@ -576,7 +599,6 @@ export default class FinancingLeaseApply extends Page {
                 let _jobform: any = customerMaterials.$refs["job-form"];
 
                 _jobform.validate(valid => {
-
                   if (!valid) {
                     this.$Message.warning("请完善客户资料信息！");
                     return false;
@@ -806,11 +828,11 @@ export default class FinancingLeaseApply extends Page {
     }
   }
   .ivu-tabs {
-    margin-bottom: 70px;
+    margin-bottom: 100px;
   }
 
   .fixed-container {
-    height: 60px;
+    height: 65px;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -864,25 +886,7 @@ export default class FinancingLeaseApply extends Page {
   .ivu-input {
     border-style: none;
     border-bottom-style: solid;
-    border-radius: 0; // width: 257%;
-  }
-  .ivu-tabs-bar {
-    border-bottom: 1px solid #dddee1;
-    .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
-      margin: 0;
-      margin-right: 4px;
-      padding: 5px 16px 4px;
-      border: 1px solid #dddee1;
-      border-bottom: 0;
-      border-radius: 4px 4px 0 0;
-      transition: all 0.3s ease-in-out;
-    }
-  }
-}
-
-.historical {
-  .ivu-modal-footer {
-    display: none !important;
+    border-radius: 0;
   }
 }
 </style>
