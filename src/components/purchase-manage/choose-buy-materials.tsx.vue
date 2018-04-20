@@ -2,10 +2,7 @@
 <template>
   <section class="component choose-buy-materials">
     <!-- 选购信息表单-start -->
-    <i-card>
-      <p slot="title">
-        选购信息
-      </p>
+    <i-card title="选购信息">
       <i-form ref="customer-form" :rules="rules" :model="chooseBuyModel" :label-width="150" label-position="right">
         <i-row>
           <i-col span="12">
