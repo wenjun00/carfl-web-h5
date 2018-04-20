@@ -242,7 +242,6 @@
       let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
       let itemList = _gatherDetail.getItem();
       this.saveDraftItem = itemList;
-      console.log(itemList, "itemList");
       this.saveDraftModel.otherFee = _gatherDetail.getOtherFee();
       this.saveDraftModel.remark = this.applyData.remark;
       let surplusManageFee = itemList.find(
@@ -333,8 +332,7 @@
           this.getModel();
           let saveAndCommitModel = this.saveDraftModel;
           if(this.saveDraftItem.length==0){
-            console.log('未添加付款项')
-            this.$Message.warning('未添加付款项，请添加付款项！')
+            this.$Message.warning('未添加收款项，请添加收款项！')
             return false
           }
           this.withdrawApplicationService
