@@ -762,6 +762,13 @@ export default class OrgUserManage extends Page {
    * 添加机构
    */
   addDept(val) {
+    // 判断当前机构级别ID是不是最大机构限制ID
+    let orgSource: number[] = this.$dict.getDictData('0401').map( v => v.value)
+    if( this.deptLevel === Math.max(...orgSource)){
+      this.$Message.error('已达到最大机构级别限制')
+      return
+    }
+
     let companyId = val.companyId
     this.addNewOrgModal = true
     if (this.deptLevel) {
