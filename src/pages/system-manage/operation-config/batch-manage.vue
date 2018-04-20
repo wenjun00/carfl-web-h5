@@ -1,7 +1,7 @@
 <!--批量管理-->
 <template>
     <section class="page system-backups">
-        <page-header title="批量管理" hiddenPrint hiddenExport></page-header>
+        <page-header title="批量管理" hidden-print hidden-export></page-header>
         <data-box :id="63" :columns="columns1" :data="batchList" @onPageChange="getBatchManageList" :page="pageService"></data-box>
         <div class="submit-bar">
             <i-row type="flex" align="middle">

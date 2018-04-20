@@ -1,7 +1,7 @@
 <!--模块功能-->
 <template>
     <section class="page module-function">
-        <page-header title="模块功能" hiddenPrint hiddenExport></page-header>
+        <page-header title="模块功能" hidden-print hidden-export></page-header>
         <i-row class="data-form">
             <!--树-->
             <i-col :span="4" class="form-item">

@@ -1,7 +1,7 @@
 <!--机构与用户管理-->
 <template>
     <section class="page org-user-manage">
-        <page-header title="机构与用户管理" hiddenPrint @on-export="exportName"></page-header>
+        <page-header title="机构与用户管理" hidden-print @on-export="exportName"></page-header>
         <i-row class="data-form">
             <i-col :span="4" class="data-form-item">
 
