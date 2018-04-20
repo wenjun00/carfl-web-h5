@@ -58,7 +58,7 @@
 
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .data-form-item {
     margin-left: 5px;
     width: 20%;

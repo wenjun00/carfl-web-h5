@@ -344,7 +344,3 @@
     }
   }
 </script>
-
-<style>
-
-</style>

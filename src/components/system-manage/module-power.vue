@@ -191,7 +191,7 @@ export default class ModulePower extends Vue {
   }
 }
 </script>
-<style  lang="less">
+<style  lang="less" scoped>
     .component.module-power{
         .module-name{
             height:600px;

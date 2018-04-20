@@ -141,7 +141,7 @@
   }
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .component.deduct-record.draw-record{
     .form-row {
       margin: 6px;

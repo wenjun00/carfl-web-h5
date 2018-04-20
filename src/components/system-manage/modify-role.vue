@@ -70,7 +70,7 @@
   }
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .component.modify-role{
       .data-form{
           margin-top:20px;
