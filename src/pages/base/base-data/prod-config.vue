@@ -713,7 +713,7 @@
     /**
      * 树形结构 新增产品系列
      */
-    addSericeFun() {
+    addSericeFun() {   
       if (this.scopes) {
         if (typeof this.scopes[0].flag === 'undefined' || this.scopes[0].flag !== '产品') {
           this.addSericeModal = true;
@@ -721,7 +721,7 @@
           this.$Message.error('温馨提示：不能在产品中添加产品系列！');
         }
       } else {
-        this.addSericeModal = true;
+         this.$Message.error('请先选择产品系列！');
       }
     }
     /**
