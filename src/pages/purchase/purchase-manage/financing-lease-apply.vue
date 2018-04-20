@@ -2,7 +2,7 @@
 <template>
   <section class="page financing-lease-apply">
     <page-header title="融资租赁申请">
-      <command-button label="添加新申请" @click="addNewApply"></command-button>
+      <command-button label="添加新申请" @click="onReset"></command-button>
       <command-button label="业务流程图" @click="onOpenFlowModal"></command-button>
     </page-header>
     <!-- 搜索表单-start -->
@@ -116,7 +116,7 @@ export default class FinancingLeaseApply extends Page {
   @ModuleState collectiondata;
 
   private showApplicationTab = false; // 申请选项卡显示状态
-  private historyId = ""; // 上次查询的身份证号
+  private currentIdCard = ""; // 上次查询的身份证号
   private addCar: Boolean = false;
   private materialTabs: String = "choose-buy-materials";
   private historicalModal: Boolean = false;
@@ -127,7 +127,7 @@ export default class FinancingLeaseApply extends Page {
   private orderStatus: any = "";
   private salesmanModal: Boolean = false;
   private spinShow: Boolean = false;
-  private aaa = false;
+
   // 客户信息表单数据
   private customerModel: any = {
     idCard: "", // 证件号码
@@ -175,14 +175,10 @@ export default class FinancingLeaseApply extends Page {
     ) {
       this.customerModel = this.collectiondata;
       this.customerModel.name = this.collectiondata.personalName;
-      this.showTab();
+      // this.showTab();
     }
   }
 
-  choosecurrentData(data) {
-    this.customerModel.salesmanName = data.userRealname;
-    this.customerModel.salesmanId = data.id;
-  }
 
   /**
    * 业务流程图
@@ -261,7 +257,7 @@ export default class FinancingLeaseApply extends Page {
           }
 
           // 判断是否需要重置信息
-          if (this.historyId && this.historyId !== this.customerModel.idCard) {
+          if (this.currentIdCard && this.currentIdCard !== this.customerModel.idCard) {
             this.$Modal.confirm({
               title: "提醒",
               content: "证件号码更新,是否要重置申请信息?",
@@ -270,8 +266,10 @@ export default class FinancingLeaseApply extends Page {
           }
 
           // 更新历史查询身份证号
-          this.historyId = this.customerModel.idCard;
+          this.currentIdCard = this.customerModel.idCard;
           this.showApplicationTab = true;
+
+          // TODO: 根据身份证获取性别和生日信息
         },
         ({ msg }) => {
           this.$Message.error(msg);
@@ -293,6 +291,8 @@ export default class FinancingLeaseApply extends Page {
           this.$Message.error("请选择需要恢复的订单");
           return false;
         }
+
+        // TODO: 更新历史订单信息
       },
       render: h => {
         return h(HistoricalRecord, {
@@ -319,6 +319,10 @@ export default class FinancingLeaseApply extends Page {
           this.$Message.error("请选择对应销售员");
           return false;
         }
+
+        // 更新销售人员信息
+        this.customerModel.salesmanName = currentRow.userRealname;
+        this.customerModel.salesmanId = currentRow.id;
       },
       render: h => {
         return h(SalesmanName);
@@ -326,54 +330,13 @@ export default class FinancingLeaseApply extends Page {
     });
   }
 
-  resetApplicationTab() {}
-
   /**
-   * 根据客户三项查询历史订单
+   * 重置申请选项卡数据
    */
-  checkcustomerinfo() {
-    let pat: any = /(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$)|(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)/;
-    if (
-      this.customerModel.idCard.length === 18 &&
-      pat.test(this.customerModel.idCard)
-    ) {
-      let idcard: any = this.customerModel.idCard;
-      if (parseInt(idcard.substr(16, 1)) % 2 == 1) {
-        this.customerModel.sex = 1;
-        this.ReverseData();
-      } else {
-        this.customerModel.sex = 2;
-        this.ReverseData();
-      }
-      this.customerModel.birthTime = new Date(
-        idcard.substring(6, 10),
-        idcard.substring(10, 12) - 1,
-        idcard.substring(12, 14)
-      );
-      this.ReverseData();
-      this.customerModel.name = "";
-      this.customerModel.mobileMain = "";
-      this.customerModel.salesmanName = "";
-      this.resethistory();
-      let customermodel: any = this.$refs["customer-materials"];
-      customermodel.getinfo(this.customerModel);
-      if (this.customerModel.idCard) {
-        this.personalService
-          .getCustomerHistoryFinanceInfo(this.customerModel)
-          .subscribe(
-            data => {
-              this.historicalDataset = data;
-              if (this.historicalDataset.length) {
-                this.historicalModal = true;
-              }
-            },
-            ({ msg }) => {
-              this.$Message.error(msg);
-            }
-          );
-      }
-    }
+  resetApplicationTab() {
+
   }
+
   /**
    * 客户信息反显
    */
@@ -401,6 +364,7 @@ export default class FinancingLeaseApply extends Page {
     let _uploadthematerial: any = this.$refs["upload-the-material"];
     _uploadthematerial.Reverse(data);
   }
+
   /**
    * 重置
    */
@@ -446,19 +410,15 @@ export default class FinancingLeaseApply extends Page {
   /**
    * 添加新申请
    */
-  addNewApply() {
+  onReset() {
     this.$Modal.confirm({
       title: "提示",
       content: "有未提交的申请，确定创建新申请吗？",
       onOk: () => {
-        let resetData: any = this.$refs["customer-form"];
-        resetData.resetFields();
-        this.resethistory();
-        this.show = "";
+        // TODO: 重置表单数据
+        // TODO: 重置选项卡数据
       },
-      onCancel: () => {
-        this.$Message.info("取消成功！");
-      }
+      onCancel: () => {}
     });
   }
 
@@ -499,7 +459,6 @@ export default class FinancingLeaseApply extends Page {
     });
     choosebuymaterials.addcarData.forEach(v => delete v.id);
     let addcarDatas = Array.from(new Set(this.addcarData));
-    console.log(uploadTheMaterial.dataList, "uploadTheMaterial.dataList");
     this.PersonalData = uploadTheMaterial.dataList.map(material => {
       return {
         materialType: uploadTheMaterial.model1, // 客户素材类型
@@ -513,11 +472,6 @@ export default class FinancingLeaseApply extends Page {
     );
     let orderServiceList = Array.from(
       new Set(choosebuymaterials.chooseBuyModel.orderServiceList)
-    );
-    console.log(
-      choosebuymaterials.chooseBuyModel.depositPercent,
-      choosebuymaterials.chooseBuyModel,
-      "99"
     );
     delete customerMaterials.customerMaterialsForm.personalDatas;
     let savesubmitDataset: any = {
@@ -601,10 +555,6 @@ export default class FinancingLeaseApply extends Page {
    */
   saveAndSubmit(type) {
     let customerOrigin: any = this.$refs["customer-origin"];
-    console.log(
-      customerOrigin.customerOriginModel,
-      "customerOrigin.customerOriginModel"
-    );
     let _customerform: any = this.$refs["customer-form"];
     _customerform.validate(valid => {
       if (!valid) {
@@ -625,9 +575,9 @@ export default class FinancingLeaseApply extends Page {
               } else {
                 let customerMaterials: any = this.$refs["customer-materials"];
                 let _jobform: any = customerMaterials.$refs["job-form"];
-                console.log(_jobform, "_jobform");
+
                 _jobform.validate(valid => {
-                  console.log(valid, "valid");
+
                   if (!valid) {
                     this.$Message.warning("请完善客户资料信息！");
                     return false;
@@ -637,7 +587,6 @@ export default class FinancingLeaseApply extends Page {
                     ];
                     let customerContacts: any = this.$refs["customer-contacts"];
                     let customerOrigin: any = this.$refs["customer-origin"];
-                    console.log(customerOrigin, "OriginModel");
                     let uploadTheMaterial: any = this.$refs[
                       "upload-the-material"
                     ];
@@ -718,10 +667,7 @@ export default class FinancingLeaseApply extends Page {
                     //     .birthTime,
                     //     'yyyy-MM-dd')
                     choosebuymaterials.addcarData.forEach(v => delete v.id);
-                    console.log(
-                      choosebuymaterials.addcarData,
-                      "choosebuymaterials.addcarData"
-                    );
+
                     let orderServiceList = Array.from(
                       new Set(
                         choosebuymaterials.chooseBuyModel.orderServiceList
@@ -837,19 +783,6 @@ export default class FinancingLeaseApply extends Page {
         });
       }
     });
-  }
-
-  showTab() {
-    let pat: any = /(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$)|(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)/;
-    if (
-      this.customerModel.idCard.length === 18 &&
-      pat.test(this.customerModel.idCard)
-    ) {
-      this.disabledStatus = "none";
-      console.log(this.disabledStatus, "this.disabledStatus");
-    } else {
-      this.disabledStatus = "";
-    }
   }
 }
 </script>
