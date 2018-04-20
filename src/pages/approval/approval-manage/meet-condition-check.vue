@@ -2,7 +2,7 @@
 <template>
     <section class="page meet-condition-check">
         <page-header title="合规检查"></page-header>
-        <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getMeetConditionList" hidden-reset>
+        <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getMeetConditionList" :page="pageService" hidden-reset>
             <template slot="input">
                 <i-form-item prop="personalInfo">
                     <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.personalInfo"></i-input>

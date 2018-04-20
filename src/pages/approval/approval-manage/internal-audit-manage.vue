@@ -2,7 +2,7 @@
 <template>
     <section class="page internal-audit-manage">
         <page-header title="内审"></page-header>
-        <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getInternalAuditList" hidden-reset>
+        <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getInternalAuditList" :page="pageService" hidden-reset>
             <template slot="input">
                 <i-form-item prop="personalInfo">
                     <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>
