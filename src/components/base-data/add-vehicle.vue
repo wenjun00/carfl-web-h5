@@ -156,7 +156,7 @@ export default class AddVehicle extends Vue {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .component.add-vehicle{
     .data-form-item{
         width: 260px;

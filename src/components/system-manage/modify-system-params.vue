@@ -93,7 +93,7 @@
   }
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .component.modify-system-params {
     .amend-parameter{
       position: relative;

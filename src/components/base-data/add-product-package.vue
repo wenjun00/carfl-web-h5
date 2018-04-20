@@ -143,7 +143,7 @@
 
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .add-product-package {
     .ivu-select-selection {
       width: 100%!important;

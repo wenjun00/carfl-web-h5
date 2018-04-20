@@ -97,15 +97,15 @@
   }
 
 </script>
- <style lang="less">
+ <style lang="less" scoped>
     .data-form.role-maintenance{
         margin-top:20px;
         .form-input{
             width:260px;
         }
-       
+
 
     }
 
- 
+
  </style>

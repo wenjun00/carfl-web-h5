@@ -129,6 +129,8 @@ export default class DialogBox extends Vue {
 
 <style lang="less" scoped>
 .component.dialog {
+  z-index:0;
+  position: relative;
 }
 </style>
 

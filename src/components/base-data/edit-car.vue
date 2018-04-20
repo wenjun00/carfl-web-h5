@@ -396,7 +396,7 @@
   }
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .edit-car {
     .data-form-icon {
       width: 7px;
