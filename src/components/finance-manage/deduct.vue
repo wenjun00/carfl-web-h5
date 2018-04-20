@@ -33,9 +33,9 @@
     </data-grid>
     <table border="1" width="900" class="modal-item-table">
       <tr height="40">
-        <td bgcolor="#F2F2F2" colspan="2">收款方式</td>
-        <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
-        <td bgcolor="#F2F2F2" colspan="1">状态</td>
+        <td class="td-bg" colspan="2">收款方式</td>
+        <td class="td-bg" colspan="1">金额（元）</td>
+        <td class="td-bg" colspan="1">状态</td>
       </tr>
       <tr height="40">
         <td colspan="2">汇付</td>
@@ -44,7 +44,7 @@
           <i-button class="blueButton">确认划扣</i-button>
         </td>
         <td colspan="1"><span>已处理</span>
-          <i-icon type="loop" size="20" color="#199ED8" class="modal-item-chuli"></i-icon>
+          <i-icon type="loop" size="20" class="modal-item-chuli"></i-icon>
         </td>
       </tr>
     </table>
@@ -191,7 +191,10 @@
     .modal-item-table {
       margin-top: 10px;
       text-align: center;
-      border: 1px solid #DDDEE1
+      border: 1px solid #DDDEE1;
+      .td-bg{
+          background-color:#F2F2F2; 
+      }
     }
     .modal-item-querenhuakou {
       display: inline-block;
@@ -200,7 +203,8 @@
     }
     .modal-item-chuli {
       margin-left: 6px;
-      cursor: pointer
+      cursor: pointer;
+      color: #199ED8;
     }
     .modal-item-huakou {
       margin: 5px 0px;
