@@ -3,7 +3,7 @@
   <section class="component apply-detail">
     <!--付款申请-->
     <i-row>
-      <i-form :label-width="110" style="margin-top:20px;position:relative;right:20px;">
+      <i-form :label-width="110" class="item-kehu-form">
         <i-col :span="12">
           <i-form-item label="客户姓名">
             <i-input v-model="addNewApplyModal.name" disabled></i-input>
@@ -58,11 +58,11 @@
     </i-row>
     <!--提前结清申请-->
     <!--<i-row v-if="applyType==='提前结清申请'">
-      
+
     </i-row>-->
     <!--提前收回申请-->
     <!--<i-row v-if="applyType==='提前收回申请'">
-      
+
     </i-row>-->
     <!--Model-->
   </section>
@@ -323,4 +323,7 @@ export default class ApplyDetail extends Vue {
         cursor: pointer;
         margin: 0 2px;
     }
+  .item-kehu-form{
+    margin-top:20px;position:relative;right:20px;
+  }
 </style>

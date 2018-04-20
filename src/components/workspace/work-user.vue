@@ -20,6 +20,3 @@ export default class WorkTheme extends Vue {
 
 }
 </script>
-
-<style lang="less">
-</style>

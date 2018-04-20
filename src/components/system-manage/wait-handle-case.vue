@@ -136,7 +136,7 @@
   }
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .component.wait-handle-case{
         .data-form{
             border-bottom: 1px solid #e9e9e9;

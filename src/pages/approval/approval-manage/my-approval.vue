@@ -23,10 +23,11 @@
                         <i-option v-for="{value,label} in this.myOrderModel.province ? this.$city.getCityData({ level: 1, id: this.myOrderModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
                     </i-select>
                 </i-form-item>
-                <i-form-item prop="productType" label="产品类型">
-                     <i-select placeholder="产品类型" v-model="myOrderModel.productType" clearable>
-                        <i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>
-                    </i-select>
+                <i-form-item prop="productType" label="产品名称:">
+                    <i-input v-model="myOrderModel.productType"></i-input>
+                     <!--<i-select placeholder="产品类型" v-model="myOrderModel.productType" clearable>-->
+                        <!--<i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>-->
+                    <!--</i-select>-->
                 </i-form-item>
             </template>
         </data-form>

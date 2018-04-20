@@ -22,8 +22,8 @@
       </div>
       <i-row>
         <i-col :span="11">
-          <i-form-item label="品牌" prop="carBrandId">
-            <i-select v-model="carFormItem.carBrandId">
+          <i-form-item label="品牌" prop="carBrandId" >
+            <i-select v-model="carFormItem.carBrandId" @on-change="carBandNumber(event,item)">
               <i-option v-for="item in brandList" :value="item.id" :label="item.brandName" :key="item.id"></i-option>
             </i-select>
           </i-form-item>
@@ -315,7 +315,6 @@
       this.carService.getAllModel().subscribe(
         data => {
           this.carList = data;
-          console.log(data, 666);
         },
         ({
           msg
@@ -328,11 +327,21 @@
       let formVal: any = this.$refs['form'];
       formVal.resetFields();
     }
+    /**
+     *  品牌change
+     */
+    carBandNumber(event,item){
+
+      console.log(this.carList.filter((v)=> v.id === item.id))
+    }
+    /**
+     *  车系change
+     */
     carListNumber(val){
-      let target:any = this.carList.find((d)=>d.modelName === val)
-      if(target){
-        this.carFormItem.carId = target.id
-      }
+      // let target:any = this.carList.find((d)=>d.modelName === val)
+      // if(target){
+      //   this.carFormItem.carId = target.id
+      // }
     }
     /**
      * 确定
@@ -387,7 +396,7 @@
   }
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .edit-car {
     .data-form-icon {
       width: 7px;

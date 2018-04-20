@@ -1,6 +1,12 @@
 <template>
   <section class="component historical-record">
-    <i-table highlight-row @on-current-change="onCurrentChange" ref="databox" :columns="orderColumns" :data="orderDataSet"></i-table>
+    <div class="order-type-radio row center-span middle-span">
+      <RadioGroup v-model="orderType" type="button" size="large" @on-change="onOrderTypeChange">
+        <Radio :label="302">历史订单</Radio>
+        <Radio :label="301">草稿订单</Radio>
+      </RadioGroup>
+    </div>
+    <i-table :height="500" highlight-row @on-current-change="onCurrentChange" ref="databox" :columns="orderColumns" :data="orderDataSet"></i-table>
   </section>
 </template>
 
@@ -13,7 +19,7 @@ import { Dependencies } from "~/core/decorator";
 import { Emit } from "vue-property-decorator";
 import { FilterService } from "~/utils/filter.service";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
-
+//TODO
 @Component({
   components: {
     DataBox
@@ -24,6 +30,7 @@ export default class HistoricalRecord extends Vue {
 
   private currentRow: any;
   private orderDataSet: Array<any> = [];
+  private orderType = 302;
 
   private orderColumns: any = [
     {
@@ -75,6 +82,11 @@ export default class HistoricalRecord extends Vue {
     this.currentRow = currentRow;
   }
 
+  onOrderTypeChange(value) {
+    this.currentRow = null;
+    this.orderDataSet = this.data.filter(x => x.orderType === value);
+  }
+
   /**
    * 获取当前选中项
    */
@@ -83,12 +95,15 @@ export default class HistoricalRecord extends Vue {
   }
 
   mounted() {
-    this.orderDataSet = this.data;
+    this.orderDataSet = this.data.filter(x => x.orderType === this.orderType);
   }
 }
 </script>
 <style lang="less" scoped>
 .component.historical-record {
+  .order-type-radio {
+    margin-bottom: 10px;
+  }
   .open {
     max-width: auto;
     overflow: hidden;

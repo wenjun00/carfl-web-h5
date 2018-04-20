@@ -21,7 +21,7 @@
   import {
     Dependencies
   } from "~/core/decorator";
-
+  //TODO
   @Component({
     components: {
       DataBox

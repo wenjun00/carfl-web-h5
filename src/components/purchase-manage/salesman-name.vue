@@ -1,7 +1,7 @@
 <!--机构与用户管理-->
 <template>
   <section>
-    <data-form :model="userModel" @on-search="getUserListByCondition" :page="pageService" hidden-date-search hidden-reset>
+    <data-form  :model="userModel" @on-search="getUserListByCondition" :page="pageService" hidden-date-search hidden-reset>
       <template slot="input">
         <i-form-item prop="userName" label="用户名:">
           <i-input v-model="userModel.userName" placeholder="请输入用户名"></i-input>
@@ -17,7 +17,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :id="9" :columns="userColumns" :data="userDataSet" ref="databox" @on-current-change="onCurrentChange" @onPageChange="getUserListByCondition" :page="pageService"></data-box>
+    <data-box :show-config-column="false" highlight-row :id="9" :columns="userColumns" :data="userDataSet" ref="databox" @on-current-change="onCurrentChange" @onPageChange="getUserListByCondition" :page="pageService"></data-box>
   </section>
 </template>
 
@@ -30,7 +30,7 @@ import { Layout } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
 import { Emit } from "vue-property-decorator";
-
+//TODO
 @Layout("workspace")
 @Component({
   components: {}
@@ -39,7 +39,7 @@ export default class SalesmanName extends Page {
   @Dependencies(ManageService) private manageService: ManageService;
   @Dependencies(PageService) private pageService: PageService;
 
-  private currentRow: any;
+  private currentRow: any = null;
   private userDataSet: Array<any> = [];
 
   private userModel: any = {
@@ -106,7 +106,7 @@ export default class SalesmanName extends Page {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .batch-manage-device {
   .ivu-modal-footer {
     display: none;

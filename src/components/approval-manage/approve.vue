@@ -63,7 +63,7 @@
           <td bgColor="#F5F5F5">产品期数</td>
           <td>{{!!orderInfo.periods ? $dict.getDictName(orderInfo.periods):0}}</td>
           <td bgColor="#F5F5F5">产品利率</td>
-          <td>{{!!orderInfo.productRate? orderInfo.productRate+'%':0}}</td>
+          <td>{{!!orderInfo.productRate? orderInfo.productRate*100+'%':0}}</td>
         </tr>
         <tr>
           <td bgColor="#F5F5F5">还款方式</td>

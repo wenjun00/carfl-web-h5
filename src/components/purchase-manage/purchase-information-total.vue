@@ -10,7 +10,7 @@
       </data-grid>
     </i-row>
     <i-row>
-      <table width="760" class="ziliao" border="1" style="border:1px solid #DDDEE1">
+      <table width="760" border="1" class="item-table ziliao">
         <tr>
           <td>序号</td>
           <td>品牌 型号</td>
@@ -46,7 +46,7 @@
       </table>
     </i-row>
     <!--个人资料-->
-    <i-row style="margin-top:20px;">
+    <i-row class="item-margin-top20">
       <h2>个人资料</h2>
       <data-grid :labelWidth="100" labelAlign="left" contentAlign="left">
         <data-grid-item label="购车方" :span="6">上海市上海市宝山区中山北路2687号</data-grid-item>
@@ -101,10 +101,15 @@
 
 </script>
 
-<style scoped>
+<style lang="less" scoped>
   .ziliao td {
     font-size: 14px;
     padding: 5px;
   }
-
+  .item-table{
+    border:1px solid #DDDEE1;
+  }
+  .item-margin-top20{
+    margin-top:20px;
+  }
 </style>

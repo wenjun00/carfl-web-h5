@@ -147,7 +147,7 @@ export default class EditOrg extends Vue {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .component.edit-org{
         .editOrg{
             position: relative;

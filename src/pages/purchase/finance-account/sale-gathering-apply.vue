@@ -57,7 +57,7 @@
             </span>
           </i-col>
           <i-col :span="4">
-            <i-button class="highDefaultButton" @click="saveDraft" :disabled="saveDraftDisabled">保存草稿</i-button>
+            <!--<i-button class="highDefaultButton" @click="saveDraft" :disabled="saveDraftDisabled">保存草稿</i-button>-->
             <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
           </i-col>
         </i-row>
@@ -492,7 +492,7 @@
       border-radius: 0;
     }
   }
-  
+
   .page.sale-gathering-apply {
     .data-command {
       margin-top: 10px;
@@ -535,18 +535,18 @@
       }
     }
   }
-  
+
   .open {
     max-width: auto;
     overflow: hidden;
   }
-  
+
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-  
+
   .case-list {
     position: fixed;
     right: 0px;
@@ -557,21 +557,21 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     height: 100%;
   }
-  
+
   .case-list.flag {
     right: -348px;
     box-shadow: none;
     background: none;
   }
-  
+
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowButton {
     line-height: 570px;
     height: 100%;
@@ -579,7 +579,7 @@
     text-align: center;
     width: 30px;
   }
-  
+
   .sale-gather-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #dddee1;
@@ -594,7 +594,7 @@
       }
     }
   }
-  
+
   .sale-gathering-apply {
     .ivu-select-selection {
       border-style: none;

@@ -1,33 +1,33 @@
 <!--换卡-->
 <template>
   <section class="component change-card">
-    <i-steps :current="current" style="margin-left:40px;">
+    <i-steps :current="current" class="item-margin-left40">
       <i-step title="解绑"></i-step>
       <i-step title="绑卡"></i-step>
     </i-steps>
-    <i-form :label-width="110" style="margin-top:20px;">
+    <i-form :label-width="110" class="item-margin-top20">
       <i-form-item label="账户类型">
-        <i-select style="width:160px;" v-model="model.accountType" :disabled="current===0">
+        <i-select class="item-input-width160"  v-model="model.accountType" :disabled="current===0">
           <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
-        </i-select>      
+        </i-select>
       </i-form-item>
       <i-form-item label="客户姓名">
-        <i-input style="width:160px;" :readonly="current===0" v-model="model.name"></i-input>
+        <i-input class="item-input-width160" :readonly="current===0" v-model="model.name"></i-input>
       </i-form-item>
       <i-form-item label="证件类型" v-if="current===2">
-        <i-input style="width:160px;" :readonly="current===0" v-model="model.certificateType"></i-input>
+        <i-input class="item-input-width160" :readonly="current===0" v-model="model.certificateType"></i-input>
       </i-form-item>
       <i-form-item label="证件号码" v-if="current===2">
-        <i-input style="width:160px;" :readonly="current===0" v-model="model.certificateNumber"></i-input>
+        <i-input class="item-input-width160" :readonly="current===0" v-model="model.certificateNumber"></i-input>
       </i-form-item>
       <i-form-item label="开户银行">
-        <i-input style="width:160px;" :readonly="current===0" v-model="model.depositBank"></i-input>
+        <i-input class="item-input-width160" :readonly="current===0" v-model="model.depositBank"></i-input>
       </i-form-item>
       <i-form-item label="开户省市">
-        <i-select style="width:80px;" :disabled="current===0" v-model="model.accountType">
+        <i-select class="item-input-width80" :disabled="current===0" v-model="model.accountType">
           <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
         </i-select>
-        <i-select style="width:80px;" :disabled="current===0" v-model="model.accountType">
+        <i-select class="item-input-width80" :disabled="current===0" v-model="model.accountType">
           <i-option label="西安市" value="西安市" key="西安市"></i-option>
           <i-option label="宝鸡市" value="宝鸡市" key="宝鸡市"></i-option>
           <i-option label="咸阳市" value="咸阳市" key="咸阳市"></i-option>
@@ -41,14 +41,14 @@
         </i-select>
       </i-form-item>
       <i-form-item label="银行预留手机号" v-if="current===1">
-        <i-input style="width:160px;" v-model="model.reservedPhoneNumber"></i-input>
+        <i-input class="item-input-width160" v-model="model.reservedPhoneNumber"></i-input>
         <!--<i-button style="display:inline-block;margin-left:8px;" class="blueButton">发送验证码<span>60</span></i-button>-->
       </i-form-item>
       <!--<i-form-item label="验证码" v-if="current===0">
         <i-input style="width:160px;"></i-input>
       </i-form-item>-->
     </i-form>
-    <div style="text-align:center">
+    <div class="item-card-div">
       <i-button @click="cancelChangeCard" class="blueButton">取消</i-button>
       <i-button @click="confirmUnBindCard" v-if="current===0" class="blueButton">确认解绑</i-button>
       <i-button @click="confirmBindCard" v-if="current===1" class="blueButton">确认绑卡</i-button>
@@ -73,7 +73,7 @@
     private model: any = {};
     private row: any = {};
     refresh(row) {
-      this.current = 0      
+      this.current = 0
       this.row = row
       this.model = row
     }
@@ -109,6 +109,22 @@
 
 </script>
 <style lang="less" scoped>
-
+.component.change-card{
+  .item-margin-left40{
+    margin-left: 40px;
+  }
+  .item-margin-top20{
+    margin-top: 20px;
+  }
+  .item-input-width160{
+    width:160px;
+  }
+  .item-input-width80{
+    width:80px;
+  }
+  .item-card-div{
+    text-align: center;
+  }
+}
 
 </style>

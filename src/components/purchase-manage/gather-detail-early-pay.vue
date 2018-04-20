@@ -1,7 +1,7 @@
 <!--提前结清收款明细-->
 <template>
   <section class="component gather-detail-early-pay">
-    <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1">
+    <table border="1" width="1100" class="gather-type-table">
       <tr height="40">
         <td bgcolor="#F2F2F2" width="80">
           <span>操作</span>
@@ -24,17 +24,17 @@
           <span>{{item.itemLabel}}</span>
         </td>
         <td>
-          <i-input v-if="item.itemName==='otherFee'" style="width:10%" :value="item.itemMoney" @on-change="changeOtherFee" :maxlength="7"></i-input>
+          <i-input v-if="item.itemName==='otherFee'" class="item-money" :value="item.itemMoney" @on-change="changeOtherFee" :maxlength="7"></i-input>
           <span v-else>{{item.itemMoney}}</span>
         </td>
       </tr>
     </table>
     <div>
-      <Icon type="plus" style="position:relative;left:16px;top:5px;color:#265ea2"></Icon>
-      <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">添加收款项</i-button>
+      <Icon type="plus" class="add-icon"></Icon>
+      <i-button type="text" class="add-button" @click="changeGatherItem">添加收款项</i-button>
     </div>
     <div class="form-title">账户信息</div>
-    <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1;margin-bottom:60px;">
+    <table border="1" width="1100" class="gather-type-table">
       <tr height="40">
         <td bgcolor="#F2F2F2">户名</td>
         <td bgcolor="#F2F2F2">开户银行</td>
@@ -245,6 +245,27 @@
 </script>
 
 <style lang="less" scoped>
+  .component.gather-detail-early-pay {
+    .gather-type-table {
+      margin-top: 10px;
+      text-align: center;
+      border: 1px solid #DDDEE1;
+      .item-money{
+          width: 10%;
+      }
+    }
+    .add-icon {
+      position: relative;
+      left: 16px;
+      top: 5px;
+      color: #265ea2;
+    }
+    .add-button {
+      margin-top: 10px;
+      color: #265ea2;
+    }
+  }
+  
   .choose-buy-materials {
     .ivu-select-selection {
       // width: 240%;

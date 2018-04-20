@@ -1,7 +1,7 @@
 <!--编辑收款项-->
 <template>
   <section class="component modify-gather-item">
-    <i-form :label-width="110" style="margin-top:20px;">
+    <i-form :label-width="110" class="item-margin-top20">
       <i-form-item label="项目名称">
         <i-input v-model="modifyGatherItemModel.itemName"></i-input>
       </i-form-item>
@@ -30,7 +30,10 @@
 
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+  .item-margin-top20{
+    margin-top: 20px;
+  }
   .modify-gather-item{
     .ivu-form{
       position: relative;

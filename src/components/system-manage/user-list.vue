@@ -103,7 +103,7 @@ export default class UserList extends Vue {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .component.user-list{
         .title{
             margin-left:20px;

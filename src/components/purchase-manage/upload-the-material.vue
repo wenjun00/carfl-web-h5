@@ -1,16 +1,16 @@
 <template>
   <section class="component upload-the-material ">
-    <i-row style="margin-left:50px;">
+    <i-row class="item-margin-left50">
       <h2>上传素材</h2>
       <br>
       <i-button class="blueButton" @click="openClick">上传</i-button>
-      <span style="margin-left:15px;">建议文件大小100M以内</span>
+      <span class="item-margin-left15">建议文件大小100M以内</span>
     </i-row>
-    <i-row style="margin-left:50px;">
+    <i-row class="item-margin-left50">
       <i-col span="6">
         <br>
         <h3>文件数量({{dataList.length}})</h3>
-        <ul style="margin-top:20px;">
+        <ul class="item-margin-top20">
           <li v-for="item in dataList" :key="item.uid">
             <p>{{item.name}}</p>
             <div>
@@ -26,7 +26,7 @@
       <i-modal :loading="true" v-model="openUpload" @on-ok="postFile">
         <i-row>
           <i-col span="4">
-            <span style="line-height:36px;">文件类型</span>
+            <span class="item-line-height">文件类型</span>
           </i-col>
           <i-col span="6">
             <i-select v-model="model1">
@@ -182,7 +182,7 @@
             this.$Message.warning('请先选择产品信息！')
             return false
         }
-      
+
     }
     hhh(response, file, fileList) {
       this.dataList = fileList
@@ -193,6 +193,19 @@
 </script>
 
 <style lang="less" scoped>
-
+.component.upload-the-material{
+  .item-margin-left50{
+    margin-left:50px;
+  }
+  .item-margin-left15{
+    margin-left: 15px;
+  }
+  .item-margin-top20{
+    margin-top: 20px;
+  }
+  .item-line-height{
+    line-height:36px;
+  }
+}
 
 </style>

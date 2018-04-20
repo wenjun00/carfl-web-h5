@@ -239,7 +239,7 @@ export default class BatchManageDevice extends Vue {
   }
 }
 </script>
- <style lang="less">
+ <style lang="less" scoped>
     .equipment.org-user-manage{
       .equipment-button{
           display:flex;
@@ -256,7 +256,7 @@ export default class BatchManageDevice extends Vue {
           border:1px solid #dddddd;
           overflow:auto;
       }
-        
+
     }
 
 </style>

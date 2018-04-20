@@ -3,7 +3,7 @@
   <section class="component add-apply">
     <!--销售收款申请-->
     <i-row>
-      <i-form :label-width="110" style="margin-top:20px;position:relative;right:20px;">
+      <i-form :label-width="110" class="item-kehu-form">
         <i-col :span="12">
           <i-form-item label="客户姓名">
             <i-input v-model="addNewApplyModal.customerName" disabled></i-input>
@@ -44,15 +44,15 @@
       <span class="title">附件</span>
       <i-row>
         <i-col :span="12">
-          <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;"
-            @click="addAttachment">
-            <Icon type="plus-circled" style="display:block;margin-top:60px;" size="40"></Icon>
+          <div class="item-fujian-div"
+               @click="addAttachment">
+            <Icon type="plus-circled" class="item-fujian-icon" size="40"></Icon>
             <div>点击添加附件</div>
-            <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
+            <span class="item-fujian-span">支持jpg/pdf/png格式建议大小不超过10M</span>
           </div>
         </i-col>
         <i-col :span="12">
-          <div style="height:200px;width:200px;border:1px solid #C2C2C2;background:url('/static/images/common/invoice2.png');background-repeat:no-repeat;position:relative;right:50px;">
+          <div class="item-backgroud-div">
 
           </div>
         </i-col>
@@ -60,11 +60,11 @@
     </i-row>
     <!--提前结清申请-->
     <!--<i-row v-if="applyType==='提前结清申请'">
-      
+
     </i-row>-->
     <!--提前收回申请-->
     <!--<i-row v-if="applyType==='提前收回申请'">
-      
+
     </i-row>-->
     <!--Model-->
     <template>
@@ -88,6 +88,7 @@
   import {
     Prop
   } from "vue-property-decorator";
+
   @Component({
 
     components: {
@@ -101,22 +102,25 @@
     addAttachmentShow: Boolean;
 
     private applyType: String = '销售收款申请'
-    private data1: Array < Object > = [];
+    private data1: Array<Object> = [];
     private columns1: any;
     private openColumnsConfig: Boolean = false
     private columns2: any;
-    private data2: Array < Object > = [];
+    private data2: Array<Object> = [];
     private columns3: any;
-    private data3: Array < Object > = [];
+    private data3: Array<Object> = [];
     private addNewApplyModal: Object = {};
 
     /**
      * 添加附件
      */
-    addAttachment() {}
+    addAttachment() {
+    }
+
     mounted() {
       // console.log(this.addAttachmentShow, 123123)
     }
+
     created() {
       this.addNewApplyModal = {
         customerName: '李良琛',
@@ -192,12 +196,8 @@
         projectName: '合计',
         money: '98000'
       }]
-      this.columns2 = [{
-
-      }]
-      this.data2 = [{
-
-      }]
+      this.columns2 = [{}]
+      this.data2 = [{}]
 
       this.columns3 = [{
         title: "户名",
@@ -228,6 +228,7 @@
         thirdCustomerId: '853654689213'
       }]
     }
+
     /**
      * 列配置
      */
@@ -242,5 +243,39 @@
     font-size: 14px;
     font-weight: bold;
   }
+
+  .component.add-apply {
+    .item-kehu-form {
+      margin-top: 20px;
+      position: relative;
+      right: 20px;
+    }
+    .item-fujian-div {
+      height: 200px;
+      width: 200px;
+      border: 1px solid #C2C2C2;
+      cursor: pointer;
+      text-align: center;
+      position: relative;
+      left: 40px;
+    }
+    .item-fujian-icon {
+      display: block;
+      margin-top: 60px;
+    }
+    .item-fujian-span{
+      color:gray
+    }
+    .item-backgroud-div {
+      height: 200px;
+      width: 200px;
+      border: 1px solid #C2C2C2;
+      background: url('/static/images/common/invoice2.png');
+      background-repeat: no-repeat;
+      position: relative;
+      right: 50px;
+    }
+  }
+
 
 </style>

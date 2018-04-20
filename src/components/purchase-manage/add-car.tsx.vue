@@ -1,16 +1,16 @@
 <template>
   <section class="component add-car">
     <i-row>
-      <i-input style="display:inline-block;width:20%;margin-right:10px" placeholder="请输入关键字"></i-input>
+      <i-input class="item-sousuo-input" placeholder="请输入关键字"></i-input>
       <!--<i-select placeholder="门店" style="margin-left:10px;width:10%;">
         <i-option label="已启用" value="已启用" key="已启用"></i-option>
         <i-option label="未启用" value="未启用" key="未启用"></i-option>
       </i-select>-->
       <i-button class="blueButton">搜索</i-button>
     </i-row>
-    <i-row style="margin-top:10px;">
-      <i-col :span="4" style="border:1px solid #DDDDDD;height:570px;overflow:auto" :class="{open:isShown,close:!isShown}">
-        <i-tree :data="treeData" style="padding:10px;" @on-select-change="cartreeChange"></i-tree>
+    <i-row class="item-margin-top10">
+      <i-col :span="4" class="item-sousuo-col"  :class="{open:isShown,close:!isShown}">
+        <i-tree class="item-sousuo-tree" :data="treeData" @on-select-change="cartreeChange"></i-tree>
       </i-col>
       <i-col :span="19">
         <i-row type="flex" justify="start">
@@ -19,12 +19,12 @@
               <Icon type="android-arrow-dropleft-circle" color="white" size="16"></Icon>
             </div>
           </i-col>
-         <i-col span="22" style="overflow:hidden" v-show="addOpen===true">
+         <i-col class="item-data-box" span="22"  v-show="addOpen===true">
             <div>
-              <data-box :height="540" ref="databox-add" :columns="carColumns" :data="carDataModel" :noDefaultRow="true"></data-box>
+              <data-box  :height="540" ref="databox-add" :columns="carColumns" :data="carDataModel" :noDefaultRow="true"></data-box>
             </div>
           </i-col>
-            <i-col span="22" style="overflow:hidden" v-show="addOpen===false">
+            <i-col class="item-data-box" span="22" style="overflow:hidden" v-show="addOpen===false">
             <div>
               <data-box :height="540" ref="databox-edit" :columns="carColumns1" :data="carDataModel" :noDefaultRow="true"></data-box>
             </div>
@@ -32,8 +32,8 @@
         </i-row>
       </i-col>
     </i-row>
-    <i-row style="margin-top:20px;">
-      <i-button class="blueButton" style="float:right" @click="chooseback">选择并返回</i-button>
+    <i-row class="item-xuanze-row">
+      <i-button class="item-xuanze-button blueButton"  @click="chooseback">选择并返回</i-button>
     </i-row>
   </section>
 </template>
@@ -280,12 +280,12 @@
       if (data[0].brandId) {
         this.brandId = data[0].brandId;
       }else{
-        this.brandId=''  
+        this.brandId=''
       }
       if (data[0].carId) {
         this.carId = data[0].carId;
       }else{
-        this.carId=''  
+        this.carId=''
       }
       this.carService.findAllCarBySeries({
         seriesId: this.seriesId,
@@ -388,6 +388,27 @@
     background: #265ea2;
     text-align: center;
     width: 20px;
+  }
+  .item-sousuo-input{
+    display:inline-block;width:20%;margin-right:10px
+  }
+  .item-margin-top10{
+    margin-top: 10px;
+  }
+  .item-sousuo-col{
+    border:1px solid #DDDDDD;height:570px;overflow:auto
+  }
+  .item-sousuo-tree{
+    padding:10px;
+     }
+  .item-data-box{
+    overflow:hidden
+  }
+  .item-xuanze-row{
+    margin-top:20px
+  }
+  .item-xuanze-button{
+    float:right
   }
 
 </style>

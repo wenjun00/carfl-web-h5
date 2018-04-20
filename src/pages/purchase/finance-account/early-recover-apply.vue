@@ -1,20 +1,7 @@
 <!--提前收回申请-->
 <template>
   <section class="page early-recover-apply special-input">
-      <page-header title="提前收回申请"></page-header>
-    <!--<div class="header">
-      <span class="form-title">提前收回申请</span>
-      <div class="command">
-        <div class="command-item">
-          <svg-icon iconClass="dayin"></svg-icon>
-          <span>打印</span>
-        </div>
-        <div class="command-item">
-          <svg-icon iconClass="daochu"></svg-icon>
-          <span>导出</span>
-        </div>
-      </div>
-    </div>-->
+    <page-header title="提前收回申请"></page-header>
     <i-row type="flex" class="data-form">
       <i-col :span="18">
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
@@ -90,7 +77,7 @@
           <span>申请时间：{{applyTime}}</span>
         </i-col>
         <i-col :span="4">
-          <i-button class="highDefaultButton" @click="saveDraftClick" :disabled="type">保存草稿</i-button>
+          <!--<i-button class="highDefaultButton" @click="saveDraftClick" :disabled="type">保存草稿</i-button>-->
           <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
         </i-col>
       </i-row>
@@ -744,7 +731,7 @@
       border-radius: 0;
     }
   }
-  
+
   .page.early-recover-apply {
       .data-form{
           margin-top: 10px;
@@ -785,18 +772,18 @@
       }
     }
   }
-  
+
   .open {
     max-width: auto;
     overflow: hidden;
   }
-  
+
   .close {
     max-width: 0;
     min-width: 0;
     overflow: hidden;
   }
-  
+
   .case-list {
     position: fixed;
     right: 0px;
@@ -807,21 +794,21 @@
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     height: 100%;
   }
-  
+
   .case-list.flag {
     right: -348px;
     box-shadow: none;
     background: none;
   }
-  
+
   .arrowUp {
     transform: rotate(0deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowDown {
     transform: rotate(180deg); // transition: transform ease-in 0.2s;
   }
-  
+
   .arrowButton {
     line-height: 570px;
     height: 100%;
@@ -829,7 +816,7 @@
     text-align: center;
     width: 30px;
   }
-  
+
   .bigSelect {
     .ivu-select-selection {
       display: inline-block;
@@ -838,7 +825,7 @@
       border-radius: 0;
     }
   }
-  
+
   .early-recover-tabs {
     .ivu-tabs-bar {
       border-bottom: 1px solid #dddee1;
@@ -853,7 +840,7 @@
       }
     }
   }
-  
+
   .early-recover-apply {
     .ivu-select-selection {
       border-style: none;
