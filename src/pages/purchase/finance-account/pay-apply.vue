@@ -389,6 +389,9 @@
       if (this.applyData.certificateNumber.length === 18) {
         this.disabledStatus = 'none'
         this.getAllMessage()
+      }else{
+          this.applyData.name =""; 
+          this.applyData.mobileNumber = "";
       }
     }
   }
