@@ -4,7 +4,7 @@
       <page-header title="订单交接">
 
       </page-header>
-      <data-form date-prop="timeSearch" :model="ordertransferModel" @on-search="refreshData" hidden-reset>
+      <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData" hidden-reset>
         <template slot="input">
           <i-form-item prop="startTime">
             <i-date-picker v-model="ordertransferModel.startTime" type="date" @on-change="startTimeChange" placeholder="起始日期(始)"></i-date-picker>
@@ -652,7 +652,7 @@
       }
     }
   }
-  
+
   .transfer-record {
     .ivu-modal-footer {
       display: none !important;

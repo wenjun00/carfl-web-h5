@@ -3,7 +3,7 @@
   <section class="page receipt-record-query">
     <page-header title="收款记录查询" hiddenPrint hiddenExport>
     </page-header>
-    <data-form hidden-date-search :model="receiptModel" @on-search="receiptRecordSearch">
+    <data-form hidden-date-search :model="receiptModel" :page="pageService" @on-search="receiptRecordSearch">
       <template slot="input">
         <i-form-item prop="queryStartDate" label="申请日期">
           <i-date-picker v-model="receiptModel.queryStartDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>

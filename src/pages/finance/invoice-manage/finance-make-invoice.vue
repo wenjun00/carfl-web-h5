@@ -2,7 +2,7 @@
 <template>
   <section class="page finance-make-invoice">
     <page-header title="财务开票" hiddenPrint hiddenExport></page-header>
-    <data-form :model="model" hiddenDateSearch hidden-reset>
+    <data-form :model="model" hiddenDateSearch hidden-reset :page="pageService">
       <template slot="input">
         <i-form-item label="关键字：" prop="dynamicCondition">
           <i-input placeholder="客户姓名\发票号" v-model="model.dynamicCondition" class="form-input"></i-input>

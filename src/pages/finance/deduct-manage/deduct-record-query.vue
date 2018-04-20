@@ -2,7 +2,7 @@
 <template>
   <section class="page deduct-record-query">
     <page-header title="划扣记录查询" hiddenPrint></page-header>
-    <data-form hiddenDateSearch hidden-reset :model="model" @on-search="getRecord">
+    <data-form hiddenDateSearch hidden-reset :model="model" :page="pageService" @on-search="getRecord">
       <template slot="input">
         <i-form-item label="支付日期" prop="startTime">
           <i-date-picker class="form-picker-one" v-model="model.startTime"></i-date-picker>~
