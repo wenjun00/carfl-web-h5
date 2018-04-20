@@ -13,31 +13,8 @@
         <i-form-item prop="queryEndDate">
           <i-date-picker v-model="gatherModel.queryEndDate" class="title-item"></i-date-picker>
         </i-form-item>
-        <!--<i-button class="blueButton" @click="getGatherListByCondition">搜索</i-button>-->
       </template>
     </data-form>
-    <!--<div class="data-form">-->
-      <!--<i-button type="text" @click="getTimeSearch(0)" v-auth="401">昨日</i-button>-->
-      <!--<i-button type="text" @click="getTimeSearch(1)" v-auth="401">今日</i-button>-->
-      <!--<i-button type="text" @click="getTimeSearch(2)" v-auth="401">本周</i-button>-->
-      <!--<i-button type="text" @click="getTimeSearch(3)" v-auth="401">本月</i-button>-->
-      <!--<i-button type="text" @click="getTimeSearch(4)" v-auth="401">上月</i-button>-->
-      <!--<i-button type="text" @click="getTimeSearch(5)" v-auth="401">最近三月</i-button>-->
-      <!--<i-button type="text" @click="getTimeSearch(6)" v-auth="401">本季度</i-button>-->
-      <!--<i-button type="text" @click="getTimeSearch(7)" v-auth="401">本年</i-button>-->
-      <!--<i-button @click="openSearch" class="form-button" v-auth="400">-->
-        <!--<span v-if="!searchOptions">展开</span>-->
-        <!--<span v-if="searchOptions">收起</span>-->
-        <!--<span>高级搜索</span>-->
-      <!--</i-button>-->
-      <!--<i-row v-if="searchOptions" class="second-data">-->
-        <!--<i-input v-model="gatherModel.accountName" class="form-input" placeholder="请录入收款账户名查询"></i-input>-->
-        <!--<span class="title">日期：</span>-->
-        <!--<i-date-picker v-model="gatherModel.queryStartDate" class="title-item"></i-date-picker> ~-->
-        <!--<i-date-picker v-model="gatherModel.queryEndDate" class="title-item"></i-date-picker>-->
-        <!--<i-button class="blueButton" @click="getGatherListByCondition">搜索</i-button>-->
-      <!--</i-row>-->
-    <!--</div>-->
     <data-box :id="399" :columns="columns1" :data="gatherList" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
 
 
@@ -45,7 +22,7 @@
       <i-modal v-model="confirmGatherModal" :title="check?'查看':'确认收款'" width="900" class="confirmGather" :transfer="false">
         <confirm-gather ref="confirm-gather" :check="check"></confirm-gather>
         <div slot="footer">
-          <i-button class="highDefaultButton" @click="saveDraft" v-if="!check">保存草稿</i-button>
+          <!--<i-button class="highDefaultButton" @click="saveDraft" v-if="!check">保存草稿</i-button>-->
           <i-button class="highButton" @click="sendBack" v-if="!check">退回</i-button>
           <i-button class="highButton" @click="confirmRepayment" v-if="!check">确认</i-button>
         </div>

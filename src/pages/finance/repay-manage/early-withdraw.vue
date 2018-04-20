@@ -7,20 +7,20 @@
         <i-form-item>
           <i-input placeholder="请录入客户姓名\证件号码"></i-input>
         </i-form-item>
-        <i-form-item>
-          <i-select placeholder="全部还款状态">
-            <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
-            <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
-          </i-select>
-        </i-form-item>
-        <i-form-item>
-          <i-select placeholder="全部结算通道">
-            <i-option value="汇付" key="汇付" label="汇付"></i-option>
-            <i-option value="富友" key="富友" label="富友"></i-option>
-            <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
-            <i-option value="现金" key="现金" label="现金"></i-option>
-          </i-select>
-        </i-form-item>
+        <!--<i-form-item>-->
+          <!--<i-select placeholder="全部还款状态">-->
+            <!--<i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>-->
+            <!--<i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>-->
+          <!--</i-select>-->
+        <!--</i-form-item>-->
+        <!--<i-form-item>-->
+          <!--<i-select placeholder="全部结算通道">-->
+            <!--<i-option value="汇付" key="汇付" label="汇付"></i-option>-->
+            <!--<i-option value="富友" key="富友" label="富友"></i-option>-->
+            <!--<i-option value="支付宝" key="支付宝" label="支付宝"></i-option>-->
+            <!--<i-option value="现金" key="现金" label="现金"></i-option>-->
+          <!--</i-select>-->
+        <!--</i-form-item>-->
       </template>
     </data-form>
     <data-box :id="428" :columns="columns1" :data="data1" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
@@ -29,7 +29,7 @@
       <i-modal title="确认收回" width="930" v-model="confirmWithdrawModal" class="confirmWithdraw">
         <confirm-withdraw ref="confirm-withdraw"></confirm-withdraw>
         <div slot="footer">
-          <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
+          <!--<i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>-->
           <i-button class="highButton" @click="confirmRepayment">确认</i-button>
         </div>
       </i-modal>
@@ -212,7 +212,7 @@
     created() {
       this.columns1 = [{
           title: "操作",
-          width: 220,
+          // width: 220,
           align: "center",
           fixed: "left",
           render: (h, {
@@ -257,7 +257,7 @@
           align: "center",
           title: "订单号",
           editable: true,
-          width: 160,
+          // width: 160,
           key: 'orderNumber',
           render: (h, {
             row,
@@ -283,7 +283,7 @@
           title: "客户结算号",
           key: "clientNumber",
           editable: true,
-          width: 150,
+          // width: 150,
           render: (h, {
             row,
             column,
@@ -308,28 +308,28 @@
           title: "客户姓名",
           editable: true,
           key: "name",
-          width: 100
+          // width: 100
         },
         {
           align: "center",
           title: " 证件号",
           editable: true,
           key: "idCard",
-          width: 160
+          // width: 160
         },
         {
           align: "center",
           title: " 手机号",
           editable: true,
           key: "mobileMain",
-          width: 120
+          // width: 120
         },
         {
           align: "center",
           title: " 订单创建时间",
           editable: true,
           key: "createTime",
-          width: 160,
+          // width: 160,
           render: (h, {
             row,
             column,
@@ -343,7 +343,7 @@
           title: " 合同生效日",
           editable: true,
           key: "contractDate",
-          width: 160,
+          // width: 160,
           render: (h, {
             row,
             column,
@@ -357,7 +357,7 @@
           title: " 结算通道",
           editable: true,
           key: "settlementChannel",
-          width: 100,
+          // width: 100,
           render: (h, {
             row,
             column,
@@ -369,7 +369,7 @@
         {
           align: "center",
           title: " 归属公司",
-          width: 100,
+          // width: 100,
           editable: true,
           key: "companyChinaName"
         }
@@ -423,7 +423,7 @@
       }
     }
   }
-  
+
   .confirmWithdraw {
     .ivu-modal-body {
       height: 600px;

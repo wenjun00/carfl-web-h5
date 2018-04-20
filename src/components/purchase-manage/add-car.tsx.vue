@@ -2,10 +2,6 @@
   <section class="component add-car">
     <i-row>
       <i-input class="item-sousuo-input" placeholder="请输入关键字"></i-input>
-      <!--<i-select placeholder="门店" style="margin-left:10px;width:10%;">
-        <i-option label="已启用" value="已启用" key="已启用"></i-option>
-        <i-option label="未启用" value="未启用" key="未启用"></i-option>
-      </i-select>-->
       <i-button class="blueButton">搜索</i-button>
     </i-row>
     <i-row class="item-margin-top10">
