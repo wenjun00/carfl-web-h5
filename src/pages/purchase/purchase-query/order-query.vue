@@ -4,7 +4,7 @@
     <page-header title="订单查询" hiddenPrint hiddenExport>
 
     </page-header>
-    <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getOrderQuery" hidden-reset>
+    <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getOrderQuery" hidden-reset :page="pageService">
       <template slot="input">
         <i-form-item prop="orderInfo">
           <i-input placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.orderInfo"></i-input>
