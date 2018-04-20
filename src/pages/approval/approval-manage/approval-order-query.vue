@@ -2,7 +2,7 @@
 <template>
     <section class="page approval-order-query">
         <page-header title="订单查询"></page-header>
-        <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getAllOrderList" :page="pageService" hidden-reset>
+        <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getAllOrderList" :page="pageService">
             <template slot="input">
                 <i-form-item prop="personalInfo">
                     <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>

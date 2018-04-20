@@ -4,7 +4,7 @@
     <page-header title="经销商报价" hiddenPrint></page-header>
     <data-form hidden-date-search :model="busModal" :page="pageService" @on-search="seachBusiness">
       <template slot="input">
-        <i-form-item prop="name" label="经销商">
+        <i-form-item prop="quotationName" label="经销商">
           <i-input placeholder="请输入经销商" v-model="busModal.quotationName"></i-input>
         </i-form-item>
         <i-form-item prop="carBrandName" label="品牌">

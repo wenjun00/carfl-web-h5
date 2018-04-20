@@ -12,8 +12,8 @@
     </data-form>
     <data-box :id="175" :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:10px">
-        <i-col :span="24" style="text-align:right;">
+      <i-row type="flex" align="middle" class="submitBar-row">
+        <i-col :span="24" class="submitBar-col">
           <i-button @click="addNewBranchFirmClick" class="highButton">新增分公司</i-button>
         </i-col>
       </i-row>
@@ -325,6 +325,12 @@
 </script>
 <style lang="less" scoped>
   .page.branch-company-info {
+    .submitBar-row{
+      padding:10px;
+    }
+    .submitBar-col{
+      text-align: right;
+    }
     // .data-form {
     //   margin-top: 10px;
     //   .span {

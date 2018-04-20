@@ -5,19 +5,9 @@
       <command-button label="导入" icon="daoru" @click="enterInto"></command-button>
       <command-button label="模板下载" icon="xiazai" @click="downloadTemplate"></command-button>
     </page-header>
-    <!--<data-form :model="appReasonModel" @on-search="seach">
-         <template slot="input" >
-      <i-form-item prop="type" label="类型">
-        <i-select class="data-form-item" placeholder="全部" v-model="appReasonModel.type" clearable @on-change="selectType">
-          <i-option label="退回" :value="374" :key="374"></i-option>
-          <i-option label="拒绝" :value="375" :key="375"></i-option>
-        </i-select>
-      </i-form-item>
-      </template>
-    </data-form>-->
     <data-form hidden-date-search :model="appReasonModel" :page="pageService" @on-search="seach">
       <template slot="input">
-        <i-form-item prop="dynamicParam" label="类型">
+        <i-form-item prop="type" label="类型">
           <i-select placeholder="全部" v-model="appReasonModel.type" clearable @on-change="selectType">
             <i-option label="退回" :value="374" :key="374"></i-option>
             <i-option label="拒绝" :value="375" :key="375"></i-option>

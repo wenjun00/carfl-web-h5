@@ -23,7 +23,7 @@
                         <i-option v-for="{value,label} in this.approvalModel.province ? this.$city.getCityData({ level: 1, id: this.approvalModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
                     </i-select>
                 </i-form-item>
-                <i-form-item prop="productType" label="产品名称">
+                <i-form-item prop="productType" label="产品名称：">
                     <i-input class="data-form-item select product-type" v-model="approvalModel.productType"></i-input>
                 </i-form-item>
             </template>
