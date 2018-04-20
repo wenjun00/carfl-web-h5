@@ -11,8 +11,7 @@
         <i-col :span="12">
           <i-form-item label="付款类型" prop="refundType">
             <i-select v-model="repaymentObj.refundType" disabled>
-              <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label"
-                        :value="value"></i-option>
+              <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
           <i-button class="modal-item-salebutton" type="text" @click="saleApplyInfo">销售申请详情</i-button>
@@ -54,8 +53,8 @@
     </div>
     <table class="modal-item-table" border="1" width="850">
       <tr height="40">
-        <td bgcolor="#F2F2F2" colspan="1" width="40%">项目</td>
-        <td bgcolor="#F2F2F2" colspan="1" width="60%">金额（元）</td>
+        <td class="bg-color" colspan="1" width="40%">项目</td>
+        <td class="bg-color" colspan="1" width="60%">金额（元）</td>
       </tr>
       <tr height="40" v-for="(v,i) in itemList" :key="i">
         <td>{{$dict.getDictName(v.refundItem)}}</td>
@@ -74,15 +73,15 @@
 
     <table class="modal-item-table" border="1" width="850">
       <tr height="40">
-        <td bgcolor="#F2F2F2" colspan="1" width="5%" v-if="!check">
+        <td class="bg-color" colspan="1" width="5%" v-if="!check">
           <div @click="addObj">
             <i-icon class="modal-item-icon" type="plus"></i-icon>
           </div>
         </td>
-        <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
-        <td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>
-        <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
-        <td bgcolor="#F2F2F2" colspan="1">状态</td>
+        <td class="bg-color" colspan="1" width="20%">结算通道</td>
+        <td class="bg-color" colspan="1" width="20%">收款项</td>
+        <td class="bg-color" colspan="1">金额（元）</td>
+        <td class="bg-color" colspan="1">状态</td>
       </tr>
       <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
         <td v-if="!check">
@@ -91,26 +90,21 @@
           </div>
         </td>
         <td>
-          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="v.refundChannel"
-                    :disabled="check">
-            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label"
-                      :value="value"></i-option>
+          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="v.refundChannel" :disabled="check">
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-select placeholder="选择收款项目" class="modal-item-select" v-model="v.refundItem"
-                    :disabled="check">
-            <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label"
-                      :value="value"></i-option>
+          <i-select placeholder="选择收款项目" class="modal-item-select" v-model="v.refundItem" :disabled="check">
+            <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-input class="modal-item-huakou-input" v-model="v.refundAmount"
-                   @on-blur="inputBlur" :readonly="check"></i-input>
+          <i-input class="modal-item-huakou-input" v-model="v.refundAmount" @on-blur="inputBlur" :readonly="check"></i-input>
           <i-button class="blueButton" v-if="!check">确认划扣</i-button>
         </td>
         <td><span>{{$dict.getDictName(v.dealStatus)}}</span>
-          <i-icon class="modal-item-huakou-icon"type="loop" size="20" color="#199ED8"></i-icon>
+          <i-icon class="modal-item-huakou-icon" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
       <tr height="40">
@@ -140,10 +134,8 @@
           <span class="modal-item-upload-text">支持jpg/pdf/png格式建议大小不超过10M</span>
         </div>
       </i-col>
-      <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id"
-             class="modal-item-upload-col">
-        <div
-          :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
+      <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id" class="modal-item-upload-col">
+        <div :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
         </div>
       </i-col>
     </i-row>
@@ -179,7 +171,9 @@
   import {
     RefundApplicationService
   } from "~/services/manage-service/refund-application.service";
-  import {Prop} from "vue-property-decorator";
+  import {
+    Prop
+  } from "vue-property-decorator";
 
   @Component({
     components: {
@@ -212,7 +206,7 @@
 
     private columns2: any;
     private columns3: any;
-    private data3: Array<Object> = [];
+    private data3: Array < Object > = [];
     private purchaseInfoModel: Boolean = false;
     private gatherModal: Object = {
       gatherType: '销售收款',
@@ -260,8 +254,8 @@
         this.applicationPhaseResources = data.resourceList.filter(v => v.materialType === 1162)
         this.inputBlur()
       }, ({
-            msg
-          }) => {
+        msg
+      }) => {
         this.$Message.error(msg)
       })
     }
@@ -466,7 +460,7 @@
       text-align: center;
     }
   }
-
+  
   .component.confirm-pay {
     .modal-item-salebutton {
       float: right;
@@ -493,46 +487,86 @@
       position: relative;
       top: 4px;
     }
-    .modal-item-table{
-      margin-top:10px;text-align:center;border:1px solid #DDDEE1
-    }
-    .modal-item-heji-td{
-      font-weight:700;font-size:14px
-    }
-    .modal-item-shoukuanfangshi-div{
-      width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;
-    }
-    .modal-item-icon{
-      color:#199ED8;cursor:pointer
-    }
-    .modal-item-select{
-      display:inline-block;width:90%;
-    }
-    .modal-item-huakou-input{
-      display:inline-block;width:30%;margin-right:10px
-    }
-    .modal-item-huakou-icon{
-      margin-left:6px;cursor:pointer
-    }
-    .modal-item-zhanghuxinxi-div{
-      width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;margin-top:10px;
-    }
-    .modal-item-shoukuanpingzheng-div{
-      width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;margin-top:10px;
-    }
-    .modal-item-upload{
-      margin-top:10px;
-      .modal-item-upload-div{
-        height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;
+    .modal-item-table {
+      margin-top: 10px;
+      text-align: center;
+      border: 1px solid #DDDEE1;
+      .bg-color{
+          background-color: #F2F2F2;
       }
-      .modal-item-upload-icon{
-        display:block;margin-top:53px;
+    }
+    .modal-item-heji-td {
+      font-weight: 700;
+      font-size: 14px
+    }
+    .modal-item-shoukuanfangshi-div {
+      width: 7px;
+      height: 20px;
+      background: #265EA2;
+      display: inline-block;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+    }
+    .modal-item-icon {
+      color: #199ED8;
+      cursor: pointer
+    }
+    .modal-item-select {
+      display: inline-block;
+      width: 90%;
+    }
+    .modal-item-huakou-input {
+      display: inline-block;
+      width: 30%;
+      margin-right: 10px
+    }
+    .modal-item-huakou-icon {
+      margin-left: 6px;
+      cursor: pointer
+    }
+    .modal-item-zhanghuxinxi-div {
+      width: 7px;
+      height: 20px;
+      background: #265EA2;
+      display: inline-block;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+      margin-top: 10px;
+    }
+    .modal-item-shoukuanpingzheng-div {
+      width: 7px;
+      height: 20px;
+      background: #265EA2;
+      display: inline-block;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+      margin-top: 10px;
+    }
+    .modal-item-upload {
+      margin-top: 10px;
+      .modal-item-upload-div {
+        height: 200px;
+        width: 200px;
+        border: 1px solid #C2C2C2;
+        cursor: pointer;
+        text-align: center;
+        position: relative;
+        left: 40px;
       }
-      .modal-item-upload-text{
-        color:gray
+      .modal-item-upload-icon {
+        display: block;
+        margin-top: 53px;
       }
-      .modal-item-upload-col{
-        display:flex;justify-content:center;margin-top:10px
+      .modal-item-upload-text {
+        color: gray
+      }
+      .modal-item-upload-col {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px
       }
     }
   }

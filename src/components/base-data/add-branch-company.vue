@@ -6,12 +6,12 @@
         <i-input v-model="addBranchModel.companyChinaname" :maxlength="20"></i-input>
       </i-form-item>
       <i-form-item label="所在省份：" prop="companyProvince">
-        <i-select style="100%" placeholder="选择省" v-model="addBranchModel.companyProvince" clearable>
+        <i-select placeholder="选择省" v-model="addBranchModel.companyProvince" clearable>
           <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
       <i-form-item label="所在市：" prop="companyCity">
-        <i-select style="100%" placeholder="选择市" v-model="addBranchModel.companyCity" clearable>
+        <i-select placeholder="选择市" v-model="addBranchModel.companyCity" clearable>
           <i-option v-for="{value,label} in this.addBranchModel.companyProvince ? this.$city.getCityData({ level: 1, id: this.addBranchModel.companyProvince }) : []"
                     :key="value" :label="label" :value="value"></i-option>
         </i-select>

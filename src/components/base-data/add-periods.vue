@@ -15,20 +15,20 @@
           </div>
         </data-grid-item>
         <data-grid-item label="产品期数" :span="4">
-          <i-form-item prop="periods" style="width:70%;">
+          <i-form-item class="item-chanpin" prop="periods">
             <i-select v-model="formItems.periods" placeholder="请输入产品期数">
               <i-option v-for="{value,label} in $dict.getDictData('0435')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </data-grid-item>
         <data-grid-item label="产品利率" :span="4">
-          <i-form-item prop="productRates" style="width:70%;">
+          <i-form-item class="item-chanpin" prop="productRates">
             <i-input v-model="formItems.productRates" placeholder="请输入产品利率"></i-input>
           </i-form-item>
           <div class="after_text">%/月</div>
         </data-grid-item>
         <data-grid-item label="还款方式" :span="4">
-          <i-form-item prop="payWay" style="width:70%;">
+          <i-form-item class="item-chanpin" prop="payWay">
             <i-select v-model="formItems.payWay">
               <i-option label="等本等息" :value="384" key="等本等息"></i-option>
               <!--<i-option label="等额等息" :value="385" key="等额等息"></i-option>-->
@@ -36,7 +36,7 @@
           </i-form-item>
         </data-grid-item>
         <data-grid-item label="周期类型" :span="4">
-          <i-form-item prop="periodType" style="width:70%;">
+          <i-form-item class="item-chanpin" prop="periodType" >
             <i-select v-model="formItems.periodType">
               <i-option label="月" :value="388" key="月"></i-option>
             </i-select>
@@ -54,12 +54,12 @@
         </data-grid-item>
         <data-grid-item label="账期类型" :span="12">
           <i-form-item prop="paymentType">
-            <i-radio-group style="margin-top:14px;" v-model="formItems.paymentType">
-              <i-radio :label="386" style="margin-right:40px;">正常账期</i-radio>
+            <i-radio-group class="item-chanpin-group" v-model="formItems.paymentType">
+              <i-radio :label="386" class="item-chanpin-radio">正常账期</i-radio>
               <i-radio :label="387">固定账期</i-radio>
             </i-radio-group>
           </i-form-item>
-          <i-select v-model="formItems.paymentDay" style="width:30%;" v-if="formItems.paymentType === 387">
+          <i-select v-model="formItems.paymentDay" class="item-chanpin-select" v-if="formItems.paymentType === 387">
             <i-option :label="item.day" :key="item.key" :value="item.value" v-for="item in monthDay"></i-option>
           </i-select>
         </data-grid-item>
@@ -67,73 +67,73 @@
       <div class="add-periods-item">首付款参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item ref label="首付款" :span="12">
-          <i-radio-group style="margin-top:6px;" v-model="initialParams">
+          <i-radio-group class="item-shoufu-group" v-model="initialParams">
             <i-radio label="无"></i-radio>
             <i-radio label="有"></i-radio>
           </i-radio-group>
-          <div v-if="initialParams==='有'" style="margin-top:24px;margin-left:-51px;" class="initialPayment">
+          <div v-if="initialParams==='有'" class="item-shoufu-div initialPayment">
             <i-form-item prop="initialPayment" label="比例">
-              <i-input v-model="formItems.initialPayment" style="width:80%;"></i-input>
+              <i-input v-model="formItems.initialPayment" class="item-shoufu-input"></i-input>
             </i-form-item>
-            <span style="color:red;margin-left:-30px;" class="after_text">%</span>
-            <span style="color:blue;" class="after_text">如果有多个则用英文分号隔开</span>
+            <span class="item-shoufu-span1 after_text">%</span>
+            <span class="item-shoufu-span2 after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
       </data-grid>
       <div class="add-periods-item">保证金参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="保证金" :span="12">
-          <i-radio-group style="float:left;margin-top:6px;" v-model="promiseMoenyParams">
+          <i-radio-group class="item-bzj-group" v-model="promiseMoenyParams">
             <i-radio label="无"></i-radio>
             <i-radio label="有"></i-radio>
           </i-radio-group>
         </data-grid-item>
         <data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">
-          <div style="margin-left:-51px;margin-top:17px;" class="initialPayment">
+          <div class="item-bzjbl-div initialPayment">
             <i-form-item prop="depositCash" label="比例">
               <i-input v-model="formItems.depositCash"></i-input>
             </i-form-item>
-            <span style="color:red" class="after_text">%</span>
+            <span class="item-bzjbl-span after_text">%</span>
             <i-form-item prop="depositCashType">
               <i-select v-model="formItems.depositCashType" placeholder="缴纳方式">
                 <i-option :value="396">退还</i-option>
                 <i-option :value="397">不退还</i-option>
               </i-select>
             </i-form-item>
-            <span style="color:blue" class="after_text">如果有多个则用英文分号隔开</span>
+            <span  class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
       </data-grid>
       <div class="add-periods-item">尾付款参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="尾付款" :span="12">
-          <i-radio-group style="margin-top:6px;" v-model="residueParams">
+          <i-radio-group class="item-mt6" v-model="residueParams">
             <i-radio label="无"></i-radio>
             <i-radio label="有"></i-radio>
           </i-radio-group>
-          <div v-if="residueParams==='有'" class="initialPayment" style="margin-top:27px;">
+          <div v-if="residueParams==='有'" class="initialPayment item-mt6-div">
             <span class="after_text">月利率:</span>
             <i-form-item prop="finalCash">
               <i-input v-model="formItems.finalCash"></i-input>
             </i-form-item>
-            <span style="color:red" class="after_text">%</span>
-            <span style="color:blue" class="after_text">如果有多个则用英文分号隔开</span>
+            <span class="item-bzjbl-span after_text">%</span>
+            <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
       </data-grid>
       <div class="add-periods-item">管理费参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="管理费" :span="12">
-          <i-radio-group style="margin-top:6px;" v-model="manageMoneyParams">
+          <i-radio-group class="item-mt6" v-model="manageMoneyParams">
             <i-radio label="无"></i-radio>
             <i-radio label="有"></i-radio>
           </i-radio-group>
-          <div v-if="manageMoneyParams==='有'" style="margin-top:21px;margin-left:-50px;" class="initialPayment">
+          <div v-if="manageMoneyParams==='有'" class="item-mt6-div2 initialPayment">
             <i-form-item prop="manageCost" label="比例">
               <i-input v-model="formItems.manageCost"></i-input>
             </i-form-item>
-            <span style="color:red" class="after_text">%</span>
-            <span style="color:blue" class="after_text">如果有多个则用英文分号隔开</span>
+            <span  class="item-bzjbl-span after_text">%</span>
+            <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
         <data-grid-item label="管理费收取方式" :span="12" v-if="manageMoneyParams==='有'">
@@ -141,7 +141,7 @@
             <i-radio :label="394">一次性收取</i-radio>
             <i-radio :label="395">分期数收取</i-radio>
           </i-radio-group>
-          <div v-if="formItems.manageCostType===395" class="initialPayment" style="margin-top:15px;">
+          <div v-if="formItems.manageCostType===395" class="initialPayment item-input">
             <i-form-item prop="stagingPeriods" label="期数">
               <i-input v-model="formItems.stagingPeriods"></i-input>
             </i-form-item>
@@ -151,27 +151,27 @@
       <div class="add-periods-item">逾期违约惩罚参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item :span="6" label="征信保护天数">
-          <i-form-item prop="creditProtectDays" style="margin-top:15px;">
+          <i-form-item prop="creditProtectDays" class="item-input">
             <i-input v-model="formItems.creditProtectDays"></i-input>&nbsp;天
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="6" label="逾期保护天数">
-          <i-form-item prop="overdueProtectDays" style="margin-top:15px;">
+          <i-form-item class="item-input" prop="overdueProtectDays">
             <i-input v-model="formItems.overdueProtectDays"></i-input>&nbsp;天
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="6" label="合同违约金费率">
-          <i-form-item prop="contractBreakRates" style="margin-top:15px;">
+          <i-form-item class="item-input" prop="contractBreakRates">
             <i-input v-model="formItems.contractBreakRates"></i-input>&nbsp;%
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="6" label="提前还款费率">
-          <i-form-item prop="prepaymentRates" style="margin-top:15px;">
+          <i-form-item class="item-input" prop="prepaymentRates">
             <i-input v-model="formItems.prepaymentRates"></i-input>&nbsp;%
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="12" label="罚息费率">
-          <i-form-item prop="penaltyRates" style="margin-top:15px;">
+          <i-form-item class="item-input" prop="penaltyRates">
             <i-input v-model="formItems.penaltyRates"></i-input>
           </i-form-item>
           <span>&nbsp;%/天</span>
@@ -438,5 +438,58 @@
     margin-left: 5px;
     margin-bottom: 20px;
   }
+  .item-input{
+    margin-top:15px;
+  }
+.item-chanpin{
+  width:70%;
+}
+  .item-chanpin-group{
+    margin-top:14px;
+  }
+  .item-chanpin-radio{
+    margin-right:40px;
+  }
+  .item-chanpin-select{
+    width:30%;
+  }
+  .item-shoufu-group{
+    margin-top:6px;
+  }
+  .item-shoufu-div{
+    margin-top:24px;margin-left:-51px;
+  }
+  .item-shoufu-input{
+    width:80%;
+  }
+  .item-shoufu-span1{
+    color:red;margin-left:-30px;
+  }
+  .item-shoufu-span2{
+    color:blue;
+  }
+  .item-bzj-group{
+    float:left;margin-top:6px;
+  }
+  .item-bzjbl-div{
+    margin-left:-51px;margin-top:17px;
+  }
+  .item-bzjbl-span{
+    color:red
+  }
+  .item-bzjbl-span2{
+    color:blue
+  }
+  .item-mt6{
+    margin-top: 6px;
+  }
+  .item-mt6-div{
+    margin-top:27px;
+  }
+  .item-mt6-div2{
+    margin-top:21px;margin-left:-50px;
+  }
+
+
 
 </style>

@@ -5,16 +5,16 @@
     <data-form data-prop="timeSearch" @on-search="getEarlyPayList" hidden-reset>
       <template slot="input">
         <i-form-item>
-          <i-input class="second-input" placeholder="请录入客户姓名\证件号码"></i-input>
+          <i-input placeholder="请录入客户姓名\证件号码"></i-input>
         </i-form-item>
         <i-form-item>
-          <i-select class="second-select" placeholder="全部还款状态">
+          <i-select placeholder="全部还款状态">
             <i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>
             <i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item>
-          <i-select class="second-select" placeholder="全部结算通道">
+          <i-select placeholder="全部结算通道">
             <i-option value="汇付" key="汇付" label="汇付"></i-option>
             <i-option value="富友" key="富友" label="富友"></i-option>
             <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
@@ -193,8 +193,8 @@
       data.totalPayment = _repayment.paymentAmount
       data.withdrawApplicationId = _repayment.rowObj.withdrawId
       data.collectMoneyId = _repayment.collectMoneyId
-      let name:any = data.collectMoneyDetails.map(v=>v.collectItem)
-      if(!name.length || name[0] === undefined){
+      let name: any = data.collectMoneyDetails.map(v => v.collectItem)
+      if (!name.length || name[0] === undefined) {
         this.$Message.warning("请选择收款方式!")
         return
       }
@@ -423,7 +423,7 @@
       }
     }
   }
-
+  
   .confirmWithdraw {
     .ivu-modal-body {
       height: 600px;

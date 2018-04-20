@@ -1,7 +1,7 @@
 <!--修改系统参数-->
 <template>
   <section class="component modify-system-params">
-    <i-form :label-width="110" class="modifySystemParams">
+    <i-form :label-width="110" class="amend-parameter">
       <i-row>
         <i-col :span="24">
           <i-form-item label="参数代码">
@@ -38,55 +38,67 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { Prop } from "vue-property-decorator";
-import { Dependencies } from "~/core/decorator";
-import { SystemParameterService } from "~/services/manage-service/system-parameter.service";
-@Component({
-  components: {}
-})
-export default class ModifySystemParams extends Vue {
-  @Dependencies(SystemParameterService)
-  private systemParameterService: SystemParameterService;
-  private sysParamModel: any = {
-    paramCode: "",
-    paramName: "",
-    paramValue: "",
-    paramStatus: ""
-  };
-  created() {}
-  makeData(row) {
-    this.sysParamModel.paramCode = row.paramCode;
-    this.sysParamModel.paramName = row.paramName;
-    this.sysParamModel.paramValue = row.paramValue;
-    this.sysParamModel.paramStatus = row.paramStatus;
-    this.sysParamModel.id = row.id;
-    this.sysParamModel.paramValue = row.paramValue;
-    this.sysParamModel.paramType = row.paramType;
-    this.sysParamModel.paramSign = row.paramSign;
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import {
+    Prop
+  } from "vue-property-decorator";
+  import {
+    Dependencies
+  } from "~/core/decorator";
+  import {
+    SystemParameterService
+  } from "~/services/manage-service/system-parameter.service";
+  @Component({
+    components: {}
+  })
+  export default class ModifySystemParams extends Vue {
+    @Dependencies(SystemParameterService)
+    private systemParameterService: SystemParameterService;
+    private sysParamModel: any = {
+      paramCode: "",
+      paramName: "",
+      paramValue: "",
+      paramStatus: ""
+    };
+    created() {}
+    makeData(row) {
+      this.sysParamModel.paramCode = row.paramCode;
+      this.sysParamModel.paramName = row.paramName;
+      this.sysParamModel.paramValue = row.paramValue;
+      this.sysParamModel.paramStatus = row.paramStatus;
+      this.sysParamModel.id = row.id;
+      this.sysParamModel.paramValue = row.paramValue;
+      this.sysParamModel.paramType = row.paramType;
+      this.sysParamModel.paramSign = row.paramSign;
+    }
+    /**
+     * 确认修改
+     */
+    confirmModify() {
+      this.systemParameterService
+        .updateSystemParameter(this.sysParamModel)
+        .subscribe(
+          val => {
+            this.$emit("close");
+            this.$Message.success("修改成功");
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
+    }
   }
-  /**
-   * 确认修改
-   */
-  confirmModify() {
-    this.systemParameterService
-      .updateSystemParameter(this.sysParamModel)
-      .subscribe(
-        val => {
-          this.$emit("close");
-          this.$Message.success("修改成功");
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
-      );
-  }
-}
+
 </script>
 <style lang="less">
-.modifySystemParams {
-  position: relative;
-  right: 30px;
-}
+  .component.modify-system-params {
+    .amend-parameter{
+      position: relative;
+      right: 30px;
+    }
+  }
+
 </style>

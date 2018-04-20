@@ -432,7 +432,7 @@
   }
 
 </script>
-<style lang="less" scoped>
+<style lang="less">
   .new-quote {
     .data-form-icon {
       width: 7px;
@@ -444,7 +444,7 @@
       top: 4px;
     }
   }
-  
+
   .flex {
     display: flex;
     align-items: center;
@@ -453,7 +453,7 @@
       flex: 50%;
     }
   }
-  
+
   .title_info {
     width: 100%;
     background: rgb(236, 235, 235);

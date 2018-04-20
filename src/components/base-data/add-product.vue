@@ -8,7 +8,7 @@
       <i-input v-model="addProduct.name"></i-input>
     </i-form-item>
     <i-form-item label="资金渠道">
-      <Select v-model="addProduct.capitaChannels" style="width:100px">
+      <Select class="item" v-model="addProduct.capitaChannels">
         <Option value="382" key="382" label="自有资金"></Option>
       </Select>
     </i-form-item>
@@ -63,9 +63,12 @@ export default class AddProduct extends Vue {
 	}
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .ivu-modal-body {
 	height: 600px;
 	overflow: auto;
 }
+  .item{
+    width:100px
+  }
 </style>

@@ -35,8 +35,8 @@
 
     <table class="modal-item-table" border="1" width="868">
       <tr height="40">
-        <td bgcolor="#F2F2F2" colspan="1" width="40%">项目</td>
-        <td bgcolor="#F2F2F2" colspan="1" width="60%">金额（元）</td>
+        <td class="td-bg" colspan="1" width="40%">项目</td>
+        <td class="td-bg" colspan="1" width="60%">金额（元）</td>
       </tr>
       <tr height="40" v-for="item in collectMoneyItemModel" :key="item.itemCode">
         <td>{{item.itemLabel}}</td>
@@ -54,8 +54,7 @@
     <div class="modal-item-origin">
       <i-row>
         <i-col class="modal-item-col" :span="6" v-for="(v,i) in applicationPhaseResources" :key="v.id">
-          <div
-            :style="`height:150px;width:150px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
+          <div>
           </div>
           <div class="modal-item-col-div">{{v.originName}}</div>
         </i-col>
@@ -72,15 +71,15 @@
     </div>
     <table class="modal-item-table" border="1" width="868">
       <tr height="40">
-        <td bgcolor="#F2F2F2" colspan="1" width="5%">
+        <td class="td-bg" colspan="1" width="5%">
           <div @click="addObj">
             <i-icon type="plus" class="modal-item-shoukuanfangshi-icon"></i-icon>
           </div>
         </td>
-        <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
-        <td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>
-        <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
-        <td bgcolor="#F2F2F2" colspan="1">状态</td>
+        <td class="td-bg" colspan="1" width="20%">结算通道</td>
+        <td class="td-bg" colspan="1" width="20%">收款项</td>
+        <td class="td-bg" colspan="1">金额（元）</td>
+        <td class="td-bg" colspan="1">状态</td>
       </tr>
       <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
         <td>
@@ -90,15 +89,12 @@
         </td>
         <td>
           <i-select class="modal-item-select" placeholder="选择结算通道" v-model="v.collectMoneyChannel">
-            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label"
-                      :value="value"></i-option>
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-select class="modal-item-select" placeholder="选择收款项" v-model="v.collectItem"
-                    @on-change="selectWay($event, v)">
-            <i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel"
-                      :value="item.itemCode"></i-option>
+          <i-select class="modal-item-select" placeholder="选择收款项" v-model="v.collectItem" @on-change="selectWay($event, v)">
+            <i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>
           </i-select>
         </td>
         <td>
@@ -111,7 +107,7 @@
       </tr>
       <tr height="40">
         <td></td>
-        <td width="25%">合计（元）</td>
+        <td class="td-wh">合计（元）</td>
         <td colspan="3" class="modal-item-heji">{{paymentAmount}}</td>
       </tr>
     </table>
@@ -247,8 +243,8 @@
         this.inputBlur()
         // this.remark = data.collectMoneyHistory.remark
       }, ({
-            msg
-          }) => {
+        msg
+      }) => {
         this.$Message.error(msg)
       })
     }
@@ -309,63 +305,63 @@
 
     created() {
       this.columns1 = [{
-        title: '操作',
-        width: '200',
-        align: 'center',
-        render: (h, params) => {
+          title: '操作',
+          width: '200',
+          align: 'center',
+          render: (h, params) => {
 
-          return h('div', [
-            h('Icon', {
-              props: {
-                type: 'archive',
-                size: '20'
-              },
-              style: {
-                cursor: 'pointer',
-                marginRight: '15px',
-                color: '#199ED8'
-              },
-              on: {
-                click: () => {
+            return h('div', [
+              h('Icon', {
+                props: {
+                  type: 'archive',
+                  size: '20'
+                },
+                style: {
+                  cursor: 'pointer',
+                  marginRight: '15px',
+                  color: '#199ED8'
+                },
+                on: {
+                  click: () => {
 
+                  }
                 }
-              }
-            }),
-            h('Icon', {
-              props: {
-                type: 'eye',
-                size: '20'
-              },
-              style: {
-                cursor: 'pointer',
-                marginRight: '15px',
-                color: '#199ED8'
-              },
-              on: {
-                click: () => {
+              }),
+              h('Icon', {
+                props: {
+                  type: 'eye',
+                  size: '20'
+                },
+                style: {
+                  cursor: 'pointer',
+                  marginRight: '15px',
+                  color: '#199ED8'
+                },
+                on: {
+                  click: () => {
 
+                  }
                 }
-              }
-            }),
-            h('Icon', {
-              props: {
-                type: 'trash-a',
-                size: '20'
-              },
-              style: {
-                cursor: 'pointer',
-                color: '#199ED8'
-              },
-              on: {
-                click: () => {
+              }),
+              h('Icon', {
+                props: {
+                  type: 'trash-a',
+                  size: '20'
+                },
+                style: {
+                  cursor: 'pointer',
+                  color: '#199ED8'
+                },
+                on: {
+                  click: () => {
 
+                  }
                 }
-              }
-            })
-          ])
+              })
+            ])
 
-        }
-      },
+          }
+        },
         {
           title: '附件信息',
           align: 'center',
@@ -395,7 +391,7 @@
 
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
   .component.confirm-early-pay {
     .modal-item-kehuxinxi {
       width: 7px;
@@ -412,7 +408,10 @@
     .modal-item-table {
       margin-top: 10px;
       text-align: center;
-      border: 1px solid #DDDEE1
+      border: 1px solid #DDDEE1;
+      .td-bg {
+        background-color: #F2F2F2;
+      }
     }
     .modal-item-heji {
       font-weight: 700;
@@ -438,6 +437,13 @@
         align-items: center;
         margin-top: 10px;
         flex-direction: column;
+        div {
+          height: 150px;
+          width: 150px;
+          border: 1px solid #C2C2C2;
+          background-image:url(${v.materialUrl});
+          background-repeat: no-repeat;
+        }
         .modal-item-col-div {
           height: 40px;
           line-height: 40px;
@@ -469,6 +475,9 @@
       display: inline-block;
       width: 90%
     }
+    .td-wh{
+        width: 25%;
+    }
     .modal-item-huakou-input {
       display: inline-block;
       width: 30%;
@@ -498,7 +507,6 @@
         top: 4px;
       }
     }
-
     .modal-item-upload {
       display: flex;
       justify-content: center;
@@ -520,7 +528,6 @@
       .modal-item-upload-text {
         color: gray
       }
-
     }
     .modal-item-upload-col {
       display: flex;
@@ -532,4 +539,5 @@
       }
     }
   }
+
 </style>

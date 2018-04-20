@@ -437,7 +437,7 @@
 
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .add-periods-item {
     font-size: 14px;
     font-weight: bold;

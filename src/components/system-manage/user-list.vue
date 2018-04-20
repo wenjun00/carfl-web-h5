@@ -1,11 +1,11 @@
 <!--用户列表-->
 <template>
   <section class="component user-list">
-    <span style="margin-left:20px;">用户名：</span>
-    <i-input style="display:inline-block;width:12%;" v-model="userListModel.username"></i-input>
-    <span style="margin-left:20px;">姓名：</span>
-    <i-input style="display:inline-block;width:12%;" v-model="userListModel.realname"></i-input>
-    <i-button class="blueButton" style="margin-left:10px;" @click="search">搜索</i-button>
+    <span class="title">用户名：</span>
+    <i-input class="form-input" v-model="userListModel.username"></i-input>
+    <span  class="title" >姓名：</span>
+    <i-input class="form-input" v-model="userListModel.realname"></i-input>
+    <i-button class="blue-button"  @click="search">搜索</i-button>
     <data-box :columns="columns1" :data="userList" @onPageChange="search" :page="pageService" :noDefaultRow="true"></data-box>
   </section>
 </template>
@@ -103,3 +103,20 @@ export default class UserList extends Vue {
   }
 }
 </script>
+<style lang="less">
+    .component.user-list{
+        .title{
+            margin-left:20px;
+        }
+        .form-input{
+            display:inline-block;
+            width:12%;
+        }
+        .blue-button{
+            margin-left:10px;
+            background: #265ea2;
+            color: #fff;
+        }
+    }
+
+</style>

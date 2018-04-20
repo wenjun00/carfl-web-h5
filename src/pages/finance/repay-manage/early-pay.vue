@@ -5,15 +5,15 @@
     <data-form data-prop="timeSearch" @on-search="getEarlyPayList" :model="customerRepayModel" hiddenReset>
       <template slot="input">
         <i-form-item prop="dynamicParam">
-          <i-input class="second-input" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
+          <i-input placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
         </i-form-item>
         <i-form-item prop="paymentStatus">
-          <i-select class="second-select" placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
+          <i-select placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item prop="settlementChannel">
-          <i-select class="second-select" placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
+          <i-select placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>

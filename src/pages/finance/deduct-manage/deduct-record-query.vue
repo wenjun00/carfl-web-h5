@@ -8,7 +8,7 @@
           <i-date-picker v-model="model.startTime"></i-date-picker>~
         </i-form-item>
         <i-form-item prop="endTime">
-          <i-date-pickerv-model="model.endTime"></i-date-picker>
+          <i-date-picker v-model="model.endTime"></i-date-picker>
         </i-form-item>
         <i-form-item prop="personalInfo">
           <i-input placeholder="请输入客户姓名、客户号查询" v-model="model.personalInfo"></i-input>

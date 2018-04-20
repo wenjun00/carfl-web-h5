@@ -39,7 +39,7 @@
         </div>
       </data-grid-item>
       <data-grid-item label="账期类型" :span="12">
-        <i-radio-group style="float:left;" v-model="productDetailView.paymentType">
+        <i-radio-group class="item-float-left" v-model="productDetailView.paymentType">
           <i-radio :label="386" disabled>正常账期</i-radio>
           <i-radio :label="387" disabled>固定账期</i-radio>
         </i-radio-group>
@@ -50,14 +50,14 @@
     <data-grid :labelWidth="100">
       <data-grid-item label="首付款" :span="12">
         <div type="flex" align="middle">
-          <i-radio-group style="float:left;" v-model="initialParams">
+          <i-radio-group class="item-float-left" v-model="initialParams">
             <i-radio label="无" disabled></i-radio>
             <i-radio label="有" disabled></i-radio>
           </i-radio-group>
-          <div v-show="initialParams==='有'" style="float:left">
+          <div v-show="initialParams==='有'" class="item-float-left">
             <span>比例</span>
             <span>{{productDetailView.manageCost}}</span>
-            <span style="color:red">%</span>
+            <span class="item-color-red">%</span>
           </div>
         </div>
       </data-grid-item>
@@ -65,16 +65,16 @@
     <div class="addPeriodsItem">保证金参数</div>
     <data-grid :labelWidth="100">
       <data-grid-item label="保证金" :span="12">
-        <i-radio-group style="float:left;margin-top:6px;" v-model="promiseMoenyParams">
+        <i-radio-group class="item-float-left item-margin-top6" v-model="promiseMoenyParams">
           <i-radio label="无" disabled></i-radio>
           <i-radio label="有" disabled></i-radio>
         </i-radio-group>
       </data-grid-item>
       <data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">
-        <div style="float:left">
-          <span style="margin-right:10px;">比例</span>
+        <div class="item-float-left">
+          <span class="item-margin-top10">比例</span>
           <span>{{productDetailView.depositCash}}</span>
-          <span style="color:red">%</span>
+          <span class="item-color-red">%</span>
           <span>{{productDetailView.depositCashType === 396 ? "退还" : "不退还"}}</span>
         </div>
       </data-grid-item>
@@ -82,32 +82,32 @@
     <div class="addPeriodsItem">尾付款参数</div>
     <data-grid :labelWidth="100">
       <data-grid-item label="尾付款" :span="12">
-        <i-radio-group style="float:left;margin-top:2px;" v-model="residueParams">
+        <i-radio-group class="item-float-left item-margin-top2" v-model="residueParams">
           <i-radio label="无" disabled></i-radio>
           <i-radio label="有" disabled></i-radio>
         </i-radio-group>
-        <div v-show="residueParams==='有'" style="float:left;margin-top:4px;">
+        <div v-show="residueParams==='有'" class="item-float-left item-margin-top4">
           <span>月利率：</span>
           <span>{{productDetailView.finalCash}}</span>
-          <span style="color:red">%</span>
+          <span class="item-color-red">%</span>
         </div>
       </data-grid-item>
     </data-grid>
     <div class="addPeriodsItem">管理费参数</div>
     <data-grid :labelWidth="100">
       <data-grid-item label="管理费" :span="12">
-        <i-radio-group style="float:left;margin-top:6px;" v-model="manageMoneyParams">
+        <i-radio-group class="item-float-left item-margin-top6" v-model="manageMoneyParams">
           <i-radio label="无" disabled></i-radio>
           <i-radio label="有" disabled></i-radio>
         </i-radio-group>
-        <div v-show="manageMoneyParams==='有'" style="float:left;margin-top:6px;">
+        <div v-show="manageMoneyParams==='有'" class="item-float-left item-margin-top6">
           <span>比例</span>
           <span>{{productDetailView.manageCost}}</span>
-          <span style="color:red">%</span>
+          <span class="item-color-red">%</span>
         </div>
       </data-grid-item>
       <data-grid-item label="管理费收取方式" :span="12" v-if="manageMoneyParams==='有'">
-        <i-radio-group v-model="productDetailView.manageCostType" style="float:left">
+        <i-radio-group v-model="productDetailView.manageCostType" class="item-float-left">
           <i-radio :label="394" disabled>一次性收取</i-radio>
           <i-radio :label="395" disabled>分期数收取</i-radio>
         </i-radio-group>
@@ -142,7 +142,7 @@
         </div>
       </data-grid-item>
     </data-grid>
-    <div style="margin-right:10px;display:inline-block" class="addPeriodsItem">状态</div>
+    <div class="item-zhuangtai-div addPeriodsItem">状态</div>
     <i-radio-group v-model="productDetailView.isPublish">
       <i-radio :label="361" disabled>未发布</i-radio>
       <i-radio :label="360" disabled>已发布</i-radio>
@@ -190,4 +190,25 @@ export default class AddPeriods extends Vue {
 	font-weight: bold;
 	margin-top: 16px;
 }
+  .item-float-left{
+    float: left;
+  }
+  .item-color-red{
+    color: red;
+  }
+  .item-margin-top6{
+    margin-top:6px;
+  }
+  .item-margin-top2{
+    margin-top: 2px;
+  }
+  .item-margin-top4{
+    margin-top: 4px;
+  }
+  .item-margin-top10{
+    margin-top: 10px;
+  }
+  .item-zhuangtai-div{
+    margin-right:10px;display:inline-block
+  }
 </style>

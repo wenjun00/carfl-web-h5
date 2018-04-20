@@ -1,7 +1,7 @@
 <!--查看模块功能-->
 <template>
   <section class="component to-view">
-    <i-form :label-width="110" style="margin-top:20px;">
+    <i-form :label-width="110" class="data-form">
       <i-form-item label="资源初始化名称" prop="resoInitName">
         <i-input v-model="ToviewrowData.resoInitName" readonly></i-input>
       </i-form-item>
@@ -42,3 +42,11 @@
   }
 
 </script>
+ <style lang="less">
+    .component.to-view{
+        .data-form{
+            margin-top:20px;
+        }
+    }
+ 
+ </style>

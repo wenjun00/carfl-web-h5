@@ -1,27 +1,28 @@
 <!--划扣记录-->
 <template>
   <section class="component deduct-record-has-search">
-    <span>支付日期：</span>
-    <i-date-picker class="modal-item-date-picker" type="date" v-model="customerRepayModel.startTime"></i-date-picker>
-    ~
-    <i-date-picker class="modal-item-date-picker" type="date" v-model="customerRepayModel.endTime"></i-date-picker>
-    <span class="modal-item-qishu">期数：</span>
-    <i-input class="modal-item-periods" v-model="customerRepayModel.periods"></i-input>
-    <i-select placeholder="全部交易状态" class="modal-item-deal-status"
-              v-model="customerRepayModel.dealStatus" clearable>
-      <i-option v-for="{value,label} in $dict.getDictData('0115')" :key="value" :label="label"
-                :value="value"></i-option>
-    </i-select>
-    <i-button class="blueButton" @click="query">搜索</i-button>
-    <div class="modal-item">
-      <div class="modal-item-daochu">
-        <svg-icon iconClass="daochu"></svg-icon>
-        <span>导出</span>
-      </div>
-    </div>
+      <page-header title="" hiddenPrint></page-header>
+    <data-form hidden-date-search :model="customerRepayModel" @on-search="query" hidden-reset>
+      <template slot="input">
+        <i-form-item prop="startTime" label="支付日期">
+          <i-date-picker type="date" v-model="customerRepayModel.startTime"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="endTime">
+          <i-date-picker type="date" v-model="customerRepayModel.endTime"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="endTime" label="期数">
+          <i-input v-model="customerRepayModel.periods"></i-input>
+        </i-form-item>
+        <i-form-item prop="dealStatus">
+          <i-select placeholder="全部交易状态" v-model="customerRepayModel.dealStatus" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0115')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+      </template>
+    </data-form>
     <div class="modal-item-kehu">
       <span>客户姓名：{{customerRepayObj.customerName}}</span>
-      <span class="modal-item-kehuhao" >出账客户号：{{customerRepayObj.clientNumber}}</span></div>
+      <span class="modal-item-kehuhao">出账客户号：{{customerRepayObj.clientNumber}}</span></div>
     <i-table ref="table" class="i-table" :columns="columns1" :data="data1" stripe size="small"></i-table>
   </section>
 </template>
@@ -66,7 +67,7 @@
       customerName: '',
       clientNumber: '',
     };
-    private data1: Array<Object> = [];
+    private data1: Array < Object > = [];
 
     refresh(row) {
       this.customerRepayModel = {
@@ -89,19 +90,19 @@
         this.customerRepayObj.clientNumber = data.clientNumber
         this.data1 = data.deductionRecordDetailModels
       }, ({
-            msg
-          }) => {
+        msg
+      }) => {
         this.$Message.error(msg)
       })
     }
 
     created() {
       this.columns1 = [{
-        title: '序号',
-        type: 'index',
-        width: 60,
-        align: 'center'
-      },
+          title: '序号',
+          type: 'index',
+          width: 60,
+          align: 'center'
+        },
         {
           title: '期数',
           key: 'periods',
@@ -201,15 +202,17 @@
       display: inline-block;
       margin-left: 10px;
       color: #3367A7;
-      span{
+      span {
         font-size: 12px;
       }
     }
-    .modal-item-kehu{
-      line-height:40px;font-size:14px;height:40px
+    .modal-item-kehu {
+      line-height: 40px;
+      font-size: 14px;
+      height: 40px
     }
-    .modal-item-kehuhao{
-      float:right;
+    .modal-item-kehuhao {
+      float: right;
     }
   }
 
