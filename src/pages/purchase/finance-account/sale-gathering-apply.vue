@@ -58,7 +58,7 @@
           </i-col>
           <i-col :span="4">
             <!--<i-button class="highDefaultButton" @click="saveDraft" :disabled="saveDraftDisabled">保存草稿</i-button>-->
-            <i-button class="highButton" style="margin-right:10px;" @click="saveAndCommit">保存并提交</i-button>
+            <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
           </i-col>
         </i-row>
       </div>

@@ -66,7 +66,7 @@
           <span>申请时间：{{applyTime}}</span>
         </i-col>
         <i-col :span="4">
-          <i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>
+          <!--<i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>-->
           <i-button class="highButton" @click="saveSubmit">保存并提交</i-button>
         </i-col>
       </i-row>
@@ -398,11 +398,9 @@ export default class PayApply extends Page {
   .data-form {
     margin-top: 10px;
   }
-  .header {
-    border-bottom: 1px solid #cccccc;
-    margin-bottom: 20px;
-    .command {
-      float: right;
+
+  .page.early-payment-apply {
+    .data-form {
       margin-top: 10px;
       margin-right: 10px;
       .command-item {
@@ -417,89 +415,89 @@ export default class PayApply extends Page {
       }
     }
   }
-  .clear-button {
-    height: 40px;
-    position: relative;
-    top: 60px;
+
+  .open {
+    max-width: auto;
+    overflow: hidden;
   }
-  .submit-bar {
-    height: 70px;
-    width: 100%;
-    background: #fff;
+
+  .close {
+    max-width: 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .case-list {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    border: 1px solid #ddd;
-    .submit-bar-item {
-      padding: 10px;
+    right: 0px;
+    top: 0px;
+    background: #fff;
+    z-index: 2000;
+    width: 368px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    height: 100%;
+  }
+
+  .case-list.flag {
+    right: -348px;
+    box-shadow: none;
+    background: none;
+  }
+
+  .arrowUp {
+    transform: rotate(0deg); // transition: transform ease-in 0.2s;
+  }
+
+  .arrowDown {
+    transform: rotate(180deg); // transition: transform ease-in 0.2s;
+  }
+
+  .arrowButton {
+    line-height: 570px;
+    height: 100%;
+    background: #e4e4e4;
+    text-align: center;
+    width: 30px;
+  }
+
+  .bigSelect {
+    .ivu-select-selection {
+      display: inline-block;
+      border-style: none;
+      border-bottom-style: solid;
+      border-radius: 0;
     }
   }
-}
 
-.open {
-  max-width: auto;
-  overflow: hidden;
-}
-
-.close {
-  max-width: 0;
-  min-width: 0;
-  overflow: hidden;
-}
-
-.case-list {
-  position: fixed;
-  right: 0px;
-  top: 0px;
-  background: #fff;
-  z-index: 2000;
-  width: 368px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-  height: 100%;
-}
-
-.case-list.flag {
-  right: -348px;
-  box-shadow: none;
-  background: none;
-}
-
-.arrowUp {
-  transform: rotate(0deg); // transition: transform ease-in 0.2s;
-}
-
-.arrowDown {
-  transform: rotate(180deg); // transition: transform ease-in 0.2s;
-}
-
-.arrowButton {
-  line-height: 570px;
-  height: 100%;
-  background: #e4e4e4;
-  text-align: center;
-  width: 30px;
-}
-
-.bigSelect {
-  .ivu-select-selection {
-    display: inline-block;
-    border-style: none;
-    border-bottom-style: solid;
-    border-radius: 0;
+  .early-pay-tabs {
+    .ivu-tabs-bar {
+      border-bottom: 1px solid #DDDEE1;
+      .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
+        margin: 0;
+        margin-right: 4px;
+        padding: 5px 16px 4px;
+        border: 1px solid #dddee1;
+        border-bottom: 0;
+        border-radius: 4px 4px 0 0;
+        transition: all .3s ease-in-out;
+      }
+    }
   }
-}
 
-.early-pay-tabs {
-  .ivu-tabs-bar {
-    border-bottom: 1px solid #dddee1;
-    .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
-      margin: 0;
-      margin-right: 4px;
-      padding: 5px 16px 4px;
-      border: 1px solid #dddee1;
-      border-bottom: 0;
-      border-radius: 4px 4px 0 0;
-      transition: all 0.3s ease-in-out;
+  .early-payment-apply {
+    .ivu-select-selection {
+      border-style: none;
+      border-bottom-style: solid;
+      border-radius: 0;
+    }
+    .shade {
+      width: 98%;
+      height: 666px;
+      background: rgba(250, 250, 250, 0.4);
+      position: absolute;
+      left: 21px;
+      top: 315px;
+      z-index: 999;
     }
   }
 }

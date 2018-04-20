@@ -15,7 +15,7 @@
           </i-col>
           <i-col span="12" pull="3">
             <i-form-item label="申请城市" prop="city">
-              <i-select v-model="chooseBuyModel.city" placeholder="选择市" clearable>
+              <i-select :disabled="!chooseBuyModel.province" v-model="chooseBuyModel.city" placeholder="选择市" clearable>
                 <i-option v-for="{value,label} in this.chooseBuyModel.province ? this.$city.getCityData({ level: 1, id: this.chooseBuyModel.province }) : []"
                   :key="value" :label="label" :value="value"></i-option>
               </i-select>

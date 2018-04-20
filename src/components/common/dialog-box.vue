@@ -105,7 +105,9 @@ export default class DialogBox extends Vue {
       if (this.$slots.default && this.$slots.default.length) {
         contentVNode = this.$slots.default[0];
       }
-      if ((await this.onOk.call(this, contentVNode.componentInstance)) === false) {
+      if (
+        (await this.onOk.call(this, contentVNode.componentInstance)) === false
+      ) {
         return;
       }
     }
@@ -129,7 +131,7 @@ export default class DialogBox extends Vue {
 
 <style lang="less" scoped>
 .component.dialog {
-  z-index:0;
+  z-index: 0;
   position: relative;
 }
 </style>
