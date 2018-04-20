@@ -5,13 +5,13 @@
     <data-form data-prop="timeSearch" hidden-reset :model="approvalModel" :page="pageService" @on-search="getOrderQuery">
       <template slot="input">
         <i-form-item prop="refundName">
-          <i-input class="form-input" v-model="approvalModel.refundName" placeholder="请录入付款账户名查询"></i-input>
+          <i-input v-model="approvalModel.refundName" placeholder="请录入付款账户名查询"></i-input>
         </i-form-item>
         <i-form-item prop="startTime" label="日期：">
-          <i-date-picker type="date" class="title-item" v-model="approvalModel.startTime"></i-date-picker> ~
+          <i-date-picker type="date" v-model="approvalModel.startTime"></i-date-picker> ~
         </i-form-item>
         <i-form-item prop="endTime">
-          <i-date-picker type="date" class="title-item" v-model="approvalModel.endTime"></i-date-picker>
+          <i-date-picker type="date" v-model="approvalModel.endTime"></i-date-picker>
         </i-form-item>
         <!--<i-button @click="getOrderQuery" class="blueButton">搜索</i-button>-->
       </template>
@@ -334,7 +334,7 @@
       }
     }
   }
-
+  
   .confirmGather {
     .ivu-modal-body {
       height: 600px;

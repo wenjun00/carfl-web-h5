@@ -2,15 +2,15 @@
 <template>
   <section class="page clear-account-report">
     <page-header title="清结算日报表" hiddenPrint></page-header>
-    <data-form hiddenDateSearch hidden-reset @on-search="getData" :model="model" >
-      <template slot="input"  >
+    <data-form hiddenDateSearch hidden-reset @on-search="getData" :model="model">
+      <template slot="input">
         <i-form-item prop="companyId">
-          <i-select class="form-select" placeholder="统计机构" v-model="model.companyId" clearable>
+          <i-select placeholder="统计机构" v-model="model.companyId" clearable>
             <i-option :label="companyChinaname" :value="id" :key="id" v-for="{id, companyChinaname} in company"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item prop="channel">
-          <i-select placeholder="统计通道" class="form-second-one" v-model="model.channel">
+          <i-select placeholder="统计通道" v-model="model.channel">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
@@ -254,7 +254,7 @@
       }
     }
   }
-
+  
   .ivu-table-cell {
     padding-left: 0;
     padding-right: 0;

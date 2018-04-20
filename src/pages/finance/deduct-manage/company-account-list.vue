@@ -8,20 +8,20 @@
           <i-input placeholder="请录入门店\员工姓名查询" class="second-data-one"></i-input>
         </i-form-item>
         <i-form-item label="下载日期：">
-          <i-date-picker class="second-data-three"></i-date-picker> ~
+          <i-date-picker></i-date-picker> ~
         </i-form-item>
         <i-form-item>
-          <i-date-picker class="second-data-three"></i-date-picker>
+          <i-date-picker></i-date-picker>
         </i-form-item>
         <i-form-item>
-          <i-select class="second-data-four" placeholder="全部状态">
+          <i-select placeholder="全部状态">
             <i-option value="拒绝" label="拒绝" key="拒绝"></i-option>
             <i-option value="退单" label="退单" key="退单"></i-option>
             <i-option value="通过" label="通过" key="通过"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item>
-          <i-select class="second-data-four" placeholder="全部拒单原因">
+          <i-select placeholder="全部拒单原因">
             <i-option value="不符合进件操作" label="不符合进件操作" key="不符合进件操作"></i-option>
             <i-option value="欺诈" label="欺诈" key="欺诈"></i-option>
             <i-option value="黑名单" label="黑名单" key="黑名单"></i-option>
@@ -31,7 +31,7 @@
           </i-select>
         </i-form-item>
         <i-form-item>
-          <i-select class="second-data-four" placeholder="全部拒单细节">
+          <i-select placeholder="全部拒单细节">
             <i-option value="行业限制" label="拒绝" key="拒绝"></i-option>
             <i-option value="信用卡开户数超标" label="退单" key="退单"></i-option>
             <i-option value="话单非本人名下且不满两年" label="通过" key="通过"></i-option>
@@ -39,10 +39,10 @@
           </i-select>
         </i-form-item>
         <i-form-item label="日期：">
-          <i-date-picker class="second-data-three"></i-date-picker>~
+          <i-date-picker></i-date-picker>~
         </i-form-item>
         <i-form-item>
-          <i-date-picker class="second-data-three"></i-date-picker>
+          <i-date-picker></i-date-picker>
         </i-form-item>
 
       </template>
