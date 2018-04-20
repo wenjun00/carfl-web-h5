@@ -1,5 +1,6 @@
 import store from '~/store'
 import * as enumData from '~/config/enum.config'
+import moment from 'moment'
 
 export class FilterService {
   /**
@@ -33,13 +34,14 @@ export class FilterService {
 
     return target ? target.name : ""
   }
+
   /**
    * 日期范围转换
    * @param dateRange
    * @param fmt
    */
   static dateRanageFormat(dateRange, fmt = "yyyy-MM-dd hh:mm:ss") {
-    let target = {
+    let target: any = {
       start: '',
       end: ''
     }
@@ -49,9 +51,12 @@ export class FilterService {
     }
 
     target.start = FilterService.dateFormat(dateRange[0], fmt)
-    target.end = FilterService.dateFormat(dateRange[1], fmt)
+    target.end = FilterService.dateFormat(moment(dateRange[1]).add(1, 'd').subtract(1, 's'), fmt)
+
     return target
   }
+
+
   /**
    * 日期格式化
    * @param date

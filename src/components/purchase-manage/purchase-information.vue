@@ -1,5 +1,5 @@
 <template>
-  <div class="component purchase-information row">
+  <div class="component purchase-information">
     <!--选购信息-->
     <i-row class="data-d">
       <div>
@@ -531,57 +531,58 @@
 </script>
 
 <style lang="less" scoped>
-  .data-d {
-    margin-top: 20px;
-    width: 900px;
-    .data-d-icon {
-      width: 7px;
-      height: 20px;
-      background: #265EA2;
-      display: inline-block;
-      margin-right: 6px;
-      position: relative;
-      top: 4px;
-    }
-    .data-d-content {
-      color: #333333;
-      cursor: auto;
-      font-size: 16px;
-      font-family: MicrosoftYaHei;
-    }
-    .data-d-item {
-      margin-top: 10px;
-      width: 760px;
-    }
-    .data-d-table {
-      margin-top: 10px;
-      border: 1px solid #DCDDE0;
-      .data-d-table-span {
-        margin-left: 10px
+  .component.purchase-information {
+    .data-d {
+      margin-top: 20px;
+      width: 900px;
+      .data-d-icon {
+        width: 7px;
+        height: 20px;
+        background: #265EA2;
+        display: inline-block;
+        margin-right: 6px;
+        position: relative;
+        top: 4px;
       }
-    }
-    .data-d-row {
-      margin-top: 10px;
-      .row-button {
-        margin-left: 10px;
+      .data-d-content {
+        color: #333333;
+        cursor: auto;
         font-size: 16px;
+        font-family: MicrosoftYaHei;
+      }
+      .data-d-item {
+        margin-top: 10px;
+        width: 760px;
+      }
+      .data-d-table {
+        margin-top: 10px;
+        border: 1px solid #DCDDE0;
+        .data-d-table-span {
+          margin-left: 10px
+        }
+      }
+      .data-d-row {
+        margin-top: 10px;
+        .row-button {
+          margin-left: 10px;
+          font-size: 16px;
+        }
       }
     }
-  }
-  
-  .right-title {
-    position: absolute;
-    top: 122px;
-    right: 153px;
-    .right-title-item {
-      width: 65px;
-      height: 260px;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
+    .right-title {
       position: absolute;
-      top: 10px;
-      left: 30px;
+      top: 122px;
+      right: 153px;
+      .right-title-item {
+        width: 65px;
+        height: 260px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        position: absolute;
+        top: 10px;
+        left: 30px;
+      }
     }
   }
   
