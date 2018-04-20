@@ -4,7 +4,7 @@
     <page-header title="产品包管理" hiddenPrint hiddenExport>
       <command-button label="报价模板下载" icon="xiazai" @click="QuotationTemplatedownload"></command-button>
     </page-header>
-    <data-form hidden-date-search :model="productModel" @on-search="getProductPackage">
+    <data-form hidden-date-search :model="productModel" :page="pageService" @on-search="getProductPackage">
       <template slot="input">
         <i-form-item prop="fileName" label="文件名">
           <i-input v-model="productModel.fileName"></i-input>
@@ -352,7 +352,7 @@
     //   }
     // }
   }
-  
+
   .ivu-table-fixed-body {
     height: auto !important;
   }

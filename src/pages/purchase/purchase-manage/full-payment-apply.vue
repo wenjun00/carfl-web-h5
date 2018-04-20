@@ -100,7 +100,7 @@ import HistoricalRecord from '~/components/purchase-manage/historical-record.vue
 
 import ChooseBuyMaterialsAll from '~/components/purchase-manage/choose-buy-materials-all.tsx.vue'
 import CustomerMaterialsAll from '~/components/purchase-manage/customer-materials-all.vue'
-import SalesmanName from '~/components/purchase-manage/salesman-name.tsx.vue'
+import SalesmanName from '~/components/purchase-manage/salesman-name.vue'
 
 @Layout('workspace')
 @Component({

@@ -3,7 +3,7 @@
   <section class="page branch-company-info">
     <page-header title="分公司管理">
     </page-header>
-    <data-form hidden-date-search :model="companyModel" @on-search="seachCompany" hidden-reset>
+    <data-form hidden-date-search :model="companyModel" @on-search="seachCompany" :page="pageService" hidden-reset>
       <template slot="input">
         <i-form-item prop="keyWord" label="关键字搜索">
           <i-input placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyWord"></i-input>
@@ -12,8 +12,8 @@
     </data-form>
     <data-box :id="175" :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
     <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:10px">
-        <i-col :span="24" style="text-align:right;">
+      <i-row type="flex" align="middle" class="submitBar-row">
+        <i-col :span="24" class="submitBar-col">
           <i-button @click="addNewBranchFirmClick" class="highButton">新增分公司</i-button>
         </i-col>
       </i-row>
@@ -325,6 +325,12 @@
 </script>
 <style lang="less" scoped>
   .page.branch-company-info {
+    .submitBar-row{
+      padding:10px;
+    }
+    .submitBar-col{
+      text-align: right;
+    }
     // .data-form {
     //   margin-top: 10px;
     //   .span {

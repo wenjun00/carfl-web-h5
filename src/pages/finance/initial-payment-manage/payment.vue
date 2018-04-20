@@ -2,7 +2,7 @@
 <template>
   <section class="page payment">
     <page-header title="付款"></page-header>
-    <data-form data-prop="timeSearch" hidden-reset :model="approvalModel" @on-search="getOrderQuery">
+    <data-form data-prop="timeSearch" hidden-reset :model="approvalModel" :page="pageService" @on-search="getOrderQuery">
       <template slot="input">
         <i-form-item prop="refundName">
           <i-input class="form-input" v-model="approvalModel.refundName" placeholder="请录入付款账户名查询"></i-input>

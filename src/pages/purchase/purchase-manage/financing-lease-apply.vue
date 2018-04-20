@@ -31,7 +31,7 @@
           </i-col>
           <i-col span="10">
             <i-form-item label="归属业务员" prop="salesmanName">
-              <i-input type="text" :maxlength="13" readonly v-model="customerModel.salesmanName" @on-focus="salesmanNamefocus"></i-input>
+              <i-input type="text" :maxlength="13" readonly v-model="customerModel.salesmanName" @on-focus="showSalemanList"></i-input>
             </i-form-item>
           </i-col>
         </i-row>
@@ -71,18 +71,6 @@
       <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit(false)">保存并提交</i-button>
     </div>
     <!--底部操作栏-end-->
-
-    <template>
-      <dialog-box title="归属业务员" width="800" v-model="salesmanModal">
-        <salesman-name @choosecurrentData="choosecurrentData"></salesman-name>
-      </dialog-box>
-    </template>
-
-    <template>
-      <dialog-box v-model="aaa" transfer>
-        asdasdasdasd
-      </dialog-box>
-    </template>
   </section>
 </template>
 
@@ -97,7 +85,7 @@ import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.
 import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue";
 import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue";
 import HistoricalRecord from "~/components/purchase-manage/historical-record.vue";
-import SalesmanName from "~/components/purchase-manage/salesman-name.tsx.vue";
+import SalesmanName from "~/components/purchase-manage/salesman-name.vue";
 import { PersonalService } from "~/services/manage-service/personal.service";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { State, Mutation, namespace } from "vuex-class";
@@ -194,13 +182,6 @@ export default class FinancingLeaseApply extends Page {
   choosecurrentData(data) {
     this.customerModel.salesmanName = data.userRealname;
     this.customerModel.salesmanId = data.id;
-  }
-
-  /**
-   * 归属业务员
-   */
-  salesmanNamefocus() {
-    this.salesmanModal = true;
   }
 
   /**
@@ -302,26 +283,45 @@ export default class FinancingLeaseApply extends Page {
    * 显示历史订单
    */
   showHistoryOrder(data) {
-    let historyRecord;
     let dialog = this.$dialog.show({
-      title: "asdasd",
+      title: "历史订单",
       footer: true,
-      onOk: () => {
-        let instance = historyRecord.componentInstance;
-        let currentRow = instance.getCurrentRow();
+      onOk: historyRecord => {
+        let currentRow = historyRecord.getCurrentRow();
 
         if (!currentRow) {
+          this.$Message.error("请选择需要恢复的订单");
           return false;
         }
       },
       render: h => {
-        historyRecord = h(HistoricalRecord, {
+        return h(HistoricalRecord, {
           props: {
             data
           }
         });
+      }
+    });
+  }
 
-        return historyRecord;
+
+  /**
+   * 显示历史订单
+   */
+  showSalemanList() {
+    let dialog = this.$dialog.show({
+      title: "销售员列表",
+      footer: true,
+      onOk: salesmanName => {
+        let currentRow = salesmanName.getCurrentRow();
+
+        if (!currentRow) {
+          this.$Message.error("请选择对应销售员");
+          return false;
+        }
+      },
+      render: h => {
+        return h(SalesmanName);
       }
     });
   }

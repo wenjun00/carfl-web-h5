@@ -2,7 +2,7 @@
 <template>
   <section class="page receipt-approve">
     <page-header title="收款审批" hiddenPrint></page-header>
-    <data-form hidden-date-search :model="receipt" @on-search="searchReceiptapprove">
+    <data-form hidden-date-search :model="receipt" :page="pageService" @on-search="searchReceiptapprove">
       <template slot="input">
         <i-form-item prop="dynamicCondition">
           <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="receipt.dynamicCondition"></i-input>
@@ -425,7 +425,7 @@
       }
     }
   }
-  
+
   .addApply {
     .ivu-modal-body {
       height: 600px;

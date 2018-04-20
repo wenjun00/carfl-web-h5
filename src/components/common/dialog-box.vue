@@ -99,9 +99,18 @@ export default class DialogBox extends Vue {
   }
 
   async onOkClick() {
-    if (!this.onOk || (this.onOk && (await this.onOk.call())) !== false) {
-      this.visible = false;
+    if (this.onOk) {
+      let contentVNode;
+
+      if (this.$slots.default && this.$slots.default.length) {
+        contentVNode = this.$slots.default[0];
+      }
+      if ((await this.onOk.call(this, contentVNode.componentInstance)) === false) {
+        return;
+      }
     }
+
+    this.visible = false;
   }
 
   onCancelClick() {

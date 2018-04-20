@@ -23,7 +23,7 @@
                         <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
                     </i-select>
                 </i-form-item>
-                  <i-form-item prop="second">
+                  <i-form-item prop="detail">
                     <i-select placeholder="全部拒单细节" v-if="!passSelect" v-model="approvalRecordModel.detail" clearable>
                             <i-option v-for="item in refuseDetail" :key="item.detail" :label="item.detail" :value="item.detail"></i-option>
                         </i-select>
