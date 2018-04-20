@@ -182,7 +182,7 @@
       totalPayment: 0, // 收款总额
       remark: "" // 备注
     };
-    private saveDraftItem: Array = [];
+    private saveDraftItem: any = [];
     private saveDraftDisabled: Boolean = false;
     private msg: any = ''
 
