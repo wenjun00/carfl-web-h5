@@ -236,6 +236,11 @@ export default class DataForm extends Vue {
       width: 170px;
       display: inline-block;
     }
+    .ivu-date-picker {
+      .ivu-select-dropdown {
+        width: 200px;
+      }
+    }
   }
 }
 </style>
