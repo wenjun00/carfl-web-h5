@@ -24,7 +24,7 @@
                     </i-select>
                 </i-form-item>
                 <i-form-item prop="productType" label="产品名称：">
-                    <i-input class="data-form-item select product-type" v-model="approvalModel.productType"></i-input>
+                    <i-input v-model="approvalModel.productType"></i-input>
                 </i-form-item>
             </template>
         </data-form>
