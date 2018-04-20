@@ -1,7 +1,16 @@
 <!--提前结清申请-->
 <template>
   <section class="page early-payment-apply special-input">
-    <page-header title="提前结清申请" hiddenExport></page-header>
+      <page-header title="提前结清申请" hiddenExport></page-header>
+    <!--<div class="header">
+      <span class="form-title">提前结清申请</span>
+      <div class="command">
+        <div class="command-item">
+          <svg-icon iconClass="dayin"></svg-icon>
+          <span>打印</span>
+        </div>
+      </div>
+    </div>-->
     <i-row type="flex" class="data-form">
       <i-col span="18">
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
@@ -178,7 +187,8 @@
       surplusPenaltyFreeze: 0, // 剩余冻结罚金
       surplusPrincipal: 0, // 剩余本金
       totalPayment: 0, // 收款总额
-      remark: "" // 备注
+      remark: "", // 备注
+      businessId:''
     };
     private saveDraftDisabled: Boolean = false;
     private msg: any = ''
@@ -222,6 +232,7 @@
               }
               if (data.withdrawId) {
                 this.saveDraftModel.id = data.withdrawId; // 获取保存草稿时需要的id
+                this.saveDraftModel.businessId = data.withdrawId;
               }
             },
             ({
