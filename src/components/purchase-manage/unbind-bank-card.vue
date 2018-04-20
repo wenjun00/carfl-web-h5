@@ -1,21 +1,21 @@
 <!--解绑银行卡-->
 <template>
   <section class="component unbind-bank-card">
-    <i-form :label-width="110" style="margin-top:20px;">
+    <i-form :label-width="110" class="item-margin-top20">
       <i-form-item label="客户姓名">
-        <i-input style="width:160px;" v-model="unbindBankCardModal.name" readonly></i-input>
+        <i-input class="item-input-width60" v-model="unbindBankCardModal.name" readonly></i-input>
       </i-form-item>
       <i-form-item label="开户银行">
-        <i-input style="width:160px;" v-model="unbindBankCardModal.depositBank" readonly></i-input>
+        <i-input class="item-input-width60" v-model="unbindBankCardModal.depositBank" readonly></i-input>
       </i-form-item>
       <i-form-item label="银行卡号">
-        <i-input style="width:160px;" v-model="unbindBankCardModal.cardNumber" readonly></i-input>
+        <i-input class="item-input-width60" v-model="unbindBankCardModal.cardNumber" readonly></i-input>
       </i-form-item>
       <i-form-item label="开户省市">
-        <i-input style="width:160px;" v-model="unbindBankCardModal.city" readonly></i-input>
+        <i-input class="item-input-width60" v-model="unbindBankCardModal.city" readonly></i-input>
       </i-form-item>
       <i-form-item label="银行预留手机号">
-        <i-input style="width:160px;" v-model="unbindBankCardModal.reservedPhoneNumber" readonly></i-input>
+        <i-input class="item-input-width60" v-model="unbindBankCardModal.reservedPhoneNumber" readonly></i-input>
       </i-form-item>
       <!--<i-form-item label="验证码">
         <i-input style="width:160px;"></i-input>
@@ -46,7 +46,12 @@
   }
 
 </script>
-<style lang="less" scope>
-
+<style lang="less" scoped>
+  .item-margin-top20{
+    margin-top: 20px;
+  }
+.item-input-width60{
+  width:160px;
+}
 
 </style>

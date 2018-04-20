@@ -2,9 +2,9 @@
 <template>
   <section class="component transfer-record">
     <div>
-      <span style="margin-left:10px;">客户姓名：</span>
+      <span class="item-margin-left10">客户姓名：</span>
       <span>{{customerName}}</span>
-      <div style="float:right;display:inline-block;margin-right:10px;">
+      <div class="item-kehu-div">
         <span>订单编号：</span>
         <span>{{orderId}}</span>
       </div>
@@ -113,7 +113,15 @@ export default class TransferRecord extends Vue {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
+  .component.transfer-record{
+    .item-margin-left10{
+      margin-left:10px;
+    }
+    .item-kehu-div{
+      float:right;display:inline-block;margin-right:10px;
+    }
+  }
 .choose-buy-materials {
   .ivu-select-selection {
     width: 240%;

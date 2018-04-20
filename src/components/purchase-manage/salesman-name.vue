@@ -30,7 +30,7 @@ import { Layout } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
 import { Emit } from "vue-property-decorator";
-
+//TODO
 @Layout("workspace")
 @Component({
   components: {}
@@ -106,7 +106,7 @@ export default class SalesmanName extends Page {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .batch-manage-device {
   .ivu-modal-footer {
     display: none;

@@ -1,7 +1,7 @@
 <!--全额付款申请客户资料-->
 <template>
   <section class="component customer-materials-all">
-    <i-tab-pane name="customerItem" label="客户资料" style="height:500px">
+    <i-tab-pane name="customerItem" label="客户资料" class="item-height50">
       <span class="form-title">个人信息</span>
       <i-row>
         <i-form ref="parchase-form" :rules="rules" :model="customerData" :label-width="110">
@@ -38,18 +38,18 @@
                 <i-row>
                   <i-row>
                     <i-col :span="5">
-                      <i-select style="width:96px" placeholder="省" v-model="customerData.province">
+                      <i-select class="item-width96" placeholder="省" v-model="customerData.province">
                         <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                       </i-select>
                     </i-col>
                     <i-col :span="5">
-                      <i-select style="width:96px" placeholder="市" v-model="customerData.city">
+                      <i-select class="item-width96" placeholder="市" v-model="customerData.city">
                         <i-option v-for="{value,label} in this.customerData.province ? this.$city.getCityData({ level: 1, id: this.customerData.province }) : []"
                           :key="value" :label="label" :value="value"></i-option>
                       </i-select>
                     </i-col>
                     <i-col :span="5">
-                      <i-select style="width:96px" placeholder="区" v-model="customerData.localHomeAddr">
+                      <i-select class="item-width96" placeholder="区" v-model="customerData.localHomeAddr">
                         <i-option v-for="{value,label} in this.customerData.city ? this.$city.getCityData({ level: 1, id: this.customerData.city }) : []"
                           :key="value" :label="label" :value="value"></i-option>
                       </i-select>
@@ -166,7 +166,7 @@
 
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
   .customer-materials-all {
     .ivu-select-selection {
       width: 100%!important;
@@ -175,6 +175,12 @@
       border-bottom-style: solid;
       border-radius: 0;
     }
+  }
+  .item-height50{
+    height: 50px;
+  }
+  .item-width96{
+    width:96px;
   }
 
 </style>
