@@ -55,7 +55,7 @@ export default class AddCar extends Vue {
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
   @Dependencies(CarService) private carService: CarService;
   @Dependencies(PageService) private pageService: PageService;
-  
+
   private isShown: Boolean = true;
   private carColumns: any;
   private carColumns1: any;
@@ -261,6 +261,7 @@ export default class AddCar extends Vue {
     } else {
       this.carId = "";
     }
+    
     this.carService
       .findAllCarBySeries({
         seriesId: this.seriesId,
