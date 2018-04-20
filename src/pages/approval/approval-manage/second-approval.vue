@@ -2,7 +2,7 @@
 <template>
     <section class="page second-approval">
         <page-header title="复审"></page-header>
-          <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getSecondList" hidden-reset>
+          <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getSecondList" :page="pageService" hidden-reset>
             <template slot="input">
                 <i-form-item prop="resourcePoolModel">
                      <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.resourcePoolModel"></i-input>
@@ -27,7 +27,7 @@
                      <i-input v-model="resourcePoolModel.productType"></i-input>
                 </i-form-item>
             </template>
-        </data-form>  
+        </data-form>
 
 
 

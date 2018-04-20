@@ -2,7 +2,7 @@
 <template>
     <section class="page black-list">
         <page-header title="黑名单"> </page-header>
-        <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getBlackList" hidden-reset>
+        <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getBlackList" :page="pageService" hidden-reset>
             <template slot="input">
                 <i-form-item prop="personalInfo">
                     <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>

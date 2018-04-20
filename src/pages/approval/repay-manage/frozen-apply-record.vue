@@ -2,7 +2,7 @@
 <template>
     <section class="page frozen-apply-record">
         <page-header title="冻结申请记录" hiddenPrint></page-header>
-        <data-form date-prop="timeSearch" :model="frozenModel" @on-search="getFrozenList" hidden-reset>
+        <data-form date-prop="timeSearch" :model="frozenModel" @on-search="getFrozenList" :page="pageService" hidden-reset>
             <template slot="input">
                 <i-form-item prop="orderInfo">
                      <i-input v-model="frozenModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
