@@ -91,8 +91,8 @@
     <i-table class="carTable" :columns="carColumns" :data="carDataSet" stripe></i-table>
     <!--车辆选购列表-end-->
     <div>
-      <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
-      <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
+      <i-icon type="plus" style="position:relative;left:26px;color:#265ea2"></i-icon>
+      <i-button @click="onAddCar" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
       <span style="margin-left:115px;font-weight:bold">总价</span>
       <span style="margin-left:328px;font-weight:bold;">{{totalPrice}}</span>
     </div>
@@ -1097,6 +1097,31 @@ export default class ChooseBuyMaterials extends Vue {
     this.choosefinalCash();
     this.choosemanageCost();
   }
+
+  /**
+   * 添加车辆处理
+   */
+  onAddCar() {
+    let dialog = this.$dialog.show({
+      title: "添加车辆",
+      footer: true,
+      onOk: historyRecord => {
+        // let currentRow = historyRecord.getCurrentRow();
+
+        // if (!currentRow) {
+        //   this.$Message.error("请选择对应的订单");
+        //   return false;
+        // }
+
+        // TODO: 更新历史订单信息
+      },
+      onCancel: () => {},
+      render: h => {
+        return h(AddCar, {});
+      }
+    });
+  }
+
   addModalOpen() {
     this.addOpen = true;
     this.addOrEditFlag = true;
