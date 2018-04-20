@@ -328,7 +328,6 @@
             this.$Message.warning('请先审批未处理的申请订单！')
             return false
           }
-
           this.getModel();
           let saveAndCommitModel = this.saveDraftModel;
           if(this.saveDraftItem.length==0){
