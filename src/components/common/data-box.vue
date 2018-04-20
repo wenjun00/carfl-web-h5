@@ -1,7 +1,7 @@
 <template>
   <section class="component data-box">
     <div class="table">
-      <i-table ref="table" :show-header="showHeader" class="i-table" :columns="tableColumns" :data="data" stripe :highlight-row="highlightRow" @on-row-click="rowClick" :width="width" :height="height" @on-current-change="currentChange" @on-selection-change="currentSelect" size="small"></i-table>
+      <i-table ref="table" :show-header="showHeader" class="i-table" :columns="tableColumns" :data="data" stripe :highlight-row="highlightRow" @on-row-click="rowClick" :width="width" :height="height" @on-current-change="onCurrentChange" @on-selection-change="currentSelect" size="small"></i-table>
     </div>
     <div v-if="page" class="row end-span" :style="{'width':`${width}px`}">
       <i-page class="pagination" size="small" show-total show-sizer :show-elevator="page.showElevator" :current.sync="page.pageIndex" :total="page.total" :page-size-opts="pageSizeOpts" :page-size.sync="page.pageSize" @on-change="pageChange" @on-page-size-change="pageSizeChange"></i-page>
@@ -99,8 +99,8 @@ export default class DataBox extends Vue {
   getRowByClick(row) {}
 
   // 当前选择行改变事件
-  @Emit("currentChange")
-  getRowInfo(currentRow, oldRow) {}
+  @Emit("on-current-change")
+  emitCurrentChange(currentRow, oldRow) {}
   
   @Emit('on-selection-change')
   emitSelectionChange(section){}
@@ -246,8 +246,8 @@ export default class DataBox extends Vue {
     this.getRowByClick(row);
   }
 
-  currentChange(currentRow, oldRow) {
-    this.getRowInfo(currentRow, oldRow);
+  onCurrentChange(currentRow, oldRow) {
+    this.emitCurrentChange(currentRow, oldRow);
   }
 
   currentSelect(selection) {
