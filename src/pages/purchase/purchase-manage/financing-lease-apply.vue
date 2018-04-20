@@ -40,24 +40,24 @@
     <!-- 搜索表单-end -->
 
     <!-- 资料申请选项卡-start -->
-    <i-tabs type="card" v-show="showApplicationTab" v-model="materialTabs" class="application-tabs">
+    <i-tabs type="card" v-show="showApplicationTab" v-model="currentTab" class="application-tabs">
       <i-tab-pane label="选购资料" name="choose-buy-materials">
-        <choose-buy-materials ref="choose-buy-materials" v-show="materialTabs==='choose-buy-materials'"></choose-buy-materials>
+        <choose-buy-materials ref="choose-buy-materials" v-show="currentTab==='choose-buy-materials'"></choose-buy-materials>
       </i-tab-pane>
       <i-tab-pane label="客户资料" name="customer-materials">
-        <customer-materials ref="customer-materials" v-show="materialTabs==='customer-materials'"></customer-materials>
+        <customer-materials ref="customer-materials" v-show="currentTab==='customer-materials'"></customer-materials>
       </i-tab-pane>
       <i-tab-pane label="客户职业" name="customer-job-message">
-        <customer-job-message ref="customer-job-message" v-show="materialTabs==='customer-job-message'"></customer-job-message>
+        <customer-job-message ref="customer-job-message" v-show="currentTab==='customer-job-message'"></customer-job-message>
       </i-tab-pane>
       <i-tab-pane label="客户联系人" name="customer-contacts">
-        <customer-contacts ref="customer-contacts" v-show="materialTabs==='customer-contacts'"></customer-contacts>
+        <customer-contacts ref="customer-contacts" v-show="currentTab==='customer-contacts'"></customer-contacts>
       </i-tab-pane>
       <i-tab-pane label="客户来源" name="customer-origin">
-        <customer-origin ref="customer-origin" v-show="materialTabs==='customer-origin'"></customer-origin>
+        <customer-origin ref="customer-origin" v-show="currentTab==='customer-origin'"></customer-origin>
       </i-tab-pane>
       <i-tab-pane label="上传素材" name="upload-the-material">
-        <upload-the-material ref="upload-the-material" v-show="materialTabs==='upload-the-material'"></upload-the-material>
+        <upload-the-material ref="upload-the-material" v-show="currentTab==='upload-the-material'"></upload-the-material>
       </i-tab-pane>
     </i-tabs>
     <div v-show="!showApplicationTab" class="emptyText">
@@ -117,8 +117,9 @@ export default class FinancingLeaseApply extends Page {
 
   private showApplicationTab = false; // 申请选项卡显示状态
   private currentIdCard = ""; // 上次查询的身份证号
+
   private addCar: Boolean = false;
-  private materialTabs: String = "choose-buy-materials";
+  private currentTab: String = "choose-buy-materials";
   private historicalModal: Boolean = false;
   private historicalDataset: any = [];
   private PersonalData: any = [];
@@ -341,7 +342,6 @@ export default class FinancingLeaseApply extends Page {
    * 客户信息反显
    */
   distributionData(data, orderStatus) {
-    console.log(data, "信息反显");
     this.customerModel.name = data.personal.name;
     this.customerModel.mobileMain = data.personal.mobileMain;
     this.customerModel.salesmanName = data.salesmanName;
@@ -431,7 +431,6 @@ export default class FinancingLeaseApply extends Page {
     let customerMaterials: any = this.$refs["customer-materials"];
     let customerJobMessage: any = this.$refs["customer-job-message"];
     let customerContacts: any = this.$refs["customer-contacts"];
-    console.log(customerOrigin, "OriginModel");
     let uploadTheMaterial: any = this.$refs["upload-the-material"];
     if (type) {
       this.orderStatus = 303;

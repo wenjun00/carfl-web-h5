@@ -70,11 +70,16 @@ export default class EnterApprovalReason extends Vue {
 
 </script>
 
-<style lang="less">
-.data-form-item {
-  margin-left: 5px;
-  width: 20%;
-}
+<style lang="less" scoped>
+  .data-form-item {
+    margin-left: 5px;
+    width: 20%;
+  }
+
+  .data-form-input {
+    width: 55%;
+    margin-left: 10px
+  }
 
 .data-form-input {
   width: 55%;

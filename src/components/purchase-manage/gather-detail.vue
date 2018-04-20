@@ -3,11 +3,11 @@
   <section class="component gather-detail">
     <i-table :columns="columns1" :data="saleItemList" width="1100" stripe></i-table>
     <div>
-      <Icon type="plus" style="position:relative;left:16px;top:5px;color:#265ea2"></Icon>
-      <i-button type="text" style="margin-top:10px;color:#265ea2" @click="changeGatherItem">变更收款项</i-button>
+      <Icon type="plus" class="item-shoukuan-icon"></Icon>
+      <i-button type="text" class="item-shoukuan-button" @click="changeGatherItem">变更收款项</i-button>
     </div>
     <div class="form-title">账户信息</div>
-    <table border="1" width="1100" class="gather_type_table" style="margin-top:10px;text-align:center;border:1px solid #DDDEE1;margin-bottom:60px;">
+    <table border="1" width="1100" class="gather_type_table item-shoukuan-table">
       <tr height="40">
         <td bgcolor="#F2F2F2">户名</td>
         <td bgcolor="#F2F2F2">开户银行</td>
@@ -173,7 +173,7 @@ export default class GatherDetail extends Vue {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .choose-buy-materials {
   .ivu-select-selection {
     // width: 240%;
@@ -189,4 +189,13 @@ export default class GatherDetail extends Vue {
     display: none !important;
   }
 }
+  .item-shoukuan-icon{
+    position:relative;left:16px;top:5px;color:#265ea2
+  }
+  .item-shoukuan-button{
+    margin-top:10px;color:#265ea2
+  }
+  .item-shoukuan-table{
+    margin-top:10px;text-align:center;border:1px solid #DDDEE1;margin-bottom:60px;
+  }
 </style>

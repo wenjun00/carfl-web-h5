@@ -150,7 +150,7 @@ export default class DataPowerModal extends Vue {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .component.data-power-modal{
         .form-col{
             .form-title{

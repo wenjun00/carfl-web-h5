@@ -388,11 +388,25 @@
         trigger: 'blur',
         type:'number'
       }],
-      vehicleAmount:[{ required: true, message: '请输入车辆参考总价', trigger: 'blur' },
-                     { pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
-      finalprincipal:[{ required: true, message: '请输入尾付本金', trigger: 'blur' },
-                      { pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,message: '请输入数字', trigger: 'blur' }],
-      financeTotalMoney: [{ required: true, message: '请输入融资总额', trigger: 'blur' }],
+      vehicleAmount:[{
+        required: true,
+        message: '请输入车辆参考总价',
+        trigger: 'blur'
+        },{
+          pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+          message: '请输入数字',
+          trigger: 'blur'
+      }],
+      finalprincipal:[{
+        required: true,
+        message: '请输入尾付本金',
+        trigger: 'blur'
+        },{
+          pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+          message: '请输入数字', trigger: 'blur'
+      }],
+      financeTotalMoney: [{
+        required: true, message: '请输入融资总额', trigger: 'blur' }],
       initialPayment:[{ required: true, message: '请输入首付金额', trigger: 'blur' }],
       depositCash:[{ required: true, message: '请输入保证金金额', trigger: 'blur' }],
       finalCash:[{ required: true, message: '请输入尾付总额', trigger: 'blur' }],

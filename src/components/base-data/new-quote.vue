@@ -432,7 +432,7 @@
   }
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .new-quote {
     .data-form-icon {
       width: 7px;

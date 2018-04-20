@@ -1,11 +1,11 @@
 <!--客户资料-->
 <template>
   <section class="component customer-materials">
-    <i-col span="24" style="line-height:30px" class="form-title">个人信息</i-col>
-    <i-form :rules="rules" ref="job-form" :model="customerMaterialsForm" :label-width="110" label-position="left" style="position:relative;left:16px;margin-top:10px;">
+    <i-col span="24" class="item-line-height30 form-title">个人信息</i-col>
+    <i-form :rules="rules" ref="job-form" :model="customerMaterialsForm" :label-width="110" label-position="left" class="item-xinxi-form">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
-        <span style="font-size:16px;">基础信息</span>
+        <div class="item-jichu-div"></div>
+        <span class="item-jichu-span">基础信息</span>
       </div>
       <i-row>
         <i-col span="12">
@@ -90,8 +90,8 @@
 
       <!--<i-col span="24" style="line-height:30px;background:#ddd">身份证信息</i-col>-->
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
-        <span style="font-size:16px;">身份证信息</span>
+        <div class="item-jichu-div"></div>
+        <span class="item-jichu-span">身份证信息</span>
       </div>
       <!--<i-form :label-width="110">-->
       <i-row>
@@ -113,17 +113,17 @@
           <i-form-item label="身份证地址" prop="idCardAddressDetail">
             <i-row>
               <i-col :span="4">
-                <i-select style="width: 87px;" placeholder="省" v-model="customerMaterialsForm.province">
+                <i-select class="item-width87" placeholder="省" v-model="customerMaterialsForm.province">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="5">
-                <i-select style="width: 110px;" placeholder="市" v-model="customerMaterialsForm.city">
+                <i-select class="item-width110" placeholder="市" v-model="customerMaterialsForm.city">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="5">
-                <i-select style="width: 120px;" placeholder="区" v-model="customerMaterialsForm.idCardAddress">
+                <i-select class="item-width120" placeholder="区" v-model="customerMaterialsForm.idCardAddress">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
@@ -150,8 +150,8 @@
 
       <!--<i-col span="24" style="line-height:30px;background:#ddd">居住信息</i-col>-->
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
-        <span style="font-size:16px;">居住信息</span>
+        <div class="item-jichu-div"></div>
+        <span class="item-jichu-span">居住信息</span>
       </div>
       <!--<i-form :label-width="110">-->
       <i-row>
@@ -162,17 +162,17 @@
             </i-row>
             <i-row>
               <i-col :span="4">
-                <i-select style="width: 87px;" placeholder="省" v-model="customerMaterialsForm.province1">
+                <i-select class="item-width87" placeholder="省" v-model="customerMaterialsForm.province1">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="5">
-                <i-select style="width: 110px;" placeholder="市" v-model="customerMaterialsForm.city1">
+                <i-select class="item-width110" placeholder="市" v-model="customerMaterialsForm.city1">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province1 }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="5">
-                <i-select style="width: 120px;" placeholder="区" v-model="customerMaterialsForm.localHomeAddr">
+                <i-select class="item-width120" placeholder="区" v-model="customerMaterialsForm.localHomeAddr">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city1 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city1 }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
@@ -195,14 +195,14 @@
           <i-form-item label="本市生活时长" prop="cityLiveTime">
             <i-input type="text" placeholder="请输入本市生活时长" v-model="customerMaterialsForm.cityLiveTime">
             </i-input>
-            <span style="position:absolute;left:300px">年</span>
+            <span class="item-nian-span">年</span>
           </i-form-item>
         </i-col>
         <i-col span="12" pull="3">
           <i-form-item label="现居住地生活时长" prop="localLiveTime">
             <i-input type="text" placeholder="请输入现居住地生活时长" v-model="customerMaterialsForm.localLiveTime">
             </i-input>
-            <span style="position:absolute;left:300px">年</span>
+            <span class="item-nian-span">年</span>
           </i-form-item>
         </i-col>
       </i-row>
@@ -229,7 +229,7 @@
             <i-form-item prop="localLiveHouseMoney">
               <i-input type="text" placeholder="每月租金" v-model="customerMaterialsForm.localLiveHouseMoney">
               </i-input>
-              <span style="position:absolute;left:300px">元</span>
+              <span class="item-nian-span">元</span>
             </i-form-item>
           </i-row>
         </i-col>
@@ -281,17 +281,17 @@
             </i-row>
             <i-row>
               <i-col :span="4">
-                <i-select style="width: 87px;" placeholder="省" v-model="customerMaterialsForm.province2">
+                <i-select class="item-width87" placeholder="省" v-model="customerMaterialsForm.province2">
                   <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="5">
-                <i-select style="width: 110px;" placeholder="市" v-model="customerMaterialsForm.city2">
+                <i-select class="item-width110" placeholder="市" v-model="customerMaterialsForm.city2">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.province2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.province2 }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
               <i-col :span="5">
-                <i-select style="width: 120px;" placeholder="区" v-model="customerMaterialsForm.cityOwnhouseAddress">
+                <i-select class="item-width120" placeholder="区" v-model="customerMaterialsForm.cityOwnhouseAddress">
                   <i-option v-for="{value,label} in this.customerMaterialsForm.city2 ? this.$city.getCityData({ level: 1, id: this.customerMaterialsForm.city2 }) : []" :key="value" :label="label" :value="value"></i-option>
                 </i-select>
               </i-col>
@@ -304,8 +304,8 @@
         </i-col>
       </i-row>
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
-        <span style="font-size:16px;">勘察请求</span>
+        <div class="item-jichu-div"></div>
+        <span class="item-jichu-span">勘察请求</span>
       </div>
       <span>是否接受现场勘察</span>
       <i-radio-group v-model="customerMaterialsForm.houseProspecting">
@@ -612,7 +612,7 @@ export default class CustomerMaterials extends Vue {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .customer-materials {
   .ivu-select-selection {
     width: 100% !important;
@@ -621,5 +621,29 @@ export default class CustomerMaterials extends Vue {
     border-bottom-style: solid;
     border-radius: 0;
   }
+}
+  .item-line-height30{
+    line-height: 30px;
+  }
+  .item-jichu-div{
+    width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;
+  }
+  .item-jichu-span{
+    font-size:16px;
+  }
+  .item-nian-span{
+    position:absolute;left:300px
+  }
+  .item-xinxi-form{
+    position:relative;left:16px;margin-top:10px;
+  }
+  .item-width87{
+    width: 87px;
+  }
+.item-width110{
+  width: 110px;
+}
+.item-width120{
+  width: 120px;
 }
 </style>

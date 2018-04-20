@@ -113,7 +113,7 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .component.function-module{
         .form-input{
             width:10%;

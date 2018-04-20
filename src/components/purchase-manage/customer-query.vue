@@ -1,7 +1,7 @@
 <!--解绑银行卡-->
 <template>
   <section class="component customer-query">
-    <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" style="margin-top: 15px;">
+    <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" class="item-margin-top15">
       <data-grid-item label="客户姓名" :span="6">{{row.personalName}}</data-grid-item>
       <data-grid-item label="订单数" :span="6">{{row.orderNumber}}</data-grid-item>
 
@@ -40,12 +40,14 @@
     private customerQuery: Object = {}
     @Prop() row: Object;
     created() {
-      
+
     }
   }
 
 </script>
-<style lang="less" scope>
-
+<style lang="less" scoped>
+  .item-margin-top15{
+    margin-top:15px;
+  }
 
 </style>

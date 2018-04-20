@@ -232,7 +232,7 @@
   }
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .component.modify-user {
     .modify-user-form {
       position: relative;

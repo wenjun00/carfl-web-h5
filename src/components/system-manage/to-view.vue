@@ -42,11 +42,11 @@
   }
 
 </script>
- <style lang="less">
+ <style lang="less" scoped>
     .component.to-view{
         .data-form{
             margin-top:20px;
         }
     }
- 
+
  </style>

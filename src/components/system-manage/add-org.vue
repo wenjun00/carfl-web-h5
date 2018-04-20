@@ -135,7 +135,7 @@ export default class AddOrg extends Vue {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .addOrg {
   position: relative;
   right: 30px;

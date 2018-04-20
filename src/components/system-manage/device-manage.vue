@@ -180,7 +180,7 @@ export default class DeviceManage extends Vue {
   moveOut(row) {}
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .component.device-manage{
         .form-name{
             margin-left:20px;
