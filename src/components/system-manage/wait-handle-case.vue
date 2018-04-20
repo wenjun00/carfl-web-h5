@@ -1,14 +1,14 @@
 <!--待办事项配置-->
 <template>
   <section class="component wait-handle-case">
-    <div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
+    <div class="data-form">
       <Checkbox
         :indeterminate="isIndeterminate"
         :value="checkAll"
         @on-change="handleCheckAllChange">全选</Checkbox>
     </div>
     <i-checkbox-group v-model="waitHanleList" @on-change="handleCheckedItemChange">
-      <i-checkbox v-for="item in checkboxList" :key="item.id" :label="item.id" style="width:400px;">{{item.type?$dict.getDictName(item.type):''}}</i-checkbox>
+      <i-checkbox class="data-checkbox" v-for="item in checkboxList" :key="item.id" :label="item.id">{{item.type?$dict.getDictName(item.type):''}}</i-checkbox>
     </i-checkbox-group>
   </section>
 </template>
@@ -136,3 +136,16 @@
   }
 
 </script>
+<style lang="less">
+    .component.wait-handle-case{
+        .data-form{
+            border-bottom: 1px solid #e9e9e9;
+            padding-bottom:6px;
+            margin-bottom:6px;
+        }
+        .data-checkbox{
+            width:400px;
+        }
+    }
+
+</style>

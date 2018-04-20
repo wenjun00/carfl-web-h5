@@ -1,18 +1,18 @@
 <!--设备管理-->
 <template>
-  <section class="component batch-manage-device">
+  <section class="equipment org-user-manage">
     <!-- <i-tabs @on-click="tabClick">
       <i-tab-pane label="PC端" name="pc"></i-tab-pane>
       <i-tab-pane label="移动端" name="app"></i-tab-pane>
     </i-tabs> -->
-    <div style="display:flex;justify-content:space-around;margin:10px 0;">
-      <i-button @click="onKeyUserDevice" class="blueButton">一键启用设备</i-button>
-      <i-button @click="onKeyForbidDevice" class="blueButton">一键禁用设备</i-button>
-      <i-button @click="onKeyUserDeviceLock" class="blueButton">一键启用设备锁</i-button>
-      <i-button @click="onKeyForbidDeviceLock" class="blueButton">一键停用设备锁</i-button>
-      <i-button @click="onKeyResetDevice" class="blueButton">一键重置设备</i-button>
+    <div class="equipment-button">
+      <i-button @click="onKeyUserDevice" class="blue-button">一键启用设备</i-button>
+      <i-button @click="onKeyForbidDevice" class="blue-button">一键禁用设备</i-button>
+      <i-button @click="onKeyUserDeviceLock" class="blue-button">一键启用设备锁</i-button>
+      <i-button @click="onKeyForbidDeviceLock" class="blue-button">一键停用设备锁</i-button>
+      <i-button @click="onKeyResetDevice" class="blue-button">一键重置设备</i-button>
     </div>
-    <div style="width:100%;height:400px;border:1px solid #dddddd;overflow:auto">
+    <div class="equipment-table">
       <i-table :columns="columns1" :data="deviceList" ref="table" @on-selection-change="currentSelect"></i-table>
     </div>
   </section>
@@ -239,3 +239,24 @@ export default class BatchManageDevice extends Vue {
   }
 }
 </script>
+ <style lang="less">
+    .equipment.org-user-manage{
+      .equipment-button{
+          display:flex;
+          justify-content:space-around;
+          margin:10px 0;
+          .blue-button{
+            background: #265ea2;
+            color: #fff;
+          }
+      }
+      .equipment-table{
+          width:100%;
+          height:400px;
+          border:1px solid #dddddd;
+          overflow:auto;
+      }
+        
+    }
+
+</style>

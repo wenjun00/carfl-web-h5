@@ -5,12 +5,12 @@
       <!--树-->
       <i-col :span="10">
         <span>模块名</span>
-        <div style="height:600px;overflow:auto">
+        <div class="module-name" >
           <data-tree  ref="data-tree" show-checkbox :data="menuResourceData" @on-select-change="getControlResourcesById"></data-tree>
         </div>
       </i-col>
       <!--表格-->
-      <i-col :span="14" style="padding:0 10px">
+      <i-col :span="14" class="module-form">
         <span>模块功能</span>
         <data-box @on-selection-change="onSelectionChange"  ref="data-box" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
       </i-col>
@@ -191,3 +191,15 @@ export default class ModulePower extends Vue {
   }
 }
 </script>
+<style  lang="less">
+    .component.module-power{
+        .module-name{
+            height:600px;
+            overflow:auto;
+        }
+        .module-form{
+            padding:0 10px;
+        }
+    }
+
+</style>

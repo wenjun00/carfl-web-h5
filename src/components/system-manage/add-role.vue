@@ -1,17 +1,17 @@
 <!--新增角色-->
 <template>
-    <i-form :label-width="110" style="margin-top:20px;" ref="add-role" :model="addRoleModel" :rules="rules">
+    <i-form :label-width="110" class="data-form role-maintenance" ref="add-role" :model="addRoleModel" :rules="rules">
       <i-form-item label="角色名称" prop="roleName">
-        <i-input style="width:260px;" v-model="addRoleModel.roleName"></i-input>
+        <i-input class="form-input" v-model="addRoleModel.roleName"></i-input>
       </i-form-item>
       <i-form-item label="状态" prop="roleStatus">
-        <i-select style="width:260px;" v-model="addRoleModel.roleStatus">
+        <i-select class="form-input" v-model="addRoleModel.roleStatus">
           <i-option label="启用" :value="0" :key="0"></i-option>
           <i-option label="停用" :value="1" :key="1"></i-option>
         </i-select>
       </i-form-item>
       <i-form-item label="备注" prop="roleRemark">
-        <i-input type="textarea" style="width:260px;" v-model="addRoleModel.roleRemark"></i-input>
+        <i-input type="textarea" class="form-input" v-model="addRoleModel.roleRemark"></i-input>
       </i-form-item>
     </i-form>
 </template>
@@ -97,3 +97,15 @@
   }
 
 </script>
+ <style lang="less">
+    .data-form.role-maintenance{
+        margin-top:20px;
+        .form-input{
+            width:260px;
+        }
+       
+
+    }
+
+ 
+ </style>

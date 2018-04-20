@@ -1,9 +1,9 @@
 <!--分配角色-->
 <template>
-  <section class="component allot-role-modal">
+  <section class="component org-user-manage">
     <span>角色名称：</span>
-    <i-input style="display:inline-block;width:20%;" v-model="roleListModel.roleName"></i-input>
-    <i-button class="blueButton" style="margin-left:10px;" @click="getRoleList">搜索</i-button>
+    <i-input class="form-input" v-model="roleListModel.roleName"></i-input>
+    <i-button class="form-button" @click="getRoleList">搜索</i-button>
     <data-box :columns="columns1" :data="roleList" ref="databox" @onPageChange="getRoleList" :page="pageService" :noDefaultRow="true"></data-box>
   </section>
 </template>
@@ -143,3 +143,17 @@ export default class AllotRoleModal extends Vue {
   }
 }
 </script>
+ <style lang="less">
+    .component.org-user-manage{
+        .form-input{
+            display:inline-block;
+            width:20%;
+        } 
+        .form-button{
+            background: #265ea2;
+            color: #fff;
+            margin-left:10px;
+        }
+    }
+
+</style>
