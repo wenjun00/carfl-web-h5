@@ -3,7 +3,7 @@
   <section class="page branch-company-info">
     <page-header title="分公司管理">
     </page-header>
-    <data-form hidden-date-search :model="companyModel" @on-search="seachCompany" hidden-reset>
+    <data-form hidden-date-search :model="companyModel" @on-search="seachCompany" :page="pageService" hidden-reset>
       <template slot="input">
         <i-form-item prop="keyWord" label="关键字搜索">
           <i-input placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyWord"></i-input>

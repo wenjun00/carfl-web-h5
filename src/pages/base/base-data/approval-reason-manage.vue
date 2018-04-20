@@ -15,7 +15,7 @@
       </i-form-item>
       </template>
     </data-form>-->
-    <data-form hidden-date-search :model="appReasonModel" @on-search="seach">
+    <data-form hidden-date-search :model="appReasonModel" :page="pageService" @on-search="seach">
       <template slot="input">
         <i-form-item prop="dynamicParam" label="类型">
           <i-select placeholder="全部" v-model="appReasonModel.type" clearable @on-change="selectType">
