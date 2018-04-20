@@ -12,68 +12,79 @@
     <!-- 弹出框 -->
     <template>
       <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
-        <file-upload ref="file-upload"></file-upload>
+        <file-upload ref="file-upload" @on-success="onUploadSuccess"></file-upload>
       </i-modal>
     </template>
   </div>
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import FileUpload from "~/components/common/file-upload.tsx.vue";
-  @Component({
-    components: {
-      FileUpload
-    }
-  })
-  export default class EnterApprovalReason extends Vue {
-    private enterReasonModel: any = {
-      type: ''
-    }
-    private disabledOne: Boolean = true;
-    private openUpload: Boolean = false
-    created() {
+import Vue from "vue";
+import Component from "vue-class-component";
+import FileUpload from "~/components/common/file-upload.tsx.vue";
+@Component({
+  components: {
+    FileUpload
+  }
+})
+export default class EnterApprovalReason extends Vue {
+  private enterReasonModel: any = {
+    type: ''
+  }
+  private disabledOne: Boolean = true;
+  private openUpload: Boolean = false;
+  private file: any = {};
 
-    }
-    enterChange() {
-      if (this.enterReasonModel.type !== '') {
-        this.disabledOne = false
-      } else {
-        this.disabledOne = true
-      }
-    }
-    fileSelect() {
-      this.openUpload = true
-    }
-    /**
-     * 上传文件
-     */
-    postFile() {
-      let fileUpload = this.$refs["file-upload"] as FileUpload;
-      fileUpload.upload();
-    }
+  created() {
 
   }
+  enterChange() {
+    if (this.enterReasonModel.type !== '') {
+      this.disabledOne = false
+    } else {
+      this.disabledOne = true
+    }
+  }
+  fileSelect() {
+    this.openUpload = true
+  }
+  /**
+   * 上传文件
+   */
+  postFile() {
+    let fileUpload = this.$refs["file-upload"] as FileUpload;
+    fileUpload.upload();
+  }
+
+  onUploadSuccess() {
+    this.openUpload = false
+    this.$nextTick(() => {
+      let fileUpload = this.$refs["file-upload"] as FileUpload;
+      fileUpload.reset();
+      let fileList: Array<any> = fileUpload.makeList()
+      this.file = fileList[0]
+    });
+  }
+
+}
 
 </script>
 
 <style lang="less">
-  .data-form-item {
-    margin-left: 5px;
-    width: 20%;
-  }
+.data-form-item {
+  margin-left: 5px;
+  width: 20%;
+}
 
-  .data-form-input {
-    width: 55%;
-    margin-left: 10px
-  }
+.data-form-input {
+  width: 55%;
+  margin-left: 10px;
+}
 
-  .data-form-content {
-    display: block;
-    text-align: center;
-    color: gray;
-    margin-top: 20px;
-  }
-
+.data-form-content {
+  display: block;
+  text-align: center;
+  color: gray;
+  margin-top: 20px;
+}
 </style>
