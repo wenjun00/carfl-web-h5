@@ -164,7 +164,7 @@
 
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
  .demo-upload-list{
         display: inline-block;
         // width: 60px;

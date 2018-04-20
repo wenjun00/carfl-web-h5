@@ -113,7 +113,7 @@ export default class TransferRecord extends Vue {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .choose-buy-materials {
   .ivu-select-selection {
     width: 240%;

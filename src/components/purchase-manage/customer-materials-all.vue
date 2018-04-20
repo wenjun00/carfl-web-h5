@@ -166,7 +166,7 @@
 
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
   .customer-materials-all {
     .ivu-select-selection {
       width: 100%!important;

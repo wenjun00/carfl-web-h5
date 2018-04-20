@@ -300,7 +300,7 @@ export default class ApplyDetail extends Vue {
   }
 }
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
 .title {
   font-size: 14px;
   font-weight: bold;

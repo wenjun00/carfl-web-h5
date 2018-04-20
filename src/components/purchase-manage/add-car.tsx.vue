@@ -360,7 +360,7 @@
   }
 
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
   .open {
     max-width: auto;
     overflow: hidden;

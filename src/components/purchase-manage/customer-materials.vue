@@ -612,7 +612,7 @@ export default class CustomerMaterials extends Vue {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .customer-materials {
   .ivu-select-selection {
     width: 100% !important;

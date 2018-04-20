@@ -369,7 +369,7 @@
 
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
   .customer-job-message {
     .ivu-select-selection {
       width: 100%!important;
