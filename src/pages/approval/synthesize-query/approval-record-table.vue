@@ -2,7 +2,7 @@
 <template>
     <section class="page approval-record-table">
         <page-header title="审核记录表" hiddenPrint hiddenExport></page-header>
-         <data-form date-prop="timeSearch" :model="approvalRecordModel" @on-search="getApprovaRecordList" hidden-reset>
+         <data-form date-prop="timeSearch" :model="approvalRecordModel" @on-search="getApprovaRecordList" :page="pageService" hidden-reset>
             <template slot="input">
                 <i-form-item prop="type">
                      <i-select  placeholder="全部状态" v-model="approvalRecordModel.type" @on-change="changeSelectOne" clearable>
@@ -28,7 +28,7 @@
                             <i-option v-for="item in refuseDetail" :key="item.detail" :label="item.detail" :value="item.detail"></i-option>
                         </i-select>
                 </i-form-item>
-               
+
                 <i-form-item prop="startTime" label="日期">
                      <i-date-picker v-model="approvalRecordModel.startTime" placeholder="起始日期"></i-date-picker> ~
                 </i-form-item>
@@ -39,7 +39,7 @@
             </template>
         </data-form>
 
-        
+
         <data-box :id="356" :columns="columns1" :data="approvalRecordList" @onPageChange="getApprovaRecordList" :page="pageService"></data-box>
 
         <!--进度查询-->

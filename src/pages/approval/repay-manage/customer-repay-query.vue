@@ -2,7 +2,7 @@
 <template>
     <section class="page customer-repay-query">
         <page-header title="客户还款查询" hiddenPrint hiddenExport></page-header>
-        <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList" hidden-reset>
+        <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList" :page="pageService"  hidden-reset>
             <template slot="input">
                 <i-form-item prop="dynamicParam">
                     <i-input placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>

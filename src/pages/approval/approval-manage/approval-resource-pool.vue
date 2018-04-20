@@ -2,7 +2,7 @@
 <template>
     <section class="page approval-resource-pool">
         <page-header title="审核资源池"> </page-header>
-        <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getApprovalListByCondition" hidden-reset>
+        <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getApprovalListByCondition" :page="pageService" hidden-reset>
             <template slot="input">
                 <i-form-item prop="personalInfo">
                     <i-input v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>

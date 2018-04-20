@@ -2,7 +2,7 @@
 <template>
     <section class="page derate-apply-record">
         <page-header title="减免申请记录" hiddenPrint></page-header>
-        <data-form date-prop="timeSearch" :model="derateModel" @on-search="getDerateList" hidden-reset>
+        <data-form date-prop="timeSearch" :model="derateModel" @on-search="getDerateList" :page="pageService"  hidden-reset>
             <template slot="input">
                     <i-form-item prop="orderInfo">
                         <i-input v-model="derateModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>

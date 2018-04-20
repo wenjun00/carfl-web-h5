@@ -1,7 +1,7 @@
 <template>
     <section class="page role-maintenance">
         <page-header title="角色维护" hiddenPrint></page-header>
-        <data-form hiddenDateSearch :model="roleModel" @on-search="getRoleListByCondition" @on-reset="refreshRoleList">
+        <data-form hiddenDateSearch :model="roleModel" @on-search="getRoleListByCondition" :page="pageService" @on-reset="refreshRoleList">
             <template slot="input">
                 <i-form-item prop="roleName" label="角色名称：">
                     <i-input placeholder="请输入角色姓名" v-model="roleModel.roleName"></i-input>

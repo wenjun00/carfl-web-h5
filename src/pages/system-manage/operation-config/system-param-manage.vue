@@ -2,7 +2,7 @@
 <template>
     <section class="page system-param-manage">
         <page-header title="系统参数管理" hiddenPrint hiddenExport></page-header>
-        <data-form hiddenDateSearch :model="systemParameterModel" @on-search="getSystemParam" @on-reset="refreshRoleList">
+        <data-form hiddenDateSearch :model="systemParameterModel" @on-search="getSystemParam" :page="pageService" @on-reset="refreshRoleList">
             <template slot="input">
                 <i-form-item prop="paramName" label="参数名称：">
                     <i-input class="form-input" v-model="systemParameterModel.paramName"></i-input>

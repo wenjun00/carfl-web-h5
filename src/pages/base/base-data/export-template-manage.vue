@@ -17,7 +17,7 @@
           </div>
         </i-col>
         <i-col class="command" span="19" offset="1">
-          <data-form hidden-date-search :model="personalModel" @on-search="search">
+          <data-form hidden-date-search :model="personalModel" :page="pageService" @on-search="search">
             <template slot="input">
               <i-form-item prop="name" label="模块功能">
                 <i-input v-model="personalModel.name" placeholder="请输入模版、页面、功能名称查询"></i-input>

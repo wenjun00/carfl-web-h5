@@ -1,13 +1,13 @@
 <template>
     <section class="page open-account">
         <page-header title="客户开户"></page-header>
-         <data-form date-prop="timeSearch" :model="openAccountModel" @on-search="getCustomerOpenAccount" hidden-reset>
+         <data-form date-prop="timeSearch" :model="openAccountModel" :page="pageService" @on-search="getCustomerOpenAccount" hidden-reset>
       <template slot="input">
         <i-form-item prop="personalInfo">
           <i-input v-model="openAccountModel.personalInfo" placeholder="请输入客户姓名\证件号码\联系号码查询"></i-input>
         </i-form-item>
       </template>
-    </data-form> 
+    </data-form>
         <data-box :id="180" :columns="columns1" :data="openAccountList" ref="databox" @onPageChange="getCustomerOpenAccount" :page="pageService"></data-box>
         <!--开户弹窗-->
         <template>

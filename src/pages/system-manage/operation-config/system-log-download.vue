@@ -3,7 +3,7 @@
     <section class="page system-log-download">
         <page-header title="系统日志下载" @on-export="exportLogs"></page-header>
 
-        <data-form hidden-date-search :model="systemLogModel" @on-search="search">
+        <data-form hidden-date-search :model="systemLogModel" :page="pageService" @on-search="search">
             <template slot="input">
                 <i-form-item prop="realName" label="操作人：">
                     <i-input v-model="systemLogModel.realName"></i-input>

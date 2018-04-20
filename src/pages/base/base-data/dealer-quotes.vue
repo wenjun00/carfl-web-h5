@@ -2,7 +2,7 @@
 <template>
   <section class="page dealer-quotes">
     <page-header title="经销商报价" hiddenPrint></page-header>
-    <data-form hidden-date-search :model="busModal" @on-search="seachBusiness">
+    <data-form hidden-date-search :model="busModal" :page="pageService" @on-search="seachBusiness">
       <template slot="input">
         <i-form-item prop="name" label="经销商">
           <i-input placeholder="请输入经销商" v-model="busModal.quotationName"></i-input>
@@ -503,7 +503,7 @@
       }
     }
   }
-  
+
   .bottom_addPrice {
     width: 100%;
     height: 80px;
