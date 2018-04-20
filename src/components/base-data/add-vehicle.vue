@@ -17,7 +17,7 @@
       </i-form-item>
       <i-form-item label="车辆颜色" prop="carColour">
         <i-input class="data-form-item" v-model="addVehicleModel.carColour"></i-input>
-        <span style="color:red">多种颜色请用；隔开</span>
+        <span class="item-span">多种颜色请用；隔开</span>
       </i-form-item>
       <i-form-item label="车辆排量" prop="carEmissions">
         <i-input class="data-form-item" v-model="addVehicleModel.carEmissions"></i-input>
@@ -156,10 +156,13 @@ export default class AddVehicle extends Vue {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .component.add-vehicle{
     .data-form-item{
         width: 260px;
     }
+  .item-span{
+    color:red
+  }
 }
 </style>
