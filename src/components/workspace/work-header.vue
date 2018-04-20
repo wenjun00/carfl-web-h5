@@ -137,7 +137,7 @@
 
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .component.work-header.row.between-span {
     flex-basis: 60px;
     height: 60px;

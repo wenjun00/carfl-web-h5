@@ -182,7 +182,7 @@ export default class WorkMenu extends Vue {
 }
 </style>
 
-<style lang="less" scoped>
+<style lang="less">
 .work-menu.component {
     .one-level{
         height:100%;
