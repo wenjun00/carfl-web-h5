@@ -51,7 +51,7 @@ export class FilterService {
     }
 
     target.start = FilterService.dateFormat(dateRange[0], fmt)
-    target.end = moment(dateRange[1]).add(1, 'd').subtract(1, 's');
+    target.end =  FilterService.dateFormat(moment(dateRange[1]).add(1, 'd').subtract(1, 's'), fmt)
     // target.end = FilterService.dateFormat(dateRange[1], fmt)
     // target.increase = function () {
     //   target.end = moment(dateRange[1]).add(1, 'd').subtract(1, 's');;
