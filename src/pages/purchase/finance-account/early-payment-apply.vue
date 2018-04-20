@@ -7,7 +7,8 @@
         <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
           <i-col span="12">
             <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
+              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab"
+                       :maxlength="18">
               </i-input>
             </i-form-item>
           </i-col>
@@ -26,7 +27,8 @@
           <i-col span="12">
             <i-form-item label="选择订单" prop="orderId">
               <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
-                <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
+                <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId"
+                          :label="item.orderNumber"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
@@ -119,10 +121,10 @@
     };
     applyRule: Object = {
       idCard: [{
-          required: true,
-          message: '请输入证件号码',
-          trigger: 'blur',
-        },
+        required: true,
+        message: '请输入证件号码',
+        trigger: 'blur',
+      },
         {
           validator: this.$validator.idCard,
           trigger: "blur"
@@ -134,10 +136,10 @@
         trigger: 'blur',
       }],
       mobileMain: [{
-          required: true,
-          message: '请输入客户电话',
-          trigger: 'blur',
-        },
+        required: true,
+        message: '请输入客户电话',
+        trigger: 'blur',
+      },
         {
           validator: this.$validator.phoneNumber,
           trigger: "blur"
@@ -156,7 +158,7 @@
     };
     private applyPerson: String = ""; // 申请人
     private applyTime: String = ""; // 申请时间
-    private orderNumberIdModels: Array < any > = [];
+    private orderNumberIdModels: Array<any> = [];
     private loading: Boolean = false;
     private addCar: Boolean = false;
     private personalId: Number = 0;
@@ -180,6 +182,7 @@
       totalPayment: 0, // 收款总额
       remark: "" // 备注
     };
+    private saveDraftItem: Array = [];
     private saveDraftDisabled: Boolean = false;
     private msg: any = ''
 
@@ -199,6 +202,7 @@
         ":" +
         time.getSeconds();
     }
+
     /**
      * 订单号change
      */
@@ -225,17 +229,19 @@
               }
             },
             ({
-              msg
-            }) => {
+               msg
+             }) => {
               this.$Message.error(msg);
               this.msg = msg
             }
           );
       }
     }
+
     getModel() {
       let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
       let itemList = _gatherDetail.getItem();
+      this.saveDraftItem = itemList;
       console.log(itemList, "itemList");
       this.saveDraftModel.otherFee = _gatherDetail.getOtherFee();
       this.saveDraftModel.remark = this.applyData.remark;
@@ -290,6 +296,7 @@
         }
       })
     }
+
     /**
      * 保存草稿
      */
@@ -302,12 +309,13 @@
             this.$Message.success("保存草稿成功！");
           },
           ({
-            msg
-          }) => {
+             msg
+           }) => {
             this.$Message.error(msg);
           }
         );
     }
+
     /**
      * 保存并提交
      */
@@ -321,8 +329,14 @@
             this.$Message.warning('请先审批未处理的申请订单！')
             return false
           }
+
           this.getModel();
           let saveAndCommitModel = this.saveDraftModel;
+          if(this.saveDraftItem.length==0){
+            console.log('未添加付款项')
+            this.$Message.warning('未添加付款项，请添加付款项！')
+            return false
+          }
           this.withdrawApplicationService
             .saveAdvancePayoffApplication(saveAndCommitModel)
             .subscribe(
@@ -340,6 +354,7 @@
         }
       })
     }
+
     /**
      * 显示tab页，去掉遮罩
      */
@@ -349,6 +364,7 @@
         this.getOrderInfo();
       }
     }
+
     /**
      * 获取订单信息
      */
@@ -369,12 +385,13 @@
             }
           },
           ({
-            msg
-          }) => {
+             msg
+           }) => {
             this.$Message.error(msg);
           }
         );
     }
+
     /**
      * 清空
      */
@@ -393,6 +410,7 @@
         }
       });
     }
+
     /**
      * 页面重置
      */
@@ -411,9 +429,9 @@
 
 <style lang="less" scope>
   .page.early-payment-apply {
-      .data-form{
-          margin-top: 10px;
-      }
+    .data-form {
+      margin-top: 10px;
+    }
     .header {
       border-bottom: 1px solid #cccccc;
       margin-bottom: 20px;
@@ -454,7 +472,7 @@
     .early-pay-tabs {
       .ivu-tabs-bar {
         border-bottom: 1px solid #dddee1;
-        .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
+        .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
           margin: 0;
           margin-right: 4px;
           padding: 5px 16px 4px;

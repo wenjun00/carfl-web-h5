@@ -2,8 +2,8 @@
 <template>
   <section class="page approval-reason-manage">
     <page-header title="审批原因管理" hiddenPrint hiddenExport>
-      <command-button label="导入" icon="daoru" @click="enterInto"></command-button>
-      <command-button label="模板下载" icon="xiazai" @click="downloadTemplate"></command-button>
+      <!-- <command-button label="导入" icon="daoru" @click="enterInto"></command-button>
+      <command-button label="模板下载" icon="xiazai" @click="downloadTemplate"></command-button> -->
     </page-header>
     <data-form hidden-date-search :model="appReasonModel" :page="pageService" @on-search="seach">
       <template slot="input">
