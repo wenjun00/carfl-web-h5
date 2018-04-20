@@ -13,7 +13,6 @@
         <i-form-item prop="endTime">
           <i-date-picker type="date" v-model="approvalModel.endTime"></i-date-picker>
         </i-form-item>
-        <!--<i-button @click="getOrderQuery" class="blueButton">搜索</i-button>-->
       </template>
     </data-form>
     <data-box :id="405" :columns="columns1" :data="paymentData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
@@ -22,7 +21,7 @@
       <i-modal v-model="confirmGatherModal" :title="checkGatherModal?'查看':'确认付款'" width="900" class="confirmGather" :transfer="false">
         <confirm-pay ref="confirm-pay" :check="checkGatherModal"></confirm-pay>
         <div slot="footer">
-          <i-button class="highDefaultButton" @click="saveDraft" v-if="!checkGatherModal">保存草稿</i-button>
+          <!--<i-button class="highDefaultButton" @click="saveDraft" v-if="!checkGatherModal">保存草稿</i-button>-->
           <i-button class="highButton" @click="sendBack" v-if="!checkGatherModal">退回</i-button>
           <i-button class="highButton" @click="confirmRepayment" v-if="!checkGatherModal">确认</i-button>
         </div>
@@ -334,7 +333,7 @@
       }
     }
   }
-  
+
   .confirmGather {
     .ivu-modal-body {
       height: 600px;
