@@ -1,9 +1,13 @@
 <!--系统日志下载-->
 <template>
     <section class="page system-log-download">
-        <page-header title="系统日志下载" @on-export="exportLogs"></page-header>
+        <page-header title="系统日志下载" @on-export="exportLogs" ></page-header>
 
+<<<<<<< HEAD
+        <data-form hidden-date-search :model="systemLogModel" @on-search="search" :page="pageService">
+=======
         <data-form hidden-date-search :model="systemLogModel" :page="pageService" @on-search="search">
+>>>>>>> 7d84107aa39f6f9671136f90c5098969cd203fab
             <template slot="input">
                 <i-form-item prop="realName" label="操作人：">
                     <i-input v-model="systemLogModel.realName"></i-input>
@@ -17,8 +21,9 @@
                 <i-form-item prop="endTime">
                     <i-date-picker v-model="systemLogModel.endTime"></i-date-picker>
                 </i-form-item>
-
-                <i-button class="form-button" @click="addNewBackups">新增备份</i-button>
+            </template>
+            <template slot="button">
+                <i-button @click="addNewBackups">新增备份</i-button>
             </template>
         </data-form>
 
@@ -123,6 +128,7 @@ export default class SystemLogDownload extends Page {
       }
     ]
   }
+  addNewBackups(){}
   search() {
     this.systemLogModel.startTime = FilterService.dateFormat(
       this.systemLogModel.startTime,

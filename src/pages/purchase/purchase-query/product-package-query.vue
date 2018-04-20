@@ -2,7 +2,11 @@
 <template>
   <section class="page product-package-query">
     <page-header title="产品包查询"></page-header>
+<<<<<<< HEAD
+    <data-form date-prop="timeSearch" :model="seachParams" @on-search="productSeach" hidden-reset :page="pageService">
+=======
     <data-form date-prop="timeSearch" :model="seachParams" @on-search="productSeach" :page="pageService" hidden-reset>
+>>>>>>> 7d84107aa39f6f9671136f90c5098969cd203fab
       <template slot="input">
         <i-form-item prop="fileName">
           <i-input class="document-query-input" v-model="seachParams.fileName" placeholder="文件名查询"></i-input>

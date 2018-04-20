@@ -1,7 +1,12 @@
 <template>
     <section class="page role-maintenance">
+<<<<<<< HEAD
+        <page-header title="角色维护" hiddenPrint @on-export="exportRole"></page-header>
+        <data-form hidden-date-search :model="roleModel" @on-search="getRoleListByCondition">
+=======
         <page-header title="角色维护" hiddenPrint></page-header>
         <data-form hiddenDateSearch :model="roleModel" @on-search="getRoleListByCondition" :page="pageService" @on-reset="refreshRoleList">
+>>>>>>> 7d84107aa39f6f9671136f90c5098969cd203fab
             <template slot="input">
                 <i-form-item prop="roleName" label="角色名称：">
                     <i-input placeholder="请输入角色姓名" v-model="roleModel.roleName"></i-input>
@@ -12,8 +17,11 @@
                         <i-option label="停用" :value="1" :key="1"></i-option>
                     </i-select>
                 </i-form-item>
-                <i-button class="blue-button blue-button-little" @click="addNewRole">新增角色</i-button>
             </template>
+            <template slot="button">
+                <i-button @click="addNewRole">新增角色</i-button>
+            </template>
+
         </data-form>
         <data-box :id="20" :columns="columns1" :data="roleList" @onPageChange="getRoleListByCondition" :page="pageService" ref="databox"></data-box>
 

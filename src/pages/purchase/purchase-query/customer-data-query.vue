@@ -4,7 +4,11 @@
     <page-header title="客户资料查询" hiddenPrint hiddenExport>
 
     </page-header>
+<<<<<<< HEAD
+    <data-form date-prop="timeSearch" :model="ordertransferModel" @on-search="refreshData" hidden-reset :page="pageService" >
+=======
     <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData" hidden-reset>
+>>>>>>> 7d84107aa39f6f9671136f90c5098969cd203fab
       <template slot="input">
         <i-form-item prop="startTime">
           <i-date-picker v-model="ordertransferModel.startTime" type="date" @on-change="startTimeChange" placeholder="起始日期(始)"></i-date-picker>
