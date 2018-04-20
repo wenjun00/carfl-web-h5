@@ -143,12 +143,12 @@ export default class AllotRoleModal extends Vue {
   }
 }
 </script>
- <style lang="less">
+ <style lang="less" scoped>
     .component.org-user-manage{
         .form-input{
             display:inline-block;
             width:20%;
-        } 
+        }
         .form-button{
             background: #265ea2;
             color: #fff;

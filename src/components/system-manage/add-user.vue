@@ -227,7 +227,7 @@
   }
 
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .addUser {
     position: relative;
     right: 30px;

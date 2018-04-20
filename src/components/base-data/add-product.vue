@@ -63,7 +63,7 @@ export default class AddProduct extends Vue {
 	}
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .ivu-modal-body {
 	height: 600px;
 	overflow: auto;

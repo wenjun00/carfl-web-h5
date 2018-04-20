@@ -119,7 +119,7 @@
 
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .changeCard {
     .ivu-modal-footer {
       display: none;
