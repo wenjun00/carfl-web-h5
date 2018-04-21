@@ -12,12 +12,7 @@
         <i-form-item prop="dataRange" label="日期">
           <i-date-picker v-model="approvalModel.dataRange" type="daterange"></i-date-picker>
         </i-form-item>
-        <!-- <i-form-item prop="startTime" label="日期">
-          <i-date-picker type="date" v-model="approvalModel.startTime"></i-date-picker>
-        </i-form-item> -->
-        <!-- <i-form-item prop="endTime">
-          <i-date-picker type="date" v-model="approvalModel.endTime"></i-date-picker>
-        </i-form-item> -->
+
       </template>
     </data-form>
     <data-box :id="466" :columns="queryColumns" :data="queryData" @onPageChange="getOrderQuery" :page="pageService"></data-box>

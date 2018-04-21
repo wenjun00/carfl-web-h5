@@ -4,11 +4,8 @@
     <page-header title="付款记录查询" hiddenPrint hiddenExport></page-header>
     <data-form hidden-date-search :model="paymentModel" :page="pageService" @on-search="searchPaymentrecord">
       <template slot="input">
-        <i-form-item prop="startTime" label="申请日期">
-          <i-date-picker v-model="paymentModel.startTime" type="date" placeholder="yyy/mm/dd"></i-date-picker>
-        </i-form-item>
-        <i-form-item prop="endTime">
-          <i-date-picker v-model="paymentModel.endTime" type="date" placeholder="yyy/mm/dd"></i-date-picker>
+        <i-form-item prop="dateRange" label="申请日期">
+          <i-date-picker v-model="paymentModel.dateRange" type="daterange"></i-date-picker>
         </i-form-item>
         <i-form-item prop="orderNumber">
           <i-input placeholder="请录入订单编号" v-model="paymentModel.orderNumber"></i-input>
@@ -89,7 +86,8 @@
       startTime: '',
       endTime: '',
       refundType: '',
-      applicationStatus: '' // 申请状态
+      applicationStatus: '', // 申请状态
+      dateRange:[]
     }
 
 
@@ -200,23 +198,11 @@
       } else {
         this.paymentModel.processStatus = 1130
       }
-      this.paymentModel.startTime = FilterService.dateFormat(
-        this.paymentModel.startTime
-      );
-      this.paymentModel.endTime = FilterService.dateFormat(
-        this.paymentModel.endTime
-      );
       this.refundApplicationService
         .getRefundRecord(this.paymentModel, this.pageService)
         .subscribe(
-          data => {
-            this.data1 = data
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg);
-          }
+          data =>this.data1 = data,
+          err=>this.$Message.error(err)
         );
     }
     getOrderInfoByTime() {}

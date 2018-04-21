@@ -1,6 +1,7 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
+import {FilterService} from "~/utils/filter.service";
 import { requestType } from "~/config/enum.config";
 import store from "~/store"
 
@@ -144,10 +145,17 @@ export class WithdrawApplicationService {
    * 获取收款申请记录
    */
   getGatheringApprovalList(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dataRange)
     return this.netService.send({
       server: manageService.withdrawApplicationController.getGatheringApprovalList,
-      data,
-      page
+      data:{
+        queryStartDate: dateRange.start,
+        queryEndDate: dateRange.end,
+        applicationType: data.applicationType, // 收款类型
+        approvalStatus: data.approvalStatus, // 申请状态
+        orderNumber: data.orderNumber, // 订单编号
+      },
+      page:page
     })
   }
   /**

@@ -7,11 +7,8 @@
         <i-form-item prop="fileName">
           <i-input class="document-query-input" v-model="seachParams.fileName" placeholder="文件名查询"></i-input>
         </i-form-item>
-        <i-form-item prop="minDate" label="日期">
-          <i-date-picker class="document-query-picker" v-model="seachParams.minDate" placeholder="起始日期"></i-date-picker>
-        </i-form-item>
-        <i-form-item prop="maxDate">
-          <i-date-picker class="document-query-picker" v-model="seachParams.maxDate" placeholder="终止日期"></i-date-picker>
+        <i-form-item prop="dateRange" label="日期">
+          <i-date-picker class="document-query-picker" v-model="seachParams.dateRange" type="daterange"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -92,7 +89,8 @@
         fileName: '',
         minDate: '',
         maxDate: '',
-        timeSearch: ''
+        timeSearch: '',
+        dateRange:[]
       }
       this.queryColumns = [{
           title: '操作',
@@ -234,25 +232,11 @@
      * 搜索
      */
     productSeach() {
-      this.seachParams.minDate = FilterService.dateFormat(
-        this.seachParams.minDate,
-        'yyyy-MM-dd'
-      )
-      this.seachParams.maxDate = FilterService.dateFormat(
-        this.seachParams.maxDate,
-        'yyyy-MM-dd'
-      )
       this.productPackageService
         .getAllProductPackage(this.seachParams, this.pageService)
         .subscribe(
-          val => {
-            this.queryData = val
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg)
-          }
+          val =>this.queryData = val,
+          err =>this.$Message.error(err)
         )
     }
     /**

@@ -120,6 +120,9 @@ export class RefundApplicationService {
         startTime: dateRange.start,
         endTime: dateRange.end,
         approvalStatus: data.approvalStatus,
+        orderNumber: data.orderNumber,
+        refundType: data.refundType,
+        applicationStatus: data.applicationStatus,
       },
       page: page
     })

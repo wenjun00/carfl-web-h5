@@ -5,11 +5,8 @@
     </page-header>
     <data-form hidden-date-search :model="receiptModel" :page="pageService" @on-search="receiptRecordSearch">
       <template slot="input">
-        <i-form-item prop="queryStartDate" label="申请日期">
-          <i-date-picker v-model="receiptModel.queryStartDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>
-        </i-form-item>
-        <i-form-item prop="queryEndDate">
-          <i-date-picker v-model="receiptModel.queryEndDate" type="date" placeholder="yyy/mm/dd"></i-date-picker>
+        <i-form-item prop="dateRange" label="申请日期">
+          <i-date-picker v-model="receiptModel.dateRange" type="daterange"></i-date-picker>
         </i-form-item>
         <i-form-item prop="applicationType">
           <i-select placeholder="全部收款类型" v-model="receiptModel.applicationType" clearable>
@@ -86,7 +83,8 @@
       queryEndDate: '',
       applicationType: '', // 收款类型
       approvalStatus: '', // 申请状态
-      orderNumber: '' // 订单编号
+      orderNumber: '', // 订单编号
+      dateRange:[]
     }
 
     addNewApply() {
@@ -236,23 +234,11 @@
       } else {
         this.receiptModel.isInclude = 0
       }
-      this.receiptModel.queryStartDate = FilterService.dateFormat(
-        this.receiptModel.queryStartDate
-      );
-      this.receiptModel.queryEndDate = FilterService.dateFormat(
-        this.receiptModel.queryEndDate
-      );
       this.withdrawApplicationService
         .getGatheringApprovalList(this.receiptModel, this.pageService)
         .subscribe(
-          data => {
-            this.receiptDataSet = data
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg);
-          }
+          data => this.receiptDataSet = data,
+          err =>this.$Message.error(err)
         );
     }
     getOrderInfoByTime() {}

@@ -19,6 +19,7 @@ export class ProductPackageService {
               fileName: data.fileName,
               minDate: dateRange.start,
               maxDate: dateRange.end,
+              timeSearch: data.timeSearch,
             },
             page:page
         })
