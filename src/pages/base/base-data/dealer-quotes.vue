@@ -466,7 +466,7 @@
   }
 
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
   .page.dealer-quotes {
     .form {
       margin-top: 10px;
@@ -504,22 +504,22 @@
     }
   }
 
-  .bottom_addPrice {
-    width: 100%;
-    height: 80px;
-    background: rgb(255, 255, 255);
-    border: 1px solid rgb(221, 221, 221);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    cursor: pointer;
-    .blueButton {
-      height: 40px;
-      margin-right: 18px;
-    }
-  }
+//   .bottom_addPrice {
+//     width: 100%;
+//     height: 80px;
+//     background: rgb(255, 255, 255);
+//     border: 1px solid rgb(221, 221, 221);
+//     position: fixed;
+//     bottom: 0;
+//     left: 0;
+//     display: flex;
+//     justify-content: flex-end;
+//     align-items: center;
+//     cursor: pointer;
+//     .blueButton {
+//       height: 40px;
+//       margin-right: 18px;
+//     }
+//   }
 
 </style>
