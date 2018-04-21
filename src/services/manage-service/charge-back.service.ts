@@ -22,7 +22,7 @@ export class ChargeBackService {
    * 获取个人开户列表
    */
   getPersonalAccountList(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dataRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.chargeBackController.getPersonalAccountList,
       data: {

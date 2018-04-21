@@ -44,7 +44,7 @@ export class ApprovalService {
    * 我的审核
    */
   getMyApprovalOrder(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dataRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.approvalController.getMyApprovalOrder,
       data: {
@@ -95,7 +95,7 @@ export class ApprovalService {
    * 审核记录表查询
    */
   getAuditRecord(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dataRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.approvalController.getAuditRecord,
       data: {

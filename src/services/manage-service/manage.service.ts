@@ -105,7 +105,7 @@ export class ManageService {
    * @param page
    */
   querySystemLogsPage(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dataRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.systemLogsController.querySystemLogsPage,
       data: {
@@ -120,7 +120,7 @@ export class ManageService {
    * 系统备份分页查询
    */
   querySystemBackupPage(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dataRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.systemBackupController.querySystemBackupPage,
       data: {

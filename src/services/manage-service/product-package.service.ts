@@ -12,7 +12,7 @@ export class ProductPackageService {
      */
     @Debounce()
     getAllProductPackage(data, page) {
-        const dateRange = FilterService.dateRanageFormat(data.dataRange)
+        const dateRange = FilterService.dateRanageFormat(data.dateRange)
         return this.netService.send({
             server: manageService.productPackageController.getAllProductPackage,
             data:{

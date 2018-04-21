@@ -13,7 +13,7 @@ export class CollectMoneyHistoryService {
    * 获取收款列表
    */
   collectMoneyHistoryList(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dataRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.collectMoneyHistoryController.collectMoneyHistoryList,
       data: {

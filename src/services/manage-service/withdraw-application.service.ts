@@ -145,7 +145,7 @@ export class WithdrawApplicationService {
    * 获取收款申请记录
    */
   getGatheringApprovalList(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dataRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.withdrawApplicationController.getGatheringApprovalList,
       data:{

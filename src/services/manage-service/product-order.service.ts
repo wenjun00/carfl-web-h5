@@ -13,7 +13,7 @@ export class ProductOrderService {
    * 获取订单交接列表
    */
   getOrderHandover(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dataRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.productOrderController.getOrderHandover,
       data:{
@@ -58,7 +58,7 @@ export class ProductOrderService {
    * 进件模块--订单查询
    */
   orderSearch(data, page) {
-    const dataRange = FilterService.dateRanageFormat(data.dataRange)
+    const dataRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.productOrderController.orderSearch,
       data: {
