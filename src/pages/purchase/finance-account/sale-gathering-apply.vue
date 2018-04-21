@@ -1,4 +1,4 @@
-<!--销售收款申请-->
+<!--销售收款申请--> 
 <template>
   <section class="page sale-gathering-apply special-input">
     <page-header title="销售收款申请" hiddenExport></page-header>
@@ -117,16 +117,7 @@
     private applyPerson: String = ""; // 申请人
     private applyTime: String = ""; // 申请时间
     applyRule: Object = {
-      idCard: [{
-          required: true,
-          message: '请输入证件号码',
-          trigger: 'blur',
-        },
-        {
-          validator: this.$validator.idCard,
-          trigger: "blur"
-        }
-      ],
+      idCard: [{validator: this.$validator.idCard, trigger: "blur"}],
       customerName: [{
         required: true,
         message: '请输入客户姓名',
@@ -391,6 +382,9 @@
       if (this.applyData.idCard.length === 18) {
         this.disabledStatus = "none";
         this.getOrderInfo();
+      }else{
+        this.applyData.customerName = "";
+        this.applyData.mobileMain = "";
       }
     }
     getOrderInfo() {

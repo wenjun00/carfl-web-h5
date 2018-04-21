@@ -10,11 +10,14 @@
           <i-input placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.orderInfo"></i-input>
         </i-form-item>
         <i-form-item prop="startTime" label="日期">
+           <i-date-picker v-model="searchDate" type="daterange"></i-date-picker>
+        </i-form-item>
+        <!-- <i-form-item prop="startTime" label="日期">
           <i-date-picker type="date" v-model="approvalModel.startTime"></i-date-picker>
-        </i-form-item>
-        <i-form-item prop="endTime">
+        </i-form-item> -->
+        <!-- <i-form-item prop="endTime">
           <i-date-picker type="date" v-model="approvalModel.endTime"></i-date-picker>
-        </i-form-item>
+        </i-form-item> -->
       </template>
     </data-form>
       <data-box :id="466" :columns="queryColumns" :data="queryData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
@@ -128,6 +131,14 @@
       orderInfo: '',
       startTime: '',
       endTime: ''
+    }
+     get searchDate() {
+        return [new Date(this.approvalModel.startTime), new Date(this.approvalModel.endTime)]
+    }
+    set searchDate(value) {
+        let dateRange = FilterService.dateRanageFormat(value)
+        this.approvalModel.startTime = dateRange.start
+        this.approvalModel.endTime = dateRange.end
     }
     cancel() {
       this.modal2 = false
@@ -577,12 +588,6 @@
       this.orderProgressModal = true
     }
     getOrderQuery() {
-      this.approvalModel.startTime = FilterService.dateFormat(
-        this.approvalModel.startTime
-      )
-      this.approvalModel.endTime = FilterService.dateFormat(
-        this.approvalModel.endTime
-      )
       this.productOrderService
         .orderSearch(this.approvalModel, this.pageService)
         .subscribe(

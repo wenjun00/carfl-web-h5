@@ -51,7 +51,7 @@ export class FilterService {
     }
 
     target.start = FilterService.dateFormat(dateRange[0], fmt)
-    let endTime:Date = moment(dateRange[1]).add(1, 'd').subtract(1, 's').toDate()
+    const endTime:Date = moment(dateRange[1]).add(1, 'd').subtract(1, 's').toDate()
     target.end = FilterService.dateFormat(endTime, fmt)
     return target
   }

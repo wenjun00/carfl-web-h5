@@ -1,8 +1,8 @@
 <!--客户职业-->
 <template>
   <section class="component customer-job-message">
-    <i-col span="24" style="line-height:30px" class="form-title">职业信息</i-col>
-    <div span="24" style="line-height:30px">
+    <i-col span="24" class="data-col-title form-title">职业信息</i-col>
+    <div span="24" class="data-col-title">
       <i-radio-group v-model="jobType" @on-change="jobchange">
         <i-radio :label="37" :value="37">工薪者</i-radio>
         <i-radio :label="38" :value="38">企业经营者</i-radio>
@@ -12,11 +12,11 @@
     <!--工薪者-->
     <div v-if="jobType === 37">
       <!--单位信息 Start-->
-      <i-col span="24" style="line-height:30px;background:#ddd"></i-col>
+      <i-col span="24" class="unit-information"></i-col>
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">单位信息</span>
+        <div class="unit-information-title"></div><span class="unit-information-size" >单位信息</span>
       </div>
-      <i-form ref="form-job" :model="job" :rules="rules" :label-width="110" label-position="left" style="position:relative;left:16px;">
+      <i-form class="units-form" ref="form-job" :model="job" :rules="rules" :label-width="110" label-position="left" >
         <i-row>
           <i-col :span="12">
             <i-form-item label="单位名称" prop="companyName">
@@ -117,7 +117,7 @@
       <!--收入信息 Start-->
 
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">收入信息</span>
+        <div class="unit-information-title" ></div><span class="unit-information-size">收入信息</span>
       </div>
       <i-form ref="revenue-form" :rules="rules" :model="job" :label-width="110" label-position="left">
         <i-col span="12">
@@ -168,9 +168,9 @@
     <!--企业经营者-->
     <div v-if="jobType ===38">
       <div>
-        <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div><span style="font-size:16px;">公司信息</span>
+        <div class="unit-information-title"></div><span class="unit-information-size">公司信息</span>
       </div>
-      <i-form ref="company-form" :model="job" :label-width="110" label-position="left" style="position:relative;left:16px;">
+      <i-form ref="company-form" :model="job" :label-width="110" label-position="left" class="units-form">
         <i-row>
 
           <i-col span="12">
@@ -180,7 +180,7 @@
                   <i-radio :label="54" :value="54">法人代表</i-radio>
                   <i-radio :label="55" :value="55">股东</i-radio>
                 </i-radio-group>
-                <i-input style="width:185px;" placeholder="股份占比%" v-model="job.stockScale"></i-input>
+                <i-input class="ratio-holding" placeholder="股份占比%" v-model="job.stockScale"></i-input>
               </i-row>
             </i-form-item>
           </i-col>
@@ -369,15 +369,37 @@
 
 </script>
 
-<style lang="less" scope>
-  .customer-job-message {
-    .ivu-select-selection {
-      width: 100%!important;
-      display: inline-block;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
+<style lang="less" scoped>
+    .component.customer-job-message{
+        .data-col-title{
+            line-height:30px;  
+        }
+         .ivu-select-selection {
+            width: 100%!important;
+            display: inline-block;
+            border-style: none;
+            border-bottom-style: solid;
+            border-radius: 0;
+            }
+         .unit-information{
+             line-height:30px;
+             background:#ddd;
+         } 
+         .unit-information-title{
+          width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;   
+         }  
+         .unit-information-size{
+             font-size:16px;
+         }
+         .units-form{
+             position:relative;left:16px;
+         }
+         .ratio-holding{
+             width:185px;
+         }
+         
     }
-  }
+
+
 
 </style>

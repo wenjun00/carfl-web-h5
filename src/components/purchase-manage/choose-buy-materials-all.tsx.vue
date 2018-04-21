@@ -30,9 +30,10 @@
     </i-row>
     <i-table :columns="columns1" :data="addcarData" :width="1100"></i-table>
     <div>
-      <Icon type="plus" style="position:relative;left:26px;color:#265ea2"></Icon>
-      <i-button @click="addModalOpen" style="margin-left:10px;color:#265ea2" type="text">添加车辆</i-button>
-      <span style="margin-left:155px;font-weight:bold">总价</span><span style="margin-left:325px;font-weight:bold;">{{totalPrice}}</span>
+      <Icon class="icon-module" type="plus"></Icon>
+      <i-button class="add-rook" @click="addModalOpen" type="text">添加车辆</i-button>
+      <span class="total-title">总价</span>
+      <span class="total-content">{{totalPrice}}</span>
     </div>
     <!--添加车辆弹框-->
     <template>
@@ -273,24 +274,34 @@
 
 </script>
 
-<style lang="less" scope>
-// .choose-buy-materials {
-  //   .ivu-select-selection {
-  //     display: inline-block;
-  //     border-style: none;
-  //     border-bottom-style: solid;
-  //     border-radius: 0;
-  //   }
-  // }
-  // .calculate {
-  //   .ivu-modal-footer {
-  //     display: none!important;
-  //   }
-  // }
-  .add-car {
-    .ivu-modal-footer {
-      display: none!important;
-    }
-  }
+<style lang="less" scoped>
+    .component.choose-buy-materials-all{
+        .icon-module{
+            position:relative;
+            left:26px;
+            color:#265ea2
+        }
+        .add-rook{
+            margin-left:10px;
+            color:#265ea2;
+        }
+        .total-title{
+            margin-left:155px;
+            font-weight:bold;
+        }
+        .total-content{
+            margin-left:325px;
+            font-weight:bold;
+        }
+        .add-car {
+        .ivu-modal-footer {
+        display: none!important;
+        }
+     }
+    } 
+
+
+
+  
 
 </style>

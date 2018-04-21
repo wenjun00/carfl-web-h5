@@ -549,6 +549,9 @@
       if (this.applyData.idCard.length === 18) {
         this.disabledStatus = "none";
         this.getOrderInfo();
+      }else{
+          this.applyData.customerName= "";
+          this.applyData.mobileMain="";
       }
     }
     showTab2() {

@@ -33,11 +33,10 @@
               </data-grid>
             </i-col>
             <i-col :span="12">
-              <!-- <span style="margin-left:20px;font-size:14px;">租金渠道选择：</span>
-                            <RadioGroup v-model="productMessage.capitaChannels" @on-change="radioSelect">
-                                <Radio label="自有资金"></Radio>
-                                <Radio label="第三方"></Radio>
-                            </RadioGroup> -->
+              <span class="data-form-item-qudao">租金渠道选择：</span>
+              <RadioGroup v-model="productMessage.selectName"   @on-change="radioSelect">
+                <Radio v-for="{value,label} in $dict.getDictData('0310')" :key="value" :label="label"></Radio>
+              </RadioGroup>
               <i-button class="blueButton data-form-button" @click="customerFodderConfig">{{productMessage.isConfig=0 ? "已配置" : "客户素材配置" }}</i-button>
               <!--<i-button class="blueButton" @click="chargeAgainstOrderConfig">冲抵顺序配置</i-button>-->
             </i-col>
@@ -325,6 +324,7 @@
         number: '',
         name: '',
         capitaChannels: '',
+        selectName:'',
         seriesId: '',
         type: '',
         status: '',
@@ -721,7 +721,7 @@
           this.$Message.error('温馨提示：不能在产品中添加产品系列！');
         }
       } else {
-        this.addSericeModal = true;
+         this.$Message.error('请先选择产品系列！');
       }
     }
     /**
@@ -849,6 +849,9 @@
           }
         }
       }
+      .data-form-item-qudao{
+        margin-left:20px;font-size:14px;
+      }
       .data-form-tree {
         width: 250px;
         height: 600px;
@@ -930,7 +933,7 @@
   }
   }
   }
-  
+
   .box-container-content .item-container:first-child {
     padding-top: 35px;
   }
@@ -940,15 +943,15 @@
       }
     }
   }
-  
+
   .maintainCss {
     background: #e4f4fa;
   }
-  
+
   .item {
     margin-left: 20px;
   }
-  
+
   .pulishCss {
     background: url('./../../../../static/images/common/no-publish.png') no-repeat;
     width: 90px;
@@ -958,7 +961,7 @@
     bottom: 39px;
     z-index: 999;
   }
-  
+
   .Publish {
     background: url('./../../../../static/images/common/publish.png') no-repeat;
     width: 90px;
@@ -968,7 +971,7 @@
     bottom: 39px;
     z-index: 999;
   }
-  
+
   .PublishContent {
     width: 300px;
     height: 50px;
@@ -981,26 +984,26 @@
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
   }
-  
+
   .PublishButton {
     line-height: 50px;
     font-size: 14px;
     color: rgb(104, 138, 188);
   }
-  
+
   .ivu-tree-empty {
     height: 50px;
     line-height: 50px;
     text-indent: 14px;
   }
-  
+
   .periods {
     .ivu-modal-body {
       height: 600px !important;
       overflow: auto !important;
     }
   }
-  
+
   .empty-text {
     height: 400px;
     line-height: 400px;

@@ -9,7 +9,7 @@
     </i-form-item>
     <i-form-item label="资金渠道">
       <Select class="item" v-model="addProduct.capitaChannels">
-        <Option value="382" key="382" label="自有资金"></Option>
+        <Option v-for="{value,label} in $dict.getDictData('0310')" :value="value" :key="value" :label="label"></Option>
       </Select>
     </i-form-item>
   </i-form>

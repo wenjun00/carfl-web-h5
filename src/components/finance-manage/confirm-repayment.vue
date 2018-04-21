@@ -241,10 +241,8 @@
         let fileUpload: any = this.$refs["file-upload"];
         this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
           return {
-            id: v.response.id,
+            // id: v.response.id,
             materialUrl: v.response.url,
-            orderId: this.rowObj.orderId,
-            businessId: this.rowObj.businessId
           }
         }))
         fileUpload.reset();

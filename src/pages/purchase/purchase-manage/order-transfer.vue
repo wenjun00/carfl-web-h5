@@ -1,9 +1,7 @@
 <!--订单交接-->
 <template>
   <section class="page order-transfer">
-      <page-header title="订单交接">
-
-      </page-header>
+      <page-header title="订单交接"></page-header>
       <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData" hidden-reset>
         <template slot="input">
           <i-form-item prop="startTime">
@@ -37,7 +35,7 @@
     <!--Model-->
     <!--一键交接弹框-->
     <template>
-      <i-modal class="views-handover" v-model="openOneKeyToConnect" title="一键交接" width="800">
+      <i-modal class="views-handover" v-model="openOneKeyToConnect" title="一键交接" width="800" @on-visible-change="onKey">
         <i-row class="views-handover-margin">
           <i-input class="views-handover-input" placeholder="请输入关键字搜索"></i-input>
           <i-button class="views-handover-button">搜索</i-button>
@@ -339,7 +337,10 @@
           title: '产品期数',
           editable: true,
           key: 'periods',
-          align: 'center'
+          align: 'center',
+          render: (h, {row, column, index}) => {
+            return h('span', {}, this.$dict.getDictName(row.periods))
+          }
         },
         {
           title: '环节',
@@ -532,6 +533,9 @@
     /**
      * 订单交接（确定并返回）
      */
+    onKey(val){
+
+    }
     orderconfirm() {
       let mulipledata = this.mulipleSelection.map(v => {
         return v.orderId
@@ -540,17 +544,17 @@
         orderIds: mulipledata,
         userId: this.currentRowuserId
       }
-      this.productOrderService.orderTransfer(orderconfirmData).subscribe(
-        data => {
-          this.$Message.success('交接成功!')
-          this.openOneKeyToConnect = false
-        },
-        ({
-          msg
-        }) => {
-          this.$Message.error(msg)
-        }
-      )
+      // this.productOrderService.orderTransfer(orderconfirmData).subscribe(
+      //   data => {
+      //     this.$Message.success('交接成功!')
+      //     this.openOneKeyToConnect = false
+      //   },
+      //   ({
+      //     msg
+      //   }) => {
+      //     this.$Message.error(msg)
+      //   }
+      // )
     }
     /**
      * 列配置
