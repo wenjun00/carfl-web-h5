@@ -17,7 +17,7 @@
           </i-select>
         </i-form-item>
         <i-form-item prop="dateRange" label="备份时间：">
-          <i-date-picker v-model="systemBackUpModel.dateRange" type="daterange"></i-date-picker>
+          <i-date-picker v-model="systemBackUpModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
       <template slot="button">

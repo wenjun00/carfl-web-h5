@@ -273,21 +273,21 @@
 </template>
 
 <script lang="tsx">
-import Vue from 'vue'
-import Component from 'vue-class-component'
-import { State, Mutation, namespace } from 'vuex-class'
-import { ApplyQueryService } from '~/services/business-service/apply-query.service'
-import { Dependencies } from '~/core/decorator'
-import AddCar from '~/components/purchase-manage/add-car.tsx.vue'
-import SvgIcon from '~/components/common/svg-icon.vue'
-import DataBox from '~/components/common/data-box.vue'
-import SimulateCalculate from '~/components/common/simulate-calculate.vue'
-import AddProduct from '~/components/purchase-manage/add-product.tsx.vue'
-import { CompanyService } from '~/services/manage-service/company.service'
-import { Prop } from 'vue-property-decorator'
-import { Emit } from 'vue-property-decorator'
-import { Input, Button } from 'iview'
-const ModuleMutation = namespace('purchase', Mutation)
+import Vue from "vue";
+import Component from "vue-class-component";
+import { State, Mutation, namespace } from "vuex-class";
+import { ApplyQueryService } from "~/services/business-service/apply-query.service";
+import { Dependencies } from "~/core/decorator";
+import AddCar from "~/components/purchase-manage/add-car.tsx.vue";
+import SvgIcon from "~/components/common/svg-icon.vue";
+import DataBox from "~/components/common/data-box.vue";
+import SimulateCalculate from "~/components/common/simulate-calculate.vue";
+import AddProduct from "~/components/purchase-manage/add-product.tsx.vue";
+import { CompanyService } from "~/services/manage-service/company.service";
+import { Prop, Emit, Watch } from "vue-property-decorator";
+import { FilterService } from "~/utils/filter.service";
+import { Input, Button, InputNumber } from "iview";
+const ModuleMutation = namespace("purchase", Mutation);
 @Component({
   components: {
     SvgIcon,
@@ -302,36 +302,33 @@ export default class ChooseBuyMaterials extends Vue {
   @Dependencies(CompanyService) private companyService: CompanyService
   @ModuleMutation('updateProductId') updateProductId
 
-  private ccc = function() {
-    return '11%'
-  }
-  private carColumns: any
-  private carData: any = []
-  private simulateCalculateModal: Boolean = false
-  private editCarModal: Boolean = false
-  private addOrEditFlag: Boolean = false
-  private prdInfoShow: Boolean = false
-  private buttonShow: Boolean = true
-  private addProductModal: Boolean = false
-  private addPrdShow: Boolean = true
-  private changePrdShow: Boolean = false
-  private companyObject: any = [] // 公司信息
-  private carDataSet: any = []
-  private rowData: any = null
-  private depositCashData: any = [] // 保证金
-  private finalCashData: any = [] // 尾付金额
-  private initialPaymentData: any = [] // 首付款
-  private manageCostData: any = [] // 管理费
-  private totalPrice: any = ''
-  private DataSet: any = {}
-  private depositdisabled: Boolean = false
-  private Paymentdisabled: Boolean = false
-  private finaldisabled: Boolean = false
-  private finalorddisabled: Boolean = false
-  private manageDatadisabled: Boolean = false
-  private addOpen: Boolean = false
-  private flag: Boolean = true
-  private index: any = ''
+  private carColumns: any;
+  private carData: any = [];
+  private simulateCalculateModal: Boolean = false;
+  private editCarModal: Boolean = false;
+  private addOrEditFlag: Boolean = false;
+  private prdInfoShow: Boolean = false;
+  private buttonShow: Boolean = true;
+  private addProductModal: Boolean = false;
+  private addPrdShow: Boolean = true;
+  private changePrdShow: Boolean = false;
+  private companyObject: any = []; // 公司信息
+  private carDataSet: any = [];
+  private rowData: any = null;
+  private depositCashData: any = []; // 保证金
+  private finalCashData: any = []; // 尾付金额
+  private initialPaymentData: any = []; // 首付款
+  private manageCostData: any = []; // 管理费
+  private totalPrice: any = "";
+  private DataSet: any = {};
+  private depositdisabled: Boolean = false;
+  private Paymentdisabled: Boolean = false;
+  private finaldisabled: Boolean = false;
+  private finalorddisabled: Boolean = false;
+  private manageDatadisabled: Boolean = false;
+  private addOpen: Boolean = false;
+  private flag: Boolean = true;
+  private index: any = "";
   private chooseBuyModel: any = {
     name: '', // 产品名称
     prdSeriods: '', // 产品系列
@@ -435,13 +432,33 @@ export default class ChooseBuyMaterials extends Vue {
       }
     ],
     initialPayment: [
-      { required: true, message: '请输入首付金额', trigger: 'blur' }
+      {
+        required: true,
+        message: "请输入首付金额",
+        trigger: "blur"
+      }
     ],
     depositCash: [
-      { required: true, message: '请输入保证金金额', trigger: 'blur' }
+      {
+        required: true,
+        message: "请输入保证金金额",
+        trigger: "blur"
+      }
     ],
-    finalCash: [{ required: true, message: '请输入尾付总额', trigger: 'blur' }],
-    manageCost: [{ required: true, message: '请输入管理费', trigger: 'blur' }],
+    finalCash: [
+      {
+        required: true,
+        message: "请输入尾付总额",
+        trigger: "blur"
+      }
+    ],
+    manageCost: [
+      {
+        required: true,
+        message: "请输入管理费",
+        trigger: "blur"
+      }
+    ],
     insuranceMoney: [
       {
         pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
@@ -512,10 +529,18 @@ export default class ChooseBuyMaterials extends Vue {
       }
     ],
     financingUse: [
-      { required: true, message: '请输入融资租赁用途', trigger: 'blur' }
+      {
+        required: true,
+        message: "请输入融资租赁用途",
+        trigger: "blur"
+      }
     ],
     intentionPaymentRatio: [
-      { required: true, message: '请输入意向首付比例', trigger: 'blur' },
+      {
+        required: true,
+        message: "请输入意向首付比例",
+        trigger: "blur"
+      },
       {
         pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
         message: '请输入数字',
@@ -523,7 +548,11 @@ export default class ChooseBuyMaterials extends Vue {
       }
     ],
     intentionFinancingAmount: [
-      { required: true, message: '请输入意向融资金额', trigger: 'blur' },
+      {
+        required: true,
+        message: "请输入意向融资金额",
+        trigger: "blur"
+      },
       {
         pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
         message: '请输入数字',
@@ -538,8 +567,6 @@ export default class ChooseBuyMaterials extends Vue {
       }
     ]
   }
-
-  @Prop() disabledStatus: String
 
   resetProductData() {
     this.chooseBuyModel.prdSeriods = ''
@@ -566,12 +593,14 @@ export default class ChooseBuyMaterials extends Vue {
     this.chooseBuyModel.final = ''
     this.chooseBuyModel.manageData = ''
   }
+
   closeProductForm() {
     this.prdInfoShow = false
     this.changePrdShow = false
     this.addPrdShow = true
     this.resetProductData()
   }
+
   /**
    * 意向月供金额（小数点保留两位）
    */
@@ -580,6 +609,7 @@ export default class ChooseBuyMaterials extends Vue {
       .toFixed(2)
       .toString()
   }
+
   /**
    * 意向融资金额（小数点保留两位）
    */
@@ -655,6 +685,7 @@ export default class ChooseBuyMaterials extends Vue {
       .toFixed(2)
       .toString()
   }
+
   /**
    * 数据反显
    */
@@ -669,8 +700,7 @@ export default class ChooseBuyMaterials extends Vue {
       : ''
     this.chooseBuyModel = data
     if (orderStatus === 303) {
-      console.log(data, '666')
-      this.carDataSet = data.orderCars
+      this.carDataSet = data.orderCars;
       if (data.payWay) {
         this.flag = false
         this.addPrdShow = false
@@ -894,6 +924,7 @@ export default class ChooseBuyMaterials extends Vue {
     }
     this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel))
   }
+
   /**
    * 尾付总额
    */
@@ -909,6 +940,8 @@ export default class ChooseBuyMaterials extends Vue {
     this.chooseBuyModel.finalCash.toString()
     this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel))
   }
+
+  private a = 0;
   /**
    * 添加车辆信息
    */
@@ -924,10 +957,11 @@ export default class ChooseBuyMaterials extends Vue {
    * 打开月供模拟计算器
    */
   openSimulateCalculate() {
-    if (this.disabledStatus === 'none') {
-      this.simulateCalculateModal = true
-    }
+    // if (this.disabledStatus === "none") {
+    //   this.simulateCalculateModal = true;
+    // }
   }
+
   /**
    * 更改产品
    */
@@ -949,53 +983,18 @@ export default class ChooseBuyMaterials extends Vue {
         title: '操作',
         align: 'center',
         width: 180,
-        render: (h, { row, column, index }) => {
-          return h('div', [
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    this.addOpen = false
-                    this.editCarModal = true
-                    this.rowData = row
-                    this.index = index
-                  }
-                }
-              },
-              '编辑'
-            ),
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '提示',
-                      content: '确定删除吗？',
-                      onOk: () => {
-                        this.carDataSet.splice(index, 1)
-                        this.complutedtotalPrice()
-                      }
-                    })
-                  }
-                }
-              },
-              '删除'
-            )
-          ])
+        render: (h, { row }) => {
+          return (
+            <div>
+              <i-button
+                type="text"
+                style="color:#265EA2"
+                onClick={() => this.onDeleteCar(row)}
+              >
+                删除
+              </i-button>
+            </div>
+          );
         }
       },
       {
@@ -1023,28 +1022,18 @@ export default class ChooseBuyMaterials extends Vue {
         key: 'carAmount',
         align: 'center',
         render: (h, { row, column, index }) => {
-          let removeHandle = ss => {
-            let ssf: any = ss.target.value
-            this.carDataSet[index].carAmount = ssf
-            let patt1: any = /[0-9]+/
-            if (!patt1.test(ssf)) {
-              ss.target.value = 0
-              this.carDataSet[index].carAmount = ssf
-            }
-            if (!this.chooseBuyModel.finalprincipal) {
-              this.finalorddisabled = true
-            }
-            this.complutedtotalPrice()
-          }
+          let amount = row.carAmount || 0;
           return (
-            <i-input
-              style="width:80px"
-              onOn-blur={removeHandle}
-              value={row.carAmount}
-            >
-              {' '}
-            </i-input>
-          )
+            <i-input-number
+              value={amount}
+              formatter={value =>
+                `${value}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => s + ",")
+              }
+              onOn-change={value => (amount = value)}
+              parser={value => value.replace(/,*/g, "")}
+              onOn-blur={() => this.onCarAmountChange(index, amount)}
+            />
+          );
         }
       },
       {
@@ -1079,6 +1068,24 @@ export default class ChooseBuyMaterials extends Vue {
 
     this.carData = []
   }
+
+  /**
+   * 更新车辆金额
+   */
+  onCarAmountChange(index, amount) {
+    if (this.carDataSet.length > index) {
+      let car = this.carDataSet[index];
+      car.carAmount = amount;
+    }
+  }
+
+  /**
+   * 检测车辆信息更新
+   */
+  @Watch("carDataSet", { immediate: true, deep: true })
+  onCarDataSetChange(value) {
+    console.log(123, value);
+  }
   /**
    * 计算车辆总价
    */
@@ -1102,19 +1109,30 @@ export default class ChooseBuyMaterials extends Vue {
     let dialog = this.$dialog.show({
       title: '添加车辆',
       footer: true,
-      onOk: historyRecord => {
-        // let currentRow = historyRecord.getCurrentRow();
-        // if (!currentRow) {
-        //   this.$Message.error("请选择对应的订单");
-        //   return false;
-        // }
-        // TODO: 更新历史订单信息
+      onOk: addCar => {
+        let currentSelection = addCar.getCurrentSelection();
+
+        if (currentSelection && currentSelection.length) {
+          this.carDataSet.push(...currentSelection);
+        }
       },
       onCancel: () => {},
       render: h => {
         return h(AddCar, {})
       }
     })
+  }
+
+  onDeleteCar(car) {
+    this.$Modal.confirm({
+      title: "提示",
+      content: "确定删除吗？",
+      onOk: () => {
+        console.log(car);
+        // this.carDataSet.splice(, 1);
+        // this.complutedtotalPrice();
+      }
+    });
   }
 
   addModalOpen() {

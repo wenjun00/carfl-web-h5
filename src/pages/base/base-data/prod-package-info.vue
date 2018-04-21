@@ -10,7 +10,7 @@
           <i-input v-model="productModel.fileName"></i-input>
         </i-form-item>
         <i-form-item prop="dateRange" label="上传时间">
-          <i-date-picker v-model="productModel.dateRange" type="daterange"></i-date-picker>
+          <i-date-picker v-model="productModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>

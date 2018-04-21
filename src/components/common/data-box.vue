@@ -105,6 +105,10 @@ export default class DataBox extends Vue {
   @Emit('on-selection-change')
   emitSelectionChange(section){}
 
+  @Watch('data')
+  onDataChange(){
+    this.multipleSelection = []
+  }
 
   private dialog = {
     dataBoxConfig: false
@@ -265,8 +269,6 @@ export default class DataBox extends Vue {
   }
 
   getCurrentSelection() {
-    console.log(this)
-    console.log(this.multipleSelection, 'selection1')
     return this.multipleSelection;
   }
 

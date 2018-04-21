@@ -51,8 +51,8 @@ export class FilterService {
     }
 
     target.start = FilterService.dateFormat(dateRange[0], fmt)
-    target.end = FilterService.dateFormat(moment(dateRange[1]).add(1, 'd').subtract(1, 's'), fmt)
-
+    const endTime: Date = moment(dateRange[1]).add(1, 'd').subtract(1, 's').toDate()
+    target.end = FilterService.dateFormat(endTime, fmt)
     return target
   }
 
@@ -143,5 +143,15 @@ export class FilterService {
     }
     // return value.substr(0, 3).padEnd(value.length - 4, '*') + value.substr(-4)
     return value.substr(0, 14) + '****'
+  }
+
+  /**
+   * 字符串截取
+   * @param str 要截取的字符串
+   * @param subIndex 截取长度,默认6位
+   */
+  static subString(str: string, subIndex: number = 6) {
+    if (!str) { return '' }
+    return str.length > subIndex ? str.substring(0, subIndex) : str
   }
 }

@@ -5,7 +5,7 @@
     <data-form hidden-date-search :model="paymentModel" :page="pageService" @on-search="searchPaymentrecord">
       <template slot="input">
         <i-form-item prop="dateRange" label="申请日期">
-          <i-date-picker v-model="paymentModel.dateRange" type="daterange"></i-date-picker>
+          <i-date-picker v-model="paymentModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
         <i-form-item prop="orderNumber">
           <i-input placeholder="请录入订单编号" v-model="paymentModel.orderNumber"></i-input>

@@ -8,7 +8,7 @@
           <i-input v-model="gatherModel.accountName" class="form-input" placeholder="请录入收款账户名查询"></i-input>
         </i-form-item>
         <i-form-item prop="dateRange" label="日期：">
-          <i-date-picker v-model="gatherModel.dateRange" class="title-item" type="daterange"></i-date-picker>
+          <i-date-picker v-model="gatherModel.dateRange" class="title-item" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>

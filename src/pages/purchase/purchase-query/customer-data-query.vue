@@ -7,7 +7,7 @@
     <data-form date-prop="timeSearch" :model="ordertransferModel" @on-search="refreshData" hidden-reset :page="pageService">
       <template slot="input">
         <i-form-item prop="dateRange">
-          <i-date-picker v-model="ordertransferModel.dateRange" type="daterange" @on-change="startTimeChange" ></i-date-picker>
+          <i-date-picker v-model="ordertransferModel.dateRange" type="daterange" @on-change="startTimeChange"  placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
         <i-form-item prop="orderInfo">
           <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入订单编号/客户姓名/证件号码/联系号码查询"></i-input>
