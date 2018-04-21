@@ -5,7 +5,7 @@
       <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData" hidden-reset>
         <template slot="input">
           <i-form-item label="订单时间" prop="dateRange">
-            <i-date-picker v-model="ordertransferModel.dateRange" type="daterange"></i-date-picker>
+            <i-date-picker v-model="ordertransferModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
           </i-form-item>
            <i-form-item prop="orderInfo">
            <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入客户姓名/证件号码/联系号码/订单所属人查询"></i-input>
@@ -204,7 +204,7 @@
       this.treeColumns = [{
           align: 'center',
           title: '选择',
-          width: 180,
+          minWidth: 180,
           render: (h, {
             row,
             columns,
@@ -221,18 +221,18 @@
           align: 'center',
           key: 'userUsername',
           title: '用户名',
-          width: 180
+          minWidth: 180
         },
         {
           align: 'center',
           key: 'userRealname',
           title: '姓名',
-          width: 195
+          minWidth: 195
         }
       ]
       this.columns1 = [{
           type: 'selection',
-          width: 60,
+          minWidth: 60,
           fixed: 'left',
           align: 'center'
         },
@@ -240,7 +240,7 @@
           title: '操作',
           align: 'center',
           fixed: 'left',
-          width: 120,
+          minWidth: 120,
           render: (h, {
             row,
             columns,
@@ -316,7 +316,7 @@
           key: 'idCard',
           editable: true,
           align: 'center',
-          width: 160
+          minWidth: 160
         },
         {
           title: '联系号码',
@@ -369,7 +369,7 @@
       this.columns2 = [{
           title: '序号',
           type: 'index',
-          width: '80',
+          minWidth: '80',
           align: 'center'
         },
         {
@@ -379,7 +379,7 @@
         },
         {
           type: 'selection',
-          width: '80',
+          minWidth: '80',
           align: 'center'
         }
       ]

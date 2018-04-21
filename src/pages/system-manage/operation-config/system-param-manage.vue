@@ -82,7 +82,7 @@ export default class OrderTransfer extends Page {
         title: '操作',
         align: 'center',
         fixed: 'left',
-        width: 120,
+        minWidth: 120,
         render: (h, { row, columns, index }) => {
           return h(
             'i-button',

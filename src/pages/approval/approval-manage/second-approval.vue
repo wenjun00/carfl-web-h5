@@ -8,7 +8,7 @@
                      <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.resourcePoolModel"></i-input>
                 </i-form-item>
                 <i-form-item prop="dateRange" label="日期：">
-                     <i-date-picker v-model="resourcePoolModel.dateRange" type="daterange"></i-date-picker> ~
+                     <i-date-picker v-model="resourcePoolModel.dateRange"  placeholder="请选择日期范围"></i-date-picker>
                 </i-form-item>
                 <i-form-item prop="province" label="省市：">
                       <i-select placeholder="选择省" v-model="resourcePoolModel.province" clearable>
@@ -101,7 +101,7 @@ export default class SecondApproval extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 100,
+        minWidth: 100,
         align: 'center',
         fixed: 'left',
         render: (h, { row, column, index }) => {
@@ -168,7 +168,7 @@ export default class SecondApproval extends Page {
         title: '订单编号',
         key: 'orderNumber',
         editable: true,
-        width: 115,
+        minWidth: 115,
         align: 'center',
         render: (h, { row, column, index }) => {
           if (row && row.orderNumber) {
@@ -195,7 +195,7 @@ export default class SecondApproval extends Page {
         align: 'center',
         title: '订单创建时间',
         editable: true,
-        width: 135,
+        minWidth: 135,
         key: 'createTime',
         render: (h, { row, column, index }) => {
           return h(
@@ -208,7 +208,7 @@ export default class SecondApproval extends Page {
         align: 'center',
         title: '进入资源池时间',
         editable: true,
-        width: 135,
+        minWidth: 135,
         key: 'intoPoolDate',
         render: (h, { row, column, index }) => {
           return h(

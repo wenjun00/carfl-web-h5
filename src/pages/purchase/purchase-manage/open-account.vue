@@ -265,7 +265,7 @@ export default class OpenAccount extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 100,
+        minWidth: 100,
         align: 'center',
         fixed: 'left',
         render: (h, { row, column, index }) => {
@@ -375,7 +375,7 @@ export default class OpenAccount extends Page {
         title: '验卡失败原因',
         key: 'faileReason',
         editable: true,
-        width: 140,
+        minWidth: 140,
         renderHeader: (h, { column, index }) => {
           return h(
             'div',
@@ -405,7 +405,7 @@ export default class OpenAccount extends Page {
       {
         title: '结算通道',
         editable: true,
-        width: 200,
+        minWidth: 200,
         key: 'settlementChannel',
         align: 'center',
         render: (h, { row, column, index }) => {

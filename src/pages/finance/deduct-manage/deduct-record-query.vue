@@ -5,7 +5,7 @@
     <data-form hiddenDateSearch hidden-reset :model="model" :page="pageService" @on-search="getRecord">
       <template slot="input">
         <i-form-item label="支付日期" prop="dateRange">
-          <i-date-picker v-model="model.dateRange" type="daterange"></i-date-picker>
+          <i-date-picker v-model="model.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
         <i-form-item prop="personalInfo">
           <i-input placeholder="请输入客户姓名、客户号查询" v-model="model.personalInfo"></i-input>

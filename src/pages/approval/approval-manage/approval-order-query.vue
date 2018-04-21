@@ -8,7 +8,7 @@
           <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>
         </i-form-item>
         <i-form-item prop="dateRange" label="日期：">
-          <i-date-picker v-model="approvalModel.dateRange" type="daterange"></i-date-picker>
+          <i-date-picker v-model="approvalModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -79,12 +79,12 @@
         {
           type: 'selection',
           fixed: 'left',
-          width: 60,
+          minWidth: 60,
           align: 'center'
         },
         {
           title: '操作',
-          width: 100,
+          minWidth: 100,
           fixed: 'left',
           align: 'center',
           render: (h, {row, column, index}) => {

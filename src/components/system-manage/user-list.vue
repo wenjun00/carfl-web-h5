@@ -42,7 +42,7 @@ export default class UserList extends Vue {
         align: "center",
         type: "index",
         title: "序号",
-        width: 60
+        minWidth: 60
       },
       {
         align: "center",
@@ -58,7 +58,7 @@ export default class UserList extends Vue {
         align: "center",
         title: "所属部门",
         key: "deptName",
-        width: 120
+        minWidth: 120
       },
       {
         align: "center",

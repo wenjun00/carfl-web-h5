@@ -6,7 +6,7 @@
     <data-form hidden-date-search :model="receiptModel" :page="pageService" @on-search="receiptRecordSearch">
       <template slot="input">
         <i-form-item prop="dateRange" label="申请日期">
-          <i-date-picker v-model="receiptModel.dateRange" type="daterange"></i-date-picker>
+          <i-date-picker v-model="receiptModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
         <i-form-item prop="applicationType">
           <i-select placeholder="全部收款类型" v-model="receiptModel.applicationType" clearable>

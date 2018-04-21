@@ -8,7 +8,7 @@
           <i-input v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
         </i-form-item>
         <i-form-item prop="dateRange" label="日期：">
-          <i-date-picker v-model="myOrderModel.dateRange" type="daterange"></i-date-picker>
+          <i-date-picker v-model="myOrderModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
         <i-form-item prop="province" label="省市：">
           <i-select placeholder="选择省" v-model="myOrderModel.province" clearable>
@@ -175,7 +175,7 @@
           <i-row>
             <i-col>
               <i-form-item label="合同生效开始日">
-                <i-date-picker placeholder="请选择" v-model="passModel.contractDate"></i-date-picker>
+                <i-date-picker v-model="passModel.contractDate" placeholder="请选择日期范围"></i-date-picker>
               </i-form-item>
             </i-col>
           </i-row>
@@ -296,7 +296,7 @@ export default class MyApproval extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 70,
+        minWidth: 70,
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -372,7 +372,7 @@ export default class MyApproval extends Page {
         title: '订单编号',
         key: 'orderNumber',
         editable: true,
-        width: 115,
+        minWidth: 115,
         align: 'center',
         render: (h, { row, columns, index }) => {
           return h(
@@ -395,7 +395,7 @@ export default class MyApproval extends Page {
         align: 'center',
         title: '订单创建时间',
         editable: true,
-        width: 135,
+        minWidth: 135,
         key: 'createTime',
         render: (h, { row, column, index }) => {
           return h(
@@ -409,7 +409,7 @@ export default class MyApproval extends Page {
         title: '领取时间',
         editable: true,
         key: 'receiveDate',
-        width: 135,
+        minWidth: 135,
         render: (h, { row, column, index }) => {
           return h(
             'span',
@@ -421,7 +421,7 @@ export default class MyApproval extends Page {
         align: 'center',
         title: '处理时间',
         editable: true,
-        width: 135,
+        minWidth: 135,
         key: 'approvalDate',
         render: (h, { row, column, index }) => {
           return h(
@@ -473,14 +473,14 @@ export default class MyApproval extends Page {
         align: 'center',
         editable: true,
         title: '证件号码',
-        width: 115,
+        minWidth: 115,
         key: 'idCard'
       },
       {
         align: 'center',
         editable: true,
         title: '手机号',
-        width: 85,
+        minWidth: 85,
         key: 'mobileMain'
       }
     ]

@@ -4,10 +4,10 @@
         <page-header title="合同下载监控" hiddenPrint hiddenExport></page-header>
         <data-form :model="approvalModel" @on-search="getAllOrderList"  :page="pageService" hidden-reset>
             <template slot="input">
-
                 <i-form-item label="日期：">
-                    <i-date-picker type="daterange""></i-date-picker>
+                    <i-date-picker type="daterange" placeholder="请选择日期范围"></i-date-picker>
                 </i-form-item>
+
                 <i-form-item>
                     <i-input placeholder="请输入员工姓名"></i-input>
                 </i-form-item>

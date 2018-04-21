@@ -10,7 +10,7 @@
           <i-input placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.orderInfo"></i-input>
         </i-form-item>
         <i-form-item prop="dataRange" label="日期">
-          <i-date-picker v-model="approvalModel.dataRange" type="daterange"></i-date-picker>
+          <i-date-picker v-model="approvalModel.dataRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
 
       </template>
@@ -145,7 +145,7 @@
       this.getOrderQuery()
       this.queryColumns = [{
           title: '操作',
-          width: 220,
+          minWidth: 220,
           align: 'center',
           fixed: 'left',
           render: (h, {
@@ -369,7 +369,7 @@
                     click: () => {
                       if (params.row.orderType === '全额') {
                         this.$Modal.info({
-                          width: 800,
+                          minWidth: 800,
                           closable: true,
                           // scrollable:true,
                           render: h => h(PurchaseInformationTotal)
@@ -540,7 +540,7 @@
       this.columns2 = [{
           title: '序号',
           type: 'index',
-          width: '80',
+          minWidth: '80',
           align: 'center'
         },
         {
@@ -550,7 +550,7 @@
         },
         {
           type: 'selection',
-          width: '80',
+          minWidth: '80',
           align: 'center'
         }
       ]

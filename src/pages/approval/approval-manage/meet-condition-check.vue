@@ -8,7 +8,7 @@
                     <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.personalInfo"></i-input>
                 </i-form-item>
                 <i-form-item prop="dateRange" label="日期：">
-                     <i-date-picker v-model="resourcePoolModel.dateRange" type="daterange"></i-date-picker>
+                     <i-date-picker v-model="resourcePoolModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
                 </i-form-item>
                 <i-form-item prop="province" label="省市：">
                      <i-select placeholder="选择省" v-model="resourcePoolModel.province" clearable>
@@ -103,7 +103,7 @@ export default class MeetConditionCheck extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 100,
+        minWidth: 100,
         align: 'center',
         fixed: 'left',
         render: (h, { row, column, index }) => {

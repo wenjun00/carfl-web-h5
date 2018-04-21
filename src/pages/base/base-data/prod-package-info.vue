@@ -10,7 +10,7 @@
           <i-input v-model="productModel.fileName"></i-input>
         </i-form-item>
         <i-form-item prop="dateRange" label="上传时间">
-          <i-date-picker v-model="productModel.dateRange" type="daterange"></i-date-picker>
+          <i-date-picker v-model="productModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -82,7 +82,7 @@
       this.columns = [{
           title: '操作',
           align: 'center',
-          width: 260,
+          minWidth: 260,
           fixed: 'left',
           render: (h, {
             row,
@@ -316,32 +316,6 @@
 
 </script>
 <style lang="less" scoped>
-  .page.prod-package-info {
-    // .data-form {
-    //   margin-top: 10px;
-    //   margin-left: 10px;
-    //   .title {
-    //     margin-right: 10px;
-    //   }
-    //   .data-form-item {
-    //     display: inline-block;
-    //     width: 10%;
-    //     margin-right: 10px;
-    //   }
-    //   .command {
-    //     float: right;
-    //     margin-right: 10px;
-    //     margin-top: 10px;
-    //     .command-item {
-    //       font-size: 16px;
-    //       cursor: pointer;
-    //       margin-left: 10px;
-    //       color: #3367A7
-    //     }
-    //   }
-    // }
-  }
-
   .ivu-table-fixed-body {
     height: auto !important;
   }

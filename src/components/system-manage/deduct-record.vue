@@ -68,25 +68,25 @@
           type: "index",
           title: "序号",
           align: "center",
-          width: 60
+          minWidth: 60
         },
         {
           title: "期数",
           key: "periods",
           align: "center",
-          width: 60
+          minWidth: 60
         },
         {
           title: "支付日期",
           key: "payDate",
           align: "center",
-          width: 120
+          minWidth: 120
         },
         {
           title: "出账卡号",
           key: "outAccountId",
           align: "center",
-          width: 170
+          minWidth: 170
         },
         {
           title: "支付银行",

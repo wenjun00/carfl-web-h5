@@ -151,12 +151,12 @@ export default class RoleMaintenance extends Page {
       {
         type: 'selection',
         align: 'center',
-        width: 60,
+        minWidth: 60,
         fixed: 'left'
       },
       {
         title: '操作',
-        width: 420,
+        minWidth: 420,
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {

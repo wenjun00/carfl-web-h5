@@ -12,7 +12,7 @@
                     <i-input v-model="systemLogModel.clientIp"></i-input>
                 </i-form-item>
                 <i-form-item prop="dateRange" label="操作时间：">
-                    <i-date-picker v-model="systemLogModel.dateRange" type="daterange"></i-date-picker>
+                    <i-date-picker v-model="systemLogModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
                 </i-form-item>
             </template>
             <template slot="button">
@@ -73,7 +73,7 @@ export default class SystemLogDownload extends Page {
       {
         type: 'selection',
         align: 'center',
-        width: 60,
+        minWidth: 60,
         fixed: 'left'
       },
       {
@@ -81,7 +81,7 @@ export default class SystemLogDownload extends Page {
         key: 'operateTime',
         editable: true,
         align: 'center',
-        width: 160,
+        minWidth: 160,
         render: (h, { row, columns, index }) => {
           return h(
             'span',

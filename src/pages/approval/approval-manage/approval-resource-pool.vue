@@ -9,7 +9,7 @@
           <i-input v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
         </i-form-item>
         <i-form-item prop="dateRange" label="日期：">
-          <i-date-picker v-model="resourcePoolModel.dateRange" type="daterange"></i-date-picker>
+          <i-date-picker v-model="resourcePoolModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
         <i-form-item prop="province">
           <i-select placeholder="选择省" v-model="resourcePoolModel.province" clearable>
@@ -127,7 +127,7 @@
           title: '操作',
           align: 'center',
           fixed: 'left',
-          width: 100,
+          minWidth: 100,
           render: (h, {row, column, index}) => {
             return h('div', [
               h(
