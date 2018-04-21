@@ -95,9 +95,17 @@ export class ApprovalService {
    * 审核记录表查询
    */
   getAuditRecord(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dataRange)
     return this.netService.send({
       server: manageService.approvalController.getAuditRecord,
-      data: data,
+      data: {
+        timeSearch: data.timeSearch,
+        startTime: dateRange.start,
+        endTime: dateRange.end,
+        type: data.type,
+        second: data.second,
+        detail: data.detail,
+      },
       page: page
     })
   }

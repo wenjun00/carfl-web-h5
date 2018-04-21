@@ -29,11 +29,8 @@
                         </i-select>
                 </i-form-item>
 
-                <i-form-item prop="startTime" label="日期">
-                     <i-date-picker v-model="approvalRecordModel.startTime" placeholder="起始日期"></i-date-picker> ~
-                </i-form-item>
-                 <i-form-item prop="endTime">
-                    <i-date-picker  v-model="approvalRecordModel.endTime" placeholder="终止日期"></i-date-picker>
+                <i-form-item prop="dateRange" label="日期">
+                     <i-date-picker v-model="approvalRecordModel.dateRange" type="daterange"></i-date-picker> ~
                 </i-form-item>
 
             </template>
@@ -94,7 +91,8 @@ export default class ApprovalRecordTable extends Page {
     endTime: '',
     type: '',
     second: '',
-    detail: ''
+    detail: '',
+    dateRange:[]
   }
 
   mounted() {
@@ -335,23 +333,12 @@ export default class ApprovalRecordTable extends Page {
   }
 
   getApprovaRecordList() {
-    this.approvalRecordModel.startTime = FilterService.dateFormat(
-      this.approvalRecordModel.startTime,
-      'yyyy-MM-dd'
-    )
-    this.approvalRecordModel.endTime = FilterService.dateFormat(
-      this.approvalRecordModel.endTime,
-      'yyyy-MM-dd'
-    )
     this.approvalService
       .getAuditRecord(this.approvalRecordModel, this.pageService)
       .subscribe(
-        data => {
-          this.approvalRecordList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+        data =>this.approvalRecordList = data,
+        err => this.$Message.error(err)
+
       )
   }
 
