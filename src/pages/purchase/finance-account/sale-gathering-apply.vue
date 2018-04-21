@@ -1,4 +1,4 @@
-<!--销售收款申请--> 
+<!--销售收款申请-->
 <template>
   <section class="page sale-gathering-apply special-input">
     <page-header title="销售收款申请" hiddenExport></page-header>
@@ -205,9 +205,7 @@
       let _gatherDetail: any = this.$refs["gather-detail"];
       let itemList = _gatherDetail.getItem();
       let initialPayment = itemList.find(v => v.itemName === "initialPayment"); // 首付款
-      this.saveDraftModel.initialPayment = initialPayment ?
-        initialPayment.itemMoney :
-        0;
+      this.saveDraftModel.initialPayment = initialPayment ? initialPayment.itemMoney : 0;
 
       let depositCash = itemList.find(v => v.itemName === "depositCash"); // 保证金
       this.saveDraftModel.depositCash = depositCash ? depositCash.itemMoney : 0;
@@ -216,26 +214,16 @@
       this.saveDraftModel.finalCash = finalCash ? finalCash.itemMoney : 0;
 
       let firstMonthlySupply = itemList.find(v => v.itemName === "monthlySupply"); // 月供金额
-      this.saveDraftModel.firstMonthlySupply = firstMonthlySupply ?
-        firstMonthlySupply.itemMoney :
-        0;
+      this.saveDraftModel.firstMonthlySupply = firstMonthlySupply ? firstMonthlySupply.itemMoney :0;
 
       let gpsFee = itemList.find(v => v.itemName === "gpsFee"); // gps费
       this.saveDraftModel.gpsFee = gpsFee ? gpsFee.itemMoney : 0;
 
-      let installLicenseFee = itemList.find(
-        v => v.itemName === "installLicenseFee"
-      ); // 安装费
-      this.saveDraftModel.installLicenseFee = installLicenseFee ?
-        installLicenseFee.itemMoney :
-        0;
+      let installLicenseFee = itemList.find(v => v.itemName === "installLicenseFee"); // 安装费
+      this.saveDraftModel.installLicenseFee = installLicenseFee ? installLicenseFee.itemMoney : 0;
 
-      let insuranceExpenses = itemList.find(
-        v => v.itemName === "insuranceExpenses"
-      ); // 保险费
-      this.saveDraftModel.insuranceExpenses = insuranceExpenses ?
-        insuranceExpenses.itemMoney :
-        0;
+      let insuranceExpenses = itemList.find(v => v.itemName === "insuranceExpenses"); // 保险费
+      this.saveDraftModel.insuranceExpenses = insuranceExpenses ? insuranceExpenses.itemMoney : 0;
 
       let manageCost = itemList.find(v => v.itemName === "manageCost"); // 管理费
       this.saveDraftModel.manageCost = manageCost ? manageCost.itemMoney : 0;
@@ -247,22 +235,13 @@
       this.saveDraftModel.purchaseTax = purchaseTax ? purchaseTax.itemMoney : 0;
 
       let totalPayment = itemList.find(v => v.itemName === "totalPayment"); // 合计
-      this.saveDraftModel.totalPayment = totalPayment ?
-        totalPayment.itemMoney :
-        0;
-      /**
-       * 获取收款明细信息end
-       */
+      this.saveDraftModel.totalPayment = totalPayment ? totalPayment.itemMoney : 0;
 
       /**
        * 获取上传素材信息start
        */
       let _uploadFodder: any = this.$refs['upload-the-fodder']
-      this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList.map(v => {
-        return {
-          materialUrl: v.url,
-        }
-      })
+      this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList
       /**
        * 获取上传素材信息end
        */
@@ -355,7 +334,7 @@
           this.getSaveModel();
           if (this.applyData.orderId) {
             let saveAndCommitModel = this.saveDraftModel;
-            // console.log("saveAndCommitModel", saveAndCommitModel);
+            console.log(saveAndCommitModel)
             this.withdrawApplicationService
               .saveSaleCollectMoneyApplication(saveAndCommitModel)
               .subscribe(
@@ -433,8 +412,8 @@
             // 给收款明细列表赋值
             let _gatherDetail: any = this.$refs["gather-detail"];
             _gatherDetail.makeList(data);
-            let _uploadMaterial: any = this.$refs["upload-the-fodder"];
-            _uploadMaterial.makeList(data);
+            // let _uploadMaterial: any = this.$refs["upload-the-fodder"];
+            // _uploadMaterial.makeList(data);
           }, ({
             msg
           }) => {
@@ -471,8 +450,7 @@
       let _gatherDetail: any = this.$refs["gather-detail"];
       _gatherDetail.resetTable();
       let _uploadFodder: any = this.$refs['upload-the-fodder'];
-      _uploadFodder.reset()
-
+      _uploadFodder.fodder.reset();
     }
   }
 

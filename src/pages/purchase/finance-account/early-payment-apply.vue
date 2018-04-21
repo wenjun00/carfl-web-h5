@@ -297,14 +297,15 @@
         0;
 
       let _uploadFodder: any = this.$refs['upload-the-fodder']
-      this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList.map(v => {
-        return {
-          materialUrl: v.url,
-          // type:v.response.type,
-          // name:v.name,
-          // id:v.response.id
-        }
-      })
+      this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList
+      // this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList.map(v => {
+      //   return {
+      //     materialUrl: v.url,
+      //     // type:v.response.type,
+      //     // name:v.name,
+      //     // id:v.response.id
+      //   }
+      // })
     }
 
     /**
@@ -433,7 +434,7 @@
       let _gatherDetail: any = this.$refs["gather-detail-early-pay"];
       _gatherDetail.resetTable();
       let _uploadthefodder: any = this.$refs['upload-the-fodder']
-      _uploadthefodder.reset()
+      _uploadthefodder.fodder.reset();
     }
   }
 

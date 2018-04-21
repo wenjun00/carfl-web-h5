@@ -338,6 +338,7 @@
           <div class="outFalg" v-for="item in materialInfoImg" :key="item.id" v-if="materialInfoImg.length ">
             <img :src="item.materialUrl" class="imgFlag">
             <div class="blackFlag">
+              <i-button type="text" icon="eye" @click="preview(item)" class="buttonFlagOne"></i-button>
               <i-button type="text" icon="arrow-down-a" @click="download(item)" class="buttonFlag"></i-button>
             </div>
           </div>
@@ -362,6 +363,11 @@
         <a href="#sucaiziliao " class="quick-link " :class="{color:getClassName.a8} ">素材资料</a>
       </div>
     </div>
+    <template>
+      <i-modal title="预览" v-model="previewModel" width="800" class-name="no-footer" :transfer="false">
+        <img :src="url" style="width: 100%">
+      </i-modal>
+    </template>
     <!--<Slider v-model="sliderStep " :step="1 " show-stops :min="2 " :max="7 " style="transform: rotate(90deg);position: absolute;top: 242px;right: 15px;width:280px "></Slider>-->
   </div>
 </template>
@@ -426,6 +432,8 @@
     private NewArray: Array < any > = [];
     private materialInfoImg: any = []; // 素材资料相关图片信息
     private materialInfoOther: any = []; //素材资料相关其他信息
+    private previewModel: Boolean = false;
+    private url:any = ''
 
     @Prop({
       default: 0
@@ -526,6 +534,17 @@
     download(item) {
       CommonService.downloadFile(item.materialUrl, "资料图片下载");
     }
+    /**
+     * 预览
+     */
+    preview(file) {
+      // if (file.type === 'jpg' || file.type === 'png' || file.type === "JPG" || file.type === 'PNG') {
+      this.url = file.materialUrl
+      this.previewModel = true
+      // } else {
+      //   window.open(file.materialUrl)
+      // }
+    }
   }
 
 </script>
@@ -585,27 +604,27 @@
       }
     }
   }
-  
+
   .color {
     color: #333333 !important;
   }
-  
+
   td {
     font-size: 14px;
     padding: 5px;
   }
-  
+
   .quick-link {
     color: #999999;
   }
-  
+
   .quick-link:active {
     color: #333333;
   }
   /*.quick-link:visited{
   color: #333333;
 }*/
-  
+
   .material {
     height: 200px;
     width: 200px;
@@ -615,7 +634,7 @@
     position: relative;
     left: 0px;
   }
-  
+
   .outFalg {
     height: 200px;
     width: 200px;
@@ -624,12 +643,12 @@
     border: 1px solid #C2C2C2;
     float: left;
   }
-  
+
   .imgFlag {
     height: 100%;
     width: 100%;
   }
-  
+
   .blackFlag {
     position: absolute;
     top: 0;
@@ -640,15 +659,22 @@
     opacity: .4;
     display: none;
   }
-  
+
   .outFalg:hover .blackFlag {
     display: block;
   }
-  
+
   .buttonFlag {
     position: absolute;
     top: -5px;
     left: 150px;
+    display: block;
+    font-size: 20px;
+  }
+  .buttonFlagOne{
+    position: absolute;
+    top: -5px;
+    left: 120px;
     display: block;
     font-size: 20px;
   }
