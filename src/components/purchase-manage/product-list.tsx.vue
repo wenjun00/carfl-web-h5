@@ -58,7 +58,7 @@ export default class AddProduct extends Vue {
   private productPlanIssueService: ProductPlanIssueService;
 
   private currentRow: any = null;
-  private currentProduct = {};
+  private currentProduct: any = {};
   private productDataSet: Array<any> = [];
   private periodDataSet: Array<any> = [];
 
@@ -132,6 +132,8 @@ export default class AddProduct extends Vue {
    * 选中项更新
    */
   onCurrentChange(row) {
+    row.productName = this.currentProduct.title;
+    row.seriesName = this.currentProduct.series;
     this.currentRow = row;
   }
 
