@@ -35,7 +35,7 @@
         </i-col>
         <i-button class="blueButton clear-button" @click="clearAll">清空</i-button>
       </i-row>
-      <i-tabs v-model="materialTabs" type="card" class="sale-gather-tabs">
+      <i-tabs v-model="materialTabs" class="sale-gather-tabs">
         <i-tab-pane name="gather-detail" label="收款明细">
           <gather-detail :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="gather-detail"></gather-detail>
         </i-tab-pane>
