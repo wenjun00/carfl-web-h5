@@ -2,6 +2,7 @@ import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
+import { FilterService } from '~/utils/filter.service';
 
 export class ProductOrderService {
   @Inject(NetService)
@@ -12,10 +13,16 @@ export class ProductOrderService {
    * 获取订单交接列表
    */
   getOrderHandover(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.productOrderController.getOrderHandover,
-      data,
-      page
+      data:{
+        orderInfo: data.orderInfo, // 请输入客户姓名/证件号码/联系号码/订单所属人查询
+        startTime: dateRange.start, // 起始日期
+        endTime: dateRange.end, // 终止日期
+        timeSearch: data.timeSearch,
+      },
+      page:page
     })
   }
   /**
@@ -51,9 +58,15 @@ export class ProductOrderService {
    * 进件模块--订单查询
    */
   orderSearch(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.productOrderController.orderSearch,
-      data: data,
+      data: {
+        timeSearch: data.timeSearch,
+        orderInfo: data.orderInfo,
+        startTime: dateRange.start,
+        endTime: dateRange.end
+      },
       page: page
     })
   }

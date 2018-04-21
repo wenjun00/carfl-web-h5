@@ -23,7 +23,7 @@
                 <modify-system-params :modifySysParamsModel="modifySysParamsModel" ref="modify-sys-param" @close="closeBtn"></modify-system-params>
                 <div slot="footer">
                     <i-button @click="editSysParamsModal=false">取消</i-button>
-                    <i-button @click="confirmModifySysParams" class="blueButton">确定</i-button>
+                    <i-button @click="confirmModifySysParams" class="form-button">确定</i-button>
                 </div>
             </i-modal>
         </template>
@@ -82,7 +82,7 @@ export default class OrderTransfer extends Page {
         title: '操作',
         align: 'center',
         fixed: 'left',
-        width: 120,
+        minWidth: 120,
         render: (h, { row, columns, index }) => {
           return h(
             'i-button',
@@ -199,20 +199,9 @@ export default class OrderTransfer extends Page {
 </script>
 <style lang="less" scoped>
 .page.system-param-manage {
-  .data-form {
-    margin-top: 10px;
-    .title {
-      margin-left: 10px;
-    }
-    .form-input {
-      display: inline-block;
-      width: 8%;
-    }
-    .form-button {
-      margin-left: 10px;
+   .form-button {
       background: #265ea2;
       color: #fff;
     }
-  }
 }
 </style>

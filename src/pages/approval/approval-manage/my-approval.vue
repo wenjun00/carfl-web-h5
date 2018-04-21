@@ -1,210 +1,199 @@
 <!--我的审核-->
 <template>
-    <section class="page my-approval">
-        <page-header title="我的审核"></page-header>
-          <data-form date-prop="timeSearch" :model="myOrderModel" @on-search="getMyOrderList" :page="pageService" hidden-reset>
-            <template slot="input">
-                <i-form-item prop="personalInfo">
-                    <i-input v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
-                </i-form-item>
-                <i-form-item prop="startTime" label="日期：">
-                    <i-date-picker v-model="myOrderModel.startTime" placeholder="起始日期"></i-date-picker> ~
-                </i-form-item>
-                <i-form-item prop="endTime">
-                    <i-date-picker v-model="myOrderModel.endTime" placeholder="终止日期"></i-date-picker>
-                </i-form-item>
-                <i-form-item prop="province" label="省市：">
-                      <i-select placeholder="选择省" v-model="myOrderModel.province" clearable>
-                        <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="city">
-                   <i-select placeholder="选择市" v-model="myOrderModel.city" clearable>
-                        <i-option v-for="{value,label} in this.myOrderModel.province ? this.$city.getCityData({ level: 1, id: this.myOrderModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="productType" label="产品名称:">
-                    <i-input v-model="myOrderModel.productType"></i-input>
-                     <!--<i-select placeholder="产品类型" v-model="myOrderModel.productType" clearable>-->
-                        <!--<i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>-->
-                    <!--</i-select>-->
-                </i-form-item>
-            </template>
-        </data-form>
+  <section class="page my-approval">
+    <page-header title="我的审核"></page-header>
+    <data-form date-prop="timeSearch" :model="myOrderModel" @on-search="getMyOrderList" :page="pageService" hidden-reset>
+      <template slot="input">
+        <i-form-item prop="personalInfo">
+          <i-input v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="日期：">
+          <i-date-picker v-model="myOrderModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="province" label="省市：">
+          <i-select placeholder="选择省" v-model="myOrderModel.province" clearable>
+            <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="city">
+          <i-select placeholder="选择市" v-model="myOrderModel.city" clearable :disabled="!myOrderModel.province">
+            <i-option v-for="{value,label} in this.myOrderModel.province ? this.$city.getCityData({ level: 1, id: this.myOrderModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="productType" label="产品名称:">
+          <i-input v-model="myOrderModel.productType"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
 
-        <data-box :id="280" :columns="columns1" :data="myOrderList" @onPageChange="getMyOrderList" :page="pageService"></data-box>
-        <!--Modal-->
-        <template>
-            <i-modal class="modal" v-model="approveModal" title="审批" width="800">
-                <approve ref="approve"></approve>
-                <div slot="footer">
-                    <i-button class="left-button" @click="backToResource">退回资源池</i-button>
-                    <div class="cutline"></div>
-                    <i-button class="left-button" @click="submitToGray">灰名单</i-button>
-                    <i-button class="left-button" @click="submitToblack">黑名单</i-button>
-                    <i-button class="left-button" @click="submitToInternal">
-                        提交内审
-                    </i-button>
-                    <div class="cutline"></div>
-                    <i-button class="right-button" size="large" @click="rejectOrder">拒绝
-                    </i-button>
-                    <i-button class="right-button" size="large" @click="rebackModal=true">退件
-                    </i-button>
-                    <i-button class="right-button" size="large" @click="pass">
-                        通过
-                    </i-button>
-                </div>
-            </i-modal>
-        </template>
+    <data-box :id="280" :columns="columns1" :data="myOrderList" @onPageChange="getMyOrderList" :page="pageService"></data-box>
+    <!--Modal-->
+    <template>
+      <i-modal class="modal" v-model="approveModal" title="审批" width="800">
+        <approve ref="approve"></approve>
+        <div slot="footer">
+          <i-button class="left-button" @click="backToResource">退回资源池</i-button>
+          <div class="cutline"></div>
+          <i-button class="left-button" @click="submitToGray">灰名单</i-button>
+          <i-button class="left-button" @click="submitToblack">黑名单</i-button>
+          <i-button class="left-button" @click="submitToInternal">
+            提交内审
+          </i-button>
+          <div class="cutline"></div>
+          <i-button class="right-button" size="large" @click="rejectOrder">拒绝
+          </i-button>
+          <i-button class="right-button" size="large" @click="rebackModal=true">退件
+          </i-button>
+          <i-button class="right-button" size="large" @click="pass">
+            通过
+          </i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal title="灰名单" v-model="grayListModal">
-                <i-form>
-                    <i-form-item label="详细原因">
-                        <i-input type="textarea" v-model="grayModel.remark"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div slot="footer">
-                    <i-button @click="cancelAddGray">取消</i-button>
-                    <i-button @click="confirmAddGray" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal title="灰名单" v-model="grayListModal">
+        <i-form>
+          <i-form-item label="详细原因">
+            <i-input type="textarea" v-model="grayModel.remark"></i-input>
+          </i-form-item>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="cancelAddGray">取消</i-button>
+          <i-button @click="confirmAddGray" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal title="提交内审" v-model="submitToInternalModal">
-                <i-form>
-                    <i-form-item label="详细原因">
-                        <i-input type="textarea" v-model="internalModel.remark"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div slot="footer">
-                    <i-button @click="cancelAddInternal">取消</i-button>
-                    <i-button @click="confirmAddInternal" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal title="提交内审" v-model="submitToInternalModal">
+        <i-form>
+          <i-form-item label="详细原因">
+            <i-input type="textarea" v-model="internalModel.remark"></i-input>
+          </i-form-item>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="cancelAddInternal">取消</i-button>
+          <i-button @click="confirmAddInternal" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal :title="rejectOrBlackFlag?'拒绝':'黑名单'" v-model="blackListModal">
-                <i-form>
-                    <i-form-item v-if="rejectOrBlackFlag">
-                        <i-select placeholder="请选择结果" class="modal-result" @on-change="changeSelectOne">
-                            <i-option label="拒绝" :value="375" :key="375"></i-option>
-                        </i-select>
-                        <i-select placeholder="全部拒单原因" class="modal-reason" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
-                            <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
-                        </i-select>
-                        <i-select placeholder="全部拒单细节" class="modal-detail" v-model="approvalRecordModel.approveReasonId">
-                            <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id"></i-option>
-                        </i-select>
-                    </i-form-item>
-                    <i-form-item>
-                        <i-input type="textarea" v-model="approvalRecordModel.remark" placeholder="请录入详细原因（非必填，限制1000字以内）" :maxlength="1000"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div slot="footer">
-                    <i-button @click="cancelAddBlack">取消</i-button>
-                    <i-button @click="confirmAddBlackOrIntenal" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal :title="rejectOrBlackFlag?'拒绝':'黑名单'" v-model="blackListModal">
+        <i-form>
+          <i-form-item v-if="rejectOrBlackFlag">
+            <i-select placeholder="请选择结果" class="modal-result" @on-change="changeSelectOne">
+              <i-option label="拒绝" :value="375" :key="375"></i-option>
+            </i-select>
+            <i-select placeholder="全部拒单原因" class="modal-reason" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
+              <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second">
+                <div :title="item.second">{{ item.second|subString}}</div>
+              </i-option>
+            </i-select>
+            <i-select placeholder="全部拒单细节" class="modal-detail" v-model="approvalRecordModel.approveReasonId">
+              <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id">
+                <div :title="item.detail">{{ item.detail|subString}}</div>
+              </i-option>
+            </i-select>
+          </i-form-item>
+          <i-form-item>
+            <i-input type="textarea" v-model="approvalRecordModel.remark" placeholder="请录入详细原因（非必填，限制1000字以内）" :maxlength="1000"></i-input>
+          </i-form-item>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="cancelAddBlack">取消</i-button>
+          <i-button @click="confirmAddBlackOrIntenal" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
-                <purchase-information ref="purchase-info"></purchase-information>
-                <div slot="footer">
-                    <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
+        <purchase-information ref="purchase-info"></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal title="退回申请" v-model="rebackModal" @on-ok="approveModal=false">
-                <i-form>
-                    <i-form-item>
-                        <i-select placeholder="请选择结果" class="modal-result" @on-change="changeSelectOne">
-                            <i-option label="退件" :value="374" :key="374"></i-option>
-                        </i-select>
-                        <i-select placeholder="全部拒单原因" class="modal-reason" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
-                            <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
-                        </i-select>
-                        <i-select placeholder="全部拒单细节" class="modal-detail" v-model="approvalRecordModel.approveReasonId">
-                            <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id"></i-option>
-                        </i-select>
-                    </i-form-item>
-                    <i-form-item>
-                        <i-input type="textarea" v-model="approvalRecordModel.remark"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div slot="footer">
-                    <i-button @click="cancelBackToComing">取消</i-button>
-                    <i-button @click="confirmBackToComing" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal title="退回申请" v-model="rebackModal" @on-ok="approveModal=false">
+        <i-form>
+          <i-form-item>
+            <i-select placeholder="请选择结果" class="modal-result" @on-change="changeSelectOne">
+              <i-option label="退件" :value="374" :key="374"></i-option>
+            </i-select>
+            <i-select placeholder="全部拒单原因" class="modal-reason" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
+              <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
+            </i-select>
+            <i-select placeholder="全部拒单细节" class="modal-detail" v-model="approvalRecordModel.approveReasonId">
+              <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id"></i-option>
+            </i-select>
+          </i-form-item>
+          <i-form-item>
+            <i-input type="textarea" v-model="approvalRecordModel.remark"></i-input>
+          </i-form-item>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="cancelBackToComing">取消</i-button>
+          <i-button @click="confirmBackToComing" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <!-- 面审通过 -->
-        <template>
-            <i-modal title="审批通过" v-model="approvePassedModal" @on-ok="approveModal=false">
-                <i-form>
-                    <i-form-item label="备注说明">
-                        <i-input type="textarea" v-model="facePassModel.remark"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div slot="footer">
-                    <i-button @click="facePassCancel">取消</i-button>
-                    <i-button @click="facePassConfirm" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <!-- 面审通过 -->
+    <template>
+      <i-modal title="审批通过" v-model="approvePassedModal" @on-ok="approveModal=false">
+        <i-form>
+          <i-form-item label="备注说明">
+            <i-input type="textarea" v-model="facePassModel.remark"></i-input>
+          </i-form-item>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="facePassCancel">取消</i-button>
+          <i-button @click="facePassConfirm" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <!--复审终审-->
-        <template>
-            <i-modal title="审批通过" v-model="secendLastApproval" width="800">
-                <second-last-approve ref="second-last" @close="closeAndRefresh"></second-last-approve>
-                <div slot="footer">
-                    <i-button @click="secendLastApprovalPassCancel">取消</i-button>
-                    <i-button @click="secendLastApprovalPassConfirm" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <!--复审终审-->
+    <template>
+      <i-modal title="审批通过" v-model="secendLastApproval" width="800">
+        <second-last-approve ref="second-last" @close="closeAndRefresh"></second-last-approve>
+        <div slot="footer">
+          <i-button @click="secendLastApprovalPassCancel">取消</i-button>
+          <i-button @click="secendLastApprovalPassConfirm" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <!--合规通过-->
-        <template>
-            <i-modal title="审批通过" v-model="meetConditionApproval">
-                <i-form :label-width="100">
-                    <i-row>
-                        <i-col>
-                            <i-form-item label="合同生效开始日">
-                                <i-date-picker placeholder="请选择" v-model="passModel.contractDate"></i-date-picker>
-                            </i-form-item>
-                        </i-col>
-                        <!--<i-col>-->
-                        <!--<i-form-item label="合同生效类型">-->
-                        <!--<i-radio-group v-model="passModel.effectiveType">-->
-                        <!--<i-radio v-for="{value,label} in $dict.getDictData('0431')" :key="value" :label="value"-->
-                        <!--:value="value">{{label}}-->
-                        <!--</i-radio>-->
-                        <!--</i-radio-group>-->
-                        <!--</i-form-item>-->
-                        <!--</i-col>-->
-                    </i-row>
-                    <i-row>
-                        <i-col>
-                            <i-form-item label="备注">
-                                <i-input type="textarea" :rows="4" v-model="passModel.remark"></i-input>
-                            </i-form-item>
-                        </i-col>
-                    </i-row>
-                </i-form>
-                <div slot="footer">
-                    <i-button @click="meetConditionPassCancel">取消</i-button>
-                    <i-button @click="meetConditionPassConfirm" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-    </section>
+    <!--合规通过-->
+    <template>
+      <i-modal title="审批通过" v-model="meetConditionApproval">
+        <i-form :label-width="100">
+          <i-row>
+            <i-col>
+              <i-form-item label="合同生效开始日">
+                <i-date-picker v-model="passModel.contractDate" placeholder="请选择日期范围"></i-date-picker>
+              </i-form-item>
+            </i-col>
+          </i-row>
+          <i-row>
+            <i-col>
+              <i-form-item label="备注">
+                <i-input type="textarea" :rows="4" v-model="passModel.remark"></i-input>
+              </i-form-item>
+            </i-col>
+          </i-row>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="meetConditionPassCancel">取消</i-button>
+          <i-button @click="meetConditionPassConfirm" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+  </section>
 </template>
 
 <script lang="ts">
@@ -272,7 +261,8 @@ export default class MyApproval extends Page {
     city: '',
     personalInfo: '',
     timeSearch: '',
-    productType: ''
+    productType: '',
+    dateRange: []
   }
   // 灰名单
   private grayModel: any = {
@@ -303,7 +293,7 @@ export default class MyApproval extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 70,
+        minWidth: 70,
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -379,7 +369,7 @@ export default class MyApproval extends Page {
         title: '订单编号',
         key: 'orderNumber',
         editable: true,
-        width: 115,
+        minWidth: 115,
         align: 'center',
         render: (h, { row, columns, index }) => {
           return h(
@@ -402,7 +392,7 @@ export default class MyApproval extends Page {
         align: 'center',
         title: '订单创建时间',
         editable: true,
-        width: 135,
+        minWidth: 135,
         key: 'createTime',
         render: (h, { row, column, index }) => {
           return h(
@@ -416,7 +406,7 @@ export default class MyApproval extends Page {
         title: '领取时间',
         editable: true,
         key: 'receiveDate',
-        width: 135,
+        minWidth: 135,
         render: (h, { row, column, index }) => {
           return h(
             'span',
@@ -428,7 +418,7 @@ export default class MyApproval extends Page {
         align: 'center',
         title: '处理时间',
         editable: true,
-        width: 135,
+        minWidth: 135,
         key: 'approvalDate',
         render: (h, { row, column, index }) => {
           return h(
@@ -480,14 +470,14 @@ export default class MyApproval extends Page {
         align: 'center',
         editable: true,
         title: '证件号码',
-        width: 115,
+        minWidth: 115,
         key: 'idCard'
       },
       {
         align: 'center',
         editable: true,
         title: '手机号',
-        width: 85,
+        minWidth: 85,
         key: 'mobileMain'
       }
     ]
@@ -498,6 +488,8 @@ export default class MyApproval extends Page {
     this.approveModal = false
     this.getMyOrderList()
   }
+
+
 
   /**
    * 获取Icon类
@@ -543,16 +535,16 @@ export default class MyApproval extends Page {
         remark: this.facePassModel.remark
       })
       .subscribe(
-        data => {
-          this.$Message.success('操作成功！')
-          this.approvePassedModal = false
-          this.facePassModel.remark = ''
-          this.approveModal = false
-          this.getMyOrderList()
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.$Message.success('操作成功！')
+        this.approvePassedModal = false
+        this.facePassModel.remark = ''
+        this.approveModal = false
+        this.getMyOrderList()
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
@@ -624,12 +616,12 @@ export default class MyApproval extends Page {
     this.approveReasonService
       .getApproveReasonByCondition(this.approvalRecordModel)
       .subscribe(
-        data => {
-          this.refuseReason = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.refuseReason = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
@@ -639,12 +631,12 @@ export default class MyApproval extends Page {
     this.approveReasonService
       .getApproveReasonByCondition(this.approvalRecordModel)
       .subscribe(
-        data => {
-          this.refuseDetail = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.refuseDetail = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
@@ -696,16 +688,16 @@ export default class MyApproval extends Page {
     this.approvalService
       .submitInternalAuditOrGreyList(this.grayModel)
       .subscribe(
-        val => {
-          this.$Message.success('提交灰名单成功！')
-          this.grayModel.remark = ''
-          this.grayListModal = false
-          // this.approveModal = false;
-          this.getMyOrderList()
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      val => {
+        this.$Message.success('提交灰名单成功！')
+        this.grayModel.remark = ''
+        this.grayListModal = false
+        // this.approveModal = false;
+        this.getMyOrderList()
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
@@ -717,16 +709,16 @@ export default class MyApproval extends Page {
     this.approvalService
       .submitInternalAuditOrGreyList(this.internalModel)
       .subscribe(
-        val => {
-          this.$Message.success('提交内审成功！')
-          this.internalModel.remark = ''
-          // this.approveModal = false;
-          this.submitToInternalModal = false
-          this.getMyOrderList()
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      val => {
+        this.$Message.success('提交内审成功！')
+        this.internalModel.remark = ''
+        // this.approveModal = false;
+        this.submitToInternalModal = false
+        this.getMyOrderList()
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
@@ -753,32 +745,6 @@ export default class MyApproval extends Page {
    */
   confirmAddBlackOrIntenal() {
     this.approvalRecordModel.orderId = this.approvalOrderId
-    // if (this.approvalRecordModel.approveReasonId) {
-    //   // 黑名单
-    //   if (!this.rejectOrBlackFlag) {
-    //     this.approvalRecordModel.operateType = 2;
-    //   } else {
-    //     // 拒绝
-    //     this.approvalRecordModel.operateType = 3;
-    //   }
-    //   this.approvalService
-    //     .submitBlackListOrRefuse(this.approvalRecordModel)
-    //     .subscribe(
-    //       val => {
-    //         this.$Message.success("提交拒单成功！");
-    //         this.blackListModal = false;
-    //         this.approveModal = false;
-    //         this.cancelAddBlack();
-    //         this.getMyOrderList();
-    //         this.approvalRecordModel.remark = "";
-    //       },
-    //       ({ msg }) => {
-    //         this.$Message.error(msg);
-    //       }
-    //     );
-    // } else {
-    //   this.$Message.error("拒单原因和拒单细节必须选择！");
-    // }
     if (this.rejectOrBlackFlag) {
       if (!this.approvalRecordModel.approveReasonId) {
         this.$Message.error('拒单原因和拒单细节必须选择！')
@@ -788,17 +754,17 @@ export default class MyApproval extends Page {
       this.approvalService
         .submitBlackListOrRefuse(this.approvalRecordModel)
         .subscribe(
-          val => {
-            this.$Message.success('提交拒单成功！')
-            this.blackListModal = false
-            this.approveModal = false
-            this.cancelAddBlack()
-            this.getMyOrderList()
-            this.approvalRecordModel.remark = ''
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-          }
+        val => {
+          this.$Message.success('提交拒单成功！')
+          this.blackListModal = false
+          this.approveModal = false
+          this.cancelAddBlack()
+          this.getMyOrderList()
+          this.approvalRecordModel.remark = ''
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
         )
     } else {
       this.approvalRecordModel.operateType = 2
@@ -806,17 +772,17 @@ export default class MyApproval extends Page {
       this.approvalService
         .submitBlackListOrRefuse(this.approvalRecordModel)
         .subscribe(
-          val => {
-            this.$Message.success('提交黑名单成功！')
-            this.blackListModal = false
-            this.approveModal = false
-            this.cancelAddBlack()
-            this.getMyOrderList()
-            this.approvalRecordModel.remark = ''
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-          }
+        val => {
+          this.$Message.success('提交黑名单成功！')
+          this.blackListModal = false
+          this.approveModal = false
+          this.cancelAddBlack()
+          this.getMyOrderList()
+          this.approvalRecordModel.remark = ''
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
         )
     }
   }
@@ -831,14 +797,14 @@ export default class MyApproval extends Page {
             orderId: this.approvalOrderId
           })
           .subscribe(
-            val => {
-              this.$Message.success('退回资源池成功！')
-              this.approveModal = false
-              this.getMyOrderList()
-            },
-            ({ msg }) => {
-              this.$Message.error(msg)
-            }
+          val => {
+            this.$Message.success('退回资源池成功！')
+            this.approveModal = false
+            this.getMyOrderList()
+          },
+          ({ msg }) => {
+            this.$Message.error(msg)
+          }
           )
       }
     })
@@ -906,12 +872,8 @@ export default class MyApproval extends Page {
     this.approvalService
       .getMyApprovalOrder(this.myOrderModel, this.pageService)
       .subscribe(
-        data => {
-          this.myOrderList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => this.myOrderList = data,
+      err => this.$Message.error(err)
       )
   }
 

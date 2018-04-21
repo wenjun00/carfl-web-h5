@@ -1,7 +1,7 @@
 <!--解绑银行卡-->
 <template>
   <section class="component unbind-bank-card">
-    <i-form :label-width="110" class="item-margin-top20">
+    <i-form :label-width="110" class="item-margin-top20" :model="unbindBankCardModal" :rules="rules">
       <i-form-item label="客户姓名">
         <i-input class="item-input-width60" v-model="unbindBankCardModal.name" readonly></i-input>
       </i-form-item>
@@ -14,7 +14,7 @@
       <i-form-item label="开户省市">
         <i-input class="item-input-width60" v-model="unbindBankCardModal.city" readonly></i-input>
       </i-form-item>
-      <i-form-item label="银行预留手机号">
+      <i-form-item label="银行预留手机号" prop="reservedPhoneNumber">
         <i-input class="item-input-width60" v-model="unbindBankCardModal.reservedPhoneNumber" readonly></i-input>
       </i-form-item>
       <!--<i-form-item label="验证码">
@@ -40,6 +40,20 @@
   })
   export default class UnbindBankCard extends Vue {
     private unbindBankCardModal: Object = {}
+    private rules:any={
+      reservedPhoneNumber:
+        [
+          {
+            required: true,
+            message: '请输入预留电话',
+            trigger: 'blur'
+          },
+          {
+            validator: this.$validator.phoneNumber,
+            trigger: 'blur'
+          }
+        ],
+    }
     refresh(row) {
       this.unbindBankCardModal = row
     }

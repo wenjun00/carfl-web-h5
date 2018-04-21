@@ -1,4 +1,4 @@
-<!--修改角色-->
+<!--修改角色--> 
 <template>
   <section class="component module-power">
     <i-row>
@@ -64,20 +64,20 @@ export default class ModulePower extends Vue {
         align: "center",
         type: "index",
         title: "序号",
-        width: "30"
+        minWidth: 30
       },
       {
         align: "center",
         type: "selection",
         key: "checked",
         title: "选择",
-        width: "60"
+        minWidth: 60
       },
       {
         align: "center",
         key: "resoName",
         title: "功能名称",
-        width: "90"
+        minWidth: 90
       },
       {
         align: "center",
@@ -91,8 +91,11 @@ export default class ModulePower extends Vue {
    * 获取控件资源通过id
    */
   getControlResourcesById({ id }) {
+      console.log(this.controlResourceData)
+      console.log('656')
     this.controlResourceData = this.controlResource.filter(
       x => [423, 424, 425].includes(x.resoFiletype) && x.resoPid === id
+     
     );
   }
 
@@ -201,5 +204,4 @@ export default class ModulePower extends Vue {
             padding:0 10px;
         }
     }
-
 </style>

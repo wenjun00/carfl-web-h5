@@ -33,11 +33,10 @@
               </data-grid>
             </i-col>
             <i-col :span="12">
-              <!-- <span style="margin-left:20px;font-size:14px;">租金渠道选择：</span>
-                            <RadioGroup v-model="productMessage.capitaChannels" @on-change="radioSelect">
-                                <Radio label="自有资金"></Radio>
-                                <Radio label="第三方"></Radio>
-                            </RadioGroup> -->
+              <span style="margin-left:20px;font-size:14px;">租金渠道选择：</span>
+                            <RadioGroup v-model="productMessage.selectName" @on-change="radioSelect">
+                                <Radio v-for="{value,label} in this.$dict.getDictData('0310')" :key="value" :label="label"></Radio>
+                            </RadioGroup>
               <i-button class="blueButton data-form-button" @click="customerFodderConfig">{{productMessage.isConfig=0 ? "已配置" : "客户素材配置" }}</i-button>
               <!--<i-button class="blueButton" @click="chargeAgainstOrderConfig">冲抵顺序配置</i-button>-->
             </i-col>
@@ -322,6 +321,7 @@
         id: '',
       }, ];
       this.productMessage = {
+        selectName:'',
         number: '',
         name: '',
         capitaChannels: '',

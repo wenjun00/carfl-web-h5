@@ -146,6 +146,10 @@ export default class DialogBox extends Vue {
     .ivu-modal {
       top: 0;
       min-width: 70%;
+
+      .ivu-modal-content {
+        min-width: 700px;
+      }
     }
 
     .ivu-modal-close {

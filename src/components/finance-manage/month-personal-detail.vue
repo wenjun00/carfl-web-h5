@@ -21,57 +21,57 @@
     created() {
       this.columns1 = [{
           title: '期数',
-          width: 90,
+          minWidth: 90,
           fixed: 'left',
           align: 'center',
           key: 'periods'
         },
         {
           title: '应付款日',
-          width: 160,
+          minWidth: 160,
           fixed: 'left',
           align: 'center',
           key: 'shouldPayDate'
         },
         {
           title: '实际付款日',
-          width: 160,
+          minWidth: 160,
           align: 'center',
           key: 'actualPayDate'
         },
         {
           title: '逾期天数',
-          width: 90,
+          minWidth: 90,
           align: 'center',
           key: 'overdueDays'
         },
         {
           title: '每日罚息',
-          width: 90,
+          minWidth: 90,
           align: 'center',
           key: 'everyDayPunishedInterest'
         },
         {
           title: '金额',
-          width: 90,
+          minWidth: 90,
           align: 'center',
           key: 'payAmt'
         },
         {
           title: '罚金',
-          width: 90,
+          minWidth: 90,
           align: 'center',
           key: 'punishedAmt'
         },
         {
           title: '网银到账日',
-          width: 120,
+          minWidth: 120,
           align: 'center',
           key: 'eBankAccountDate'
         },
         {
           title: '开票日',
-          width: 120,
+          minWidth: 120,
           align: 'center',
           key: 'invoiceDate'
         },
@@ -79,67 +79,67 @@
           title: '应收租金',
           key: 'supposedRentAmt',
           align: 'center',
-          width: 90
+          minWidth: 90
         },
         {
           title: '应收利息',
           key: 'supposedInterest',
           align: 'center',
-          width: 90
+          minWidth: 90
         },
         {
           title: '应收罚息',
           key: 'supposedPunishedInterest',
           align: 'center',
-          width: 90
+          minWidth: 90
         },
         {
           title: '减免罚息',
           key: 'deratePunishedInterest',
           align: 'center',
-          width: 90
+          minWidth: 90
         },
         {
           title: '冻结罚息',
           key: 'frozenPunishedInterest',
           align: 'center',
-          width: 90
+          minWidth: 90
         },
         {
           title: '实收本金',
           key: 'actualMajorAmt',
           align: 'center',
-          width: 90
+          minWidth: 90
         },
         {
           title: '实收利息',
           key: 'actualInterest',
           align: 'center',
-          width: 90
+          minWidth: 90
         },
         {
           title: '实收罚息',
           key: 'actualPunishInterest',
           align: 'center',
-          width: 90
+          minWidth: 90
         },
         {
           title: '剩余本金',
           key: 'remainMajorAmt',
           align: 'center',
-          width: 90
+          minWidth: 90
         },
         {
           title: '剩余利息',
           key: 'remainInterest',
           align: 'center',
-          width: 90
+          minWidth: 90
         },
         {
           title: '剩余罚息',
           key: 'remainPunishedInterest',
           align: 'center',
-          width: 90
+          minWidth: 90
         }
       ]
       this.data1 = [{

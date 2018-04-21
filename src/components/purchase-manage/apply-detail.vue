@@ -3,7 +3,7 @@
   <section class="component apply-detail">
     <!--付款申请-->
     <i-row>
-      <i-form :label-width="110" class="item-kehu-form">
+      <i-form :rules="applyRules"  :label-width="110" class="item-kehu-form">
         <i-col :span="12">
           <i-form-item label="客户姓名">
             <i-input v-model="addNewApplyModal.name" disabled></i-input>
@@ -30,25 +30,13 @@
           </i-form-item>
         </i-col>
       </i-form>
-
       <span class="title">付款明细</span>
       <i-table :columns="columns1" :data="payDetail" :noDefaultRow="true"></i-table>
       <span class="title">账户信息</span>
       <i-table :columns="columns3" :data="accountDetail" :noDefaultRow="true"></i-table>
       <span class="title">附件</span>
-         <!--<upload-the-fodder :type="type" ref="upload-the-fodder"></upload-the-fodder>-->
       <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher" hiddenUpload></upload-voucher>
     </i-row>
-
-    <!--提前结清申请-->
-    <!--<i-row v-if="applyType==='提前结清申请'">
-
-    </i-row>-->
-    <!--提前收回申请-->
-    <!--<i-row v-if="applyType==='提前收回申请'">
-
-    </i-row>-->
-    <!--Model-->
   </section>
 </template>
 
@@ -68,7 +56,6 @@ import UploadVoucher from "~/components/common/upload-voucher.vue"
 export default class ApplyDetail extends Vue {
   @Prop() orderType;
   addAttachmentShow: Boolean;
-
   private applyType: String = "销售收款申请";
   private payDetail: Array<Object> = [];
   private columns1: any;
@@ -84,6 +71,7 @@ export default class ApplyDetail extends Vue {
   private remark: String = "";
   private orderNumber: String = "";
   private type:any="";
+  private applyRules: any = {}
   getparentData(val, row ,type) {
     //   上传资料反显
     this.type=type
@@ -105,6 +93,12 @@ export default class ApplyDetail extends Vue {
     this.fodderList = item
   }
   created() {
+    this.applyRules={
+      idCard: [{
+        validator: this.$validator.idCard,
+        trigger: "blur"
+      }]
+    };
     this.columns1 = [
       {
         title: "项目名称",

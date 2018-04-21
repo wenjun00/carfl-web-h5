@@ -3,6 +3,7 @@ import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
+import {FilterService} from "~/utils/filter.service";
 
 export class ApprovalService {
   @Inject(NetService)
@@ -12,14 +13,25 @@ export class ApprovalService {
    * 分页查询审批原因
    */
   auditResourcePool(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.approvalController.auditResourcePool,
-      data: data,
+      data: {
+        startTime: dateRange.start,
+        endTime: dateRange.end,
+        province: data.province,
+        city: data.city,
+        personalInfo: data.personalInfo,
+        timeSearch: data.timeSearch,
+        orderType: data.orderType,
+        orderLink: data.orderLink,
+        productType: data.productType,
+      },
       page: page
     })
   }
   /**
-   * 
+   *
    * @param data 领取订单到我的审核
    */
   batchReceiveApproval(data) {
@@ -32,9 +44,18 @@ export class ApprovalService {
    * 我的审核
    */
   getMyApprovalOrder(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.approvalController.getMyApprovalOrder,
-      data: data,
+      data: {
+        startTime: dateRange.start,
+        endTime: dateRange.end,
+        province: data.province,
+        city: data.city,
+        personalInfo: data.personalInfo,
+        timeSearch: data.timeSearch,
+        productType: data.productType,
+      },
       page: page
     })
   }
@@ -42,9 +63,19 @@ export class ApprovalService {
    * 订单查询、内审、黑名单、灰名单
    */
   approvalOrderSearch(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.approvalController.approvalOrderSearch,
-      data: data,
+      data: {
+        timeSearch: data.timeSearch,
+        startTime: dateRange.start,
+        endTime: dateRange.end,
+        personalInfo: data.personalInfo,
+        riskStatus: data.riskStatus,
+        province: data.province,
+        city: data.city,
+        productType: data.productType,
+      },
       page: page
     })
   }
@@ -64,9 +95,17 @@ export class ApprovalService {
    * 审核记录表查询
    */
   getAuditRecord(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.approvalController.getAuditRecord,
-      data: data,
+      data: {
+        timeSearch: data.timeSearch,
+        startTime: dateRange.start,
+        endTime: dateRange.end,
+        type: data.type,
+        second: data.second,
+        detail: data.detail,
+      },
       page: page
     })
   }

@@ -32,7 +32,7 @@ export default class WorkTheme extends Vue {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .theme-item{
   // display:inline-block;
   width:20px;

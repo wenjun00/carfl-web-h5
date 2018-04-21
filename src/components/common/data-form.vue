@@ -202,7 +202,7 @@ export default class DataForm extends Vue {
 }
 </style>
 
-<style lang="less">
+<style lang="less" scoped>
 .component.data-form {
   .el-radio-group {
     padding-left: 10px;

@@ -7,11 +7,8 @@
                 <i-form-item prop="orderInfo">
                      <i-input v-model="frozenModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
                 </i-form-item>
-                <i-form-item prop="applyDateStart" label="日期：">
-                     <i-date-picker v-model="frozenModel.applyDateStart" placeholder="起始日期"></i-date-picker> ~
-                </i-form-item>
-                <i-form-item prop="applyDateEnd">
-                    <i-date-picker v-model="frozenModel.applyDateEnd" placeholder="终止日期"></i-date-picker>
+                <i-form-item prop="dateRange" label="日期：">
+                     <i-date-picker v-model="frozenModel.dateRange"  placeholder="请选择日期范围"></i-date-picker>
                 </i-form-item>
                 <i-form-item prop="collectMoneyMethod">
                      <i-select placeholder="全部结算通道" v-model="frozenModel.collectMoneyMethod" clearable>
@@ -71,7 +68,8 @@ export default class FrozenApplyRecord extends Page {
     applyDateEnd: '',
     timeSearch: '',
     collectMoneyMethod: '',
-    orderInfo: ''
+    orderInfo: '',
+    dateRange:[]
   }
 
   mounted() {
@@ -82,7 +80,7 @@ export default class FrozenApplyRecord extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 100,
+        minWidth: 100,
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -242,23 +240,11 @@ export default class FrozenApplyRecord extends Page {
   checkProof(row) {}
 
   getFrozenList() {
-    this.frozenModel.applyDateStart = FilterService.dateFormat(
-      this.frozenModel.applyDateStart,
-      'yyyy-MM-dd'
-    )
-    this.frozenModel.applyDateEnd = FilterService.dateFormat(
-      this.frozenModel.applyDateEnd,
-      'yyyy-MM-dd'
-    )
     this.remitApplicationService
       .selectApplyForReliefHistory(this.frozenModel, this.pageService)
       .subscribe(
-        data => {
-          this.frozenList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+        data =>this.frozenList = data,
+        err =>this.$Message.error(err)
       )
   }
 

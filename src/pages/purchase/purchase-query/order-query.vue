@@ -9,15 +9,10 @@
         <i-form-item prop="orderInfo">
           <i-input placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.orderInfo"></i-input>
         </i-form-item>
-        <i-form-item prop="startTime" label="日期">
-           <i-date-picker v-model="searchDate" type="daterange"></i-date-picker>
+        <i-form-item prop="dataRange" label="日期">
+          <i-date-picker v-model="approvalModel.dataRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
-        <!-- <i-form-item prop="startTime" label="日期">
-          <i-date-picker type="date" v-model="approvalModel.startTime"></i-date-picker>
-        </i-form-item> -->
-        <!-- <i-form-item prop="endTime">
-          <i-date-picker type="date" v-model="approvalModel.endTime"></i-date-picker>
-        </i-form-item> -->
+
       </template>
     </data-form>
       <data-box :id="466" :columns="queryColumns" :data="queryData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
@@ -150,7 +145,7 @@
       this.getOrderQuery()
       this.queryColumns = [{
           title: '操作',
-          width: 220,
+          minWidth: 220,
           align: 'center',
           fixed: 'left',
           render: (h, {
@@ -374,7 +369,7 @@
                     click: () => {
                       if (params.row.orderType === '全额') {
                         this.$Modal.info({
-                          width: 800,
+                          minWidth: 800,
                           closable: true,
                           // scrollable:true,
                           render: h => h(PurchaseInformationTotal)
@@ -545,7 +540,7 @@
       this.columns2 = [{
           title: '序号',
           type: 'index',
-          width: '80',
+          minWidth: '80',
           align: 'center'
         },
         {
@@ -555,7 +550,7 @@
         },
         {
           type: 'selection',
-          width: '80',
+          minWidth: '80',
           align: 'center'
         }
       ]
@@ -620,38 +615,6 @@
 </script>
 
 <style lang="less" scoped>
-  .page.order-query {
-    // .seek-day {
-    //   margin-top: 10px;
-    // }
-    // .data-from-seek {
-    //   margin-top: 6px;
-    //   position: relative;
-    //   right: 10px;
-    //   .data-from-input {
-    //     display: inline-block;
-    //     width: 18%;
-    //     margin-left: 20px;
-    //   }
-    //   .data-from-day {
-    //     margin-left: 10px;
-    //   }
-    //   .data-from-picker {
-    //     display: inline-block;
-    //     width: 10%;
-    //   }
-    //   .data-from-blue-button {
-    //     margin-left: 10px;
-    //     background: #265ea2;
-    //     color: #fff;
-    //   }
-    // }
-    // .data-box-margin {
-    //   margin-top: 20px;
-    // }
-    // .td {
-    //   padding: 10px;
-    // }
-  }
+
 
 </style>

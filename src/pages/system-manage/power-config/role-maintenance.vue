@@ -151,12 +151,12 @@ export default class RoleMaintenance extends Page {
       {
         type: 'selection',
         align: 'center',
-        width: 60,
+        minWidth: 60,
         fixed: 'left'
       },
       {
         title: '操作',
-        width: 420,
+        minWidth: 420,
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -454,42 +454,6 @@ export default class RoleMaintenance extends Page {
 
 <style lang="less" scoped>
 .page.role-maintenance {
-  .data-form {
-    margin-top: 10px;
-    .title {
-      margin-left: 20px;
-    }
-    .title-little {
-      margin-left: 10px;
-    }
-    .form-input {
-      display: inline-block;
-      width: 10%;
-    }
-    .blue-button {
-      margin-left: 20px;
-      background: #265ea2;
-      color: #fff;
-    }
-    .blue-button-little {
-      margin-left: 10px;
-    }
-    .command {
-      float: right;
-      margin-right: 10px;
-      margin-top: 10px;
-      .command-item {
-        font-size: 16px;
-        cursor: pointer;
-        display: inline-block;
-        margin-left: 10px;
-        color: #3367a7;
-        span {
-          font-size: 12px;
-        }
-      }
-    }
-  }
   .modify-role {
     .ivu-form {
       position: relative;

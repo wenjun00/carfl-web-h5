@@ -7,11 +7,8 @@
                 <i-form-item prop="personalInfo">
                     <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.personalInfo"></i-input>
                 </i-form-item>
-                <i-form-item prop="startTime" label="日期：">
-                    <i-date-picker v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker> ~
-                </i-form-item>
-                <i-form-item prop="endTime">
-                    <i-date-picker v-model="resourcePoolModel.endTime" placeholder="终止日期"></i-date-picker>
+                <i-form-item prop="dateRange" label="日期：">
+                    <i-date-picker v-model="resourcePoolModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
                 </i-form-item>
                 <i-form-item prop="province" label="省市：">
                     <i-select placeholder="选择省" v-model="resourcePoolModel.province" clearable>
@@ -19,7 +16,7 @@
                     </i-select>
                 </i-form-item>
                 <i-form-item prop="city">
-                    <i-select placeholder="选择市" v-model="resourcePoolModel.city" clearable>
+                    <i-select placeholder="选择市" v-model="resourcePoolModel.city" :disabled="!resourcePoolModel.province" clearable>
                         <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
                     </i-select>
                 </i-form-item>
@@ -90,7 +87,8 @@ export default class LastApproval extends Page {
     city: '',
     personalInfo: '',
     timeSearch: '',
-    productType: ''
+    productType: '',
+    dateRange: []
   }
   private getOrderModel: any = {
     userId: '',
@@ -105,7 +103,7 @@ export default class LastApproval extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 100,
+        minWidth: 100,
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -134,7 +132,7 @@ export default class LastApproval extends Page {
         title: '订单编号',
         key: 'orderNumber',
         editable: true,
-        width: 115,
+        minWidth: 115,
         align: 'center',
         render: (h, { row, columns, index }) => {
           return h(
@@ -196,7 +194,7 @@ export default class LastApproval extends Page {
         title: '订单创建时间',
         editable: true,
         key: 'createTime',
-        width: 135,
+        minWidth: 135,
         render: (h, { row, column, index }) => {
           return h(
             'span',
@@ -209,7 +207,7 @@ export default class LastApproval extends Page {
         title: '进入资源池时间',
         editable: true,
         key: 'intoPoolDate',
-        width: 135,
+        minWidth: 135,
         render: (h, { row, column, index }) => {
           return h(
             'span',
@@ -260,14 +258,14 @@ export default class LastApproval extends Page {
         align: 'center',
         editable: true,
         title: '证件号',
-        width: 115,
+        minWidth: 115,
         key: 'idCard'
       },
       {
         align: 'center',
         editable: true,
         title: '手机号',
-        width: 85,
+        minWidth: 85,
         key: 'mobileMain'
       }
     ]
@@ -332,23 +330,11 @@ export default class LastApproval extends Page {
   }
 
   getLastList() {
-    this.resourcePoolModel.startTime = FilterService.dateFormat(
-      this.resourcePoolModel.startTime,
-      'yyyy-MM-dd'
-    )
-    this.resourcePoolModel.endTime = FilterService.dateFormat(
-      this.resourcePoolModel.endTime,
-      'yyyy-MM-dd'
-    )
     this.approvalService
       .auditResourcePool(this.resourcePoolModel, this.pageService)
       .subscribe(
-        data => {
-          this.lastList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+        data =>this.lastList = data,
+        err =>this.$Message.error(err)
       )
   }
 

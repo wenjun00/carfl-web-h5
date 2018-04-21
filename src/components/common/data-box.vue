@@ -59,8 +59,7 @@ export default class DataBox extends Vue {
   noDefaultRow: boolean;
 
   // 分页服务
-  @Prop()
-  page: PageService;
+  @Prop() page: PageService;
 
   // 表格高度
   @Prop() width: Number;
@@ -70,7 +69,7 @@ export default class DataBox extends Vue {
     type: [Boolean, Number, String],
     default: "550"
   })
-  height: number|string|boolean;
+  height: number | string | boolean;
 
   // 数据表主键
   @Prop({
@@ -100,28 +99,38 @@ export default class DataBox extends Vue {
 
   // 当前选择行改变事件
   @Emit("on-current-change")
-  emitCurrentChange(currentRow, oldRow) {}
-  
-  @Emit('on-selection-change')
-  emitSelectionChange(section){}
+  emitCurrentChange(currentRow, oldRow) {
+    if (currentRow) {
+      this.currentRow = currentRow;
+    }
+  }
 
+  @Emit("on-selection-change")
+  emitSelectionChange(section) {}
+
+  @Watch("data")
+  onDataChange() {
+    this.multipleSelection = [];
+    this.currentRow = null;
+  }
 
   private dialog = {
     dataBoxConfig: false
   };
 
   public table; // table对象
-  private multipleSelection:Array<any> = []; // 多选数据
+  private multipleSelection: Array<any> = []; // 多选数据
+  private currentRow: any = null; // 多选数据
   private filterColumns: Array<any> | null = null;
   private tableColumns: Array<any> | null = [];
   private pageSizeOpts: Array<any> = [10, 30, 50];
 
   // 是否显示列头
-  get showHeader(){
-    if(this.autoHiddenHeader&&(!this.data||!this.data.length)){
-      return false
-    }else{
-      return true
+  get showHeader() {
+    if (this.autoHiddenHeader && (!this.data || !this.data.length)) {
+      return false;
+    } else {
+      return true;
     }
   }
   /**
@@ -252,7 +261,7 @@ export default class DataBox extends Vue {
 
   currentSelect(selection) {
     this.multipleSelection = selection;
-    this.emitSelectionChange(selection)
+    this.emitSelectionChange(selection);
   }
 
   /**
@@ -265,24 +274,26 @@ export default class DataBox extends Vue {
   }
 
   getCurrentSelection() {
-    console.log(this)
-    console.log(this.multipleSelection, 'selection1')
     return this.multipleSelection;
+  }
+
+  getCurrentRow() {
+    return this.currentRow;
   }
 
   mounted() {
     this.table = this.$refs["table"];
-    
-    if(!!this.id){
+
+    if (!!this.id) {
       this.getFilterColumns();
-    }else{
-      this.getTableColumns()
+    } else {
+      this.getTableColumns();
     }
 
     // 解决table高度计算错误问题
-    this.table.$options.mounted.push(()=>{
-      this.table.fixedHeader()
-    })
+    this.table.$options.mounted.push(() => {
+      this.table.fixedHeader();
+    });
   }
 }
 </script>
@@ -293,6 +304,16 @@ export default class DataBox extends Vue {
     padding: 10px;
     /*height:600px;*/
     /*overflow: auto;*/
+  }
+
+  & > table {
+    width: auto;
+  }
+
+  .ivu-table-tip {
+    & > td {
+      width: auto;
+    }
   }
 }
 .pagination {

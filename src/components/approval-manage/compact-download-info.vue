@@ -27,13 +27,13 @@
           align: "center",
           type: "index",
           title: '序号',
-          width: 60
+          minWidth: 60
         },
         {
           align: "center",
           title: "下载时间",
           key: 'downloadTime',
-          width: 180
+          minWidth: 180
         },
         {
           align: "center",
@@ -44,7 +44,7 @@
           align: "center",
           title: "身份证号",
           key: "idCard",
-          width: 180
+          minWidth: 180
         },
         {
           align: "center",

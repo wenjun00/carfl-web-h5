@@ -1,13 +1,11 @@
 <template>
-  <section class="component add-car">
-    <i-row class="data-container">
-      <i-col span="4" class="item-sousuo-col">
-        <i-tree class="item-sousuo-tree" :data="seriesDataSet" @on-select-change="onSelectSeriesChange"></i-tree>
-      </i-col>
-      <i-col class="item-data-box" span="20">
-        <data-box :height="540" ref="data-box" :columns="carColumns" :data="carDataSet" :noDefaultRow="true"></data-box>
-      </i-col>
-    </i-row>
+  <section class="component add-car row">
+    <div class="series-container">
+      <i-tree class="series-tree" :data="seriesDataSet" @on-select-change="onSelectSeriesChange"></i-tree>
+    </div>
+    <div class="car-container col-span">
+      <data-box :height="540" ref="data-box" :columns="carColumns" :data="carDataSet" :noDefaultRow="true"></data-box>
+    </div>
   </section>
 </template>
 
@@ -37,11 +35,15 @@ export default class AddCar extends Vue {
   private carDataSet: any = [];
   private seriesDataSet: any = [];
 
+  /**
+   * 车辆列配置
+   */
   private carColumns: any = [
     {
       type: "selection",
       align: "center",
-      width: 100
+      width: 100,
+      editable: true
     },
     {
       title: "车辆品牌",
@@ -88,7 +90,7 @@ export default class AddCar extends Vue {
       key: "status",
       align: "center",
       render: (h, { row }) => {
-        return h("p", {}, this.$dict.getDictName(row.status));
+        return <p>{this.$dict.getDictName(row.status)}</p>;
       }
     }
   ];
@@ -103,33 +105,6 @@ export default class AddCar extends Vue {
   getCurrentSelection() {
     let databoxadd: any = this.$refs["data-box"];
     return databoxadd.getCurrentSelection();
-  }
-
-  /**
-   * 选择并返回
-   */
-  chooseback() {
-    // if (this.addOpen === true) {
-    //   let databoxadd: any = this.$refs["data-box"];
-    //   this.multipleSelection = databoxadd.getCurrentSelection();
-    // } else {
-    //   let radioRowData = this.carDataSet.find(v => v.radio === true);
-    //   this.multipleSelection = radioRowData;
-    // }
-    // if (this.multipleSelection === undefined) {
-    //   this.$Message.warning("请选择车辆！");
-    //   return;
-    // } else {
-    //   if (this.rowData) {
-    //     Object.assign(this.rowData, this.multipleSelection);
-    //     this.addcarData[this.index] = this.multipleSelection;
-    //     this.complutedtotalPrice();
-    //   } else {
-    //     this.distributionData(this.addcarData.concat(this.multipleSelection));
-    //     this.multipleSelection = [];
-    //   }
-    //   this.close();
-    // }
   }
 
   /**
@@ -198,58 +173,22 @@ export default class AddCar extends Vue {
 </script>
 <style lang="less" scoped>
 .component.add-car {
-  .open {
-    max-width: auto;
-    overflow: hidden;
-  }
-
-  .close {
-    max-width: 0;
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  .arrowUp {
-    transform: rotate(0deg); // transition: transform ease-in 0.2s;
-    cursor: pointer;
-  }
-
-  .arrowDown {
-    transform: rotate(180deg); // transition: transform ease-in 0.2s;
-    cursor: pointer;
-  }
-
-  .arrowButton {
-    line-height: 570px;
-    height: 100%;
-    background: #265ea2;
-    text-align: center;
-    width: 20px;
-  }
-  .item-sousuo-input {
-    display: inline-block;
-    width: 20%;
-    margin-right: 10px;
-  }
-  .data-container {
-    margin-top: 10px;
-  }
-  .item-sousuo-col {
-    border: 1px solid #dddddd;
-    height: 570px;
-    overflow: auto;
-  }
-  .item-sousuo-tree {
+  .series-container {
     padding: 10px;
+    height: 560px;
+    width:200px;
+    flex-basis: 200px;
+    overflow: auto;
+
+    .series-tree {
+      padding: 5px 20px;
+      border: solid 1px #ccc;
+      height: 100%;
+      overflow: auto;
+    }
   }
-  .item-data-box {
-    overflow: hidden;
-  }
-  .item-xuanze-row {
-    margin-top: 20px;
-  }
-  .item-xuanze-button {
-    float: right;
+
+  .car-container {
   }
 }
 </style>

@@ -27,11 +27,8 @@
             <i-option value="现金" key="现金" label="现金"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="startDate" label="付款日期：">
-          <i-date-picker v-model="model.startDate"></i-date-picker>~
-        </i-form-item>
-        <i-form-item prop="endDate">
-          <i-date-picker v-model="model.endDate"></i-date-picker>
+        <i-form-item prop="dateRange" label="付款日期：">
+          <i-date-picker v-model="model.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -121,7 +118,8 @@
       collectItem: '',
       collectMoneyChannel: '',
       startDate: '',
-      endDate: ''
+      endDate: '',
+      dateRange:[]
     };
 
     query() {
@@ -341,7 +339,7 @@
       }
     }
   }
-  
+
   .bottom {
     text-align: right;
     padding: 10px;

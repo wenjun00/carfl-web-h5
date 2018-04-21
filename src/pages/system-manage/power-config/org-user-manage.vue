@@ -247,11 +247,11 @@ export default class OrgUserManage extends Page {
         align: 'center',
         type: 'selection',
         fixed: 'left',
-        width: 60
+        minWidth: 60
       },
       {
         title: '操作',
-        width: 360,
+        minWidth: 360,
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -422,28 +422,28 @@ export default class OrgUserManage extends Page {
         title: '用户名',
         key: 'userUsername',
         editable: true,
-        width: 90
+        minWidth: 90
       },
       {
         align: 'center',
         title: '姓名',
         editable: true,
         key: 'userRealname',
-        width: 90
+        minWidth: 90
       },
       {
         align: 'center',
         title: '所属机构',
         editable: true,
         key: 'deptName',
-        width: 90
+        minWidth: 90
       },
       {
         align: 'center',
         editable: true,
         title: '状态',
         key: 'status',
-        width: 90,
+        minWidth: 90,
         render: (h, { row, columns, index }) => {
           if (row.userStatus === 0) {
             return h('span', {}, '启用')

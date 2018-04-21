@@ -265,7 +265,7 @@ export default class OpenAccount extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 100,
+        minWidth: 100,
         align: 'center',
         fixed: 'left',
         render: (h, { row, column, index }) => {
@@ -375,7 +375,7 @@ export default class OpenAccount extends Page {
         title: '验卡失败原因',
         key: 'faileReason',
         editable: true,
-        width: 140,
+        minWidth: 140,
         renderHeader: (h, { column, index }) => {
           return h(
             'div',
@@ -405,7 +405,7 @@ export default class OpenAccount extends Page {
       {
         title: '结算通道',
         editable: true,
-        width: 200,
+        minWidth: 200,
         key: 'settlementChannel',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -625,44 +625,6 @@ export default class OpenAccount extends Page {
 .page.open-account {
   .seek-day {
     margin-top: 10px;
-  }
-  .command {
-    float: right;
-    margin-right: 10px;
-    margin-top: 10px;
-    .command-item {
-      cursor: pointer;
-      display: inline-block;
-      margin-left: 10px;
-      color: #3367a7;
-      &.dayin {
-        font-size: 24px;
-        span {
-          font-size: 12px;
-        }
-      }
-      &.daochu {
-        font-size: 12px;
-        span {
-          font-size: 12px;
-        }
-      }
-    }
-  }
-  .data-form {
-    margin: 6px;
-    margin-left: 10px;
-    .form-input {
-      display: inline-block;
-      width: 16%;
-      margin-right: 10px;
-    }
-    .blue-button {
-      background: #265ea2;
-      color: #fff;
-      display: inline-block;
-      margin-left: 8px;
-    }
   }
 }
 </style>

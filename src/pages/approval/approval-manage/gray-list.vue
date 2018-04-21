@@ -7,11 +7,8 @@
                 <i-form-item prop="personalInfo">
                     <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>
                 </i-form-item>
-                <i-form-item prop="startTime" label="日期：">
-                    <i-date-picker v-model="approvalModel.startTime" placeholder="起始日期"></i-date-picker> ~
-                </i-form-item>
-                <i-form-item prop="endTime">
-                    <i-date-picker v-model="approvalModel.endTime" placeholder="终止日期"></i-date-picker>
+                <i-form-item prop="dateRange" label="日期：">
+                    <i-date-picker v-model="approvalModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
                 </i-form-item>
                 <i-form-item prop="province" label="省市：">
                     <i-select placeholder="选择省" v-model="approvalModel.province" clearable>
@@ -19,7 +16,7 @@
                     </i-select>
                 </i-form-item>
                 <i-form-item prop="city">
-                    <i-select placeholder="选择市" v-model="approvalModel.city" clearable>
+                    <i-select placeholder="选择市" v-model="approvalModel.city" :disabled="!approvalModel.province" clearable>
                         <i-option v-for="{value,label} in this.approvalModel.province ? this.$city.getCityData({ level: 1, id: this.approvalModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
                     </i-select>
                 </i-form-item>
@@ -80,7 +77,8 @@ export default class GrayList extends Page {
     city: '',
     startTime: '',
     endTime: '',
-    productType: ''
+    productType: '',
+    dateRange: []
   }
 
   mounted() {
@@ -90,7 +88,7 @@ export default class GrayList extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 200,
+        minWidth: 200,
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -301,23 +299,11 @@ export default class GrayList extends Page {
   }
 
   getGrayList() {
-    this.approvalModel.startTime = FilterService.dateFormat(
-      this.approvalModel.startTime,
-      'yyyy-MM-dd'
-    )
-    this.approvalModel.endTime = FilterService.dateFormat(
-      this.approvalModel.endTime,
-      'yyyy-MM-dd'
-    )
     this.approvalService
       .approvalOrderSearch(this.approvalModel, this.pageService)
       .subscribe(
-        data => {
-          this.grayList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+        data =>this.grayList = data,
+        err =>this.$Message.error(err)
       )
   }
   /**

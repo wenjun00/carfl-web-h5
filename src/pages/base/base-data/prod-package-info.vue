@@ -9,11 +9,8 @@
         <i-form-item prop="fileName" label="文件名">
           <i-input v-model="productModel.fileName"></i-input>
         </i-form-item>
-        <i-form-item prop="minDate" label="上传时间">
-          <i-date-picker v-model="productModel.minDate"></i-date-picker>
-        </i-form-item>
-        <i-form-item prop="maxDate">
-          <i-date-picker v-model="productModel.maxDate"></i-date-picker>
+        <i-form-item prop="dateRange" label="上传时间">
+          <i-date-picker v-model="productModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -85,7 +82,7 @@
       this.columns = [{
           title: '操作',
           align: 'center',
-          width: 260,
+          minWidth: 260,
           fixed: 'left',
           render: (h, {
             row,
@@ -193,6 +190,7 @@
         fileName: '',
         minDate: '',
         maxDate: '',
+        dateRange:[]
       };
     }
     // mounted() {
@@ -238,18 +236,9 @@
      * 多条件分页查询产品包信息
      */
     getProductPackage() {
-      this.productModel.minDate = FilterService.dateFormat(this.productModel.minDate, 'yyyy-MM-dd');
-      this.productModel.maxDate = FilterService.dateFormat(this.productModel.maxDate, 'yyyy-MM-dd');
       this.productPackageService.getAllProductPackage(this.productModel, this.pageService).subscribe(
-        val => {
-          this.prdPackageList = val;
-          console.log(this.prdPackageList, 33);
-        },
-        ({
-          msg
-        }) => {
-          this.$Message.error(msg);
-        }
+        val => this.prdPackageList = val,
+        err => this.$Message.error(err)
       );
     }
 
@@ -327,32 +316,6 @@
 
 </script>
 <style lang="less" scoped>
-  .page.prod-package-info {
-    // .data-form {
-    //   margin-top: 10px;
-    //   margin-left: 10px;
-    //   .title {
-    //     margin-right: 10px;
-    //   }
-    //   .data-form-item {
-    //     display: inline-block;
-    //     width: 10%;
-    //     margin-right: 10px;
-    //   }
-    //   .command {
-    //     float: right;
-    //     margin-right: 10px;
-    //     margin-top: 10px;
-    //     .command-item {
-    //       font-size: 16px;
-    //       cursor: pointer;
-    //       margin-left: 10px;
-    //       color: #3367A7
-    //     }
-    //   }
-    // }
-  }
-
   .ivu-table-fixed-body {
     height: auto !important;
   }

@@ -7,11 +7,8 @@
         <i-form-item prop="accountName">
           <i-input v-model="gatherModel.accountName" class="form-input" placeholder="请录入收款账户名查询"></i-input>
         </i-form-item>
-        <i-form-item prop="queryStartDate" label="日期：">
-          <i-date-picker v-model="gatherModel.queryStartDate" class="title-item"></i-date-picker> ~
-        </i-form-item>
-        <i-form-item prop="queryEndDate">
-          <i-date-picker v-model="gatherModel.queryEndDate" class="title-item"></i-date-picker>
+        <i-form-item prop="dateRange" label="日期：">
+          <i-date-picker v-model="gatherModel.dateRange" class="title-item" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -75,7 +72,8 @@
       accountName: '',
       queryStartDate: '',
       queryEndDate: '',
-      timeSearch: ''
+      timeSearch: '',
+      dateRange:[]
     }
     getEarlyPayList() {
 
@@ -291,9 +289,10 @@
      * 获取收款列表
      */
     getGatherListByCondition() {
-      this.collectMoneyHistoryService.collectMoneyHistoryList(this.gatherModel, this.pageService).subscribe(val => {
-        this.gatherList = val
-      })
+      this.collectMoneyHistoryService.collectMoneyHistoryList(this.gatherModel, this.pageService).subscribe(
+        val => this.gatherList = val,
+        err => this.$Message.error(err)
+      )
     }
   }
 

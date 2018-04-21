@@ -1,7 +1,7 @@
 <!--补传附件-->
 <template>
   <section class="component create-personal-account">
-    <i-form :label-width="110" :model="model" ref="form">
+    <i-form :label-width="110" :rule="accountRules" :model="model" ref="form">
       <i-form-item label="账户类型" prop="accountType">
         <i-select style="width:160px;" v-model="model.accountType">
           <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
@@ -62,13 +62,23 @@
       province: '',
       smsCode: '666666'
     }
+    private accountRules:any={}
     refresh(row) {
       let form: any = this.$refs.form
       form.resetFields()
       this.model.personalId = row.personalId
     }
     created() {
-
+      this.accountRules={
+        certificateNumber:[{
+          trigger: 'blur',
+          validator:this.$validator.idCard
+        }],
+        reservedPhoneNumber:[{
+          trigger: 'blur',
+          validator:this.$validator.phoneNumber
+        }]
+      }
     }
   }
 
