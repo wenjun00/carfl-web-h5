@@ -1,5 +1,5 @@
 <template>
-  <div class="component approve row">
+  <section class="component approve row">
     <!--选购信息-->
     <i-row class="data-form">
       <div>
@@ -362,6 +362,7 @@
           <div class="outFalg" v-for="item in materialInfoImg" :key="item.id" v-if="materialInfoImg.length > 0">
             <img :src="item.materialUrl" class="imgFlag">
             <div class="blackFlag">
+              <i-button type="text" icon="eye" @click="preview(item)" class="buttonFlagOne"></i-button>
               <i-button type="text" icon="arrow-down-a" @click="download(item)" class="buttonFlag"></i-button>
             </div>
           </div>
@@ -369,13 +370,16 @@
       </i-row>
       <i-row class="td-span">
         <i-col :span="24">
-          <i-button type="text" v-for="item in materialInfoOther" :key="item.id"
-                    class="td-span font" v-text="item.uploadName" @click="upLoadFile(item)"
-                    v-if="materialInfoOther.length > 0"></i-button>
+          <i-button type="text" v-for="item in materialInfoOther" :key="item.id" class="td-span font" v-text="item.uploadName" @click="upLoadFile(item)" v-if="materialInfoOther.length > 0"></i-button>
         </i-col>
       </i-row>
     </i-row>
-  </div>
+    <template>
+      <i-modal title="预览" v-model="previewModel" width="800" class-name="no-footer" :transfer="false">
+        <img :src="url" style="width: 100%">
+      </i-modal>
+    </template>
+  </section>
 </template>
 
 <script lang="ts">
@@ -416,6 +420,8 @@
     private ImgArray: Array<any> = [];
     private OtherArray: Array<any> = [];
     private NewArray: Array<any> = [];
+    private previewModel: Boolean = false;
+    private url:any = ''
     @Prop() person;
     @Action select;
 
@@ -519,6 +525,17 @@
     download(item) {
       CommonService.downloadFile(item.materialUrl, "资料图片下载");
     }
+    /**
+     * 预览
+     */
+    preview(file) {
+      // if (file.type === 'jpg' || file.type === 'png' || file.type === "JPG" || file.type === 'PNG') {
+        this.url = file.materialUrl
+        this.previewModel = true
+      // } else {
+      //   window.open(file.materialUrl)
+      // }
+    }
   }
 </script>
 
@@ -564,6 +581,13 @@
     position: absolute;
     top: -5px;
     left: 150px;
+    display: block;
+    font-size: 20px;
+  }
+  .buttonFlagOne{
+    position: absolute;
+    top: -5px;
+    left: 120px;
     display: block;
     font-size: 20px;
   }

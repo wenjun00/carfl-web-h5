@@ -1,4 +1,4 @@
-<!--确认还款-->
+<!--确认结清-->
 <template>
   <section class="component confirm-early-pay">
     <div>
@@ -140,15 +140,15 @@
         </i-col>
       </i-row>
     </div>
-    <template>
-      <i-modal title="划扣记录" v-model="deductRecordModal" width="1200">
-        <deduct-record ref="deduct-record"></deduct-record>
-      </i-modal>
-    </template>
     <!-- 弹出框 -->
     <template>
       <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
         <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
+      </i-modal>
+    </template>
+    <template>
+      <i-modal title="划扣记录" v-model="deductRecordModal" width="1200">
+        <deduct-record ref="deduct-record"></deduct-record>
       </i-modal>
     </template>
   </section>

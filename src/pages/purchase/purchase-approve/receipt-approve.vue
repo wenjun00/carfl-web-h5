@@ -26,7 +26,8 @@
     </template>
 
     <template>
-      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'收款申请':'查看'" width="800">
+      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'收款审批':'查看'" width="800" :transfer="false">
+        <!--<add-apply></add-apply>-->
         <apply-detail ref="applyDetail"></apply-detail>
         <div slot="footer">
           <i-button class="highDefaultButton" style="width:80px" @click="rebackClick" v-if="type===1">退回</i-button>
@@ -88,9 +89,7 @@
     @Dependencies(PageService) private pageService: PageService;
     @ModuleMutation paymentRecordFlag;
     private columns1: any;
-    private columns2: any;
     private data1: Array < Object > = [];
-    private data2: Array < Object > = [];
     private searchOptions: Boolean = false;
     private approvalModal: Boolean = false;
     private checkApplyModal: Boolean = false;
@@ -275,41 +274,6 @@
           align: "center"
         }
       ];
-      this.data2 = [{
-          columnsName: "申请类型"
-        },
-        {
-          columnsName: "环节"
-        },
-        {
-          columnsName: "状态"
-        },
-        {
-          columnsName: "订单编号"
-        },
-        {
-          columnsName: "订单创建时间"
-        },
-        {
-          columnsName: "收款金额"
-        },
-        {
-          columnsName: "收款类型"
-        },
-        {
-          columnsName: "产品名称"
-        },
-        {
-          columnsName: "客户姓名"
-        },
-        {
-          columnsName: "证件号码"
-        },
-        {
-          columnsName: "联系号码"
-        }
-      ];
-      this.columns2 = [{}];
     }
 
     getOrderInfoByTime() {}

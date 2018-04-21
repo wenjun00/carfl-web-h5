@@ -15,19 +15,11 @@
         </i-col>
       </i-row>
     </i-form>
-
     <div v-if="applicationPhaseResources.length">
       <div class="modal-item-fujian"></div>
       <span>附件</span>
+      <upload-voucher  ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
     </div>
-
-    <div class="invoiceContainer">
-      <div v-for="item in applicationPhaseResources" :key="item.id" class="invoices">
-        <div class="invoiceItem"></div>
-        <div class="invoiceName">{{item.invoiceName}}</div>
-      </div>
-    </div>
-
     <div>
       <div class="modal-item-mingxi"></div>
       <span>收款明细</span>
@@ -42,12 +34,10 @@
         <td>{{item.itemMoney}}</td>
       </tr>
     </table>
-
     <div>
       <div class="modal-item-fangshi"></div>
       <span>收款方式</span>
     </div>
-
     <table class="modal-item-table" border="1" width="850">
       <tr height="40">
         <td class="bg-color" colspan="1" width="5%" v-if="!check">
@@ -72,8 +62,8 @@
           </i-select>
         </td>
         <td>
-          <i-select class="modal-item-select" placeholder="选择收款项目" v-model="v.collectItem" :disabled="check">
-            <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>
+          <i-select class="modal-item-select" placeholder="选择收款项目" v-model="v.collectItem" :disabled="check" @on-change="selectWay($event, v)">
+            <i-option v-for="item in collectMoneyItemModels" :key="item.itemCode" :label="item.itemLabel" :value="item.itemLabel"></i-option>
           </i-select>
         </td>
         <td>
@@ -90,45 +80,24 @@
         <td colspan="3" class="modal-item-td">{{paymentAmount}}</td>
       </tr>
     </table>
-
-    <!--<i-table :columns3="columns3" :data3="data3"></i-table>-->
     <div>
       <div class="modal-item-xinxi"></div>
-      <span>账户信息</span>
+      <span >账户信息</span>
     </div>
     <i-table :columns="columns2" :data="personalBanks"></i-table>
 
     <div v-if="!check||financeUploadResources.length">
       <div class="modal-item-xinxi"></div>
-      <span>收款凭证</span>
+      <span >收款凭证</span>
+      <upload-voucher></upload-voucher>
     </div>
 
-    <i-row class="modal-item-fujian2">
-      <i-col :span="12" v-if="!check">
-        <div class="modal-item-fujian2-div" @click="openUpload=true">
-          <Icon type="plus-circled" class="modal-item-fujian2-circled" size="40" color="#265ea2"></Icon>
-          <div>点击添加附件</div>
-          <span class="modal-item-fujian2-text">支持jpg/pdf/png格式建议大小不超过10M</span>
-        </div>
-      </i-col>
-      <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id" class="modal-item-resources">
-        <div>
-        </div>
-      </i-col>
-    </i-row>
     <template>
       <i-modal title="申请单详情" v-model="purchaseInfoModel" width="1000" class="purchaseInformation">
-        <purchase-information ref="purchase-info" :scrollTopHeight="scrollTopHeight"></purchase-information>
+        <purchase-information ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModel=false">返回</i-button>
         </div>
-      </i-modal>
-    </template>
-
-    <!-- 弹出框 -->
-    <template>
-      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
-        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
       </i-modal>
     </template>
   </section>
@@ -150,17 +119,23 @@
     Prop
   } from "vue-property-decorator";
   import FileUpload from "~/components/common/file-upload.tsx.vue";
+  import UploadVoucher from "~/components/common/upload-voucher.vue"
 
   @Component({
     components: {
       FileUpload,
       ChangeCard,
       DataBox,
-      PurchaseInformation
+      PurchaseInformation,
+      UploadVoucher
     }
   })
   export default class ConfirmGather extends Vue {
     @Dependencies(CollectMoneyHistoryService) private collectMoneyHistoryService: CollectMoneyHistoryService;
+    @Prop({
+      default: false
+    })
+    check: boolean;
     private rowObj: any = {};
     private repaymentObj: any = {};
     private applicationPhaseResources: any = []
@@ -171,13 +146,6 @@
     private collectMoneyId: any = ''
     private openUpload: Boolean = false;
     private box: any = ''
-
-    @Prop({
-      default: false
-    })
-    check: boolean;
-
-
     private columns2: any;
     private personalBanks: Array < Object > = [];
     private columns3: any;
@@ -187,35 +155,6 @@
       gatherType: '销售收款',
       remarks: ''
     }
-    private payType = ''
-    private scrollTopHeight = 0
-
-    /**
-     * 上传文件成功回调
-     */
-    uploadSuccess() {
-      this.openUpload = false;
-      this.$nextTick(() => {
-        let fileUpload: any = this.$refs["file-upload"];
-        this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
-          return {
-            id: v.response.id,
-            materialUrl: v.response.url,
-            orderId: this.rowObj.orderId,
-            businessId: this.rowObj.businessId
-          }
-        }))
-        fileUpload.reset();
-      });
-    }
-
-    /**
-     * 上传文件
-     */
-    postFile() {
-      let fileUpload = this.$refs["file-upload"] as FileUpload;
-      fileUpload.upload();
-    }
 
     refresh(row) {
       this.rowObj = row
@@ -223,13 +162,14 @@
         applicationId: row.applicationId
       }).subscribe(data => {
         this.collectMoneyId = data.collectMoneyId || ''
-        console.log(data)
         this.repaymentObj = data
         this.collectMoneyDetails = data.collectMoneyDetails || []
         this.personalBanks = data.personalBanks
         this.financeUploadResources = data.collectMoneyPhaseUploadResources
         this.applicationPhaseResources = data.applicationPhaseUploadResources
         this.collectMoneyItemModels = data.collectMoneyItemModels
+        let _uploadFodder:any = this.$refs['upload-voucher']
+        _uploadFodder.Reverse(data.applicationPhaseUploadResources)
         this.inputBlur()
       }, ({
         msg
@@ -249,21 +189,6 @@
       console.log(sum)
       this.paymentAmount = sum
     }
-
-    mounted() {
-      // this.box = this.$refs.purchaseInformation1
-      // this.box.addEventListener("scroll", ()=>{
-      //   console.log(this.box.scrollTop)
-      // })
-    }
-
-    monitorScorll() {
-      // console.log(123123)
-      // let target = document.getElementsByClassName("purchaseInformation1")[0]
-      //   this.scrollTopHeight = target.scrollTop
-      //    console.log(target.scrollTop)
-    }
-
     /**
      * 增加还款对象
      */
@@ -274,7 +199,13 @@
         collectMoneyMethod: ''
       })
     }
-
+    selectWay(code, item) {
+      let target: any = this.collectMoneyItemModels.find((d) => d.itemCode === code)
+      if (target) {
+        item.collectMoneyAmount = target.itemMoney
+        this.inputBlur()
+      }
+    }
     /**
      * 删除还款对象
      */
@@ -392,24 +323,6 @@
         key: 'clientNumber'
       }]
     }
-
-    changeBankCard() {
-
-    }
-
-    addRow() {
-      // let tr: any = document.createElement('tr');
-      // let tb: any = document.getElementsByClassName('gather_type_table')[0]
-      // let cellsNum = tb.rows[0].cells.length;
-      // console.log(444, cellsNum)
-      // for (let j = 0; j < cellsNum; j++) {
-      //   let td = document.createElement('td');
-      //   td.innerHTML = 'test';
-      //   tr.appendChild(td);
-      // }
-      // tb.tBodies[0].appendChild(tr);
-    }
-
     saleApplyInfo() {
       this.purchaseInfoModel = true
       let _purchaseInfo: any = this.$refs["purchase-info"];
@@ -437,7 +350,7 @@
       text-align: center;
     }
   }
-  
+
   .component.confirm-gather {
     .modal-item-shenqing {
       background: #F5F5F5
@@ -529,37 +442,6 @@
       position: relative;
       top: 4px;
       margin-top: 10px;
-    }
-    .modal-item-fujian2 {
-      margin-top: 10px;
-      .modal-item-fujian2-div {
-        height: 200px;
-        width: 200px;
-        border: 1px solid #C2C2C2;
-        cursor: pointer;
-        text-align: center;
-        position: relative;
-        left: 40px;
-      }
-      .modal-item-fujian2-circled {
-        display: block;
-        margin-top: 53px;
-      }
-      .modal-item-fujian2-text {
-        color: gray
-      }
-      .modal-item-resources {
-        display: flex;
-        justify-content: center;
-        margin-top: 10px;
-        div {
-          height: 200px;
-          width: 200px;
-          border: 1px solid #C2C2C2;
-          background-image:url(${v.materialUrl});
-          background-repeat: no-repeat;
-        }
-      }
     }
   }
 
