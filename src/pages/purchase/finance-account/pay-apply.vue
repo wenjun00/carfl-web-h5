@@ -162,11 +162,6 @@ export default class PayApply extends Page {
         trigger: 'blur'
       }
     ],
-    //   orderNumber: [{
-    //     required: true,
-    //     message: '请选择订单',
-    //     trigger:'change'
-    //   }],
     refundType: [
       {
         required: true,

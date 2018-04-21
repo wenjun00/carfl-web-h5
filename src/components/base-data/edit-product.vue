@@ -152,27 +152,32 @@
         <data-grid-item :span="6" label="征信保护天数">
           <i-form-item prop="creditProtectDays" style="margin-top:15px;">
             <i-input v-model="productDetail.creditProtectDays"></i-input>
-          </i-form-item><span>&nbsp;天</span>
+          </i-form-item>
+          <span>&nbsp;天</span>
         </data-grid-item>
         <data-grid-item :span="6" label="逾期保护天数">
           <i-form-item prop="overdueProtectDays" style="margin-top:15px;">
             <i-input v-model="productDetail.overdueProtectDays"></i-input>
-          </i-form-item><span >&nbsp;天</span>
+          </i-form-item>
+          <span>&nbsp;天</span>
         </data-grid-item>
         <data-grid-item :span="6" label="合同违约金费率">
-          <i-form-item prop="contractBreakRates"  style="margin-top:15px;">
+          <i-form-item prop="contractBreakRates" style="margin-top:15px;">
             <i-input v-model="productDetail.contractBreakRates"></i-input>
-          </i-form-item><span >&nbsp;%</span>
+          </i-form-item>
+          <span>&nbsp;%</span>
         </data-grid-item>
         <data-grid-item :span="6" label="提前还款费率">
           <i-form-item prop="prepaymentRates" style="margin-top:15px;">
             <i-input v-model="productDetail.prepaymentRates"></i-input>
-          </i-form-item><span >&nbsp;%</span>
+          </i-form-item>
+          <span>&nbsp;%</span>
         </data-grid-item>
-        <data-grid-item :span="12" label="罚息费率" >
+        <data-grid-item :span="12" label="罚息费率">
           <i-form-item prop="penaltyRates" style="margin-top:15px;">
             <i-input v-model="productDetail.penaltyRates"></i-input>
-          </i-form-item><span >&nbsp;%/天</span>
+          </i-form-item>
+          <span>&nbsp;%/天</span>
         </data-grid-item>
       </data-grid>
       <!--<div style="margin-right:10px;display:inline-block" class="add-periods-item">状态</div>
@@ -187,288 +192,314 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
-  import { Prop } from 'vue-property-decorator';
-  import { DataGrid, DataGridItem } from '@zct1989/vue-component';
-  import { Form } from 'iview';
-  import { Dependencies } from '~/core/decorator';
-  import { ProductPlanIssueService } from '~/services/manage-service/product-plan-issue.service';
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { Prop } from 'vue-property-decorator';
+import { DataGrid, DataGridItem } from '@zct1989/vue-component';
+import { Form } from 'iview';
+import { Dependencies } from '~/core/decorator';
+import { ProductPlanIssueService } from '~/services/manage-service/product-plan-issue.service';
 
-  @Component({
-    components: {
-      DataGrid,
-      DataGridItem,
-    },
-  })
-  export default class AddProduct extends Vue {
-    @Dependencies(ProductPlanIssueService) private ProductPlanIssueService: ProductPlanIssueService;
-    @Prop() productDetails: any;
-    @Prop() pNameTitle: any;
-    private initialParams: String = '无';
-    private promiseMoenyParams: String = '无';
-    private residueParams: String = '无';
-    private manageMoneyParams: String = '无';
-    private costType: any = '';
-    private disabled: Boolean = false;
-    private changePromiseMoenyShow: Boolean = false;
-    private formRules: Object = {};
-    private amountRules: Object = {};
-    private amount: any = {};
-    private monthDay: any = [];
-    private moneyArray: any = [];
-    private productDetail :any = {
-      productId: '',
-      periods: '', //产品期数
-      periodType: '', // 周期类型
-      paymentType: '', //账期类型
-      paymentDay: '', //固定账期 期数
-      productRates: '', // 产品利率
-      payWay: '', //还款方式
-      financingAmount: '', //融资金额
-      initialPayment: '', // 首付款比例
-      depositCash: '', // 保证金比例
-      depositCashType: '', //缴纳方式
-      finalCash: '', // 尾付款年利率
-      manageCost: '', //管理费比例
-      manageCostType: '', //管理费收取方式
-      stagingPeriods: '', // 管理费分期 期数
-      creditProtectDays: '', // 征信保护天数
-      overdueProtectDays: '', //逾期保护天数
-      penaltyRates: '', //罚息费率
-      contractBreakRates: '', //合同违约金费率
-      prepaymentRates: '', //提前还款费率
-      isPublish: '', // 未发布or已发布
-      operator: '',
-      operatorTime: '',
-      id: '',
-      penaltyRate: '',
-      contractBreakRate: '',
-      prepaymentRate: '',
-      productRate: "",
-    };
-    /**
-     * 获取月份天数
-     */
-    monthDayFun() {
-      let arr: any = 31;
-      for (let i = 1; i <= arr; i++) {
-        this.monthDay.push({
-          day: i + '日',
-          key: i + '日',
-          value: i,
-        });
-      }
-    }
-    /**
-     * 父组件向子组件传值  并转为字符串
-     */
-    moneyFun(item) {
-      this.productDetail.productRates = String(item.productRate*100)
-      this.productDetail.creditProtectDays = String(item.creditProtectDays)
-      this.productDetail.overdueProtectDays = String(item.overdueProtectDays)
-      this.productDetail.contractBreakRates =String(item.contractBreakRate*100)
-      this.productDetail.prepaymentRates = String(item.prepaymentRate*100)
-      this.productDetail.penaltyRates = String(item.penaltyRate*100)
-      this.productDetail.payWay = item.payWay
-      this.productDetail.periods = item.periods
-      this.productDetail.periodType = item.periodType
-      this.productDetail.id = item.id
-      this.productDetail.isPublish = item.isPublish
-      if(item.paymentType){
-        this.productDetail.paymentType = item.paymentType
-        this.productDetail.paymentDay = item.paymentDay
-      }
-      if(item.stagingPeriods) {
-        this.productDetail.stagingPeriods = String(item.stagingPeriods)
-      }
-      this.moneyArray = item.financingAmount.split('~');
-      this.amount = {
-        financingAmount1: this.moneyArray[0],
-        financingAmount2: this.moneyArray[1],
-      };
-      if (item.initialPayment) {
-        this.initialParams = '有';
-        this.productDetail.initialPayment = item.initialPayment
-      }
-      if (item.depositCash) {
-        this.promiseMoenyParams = '有';
-        this.productDetail.depositCash = item.depositCash
-        this.productDetail.depositCashType = item.depositCashType
-      }
-      if (item.finalCash) {
-        this.residueParams = '有';
-        this.productDetail.finalCash = item.finalCash
-      }
-      if (item.manageCost) {
-        this.manageMoneyParams = '有';
-        this.productDetail.manageCost = item.manageCost
-        this.productDetail.manageCostType = item.manageCostType
-      }
-      // if (item.managecostType) {
-      //   this.costType = 395;
-      // }else{
-      //   this.costType = 394;
-      // }
-    }
-    /**@
-     * 点击确定按钮
-     */
-    confirmPeriods() {
-      let form = <Form>this.$refs['productref'];
-      let formVal = <Form>this.$refs['finance'];
-      form.validate(valid => {
-        formVal.validate(vali => {
-          if(!vali || !valid) return false;
-          if(this.amount.financingAmount1>=this.amount.financingAmount2){
-            this.$Message.error("请输入正确的融资金额");
-            return false;
-          }
-          if (this.manageMoneyParams === "无") {
-            delete this.productDetail.manageCost;
-            delete this.productDetail.manageCostType;
-            delete this.productDetail.stagingPeriods;
-          } else {
-            if (this.productDetail.manageCostType === 394) {
-              delete this.productDetail.stagingPeriods;
-            }
-          }
-          if (this.initialParams === "无") {
-            delete this.productDetail.initialPayment;
-          }
-
-          if (this.promiseMoenyParams === "无") {
-            delete this.productDetail.depositCash;
-          }
-          if (this.residueParams === "无") {
-            delete this.productDetail.finalCash;
-          }
-          this.productDetail.financingAmount = this.amount.financingAmount1 + '~' + this.amount.financingAmount2;
-          this.productDetail.productId = this.pNameTitle.id;
-          this.productDetail.productStatus = this.pNameTitle.status;
-          this.productDetail.productRate = this.productDetail.productRates*0.01;
-          this.productDetail.contractBreakRate = this.productDetail.contractBreakRates*0.01;
-          this.productDetail.prepaymentRate =  this.productDetail.prepaymentRates*0.01;
-          this.productDetail.penaltyRate = this.productDetail.penaltyRates*0.01;
-          this.ProductPlanIssueService.createOrModifyProductPlan(this.productDetail).subscribe(val => {
-              this.$emit('close');
-              this.$Message.success('修改成功！');
-            },
-            ({ msg }) => {
-              this.$Message.error(msg);
-            });
-        })
-        if (!valid) return false;
+@Component({
+  components: {
+    DataGrid,
+    DataGridItem,
+  },
+})
+export default class AddProduct extends Vue {
+  @Dependencies(ProductPlanIssueService) private ProductPlanIssueService: ProductPlanIssueService;
+  @Prop() productDetails: any;
+  @Prop() pNameTitle: any;
+  private initialParams: String = '无';
+  private promiseMoenyParams: String = '无';
+  private residueParams: String = '无';
+  private manageMoneyParams: String = '无';
+  private costType: any = '';
+  private disabled: Boolean = false;
+  private changePromiseMoenyShow: Boolean = false;
+  private formRules: Object = {};
+  private amountRules: Object = {};
+  private amount: any = {};
+  private monthDay: any = [];
+  private moneyArray: any = [];
+  private productDetail: any = {
+    productId: '',
+    periods: '', //产品期数
+    periodType: '', // 周期类型
+    paymentType: '', //账期类型
+    paymentDay: '', //固定账期 期数
+    productRates: '', // 产品利率
+    payWay: '', //还款方式
+    financingAmount: '', //融资金额
+    initialPayment: '', // 首付款比例
+    depositCash: '', // 保证金比例
+    depositCashType: '', //缴纳方式
+    finalCash: '', // 尾付款年利率
+    manageCost: '', //管理费比例
+    manageCostType: '', //管理费收取方式
+    stagingPeriods: '', // 管理费分期 期数
+    creditProtectDays: '', // 征信保护天数
+    overdueProtectDays: '', //逾期保护天数
+    penaltyRates: '', //罚息费率
+    contractBreakRates: '', //合同违约金费率
+    prepaymentRates: '', //提前还款费率
+    isPublish: '', // 未发布or已发布
+    operator: '',
+    operatorTime: '',
+    id: '',
+    penaltyRate: '',
+    contractBreakRate: '',
+    prepaymentRate: '',
+    productRate: "",
+  };
+  /**
+   * 获取月份天数
+   */
+  monthDayFun() {
+    let arr: any = 31;
+    for (let i = 1; i <= arr; i++) {
+      this.monthDay.push({
+        day: i + '日',
+        key: i + '日',
+        value: i,
       });
     }
-    created() {
-      this.monthDayFun();
-      this.amountRules = {
-        financingAmount1: [
-          { pattern: /^[0-9]{1,9}$/g, message: '请输入1~9位数字', trigger: 'blur' }
-        ],
-        financingAmount2: [
-          { pattern: /^[0-9]{1,9}$/g, message: '请输入1~9位数字', trigger: 'blur' }
-        ]
-      }
-      this.formRules = {
-        periods: [
-          { required: true, message: '请输入产品期数', type: 'number', trigger: 'change' }
-        ],
-        productRates: [
-          { required: true, message: '请输入产品利率', trigger: 'blur' },
-          { pattern: /^[0-9]{1,3}([.]{1}[0-9]{0,4}){0,1}$/g, message: '请输入0~999整数或四位小数', trigger: 'blur' }
-        ],
-        payWay: [
-          { required: true, message: '请选择还款方式', trigger: 'change', type: 'number' }
-        ],
-        periodType: [
-          { required: true, message: '请选择周期类型', trigger: 'change', type: 'number' }
-        ],
-        paymentDay: [
-          { required: true, message: '请选择固定账期期数', trigger: 'change', type: 'number' }
-        ],
-        initialPayment: [
-          { required: true, message: '请输入首付款比例', trigger: 'blur' },
-          { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
-        ],
-        depositCash: [
-          { required: true, message: '请输入保证金比例', trigger: 'blur' },
-          { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
-        ],
-        depositCashType: [
-          { required: true, message: '请选择退还方式', trigger: 'change', type: 'number' }
-        ],
-        finalCash: [
-          { required: true, message: '请输入尾付款年利率', trigger: 'blur' },
-          { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
-        ],
-        manageCost: [
-          { required: true, message: '请输入管理费比例', trigger: 'blur' },
-          { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
-        ],
-        stagingPeriods: [
-          { required: true, message: '请输入管理费分期期数', trigger: 'blur' },
-          { pattern: /^[\d]+$/, message: '请输入整数', trigger: 'blur' }
-        ],
-        creditProtectDays: [
-          { required: true, message: '请输入征信保护天数', trigger: 'blur' },
-          { pattern: /^(0|[1-9][0-9]{0,3})$/g, message: '请输入0~9999整数', trigger: 'blur' }
-        ],
-        overdueProtectDays: [
-          { required: true, message: '请输入逾期保护天数', trigger: 'blur' },
-          { pattern: /^(0|[1-9][0-9]{0,3})$/g, message: '请输入0~9999整数', trigger: 'blur' }
-        ],
-        contractBreakRates: [
-          { required: true, message: '请输入合同违约金费率', trigger: 'blur' },
-          { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或四位小数', trigger: 'blur' }
-        ],
-        prepaymentRates: [
-          { required: true, message: '请输入提前还款费率', trigger: 'blur' },
-          { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或四位小数', trigger: 'blur' }
-        ],
-        penaltyRates: [
-          { required: true, message: '请输入罚期费率', trigger: 'blur' },
-          { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或四位小数', trigger: 'blur' }
-        ]
-      };
+  }
+  /**
+   * 父组件向子组件传值  并转为字符串
+   */
+  moneyFun(item) {
+    this.productDetail.productRates = String(item.productRate * 100)
+    this.productDetail.creditProtectDays = String(item.creditProtectDays)
+    this.productDetail.overdueProtectDays = String(item.overdueProtectDays)
+    this.productDetail.contractBreakRates = String(item.contractBreakRate * 100)
+    this.productDetail.prepaymentRates = String(item.prepaymentRate * 100)
+    this.productDetail.penaltyRates = String(item.penaltyRate * 100)
+    this.productDetail.payWay = item.payWay
+    this.productDetail.periods = item.periods
+    this.productDetail.periodType = item.periodType
+    this.productDetail.id = item.id
+    this.productDetail.isPublish = item.isPublish
+    if (item.paymentType) {
+      this.productDetail.paymentType = item.paymentType
+      this.productDetail.paymentDay = item.paymentDay
     }
+    if (item.stagingPeriods) {
+      this.productDetail.stagingPeriods = String(item.stagingPeriods)
+    }
+    this.moneyArray = item.financingAmount.split('~');
+    this.amount = {
+      financingAmount1: this.moneyArray[0],
+      financingAmount2: this.moneyArray[1],
+    };
+    if (item.initialPayment) {
+      this.initialParams = '有';
+      this.productDetail.initialPayment = item.initialPayment
+    }
+    if (item.depositCash) {
+      this.promiseMoenyParams = '有';
+      this.productDetail.depositCash = item.depositCash
+      this.productDetail.depositCashType = item.depositCashType
+    }
+    if (item.finalCash) {
+      this.residueParams = '有';
+      this.productDetail.finalCash = item.finalCash
+    }
+    if (item.manageCost) {
+      this.manageMoneyParams = '有';
+      this.productDetail.manageCost = item.manageCost
+      this.productDetail.manageCostType = item.manageCostType
+    }
+    // if (item.managecostType) {
+    //   this.costType = 395;
+    // }else{
+    //   this.costType = 394;
+    // }
+  }
+  /**@
+   * 点击确定按钮
+   */
+  confirmPeriods() {
+    let form = <Form>this.$refs['productref'];
+    let formVal = <Form>this.$refs['finance'];
+    form.validate(valid => {
+      formVal.validate(vali => {
+        if (!vali || !valid) return false;
+        if (this.amount.financingAmount1 >= this.amount.financingAmount2) {
+          this.$Message.error("请输入正确的融资金额");
+          return false;
+        }
+        if (this.manageMoneyParams === "无") {
+          delete this.productDetail.manageCost;
+          delete this.productDetail.manageCostType;
+          delete this.productDetail.stagingPeriods;
+        } else {
+          if (this.productDetail.manageCostType === 394) {
+            delete this.productDetail.stagingPeriods;
+          }
+        }
+        if (this.initialParams === "无") {
+          delete this.productDetail.initialPayment;
+        }
+
+        if (this.promiseMoenyParams === "无") {
+          delete this.productDetail.depositCash;
+        }
+        if (this.residueParams === "无") {
+          delete this.productDetail.finalCash;
+        }
+        this.productDetail.financingAmount = this.amount.financingAmount1 + '~' + this.amount.financingAmount2;
+        this.productDetail.productId = this.pNameTitle.id;
+        this.productDetail.productStatus = this.pNameTitle.status;
+        this.productDetail.productRate = this.productDetail.productRates * 0.01;
+        this.productDetail.contractBreakRate = this.productDetail.contractBreakRates * 0.01;
+        this.productDetail.prepaymentRate = this.productDetail.prepaymentRates * 0.01;
+        this.productDetail.penaltyRate = this.productDetail.penaltyRates * 0.01;
+        this.ProductPlanIssueService.createOrModifyProductPlan(this.productDetail).subscribe(val => {
+          this.$emit('close');
+          this.$Message.success('修改成功！');
+        },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          });
+      })
+      if (!valid) return false;
+    });
+  }
+
+  /**
+    * 金额大小验证
+    */
+  moneySmall(rule, value, callback) {
+    if (!value) {
+      callback(new Error('请输入最小金额'))
+    } else {
+      if (this.amount.financingAmount2 && value > this.amount.financingAmount2) {
+        callback(new Error('最小金额必须小于最大金额'))
+      } else {
+        callback()
+      }
+    }
+  }
+
+  moneyBig(rule, value, callback) {
+    if (!value) {
+      callback(new Error('请输入最大金额'))
+    } else {
+      if (!this.amount.financingAmount1) {
+        callback(new Error('请再输入最小金额'))
+      } else if (this.amount.financingAmount1 > value) {
+        callback(new Error('最大金额必须大于最小金额'))
+      } else {
+        callback()
+      }
+    }
+  }
+
+  created() {
+    this.monthDayFun();
+    this.amountRules = {
+      financingAmount1: { validator: this.moneySmall, trigger: 'blur' },
+      financingAmount2: { validator: this.moneyBig, trigger: 'blur' }
+    }
+    this.formRules = {
+      periods: [
+        { required: true, message: '请输入产品期数', type: 'number', trigger: 'change' }
+      ],
+      productRates: [
+        { required: true, message: '请输入产品利率', trigger: 'blur' },
+        { pattern: /^[0-9]{1,3}([.]{1}[0-9]{0,4}){0,1}$/g, message: '请输入0~999整数或四位小数', trigger: 'blur' }
+      ],
+      payWay: [
+        { required: true, message: '请选择还款方式', trigger: 'change', type: 'number' }
+      ],
+      periodType: [
+        { required: true, message: '请选择周期类型', trigger: 'change', type: 'number' }
+      ],
+      paymentDay: [
+        { required: true, message: '请选择固定账期期数', trigger: 'change', type: 'number' }
+      ],
+      initialPayment: [
+        { required: true, message: '请输入首付款比例', trigger: 'blur' },
+        { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
+      ],
+      depositCash: [
+        { required: true, message: '请输入保证金比例', trigger: 'blur' },
+        { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
+      ],
+      depositCashType: [
+        { required: true, message: '请选择退还方式', trigger: 'change', type: 'number' }
+      ],
+      finalCash: [
+        { required: true, message: '请输入尾付款年利率', trigger: 'blur' },
+        { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
+      ],
+      manageCost: [
+        { required: true, message: '请输入管理费比例', trigger: 'blur' },
+        { pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
+      ],
+      stagingPeriods: [
+        { required: true, message: '请输入管理费分期期数', trigger: 'blur' },
+        { pattern: /^[\d]+$/, message: '请输入整数', trigger: 'blur' }
+      ],
+      creditProtectDays: [
+        { required: true, message: '请输入征信保护天数', trigger: 'blur' },
+        { pattern: /^(0|[1-9][0-9]{0,3})$/g, message: '请输入0~9999整数', trigger: 'blur' }
+      ],
+      overdueProtectDays: [
+        { required: true, message: '请输入逾期保护天数', trigger: 'blur' },
+        { pattern: /^(0|[1-9][0-9]{0,3})$/g, message: '请输入0~9999整数', trigger: 'blur' }
+      ],
+      contractBreakRates: [
+        { required: true, message: '请输入合同违约金费率', trigger: 'blur' },
+        { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或四位小数', trigger: 'blur' }
+      ],
+      prepaymentRates: [
+        { required: true, message: '请输入提前还款费率', trigger: 'blur' },
+        { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或四位小数', trigger: 'blur' }
+      ],
+      penaltyRates: [
+        { required: true, message: '请输入罚期费率', trigger: 'blur' },
+        { pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g, message: '请输入0~100整数或四位小数', trigger: 'blur' }
+      ]
+    };
+  }
 }
 
 </script>
 
 <style lang="less" scoped>
-  .add-periods-item {
-    font-size: 14px;
-    font-weight: bold;
-    margin-top: 16px;
-    .select{
-        width: 70%;
-    }
-  }
-
-  .ivu-form-item-content {
-    margin-left: 0 !important;
-  }
-
-  .data-grid-item__content,
-  .initialPayment,
-  .ivu-form-item-content {
-    display: flex;
-    align-items: center;
-  }
-
-  .ivu-form-item {
-    margin-bottom: 16px;
-  }
-
-  .after_text {
-    line-height: 33px;
-    margin-left: 5px;
-    margin-bottom: 20px;
-  }
-
-  .initialPayment {
+.add-periods-item {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 16px;
+  .select {
     width: 70%;
   }
+}
+
+.ivu-form-item-content {
+  margin-left: 0 !important;
+}
+
+.data-grid-item__content,
+.initialPayment,
+.ivu-form-item-content {
+  display: flex;
+  align-items: center;
+}
+
+.ivu-form-item {
+  margin-bottom: 16px;
+}
+
+.after_text {
+  line-height: 33px;
+  margin-left: 5px;
+  margin-bottom: 20px;
+}
+
+.initialPayment {
+  width: 70%;
+}
 </style>
