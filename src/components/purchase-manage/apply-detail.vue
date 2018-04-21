@@ -35,7 +35,7 @@
       <span class="title">账户信息</span>
       <i-table :columns="columns3" :data="accountDetail" :noDefaultRow="true"></i-table>
       <span class="title">附件</span>
-      <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher" hiddenUpload></upload-voucher>
+      <upload-voucher  ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
     </i-row>
   </section>
 </template>
@@ -86,12 +86,6 @@ export default class ApplyDetail extends Vue {
     this.accountDetail = val.personalBank||[]; // 账户信息
   }
 
-  /**
-   *  新增上传素材
-   */
-  fileNumber(item){
-    this.fodderList = item
-  }
   created() {
     this.applyRules={
       idCard: [{
