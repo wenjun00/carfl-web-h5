@@ -45,7 +45,7 @@
       </i-col>
 
     </i-row>
-    <i-tabs v-model="materialTabs" type="card" class="early-pay-tabs">
+    <i-tabs v-model="materialTabs" class="early-pay-tabs">
       <i-tab-pane name="gather-detail-early-pay" label="收款明细">
         <gather-detail-early-pay :checkOrderId="checkOrderId" ref="gather-detail-early-pay"></gather-detail-early-pay>
       </i-tab-pane>

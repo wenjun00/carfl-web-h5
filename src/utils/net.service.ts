@@ -128,7 +128,6 @@ export class NetService {
 
     // 判断参数类型
     getType.indexOf(method) > -1 ? (getData = this.filterEmptyData(data)) : (postData = data)
-
     // 创建待观察对象
     var observable = Observable.create((observer) => {
       this.axiosInstance.request({

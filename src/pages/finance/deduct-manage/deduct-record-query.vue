@@ -5,7 +5,7 @@
     <data-form hiddenDateSearch hidden-reset :model="model" :page="pageService" @on-search="getRecord">
       <template slot="input">
         <i-form-item label="支付日期" prop="startTime">
-          <i-date-picker v-model="searchDate" type="daterange"></i-date-picker>
+          <i-date-picker v-model="model.dateRange" type="daterange"></i-date-picker>
         </i-form-item>
         <i-form-item prop="personalInfo">
           <i-input placeholder="请输入客户姓名、客户号查询" v-model="model.personalInfo"></i-input>
@@ -78,20 +78,12 @@ export default class DeductRecordQuery extends Page {
   private data1: Array<Object> = [];
   private searchOptions: Boolean = false;
 
-  get searchDate() {
-    return [new Date(this.model.startTime), new Date(this.model.endTime)]
-  }
-  set searchDate(value) {
-    let dateRange = FilterService.dateRanageFormat(value)
-    this.model.startTime = dateRange.start
-    this.model.endTime = dateRange.end
-  }
-
   private model: any = {
     personalInfo: '',
     startTime: '',
     endTime: '',
-    payStatus: ''
+    payStatus: '',
+    dateRange: []
   };
   /**
    * 获取划扣记录

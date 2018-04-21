@@ -44,7 +44,7 @@
             </i-row>
             <div class="shade" :style="{display:disabledStatus}">
             </div>
-            <i-tabs type="card" class="fulls-pay-tabs">
+            <i-tabs class="fulls-pay-tabs">
                 <i-tab-pane label="选购资料" name="choose-buy-materials-all">
                     <choose-buy-materials-all ref='materials-all'></choose-buy-materials-all>
                 </i-tab-pane>
