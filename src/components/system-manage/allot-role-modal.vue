@@ -54,7 +54,7 @@ export default class AllotRoleModal extends Vue {
       {
         align: "center",
         type: "selection",
-        width: 60
+        minWidth: 60
       },
       {
         align: "center",

@@ -128,7 +128,7 @@
       this.columns = [{
           align: 'center',
           title: '操作',
-          width: 170,
+          minWidth: 170,
           render: (h, {
             row,
             column,
@@ -450,39 +450,6 @@
 
 </script>
 <style lang="less" scoped>
-  .page.approval-reason-manage {
-    // .data-form {
-    //   .span {
-    //     font-size: 18px;
-    //     font-weight: bold;
-    //     margin-right: 10px;
-    //   }
-    //   margin-top:10px !important;
-    //   margin-left:10px !important;
-    //   //   .data-form-item {
-    //   //     margin-right: 10px;
-    //   //     width: 10% !important;
-    //   //     .ivu-select .ivu-select-single {
-    //   //       display: inline-block;
-    //   //       width: 10% !important;
-    //   //     }
-    //   //   }
-    //   .command {
-    //     float: right;
-    //     margin-right: 12px;
-    //     margin-top: 10px;
-    //     .command-in {
-    //       cursor: pointer;
-    //       display: inline-block;
-    //       margin-left: 10px;
-    //       color: #3367A7;
-    //     }
-    //   }
-    // }
-    // .data-form-item .ivu-select .ivu-select-single{
-    //     display: inline-block;
-    //     width: 10% !important;
-    // }
-  }
+
 
 </style>

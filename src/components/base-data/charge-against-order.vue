@@ -30,12 +30,12 @@
         title: '序号',
         type: 'index',
         align: 'center',
-        width: 160
+        minWidth: 160
       }, {
         title: '审批流',
         align: 'center',
         key: 'approvalFlow',
-        width: 400
+        minWidth: 400
       }, {
         align: 'center',
         title: '操作',

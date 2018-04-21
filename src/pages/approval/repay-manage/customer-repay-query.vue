@@ -111,7 +111,7 @@ export default class CustomerRepayQuery extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 220,
+        minWidth: 220,
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {

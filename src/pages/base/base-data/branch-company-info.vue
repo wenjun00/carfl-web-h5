@@ -115,7 +115,7 @@
           title: '操作',
           align: 'center',
           fixed: 'left',
-          width: 100,
+          minWidth: 100,
           render: (h, {
             row,
             column,
@@ -154,7 +154,7 @@
           title: '省份',
           key: 'companyProvince',
           align: 'center',
-          width: 160,
+          minWidth: 160,
           editable: true,
           render: (h, {
             row,

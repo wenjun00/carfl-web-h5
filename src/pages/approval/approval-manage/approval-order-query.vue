@@ -79,12 +79,12 @@
         {
           type: 'selection',
           fixed: 'left',
-          width: 60,
+          minWidth: 60,
           align: 'center'
         },
         {
           title: '操作',
-          width: 100,
+          minWidth: 100,
           fixed: 'left',
           align: 'center',
           render: (h, {row, column, index}) => {

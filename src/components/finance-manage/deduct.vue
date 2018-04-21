@@ -107,14 +107,14 @@
 
       this.columns1 = [{
         align: 'center',
-        width: 60,
+        minWidth: 60,
         title: '序号',
         type: 'index'
       }, {
         title: '支付日期',
         key: 'payDate',
         align: 'center',
-        width: 180
+        minWidth: 180
       }, {
         title: '支付金额',
         key: 'paymentAmount',
@@ -123,7 +123,7 @@
         title: '订单号',
         key: 'orderId',
         align: 'center',
-        width: 180
+        minWidth: 180
       }, {
         title: '交易状态',
         key: 'dealStatus',

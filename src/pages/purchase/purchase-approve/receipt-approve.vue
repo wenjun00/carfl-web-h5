@@ -124,7 +124,7 @@
       this.columns1 = [{
           title: "操作",
           align: "center",
-          width: 100,
+          minWidth: 100,
           fixed: "left",
           render: (h, {
             row,

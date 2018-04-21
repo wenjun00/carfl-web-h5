@@ -81,7 +81,7 @@ export default class DerateApplyRecord extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 100,
+        minWidth: 100,
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {

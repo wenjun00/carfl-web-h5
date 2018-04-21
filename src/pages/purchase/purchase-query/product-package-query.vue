@@ -94,7 +94,7 @@
       }
       this.queryColumns = [{
           title: '操作',
-          width: 180,
+          minWidth: 180,
           align: 'center',
           fixed: 'left',
           render: (h, params) => {
@@ -188,7 +188,7 @@
       this.columns2 = [{
           title: '序号',
           type: 'index',
-          width: 80,
+          minWidth: 80,
           align: 'center'
         },
         {
@@ -198,7 +198,7 @@
         },
         {
           type: 'selection',
-          width: 80,
+          minWidth: 80,
           align: 'center'
         }
       ]

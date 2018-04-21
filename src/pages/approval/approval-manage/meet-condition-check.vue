@@ -103,7 +103,7 @@ export default class MeetConditionCheck extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 100,
+        minWidth: 100,
         align: 'center',
         fixed: 'left',
         render: (h, { row, column, index }) => {

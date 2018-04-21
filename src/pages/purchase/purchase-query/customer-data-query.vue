@@ -203,7 +203,7 @@ export default class CustomerDataQuery extends Page {
       {
         title: "序号",
         type: "index",
-        width: "80",
+        minWidth: "80",
         align: "center"
       },
       {
@@ -213,7 +213,7 @@ export default class CustomerDataQuery extends Page {
       },
       {
         type: "selection",
-        width: "80",
+        minWidth: "80",
         align: "center"
       }
     ];

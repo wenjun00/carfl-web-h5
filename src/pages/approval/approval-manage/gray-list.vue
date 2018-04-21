@@ -88,7 +88,7 @@ export default class GrayList extends Page {
     this.columns1 = [
       {
         title: '操作',
-        width: 200,
+        minWidth: 200,
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {

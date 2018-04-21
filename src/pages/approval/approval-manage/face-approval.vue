@@ -109,7 +109,7 @@
       this.columns1 = [
         {
           title: '操作',
-          width: 100,
+          minWidth: 100,
           align: 'center',
           fixed: 'left',
           render: (h, {row, column, index}) => {
@@ -176,7 +176,7 @@
           title: '订单编号',
           key: 'orderNumber',
           editable: true,
-          width: 115,
+          minWidth: 115,
           align: 'center',
           render: (h, {row, column, index}) => {
             if (row && row.orderNumber) {
@@ -204,7 +204,7 @@
           title: '订单创建时间',
           editable: true,
           key: 'createTime',
-          width: 135,
+          minWidth: 135,
           render: (h, {row, column, index}) => {
             return h(
               'span',
@@ -217,7 +217,7 @@
           title: '进入资源池时间',
           editable: true,
           key: 'intoPoolDate',
-          width: 135,
+          minWidth: 135,
           render: (h, {row, column, index}) => {
             return h(
               'span',
@@ -268,14 +268,14 @@
           align: 'center',
           editable: true,
           title: '证件号',
-          width: 115,
+          minWidth: 115,
           key: 'idCard'
         },
         {
           align: 'center',
           editable: true,
           title: '手机号',
-          width: 85,
+          minWidth: 85,
           key: 'mobileMain'
         }
       ]

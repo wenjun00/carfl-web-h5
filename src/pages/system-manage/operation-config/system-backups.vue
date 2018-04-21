@@ -87,7 +87,7 @@
       this.columns1 = [
         {
           title: '操作',
-          width: 220,
+          minWidth: 220,
           align: 'center',
           render: (h, {row, column, index}) => {
             return h('div', [

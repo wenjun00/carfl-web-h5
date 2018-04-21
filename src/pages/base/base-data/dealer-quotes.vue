@@ -125,7 +125,7 @@
           title: "操作",
           align: "center",
           fixed: "left",
-          width: 250,
+          minWidth: 250,
           render: (h, {
             row,
             column,

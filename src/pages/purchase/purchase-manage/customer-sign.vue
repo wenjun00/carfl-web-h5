@@ -179,7 +179,7 @@
     created() {
       this.columns1 = [{
           title: '操作',
-          width: 200,
+          minWidth: 200,
           fixed: 'left',
           align: 'center',
           render: (h, {

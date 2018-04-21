@@ -169,7 +169,7 @@ export default class ModuleFunction extends Page {
       {
         align: 'center',
         title: '操作',
-        width: 260,
+        minWidth: 260,
         fixed: 'left',
         render: (h, { row, columns, index }) => {
           return [

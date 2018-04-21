@@ -73,7 +73,7 @@ export default class SystemLogDownload extends Page {
       {
         type: 'selection',
         align: 'center',
-        width: 60,
+        minWidth: 60,
         fixed: 'left'
       },
       {
@@ -81,7 +81,7 @@ export default class SystemLogDownload extends Page {
         key: 'operateTime',
         editable: true,
         align: 'center',
-        width: 160,
+        minWidth: 160,
         render: (h, { row, columns, index }) => {
           return h(
             'span',

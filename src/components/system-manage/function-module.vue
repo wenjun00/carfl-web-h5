@@ -34,12 +34,12 @@
       this.columns1 = [{
           title: '序号',
           type: 'index',
-          width: 60,
+          minWidth: 60,
           align: 'center'
         },
         {
           title: '操作',
-          width: 170,
+          minWidth: 170,
           align: 'center',
           render: (h, {
             row,
@@ -70,7 +70,7 @@
           title: '功能名称',
           key: 'functionName',
           align: 'center',
-          width: 120
+          minWidth: 120
         },
         {
           title: '功能标记',
@@ -81,25 +81,25 @@
           title: '功能状态',
           key: 'functionStatus',
           align: 'center',
-          width: 100
+          minWidth: 100
         },
         {
           title: '操作人',
           key: 'operator',
           align: 'center',
-          width: 100
+          minWidth: 100
         },
         {
           title: '创建时间',
           key: 'createTime',
           align: 'center',
-          width: 160
+          minWidth: 160
         },
         {
           title: '修改时间',
           key: 'modifyTime',
           align: 'center',
-          width: 160
+          minWidth: 160
         }
       ]
       this.data1 = [{
