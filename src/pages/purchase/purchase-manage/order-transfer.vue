@@ -484,9 +484,12 @@ export default class OrderTransfer extends Page {
   oneKeyToConnect() {
     this.mulipleSelection = this.$refs['databox']
     this.mulipleSelection = this.mulipleSelection.getCurrentSelection()
+    // console.log(this.mulipleSelection)
     if (!this.mulipleSelection) {
       this.$Message.error('请选择要交接的订单！')
     } else {
+      this.getTree()
+      this.userList=[],
       this.openOneKeyToConnect = true
     }
   }
