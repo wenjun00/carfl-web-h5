@@ -222,7 +222,7 @@ import SvgIcon from '~/components/common/svg-icon.vue'
     SvgIcon
   },
   filters: {
-    subOptionLabel: (str) => { return FilterService.subString(str, 6) }
+    subOptionLabel: (str) =>  FilterService.subString(str, 6)
   }
 })
 export default class MyApproval extends Page {

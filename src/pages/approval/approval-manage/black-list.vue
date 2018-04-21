@@ -17,7 +17,7 @@
           </i-select>
         </i-form-item>
         <i-form-item prop="city">
-          <i-select placeholder="选择市" v-model="approvalModel.city" clearable>
+          <i-select placeholder="选择市" v-model="approvalModel.city" :disabled="!approvalModel.province" clearable>
             <i-option
               v-for="{value,label} in this.approvalModel.province ? this.$city.getCityData({ level: 1, id: this.approvalModel.province }) : []"
               :key="value" :label="label" :value="value"></i-option>
