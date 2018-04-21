@@ -8,7 +8,7 @@
           <i-input class="document-query-input" v-model="seachParams.fileName" placeholder="文件名查询"></i-input>
         </i-form-item>
         <i-form-item prop="dateRange" label="日期">
-          <i-date-picker class="document-query-picker" v-model="seachParams.dateRange" type="daterange"></i-date-picker>
+          <i-date-picker class="document-query-picker" v-model="seachParams.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>

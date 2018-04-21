@@ -8,7 +8,7 @@
                         <i-input v-model="derateModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
                     </i-form-item>
                     <i-form-item prop="dateRange" label="日期：">
-                        <i-date-picker v-model="derateModel.dateRange" type="daterange"></i-date-picker>
+                        <i-date-picker v-model="derateModel.dateRange"  placeholder="请选择日期范围"></i-date-picker>
                     </i-form-item>
                     <i-form-item prop="collectMoneyMethod">
                         <i-select placeholder="全部结算通道" v-model="derateModel.collectMoneyMethod" clearable>

@@ -34,7 +34,7 @@
         </i-form-item>
 
         <i-form-item prop="dateRange" label="日期">
-          <i-date-picker v-model="approvalRecordModel.dateRange" type="daterange"></i-date-picker> ~
+          <i-date-picker v-model="approvalRecordModel.dateRange"  placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
 
       </template>

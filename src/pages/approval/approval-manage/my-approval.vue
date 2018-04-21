@@ -8,7 +8,7 @@
           <i-input v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
         </i-form-item>
         <i-form-item prop="dateRange" label="日期：">
-          <i-date-picker v-model="myOrderModel.dateRange" type="daterange"></i-date-picker>
+          <i-date-picker v-model="myOrderModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
         <i-form-item prop="province" label="省市：">
           <i-select placeholder="选择省" v-model="myOrderModel.province" clearable>
@@ -175,7 +175,7 @@
           <i-row>
             <i-col>
               <i-form-item label="合同生效开始日">
-                <i-date-picker placeholder="请选择" v-model="passModel.contractDate"></i-date-picker>
+                <i-date-picker v-model="passModel.contractDate" placeholder="请选择日期范围"></i-date-picker>
               </i-form-item>
             </i-col>
           </i-row>

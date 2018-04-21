@@ -12,7 +12,7 @@
                     <i-input v-model="systemLogModel.clientIp"></i-input>
                 </i-form-item>
                 <i-form-item prop="dateRange" label="操作时间：">
-                    <i-date-picker v-model="systemLogModel.dateRange" type="daterange"></i-date-picker>
+                    <i-date-picker v-model="systemLogModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
                 </i-form-item>
             </template>
             <template slot="button">
