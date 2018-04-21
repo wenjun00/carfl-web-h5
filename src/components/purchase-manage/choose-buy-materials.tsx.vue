@@ -88,11 +88,11 @@
       </div>
     </i-card>
     <!--车辆选购列表-end-->
-    
+
     <!--产品信息-start-->
     <i-card title="产品信息" class="product-container">
       <div slot="extra">
-        <i-button icon="plus" @click="onSelectProduct" type="text">选择产品</i-button>
+        <i-button icon="plus" @click="onOpenProductList" type="text">选择产品</i-button>
       </div>
       <i-form ref="form" :rules="rulesdata" :model="chooseBuyModel" :label-width="150">
         <i-row>
@@ -253,12 +253,6 @@
       </i-form>
     </i-card>
     <!--产品信息-end-->
-
-    <template>
-      <i-modal v-model="addProductModal" :mask-closable="false" title="添加产品" width="1000" class="add-car">
-        <add-product ref="add-product" @resetProductData="resetProductData" @currentRowData="currentRowData" @close="addProductModal=false" @productPlanissue="productPlanissue"></add-product>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -271,7 +265,7 @@ import { Dependencies } from "~/core/decorator";
 import AddCar from "~/components/purchase-manage/add-car.tsx.vue";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import DataBox from "~/components/common/data-box.vue";
-import AddProduct from "~/components/purchase-manage/add-product.tsx.vue";
+import ProductList from "~/components/purchase-manage/product-list.tsx.vue";
 import { CompanyService } from "~/services/manage-service/company.service";
 import { Prop, Emit, Watch } from "vue-property-decorator";
 import { FilterService } from "~/utils/filter.service";
@@ -280,7 +274,7 @@ const ModuleMutation = namespace("purchase", Mutation);
 @Component({
   components: {
     AddCar,
-    AddProduct
+    ProductList
   }
 })
 export default class ChooseBuyMaterials extends Vue {
@@ -392,7 +386,7 @@ export default class ChooseBuyMaterials extends Vue {
         trigger: "blur"
       },
       {
-        type: 'number',
+        type: "number",
         message: "请输入数字",
         trigger: "blur"
       }
@@ -404,7 +398,7 @@ export default class ChooseBuyMaterials extends Vue {
         trigger: "blur"
       },
       {
-        type: 'number',
+        type: "number",
         message: "请输入数字",
         trigger: "blur"
       }
@@ -446,35 +440,35 @@ export default class ChooseBuyMaterials extends Vue {
     ],
     insuranceMoney: [
       {
-        type: 'number',
+        type: "number",
         message: "请输入数字",
         trigger: "blur"
       }
     ],
     purchaseMoney: [
       {
-        type: 'number',
+        type: "number",
         message: "请输入数字",
         trigger: "blur"
       }
     ],
     licenseMoney: [
       {
-        type: 'number',
+        type: "number",
         message: "请输入数字",
         trigger: "blur"
       }
     ],
     GpsMoney: [
       {
-        type: 'number',
+        type: "number",
         message: "请输入数字",
         trigger: "blur"
       }
     ],
     otherFee: [
       {
-        type: 'number',
+        type: "number",
         message: "请输入数字",
         trigger: "blur"
       }
@@ -527,7 +521,7 @@ export default class ChooseBuyMaterials extends Vue {
         trigger: "blur"
       },
       {
-        type: 'number',
+        type: "number",
         message: "请输入数字",
         trigger: "blur"
       }
@@ -539,14 +533,14 @@ export default class ChooseBuyMaterials extends Vue {
         trigger: "blur"
       },
       {
-        type: 'number',
+        type: "number",
         message: "请输入数字",
         trigger: "blur"
       }
     ],
     rentPayable: [
       {
-        type: 'number',
+        type: "number",
         message: "请输入数字",
         trigger: "blur"
       }
@@ -1139,26 +1133,26 @@ export default class ChooseBuyMaterials extends Vue {
     this.editCarModal = false;
   }
 
-  onSelectProduct(){
+  onOpenProductList() {
     let dialog = this.$dialog.show({
-      title: "添加车辆",
+      title: "选择产品",
       footer: true,
-      onOk: addProduct => {
-        let currentRow = addProduct.currentRow();
+      onOk: productList => {
+        let currentRow = productList.getCurrentRow();
 
         if (currentRow) {
-          console.log(currentRow)
-        }else{
-
+          
+        } else {
+          this.$Message.error("请选择对应的产品");
+          return false;
         }
       },
       onCancel: () => {},
       render: h => {
-        return h(AddProduct, {});
+        return h(ProductList, {});
       }
     });
   }
-
 
   addNewPrd() {
     this.resetProductData();
