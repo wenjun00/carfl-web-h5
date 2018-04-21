@@ -107,7 +107,7 @@ export default class WorkTab extends Vue {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .component.work-tab {
     .close-all-tabs{
         position:absolute;
