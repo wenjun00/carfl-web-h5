@@ -16,15 +16,12 @@
           </i-select>
         </i-form-item>
         <i-form-item prop="city">
-          <i-select placeholder="选择市" v-model="myOrderModel.city" clearable>
+          <i-select placeholder="选择市" v-model="myOrderModel.city" clearable :disabled="!myOrderModel.province">
             <i-option v-for="{value,label} in this.myOrderModel.province ? this.$city.getCityData({ level: 1, id: this.myOrderModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item prop="productType" label="产品名称:">
           <i-input v-model="myOrderModel.productType"></i-input>
-          <!--<i-select placeholder="产品类型" v-model="myOrderModel.productType" clearable>-->
-          <!--<i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>-->
-          <!--</i-select>-->
         </i-form-item>
       </template>
     </data-form>
@@ -91,12 +88,12 @@
             </i-select>
             <i-select placeholder="全部拒单原因" class="modal-reason" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
               <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second">
-                <div :title="item.second">{{ item.second|subOptionLable}}</div>
+                <div :title="item.second">{{ item.second|subOptionLabel}}</div>
               </i-option>
             </i-select>
             <i-select placeholder="全部拒单细节" class="modal-detail" v-model="approvalRecordModel.approveReasonId">
               <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id">
-                <div :title="item.detail">{{item.detail|subOptionLable}}</div>
+                <div :title="item.detail">{{item.detail|subOptionLabel}}</div>
               </i-option>
             </i-select>
           </i-form-item>
@@ -225,11 +222,7 @@ import SvgIcon from '~/components/common/svg-icon.vue'
     SvgIcon
   },
   filters: {
-    subOptionLable: str => {
-      const subIndex = 6
-      if (!str) { return '' }
-      return str.length > subIndex ? str.substring(0, subIndex) : str
-    }
+    subOptionLabel: (str) => { return FilterService.subString(str, 6) }
   }
 })
 export default class MyApproval extends Page {
@@ -755,32 +748,6 @@ export default class MyApproval extends Page {
    */
   confirmAddBlackOrIntenal() {
     this.approvalRecordModel.orderId = this.approvalOrderId
-    // if (this.approvalRecordModel.approveReasonId) {
-    //   // 黑名单
-    //   if (!this.rejectOrBlackFlag) {
-    //     this.approvalRecordModel.operateType = 2;
-    //   } else {
-    //     // 拒绝
-    //     this.approvalRecordModel.operateType = 3;
-    //   }
-    //   this.approvalService
-    //     .submitBlackListOrRefuse(this.approvalRecordModel)
-    //     .subscribe(
-    //       val => {
-    //         this.$Message.success("提交拒单成功！");
-    //         this.blackListModal = false;
-    //         this.approveModal = false;
-    //         this.cancelAddBlack();
-    //         this.getMyOrderList();
-    //         this.approvalRecordModel.remark = "";
-    //       },
-    //       ({ msg }) => {
-    //         this.$Message.error(msg);
-    //       }
-    //     );
-    // } else {
-    //   this.$Message.error("拒单原因和拒单细节必须选择！");
-    // }
     if (this.rejectOrBlackFlag) {
       if (!this.approvalRecordModel.approveReasonId) {
         this.$Message.error('拒单原因和拒单细节必须选择！')
