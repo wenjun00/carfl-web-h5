@@ -5,7 +5,7 @@
       <i-step title="解绑"></i-step>
       <i-step title="绑卡"></i-step>
     </i-steps>
-    <i-form :label-width="110" class="item-margin-top20">
+    <i-form :label-width="110" class="item-margin-top20" :model="model" :rules="applyRules">
       <i-form-item label="账户类型">
         <i-select class="item-input-width160"  v-model="model.accountType" :disabled="current===0">
           <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
@@ -17,7 +17,7 @@
       <i-form-item label="证件类型" v-if="current===2">
         <i-input class="item-input-width160" :readonly="current===0" v-model="model.certificateType"></i-input>
       </i-form-item>
-      <i-form-item label="证件号码" v-if="current===2">
+      <i-form-item label="证件号码" v-if="current===2" prop="certificateNumber">
         <i-input class="item-input-width160" :readonly="current===0" v-model="model.certificateNumber"></i-input>
       </i-form-item>
       <i-form-item label="开户银行">
@@ -40,7 +40,7 @@
           <i-option label="商洛市" value="商洛市" key="商洛市"></i-option>
         </i-select>
       </i-form-item>
-      <i-form-item label="银行预留手机号" v-if="current===1">
+      <i-form-item label="银行预留手机号" v-if="current===1" prop="reservedPhoneNumber">
         <i-input class="item-input-width160" v-model="model.reservedPhoneNumber"></i-input>
         <!--<i-button style="display:inline-block;margin-left:8px;" class="blueButton">发送验证码<span>60</span></i-button>-->
       </i-form-item>
@@ -72,6 +72,7 @@
     private openChangeBankCard: Boolean = false;
     private model: any = {};
     private row: any = {};
+    private applyRules:any={}
     refresh(row) {
       this.current = 0
       this.row = row
@@ -80,6 +81,32 @@
     cancelChangeCard() {
       this.$Modal.remove()
       this.$emit('close')
+    }
+    created(){
+      this.applyRules={
+        certificateNumber:[
+          {
+            required: true,
+            message: '请输入证件号码',
+            trigger: 'blur'
+          },
+          {
+            validator: this.$validate.idCard,
+            trigger: 'blur'
+          }
+        ],
+        reservedPhoneNumber:[
+          {
+            required: true,
+            message: '请输入客户电话',
+            trigger: 'blur'
+          },
+          {
+            validator: this.$validate.phoneNumber,
+            trigger: 'blur'
+          }
+        ],
+      }
     }
     /**
      * 确认解绑

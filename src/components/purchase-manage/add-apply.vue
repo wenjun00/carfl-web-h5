@@ -3,7 +3,7 @@
   <section class="component add-apply">
     <!--销售收款申请-->
     <i-row>
-      <i-form :label-width="110" class="item-kehu-form">
+      <i-form :label-width="110" :model="addNewApplyModal" :rules="applyRules" class="item-kehu-form">
         <i-col :span="12">
           <i-form-item label="客户姓名">
             <i-input v-model="addNewApplyModal.customerName" disabled></i-input>
@@ -17,7 +17,7 @@
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="身份证号">
+          <i-form-item label="身份证号" prop="idCard">
             <i-input v-model="addNewApplyModal.idCard" disabled></i-input>
           </i-form-item>
         </i-col>
@@ -110,7 +110,9 @@
     private columns3: any;
     private data3: Array<Object> = [];
     private addNewApplyModal: Object = {};
+    private applyRules:any={
 
+    }
     /**
      * 添加附件
      */
@@ -122,6 +124,17 @@
     }
 
     created() {
+      this.applyRules={
+        idCard:[{
+          required: true,
+          message: '请输入证件号码',
+          trigger: 'blur'
+        },
+          {
+            validator: this.$validate.idCard,
+            trigger: 'blur'
+          }]
+      }
       this.addNewApplyModal = {
         customerName: '李良琛',
         gatherType: '销售收款',

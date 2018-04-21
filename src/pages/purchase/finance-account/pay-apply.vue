@@ -140,7 +140,7 @@ export default class PayApply extends Page {
         trigger: 'blur'
       },
       {
-        validator: this.$validator.idCard,
+        validator: this.$validate.idCard,
         trigger: 'blur'
       }
     ],
@@ -158,15 +158,10 @@ export default class PayApply extends Page {
         trigger: 'blur'
       },
       {
-        validator: this.$validator.phoneNumber,
+        validator: this.$validate.phoneNumber,
         trigger: 'blur'
       }
     ],
-    //   orderNumber: [{
-    //     required: true,
-    //     message: '请选择订单',
-    //     trigger:'change'
-    //   }],
     refundType: [
       {
         required: true,
