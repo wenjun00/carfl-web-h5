@@ -97,8 +97,9 @@ export class FilterService {
    */
   static toThousands(number): String {
     let num: any = ''
+
     if (number === null || number === '') {
-      num = number
+      num = number|0
     } else {
       num = Number(number).toFixed(2)
       if (isNaN(num) || num === '' || num === undefined || num === null) {
