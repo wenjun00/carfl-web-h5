@@ -9,7 +9,7 @@
         <i-form-item prop="orderInfo">
           <i-input placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.orderInfo"></i-input>
         </i-form-item>
-        <i-form-item prop="startTime" label="日期">
+        <i-form-item prop="dataRange" label="日期">
           <i-date-picker v-model="approvalModel.dataRange" type="daterange"></i-date-picker>
         </i-form-item>
         <!-- <i-form-item prop="startTime" label="日期">

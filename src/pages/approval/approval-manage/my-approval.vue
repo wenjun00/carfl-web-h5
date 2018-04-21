@@ -7,11 +7,8 @@
                 <i-form-item prop="personalInfo">
                     <i-input v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
                 </i-form-item>
-                <i-form-item prop="startTime" label="日期：">
-                    <i-date-picker v-model="myOrderModel.startTime" placeholder="起始日期"></i-date-picker> ~
-                </i-form-item>
-                <i-form-item prop="endTime">
-                    <i-date-picker v-model="myOrderModel.endTime" placeholder="终止日期"></i-date-picker>
+                <i-form-item prop="dateRange" label="日期：">
+                  <i-date-picker v-model="myOrderModel.dateRange" type="daterange"></i-date-picker>
                 </i-form-item>
                 <i-form-item prop="province" label="省市：">
                       <i-select placeholder="选择省" v-model="myOrderModel.province" clearable>
@@ -272,7 +269,8 @@ export default class MyApproval extends Page {
     city: '',
     personalInfo: '',
     timeSearch: '',
-    productType: ''
+    productType: '',
+    dateRange:[]
   }
   // 灰名单
   private grayModel: any = {
@@ -906,12 +904,8 @@ export default class MyApproval extends Page {
     this.approvalService
       .getMyApprovalOrder(this.myOrderModel, this.pageService)
       .subscribe(
-        data => {
-          this.myOrderList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+        data =>this.myOrderList = data,
+        err =>this.$Message.error(err)
       )
   }
 

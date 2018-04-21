@@ -4,7 +4,7 @@
     <page-header title="划扣记录查询" hiddenPrint></page-header>
     <data-form hiddenDateSearch hidden-reset :model="model" :page="pageService" @on-search="getRecord">
       <template slot="input">
-        <i-form-item label="支付日期" prop="startTime">
+        <i-form-item label="支付日期" prop="dateRange">
           <i-date-picker v-model="model.dateRange" type="daterange"></i-date-picker>
         </i-form-item>
         <i-form-item prop="personalInfo">

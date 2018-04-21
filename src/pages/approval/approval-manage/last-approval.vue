@@ -7,11 +7,8 @@
                 <i-form-item prop="personalInfo">
                     <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.personalInfo"></i-input>
                 </i-form-item>
-                <i-form-item prop="startTime" label="日期：">
-                    <i-date-picker v-model="resourcePoolModel.startTime" placeholder="起始日期"></i-date-picker> ~
-                </i-form-item>
-                <i-form-item prop="endTime">
-                    <i-date-picker v-model="resourcePoolModel.endTime" placeholder="终止日期"></i-date-picker>
+                <i-form-item prop="dateRange" label="日期：">
+                    <i-date-picker v-model="resourcePoolModel.dateRange" type="daterange"></i-date-picker>
                 </i-form-item>
                 <i-form-item prop="province" label="省市：">
                     <i-select placeholder="选择省" v-model="resourcePoolModel.province" clearable>
@@ -90,7 +87,8 @@ export default class LastApproval extends Page {
     city: '',
     personalInfo: '',
     timeSearch: '',
-    productType: ''
+    productType: '',
+    dateRange: []
   }
   private getOrderModel: any = {
     userId: '',
@@ -332,23 +330,11 @@ export default class LastApproval extends Page {
   }
 
   getLastList() {
-    this.resourcePoolModel.startTime = FilterService.dateFormat(
-      this.resourcePoolModel.startTime,
-      'yyyy-MM-dd'
-    )
-    this.resourcePoolModel.endTime = FilterService.dateFormat(
-      this.resourcePoolModel.endTime,
-      'yyyy-MM-dd'
-    )
     this.approvalService
       .auditResourcePool(this.resourcePoolModel, this.pageService)
       .subscribe(
-        data => {
-          this.lastList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+        data =>this.lastList = data,
+        err =>this.$Message.error(err)
       )
   }
 
