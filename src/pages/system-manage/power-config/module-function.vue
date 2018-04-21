@@ -1,4 +1,4 @@
-<!--模块功能-->
+<!--模块功能--> 
 <template>
     <section class="page module-function">
         <page-header title="模块功能" hidden-print hidden-export></page-header>
@@ -19,8 +19,8 @@
         </i-row>
 
         <template>
-            <i-modal title="模块添加/修改" v-model="addModuleFunctionModal" class="modal" width="600">
-                <i-form :label-width="110" style="margin-top:20px;">
+            <i-modal class="module-level" title="模块添加/修改" v-model="addModuleFunctionModal" width="600">
+                <i-form class="form-level" :label-width="110">
                     <i-form-item label="模块名称">
                         <i-input class="input"></i-input>
                     </i-form-item>
@@ -90,20 +90,20 @@
                     </i-form-item>
                 </i-form>
                 <div style="text-align:right;">
-                    <i-button @click="cancelmodifyName" class="defalutButton">取消</i-button>
+                    <i-button @click="cancelmodifyName" class="defalut-button">取消</i-button>
                     <i-button @click="confirmmodifyName" class="blueButton">确定</i-button>
                 </div>
             </i-modal>
         </template>
         <template>
-            <i-modal v-model="modifyIconModal" width="500" title="修改资源图标" class="to-view-modal-class">
-                <i-form :label-width="60" style="margin-top:20px;">
+            <i-modal class="modify-chart-resources to-view-modal-class" v-model="modifyIconModal" width="500" title="修改资源图标">
+                <i-form class="chart-resources-itiem" :label-width="60">
                     <i-form-item label="资源图标" prop="resoIcon">
                         <i-input v-model="modifyIconData.resoIcon" :maxlength="15"></i-input>
                     </i-form-item>
                 </i-form>
-                <div style="text-align:right;">
-                    <i-button @click="cancelmodifyIcon" class="defalutButton">取消</i-button>
+                <div class="pop-button">
+                    <i-button @click="cancelmodifyIcon" class="defalut-button">取消</i-button>
                     <i-button @click="confirmmodifyIcon" class="blueButton">确定</i-button>
                 </div>
             </i-modal>
@@ -490,13 +490,31 @@ export default class ModuleFunction extends Page {
       }
     }
   }
-  .input {
-    width: 60%;
-  }
   .toViewModalClass {
     .ivu-modal-footer {
       display: none !important;
     }
   }
 }
+</style>
+<style lang="less" scoped>
+.module-level {
+  .form-level {
+    margin-top: 20px;
+  }
+  .input {
+    width: 60%;
+  }
+}
+</style>
+<style lang="less" scoped>
+    .modify-chart-resources{
+        .chart-resources-itiem{
+            margin-top:20px;
+        }
+        .pop-button{
+            text-align:right;
+        }
+    }
+
 </style>

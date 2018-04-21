@@ -1,4 +1,4 @@
-<!--修改角色-->
+<!--修改角色--> 
 <template>
   <section class="component module-power">
     <i-row>
@@ -91,8 +91,11 @@ export default class ModulePower extends Vue {
    * 获取控件资源通过id
    */
   getControlResourcesById({ id }) {
+      console.log(this.controlResourceData)
+      console.log('656')
     this.controlResourceData = this.controlResource.filter(
       x => [423, 424, 425].includes(x.resoFiletype) && x.resoPid === id
+     
     );
   }
 

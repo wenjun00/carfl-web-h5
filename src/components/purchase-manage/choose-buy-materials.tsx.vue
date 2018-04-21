@@ -1344,15 +1344,18 @@ export default class ChooseBuyMaterials extends Vue {
   }
 }
 
-.calculate {
-  .ivu-modal-footer {
-    display: none !important;
-  }
-}
-
-.add-car {
-  .ivu-modal-footer {
-    display: none !important;
-  }
-}
+</style>
+<style lang="less" scope>
+    .calculate {
+        .ivu-modal-footer {
+            display: none !important;
+        }
+        }
+</style>
+<style lang="less" scope>
+   .add-car {
+    .ivu-modal-footer {
+        display: none !important;
+    }
+    }
 </style>

@@ -1,5 +1,5 @@
 <!--订单交接-->
-<template>
+<template> 
   <section class="page order-transfer">
       <page-header title="订单交接"></page-header>
       <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData" hidden-reset>
@@ -585,48 +585,6 @@
   .page.order-transfer {
     .seek-day {
       margin-top: 10px;
-    }
-    .data-form {
-      .command {
-        float: right;
-        margin-right: 10px;
-        margin-top: 10px;
-        .command-item {
-          font-size: 16px;
-          cursor: pointer;
-          display: inline-block;
-          margin-left: 10px;
-          color: #3367a7;
-          &.dayin {
-            font-size: 24px;
-            span {
-              font-size: 12px;
-            }
-          }
-          &.daochu {
-            font-size: 12px;
-            span {
-              font-size: 12px;
-            }
-          }
-        }
-      }
-    }
-    .search-term {
-      margin: 6px;
-      margin-left: 10px;
-      .search-term-picker {
-        width: 200px;
-      }
-      .search-term-input {
-        display: inline-block;
-        width: 20%;
-      }
-      .search-term-button {
-        margin-left: 10px;
-        background: #265ea2;
-        color: #fff;
-      }
     }
     .submit-bar {
       z-index: 200;

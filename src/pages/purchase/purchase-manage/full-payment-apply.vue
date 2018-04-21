@@ -600,23 +600,6 @@ export default class FullPaymentApply extends Page {
 .page.full-payment-apply {
   .header {
     border-bottom: 1px solid #cccccc;
-    .command {
-      float: right;
-      margin-top: 10px;
-      margin-right: 10px;
-      div {
-        cursor: pointer;
-        display: inline-block;
-        margin-left: 10px;
-        color: #3367a7;
-        .dayin-img {
-          font-size: 24px;
-        }
-        span {
-          font-size: 12px;
-        }
-      }
-    }
   }
   .form-data {
     .form-data-item {

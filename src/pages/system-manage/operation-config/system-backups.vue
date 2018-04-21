@@ -246,29 +246,5 @@ export default class SystemBackups extends Page {
 }
 </script>
 <style lang="less" scoped>
-.page.system-backups {
-  .data-form {
-    .span-heand {
-      margin-left: 10px;
-    }
-    .form-input {
-      display: inline-block;
-      width: 10%;
-      margin-right: 20px;
-      margin-top: 10px;
-    }
-    .title {
-      margin-left: 20px;
-    }
-    .form-item {
-      display: inline-block;
-      width: 10%;
-    }
-    .form-button {
-      margin-left: 10px;
-      background: #265ea2;
-      color: #fff;
-    }
-  }
-}
+
 </style>

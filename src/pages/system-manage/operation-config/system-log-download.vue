@@ -189,46 +189,5 @@ export default class SystemLogDownload extends Page {
 </script>
 
 <style lang="less" scoped>
-.page.system-log-download {
-  .data-form {
-    margin: 6px;
-    .form-input {
-      display: inline-block;
-      width: 10%;
-      margin-right: 10px;
-    }
-    .title {
-      margin-left: 20px;
-    }
-    .form-item {
-      display: inline-block;
-      width: 10%;
-    }
-    .blue-button {
-      margin-left: 10px;
-      background: #265ea2;
-      color: #fff;
-    }
-    .command {
-      float: right;
-      margin-right: 10px;
-      margin-top: -48px;
-      .command-item {
-        color: #3367a7;
-        cursor: pointer;
-        margin-left: 10px;
-        display: inline-block;
-        &.dayin {
-          font-size: 18px;
-        }
-        &.daochu {
-          font-size: 16px;
-        }
-        span {
-          font-size: 12px;
-        }
-      }
-    }
-  }
-}
+
 </style>

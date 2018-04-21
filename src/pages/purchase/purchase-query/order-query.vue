@@ -620,38 +620,6 @@
 </script>
 
 <style lang="less" scoped>
-  .page.order-query {
-    // .seek-day {
-    //   margin-top: 10px;
-    // }
-    // .data-from-seek {
-    //   margin-top: 6px;
-    //   position: relative;
-    //   right: 10px;
-    //   .data-from-input {
-    //     display: inline-block;
-    //     width: 18%;
-    //     margin-left: 20px;
-    //   }
-    //   .data-from-day {
-    //     margin-left: 10px;
-    //   }
-    //   .data-from-picker {
-    //     display: inline-block;
-    //     width: 10%;
-    //   }
-    //   .data-from-blue-button {
-    //     margin-left: 10px;
-    //     background: #265ea2;
-    //     color: #fff;
-    //   }
-    // }
-    // .data-box-margin {
-    //   margin-top: 20px;
-    // }
-    // .td {
-    //   padding: 10px;
-    // }
-  }
+
 
 </style>
