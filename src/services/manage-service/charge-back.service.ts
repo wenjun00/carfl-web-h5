@@ -39,14 +39,13 @@ export class ChargeBackService {
    * 获取划扣记录
    */
   getChargeRecordList(data, page) {
-    let dataRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.chargeBackController.getChargeRecordList,
       data: {
-        startTime: dataRange.start,
-        endTime: dataRange.end,
-        payStatus: data.payStatus,
-        personalInfo: data.personalInfo,
+        startTime: FilterService.dateFormat(data.startTime, 'yyyy-MM-dd'),
+        endTime: FilterService.dateFormat(data.endTime, 'yyyy-MM-dd'),
+        payStatus: data.payStatus,  
+        personalInfo: data.personalInfo,  
         personalId: data.personalId
       },
       page

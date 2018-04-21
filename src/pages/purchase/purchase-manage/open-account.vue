@@ -626,44 +626,6 @@ export default class OpenAccount extends Page {
   .seek-day {
     margin-top: 10px;
   }
-  .command {
-    float: right;
-    margin-right: 10px;
-    margin-top: 10px;
-    .command-item {
-      cursor: pointer;
-      display: inline-block;
-      margin-left: 10px;
-      color: #3367a7;
-      &.dayin {
-        font-size: 24px;
-        span {
-          font-size: 12px;
-        }
-      }
-      &.daochu {
-        font-size: 12px;
-        span {
-          font-size: 12px;
-        }
-      }
-    }
-  }
-  .data-form {
-    margin: 6px;
-    margin-left: 10px;
-    .form-input {
-      display: inline-block;
-      width: 16%;
-      margin-right: 10px;
-    }
-    .blue-button {
-      background: #265ea2;
-      color: #fff;
-      display: inline-block;
-      margin-left: 8px;
-    }
-  }
 }
 </style>
 

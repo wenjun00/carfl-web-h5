@@ -29,7 +29,7 @@
     </template>
     <!--上传资料、补充资料-->
     <template>
-      <i-modal v-model="openUpload" :transfer="false" width="700" title="补充资料">
+      <i-modal class="pop-update" v-model="openUpload" :transfer="false" width="700" title="补充资料">
         <upload-the-material ref="upload-the-material"></upload-the-material>
         <!--<i-button @click="uploadDialog">上传</i-button>
         <div style="font-size:18px;font-weight:bold;margin-top:10px">
@@ -46,8 +46,8 @@
           <span>结婚证-001fdawdeklvkje...</span>
         </div>-->
         <div slot="footer">
-          <i-button class="highDefaultButton" style="width:80px" @click="openUpload=false">取消</i-button>
-          <i-button class="highButton" style="width:80px" @click="confirm">确定</i-button>
+          <i-button class="high-default-button" @click="openUpload=false">取消</i-button>
+          <i-button class="high-default-button" @click="confirm">确定</i-button>
         </div>
       </i-modal>
     </template>
@@ -348,24 +348,10 @@ export default class CustomerDataQuery extends Page {
   .seek-day {
     margin-top: 10px;
   }
-  .unfold-button {
-    color: #265ea2;
-  }
-  .seek-line {
-    margin: 6px;
-    margin-left: 10px;
-    .seek-line-picker {
-      width: 200px;
+}
+.pop-update{
+    .high-default-button{
+        width:80px;
     }
-    .seek-line-input {
-      display: inline-block;
-      width: 20%;
-    }
-    .seek-line-button {
-      margin-left: 10px;
-      background: #265ea2;
-      color: #fff;
-    }
-  }
 }
 </style>

@@ -58,14 +58,14 @@ export class ProductOrderService {
    * 进件模块--订单查询
    */
   orderSearch(data, page) {
-    const dataRange = FilterService.dateRanageFormat(data.dateRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.productOrderController.orderSearch,
       data: {
         timeSearch: data.timeSearch,
         orderInfo: data.orderInfo,
-        startTime: dataRange.start,
-        endTime: dataRange.end
+        startTime: dateRange.start,
+        endTime: dateRange.end
       },
       page: page
     })

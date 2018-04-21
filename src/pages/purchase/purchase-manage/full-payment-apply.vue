@@ -44,7 +44,7 @@
             </i-row>
             <div class="shade" :style="{display:disabledStatus}">
             </div>
-            <i-tabs class="fulls-pay-tabs">
+            <i-tabs type="card" class="fulls-pay-tabs">
                 <i-tab-pane label="选购资料" name="choose-buy-materials-all">
                     <choose-buy-materials-all ref='materials-all'></choose-buy-materials-all>
                 </i-tab-pane>
@@ -600,23 +600,6 @@ export default class FullPaymentApply extends Page {
 .page.full-payment-apply {
   .header {
     border-bottom: 1px solid #cccccc;
-    .command {
-      float: right;
-      margin-top: 10px;
-      margin-right: 10px;
-      div {
-        cursor: pointer;
-        display: inline-block;
-        margin-left: 10px;
-        color: #3367a7;
-        .dayin-img {
-          font-size: 24px;
-        }
-        span {
-          font-size: 12px;
-        }
-      }
-    }
   }
   .form-data {
     .form-data-item {
