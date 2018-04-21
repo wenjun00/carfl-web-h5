@@ -298,7 +298,7 @@ export default class DataBox extends Vue {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .data-box {
   & > * {
     padding: 10px;
