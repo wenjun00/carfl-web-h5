@@ -481,13 +481,11 @@ export default class CustomerMaterials extends Vue {
   };
   @Prop() disabled: Boolean;
   Reverse(data) {
-    console.log(data, "dsdhsjhdskjd");
     //   身份证地址回显
     data.personal.birthTime = FilterService.dateFormat(
       data.personal.birthTime,
       "yyyy-MM-dd"
     );
-    console.log(data.personal.birthTime);
     if (data.personal.localHomeAddr === data.personal.idCardAddress) {
       this.idCardads = true;
     }
@@ -526,7 +524,6 @@ export default class CustomerMaterials extends Vue {
       Number(data.personal.cityOwnhouseAddress)
     )[0];
     this.customerMaterialsForm = data.personal;
-    console.log(data, "person");
     this.customerMaterialsForm.id = data.personalId || null;
     delete data.personalId;
   }
@@ -534,7 +531,6 @@ export default class CustomerMaterials extends Vue {
     this.customerMaterialsForm = Object.assign({}, customerModel);
   }
   idCardChange(value) {
-    console.log(this.idCardads, "idCardads");
     if (value) {
       this.customerMaterialsForm.province1 = this.customerMaterialsForm.province;
       this.customerMaterialsForm.city1 = this.customerMaterialsForm.city;
@@ -558,9 +554,6 @@ export default class CustomerMaterials extends Vue {
   }
   cityidcardChange(value) {
     this.idcardOwn = value;
-    console.log(value, "value");
-    //   this.cityValue = value
-    //   this.liveValue = false
     if (value === 29) {
       this.customerMaterialsForm.province2 = this.customerMaterialsForm.province;
       this.customerMaterialsForm.city2 = this.customerMaterialsForm.city;

@@ -1,71 +1,71 @@
 <!--销售收款申请--> 
 <template>
-    <section class="page sale-gathering-apply special-input">
-        <page-header title="销售收款申请" hiddenExport></page-header>
-        <div class="data-command">
-            <i-row type="flex">
-                <i-col span="18">
-                    <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
-                        <i-col span="12">
-                            <i-form-item label="证件号码" prop="idCard">
-                                <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
-                                </i-input>
-                            </i-form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <i-form-item label="客户姓名" prop="customerName">
-                                <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名" @on-blur="getOrderInfo">
-                                </i-input>
-                            </i-form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <i-form-item label="客户电话" prop="mobileMain">
-                                <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话">
-                                </i-input>
-                            </i-form-item>
-                        </i-col>
-                        <i-col span="12">
-                            <i-form-item label="选择订单" prop="orderId">
-                                <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
-                                    <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
-                                </i-select>
-                            </i-form-item>
-                        </i-col>
-                    </i-form>
-                </i-col>
-                <i-button class="blueButton clear-button" @click="clearAll">清空</i-button>
-            </i-row>
-            <i-tabs v-model="materialTabs" type="card" class="sale-gather-tabs">
-                <i-tab-pane name="gather-detail" label="收款明细">
-                    <gather-detail :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="gather-detail"></gather-detail>
-                </i-tab-pane>
-                <i-tab-pane name="upload-the-fodder" label="上传素材">
-                    <upload-the-fodder :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="upload-the-fodder"></upload-the-fodder>
-                </i-tab-pane>
-            </i-tabs>
+  <section class="page sale-gathering-apply special-input">
+    <page-header title="销售收款申请" hiddenExport></page-header>
+    <div class="data-command">
+      <i-row type="flex">
+        <i-col span="18">
+          <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
+            <i-col span="12">
+              <i-form-item label="证件号码" prop="idCard">
+                <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
+                </i-input>
+              </i-form-item>
+            </i-col>
+            <i-col span="12">
+              <i-form-item label="客户姓名" prop="customerName">
+                <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名" @on-blur="getOrderInfo">
+                </i-input>
+              </i-form-item>
+            </i-col>
+            <i-col span="12">
+              <i-form-item label="客户电话" prop="mobileMain">
+                <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话">
+                </i-input>
+              </i-form-item>
+            </i-col>
+            <i-col span="12">
+              <i-form-item label="选择订单" prop="orderId">
+                <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
+                  <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
+                </i-select>
+              </i-form-item>
+            </i-col>
+          </i-form>
+        </i-col>
+        <i-button class="blueButton clear-button" @click="clearAll">清空</i-button>
+      </i-row>
+      <i-tabs v-model="materialTabs" type="card" class="sale-gather-tabs">
+        <i-tab-pane name="gather-detail" label="收款明细">
+          <gather-detail :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="gather-detail"></gather-detail>
+        </i-tab-pane>
+        <i-tab-pane name="upload-the-fodder" label="上传素材">
+          <upload-the-fodder :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="upload-the-fodder"></upload-the-fodder>
+        </i-tab-pane>
+      </i-tabs>
 
-            <div class="submit-bar">
-                <i-row type="flex" align="middle" class="submit-bar-item">
-                    <i-col :span="8" push="1">
-                        <span>申请人：
-                            <span>{{applyPerson}}</span>
-                        </span>
-                    </i-col>
-                    <i-col :span="12" pull="4">
-                        <span>申请时间：
-                            <span>{{applyTime}}</span>
-                        </span>
-                    </i-col>
-                    <i-col :span="4">
-                        <!--<i-button class="highDefaultButton" @click="saveDraft" :disabled="saveDraftDisabled">保存草稿</i-button>-->
-                        <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
-                    </i-col>
-                </i-row>
-            </div>
-        </div>
-        <div class="shade" :style="{display:disabledStatus}">
-        </div>
-    </section>
+      <div class="submit-bar">
+        <i-row type="flex" align="middle" class="submit-bar-item">
+          <i-col :span="8" push="1">
+            <span>申请人：
+              <span>{{applyPerson}}</span>
+            </span>
+          </i-col>
+          <i-col :span="12" pull="4">
+            <span>申请时间：
+              <span>{{applyTime}}</span>
+            </span>
+          </i-col>
+          <i-col :span="4">
+            <!--<i-button class="highDefaultButton" @click="saveDraft" :disabled="saveDraftDisabled">保存草稿</i-button>-->
+            <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
+          </i-col>
+        </i-row>
+      </div>
+    </div>
+    <div class="shade" :style="{display:disabledStatus}">
+    </div>
+  </section>
 </template>
 <script lang="ts">
 import Page from '~/core/page'
@@ -319,12 +319,12 @@ export default class SaleGatheringApply extends Page {
       this.withdrawApplicationService
         .saveSaleCollectMoneyApplicationAsDraft(this.saveDraftModel)
         .subscribe(
-          data => {
-            this.$Message.success('保存草稿成功！')
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-          }
+        data => {
+          this.$Message.success('保存草稿成功！')
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
         )
     } else {
       this.$Message.info('请先选择订单！')
@@ -350,16 +350,16 @@ export default class SaleGatheringApply extends Page {
           this.withdrawApplicationService
             .saveSaleCollectMoneyApplication(saveAndCommitModel)
             .subscribe(
-              data => {
-                this.updatePaymentRecord(new Date())
-                this.$Message.success('保存并提交成功！')
-                this.saveDraftDisabled = true
-                this.resetAll()
-                this.disabledStatus = ''
-              },
-              ({ msg }) => {
-                this.$Message.error(msg)
-              }
+            data => {
+              this.updatePaymentRecord(new Date())
+              this.$Message.success('保存并提交成功！')
+              this.saveDraftDisabled = true
+              this.resetAll()
+              this.disabledStatus = ''
+            },
+            ({ msg }) => {
+              this.$Message.error(msg)
+            }
             )
         } else {
           this.$Message.info('请先选择订单！')
@@ -384,17 +384,17 @@ export default class SaleGatheringApply extends Page {
         mobileMain: this.applyData.mobileMain
       })
       .subscribe(
-        data => {
-          if (data[0] && data[0].orderNumberIdModels) {
-            this.orderNumberIdModels = data[0].orderNumberIdModels
-            this.applyData.customerName = data[0].name
-            this.applyData.mobileMain = data[0].mobileMain
-            this.personalId = data[0].personalId
-          }
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
+      data => {
+        if (data[0] && data[0].orderNumberIdModels) {
+          this.orderNumberIdModels = data[0].orderNumberIdModels
+          this.applyData.customerName = data[0].name
+          this.applyData.mobileMain = data[0].mobileMain
+          this.personalId = data[0].personalId
         }
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
   /**
@@ -410,24 +410,24 @@ export default class SaleGatheringApply extends Page {
           orderId: val
         })
         .subscribe(
-          data => {
-            this.orderFodderInfo = data
-            if (data.withdrawId) {
-              this.saveDraftModel.id = data.withdrawId // 获取保存草稿时需要的id
-            }
-            if (data.personalBank && data.personalBank.personalName) {
-              this.saveDraftModel.accountName = data.personalBank.personalName // 获取保存草稿时需要的accountName
-            }
-            // 给收款明细列表赋值
-            let _gatherDetail: any = this.$refs['gather-detail']
-            _gatherDetail.makeList(data)
-            let _uploadMaterial: any = this.$refs['upload-the-fodder']
-            _uploadMaterial.makeList(data)
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-            this.msg = msg
+        data => {
+          this.orderFodderInfo = data
+          if (data.withdrawId) {
+            this.saveDraftModel.id = data.withdrawId // 获取保存草稿时需要的id
           }
+          if (data.personalBank && data.personalBank.personalName) {
+            this.saveDraftModel.accountName = data.personalBank.personalName // 获取保存草稿时需要的accountName
+          }
+          // 给收款明细列表赋值
+          let _gatherDetail: any = this.$refs['gather-detail']
+          _gatherDetail.makeList(data)
+          let _uploadMaterial: any = this.$refs['upload-the-fodder']
+          _uploadMaterial.makeList(data)
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+          this.msg = msg
+        }
         )
     }
   }
