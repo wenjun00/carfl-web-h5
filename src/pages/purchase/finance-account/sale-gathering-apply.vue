@@ -1,87 +1,80 @@
 <!--销售收款申请-->
 <template>
-  <section class="page sale-gathering-apply special-input">
-    <page-header title="销售收款申请" hiddenExport></page-header>
-    <div class="data-command">
-      <i-row type="flex">
-        <i-col span="18">
-          <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
-            <i-col span="12">
-              <i-form-item label="证件号码" prop="idCard">
-                <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
-                </i-input>
-              </i-form-item>
-            </i-col>
-            <i-col span="12">
-              <i-form-item label="客户姓名" prop="customerName">
-                <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名" @on-blur="getOrderInfo">
-                </i-input>
-              </i-form-item>
-            </i-col>
-            <i-col span="12">
-              <i-form-item label="客户电话" prop="mobileMain">
-                <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话">
-                </i-input>
-              </i-form-item>
-            </i-col>
-            <i-col span="12">
-              <i-form-item label="选择订单" prop="orderId">
-                <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
-                  <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
-                </i-select>
-              </i-form-item>
-            </i-col>
-          </i-form>
-        </i-col>
-        <i-button class="blueButton clear-button" @click="clearAll">清空</i-button>
-      </i-row>
-      <i-tabs v-model="materialTabs" class="sale-gather-tabs">
-        <i-tab-pane name="gather-detail" label="收款明细">
-          <gather-detail :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="gather-detail"></gather-detail>
-        </i-tab-pane>
-        <i-tab-pane name="upload-the-fodder" label="上传素材">
-          <upload-the-fodder :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="upload-the-fodder"></upload-the-fodder>
-        </i-tab-pane>
-      </i-tabs>
+  <section class="page sale-gathering-apply">
+    <page-header title="销售收款申请" hiddenExport>
+      <command-button label="添加新申请" @click="clearAll"></command-button>
+    </page-header>
 
-      <div class="submit-bar">
-        <i-row type="flex" align="middle" class="submit-bar-item">
-          <i-col :span="8" push="1">
-            <span>申请人：
-              <span>{{applyPerson}}</span>
-            </span>
+    <!-- 搜索表单-start -->
+    <div class="search-container">
+      <i-form :label-width="90" ref="customer-form" class="search-form" :model="applyData" label-position="right" :rules="applyRule">
+        <i-row :gutter="20">
+          <i-col span="10">
+            <i-form-item label="证件号码" prop="idCard">
+              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="getUserInfo" :maxlength="18">
+              </i-input>
+            </i-form-item>
           </i-col>
-          <i-col :span="12" pull="4">
-            <span>申请时间：
-              <span>{{applyTime}}</span>
-            </span>
-          </i-col>
-          <i-col :span="4">
-            <!--<i-button class="highDefaultButton" @click="saveDraft" :disabled="saveDraftDisabled">保存草稿</i-button>-->
-            <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
+          <i-col span="10">
+            <i-form-item label="客户姓名" prop="customerName">
+              <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名">
+              </i-input>
+            </i-form-item>
           </i-col>
         </i-row>
-      </div>
+        <i-row :gutter="20">
+          <i-col span="10">
+            <i-form-item label="客户电话" prop="mobileMain">
+              <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col span="10">
+            <i-form-item label="选择订单" prop="orderId">
+              <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
+                <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
+              </i-select>
+            </i-form-item>
+          </i-col>
+        </i-row>
+      </i-form>
     </div>
-    <div class="shade" :style="{display:disabledStatus}">
+
+    <i-tabs v-show="applyData.orderId" v-model="materialTabs" class="info-container">
+      <i-tab-pane name="gather-detail" label="收款明细">
+        <gather-detail :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="gather-detail"></gather-detail>
+      </i-tab-pane>
+      <i-tab-pane name="upload-the-fodder" label="上传素材">
+        <upload-the-fodder :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="upload-the-fodder"></upload-the-fodder>
+      </i-tab-pane>
+    </i-tabs>
+
+    <div v-show="!applyData.orderId" class="emptyText">
+      请先填写证件信息
+    </div>
+
+    <div class="fixed-container" v-show="applyData.orderId">
+      <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
     </div>
   </section>
 </template>
 <script lang="ts">
-import Page from '~/core/page'
-import Component from 'vue-class-component'
-import { Dependencies } from '~/core/decorator'
-import DataBox from '~/components/common/data-box.vue'
-import { PageService } from '~/utils/page.service'
-import SvgIcon from '~/components/common/svg-icon.vue'
-import { Layout } from '~/core/decorator'
-import { State, Mutation, namespace } from 'vuex-class'
-import UploadTheFodder from '~/components/purchase-manage/upload-the-fodder.vue'
-import GatherDetail from '~/components/purchase-manage/gather-detail.vue'
-import { WithdrawApplicationService } from '~/services/manage-service/withdraw-application.service'
-const ModuleState = namespace('purchase', State)
-const ModuleMutation = namespace('purchase', Mutation)
-@Layout('workspace')
+import Page from "~/core/page";
+import Component from "vue-class-component";
+import { Dependencies } from "~/core/decorator";
+import DataBox from "~/components/common/data-box.vue";
+import { PageService } from "~/utils/page.service";
+import SvgIcon from "~/components/common/svg-icon.vue";
+import { Layout } from "~/core/decorator";
+import { State, Mutation, namespace } from "vuex-class";
+import UploadTheFodder from "~/components/purchase-manage/upload-the-fodder.vue";
+import GatherDetail from "~/components/purchase-manage/gather-detail.vue";
+import { WithdrawApplicationService } from "~/services/manage-service/withdraw-application.service";
+import { FilterService } from "~/utils/filter.service.ts";
+
+const ModuleState = namespace("purchase", State);
+const ModuleMutation = namespace("purchase", Mutation);
+@Layout("workspace")
 @Component({
   components: {
     DataBox,
@@ -91,102 +84,98 @@ const ModuleMutation = namespace('purchase', Mutation)
   }
 })
 export default class SaleGatheringApply extends Page {
-  @Dependencies() private pageService: PageService
+  @Dependencies() private pageService: PageService;
   @Dependencies(WithdrawApplicationService)
-  private withdrawApplicationService: WithdrawApplicationService
-  @ModuleMutation updatePaymentRecord
-  @ModuleState collectiondata
+  private withdrawApplicationService: WithdrawApplicationService;
+  @ModuleMutation updatePaymentRecord;
+  @ModuleState collectiondata;
+
   private applyData: any = {
-    idCard: '',
-    customerName: '',
-    mobileMain: '',
-    orderId: ''
-  }
-  private applyPerson: String = '' // 申请人
-  private applyTime: String = '' // 申请时间
-  applyRule: Object = {
-    idCard: [{ validator: this.$validator.idCard, trigger: 'blur' }],
-    customerName: [
+    idCard: "",
+    customerName: "",
+    mobileMain: "",
+    orderId: ""
+  };
+
+  private applyRule: any = {
+    idCard: [
+      { required: true, message: "证件号码必填", trigger: "blur" },
+      { validator: this.$validator.idCard, trigger: "blur" }
+    ],
+    customerName: {
+      required: true,
+      message: "请输入客户姓名",
+      trigger: "blur"
+    },
+    mobileMain: [
+      { required: true, message: "客户电话必填", trigger: "blur" },
       {
         required: true,
-        message: '请输入客户姓名',
-        trigger: 'blur'
-      }
-    ],
-    mobileMain: [
-      {
         validator: this.$validator.phoneNumber,
-        trigger: 'blur'
+        trigger: "blur"
       }
     ]
-
-  }
+  };
   private purchaseData: Object = {
-    province: '',
-    city: '',
-    company: ''
-  }
+    province: "",
+    city: "",
+    company: ""
+  };
 
-  private data2: Array<Object> = []
-  private loading: Boolean = false
-  private addCar: Boolean = false
-  private isShown: Boolean = true
-  private modifyGatherItemModal: Boolean = false
-  private materialTabs: String = 'gather-detail'
-  private disabledStatus: String = '' // 子组件中输入框禁用flag
-  private orderNumberIdModels: Array<any> = []
-  private personalId: Number = 0
-  private checkOrderId: Number = 0
-  private orderFodderInfo: Object = {} // 获取订单下的素材等信息
+  private customerForm: any = {};
+  private gatherDetail: any = {};
+  private uploadFodder: any = {};
+  // 底部信息model
+  private footModel: any = {};
+
+  private materialTabs: String = "gather-detail";
+  private disabledStatus: String = ""; // 子组件中输入框禁用flag
+  private orderNumberIdModels: Array<any> = [];
+  private personalId: Number = 0;
+  private checkOrderId: Number = 0;
+  private orderFodderInfo: Object = {}; // 获取订单下的素材等信息
   private saveDraftModel: any = {
-    accountName: '',
+    accountName: "",
     financeUploadResources: [], // 上传素材
     depositCash: 0,
     finalCash: 0,
     firstMonthlySupply: 0,
     gpsFee: 0,
-    id: '',
+    id: "",
     initialPayment: 0,
     installLicenseFee: 0,
     insuranceExpenses: 0,
     manageCost: 0,
-    orderId: '',
+    orderId: "",
     otherFee: 0,
     purchaseTax: 0,
     totalPayment: 0
-  }
-  private saveDraftDisabled: Boolean = false
-  private msg: any = ''
-  // mounted() {
-  //   if (this.$store.state.pageList.find(v => v.resoname === '销售收款申请').flag) {
-  //     this.applyData = this.collectiondata
-  //     this.showTab()
-  //   }
-  // }
+  };
+  private saveDraftDisabled: Boolean = false;
+  private msg: any = "";
+
   created() {
-    this.applyPerson = this.$store.state.userData.username
-    let time = new Date()
-    this.applyTime =
-      time.getFullYear() +
-      '-' +
-      (time.getMonth() + 1) +
-      '-' +
-      time.getDate() +
-      ' ' +
-      time.getHours() +
-      ':' +
-      time.getMinutes() +
-      ':' +
-      time.getSeconds()
+    this.footModel = {
+      applyPerson: this.$store.state.userData.username, // 申请人
+      applyTime: FilterService.dateFormat(new Date()) // 申请时间
+    };
   }
+
+  mounted() {
+    this.customerForm = this.$refs["customer-form"];
+    this.gatherDetail = this.$refs["gather-detail"];
+    this.uploadFodder = this.$refs["upload-the-fodder"];
+  }
+
   getSaveModel() {
     /**
      * 获取收款明细信息start
      */
-    let _gatherDetail: any = this.$refs["gather-detail"];
-    let itemList = _gatherDetail.getItem();
+    let itemList = this.gatherDetail.getItem();
     let initialPayment = itemList.find(v => v.itemName === "initialPayment"); // 首付款
-    this.saveDraftModel.initialPayment = initialPayment ? initialPayment.itemMoney : 0;
+    this.saveDraftModel.initialPayment = initialPayment
+      ? initialPayment.itemMoney
+      : 0;
 
     let depositCash = itemList.find(v => v.itemName === "depositCash"); // 保证金
     this.saveDraftModel.depositCash = depositCash ? depositCash.itemMoney : 0;
@@ -195,16 +184,26 @@ export default class SaleGatheringApply extends Page {
     this.saveDraftModel.finalCash = finalCash ? finalCash.itemMoney : 0;
 
     let firstMonthlySupply = itemList.find(v => v.itemName === "monthlySupply"); // 月供金额
-    this.saveDraftModel.firstMonthlySupply = firstMonthlySupply ? firstMonthlySupply.itemMoney :0;
+    this.saveDraftModel.firstMonthlySupply = firstMonthlySupply
+      ? firstMonthlySupply.itemMoney
+      : 0;
 
     let gpsFee = itemList.find(v => v.itemName === "gpsFee"); // gps费
     this.saveDraftModel.gpsFee = gpsFee ? gpsFee.itemMoney : 0;
 
-    let installLicenseFee = itemList.find(v => v.itemName === "installLicenseFee"); // 安装费
-    this.saveDraftModel.installLicenseFee = installLicenseFee ? installLicenseFee.itemMoney : 0;
+    let installLicenseFee = itemList.find(
+      v => v.itemName === "installLicenseFee"
+    ); // 安装费
+    this.saveDraftModel.installLicenseFee = installLicenseFee
+      ? installLicenseFee.itemMoney
+      : 0;
 
-    let insuranceExpenses = itemList.find(v => v.itemName === "insuranceExpenses"); // 保险费
-    this.saveDraftModel.insuranceExpenses = insuranceExpenses ? insuranceExpenses.itemMoney : 0;
+    let insuranceExpenses = itemList.find(
+      v => v.itemName === "insuranceExpenses"
+    ); // 保险费
+    this.saveDraftModel.insuranceExpenses = insuranceExpenses
+      ? insuranceExpenses.itemMoney
+      : 0;
 
     let manageCost = itemList.find(v => v.itemName === "manageCost"); // 管理费
     this.saveDraftModel.manageCost = manageCost ? manageCost.itemMoney : 0;
@@ -216,166 +215,121 @@ export default class SaleGatheringApply extends Page {
     this.saveDraftModel.purchaseTax = purchaseTax ? purchaseTax.itemMoney : 0;
 
     let totalPayment = itemList.find(v => v.itemName === "totalPayment"); // 合计
-    this.saveDraftModel.totalPayment = totalPayment ? totalPayment.itemMoney : 0;
+    this.saveDraftModel.totalPayment = totalPayment
+      ? totalPayment.itemMoney
+      : 0;
 
     /**
      * 获取上传素材信息start
      */
-    let _uploadFodder: any = this.$refs['upload-the-fodder']
-    this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList
+    let _uploadFodder: any = this.$refs["upload-the-fodder"];
+    this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList;
   }
-  /**
-   * 保存草稿
-   */
-  saveDraft() {
-    this.getSaveModel()
-    // let _gatherDetail: any = this.$refs["gather-detail"];
-    // let itemList = _gatherDetail.getItem();
-    // // console.log("itemList", itemList);
-    // let initialPayment = itemList.find(v => v.itemName === "initialPayment"); // 首付款
-    // this.saveDraftModel.initialPayment = initialPayment
-    //   ? initialPayment.itemMoney
-    //   : 0;
 
-    // let depositCash = itemList.find(v => v.itemName === "depositCash"); // 保证金
-    // this.saveDraftModel.depositCash = depositCash ? depositCash.itemMoney : 0;
-
-    // let finalCash = itemList.find(v => v.itemName === "finalCash"); // 尾付款
-    // this.saveDraftModel.finalCash = finalCash ? finalCash.itemMoney : 0;
-
-    // let firstMonthlySupply = itemList.find(v => v.itemName === "monthlySupply"); // 月供金额
-    // this.saveDraftModel.firstMonthlySupply = firstMonthlySupply
-    //   ? firstMonthlySupply.itemMoney
-    //   : 0;
-
-    // let gpsFee = itemList.find(v => v.itemName === "gpsFee"); // gps费
-    // this.saveDraftModel.gpsFee = gpsFee ? gpsFee.itemMoney : 0;
-
-    // let installLicenseFee = itemList.find(
-    //   v => v.itemName === "installLicenseFee"
-    // ); // 安装费
-    // this.saveDraftModel.installLicenseFee = installLicenseFee
-    //   ? installLicenseFee.itemMoney
-    //   : 0;
-
-    // let insuranceExpenses = itemList.find(
-    //   v => v.itemName === "insuranceExpenses"
-    // ); // 保险费
-    // this.saveDraftModel.insuranceExpenses = insuranceExpenses
-    //   ? insuranceExpenses.itemMoney
-    //   : 0;
-
-    // let manageCost = itemList.find(v => v.itemName === "manageCost"); // 管理费
-    // this.saveDraftModel.manageCost = manageCost ? manageCost.itemMoney : 0;
-
-    // let otherFee = itemList.find(v => v.itemName === "otherFee"); // 其他费用
-    // this.saveDraftModel.otherFee = otherFee ? otherFee.itemMoney : 0;
-
-    // let purchaseTax = itemList.find(v => v.itemName === "purchaseTax"); // 购置税
-    // this.saveDraftModel.purchaseTax = purchaseTax ? purchaseTax.itemMoney : 0;
-
-    // let totalPayment = itemList.find(v => v.itemName === "totalPayment"); // 合计
-    // this.saveDraftModel.totalPayment = totalPayment
-    //   ? totalPayment.itemMoney
-    //   : 0;
-    console.log(777, this.saveDraftModel)
-    if (this.applyData.orderId) {
-      this.withdrawApplicationService
-        .saveSaleCollectMoneyApplicationAsDraft(this.saveDraftModel)
-        .subscribe(
-        data => {
-          this.$Message.success('保存草稿成功！')
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
-        )
-    } else {
-      this.$Message.info('请先选择订单！')
-    }
-  }
   /**
    * 保存并提交
    */
   saveAndCommit() {
-    let customerform: any = this.$refs['customer-form']
-    customerform.validate(valid => {
+    this.customerForm.validate(valid => {
       if (!valid) {
-        return false
-      } else  {
-          if (this.msg === '该订单已有一个未处理的提前结清申请') {
-            this.$Message.warning('请先审批未处理的申请订单！')
-            return false
-          }
-          this.getSaveModel();
-          if (this.applyData.orderId) {
-            let saveAndCommitModel = this.saveDraftModel;
-            console.log(saveAndCommitModel)
-            this.withdrawApplicationService
-              .saveSaleCollectMoneyApplication(saveAndCommitModel)
-              .subscribe(
-                data => {
-                  this.updatePaymentRecord(new Date())
-                  this.$Message.success("保存并提交成功！");
-                  this.saveDraftDisabled = true;
-                  this.resetAll()
-                  this.disabledStatus = ''
-                },
-                ({
-                  msg
-                }) => {
-                  this.$Message.error(msg);
-                }
-              );
-          } else {
-            this.$Message.info("请先选择订单！");
-          }
+        return false;
+      } else {
+        if (this.msg === "该订单已有一个未处理的提前结清申请") {
+          this.$Message.warning("请先审批未处理的申请订单！");
+          return false;
         }
-    })
+        this.getSaveModel();
+        if (this.applyData.orderId) {
+          let saveAndCommitModel = this.saveDraftModel;
+          console.log(saveAndCommitModel);
+          this.withdrawApplicationService
+            .saveSaleCollectMoneyApplication(saveAndCommitModel)
+            .subscribe(
+              data => {
+                this.updatePaymentRecord(new Date());
+                this.$Message.success("保存并提交成功！");
+                this.saveDraftDisabled = true;
+                this.resetPage();
+                this.disabledStatus = "";
+              },
+              ({ msg }) => {
+                this.$Message.error(msg);
+              }
+            );
+        } else {
+          this.$Message.info("请先选择订单！");
+        }
+      }
+    });
   }
   showTab() {
-    if (this.applyData.idCard.length === 18) {
-      this.disabledStatus = 'none'
-      this.getOrderInfo()
+    if (this.$validator.idCard()) {
+      this.disabledStatus = "none";
+      this.getOrderInfo();
     } else {
-      this.applyData.customerName = ''
-      this.applyData.mobileMain = ''
+      this.applyData.customerName = "";
+      this.applyData.mobileMain = "";
     }
   }
-  getOrderInfo() {
-    this.withdrawApplicationService
-      .getPersonalProductOrderInfo({
-        idCard: this.applyData.idCard,
-        customerName: this.applyData.customerName,
-        mobileMain: this.applyData.mobileMain
-      })
-      .subscribe(
-      data => {
-        if (data[0] && data[0].orderNumberIdModels) {
-          this.orderNumberIdModels = data[0].orderNumberIdModels
-          this.applyData.customerName = data[0].name
-          this.applyData.mobileMain = data[0].mobileMain
-          this.personalId = data[0].personalId
-        }
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      })
+
+  async getUserInfo() {
+    if (!this.applyData.idCard) {
+      this.applyData.orderId = "";
+      return;
     }
 
-    /**
-     * 通过订单id获取销售收款申请信息
-     */
-    changeOrderId(val) {
-      if (val) {
-        this.checkOrderId = val; // 将选择的订单号传给变更收款项按钮点击事件中
-        this.saveDraftModel.orderId = val; // 保存草稿所需orderId
-        this.withdrawApplicationService
-          .getSaleCollectMoneyApplicationInfo({
-            personalId: this.personalId,
-            orderId: val
-          })
-          .subscribe(data => {
+    if (this.applyData.idCard.length === 18) {
+      // 验证身份证信息
+      let result = await new Promise((reslove, reject) => {
+        this.customerForm.validateField("idCard", error => reslove(!error));
+      });
+
+      if (result) {
+        this.getOrderInfo();
+      }
+    }
+  }
+
+  getOrderInfo() {
+    this.withdrawApplicationService
+      .getPersonalProductOrderInfo(this.applyData)
+      .subscribe(
+        data => {
+          if (data[0] && data[0].orderNumberIdModels) {
+            this.orderNumberIdModels = data[0].orderNumberIdModels;
+            this.applyData.customerName = data[0].name;
+            this.applyData.mobileMain = data[0].mobileMain;
+            this.personalId = data[0].personalId;
+          }
+        },
+        err => {
+          this.$Message.error(err.msg);
+          this.customerForm.resetFields();
+        }
+      );
+  }
+
+  resetPage() {
+    this.orderNumberIdModels = [];
+    this.customerForm.resetFields();
+    this.gatherDetail.resetTable();
+    this.uploadFodder.fodder.reset();
+  }
+
+  /**
+   * 通过订单id获取销售收款申请信息
+   */
+  changeOrderId(val) {
+    if (val) {
+      this.checkOrderId = val; // 将选择的订单号传给变更收款项按钮点击事件中
+      this.saveDraftModel.orderId = val; // 保存草稿所需orderId
+      this.withdrawApplicationService
+        .getSaleCollectMoneyApplicationInfo({
+          personalId: this.personalId,
+          orderId: val
+        })
+        .subscribe(
+          data => {
             this.orderFodderInfo = data;
             if (data.withdrawId) {
               this.saveDraftModel.id = data.withdrawId; // 获取保存草稿时需要的id
@@ -384,133 +338,66 @@ export default class SaleGatheringApply extends Page {
               this.saveDraftModel.accountName = data.personalBank.personalName; // 获取保存草稿时需要的accountName
             }
             // 给收款明细列表赋值
-            let _gatherDetail: any = this.$refs["gather-detail"];
-            _gatherDetail.makeList(data);
+            let gatherDetail: any = this.$refs["gather-detail"];
+            gatherDetail.makeList(data);
             // let _uploadMaterial: any = this.$refs["upload-the-fodder"];
             // _uploadMaterial.makeList(data);
-          }, ({
-            msg
-          }) => {
+          },
+          ({ msg }) => {
             this.$Message.error(msg);
-            this.msg = msg
-          });
+            this.msg = msg;
+          }
+        );
+    }
+  }
+  /**
+   * 清空
+   */
+  clearAll() {
+    this.$Modal.confirm({
+      title: "提示",
+      content:
+        "您有未保存的销售收款申请,清空会删除页面内容，是否确认清空申请内容！",
+      onOk: () => {
+        this.resetPage();
+        // 显示遮罩
+        this.disabledStatus = "block";
       }
-    }
-    /**
-     * 清空
-     */
-    clearAll() {
-      this.$Modal.confirm({
-        title: "提示",
-        content: "您有未保存的销售收款申请,清空会删除页面内容，是否确认清空申请内容！",
-        onOk: () => {
-          this.resetAll();
-          // 显示遮罩
-          this.disabledStatus = "block";
-          // 清空orderId
-          this.checkOrderId = 0;
-          // 停止禁用保存草稿
-          this.saveDraftDisabled = false;
-        }
-      });
-    }
-    /**
-     * 页面重置
-     */
-    resetAll() {
-      let _form: any = this.$refs["customer-form"];
-      _form.resetFields();
-      this.applyData.orderId = "";
-      let _gatherDetail: any = this.$refs["gather-detail"];
-      _gatherDetail.resetTable();
-      let _uploadFodder: any = this.$refs['upload-the-fodder'];
-      _uploadFodder.fodder.reset();
-    }
+    });
+  }
 }
 </script>
 
 <style lang="less" scoped>
-.page.sale-gathering-apply {
-  .data-command {
-    margin-top: 10px;
-  }
-  .shade {
-    width: 98%;
-    height: 666px;
-    background: rgba(250, 250, 250, 0.4);
-    position: absolute;
-    left: 21px;
-    top: 257px;
-    z-index: 999;
-  }
-  .header {
-    border-bottom: 1px solid #cccccc;
-    margin-bottom: 20px;
-    .data-form {
-      float: right;
-      margin-top: 10px;
-      margin-right: 10px;
-      .data-form-item {
-        font-size: 16px;
-        cursor: pointer;
-        display: inline-block;
-        margin-left: 10px;
-        color: #3367a7;
-        span {
-          font-size: 12px;
-        }
-      }
-    }
-  }
-  .clear-button {
-    height: 40px;
-    position: relative;
-    top: 60px;
-  }
-  .submit-bar {
-    height: 70px;
-    width: 100%;
-    background: #fff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border: 1px solid #ddd;
-    padding-right: 24px;
-    .submit-bar-item {
-      padding: 10px;
-    }
-  }
+.search-container {
+  padding: 15px;
 }
-</style>
-<style lang="less">
-.page.sale-gathering-apply.special-input {
-  .special-input {
-    .ivu-input {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-  .sale-gather-tabs {
-    .ivu-tabs-bar {
-      border-bottom: 1px solid #dddee1;
-      .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
-        margin: 0;
-        margin-right: 4px;
-        padding: 5px 16px 4px;
-        border: 1px solid #dddee1;
-        border-bottom: 0;
-        border-radius: 4px 4px 0 0;
-        transition: all 0.3s ease-in-out;
-      }
-    }
-  }
-  .sale-gathering-apply {
-    .ivu-select-selection {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
+.info-container {
+  margin-bottom: 100px;
+}
+
+.fixed-container {
+  height: 65px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 10;
+  text-align: right;
+  padding: 10px 20px;
+  box-shadow: 0px -5px 10px #ccc;
+}
+
+.emptyText {
+  font-size: 32px;
+  color: #ccc;
+  font-weight: bold;
+  background: #f2f2f2;
+  height: 500px;
+  text-align: center;
+  line-height: 500px;
+  letter-spacing: 1px;
+  box-shadow: 0px 0px 5px #ccc;
 }
 </style>
