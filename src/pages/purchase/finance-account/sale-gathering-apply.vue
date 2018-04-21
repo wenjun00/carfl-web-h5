@@ -115,20 +115,11 @@ export default class SaleGatheringApply extends Page {
     ],
     mobileMain: [
       {
-        required: true,
-        message: '请输入客户电话',
-        trigger: 'blur'
-      },
-      {
         validator: this.$validator.phoneNumber,
         trigger: 'blur'
       }
     ]
-    //   orderId: [{
-    //     required: true,
-    //     message: '请选择订单',
-    //     trigger:'change'
-    //   }],
+
   }
   private purchaseData: Object = {
     province: '',
@@ -166,15 +157,12 @@ export default class SaleGatheringApply extends Page {
   }
   private saveDraftDisabled: Boolean = false
   private msg: any = ''
-  mounted() {
-    if (
-      this.$store.state.pageList.find(v => v.resoname === '销售收款申请').flag
-    ) {
-      this.applyData = this.collectiondata
-      this.showTab()
-    }
-  }
-
+  // mounted() {
+  //   if (this.$store.state.pageList.find(v => v.resoname === '销售收款申请').flag) {
+  //     this.applyData = this.collectiondata
+  //     this.showTab()
+  //   }
+  // }
   created() {
     this.applyPerson = this.$store.state.userData.username
     let time = new Date()
@@ -195,70 +183,46 @@ export default class SaleGatheringApply extends Page {
     /**
      * 获取收款明细信息start
      */
-    let _gatherDetail: any = this.$refs['gather-detail']
-    let itemList = _gatherDetail.getItem()
-    let initialPayment = itemList.find(v => v.itemName === 'initialPayment') // 首付款
-    this.saveDraftModel.initialPayment = initialPayment
-      ? initialPayment.itemMoney
-      : 0
+    let _gatherDetail: any = this.$refs["gather-detail"];
+    let itemList = _gatherDetail.getItem();
+    let initialPayment = itemList.find(v => v.itemName === "initialPayment"); // 首付款
+    this.saveDraftModel.initialPayment = initialPayment ? initialPayment.itemMoney : 0;
 
-    let depositCash = itemList.find(v => v.itemName === 'depositCash') // 保证金
-    this.saveDraftModel.depositCash = depositCash ? depositCash.itemMoney : 0
+    let depositCash = itemList.find(v => v.itemName === "depositCash"); // 保证金
+    this.saveDraftModel.depositCash = depositCash ? depositCash.itemMoney : 0;
 
-    let finalCash = itemList.find(v => v.itemName === 'finalCash') // 尾付款
-    this.saveDraftModel.finalCash = finalCash ? finalCash.itemMoney : 0
+    let finalCash = itemList.find(v => v.itemName === "finalCash"); // 尾付款
+    this.saveDraftModel.finalCash = finalCash ? finalCash.itemMoney : 0;
 
-    let firstMonthlySupply = itemList.find(v => v.itemName === 'monthlySupply') // 月供金额
-    this.saveDraftModel.firstMonthlySupply = firstMonthlySupply
-      ? firstMonthlySupply.itemMoney
-      : 0
+    let firstMonthlySupply = itemList.find(v => v.itemName === "monthlySupply"); // 月供金额
+    this.saveDraftModel.firstMonthlySupply = firstMonthlySupply ? firstMonthlySupply.itemMoney :0;
 
-    let gpsFee = itemList.find(v => v.itemName === 'gpsFee') // gps费
-    this.saveDraftModel.gpsFee = gpsFee ? gpsFee.itemMoney : 0
+    let gpsFee = itemList.find(v => v.itemName === "gpsFee"); // gps费
+    this.saveDraftModel.gpsFee = gpsFee ? gpsFee.itemMoney : 0;
 
-    let installLicenseFee = itemList.find(
-      v => v.itemName === 'installLicenseFee'
-    ) // 安装费
-    this.saveDraftModel.installLicenseFee = installLicenseFee
-      ? installLicenseFee.itemMoney
-      : 0
+    let installLicenseFee = itemList.find(v => v.itemName === "installLicenseFee"); // 安装费
+    this.saveDraftModel.installLicenseFee = installLicenseFee ? installLicenseFee.itemMoney : 0;
 
-    let insuranceExpenses = itemList.find(
-      v => v.itemName === 'insuranceExpenses'
-    ) // 保险费
-    this.saveDraftModel.insuranceExpenses = insuranceExpenses
-      ? insuranceExpenses.itemMoney
-      : 0
+    let insuranceExpenses = itemList.find(v => v.itemName === "insuranceExpenses"); // 保险费
+    this.saveDraftModel.insuranceExpenses = insuranceExpenses ? insuranceExpenses.itemMoney : 0;
 
-    let manageCost = itemList.find(v => v.itemName === 'manageCost') // 管理费
-    this.saveDraftModel.manageCost = manageCost ? manageCost.itemMoney : 0
+    let manageCost = itemList.find(v => v.itemName === "manageCost"); // 管理费
+    this.saveDraftModel.manageCost = manageCost ? manageCost.itemMoney : 0;
 
-    let otherFee = itemList.find(v => v.itemName === 'otherFee') // 其他费用
-    this.saveDraftModel.otherFee = otherFee ? otherFee.itemMoney : 0
+    let otherFee = itemList.find(v => v.itemName === "otherFee"); // 其他费用
+    this.saveDraftModel.otherFee = otherFee ? otherFee.itemMoney : 0;
 
-    let purchaseTax = itemList.find(v => v.itemName === 'purchaseTax') // 购置税
-    this.saveDraftModel.purchaseTax = purchaseTax ? purchaseTax.itemMoney : 0
+    let purchaseTax = itemList.find(v => v.itemName === "purchaseTax"); // 购置税
+    this.saveDraftModel.purchaseTax = purchaseTax ? purchaseTax.itemMoney : 0;
 
-    let totalPayment = itemList.find(v => v.itemName === 'totalPayment') // 合计
-    this.saveDraftModel.totalPayment = totalPayment ? totalPayment.itemMoney : 0
-    /**
-     * 获取收款明细信息end
-     */
+    let totalPayment = itemList.find(v => v.itemName === "totalPayment"); // 合计
+    this.saveDraftModel.totalPayment = totalPayment ? totalPayment.itemMoney : 0;
 
     /**
      * 获取上传素材信息start
      */
     let _uploadFodder: any = this.$refs['upload-the-fodder']
-    this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList.map(
-      v => {
-        return {
-          materialUrl: v.url
-        }
-      }
-    )
-    /**
-     * 获取上传素材信息end
-     */
+    this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList
   }
   /**
    * 保存草稿
@@ -338,33 +302,35 @@ export default class SaleGatheringApply extends Page {
     customerform.validate(valid => {
       if (!valid) {
         return false
-      } else {
-        if (this.msg === '该订单已有一个未处理的提前结清申请') {
-          this.$Message.warning('请先审批未处理的申请订单！')
-          return false
+      } else  {
+          if (this.msg === '该订单已有一个未处理的提前结清申请') {
+            this.$Message.warning('请先审批未处理的申请订单！')
+            return false
+          }
+          this.getSaveModel();
+          if (this.applyData.orderId) {
+            let saveAndCommitModel = this.saveDraftModel;
+            console.log(saveAndCommitModel)
+            this.withdrawApplicationService
+              .saveSaleCollectMoneyApplication(saveAndCommitModel)
+              .subscribe(
+                data => {
+                  this.updatePaymentRecord(new Date())
+                  this.$Message.success("保存并提交成功！");
+                  this.saveDraftDisabled = true;
+                  this.resetAll()
+                  this.disabledStatus = ''
+                },
+                ({
+                  msg
+                }) => {
+                  this.$Message.error(msg);
+                }
+              );
+          } else {
+            this.$Message.info("请先选择订单！");
+          }
         }
-        this.getSaveModel()
-        if (this.applyData.orderId) {
-          let saveAndCommitModel = this.saveDraftModel
-          // console.log("saveAndCommitModel", saveAndCommitModel);
-          this.withdrawApplicationService
-            .saveSaleCollectMoneyApplication(saveAndCommitModel)
-            .subscribe(
-            data => {
-              this.updatePaymentRecord(new Date())
-              this.$Message.success('保存并提交成功！')
-              this.saveDraftDisabled = true
-              this.resetAll()
-              this.disabledStatus = ''
-            },
-            ({ msg }) => {
-              this.$Message.error(msg)
-            }
-            )
-        } else {
-          this.$Message.info('请先选择订单！')
-        }
-      }
     })
   }
   showTab() {
@@ -394,74 +360,72 @@ export default class SaleGatheringApply extends Page {
       },
       ({ msg }) => {
         this.$Message.error(msg)
-      }
-      )
-  }
-  /**
-   * 通过订单id获取销售收款申请信息
-   */
-  changeOrderId(val) {
-    if (val) {
-      this.checkOrderId = val // 将选择的订单号传给变更收款项按钮点击事件中
-      this.saveDraftModel.orderId = val // 保存草稿所需orderId
-      this.withdrawApplicationService
-        .getSaleCollectMoneyApplicationInfo({
-          personalId: this.personalId,
-          orderId: val
-        })
-        .subscribe(
-        data => {
-          this.orderFodderInfo = data
-          if (data.withdrawId) {
-            this.saveDraftModel.id = data.withdrawId // 获取保存草稿时需要的id
-          }
-          if (data.personalBank && data.personalBank.personalName) {
-            this.saveDraftModel.accountName = data.personalBank.personalName // 获取保存草稿时需要的accountName
-          }
-          // 给收款明细列表赋值
-          let _gatherDetail: any = this.$refs['gather-detail']
-          _gatherDetail.makeList(data)
-          let _uploadMaterial: any = this.$refs['upload-the-fodder']
-          _uploadMaterial.makeList(data)
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-          this.msg = msg
-        }
-        )
+      })
     }
-  }
-  /**
-   * 清空
-   */
-  clearAll() {
-    this.$Modal.confirm({
-      title: '提示',
-      content:
-        '您有未保存的销售收款申请,清空会删除页面内容，是否确认清空申请内容！',
-      onOk: () => {
-        this.resetAll()
-        // 显示遮罩
-        this.disabledStatus = 'block'
-        // 清空orderId
-        this.checkOrderId = 0
-        // 停止禁用保存草稿
-        this.saveDraftDisabled = false
+
+    /**
+     * 通过订单id获取销售收款申请信息
+     */
+    changeOrderId(val) {
+      if (val) {
+        this.checkOrderId = val; // 将选择的订单号传给变更收款项按钮点击事件中
+        this.saveDraftModel.orderId = val; // 保存草稿所需orderId
+        this.withdrawApplicationService
+          .getSaleCollectMoneyApplicationInfo({
+            personalId: this.personalId,
+            orderId: val
+          })
+          .subscribe(data => {
+            this.orderFodderInfo = data;
+            if (data.withdrawId) {
+              this.saveDraftModel.id = data.withdrawId; // 获取保存草稿时需要的id
+            }
+            if (data.personalBank && data.personalBank.personalName) {
+              this.saveDraftModel.accountName = data.personalBank.personalName; // 获取保存草稿时需要的accountName
+            }
+            // 给收款明细列表赋值
+            let _gatherDetail: any = this.$refs["gather-detail"];
+            _gatherDetail.makeList(data);
+            // let _uploadMaterial: any = this.$refs["upload-the-fodder"];
+            // _uploadMaterial.makeList(data);
+          }, ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+            this.msg = msg
+          });
       }
-    })
-  }
-  /**
-   * 页面重置
-   */
-  resetAll() {
-    let _form: any = this.$refs['customer-form']
-    _form.resetFields()
-    this.applyData.orderId = ''
-    let _gatherDetail: any = this.$refs['gather-detail']
-    _gatherDetail.resetTable()
-    let _uploadFodder: any = this.$refs['upload-the-fodder']
-    _uploadFodder.reset()
-  }
+    }
+    /**
+     * 清空
+     */
+    clearAll() {
+      this.$Modal.confirm({
+        title: "提示",
+        content: "您有未保存的销售收款申请,清空会删除页面内容，是否确认清空申请内容！",
+        onOk: () => {
+          this.resetAll();
+          // 显示遮罩
+          this.disabledStatus = "block";
+          // 清空orderId
+          this.checkOrderId = 0;
+          // 停止禁用保存草稿
+          this.saveDraftDisabled = false;
+        }
+      });
+    }
+    /**
+     * 页面重置
+     */
+    resetAll() {
+      let _form: any = this.$refs["customer-form"];
+      _form.resetFields();
+      this.applyData.orderId = "";
+      let _gatherDetail: any = this.$refs["gather-detail"];
+      _gatherDetail.resetTable();
+      let _uploadFodder: any = this.$refs['upload-the-fodder'];
+      _uploadFodder.fodder.reset();
+    }
 }
 </script>
 

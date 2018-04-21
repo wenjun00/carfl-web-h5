@@ -10,8 +10,8 @@
                     <i-form-item prop="dateRange" label="日期：">
                         <i-date-picker v-model="derateModel.dateRange"  placeholder="请选择日期范围"></i-date-picker>
                     </i-form-item>
-                    <i-form-item prop="collectMoneyMethod">
-                        <i-select placeholder="全部结算通道" v-model="derateModel.collectMoneyMethod" clearable>
+                    <i-form-item prop="collectMoneyMethod" label="结算通道">
+                        <i-select placeholder="请选择结算通道" v-model="derateModel.collectMoneyMethod" clearable>
                             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
                         </i-select>
                     </i-form-item>

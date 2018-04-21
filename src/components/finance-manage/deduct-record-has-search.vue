@@ -5,7 +5,7 @@
     <data-form hidden-date-search :model="customerRepayModel" @on-search="query" hidden-reset>
       <template slot="input">
         <i-form-item prop="startTime" label="支付日期">
-          <i-date-picker type="date" v-model="customerRepayModel.startTime"></i-date-picker>
+          <i-date-picker type="date"  v-model="customerRepayModel.startTime"></i-date-picker>
         </i-form-item>
         <i-form-item prop="endTime">
           <i-date-picker type="date" v-model="customerRepayModel.endTime"></i-date-picker>
@@ -13,8 +13,8 @@
         <i-form-item prop="endTime" label="期数">
           <i-input v-model="customerRepayModel.periods"></i-input>
         </i-form-item>
-        <i-form-item prop="dealStatus">
-          <i-select placeholder="全部交易状态" v-model="customerRepayModel.dealStatus" clearable>
+        <i-form-item prop="dealStatus" label="交易状态">
+          <i-select placeholder="请选择交易状态" v-model="customerRepayModel.dealStatus" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0115')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>

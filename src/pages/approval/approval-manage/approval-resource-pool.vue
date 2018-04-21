@@ -11,20 +11,20 @@
         <i-form-item prop="dateRange" label="日期：">
           <i-date-picker v-model="resourcePoolModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
-        <i-form-item prop="province">
+        <i-form-item prop="province" label="省市：">
           <i-select placeholder="选择省" v-model="resourcePoolModel.province" clearable>
             <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label"
                       :value="value"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item prop="city">
-          <i-select placeholder="选择市" v-model="resourcePoolModel.city" clearable>
+          <i-select placeholder="选择市" v-model="resourcePoolModel.city" :disabled="!resourcePoolModel.province" clearable>
             <i-option
               v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []"
               :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="orderType">
+        <i-form-item prop="orderType" label="订单类型">
           <i-select placeholder="订单类型" v-model="resourcePoolModel.orderType" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0301')" :key="value" :label="label"
                       :value="value"></i-option>

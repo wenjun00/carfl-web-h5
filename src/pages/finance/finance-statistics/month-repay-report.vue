@@ -17,7 +17,7 @@
             <i-option label="富友" value="富友" key="富友"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item>
+        <i-form-item label="姓名">
           <i-input placeholder="请输入客户姓名"></i-input>
         </i-form-item>
       </template>

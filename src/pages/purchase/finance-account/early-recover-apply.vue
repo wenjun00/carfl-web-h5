@@ -44,9 +44,6 @@
                             </i-form-item>
                         </i-col>
                         <i-col :span="12" :pull="1">
-                            <!--<i-form-item prop="isAddToBlackList">
-                <i-checkbox v-model="applyData.isAddToBlackList" value="1" label="1">是否申请加入黑名单</i-checkbox>
-              </i-form-item>-->
                         </i-col>
                     </i-row>
                     <i-col :span="24">
@@ -77,7 +74,6 @@
                     <span>申请时间：{{applyTime}}</span>
                 </i-col>
                 <i-col :span="4">
-                    <!--<i-button class="highDefaultButton" @click="saveDraftClick" :disabled="type">保存草稿</i-button>-->
                     <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
                 </i-col>
             </i-row>

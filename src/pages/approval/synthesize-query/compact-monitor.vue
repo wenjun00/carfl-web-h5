@@ -8,10 +8,10 @@
                     <i-date-picker type="daterange" placeholder="请选择日期范围"></i-date-picker>
                 </i-form-item>
 
-                <i-form-item>
+                <i-form-item label="姓名">
                     <i-input placeholder="请输入员工姓名"></i-input>
                 </i-form-item>
-                <i-form-item>
+                <i-form-item label="门店">
                     <i-select placeholder="全部门店">
                         <i-option label="吴小川" value="吴小川" key="吴小川"></i-option>
                         <i-option label="黄瑞" value="黄瑞" key="黄瑞"></i-option>
