@@ -1,59 +1,59 @@
 <!--客户还款查询-->
 <template>
-    <section class="page customer-repay-query">
-        <page-header title="客户还款查询" hiddenPrint hiddenExport></page-header>
-        <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList" :page="pageService"  hidden-reset>
-            <template slot="input">
-                <i-form-item prop="dynamicParam">
-                    <i-input placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
-                </i-form-item>
-                <i-form-item prop="paymentStatus">
-                    <i-select placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
-                        <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="settlementChannel">
-                    <i-select placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
-                        <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
-                    </i-select>
-                </i-form-item>
-            </template>
-        </data-form>
-        <data-box :id="331" :columns="columns1" :data="customerRepayList" @onPageChange="getCustomerRepayList" :page="pageService"></data-box>
-        <div>
+  <section class="page customer-repay-query">
+    <page-header title="客户还款查询" hiddenPrint hiddenExport></page-header>
+    <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList" :page="pageService" hidden-reset>
+      <template slot="input">
+        <i-form-item prop="dynamicParam">
+          <i-input placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
+        </i-form-item>
+        <i-form-item prop="paymentStatus">
+          <i-select placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="settlementChannel">
+          <i-select placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+      </template>
+    </data-form>
+    <data-box :id="331" :columns="columns1" :data="customerRepayList" @onPageChange="getCustomerRepayList" :page="pageService"></data-box>
+    <div>
+    </div>
+
+    <template>
+      <i-modal title="还款详情" :transfer="false" v-model="repayInfoModal" width="1300" class="repay-info">
+        <repay-info ref="repay-info"></repay-info>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="还款总览" :transfer="false" width="1050" v-model="repaySumModal" class="repay-sum">
+        <repay-sum ref="repay-sum"></repay-sum>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="客户当前结算号" :transfer="false" v-model="customerSettleModal">
+        <customer-settle-modal ref="customer-settle"></customer-settle-modal>
+        <div slot="footer">
+          <i-button @click="customerSettleModal=false" class="blueButton">关闭</i-button>
         </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal title="还款详情" :transfer="false" v-model="repayInfoModal" width="1300" class="repay-info">
-                <repay-info ref="repay-info"></repay-info>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
+        <purchase-information ref="purchase-info"></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal title="还款总览" :transfer="false" width="1050" v-model="repaySumModal" class="repay-sum">
-                <repay-sum ref="repay-sum"></repay-sum>
-            </i-modal>
-        </template>
-
-        <template>
-            <i-modal title="客户当前结算号" :transfer="false" v-model="customerSettleModal">
-                <customer-settle-modal ref="customer-settle"></customer-settle-modal>
-                <div slot="footer">
-                    <i-button @click="customerSettleModal=false" class="blueButton">关闭</i-button>
-                </div>
-            </i-modal>
-        </template>
-
-        <template>
-            <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
-                <purchase-information ref="purchase-info"></purchase-information>
-                <div slot="footer">
-                    <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-                </div>
-            </i-modal>
-        </template>
-
-    </section>
+  </section>
 </template>
 
 <script lang="ts">
@@ -291,14 +291,14 @@ export default class CustomerRepayQuery extends Page {
     _purchaseInfo.getOrderDetail(row)
   }
 
-  repaySum(row) {}
+  repaySum(row) { }
 
-  trailerCar(row) {}
+  trailerCar(row) { }
 
   /**
    * 查看凭证
    */
-  checkProof(row) {}
+  checkProof(row) { }
 
   /**
    * 获取客户还款查询
@@ -307,12 +307,12 @@ export default class CustomerRepayQuery extends Page {
     this.paymentScheduleService
       .getCustomerPayments(this.customerRepayModel, this.pageService)
       .subscribe(
-        data => {
-          this.customerRepayList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.customerRepayList = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 

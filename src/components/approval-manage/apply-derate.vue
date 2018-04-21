@@ -77,7 +77,7 @@ export default class ApplyDerate extends Vue {
   confirmApplyDerate() {
     this.applyDerateModel.paymentScheduleId = this.paymentScheduleId;
     this.applyDerateModel.orderId = this.orderId;
-    if (!this.applyDerateModel.remitAmount) {
+    if (!this.applyDerateModel.remitAmount || this.applyDerateModel.remitAmount <= 0 ) {
       this.$Message.error("减免金额必须大于0！");
     } else if (
       this.applyDerateModel.remitAmount >
