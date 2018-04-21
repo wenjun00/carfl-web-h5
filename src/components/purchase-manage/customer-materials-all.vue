@@ -4,7 +4,7 @@
     <i-tab-pane name="customerItem" label="客户资料" class="item-height50">
       <span class="form-title">个人信息</span>
       <i-row>
-        <i-form ref="parchase-form" :rules="rules" :model="customerData" :label-width="110">
+        <i-form ref="parchase-form" :rules="customerRules" :model="customerData" :label-width="110">
           <i-row>
             <i-col span="12" class="bigSelect">
               <i-form-item label="购车方" prop="name">
@@ -114,7 +114,7 @@
       idCardAddressDetail: '', // 箱子地址
       orderServiceList: [], // 代办服务
     };
-    private rules: any = {
+    private customerRules: any = {
       certificateType: [{
         required: true,
         message: '请输入证件类型',
@@ -126,6 +126,17 @@
         message: '请输入详细地址信息',
         trigger: 'blur',
       }],
+      idCard:[
+        {
+          required: true,
+          message: '请输入证件号码',
+          trigger: 'blur'
+        },
+        {
+          validator: this.$validator.idCard,
+          trigger: 'blur'
+        }
+      ],
       postalCode: [{
         required: true,
         message: '请输入邮政编码',
@@ -141,7 +152,11 @@
         required: true,
         message: '请输入联系电话',
         trigger: 'blur',
-      }],
+      },
+        {
+          validator: this.$validator.phoneNumber,
+          trigger: 'blur'
+        }],
     }
     /**
      * 信息反显

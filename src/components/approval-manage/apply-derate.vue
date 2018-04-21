@@ -1,7 +1,7 @@
 <!--申请减免-->
 <template>
   <section class="component apply-derate">
-    <data-grid :labelWidth="120">
+    <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
       <data-grid-item label="应还罚息" :span="6">
         <template>
           <div>{{repaySumObj.paymentSchedule?repaySumObj.paymentSchedule.penaltyReceivable:0}}</div>
@@ -38,6 +38,7 @@ import { Prop } from "vue-property-decorator";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { RemitApplicationService } from "~/services/manage-service/remit-application.service";
 import { Dependencies } from "~/core/decorator";
+
 @Component({
   components: {
     DataGrid,
@@ -45,14 +46,14 @@ import { Dependencies } from "~/core/decorator";
   }
 })
 export default class ApplyDerate extends Vue {
-  @Dependencies(RemitApplicationService)
-  private remitApplicationService: RemitApplicationService;
-
+  @Dependencies(RemitApplicationService)  private remitApplicationService: RemitApplicationService;
+  
   private columns1: any;
   private data1: Array<Object> = [];
   private repaySumObj: any = {};
   private paymentScheduleId: number = 0;
   private orderId: number = 0;
+
   private applyDerateModel: any = {
     paymentScheduleId: "",
     orderId: "",
@@ -62,10 +63,10 @@ export default class ApplyDerate extends Vue {
   };
   @Prop() row: Object;
 
-  created() {}
+  created() { }
 
-  cancel() {}
-  confirm() {}
+  cancel() { }
+  confirm() { }
 
   getInterestInfo(data, orderId) {
     this.repaySumObj = data;
@@ -77,7 +78,7 @@ export default class ApplyDerate extends Vue {
   confirmApplyDerate() {
     this.applyDerateModel.paymentScheduleId = this.paymentScheduleId;
     this.applyDerateModel.orderId = this.orderId;
-    if (!this.applyDerateModel.remitAmount || this.applyDerateModel.remitAmount <= 0 ) {
+    if (!this.applyDerateModel.remitAmount || this.applyDerateModel.remitAmount <= 0) {
       this.$Message.error("减免金额必须大于0！");
     } else if (
       this.applyDerateModel.remitAmount >
@@ -88,14 +89,14 @@ export default class ApplyDerate extends Vue {
       this.remitApplicationService
         .applyForRelief(this.applyDerateModel)
         .subscribe(
-          val => {
-            this.$Message.success("申请减免成功！");
-            this.$emit("close");
-            this.resetInput();
-          },
-          ({ msg }) => {
-            this.$Message.error(msg);
-          }
+        val => {
+          this.$Message.success("申请减免成功！");
+          this.$emit("close");
+          this.resetInput();
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
         );
     }
   }
@@ -109,7 +110,7 @@ export default class ApplyDerate extends Vue {
 }
 </script>
 <style lang="less" scoped>
-  .input{
-    width:90%
-  }
+.input {
+  width: 90%;
+}
 </style>

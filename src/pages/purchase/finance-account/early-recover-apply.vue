@@ -58,7 +58,7 @@
             </i-col>
             <i-button class="blueButton clear-button" @click="clearAll">清空</i-button>
         </i-row>
-        <i-tabs v-model="materialTabs" type="card" class="early-recover-tabs">
+        <i-tabs v-model="materialTabs" class="early-recover-tabs">
             <i-tab-pane name="gather-detail-early-pay" label="收款明细">
                 <gather-detail-early-pay :checkOrderId="checkOrderId" :typeData="typeData" ref="gather-detail-early-pay"></gather-detail-early-pay>
             </i-tab-pane>

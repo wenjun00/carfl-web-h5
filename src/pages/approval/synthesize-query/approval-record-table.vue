@@ -69,9 +69,6 @@ import { ApproveReasonService } from '~/services/manage-service/approve-reason.s
   components: {
     DataBox,
     OrderProgress
-  },
-  filters: {
-    subOptionLabel: (str) => { return FilterService.subString(str, 6) }
   }
 })
 export default class ApprovalRecordTable extends Page {

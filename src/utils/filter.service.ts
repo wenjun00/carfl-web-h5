@@ -99,7 +99,7 @@ export class FilterService {
     let num: any = ''
 
     if (number === null || number === '') {
-      num = number|0
+      num = number | 0
     } else {
       num = Number(number).toFixed(2)
       if (isNaN(num) || num === '' || num === undefined || num === null) {
@@ -154,5 +154,21 @@ export class FilterService {
   static subString(str: string, subIndex: number = 6) {
     if (!str) { return '' }
     return str.length > subIndex ? str.substring(0, subIndex) : str
+  }
+
+  /**
+   * 
+   * @param value 要解析的金额字符串
+   */
+  static moneyParse(value: string) {
+    return value.replace(/,*/g, '')
+  }
+
+  /**
+   * 
+   * @param value 要格式化的金额字符串
+   */
+  static moneyFormat(value: number) {
+    return `${value}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => s + ',')
   }
 }

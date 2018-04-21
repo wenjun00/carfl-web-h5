@@ -47,7 +47,7 @@
             </i-col>
             <i-button class="blueButton clear-button" @click="clearAll">清空</i-button>
         </i-row>
-        <i-tabs v-model="materialTabs" type="card" class="early-pay-tabs">
+        <i-tabs v-model="materialTabs" class="early-pay-tabs">
             <i-tab-pane name="pay-detail" label="付款明细">
                 <pay-detail :checkOrderId="checkOrderId" ref="payDetail"></pay-detail>
             </i-tab-pane>
@@ -162,11 +162,6 @@ export default class PayApply extends Page {
         trigger: 'blur'
       }
     ],
-    //   orderNumber: [{
-    //     required: true,
-    //     message: '请选择订单',
-    //     trigger:'change'
-    //   }],
     refundType: [
       {
         required: true,
