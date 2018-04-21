@@ -11,7 +11,7 @@
         </i-select>
       </i-form-item>
       <i-form-item label="所在市：" prop="companyCity">
-        <i-select placeholder="选择市" v-model="addBranchModel.companyCity" clearable>
+        <i-select placeholder="选择市" v-model="addBranchModel.companyCity" :disabled="!addBranchModel.companyProvince" clearable>
           <i-option v-for="{value,label} in this.addBranchModel.companyProvince ? this.$city.getCityData({ level: 1, id: this.addBranchModel.companyProvince }) : []"
                     :key="value" :label="label" :value="value"></i-option>
         </i-select>
