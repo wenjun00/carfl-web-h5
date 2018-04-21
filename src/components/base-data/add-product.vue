@@ -1,15 +1,12 @@
 //新增产品
 <template>
   <i-form ref="add-product" :model="addProduct" :rules="rulesAdd" :label-width="80">
-    <!--<i-form-item label="产品序号" prop="number">-->
-      <!--<i-input v-model="addProduct.number"></i-input>-->
-    <!--</i-form-item>-->
     <i-form-item label="产品名称" prop="name">
       <i-input v-model="addProduct.name"></i-input>
     </i-form-item>
     <i-form-item label="资金渠道">
       <Select class="item" v-model="addProduct.capitaChannels">
-        <Option value="382" key="382" label="自有资金"></Option>
+        <Option v-for="{value,label} in this.$dict.getDictData('0310')" :value="value" :key="value" :label="label"></Option>
       </Select>
     </i-form-item>
   </i-form>
