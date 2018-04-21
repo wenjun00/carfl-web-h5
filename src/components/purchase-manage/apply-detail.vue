@@ -166,7 +166,7 @@ export default class ApplyDetail extends Vue {
   created() {
     this.applyRules={
       idCard: [{
-        validator: this.$validate.idCard,
+        validator: this.$validator.idCard,
         trigger: "blur"
       }]
     };

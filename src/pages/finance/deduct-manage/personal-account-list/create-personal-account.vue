@@ -72,11 +72,11 @@
       this.accountRules={
         certificateNumber:[{
           trigger: 'blur',
-          validator:this.$validate.idCard
+          validator:this.$validator.idCard
         }],
         reservedPhoneNumber:[{
           trigger: 'blur',
-          validator:this.$validate.phoneNumber
+          validator:this.$validator.phoneNumber
         }]
       }
     }

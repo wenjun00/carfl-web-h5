@@ -115,7 +115,7 @@ export default class EarlyPaymentApply extends Page {
         trigger: 'blur'
       },
       {
-        validator: this.$validate.idCard,
+        validator: this.$validator.idCard,
         trigger: 'blur'
       }
     ],
@@ -133,7 +133,7 @@ export default class EarlyPaymentApply extends Page {
         trigger: 'blur'
       },
       {
-        validator: this.$validate.phoneNumber,
+        validator: this.$validator.phoneNumber,
         trigger: 'blur'
       }
     ]

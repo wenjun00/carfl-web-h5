@@ -49,7 +49,7 @@
             trigger: 'blur'
           },
           {
-            validator: this.$validate.phoneNumber,
+            validator: this.$validator.phoneNumber,
             trigger: 'blur'
           }
         ],

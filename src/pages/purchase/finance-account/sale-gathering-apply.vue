@@ -105,7 +105,7 @@ export default class SaleGatheringApply extends Page {
   private applyPerson: String = '' // 申请人
   private applyTime: String = '' // 申请时间
   applyRule: Object = {
-    idCard: [{ validator: this.$validate.idCard, trigger: 'blur' }],
+    idCard: [{ validator: this.$validator.idCard, trigger: 'blur' }],
     customerName: [
       {
         required: true,
@@ -120,7 +120,7 @@ export default class SaleGatheringApply extends Page {
         trigger: 'blur'
       },
       {
-        validator: this.$validate.phoneNumber,
+        validator: this.$validator.phoneNumber,
         trigger: 'blur'
       }
     ]

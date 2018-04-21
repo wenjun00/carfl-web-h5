@@ -131,7 +131,7 @@
           trigger: 'blur'
         },
           {
-            validator: this.$validate.idCard,
+            validator: this.$validator.idCard,
             trigger: 'blur'
           }]
       }

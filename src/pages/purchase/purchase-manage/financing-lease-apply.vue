@@ -158,7 +158,7 @@ export default class FinancingLeaseApply extends Page {
         message: "请输入证件号码",
         trigger: "blur"
       },
-      { validator: this.$validate.idCard, trigger: "blur" }
+      { validator: this.$validator.idCard, trigger: "blur" }
     ],
     name: [
       {
@@ -173,7 +173,7 @@ export default class FinancingLeaseApply extends Page {
         message: "请输入客户电话",
         trigger: "blur"
       },
-      { validator: this.$validate.phoneNumber, trigger: "blur" }
+      { validator: this.$validator.phoneNumber, trigger: "blur" }
     ],
     salesmanName: [
       {

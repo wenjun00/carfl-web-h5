@@ -91,7 +91,7 @@
             trigger: 'blur'
           },
           {
-            validator: this.$validate.idCard,
+            validator: this.$validator.idCard,
             trigger: 'blur'
           }
         ],
@@ -102,7 +102,7 @@
             trigger: 'blur'
           },
           {
-            validator: this.$validate.phoneNumber,
+            validator: this.$validator.phoneNumber,
             trigger: 'blur'
           }
         ],

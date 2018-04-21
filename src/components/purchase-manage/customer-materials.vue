@@ -414,11 +414,11 @@ export default class CustomerMaterials extends Vue {
         trigger: 'blur'
       },
       {
-        validator: this.$validate.phoneNumber,
+        validator: this.$validator.phoneNumber,
         trigger: 'blur'
       }
     ],
-    mobileMinor: [{ validator: this.$validate.phoneNumber, trigger: "blur" }],
+    mobileMinor: [{ validator: this.$validator.phoneNumber, trigger: "blur" }],
     localHomePhone: [
       {
         pattern: /^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/,
@@ -441,7 +441,7 @@ export default class CustomerMaterials extends Vue {
         trigger: 'blur'
       },
       {
-        validator: this.$validate.idCard,
+        validator: this.$validator.idCard,
         trigger: 'blur'
       }
     ],
