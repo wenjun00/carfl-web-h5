@@ -3,7 +3,7 @@
   <section class="component apply-detail">
     <!--付款申请-->
     <i-row>
-      <i-form :label-width="110" class="item-kehu-form">
+      <i-form :rules="applyRules"  :label-width="110" class="item-kehu-form">
         <i-col :span="12">
           <i-form-item label="客户姓名">
             <i-input v-model="addNewApplyModal.name" disabled></i-input>
@@ -38,33 +38,9 @@
       <span class="title">附件</span>
       <i-row>
          <upload-the-fodder :type="type" ref="upload-the-fodder"></upload-the-fodder>
-        <!--<i-col :span="12">
-          <div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;position:relative;left:40px;" @click="addAttachment">
-            <Icon type="plus-circled" style="display:block;margin-top:60px;" size="40"></Icon>
-            <div>点击添加附件</div>
-            <span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>
-          </div>
-        </i-col>
-        <i-col :span="12">
-          <div class="demo-upload-list" v-for="(item, id) in fileList" :key="id">
-            <img style="height:200px;width:200px;border:1px solid #C2C2C2;" :src="item.materialUrl">
-            <div class="demo-upload-list-cover">
-              <i-icon type="arrow-down-a" @click.native="download(item)"></i-icon>
-              <i-icon type="ios-trash-outline" @click.native="handleRemove(item)"></i-icon>
-            </div>
-          </div>
-        </i-col>-->
       </i-row>
     </i-row>
-    <!--提前结清申请-->
-    <!--<i-row v-if="applyType==='提前结清申请'">
 
-    </i-row>-->
-    <!--提前收回申请-->
-    <!--<i-row v-if="applyType==='提前收回申请'">
-
-    </i-row>-->
-    <!--Model-->
   </section>
 </template>
 
@@ -105,6 +81,7 @@ export default class ApplyDetail extends Vue {
   private remark: String = "";
   private orderNumber: String = "";
   private type:any="";
+  private applyRules: any = {}
   /**
    * 添加附件
    */
@@ -187,7 +164,12 @@ export default class ApplyDetail extends Vue {
     this.fileList.splice(this.fileList.indexOf(file), 1);
   }
   created() {
-    console.log(2);
+    this.applyRules={
+      idCard: [{
+        validator: this.$validate.idCard,
+        trigger: "blur"
+      }]
+    };
     this.columns1 = [
     //   {
     //     align: "center",

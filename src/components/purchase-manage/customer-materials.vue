@@ -410,11 +410,15 @@ export default class CustomerMaterials extends Vue {
     mobileMain: [
       {
         required: true,
-        message: "请输入手机号码",
-        trigger: "blur"
+        message: '请输入客户电话',
+        trigger: 'blur'
+      },
+      {
+        validator: this.$validate.phoneNumber,
+        trigger: 'blur'
       }
     ],
-    mobileMinor: [{ validator: this.$validator.phoneNumber, trigger: "blur" }],
+    mobileMinor: [{ validator: this.$validate.phoneNumber, trigger: "blur" }],
     localHomePhone: [
       {
         pattern: /^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/,
@@ -433,8 +437,12 @@ export default class CustomerMaterials extends Vue {
     idCard: [
       {
         required: true,
-        message: "请输入身份证号码",
-        trigger: "blur"
+        message: '请输入证件号码',
+        trigger: 'blur'
+      },
+      {
+        validator: this.$validate.idCard,
+        trigger: 'blur'
       }
     ],
     idCardAddressDetail: [

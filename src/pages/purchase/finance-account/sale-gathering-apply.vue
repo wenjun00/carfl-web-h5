@@ -1,4 +1,4 @@
-<!--销售收款申请--> 
+<!--销售收款申请-->
 <template>
     <section class="page sale-gathering-apply special-input">
         <page-header title="销售收款申请" hiddenExport></page-header>
@@ -105,7 +105,7 @@ export default class SaleGatheringApply extends Page {
   private applyPerson: String = '' // 申请人
   private applyTime: String = '' // 申请时间
   applyRule: Object = {
-    idCard: [{ validator: this.$validator.idCard, trigger: 'blur' }],
+    idCard: [{ validator: this.$validate.idCard, trigger: 'blur' }],
     customerName: [
       {
         required: true,
@@ -120,7 +120,7 @@ export default class SaleGatheringApply extends Page {
         trigger: 'blur'
       },
       {
-        validator: this.$validator.phoneNumber,
+        validator: this.$validate.phoneNumber,
         trigger: 'blur'
       }
     ]

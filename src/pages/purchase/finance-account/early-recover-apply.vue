@@ -171,7 +171,7 @@ export default class EarlyRecoverApply extends Page {
         trigger: 'blur'
       },
       {
-        validator: this.$validator.idCard,
+        validator: this.$validate.idCard,
         trigger: 'blur'
       }
     ],
@@ -189,7 +189,7 @@ export default class EarlyRecoverApply extends Page {
         trigger: 'blur'
       },
       {
-        validator: this.$validator.phoneNumber,
+        validator: this.$validate.phoneNumber,
         trigger: 'blur'
       }
     ],
