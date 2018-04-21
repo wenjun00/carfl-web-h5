@@ -4,8 +4,8 @@
       <page-header title="订单交接"></page-header>
       <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData" hidden-reset>
         <template slot="input">
-          <i-form-item prop="dateRange">
-            <i-date-picker v-model="ordertransferModel.dateRange" type="daterange" @on-change="startTimeChange"></i-date-picker>
+          <i-form-item label="订单时间" prop="dateRange">
+            <i-date-picker v-model="ordertransferModel.dateRange" type="daterange"></i-date-picker>
           </i-form-item>
            <i-form-item prop="orderInfo">
            <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入客户姓名/证件号码/联系号码/订单所属人查询"></i-input>
@@ -106,8 +106,7 @@
   })
   export default class OrderTransfer extends Page {
     @Dependencies(PageService) private pageService: PageService
-    @Dependencies(ProductOrderService)
-    private productOrderService: ProductOrderService
+    @Dependencies(ProductOrderService) private productOrderService: ProductOrderService
     @Dependencies(ManageService) private manageService: ManageService
     private columns1: any
     private columns2: any
@@ -440,6 +439,7 @@
       ]
     }
     refreshData() {
+      console.log(this.ordertransferModel)
       this.productOrderService
         .getOrderHandover(this.ordertransferModel, this.pageService)
         .subscribe(

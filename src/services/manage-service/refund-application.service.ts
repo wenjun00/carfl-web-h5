@@ -111,7 +111,7 @@ export class RefundApplicationService {
    * 进件，财务----付款记录查询/付款查询
    */
   getRefundRecord(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dataRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.refundApplicationController.getRefundRecord,
       data: {

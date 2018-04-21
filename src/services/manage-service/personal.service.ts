@@ -59,7 +59,7 @@ export class PersonalService {
    * 获取客户签约列表
    */
   getCustomerSignList(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dataRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.personalController.getCustomerSignList,
       data: {
@@ -89,7 +89,7 @@ export class PersonalService {
    * 进件模块-客户资料
    */
   getCustomerDataOrder(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dataRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.personalController.getCustomerDataOrder,
       data: {
