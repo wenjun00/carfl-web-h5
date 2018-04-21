@@ -3,11 +3,8 @@
     <page-header title="客户签约"></page-header>
     <data-form date-prop="timeSearch" :model="customerSignModel" @on-search="getSignList" :page="pageService">
       <template slot="input">
-        <i-form-item prop="startTime" label="日期">
-          <i-date-picker v-model="customerSignModel.startTime"></i-date-picker>
-        </i-form-item>
-        <i-form-item prop="endTime">
-          <i-date-picker v-model="customerSignModel.endTime"></i-date-picker>
+        <i-form-item prop="dateRange" label="日期">
+          <i-date-picker v-model="customerSignModel.dateRange" type="daterange"></i-date-picker>
         </i-form-item>
         <i-form-item prop="orderInfo">
           <i-input v-model="customerSignModel.orderInfo" placeholder="请输入订单编号\客户姓名\证件号码\联系号码"></i-input>
@@ -169,7 +166,8 @@
       orderInfo: '',
       timeSearch: '',
       startTime: '',
-      endTime: ''
+      endTime: '',
+      dateRange:[]
     }
 
     mounted() {
@@ -400,25 +398,11 @@
      * 获取客户签约列表
      */
     getSignList() {
-      this.customerSignModel.startTime = FilterService.dateFormat(
-        this.customerSignModel.startTime,
-        'yyyy-MM-dd'
-      )
-      this.customerSignModel.endTime = FilterService.dateFormat(
-        this.customerSignModel.endTime,
-        'yyyy-MM-dd'
-      )
       this.personalService
         .getCustomerSignList(this.customerSignModel, this.pageService)
         .subscribe(
-          data => {
-            this.customerSignList = data
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg)
-          }
+          data => this.customerSignList = data,
+          err =>this.$Message.error(err)
         )
     }
     getOrderInfoByTime(val) {

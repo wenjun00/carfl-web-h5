@@ -204,5 +204,4 @@ export default class ModulePower extends Vue {
             padding:0 10px;
         }
     }
-
 </style>

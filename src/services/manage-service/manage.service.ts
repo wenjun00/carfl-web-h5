@@ -1,6 +1,7 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
+import {FilterService} from "~/utils/filter.service";
 import { requestType } from "~/config/enum.config";
 
 export class ManageService {
@@ -17,7 +18,7 @@ export class ManageService {
   }
   /**
    * 获取分页查询角色
-   * @param 
+   * @param
    */
   queryRolePage({ roleName, roleStatus, userId }, page) {
     return this.netService.send({
@@ -100,13 +101,18 @@ export class ManageService {
   }
   /**
    * 系统日志分页查询
-   * @param data 
-   * @param page 
+   * @param data
+   * @param page
    */
   querySystemLogsPage(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.systemLogsController.querySystemLogsPage,
-      data: data,
+      data: {
+        clientIp: data.clientIp,
+        exeType: data.exeType,
+        exeTime: dateRange.start,
+      },
       page: page
     })
   }
@@ -114,9 +120,16 @@ export class ManageService {
    * 系统备份分页查询
    */
   querySystemBackupPage(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.systemBackupController.querySystemBackupPage,
-      data: data,
+      data: {
+        mysqlName: data.mysqlName,
+        mongdbName: data.mongdbName,
+        type: data.type,
+        startTime: dateRange.start,
+        endTime: dateRange.end,
+      },
       page: page
     })
   }
@@ -164,7 +177,7 @@ export class ManageService {
 
   /**
    * 用户批量分配角色
-   * @param data 
+   * @param data
    */
   userBatchAllocateRoles(data) {
     return this.netService.send({

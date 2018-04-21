@@ -11,13 +11,14 @@ export class ReportService {
    * 查询清结算日报表
    */
   getSettlementReport(data) {
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: reportService.reportController.getSettlementReport,
       data: {
         companyId: data.companyId,
         channel: data.channel,
-        minSettlementDate: FilterService.dateFormat(data.minSettlementDate, 'yyyy-MM-dd'),
-        maxSettlementDate: FilterService.dateFormat(data.maxSettlementDate, 'yyyy-MM-dd')
+        minSettlementDate: dateRange.start,
+        maxSettlementDate: dateRange.end,
       }
     })
   }

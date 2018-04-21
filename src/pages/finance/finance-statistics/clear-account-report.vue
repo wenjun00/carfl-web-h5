@@ -14,11 +14,8 @@
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="minSettlementDate" label="结算日期：">
-          <i-date-picker v-model="model.minSettlementDate"></i-date-picker> ~
-        </i-form-item>
-        <i-form-item prop="minSettlementDate">
-          <i-date-picker v-model="model.maxSettlementDate"></i-date-picker>
+        <i-form-item prop="dateRange" label="结算日期：">
+          <i-date-picker v-model="model.dateRange" type="daterange"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -63,7 +60,8 @@
       companyId: '',
       channel: '',
       minSettlementDate: '',
-      maxSettlementDate: ''
+      maxSettlementDate: '',
+      dateRange:[]
     };
     private columnsFuyou: any;
     private searchOptions: Boolean = false;
@@ -254,7 +252,7 @@
       }
     }
   }
-  
+
   .ivu-table-cell {
     padding-left: 0;
     padding-right: 0;

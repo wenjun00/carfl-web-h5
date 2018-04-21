@@ -4,11 +4,8 @@
       <page-header title="订单交接"></page-header>
       <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData" hidden-reset>
         <template slot="input">
-          <i-form-item prop="startTime">
-            <i-date-picker v-model="ordertransferModel.startTime" type="date" @on-change="startTimeChange" placeholder="起始日期(始)"></i-date-picker>
-          </i-form-item>
-          <i-form-item prop="endTime">
-            <i-date-picker v-model="ordertransferModel.endTime" type="date" @on-change="endTimeChange" placeholder="终止日期(止)"></i-date-picker>
+          <i-form-item label="订单时间" prop="dateRange">
+            <i-date-picker v-model="ordertransferModel.dateRange" type="daterange"></i-date-picker>
           </i-form-item>
            <i-form-item prop="orderInfo">
            <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入客户姓名/证件号码/联系号码/订单所属人查询"></i-input>
@@ -109,8 +106,7 @@
   })
   export default class OrderTransfer extends Page {
     @Dependencies(PageService) private pageService: PageService
-    @Dependencies(ProductOrderService)
-    private productOrderService: ProductOrderService
+    @Dependencies(ProductOrderService) private productOrderService: ProductOrderService
     @Dependencies(ManageService) private manageService: ManageService
     private columns1: any
     private columns2: any
@@ -126,7 +122,8 @@
       orderInfo: '', // 请输入客户姓名/证件号码/联系号码/订单所属人查询
       startTime: '', // 起始日期
       endTime: '', // 终止日期
-      timeSearch: ''
+      timeSearch: '',
+      dateRange:[]
     }
     private applyPerson: String = '' // 申请人
     private applyTime: String = '' // 申请时间
@@ -442,23 +439,12 @@
       ]
     }
     refreshData() {
-      this.ordertransferModel.startTime = FilterService.dateFormat(
-        this.ordertransferModel.startTime
-      )
-      this.ordertransferModel.endTime = FilterService.dateFormat(
-        this.ordertransferModel.endTime
-      )
+      console.log(this.ordertransferModel)
       this.productOrderService
         .getOrderHandover(this.ordertransferModel, this.pageService)
         .subscribe(
-          data => {
-            this.ordertransferDataSet = data
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg)
-          }
+          data =>this.ordertransferDataSet = data,
+          err => this.$Message.error(err)
         )
     }
     currenttrablerowdata(currentRow, oldCurrentRow) {

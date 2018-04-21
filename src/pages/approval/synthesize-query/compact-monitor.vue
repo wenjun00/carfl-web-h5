@@ -6,10 +6,7 @@
             <template slot="input">
 
                 <i-form-item label="日期：">
-                    <i-date-picker placeholder="起始日期"></i-date-picker> ~
-                </i-form-item>
-                <i-form-item>
-                    <i-date-picker placeholder="终止日期"></i-date-picker>
+                    <i-date-picker type="daterange""></i-date-picker>
                 </i-form-item>
                 <i-form-item>
                     <i-input placeholder="请输入员工姓名"></i-input>

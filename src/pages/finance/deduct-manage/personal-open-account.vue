@@ -40,10 +40,7 @@
           </i-select>
         </i-form-item>
         <i-form-item label="日期：">
-          <i-date-picker></i-date-picker>~
-        </i-form-item>
-        <i-form-item>
-          <i-date-picker></i-date-picker>
+          <i-date-picker type="daterange"></i-date-picker>~
         </i-form-item>
       </template>
     </data-form>

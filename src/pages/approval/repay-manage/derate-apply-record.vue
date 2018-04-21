@@ -7,11 +7,8 @@
                     <i-form-item prop="orderInfo">
                         <i-input v-model="derateModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
                     </i-form-item>
-                    <i-form-item prop="applyDateStart" label="日期：">
-                        <i-date-picker v-model="derateModel.applyDateStart" placeholder="起始日期"></i-date-picker> ~
-                    </i-form-item>
-                    <i-form-item prop="applyDateEnd">
-                        <i-date-picker v-model="derateModel.applyDateEnd" placeholder="终止日期"></i-date-picker>
+                    <i-form-item prop="dateRange" label="日期：">
+                        <i-date-picker v-model="derateModel.dateRange" type="daterange"></i-date-picker>
                     </i-form-item>
                     <i-form-item prop="collectMoneyMethod">
                         <i-select placeholder="全部结算通道" v-model="derateModel.collectMoneyMethod" clearable>
@@ -72,7 +69,8 @@ export default class DerateApplyRecord extends Page {
     applyDateEnd: '',
     timeSearch: '',
     collectMoneyMethod: '',
-    orderInfo: ''
+    orderInfo: '',
+    dateRange:[]
   }
 
   mounted() {
@@ -249,23 +247,11 @@ export default class DerateApplyRecord extends Page {
   }
 
   getDerateList() {
-    this.derateModel.applyDateStart = FilterService.dateFormat(
-      this.derateModel.applyDateStart,
-      'yyyy-MM-dd'
-    )
-    this.derateModel.applyDateEnd = FilterService.dateFormat(
-      this.derateModel.applyDateEnd,
-      'yyyy-MM-dd'
-    )
     this.remitApplicationService
       .selectApplyForReliefHistory(this.derateModel, this.pageService)
       .subscribe(
-        data => {
-          this.derateList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+        data =>this.derateList = data,
+        err => this.$Message.error(err)
       )
   }
 
