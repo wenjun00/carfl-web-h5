@@ -429,6 +429,7 @@
      * 获取弹窗内所有订单信息
      */
     getOrderDetail(row) {
+    
       this.productOrderService
         .findOrderInfoByOrderNumber({
           orderNumber: row.orderNumber

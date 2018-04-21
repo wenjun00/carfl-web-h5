@@ -1,4 +1,4 @@
-<!--订单查询-->
+<!--订单查询--> 
 <template>
   <section class="page order-query">
     <page-header title="订单查询" hiddenPrint hiddenExport>
@@ -367,7 +367,8 @@
                   },
                   on: {
                     click: () => {
-                      if (params.row.orderType === '全额') {
+                     console.log(this.$dict.getDictName(params.row.orderType) ==="全额" )
+                      if (this.$dict.getDictName(params.row.orderType) === '全额') {
                         this.$Modal.info({
                           minWidth: 800,
                           closable: true,

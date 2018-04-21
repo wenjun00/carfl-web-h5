@@ -1,4 +1,4 @@
-<template>
+<template> 
   <div class="component purchase-information">
     <!--选购信息-->
     <i-row class="data-d">
