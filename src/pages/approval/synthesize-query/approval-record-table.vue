@@ -4,29 +4,29 @@
     <page-header title="审核记录表" hiddenPrint hiddenExport></page-header>
     <data-form date-prop="timeSearch" :model="approvalRecordModel" @on-search="getApprovaRecordList" :page="pageService" hidden-reset>
       <template slot="input">
-        <i-form-item prop="type">
-          <i-select placeholder="全部状态" v-model="approvalRecordModel.type" @on-change="changeSelectOne" clearable>
+        <i-form-item prop="type" label="状态">
+          <i-select placeholder="选择状态" v-model="approvalRecordModel.type" @on-change="changeSelectOne" clearable>
             <i-option label="通过" :value="0" :key="0"></i-option>
             <i-option label="退件" :value="374" :key="374"></i-option>
             <i-option label="拒绝" :value="375" :key="375"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="second">
-          <i-select placeholder="通过类型" v-if="passSelect" v-model="approvalRecordModel.second" clearable>
+        <i-form-item prop="second" label="通过类型">
+          <i-select placeholder="请选择通过类型" v-if="passSelect" v-model="approvalRecordModel.second" clearable>
             <i-option label="通过" :key="310" :value="310"></i-option>
             <i-option label="提交内审/通过" :key="321" :value="321"></i-option>
             <i-option label="灰名单/通过" :key="322" :value="322"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="second">
-          <i-select placeholder="全部拒单原因" v-if="!passSelect" v-model="approvalRecordModel.second" @on-change="changeSelectTwo" clearable>
+        <i-form-item prop="second" label="拒单原因">
+          <i-select placeholder="请选择拒单原因" v-if="!passSelect" v-model="approvalRecordModel.second" @on-change="changeSelectTwo" clearable>
             <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second">
               <div :title="item.second">{{ item.second|subOptionLabel}}</div>
             </i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="detail">
-          <i-select placeholder="全部拒单细节" v-if="!passSelect" v-model="approvalRecordModel.detail" clearable>
+        <i-form-item prop="detail" label="拒单细节">
+          <i-select placeholder="请选择拒单细节" v-if="!passSelect" v-model="approvalRecordModel.detail" clearable>
             <i-option v-for="item in refuseDetail" :key="item.detail" :label="item.detail" :value="item.detail">
               <div :title="item.detail">{{item.detail|subOptionLabel}}</div>
             </i-option>

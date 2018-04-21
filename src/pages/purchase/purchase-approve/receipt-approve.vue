@@ -7,8 +7,8 @@
         <i-form-item prop="dynamicCondition">
           <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="receipt.dynamicCondition"></i-input>
         </i-form-item>
-        <i-form-item prop="applicationType">
-          <i-select placeholder="全部申请类型" v-model="receipt.applicationType" clearable>
+        <i-form-item prop="applicationType" label="申请类型">
+          <i-select placeholder="请选择申请类型" v-model="receipt.applicationType" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
@@ -22,13 +22,11 @@
 
     <template>
       <i-modal title="审批" width="500" v-model="approvalModal">
-        <!--<approval :addAttachmentShow="addAttachmentShow"></approval>-->
       </i-modal>
     </template>
 
     <template>
       <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'收款申请':'查看'" width="800">
-        <!--<add-apply></add-apply>-->
         <apply-detail ref="applyDetail"></apply-detail>
         <div slot="footer">
           <i-button class="highDefaultButton" style="width:80px" @click="rebackClick" v-if="type===1">退回</i-button>

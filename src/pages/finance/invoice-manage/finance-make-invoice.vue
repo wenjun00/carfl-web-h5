@@ -7,7 +7,7 @@
         <i-form-item label="关键字：" prop="dynamicCondition">
           <i-input placeholder="客户姓名\发票号" v-model="model.dynamicCondition"></i-input>
         </i-form-item>
-        <i-form-item prop="invoicingStatus">
+        <i-form-item prop="invoicingStatus" label="开票状态">
           <i-select placeholder="开票状态" v-model="model.invoicingStatus">
             <i-option label="已开票" value="已开票" key="已开票"></i-option>
             <i-option label="未开票" value="未开票" key="未开票"></i-option>

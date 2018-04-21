@@ -7,20 +7,7 @@
         <i-form-item>
           <i-input placeholder="请录入客户姓名\证件号码"></i-input>
         </i-form-item>
-        <!--<i-form-item>-->
-          <!--<i-select placeholder="全部还款状态">-->
-            <!--<i-option value="正常还款客户" key="正常还款客户" label="正常还款客户"></i-option>-->
-            <!--<i-option value="逾期客户" key="逾期客户" label="逾期客户"></i-option>-->
-          <!--</i-select>-->
-        <!--</i-form-item>-->
-        <!--<i-form-item>-->
-          <!--<i-select placeholder="全部结算通道">-->
-            <!--<i-option value="汇付" key="汇付" label="汇付"></i-option>-->
-            <!--<i-option value="富友" key="富友" label="富友"></i-option>-->
-            <!--<i-option value="支付宝" key="支付宝" label="支付宝"></i-option>-->
-            <!--<i-option value="现金" key="现金" label="现金"></i-option>-->
-          <!--</i-select>-->
-        <!--</i-form-item>-->
+      
       </template>
     </data-form>
     <data-box :id="428" :columns="columns1" :data="data1" @onPageChange="getEarlyPayList" :page="pageService"></data-box>

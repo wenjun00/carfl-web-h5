@@ -8,12 +8,12 @@
         <i-form-item prop="dateRange" label="申请日期">
           <i-date-picker v-model="receiptModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
-        <i-form-item prop="applicationType">
+        <i-form-item prop="applicationType" label="收款类型">
           <i-select placeholder="全部收款类型" v-model="receiptModel.applicationType" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0101')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="approvalStatus">
+        <i-form-item prop="approvalStatus" label="申请状态">
           <i-select placeholder="申请状态" v-model="receiptModel.approvalStatus" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0103')" :key="value" :label="label" :value="value"></i-option>
           </i-select>

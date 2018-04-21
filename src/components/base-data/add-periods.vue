@@ -177,13 +177,6 @@
           <span>&nbsp;%/天</span>
         </data-grid-item>
       </data-grid>
-      <!--<div style="margin-right:10px;display:inline-block" class="add-periods-item">状态</div>
-      <i-form-item prop="isPublish">
-        <i-radio-group v-model="formItems.isPublish">
-          <i-radio :label="361">未发布</i-radio>
-          <i-radio :label="360">已发布</i-radio>
-        </i-radio-group>
-      </i-form-item>-->
     </section>
   </i-form>
 </template>
