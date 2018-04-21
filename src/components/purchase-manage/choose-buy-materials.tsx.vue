@@ -19,7 +19,6 @@
               </i-select>
             </i-form-item>
           </i-col>
-
           <i-col span="12">
             <i-form-item label="所属公司" prop="companyId">
               <i-select v-model="chooseBuyModel.companyId" clearable>
@@ -40,7 +39,6 @@
               </i-checkbox-group>
             </i-form-item>
           </i-col>
-
           <i-col span="12">
             <i-form-item label="融资租赁用途" prop="financingUse">
               <i-input type="text" v-model="chooseBuyModel.financingUse">
@@ -53,7 +51,6 @@
               </i-input>
             </i-form-item>
           </i-col>
-
           <i-col span="12">
             <i-form-item label="意向期限(期)" prop="intentionPeriods">
               <i-select v-model="chooseBuyModel.intentionPeriods">
@@ -67,7 +64,6 @@
               </i-input>
             </i-form-item>
           </i-col>
-
           <i-col span="12">
             <i-form-item label="意向首付比例(%)" prop="intentionPaymentRatio">
               <input-number :max="100" :min="0" v-model="chooseBuyModel.intentionPaymentRatio" :formatter="value => `${value}%`" :parser="value => value.replace('%', '')"></input-number>
@@ -79,11 +75,12 @@
     <!--选购信息表单-end-->
 
     <!--车辆选购列表-start-->
-
     <i-card title="车辆列表" class="car-container">
+      <div slot="extra">
+        <i-button icon="plus" @click="onAddCar" type="text">添加车辆</i-button>
+      </div>
       <i-table class="car-table" :columns="carColumns" :data="carDataSet" stripe></i-table>
       <div class="car-static row between-span">
-        <i-button icon="plus" class="vehicle-button" @click="onAddCar" type="text">添加车辆</i-button>
         <div class="car-total-price">
           <span class="label">总价</span>
           <span class="price">￥ {{totalPrice|toThousands}}</span>
@@ -91,9 +88,12 @@
       </div>
     </i-card>
     <!--车辆选购列表-end-->
-
+    
     <!--产品信息-start-->
     <i-card title="产品信息" class="product-container">
+      <div slot="extra">
+        <i-button icon="plus" @click="onSelectProduct" type="text">选择产品</i-button>
+      </div>
       <i-form ref="form" :rules="rulesdata" :model="chooseBuyModel" :label-width="150">
         <i-row>
           <i-col span="12">
@@ -134,7 +134,7 @@
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-row gutter="24">
+            <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="首付金额（元）" prop="Payment">
                   <i-select class="payment-amount-select" placeholder="请选择首付金额比例" v-model="chooseBuyModel.Payment" clearable @on-change="chooseinitialPayment" :disabled="Paymentdisabled">
@@ -143,7 +143,7 @@
                 </i-form-item>
               </i-col>
               <i-col span="12">
-                <i-form-item prop="initialPayment" label-width="0">
+                <i-form-item prop="initialPayment" :label-width="0">
                   <i-input class="payment-amount-input" type="text" v-model="chooseBuyModel.initialPayment" readonly>
                   </i-input>
                 </i-form-item>
@@ -157,7 +157,7 @@
             </i-form-item>
           </i-col>
           <i-col span="12">
-            <i-row gutter="24">
+            <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="保证金金额（元）" prop="deposit">
                   <i-select placeholder="请选择保证金金额比例" v-model="chooseBuyModel.deposit" clearable @on-change="choosedeposit" :disabled="depositdisabled">
@@ -166,7 +166,7 @@
                 </i-form-item>
               </i-col>
               <i-col span="12">
-                <i-form-item prop="depositCash" label-width="0">
+                <i-form-item prop="depositCash" :label-width="0">
                   <i-input v-model="chooseBuyModel.depositCash" readonly>
                   </i-input>
                 </i-form-item>
@@ -174,7 +174,7 @@
             </i-row>
           </i-col>
           <i-col span="12">
-            <i-row gutter="24">
+            <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="尾付总额（元）" prop="final">
                   <i-select placeholder="请选择尾付总额比例" v-model="chooseBuyModel.final" clearable @on-change="choosefinalCash" :disabled="finalorddisabled">
@@ -183,7 +183,7 @@
                 </i-form-item>
               </i-col>
               <i-col span="12">
-                <i-form-item prop="finalCash" label-width="0">
+                <i-form-item prop="finalCash" :label-width="0">
                   <i-input v-model="chooseBuyModel.finalCash" readonly>
                   </i-input>
                 </i-form-item>
@@ -191,7 +191,7 @@
             </i-row>
           </i-col>
           <i-col span="12">
-            <i-row gutter="24">
+            <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="管理费（元）" prop="manageData">
                   <i-select placeholder="请选择管理费比例" v-model="chooseBuyModel.manageData" clearable @on-change="choosemanageCost" :disabled="manageDatadisabled">
@@ -200,7 +200,7 @@
                 </i-form-item>
               </i-col>
               <i-col span="12">
-                <i-form-item prop="manageCost" label-width="0">
+                <i-form-item prop="manageCost" :label-width="0">
                   <i-input v-model="chooseBuyModel.manageCost" readonly>
                   </i-input>
                 </i-form-item>
@@ -392,7 +392,7 @@ export default class ChooseBuyMaterials extends Vue {
         trigger: "blur"
       },
       {
-        pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+        type: 'number',
         message: "请输入数字",
         trigger: "blur"
       }
@@ -404,7 +404,7 @@ export default class ChooseBuyMaterials extends Vue {
         trigger: "blur"
       },
       {
-        pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+        type: 'number',
         message: "请输入数字",
         trigger: "blur"
       }
@@ -446,35 +446,35 @@ export default class ChooseBuyMaterials extends Vue {
     ],
     insuranceMoney: [
       {
-        pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+        type: 'number',
         message: "请输入数字",
         trigger: "blur"
       }
     ],
     purchaseMoney: [
       {
-        pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+        type: 'number',
         message: "请输入数字",
         trigger: "blur"
       }
     ],
     licenseMoney: [
       {
-        pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+        type: 'number',
         message: "请输入数字",
         trigger: "blur"
       }
     ],
     GpsMoney: [
       {
-        pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+        type: 'number',
         message: "请输入数字",
         trigger: "blur"
       }
     ],
     otherFee: [
       {
-        pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+        type: 'number',
         message: "请输入数字",
         trigger: "blur"
       }
@@ -527,7 +527,7 @@ export default class ChooseBuyMaterials extends Vue {
         trigger: "blur"
       },
       {
-        pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+        type: 'number',
         message: "请输入数字",
         trigger: "blur"
       }
@@ -539,14 +539,14 @@ export default class ChooseBuyMaterials extends Vue {
         trigger: "blur"
       },
       {
-        pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+        type: 'number',
         message: "请输入数字",
         trigger: "blur"
       }
     ],
     rentPayable: [
       {
-        pattern: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+        type: 'number',
         message: "请输入数字",
         trigger: "blur"
       }
@@ -782,16 +782,12 @@ export default class ChooseBuyMaterials extends Vue {
   /**
    * 验证数据
    */
-  validate(){
-    
-  }
+  validate() {}
 
   /**
    * 获取数据
    */
-  getData(){
-
-  }
+  getData() {}
   /**
    * 融资总额
    */
@@ -1142,6 +1138,28 @@ export default class ChooseBuyMaterials extends Vue {
   confirmAndBack() {
     this.editCarModal = false;
   }
+
+  onSelectProduct(){
+    let dialog = this.$dialog.show({
+      title: "添加车辆",
+      footer: true,
+      onOk: addProduct => {
+        let currentRow = addProduct.currentRow();
+
+        if (currentRow) {
+          console.log(currentRow)
+        }else{
+
+        }
+      },
+      onCancel: () => {},
+      render: h => {
+        return h(AddProduct, {});
+      }
+    });
+  }
+
+
   addNewPrd() {
     this.resetProductData();
     this.addProductModal = true;
@@ -1346,6 +1364,9 @@ export default class ChooseBuyMaterials extends Vue {
     .car-static {
       margin-top: 20px;
     }
+  }
+
+  .product-container {
   }
 
   .vehicle-list {
