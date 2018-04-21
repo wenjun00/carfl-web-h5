@@ -6,7 +6,8 @@
         <i-input v-model="modifyGatherItemModel.itemName"></i-input>
       </i-form-item>
       <i-form-item label="项目金额">
-        <i-input v-model="modifyGatherItemModel.itemMoney"></i-input>
+        <i-input-number v-model="modifyGatherItemModel.itemMoney" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+
       </i-form-item>
     </i-form>
   </section>
