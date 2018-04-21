@@ -22,19 +22,20 @@ export class ChargeBackService {
    * 获取个人开户列表
    */
   getPersonalAccountList(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dataRange)
     return this.netService.send({
       server: manageService.chargeBackController.getPersonalAccountList,
       data: {
-        orderInfo: data.orderInfo,
-        createDateStart: FilterService.dateFormat(data.createDateStart, 'yyyy-MM-dd'),
-        createDateEnd: FilterService.dateFormat(data.createDateEnd, 'yyyy-MM-dd'),
-        timeSearch: data.timeSearch
+        orderInfo:data.orderInfo,
+        createDateStart: dateRange.start,
+        createDateEnd: dateRange.end,
+        timeSearch: data.timeSearch,
       },
       page: page
     })
   }
   /**
-   * 
+   *
    * 获取划扣记录
    */
   getChargeRecordList(data, page) {

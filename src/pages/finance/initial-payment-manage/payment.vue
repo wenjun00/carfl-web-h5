@@ -7,11 +7,8 @@
         <i-form-item prop="refundName">
           <i-input v-model="approvalModel.refundName" placeholder="请录入付款账户名查询"></i-input>
         </i-form-item>
-        <i-form-item prop="startTime" label="日期：">
-          <i-date-picker type="date" v-model="approvalModel.startTime"></i-date-picker> ~
-        </i-form-item>
-        <i-form-item prop="endTime">
-          <i-date-picker type="date" v-model="approvalModel.endTime"></i-date-picker>
+        <i-form-item prop="dateRange" label="日期：">
+          <i-date-picker v-model="approvalModel.dateRange" type="daterange"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -80,7 +77,8 @@
       timeSearch: '',
       startTime: '',
       endTime: '',
-      approvalStatus: 1127
+      approvalStatus: 1127,
+      dateRange:[]
     }
     openSearch() {
       this.searchOptions = !this.searchOptions;
@@ -139,9 +137,10 @@
       })
     }
     getOrderQuery() {
-      this.refundApplicationService.getRefundRecord(this.approvalModel, this.pageService).subscribe(val => {
-        this.paymentData = val
-      })
+      this.refundApplicationService.getRefundRecord(this.approvalModel, this.pageService).subscribe(
+        val =>this.paymentData = val,
+        err => this.$Message.error(err)
+      )
     }
     getTimeSearch(val) {
       this.approvalModel.startTime = "";

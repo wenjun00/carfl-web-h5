@@ -13,13 +13,14 @@ export class CollectMoneyHistoryService {
    * 获取收款列表
    */
   collectMoneyHistoryList(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dataRange)
     return this.netService.send({
       server: manageService.collectMoneyHistoryController.collectMoneyHistoryList,
       data: {
         accountName: data.accountName,
+        queryStartDate: dateRange.start,
+        queryEndDate: dateRange.end,
         timeSearch: data.timeSearch,
-        queryStartDate: FilterService.dateFormat(data.queryStartDate, 'yyyy-MM-dd'),
-        queryEndDate: FilterService.dateFormat(data.queryEndDate, 'yyyy-MM-dd')
       },
       page: page
     })

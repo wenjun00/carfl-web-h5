@@ -1,20 +1,26 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
+import {FilterService} from "~/utils/filter.service";
 
 export class ProductPackageService {
     @Inject()
     private netService: NetService
 
     /**
-     * 多条件分页查询产品包信息  
+     * 多条件分页查询产品包信息
      */
     @Debounce()
     getAllProductPackage(data, page) {
+        const dateRange = FilterService.dateRanageFormat(data.dataRange)
         return this.netService.send({
             server: manageService.productPackageController.getAllProductPackage,
-            data,
-            page
+            data:{
+              fileName: data.fileName,
+              minDate: dateRange.start,
+              maxDate: dateRange.end,
+            },
+            page:page
         })
     }
     /**
