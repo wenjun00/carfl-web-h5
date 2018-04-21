@@ -1,24 +1,19 @@
 <!--产品包查询-->
 <template>
   <section class="page product-package-query">
-    <span class="form-title">产品包查询</span>
-    <i-button @click="getOrderInfoByTime(1)" type="text">昨日</i-button>
-    <i-button @click="getOrderInfoByTime(2)" type="text">今日</i-button>
-    <i-button @click="getOrderInfoByTime(3)" type="text">本周</i-button>
-    <i-button @click="getOrderInfoByTime(4)" type="text">本月</i-button>
-    <i-button @click="getOrderInfoByTime(5)" type="text">上月</i-button>
-    <i-button @click="getOrderInfoByTime(6)" type="text">最近三月</i-button>
-    <i-button @click="getOrderInfoByTime(7)" type="text">本季度</i-button>
-    <i-button @click="getOrderInfoByTime(8)" type="text">本年</i-button>
-    <i-button @click="openSearch" style="color:#265EA2"><span v-if="!searchOptions">展开</span><span v-if="searchOptions">关闭</span>高级搜索</i-button>
-    <i-row v-if="searchOptions" style="margin-top:20px;margin-left:16px;">
-      <i-date-picker placeholder="起始日期"></i-date-picker>
-      <i-date-picker placeholder="终止日期"></i-date-picker>
-      <i-input style="width:10%;" placeholder="文件名查询"></i-input>
-      <i-button class="blueButton">搜索</i-button>
-    </i-row>
-    <i-row style="margin-top:20px">
-      <data-box :columns="queryColumns" :data="queryData"></data-box>
+    <page-header title="产品包查询"></page-header>
+    <data-form date-prop="timeSearch" :model="seachParams" @on-search="productSeach" hidden-reset :page="pageService">
+      <template slot="input">
+        <i-form-item prop="fileName">
+          <i-input class="document-query-input" v-model="seachParams.fileName" placeholder="文件名查询"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="日期">
+          <i-date-picker class="document-query-picker" v-model="seachParams.dateRange" type="daterange"></i-date-picker>
+        </i-form-item>
+      </template>
+    </data-form>
+    <i-row>
+      <data-box :id="392" :columns="queryColumns" :data="queryData" @onPageChange="productSeach" :page="pageService"></data-box>
     </i-row>
     <!--列配置-->
     <template>
@@ -43,166 +38,279 @@
 </template>
 
 <script lang="ts">
-  import Page from "~/core/page";
-  import Component from "vue-class-component";
-  import DataBox from "~/components/common/data-box.vue";
+  import Page from '~/core/page'
+  import Component from 'vue-class-component'
+  import DataBox from '~/components/common/data-box.vue'
   import {
     Dependencies
-  } from "~/core/decorator";
+  } from '~/core/decorator'
+  import SvgIcon from '~/components/common/svg-icon.vue'
   import {
-    OrderQueryService
-  } from "~/services/business-service/order-query.service";
-  import PurchaseInformation from "~/components/purchase-query/purchase-information.vue";
+    ProductPackageService
+  } from '~/services/manage-service/product-package.service'
+  import PurchaseInformation from '~/components/purchase-manage/purchase-information.vue'
   import {
     Layout
-  } from "~/core/decorator";
+  } from '~/core/decorator'
+  import {
+    PageService
+  } from '~/utils/page.service'
+  import {
+    FilterService
+  } from '~/utils/filter.service'
+  import {
+    CommonService
+  } from '~/utils/common.service'
 
-  @Layout("workspace")
+  @Layout('workspace')
   @Component({
     components: {
-      DataBox
+      DataBox,
+      SvgIcon
     }
   })
   export default class ProductPackageQuery extends Page {
-    @Dependencies(OrderQueryService) private orderQueryService: OrderQueryService;
-    private queryColumns: any;
-    private queryData: Array < Object > = [];
-    private data2: Array < Object > = [];
-    private columns2: any;
-    private columnsManage: Boolean = false;
-    private searchOptions: Boolean = false;
-    private previewModal: Boolean = false;
+    @Dependencies(ProductPackageService)
+    private productPackageService: ProductPackageService
+    @Dependencies(PageService) private pageService: PageService
+
+    private queryColumns: any = []
+    private queryData: Array < any > = []
+    private data2: Array < Object > = []
+    private columns2: any
+    private columnsManage: Boolean = false
+    private searchOptions: Boolean = false
+    private previewModal: Boolean = false
+    private seachParams: any = {}
 
     created() {
+      this.productSeach()
+      this.seachParams = {
+        fileName: '',
+        minDate: '',
+        maxDate: '',
+        timeSearch: '',
+        dateRange:[]
+      }
       this.queryColumns = [{
-          align: 'center',
-          type: 'index',
-          width: 80,
-          renderHeader: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h('div', {
-              on: {
-                click: () => {
-                  this.columnsManage = true
-                }
-              },
-              style: {
-                cursor: 'pointer'
-              }
-            }, [
-              h('Icon', {
-                props: {
-                  type: 'gear-b',
-                  size: '20'
-                }
-              })
-            ])
-          }
-        }, {
           title: '操作',
-          width: 200,
+          width: 180,
           align: 'center',
+          fixed: 'left',
           render: (h, params) => {
-
             return h('div', [
-              h('i-button', {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265ea2'
-                },
-                on: {
-                  click: () => {
-
+              h(
+                'i-button', {
+                  props: {
+                    type: 'text'
+                  },
+                  style: {
+                    color: '#265ea2'
+                  },
+                  on: {
+                    click: () => {
+                      this.productPackageService
+                        .downloadProductPackage({
+                          fileId: params.row.fileId
+                        })
+                        .subscribe(
+                          val => {
+                            CommonService.downloadFile(val, '产品包下载')
+                            this.$Message.success('下载成功！')
+                          },
+                          ({
+                            msg
+                          }) => {
+                            this.$Message.error(msg)
+                          }
+                        )
+                    }
                   }
-                }
-              }, '下载'),
-              h('i-button', {
-                props: {
-                  type: 'text'
                 },
-                style: {
-                  color: '#265ea2'
-                },
-                on: {
-                  click: () => {
-                    this.previewModal = true
-                  }
-                }
-              }, '查看')
+                '下载'
+              )
+              // h(
+              // 	'i-button',
+              // 	{
+              // 		props: {
+              // 			type: 'text',
+              // 		},
+              // 		style: {
+              // 			color: '#265ea2',
+              // 		},
+              // 		on: {
+              // 			click: () => {
+              // 				this.previewModal = true;
+              // 			},
+              // 		},
+              // 	},
+              // 	'查看'
+              // ),
             ])
-
           }
         },
         {
           title: '文件名',
+          editable: true,
           align: 'center',
           key: 'fileName'
         },
         {
           align: 'center',
+          editable: true,
           title: '上传时间',
-          key: 'uploadTime'
+          key: 'uploadTime',
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h(
+              'span',
+              FilterService.dateFormat(row.uploadTime, 'yyyy-MM-dd hh:mm:ss')
+            )
+          }
         },
         {
           align: 'center',
+          editable: true,
           title: '操作人',
-          key: 'customName'
+          key: 'operatorName'
         },
         {
           align: 'center',
+          editable: true,
           title: '备注',
           key: 'remark'
         }
       ]
       /**@argument列配置 */
       this.columns2 = [{
-        title: '序号',
-        type: 'index',
-        width: 80,
-        align: 'center'
-      }, {
-        title: '列名',
-        key: 'columnsName',
-        align: 'center'
-      }, {
-        type: 'selection',
-        width: 80,
-        align: 'center'
-      }]
+          title: '序号',
+          type: 'index',
+          width: 80,
+          align: 'center'
+        },
+        {
+          title: '列名',
+          key: 'columnsName',
+          align: 'center'
+        },
+        {
+          type: 'selection',
+          width: 80,
+          align: 'center'
+        }
+      ]
       this.data2 = [{
-        columnsName: '订单编号'
-      }, {
-        columnsName: '订单创建时间'
-      }, {
-        columnsName: '订单类型'
-      }, {
-        columnsName: '产品名称'
-      }, {
-        columnsName: '客户姓名'
-      }, {
-        columnsName: '证件号码'
-      }, {
-        columnsName: '最近合同生成日期'
-      }]
-      this.orderQueryService.getProductQuery().subscribe(({
-        val
-      }) => {
-        this.queryData = val
-      })
+          columnsName: '订单编号'
+        },
+        {
+          columnsName: '订单创建时间'
+        },
+        {
+          columnsName: '订单类型'
+        },
+        {
+          columnsName: '产品名称'
+        },
+        {
+          columnsName: '客户姓名'
+        },
+        {
+          columnsName: '证件号码'
+        },
+        {
+          columnsName: '最近合同生成日期'
+        }
+      ]
     }
     openSearch() {
       this.searchOptions = !this.searchOptions
+    }
+    /**
+     * 搜索
+     */
+    productSeach() {
+      this.productPackageService
+        .getAllProductPackage(this.seachParams, this.pageService)
+        .subscribe(
+          val =>this.queryData = val,
+          err =>this.$Message.error(err)
+        )
+    }
+    /**
+     * 高级搜索
+     */
+    getOrderInfoByTime(val) {
+      this.seachParams = {
+        fileName: '',
+        minDate: '',
+        maxDate: '',
+        timeSearch: ''
+      }
+      this.seachParams.timeSearch = val
+      this.productSeach()
+    }
+    /**
+     * 重置搜索
+     */
+    resetSeach() {
+      this.seachParams = {
+        fileName: '',
+        minDate: '',
+        maxDate: '',
+        timeSearch: ''
+      }
     }
   }
 
 </script>
 
-<style lang="less" scope>
-
+<style lang="less" scoped>
+  .page.product-package-query {
+    .seek-day {
+      margin-top: 10px;
+    }
+    .command {
+      float: right;
+      margin-right: 13px;
+      margin-top: 10px;
+      .command-item {
+        cursor: pointer;
+        display: inline-block;
+        margin-left: 10px;
+        color: #3367a7;
+        &.dayin {
+          font-size: 18px;
+          span {
+            font-size: 12px;
+          }
+        }
+        &.daochu {
+          font-size: 12px;
+          span {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+    .document-query {
+      margin-top: 20px;
+      .document-query-input {
+        display: inline-block;
+        width: 10%;
+        margin-left: 10px;
+      }
+      .document-query-picker {
+        display: inline-block;
+        width: 10%;
+      }
+      .document-query-button {
+        background: #06428b;
+        color: #fff;
+      }
+    }
+  }
 
 </style>

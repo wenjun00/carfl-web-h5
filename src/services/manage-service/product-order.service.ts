@@ -2,6 +2,7 @@ import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
+import { FilterService } from '~/utils/filter.service';
 
 export class ProductOrderService {
   @Inject(NetService)
@@ -57,10 +58,15 @@ export class ProductOrderService {
    * 进件模块--订单查询
    */
   orderSearch(data, page) {
-    const dataRange = FilterService.dateRanageFormat(data.dateRange)
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.productOrderController.orderSearch,
-      data: data,
+      data: {
+        timeSearch: data.timeSearch,
+        orderInfo: data.orderInfo,
+        startTime: dateRange.start,
+        endTime: dateRange.end
+      },
       page: page
     })
   }

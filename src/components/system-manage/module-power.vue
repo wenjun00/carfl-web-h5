@@ -64,20 +64,20 @@ export default class ModulePower extends Vue {
         align: "center",
         type: "index",
         title: "序号",
-        width: "30"
+        width: 30
       },
       {
         align: "center",
         type: "selection",
         key: "checked",
         title: "选择",
-        width: "60"
+        width: 60
       },
       {
         align: "center",
         key: "resoName",
         title: "功能名称",
-        width: "90"
+        width: 90
       },
       {
         align: "center",
