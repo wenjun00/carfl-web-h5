@@ -1141,7 +1141,7 @@ export default class ChooseBuyMaterials extends Vue {
         let currentRow = productList.getCurrentRow();
 
         if (currentRow) {
-          
+          console.log(currentRow)
         } else {
           this.$Message.error("请选择对应的产品");
           return false;
