@@ -255,12 +255,6 @@
     <!--产品信息-end-->
 
     <template>
-      <i-modal title="月供模拟计算器" width="900" v-model="simulateCalculateModal" class="calculate">
-        <simulate-calculate :chooseBuyModel="chooseBuyModel"></simulate-calculate>
-      </i-modal>
-    </template>
-
-    <template>
       <i-modal v-model="addProductModal" :mask-closable="false" title="添加产品" width="1000" class="add-car">
         <add-product ref="add-product" @resetProductData="resetProductData" @currentRowData="currentRowData" @close="addProductModal=false" @productPlanissue="productPlanissue"></add-product>
       </i-modal>
@@ -277,7 +271,6 @@ import { Dependencies } from "~/core/decorator";
 import AddCar from "~/components/purchase-manage/add-car.tsx.vue";
 import SvgIcon from "~/components/common/svg-icon.vue";
 import DataBox from "~/components/common/data-box.vue";
-import SimulateCalculate from "~/components/common/simulate-calculate.vue";
 import AddProduct from "~/components/purchase-manage/add-product.tsx.vue";
 import { CompanyService } from "~/services/manage-service/company.service";
 import { Prop, Emit, Watch } from "vue-property-decorator";
@@ -286,9 +279,6 @@ import { Input, Button, InputNumber } from "iview";
 const ModuleMutation = namespace("purchase", Mutation);
 @Component({
   components: {
-    SvgIcon,
-    DataBox,
-    SimulateCalculate,
     AddCar,
     AddProduct
   }
@@ -300,7 +290,6 @@ export default class ChooseBuyMaterials extends Vue {
 
   private carColumns: any;
   private carData: any = [];
-  private simulateCalculateModal: Boolean = false;
   private editCarModal: Boolean = false;
   private addOrEditFlag: Boolean = false;
   private prdInfoShow: Boolean = false;
@@ -789,6 +778,20 @@ export default class ChooseBuyMaterials extends Vue {
       }
     }
   }
+
+  /**
+   * 验证数据
+   */
+  validate(){
+    
+  }
+
+  /**
+   * 获取数据
+   */
+  getData(){
+
+  }
   /**
    * 融资总额
    */
@@ -948,14 +951,6 @@ export default class ChooseBuyMaterials extends Vue {
       sum = sum + (Number(v.carAmount) || 0);
     });
     this.totalPrice = sum;
-  }
-  /**
-   * 打开月供模拟计算器
-   */
-  openSimulateCalculate() {
-    // if (this.disabledStatus === "none") {
-    //   this.simulateCalculateModal = true;
-    // }
   }
 
   /**
