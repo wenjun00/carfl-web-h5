@@ -88,12 +88,12 @@
             </i-select>
             <i-select placeholder="全部拒单原因" class="modal-reason" v-model="approvalRecordModel.second" @on-change="changeSelectTwo">
               <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second">
-                <div :title="item.second">{{ item.second|subOptionLabel}}</div>
+                <div :title="item.second">{{ item.second|subString}}</div>
               </i-option>
             </i-select>
             <i-select placeholder="全部拒单细节" class="modal-detail" v-model="approvalRecordModel.approveReasonId">
               <i-option v-for="item in refuseDetail" :key="item.id" :label="item.detail" :value="item.id">
-                <div :title="item.detail">{{item.detail|subOptionLabel}}</div>
+                <div :title="item.detail">{{ item.detail|subString}}</div>
               </i-option>
             </i-select>
           </i-form-item>
@@ -220,9 +220,6 @@ import SvgIcon from '~/components/common/svg-icon.vue'
     Approve,
     SecondLastApprove,
     SvgIcon
-  },
-  filters: {
-    subOptionLabel: (str) => { return FilterService.subString(str, 6) }
   }
 })
 export default class MyApproval extends Page {
