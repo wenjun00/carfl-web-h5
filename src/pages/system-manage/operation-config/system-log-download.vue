@@ -11,11 +11,8 @@
                 <i-form-item prop="clientIp" label="客户端IP：">
                     <i-input v-model="systemLogModel.clientIp"></i-input>
                 </i-form-item>
-                <i-form-item prop="startTime" label="操作时间：">
-                    <i-date-picker v-model="systemLogModel.startTime"></i-date-picker>~
-                </i-form-item>
-                <i-form-item prop="endTime">
-                    <i-date-picker v-model="systemLogModel.endTime"></i-date-picker>
+                <i-form-item prop="dateRange" label="操作时间：">
+                    <i-date-picker v-model="systemLogModel.dateRange" type="daterange"></i-date-picker>
                 </i-form-item>
             </template>
             <template slot="button">
@@ -56,13 +53,19 @@ export default class SystemLogDownload extends Page {
   private openColumnsConfig: Boolean = false
   private columns2: any
   private test: String = ''
-  private systemLogModel: any = {}
+  private systemLogModel: any = {
+    clientIp: '',
+    exeType: '',
+    exeTime: '',
+    dateRange:[]
+  }
 
   created() {
     this.systemLogModel = {
       clientIp: '',
       exeType: '',
-      exeTime: ''
+      exeTime: '',
+      dateRange:[]
     }
     this.search()
 
@@ -126,23 +129,11 @@ export default class SystemLogDownload extends Page {
   }
   addNewBackups(){}
   search() {
-    this.systemLogModel.startTime = FilterService.dateFormat(
-      this.systemLogModel.startTime,
-      'yyyy-MM-dd'
-    )
-    this.systemLogModel.endTime = FilterService.dateFormat(
-      this.systemLogModel.endTime,
-      'yyyy-MM-dd'
-    )
     this.manageService
       .querySystemLogsPage(this.systemLogModel, this.pageService)
       .subscribe(
-        data => {
-          this.systemLogsList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+        data =>this.systemLogsList = data,
+        err => this.$Message.error(err)
       )
   }
   /**
@@ -189,46 +180,5 @@ export default class SystemLogDownload extends Page {
 </script>
 
 <style lang="less" scoped>
-.page.system-log-download {
-  .data-form {
-    margin: 6px;
-    .form-input {
-      display: inline-block;
-      width: 10%;
-      margin-right: 10px;
-    }
-    .title {
-      margin-left: 20px;
-    }
-    .form-item {
-      display: inline-block;
-      width: 10%;
-    }
-    .blue-button {
-      margin-left: 10px;
-      background: #265ea2;
-      color: #fff;
-    }
-    .command {
-      float: right;
-      margin-right: 10px;
-      margin-top: -48px;
-      .command-item {
-        color: #3367a7;
-        cursor: pointer;
-        margin-left: 10px;
-        display: inline-block;
-        &.dayin {
-          font-size: 18px;
-        }
-        &.daochu {
-          font-size: 16px;
-        }
-        span {
-          font-size: 12px;
-        }
-      }
-    }
-  }
-}
+
 </style>

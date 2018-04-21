@@ -812,20 +812,6 @@ export default class FinancingLeaseApply extends Page {
 .page.financing-lease-apply {
   .search-container {
     padding: 15px;
-    .data-form {
-      .data-form-num {
-        margin-top: 20px;
-        position: relative;
-        left: 16px;
-      }
-      .add-new-applyfor {
-        height: 40px;
-        position: relative;
-        top: 60px;
-        background: #265ea2;
-        color: #fff;
-      }
-    }
   }
   .ivu-tabs {
     margin-bottom: 100px;

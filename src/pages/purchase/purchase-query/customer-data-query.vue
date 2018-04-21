@@ -6,11 +6,8 @@
     </page-header>
     <data-form date-prop="timeSearch" :model="ordertransferModel" @on-search="refreshData" hidden-reset :page="pageService">
       <template slot="input">
-        <i-form-item prop="startTime">
-          <i-date-picker v-model="ordertransferModel.startTime" type="date" @on-change="startTimeChange" placeholder="起始日期(始)"></i-date-picker>
-        </i-form-item>
-        <i-form-item prop="endTime">
-          <i-date-picker v-model="ordertransferModel.endTime" type="date" @on-change="endTimeChange" placeholder="终止日期(止)"></i-date-picker>
+        <i-form-item prop="dateRange">
+          <i-date-picker v-model="ordertransferModel.dateRange" type="daterange" @on-change="startTimeChange" ></i-date-picker>
         </i-form-item>
         <i-form-item prop="orderInfo">
           <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入订单编号/客户姓名/证件号码/联系号码查询"></i-input>
@@ -32,7 +29,7 @@
     </template>
     <!--上传资料、补充资料-->
     <template>
-      <i-modal v-model="openUpload" :transfer="false" width="700" title="补充资料">
+      <i-modal class="pop-update" v-model="openUpload" :transfer="false" width="700" title="补充资料">
         <upload-the-material ref="upload-the-material"></upload-the-material>
         <!--<i-button @click="uploadDialog">上传</i-button>
         <div style="font-size:18px;font-weight:bold;margin-top:10px">
@@ -49,8 +46,8 @@
           <span>结婚证-001fdawdeklvkje...</span>
         </div>-->
         <div slot="footer">
-          <i-button class="highDefaultButton" style="width:80px" @click="openUpload=false">取消</i-button>
-          <i-button class="highButton" style="width:80px" @click="confirm">确定</i-button>
+          <i-button class="high-default-button" @click="openUpload=false">取消</i-button>
+          <i-button class="high-default-button" @click="confirm">确定</i-button>
         </div>
       </i-modal>
     </template>
@@ -119,7 +116,8 @@ export default class CustomerDataQuery extends Page {
     orderInfo: "", // 请输入客户姓名/证件号码/联系号码/订单所属人查询
     startTime: "", // 起始日期
     endTime: "", // 终止日期
-    timeSearch: ""
+    timeSearch: "",
+    dateRange:[]
   };
 
   created() {
@@ -277,21 +275,11 @@ export default class CustomerDataQuery extends Page {
     );
   }
   refreshData() {
-    this.ordertransferModel.startTime = FilterService.dateFormat(
-      this.ordertransferModel.startTime
-    );
-    this.ordertransferModel.endTime = FilterService.dateFormat(
-      this.ordertransferModel.endTime
-    );
     this.personalService
       .getCustomerDataOrder(this.ordertransferModel, this.pageService)
       .subscribe(
-        data => {
-          this.customerDataSet = data;
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
+        data =>this.customerDataSet = data,
+        err => this.$Message.error(err)
       );
   }
   /**
@@ -360,24 +348,10 @@ export default class CustomerDataQuery extends Page {
   .seek-day {
     margin-top: 10px;
   }
-  .unfold-button {
-    color: #265ea2;
-  }
-  .seek-line {
-    margin: 6px;
-    margin-left: 10px;
-    .seek-line-picker {
-      width: 200px;
+}
+.pop-update{
+    .high-default-button{
+        width:80px;
     }
-    .seek-line-input {
-      display: inline-block;
-      width: 20%;
-    }
-    .seek-line-button {
-      margin-left: 10px;
-      background: #265ea2;
-      color: #fff;
-    }
-  }
 }
 </style>

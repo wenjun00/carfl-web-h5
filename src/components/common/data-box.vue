@@ -296,6 +296,16 @@ export default class DataBox extends Vue {
     /*height:600px;*/
     /*overflow: auto;*/
   }
+
+      & > table{
+           width: auto;
+        }
+
+    .ivu-table-tip{
+        &>td{
+           width: auto;            
+        }
+    }
 }
 .pagination {
   .ivu-select,

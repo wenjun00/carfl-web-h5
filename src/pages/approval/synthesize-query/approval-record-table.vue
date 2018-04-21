@@ -1,54 +1,54 @@
 <!--审核记录表-->
 <template>
-    <section class="page approval-record-table">
-        <page-header title="审核记录表" hiddenPrint hiddenExport></page-header>
-         <data-form date-prop="timeSearch" :model="approvalRecordModel" @on-search="getApprovaRecordList" :page="pageService" hidden-reset>
-            <template slot="input">
-                <i-form-item prop="type">
-                     <i-select  placeholder="全部状态" v-model="approvalRecordModel.type" @on-change="changeSelectOne" clearable>
-                        <i-option label="通过" :value="0" :key="0"></i-option>
-                        <i-option label="退件" :value="374" :key="374"></i-option>
-                        <i-option label="拒绝" :value="375" :key="375"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="second">
-                     <i-select placeholder="通过类型" v-if="passSelect" v-model="approvalRecordModel.second" clearable>
-                        <i-option label="通过" :key="310" :value="310"></i-option>
-                        <i-option label="提交内审/通过" :key="321" :value="321"></i-option>
-                        <i-option label="灰名单/通过" :key="322" :value="322"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="second">
-                    <i-select placeholder="全部拒单原因" v-if="!passSelect" v-model="approvalRecordModel.second" @on-change="changeSelectTwo" clearable>
-                        <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second"></i-option>
-                    </i-select>
-                </i-form-item>
-                  <i-form-item prop="detail">
-                    <i-select placeholder="全部拒单细节" v-if="!passSelect" v-model="approvalRecordModel.detail" clearable>
-                            <i-option v-for="item in refuseDetail" :key="item.detail" :label="item.detail" :value="item.detail"></i-option>
-                        </i-select>
-                </i-form-item>
+  <section class="page approval-record-table">
+    <page-header title="审核记录表" hiddenPrint hiddenExport></page-header>
+    <data-form date-prop="timeSearch" :model="approvalRecordModel" @on-search="getApprovaRecordList" :page="pageService" hidden-reset>
+      <template slot="input">
+        <i-form-item prop="type">
+          <i-select placeholder="全部状态" v-model="approvalRecordModel.type" @on-change="changeSelectOne" clearable>
+            <i-option label="通过" :value="0" :key="0"></i-option>
+            <i-option label="退件" :value="374" :key="374"></i-option>
+            <i-option label="拒绝" :value="375" :key="375"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="second">
+          <i-select placeholder="通过类型" v-if="passSelect" v-model="approvalRecordModel.second" clearable>
+            <i-option label="通过" :key="310" :value="310"></i-option>
+            <i-option label="提交内审/通过" :key="321" :value="321"></i-option>
+            <i-option label="灰名单/通过" :key="322" :value="322"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="second">
+          <i-select placeholder="全部拒单原因" v-if="!passSelect" v-model="approvalRecordModel.second" @on-change="changeSelectTwo" clearable>
+            <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second">
+              <div :title="item.second">{{ item.second|subOptionLabel}}</div>
+            </i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="detail">
+          <i-select placeholder="全部拒单细节" v-if="!passSelect" v-model="approvalRecordModel.detail" clearable>
+            <i-option v-for="item in refuseDetail" :key="item.detail" :label="item.detail" :value="item.detail">
+              <div :title="item.detail">{{item.detail|subOptionLabel}}</div>
+            </i-option>
+          </i-select>
+        </i-form-item>
 
-                <i-form-item prop="startTime" label="日期">
-                     <i-date-picker v-model="approvalRecordModel.startTime" placeholder="起始日期"></i-date-picker> ~
-                </i-form-item>
-                 <i-form-item prop="endTime">
-                    <i-date-picker  v-model="approvalRecordModel.endTime" placeholder="终止日期"></i-date-picker>
-                </i-form-item>
+        <i-form-item prop="dateRange" label="日期">
+          <i-date-picker v-model="approvalRecordModel.dateRange" type="daterange"></i-date-picker> ~
+        </i-form-item>
 
-            </template>
-        </data-form>
+      </template>
+    </data-form>
 
+    <data-box :id="356" :columns="columns1" :data="approvalRecordList" @onPageChange="getApprovaRecordList" :page="pageService"></data-box>
 
-        <data-box :id="356" :columns="columns1" :data="approvalRecordList" @onPageChange="getApprovaRecordList" :page="pageService"></data-box>
-
-        <!--进度查询-->
-        <template>
-            <i-modal v-model="orderProgressModal" title="审核进度" width="76" class="order-progress">
-                <order-progress ref="order-progress"></order-progress>
-            </i-modal>
-        </template>
-    </section>
+    <!--进度查询-->
+    <template>
+      <i-modal v-model="orderProgressModal" title="审核进度" width="76" class="order-progress">
+        <order-progress ref="order-progress"></order-progress>
+      </i-modal>
+    </template>
+  </section>
 </template>
 
 <script lang="ts">
@@ -69,6 +69,9 @@ import { ApproveReasonService } from '~/services/manage-service/approve-reason.s
   components: {
     DataBox,
     OrderProgress
+  },
+  filters: {
+    subOptionLabel: (str) => { return FilterService.subString(str, 6) }
   }
 })
 export default class ApprovalRecordTable extends Page {
@@ -94,7 +97,8 @@ export default class ApprovalRecordTable extends Page {
     endTime: '',
     type: '',
     second: '',
-    detail: ''
+    detail: '',
+    dateRange: []
   }
 
   mounted() {
@@ -278,11 +282,11 @@ export default class ApprovalRecordTable extends Page {
     this.searchOptions = !this.searchOptions
   }
 
-  deleteRole(row) {}
+  deleteRole(row) { }
 
-  allotRole(row) {}
+  allotRole(row) { }
 
-  dataPower(row) {}
+  dataPower(row) { }
 
   changeSelectOne(val) {
     if (val === 0) {
@@ -296,12 +300,12 @@ export default class ApprovalRecordTable extends Page {
       this.approveReasonService
         .getApproveReasonByCondition(this.approvalRecordModel)
         .subscribe(
-          data => {
-            this.refuseReason = data
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-          }
+        data => {
+          this.refuseReason = data
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
         )
     }
   }
@@ -312,12 +316,12 @@ export default class ApprovalRecordTable extends Page {
     this.approveReasonService
       .getApproveReasonByCondition(this.approvalRecordModel)
       .subscribe(
-        data => {
-          this.refuseDetail = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.refuseDetail = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
@@ -335,23 +339,12 @@ export default class ApprovalRecordTable extends Page {
   }
 
   getApprovaRecordList() {
-    this.approvalRecordModel.startTime = FilterService.dateFormat(
-      this.approvalRecordModel.startTime,
-      'yyyy-MM-dd'
-    )
-    this.approvalRecordModel.endTime = FilterService.dateFormat(
-      this.approvalRecordModel.endTime,
-      'yyyy-MM-dd'
-    )
     this.approvalService
       .getAuditRecord(this.approvalRecordModel, this.pageService)
       .subscribe(
-        data => {
-          this.approvalRecordList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => this.approvalRecordList = data,
+      err => this.$Message.error(err)
+
       )
   }
 

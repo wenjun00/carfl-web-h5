@@ -155,8 +155,4 @@ export default class EditOrg extends Vue {
         }
     }
 
-
-
-
-
 </style>
