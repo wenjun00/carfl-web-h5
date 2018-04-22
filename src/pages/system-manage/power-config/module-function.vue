@@ -362,7 +362,6 @@
      */
     getTreeDate() {
       this.roleResoService.findRoleResoMenu().subscribe(data => {
-        console.log(data, 999)
         this.allData = data
         this.resoPid = data.pid
         this.createNewTree(this.allData)
