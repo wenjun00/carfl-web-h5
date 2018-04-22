@@ -199,7 +199,7 @@ export default class CustomerRepay extends Page {
         fixed: "left",
         render: (h, { row, column, index }) => {
           let arr =
-            row.orderStatus === 316 || row.orderStatus === 319
+            !([317,318,324].includes(row.orderStatus))
               ? [
                   h(
                     "i-button",
@@ -231,6 +231,7 @@ export default class CustomerRepay extends Page {
                       },
                       on: {
                         click: () => {
+                          console.log(row.orderStatus)
                           this.deductRecordModal = true;
                           let _record: any = this.$refs[
                             "deduct-record-has-search"
