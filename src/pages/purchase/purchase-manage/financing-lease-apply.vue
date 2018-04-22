@@ -41,6 +41,7 @@
 
     <!-- 资料申请选项卡-start -->
     <i-tabs v-show="showApplicationTab" v-model="currentTab" class="application-tabs">
+      <i-button size="small" type="ghost" @click="onNextStep" v-show="currentStep < 5" slot="extra">下一步</i-button>
       <i-tab-pane label="选购资料" name="choose-buy-materials">
         <choose-buy-materials ref="choose-buy-materials" v-show="currentTab==='choose-buy-materials'"></choose-buy-materials>
       </i-tab-pane>
@@ -59,7 +60,6 @@
       <i-tab-pane :disabled="currentStep < 5" label="上传素材" name="upload-the-material">
         <upload-the-material ref="upload-the-material" v-show="currentTab==='upload-the-material'"></upload-the-material>
       </i-tab-pane>
-      <i-button size="small" type="ghost" @click="onNextStep" v-show="currentStep < 5" slot="extra">下一步</i-button>
     </i-tabs>
 
     <div v-show="!showApplicationTab" class="emptyText">
@@ -69,8 +69,8 @@
 
     <!--底部操作栏-start-->
     <div class="fixed-container" v-show="currentStep >= 5">
-      <i-button size="large" class="highDefaultButton" @click="draftsaveAndSubmit(true)">保存草稿</i-button>
-      <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit(false)">保存并提交</i-button>
+      <i-button size="large" class="highDefaultButton" @click="onSubmit(true)">保存草稿</i-button>
+      <i-button size="large" class="highButton" style="margin-left:10px;" @click="onSubmit(false)">保存并提交</i-button>
     </div>
     <!--底部操作栏-end-->
   </section>
@@ -193,17 +193,32 @@ export default class FinancingLeaseApply extends Page {
     }
   }
 
-  activated({row}){
-    console.log('ssssssssss')
-    console.log(row)
+  loaded(){
+    console.log(111)
   }
 
+  activated(){
+    
+  }
+
+  /**
+   * 执行流程操作
+   */
   onNextStep() {
-    // TODO: 验证当前页面
+    let tab = this.$refs[this.currentTab]
 
-    this.currentStep++;
-    this.currentTab = this.applicationTabList[this.currentStep];
+    // 验证当前页面
+    tab.validate()
+    .then(()=>{
+        this.currentStep++;
+        this.currentTab = this.applicationTabList[this.currentStep];
+    })
+    .catch(()=>{
+
+    })
   }
+
+  
 
   /**
    * 业务流程图
@@ -366,6 +381,28 @@ export default class FinancingLeaseApply extends Page {
    */
   resetApplicationTab() {}
 
+  /**
+   * 提交申请数据
+   */
+  async onSubmit(validate){
+    if(validate){
+      let result = true
+
+      // 执行验证
+      for(let key of applicationTabList){
+        let tab = this.$refs[key]
+        result = result && await tab.validate()
+        if(!result){
+          break;
+        }
+      }
+      
+      // 验证结果
+      if(!result){
+        return result
+      }
+    }
+  }
   /**
    * 客户信息反显
    */
