@@ -1,4 +1,4 @@
-<!--模块功能--> 
+<!--模块功能-->
 <template>
     <section class="page module-function">
         <page-header title="模块功能" hidden-print hidden-export></page-header>
@@ -169,7 +169,7 @@ export default class ModuleFunction extends Page {
       {
         align: 'center',
         title: '操作',
-        minWidth: 260,
+        minWidth: this.$common.getColumnWidth(6),
         fixed: 'left',
         render: (h, { row, columns, index }) => {
           return [
@@ -237,37 +237,36 @@ export default class ModuleFunction extends Page {
         align: 'center',
         editable: true,
         key: 'resoInitName',
-        title: '资源初始化名称'
+        title: '资源初始化名称',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         align: 'center',
         editable: true,
         key: 'resoName',
-        title: '资源名称'
+        title: '资源名称',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         align: 'center',
         editable: true,
         key: 'resoInitIcon',
-        title: '资源初始化图标'
+        title: '资源初始化图标',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         align: 'center',
         editable: true,
         key: 'resoIcon',
-        title: '资源图标'
+        title: '资源图标',
+        minWidth: this.$common.getColumnWidth(6),
       },
-      // {
-      //   align: "center",
-      //   editable: true,
-      //   key: "resoStatus",
-      //   title: "状态"
-      // },
       {
         align: 'center',
         editable: true,
         key: 'resoRemark',
-        title: '备注'
+        title: '备注',
+        minWidth: this.$common.getColumnWidth(10),
       }
     ]
 

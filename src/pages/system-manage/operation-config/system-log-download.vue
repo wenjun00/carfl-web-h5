@@ -73,7 +73,7 @@ export default class SystemLogDownload extends Page {
       {
         type: 'selection',
         align: 'center',
-        minWidth: 60,
+        minWidth: this.$common.getColumnWidth(2),
         fixed: 'left'
       },
       {
@@ -81,7 +81,7 @@ export default class SystemLogDownload extends Page {
         key: 'operateTime',
         editable: true,
         align: 'center',
-        minWidth: 160,
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, columns, index }) => {
           return h(
             'span',
@@ -93,37 +93,43 @@ export default class SystemLogDownload extends Page {
         title: '操作人',
         editable: true,
         key: 'realName',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '客户端IP',
         editable: true,
         key: 'clientIp',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '执行方法',
         editable: true,
         key: 'exeMethod',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '备注',
         editable: true,
         key: 'logRemark',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(10),
       },
       {
         title: '请求执行时长（秒）',
         editable: true,
         key: 'exeTime',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         title: '执行类型',
         editable: true,
         key: 'exeType',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(4),
       }
     ]
   }

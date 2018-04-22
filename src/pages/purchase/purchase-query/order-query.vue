@@ -1,4 +1,4 @@
-<!--订单查询--> 
+<!--订单查询-->
 <template>
   <section class="page order-query">
     <page-header title="订单查询" hiddenPrint hiddenExport>
@@ -130,7 +130,7 @@ export default class OrderQuery extends Page {
     this.queryColumns = [
       {
         title: "操作",
-        minWidth: 220,
+        minWidth: this.$common.getColumnWidth(8),
         align: "center",
         fixed: "left",
         render: (h, { row, column, index }) => {

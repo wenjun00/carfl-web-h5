@@ -109,6 +109,7 @@
       this.columns = [{
           title: '操作',
           align: 'center',
+        minWidth: this.$common.getColumnWidth(5),
           render: (h, {
             row,
             column,
@@ -145,12 +146,14 @@
           key: 'templateName',
           align: 'center',
           editable: true,
+          minWidth: this.$common.getColumnWidth(8),
         },
         {
           title: '创建人',
           key: 'operator',
           align: 'center',
           editable: true,
+          minWidth: this.$common.getColumnWidth(4),
         },
       ];
     }

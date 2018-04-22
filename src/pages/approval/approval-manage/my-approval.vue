@@ -293,7 +293,7 @@ export default class MyApproval extends Page {
     this.columns1 = [
       {
         title: '操作',
-        minWidth: 70,
+        minWidth: this.$common.getColumnWidth(4),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -323,6 +323,7 @@ export default class MyApproval extends Page {
         align: 'center',
         editable: true,
         title: '环节',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) => {
           if (row.riskStatus) {
             return h('div', [
@@ -361,6 +362,7 @@ export default class MyApproval extends Page {
         align: 'center',
         editable: true,
         key: 'orderStatus',
+        minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, columns, index }) => {
           return h('span', {}, this.$dict.getDictName(row.orderStatus))
         }
@@ -369,7 +371,7 @@ export default class MyApproval extends Page {
         title: '订单编号',
         key: 'orderNumber',
         editable: true,
-        minWidth: 115,
+        minWidth: this.$common.getColumnWidth(6),
         align: 'center',
         render: (h, { row, columns, index }) => {
           return h(
@@ -392,7 +394,7 @@ export default class MyApproval extends Page {
         align: 'center',
         title: '订单创建时间',
         editable: true,
-        minWidth: 135,
+        minWidth: this.$common.getColumnWidth(6),
         key: 'createTime',
         render: (h, { row, column, index }) => {
           return h(
@@ -406,7 +408,7 @@ export default class MyApproval extends Page {
         title: '领取时间',
         editable: true,
         key: 'receiveDate',
-        minWidth: 135,
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             'span',
@@ -418,7 +420,7 @@ export default class MyApproval extends Page {
         align: 'center',
         title: '处理时间',
         editable: true,
-        minWidth: 135,
+        minWidth: this.$common.getColumnWidth(6),
         key: 'approvalDate',
         render: (h, { row, column, index }) => {
           return h(
@@ -432,6 +434,7 @@ export default class MyApproval extends Page {
         title: '省份',
         editable: true,
         key: 'province',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', CityService.getCityName(row.province))
         }
@@ -441,6 +444,7 @@ export default class MyApproval extends Page {
         title: '城市',
         editable: true,
         key: 'city',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', CityService.getCityName(row.city))
         }
@@ -450,6 +454,7 @@ export default class MyApproval extends Page {
         title: '订单类型',
         editable: true,
         key: 'orderType',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) => {
           return h('span', {}, this.$dict.getDictName(row.orderType))
         }
@@ -458,26 +463,28 @@ export default class MyApproval extends Page {
         align: 'center',
         editable: true,
         title: '产品名称',
-        key: 'productName'
+        key: 'productName',
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: 'center',
         editable: true,
         title: '客户姓名',
-        key: 'personalName'
+        key: 'personalName',
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: 'center',
         editable: true,
         title: '证件号码',
-        minWidth: 115,
+        minWidth: this.$common.getColumnWidth(6),
         key: 'idCard'
       },
       {
         align: 'center',
         editable: true,
         title: '手机号',
-        minWidth: 85,
+        minWidth: this.$common.getColumnWidth(4),
         key: 'mobileMain'
       }
     ]

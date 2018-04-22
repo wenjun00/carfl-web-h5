@@ -179,7 +179,7 @@
     created() {
       this.columns1 = [{
           title: '操作',
-          minWidth: 200,
+        minWidth: this.$common.getColumnWidth(5),
           fixed: 'left',
           align: 'center',
           render: (h, {
@@ -227,13 +227,15 @@
           title: '订单编号',
           align: 'center',
           editable: true,
-          key: 'orderNumber'
+          key: 'orderNumber',
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           align: 'center',
           title: '订单创建时间',
           editable: true,
           key: 'orderCreateTime',
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -250,6 +252,7 @@
           editable: true,
           title: '订单类型',
           key: 'orderType',
+          minWidth: this.$common.getColumnWidth(3),
           render: (h, {
             row,
             column,
@@ -262,31 +265,36 @@
           align: 'center',
           editable: true,
           title: '产品名称',
-          key: 'productName'
+          key: 'productName',
+          minWidth: this.$common.getColumnWidth(4),
         },
         {
           align: 'center',
           editable: true,
           title: '客户姓名',
-          key: 'personalName'
+          key: 'personalName',
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           align: 'center',
           editable: true,
           title: '证件号码',
-          key: 'idCard'
+          key: 'idCard',
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           align: 'center',
           editable: true,
           title: '联系号码',
-          key: 'mobileMain'
+          key: 'mobileMain',
+          minWidth: this.$common.getColumnWidth(5),
         },
         {
           align: 'center',
           editable: true,
           title: '最近合同生成日期',
           key: 'latelyContractTime',
+          minWidth: this.$common.getColumnWidth(5),
           render: (h, {
             row,
             column,

@@ -148,12 +148,12 @@
       this.columns1 = [{
           align: "center",
           type: "selection",
-          width: 30,
+        minWidth: this.$common.getColumnWidth(1),
           fixed: 'left'
         },
         {
           title: "操作",
-          width: 120,
+          minWidth: this.$common.getColumnWidth(5),
           align: "center",
           fixed: 'left',
           render: (h, {
@@ -201,6 +201,7 @@
           title: "付款日期",
           key: "actualCollectDate",
           align: "center",
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -212,12 +213,14 @@
         {
           align: "center",
           title: "客户姓名",
-          key: "customerName"
+          key: "customerName",
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           align: "center",
           title: "项目",
           key: "collectItem",
+          minWidth: this.$common.getColumnWidth(5),
           render: (h, {
             row,
             column,
@@ -229,21 +232,36 @@
         {
           align: "center",
           title: "金额",
-          key: "collectMoneyAmount"
+          key: "collectMoneyAmount",
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.collectMoneyAmount)
+            );
+          }
         },
         {
           align: "center",
           title: "期数",
-          key: "periods"
+          key: "periods",
+          minWidth: this.$common.getColumnWidth(2),
         },
         {
           align: "center",
           title: "所属公司",
-          key: "companyChinaName"
+          key: "companyChinaName",
+          minWidth: this.$common.getColumnWidth(5),
         },
         {
           align: "center",
           title: "结算通道",
+          minWidth: this.$common.getColumnWidth(4),
           key: "colectMoneyChannel",
           render: (h, {
             row,
@@ -256,6 +274,7 @@
         {
           align: "center",
           title: "开票状态",
+          minWidth: this.$common.getColumnWidth(4),
           key: "invoicingStatus",
           render: (h, {
             row,
@@ -268,11 +287,13 @@
         {
           align: "center",
           title: "发票号",
-          key: "invoiceNumber"
+          key: "invoiceNumber",
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           align: "center",
           title: "开票日期",
+          minWidth: this.$common.getColumnWidth(6),
           key: "invoicingDate",
           render: (h, {
             row,
@@ -285,12 +306,14 @@
         {
           align: "center",
           title: "发票抬头",
+          minWidth: this.$common.getColumnWidth(4),
           key: "invoicingTitle"
         },
         {
           align: "center",
           title: "备注",
-          key: "remark"
+          key: "remark",
+          minWidth: this.$common.getColumnWidth(7),
         }
       ];
     }

@@ -189,7 +189,7 @@
       this.columns1 = [{
           title: "操作",
           align: "center",
-          width: 100,
+        minWidth: this.$common.getColumnWidth(5),
           render: (h, {
             row,
             columns,
@@ -275,7 +275,7 @@
           title: "处理时间",
           editable: true,
           key: "processTime",
-          width: 180,
+          minWidth: this.$common.getColumnWidth(6),
           align: "center",
           render: (h, {
             row,
@@ -291,7 +291,7 @@
         {
           title: "处理人",
           editable: true,
-          width: 120,
+          minWidth: this.$common.getColumnWidth(3),
           key: "processName",
           align: "center"
         },
@@ -300,6 +300,7 @@
           editable: true,
           key: "refundType",
           align: "center",
+          minWidth: this.$common.getColumnWidth(4),
           render: (h, {
             row,
             column,
@@ -312,32 +313,49 @@
           title: "付款金额",
           editable: true,
           key: "refundTotalAmount",
-          align: "center"
+          align: "center",
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.refundTotalAmount)
+            );
+          }
+
+
         },
         {
           title: "客户账户名",
           editable: true,
           key: "customerName",
-          align: "center"
+          align: "center",
+          minWidth: this.$common.getColumnWidth(4),
         },
         {
           title: "开户银行",
           editable: true,
           key: "depositBank",
-          align: "center"
+          align: "center",
+          minWidth: this.$common.getColumnWidth(4),
         },
         {
           title: "银行卡号",
           editable: true,
           key: "cardNumber",
           align: "center",
-          width: 180
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           title: "申请日期",
           editable: true,
           key: "operateTime",
           align: "center",
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -353,7 +371,8 @@
           title: "制单人",
           editable: true,
           key: "operator",
-          align: "center"
+          align: "center",
+          minWidth: this.$common.getColumnWidth(3),
         }
       ];
 
@@ -439,7 +458,7 @@
     //   }
     // }
   }
-  
+
   .addApply {
     .ivu-modal-body {
       height: 600px;
