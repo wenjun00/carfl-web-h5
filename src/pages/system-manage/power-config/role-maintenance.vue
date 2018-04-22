@@ -151,12 +151,12 @@ export default class RoleMaintenance extends Page {
       {
         type: 'selection',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(1),
         fixed: 'left'
       },
       {
         title: '操作',
-        minWidth: this.$common.getColumnWidth(10),
+        minWidth: this.$common.getColumnWidth(15),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -252,7 +252,7 @@ export default class RoleMaintenance extends Page {
         editable: true,
         title: '状态',
         key: 'roleStatus',
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) => {
           if (row.roleStatus === 0) {
             return h('span', {}, '启用')
@@ -266,14 +266,14 @@ export default class RoleMaintenance extends Page {
         editable: true,
         title: '角色名称',
         key: 'roleName',
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: 'center',
         editable: true,
         title: '备注',
         key: 'roleRemark',
-        minWidth: this.$common.getColumnWidth(10),
+        minWidth: this.$common.getColumnWidth(8),
       },
       {
         align: 'center',

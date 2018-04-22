@@ -132,45 +132,11 @@
         <div class="modal-item-shoukuanpingzheng-box"></div>
         <span>收款凭证</span>
       </div>
-      <!--<i-button class="blueButton" style="float:right">凭证上传</i-button>
-      <i-button class="blueButton" style="float:right">全部下载</i-button>-->
-
-      <!--<i-row>-->
-      <!--<i-col :span="8" style="display:flex;justify-content:center;;margin-top:10px">-->
-      <!--<div style="height:200px;width:200px;border:1px solid #C2C2C2;cursor:pointer;text-align:center;">-->
-      <!--<Icon type="plus-circled" style="display:block;margin-top:53px;" color="#265ea2" size="40"></Icon>-->
-      <!--<div>点击添加附件</div>-->
-      <!--<span style="color:gray">支持jpg/pdf/png格式建议大小不超过10M</span>-->
-      <!--</div>-->
-      <!--</i-col>-->
-      <!--<i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id" style="display:flex;justify-content:center;margin-top:10px">-->
-      <!--<div :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">-->
-      <!--</div>-->
-      <!--</i-col>-->
-      <!--</i-row>-->
-      <i-row>
-        <i-col class="modal-item-addfujian" :span="8">
-          <div class="modal-item-addfujianbox" @click="openUpload=true">
-            <Icon class="modal-item-addfujianbox-icon" type="plus-circled" color="#265ea2" size="40"></Icon>
-            <h2 class="modal-item-addfujianbox-tianjia">点击添加附件</h2>
-            <h3 class="modal-item-addfujianbox-text">支持jpg/png格式</h3>
-            <h3 class="modal-item-addfujianbox-text">建议大小不超过10M</h3>
-          </div>
-        </i-col>
-        <i-col class="modal-item-url" :span="8" v-for="(v,i) in financeUploadResources" :key="v.id">
-          <img class="modal-item-img" :src="v.materialUrl">
-        </i-col>
-      </i-row>
+      <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher"></upload-voucher>
     </div>
     <template>
       <i-modal title="划扣记录" v-model="deductRecordModal" width="1200">
         <deduct-record ref="deduct-record"></deduct-record>
-      </i-modal>
-    </template>
-    <!-- 弹出框 -->
-    <template>
-      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload" :transfer="false">
-        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
       </i-modal>
     </template>
   </section>
@@ -191,7 +157,7 @@
   import {
     AdvanceRevokeService
   } from "~/services/manage-service/advance-revoke.service";
-  import FileUpload from "~/components/common/file-upload.tsx.vue";
+  import UploadVoucher from "~/components/common/upload-voucher.vue"
 
   @Component({
     components: {
@@ -199,7 +165,7 @@
       DataGrid,
       DataGridItem,
       DeductRecord,
-      FileUpload
+      UploadVoucher
     }
   })
   export default class ConfirmWithdraw extends Vue {
@@ -218,6 +184,7 @@
     private collectMoneyId: any = ''
     private collectMoneyItemModel: any = []
     private openUpload: Boolean = false;
+    private fodderList:any = []
 
     refresh(row) {
       this.rowObj = row
@@ -244,7 +211,9 @@
       let _record: any = this.$refs['deduct-record']
       _record.refresh(this.rowObj)
     }
-
+    fileNumber(item){
+      this.fodderList = item
+    }
     /**
      * 增加还款对象
      */
@@ -283,34 +252,6 @@
         this.inputBlur()
       }
     }
-
-    /**
-     * 上传文件成功回调
-     */
-    uploadSuccess() {
-      this.openUpload = false;
-      this.$nextTick(() => {
-        let fileUpload: any = this.$refs["file-upload"];
-        this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
-          return {
-            id: v.response.id,
-            materialUrl: v.response.url,
-            orderId: this.rowObj.orderId,
-            businessId: this.rowObj.businessId
-          }
-        }))
-        fileUpload.reset();
-      });
-    }
-
-    /**
-     * 上传文件
-     */
-    postFile() {
-      let fileUpload = this.$refs["file-upload"] as FileUpload;
-      fileUpload.upload();
-    }
-
   }
 
 </script>
