@@ -110,7 +110,6 @@
         this.$Message.error(msg)
       })
     }
-
     /**
      * 确认还款
      */
@@ -158,9 +157,6 @@
       }) => {
         this.$Message.error(msg)
       })
-    }
-    activated() {
-      this.getGatherListByCondition()
     }
     created() {
       this.getGatherListByCondition()
@@ -298,7 +294,10 @@
         }
       ];
     }
-
+    /**
+     * 确定
+     */
+    confirm() {}
     /**
      * 获取收款列表
      */

@@ -18,7 +18,7 @@
 
     <template>
       <i-modal v-model="addAttachmentModal" title="补传凭证" width="900">
-        <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher"></upload-voucher>
+        <add-attachment></add-attachment>
         <div slot="footer">
           <i-button @click="cancelOne">取消</i-button>
           <i-button @click="confirmOne" class="blueButton">确定</i-button>
@@ -33,6 +33,7 @@
   import Component from "vue-class-component";
   import DataBox from "~/components/common/data-box.vue";
   import RepayRecord from '~/components/finance-manage/repay-record.vue'
+  import AddAttachment from '~/components/finance-manage/add-attachment.vue'
   import {
     Dependencies
   } from "~/core/decorator";
@@ -42,13 +43,12 @@
   import {
     FilterService
   } from "~/utils/filter.service"
-  import UploadVoucher from "~/components/common/upload-voucher.vue"
 
   @Component({
     components: {
       DataBox,
       RepayRecord,
-      UploadVoucher
+      AddAttachment
     }
   })
   export default class RepayInfo extends Vue {
@@ -62,7 +62,6 @@
     private repayList: Array<Object> = [];
     private repayRecordModal: Boolean = false;
     private addAttachmentModal: Boolean = false;
-    private fodderList:any = [];
 
     refresh(row) {
       this.repayList = []
@@ -325,9 +324,6 @@
 
     confirmOne() {
 
-    }
-    fileNumber(item){
-      this.fodderList = item
     }
   }
 
