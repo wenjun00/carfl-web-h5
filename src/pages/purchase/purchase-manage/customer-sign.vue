@@ -89,7 +89,7 @@
       </i-modal>
     </template>
     <template>
-      <i-modal title="预览" v-model="previewModel" width="800" class-name="no-footer">
+      <i-modal title="预览" v-model="previewModel" :width="800" class-name="no-footer">
         <img :src="url" class="preview" style="width: 100%">
       </i-modal>
     </template>

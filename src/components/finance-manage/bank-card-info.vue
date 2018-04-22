@@ -20,7 +20,7 @@
     </div>
 
     <template>
-      <i-modal title="换卡" v-model="dialog.change" width="480" class="changeCard">
+      <i-modal title="换卡" v-model="dialog.change" :width="480" class="changeCard">
         <change-card ref="change-card" @close="dialog.change = false,$emit('change')"></change-card>
         <div slot="footer">
           <i-button>取消</i-button>
@@ -30,7 +30,7 @@
     </template>
 
     <template>
-      <i-modal title="解绑银行卡" width="480" v-model="dialog.unbind">
+      <i-modal title="解绑银行卡" :width="480" v-model="dialog.unbind">
         <unbind-bank-card ref="unbind-bank-card"></unbind-bank-card>
         <div slot="footer">
           <i-button @click="dialog.unbind=false" class="defaultButton">取消</i-button>

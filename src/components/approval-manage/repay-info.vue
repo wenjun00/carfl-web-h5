@@ -5,7 +5,7 @@
 
     <!--查看附件-->
     <template>
-      <i-modal title="查看凭证" v-model="checkAttachmentModal" class-name="no-footer" width="1000" class="purchaseInformation">
+      <i-modal title="查看凭证" v-model="checkAttachmentModal" class-name="no-footer" :width="1000" class="purchaseInformation">
         <check-attachment ref="check-attach"></check-attachment>
       </i-modal>
     </template>

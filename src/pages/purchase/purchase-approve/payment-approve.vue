@@ -12,35 +12,10 @@
         <i-checkbox v-model="status">包含已处理</i-checkbox>
       </template>
     </data-form>
-    <!--<div class="data-form">-->
-
-      <!--<i-select placeholder="全部申请类型" class="data-form-item" clearable>-->
-      <!--<i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>-->
-      <!--</i-select>-->
-
-    <!--</div>-->
     <data-box :id="390" :columns="columns1" :data="refundApproval"></data-box>
-    <!--Model-->
-    <!-- <template>
-      <i-modal v-model="openColumnsConfig" title="列配置">
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template> -->
-
-    <!-- <template>
-      <i-modal title="审批" width="500" v-model="approvalModal">
-        <approval :addAttachmentShow="addAttachmentShow"></approval>
-      </i-modal>
-    </template> -->
 
     <template>
-      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'付款审批':'查看'" width="800">
+      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'付款审批':'查看'" :width="800">
         <apply-detail ref="applyDetail"></apply-detail>
         <div slot="footer">
           <i-button class="highDefaultButton" style="width:80px" @click="backApply" v-if="type===1">退回</i-button>

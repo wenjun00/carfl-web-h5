@@ -53,7 +53,7 @@
         </template>
 
         <template>
-            <i-modal v-model="modifyUserModal" title="修改用户" width="600">
+            <i-modal v-model="modifyUserModal" title="修改用户" :width="600">
                 <modify-user :modifyUserModel="modifyUserModel" @close="modifyUserClose" ref="modify-user"></modify-user>
                 <div slot="footer">
                     <i-button @click="modifyUserModal=false">取消</i-button>
@@ -63,7 +63,7 @@
         </template>
 
         <template>
-            <i-modal v-model="addNewUserModal" title="新增用户" width="600" class="addUser" @on-visible-change="newUserModalChange">
+            <i-modal v-model="addNewUserModal" title="新增用户" :width="600" class="addUser" @on-visible-change="newUserModalChange">
                 <add-user :deptObject="deptObject" @close="closeAdd" ref="add-user"></add-user>
                 <div slot="footer">
                     <i-button @click="addNewUserModal=false">取消</i-button>
@@ -73,13 +73,13 @@
         </template>
 
         <template>
-            <i-modal v-model="deviceManageModal" title="设备管理" width="660" class="device-manage" class-name="no-footer">
+            <i-modal v-model="deviceManageModal" title="设备管理" :width="660" class="device-manage" class-name="no-footer">
                 <device-manage ref="device-manage"></device-manage>
             </i-modal>
         </template>
 
         <template>
-            <i-modal v-model="addNewOrgModal" title="添加机构" width="400">
+            <i-modal v-model="addNewOrgModal" title="添加机构" :width="400">
                 <add-org ref="add-org" :addOrgModel="addOrgModel" @close="closeOrg"></add-org>
                 <div slot="footer">
                     <i-button @click="cancelAddOrg">取消</i-button>
@@ -89,7 +89,7 @@
         </template>
 
         <template>
-            <i-modal v-model="editNewOrgModal" title="编辑机构" width="400">
+            <i-modal v-model="editNewOrgModal" title="编辑机构" :width="400">
                 <edit-org ref="edit-org" :deptObject="deptObject" @close="closeEditOrg"></edit-org>
                 <div slot="footer">
                     <i-button @click="cancelEditOrg">取消</i-button>

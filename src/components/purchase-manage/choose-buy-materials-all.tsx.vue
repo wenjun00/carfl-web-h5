@@ -37,7 +37,7 @@
     </div>
     <!--添加车辆弹框-->
     <template>
-      <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" width="1200" v-model="editCarModal" :trandfer="false" class="add-car">
+      <i-modal :title="addOrEditFlag?'添加车辆':'编辑车辆'" :width="1200" v-model="editCarModal" :trandfer="false" class="add-car">
         <add-car ref="add-car" :addOpen="addOpen"  @distributionData="distributionData" :addcarData.sync="addcarData" :rowData.sync="rowData" @close="editCarModal=false,rowData=null"></add-car>
       </i-modal>
     </template>

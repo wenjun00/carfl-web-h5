@@ -31,7 +31,7 @@
         </template>
 
         <template>
-            <i-modal v-model="modulePowerModal" title="模块权限" width="600">
+            <i-modal v-model="modulePowerModal" title="模块权限" :width="600">
                 <module-power @close="modulePowerModal=false" ref="module-power" :roleId="currentRoleId"></module-power>
                 <div slot="footer">
                     <i-button @click="modulePowerModal=false">取消</i-button>
@@ -41,7 +41,7 @@
         </template>
 
         <template>
-            <i-modal v-model="userListModal" title="用户列表" width="800" class-name="no-footer" @on-visible-change="visibleChange">
+            <i-modal v-model="userListModal" title="用户列表" :width="800" class-name="no-footer" @on-visible-change="visibleChange">
                 <user-list ref="user-list"></user-list>
             </i-modal>
         </template>

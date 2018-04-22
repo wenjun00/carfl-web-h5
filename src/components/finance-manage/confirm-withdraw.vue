@@ -135,7 +135,7 @@
       <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher"></upload-voucher>
     </div>
     <template>
-      <i-modal title="划扣记录" v-model="deductRecordModal" width="1200">
+      <i-modal title="划扣记录" v-model="deductRecordModal" :width="1200">
         <deduct-record ref="deduct-record"></deduct-record>
       </i-modal>
     </template>

@@ -31,7 +31,7 @@
         <!--Model-->
         <!--一键交接弹框-->
         <template>
-            <i-modal class="views-handover" v-model="openOneKeyToConnect" title="一键交接" width="800" @on-visible-change="onKey">
+            <i-modal class="views-handover" v-model="openOneKeyToConnect" title="一键交接" :width="800" @on-visible-change="onKey">
                 <i-row class="views-handover-margin">
                     <i-input class="views-handover-input" placeholder="请输入关键字搜索"></i-input>
                     <i-button class="views-handover-button">搜索</i-button>

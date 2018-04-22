@@ -23,7 +23,7 @@
     <data-box :id="420" :columns="columns1" :data="customerRepayList" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
 
     <template>
-      <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认结清" width="900">
+      <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认结清" :width="900">
         <confirm-early-pay ref="confirm-early-pay"></confirm-early-pay>
         <div slot="footer">
           <!--<i-button @click="saveDraft" class="highDefaultButton">保存草稿</i-button>-->
@@ -42,20 +42,20 @@
     </template>
 
     <template>
-      <i-modal v-model="repayInfoModal" title="还款详情" width="900" :transfer="false">
+      <i-modal v-model="repayInfoModal" title="还款详情" :width="900" :transfer="false">
         <repay-info ref="repay-info"></repay-info>
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="deductRecordModal" title="划扣记录" width="1300">
+      <i-modal v-model="deductRecordModal" title="划扣记录" :width="1300">
         <deduct-record-has-search ref="deduct-record-has-search"></deduct-record-has-search>
       </i-modal>
     </template>
 
 
     <template>
-      <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
+      <i-modal title="订单详情" :width="1200" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
         <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInformationModal=false">返回</i-button>

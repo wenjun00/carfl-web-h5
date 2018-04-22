@@ -35,7 +35,7 @@
     </i-row>
 
     <template>
-      <i-modal v-model="addNameModal" width="500" :title="checkModal?'编辑数据':'新增数据'" class="toViewModalClass">
+      <i-modal v-model="addNameModal" :width="500" :title="checkModal?'编辑数据':'新增数据'" class="toViewModalClass">
         <i-form :label-width="60" style="margin-top:20px;">
           <i-form-item label="名称" prop="name">
             <i-input v-model="addModel.name"></i-input>
@@ -49,7 +49,7 @@
     </template>
 
     <template>
-      <i-modal v-model="adddatatypeModal" width="500" title="新增数据字典类型" class="toViewModalClass">
+      <i-modal v-model="adddatatypeModal" :width="500" title="新增数据字典类型" class="toViewModalClass">
         <i-form :label-width="60" style="margin-top:20px;" :model="addDataType" :rules="rulesAddDataType" ref="add-data-type">
           <i-form-item label="名称" prop="name">
             <i-input v-model="addDataType.name"></i-input>

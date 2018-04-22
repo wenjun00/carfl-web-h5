@@ -49,7 +49,7 @@
     </div>
 
     <template>
-      <i-modal v-model="makeInvoiceModal" title="确认开票" width="600" class="confirmMakeInvoice">
+      <i-modal v-model="makeInvoiceModal" title="确认开票" :width="600" class="confirmMakeInvoice">
         <confirm-make-invoice></confirm-make-invoice>
       </i-modal>
     </template>

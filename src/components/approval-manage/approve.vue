@@ -160,9 +160,9 @@
         <div class="data-form-item"></div>
         <a name="lianxirenxinxi" class="xinxi">联系人信息</a>
       </div>
-      <i-table width="1000" highlight-row ref="databox1" :columns="immediateColumns" :data="immediateContacts"></i-table>
+      <i-table :width="1000" highlight-row ref="databox1" :columns="immediateColumns" :data="immediateContacts"></i-table>
       <span>其他联系人（提示：必填3个其他联系人）</span>
-      <i-table width="1000" highlight-row ref="databox2" :columns="otherColumns" :data="otherContactsInfo"></i-table>
+      <i-table :width="1000" highlight-row ref="databox2" :columns="otherColumns" :data="otherContactsInfo"></i-table>
     </i-row>
     <!--客户来源-->
     <i-row class="data-form">
@@ -237,7 +237,7 @@
       </i-row>
     </i-row>
     <template>
-      <i-modal title="预览" v-model="previewModel" width="800" class-name="no-footer" :transfer="false">
+      <i-modal title="预览" v-model="previewModel" :width="800" class-name="no-footer" :transfer="false">
         <img :src="url" style="width: 100%">
       </i-modal>
     </template>

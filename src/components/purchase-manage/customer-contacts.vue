@@ -3,14 +3,14 @@
   <section class="component customer-contacts">
     <div class="form-title">客户联系人</div>
     <div class="client-person" >直系亲属（提示：配偶(已婚必填)+必填2个直系亲属）</div>
-    <i-table :columns="columns1" :data="data1" width="1100"></i-table>
+    <i-table :columns="columns1" :data="data1" :width="1100"></i-table>
     <!--<i-button @click="addNewContacts" style="margin:10px 0" class="blueButton">添加联系人</i-button>-->
     <div>
       <Icon class="client-person-icon" type="plus" ></Icon>
       <i-button @click="addNewContacts" class="form-button" type="text">添加联系人</i-button>
     </div>
     <div style="margin-left:10px;margin-top:20px;">其他联系人（提示：必填3个其他联系人）</div>
-    <i-table :columns="columns2" :data="data2" width="1100"></i-table>
+    <i-table :columns="columns2" :data="data2" :width="1100"></i-table>
     <!--<i-button @click="addNewContacts2" style="margin:10px 0" class="blueButton">添加联系人</i-button>-->
     <div>
       <Icon type="plus" class="client-person-icon"></Icon>

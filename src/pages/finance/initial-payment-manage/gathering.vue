@@ -14,7 +14,7 @@
     </data-form>
     <data-box :id="399" :columns="columns1" :data="gatherList" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
     <template>
-      <i-modal  v-model="confirmGatherModal" :title="check?'查看':'确认收款'" width="900" class="confirmGather" :transfer="false">
+      <i-modal  v-model="confirmGatherModal" :title="check?'查看':'确认收款'" :width="900" class="confirmGather" :transfer="false">
         <confirm-gather :currentRow="currentRow" ref="confirm-gather" :check="check"></confirm-gather>
         <div slot="footer">
           <!--<i-button class="highDefaultButton" @click="saveDraft" v-if="!check">保存草稿</i-button>-->
