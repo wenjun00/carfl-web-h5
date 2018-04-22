@@ -1,4 +1,4 @@
-//新增产品
+//新增产品 
 <template>
   <i-form ref="add-product" :model="addProduct" :rules="rulesAdd" :label-width="80">
     <i-form-item label="产品名称" prop="name">
@@ -50,7 +50,8 @@ export default class AddProduct extends Vue {
 				val => {
 					this.$emit('close');
 					this.$Message.success('新增产品成功！');
-					this.reset()
+                    this.reset()
+                    this.addProduct = {}
 				},
 				({ msg }) => {
 					this.$Message.error(msg);

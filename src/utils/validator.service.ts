@@ -8,18 +8,17 @@ export class ValidatorService {
    * @param callback 
    */
   static validate(data: any, descriptor: any) {
+    console.log(data)
     let schema = new validator(descriptor);
     let process = new Promise((reslove, reject) => {
       schema.validate(data, (errors, fields) => {
-        // 验证失败
-        if (errors) {
-          return reject({
-            errors,
-            fields
-          });
+        if(errors&&errors.length){
+          let [error] = errors
+          // 验证成功
+          reslove(error.message)
+        }else{
+          reslove()
         }
-        // 验证成功
-        reslove()
       });
     })
     return process

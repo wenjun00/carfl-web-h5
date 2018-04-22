@@ -68,7 +68,7 @@
       this.columns1 = [{
           title: "客户名",
           key: "customerName",
-          width: 160,
+        minWidth: this.$common.getColumnWidth(3),
           fixed: 'left',
           align: 'center',
           render: (h, {
@@ -90,120 +90,240 @@
         }, {
           title: "合同号",
           key: "compactId",
-          width: 160,
+        minWidth: this.$common.getColumnWidth(6),
           align: 'center'
         },
         {
           title: "证件号码",
           key: "idCard",
-          width: 160,
+          minWidth: this.$common.getColumnWidth(6),
           align: 'center'
         },
         {
           title: "手机号码",
           key: "phone",
-          width: 160,
+          minWidth: this.$common.getColumnWidth(5),
           align: 'center'
         },
         {
           title: "银行名称",
           key: "bankName",
-          width: 100,
+          minWidth: this.$common.getColumnWidth(4),
           align: 'center'
         },
         {
           title: "银行卡号",
           key: "bankCardId",
-          width: 180,
+          minWidth: this.$common.getColumnWidth(6),
           align: 'center'
         },
         {
           title: "租赁期数",
           key: "rentPeriods",
-          width: 100,
+          minWidth: this.$common.getColumnWidth(3),
           align: 'center'
         },
         {
           title: "融资额",
           key: "financedAmount",
-          width: 100,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.financedAmount)
+            );
+          }
+
         },
         {
           title: "首付款",
           key: "initialPayment",
-          width: 100,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.initialPayment)
+            );
+          }
+
         },
         {
           title: "保证金",
           key: "cashDeposit",
-          width: 100,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.cashDeposit)
+            );
+          }
+
         },
         {
           title: "购置税",
           key: "purchaseTax",
-          width: 100
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.purchaseTax)
+            );
+          }
+
         },
         {
           title: "路桥费",
           key: "tollCharge",
-          width: 100,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.tollCharge)
+            );
+          }
+
         },
         {
           title: "保险费",
           key: "insuranceExpences",
-          width: 100,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.insuranceExpences)
+            );
+          }
+
         },
         {
           title: "结算通道",
           key: "settleChannel",
-          width: 100,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(4),
         },
         {
           title: "已还期数",
           key: "alreadyPayPeriods",
-          width: 100,
+          minWidth: this.$common.getColumnWidth(3),
           align: 'center'
         },
         {
           title: "剩余期数",
           key: "residuePeriods",
-          width: 100,
+          minWidth: this.$common.getColumnWidth(3),
           align: 'center'
         },
         {
           title: "月还款额",
           key: "monthPayAmt",
-          width: 100,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.monthPayAmt)
+            );
+          }
+
         },
         {
           title: "已还款总额",
           key: "alreadyPayAmount",
-          width: 100,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.alreadyPayAmount)
+            );
+          }
+
         },
         {
           title: "剩余还款总额",
           key: "residuePayAmount",
-          width: 120,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.residuePayAmount)
+            );
+          }
+
         },
         {
           title: "租金总额",
           key: "rentTotalAmt",
-          width: 100,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.rentTotalAmt)
+            );
+          }
+
         },
         {
           title: "租赁状态",
           key: "rentStatus",
-          width: 100,
+          minWidth: this.$common.getColumnWidth(4),
           align: 'center'
         }
       ]

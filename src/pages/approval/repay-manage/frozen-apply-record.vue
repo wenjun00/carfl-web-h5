@@ -80,7 +80,7 @@ export default class FrozenApplyRecord extends Page {
     this.columns1 = [
       {
         title: '操作',
-        minWidth: 100,
+        minWidth: this.$common.getColumnWidth(4),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -115,19 +115,34 @@ export default class FrozenApplyRecord extends Page {
         align: 'center',
         editable: true,
         title: '冻结金额',
-        key: 'remitAmount'
+        key: 'remitAmount',
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => {
+          return h(
+            "div",
+            {
+              style: {
+                textAlign: "right"
+              }
+            },
+            this.$filter.toThousands(row.financingAmount)
+          );
+        }
+
       },
       {
         align: 'center',
         editable: true,
         title: '冻结期数',
-        key: 'periods'
+        key: 'periods',
+        minWidth: this.$common.getColumnWidth(2)
       },
       {
         align: 'center',
         editable: true,
         title: '订单环节',
         key: 'orderLink',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', {}, this.$dict.getDictName(row.orderLink))
         }
@@ -137,6 +152,7 @@ export default class FrozenApplyRecord extends Page {
         editable: true,
         title: '订单状态',
         key: 'orderStatus',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', {}, this.$dict.getDictName(row.orderStatus))
         }
@@ -146,6 +162,7 @@ export default class FrozenApplyRecord extends Page {
         editable: true,
         title: '申请时间',
         key: 'applyDate',
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             'span',
@@ -157,25 +174,29 @@ export default class FrozenApplyRecord extends Page {
         align: 'center',
         editable: true,
         title: '客户姓名',
-        key: 'name'
+        key: 'name',
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         align: 'center',
         editable: true,
         title: '证件号码',
-        key: 'idCard'
+        key: 'idCard',
+        minWidth: this.$common.getColumnWidth(6)
       },
       {
         align: 'center',
         editable: true,
         title: '手机号',
-        key: 'mobileNumber'
+        key: 'mobileNumber',
+        minWidth: this.$common.getColumnWidth(5)
       },
       {
         align: 'center',
         editable: true,
         title: '订单创建时间',
         key: 'orderCreateTime',
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             'span',
@@ -188,6 +209,7 @@ export default class FrozenApplyRecord extends Page {
         editable: true,
         title: '订单号',
         key: 'orderNumber',
+      minWidth: this.$common.getColumnWidth(5),
         render: (h, { row, column, index }) => {
           return h(
             'i-button',
@@ -210,6 +232,7 @@ export default class FrozenApplyRecord extends Page {
         editable: true,
         title: '合同生效日期',
         key: 'contractDate',
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             'span',
@@ -221,7 +244,8 @@ export default class FrozenApplyRecord extends Page {
         align: 'center',
         editable: true,
         title: '备注',
-        key: 'remitRemark'
+        key: 'remitRemark',
+        minWidth: this.$common.getColumnWidth(6)
       }
     ]
   }

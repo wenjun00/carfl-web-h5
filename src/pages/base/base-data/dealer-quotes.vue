@@ -125,7 +125,7 @@
           title: "操作",
           align: "center",
           fixed: "left",
-          minWidth: 250,
+        minWidth: this.$common.getColumnWidth(8),
           render: (h, {
             row,
             column,
@@ -210,7 +210,7 @@
           key: "productPackageName",
           align: "center",
           // fixed: "left",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(8),
           editable: true
         },
         {
@@ -218,119 +218,225 @@
           key: "quotationName",
           align: "center",
           // fixed: "left",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(5),
           editable: true
         },
         {
           title: "品牌",
           key: "carBrandName",
           align: "center",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(5),
           editable: true
         },
         {
           title: "系列",
           key: "carSeriesName",
           align: "center",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(5),
           editable: true
         },
         {
           title: "型号",
           key: "carName",
           align: "center",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(5),
           editable: true
         },
         {
           title: "颜色",
           key: "carColor",
           align: "center",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(3),
           editable: true
         },
         {
           title: "市场指导价",
           key: "marketGuidingPrice",
           align: "center",
-          // width: 160,
-          editable: true
+          editable: true,
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.marketGuidingPrice)
+            );
+          }
+
         },
         {
           title: "经销商价格",
           key: "dealerGuidingPrice",
           align: "center",
-          // width: 160,
-          editable: true
+          editable: true,
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.dealerGuidingPrice)
+            );
+          }
         },
         {
           title: "首期金额",
           key: "firstPayment",
           align: "center",
-          // width: 160,
-          editable: true
+          editable: true,
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.firstPayment)
+            );
+          }
+
         },
         {
           title: "融资金额",
           key: "financeAmount",
           align: "center",
-          // width: 160,
-          editable: true
+          editable: true,
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.financeAmount)
+            );
+          }
         },
         {
           title: "融资期数",
           key: "periods",
           align: "center",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(2),
           editable: true
         },
         {
           title: "租金（月）",
           key: "monthPay",
           align: "center",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(2),
           editable: true
         },
         {
           title: "购置税",
           key: "purchaseTaxMoney",
           align: "center",
-          // width: 160,
-          editable: true
+          editable: true,
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.purchaseTaxMoney)
+            );
+          }
+
         },
         {
           title: "路桥费",
           key: "roadBridgeFee",
           align: "center",
-          // width: 160,
-          editable: true
+          editable: true,
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.roadBridgeFee)
+            );
+          }
+
         },
         {
           title: "保险费",
           key: "annualAmount",
           align: "center",
-          // width: 160,
-          editable: true
+          editable: true,
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.annualAmount)
+            );
+          }
+
         },
         {
           title: "GPS费",
           key: "gpsFee",
           align: "center",
-          // width: 160,
-          editable: true
+          editable: true,
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.gpsFee)
+            );
+          }
+
         },
         {
           title: "其他费用",
           key: "otherFee",
           align: "center",
-          // width: 160,
-          editable: true
+          editable: true,
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.otherFee)
+            );
+          }
+
         },
         {
           title: "状态",
           key: "status",
           align: "center",
-          // width: 90,
+          minWidth: this.$common.getColumnWidth(3),
           editable: true,
           render: (h, {
             row,

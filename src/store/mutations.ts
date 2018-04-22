@@ -55,7 +55,7 @@ export default {
    * @param state 
    * @param page 
    */
-  openPage(state, target, params = {}) {
+  openPage(state, target) {
     // TODO: 传递至应该是菜单对象，从菜单中查询而非自定义对象
     let page: any
 
@@ -63,16 +63,19 @@ export default {
       page = state.pageList.find(x => x.path === target)
     } else {
       // 菜单对象
-      page = target
+      page = {
+        path: target.path,
+        resoname: target.resoname,
+        params: target.params // 添加页面参数
+      }
     }
 
-    // 添加页面参数
-    page.params = params
+    let pageModel = state.pageList.find(x => x.path === page.path)
 
-    let hasPage = state.pageList.find(x => x.path === page.path)
-
-    if (!hasPage) {
+    if (!pageModel) {
       state.pageList.push(page)
+    }else{
+      pageModel.params = target.params
     }
 
     state.currentPage = page.path

@@ -251,7 +251,7 @@ export default class OrgUserManage extends Page {
       },
       {
         title: '操作',
-        minWidth: 360,
+        minWidth: this.$common.getColumnWidth(6),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -422,28 +422,28 @@ export default class OrgUserManage extends Page {
         title: '用户名',
         key: 'userUsername',
         editable: true,
-        minWidth: 90
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         align: 'center',
         title: '姓名',
         editable: true,
         key: 'userRealname',
-        minWidth: 90
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         align: 'center',
         title: '所属机构',
         editable: true,
         key: 'deptName',
-        minWidth: 90
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         align: 'center',
         editable: true,
         title: '状态',
         key: 'status',
-        minWidth: 90,
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, columns, index }) => {
           if (row.userStatus === 0) {
             return h('span', {}, '启用')
@@ -456,27 +456,31 @@ export default class OrgUserManage extends Page {
         align: 'center',
         editable: true,
         title: '电话',
-        key: 'userPhone'
+        key: 'userPhone',
+        minWidth: this.$common.getColumnWidth(5),
       },
       {
         align: 'center',
         editable: true,
         title: '备注',
         key: 'userRemark',
-        ellipsis: true
+        ellipsis: true,
+        minWidth: this.$common.getColumnWidth(10),
       },
 
       {
         align: 'center',
         editable: true,
         title: '创建人',
-        key: 'operatorName'
+        key: 'operatorName',
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         align: 'center',
         editable: true,
         title: '创建时间',
         key: 'operateTime',
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, columns, index }) => {
           return h(
             'span',
@@ -489,6 +493,7 @@ export default class OrgUserManage extends Page {
         title: '数据权限',
         editable: true,
         key: 'userManager',
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h('span', {}, this.$dict.getDictName(row.userManager))
         }

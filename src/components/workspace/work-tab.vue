@@ -102,14 +102,12 @@ export default class WorkTab extends Vue {
       activated.call(component);
     }
     let page = this.pageList.find(x => x.path === value) || {};
-
     // 处理页面传参情况
     if (page.params) {
       this.$nextTick(() => {
         let component = getTargetComponent();
-
-        if (component && component.$options["loaded"]) {
-          let loaded = component.$options["loaded"];
+        if (component && component["loaded"]) {
+          let loaded = component["loaded"];
           loaded.call(component, Object.assign({}, page.params));
           page.params = null;
         }

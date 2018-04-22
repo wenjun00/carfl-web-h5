@@ -194,7 +194,7 @@ export default class CustomerRepay extends Page {
     this.columns1 = [
       {
         title: "操作",
-        width: 210,
+        minWidth: this.$common.getColumnWidth(5),
         align: "center",
         fixed: "left",
         render: (h, { row, column, index }) => {
@@ -272,7 +272,7 @@ export default class CustomerRepay extends Page {
         align: "center",
         title: "订单号",
         editable: true,
-        // width: 160,
+        minWidth: this.$common.getColumnWidth(6),
         key: "orderNumber",
         render: (h, { row, column, index }) => {
           return h(
@@ -298,7 +298,7 @@ export default class CustomerRepay extends Page {
         title: "客户结算号",
         key: "clientNumber",
         editable: true,
-        // width: 150,
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             "i-button",
@@ -322,29 +322,29 @@ export default class CustomerRepay extends Page {
         align: "center",
         title: "客户姓名",
         editable: true,
-        key: "name"
-        // width: 100
+        key: "name",
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: "center",
         title: " 证件号",
         editable: true,
-        key: "idCard"
-        // width: 160
+        key: "idCard",
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         align: "center",
         title: " 手机号",
         editable: true,
-        key: "mobileMain"
-        // width: 120
+        key: "mobileMain",
+        minWidth: this.$common.getColumnWidth(5),
       },
       {
         align: "center",
         title: " 订单创建时间",
         editable: true,
         key: "createTime",
-        // width: 160,
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             "span",
@@ -357,7 +357,7 @@ export default class CustomerRepay extends Page {
         title: " 合同生效日",
         editable: true,
         key: "contractDate",
-        // width: 160,
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             "span",
@@ -369,50 +369,109 @@ export default class CustomerRepay extends Page {
         align: "center",
         title: " 待还本金",
         editable: true,
-        key: "principalReceivable"
-        // width: 90
+        key: "principalReceivable",
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => {
+          return h(
+            "div",
+            {
+              style: {
+                textAlign: "right"
+              }
+            },
+            this.$filter.toThousands(row.principalReceivable)
+          );
+        }
+
       },
       {
         align: "center",
         title: " 待还利息",
         editable: true,
-        key: "interestReceivable"
-        // width: 90
+        key: "interestReceivable",
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => {
+          return h(
+            "div",
+            {
+              style: {
+                textAlign: "right"
+              }
+            },
+            this.$filter.toThousands(row.interestReceivable)
+          );
+        }
+
       },
       {
         align: "center",
         title: " 待还管理费",
         editable: true,
-        key: "manageFeeReceivable"
-        // width: 90
+        key: "manageFeeReceivable",
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => {
+          return h(
+            "div",
+            {
+              style: {
+                textAlign: "right"
+              }
+            },
+            this.$filter.toThousands(row.manageFeeReceivable)
+          );
+        }
+
       },
       {
         align: "center",
         title: " 待还总金额",
         editable: true,
-        key: "sumReceivable"
-        // width: 90
+        key: "sumReceivable",
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => {
+          return h(
+            "div",
+            {
+              style: {
+                textAlign: "right"
+              }
+            },
+            this.$filter.toThousands(row.sumReceivable)
+          );
+        }
+
       },
       {
         align: "center",
         title: " 待还罚息",
         editable: true,
-        key: "penaltyReceivable"
-        // width: 90
+        key: "penaltyReceivable",
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => {
+          return h(
+            "div",
+            {
+              style: {
+                textAlign: "right"
+              }
+            },
+            this.$filter.toThousands(row.penaltyReceivable)
+          );
+        }
       },
       {
         align: "center",
         title: " 利率%/月",
         editable: true,
-        key: "productRate"
-        // width: 90
+        key: "productRate",
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         align: "center",
         title: " 结算通道",
         editable: true,
         key: "settlementChannel",
-        // width: 100,
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.settlementChannel));
         }
@@ -420,7 +479,7 @@ export default class CustomerRepay extends Page {
       {
         align: "center",
         title: " 归属公司",
-        // width: 100,
+        minWidth: this.$common.getColumnWidth(4),
         editable: true,
         key: "companyChinaName"
       }

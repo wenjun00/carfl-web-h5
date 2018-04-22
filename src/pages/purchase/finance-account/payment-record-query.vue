@@ -106,7 +106,7 @@
       this.columns1 = [{
         title: '操作',
         align: 'center',
-        width: 180,
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, {
           row,
           columns,
@@ -139,11 +139,13 @@
         key: 'orderNumber',
         align: 'center',
         editable: true,
+        minWidth: this.$common.getColumnWidth(5),
       }, {
         title: '付款类型',
         key: 'refundType',
         align: 'center',
         editable: true,
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, {
           row,
           column,
@@ -155,6 +157,7 @@
         title: '申请状态',
         key: 'applicationStatus',
         align: 'center',
+        minWidth: this.$common.getColumnWidth(3),
         editable: true,
         render: (h, {
           row,
@@ -167,17 +170,31 @@
         title: '付款客户名',
         key: 'customerName',
         align: 'center',
+        minWidth: this.$common.getColumnWidth(3),
         editable: true,
       }, {
         title: '付款金额',
         key: 'refundTotalAmount',
         align: 'center',
         editable: true,
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => {
+          return h(
+            "div",
+            {
+              style: {
+                textAlign: "right"
+              }
+            },
+            this.$filter.toThousands(row.refundTotalAmount)
+          );
+        }
       }, {
         title: '申请时间',
         key: 'operateTime',
         align: 'center',
         editable: true,
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, {
           row,
           column,
@@ -189,6 +206,7 @@
         title: '制单人',
         key: 'operator',
         align: 'center',
+        minWidth: this.$common.getColumnWidth(3),
         editable: true,
       }]
     }

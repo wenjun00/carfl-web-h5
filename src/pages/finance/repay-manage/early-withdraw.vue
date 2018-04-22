@@ -7,7 +7,7 @@
         <i-form-item>
           <i-input placeholder="请录入客户姓名\证件号码"></i-input>
         </i-form-item>
-      
+
       </template>
     </data-form>
     <data-box :id="428" :columns="columns1" :data="data1" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
@@ -199,7 +199,7 @@
     created() {
       this.columns1 = [{
           title: "操作",
-          // width: 220,
+        minWidth: this.$common.getColumnWidth(5),
           align: "center",
           fixed: "left",
           render: (h, {
@@ -244,7 +244,7 @@
           align: "center",
           title: "订单号",
           editable: true,
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(6),
           key: 'orderNumber',
           render: (h, {
             row,
@@ -270,7 +270,7 @@
           title: "客户结算号",
           key: "clientNumber",
           editable: true,
-          // width: 150,
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -295,28 +295,28 @@
           title: "客户姓名",
           editable: true,
           key: "name",
-          // width: 100
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           align: "center",
           title: " 证件号",
           editable: true,
           key: "idCard",
-          // width: 160
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           align: "center",
           title: " 手机号",
           editable: true,
           key: "mobileMain",
-          // width: 120
+          minWidth: this.$common.getColumnWidth(5),
         },
         {
           align: "center",
           title: " 订单创建时间",
           editable: true,
           key: "createTime",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -330,7 +330,7 @@
           title: " 合同生效日",
           editable: true,
           key: "contractDate",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(4),
           render: (h, {
             row,
             column,
@@ -344,7 +344,7 @@
           title: " 结算通道",
           editable: true,
           key: "settlementChannel",
-          // width: 100,
+          minWidth: this.$common.getColumnWidth(4),
           render: (h, {
             row,
             column,
@@ -356,7 +356,7 @@
         {
           align: "center",
           title: " 归属公司",
-          // width: 100,
+          minWidth: this.$common.getColumnWidth(4),
           editable: true,
           key: "companyChinaName"
         }
