@@ -10,7 +10,6 @@
         </i-form-item>
         <i-form-item prop="dateRange" label="日期：">
           <i-date-picker class="second-data-three" v-model="gatherModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
-          ~
         </i-form-item>
         <!--<i-button class="blueButton" @click="getEarlyPayList">搜索</i-button>-->
       </template>

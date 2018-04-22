@@ -1,7 +1,7 @@
 <!--新增组织-->
 <template>
   <section class="component edit-org">
-    <i-form :label-width="110" class="editOrg" ref="add-org-form" :model="deptObject" :rules="rules">
+    <i-form :label-width="110" class="editOrg" ref="add-org-form" :model="deptObj" :rules="rules">
       <i-row>
         <i-col :span="24">
           <i-form-item label="机构名称" prop="deptName">

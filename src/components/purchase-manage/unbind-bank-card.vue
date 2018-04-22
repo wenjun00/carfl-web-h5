@@ -2,16 +2,16 @@
 <template>
   <section class="component unbind-bank-card">
     <i-form :label-width="110" class="item-margin-top20" :model="unbindBankCardModal" :rules="rules">
-      <i-form-item label="客户姓名">
+      <i-form-item label="客户姓名" prop="name">
         <i-input class="item-input-width60" v-model="unbindBankCardModal.name" readonly></i-input>
       </i-form-item>
-      <i-form-item label="开户银行">
+      <i-form-item label="开户银行" prop="depositBank">
         <i-input class="item-input-width60" v-model="unbindBankCardModal.depositBank" readonly></i-input>
       </i-form-item>
-      <i-form-item label="银行卡号">
+      <i-form-item label="银行卡号" prop="cardNumber">
         <i-input class="item-input-width60" v-model="unbindBankCardModal.cardNumber" readonly></i-input>
       </i-form-item>
-      <i-form-item label="开户省市">
+      <i-form-item label="开户省市" prop="city">
         <i-input class="item-input-width60" v-model="unbindBankCardModal.city" readonly></i-input>
       </i-form-item>
       <i-form-item label="银行预留手机号" prop="reservedPhoneNumber">

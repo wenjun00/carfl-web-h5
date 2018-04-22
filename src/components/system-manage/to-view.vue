@@ -1,7 +1,7 @@
 <!--查看模块功能-->
 <template>
   <section class="component to-view">
-    <i-form :label-width="110" class="data-form">
+    <i-form :label-width="110" :model="ToviewrowData" class="data-form">
       <i-form-item label="资源初始化名称" prop="resoInitName">
         <i-input v-model="ToviewrowData.resoInitName" readonly></i-input>
       </i-form-item>
