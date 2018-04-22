@@ -66,14 +66,16 @@ export default {
       page = {
         path: target.path,
         resoname: target.resoname,
-        params: target.resoname // 添加页面参数
+        params: target.params // 添加页面参数
       }
     }
 
-    let hasPage = state.pageList.find(x => x.path === page.path)
+    let pageModel = state.pageList.find(x => x.path === page.path)
 
-    if (!hasPage) {
+    if (!pageModel) {
       state.pageList.push(page)
+    }else{
+      pageModel.params = target.params
     }
 
     state.currentPage = page.path

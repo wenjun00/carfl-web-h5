@@ -173,16 +173,14 @@ export default class OrderQuery extends Page {
                           onOk: () => {
                             this.collectionRowData(row);
                             this.$nextTick(() => {
-                              this.openPage(
-                                {
-                                  resoname: "融资租赁申请",
-                                  path:
-                                    "purchase/purchase-manage/financing-lease-apply"
-                                },
-                                {
+                              this.openPage({
+                                resoname: "融资租赁申请",
+                                path:
+                                  "purchase/purchase-manage/financing-lease-apply",
+                                params: {
                                   row: row
                                 }
-                              );
+                              });
                             });
                           }
                         });
@@ -260,14 +258,14 @@ export default class OrderQuery extends Page {
                           content: "确认申请收款吗？",
                           onOk: () => {
                             this.collectionRowData(row);
-                            this.openPage(
-                              {
-                                resoname: "销售收款申请",
-                                path:
-                                  "purchase/finance-account/sale-gathering-apply"
-                              },
-                              row
-                            );
+                            this.openPage({
+                              resoname: "销售收款申请",
+                              path:
+                                "purchase/finance-account/sale-gathering-apply",
+                              params: {
+                                row: row
+                              }
+                            });
                           }
                         });
                       }
@@ -312,20 +310,20 @@ export default class OrderQuery extends Page {
                           content: "确认申请收款吗？",
                           onOk: () => {
                             this.collectionRowData(row);
-                            this.openPage(
-                              {
-                                resoname: "销售收款申请",
-                                path:
-                                  "purchase/finance-account/sale-gathering-apply"
-                              },
-                              row
-                            );
+                            this.openPage({
+                              resoname: "销售收款申请",
+                              path:
+                                "purchase/finance-account/sale-gathering-apply",
+                              params: {
+                                row: row
+                              }
+                            });
                           }
                         });
                       }
                     }
                   },
-                  "申请收款"
+                  "申请收款111"
                 )
               ]);
             } else {
