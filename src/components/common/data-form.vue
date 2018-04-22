@@ -228,19 +228,6 @@ export default class DataForm extends Vue {
         display: inline;
       }
     }
-
-    .ivu-input-type,
-    .ivu-input-wrapper,
-    .ivu-select,
-    .ivu-select-single .ivu-select-selection {
-      width: 170px;
-      display: inline-block;
-    }
-    // .ivu-date-picker {
-    //   .ivu-select-dropdown {
-    //     width: 200px;
-    //   }
-    // }
   }
 }
 </style>

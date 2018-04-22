@@ -1,6 +1,6 @@
 <template>
   <section class="component work-tab full">
-    <Tabs v-model="currentPage" closable :animated="false" @on-tab-remove="closePage">
+    <Tabs type="card" v-model="currentPage" closable :animated="false" @on-tab-remove="closePage">
       <TabPane v-for="page in pageList" :key="page.path" :label="page.resoname" :name="page.path" :closable="page.path !== 'home'">
         <component ref="pages" :is="getComponentName(page)"></component>
       </TabPane>
@@ -78,15 +78,17 @@ export default class WorkTab extends Vue {
    * 监听当前页面变化
    */
   @Watch("currentPage")
-  onPageChanged(val: string, oldVal: string) {
+  onPageChanged(value: string) {
     let components = <Array<Vue>>this.$refs["pages"];
     let component = components.find(
       x =>
         x.$options.name ===
         this.getComponentName({
-          path: val
+          path: value
         })
     );
+
+    let page = this.pageList.find(x => x.path === value) || {};
 
     if (
       component &&
@@ -94,7 +96,7 @@ export default class WorkTab extends Vue {
       component.$options.activated.length > 0
     ) {
       let activated = component.$options.activated[0];
-      activated.call(component);
+      activated.call(component, [page.params]);
     }
   }
 
@@ -109,13 +111,14 @@ export default class WorkTab extends Vue {
 
 <style lang="less">
 .component.work-tab {
-    .close-all-tabs{
-        position:absolute;
-        top:70px;
-        right:10px;
-        border-bottom-style:none;
-        font-size:14px;cursor:pointer;
-    }
+  .close-all-tabs {
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    border-bottom-style: none;
+    font-size: 14px;
+    cursor: pointer;
+  }
   & > .ivu-tabs {
     height: 100%;
     @tab-bar-height: 45px;

@@ -7,10 +7,10 @@
         <i-form-item label="支付日期" prop="dateRange">
           <i-date-picker v-model="model.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
-        <i-form-item prop="personalInfo">
+        <i-form-item prop="personalInfo" label="客户姓名">
           <i-input placeholder="请输入客户姓名、客户号查询" v-model="model.personalInfo"></i-input>
         </i-form-item>
-        <i-form-item prop="payStatus">
+        <i-form-item prop="payStatus" label="城市">
           <i-select placeholder="全部" v-model="model.payStatus">
             <i-option label="初始" value="西安市" key="西安市"></i-option>
             <i-option label="成功" value="宝鸡市" key="宝鸡市"></i-option>

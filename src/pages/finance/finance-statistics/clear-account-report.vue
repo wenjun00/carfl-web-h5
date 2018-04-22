@@ -4,12 +4,12 @@
     <page-header title="清结算日报表" hiddenPrint></page-header>
     <data-form hiddenDateSearch hidden-reset @on-search="getData" :model="model">
       <template slot="input">
-        <i-form-item prop="companyId">
+        <i-form-item prop="companyId" label="统计机构">
           <i-select placeholder="统计机构" v-model="model.companyId" clearable>
             <i-option :label="companyChinaname" :value="id" :key="id" v-for="{id, companyChinaname} in company"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="channel">
+        <i-form-item prop="channel" label="统计通道">
           <i-select placeholder="统计通道" v-model="model.channel">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>

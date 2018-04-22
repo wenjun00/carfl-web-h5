@@ -23,7 +23,7 @@
                         <i-form-item prop="realName" label="姓名：">
                             <i-input v-model="userListModel.realName" placeholder="请输入姓名"></i-input>
                         </i-form-item>
-                        <i-form-item prop="realName" label="状态：">
+                        <i-form-item prop="status" label="状态：">
                             <i-select class="form-input" v-model="userListModel.status">
                                 <i-option label="启用" :value="0" :key="0"></i-option>
                                 <i-option label="停用" :value="1" :key="1"></i-option>

@@ -7,15 +7,15 @@
         <i-form-item prop="dateRange" label="申请日期">
           <i-date-picker v-model="paymentModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
-        <i-form-item prop="orderNumber">
+        <i-form-item prop="orderNumber" label="订单编号">
           <i-input placeholder="请录入订单编号" v-model="paymentModel.orderNumber"></i-input>
         </i-form-item>
-        <i-form-item prop="refundType">
+        <i-form-item prop="refundType" label="付款类型">
           <i-select placeholder="全部付款类型" clearable v-model="paymentModel.refundType">
             <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="applicationStatus">
+        <i-form-item prop="applicationStatus" label="申请状态">
           <i-select placeholder="申请状态" clearable v-model="paymentModel.applicationStatus">
             <i-option v-for="{value,label} in $dict.getDictData('0415')" :key="value" :label="label" :value="value"></i-option>
           </i-select>

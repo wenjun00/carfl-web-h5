@@ -7,13 +7,13 @@
         <i-form-item prop="dynamicParam">
           <i-input placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
         </i-form-item>
-        <i-form-item prop="paymentStatus">
-          <i-select placeholder="全部还款状态" v-model="customerRepayModel.paymentStatus" clearable>
+        <i-form-item prop="paymentStatus" label="还款状态">
+          <i-select placeholder="请选择还款状态" v-model="customerRepayModel.paymentStatus" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="settlementChannel">
-          <i-select placeholder="全部结算通道" v-model="customerRepayModel.settlementChannel" clearable>
+        <i-form-item prop="settlementChannel" label="结算通道">
+          <i-select placeholder="请选择结算通道" v-model="customerRepayModel.settlementChannel" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>

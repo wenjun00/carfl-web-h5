@@ -1,11 +1,11 @@
 <!--编辑收款项-->
 <template>
   <section class="component modify-gather-item">
-    <i-form :label-width="110" class="item-margin-top20">
-      <i-form-item label="项目名称">
+    <i-form :label-width="110" :model="modifyGatherItemModel" class="item-margin-top20">
+      <i-form-item label="项目名称" prop="itemName">
         <i-input v-model="modifyGatherItemModel.itemName"></i-input>
       </i-form-item>
-      <i-form-item label="项目金额">
+      <i-form-item label="项目金额" prop="itemMoney">
         <i-input-number v-model="modifyGatherItemModel.itemMoney" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
 
       </i-form-item>

@@ -1,4 +1,7 @@
 
+
+const unit = 25
+
 /**
  * 公共服务类
  */
@@ -67,4 +70,9 @@ export class CommonService {
     // 生成树形结构
     return rootList.map(fun)
   }
+
+  static getColumnWidth(count) {
+    return count * unit
+  }
+
 }

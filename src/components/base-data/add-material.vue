@@ -1,15 +1,8 @@
-//新增素材
 <template>
   <i-form ref="add-material" :model="addMaterial" :rules="rulesMaterial" :label-width="80">
     <i-form-item label="素材名称" prop="name">
       <i-input v-model="addMaterial.name"></i-input>
     </i-form-item>
-    <!--<i-form-item label="是否启用" prop="isNecessary">
-      <i-switch v-model="addMaterial.isNecessary" size="large">
-        <span slot="open">启用</span>
-        <span slot="close">停用</span>
-      </i-switch>
-    </i-form-item>-->
   </i-form>
 
 </template>
