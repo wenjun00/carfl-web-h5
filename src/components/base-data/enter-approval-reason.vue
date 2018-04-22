@@ -2,10 +2,10 @@
   <div>
     <i-row>
       <i-select class="data-form-item" placeholder="导入类型" clearable v-model="enterReasonModel.type" @on-change="enterChange">
-        <i-option label="退回" :value="374" :key="374"></i-option>
+        <i-option label="退件" :value="374" :key="374"></i-option>
         <i-option label="拒绝" :value="375" :key="375"></i-option>
       </i-select>
-      <i-input class="data-form-input" clearable></i-input>
+      <i-input v-model="enterReasonModel.fileName" class="data-form-input" clearable></i-input>
       <i-button class="blueButton" :disabled="disabledOne" @click="fileSelect">文件选择</i-button>
       <span class="data-form-content" v-if="this.enterReasonModel.type ===''">请选择导入类型并指定模板文件</span>
     </i-row>
@@ -19,54 +19,60 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import FileUpload from "~/components/common/file-upload.tsx.vue";
-@Component({
-  components: {
-    FileUpload
-  }
-})
-export default class EnterApprovalReason extends Vue {
-  private enterReasonModel: any = {
-    type: ''
-  }
-  private disabledOne: Boolean = true;
-  private openUpload: Boolean = false;
-  private file: any = {};
-
-  created() {
-
-  }
-  enterChange() {
-    if (this.enterReasonModel.type !== '') {
-      this.disabledOne = false
-    } else {
-      this.disabledOne = true
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import FileUpload from "~/components/common/file-upload.tsx.vue";
+  @Component({
+    components: {
+      FileUpload
     }
-  }
-  fileSelect() {
-    this.openUpload = true
-  }
-  /**
-   * 上传文件
-   */
-  postFile() {
-    let fileUpload = this.$refs["file-upload"] as FileUpload;
-    fileUpload.upload();
-  }
+  })
+  export default class EnterApprovalReason extends Vue {
+    private enterReasonModel: any = {
+      type: '',
+      fileName:''
+    }
+    private disabledOne: Boolean = true;
+    private openUpload: Boolean = false;
+    private file: any = {};
 
-  onUploadSuccess() {
-    this.openUpload = false
-    this.$nextTick(() => {
+    created() {
+
+    }
+    reset(){
+        this.enterReasonModel.type=''
+        this.enterReasonModel.fileName=''
+    }
+    enterChange() {
+      if (this.enterReasonModel.type !== '') {
+        this.disabledOne = false
+      } else {
+        this.disabledOne = true
+      }
+    }
+    fileSelect() {
+      this.openUpload = true
+    }
+    /**
+     * 上传文件
+     */
+    postFile() {
       let fileUpload = this.$refs["file-upload"] as FileUpload;
-      fileUpload.reset();
-      let fileList: Array<any> = fileUpload.makeList()
-      this.file = fileList[0]
-    });
-  }
+      fileUpload.upload();
+    }
 
-}
+    onUploadSuccess() {
+      this.openUpload = false
+      this.$nextTick(() => {
+        let fileUpload = this.$refs["file-upload"] as FileUpload;
+        fileUpload.reset();
+        let fileList: Array < any > = fileUpload.makeList()
+        this.file = fileList[0]
+        this.enterReasonModel.fileName = this.file.name
+      });
+    }
+
+  }
 
 </script>
 
@@ -75,21 +81,22 @@ export default class EnterApprovalReason extends Vue {
     margin-left: 5px;
     width: 20%;
   }
-
+  
   .data-form-input {
     width: 55%;
     margin-left: 10px
   }
+  
+  .data-form-input {
+    width: 55%;
+    margin-left: 10px;
+  }
+  
+  .data-form-content {
+    display: block;
+    text-align: center;
+    color: gray;
+    margin-top: 20px;
+  }
 
-.data-form-input {
-  width: 55%;
-  margin-left: 10px;
-}
-
-.data-form-content {
-  display: block;
-  text-align: center;
-  color: gray;
-  margin-top: 20px;
-}
 </style>

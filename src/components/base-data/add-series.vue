@@ -47,7 +47,8 @@ export default class addSeries extends Vue {
 				val => {
 					this.$emit('close');
 					this.$Message.success('新增产品系列成功！');
-					this.reset()
+                    this.reset()
+                    this.addSeries = ''
 				},
 				({ msg }) => {
 					this.$Message.error(msg);

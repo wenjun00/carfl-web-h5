@@ -224,7 +224,7 @@
     created() {
       this.columns1 = [{
           title: "操作",
-          minWidth: this.$common.getColumnWidth(5),
+          minWidth: this.$common.getColumnWidth(4),
           align: "center",
           fixed: "left",
           render: (h, {
@@ -311,7 +311,7 @@
           title: "客户结算号",
           editable: true,
           key: "clientNumber",
-          minWidth: this.$common.getColumnWidth(6),
+          minWidth: this.$common.getColumnWidth(4),
           render: (h, {
             row,
             column,
@@ -343,21 +343,21 @@
           title: " 证件号",
           editable: true,
           key: "idCard",
-          minWidth: this.$common.getColumnWidth(6),
+          minWidth: this.$common.getColumnWidth(5),
         },
         {
           align: "center",
           title: " 手机号",
           key: "mobileMain",
           editable: true,
-          minWidth: this.$common.getColumnWidth(5),
+          minWidth: this.$common.getColumnWidth(4),
         },
         {
           align: "center",
           title: " 订单创建时间",
           editable: true,
           key: "createTime",
-          minWidth: this.$common.getColumnWidth(6),
+          minWidth: this.$common.getColumnWidth(5),
           render: (h, {
             row,
             column,

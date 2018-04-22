@@ -154,37 +154,11 @@
         <div class="modal-item-shoukuanpingzheng-div"></div>
         <span>收款凭证</span>
       </div>
-      <!--<i-button class="blueButton" style="float:right">凭证上传</i-button>
-      <i-button class="blueButton" style="float:right">全部下载</i-button>-->
-
-      <i-row>
-        <i-col class="modal-item-fujian" :span="8">
-          <div class="modal-item-upload"
-               @click="openUpload=true">
-            <Icon class="modal-item-upload-icon" type="plus-circled" color="#265ea2" size="40"></Icon>
-            <h2 class="modal-item-upload-add">点击添加附件</h2>
-            <h3 class="modal-item-upload-text">支持jpg/png格式</h3>
-            <h3 class="modal-item-upload-text">建议大小不超过10M</h3>
-          </div>
-        </i-col>
-        <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="v.id"
-               class="modal-item-fanxian">
-          <img :src="v.materialUrl" class="modal-item-fanxian-img">
-        </i-col>
-      </i-row>
+      <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
     </div>
-    <!--<data-box :columns="columns1" :data="data1"></data-box>-->
-
     <template>
       <i-modal title="划扣记录" v-model="deductRecordModal" width="1200">
         <deduct-record ref="deduct-record"></deduct-record>
-      </i-modal>
-    </template>
-
-    <!-- 弹出框 -->
-    <template>
-      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
-        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
       </i-modal>
     </template>
   </section>
@@ -195,7 +169,6 @@
   import Component from "vue-class-component";
   import DataBox from "~/components/common/data-box.vue";
   import DeductRecord from "~/components/finance-manage/deduct-record.vue";
-  import FileUpload from "~/components/common/file-upload.tsx.vue";
   import {
     DataGrid,
     DataGridItem
@@ -206,14 +179,15 @@
   import {
     PaymentScheduleService
   } from "~/services/manage-service/payment-schedule.service";
+  import UploadVoucher from "~/components/common/upload-voucher.vue"
 
   @Component({
     components: {
-      FileUpload,
       DataBox,
       DataGrid,
       DataGridItem,
-      DeductRecord
+      DeductRecord,
+      UploadVoucher
     }
   })
   export default class ConfirmRepayment extends Vue {
@@ -231,32 +205,11 @@
     private collectMoneySum: any = 0
     private collectMoneyId: any = ''
     private collectMoneyItemModel: any = []
+    private fodderList:any =[]
 
-    /**
-     * 上传文件成功回调
-     */
-    uploadSuccess() {
-      this.openUpload = false;
-      this.$nextTick(() => {
-        let fileUpload: any = this.$refs["file-upload"];
-        this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
-          return {
-            // id: v.response.id,
-            materialUrl: v.response.url,
-          }
-        }))
-        fileUpload.reset();
-      });
+    fileNumber(item){
+      this.fodderList = item
     }
-
-    /**
-     * 上传文件
-     */
-    postFile() {
-      let fileUpload = this.$refs["file-upload"] as FileUpload;
-      fileUpload.upload();
-    }
-
     refresh(row) {
       this.remark = ''
       this.collectMoneyId = ''
@@ -411,11 +364,8 @@
         uploadTime: '2017-12-03 14:56:25',
         uploadPerson: '胡开甲'
       }]
-
     }
-
   }
-
 </script>
 
 <style lang="less" scoped>

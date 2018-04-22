@@ -2,8 +2,8 @@
 <template>
   <section class="page approval-reason-manage">
     <page-header title="审批原因管理" hiddenPrint hiddenExport>
-      <!-- <command-button label="导入" icon="daoru" @click="enterInto"></command-button>
-<command-button label="模板下载" icon="xiazai" @click="downloadTemplate"></command-button> -->
+      <command-button label="导入" icon="daoru" @click="enterInto"></command-button>
+      <command-button label="模板下载" icon="xiazai" @click="downloadTemplate"></command-button>
     </page-header>
     <data-form hidden-date-search :model="appReasonModel" :page="pageService" @on-search="seach">
       <template slot="input">
@@ -35,8 +35,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :id="109" :columns="columns" :data="AppRoveReasonList" @onPageChange="seach"
-              :page="pageService"></data-box>
+    <data-box :id="109" :columns="columns" :data="AppRoveReasonList" @onPageChange="seach" :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:10px">
         <i-col :span="24" style="text-align:right;">
@@ -55,8 +54,7 @@
     </template>
     <template>
       <i-modal title="编辑审批原因" v-model="editApprovalReasonModel">
-        <edit-approval-reason ref="edit-approval-reason" @close="closeEditApproval"
-                              :AppRoveReasonList="AppRoveReasonList"></edit-approval-reason>
+        <edit-approval-reason ref="edit-approval-reason" @close="closeEditApproval" :AppRoveReasonList="AppRoveReasonList"></edit-approval-reason>
         <div slot="footer">
           <i-button class="Ghost" @click="editcancel">取消</i-button>
           <i-button class="blueButton" @click="editApproval">保存并退出</i-button>
@@ -80,15 +78,27 @@
   import DataBox from '~/components/common/data-box.vue'
   import Component from 'vue-class-component'
   import SvgIcon from '~/components/common/svg-icon.vue'
-  import {Dependencies} from '~/core/decorator'
-  import {Layout} from '~/core/decorator'
+  import {
+    Dependencies
+  } from '~/core/decorator'
+  import {
+    Layout
+  } from '~/core/decorator'
   import AddApprovalReason from '~/components/base-data/add-approval-reason.vue'
   import EditApprovalReason from '~/components/base-data/edit-approval-reason.vue'
   import EnterApprovalReason from '~/components/base-data/enter-approval-reason.vue'
-  import {ApproveReasonService} from '~/services/manage-service/approve-reason.service'
-  import {PageService} from '~/utils/page.service'
-  import {FilterService} from '~/utils/filter.service'
-  import {CommonService} from '~/utils/common.service'
+  import {
+    ApproveReasonService
+  } from '~/services/manage-service/approve-reason.service'
+  import {
+    PageService
+  } from '~/utils/page.service'
+  import {
+    FilterService
+  } from '~/utils/filter.service'
+  import {
+    CommonService
+  } from '~/utils/common.service'
 
   @Layout('workspace')
   @Component({
@@ -107,11 +117,11 @@
     private columns: any
     private columns2: any
     private appReasonModel: any = {}
-    private data2: Array<any> = []
+    private data2: Array < any > = []
     private searchOptions: Boolean = false
     private isDisabled: Boolean = true
     private fileDataOpen: Boolean = false
-    private AppRoveReasonList: Array<any> = []
+    private AppRoveReasonList: Array < any > = []
     private approvalReasonModel: Boolean = false
     private editApprovalReasonModel: Boolean = false
     private enterIntoReasonModel: Boolean = false
@@ -121,16 +131,18 @@
 
     created() {
       this.seach()
-      this.columns = [
-        {
+      this.columns = [{
           align: 'center',
           title: '操作',
           minWidth: this.$common.getColumnWidth(5),
-          render: (h, {row, column, index}) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('div', [
               h(
-                'i-button',
-                {
+                'i-button', {
                   props: {
                     type: 'text'
                   },
@@ -146,8 +158,7 @@
                 '编辑'
               ),
               h(
-                'i-button',
-                {
+                'i-button', {
                   props: {
                     type: 'text'
                   },
@@ -177,7 +188,11 @@
           align: 'center',
           editable: true,
           minWidth: this.$common.getColumnWidth(3),
-          render: (h, {row, column, index}) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('span', {}, this.$dict.getDictName(row.type))
           }
         },
@@ -187,15 +202,15 @@
           align: 'center',
           minWidth: this.$common.getColumnWidth(3),
           editable: true,
-          render: ((h, {row}) => {
+          render: ((h, {
+            row
+          }) => {
             return h(
-              "div",
-              {
+              "div", {
                 attrs: {
                   title: row.first
                 }
-              },
-              [h("p", this.$filter.subString(row.first, 15))]
+              }, [h("p", this.$filter.subString(row.first, 15))]
             )
           }),
         },
@@ -205,15 +220,15 @@
           align: 'center',
           minWidth: this.$common.getColumnWidth(3),
           editable: true,
-          render: ((h, {row}) => {
+          render: ((h, {
+            row
+          }) => {
             return h(
-              "div",
-              {
+              "div", {
                 attrs: {
                   title: row.second
                 }
-              },
-              [h("p", this.$filter.subString(row.second, 15))]
+              }, [h("p", this.$filter.subString(row.second, 15))]
             )
           }),
         },
@@ -223,15 +238,15 @@
           align: 'center',
           minWidth: this.$common.getColumnWidth(2),
           editable: true,
-          render: ((h, {row}) => {
+          render: ((h, {
+            row
+          }) => {
             return h(
-              "div",
-              {
+              "div", {
                 attrs: {
                   title: row.crc
                 }
-              },
-              [h("p", this.$filter.subString(row.crc, 15))]
+              }, [h("p", this.$filter.subString(row.crc, 15))]
             )
           }),
         },
@@ -240,15 +255,15 @@
           key: 'detail',
           align: 'center',
           minWidth: this.$common.getColumnWidth(7),
-          render: ((h, {row}) => {
+          render: ((h, {
+            row
+          }) => {
             return h(
-              "div",
-              {
+              "div", {
                 attrs: {
                   title: row.detail
                 }
-              },
-              [h("p", this.$filter.subString(row.detail, 15))]
+              }, [h("p", this.$filter.subString(row.detail, 15))]
             )
           }),
           editable: true
@@ -266,7 +281,11 @@
           align: 'center',
           minWidth: this.$common.getColumnWidth(6),
           editable: true,
-          render: (h, {row, columns, index}) => {
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
             return h(
               'span',
               FilterService.dateFormat(row.operatorTime, 'yyyy-MM-dd hh:mm:ss')
@@ -288,6 +307,8 @@
      * 取消导入审批原因
      */
     entercancel() {
+      let _enterapprovalreason: any = this.$refs['enter-approval-reason']
+      _enterapprovalreason.reset()
       this.enterIntoReasonModel = false
     }
 
@@ -295,6 +316,26 @@
      * 确定导入审批原因
      */
     enterApproval() {
+      let _enterapprovalreason: any = this.$refs['enter-approval-reason']
+      let fileId: any = _enterapprovalreason.file.response.id
+      this.approveReasonService
+        .ImportApproveReason({
+          fileId: fileId
+        })
+        .subscribe(
+          val => {
+            this.$Message.success('导入成功！')
+            this.seach()
+            this.enterIntoReasonModel = false
+            let _enterapprovalreason: any = this.$refs['enter-approval-reason']
+            _enterapprovalreason.reset()
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg);
+          }
+        );
     }
 
     /**
@@ -315,15 +356,13 @@
       _addapprovalreason.reset()
     }
 
-    getOrderInfoByTime() {
-    }
+    getOrderInfoByTime() {}
 
     openSearch() {
       this.searchOptions = !this.searchOptions
     }
 
-    exportMonthReport() {
-    }
+    exportMonthReport() {}
 
     /**
      * selectChange
@@ -356,7 +395,9 @@
 
             })
           },
-          ({msg}) => {
+          ({
+            msg
+          }) => {
             this.$Message.error(msg)
           }
         )
@@ -405,7 +446,9 @@
             this.$Message.success('删除成功！')
             this.seach() //刷新
           },
-          ({msg}) => {
+          ({
+            msg
+          }) => {
             this.$Message.error(msg)
           }
         )
@@ -513,6 +556,7 @@
       this.appReasonModel.second = val
     }
   }
+
 </script>
 <style lang="less" scoped>
 

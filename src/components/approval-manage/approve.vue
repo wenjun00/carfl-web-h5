@@ -7,7 +7,7 @@
         <!-- <span>选购信息</span> -->
         <a name="xuangouxinxi" class="xinxi">选购信息</a>
       </div>
-      <data-grid class="data-form-grid" :labelWidth="100" labelAlign="left" contentAlign="left">
+      <data-grid class="data-form-grid" :labelWidth="110" labelAlign="left" contentAlign="left">
         <data-grid-item label="申请省份：" :span="3">{{orderInfo.province?$city.getCityName(orderInfo.province):''}}
         </data-grid-item>
         <data-grid-item label="申请城市：" :span="3">{{orderInfo.city?$city.getCityName(orderInfo.city):''}}</data-grid-item>
@@ -35,7 +35,7 @@
         <div class="data-form-item"></div>
         <a name="cheliangxinxi" class="xinxi">车辆信息</a>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" class="data-form-grid" v-for="item in carOrderInfo" :key="item.id">
+      <data-grid :labelWidth="110" labelAlign="left" contentAlign="left" class="data-form-grid" v-for="item in carOrderInfo" :key="item.id">
         <data-grid-item label="车辆型号" :span="4">{{item.modelName?item.modelName:''}}</data-grid-item>
         <data-grid-item label="上牌地区" :span="4">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>
         <data-grid-item label="车身颜色" :span="4">{{item.vehicleColour?item.vehicleColour:''}}</data-grid-item>
@@ -51,7 +51,7 @@
         <div class="data-form-item"></div>
         <a name="chanpinxinxi" class="xinxi">产品信息</a>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" class="data-form-grid">
+      <data-grid :labelWidth="110" labelAlign="left" contentAlign="left" class="data-form-grid">
         <data-grid-item label="产品系列" :span="3">{{orderInfo.productSeries?orderInfo.productSeries.name:''}}</data-grid-item>
         <data-grid-item label="产品名称" :span="3">{{orderInfo.product?orderInfo.product.name:''}}</data-grid-item>
         <data-grid-item label="产品期数" :span="3">{{!!orderInfo.periods ? $dict.getDictName(orderInfo.periods):0}}</data-grid-item>
@@ -82,7 +82,7 @@
         <div class="data-form-item"></div>
         <a name="gerenziliao" class="xinxi">个人资料</a>
       </div>
-      <data-grid :labelWidth="105" labelAlign="left" contentAlign="left" class="data-form-grid">
+      <data-grid :labelWidth="120" labelAlign="left" contentAlign="left" class="data-form-grid">
         <data-grid-item label="姓名" :span="3">{{orderInfo.personal?orderInfo.personal.name:''}}</data-grid-item>
         <data-grid-item label="性别" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.sex):''}}</data-grid-item>
         <data-grid-item label="出生日期" :span="3">{{personal.birthTime|dateFormat('yyyy-MM-dd')}}</data-grid-item>
@@ -90,12 +90,13 @@
 
         <data-grid-item label="手机号码(主)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMain:''}}</data-grid-item>
         <data-grid-item label="手机号码(次)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMinor:''}}</data-grid-item>
-        <data-grid-item label="身份证号" :span="3">{{orderInfo.personal?orderInfo.personal.idCard:''}}</data-grid-item>
-        <data-grid-item label="婚属状况" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.marital):''}}</data-grid-item>
-
-        <data-grid-item label="身份证有效期" :span="6">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? orderInfo.personal.idCardValidityPeriodType
+        <data-grid-item label="身份证有效期" :span="3">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? orderInfo.personal.idCardValidityPeriodType
           :orderInfo.personal.idCardValidityPeriodSection):''}}
         </data-grid-item>
+        <data-grid-item label="婚属状况" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.marital):''}}</data-grid-item>
+
+        <data-grid-item label="身份证号" :span="6">{{orderInfo.personal?orderInfo.personal.idCard:''}}</data-grid-item>
+
         <data-grid-item label="发证机关" :span="6">{{orderInfo.personal?orderInfo.personal.issuer:''}}</data-grid-item>
 
         <data-grid-item label="身份证地址" :span="12">{{orderInfo.personal?(orderInfo.personal.idCardAddressDetail?orderInfo.personal.idCardAddressDetail:''):''}}</data-grid-item>
@@ -112,11 +113,11 @@
         <data-grid-item label="电费账号" :span="3">{{orderInfo.personal?orderInfo.personal.electricityAccount:''}}</data-grid-item>
         <data-grid-item label="电费密码" :span="3">{{orderInfo.personal?orderInfo.personal.electricityPassword:''}}</data-grid-item>
 
-        <data-grid-item label="本市房产地址" :span="3">{{orderInfo.personal?orderInfo.personal.cityOwnhouseAddressDetail:''}}</data-grid-item>
+        <data-grid-item label="本市房产地址" :span="12">{{orderInfo.personal?orderInfo.personal.cityOwnhouseAddressDetail:''}}</data-grid-item>
 
-        <data-grid-item label="教育程度" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.education):''}}</data-grid-item>
-        <data-grid-item label="毕业院校" :span="3">{{orderInfo.personal?orderInfo.personal.school:''}}</data-grid-item>
-        <data-grid-item label="是否接受现场勘查" :span="6">
+        <data-grid-item label="教育程度" :span="4">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.education):''}}</data-grid-item>
+        <data-grid-item label="毕业院校" :span="4">{{orderInfo.personal?orderInfo.personal.school:''}}</data-grid-item>
+        <data-grid-item label="是否接受现场勘查" :span="4">
           <i-radio-group v-model="personal.houseProspecting">
             <i-radio :label="29" :value="29" :key="29" disabled>是</i-radio>
             <i-radio :label="30" :value="30" :key="30" disabled>否</i-radio>
@@ -130,7 +131,7 @@
         <div class="data-form-item"></div>
         <a name="zhiyexinxi" class="xinxi">职业信息</a>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" class="data-form-grid">
+      <data-grid :labelWidth="110" labelAlign="left" contentAlign="left" class="data-form-grid">
         <data-grid-item label="单位名称" :span="6">{{personalJobInfo.companyName}}</data-grid-item>
         <data-grid-item label="部门" :span="6">{{personalJobInfo.department}}</data-grid-item>
 
@@ -159,9 +160,9 @@
         <div class="data-form-item"></div>
         <a name="lianxirenxinxi" class="xinxi">联系人信息</a>
       </div>
-      <i-table width="760" highlight-row ref="databox1" :columns="immediateColumns" :data="immediateContacts"></i-table>
+      <i-table width="1000" highlight-row ref="databox1" :columns="immediateColumns" :data="immediateContacts"></i-table>
       <span>其他联系人（提示：必填3个其他联系人）</span>
-      <i-table width="760" highlight-row ref="databox2" :columns="otherColumns" :data="otherContactsInfo"></i-table>
+      <i-table width="1000" highlight-row ref="databox2" :columns="otherColumns" :data="otherContactsInfo"></i-table>
     </i-row>
     <!--客户来源-->
     <i-row class="data-form">
@@ -169,7 +170,7 @@
         <div class="data-form-item"></div>
         <a name="kehulaiyuan" class="xinxi">客户来源</a>
       </div>
-      <table border="1" width="760" class="data-form-table">
+      <table border="1" width="1000" class="data-form-table">
         <tr>
           <td bgColor="#F5F5F5">通过宣传</td>
           <td colspan="4">
@@ -563,7 +564,7 @@
   
   .data-form-grid {
     margin-top: 10px;
-    width: 760px;
+    width: 1000px;
     font-size: 14px
   }
   

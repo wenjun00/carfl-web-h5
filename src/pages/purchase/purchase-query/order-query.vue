@@ -37,7 +37,7 @@
 
     <!--订单详情-->
     <template>
-      <i-modal v-model="purchaseInfoModal" title="订单详情" width="1000" class="purchaseInformation">
+      <i-modal v-model="purchaseInfoModal" title="订单详情" width="1200" class="purchaseInformation">
         <purchase-information ref="purchase-information"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
