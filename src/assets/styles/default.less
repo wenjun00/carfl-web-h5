@@ -113,8 +113,23 @@ body,
     .ivu-input-type,
     .ivu-input-wrapper,
     .ivu-select,
+    .ivu-input-number,
     .ivu-select-single .ivu-select-selection {
-      // max-width: 320px;
+      width: 240px;
+    }
+  }
+  .data-form {
+    .ivu-input-type,
+    .ivu-input-wrapper,
+    .ivu-select,
+    .ivu-select-single .ivu-select-selection {
+      width: 180px;
+      display: inline-block;
+    }
+    .ivu-date-picker {
+      .ivu-date-picker-editor {
+        width: 200px;
+      }
     }
   }
 }
@@ -167,7 +182,7 @@ body,
     .data-grid-item {
       border-right: 1px solid @DataGridColor  !important;
       border-bottom: 1px solid @DataGridColor  !important;
-      .data-grid-item__label{
+      .data-grid-item__label {
         padding-right: 8px;
       }
       .data-grid-item__separate {
