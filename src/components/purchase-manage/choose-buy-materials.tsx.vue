@@ -295,7 +295,7 @@ export default class ChooseBuyMaterials extends Vue {
   private addPrdShow: Boolean = true;
   private changePrdShow: Boolean = false;
   private companyList: any = []; // 公司信息
-  private carDataSet: any = [];
+
   private rowData: any = null;
   private depositCashData: any = []; // 保证金
   private finalCashData: any = []; // 尾付金额
@@ -311,9 +311,9 @@ export default class ChooseBuyMaterials extends Vue {
   private addOpen: Boolean = false;
   private flag: Boolean = true;
   private index: any = "";
-
+  public carDataSet: any = [];
   // 选购信息数据
-  private chooseModel: any = {
+  public chooseModel: any = {
     province: "", // 省份
     city: "", // 城市
     companyId: "", // 公司ID
@@ -326,7 +326,7 @@ export default class ChooseBuyMaterials extends Vue {
   };
 
   // 产品信息
-  private productModel: any = {
+  public productModel: any = {
     vehicleAmount: 0, // 车辆参考总价
     finalPayment: 0, // 尾付本金
     initialPayment: 0, // 首付金额
