@@ -158,6 +158,9 @@
         this.$Message.error(msg)
       })
     }
+    activated() {
+      this.getGatherListByCondition()
+    }
     created() {
       this.getGatherListByCondition()
       this.columns1 = [{
@@ -186,7 +189,7 @@
                       let _repayment: any = this.$refs['confirm-gather']
                       _repayment.refresh(row)
                     })
-                    this.check = false
+                    this.check = true
                     this.currentRow = row
                   }
                 }

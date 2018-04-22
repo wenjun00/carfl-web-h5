@@ -185,8 +185,8 @@
             _uploadFodder.Reverse(data.applicationPhaseUploadResources)
             let _uploadFodderTwo:any = this.$refs['upload-voucher-two']
             _uploadFodderTwo.Reverse(data.collectMoneyPhaseUploadResources)
-            this.inputBlur()
           })
+          this.inputBlur()
         }, ({
               msg
             }) => {
