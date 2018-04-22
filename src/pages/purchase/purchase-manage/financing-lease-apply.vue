@@ -98,8 +98,6 @@ import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.
 import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue"; // 客户联系人
 import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue"; // 客户来源
 
-import { ValidateInterface } from "~/interfaces/validate.interface";
-
 const ModuleState = namespace("purchase", State);
 
 @Layout("workspace")
@@ -198,20 +196,16 @@ export default class FinancingLeaseApply extends Page {
   /**
    * 执行流程操作
    */
-  onNextStep() {
-    let tab = this.$refs[this.currentTab] as ValidateInterface;
-    console.log(111)
+  async onNextStep() {
+    let tab = this.$refs[this.currentTab] as any;
+   console.log(tab)
     // 验证当前页面
-    tab
-      .validate()
-      .then(() => {
-        console.log('ccc')
-        this.currentStep++;
-        this.currentTab = this.applicationTabList[this.currentStep];
-      })
-      .catch(() => {
-        console.log('ccc')
-      });
+    let result = await tab.validate();
+
+    if (result) {
+      this.currentStep++;
+      this.currentTab = this.applicationTabList[this.currentStep];
+    }
   }
 
   /**
@@ -396,7 +390,7 @@ export default class FinancingLeaseApply extends Page {
 
     // 执行验证
     for (let key of this.applicationTabList) {
-      let tab = this.$refs[key] as ValidateInterface;
+      let tab = this.$refs[key] as any;
       result = result && (await tab.validate());
       if (!result) {
         break;
