@@ -410,3 +410,11 @@
   }
 
 </style>
+ <style lang="less">
+ .ivu-input-wrapper.ivu-input-type,
+ .ivu-select-selection,
+   .ivu-input-number{
+     width:180px;
+   }
+ 
+ </style>

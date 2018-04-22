@@ -5,32 +5,12 @@
       <div class="modal-kehuxinxi"></div>
       <span>客户信息</span>
     </div>
-    <data-grid class="modal-item-grid" :labelWidth="90" labelAlign="left" contentAlign="left">
-      <data-grid-item label="客户姓名" :span="2">
-        <template>
-          <div>{{repaymentObj.customerName}}</div>
-        </template>
-      </data-grid-item>
-      <data-grid-item label="身份证号" :span="4">
-        <template>
-          <div>{{repaymentObj.idCard}}</div>
-        </template>
-      </data-grid-item>
-      <data-grid-item label="融资金额（元）" :span="2">
-        <template>
-          <div>{{repaymentObj.financingAmount}}</div>
-        </template>
-      </data-grid-item>
-      <data-grid-item label="期数" :span="2">
-        <template>
-          <div>{{repaymentObj.periods}}</div>
-        </template>
-      </data-grid-item>
-      <data-grid-item label="利率%/月" :span="2">
-        <template>
-          <div>{{repaymentObj.productRate}}</div>
-        </template>
-      </data-grid-item>
+    <data-grid :totalSpan="6" class="modal-item-grid" :labelWidth="150" labelAlign="right" contentAlign="left">
+      <data-grid-item label="客户姓名" :span="2">{{repaymentObj.customerName}}</data-grid-item>
+      <data-grid-item label="身份证号" :span="4">{{repaymentObj.idCard}}</data-grid-item>
+      <data-grid-item label="融资金额（元）" :span="2">{{repaymentObj.financingAmount}}</data-grid-item>
+      <data-grid-item label="期数" :span="2">{{repaymentObj.periods}}</data-grid-item>
+      <data-grid-item label="利率%/月" :span="2">{{repaymentObj.productRate}}</data-grid-item>
     </data-grid>
 
     <table class="modal-item-table" border="1" width="868">
@@ -118,22 +98,20 @@
         </td>
         <td>
           <i-select class="modal-item-select" placeholder="选择结算通道" v-model="v.collectMoneyChannel">
-            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label"
-                      :value="value"></i-option>
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
         <td>
-          <i-select class="modal-item-select" placeholder="选择收款项" v-model="v.collectItem"
-                    @on-change="selectWay($event, v)">
-            <i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel"
-                      :value="item.itemCode"></i-option>
+          <i-select class="modal-item-select" placeholder="选择收款项" v-model="v.collectItem" @on-change="selectWay($event, v)">
+            <i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>
           </i-select>
         </td>
         <td>
           <i-input style="display:inline-block;width:30%;margin-right:10px" v-model="v.collectMoneyAmount" @on-blur="inputBlur" readonly></i-input>
           <i-button class="blueButton">确认划扣</i-button>
         </td>
-        <td><span>已处理</span>
+        <td>
+          <span>已处理</span>
           <i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
@@ -165,318 +143,310 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import DataBox from "~/components/common/data-box.vue";
-  import DeductRecord from "~/components/finance-manage/deduct-record.vue";
-  import {
+import Vue from "vue";
+import Component from "vue-class-component";
+import DataBox from "~/components/common/data-box.vue";
+import DeductRecord from "~/components/finance-manage/deduct-record.vue";
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
+import { Dependencies } from "~/core/decorator";
+import { PaymentScheduleService } from "~/services/manage-service/payment-schedule.service";
+import UploadVoucher from "~/components/common/upload-voucher.vue";
+
+@Component({
+  components: {
+    DataBox,
     DataGrid,
-    DataGridItem
-  } from "@zct1989/vue-component";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    PaymentScheduleService
-  } from "~/services/manage-service/payment-schedule.service";
-  import UploadVoucher from "~/components/common/upload-voucher.vue"
+    DataGridItem,
+    DeductRecord,
+    UploadVoucher
+  }
+})
+export default class ConfirmRepayment extends Vue {
+  @Dependencies(PaymentScheduleService)
+  private paymentScheduleService: PaymentScheduleService;
+  private columns1: any;
+  private repaymentObj: any = {};
+  private rowObj: any = {};
+  private data1: any = [];
+  private collectMoneyDetails: any = [];
+  private financeUploadResources: any = [];
+  private data2: any = [];
+  private deductRecordModal: Boolean = false;
+  private openUpload: Boolean = false;
+  private remark: String = "";
+  private collectMoneySum: any = 0;
+  private collectMoneyId: any = "";
+  private collectMoneyItemModel: any = [];
+  private fodderList: any = [];
 
-  @Component({
-    components: {
-      DataBox,
-      DataGrid,
-      DataGridItem,
-      DeductRecord,
-      UploadVoucher
-    }
-  })
-  export default class ConfirmRepayment extends Vue {
-    @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
-    private columns1: any;
-    private repaymentObj: any = {};
-    private rowObj: any = {};
-    private data1: any = [];
-    private collectMoneyDetails: any = [];
-    private financeUploadResources: any = [];
-    private data2: any = [];
-    private deductRecordModal: Boolean = false;
-    private openUpload: Boolean = false;
-    private remark: String = ''
-    private collectMoneySum: any = 0
-    private collectMoneyId: any = ''
-    private collectMoneyItemModel: any = []
-    private fodderList:any =[]
-
-    fileNumber(item){
-      this.fodderList = item
-    }
-    refresh(row) {
-      this.remark = ''
-      this.collectMoneyId = ''
-      this.repaymentObj = {}
-      this.collectMoneyDetails = []
-      this.financeUploadResources = []
-      this.inputBlur()
-      this.rowObj = row
-      this.paymentScheduleService.getCustomerScheduleBillDetail({
+  fileNumber(item) {
+    this.fodderList = item;
+  }
+  refresh(row) {
+    this.remark = "";
+    this.collectMoneyId = "";
+    this.repaymentObj = {};
+    this.collectMoneyDetails = [];
+    this.financeUploadResources = [];
+    this.inputBlur();
+    this.rowObj = row;
+    this.paymentScheduleService
+      .getCustomerScheduleBillDetail({
         orderId: row.orderId
-      }).subscribe(data => {
-        console.log(data)
-        this.collectMoneyId = data.collectMoneyHistory ? data.collectMoneyHistory.id : ''
-        this.repaymentObj = data
-        this.collectMoneyDetails = data.collectMoneyDetails || []
-        this.financeUploadResources = data.financeUploadResources || []
-        this.collectMoneyItemModel = data.collectMoneyItemModel
-        this.remark = data.remark
-        this.inputBlur()
-      }, ({
-            msg
-          }) => {
-        this.$Message.error(msg)
       })
-    }
-
-    checkDeductRecord() {
-      this.deductRecordModal = true
-      let _record: any = this.$refs['deduct-record']
-      _record.refresh(this.rowObj)
-    }
-
-    /**
-     * 增加还款对象
-     */
-    addObj() {
-      console.log('add')
-      this.collectMoneyDetails.push({
-        collectMoneyAmount: '',
-        collectMoneyChannel: '',
-        collectItem: ''
-      })
-    }
-
-    /**
-     * 删除还款对象
-     */
-    deleteObj(index) {
-      console.log('add')
-      this.collectMoneyDetails.splice(index, 1)
-      this.inputBlur()
-    }
-
-    /**
-     * 计算总计
-     */
-    inputBlur() {
-      let sum: any = 0
-      this.collectMoneyDetails.forEach(v => {
-        sum = sum + (Number(v.collectMoneyAmount) || 0)
-      })
-      console.log(sum)
-      this.collectMoneySum = sum
-    }
-
-    selectWay(code, item) {
-      let target: any = this.collectMoneyItemModel.find((d) => d.itemCode === code)
-      if (target) {
-        item.collectMoneyAmount = target.itemMoney
-        this.inputBlur()
-      }
-    }
-
-    created() {
-      this.columns1 = [{
-        title: '操作',
-        width: '200',
-        align: 'center',
-        render: (h, params) => {
-
-          return h('div', [
-            h('Icon', {
-              props: {
-                type: 'archive',
-                size: '20'
-              },
-              style: {
-                cursor: 'pointer',
-                marginRight: '15px',
-                color: '#199ED8'
-              },
-              on: {
-                click: () => {
-
-                }
-              }
-            }),
-            h('Icon', {
-              props: {
-                type: 'eye',
-                size: '20'
-              },
-              style: {
-                cursor: 'pointer',
-                marginRight: '15px',
-                color: '#199ED8'
-              },
-              on: {
-                click: () => {
-
-                }
-              }
-            }),
-            h('Icon', {
-              props: {
-                type: 'trash-a',
-                size: '20'
-              },
-              style: {
-                cursor: 'pointer',
-                color: '#199ED8'
-              },
-              on: {
-                click: () => {
-
-                }
-              }
-            })
-          ])
-
-        }
-      },
-        {
-          title: '附件信息',
-          align: 'center',
-          key: 'attachmentName'
+      .subscribe(
+        data => {
+          console.log(data);
+          this.collectMoneyId = data.collectMoneyHistory
+            ? data.collectMoneyHistory.id
+            : "";
+          this.repaymentObj = data;
+          this.collectMoneyDetails = data.collectMoneyDetails || [];
+          this.financeUploadResources = data.financeUploadResources || [];
+          this.collectMoneyItemModel = data.collectMoneyItemModel;
+          this.remark = data.remark;
+          this.inputBlur();
         },
-        {
-          align: 'center',
-          title: '上传日期',
-          key: 'uploadTime'
-        },
-        {
-          align: 'center',
-          title: '上传人',
-          key: 'uploadPerson'
+        ({ msg }) => {
+          this.$Message.error(msg);
         }
-      ]
+      );
+  }
 
-      this.data1 = [{
-        attachmentName: 'kb0917',
-        uploadTime: '2017-12-03 14:56:25',
-        uploadPerson: '胡开甲'
-      }]
+  checkDeductRecord() {
+    this.deductRecordModal = true;
+    let _record: any = this.$refs["deduct-record"];
+    _record.refresh(this.rowObj);
+  }
+
+  /**
+   * 增加还款对象
+   */
+  addObj() {
+    console.log("add");
+    this.collectMoneyDetails.push({
+      collectMoneyAmount: "",
+      collectMoneyChannel: "",
+      collectItem: ""
+    });
+  }
+
+  /**
+   * 删除还款对象
+   */
+  deleteObj(index) {
+    console.log("add");
+    this.collectMoneyDetails.splice(index, 1);
+    this.inputBlur();
+  }
+
+  /**
+   * 计算总计
+   */
+  inputBlur() {
+    let sum: any = 0;
+    this.collectMoneyDetails.forEach(v => {
+      sum = sum + (Number(v.collectMoneyAmount) || 0);
+    });
+    console.log(sum);
+    this.collectMoneySum = sum;
+  }
+
+  selectWay(code, item) {
+    let target: any = this.collectMoneyItemModel.find(d => d.itemCode === code);
+    if (target) {
+      item.collectMoneyAmount = target.itemMoney;
+      this.inputBlur();
     }
   }
+
+  created() {
+    this.columns1 = [
+      {
+        title: "操作",
+        width: "200",
+        align: "center",
+        render: (h, params) => {
+          return h("div", [
+            h("Icon", {
+              props: {
+                type: "archive",
+                size: "20"
+              },
+              style: {
+                cursor: "pointer",
+                marginRight: "15px",
+                color: "#199ED8"
+              },
+              on: {
+                click: () => {}
+              }
+            }),
+            h("Icon", {
+              props: {
+                type: "eye",
+                size: "20"
+              },
+              style: {
+                cursor: "pointer",
+                marginRight: "15px",
+                color: "#199ED8"
+              },
+              on: {
+                click: () => {}
+              }
+            }),
+            h("Icon", {
+              props: {
+                type: "trash-a",
+                size: "20"
+              },
+              style: {
+                cursor: "pointer",
+                color: "#199ED8"
+              },
+              on: {
+                click: () => {}
+              }
+            })
+          ]);
+        }
+      },
+      {
+        title: "附件信息",
+        align: "center",
+        key: "attachmentName"
+      },
+      {
+        align: "center",
+        title: "上传日期",
+        key: "uploadTime"
+      },
+      {
+        align: "center",
+        title: "上传人",
+        key: "uploadPerson"
+      }
+    ];
+
+    this.data1 = [
+      {
+        attachmentName: "kb0917",
+        uploadTime: "2017-12-03 14:56:25",
+        uploadPerson: "胡开甲"
+      }
+    ];
+  }
+}
 </script>
 
 <style lang="less" scoped>
-  .component.confirm-repayment {
-    .modal-kehuxinxi {
-      width: 7px;
-      height: 20px;
-      background: #265EA2;
-      display: inline-block;
-      margin-right: 6px;
-      position: relative;
-      top: 4px;
-    }
-    .modal-item-grid {
-      margin-top: 10px
-    }
-    .modal-item-table {
-      margin-top: 10px;
-      text-align: center;
-      border: 1px solid #DDDEE1
-    }
-
-    .modal-item-derate {
-      text-decoration: line-through;
-      margin-right: 6px
-    }
-    .modal-item-surplus {
-      color: red;
-    }
-    .modal-item-huakoujilu {
-      margin-top: 10px;
-      .modal-item-huakoubutton {
-        float: right;
-        margin-bottom: 10px;
-      }
-    }
-    .modal-item-shoukuanfangshi {
-      width: 7px;
-      height: 20px;
-      background: #265EA2;
-      display: inline-block;
-      margin-right: 6px;
-      position: relative;
-      top: 4px;
-    }
-    .modal-item-icon {
-      color: #199ED8;
-      cursor: pointer
-    }
-    .modal-item-select {
-      display: inline-block;
-      width: 90%
-    }
-    .modal-item-input {
-      display: inline-block;
-      width: 30%;
-      margin-right: 10px
-    }
-    .modal-item-icon2 {
-      margin-left: 6px;
-      cursor: pointer
-    }
-    .modal-item-td {
-      font-weight: 700;
-      font-size: 14px
-    }
-    .modal-item-shoukuanpingzheng {
-      margin-top: 10px;
-      margin-bottom: 10px;
-      .modal-item-shoukuanpingzheng-div {
-        width: 7px;
-        height: 20px;
-        background: #265EA2;
-        display: inline-block;
-        margin-right: 6px;
-        position: relative;
-        top: 4px;
-      }
-
-    }
-    .modal-item-fujian {
-      display: flex;
-      justify-content: center;
-      margin-top: 10px;
-      .modal-item-upload {
-        height: 200px;
-        width: 200px;
-        cursor: pointer;
-        text-align: center;
-        background-color: rgb(244, 244, 244);
-      }
-      .modal-item-upload-icon {
-        display: block;
-        margin-top: 40px;
-      }
-      .modal-item-upload-add {
-        margin-top: 5px
-      }
-      .modal-item-upload-text {
-        color: gray
-      }
-    }
-    .modal-item-fanxian {
-      display: flex;
-      justify-content: center;
-      margin-top: 10px;
-      .modal-item-fanxian-img {
-        height: 200px;
-        width: 200px;
-      }
-    }
+.component.confirm-repayment {
+  .modal-kehuxinxi {
+    width: 7px;
+    height: 20px;
+    background: #265ea2;
+    display: inline-block;
+    margin-right: 6px;
+    position: relative;
+    top: 4px;
+  }
+  .modal-item-grid {
+    margin-top: 10px;
+  }
+  .modal-item-table {
+    margin-top: 10px;
+    text-align: center;
+    border: 1px solid #dddee1;
   }
 
+  .modal-item-derate {
+    text-decoration: line-through;
+    margin-right: 6px;
+  }
+  .modal-item-surplus {
+    color: red;
+  }
+  .modal-item-huakoujilu {
+    margin-top: 10px;
+    .modal-item-huakoubutton {
+      float: right;
+      margin-bottom: 10px;
+    }
+  }
+  .modal-item-shoukuanfangshi {
+    width: 7px;
+    height: 20px;
+    background: #265ea2;
+    display: inline-block;
+    margin-right: 6px;
+    position: relative;
+    top: 4px;
+  }
+  .modal-item-icon {
+    color: #199ed8;
+    cursor: pointer;
+  }
+  .modal-item-select {
+    display: inline-block;
+    width: 90%;
+  }
+  .modal-item-input {
+    display: inline-block;
+    width: 30%;
+    margin-right: 10px;
+  }
+  .modal-item-icon2 {
+    margin-left: 6px;
+    cursor: pointer;
+  }
+  .modal-item-td {
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .modal-item-shoukuanpingzheng {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    .modal-item-shoukuanpingzheng-div {
+      width: 7px;
+      height: 20px;
+      background: #265ea2;
+      display: inline-block;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+    }
+  }
+  .modal-item-fujian {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    .modal-item-upload {
+      height: 200px;
+      width: 200px;
+      cursor: pointer;
+      text-align: center;
+      background-color: rgb(244, 244, 244);
+    }
+    .modal-item-upload-icon {
+      display: block;
+      margin-top: 40px;
+    }
+    .modal-item-upload-add {
+      margin-top: 5px;
+    }
+    .modal-item-upload-text {
+      color: gray;
+    }
+  }
+  .modal-item-fanxian {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    .modal-item-fanxian-img {
+      height: 200px;
+      width: 200px;
+    }
+  }
+}
 </style>
