@@ -32,7 +32,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns1" :data="data1" :page="pageService"></data-box>
+    <data-box :columns="columns1" :data="data1" :page="pageService" @onPageChange="query"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle">
         <i-col :span="8" push="1">
