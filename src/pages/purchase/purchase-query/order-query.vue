@@ -10,7 +10,7 @@
           <i-input placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.orderInfo"></i-input>
         </i-form-item>
         <i-form-item prop="dataRange" label="日期">
-          <i-date-picker v-model="approvalModel.dataRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+          <i-date-picker v-model="approvalModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
 
       </template>
@@ -260,12 +260,14 @@ export default class OrderQuery extends Page {
                           content: "确认申请收款吗？",
                           onOk: () => {
                             this.collectionRowData(row);
-                            this.openPage({
-                              resoname: "销售收款申请",
-                              path:
-                                "purchase/finance-account/sale-gathering-apply",
-                              flag: true
-                            });
+                            this.openPage(
+                              {
+                                resoname: "销售收款申请",
+                                path:
+                                  "purchase/finance-account/sale-gathering-apply"
+                              },
+                              row
+                            );
                           }
                         });
                       }
@@ -310,12 +312,14 @@ export default class OrderQuery extends Page {
                           content: "确认申请收款吗？",
                           onOk: () => {
                             this.collectionRowData(row);
-                            this.openPage({
-                              resoname: "销售收款申请",
-                              path:
-                                "purchase/finance-account/sale-gathering-apply",
-                              flag: true
-                            });
+                            this.openPage(
+                              {
+                                resoname: "销售收款申请",
+                                path:
+                                  "purchase/finance-account/sale-gathering-apply"
+                              },
+                              row
+                            );
                           }
                         });
                       }
@@ -498,7 +502,8 @@ export default class OrderQuery extends Page {
               style: {
                 textAlign: "right"
               }
-            },this.$filter.toThousands(row.financingAmount)
+            },
+            this.$filter.toThousands(row.financingAmount)
           );
         }
       },

@@ -193,6 +193,11 @@ export default class FinancingLeaseApply extends Page {
     }
   }
 
+  activated({row}){
+    console.log('ssssssssss')
+    console.log(row)
+  }
+
   onNextStep() {
     // TODO: 验证当前页面
 
