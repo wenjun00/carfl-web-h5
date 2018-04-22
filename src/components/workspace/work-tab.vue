@@ -1,6 +1,6 @@
 <template>
   <section class="component work-tab full">
-    <Tabs v-model="currentPage" closable :animated="false" @on-tab-remove="closePage">
+    <Tabs type="card" v-model="currentPage" closable :animated="false" @on-tab-remove="closePage">
       <TabPane v-for="page in pageList" :key="page.path" :label="page.resoname" :name="page.path" :closable="page.path !== 'home'">
         <component ref="pages" :is="getComponentName(page)"></component>
       </TabPane>
