@@ -225,9 +225,9 @@ export default class AddPeriods extends Vue {
     stagingPeriods: "", // 期数
     creditProtectDays: '0',
     overdueProtectDays: '0',
-    penaltyRates: '1',
-    contractBreakRates: '0',
-    prepaymentRates: '0',
+    penaltyRates: 0,
+    contractBreakRates: 0,
+    prepaymentRates: 0,
     productStatus: "",
     // isPublish: '',
     manageCost: "",
@@ -239,8 +239,8 @@ export default class AddPeriods extends Vue {
   };
   private amountRules: Object = {};
   private amount: any = {
-    financingAmount1: "",
-    financingAmount2: ""
+    financingAmount1: 0,
+    financingAmount2: 0
   };
   private monthDay: any;
   private formRules: Object = {};

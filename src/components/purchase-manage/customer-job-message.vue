@@ -120,7 +120,7 @@
             <i-form ref="revenue-form" :rules="rules" :model="job" :label-width="110" label-position="left">
                 <i-col span="12">
                     <i-form-item label="基本月薪(元)" prop="basicSalary">
-                        <i-input-number v-model="job.basicSalary" @on-blur="basicSalaryBlur" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+                        <i-input-number v-model="job.basicSalary" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
                     </i-form-item>
                 </i-col>
                 <i-col span="12" pull="3">
@@ -139,12 +139,12 @@
                 </i-col>
                 <i-col span="12" pull="3">
                     <i-form-item label="年收入(万元)" prop="yearlySalaries">
-                        <i-input-number v-model="job.yearlySalaries" @on-blur="yearlySalariesBlur" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+                        <i-input-number v-model="job.yearlySalaries" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
                     </i-form-item>
                 </i-col>
                 <i-col span="12">
                     <i-form-item label="每月其他收入(元)" prop="monthOtherIncome">
-                        <i-input-number v-model="job.monthOtherIncome" @on-blur="monthOtherIncomeBlur" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+                        <i-input-number v-model="job.monthOtherIncome" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
                     </i-form-item>
                 </i-col>
                 <i-col span="12" pull="3">
@@ -248,20 +248,20 @@ export default class CustomerJobMessage extends Vue {
     companyAddress: '', // 单位地址
     companyAddressDetail: '', // 单位详细地址
     companyPhone: '', // 单位固定电话
-    basicSalary: '', // 基本月薪
+    basicSalary: 0, // 基本月薪
     payDay: '', // 每月发薪日
     payWay: '', // 发薪方式
-    yearlySalaries: '', // 年收入
-    monthOtherIncome: '', // 每月其他收入
-    otherIncomeSource: '', // 其他收入来源
+    yearlySalaries: 0, // 年收入
+    monthOtherIncome: 0, // 每月其他收入
+    otherIncomeSource: 0, // 其他收入来源
     identity: '', // 身份
     enterpriseManageYears: '', // 企业经营年限
     enterpriseManageBelong: '', // 经营地归属
     employeesNumber: '', // 员工人数
-    registeredCapital: '', // 注册资本
+    registeredCapital: 0, // 注册资本
     industry: '', // 所属行业
-    pastyearIncome: '', // 过去一年营业收入
-    pastyearProfit: '', // 过去一年利润
+    pastyearIncome: 0, // 过去一年营业收入
+    pastyearProfit: 0, // 过去一年利润
     stockScale: ''
   }
   private monthDay: any
@@ -335,30 +335,8 @@ export default class CustomerJobMessage extends Vue {
   jobchange() {
     this.job = {}
   }
-  /**
-   * 基本月薪(保留两位小数)
-   */
-  basicSalaryBlur() {
-    this.job.basicSalary = Number(this.job.basicSalary)
-      .toFixed(2)
-      .toString()
-  }
-  /**
-   * 年收入(保留两位小数)
-   */
-  yearlySalariesBlur() {
-    this.job.yearlySalaries = Number(this.job.yearlySalaries)
-      .toFixed(2)
-      .toString()
-  }
-  /**
-   * 每月其他收入(保留两位小数)
-   */
-  monthOtherIncomeBlur() {
-    this.job.monthOtherIncome = Number(this.job.monthOtherIncome)
-      .toFixed(2)
-      .toString()
-  }
+
+
   /**
    * 获取月份天数
    */

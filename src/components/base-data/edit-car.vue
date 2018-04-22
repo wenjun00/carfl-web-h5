@@ -182,17 +182,17 @@
       carName: '', // 车型
       carSeriesName: '', // 车系
       carColor: '', // 颜色
-      marketGuidingPrice: '', // 市场指导价
-      monthPay: '', // 租金
-      firstPayment: '', // 首期金额
-      dealerGuidingPrice: '', // 经销商报价
-      purchaseTaxMoney: '', // 购置税
-      roadBridgeFee: '', // 路桥费
-      financeAmount: '', // 融资金额
-      annualAmount: '', // 保险费
+      marketGuidingPrice: 0, // 市场指导价
+      monthPay: 0, // 租金
+      firstPayment: 0, // 首期金额
+      dealerGuidingPrice: 0, // 经销商报价
+      purchaseTaxMoney: 0, // 购置税
+      roadBridgeFee: 0, // 路桥费
+      financeAmount: 0, // 融资金额
+      annualAmount: 0, // 保险费
       periods: '', // 期数
-      gpsFee: '', // GPS费
-      otherFee: '', // 其他费用
+      gpsFee: 0, // GPS费
+      otherFee: 0, // 其他费用
       status: '', // 是否启用
       carId:''
     };
