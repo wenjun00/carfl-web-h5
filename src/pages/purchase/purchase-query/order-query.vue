@@ -84,7 +84,7 @@ export default class OrderQuery extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @ModuleMutation collectionRowData;
 
-  private queryColumns: any;
+  private queryColumns: any = [];
   @Mutation openPage;
   private columns2: any;
   private customerInformation: Array<Object> = [];
@@ -353,7 +353,7 @@ export default class OrderQuery extends Page {
         editable: true,
         align: "center",
         key: "orderNumber",
-        minWidth: this.$helper.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, params) => {
           return h("div", [
             h(
@@ -396,7 +396,7 @@ export default class OrderQuery extends Page {
         title: "订单创建时间",
         editable: true,
         key: "createTime",
-        minWidth: this.$helper.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             "span",
@@ -409,7 +409,7 @@ export default class OrderQuery extends Page {
         title: "客户",
         editable: true,
         key: "personalName",
-        minWidth: this.$helper.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, params) => {
           return h("div", [
             h(
@@ -445,7 +445,7 @@ export default class OrderQuery extends Page {
         align: "center",
         title: "订单类型",
         editable: true,
-        minWidth: this.$helper.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(4),
         key: "orderType",
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.orderType));
@@ -453,7 +453,7 @@ export default class OrderQuery extends Page {
       },
       {
         align: "center",
-        minWidth: this.$helper.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(4),
         title: "产品名称",
         editable: true,
         key: "productName"
@@ -463,7 +463,7 @@ export default class OrderQuery extends Page {
         title: "产品期数",
         key: "periods",
         editable: true,
-        minWidth: this.$helper.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.periods));
         }
@@ -473,14 +473,14 @@ export default class OrderQuery extends Page {
         title: "利率(月)",
         editable: true,
         key: "productRate",
-        minWidth: this.$helper.getColumnWidth(2)
+        minWidth: this.$common.getColumnWidth(2)
       },
       {
         align: "center",
         title: "还款方式",
         editable: true,
         key: "payWay",
-        minWidth: this.$helper.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.payWay));
         }
@@ -490,7 +490,7 @@ export default class OrderQuery extends Page {
         title: "融资总额(元)",
         editable: true,
         key: "financingAmount",
-        minWidth: this.$helper.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => {
           return h(
             "div",
@@ -507,7 +507,7 @@ export default class OrderQuery extends Page {
         title: "订单状态",
         editable: true,
         key: "orderStatus",
-        minWidth: this.$helper.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.orderStatus));
         }

@@ -11,7 +11,8 @@ declare module 'vue/types/vue' {
     $validate: any
     $validator: any
     $Message: any
-    $Modal: any,
+    $Modal: any
     $dialog: any
+    $common: any
   }
 }
