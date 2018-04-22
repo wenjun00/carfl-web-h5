@@ -29,7 +29,7 @@
         <data-box :id="262" :columns="columns1" :data="lastList" @onPageChange="getLastList" :page="pageService"></data-box>
         <!--Modal-->
         <template>
-            <i-modal title="订单领取" v-model="orderModal" width="300">
+            <i-modal title="订单领取" v-model="orderModal" :width="300">
                 <span>确定将所选订单领取到我的审核？</span>
                 <div slot="footer">
                     <i-button @click="orderModal=false">取消</i-button>
@@ -39,7 +39,7 @@
         </template>
 
         <template>
-            <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
+            <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
                 <purchase-information ref="purchase-info"></purchase-information>
                 <div slot="footer">
                     <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>

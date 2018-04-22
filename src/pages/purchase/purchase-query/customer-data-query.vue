@@ -29,7 +29,7 @@
     </template>
     <!--上传资料、补充资料-->
     <template>
-      <i-modal class="pop-update" v-model="openUpload" :transfer="false" width="700" title="补充资料">
+      <i-modal class="pop-update" v-model="openUpload" :transfer="false" :width="700" title="补充资料">
         <upload-the-material ref="upload-the-material"></upload-the-material>
         <div slot="footer">
           <i-button class="high-default-button" @click="openUpload=false">取消</i-button>

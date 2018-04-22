@@ -26,7 +26,7 @@
     <data-box :id="447" :columns="columns1" :data="receiptDataSet" :page="pageService" @onPageChange="receiptRecordSearch"></data-box>
     <!--Model-->
     <template>
-      <i-modal v-model="checkApplyModal" title="查看" width="800">
+      <i-modal v-model="checkApplyModal" title="查看" :width="800">
         <apply-detail ref="applyDetail"></apply-detail>
       </i-modal>
     </template>

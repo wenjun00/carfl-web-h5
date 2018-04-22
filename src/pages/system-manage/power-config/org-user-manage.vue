@@ -53,7 +53,7 @@
         </template>
 
         <template>
-            <i-modal v-model="modifyUserModal" title="修改用户" width="600">
+            <i-modal v-model="modifyUserModal" title="修改用户" :width="600">
                 <modify-user :modifyUserModel="modifyUserModel" @close="modifyUserClose" ref="modify-user"></modify-user>
                 <div slot="footer">
                     <i-button @click="modifyUserModal=false">取消</i-button>
@@ -63,7 +63,7 @@
         </template>
 
         <template>
-            <i-modal v-model="addNewUserModal" title="新增用户" width="600" class="addUser" @on-visible-change="newUserModalChange">
+            <i-modal v-model="addNewUserModal" title="新增用户" :width="600" class="addUser" @on-visible-change="newUserModalChange">
                 <add-user :deptObject="deptObject" @close="closeAdd" ref="add-user"></add-user>
                 <div slot="footer">
                     <i-button @click="addNewUserModal=false">取消</i-button>
@@ -73,13 +73,13 @@
         </template>
 
         <template>
-            <i-modal v-model="deviceManageModal" title="设备管理" width="660" class="device-manage" class-name="no-footer">
+            <i-modal v-model="deviceManageModal" title="设备管理" :width="660" class="device-manage" class-name="no-footer">
                 <device-manage ref="device-manage"></device-manage>
             </i-modal>
         </template>
 
         <template>
-            <i-modal v-model="addNewOrgModal" title="添加机构" width="400">
+            <i-modal v-model="addNewOrgModal" title="添加机构" :width="400">
                 <add-org ref="add-org" :addOrgModel="addOrgModel" @close="closeOrg"></add-org>
                 <div slot="footer">
                     <i-button @click="cancelAddOrg">取消</i-button>
@@ -89,7 +89,7 @@
         </template>
 
         <template>
-            <i-modal v-model="editNewOrgModal" title="编辑机构" width="400">
+            <i-modal v-model="editNewOrgModal" title="编辑机构" :width="400">
                 <edit-org ref="edit-org" :deptObject="deptObject" @close="closeEditOrg"></edit-org>
                 <div slot="footer">
                     <i-button @click="cancelEditOrg">取消</i-button>
@@ -247,11 +247,11 @@ export default class OrgUserManage extends Page {
         align: 'center',
         type: 'selection',
         fixed: 'left',
-        minWidth: 60
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '操作',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(12),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -422,21 +422,21 @@ export default class OrgUserManage extends Page {
         title: '用户名',
         key: 'userUsername',
         editable: true,
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: 'center',
         title: '姓名',
         editable: true,
         key: 'userRealname',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: 'center',
         title: '所属机构',
         editable: true,
         key: 'deptName',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         align: 'center',
@@ -457,7 +457,7 @@ export default class OrgUserManage extends Page {
         editable: true,
         title: '电话',
         key: 'userPhone',
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         align: 'center',
@@ -465,7 +465,7 @@ export default class OrgUserManage extends Page {
         title: '备注',
         key: 'userRemark',
         ellipsis: true,
-        minWidth: this.$common.getColumnWidth(10),
+        minWidth: this.$common.getColumnWidth(8),
       },
 
       {
@@ -473,7 +473,7 @@ export default class OrgUserManage extends Page {
         editable: true,
         title: '创建人',
         key: 'operatorName',
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: 'center',

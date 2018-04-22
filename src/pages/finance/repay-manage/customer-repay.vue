@@ -22,7 +22,7 @@
     <data-box :id="412" :columns="columns1" :data="customerRepayList" @onPageChange="getCustomerRepayList" :page="pageService"></data-box>
 
     <template>
-      <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认还款" width="900">
+      <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认还款" :width="900">
         <confirm-repayment ref="confirm-repayment"></confirm-repayment>
         <div slot="footer">
           <!--<i-button @click="saveDraft" class="highDefaultButton">保存草稿</i-button>-->
@@ -41,19 +41,19 @@
     </template>
 
     <template>
-      <i-modal v-model="repayInfoModal" :transfer="false" title="还款详情" width="1200">
+      <i-modal v-model="repayInfoModal" :transfer="false" title="还款详情" :width="1200">
         <repay-info ref="repay-info"></repay-info>
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="deductRecordModal" title="划扣记录" width="1300">
+      <i-modal v-model="deductRecordModal" title="划扣记录" :width="1300">
         <deduct-record-has-search ref="deduct-record-has-search"></deduct-record-has-search>
       </i-modal>
     </template>
 
     <template>
-      <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
+      <i-modal title="订单详情" :width="1200" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
         <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInformationModal=false">返回</i-button>
@@ -274,7 +274,7 @@ export default class CustomerRepay extends Page {
         align: "center",
         title: "订单号",
         editable: true,
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(5),
         key: "orderNumber",
         render: (h, { row, column, index }) => {
           return h(
@@ -300,7 +300,7 @@ export default class CustomerRepay extends Page {
         title: "客户结算号",
         key: "clientNumber",
         editable: true,
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, column, index }) => {
           return h(
             "i-button",
@@ -332,14 +332,14 @@ export default class CustomerRepay extends Page {
         title: " 证件号",
         editable: true,
         key: "idCard",
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(5),
       },
       {
         align: "center",
         title: " 手机号",
         editable: true,
         key: "mobileMain",
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: "center",
@@ -466,14 +466,14 @@ export default class CustomerRepay extends Page {
         title: " 利率%/月",
         editable: true,
         key: "productRate",
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(1),
       },
       {
         align: "center",
         title: " 结算通道",
         editable: true,
         key: "settlementChannel",
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.settlementChannel));
         }
@@ -481,7 +481,7 @@ export default class CustomerRepay extends Page {
       {
         align: "center",
         title: " 归属公司",
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(3),
         editable: true,
         key: "companyChinaName"
       }

@@ -50,7 +50,7 @@
     </div>
 
     <template>
-      <i-modal title="解绑银行卡" width="480" v-model="unbindBankCardModal">
+      <i-modal title="解绑银行卡" :width="480" v-model="unbindBankCardModal">
         <unbind-bank-card ref="unbind-bank-card"></unbind-bank-card>
         <div slot="footer">
           <i-button @click="unbindBankCardModal=false">取消</i-button>

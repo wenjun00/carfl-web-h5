@@ -83,12 +83,12 @@
 
         <data-grid-item label="手机号码(主)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMain:''}}</data-grid-item>
         <data-grid-item label="手机号码(次)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMinor:''}}</data-grid-item>
-        <data-grid-item label="身份证号" :span="3">{{orderInfo.personal?orderInfo.personal.idCard:''}}</data-grid-item>
-        <data-grid-item label="婚属状况" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.marital):''}}</data-grid-item>
-
-        <data-grid-item label="身份证有效期" :span="6">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? orderInfo.personal.idCardValidityPeriodType
+        <data-grid-item label="身份证有效期" :span="3">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? orderInfo.personal.idCardValidityPeriodType
           :orderInfo.personal.idCardValidityPeriodSection):''}}
         </data-grid-item>
+        <data-grid-item label="婚属状况" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.marital):''}}</data-grid-item>
+
+        <data-grid-item label="身份证号" :span="6">{{orderInfo.personal?orderInfo.personal.idCard:''}}</data-grid-item>
         <data-grid-item label="发证机关" :span="6">{{orderInfo.personal?orderInfo.personal.issuer:''}}</data-grid-item>
 
         <data-grid-item label="身份证地址" :span="12">{{orderInfo.personal?(orderInfo.personal.idCardAddressDetail?orderInfo.personal.idCardAddressDetail:''):''}}</data-grid-item>
@@ -107,9 +107,9 @@
 
         <data-grid-item label="本市房产地址" :span="12">{{orderInfo.personal?orderInfo.personal.cityOwnhouseAddressDetail:''}}</data-grid-item>
 
-        <data-grid-item label="教育程度" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.education):''}}</data-grid-item>
-        <data-grid-item label="毕业院校" :span="3">{{orderInfo.personal?orderInfo.personal.school:''}}</data-grid-item>
-        <data-grid-item label="是否接受现场勘查" :span="6">
+        <data-grid-item label="教育程度" :span="4">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.education):''}}</data-grid-item>
+        <data-grid-item label="毕业院校" :span="4">{{orderInfo.personal?orderInfo.personal.school:''}}</data-grid-item>
+        <data-grid-item label="是否接受现场勘查" :span="4">
           <i-radio-group v-model="personal.houseProspecting">
             <i-radio :label="29" :value="29" :key="29" disabled>是</i-radio>
             <i-radio :label="30" :value="30" :key="30" disabled>否</i-radio>
@@ -152,9 +152,9 @@
         <div class="data-d-icon"></div>
         <a name="lianxirenxinxi" class="data-d-content">联系人信息</a>
       </div>
-      <i-table width="760" highlight-row ref="databox1" :columns="immediateColumns" :data="immediateContacts"></i-table>
+      <i-table :width="1000" highlight-row ref="databox1" :columns="immediateColumns" :data="immediateContacts"></i-table>
       <span>其他联系人（提示：必填3个其他联系人）</span>
-      <i-table width="760" highlight-row ref="databox2" :columns="otherColumns" :data="otherContactsInfo"></i-table>
+      <i-table :width="1000" highlight-row ref="databox2" :columns="otherColumns" :data="otherContactsInfo"></i-table>
     </i-row>
     <!--客户来源-->
     <i-row class="data-d">
@@ -162,7 +162,7 @@
         <div class="data-d-icon"></div>
         <a name="kehulaiyuan" class="data-d-content">客户来源</a>
       </div>
-      <table border="1" width="760" class="data-d-table">
+      <table border="1" width="1000" class="data-d-table">
         <tr>
           <td bgColor="#F5F5F5">通过宣传</td>
           <td colspan="4">
@@ -240,7 +240,7 @@
       </div>
     </div>
     <template>
-      <i-modal title="预览" v-model="previewModel" width="800" class-name="no-footer" :transfer="false">
+      <i-modal title="预览" v-model="previewModel" :width="800" class-name="no-footer" :transfer="false">
         <img :src="url" style="width: 100%">
       </i-modal>
     </template>
@@ -511,7 +511,7 @@
       }
       .data-d-item {
         margin-top: 10px;
-        width: 760px;
+        width: 1000px;
       }
       .data-d-table {
         margin-top: 10px;

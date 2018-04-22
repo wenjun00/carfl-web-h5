@@ -17,7 +17,7 @@
     <data-box :id="456" :columns="columns1" :data="data1" @onPageChange="getGatherListByCondition"
               :page="pageService"></data-box>
     <template>
-      <i-modal v-model="dialog.create" title="开户绑卡" width="400">
+      <i-modal v-model="dialog.create" title="开户绑卡" :width="400">
         <create-personal-account ref="create-personal-account"></create-personal-account>
         <div slot="footer">
           <i-button @click="dialog.create=false">取消</i-button>
@@ -27,14 +27,14 @@
     </template>
 
     <template>
-      <i-modal v-model="dialog.cardInfo" :transfer="false" class="bankCardInfo" title="银行卡信息" width="400">
+      <i-modal v-model="dialog.cardInfo" :transfer="false" class="bankCardInfo" title="银行卡信息" :width="400">
         <bank-card-info ref="bank-card-info"
                         @change="dialog.cardInfo=false,getGatherListByCondition()"></bank-card-info>
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="deductModal" title="划扣" width="930">
+      <i-modal v-model="deductModal" title="划扣" :width="930">
         <deduct ref="deduct"></deduct>
         <div slot="footer"></div>
       </i-modal>

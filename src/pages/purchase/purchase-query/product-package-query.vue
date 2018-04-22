@@ -32,7 +32,7 @@
 
     <!--预览-->
     <template>
-      <i-modal v-model="previewModal" title="查看" width="800">
+      <i-modal v-model="previewModal" title="查看" :width="800">
         <div
           style="width:760px;height:500px;background-image:url('/static/images/common/previewImg.png');background-repeat:no-repeat"></div>
       </i-modal>
