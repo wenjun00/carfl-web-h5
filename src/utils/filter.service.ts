@@ -157,7 +157,7 @@ export class FilterService {
    */
   static subString(str: string, subIndex: number = 6) {
     if (!str) { return '' }
-    return str.length > subIndex ? str.substring(0, subIndex) : str
+    return str.length > subIndex ? str.substring(0, subIndex) + '...' : str
   }
 
   /**
