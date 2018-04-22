@@ -24,13 +24,13 @@
     </div>
 
     <template>
-      <i-modal title="还款详情" :transfer="false" v-model="repayInfoModal" width="1300" class="repay-info">
+      <i-modal title="还款详情" :transfer="false" v-model="repayInfoModal" :width="1300" class="repay-info">
         <repay-info ref="repay-info"></repay-info>
       </i-modal>
     </template>
 
     <template>
-      <i-modal title="还款总览" :transfer="false" width="1050" v-model="repaySumModal" class="repay-sum">
+      <i-modal title="还款总览" :transfer="false" :width="1050" v-model="repaySumModal" class="repay-sum">
         <repay-sum ref="repay-sum"></repay-sum>
       </i-modal>
     </template>
@@ -45,7 +45,7 @@
     </template>
 
     <template>
-      <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
+      <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
         <purchase-information ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>

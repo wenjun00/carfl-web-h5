@@ -32,7 +32,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns1" :data="data1" :page="pageService"></data-box>
+    <data-box :columns="columns1" :data="data1" :page="pageService" @onPageChange="query"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle">
         <i-col :span="8" push="1">
@@ -49,7 +49,7 @@
     </div>
 
     <template>
-      <i-modal v-model="makeInvoiceModal" title="确认开票" width="600" class="confirmMakeInvoice">
+      <i-modal v-model="makeInvoiceModal" title="确认开票" :width="600" class="confirmMakeInvoice">
         <confirm-make-invoice></confirm-make-invoice>
       </i-modal>
     </template>
@@ -220,7 +220,7 @@
           align: "center",
           title: "项目",
           key: "collectItem",
-          minWidth: this.$common.getColumnWidth(5),
+          minWidth: this.$common.getColumnWidth(3),
           render: (h, {
             row,
             column,
@@ -256,12 +256,12 @@
           align: "center",
           title: "所属公司",
           key: "companyChinaName",
-          minWidth: this.$common.getColumnWidth(5),
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           align: "center",
           title: "结算通道",
-          minWidth: this.$common.getColumnWidth(4),
+          minWidth: this.$common.getColumnWidth(3),
           key: "colectMoneyChannel",
           render: (h, {
             row,
@@ -274,7 +274,7 @@
         {
           align: "center",
           title: "开票状态",
-          minWidth: this.$common.getColumnWidth(4),
+          minWidth: this.$common.getColumnWidth(2),
           key: "invoicingStatus",
           render: (h, {
             row,
@@ -288,12 +288,12 @@
           align: "center",
           title: "发票号",
           key: "invoiceNumber",
-          minWidth: this.$common.getColumnWidth(6),
+          minWidth: this.$common.getColumnWidth(5),
         },
         {
           align: "center",
           title: "开票日期",
-          minWidth: this.$common.getColumnWidth(6),
+          minWidth: this.$common.getColumnWidth(5),
           key: "invoicingDate",
           render: (h, {
             row,
@@ -313,7 +313,7 @@
           align: "center",
           title: "备注",
           key: "remark",
-          minWidth: this.$common.getColumnWidth(7),
+          minWidth: this.$common.getColumnWidth(6),
         }
       ];
     }

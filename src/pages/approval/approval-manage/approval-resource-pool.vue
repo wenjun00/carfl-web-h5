@@ -38,7 +38,7 @@
 
     <!--Modal-->
     <template>
-      <i-modal title="订单领取" v-model="orderModal" width="300">
+      <i-modal title="订单领取" v-model="orderModal" :width="300">
         <span>确定将所选订单领取到我的审核？</span>
         <div slot="footer">
           <i-button @click="orderModal=false">取消</i-button>
@@ -50,7 +50,7 @@
     <!--Model-->
 
     <template>
-      <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation"
+      <i-modal title="订单详情" :width="1200" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation"
                @on-visible-change="visibleChange">
         <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
         <div slot="footer">

@@ -74,7 +74,7 @@
 
     <!--开户弹窗-->
     <template>
-      <i-modal v-model="addCompanyModal" title="新增企业开户" width="800" class="openAccount_modal" ok-text="确认开户">
+      <i-modal v-model="addCompanyModal" title="新增企业开户" :width="800" class="openAccount_modal" ok-text="确认开户">
         <i-form :label-width="110" label-position="left">
           <i-row>
             <i-col :span="24">
@@ -389,7 +389,7 @@
 
     <!--企业银行卡详情-->
     <template>
-      <i-modal v-model="companyBankCardInfoModal" title="银行卡详情" :transfer="false" width="800" class="companyBankCardInfo">
+      <i-modal v-model="companyBankCardInfoModal" title="银行卡详情" :transfer="false" :width="800" class="companyBankCardInfo">
         <company-bank-card @close="close"></company-bank-card>
       </i-modal>
     </template>

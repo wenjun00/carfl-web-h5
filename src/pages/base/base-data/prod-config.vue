@@ -140,7 +140,7 @@
     </template>
 
     <template>
-      <i-modal v-model="addPeriodsModal" title="新增期数" width="900" class="purchaseInformation">
+      <i-modal v-model="addPeriodsModal" title="新增期数" :width="900" class="purchaseInformation">
         <add-periods :pNameTitle="productMessage" ref="add-periods-ref" @close="closeModal"></add-periods>
         <div slot="footer">
           <i-button type="primary" @click="submiteButton">保存并退出</i-button>
@@ -148,7 +148,7 @@
       </i-modal>
     </template>
     <template>
-      <i-modal v-model="editModal" title="编辑期数" width="900" class="purchaseInformation">
+      <i-modal v-model="editModal" title="编辑期数" :width="900" class="purchaseInformation">
         <edit-periods :productDetails="productDetails" :pNameTitle="productMessage" ref="edit-periods" @close="closeEditModal"></edit-periods>
         <div slot="footer">
           <i-button type="primary" @click="editSubmit">保存并退出</i-button>
@@ -157,7 +157,7 @@
     </template>
 
     <template>
-      <i-modal v-model="viewModal" title="查看期数" width="900" class="periods">
+      <i-modal v-model="viewModal" title="查看期数" :width="900" class="periods">
         <preview-product :productDetailView="productDetails" :dpNameTitleView="productMessage"></preview-product>
         <div slot="footer">
           <i-button type="primary" @click="viewModal=false">关闭</i-button>
@@ -166,7 +166,7 @@
     </template>
 
     <template>
-      <i-modal v-model="chargeAgainstOrderConfigModal" title="冲抵顺序配置" width="900">
+      <i-modal v-model="chargeAgainstOrderConfigModal" title="冲抵顺序配置" :width="900">
         <charge-against-order></charge-against-order>
       </i-modal>
     </template>

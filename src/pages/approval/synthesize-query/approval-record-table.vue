@@ -44,7 +44,7 @@
 
     <!--进度查询-->
     <template>
-      <i-modal v-model="orderProgressModal" title="审核进度" width="76" class="order-progress">
+      <i-modal v-model="orderProgressModal" title="审核进度" :width="76" class="order-progress">
         <order-progress ref="order-progress"></order-progress>
       </i-modal>
     </template>

@@ -13,7 +13,7 @@
     <data-box :id="428" :columns="columns1" :data="data1" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
     <!--确认收回-->
     <template>
-      <i-modal title="确认收回" width="930" v-model="confirmWithdrawModal" class="confirmWithdraw">
+      <i-modal title="确认收回" :width="930" v-model="confirmWithdrawModal" class="confirmWithdraw">
         <confirm-withdraw ref="confirm-withdraw"></confirm-withdraw>
         <div slot="footer">
           <!--<i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>-->
@@ -33,13 +33,13 @@
 
     <!--还款详情-->
     <template>
-      <i-modal v-model="repayInfoModal" :transfer="false" title="还款详情" width="1200">
+      <i-modal v-model="repayInfoModal" :transfer="false" title="还款详情" :width="1200">
         <repay-info ref="repay-info"></repay-info>
       </i-modal>
     </template>
 
     <template>
-      <i-modal title="订单详情" width="1000" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
+      <i-modal title="订单详情" :width="1200" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
         <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInformationModal=false">返回</i-button>

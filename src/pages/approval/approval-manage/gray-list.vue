@@ -29,7 +29,7 @@
         <data-box :id="304" :columns="columns1" :data="grayList" @onPageChange="getGrayList" :page="pageService"></data-box>
 
         <template>
-            <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
+            <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
                 <purchase-information ref="purchase-info"></purchase-information>
                 <div slot="footer">
                     <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>

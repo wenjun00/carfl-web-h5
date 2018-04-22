@@ -135,7 +135,7 @@
       <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher"></upload-voucher>
     </div>
     <template>
-      <i-modal title="划扣记录" v-model="deductRecordModal" width="1200">
+      <i-modal title="划扣记录" v-model="deductRecordModal" :width="1200">
         <deduct-record ref="deduct-record"></deduct-record>
       </i-modal>
     </template>
@@ -252,34 +252,6 @@
         this.inputBlur()
       }
     }
-
-    /**
-     * 上传文件成功回调
-     */
-    uploadSuccess() {
-      this.openUpload = false;
-      this.$nextTick(() => {
-        let fileUpload: any = this.$refs["file-upload"];
-        this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
-          return {
-            id: v.response.id,
-            materialUrl: v.response.url,
-            orderId: this.rowObj.orderId,
-            businessId: this.rowObj.businessId
-          }
-        }))
-        fileUpload.reset();
-      });
-    }
-
-    /**
-     * 上传文件
-     */
-    postFile() {
-      let fileUpload = this.$refs["file-upload"] as FileUpload;
-      fileUpload.upload();
-    }
-
   }
 
 </script>

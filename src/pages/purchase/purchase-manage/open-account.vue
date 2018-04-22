@@ -11,7 +11,7 @@
         <data-box :id="180" :columns="columns1" :data="openAccountList" ref="databox" @onPageChange="getCustomerOpenAccount" :page="pageService"></data-box>
         <!--开户弹窗-->
         <template>
-            <i-modal class="open-account-window" v-model="openCreateAccount" title="开户申请" width="500">
+            <i-modal class="open-account-window" v-model="openCreateAccount" title="开户申请" :width="500">
                 <i-form class="form-window" :label-width="110">
                     <i-form-item label="开户渠道">
                         <i-select class="open-input">
@@ -73,7 +73,7 @@
 
         <!--绑卡弹窗-->
         <template>
-            <i-modal class="open-account-window" v-model="openBindCard" title="绑定银行卡" width="400">
+            <i-modal class="open-account-window" v-model="openBindCard" title="绑定银行卡" :width="400">
                 <i-form :label-width="110">
                     <i-form-item label="账户类型">
                         <i-input class="open-input" v-model="accountType"></i-input>
@@ -121,7 +121,7 @@
         </template>
         <!--结算通道-->
         <template>
-            <i-modal v-model="openAccountChannel" title="结算通道" width="300">
+            <i-modal v-model="openAccountChannel" title="结算通道" :width="300">
                 <i-form :label-width="60">
                     <i-form-item label="结算通道">
                         <i-select style="width:150px;" v-model="settleChannel">
@@ -138,7 +138,7 @@
 
         <!--更换银行卡-->
         <template>
-            <i-modal class="bank-popover" v-model="openChangeBankCard" title="更换银行卡" width="480">
+            <i-modal class="bank-popover" v-model="openChangeBankCard" title="更换银行卡" :width="480">
                 <i-steps :current="current" class="binding-choose" >
                     <i-step title="解绑"></i-step>
                     <i-step title="绑卡"></i-step>
@@ -199,7 +199,7 @@
 
         <!--help-->
         <template>
-            <i-modal title="验卡失败原因" v-model="openHelp" width="600" class-name="no-footer">
+            <i-modal title="验卡失败原因" v-model="openHelp" :width="600" class-name="no-footer">
                 <data-box :columns="columnsHelp" :data="dataHelp" hideColumnsConfig :noDefaultRow="true"></data-box>
             </i-modal>
         </template>

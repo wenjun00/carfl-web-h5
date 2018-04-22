@@ -31,7 +31,7 @@
         <!--Model-->
         <!--一键交接弹框-->
         <template>
-            <i-modal class="views-handover" v-model="openOneKeyToConnect" title="一键交接" width="800" @on-visible-change="onKey">
+            <i-modal class="views-handover" v-model="openOneKeyToConnect" title="一键交接" :width="800" @on-visible-change="onKey">
                 <i-row class="views-handover-margin">
                     <i-input class="views-handover-input" placeholder="请输入关键字搜索"></i-input>
                     <i-button class="views-handover-button">搜索</i-button>
@@ -255,21 +255,21 @@ export default class OrderTransfer extends Page {
         editable: true,
         key: 'orderNumber',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(5),
       },
       {
         title: '制单人',
         editable: true,
         key: 'recorderName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(2),
       },
       {
         title: '所属部门',
         editable: true,
         key: 'deptName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(2),
       },
       {
         title: '转交人',
@@ -283,7 +283,7 @@ export default class OrderTransfer extends Page {
         editable: true,
         key: 'createTime',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, { row, columns, index }) => {
           return h(
             'span',
@@ -310,21 +310,21 @@ export default class OrderTransfer extends Page {
         editable: true,
         key: 'mobileMain',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         title: '产品名称',
         editable: true,
         key: 'productName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(2),
       },
       {
         title: '产品期数',
         editable: true,
         key: 'periods',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(1),
         render: (h, { row, column, index }) => {
           return h('span', {}, this.$dict.getDictName(row.periods))
         }
@@ -334,7 +334,7 @@ export default class OrderTransfer extends Page {
         editable: true,
         key: 'orderLink',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, column, index }) => {
           return h('span', {}, this.$dict.getDictName(row.orderLink))
         }

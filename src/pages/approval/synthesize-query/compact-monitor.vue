@@ -24,7 +24,7 @@
         <data-box :columns="columns1" :data="compactList" @onPageChange="getCompactMonitorList" :page="pageService" :noDefaultRow="true"></data-box>
 
         <template>
-            <i-modal title="合同下载详情" v-model="compactDownloadInfoModal" width="1300">
+            <i-modal title="合同下载详情" v-model="compactDownloadInfoModal" :width="1300">
                 <compact-download-info></compact-download-info>
             </i-modal>
         </template>

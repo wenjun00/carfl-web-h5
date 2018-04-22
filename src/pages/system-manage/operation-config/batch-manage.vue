@@ -59,63 +59,63 @@ export default class SystemBackups extends Page {
         editable: true,
         key: 'jobName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '任务所在组',
         editable: true,
         key: 'jobGroup',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '任务描述',
         editable: true,
         key: 'jobDescribe',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(10),
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '任务类名',
         editable: true,
         key: 'jobClassName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(12),
       },
       {
         title: '触发器名称',
         editable: true,
         key: 'triggerName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '触发器所在组',
         editable: true,
         key: 'triggerGroup',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '下次执行时间',
         editable: true,
         key: 'nextExecutionTime',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '表达式',
         editable: true,
         key: 'expression',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(15),
+        minWidth: this.$common.getColumnWidth(5),
       },
       {
         title: '状态',
         editable: true,
         key: 'triggerState',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, column, index }) => {
           return h('span', {}, row.triggerState === 'NORMAL' ? '启用' : '停用')
         }
@@ -125,7 +125,7 @@ export default class SystemBackups extends Page {
         editable: true,
         key: 'timeZone',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(4),
       }
     ]
   }
