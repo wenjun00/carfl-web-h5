@@ -44,9 +44,6 @@
         <i-input class="item-input-width160" v-model="model.reservedPhoneNumber"></i-input>
         <!--<i-button style="display:inline-block;margin-left:8px;" class="blueButton">发送验证码<span>60</span></i-button>-->
       </i-form-item>
-      <!--<i-form-item label="验证码" v-if="current===0">
-        <i-input style="width:160px;"></i-input>
-      </i-form-item>-->
     </i-form>
     <div class="item-card-div">
       <i-button @click="cancelChangeCard" class="blueButton">取消</i-button>

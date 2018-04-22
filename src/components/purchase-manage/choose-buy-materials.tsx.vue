@@ -47,8 +47,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="意向融资金额（元）" prop="intentionFinancingAmount">
-              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.intentionFinancingAmount" @on-blur="intentionFinancingAmountBlur">
-              </i-input>
+              <i-input-number  v-model="chooseBuyModel.intentionFinancingAmount" @on-blur="intentionFinancingAmountBlur"  :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
@@ -60,8 +59,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="意向月供(元)" prop="rentPayable">
-              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.rentPayable" @on-blur="rentPayableBlur">
-              </i-input>
+              <i-input-number  v-model="chooseBuyModel.rentPayable" @on-blur="rentPayableBlur"  :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
@@ -123,14 +121,12 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="车辆参考总价（元）" prop="vehicleAmount">
-              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.vehicleAmount" @on-change="vehicleAmountChange" @on-blur="vehicleAmountBlur">
-              </i-input>
+              <i-input-number v-model="chooseBuyModel.vehicleAmount" @on-change="vehicleAmountChange" @on-blur="vehicleAmountBlur"  :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="尾付本金（元）" prop="finalprincipal">
-              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.finalprincipal" @on-change="finalprincipalChange" :readonly="finaldisabled" @on-blur="finalprincipalBlur">
-              </i-input>
+               <i-input-number :readonly="finaldisabled" v-model="chooseBuyModel.finalprincipal" @on-change="finalprincipalChange" @on-blur="finalprincipalBlur"  :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>  
             </i-form-item>
           </i-col>
           <i-col span="12">
@@ -209,32 +205,27 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="保险费（元）" prop="insuranceMoney">
-              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.insuranceMoney" @on-blur="insuranceMoneyBlur">
-              </i-input>
+            <i-input-number  v-model="chooseBuyModel.insuranceMoney" @on-blur="insuranceMoneyBlur"  :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number> 
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="购置税（元）" prop="purchaseMoney">
-              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.purchaseMoney" @on-blur="purchaseMoneyBlur">
-              </i-input>
+              <i-input-number  v-model="chooseBuyModel.purchaseMoney"  @on-blur="purchaseMoneyBlur"  :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>  
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="上牌费（元）" prop="licenseMoney">
-              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.licenseMoney" @on-blur="licenseMoneyBlur">
-              </i-input>
+                 <i-input-number  v-model="chooseBuyModel.licenseMoney" @on-blur="licenseMoneyBlur" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>   
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="GPS费（元）" prop="GpsMoney">
-              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.GpsMoney" @on-blur="GpsMoneyBlur">
-              </i-input>
+                <i-input-number  v-model="chooseBuyModel.GpsMoney" @on-blur="GpsMoneyBlur" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>     
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="其他费用（元）" prop="otherFee">
-              <i-input :maxlength="14" type="text" v-model="chooseBuyModel.otherFee" @on-blur="otherFeeBlur">
-              </i-input>
+               <i-input-number  v-model="chooseBuyModel.otherFee" @on-blur="otherFeeBlur" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>       
             </i-form-item>
           </i-col>
           <i-col span="12">

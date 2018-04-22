@@ -45,10 +45,10 @@
         <data-grid-item label="融资金额" :span="8">
           <i-form ref="finance" :model="amount" :rules="amountRules" inline>
             <i-form-item prop="financingAmount1">
-              <i-input v-model="amount.financingAmount1" placeholder="请输入融资金额"></i-input>~
+            <i-input-number  v-model="amount.financingAmount1" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number> ~
             </i-form-item>
             <i-form-item prop="financingAmount2">
-              <i-input v-model="amount.financingAmount2" placeholder="请输入融资金额"></i-input>
+                <i-input-number  v-model="amount.financingAmount2" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number> ~ 
             </i-form-item>
           </i-form>
         </data-grid-item>
@@ -162,17 +162,17 @@
         </data-grid-item>
         <data-grid-item :span="6" label="合同违约金费率">
           <i-form-item class="item-input" prop="contractBreakRates">
-            <i-input v-model="formItems.contractBreakRates"></i-input>&nbsp;%
+             <i-input-number v-model="formItems.contractBreakRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>&nbsp;%
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="6" label="提前还款费率">
           <i-form-item class="item-input" prop="prepaymentRates">
-            <i-input v-model="formItems.prepaymentRates"></i-input>&nbsp;%
+            <i-input-number  v-model="formItems.prepaymentRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>&nbsp;%
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="12" label="罚息费率">
           <i-form-item class="item-input" prop="penaltyRates">
-            <i-input v-model="formItems.penaltyRates"></i-input>
+              <i-input-number  v-model="formItems.penaltyRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>  
           </i-form-item>
           <span>&nbsp;%/天</span>
         </data-grid-item>
