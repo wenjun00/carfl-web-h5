@@ -1,7 +1,6 @@
 const cityData = require('~/assets/json/city.json');
 
 export class CityService {
-
   /**
    * 获取城市信息
    * @param level

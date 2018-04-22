@@ -191,11 +191,11 @@
             return h(
               "div",
               {
-                attrs:{
-                  title:row.first
+                attrs: {
+                  title: row.first
                 }
               },
-              [h("p",this.$filter.subString(row.first,15))]
+              [h("p", this.$filter.subString(row.first, 15))]
             )
           }),
         },
@@ -209,11 +209,11 @@
             return h(
               "div",
               {
-                attrs:{
-                  title:row.second
+                attrs: {
+                  title: row.second
                 }
               },
-              [h("p",this.$filter.subString(row.second,15))]
+              [h("p", this.$filter.subString(row.second, 15))]
             )
           }),
         },
@@ -227,11 +227,11 @@
             return h(
               "div",
               {
-                attrs:{
-                  title:row.crc
+                attrs: {
+                  title: row.crc
                 }
               },
-              [h("p",this.$filter.subString(row.crc,15))]
+              [h("p", this.$filter.subString(row.crc, 15))]
             )
           }),
         },
@@ -244,11 +244,11 @@
             return h(
               "div",
               {
-                attrs:{
-                  title:row.detail
+                attrs: {
+                  title: row.detail
                 }
               },
-              [h("p",this.$filter.subString(row.detail,15))]
+              [h("p", this.$filter.subString(row.detail, 15))]
             )
           }),
           editable: true
@@ -353,11 +353,7 @@
           data => {
             this.AppRoveReasonList = data
             this.AppRoveReasonList.map(v => {
-              // if (v.type === 374) {
-              //   v.type = '退回';
-              // } else {
-              //   v.type = '拒绝';
-              // }
+
             })
           },
           ({msg}) => {

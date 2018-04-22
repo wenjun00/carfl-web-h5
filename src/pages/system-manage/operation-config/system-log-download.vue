@@ -57,6 +57,7 @@ export default class SystemLogDownload extends Page {
     clientIp: '',
     exeType: '',
     exeTime: '',
+    realName:'',
     dateRange:[]
   }
 
@@ -65,6 +66,7 @@ export default class SystemLogDownload extends Page {
       clientIp: '',
       exeType: '',
       exeTime: '',
+      realName:'',
       dateRange:[]
     }
     this.search()
@@ -155,7 +157,8 @@ export default class SystemLogDownload extends Page {
     this.systemLogModel = {
       clientIp: '',
       exeType: '',
-      exeTime: ''
+      exeTime: '',
+      realName:''
     }
   }
   /**
