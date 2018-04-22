@@ -47,7 +47,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="意向融资金额（元）" prop="intentionFinancingAmount">
-              <i-input-number  v-model="chooseBuyModel.intentionFinancingAmount" @on-blur="intentionFinancingAmountBlur"  :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number  v-model="chooseBuyModel.intentionFinancingAmount" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
@@ -59,7 +59,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="意向月供(元)" prop="rentPayable">
-              <i-input-number  v-model="chooseBuyModel.rentPayable" @on-blur="rentPayableBlur"  :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number  v-model="chooseBuyModel.rentPayable"  :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
@@ -361,9 +361,9 @@ export default class ChooseBuyMaterials extends Vue {
     province: "", // 省份
     city: "", // 城市
     companyId: "", // 所属公司
-    intentionFinancingAmount: "", // 意向融资金额
+    intentionFinancingAmount: 0, // 意向融资金额
     intentionPeriods: "", // 意向期限
-    rentPayable: "", // 租金支付
+    rentPayable: 0, // 租金支付
     intentionPaymentRatio: 0, // 意向首付比例
     orderServiceList: [], // 自缴费用
     financingUse: "", // 融资租赁用途
@@ -571,6 +571,7 @@ export default class ChooseBuyMaterials extends Vue {
     ],
     intentionPaymentRatio: [
       {
+        type: "number",
         required: true,
         message: "请输入意向首付比例",
         trigger: "blur"
@@ -583,6 +584,7 @@ export default class ChooseBuyMaterials extends Vue {
     ],
     intentionFinancingAmount: [
       {
+        type:"number",
         required: true,
         message: "请输入意向融资金额",
         trigger: "blur"
@@ -602,25 +604,6 @@ export default class ChooseBuyMaterials extends Vue {
     ]
   };
 
-  /**
-   * 意向月供金额(小数点保留两位)
-   */
-  rentPayableBlur() {
-    this.chooseBuyModel.rentPayable = Number(this.chooseBuyModel.rentPayable)
-      .toFixed(2)
-      .toString();
-  }
-
-  /**
-   * 意向融资金额(小数点保留两位)
-   */
-  intentionFinancingAmountBlur() {
-    this.chooseBuyModel.intentionFinancingAmount = Number(
-      this.chooseBuyModel.intentionFinancingAmount
-    )
-      .toFixed(2)
-      .toString();
-  }
   /**
    * 尾付本金(小数点保留两位)
    */
