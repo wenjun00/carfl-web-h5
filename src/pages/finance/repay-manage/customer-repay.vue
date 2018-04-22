@@ -194,7 +194,7 @@ export default class CustomerRepay extends Page {
     this.columns1 = [
       {
         title: "操作",
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(6),
         align: "center",
         fixed: "left",
         render: (h, { row, column, index }) => {
@@ -209,6 +209,7 @@ export default class CustomerRepay extends Page {
                       },
                       on: {
                         click: () => {
+                          console.log(row.orderStatus)
                           this.confirmRepaymentModal = true;
                           let _repayment: any = this.$refs["confirm-repayment"];
                           _repayment.refresh(row);
