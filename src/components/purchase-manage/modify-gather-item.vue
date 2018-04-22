@@ -24,7 +24,7 @@
   export default class ModifyGatherItem extends Vue {
     private modifyGatherItemModel: Object = {
       itemName: '首付金额',
-      itemMoney: '9000'
+      itemMoney: 0
     }
     created() {}
   }

@@ -173,10 +173,8 @@ export default class SaleGatheringApply extends Page {
     let finalCash = itemList.find(v => v.itemName === "finalCash"); // 尾付款
     this.saveDraftModel.finalCash = finalCash ? finalCash.itemMoney : 0;
 
-    let firstMonthlySupply = itemList.find(v => v.itemName === "monthlySupply"); // 月供金额
-    this.saveDraftModel.firstMonthlySupply = firstMonthlySupply
-      ? firstMonthlySupply.itemMoney
-      : 0;
+    let firstMonthlySupply = itemList.find(v => v.itemName === "firstMonthlySupply"); // 月供金额
+    this.saveDraftModel.firstMonthlySupply = firstMonthlySupply ? firstMonthlySupply.itemMoney :0;
 
     let gpsFee = itemList.find(v => v.itemName === "gpsFee"); // gps费
     this.saveDraftModel.gpsFee = gpsFee ? gpsFee.itemMoney : 0;
