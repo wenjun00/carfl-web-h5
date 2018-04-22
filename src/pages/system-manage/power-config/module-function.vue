@@ -79,7 +79,7 @@
         </template>
         <template>
             <i-modal v-model="toViewModal" width="500" title="查看" class="to-view-modal-class">
-                <to-view :ToviewrowData="ToviewrowData"></to-view>
+                <to-view ref="to-view"></to-view>
             </i-modal>
         </template>
         <template>
@@ -144,7 +144,6 @@ export default class ModuleFunction extends Page {
   private modifyIconModal: Boolean = false
   private resoPid: number = 0
   private allData: Array<any> = []
-  private ToviewrowData: any = ''
   private modifyNameDataset: any = {
     resoName: '',
     id: ''
@@ -219,8 +218,8 @@ export default class ModuleFunction extends Page {
                 },
                 on: {
                   click: () => {
-                    this.ToviewrowData = row
-                    console.log(this.ToviewrowData, 777)
+                    let _toview:any=this.$refs['to-view']
+                    _toview.getData(row)
                     this.toViewModal = true
                   }
                 },

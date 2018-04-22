@@ -215,7 +215,6 @@ export default class SaleGatheringApply extends Page {
   }
 
 activited({row}){
-  console.log('oooooooooo')
   console.log(row)
 }
   /**

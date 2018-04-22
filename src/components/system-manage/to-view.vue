@@ -33,20 +33,27 @@
 
   @Component({})
   export default class ToView extends Vue {
-    @Prop()
-    row: Object;
-
-    @Prop() ToviewrowData: any;
+    private ToviewrowData: any = {
+      resoInitName: '',
+      resoName: '',
+      resoInitIcon: '',
+      resoIcon: '',
+      resoStatus: '',
+      resoRemark: ''
+    };
 
     created() {}
+    getData(row) {
+      this.ToviewrowData = row
+    }
   }
 
 </script>
- <style lang="less" scoped>
-    .component.to-view{
-        .data-form{
-            margin-top:20px;
-        }
+<style lang="less" scoped>
+  .component.to-view {
+    .data-form {
+      margin-top: 20px;
     }
+  }
 
- </style>
+</style>
