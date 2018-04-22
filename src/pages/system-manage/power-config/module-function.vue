@@ -78,18 +78,18 @@
       </i-modal>
     </template>
     <template>
-      <i-modal v-model="toViewModal" width="500" title="查看" class="to-view-modal-class">
+      <i-modal v-model="toViewModal" width="500" title="查看">
         <to-view ref="to-view"></to-view>
       </i-modal>
     </template>
     <template>
-      <i-modal v-model="modifyNameModal" width="500" title="修改资源名称" class="to-view-modal-class">
+      <i-modal v-model="modifyNameModal" width="500" title="修改资源名称">
         <i-form :label-width="60" style="margin-top:20px;">
           <i-form-item label="资源名称" prop="resoName">
             <i-input v-model="modifyNameDataset.resoName" :maxlength="20"></i-input>
           </i-form-item>
         </i-form>
-        <div style="text-align:right;">
+        <div slot="footer">
           <i-button @click="cancelmodifyName" class="defalut-button">取消</i-button>
           <i-button @click="confirmmodifyName" class="blueButton">确定</i-button>
         </div>
@@ -102,7 +102,7 @@
             <i-input v-model="modifyIconData.resoIcon" :maxlength="15"></i-input>
           </i-form-item>
         </i-form>
-        <div class="pop-button">
+        <div slot="footer">
           <i-button @click="cancelmodifyIcon" class="defalut-button">取消</i-button>
           <i-button @click="confirmmodifyIcon" class="blueButton">确定</i-button>
         </div>
@@ -362,7 +362,6 @@
      */
     getTreeDate() {
       this.roleResoService.findRoleResoMenu().subscribe(data => {
-        console.log(data, 999)
         this.allData = data
         this.resoPid = data.pid
         this.createNewTree(this.allData)
