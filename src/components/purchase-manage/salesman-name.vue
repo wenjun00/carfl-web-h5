@@ -1,5 +1,5 @@
 <!--机构与用户管理-->
-<template>
+<template> 
   <section>
     <data-form  :model="userModel" @on-search="getUserListByCondition" :page="pageService" hidden-date-search hidden-reset>
       <template slot="input">

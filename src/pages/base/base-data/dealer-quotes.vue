@@ -17,6 +17,10 @@
           <i-input placeholder="请输入经销商" v-model="busModal.carName"></i-input>
         </i-form-item>
       </template>
+      <template slot="button">
+         <i-button @click="addquoteFun">新增报价</i-button>
+      </template>
+
     </data-form>
     <data-box :id="154" :columns="columns" :data="carList" @onPageChange="seachBusiness" :page="pageService"></data-box>
     <template>
@@ -37,17 +41,7 @@
         </div>
       </i-modal>
     </template>
-    <!-- <div class="bottom_addPrice">
-      <i-button class="highButton" @click="addquoteFun">新增报价</i-button>
-    </div> -->
-    <!--新增报价-->
-    <div class="submitBar">
-      <i-row type="flex" align="middle">
-        <i-col :span="1" :offset="23">
-          <i-button @click="addquoteFun" class="highButton">新增报价</i-button>
-        </i-col>
-      </i-row>
-    </div>
+  
   </section>
 </template>
 <script lang="ts">
