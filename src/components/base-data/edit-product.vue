@@ -23,7 +23,7 @@
         </data-grid-item>
         <data-grid-item label="产品利率" :span="4">
           <i-form-item class="select" prop="productRates">
-            <i-input v-model="productDetail.productRates" placeholder="请输入产品利率"></i-input>
+            <i-input-number   v-model="productDetail.productRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>  
           </i-form-item>
           <div class="after_text">%/月</div>
         </data-grid-item>
@@ -45,10 +45,10 @@
         <data-grid-item label="融资金额" :span="8">
           <i-form ref="finance" :model="amount" :rules="amountRules" inline>
             <i-form-item prop="financingAmount1">
-              <i-input v-model="amount.financingAmount1" placeholder="请输入融资金额"></i-input>~
+              <i-input-number   v-model="amount.financingAmount1" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number> ~  
             </i-form-item>
             <i-form-item prop="financingAmount2">
-              <i-input v-model="amount.financingAmount2" placeholder="请输入融资金额"></i-input>
+              <i-input-number   v-model="amount.financingAmount2" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number> 
             </i-form-item>
           </i-form>
         </data-grid-item>
@@ -73,7 +73,7 @@
           </i-radio-group>
           <div v-if="initialParams==='有'" style="margin-left:10px;margin-top:21px;" class="initialPayment">
             <i-form-item style="width:35%;" prop="initialPayment" label="比例">
-              <i-input v-model="productDetail.initialPayment"></i-input>
+                <i-input v-model="productDetail.initialPayment"></i-input> 
             </i-form-item>
             <div style="color:red" class="after_text">%</div>
             <div style="color:blue" class="after_text">如果有多个则用分号隔开</div>
@@ -91,7 +91,7 @@
         <data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">
           <div style="margin-top:17px;" class="initialPayment">
             <i-form-item prop="depositCash" label="比例">
-              <i-input v-model="productDetail.depositCash"></i-input>
+            <i-input v-model="productDetail.depositCash"></i-input> 
             </i-form-item>
             <span style="color:red" class="after_text">%</span>
             <i-form-item prop="depositCashType" style="width:30%;">
@@ -113,7 +113,7 @@
           </i-radio-group>
           <div v-if="residueParams==='有'" class="initialPayment" style="margin-top:27px;">
             <i-form-item style="width:37%;" prop="finalCash" label="月利率">
-              <i-input v-model="productDetail.finalCash"></i-input>
+              <i-input v-model="productDetail.finalCash"></i-input> 
             </i-form-item>
             <span style="color:red" class="after_text">%</span>
             <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
@@ -163,30 +163,23 @@
         </data-grid-item>
         <data-grid-item :span="6" label="合同违约金费率">
           <i-form-item prop="contractBreakRates" style="margin-top:15px;">
-            <i-input v-model="productDetail.contractBreakRates"></i-input>
+            <i-input-number   v-model="productDetail.contractBreakRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number> 
           </i-form-item>
           <span>&nbsp;%</span>
         </data-grid-item>
         <data-grid-item :span="6" label="提前还款费率">
           <i-form-item prop="prepaymentRates" style="margin-top:15px;">
-            <i-input v-model="productDetail.prepaymentRates"></i-input>
+            <i-input-number   v-model="productDetail.prepaymentRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number> 
           </i-form-item>
           <span>&nbsp;%</span>
         </data-grid-item>
         <data-grid-item :span="12" label="罚息费率">
           <i-form-item prop="penaltyRates" style="margin-top:15px;">
-            <i-input v-model="productDetail.penaltyRates"></i-input>
+            <i-input-number   v-model="productDetail.penaltyRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>   
           </i-form-item>
           <span>&nbsp;%/天</span>
         </data-grid-item>
       </data-grid>
-      <!--<div style="margin-right:10px;display:inline-block" class="add-periods-item">状态</div>
-      <i-form-item prop="isPublish">
-        <i-radio-group v-model="productDetail.isPublish">
-          <i-radio :label="361">未发布</i-radio>
-          <i-radio :label="360">已发布</i-radio>
-        </i-radio-group>
-      </i-form-item>-->
     </i-form>
   </section>
 </template>

@@ -35,12 +35,26 @@ export default class ChangeGatherItem extends Vue {
       {
         align: "center",
         title: "收款项",
-        key: "itemLabel"
+        key: "itemLabel",
+        minWidth: 150
       },
       {
         align: "center",
         title: "金额",
-        key: "itemMoney"
+        key: "itemMoney",
+        minWidth: 100,
+        render: (h, { row }) => {
+          return h(
+            "div",
+            {
+              style: {
+                width: "100%",
+                textAlign: "right"
+              }
+            },
+            [h("p", this.$filter.toThousands(row.itemMoney))]
+          );
+        }
       }
     ];
   }
@@ -78,13 +92,13 @@ export default class ChangeGatherItem extends Vue {
   }
   changeItem() {
     if (this.multipleSelection) {
-    //   let moneyList = this.multipleSelection.map(v => v.itemMoney);
-      let sum:any=0
-      this.multipleSelection.forEach(v=>{
-          sum=sum+(Number(v.itemMoney)||0)
-      })
-      let totalPayment:any=sum.toFixed()
-    //   let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
+      //   let moneyList = this.multipleSelection.map(v => v.itemMoney);
+      let sum: any = 0;
+      this.multipleSelection.forEach(v => {
+        sum = sum + (Number(v.itemMoney) || 0);
+      });
+      let totalPayment: any = sum.toFixed();
+      //   let totalPayment = moneyList.reduce((x, y) => x + y); // 获取合计
       let total = {
         itemMoney: totalPayment,
         itemLabel: "合计（元）",

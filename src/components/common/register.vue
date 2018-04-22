@@ -22,10 +22,6 @@
       <i-form-item label="所属公司" prop="company">
         <i-input v-model="registerModel.company" style="width:80%;"></i-input>
       </i-form-item>
-      <!-- <i-row style="text-align:center;margin-right:40px;">
-        <i-button @click="cancelClick" size="large">取消</i-button>
-        <i-button @click="registerClick()" size="large" style="background:#265ea2;color:#fff;margin-left:20px;">注册</i-button>
-      </i-row> -->
     </i-form>
   </section>
 </template>

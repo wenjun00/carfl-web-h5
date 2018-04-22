@@ -1,4 +1,3 @@
-//新增素材
 <template>
   <i-form ref="add-material" :model="addMaterial" :rules="rulesMaterial" :label-width="80">
     <i-form-item label="素材名称" prop="name">

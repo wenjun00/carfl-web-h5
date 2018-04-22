@@ -1,28 +1,19 @@
 <!--收款明细-->
 <template>
   <section class="component gather-detail">
-    <i-table :columns="columns1" :data="saleItemList" width="1100" stripe></i-table>
+    <i-table :height="400" :columns="columns1" :data="saleItemList" stripe></i-table>
     <div>
-      <Icon type="plus" class="item-shoukuan-icon"></Icon>
       <i-button type="text" class="item-shoukuan-button" @click="changeGatherItem">变更收款项</i-button>
     </div>
     <div class="form-title">账户信息</div>
-    <table border="1" width="1100" class="gather_type_table item-shoukuan-table">
-      <tr height="40">
-        <td bgcolor="#F2F2F2">户名</td>
-        <td bgcolor="#F2F2F2">开户银行</td>
-        <td bgcolor="#F2F2F2">银行卡号</td>
-        <td bgcolor="#F2F2F2">支行名称</td>
-        <td bgcolor="#F2F2F2">第三方客户号</td>
-      </tr>
-      <tr height="40">
-        <td>{{accountInfo.personalName}}</td>
-        <td>{{accountInfo.depositBank}}</td>
-        <td>{{accountInfo.cardNumber}}</td>
-        <td>{{accountInfo.depositBranch}}</td>
-        <td>{{accountInfo.clientNumber}}</td>
-      </tr>
-    </table>
+    <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
+      <data-grid-item label="户名" :span="4">{{accountInfo.personalName}}</data-grid-item>
+      <data-grid-item label="开户银行" :span="4">{{accountInfo.depositBank}}</data-grid-item>
+      <data-grid-item label="银行卡号" :span="4">{{accountInfo.cardNumber}}</data-grid-item>
+      <data-grid-item label="支行名称" :span="4">{{accountInfo.depositBranch}}</data-grid-item>
+      <data-grid-item label="第三方客户号" :span="8">{{accountInfo.clientNumber}}</data-grid-item>
+    </data-grid>
+
     <!--变更收款项-->
     <template>
       <i-modal v-model="changeGatherItemModal" title="变更收款项">
@@ -63,8 +54,6 @@ export default class GatherDetail extends Vue {
   @Prop() orderFodderInfo: any;
   private columns1: any;
   private saleItemList: Array<Object> = [];
-  private columns3: any;
-  private data3: Array<Object> = [];
   private changeGatherItemModal: Boolean = false;
   private accountInfo: any = {}; // 账户信息
   created() {
@@ -72,50 +61,27 @@ export default class GatherDetail extends Vue {
       {
         key: "itemLabel",
         title: "项目名称",
-        align: "center"
+        align: "center",
+        minWidth: 200
       },
       {
         key: "itemMoney",
         title: "金额",
-        align: "center"
-      }
-    ];
-
-    this.columns3 = [
-      {
-        key: "accountName",
         align: "center",
-        title: "户名"
-      },
-      {
-        key: "openAccountBank",
-        align: "center",
-        title: "开户银行"
-      },
-      {
-        key: "bankCardId",
-        align: "center",
-        title: "银行卡号"
-      },
-      {
-        key: "branchBankName",
-        align: "center",
-        title: "支行名称"
-      },
-      {
-        key: "thirdCustomId",
-        align: "center",
-        title: "第三方客户号"
-      }
-    ];
-
-    this.data3 = [
-      {
-        accountName: "李兵强",
-        openAccountBank: "中国建设银行",
-        bankCardId: "6227004171150315789",
-        branchBankName: "丈八六路支行",
-        thirdCustomId: "3456878774154"
+        minWidth: 200,
+        render: (h, { row }) => {
+          return h(
+            "div",
+            {
+              style: {
+                width: "100%",
+                textAlign: "right",
+                paddingRight: "48%"
+              }
+            },
+            [h("p", this.$filter.toThousands(row.itemMoney))]
+          );
+        }
       }
     ];
   }
@@ -189,13 +155,20 @@ export default class GatherDetail extends Vue {
     display: none !important;
   }
 }
-  .item-shoukuan-icon{
-    position:relative;left:16px;top:5px;color:#265ea2
-  }
-  .item-shoukuan-button{
-    margin-top:10px;color:#265ea2
-  }
-  .item-shoukuan-table{
-    margin-top:10px;text-align:center;border:1px solid #DDDEE1;margin-bottom:60px;
-  }
+.item-shoukuan-icon {
+  position: relative;
+  left: 16px;
+  top: 5px;
+  color: #265ea2;
+}
+.item-shoukuan-button {
+  margin-top: 10px;
+  color: #265ea2;
+}
+.item-shoukuan-table {
+  margin-top: 10px;
+  text-align: center;
+  border: 1px solid #dddee1;
+  margin-bottom: 60px;
+}
 </style>

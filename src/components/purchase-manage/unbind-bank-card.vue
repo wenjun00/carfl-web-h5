@@ -17,10 +17,6 @@
       <i-form-item label="银行预留手机号" prop="reservedPhoneNumber">
         <i-input class="item-input-width60" v-model="unbindBankCardModal.reservedPhoneNumber" readonly></i-input>
       </i-form-item>
-      <!--<i-form-item label="验证码">
-        <i-input style="width:160px;"></i-input>
-        <i-button style="display:inline-block;margin-left:8px;" class="blueButton">发送验证码<span>60</span></i-button>
-      </i-form-item>-->
     </i-form>
   </section>
 </template>
