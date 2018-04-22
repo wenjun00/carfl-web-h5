@@ -20,7 +20,7 @@
         <change-gather-item ref="change-item" @change="changeSaleItem" @close="changeGatherItemModal=false"></change-gather-item>
         <div slot="footer">
           <i-button @click="changeGatherItemModal=false">取消</i-button>
-          <i-button @click="confirmChangeItem" class="blueButton">确定</i-button>
+          <i-button @click="changeItemForm.changeItem()" class="blueButton">确定</i-button>
         </div>
       </i-modal>
     </template>
@@ -33,16 +33,12 @@ import Component from "vue-class-component";
 import { ApplyQueryService } from "~/services/business-service/apply-query.service";
 import { Dependencies } from "~/core/decorator";
 import SvgIcon from "~/components/common/svg-icon.vue";
-import DataBox from "~/components/common/data-box.vue";
 import { Prop } from "vue-property-decorator";
-import ModifyGatherItem from "~/components/purchase-manage/modify-gather-item.vue";
 import ChangeGatherItem from "~/components/purchase-manage/change-gather-item.vue";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 @Component({
   components: {
     SvgIcon,
-    DataBox,
-    ModifyGatherItem,
     ChangeGatherItem,
     DataGrid,
     DataGridItem
@@ -51,10 +47,10 @@ import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 export default class GatherDetail extends Vue {
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
   @Prop() checkOrderId: Number;
-  @Prop() orderFodderInfo: any;
   private columns1: any;
   private saleItemList: Array<Object> = [];
   private changeGatherItemModal: Boolean = false;
+  private changeItemForm: any = {}
   private accountInfo: any = {}; // 账户信息
   created() {
     this.columns1 = [
@@ -85,24 +81,21 @@ export default class GatherDetail extends Vue {
       }
     ];
   }
+
+  mounted(){
+    this.changeItemForm = this.$refs["change-item"]
+  }
+
   /**
    * 变更收款项
    */
   changeGatherItem() {
     if (this.checkOrderId) {
       this.changeGatherItemModal = true;
-      let _changeItemModal: any = this.$refs["change-item"];
-      _changeItemModal.getOrderSaleItem(this.checkOrderId, this.saleItemList);
+      this.changeItemForm.getOrderSaleItem(this.checkOrderId, this.saleItemList);
     } else {
       this.$Message.info("请选择订单！");
     }
-  }
-  /**
-   * 确定变更收款项
-   */
-  confirmChangeItem() {
-    let _changeItem: any = this.$refs["change-item"];
-    _changeItem.changeItem();
   }
   makeList(val) {
     if (val.applicationCollectMoneyItems) {
