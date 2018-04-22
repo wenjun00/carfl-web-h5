@@ -9,7 +9,7 @@ declare module 'vue/types/vue' {
     $dict: any
     $city: any
     $filter: any
-    $validator: ValidatorService
+    $validator: any
     $Message: any
     $Modal: any
     $dialog: any
