@@ -3,9 +3,9 @@ import validator from 'async-validator'
 export class ValidatorService {
   /**
    * 自定义验证器
-   * @param data 
-   * @param descriptor 
-   * @param callback 
+   * @param data
+   * @param descriptor
+   * @param callback
    */
   static validate(data: any, descriptor: any) {
     let schema = new validator(descriptor);
@@ -49,7 +49,7 @@ export class ValidatorService {
   /**
    * 验证身份证
    */
-  static idCard(rule, value, callback) {
+  public static idCard(rule, value, callback) {
     if (ValidatorService.regex.idCard.test(value) || !value) {
       callback();
     } else {
