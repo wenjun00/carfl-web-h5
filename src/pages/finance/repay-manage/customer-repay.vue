@@ -273,7 +273,7 @@ export default class CustomerRepay extends Page {
         align: "center",
         title: "订单号",
         editable: true,
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(5),
         key: "orderNumber",
         render: (h, { row, column, index }) => {
           return h(
@@ -299,7 +299,7 @@ export default class CustomerRepay extends Page {
         title: "客户结算号",
         key: "clientNumber",
         editable: true,
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, column, index }) => {
           return h(
             "i-button",
@@ -331,14 +331,14 @@ export default class CustomerRepay extends Page {
         title: " 证件号",
         editable: true,
         key: "idCard",
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(5),
       },
       {
         align: "center",
         title: " 手机号",
         editable: true,
         key: "mobileMain",
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: "center",
@@ -465,14 +465,14 @@ export default class CustomerRepay extends Page {
         title: " 利率%/月",
         editable: true,
         key: "productRate",
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(1),
       },
       {
         align: "center",
         title: " 结算通道",
         editable: true,
         key: "settlementChannel",
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.settlementChannel));
         }
@@ -480,7 +480,7 @@ export default class CustomerRepay extends Page {
       {
         align: "center",
         title: " 归属公司",
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(3),
         editable: true,
         key: "companyChinaName"
       }

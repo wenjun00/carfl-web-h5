@@ -422,21 +422,21 @@ export default class OrgUserManage extends Page {
         title: '用户名',
         key: 'userUsername',
         editable: true,
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: 'center',
         title: '姓名',
         editable: true,
         key: 'userRealname',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: 'center',
         title: '所属机构',
         editable: true,
         key: 'deptName',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         align: 'center',
@@ -457,7 +457,7 @@ export default class OrgUserManage extends Page {
         editable: true,
         title: '电话',
         key: 'userPhone',
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         align: 'center',
@@ -465,7 +465,7 @@ export default class OrgUserManage extends Page {
         title: '备注',
         key: 'userRemark',
         ellipsis: true,
-        minWidth: this.$common.getColumnWidth(10),
+        minWidth: this.$common.getColumnWidth(8),
       },
 
       {
@@ -473,7 +473,7 @@ export default class OrgUserManage extends Page {
         editable: true,
         title: '创建人',
         key: 'operatorName',
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: 'center',
