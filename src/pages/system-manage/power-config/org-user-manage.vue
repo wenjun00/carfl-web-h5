@@ -247,7 +247,7 @@ export default class OrgUserManage extends Page {
         align: 'center',
         type: 'selection',
         fixed: 'left',
-        minWidth: this.$common.getColumnWidth(3),
+        width:40
       },
       {
         title: '操作',

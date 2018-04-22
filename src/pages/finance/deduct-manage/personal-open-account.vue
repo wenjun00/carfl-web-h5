@@ -227,7 +227,7 @@
         },
         {
           type: "selection",
-          minWidth: this.$common.getColumnWidth(3),
+          width:40,
           align: "center"
         }
       ];

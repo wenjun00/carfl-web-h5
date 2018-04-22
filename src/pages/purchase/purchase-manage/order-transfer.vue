@@ -220,7 +220,7 @@ export default class OrderTransfer extends Page {
     this.columns1 = [
       {
         type: 'selection',
-        minWidth: this.$common.getColumnWidth(2),
+        width:40,
         fixed: 'left',
         align: 'center'
       },

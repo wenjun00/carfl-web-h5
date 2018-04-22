@@ -75,7 +75,7 @@ export default class SystemLogDownload extends Page {
       {
         type: 'selection',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2),
+        width:40,
         fixed: 'left'
       },
       {

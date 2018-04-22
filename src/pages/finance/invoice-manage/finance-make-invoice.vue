@@ -148,7 +148,7 @@
       this.columns1 = [{
           align: "center",
           type: "selection",
-        minWidth: this.$common.getColumnWidth(1),
+        width:40,
           fixed: 'left'
         },
         {
