@@ -4,7 +4,7 @@
     <h2>客户来源</h2>
     <i-form ref="job-form" :model="OriginModel" :label-width="110">
       <i-row>
-        <i-form-item label="通过宣传" prop="name">
+        <i-form-item label="通过宣传" prop="resourceType">
           <i-checkbox-group v-model="OriginModel.resourceType">
             <i-checkbox :label="65">宣传页</i-checkbox>
             <i-checkbox :label="66">网络推广</i-checkbox>
@@ -44,7 +44,7 @@
         <div class="customer-radio-form">
           <!--<i-checkbox v-model="isShow" @on-change="checked1">客户转介绍</i-checkbox>-->
           <div v-if="customerOriginModel.resourceType===82" class="customer-radio-form-item">
-            <i-form ref="job-form" label-position="left" :label-width="110">
+            <i-form ref="job-form" label-position="left" :model="customerOriginModel" :label-width="110">
               <i-form-item label="客户姓名" prop="customerName">
                 <i-input type="text" v-model="customerOriginModel.customerName"></i-input>
               </i-form-item>
@@ -63,7 +63,7 @@
         <div class="customer-radio-form">
           <!--<i-checkbox v-model="isTrue" @on-change="checked2">分支机构推荐</i-checkbox>-->
           <div v-if="customerOriginModel.resourceType===83" class="customer-radio-form-item">
-            <i-form ref="job-form" label-position="left" :label-width="110">
+            <i-form ref="job-form" :model="customerOriginModel" label-position="left" :label-width="110">
               <i-form-item label="机构名称" prop="organizationNames">
                 <i-input type="text" v-model="customerOriginModel.organizationNames"></i-input>
               </i-form-item>

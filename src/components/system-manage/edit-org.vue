@@ -1,7 +1,7 @@
 <!--新增组织-->
 <template>
   <section class="component edit-org">
-    <i-form :label-width="110" class="editOrg" ref="add-org-form" :model="deptObject" :rules="rules">
+    <i-form :label-width="110" class="editOrg" ref="add-org-form" :model="deptObj" :rules="rules">
       <i-row>
         <i-col :span="24">
           <i-form-item label="机构名称" prop="deptName">
@@ -13,14 +13,6 @@
         <i-col :span="24">
           <i-form-item label="组织机构等级" prop="deptLevel">
             <i-select v-model="deptObj.deptLevel" disabled>
-              <!-- <i-option label="一级" :value="401" :key="401"></i-option>
-              <i-option label="二级" :value="402" :key="402"></i-option>
-              <i-option label="三级" :value="403" :key="403"></i-option>
-              <i-option label="四级" :value="404" :key="404"></i-option>
-              <i-option label="五级" :value="405" :key="405"></i-option>
-              <i-option label="六级" :value="406" :key="406"></i-option>
-              <i-option label="七级" :value="407" :key="407"></i-option>
-              <i-option label="八级" :value="408" :key="408"></i-option> -->
               <i-option v-for="{value,label} in $dict.getDictData('0401')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>

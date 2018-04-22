@@ -31,20 +31,6 @@
     <template>
       <i-modal class="pop-update" v-model="openUpload" :transfer="false" width="700" title="补充资料">
         <upload-the-material ref="upload-the-material"></upload-the-material>
-        <!--<i-button @click="uploadDialog">上传</i-button>
-        <div style="font-size:18px;font-weight:bold;margin-top:10px">
-          <span>文件数量（3）</span>
-          <div style="display:inline-block;float:right;">
-            <i-icon type="ios-download" style="position:relative;left:10px;"></i-icon>
-            <i-button type="text">全部下载</i-button>
-          </div>
-        </div>
-        <div style="margin-top:6px;font-size:14px;">
-          <span>身份证-001fdawdeklvkje...</span><span style="margin-left:10px;">驾驶证-001fdawdeklvkje...</span>
-        </div>
-        <div style="margin-top:6px;font-size:14px;">
-          <span>结婚证-001fdawdeklvkje...</span>
-        </div>-->
         <div slot="footer">
           <i-button class="high-default-button" @click="openUpload=false">取消</i-button>
           <i-button class="high-default-button" @click="confirm">确定</i-button>

@@ -6,24 +6,24 @@
       <i-step title="绑卡"></i-step>
     </i-steps>
     <i-form :label-width="110" class="item-margin-top20" :model="model" :rules="applyRules">
-      <i-form-item label="账户类型">
+      <i-form-item label="账户类型" prop="accountType">
         <i-select class="item-input-width160"  v-model="model.accountType" :disabled="current===0">
           <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
-      <i-form-item label="客户姓名">
+      <i-form-item label="客户姓名" prop="name">
         <i-input class="item-input-width160" :readonly="current===0" v-model="model.name"></i-input>
       </i-form-item>
-      <i-form-item label="证件类型" v-if="current===2">
+      <i-form-item label="证件类型" v-if="current===2" prop="certificateType">
         <i-input class="item-input-width160" :readonly="current===0" v-model="model.certificateType"></i-input>
       </i-form-item>
       <i-form-item label="证件号码" v-if="current===2" prop="certificateNumber">
         <i-input class="item-input-width160" :readonly="current===0" v-model="model.certificateNumber"></i-input>
       </i-form-item>
-      <i-form-item label="开户银行">
+      <i-form-item label="开户银行" prop="depositBank">
         <i-input class="item-input-width160" :readonly="current===0" v-model="model.depositBank"></i-input>
       </i-form-item>
-      <i-form-item label="开户省市">
+      <i-form-item label="开户省市" prop="accountType">
         <i-select class="item-input-width80" :disabled="current===0" v-model="model.accountType">
           <i-option label="陕西省" value="陕西省" key="陕西省"></i-option>
         </i-select>
@@ -44,9 +44,6 @@
         <i-input class="item-input-width160" v-model="model.reservedPhoneNumber"></i-input>
         <!--<i-button style="display:inline-block;margin-left:8px;" class="blueButton">发送验证码<span>60</span></i-button>-->
       </i-form-item>
-      <!--<i-form-item label="验证码" v-if="current===0">
-        <i-input style="width:160px;"></i-input>
-      </i-form-item>-->
     </i-form>
     <div class="item-card-div">
       <i-button @click="cancelChangeCard" class="blueButton">取消</i-button>

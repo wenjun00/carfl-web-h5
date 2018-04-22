@@ -1,31 +1,31 @@
 <!--修改系统参数-->
 <template>
   <section class="component modify-system-params">
-    <i-form :label-width="110" class="amend-parameter">
+    <i-form :label-width="110" :model="sysParamModel" class="amend-parameter">
       <i-row>
         <i-col :span="24">
-          <i-form-item label="参数代码">
+          <i-form-item label="参数代码" prop="paramCode">
             <i-input v-model="sysParamModel.paramCode" disabled></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="24">
-          <i-form-item label="参数名称">
+          <i-form-item label="参数名称" prop="paramName">
             <i-input v-model="sysParamModel.paramName" disabled></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="24">
-          <i-form-item label="参数值">
+          <i-form-item label="参数值" prop="paramValue">
             <i-input v-model="sysParamModel.paramValue"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="24">
-          <i-form-item label="是否启用">
+          <i-form-item label="是否启用" prop="paramStatus">
             <i-select v-model="sysParamModel.paramStatus">
               <i-option label="启用" :value="0" :key="0"></i-option>
               <i-option label="停用" :value="1" :key="1"></i-option>

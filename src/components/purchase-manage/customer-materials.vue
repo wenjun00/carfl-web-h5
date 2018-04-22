@@ -227,8 +227,7 @@
           </i-row>
           <i-row>
             <i-form-item prop="localLiveHouseMoney">
-              <i-input type="text" placeholder="每月租金" v-model="customerMaterialsForm.localLiveHouseMoney">
-              </i-input>
+              <i-input-number  v-model="customerMaterialsForm.localLiveHouseMoney" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
               <span class="item-nian-span">元</span>
             </i-form-item>
           </i-row>
