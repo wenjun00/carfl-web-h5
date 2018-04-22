@@ -13,11 +13,9 @@
       </template>
     </data-form>
     <data-box :id="399" :columns="columns1" :data="gatherList" @onPageChange="getGatherListByCondition" :page="pageService"></data-box>
-
-
     <template>
-      <i-modal v-model="confirmGatherModal" :title="check?'查看':'确认收款'" width="900" class="confirmGather" :transfer="false">
-        <confirm-gather ref="confirm-gather" :check="check"></confirm-gather>
+      <i-modal  v-model="confirmGatherModal" :title="check?'查看':'确认收款'" width="900" class="confirmGather" :transfer="false">
+        <confirm-gather :currentRow="currentRow" ref="confirm-gather" :check="check"></confirm-gather>
         <div slot="footer">
           <!--<i-button class="highDefaultButton" @click="saveDraft" v-if="!check">保存草稿</i-button>-->
           <i-button class="highButton" @click="sendBack" v-if="!check">退回</i-button>
@@ -52,6 +50,8 @@
   import {
     FilterService
   } from "~/utils/filter.service"
+
+
   @Layout("workspace")
   @Component({
     components: {
@@ -75,6 +75,8 @@
       timeSearch: '',
       dateRange:[]
     }
+    private currentRow:any =[]
+
     getEarlyPayList() {
 
     }
@@ -93,7 +95,7 @@
       let _repayment: any = this.$refs['confirm-gather']
       let data: any = {}
       data.collectMoneyId = _repayment.collectMoneyId
-      data.financeUploadResource = _repayment.financeUploadResources
+      data.financeUploadResource = _repayment.fodderList
       data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.applicationId
@@ -115,22 +117,27 @@
       let _repayment: any = this.$refs['confirm-gather']
       let data: any = {}
       data.collectMoneyId = _repayment.collectMoneyId
-      data.financeUploadResource = _repayment.financeUploadResources
+      data.financeUploadResource = _repayment.fodderList
       data.collectMoneyDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.applicationId
       data.totalPayment = _repayment.paymentAmount
       data.withdrawApplicationId = _repayment.rowObj.applicationId
-      this.collectMoneyHistoryService.saveCollectMoneyHistory(data).subscribe(data => {
-        this.$Message.info('操作成功！')
-        this.confirmGatherModal = false
-        this.pageService.reset()
-        this.getGatherListByCondition()
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
-      })
+      if(!_repayment.collectMoneyDetails.length || (_repayment.repaymentObj.totalPayment >_repayment.paymentAmount)){
+        this.$Message.warning("总金额小于应收总金额，请检查后确定！")
+        return
+      }else{
+        this.collectMoneyHistoryService.saveCollectMoneyHistory(data).subscribe(data => {
+          this.$Message.info('操作成功！')
+          this.confirmGatherModal = false
+          this.pageService.reset()
+          this.getGatherListByCondition()
+        }, ({
+              msg
+            }) => {
+          this.$Message.error(msg)
+        })
+      }
     }
     /**
      * 退回
@@ -174,10 +181,13 @@
                 },
                 on: {
                   click: () => {
-                    let _repayment: any = this.$refs['confirm-gather']
-                    _repayment.refresh(row)
-                    this.check = true
                     this.confirmGatherModal = true
+                    this.$nextTick(()=>{
+                      let _repayment: any = this.$refs['confirm-gather']
+                      _repayment.refresh(row)
+                    })
+                    this.check = false
+                    this.currentRow = row
                   }
                 }
               }, "查看")
@@ -191,10 +201,13 @@
                 },
                 on: {
                   click: () => {
-                    let _repayment: any = this.$refs['confirm-gather']
-                    _repayment.refresh(row)
-                    this.check = false
                     this.confirmGatherModal = true
+                    this.$nextTick(()=>{
+                      let _repayment: any = this.$refs['confirm-gather']
+                      _repayment.refresh(row)
+                    })
+                    this.check = false
+                    this.currentRow = row
                   }
                 }
               }, "确认收款")

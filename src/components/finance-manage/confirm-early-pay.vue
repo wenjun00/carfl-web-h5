@@ -43,7 +43,7 @@
         <td>{{item.itemMoney}}</td>
       </tr>
       <tr height="40">
-        <td>合计</td>
+        <td>合计（元）</td>
         <td class="modal-item-heji">{{repaymentObj.totalPayment}}</td>
       </tr>
     </table>
