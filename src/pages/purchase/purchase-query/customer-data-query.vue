@@ -113,6 +113,7 @@ export default class CustomerDataQuery extends Page {
         title: "操作",
         align: "center",
         fixed: "left",
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, { row, column, index }) => {
           return h(
             "i-button",
@@ -137,13 +138,15 @@ export default class CustomerDataQuery extends Page {
         title: "订单编号",
         editable: true,
         key: "orderNumber",
-        align: "center"
+        align: "center",
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: "订单创建时间",
         editable: true,
         key: "createTime",
         align: "center",
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             "span",
@@ -156,6 +159,7 @@ export default class CustomerDataQuery extends Page {
         editable: true,
         key: "orderType",
         align: "center",
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.orderType));
         }
@@ -164,25 +168,29 @@ export default class CustomerDataQuery extends Page {
         title: "产品名称",
         editable: true,
         key: "productName",
-        align: "center"
+        align: "center",
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: "客户姓名",
         editable: true,
         key: "personalName",
-        align: "center"
+        align: "center",
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: "证件号码",
         editable: true,
         key: "idCard",
-        align: "center"
+        align: "center",
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: "联系号码",
         editable: true,
         key: "mobileMain",
-        align: "center"
+        align: "center",
+        minWidth: this.$common.getColumnWidth(5),
       }
     ];
     this.columns2 = [

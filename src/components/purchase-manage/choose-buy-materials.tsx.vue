@@ -92,7 +92,7 @@
       <div slot="extra">
         <i-button icon="plus" @click="onOpenProductList" type="text">{{productModel.productIssueId?"更改产品":"选择产品"}}</i-button>
       </div>
-      <i-form v-show="productModel.productIssueId" ref="form" :rules="productRules" :model="productModel" :label-width="150">
+      <i-form v-show="productModel.productIssueId" ref="product-form" :rules="productRules" :model="productModel" :label-width="150">
         <i-row>
           <i-col span="12">
             <i-form-item label="产品系列">
@@ -175,7 +175,7 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="尾付总额(元)" prop="final">
-                  <i-select :disabled="!productModel.finalCash" placeholder="请选择尾付总额比例" v-model="productModel.final" clearable >
+                  <i-select :disabled="!productModel.finalCash" placeholder="请选择尾付总额比例" v-model="productModel.final" clearable>
                     <i-option v-for="item in finalCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
                   </i-select>
                 </i-form-item>
@@ -295,7 +295,7 @@ export default class ChooseBuyMaterials extends Vue {
   private addPrdShow: Boolean = true;
   private changePrdShow: Boolean = false;
   private companyList: any = []; // 公司信息
-  private carDataSet: any = [];
+
   private rowData: any = null;
   private depositCashData: any = []; // 保证金
   private finalCashData: any = []; // 尾付金额
@@ -311,9 +311,10 @@ export default class ChooseBuyMaterials extends Vue {
   private addOpen: Boolean = false;
   private flag: Boolean = true;
   private index: any = "";
+  public carDataSet: any = [];
 
   // 选购信息数据
-  private chooseModel: any = {
+  public chooseModel: any = {
     province: "", // 省份
     city: "", // 城市
     companyId: "", // 公司ID
@@ -326,7 +327,7 @@ export default class ChooseBuyMaterials extends Vue {
   };
 
   // 产品信息
-  private productModel: any = {
+  public productModel: any = {
     vehicleAmount: 0, // 车辆参考总价
     finalPayment: 0, // 尾付本金
     initialPayment: 0, // 首付金额
@@ -357,31 +358,28 @@ export default class ChooseBuyMaterials extends Vue {
       {
         required: true,
         message: "请输入意向期限",
-        trigger: "change",
-        type: "number"
+        trigger: "blur"
       }
     ],
     province: [
       {
         required: true,
         message: "请选择申请省份",
-        trigger: "change",
-        type: "number"
+        trigger: "blur"
       }
     ],
     city: [
       {
         required: true,
         message: "请选择申请城市",
-        trigger: "change",
-        type: "number"
+        trigger: "blur"
       }
     ],
     orderService: [
       {
         required: true,
         message: "请选择自缴费用",
-        trigger: "change",
+        trigger: "blur",
         type: "array"
       }
     ],
@@ -394,186 +392,55 @@ export default class ChooseBuyMaterials extends Vue {
     ],
     intentionPaymentRatio: [
       {
-        type: "number",
         required: true,
         message: "请输入意向首付比例",
         trigger: "blur"
       },
-      {
-        type: "number",
-        message: "请输入数字",
-        trigger: "blur"
-      }
     ],
     intentionFinancingAmount: [
       {
-        type: "number",
         required: true,
         message: "请输入意向融资金额",
         trigger: "blur"
-      },
-      {
-        type: "number",
-        message: "请输入数字",
-        trigger: "blur"
       }
     ],
-    rentPayable: [
-      {
-        type: "number",
-        message: "请输入数字",
-        trigger: "blur"
-      }
-    ]
+    
   };
 
   // 产品校验规则
   private productRules: any = {
-    prdSeriods: [
-      {
-        required: true,
-        message: "请输入产品系列",
-        trigger: "blur"
-      }
-    ],
-    name: [
-      {
-        required: true,
-        message: "请输入产品名称",
-        trigger: "blur"
-      }
-    ],
-    periods: [
-      {
-        required: true,
-        message: "请输入产品期数",
-        trigger: "blur",
-        type: "number"
-      }
-    ],
-    productRate: [
-      {
-        required: true,
-        message: "请输入产品利率",
-        trigger: "blur",
-        type: "number"
-      }
-    ],
-    payWay: [
-      {
-        required: true,
-        message: "请输入还款方式",
-        trigger: "blur",
-        type: "number"
-      }
-    ],
     vehicleAmount: [
       {
-        required: true,
+        type:'number',
         message: "请输入车辆参考总价",
-        trigger: "blur"
-      },
-      {
-        type: "number",
-        message: "请输入数字",
-        trigger: "blur"
-      }
-    ],
-    finalPayment: [
-      {
-        required: true,
-        message: "请输入尾付本金",
-        trigger: "blur"
-      },
-      {
-        type: "number",
-        message: "请输入数字",
-        trigger: "blur"
-      }
-    ],
-    financingAmount: [
-      {
-        required: true,
-        message: "请输入融资总额",
-        trigger: "blur"
-      }
-    ],
-    initialPayment: [
-      {
-        required: true,
-        message: "请输入首付金额",
-        trigger: "blur"
-      }
-    ],
-    depositCash: [
-      {
-        required: true,
-        message: "请输入保证金金额",
-        trigger: "blur"
-      }
-    ],
-    finalCash: [
-      {
-        required: true,
-        message: "请输入尾付总额",
-        trigger: "blur"
-      }
-    ],
-    manageCost: [
-      {
-        required: true,
-        message: "请输入管理费",
-        trigger: "blur"
-      }
-    ],
-    insuranceExpenses: [
-      {
-        type: "number",
-        message: "请输入数字",
-        trigger: "blur"
-      }
-    ],
-    purchaseTax: [
-      {
-        type: "number",
-        message: "请输入数字",
-        trigger: "blur"
-      }
-    ],
-    monthlySupply: [
-      {
-        type: "number",
-        message: "请输入数字",
-        trigger: "blur"
-      }
-    ],
-    installLicenseFee: [
-      {
-        type: "number",
-        message: "请输入数字",
-        trigger: "blur"
-      }
-    ],
-    gpsFee: [
-      {
-        type: "number",
-        message: "请输入数字",
-        trigger: "blur"
-      }
-    ],
-    otherFee: [
-      {
-        type: "number",
-        message: "请输入数字",
         trigger: "blur"
       }
     ]
   };
 
-  /**
-   * 自定义校验规则
-   */
-  customRules = {};
+  // 自定义校验规则
+  customRules = {
+    productIssueId: [
+      {
+        required: true,
+        message: "请选择对应产品"
+      }
+    ],
+    carListCount: [
+      {
+        type: "number",
+        min: 1,
+        message: "请添加车辆"
+      }
+    ],
+    totalPrice: [
+      {
+        type: "number",
+        min: 1,
+        message: "请填写车辆价格"
+      }
+    ]
+  };
 
   private carColumns = [
     {
@@ -663,355 +530,7 @@ export default class ChooseBuyMaterials extends Vue {
     }
   ];
 
-  // /**
-  //  * 尾付本金(小数点保留两位)
-  //  */
-  // finalprincipalBlur() {
-  //   this.chooseBuyModel.finalprincipal = Number(
-  //     this.chooseBuyModel.finalprincipal
-  //   )
-  //     .toFixed(2)
-  //     .toString();
-  //   if (
-  //     Number(this.chooseBuyModel.finalprincipal) >=
-  //     Number(this.chooseBuyModel.vehicleAmount)
-  //   ) {
-  //     this.$Message.warning("尾付本金应小于车辆参考总价！");
-  //     this.chooseBuyModel.finalprincipal = "";
-  //   }
-  // }
-
-  // /**
-  //  * 保险费(小数点保留两位)
-  //  */
-  // insuranceMoneyBlur() {
-  //   this.chooseBuyModel.insuranceMoney = Number(
-  //     this.chooseBuyModel.insuranceMoney
-  //   )
-  //     .toFixed(2)
-  //     .toString();
-  // }
-  // /**
-  //  * 购置税(小数点保留两位)
-  //  */
-  // purchaseMoneyBlur() {
-  //   this.chooseBuyModel.purchaseMoney = Number(
-  //     this.chooseBuyModel.purchaseMoney
-  //   )
-  //     .toFixed(2)
-  //     .toString();
-  //   console.log(
-  //     this.chooseBuyModel.purchaseMoney,
-  //     "this.chooseBuyModel.purchaseMoney"
-  //   );
-  // }
-  // /**
-  //  * 上牌费(小数点保留两位)
-  //  */
-  // licenseMoneyBlur() {
-  //   this.chooseBuyModel.licenseMoney = Number(this.chooseBuyModel.licenseMoney)
-  //     .toFixed(2)
-  //     .toString();
-  // }
-  // /**
-  //  * GPS费(小数点保留两位)
-  //  */
-  // GpsMoneyBlur() {
-  //   this.chooseBuyModel.GpsMoney = Number(this.chooseBuyModel.GpsMoney)
-  //     .toFixed(2)
-  //     .toString();
-  // }
-  // /**
-  //  * 其他费用(小数点保留两位)
-  //  */
-  // otherFeeBlur() {
-  //   this.chooseBuyModel.otherFee = Number(this.chooseBuyModel.otherFee)
-  //     .toFixed(2)
-  //     .toString();
-  // }
-
-  // /**
-  //  * 数据反显
-  //  */
-  // Reverse(data, orderStatus) {
-  //   data.orderServiceList = data.orderServices.map(v => v.service);
-  //   data.intentionPeriods = Number(data.intentionPeriods);
-  //   data.intentionPaymentRatio = data.intentionPaymentRatio
-  //     ? data.intentionPaymentRatio.toString()
-  //     : "";
-  //   data.intentionFinancingAmount = data.intentionFinancingAmount
-  //     ? data.intentionFinancingAmount.toString()
-  //     : "";
-  //   this.chooseBuyModel = data;
-  //   if (orderStatus === 303) {
-  //     this.carDataSet = data.orderCars;
-  //     if (data.payWay) {
-  //       this.flag = false;
-  //       this.addPrdShow = false;
-  //       this.prdInfoShow = true;
-  //       this.changePrdShow = true;
-
-  //       this.chooseBuyModel.moneyPay = data.monthlySupply.toFixed(2).toString(); // 月供金额
-  //       this.totalPrice = data.vehicleAmount.toFixed(2).toString();
-  //       this.chooseBuyModel.vehicleAmount = this.totalPrice;
-  //       this.chooseBuyModel.GpsMoney = data.gpsFee.toFixed(2).toString(); // GPS费
-  //       this.chooseBuyModel.insuranceMoney = data.insuranceExpenses
-  //         .toFixed(2)
-  //         .toString(); // 保险费
-  //       this.chooseBuyModel.purchaseMoney = data.purchaseTax
-  //         .toFixed(2)
-  //         .toString(); // 购置税
-  //       this.chooseBuyModel.licenseMoney = data.installLicenseFee
-  //         .toFixed(2)
-  //         .toString(); // 上牌费
-  //       this.chooseBuyModel.name = data.product.name; // 产品名称
-  //       this.chooseBuyModel.prdInterestRate = data.productRate; // 产品利率
-  //       this.chooseBuyModel.financeTotalMoney = data.financingAmount
-  //         .toFixed(2)
-  //         .toString(); // 融资总额
-  //       this.chooseBuyModel.finalprincipal = data.finalPayment
-  //         .toFixed(2)
-  //         .toString(); // 尾付本金
-
-  //       //       this.chooseBuyModel.moneyPay = (Number(this.chooseBuyModel.financeTotalMoney) * (1 + Number(this.chooseBuyModel.prdInterestRate) * this.$dict.getDictName(this.chooseBuyModel.periods)) / Number(this.$dict.getDictName(this.DataSet.periods))).toFixed(2)
-  //       // this.chooseBuyModel.moneyPay.toString()
-
-  //       setTimeout(() => {
-  //         this.initialPaymentData.push({
-  //           key: data.paymentScale * 100 + "%",
-  //           value: data.paymentScale * 100
-  //         });
-  //         for (let i = 0; i < this.initialPaymentData.length - 1; i++) {
-  //           for (let j = 1; j < this.initialPaymentData.length; j++) {
-  //             if (i != j) {
-  //               if (
-  //                 this.initialPaymentData[i].key ==
-  //                 this.initialPaymentData[j].key
-  //               ) {
-  //                 this.initialPaymentData.splice(j, 1);
-  //               }
-  //             }
-  //           }
-  //         }
-  //         this.chooseBuyModel.Payment = this.initialPaymentData[0].value; // 首付比例
-  //       }, 100);
-  //       setTimeout(() => {
-  //         this.manageCostData.push({
-  //           key: data.manageCostPercent * 100 + "%",
-  //           value: data.manageCostPercent * 100
-  //         });
-  //         for (let i = 0; i < this.manageCostData.length - 1; i++) {
-  //           for (let j = 1; j < this.manageCostData.length; j++) {
-  //             if (i != j) {
-  //               if (this.manageCostData[i].key == this.manageCostData[j].key) {
-  //                 this.manageCostData.splice(j, 1);
-  //               }
-  //             }
-  //           }
-  //         }
-  //         this.chooseBuyModel.manageData = this.manageCostData[0].value; // 管理费比例
-  //       }, 100);
-  //       setTimeout(() => {
-  //         this.depositCashData.push({
-  //           key: data.depositPercent * 100 + "%",
-  //           value: data.depositPercent * 100
-  //         });
-  //         for (let i = 0; i < this.depositCashData.length - 1; i++) {
-  //           for (let j = 1; j < this.depositCashData.length; j++) {
-  //             if (i != j) {
-  //               if (
-  //                 this.depositCashData[i].key == this.depositCashData[j].key
-  //               ) {
-  //                 this.depositCashData.splice(j, 1);
-  //               }
-  //             }
-  //           }
-  //         }
-  //         this.chooseBuyModel.deposit = this.depositCashData[0].value; // 保证金比例
-  //       }, 100);
-  //       this.chooseBuyModel.prdSeriods = data.productSeries.name; // 产品系列
-  //       this.DataSet.productId = data.productId; // 产品id
-  //       this.DataSet.id = data.productIssueId; // 期数id
-  //       this.chooseBuyModel.seriesId = data.seriesId; // 系列id
-  //       this.chooseBuyModel.finalCash = this.chooseBuyModel.finalCash.toString();
-  //     }
-  //   }
-  // }
-
-  // /**
-  //  * 融资总额
-  //  */
-  // getFinanceTotalMoney() {
-  //   if (
-  //     this.chooseBuyModel.vehicleAmount &&
-  //     this.chooseBuyModel.finalprincipal &&
-  //     this.chooseBuyModel.initialPayment
-  //   ) {
-  //     this.chooseBuyModel.financeTotalMoney = (
-  //       Number(this.chooseBuyModel.vehicleAmount) -
-  //       Number(this.chooseBuyModel.finalprincipal) -
-  //       Number(this.chooseBuyModel.initialPayment)
-  //     ).toFixed(2);
-  //     this.chooseBuyModel.financeTotalMoney.toString();
-  //   } else {
-  //     this.chooseBuyModel.financeTotalMoney = "";
-  //   }
-  //   //   this.chooseBuyModel.deposit = ''
-  //   //   this.chooseBuyModel.manageData = ''
-  //   //   this.chooseBuyModel.moneyPay = ''
-  //   //   月供金额
-  //   if (this.flag) {
-  //     this.flag = true;
-  //     if (this.chooseBuyModel.financeTotalMoney) {
-  //       this.chooseBuyModel.moneyPay = (
-  //         Number(this.chooseBuyModel.financeTotalMoney) *
-  //         (1 +
-  //           Number(this.chooseBuyModel.prdInterestRate) *
-  //             this.$dict.getDictName(this.chooseBuyModel.periods)) /
-  //         Number(this.$dict.getDictName(this.DataSet.periods))
-  //       ).toFixed(2);
-  //       this.chooseBuyModel.moneyPay.toString();
-  //     }
-  //   }
-  // }
-  // /**
-  //  * 管理费
-  //  */
-  // choosemanageCost() {
-  //   // 管理费=融资总额*管理费率
-  //   if (
-  //     this.chooseBuyModel.financeTotalMoney &&
-  //     this.chooseBuyModel.manageData
-  //   ) {
-  //     this.chooseBuyModel.manageCost = (
-  //       Number(this.chooseBuyModel.financeTotalMoney) *
-  //       (Number(this.chooseBuyModel.manageData) * 0.01)
-  //     ).toFixed(2);
-  //     this.chooseBuyModel.manageCost.toString();
-  //   }
-  //   this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel));
-  // }
-  // /**
-  //  * 尾付本金
-  //  */
-  // finalprincipalChange() {
-  //   //   if (Number(this.chooseBuyModel.finalprincipal)>0) {
-  //   //   } else {
-  //   //     this.chooseBuyModel.finalprincipal = ''
-  //   //   }
-  //   if (this.chooseBuyModel.finalprincipal && this.DataSet.finalCash) {
-  //     this.finalorddisabled = false;
-  //   }
-  //   this.getFinanceTotalMoney();
-  // }
-  // vehicleAmountChange() {
-  //   if (this.chooseBuyModel.vehicleAmount && this.DataSet.depositCash) {
-  //     this.depositdisabled = false; // 保证金金额比例输入框
-  //   }
-  //   if (this.chooseBuyModel.vehicleAmount && this.DataSet.finalCash) {
-  //     this.finaldisabled = false;
-  //   }
-  //   if (this.chooseBuyModel.vehicleAmount && this.DataSet.initialPayment) {
-  //     this.Paymentdisabled = false;
-  //   }
-  //   if (this.chooseBuyModel.vehicleAmount && this.DataSet.manageCost) {
-  //     this.manageDatadisabled = false;
-  //   }
-  // }
-  // /**
-  //  * 车辆参考总价更改
-  //  */
-  // vehicleAmountBlur() {
-  //   this.chooseBuyModel.vehicleAmount = Number(
-  //     this.chooseBuyModel.vehicleAmount
-  //   )
-  //     .toFixed(2)
-  //     .toString();
-  //   this.getFinanceTotalMoney();
-  // }
-  // /**
-  //  * 首付金额
-  //  */
-  // chooseinitialPayment() {
-  //   // 首付金额=车辆参考总价*首付比例
-  //   if (
-  //     this.chooseBuyModel.Payment !== "" &&
-  //     this.chooseBuyModel.vehicleAmount
-  //   ) {
-  //     this.chooseBuyModel.initialPayment = (
-  //       Number(this.chooseBuyModel.vehicleAmount) *
-  //       (Number(this.chooseBuyModel.Payment) * 0.01)
-  //     ).toFixed(2);
-  //     this.chooseBuyModel.initialPayment.toString();
-  //     console.log(
-  //       this.chooseBuyModel.initialPayment,
-  //       "this.chooseBuyModel.initialPayment"
-  //     );
-  //   }
-  //   this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel));
-  //   this.getFinanceTotalMoney();
-  // }
-  // /**
-  //  * 保证金金额
-  //  */
-  // choosedeposit() {
-  //   // 保证金金额=融资总额*保证金比例
-  //   if (
-  //     this.chooseBuyModel.deposit !== "" &&
-  //     this.chooseBuyModel.financeTotalMoney
-  //   ) {
-  //     this.chooseBuyModel.depositCash = (
-  //       Number(this.chooseBuyModel.financeTotalMoney) *
-  //       Number(this.chooseBuyModel.deposit) *
-  //       0.01
-  //     ).toFixed(2);
-  //     this.chooseBuyModel.depositCash.toString();
-  //   }
-  //   this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel));
-  // }
-
-  // /**
-  //  * 尾付总额
-  //  */
-  // choosefinalCash() {
-  //   // 尾付总额(尾款本金+尾付利息)
-  //   this.chooseBuyModel.finalCash = (
-  //     Number(this.chooseBuyModel.finalprincipal) *
-  //     (1 +
-  //       Number(this.chooseBuyModel.final) *
-  //         0.01 *
-  //         this.$dict.getDictName(this.chooseBuyModel.periods))
-  //   ).toFixed(2);
-  //   this.chooseBuyModel.finalCash.toString();
-  //   this.chooseBuyModel = JSON.parse(JSON.stringify(this.chooseBuyModel));
-  // }
-
-  // private a = 0;
-  // /**
-  //  * 添加车辆信息
-  //  */
-  // distributionData(data) {
-  //   this.carDataSet = data;
-  //   let sum: any = 0;
-  //   data.forEach(v => {
-  //     sum = sum + (Number(v.carAmount) || 0);
-  //   });
-  //   this.totalPrice = sum;
-  // }
-
-  // /**
-  //  * 更改产品
-  //  */
-  // changePrd() {
-  //   this.addProductModal = true;
-  //   let addProductRefresh: any = this.$refs["add-product"];
-  //   addProductRefresh.treeList();
-  //   addProductRefresh.resetcarData();
-  // }
-
-  onInitialPaymentChange(){
-
-  }
+  onInitialPaymentChange() {}
 
   /**
    * 更新车辆金额
@@ -1055,22 +574,6 @@ export default class ChooseBuyMaterials extends Vue {
     this.productModel.finalCash = 0;
     this.productModel.initialPayment = 0;
   }
-
-  // /**
-  //  * 计算车辆总价
-  //  */
-  // complutedtotalPrice() {
-  //   let sum: any = 0;
-  //   this.carDataSet.forEach(v => {
-  //     sum = sum + (Number(v.carAmount) || 0);
-  //   });
-  //   this.totalPrice = sum.toFixed(2);
-  //   this.chooseBuyModel.vehicleAmount = this.totalPrice;
-  //   this.chooseinitialPayment();
-  //   this.choosedeposit();
-  //   this.choosefinalCash();
-  //   this.choosemanageCost();
-  // }
 
   /**
    * 添加车辆处理
@@ -1141,189 +644,8 @@ export default class ChooseBuyMaterials extends Vue {
   }
 
   /**
-   * 获取添加产品信息
+   * 获取公司名称
    */
-  // currentRowData(data, productDataModel) {
-  //   this.depositCashData = [];
-  //   this.finalCashData = [];
-  //   this.initialPaymentData = [];
-  //   this.manageCostData = [];
-  //   this.DataSet = data;
-  //   if (data.depositCash) {
-  //     let deposit: any = data.depositCash ? data.depositCash.split(";") : "";
-  //     deposit.forEach(v => {
-  //       this.depositCashData.push({
-  //         key: v + "%",
-  //         value: v || 0
-  //       });
-  //     });
-  //     for (let i = 0; i < this.depositCashData.length - 1; i++) {
-  //       for (let j = 1; j < this.depositCashData.length; j++) {
-  //         if (i != j) {
-  //           if (this.depositCashData[i].key == this.depositCashData[j].key) {
-  //             this.depositCashData.splice(j, 1);
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   if (data.finalCash) {
-  //     let rr: any = data.finalCash ? data.finalCash.split(";") : "";
-  //     rr.forEach(v => {
-  //       this.finalCashData.push({
-  //         key: v + "%",
-  //         value: v || 0
-  //       });
-  //     });
-  //     for (let i = 0; i < this.finalCashData.length - 1; i++) {
-  //       for (let j = 1; j < this.finalCashData.length; j++) {
-  //         if (i != j) {
-  //           if (this.finalCashData[i].key == this.finalCashData[j].key) {
-  //             this.finalCashData.splice(j, 1);
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   if (data.initialPayment) {
-  //     let initial: any = data.initialPayment
-  //       ? data.initialPayment.split(";")
-  //       : "";
-  //     initial.forEach(v => {
-  //       this.initialPaymentData.push({
-  //         key: v + "%",
-  //         value: v || 0
-  //       });
-  //     });
-  //     for (let i = 0; i < this.initialPaymentData.length - 1; i++) {
-  //       for (let j = 1; j < this.initialPaymentData.length; j++) {
-  //         if (i != j) {
-  //           if (
-  //             this.initialPaymentData[i].key == this.initialPaymentData[j].key
-  //           ) {
-  //             this.initialPaymentData.splice(j, 1);
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   if (data.manageCost) {
-  //     let manage: any = data.manageCost ? data.manageCost.split(";") : "";
-  //     manage.forEach(v => {
-  //       this.manageCostData.push({
-  //         key: v + "%",
-  //         value: v || 0
-  //       });
-  //     });
-  //     for (let i = 0; i < this.manageCostData.length - 1; i++) {
-  //       for (let j = 1; j < this.manageCostData.length; j++) {
-  //         if (i != j) {
-  //           if (this.manageCostData[i].key == this.manageCostData[j].key) {
-  //             this.manageCostData.splice(j, 1);
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   this.updateProductId(data.productId);
-  //   this.chooseBuyModel.name = productDataModel.title; // 产品名称
-  //   this.chooseBuyModel.prdSeriods = productDataModel.series; // 产品系列
-  //   this.chooseBuyModel.periods = data.periods; // 产品期数
-  //   this.chooseBuyModel.prdInterestRate = data.productRate; // 产品利率
-  //   this.chooseBuyModel.payWay = data.payWay; // 还款方式
-  //   this.chooseBuyModel.moneyPay = data.moneyPay;
-  //   this.chooseBuyModel.insuranceMoney = data.insuranceMoney;
-  //   this.chooseBuyModel.purchaseMoney = data.purchaseMoney;
-  //   this.chooseBuyModel.licenseMoney = data.licenseMoney;
-  //   this.chooseBuyModel.GpsMoney = data.GpsMoney;
-  //   this.chooseBuyModel.otherFee = data.otherFee;
-  //   this.chooseBuyModel.remark = data.remark;
-  //   if (this.totalPrice) {
-  //     this.chooseBuyModel.vehicleAmount = this.totalPrice.toString();
-  //   } else {
-  //     this.chooseBuyModel.vehicleAmount = "";
-  //   }
-  //   if (data.depositCash === undefined || data.depositCash === null) {
-  //     this.chooseBuyModel.depositCash = "0.00"; // 保证金金额
-  //     setTimeout(() => {
-  //       this.depositCashData.push({
-  //         key: 0 + "%",
-  //         value: 0
-  //       });
-  //       this.chooseBuyModel.deposit = this.depositCashData[0].value;
-  //     }, 100);
-  //     this.depositdisabled = true;
-  //   } else {
-  //     console.log(
-  //       this.chooseBuyModel.vehicleAmount,
-  //       "this.chooseBuyModel.vehicleAmountdfdfdfd"
-  //     );
-  //     if (!this.chooseBuyModel.vehicleAmount) {
-  //       this.depositdisabled = true;
-  //     } else {
-  //       this.depositdisabled = false;
-  //     }
-  //   }
-  //   if (data.initialPayment === undefined || data.initialPayment === null) {
-  //     this.chooseBuyModel.initialPayment = "0.00"; // 首付金额
-  //     setTimeout(() => {
-  //       this.initialPaymentData.push({
-  //         key: 0 + "%",
-  //         value: 0
-  //       });
-  //       this.chooseBuyModel.Payment = this.initialPaymentData[0].value;
-  //     }, 100);
-  //     this.Paymentdisabled = true;
-  //   } else {
-  //     if (this.chooseBuyModel.vehicleAmount) {
-  //       this.Paymentdisabled = false;
-  //     } else {
-  //       this.Paymentdisabled = true;
-  //     }
-  //   }
-  //   if (data.manageCost === undefined || data.manageCost === null) {
-  //     this.chooseBuyModel.manageCost = "0.00"; // 管理费
-  //     setTimeout(() => {
-  //       this.manageCostData.push({
-  //         key: 0 + "%",
-  //         value: 0
-  //       });
-  //       this.chooseBuyModel.manageData = this.manageCostData[0].value;
-  //     }, 100);
-  //     this.manageDatadisabled = true;
-  //   } else {
-  //     if (this.chooseBuyModel.vehicleAmount) {
-  //       this.manageDatadisabled = false;
-  //     } else {
-  //       this.manageDatadisabled = true;
-  //     }
-  //   }
-  //   if (data.finalCash === undefined || data.finalCash === null) {
-  //     this.chooseBuyModel.finalprincipal = "0.00"; // 尾付本金
-  //     this.chooseBuyModel.finalCash = "0.00"; // 尾付总额
-  //     setTimeout(() => {
-  //       this.finalCashData.push({
-  //         key: 0 + "%",
-  //         value: 0
-  //       });
-  //       this.chooseBuyModel.final = this.finalCashData[0].value;
-  //     }, 100);
-  //     this.finaldisabled = true;
-  //     this.finalorddisabled = true;
-  //   } else {
-  //     if (this.chooseBuyModel.vehicleAmount) {
-  //       this.finaldisabled = false;
-  //     } else {
-  //       this.finaldisabled = true;
-  //       this.finalorddisabled = true;
-  //     }
-  //   }
-  //   this.chooseBuyModel.seriesId = productDataModel.seriesId;
-  // }
-
   getCompanyList() {
     // 获取公司名称
     this.companyService.getAllCompany().subscribe(val => {
@@ -1338,21 +660,40 @@ export default class ChooseBuyMaterials extends Vue {
     let chooseForm = this.$refs["choose-form"] as Form;
     let productForm = this.$refs["product-form"] as Form;
 
-    // 验证表单
-    if (await Promise.all([chooseForm.validate(), productForm.validate()])) {
+    let result;
+
+    // 自定义验证
+    result = await this.$validator
+      .validate(
+        {
+          productIssueId: this.productModel.productIssueId,
+          carListCount: this.carDataSet.length,
+          totalPrice: this.totalPrice
+        },
+        this.customRules
+      )
+      .then(error => {
+        if (error) {
+          this.$Message.error(error);
+          return false;
+        } else {
+          return true;
+        }
+      });
+
+    if (!result) {
       return false;
     }
 
-    // 自定义验证
-    let result = await this.$validator.validate({}, this.customRules).then(error => {
-      if (error) {
-        // 验证自定义错误
-      }
-
-      return true
+    // 基础表单验证
+    result = await Promise.all([
+      chooseForm.validate(),
+      productForm.validate()
+    ]).then(result => {
+      return result.every(x => x);
     });
 
-    return result
+    return result;
   }
 
   mounted() {

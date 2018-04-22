@@ -58,55 +58,64 @@ export default class SystemBackups extends Page {
         title: '任务名称',
         editable: true,
         key: 'jobName',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '任务所在组',
         editable: true,
         key: 'jobGroup',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '任务描述',
         editable: true,
         key: 'jobDescribe',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(10),
       },
       {
         title: '任务类名',
         editable: true,
         key: 'jobClassName',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '触发器名称',
         editable: true,
         key: 'triggerName',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '触发器所在组',
         editable: true,
         key: 'triggerGroup',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '下次执行时间',
         editable: true,
         key: 'nextExecutionTime',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '表达式',
         editable: true,
         key: 'expression',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(15),
       },
       {
         title: '状态',
         editable: true,
         key: 'triggerState',
         align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h('span', {}, row.triggerState === 'NORMAL' ? '启用' : '停用')
         }
@@ -115,7 +124,8 @@ export default class SystemBackups extends Page {
         title: '时区',
         editable: true,
         key: 'timeZone',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       }
     ]
   }

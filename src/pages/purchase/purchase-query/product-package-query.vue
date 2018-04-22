@@ -8,12 +8,14 @@
           <i-input class="document-query-input" v-model="seachParams.fileName" placeholder="文件名查询"></i-input>
         </i-form-item>
         <i-form-item prop="dateRange" label="日期">
-          <i-date-picker class="document-query-picker" v-model="seachParams.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+          <i-date-picker class="document-query-picker" v-model="seachParams.dateRange" type="daterange"
+                         placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
     <i-row>
-      <data-box :id="392" :columns="queryColumns" :data="queryData" @onPageChange="productSeach" :page="pageService"></data-box>
+      <data-box :id="392" :columns="queryColumns" :data="queryData" @onPageChange="productSeach"
+                :page="pageService"></data-box>
     </i-row>
     <!--列配置-->
     <template>
@@ -31,7 +33,8 @@
     <!--预览-->
     <template>
       <i-modal v-model="previewModal" title="查看" width="800">
-        <div style="width:760px;height:500px;background-image:url('/static/images/common/previewImg.png');background-repeat:no-repeat"></div>
+        <div
+          style="width:760px;height:500px;background-image:url('/static/images/common/previewImg.png');background-repeat:no-repeat"></div>
       </i-modal>
     </template>
   </section>
@@ -75,8 +78,8 @@
     @Dependencies(PageService) private pageService: PageService
 
     private queryColumns: any = []
-    private queryData: Array < any > = []
-    private data2: Array < Object > = []
+    private queryData: Array<any> = []
+    private data2: Array<Object> = []
     private columns2: any
     private columnsManage: Boolean = false
     private searchOptions: Boolean = false
@@ -90,76 +93,62 @@
         minDate: '',
         maxDate: '',
         timeSearch: '',
-        dateRange:[]
+        dateRange: []
       }
       this.queryColumns = [{
-          title: '操作',
-          minWidth: 180,
-          align: 'center',
-          fixed: 'left',
-          render: (h, params) => {
-            return h('div', [
-              h(
-                'i-button', {
-                  props: {
-                    type: 'text'
-                  },
-                  style: {
-                    color: '#265ea2'
-                  },
-                  on: {
-                    click: () => {
-                      this.productPackageService
-                        .downloadProductPackage({
-                          fileId: params.row.fileId
-                        })
-                        .subscribe(
-                          val => {
-                            CommonService.downloadFile(val, '产品包下载')
-                            this.$Message.success('下载成功！')
-                          },
-                          ({
-                            msg
-                          }) => {
-                            this.$Message.error(msg)
-                          }
-                        )
-                    }
-                  }
+        title: '操作',
+        minWidth: this.$common.getColumnWidth(5),
+        align: 'center',
+        fixed: 'left',
+        render: (h, params) => {
+          return h('div', [
+            h(
+              'i-button', {
+                props: {
+                  type: 'text'
                 },
-                '下载'
-              )
-              // h(
-              // 	'i-button',
-              // 	{
-              // 		props: {
-              // 			type: 'text',
-              // 		},
-              // 		style: {
-              // 			color: '#265ea2',
-              // 		},
-              // 		on: {
-              // 			click: () => {
-              // 				this.previewModal = true;
-              // 			},
-              // 		},
-              // 	},
-              // 	'查看'
-              // ),
-            ])
-          }
-        },
+                style: {
+                  color: '#265ea2'
+                },
+                on: {
+                  click: () => {
+                    this.productPackageService
+                      .downloadProductPackage({
+                        fileId: params.row.fileId
+                      })
+                      .subscribe(
+                        val => {
+                          CommonService.downloadFile(val, '产品包下载')
+                          this.$Message.success('下载成功！')
+                        },
+                        ({
+                           msg
+                         }) => {
+                          this.$Message.error(msg)
+                        }
+                      )
+                  }
+                }
+              },
+              '下载'
+            )
+          ])
+        }
+      },
         {
           title: '文件名',
           editable: true,
           align: 'center',
-          key: 'fileName'
+          key: 'fileName',
+          minWidth: this.$common.getColumnWidth(6),
+
         },
         {
           align: 'center',
           editable: true,
           title: '上传时间',
           key: 'uploadTime',
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -175,22 +164,24 @@
           align: 'center',
           editable: true,
           title: '操作人',
-          key: 'operatorName'
+          key: 'operatorName',
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           align: 'center',
           editable: true,
           title: '备注',
-          key: 'remark'
+          key: 'remark',
+          minWidth: this.$common.getColumnWidth(10),
         }
       ]
       /**@argument列配置 */
       this.columns2 = [{
-          title: '序号',
-          type: 'index',
-          minWidth: 80,
-          align: 'center'
-        },
+        title: '序号',
+        type: 'index',
+        minWidth: 80,
+        align: 'center'
+      },
         {
           title: '列名',
           key: 'columnsName',
@@ -203,8 +194,8 @@
         }
       ]
       this.data2 = [{
-          columnsName: '订单编号'
-        },
+        columnsName: '订单编号'
+      },
         {
           columnsName: '订单创建时间'
         },
@@ -225,9 +216,11 @@
         }
       ]
     }
+
     openSearch() {
       this.searchOptions = !this.searchOptions
     }
+
     /**
      * 搜索
      */
@@ -235,10 +228,11 @@
       this.productPackageService
         .getAllProductPackage(this.seachParams, this.pageService)
         .subscribe(
-          val =>this.queryData = val,
-          err =>this.$Message.error(err)
+          val => this.queryData = val,
+          err => this.$Message.error(err)
         )
     }
+
     /**
      * 高级搜索
      */
@@ -252,6 +246,7 @@
       this.seachParams.timeSearch = val
       this.productSeach()
     }
+
     /**
      * 重置搜索
      */

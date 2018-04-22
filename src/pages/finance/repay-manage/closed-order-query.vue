@@ -146,7 +146,7 @@
     created() {
       this.columns1 = [{
           title: "操作",
-          // width: 110,
+        minWidth: this.$common.getColumnWidth(5),
           align: "center",
           fixed: "left",
           render: (h, {
@@ -175,7 +175,7 @@
         {
           align: "center",
           title: "订单编号",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(6),
           key: 'orderNumber',
           editable: true,
           render: (h, {
@@ -202,7 +202,7 @@
           align: "center",
           title: "客户结算号",
           key: "clientNumber",
-          // width: 150,
+          minWidth: this.$common.getColumnWidth(6),
           editable: true,
           render: (h, {
             row,
@@ -228,28 +228,28 @@
           title: "客户姓名",
           key: "customerName",
           editable: true,
-          // width: 100
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           align: "center",
           title: " 证件号",
           editable: true,
           key: "idCard",
-          // width: 160
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           align: "center",
           title: " 手机号",
           key: "mobileMain",
           editable: true,
-          // width: 120
+          minWidth: this.$common.getColumnWidth(5),
         },
         {
           align: "center",
           title: " 合同生效日",
           key: "contractDate",
           editable: true,
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -263,7 +263,7 @@
           title: " 结清日期",
           key: "settlementDay",
           editable: true,
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -277,14 +277,14 @@
           title: " 利率%/月",
           key: "productRate",
           editable: true,
-          // width: 90
+          minWidth: this.$common.getColumnWidth(2),
         },
         {
           align: "center",
           editable: true,
           title: " 结算通道",
           key: "settlementChannel",
-          // width: 100,
+          minWidth: this.$common.getColumnWidth(4),
           render: (h, {
             row,
             column,
@@ -298,7 +298,7 @@
           title: " 结清状态",
           key: "settlementType",
           editable: true,
-          // width: 100,
+          minWidth: this.$common.getColumnWidth(3),
           render: (h, {
             row,
             column,
@@ -310,7 +310,7 @@
         {
           align: "center",
           title: " 归属公司",
-          // width: 100,
+          minWidth: this.$common.getColumnWidth(6),
           editable: true,
           key: "companyChinaName"
         }

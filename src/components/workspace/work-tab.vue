@@ -80,23 +80,38 @@ export default class WorkTab extends Vue {
   @Watch("currentPage")
   onPageChanged(value: string) {
     let components = <Array<Vue>>this.$refs["pages"];
-    let component = components.find(
-      x =>
-        x.$options.name ===
-        this.getComponentName({
-          path: value
-        })
-    );
 
-    let page = this.pageList.find(x => x.path === value) || {};
+    let getTargetComponent = () =>
+      components.find(
+        x =>
+          x.$options.name ===
+          this.getComponentName({
+            path: value
+          })
+      );
 
+    let component = getTargetComponent();
+    
+    // 处理页面切换回调
     if (
       component &&
       component.$options.activated &&
       component.$options.activated.length > 0
     ) {
       let activated = component.$options.activated[0];
-      activated.call(component, [page.params]);
+      activated.call(component);
+    }
+    let page = this.pageList.find(x => x.path === value) || {};
+    // 处理页面传参情况
+    if (page.params) {
+      this.$nextTick(() => {
+        let component = getTargetComponent();
+        if (component && component["loaded"]) {
+          let loaded = component["loaded"];
+          loaded.call(component, Object.assign({}, page.params));
+          page.params = null;
+        }
+      });
     }
   }
 

@@ -465,7 +465,7 @@
       this.columns1 = [
         {
           title: "操作",
-          width: 220,
+          minWidth: this.$common.getColumnWidth(5),
           align: "center",
           render: (h, {
             row,
@@ -510,7 +510,7 @@
         },
         {
           title: "查看",
-          width: 240,
+          minWidth: this.$common.getColumnWidth(4),
           align: "center",
           render: (h, {
             row,
@@ -561,60 +561,68 @@
         {
           title: "用户客户号",
           align: "center",
-          key: "userCustomerId"
+          key: "userCustomerId",
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           align: "center",
           title: "用户子账户号",
-          key: "userSonAccountId"
+          key: "userSonAccountId",
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           align: "center",
           title: "企业证照类型",
+          minWidth: this.$common.getColumnWidth(4),
           key: "companyLicenseType"
         },
         {
           align: "center",
           title: "企业名称",
+          minWidth: this.$common.getColumnWidth(10),
           key: "companyName"
         },
         {
           align: "center",
           title: "营业执照注册号",
+          minWidth: this.$common.getColumnWidth(6),
           key: "businessLicenseId"
         },
         {
           align: "center",
           title: "审核状态",
+          minWidth: this.$common.getColumnWidth(3),
           key: "approvalStatus"
         }
       ];
       this.columns2 = [{
           title: "序号",
           type: "index",
-          width: "80",
+        minWidth: this.$common.getColumnWidth(3),
           align: "center"
         },
         {
           title: "列名",
           key: "columnsName",
+          minWidth: this.$common.getColumnWidth(3),
           align: "center"
         },
         {
           type: "selection",
-          width: "80",
+          minWidth: this.$common.getColumnWidth(3),
           align: "center"
         }
       ];
       this.columns3 = [{
           title: "文件名称",
           align: "center",
+        minWidth: this.$common.getColumnWidth(5),
           key: "fileName"
         },
         {
           type: "selection",
           align: "center",
-          width: "80"
+          minWidth: this.$common.getColumnWidth(3),
         }
       ];
       this.data2 = [{

@@ -71,11 +71,11 @@ export default class CompactMonitor extends Page {
         type: 'index',
         title: '序号',
         fixed: 'left',
-        width: 60
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '操作',
-        width: 200,
+        minWidth: this.$common.getColumnWidth(6),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -103,17 +103,20 @@ export default class CompactMonitor extends Page {
       {
         align: 'center',
         title: '门店',
-        key: 'branchAddress'
+        key: 'branchAddress',
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         align: 'center',
         title: '员工姓名',
-        key: 'employeeName'
+        key: 'employeeName',
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         align: 'center',
         title: ' 下载量',
-        key: 'downloadNum'
+        key: 'downloadNum',
+        minWidth: this.$common.getColumnWidth(3)
       }
     ]
   }

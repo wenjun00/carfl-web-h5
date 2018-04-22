@@ -137,6 +137,7 @@
       this.columns = [{
           title: '操作',
           align: 'center',
+          minWidth: this.$common.getColumnWidth(5),
           render: (h, {
             row,
             column,
@@ -189,12 +190,14 @@
           key: 'name',
           align: 'center',
           editable: true,
+          minWidth: this.$common.getColumnWidth(4),
         },
         {
           title: '是否必传',
           key: 'isNecessary',
           align: 'center',
           editable: true,
+          minWidth: this.$common.getColumnWidth(2),
           render: (h, {
             row,
             columns,
@@ -453,7 +456,7 @@
       }
     }
   }
-  
+
   .maintainCss {
     background: #e4f4fa;
   }

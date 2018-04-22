@@ -152,7 +152,7 @@
       this.getOrderQuery()
       this.columns1 = [{
           title: "操作",
-          width: 120,
+          minWidth: this.$common.getColumnWidth(5),
           align: "center",
           fixed: "left",
           render: (h, {
@@ -212,6 +212,7 @@
           key: 'processStatus',
           editable: true,
           align: 'center',
+          minWidth: this.$common.getColumnWidth(3),
           render: (h, {
             row,
             column,
@@ -223,7 +224,7 @@
           title: '处理时间',
           key: 'processTime',
           editable: true,
-          width: 180,
+          minWidth: this.$common.getColumnWidth(6),
           align: 'center',
           render: (h, {
             row,
@@ -235,13 +236,14 @@
         }, {
           title: '处理人',
           editable: true,
-          width: 120,
+          minWidth: this.$common.getColumnWidth(3),
           key: 'processName',
           align: 'center'
         }, {
           title: '付款类型',
           key: 'refundType',
           editable: true,
+          minWidth: this.$common.getColumnWidth(3),
           align: 'center',
           render: (h, {
             row,
@@ -254,16 +256,30 @@
           title: '付款总金额',
           key: 'refundTotalAmount',
           editable: true,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.refundTotalAmount)
+            );
+          }
         }, {
           title: '付款账户名',
           key: 'customerName',
           editable: true,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(3),
         }, {
           title: '申请日期',
           key: 'operateTime',
           editable: true,
+          minWidth: this.$common.getColumnWidth(6),
           align: 'center',
           render: (h, {
             row,
@@ -276,7 +292,8 @@
           title: '制单人',
           key: 'operator',
           editable: true,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(3),
         }
       ]
     }

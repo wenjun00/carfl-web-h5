@@ -458,11 +458,6 @@ export default class CustomerMaterials extends Vue {
         trigger: "blur"
       }
     ],
-    //   idCardValidityPeriodSection:[{
-    //     required: true,
-    //     message: '请输入身份证有效期',
-    //     trigger: 'blur',
-    //   }],
     localHomeAddrDetail: [
       {
         required: true,

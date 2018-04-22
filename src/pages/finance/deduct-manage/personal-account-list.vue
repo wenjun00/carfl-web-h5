@@ -11,27 +11,11 @@
         <i-form-item prop="dateRange" label="日期：">
           <i-date-picker class="second-data-three" v-model="gatherModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
-        <!--<i-button class="blueButton" @click="getEarlyPayList">搜索</i-button>-->
       </template>
     </data-form>
 
     <data-box :id="456" :columns="columns1" :data="data1" @onPageChange="getGatherListByCondition"
               :page="pageService"></data-box>
-
-    <!--<div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:5px">
-        <i-col :span="8" push="1">
-          <span>申请人：administrator</span>
-        </i-col>
-        <i-col :span="10" pull="4">
-          <span>申请时间： 2017-12-01 13:56:45</span>
-        </i-col>
-        <i-col :span="6" style="text-align:right;">
-          <i-button class="highButton" style="margin-left:10px;" @click="createAccount">客户开户</i-button>
-        </i-col>
-      </i-row>
-    </div>-->
-    <!--开户弹窗-->
     <template>
       <i-modal v-model="dialog.create" title="开户绑卡" width="400">
         <create-personal-account ref="create-personal-account"></create-personal-account>
@@ -142,7 +126,7 @@
       this.columns1 = [
         {
           title: "操作",
-          width: 220,
+          minWidth: this.$common.getColumnWidth(5),
           align: "center",
           render: (h, {row, column, index}) => {
             return h("div", [h("i-button", {
@@ -193,6 +177,7 @@
         {
           title: "开户日期",
           align: "center",
+          minWidth: this.$common.getColumnWidth(6),
           key: "openAccountDate",
           render: (h, {row, column, index}) => {
             return h('span', FilterService.dateFormat(row.openAccountDate, 'yyyy-MM-dd'))
@@ -202,6 +187,7 @@
           align: "center",
           title: "开户类型",
           key: "accountType",
+          minWidth: this.$common.getColumnWidth(4),
           render: (h, {row, column, index}) => {
             return h("span", {}, this.$dict.getDictName(Number(row.accountType)));
           }
@@ -209,22 +195,26 @@
         {
           align: "center",
           title: "客户号",
-          key: "clientNumber"
+          key: "clientNumber",
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           align: "center",
           title: "客户姓名",
-          key: "name"
+          key: "name",
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           align: "center",
           title: "证件号码",
-          key: "certificateNumber"
+          key: "certificateNumber",
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           align: "center",
           title: "预留手机",
-          key: "reservedPhoneNumber"
+          key: "reservedPhoneNumber",
+          minWidth: this.$common.getColumnWidth(5),
         }
       ];
     }

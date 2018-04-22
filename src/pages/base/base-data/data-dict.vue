@@ -188,12 +188,15 @@
           title: "序号",
           type: "index",
           fixed: "left",
+        minWidth: this.$common.getColumnWidth(3),
           align: "center"
+
         },
         {
           title: "操作",
           fixed: "left",
           align: "center",
+          minWidth: this.$common.getColumnWidth(5),
           render: (h, {
             row,
             column,
@@ -241,7 +244,8 @@
         {
           align: "center",
           title: " 名称",
-          key: "name"
+          key: "name",
+          minWidth: this.$common.getColumnWidth(3),
         }
       ];
     }
@@ -526,17 +530,17 @@
       }
     }
   }
-  
+
   .dataTypeCss {
     background: #e4f4fa;
   }
-  
+
   .toViewModalClass {
     .ivu-modal-footer {
       display: none !important;
     }
   }
-  
+
   //   .rightTable {
   //     width: calc(~ "100% - 280px");
   //     margin: -10px;

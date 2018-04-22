@@ -87,7 +87,7 @@
       this.columns1 = [
         {
           title: '操作',
-          minWidth: 220,
+          minWidth: this.$common.getColumnWidth(5),
           align: 'center',
           render: (h, {row, column, index}) => {
             return h('div', [
@@ -150,12 +150,14 @@
           title: '操作人',
           key: 'operatorName',
           editable: true,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           title: '操作时间',
           key: 'operateTime',
           editable: true,
+          minWidth: this.$common.getColumnWidth(6),
           align: 'center',
           render: (h, {row, columns, index}) => {
             return h(
@@ -168,19 +170,22 @@
           title: 'mysql文件名',
           key: 'mysqlName',
           editable: true,
+          minWidth: this.$common.getColumnWidth(8),
           align: 'center'
         },
         {
           title: 'mongodb文件名',
           key: 'mongdbName',
           editable: true,
-          align: 'center'
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(8),
         },
         {
           title: '备份类型',
           key: 'type',
           editable: true,
           align: 'center',
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {row, columns, index}) => {
             if (row.type === 0) {
               return h('span', {}, '自动')

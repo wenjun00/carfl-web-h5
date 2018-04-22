@@ -211,15 +211,18 @@ export default class VehicleMaintenance extends Page {
       {
         title: '参数名称',
         key: 'name',
+        minWidth: this.$common.getColumnWidth(4),
         align: 'center'
       },
       {
         title: '参数值',
         key: 'value',
+        minWidth: this.$common.getColumnWidth(4),
         align: 'center'
       },
       {
         title: '操作',
+        minWidth: this.$common.getColumnWidth(4),
         align: 'center',
         render: (h, { row, column, index }) => {
           return h('div', [

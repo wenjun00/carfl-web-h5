@@ -224,7 +224,7 @@
     created() {
       this.columns1 = [{
           title: "操作",
-          // width: 210,
+          minWidth: this.$common.getColumnWidth(5),
           align: "center",
           fixed: "left",
           render: (h, {
@@ -284,7 +284,7 @@
         {
           align: "center",
           title: "订单号",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(6),
           editable: true,
           key: 'orderNumber',
           render: (h, {
@@ -311,7 +311,7 @@
           title: "客户结算号",
           editable: true,
           key: "clientNumber",
-          // width: 150,
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -336,28 +336,28 @@
           editable: true,
           title: "客户姓名",
           key: "name",
-          // width: 100
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           align: "center",
           title: " 证件号",
           editable: true,
           key: "idCard",
-          // width: 160
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           align: "center",
           title: " 手机号",
           key: "mobileMain",
           editable: true,
-          // width: 120
+          minWidth: this.$common.getColumnWidth(5),
         },
         {
           align: "center",
           title: " 订单创建时间",
           editable: true,
           key: "createTime",
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -371,7 +371,7 @@
           title: " 合同生效日",
           key: "contractDate",
           editable: true,
-          // width: 160,
+          minWidth: this.$common.getColumnWidth(4),
           render: (h, {
             row,
             column,
@@ -385,35 +385,68 @@
           title: " 待还本金",
           key: "principalReceivable",
           editable: true,
-          // width: 90
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.principalReceivable)
+            );
+          }
         },
         {
           align: "center",
           title: " 待还利息",
           key: "interestReceivable",
           editable: true,
-          // width: 90
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.interestReceivable)
+            );
+          }
         },
         {
           align: "center",
           title: " 待还罚息",
           key: "penaltyReceivable",
           editable: true,
-          // width: 90
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.penaltyReceivable)
+            );
+          }
         },
         {
           align: "center",
           title: " 利率%/月",
           key: "productRate",
           editable: true,
-          // width: 90
+          minWidth: this.$common.getColumnWidth(2),
         },
         {
           align: "center",
           editable: true,
           title: " 结算通道",
           key: "settlementChannel",
-          // width: 100,
+          minWidth: this.$common.getColumnWidth(4),
           render: (h, {
             row,
             column,
@@ -426,7 +459,7 @@
           align: "center",
           title: " 归属公司",
           editable: true,
-          // width: 100,
+          minWidth: this.$common.getColumnWidth(4),
           key: "companyChinaName"
         }
       ];

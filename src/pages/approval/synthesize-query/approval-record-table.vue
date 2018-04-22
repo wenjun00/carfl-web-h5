@@ -106,7 +106,7 @@ export default class ApprovalRecordTable extends Page {
     this.columns1 = [
       {
         title: '操作',
-        minWidth: 100,
+        minWidth: this.$common.getColumnWidth(4),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -136,6 +136,7 @@ export default class ApprovalRecordTable extends Page {
         title: '审核时间',
         editable: true,
         key: 'approvalDate',
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             'span',
@@ -148,6 +149,7 @@ export default class ApprovalRecordTable extends Page {
         title: '省份',
         editable: true,
         key: 'province',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', CityService.getCityName(row.province))
         }
@@ -157,6 +159,7 @@ export default class ApprovalRecordTable extends Page {
         title: '城市',
         editable: true,
         key: 'city',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', CityService.getCityName(row.city))
         }
@@ -165,111 +168,66 @@ export default class ApprovalRecordTable extends Page {
         align: 'center',
         editable: true,
         title: '网点',
-        key: 'dot'
+        key: 'dot',
+        minWidth: this.$common.getColumnWidth(5)
       },
       {
         align: 'center',
         editable: true,
         title: '业务员',
-        key: 'salesmanName'
+        key: 'salesmanName',
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         align: 'center',
         editable: true,
         title: '客户姓名',
-        key: 'personalName'
+        key: 'personalName',
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         align: 'center',
         editable: true,
         title: '证件号',
-        key: 'idCard'
+        key: 'idCard',
+        minWidth: this.$common.getColumnWidth(6)
       },
       {
         align: 'center',
         editable: true,
         title: '审核状态',
         key: 'approveStatus',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) => {
           return h('span', {}, this.$dict.getDictName(row.approveStatus))
         }
       },
-      // {
-      //   align: "center",
-      //   editable: true,
-      //   title: "是否提车",
-      //   key: "isDeliveryCar"
-      //   ,
-      //   render: (h, {
-      //     row,
-      //     columns,
-      //     index
-      //   }) => {
-      //     if (row.approvalStatus === '拒绝') {
-      //       return h('Tooltip', {
-      //         props: {
-      //           content: row.content
-      //         },
-      //       }, [h('span', {}, row.isDeliveryCar),
-      //         h('Icon', {
-      //           props: {
-      //             type: 'ios-information',
-      //             size: '20',
-      //             color: '#F9435D'
-      //           },
-      //           style: {
-      //             position: 'relative',
-      //             top: '2px',
-      //             left: '6px',
-      //             cursor: 'pointer'
-      //           }
-      //         })
-      //       ])
-      //     } else {
-      //       return h('Tooltip', {
-      //         props: {
-      //           content: row.content
-      //         },
-      //       }, [h('span', {}, row.isDeliveryCar),
-      //         h('Icon', {
-      //           props: {
-      //             type: 'ios-information',
-      //             size: '20',
-      //             color: '#666666'
-      //           },
-      //           style: {
-      //             position: 'relative',
-      //             top: '2px',
-      //             left: '6px',
-      //             cursor: 'pointer'
-      //           }
-      //         })
-      //       ])
-      //     }
-      //   }
-      // },
       {
         align: 'center',
         editable: true,
         title: '拒单原因',
+        minWidth: this.$common.getColumnWidth(5),
         key: 'refuseResource'
       },
       {
         align: 'center',
         editable: true,
         title: '拒单细节',
+        minWidth: this.$common.getColumnWidth(5),
         key: 'refuseDetails'
       },
       {
         align: 'center',
         editable: true,
         title: '备注',
+        minWidth: this.$common.getColumnWidth(6),
         key: 'remark'
       },
       {
         align: 'center',
         editable: true,
         title: '审核人员',
+        minWidth: this.$common.getColumnWidth(3),
         key: 'approvalPersonal'
       }
     ]

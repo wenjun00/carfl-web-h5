@@ -94,7 +94,7 @@
         title: "出账日期",
         align: "center",
         key: "paymentDate",
-        width: 160,
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, {
           row,
           column,
@@ -107,6 +107,7 @@
           title: "出账客户号",
           key: "clientNumber",
           align: "center",
+          minWidth: this.$common.getColumnWidth(5),
           render: (h, params) => {
             return h('i-button', {
               props: {
@@ -124,34 +125,49 @@
           align: "center",
           title: "出账卡号",
           key: "cardNumber",
-          width: 160
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           align: "center",
           title: "客户姓名",
           key: "clientName",
-          width: 160
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           align: "center",
           title: "支付银行",
-          key: "depositBank"
+          key: "depositBank",
+          minWidth: this.$common.getColumnWidth(4),
         },
         {
           align: "center",
           title: "支付金额",
-          key: "paymentAmount"
+          key: "paymentAmount",
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.paymentAmount)
+            );
+          }
+
         },
         {
           align: "center",
           title: "订单号",
-          key: "orderNumber"
+          key: "orderNumber",
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           key: 'tradingStatus',
           title: '交易状态',
           align: 'center',
-          width: 120,
+          minWidth: this.$common.getColumnWidth(3),
           render: (h, {
             row,
             column,
@@ -195,11 +211,13 @@
         {
           align: "center",
           title: "失败原因",
-          key: "failReason"
+          key: "failReason",
+          minWidth: this.$common.getColumnWidth(5),
         },
         {
           align: "center",
           title: "操作人",
+          minWidth: this.$common.getColumnWidth(3),
           key: "operateName"
         }
       ];

@@ -1,4 +1,4 @@
-<!--订单查询-->
+<!--审核-订单查询-->
 <template>
   <section class="page approval-order-query">
     <page-header title="订单查询"></page-header>
@@ -79,12 +79,12 @@
         {
           type: 'selection',
           fixed: 'left',
-          minWidth: 60,
+          minWidth: this.$common.getColumnWidth(2),
           align: 'center'
         },
         {
           title: '操作',
-          minWidth: 100,
+          minWidth: this.$common.getColumnWidth(3),
           fixed: 'left',
           align: 'center',
           render: (h, {row, column, index}) => {
@@ -115,6 +115,7 @@
           align: 'center',
           editable: true,
           title: '环节',
+          minWidth: this.$common.getColumnWidth(4),
           render: (h, {row, columns, index}) => {
             if (row.riskStatus) {
               return h('div', [
@@ -153,6 +154,7 @@
           align: 'center',
           editable: true,
           key: 'orderStatus',
+          minWidth: this.$common.getColumnWidth(5),
           render: (h, {row, columns, index}) => {
             return h('span', {}, this.$dict.getDictName(row.orderStatus))
           }
@@ -162,6 +164,7 @@
           title: '订单创建时间',
           editable: true,
           key: 'createTime',
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {row, column, index}) => {
             return h(
               'span',
@@ -174,6 +177,7 @@
           key: 'orderNumber',
           editable: true,
           align: 'center',
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {row, columns, index}) => {
             return h(
               'i-button',
@@ -196,25 +200,29 @@
           align: 'center',
           editable: true,
           title: '客户姓名',
+          minWidth: this.$common.getColumnWidth(3),
           key: 'personalName'
         },
         {
           align: 'center',
           editable: true,
           title: '证件号',
-          key: 'idCard'
+          key: 'idCard',
+          minWidth: this.$common.getColumnWidth(6)
         },
         {
           align: 'center',
           editable: true,
           title: '手机号',
-          key: 'mobileMain'
+          key: 'mobileMain',
+          minWidth: this.$common.getColumnWidth(5)
         },
         {
           align: 'center',
           editable: true,
           title: '订单类型',
           key: 'orderType',
+          minWidth: this.$common.getColumnWidth(4),
           render: (h, {row, columns, index}) => {
             return h('span', {}, this.$dict.getDictName(row.orderType))
           }
@@ -223,19 +231,22 @@
           align: 'center',
           editable: true,
           title: '订单归属公司',
-          key: 'orderCompany'
+          key: 'orderCompany',
+          minWidth: this.$common.getColumnWidth(5)
         },
         {
           align: 'center',
           editable: true,
           title: '归属部门',
-          key: 'orderDept'
+          key: 'orderDept',
+          minWidth: this.$common.getColumnWidth(5)
         },
         {
           align: 'center',
           editable: true,
           title: '制单人',
-          key: 'recorder'
+          key: 'recorder',
+          minWidth: this.$common.getColumnWidth(4)
         }
       ]
     }
