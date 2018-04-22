@@ -265,7 +265,7 @@ export default class OpenAccount extends Page {
     this.columns1 = [
       {
         title: '操作',
-        minWidth: 100,
+        minWidth: this.$common.getColumnWidth(5),
         align: 'center',
         fixed: 'left',
         render: (h, { row, column, index }) => {
@@ -330,25 +330,29 @@ export default class OpenAccount extends Page {
         title: '客户姓名',
         editable: true,
         key: 'personalName',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '证件号码',
         editable: true,
         key: 'idCard',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '联系号码',
         editable: true,
         key: 'mobileMain',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(5),
       },
       {
         title: '是否开户',
         editable: true,
         key: 'isAccount',
         align: 'center',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', {}, this.$dict.getDictName(row.isAccount))
         }
@@ -357,25 +361,28 @@ export default class OpenAccount extends Page {
         title: '绑卡银行',
         editable: true,
         key: 'boundBank',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         title: '银行卡号',
         editable: true,
         key: 'bankCard',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '客户号',
         editable: true,
         key: 'customId',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(5),
       },
       {
         title: '验卡失败原因',
         key: 'faileReason',
         editable: true,
-        minWidth: 140,
+        minWidth: this.$common.getColumnWidth(6),
         renderHeader: (h, { column, index }) => {
           return h(
             'div',
@@ -405,7 +412,7 @@ export default class OpenAccount extends Page {
       {
         title: '结算通道',
         editable: true,
-        minWidth: 200,
+        minWidth: this.$common.getColumnWidth(4),
         key: 'settlementChannel',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -433,7 +440,7 @@ export default class OpenAccount extends Page {
       {
         title: '序号',
         type: 'index',
-        width: 80,
+        minWidth: 80,
         align: 'center'
       },
       {
@@ -443,7 +450,7 @@ export default class OpenAccount extends Page {
       },
       {
         type: 'selection',
-        width: 80,
+        minWidth: 80,
         align: 'center'
       }
     ]

@@ -162,7 +162,7 @@
       this.getGatherListByCondition()
       this.columns1 = [{
           title: "操作",
-          width: 120,
+          minWidth: this.$common.getColumnWidth(4),
           fixed: "left",
           align: "center",
           render: (h, {
@@ -220,6 +220,7 @@
           key: "collectMoneyDealStatus",
           align: "center",
           editable: true,
+          minWidth: this.$common.getColumnWidth(4),
           render: (h, {
             row,
             column,
@@ -233,7 +234,7 @@
           title: "处理时间",
           editable: true,
           key: "dealTime",
-          width: 180,
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -246,12 +247,14 @@
           align: "center",
           title: "处理人",
           editable: true,
-          key: "dealerName"
+          key: "dealerName",
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           align: "center",
           title: "收款类型",
           editable: true,
+          minWidth: this.$common.getColumnWidth(3),
           key: "applicationType",
           render: (h, {
             row,
@@ -265,12 +268,26 @@
           align: "center",
           title: "收款总金额",
           editable: true,
-          key: "totalPayment"
+          key: "totalPayment",
+          minWidth: this.$common.getColumnWidth(4),
+          render: (h, { row }) => {
+            return h(
+              "div",
+              {
+                style: {
+                  textAlign: "right"
+                }
+              },
+              this.$filter.toThousands(row.totalPayment)
+            );
+          }
+
         },
         {
           align: "center",
           title: "收款账户名",
           editable: true,
+          minWidth: this.$common.getColumnWidth(4),
           key: "accountName"
         },
         {
@@ -278,6 +295,7 @@
           title: "申请日期",
           editable: true,
           key: "operatorTime",
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -290,6 +308,7 @@
           align: "center",
           title: "申请人",
           editable: true,
+          minWidth: this.$common.getColumnWidth(3),
           key: "operatorName"
         }
       ];

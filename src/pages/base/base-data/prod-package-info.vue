@@ -82,7 +82,7 @@
       this.columns = [{
           title: '操作',
           align: 'center',
-          minWidth: 260,
+        minWidth: this.$common.getColumnWidth(5),
           fixed: 'left',
           render: (h, {
             row,
@@ -158,12 +158,14 @@
           key: 'fileName',
           align: 'center',
           editable: true,
+          minWidth: this.$common.getColumnWidth(6),
         },
         {
           title: '上传时间',
           key: 'uploadTime',
           align: 'center',
           editable: true,
+          minWidth: this.$common.getColumnWidth(6),
           render: (h, {
             row,
             column,
@@ -177,13 +179,15 @@
           key: 'operatorName',
           align: 'center',
           editable: true,
+          minWidth: this.$common.getColumnWidth(3),
         },
         {
           title: '备注',
           key: 'remark',
           align: 'center',
           editable: true,
-          ellipsis: true
+          ellipsis: true,
+          minWidth: this.$common.getColumnWidth(8),
         },
       ];
       this.productModel = {

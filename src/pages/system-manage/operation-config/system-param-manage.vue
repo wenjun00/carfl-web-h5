@@ -82,7 +82,7 @@ export default class OrderTransfer extends Page {
         title: '操作',
         align: 'center',
         fixed: 'left',
-        minWidth: 120,
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, { row, columns, index }) => {
           return h(
             'i-button',
@@ -107,25 +107,29 @@ export default class OrderTransfer extends Page {
         title: '参数代码',
         editable: true,
         key: 'paramCode',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '参数名称',
         editable: true,
         key: 'paramName',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '参数值',
         editable: true,
         key: 'paramValue',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '是否启用',
         editable: true,
         key: 'paramStatus',
         align: 'center',
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, columns, index }) => {
           return h('span', {}, row.paramStatus === 0 ? '启用' : '停用')
         }
@@ -134,7 +138,8 @@ export default class OrderTransfer extends Page {
         title: '说明',
         editable: true,
         key: 'paramRemark',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(10),
       }
     ]
   }

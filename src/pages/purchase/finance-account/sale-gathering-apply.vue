@@ -11,7 +11,7 @@
         <i-row :gutter="20">
           <i-col span="10">
             <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" v-model="applyModel.idCard" placeholder="请输入证件号码" @on-change="getUserInfo" :maxlength="18">
+              <i-input type="text" v-model="applyModel.idCard" placeholder="请输入证件号码" :disabled="transFlag" @on-change="getUserInfo" :maxlength="18">
               </i-input>
             </i-form-item>
           </i-col>
@@ -31,9 +31,11 @@
           </i-col>
           <i-col span="10">
             <i-form-item label="选择订单" prop="orderId">
-              <i-select v-model="applyModel.orderId" placeholder="请选择订单" @on-change="changeOrderId">
+              <i-input v-model="applyModel.orderNumber" :readonly="true" v-if="transFlag"></i-input>
+              <i-select v-model="applyModel.orderId" placeholder="请选择订单" @on-change="changeOrderId" v-else>
                 <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
               </i-select>
+
             </i-form-item>
           </i-col>
         </i-row>
@@ -98,6 +100,8 @@ export default class SaleGatheringApply extends Page {
   private gatherDetail: any = {};
   private uploadFodder: any = {};
 
+  // 传值过来的页面
+  private transFlag: boolean = false;
   private materialTabs: String = "gather-detail";
   private orderNumberIdModels: Array<any> = [];
   private personalId: Number = 0;
@@ -127,7 +131,8 @@ export default class SaleGatheringApply extends Page {
       idCard: "",
       customerName: "",
       mobileMain: "",
-      orderId: ""
+      orderId: "",
+      orderNumber: ""
     };
 
     this.applyRule = {
@@ -173,8 +178,12 @@ export default class SaleGatheringApply extends Page {
     let finalCash = itemList.find(v => v.itemName === "finalCash"); // 尾付款
     this.saveDraftModel.finalCash = finalCash ? finalCash.itemMoney : 0;
 
-    let firstMonthlySupply = itemList.find(v => v.itemName === "firstMonthlySupply"); // 月供金额
-    this.saveDraftModel.firstMonthlySupply = firstMonthlySupply ? firstMonthlySupply.itemMoney :0;
+    let firstMonthlySupply = itemList.find(
+      v => v.itemName === "firstMonthlySupply"
+    ); // 月供金额
+    this.saveDraftModel.firstMonthlySupply = firstMonthlySupply
+      ? firstMonthlySupply.itemMoney
+      : 0;
 
     let gpsFee = itemList.find(v => v.itemName === "gpsFee"); // gps费
     this.saveDraftModel.gpsFee = gpsFee ? gpsFee.itemMoney : 0;
@@ -214,9 +223,20 @@ export default class SaleGatheringApply extends Page {
     this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList;
   }
 
-activited({row}){
-  console.log(row)
-}
+  loaded({ row }) {
+    if (!row) {
+      return;
+    }
+
+    this.transFlag = true;
+    this.applyModel.idCard = row.idCard;
+    this.applyModel.customerName = row.personalName;
+    this.applyModel.mobileMain = row.mobileMain;
+    this.applyModel.orderId = row.orderId;
+    this.personalId = row.personalId;
+    this.applyModel.orderNumber = row.orderNumber;
+    this.changeOrderId(row.orderId);
+  }
   /**
    * 保存并提交
    */
@@ -298,6 +318,7 @@ activited({row}){
   }
 
   resetPage() {
+    this.transFlag = false;
     this.orderNumberIdModels = [];
     this.customerForm.resetFields();
     this.gatherDetail.resetTable();

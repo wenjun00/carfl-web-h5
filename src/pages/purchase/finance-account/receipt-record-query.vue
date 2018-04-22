@@ -99,7 +99,7 @@
       this.columns1 = [{
         title: '操作',
         align: 'center',
-        width: 180,
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, {
           row,
           columns,
@@ -131,12 +131,14 @@
         title: '订单编号',
         key: 'orderNumber',
         align: 'center',
-        editable: true
+        editable: true,
+        minWidth: this.$common.getColumnWidth(6),
       }, {
         title: '收款类型',
         key: 'applicationType',
         align: 'center',
         editable: true,
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, {
           row,
           column,
@@ -149,6 +151,7 @@
         key: 'approvalStatus',
         align: 'center',
         editable: true,
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, {
           row,
           column,
@@ -161,16 +164,31 @@
         key: 'accountName',
         align: 'center',
         editable: true,
+        minWidth: this.$common.getColumnWidth(3),
       }, {
         title: '收款金额',
         key: 'totalPayment',
         align: 'center',
         editable: true,
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row }) => {
+          return h(
+            "div",
+            {
+              style: {
+                textAlign: "right"
+              }
+            },
+            this.$filter.toThousands(row.totalPayment)
+          );
+        }
+
       }, {
         title: '申请时间',
         key: 'operatorTime',
         align: 'center',
         editable: true,
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, {
           row,
           column,
@@ -183,6 +201,7 @@
         key: 'userUserName',
         align: 'center',
         editable: true,
+        minWidth: this.$common.getColumnWidth(3),
       }]
       this.columns2 = [{
         title: '序号',

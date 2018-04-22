@@ -1,4 +1,4 @@
-<!--订单查询--> 
+<!--订单查询-->
 <template>
   <section class="page order-query">
     <page-header title="订单查询" hiddenPrint hiddenExport>
@@ -130,7 +130,7 @@ export default class OrderQuery extends Page {
     this.queryColumns = [
       {
         title: "操作",
-        minWidth: 220,
+        minWidth: this.$common.getColumnWidth(8),
         align: "center",
         fixed: "left",
         render: (h, { row, column, index }) => {
@@ -173,16 +173,14 @@ export default class OrderQuery extends Page {
                           onOk: () => {
                             this.collectionRowData(row);
                             this.$nextTick(() => {
-                              this.openPage(
-                                {
-                                  resoname: "融资租赁申请",
-                                  path:
-                                    "purchase/purchase-manage/financing-lease-apply"
-                                },
-                                {
+                              this.openPage({
+                                resoname: "融资租赁申请",
+                                path:
+                                  "purchase/purchase-manage/financing-lease-apply",
+                                params: {
                                   row: row
                                 }
-                              );
+                              });
                             });
                           }
                         });
@@ -260,14 +258,14 @@ export default class OrderQuery extends Page {
                           content: "确认申请收款吗？",
                           onOk: () => {
                             this.collectionRowData(row);
-                            this.openPage(
-                              {
-                                resoname: "销售收款申请",
-                                path:
-                                  "purchase/finance-account/sale-gathering-apply"
-                              },
-                              row
-                            );
+                            this.openPage({
+                              resoname: "销售收款申请",
+                              path:
+                                "purchase/finance-account/sale-gathering-apply",
+                              params: {
+                                row: row
+                              }
+                            });
                           }
                         });
                       }
@@ -312,14 +310,14 @@ export default class OrderQuery extends Page {
                           content: "确认申请收款吗？",
                           onOk: () => {
                             this.collectionRowData(row);
-                            this.openPage(
-                              {
-                                resoname: "销售收款申请",
-                                path:
-                                  "purchase/finance-account/sale-gathering-apply"
-                              },
-                              row
-                            );
+                            this.openPage({
+                              resoname: "销售收款申请",
+                              path:
+                                "purchase/finance-account/sale-gathering-apply",
+                              params: {
+                                row: row
+                              }
+                            });
                           }
                         });
                       }

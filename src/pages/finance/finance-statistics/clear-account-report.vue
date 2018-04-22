@@ -99,12 +99,12 @@
           title: "公司简介",
           align: 'center',
           key: 'companyName',
-          width: 104
+          minWidth: this.$common.getColumnWidth(4),
         },
         {
           title: "汇付",
           align: 'center',
-          width: 890,
+          minWidth: this.$common.getColumnWidth(15),
           render: (h, params) => {
             return h('i-table', {
               props: {
@@ -132,7 +132,7 @@
         },
         {
           title: "富友",
-          width: 890,
+          minWidth: this.$common.getColumnWidth(15),
           align: 'center',
           render: (h, params) => {
             return h('i-table', {

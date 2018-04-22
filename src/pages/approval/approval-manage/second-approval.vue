@@ -1,4 +1,4 @@
-<!--复审-->
+<!--复审资源池-->
 <template>
     <section class="page second-approval">
         <page-header title="复审"></page-header>
@@ -101,7 +101,7 @@ export default class SecondApproval extends Page {
     this.columns1 = [
       {
         title: '操作',
-        minWidth: 100,
+        minWidth: this.$common.getColumnWidth(4),
         align: 'center',
         fixed: 'left',
         render: (h, { row, column, index }) => {
@@ -131,6 +131,7 @@ export default class SecondApproval extends Page {
         align: 'center',
         editable: true,
         title: '环节',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) => {
           if (row.riskStatus) {
             return h('div', [
@@ -168,7 +169,7 @@ export default class SecondApproval extends Page {
         title: '订单编号',
         key: 'orderNumber',
         editable: true,
-        minWidth: 115,
+        minWidth: this.$common.getColumnWidth(6),
         align: 'center',
         render: (h, { row, column, index }) => {
           if (row && row.orderNumber) {
@@ -195,7 +196,7 @@ export default class SecondApproval extends Page {
         align: 'center',
         title: '订单创建时间',
         editable: true,
-        minWidth: 135,
+        minWidth: this.$common.getColumnWidth(6),
         key: 'createTime',
         render: (h, { row, column, index }) => {
           return h(
@@ -208,7 +209,7 @@ export default class SecondApproval extends Page {
         align: 'center',
         title: '进入资源池时间',
         editable: true,
-        minWidth: 135,
+        minWidth: this.$common.getColumnWidth(6),
         key: 'intoPoolDate',
         render: (h, { row, column, index }) => {
           return h(
@@ -222,6 +223,7 @@ export default class SecondApproval extends Page {
         title: '省份',
         editable: true,
         key: 'province',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', CityService.getCityName(row.province))
         }
@@ -231,6 +233,7 @@ export default class SecondApproval extends Page {
         title: '城市',
         editable: true,
         key: 'city',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', CityService.getCityName(row.city))
         }
@@ -240,6 +243,7 @@ export default class SecondApproval extends Page {
         editable: true,
         title: '订单类型',
         key: 'orderType',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) => {
           return h('span', {}, this.$dict.getDictName(row.orderType))
         }
@@ -248,26 +252,28 @@ export default class SecondApproval extends Page {
         align: 'center',
         editable: true,
         title: '产品名称',
-        key: 'productName'
+        key: 'productName',
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         align: 'center',
         editable: true,
         title: '客户姓名',
-        key: 'personalName'
+        key: 'personalName',
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         align: 'center',
         editable: true,
         title: '证件号',
-        width: 115,
+        minWidth: this.$common.getColumnWidth(6),
         key: 'idCard'
       },
       {
         align: 'center',
         editable: true,
         title: '手机号',
-        width: 85,
+        minWidth: this.$common.getColumnWidth(5),
         key: 'mobileMain'
       }
     ]

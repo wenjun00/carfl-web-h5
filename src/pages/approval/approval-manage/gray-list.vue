@@ -88,7 +88,7 @@ export default class GrayList extends Page {
     this.columns1 = [
       {
         title: '操作',
-        minWidth: 200,
+        minWidth: this.$common.getColumnWidth(5),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -142,6 +142,7 @@ export default class GrayList extends Page {
         align: 'center',
         editable: true,
         title: '环节',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) => {
           if (row.riskStatus) {
             return h('div', [
@@ -180,6 +181,7 @@ export default class GrayList extends Page {
         editable: true,
         align: 'center',
         key: 'orderStatus',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) => {
           return h('span', {}, this.$dict.getDictName(row.orderStatus))
         }
@@ -189,6 +191,7 @@ export default class GrayList extends Page {
         key: 'orderNumber',
         editable: true,
         align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, columns, index }) => {
           return h(
             'i-button',
@@ -211,6 +214,7 @@ export default class GrayList extends Page {
         title: '订单创建时间',
         editable: true,
         key: 'createTime',
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             'span',
@@ -223,6 +227,7 @@ export default class GrayList extends Page {
         editable: true,
         title: '进入资源池时间',
         key: 'intoPoolDate',
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
           return h(
             'span',
@@ -235,6 +240,7 @@ export default class GrayList extends Page {
         editable: true,
         title: '省份',
         key: 'province',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', CityService.getCityName(row.province))
         }
@@ -244,6 +250,7 @@ export default class GrayList extends Page {
         title: '城市',
         editable: true,
         key: 'city',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', CityService.getCityName(row.city))
         }
@@ -253,6 +260,7 @@ export default class GrayList extends Page {
         title: '订单类型',
         editable: true,
         key: 'orderType',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, columns, index }) => {
           return h('span', {}, this.$dict.getDictName(row.orderType))
         }
@@ -261,25 +269,29 @@ export default class GrayList extends Page {
         align: 'center',
         editable: true,
         title: '产品名称',
-        key: 'productName'
+        key: 'productName',
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         align: 'center',
         editable: true,
         title: '客户姓名',
-        key: 'personalName'
+        key: 'personalName',
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         align: 'center',
         editable: true,
         title: '证件号',
-        key: 'idCard'
+        key: 'idCard',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         align: 'center',
         editable: true,
         title: '手机号',
-        key: 'mobileMain'
+        key: 'mobileMain',
+        minWidth: this.$common.getColumnWidth(5),
       }
     ]
   }

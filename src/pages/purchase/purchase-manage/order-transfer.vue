@@ -195,7 +195,7 @@ export default class OrderTransfer extends Page {
       {
         align: 'center',
         title: '选择',
-        minWidth: 180,
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, columns, index }) => {
           return h('Radio', {
             props: {
@@ -208,19 +208,19 @@ export default class OrderTransfer extends Page {
         align: 'center',
         key: 'userUsername',
         title: '用户名',
-        minWidth: 180
+        minWidth: this.$common.getColumnWidth(5),
       },
       {
         align: 'center',
         key: 'userRealname',
         title: '姓名',
-        minWidth: 195
+        minWidth: this.$common.getColumnWidth(6),
       }
     ]
     this.columns1 = [
       {
         type: 'selection',
-        minWidth: 60,
+        minWidth: this.$common.getColumnWidth(2),
         fixed: 'left',
         align: 'center'
       },
@@ -228,7 +228,7 @@ export default class OrderTransfer extends Page {
         title: '操作',
         align: 'center',
         fixed: 'left',
-        minWidth: 120,
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, { row, columns, index }) => {
           return h(
             'i-button',
@@ -254,31 +254,36 @@ export default class OrderTransfer extends Page {
         title: '订单编号',
         editable: true,
         key: 'orderNumber',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '制单人',
         editable: true,
         key: 'recorderName',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '所属部门',
         editable: true,
         key: 'deptName',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         title: '转交人',
         editable: true,
         key: 'transferName',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '订单创建时间',
         editable: true,
         key: 'createTime',
         align: 'center',
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, columns, index }) => {
           return h(
             'span',
@@ -290,32 +295,36 @@ export default class OrderTransfer extends Page {
         title: '客户姓名',
         editable: true,
         key: 'personalName',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(3),
       },
       {
         title: '证件号码',
         key: 'idCard',
         editable: true,
         align: 'center',
-        minWidth: 160
+        minWidth: this.$common.getColumnWidth(6),
       },
       {
         title: '联系号码',
         editable: true,
         key: 'mobileMain',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(5),
       },
       {
         title: '产品名称',
         editable: true,
         key: 'productName',
-        align: 'center'
+        align: 'center',
+        minWidth: this.$common.getColumnWidth(4),
       },
       {
         title: '产品期数',
         editable: true,
         key: 'periods',
         align: 'center',
+        minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, column, index }) => {
           return h('span', {}, this.$dict.getDictName(row.periods))
         }
@@ -325,6 +334,7 @@ export default class OrderTransfer extends Page {
         editable: true,
         key: 'orderLink',
         align: 'center',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', {}, this.$dict.getDictName(row.orderLink))
         }
@@ -334,6 +344,7 @@ export default class OrderTransfer extends Page {
         editable: true,
         key: 'orderStatus',
         align: 'center',
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h('span', {}, this.$dict.getDictName(row.orderStatus))
         }
@@ -343,7 +354,7 @@ export default class OrderTransfer extends Page {
       {
         title: '序号',
         type: 'index',
-        minWidth: '80',
+        minWidth: 80,
         align: 'center'
       },
       {
@@ -353,7 +364,7 @@ export default class OrderTransfer extends Page {
       },
       {
         type: 'selection',
-        minWidth: '80',
+        minWidth: 80,
         align: 'center'
       }
     ]
