@@ -404,9 +404,7 @@
       document.getElementsByClassName("purchase-information")[0].addEventListener("scroll", this.handleScroll);
     }
     handleScroll() {
-      console.log(1321)
       let target = document.getElementsByClassName("purchase-information")[0].scrollTop
-      console.log(target)
     }
     getMaterialUrl(item) {
       let url = item.materialUrl;
@@ -458,12 +456,9 @@
           }
           this.materialInfoImg = this.personal.personalDatas.filter(x => this.ImgArray.includes(x.uploadName))
           this.materialInfoOther = this.personal.personalDatas.filter(x => this.OtherArray.includes(x.uploadName))
-          // console.log(this.orderInfo.personalJob, 1234)
           this.immediateContacts = this.contactsInfo.filter(
             v => v.relation === 56 || v.relation === 57 || v.relation === 58
           );
-          console.log(this.immediateContacts, 'immediateContacts')
-          // console.log(this.immediateContacts, 8987)
           this.otherContactsInfo = this.contactsInfo.filter(
             v =>
             v.relation === 59 ||
