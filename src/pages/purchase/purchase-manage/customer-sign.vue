@@ -54,7 +54,7 @@
           </div>
         </div>
         <ul class="upload-count-ul one">
-          <li v-for="item in mertialList">
+          <li v-for="(item,index) in mertialList" :key="index">
             <p>{{item.contractName}}</p>
             <div>
               <i-button type="text" icon="arrow-down-a" @click="downloadOne(item)"></i-button>
