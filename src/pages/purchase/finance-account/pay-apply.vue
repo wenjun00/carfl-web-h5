@@ -396,6 +396,9 @@ export default class PayApply extends Page {
 
 <style lang="less" scoped>
 .page.early-payment-apply {
+  .clear-button{
+     height: 100%;
+  }
   .data-form {
     margin-top: 10px;
     margin-right: 10px;
