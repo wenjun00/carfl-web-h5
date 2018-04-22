@@ -33,6 +33,10 @@
         <td>{{item.itemLabel}}</td>
         <td>{{item.itemMoney}}</td>
       </tr>
+      <tr height="40">
+        <td>合计</td>
+        <td class="modal-item-heji">{{repaymentObj.totalPayment}}</td>
+      </tr>
     </table>
     <div>
       <div class="modal-item-fangshi"></div>
@@ -63,11 +67,11 @@
         </td>
         <td>
           <i-select class="modal-item-select" placeholder="选择收款项目" v-model="v.collectItem" :disabled="check" @on-change="selectWay($event, v)">
-            <i-option v-for="item in collectMoneyItemModels" :key="item.itemCode" :label="item.itemLabel" :value="item.itemLabel"></i-option>
+            <i-option v-for="item in collectMoneyItemModels" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>
           </i-select>
         </td>
         <td>
-          <i-input class="modal-item-huakou" v-model="v.collectMoneyAmount" @on-blur="inputBlur" :readonly="check"></i-input>
+          <i-input class="modal-item-huakou" v-model="v.collectMoneyAmount" @on-blur="inputBlur" readonly></i-input>
           <i-button class="blueButton" v-if="!check">确认划扣</i-button>
         </td>
         <td><span>已处理</span>
@@ -89,7 +93,7 @@
     <div v-if="!check||financeUploadResources.length">
       <div class="modal-item-xinxi"></div>
       <span >收款凭证</span>
-      <upload-voucher></upload-voucher>
+      <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
     </div>
 
     <template>
@@ -115,15 +119,11 @@
   import {
     CollectMoneyHistoryService
   } from "~/services/manage-service/collect-money-history.service";
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import FileUpload from "~/components/common/file-upload.tsx.vue";
   import UploadVoucher from "~/components/common/upload-voucher.vue"
+  import { Prop, Watch } from "vue-property-decorator";
 
   @Component({
     components: {
-      FileUpload,
       ChangeCard,
       DataBox,
       PurchaseInformation,
@@ -136,6 +136,7 @@
       default: false
     })
     check: boolean;
+    @Prop() currentRow:any
     private rowObj: any = {};
     private repaymentObj: any = {};
     private applicationPhaseResources: any = []
@@ -151,33 +152,54 @@
     private columns3: any;
     private data3: Array < Object > = [];
     private purchaseInfoModel: Boolean = false;
+    private fodderList:any =[]
     private gatherModal: Object = {
       gatherType: '销售收款',
       remarks: ''
     }
 
+    @Watch('currentRow')
+    onChange(){
+      this.refresh(this.currentRow)
+    }
+    mounted(){
+      this.refresh(this.currentRow)
+    }
     refresh(row) {
-      this.rowObj = row
-      this.collectMoneyHistoryService.withdrawApplicationDetail({
-        applicationId: row.applicationId
-      }).subscribe(data => {
-        this.collectMoneyId = data.collectMoneyId || ''
-        this.repaymentObj = data
-        this.collectMoneyDetails = data.collectMoneyDetails || []
-        this.personalBanks = data.personalBanks
-        this.financeUploadResources = data.collectMoneyPhaseUploadResources
-        this.applicationPhaseResources = data.applicationPhaseUploadResources
-        this.collectMoneyItemModels = data.collectMoneyItemModels
-        let _uploadFodder:any = this.$refs['upload-voucher']
-        _uploadFodder.Reverse(data.applicationPhaseUploadResources)
-        this.inputBlur()
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
+      this.$nextTick(()=>{
+        if(!row)
+          return
+        this.rowObj = row
+        this.collectMoneyHistoryService.withdrawApplicationDetail({
+          applicationId: row.applicationId
+        }).subscribe(data => {
+          this.collectMoneyId = data.collectMoneyId || ''
+          this.repaymentObj = data
+          this.collectMoneyDetails = data.collectMoneyDetails || []
+          this.personalBanks = data.personalBanks
+          this.financeUploadResources = data.collectMoneyPhaseUploadResources
+          this.applicationPhaseResources = data.applicationPhaseUploadResources
+          this.collectMoneyItemModels = data.collectMoneyItemModels
+          this.$nextTick(()=>{
+            let _uploadFodder:any = this.$refs['upload-voucher']
+            _uploadFodder.Reverse(data.applicationPhaseUploadResources)
+            let _uploadFodderTwo:any = this.$refs['upload-voucher-two']
+            _uploadFodderTwo.Reverse(data.collectMoneyPhaseUploadResources)
+            this.inputBlur()
+          })
+        }, ({
+              msg
+            }) => {
+          this.$Message.error(msg)
+        })
       })
     }
-
+    /**
+     * 上传的文件
+     */
+    fileNumber(item){
+      this.fodderList = item
+    }
     /**
      * 计算总计
      */
@@ -186,18 +208,13 @@
       this.collectMoneyDetails.forEach(v => {
         sum = sum + (Number(v.collectMoneyAmount) || 0)
       })
-      console.log(sum)
       this.paymentAmount = sum
     }
     /**
      * 增加还款对象
      */
     addObj() {
-      console.log('add')
-      this.collectMoneyDetails.push({
-        collectMoneyAmount: '',
-        collectMoneyMethod: ''
-      })
+      this.collectMoneyDetails.push({collectMoneyAmount: ''})
     }
     selectWay(code, item) {
       let target: any = this.collectMoneyItemModels.find((d) => d.itemCode === code)

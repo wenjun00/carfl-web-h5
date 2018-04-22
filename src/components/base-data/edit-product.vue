@@ -221,7 +221,7 @@ export default class AddProduct extends Vue {
     periodType: '', // 周期类型
     paymentType: '', //账期类型
     paymentDay: '', //固定账期 期数
-    productRates: '', // 产品利率
+    productRates: 0, // 产品利率
     payWay: '', //还款方式
     financingAmount: '', //融资金额
     initialPayment: '', // 首付款比例
@@ -233,9 +233,9 @@ export default class AddProduct extends Vue {
     stagingPeriods: '', // 管理费分期 期数
     creditProtectDays: '', // 征信保护天数
     overdueProtectDays: '', //逾期保护天数
-    penaltyRates: '', //罚息费率
-    contractBreakRates: '', //合同违约金费率
-    prepaymentRates: '', //提前还款费率
+    penaltyRates: 0, //罚息费率
+    contractBreakRates: 0, //合同违约金费率
+    prepaymentRates: 0, //提前还款费率
     isPublish: '', // 未发布or已发布
     operator: '',
     operatorTime: '',

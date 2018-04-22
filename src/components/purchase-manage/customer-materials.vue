@@ -363,7 +363,7 @@ export default class CustomerMaterials extends Vue {
     cityOwnhouseOther: "", // 本市子属房产状况(其他)
     electricityAccount: "", // 电费账号
     electricityPassword: "", // 电费密码
-    localLiveHouseMoney: "", // 每月租金
+    localLiveHouseMoney: 0, // 每月租金
     idCardAddress: "", // 身份证地址（区）
     localHomeAddr: "", // 先居住地址（区）
     cityOwnhouseAddress: "" // 本市房产地址（区）
