@@ -1,4 +1,4 @@
-<template> 
+<template>
   <div class="component purchase-information">
     <!--选购信息-->
     <i-row class="data-d">
@@ -43,54 +43,31 @@
         <div class="data-d-icon"></div>
         <a name="chanpinxinxi" class="data-d-content">产品信息</a>
       </div>
-      <table border="1" width="760" class="data-d-table">
-        <tr>
-          <td bgColor="#F5F5F5">产品系列</td>
-          <td>{{orderInfo.productSeries?orderInfo.productSeries.name:''}}</td>
-          <td bgColor="#F5F5F5">产品名称</td>
-          <td>{{orderInfo.product?orderInfo.product.name:''}}</td>
-          <td bgColor="#F5F5F5">产品期数</td>
-          <td>{{!!orderInfo.periods ? $dict.getDictName(orderInfo.periods):0}}</td>
-          <td bgColor="#F5F5F5">产品利率</td>
-          <td>{{!!orderInfo.productRate? orderInfo.productRate*100+'%':0}}</td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">还款方式</td>
-          <td>{{$dict.getDictName(orderInfo.payWay)}}</td>
-          <td bgColor="#F5F5F5">融资总额</td>
-          <td>{{!!orderInfo.financingAmount?orderInfo.financingAmount:0}}</td>
-          <td bgColor="#F5F5F5">月供金额</td>
-          <td>{{ !!orderInfo.monthlySupply ?orderInfo.monthlySupply:0}}</td>
-          <td bgColor="#F5F5F5">首付金额</td>
-          <td>{{!!orderInfo.initialPayment?orderInfo.initialPayment:0}}</td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">保证金金额</td>
-          <td>{{!!orderInfo.depositCash?orderInfo.depositCash:0}}</td>
-          <td bgColor="#F5F5F5">尾付金额</td>
-          <td>{{!!orderInfo.finalCash ? orderInfo.finalCash:0}}</td>
-          <td bgColor="#F5F5F5">管理费</td>
-          <td>{{!!orderInfo.manageCost?orderInfo.manageCost:0}}</td>
-          <td bgColor="#F5F5F5">保险费</td>
-          <td>{{!!orderInfo.insuranceExpenses ?orderInfo.insuranceExpenses:0}}</td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">购置税</td>
-          <td>{{!!orderInfo.purchaseTax ?orderInfo.purchaseTax:0}}</td>
-          <td bgColor="#F5F5F5">上牌费</td>
-          <td>{{!!orderInfo.installLicenseFee?orderInfo.installLicenseFee:0}}</td>
-          <td bgColor="#F5F5F5">GPS费</td>
-          <td>{{!!orderInfo.gpsFee?orderInfo.gpsFee:0}}</td>
-          <td bgColor="#F5F5F5">其他费用</td>
-          <td>{{!!orderInfo.otherFee?orderInfo.otherFee:0}}</td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">车辆参考总价</td>
-          <td>{{!!orderInfo.vehicleAmount?orderInfo.vehicleAmount:0}}</td>
-          <td bgColor="#F5F5F5">备注</td>
-          <td colspan="7">{{orderInfo.remark}}</td>
-        </tr>
-      </table>
+      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" class="data-d-item">
+        <data-grid-item label="产品系列" :span="3">{{orderInfo.productSeries?orderInfo.productSeries.name:''}}</data-grid-item>
+        <data-grid-item label="产品名称" :span="3">{{orderInfo.product?orderInfo.product.name:''}}</data-grid-item>
+        <data-grid-item label="产品期数" :span="3">{{!!orderInfo.periods ? $dict.getDictName(orderInfo.periods):0}}</data-grid-item>
+        <data-grid-item label="产品利率" :span="3">{{!!orderInfo.productRate? orderInfo.productRate*100+'%':0}}</data-grid-item>
+
+        <data-grid-item label="还款方式" :span="3">{{$dict.getDictName(orderInfo.payWay)}}</data-grid-item>
+        <data-grid-item label="融资总额" :span="3">{{!!orderInfo.financingAmount?orderInfo.financingAmount:0}}</data-grid-item>
+        <data-grid-item label="月供金额" :span="3">{{!!orderInfo.monthlySupply ?orderInfo.monthlySupply:0}}</data-grid-item>
+        <data-grid-item label="首付金额" :span="3">{{!!orderInfo.initialPayment?orderInfo.initialPayment:0}}</data-grid-item>
+
+        <data-grid-item label="保证金金额" :span="3">{{!!orderInfo.depositCash?orderInfo.depositCash:0}}</data-grid-item>
+        <data-grid-item label="尾付金额" :span="3">{{!!orderInfo.finalCash ? orderInfo.finalCash:0}}</data-grid-item>
+        <data-grid-item label="管理费" :span="3">{{!!orderInfo.manageCost?orderInfo.manageCost:0}}</data-grid-item>
+        <data-grid-item label="保险费" :span="3">{{!!orderInfo.insuranceExpenses ?orderInfo.insuranceExpenses:0}}</data-grid-item>
+
+
+        <data-grid-item label="购置税" :span="3">{{!!orderInfo.purchaseTax ?orderInfo.purchaseTax:0}}</data-grid-item>
+        <data-grid-item label="上牌费" :span="3">{{!!orderInfo.installLicenseFee?orderInfo.installLicenseFee:0}}</data-grid-item>
+        <data-grid-item label="GPS费" :span="3">{{!!orderInfo.gpsFee?orderInfo.gpsFee:0}}</data-grid-item>
+        <data-grid-item label="其他费用" :span="3">{{!!orderInfo.otherFee?orderInfo.otherFee:0}}</data-grid-item>
+
+        <data-grid-item label="车辆参考总价" :span="3">{{!!orderInfo.vehicleAmount?orderInfo.vehicleAmount:0}}</data-grid-item>
+        <data-grid-item label="备注" :span="9">{{orderInfo.remark}}</data-grid-item>
+      </data-grid>
     </i-row>
     <!--个人资料-->
     <i-row class="data-d">
@@ -98,94 +75,47 @@
         <div class="data-d-icon"></div>
         <a name="gerenziliao" class="data-d-content">个人资料</a>
       </div>
-      <table border="1" width="760" class="data-d-table">
-        <tr>
-          <td bgColor="#F5F5F5">姓名</td>
-          <td>{{orderInfo.personal?orderInfo.personal.name:''}}</td>
-          <td bgColor="#F5F5F5">性别</td>
-          <td>{{orderInfo.personal?$dict.getDictName(orderInfo.personal.sex):''}}</td>
-          <td bgColor="#F5F5F5">出生日期</td>
-          <td>{{personal.birthTime|dateFormat('yyyy-MM-dd')}}</td>
-          <td bgColor="#F5F5F5">微信号</td>
-          <td>{{orderInfo.personal?orderInfo.personal.wechat:''}}</td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">手机号码(主)</td>
-          <td>{{orderInfo.personal?orderInfo.personal.mobileMain:''}}</td>
-          <td bgColor="#F5F5F5">手机号码(次)</td>
-          <td>{{orderInfo.personal?orderInfo.personal.mobileMinor:''}}</td>
-          <td bgColor="#F5F5F5">身份证号</td>
-          <td>{{orderInfo.personal?orderInfo.personal.idCard:''}}</td>
-          <td bgColor="#F5F5F5">婚属状况</td>
-          <td colspan="5">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.marital):''}}</td>
-        </tr>
-        <tr>
-          <td colspan="2" bgColor="#F5F5F5">身份证有效期</td>
-          <td colspan="2">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? orderInfo.personal.idCardValidityPeriodType
-            :orderInfo.personal.idCardValidityPeriodSection):''}}
-          </td>
+      <data-grid :labelWidth="105" labelAlign="left" contentAlign="left" class="data-d-item">
+        <data-grid-item label="姓名" :span="3">{{orderInfo.personal?orderInfo.personal.name:''}}</data-grid-item>
+        <data-grid-item label="性别" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.sex):''}}</data-grid-item>
+        <data-grid-item label="出生日期" :span="3">{{personal.birthTime|dateFormat('yyyy-MM-dd')}}</data-grid-item>
+        <data-grid-item label="微信号" :span="3">{{orderInfo.personal?orderInfo.personal.wechat:''}}</data-grid-item>
 
-          <td bgColor="#F5F5F5">发证机关</td>
-          <td colspan="4">{{orderInfo.personal?orderInfo.personal.issuer:''}}</td>
-        </tr>
-        <tr>
-          <td colspan="2" bgColor="#F5F5F5">身份证地址</td>
-          <td colspan="6" v-if="orderInfo.personal&&orderInfo.personal.idCardAddress">
-            <!--{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[0]):''}}
-            {{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.idCardAddress))[1]):''}}
-            {{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.idCardAddress)):''}}-->
-            {{orderInfo.personal?orderInfo.personal.idCardAddressDetail:''}}
-          </td>
-          <td v-else colspan="6"></td>
-        </tr>
-        <tr>
-          <td colspan="2" bgColor="#F5F5F5">现居住地址</td>
-          <td v-if="orderInfo.personal&&orderInfo.personal.localHomeAddr" colspan="6">
-            <!--{{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[0]):''}}
-            {{orderInfo.personal?$city.getCityName($city.getCityParent(parseInt(orderInfo.personal.localHomeAddr))[1]):''}}
-            {{orderInfo.personal?$city.getCityName(parseInt(orderInfo.personal.localHomeAddr)):''}}-->
-            {{orderInfo.personal?orderInfo.personal.localHomeAddrDetail:''}}
-          </td>
-          <td v-else colspan="6"></td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5" colspan="2">居住地址家庭座机</td>
-          <td>{{orderInfo.personal?orderInfo.personal.localHomePhone:''}}</td>
-          <td bgColor="#F5F5F5">本市生活时长</td>
-          <td>{{orderInfo.personal?orderInfo.personal.cityLiveTime:''}}</td>
-          <td bgColor="#F5F5F5" colspan="2">现居住地生活时长</td>
-          <td>{{orderInfo.personal?orderInfo.personal.localLiveTime:''}}</td>
-        </tr>
-        <tr>
-          <td colspan="2" bgColor="#F5F5F5">现居住地房产归属</td>
-          <td colspan="6">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.localLiveHouseOwner):''}}</td>
-        </tr>
-        <tr>
-          <td colspan="2" bgColor="#F5F5F5">本市自有房产状况归属</td>
-          <td colspan="2">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.cityOwnhouseCondition):''}}</td>
-          <td bgColor="#F5F5F5">电费账号</td>
-          <td>{{orderInfo.personal?orderInfo.personal.electricityAccount:''}}</td>
-          <td bgColor="#F5F5F5">电费密码</td>
-          <td>{{orderInfo.personal?orderInfo.personal.electricityPassword:''}}</td>
-        </tr>
-        <tr>
-          <td colspan="2" bgColor="#F5F5F5">本市房产地址</td>
-          <td colspan="6">{{orderInfo.personal?orderInfo.personal.cityOwnhouseAddressDetail:''}}</td>
-        </tr>
-        <tr>
-          <td colspan="2" bgColor="#F5F5F5">教育程度</td>
-          <td>{{orderInfo.personal?$dict.getDictName(orderInfo.personal.education):''}}</td>
-          <td bgColor="#F5F5F5">毕业院校</td>
-          <td>{{orderInfo.personal?orderInfo.personal.school:''}}</td>
-          <td bgColor="#F5F5F5">是否接受现场勘查</td>
-          <td colspan="2">
-            <i-radio-group v-model="personal.houseProspecting">
-              <i-radio :label="29" :value="29" :key="29" disabled>是</i-radio>
-              <i-radio :label="30" :value="30" :key="30" disabled>否</i-radio>
-            </i-radio-group>
-          </td>
-        </tr>
-      </table>
+        <data-grid-item label="手机号码(主)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMain:''}}</data-grid-item>
+        <data-grid-item label="手机号码(次)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMinor:''}}</data-grid-item>
+        <data-grid-item label="身份证号" :span="3">{{orderInfo.personal?orderInfo.personal.idCard:''}}</data-grid-item>
+        <data-grid-item label="婚属状况" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.marital):''}}</data-grid-item>
+
+        <data-grid-item label="身份证有效期" :span="6">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? orderInfo.personal.idCardValidityPeriodType
+          :orderInfo.personal.idCardValidityPeriodSection):''}}
+        </data-grid-item>
+        <data-grid-item label="发证机关" :span="6">{{orderInfo.personal?orderInfo.personal.issuer:''}}</data-grid-item>
+
+        <data-grid-item label="身份证地址" :span="12">{{orderInfo.personal?(orderInfo.personal.idCardAddressDetail?orderInfo.personal.idCardAddressDetail:''):''}}</data-grid-item>
+
+        <data-grid-item label="现居住地址" :span="12">{{orderInfo.personal?(orderInfo.personal.localHomeAddrDetail?orderInfo.personal.localHomeAddrDetail:''):''}}</data-grid-item>
+
+        <data-grid-item label="居住地址家庭座机" :span="6">{{orderInfo.personal?orderInfo.personal.localHomePhone:''}}</data-grid-item>
+        <data-grid-item label="本市生活时长" :span="3">{{orderInfo.personal?orderInfo.personal.cityLiveTime:''}}</data-grid-item>
+        <data-grid-item label="现居住地生活时长" :span="3">{{orderInfo.personal?orderInfo.personal.localLiveTime:''}}</data-grid-item>
+
+        <data-grid-item label="现居住地房产归属" :span="12">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.localLiveHouseOwner):''}}</data-grid-item>
+
+        <data-grid-item label="本市自有房产状况归属" :span="6">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.cityOwnhouseCondition):''}}</data-grid-item>
+        <data-grid-item label="电费账号" :span="3">{{orderInfo.personal?orderInfo.personal.electricityAccount:''}}</data-grid-item>
+        <data-grid-item label="电费密码" :span="3">{{orderInfo.personal?orderInfo.personal.electricityPassword:''}}</data-grid-item>
+
+        <data-grid-item label="本市房产地址" :span="12">{{orderInfo.personal?orderInfo.personal.cityOwnhouseAddressDetail:''}}</data-grid-item>
+
+        <data-grid-item label="教育程度" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.education):''}}</data-grid-item>
+        <data-grid-item label="毕业院校" :span="3">{{orderInfo.personal?orderInfo.personal.school:''}}</data-grid-item>
+        <data-grid-item label="是否接受现场勘查" :span="6">
+          <i-radio-group v-model="personal.houseProspecting">
+            <i-radio :label="29" :value="29" :key="29" disabled>是</i-radio>
+            <i-radio :label="30" :value="30" :key="30" disabled>否</i-radio>
+          </i-radio-group>
+        </data-grid-item>
+      </data-grid>
     </i-row>
     <!--职业信息-->
     <i-row class="data-d">
@@ -193,52 +123,28 @@
         <div class="data-d-icon"></div>
         <a name="zhiyexinxi" class="data-d-content">职业信息</a>
       </div>
-      <table border="1" width="760" class="data-d-table">
-        <tr>
-          <td bgColor="#F5F5F5">单位名称</td>
-          <td>{{personalJobInfo.companyName}}</td>
-          <td bgColor="#F5F5F5">部门</td>
-          <td>{{personalJobInfo.department}}</td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">单位性质</td>
-          <td>{{$dict.getDictName(personalJobInfo.companyNature)}}</td>
-          <td bgColor="#F5F5F5">职务</td>
-          <td>{{personalJobInfo.duty}}</td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">职级</td>
-          <td>{{$dict.getDictName(personalJobInfo.rank)}}</td>
-          <td bgColor="#F5F5F5">单位地址</td>
-          <td>{{personalJobInfo.companyAddressDetail}}</td>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">单位固定电话</td>
-          <td>{{personalJobInfo.companyPhone}}</td>
-          <td bgColor="#F5F5F5">何时进入公司</td>
-          <td>{{personalJobInfo.accessCompanyTime|dateFormat('yyyy-MM-dd')}}</td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">基本月薪(元)</td>
-          <td>{{personalJobInfo.basicSalary}}</td>
-          <td bgColor="#F5F5F5">每月发薪日</td>
-          <td>{{personalJobInfo.payDay}}</td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">发薪方式</td>
-          <td>{{personalJobInfo.payWay}}</td>
-          <td bgColor="#F5F5F5">年收入(万元)</td>
-          <td>{{personalJobInfo.yearlySalaries}}</td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">每月其他收入(元)</td>
-          <td>{{personalJobInfo.monthOtherIncome}}</td>
-          <td bgColor="#F5F5F5">其他收入来源</td>
-          <td>{{personalJobInfo.otherIncomeSource}}</td>
-        </tr>
-      </table>
+      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" class="data-d-item">
+        <data-grid-item label="单位名称" :span="6">{{personalJobInfo.companyName}}</data-grid-item>
+        <data-grid-item label="部门" :span="6">{{personalJobInfo.department}}</data-grid-item>
+
+        <data-grid-item label="单位性质" :span="6">{{$dict.getDictName(personalJobInfo.companyNature)}}</data-grid-item>
+        <data-grid-item label="职务" :span="6">{{personalJobInfo.duty}}</data-grid-item>
+
+        <data-grid-item label="职级" :span="6">{{$dict.getDictName(personalJobInfo.rank)}}</data-grid-item>
+        <data-grid-item label="单位地址" :span="6">{{personalJobInfo.companyAddressDetail}}</data-grid-item>
+
+        <data-grid-item label="单位固定电话" :span="6">{{personalJobInfo.companyPhone}}</data-grid-item>
+        <data-grid-item label="何时进入公司" :span="6">{{personalJobInfo.accessCompanyTime|dateFormat('yyyy-MM-dd')}}</data-grid-item>
+
+        <data-grid-item label="基本月薪(元)" :span="6">{{personalJobInfo.basicSalary}}</data-grid-item>
+        <data-grid-item label="每月发薪日" :span="6">{{personalJobInfo.payDay}}</data-grid-item>
+
+        <data-grid-item label="发薪方式" :span="6">{{personalJobInfo.payWay}}</data-grid-item>
+        <data-grid-item label="年收入(万元)" :span="6">{{personalJobInfo.yearlySalaries}}</data-grid-item>
+
+        <data-grid-item label="每月其他收入(元)" :span="6">{{personalJobInfo.monthOtherIncome}}</data-grid-item>
+        <data-grid-item label="其他收入来源" :span="6">{{personalJobInfo.otherIncomeSource}}</data-grid-item>
+      </data-grid>
     </i-row>
     <!--联系人信息-->
     <i-row class="data-d">
@@ -246,39 +152,9 @@
         <div class="data-d-icon"></div>
         <a name="lianxirenxinxi" class="data-d-content">联系人信息</a>
       </div>
-      <table border="1" width="760" class="data-d-table">
-        <tr>
-          <td bgColor="#F5F5F5">姓名</td>
-          <td bgColor="#F5F5F5">与本人关系</td>
-          <td bgColor="#F5F5F5">联系方式</td>
-          <td bgColor="#F5F5F5">单位名称</td>
-          <td bgColor="#F5F5F5">家庭住址</td>
-        </tr>
-        <tr v-for="item in immediateContacts" :key="item.id">
-          <td>{{item.name?item.name:''}}</td>
-          <td>{{item.relation?$dict.getDictName(item.relation):''}}</td>
-          <td>{{item.relation?item.phone:''}}</td>
-          <td>{{item.employer?item.employer:''}}</td>
-          <td>{{item.address?item.address:''}}</td>
-        </tr>
-        <tr>
-          <td colspan="5">其他联系人（提示：必填3个其他联系人）</td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">姓名</td>
-          <td bgColor="#F5F5F5">与本人关系</td>
-          <td bgColor="#F5F5F5">联系方式</td>
-          <td bgColor="#F5F5F5">单位名称</td>
-          <td bgColor="#F5F5F5">家庭住址</td>
-        </tr>
-        <tr v-for="item in otherContactsInfo" :key="item.id">
-          <td>{{item.name?item.name:''}}</td>
-          <td>{{item.relation?$dict.getDictName(item.relation):''}}</td>
-          <td>{{item.relation?item.phone:''}}</td>
-          <td>{{item.employer?item.employer:''}}</td>
-          <td>{{item.address?item.address:''}}</td>
-        </tr>
-      </table>
+      <i-table width="760" highlight-row ref="databox1" :columns="immediateColumns" :data="immediateContacts"></i-table>
+      <span>其他联系人（提示：必填3个其他联系人）</span>
+      <i-table width="760" highlight-row ref="databox2" :columns="otherColumns" :data="otherContactsInfo"></i-table>
     </i-row>
     <!--客户来源-->
     <i-row class="data-d">
@@ -420,8 +296,8 @@
     private personal: any = {}; // 个人资料
     private productSeries: any = {}; // 产品系列
     private contactsInfo: any = {}; // 联系人信息
-    private immediateContacts: any = {}; // 直系联系人信息
-    private otherContactsInfo: any = {}; // 其他联系人信息
+    private immediateContacts: any = []; // 直系联系人信息
+    private otherContactsInfo: any = []; // 其他联系人信息
     private carOrderInfo: any = []; // 选购车辆
     private personalJobInfo: any = {}; // 职业信息
     private personalResourcePublicity: any = {}; // 客户来源相关信息
@@ -433,7 +309,9 @@
     private materialInfoImg: any = []; // 素材资料相关图片信息
     private materialInfoOther: any = []; //素材资料相关其他信息
     private previewModel: Boolean = false;
-    private url:any = ''
+    private url: any = '';
+    private immediateColumns: any;
+    private otherColumns: any;
 
     @Prop({
       default: 0
@@ -452,6 +330,76 @@
       return this.c;
     }
 
+    created() {
+      this.sliderStep = 2;
+      this.immediateColumns = [{
+            title: '姓名',
+            key: 'name',
+            align: 'center'
+          },
+          {
+            title: '与本人关系',
+            key: 'relation',
+            align: 'center',
+            render: (h, {
+              row,
+              column,
+              index
+            }) => {
+              return h('span', {}, this.$dict.getDictName(row.relation))
+            }
+          },
+          {
+            title: '联系方式',
+            key: 'phone',
+            align: 'center'
+          },
+          {
+            title: '单位名称',
+            key: 'employer',
+            align: 'center'
+          },
+          {
+            title: '家庭住址',
+            key: 'address',
+            align: 'center'
+          }
+        ],
+        this.otherColumns = [{
+            title: '姓名',
+            key: 'name',
+            align: 'center'
+          },
+          {
+            title: '与本人关系',
+            key: 'relation',
+            align: 'center',
+            render: (h, {
+              row,
+              column,
+              index
+            }) => {
+              return h('span', {}, this.$dict.getDictName(row.relation))
+            }
+          },
+          {
+            title: '联系方式',
+            key: 'phone',
+            align: 'center'
+          },
+          {
+            title: '单位名称',
+            key: 'employer',
+            align: 'center'
+          },
+          {
+            title: '家庭住址',
+            key: 'address',
+            align: 'center'
+          }
+        ]
+    }
+
     mounted() {
       document.getElementsByClassName("purchase-information")[0].addEventListener("scroll", this.handleScroll);
     }
@@ -459,9 +407,6 @@
       console.log(1321)
       let target = document.getElementsByClassName("purchase-information")[0].scrollTop
       console.log(target)
-    }
-    created() {
-      this.sliderStep = 2;
     }
     getMaterialUrl(item) {
       let url = item.materialUrl;
@@ -517,7 +462,7 @@
           this.immediateContacts = this.contactsInfo.filter(
             v => v.relation === 56 || v.relation === 57 || v.relation === 58
           );
-
+          console.log(this.immediateContacts, 'immediateContacts')
           // console.log(this.immediateContacts, 8987)
           this.otherContactsInfo = this.contactsInfo.filter(
             v =>
@@ -604,27 +549,27 @@
       }
     }
   }
-
+  
   .color {
     color: #333333 !important;
   }
-
+  
   td {
     font-size: 14px;
     padding: 5px;
   }
-
+  
   .quick-link {
     color: #999999;
   }
-
+  
   .quick-link:active {
     color: #333333;
   }
   /*.quick-link:visited{
   color: #333333;
 }*/
-
+  
   .material {
     height: 200px;
     width: 200px;
@@ -634,7 +579,7 @@
     position: relative;
     left: 0px;
   }
-
+  
   .outFalg {
     height: 200px;
     width: 200px;
@@ -643,12 +588,12 @@
     border: 1px solid #C2C2C2;
     float: left;
   }
-
+  
   .imgFlag {
     height: 100%;
     width: 100%;
   }
-
+  
   .blackFlag {
     position: absolute;
     top: 0;
@@ -659,11 +604,11 @@
     opacity: .4;
     display: none;
   }
-
+  
   .outFalg:hover .blackFlag {
     display: block;
   }
-
+  
   .buttonFlag {
     position: absolute;
     top: -5px;
@@ -671,7 +616,8 @@
     display: block;
     font-size: 20px;
   }
-  .buttonFlagOne{
+  
+  .buttonFlagOne {
     position: absolute;
     top: -5px;
     left: 120px;
