@@ -67,7 +67,7 @@ export default {
     }
 
     // 添加页面参数
-    this.page.params = params
+    page.params = params
 
     let hasPage = state.pageList.find(x => x.path === page.path)
 

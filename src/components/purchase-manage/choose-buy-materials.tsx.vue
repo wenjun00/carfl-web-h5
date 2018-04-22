@@ -208,14 +208,14 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="保险费(元)" prop="insuranceExpenses">
-                <i-input-number v-model="productModel.insuranceExpenses" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser"/>
+                <i-input-number :precision="2" v-model="productModel.insuranceExpenses" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser"/>
               <!-- <i-input :maxlength="14" type="text" v-model.number="productModel.insuranceExpenses" @on-blur="insuranceMoneyBlur">
               </i-input> -->
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="购置税(元)" prop="purchaseTax">
-                <i-input-number v-model="productModel.purchaseTax" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser"/>
+                <i-input-number :precision="2"  v-model="productModel.purchaseTax" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser"/>
 <!--               
               <i-input :maxlength="14" type="text" v-model.number="productModel.purchaseTax" @on-blur="purchaseMoneyBlur">
               </i-input> -->
@@ -223,21 +223,21 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="上牌费(元)" prop="installLicenseFee">
-               <i-input-number v-model="productModel.installLicenseFee" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser"/>
+               <i-input-number :precision="2"  v-model="productModel.installLicenseFee" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser"/>
               <!-- <i-input :maxlength="14" type="text" v-model.number="productModel.installLicenseFee" @on-blur="licenseMoneyBlur">
               </i-input> -->
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="GPS费(元)" prop="gpsFee">
-              <i-input-number v-model="productModel.gpsFee" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser"/>
+              <i-input-number :precision="2" v-model="productModel.gpsFee" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser"/>
               <!-- <i-input :maxlength="14" type="text" v-model.number="productModel.gpsFee" @on-blur="GpsMoneyBlur">
               </i-input> -->
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="其他费用(元)" prop="otherFee">
-              <i-input-number v-model="productModel.otherFee" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser"/>
+              <i-input-number :precision="2" v-model="productModel.otherFee" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser"/>
               <!-- <i-input :maxlength="14" type="text" v-model.number="productModel.otherFee" @on-blur="otherFeeBlur">
               </i-input> -->
             </i-form-item>
@@ -621,6 +621,7 @@ export default class ChooseBuyMaterials extends Vue {
       this.chooseBuyModel.finalprincipal = "";
     }
   }
+  
   /**
    * 保险费(小数点保留两位)
    */
