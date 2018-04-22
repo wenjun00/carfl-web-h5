@@ -323,7 +323,7 @@ export default class OrderQuery extends Page {
                       }
                     }
                   },
-                  "申请收款111"
+                  "申请收款"
                 )
               ]);
             } else {
