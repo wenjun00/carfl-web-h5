@@ -30,7 +30,7 @@
           <i-col span="12">
             <i-form-item label="自缴费用" prop="orderService">
               <i-checkbox-group v-model="chooseModel.orderService">
-                <i-checkbox :label="368" :disabled="!chooseModel.orderService.includes(368)">无</i-checkbox>
+                <i-checkbox :label="368" :disabled="chooseModel.orderService.length>0&&!chooseModel.orderService.includes(368)">无</i-checkbox>
                 <i-checkbox :label="369" :disabled="chooseModel.orderService.includes(368)">购置税</i-checkbox>
                 <i-checkbox :label="370" :disabled="chooseModel.orderService.includes(368)">保险费</i-checkbox>
                 <i-checkbox :label="371" :disabled="chooseModel.orderService.includes(368)">上牌费</i-checkbox>
@@ -90,6 +90,7 @@
     <!--产品信息-start-->
     <i-card title="产品信息" class="product-container">
       <div slot="extra">
+        <i-button v-show="productModel.productIssueId" @click="onOpenProductList" type="text">计算费用</i-button>
         <i-button icon="plus" @click="onOpenProductList" type="text">{{productModel.productIssueId?"更改产品":"选择产品"}}</i-button>
       </div>
       <i-form v-show="productModel.productIssueId" ref="product-form" :rules="productRules" :model="productModel" :label-width="150">
@@ -119,6 +120,9 @@
               <span class="product-color">{{this.$dict.getDictName(currentProduct.payWay)}}</span>
             </i-form-item>
           </i-col>
+        </i-row>
+
+        <i-row>
           <i-col span="12">
             <i-form-item label="车辆参考总价(元)" prop="vehicleAmount">
               <i-input-number :disabled="!carDataSet.length||!totalPrice" v-model="productModel.vehicleAmount" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" @on-change="onVehicleAmountChange" />
@@ -127,46 +131,47 @@
             </i-form-item>
           </i-col>
           <i-col span="12">
+            <i-row :gutter="24">
+              <i-col span="12">
+                <i-form-item label="首付金额(元)" prop="Payment">
+                  <i-select :disabled="!currentProduct.initialPayment" class="payment-amount-select" placeholder="请选择首付金额比例" v-model="productRadioModel.initialPaymentRadio" clearable @on-change="onInitialPaymentChange">
+                    <i-option v-for="item in currentProduct.initialPaymentList" :key="item" :value="item" :label="item"></i-option>
+                  </i-select>
+                </i-form-item>
+              </i-col>
+              <i-col span="12">
+                <i-form-item prop="initialPayment" :label-width="50">
+                  <i-input-number :disabled="!currentProduct.initialPayment" v-model="productModel.initialPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
+                </i-form-item>
+              </i-col>
+            </i-row>
+          </i-col>
+          <i-col span="12">
             <i-form-item label="尾付本金(元)" prop="finalPayment">
               <i-input-number :disabled="!productModel.vehicleAmount" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" />
               <!-- <i-input  :maxlength="14" type="text" v-model="productModel.finalPayment" @on-change="finalprincipalChange" :readonly="finaldisabled" @on-blur="finalprincipalBlur">
               </i-input> -->
             </i-form-item>
           </i-col>
-          <i-col span="12">
-            <i-row :gutter="24">
-              <i-col span="12">
-                <i-form-item label="首付金额(元)" prop="Payment">
-                  <i-select :disabled="!currentProduct.initialPayment" class="payment-amount-select" placeholder="请选择首付金额比例" v-model="productModel.Payment" clearable @on-change="onInitialPaymentChange">
-                    <i-option v-for="item in initialPaymentData" :key="item.key" :value="item.value" :label="item.key"></i-option>
-                  </i-select>
-                </i-form-item>
-              </i-col>
-              <i-col span="12">
-                <i-form-item prop="initialPayment" :label-width="50">
-                  <i-input-number :disabled="!productModel.initialPayment" v-model="productModel.initialPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
-                </i-form-item>
-              </i-col>
-            </i-row>
-          </i-col>
+        </i-row>
+        <i-row v-show="calculationModel">
           <i-col span="12">
             <i-form-item label="月供金额(元)" prop="monthlySupply">
               <i-input-number v-model="productModel.monthlySupply" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
-
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-row :gutter="24">
               <i-col span="12">
-                <i-form-item label="保证金金额(元)" prop="deposit">
-                  <i-select :disabled="!productModel.depositCash" placeholder="请选择保证金金额比例" v-model="productModel.deposit" clearable>
-                    <i-option v-for="item in depositCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
+                <i-form-item label="保证金金额(元)">
+                  <i-select :disabled="!currentProduct.depositCash" placeholder="请选择保证金金额比例" v-model="productRadioModel.depositCashRadio" clearable>
+                    <i-option v-for="item in currentProduct.depositCashList" :key="item" :value="item" :label="item"></i-option>
                   </i-select>
                 </i-form-item>
               </i-col>
               <i-col span="12">
                 <i-form-item prop="depositCash" :label-width="50">
-                  <i-input-number :disabled="!productModel.depositCash" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
+                  <i-input-number :disabled="!currentProduct.depositCash" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
                 </i-form-item>
               </i-col>
             </i-row>
@@ -175,14 +180,14 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="尾付总额(元)" prop="final">
-                  <i-select :disabled="!productModel.finalCash" placeholder="请选择尾付总额比例" v-model="productModel.final" clearable>
-                    <i-option v-for="item in finalCashData" :key="item.key" :value="item.value" :label="item.key"></i-option>
+                  <i-select :disabled="!currentProduct.finalCash" placeholder="请选择尾付总额比例" v-model="productRadioModel.finalCashRadio" clearable>
+                    <i-option v-for="item in currentProduct.finalCashList" :key="item" :value="item" :label="item"></i-option>
                   </i-select>
                 </i-form-item>
               </i-col>
               <i-col span="12">
                 <i-form-item prop="finalCash" :label-width="50">
-                  <i-input-number :disabled="!productModel.finalCash" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
+                  <i-input-number :disabled="!currentProduct.finalCash" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
                 </i-form-item>
               </i-col>
             </i-row>
@@ -191,14 +196,14 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="管理费(元)" prop="manageData">
-                  <i-select :disabled="!productModel.manageCost" placeholder="请选择管理费比例" v-model="productModel.manageData" clearable>
-                    <i-option v-for="item in manageCostData" :key="item.key" :value="item.value" :label="item.key"></i-option>
+                  <i-select :disabled="!currentProduct.manageCost" placeholder="请选择管理费比例" v-model="productRadioModel.manageCostRadio" clearable>
+                    <i-option v-for="item in currentProduct.manageCostList" :key="item" :value="item" :label="item"></i-option>
                   </i-select>
                 </i-form-item>
               </i-col>
               <i-col span="12">
                 <i-form-item prop="manageCost" :label-width="50">
-                  <i-input-number :disabled="!productModel.manageCost" v-model="productModel.manageCost" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
+                  <i-input-number :disabled="!currentProduct.manageCost" v-model="productModel.manageCost" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
                 </i-form-item>
               </i-col>
             </i-row>
@@ -279,6 +284,11 @@ const ModuleMutation = namespace("purchase", Mutation);
   components: {
     AddCar,
     ProductList
+  },
+  filters:{
+    convertRadio(value){
+      return value?value.split(';'):[]
+    }
   }
 })
 export default class ChooseBuyMaterials extends Vue {
@@ -344,6 +354,14 @@ export default class ChooseBuyMaterials extends Vue {
     financingAmount: 0 // 融资总额
   };
 
+  // 产品金额比例
+  private productRadioModel = {
+    depositCashRadio: "", // 保证金
+    finalCashRadio: "", // 尾付金额
+    initialPaymentRadio: "", // 首付款
+    manageCostRadio: "" // 管理费
+  };
+
   private currentProduct = {
     seriesName: "", // 产品系列
     productNanme: "", // 产品名称
@@ -352,10 +370,13 @@ export default class ChooseBuyMaterials extends Vue {
     payWay: "" // 还款方式
   };
 
+  private calculationModel:any = null
+
   // 选购数据校验
   private chooseRules: any = {
     intentionPeriods: [
       {
+        type: "number",
         required: true,
         message: "请输入意向期限",
         trigger: "blur"
@@ -363,6 +384,7 @@ export default class ChooseBuyMaterials extends Vue {
     ],
     province: [
       {
+        type: "number",
         required: true,
         message: "请选择申请省份",
         trigger: "blur"
@@ -370,6 +392,7 @@ export default class ChooseBuyMaterials extends Vue {
     ],
     city: [
       {
+        type: "number",
         required: true,
         message: "请选择申请城市",
         trigger: "blur"
@@ -392,26 +415,27 @@ export default class ChooseBuyMaterials extends Vue {
     ],
     intentionPaymentRatio: [
       {
+        type: "number",
         required: true,
         message: "请输入意向首付比例",
         trigger: "blur"
-      },
+      }
     ],
     intentionFinancingAmount: [
       {
+        type: "number",
         required: true,
         message: "请输入意向融资金额",
         trigger: "blur"
       }
-    ],
-    
+    ]
   };
 
   // 产品校验规则
   private productRules: any = {
     vehicleAmount: [
       {
-        type:'number',
+        type: "number",
         message: "请输入车辆参考总价",
         trigger: "blur"
       }
@@ -542,6 +566,15 @@ export default class ChooseBuyMaterials extends Vue {
     }
   }
 
+  getBaseAmount() {
+    //     保证金金额 = 融资总额x保证金比例
+    // 管理费 = 融资总额x管理费比例
+    // 月供金额 = 融资总额x (1+月利率x期数)/期数
+    // 月供本金=融资总额/期数
+    // 月利息=融资总额x月利率
+    // if(this.productModel.financingAmount
+  }
+
   /**
    * 检测车辆信息更新
    */
@@ -613,6 +646,13 @@ export default class ChooseBuyMaterials extends Vue {
    * 格式化产品数据
    */
   formatProductModal(product) {
+    let formatRadio = x=>x?x.split(';'):[]
+
+    product.depositCashList = formatRadio(product.depositCash) // 预付金额
+    product.finalCashList = formatRadio(product.finalCash)  // 尾付金额
+    product.initialPaymentList = formatRadio(product.initialPayment)  // 首付款
+    product.manageCostList = formatRadio(product.manageCost)  // 管理费
+
     return product;
   }
 
