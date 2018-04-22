@@ -1,5 +1,5 @@
 <template>
-  <section class="page customer-fodder-maintain">
+  <section class="page customer-fodder-maintain"> 
     <page-header title="导出模板管理" hiddenPrint hiddenExport></page-header>
     <i-row>
       <!--<i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>-->
@@ -99,7 +99,8 @@
     private editId: Number = 0;
     private config: any = {};
     private itemData: any = {};
-    private addMater: Boolean = false
+    private addMater: Boolean = false;
+    private templateType: String = "";
 
     created() {
       this.personalModel = {
@@ -155,6 +156,9 @@
       ];
     }
     checkMaintain(value) {
+      console.log(value)
+      console.log('测试点击事件')
+      this.templateType = value
       this.addMater = true
       this.checkId = value
       this.templateService.selectTemplate({
@@ -181,7 +185,8 @@
       let _addManage: any = this.$refs['add-manage']
       _addManage.saveButton(this.checkId)
     }
-    materialModelOne() {
+    materialModelOne(templateType) {
+      console.log(this.templateType)
       this.materialModel = true
       let _addManage: any = this.$refs['add-manage']
       _addManage.start()
@@ -247,7 +252,7 @@
           height: 40px;
           line-height: 40px;
           font-size: 16px;
-          postion: relative;
+          position: relative;
           margin: auto
         }
       }

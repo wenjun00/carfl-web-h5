@@ -956,7 +956,7 @@
     position: relative;
     left: 228px;
     bottom: 39px;
-    z-index: 999;
+    z-index: 8;
   }
   
   .Publish {
@@ -966,7 +966,7 @@
     position: relative;
     left: 228px;
     bottom: 39px;
-    z-index: 999;
+    z-index: 8;
   }
   
   .PublishContent {

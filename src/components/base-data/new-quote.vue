@@ -240,6 +240,7 @@
             required: true,
             message: '请输入市场指导价',
             trigger: 'blur',
+              type: 'number',
           },
           {
             pattern: /^[0-9]*$/g,
@@ -251,6 +252,7 @@
             required: true,
             message: '请输入租金',
             trigger: 'blur',
+              type: 'number',
           },
           {
             pattern: /^[0-9]*$/g,
@@ -262,6 +264,7 @@
             required: true,
             message: '请输入经销商报价',
             trigger: 'blur',
+            type: 'number',
           },
           {
             pattern: /^[0-9]*$/g,
@@ -273,6 +276,7 @@
             required: true,
             message: '请输入购置税',
             trigger: 'blur',
+            type: 'number',
           },
           {
             pattern: /^[0-9]*$/g,
@@ -284,6 +288,7 @@
             required: true,
             message: '请输入首期金额',
             trigger: 'blur',
+            type: 'number',
           },
           {
             pattern: /^[0-9]*$/g,
@@ -295,6 +300,7 @@
             required: true,
             message: '请输入路桥费',
             trigger: 'blur',
+            type: 'number',
           },
           {
             pattern: /^[0-9]*$/g,
@@ -306,6 +312,7 @@
             required: true,
             message: '请输入融资金额',
             trigger: 'blur',
+            type: 'number',
           },
           {
             pattern: /^[0-9]*$/g,
@@ -317,6 +324,7 @@
             required: true,
             message: '请输入保险费',
             trigger: 'blur',
+            type: 'number',
           },
           {
             pattern: /^[0-9]*$/g,
@@ -339,6 +347,7 @@
             required: true,
             message: '请输入GPS费',
             trigger: 'blur',
+            type: 'number',
           },
           {
             pattern: /^[0-9]*$/g,
@@ -413,6 +422,8 @@
     getAllProdPackage() {
       this.productPackageService.getAllProductPackageNoPage().subscribe(
         data => {
+        //   console.log(data)
+        //   console.log('产品包')
           this.allProdPackage = data;
         },
         ({
