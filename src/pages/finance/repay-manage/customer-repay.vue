@@ -184,6 +184,8 @@ export default class CustomerRepay extends Page {
         this.confirmRepaymentModal = false;
         this.pageService.reset();
         this.getCustomerRepayList();
+        let _confirmRepayment:any = this.$refs['confirm-repayment']
+        _confirmRepayment.uploadFodder.reset()
       },
       ({ msg }) => {
         this.$Message.error(msg);
