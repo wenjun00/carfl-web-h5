@@ -1,7 +1,9 @@
 <!--经销商报价-->
 <template>
     <section class="page dealer-quotes">
-        <page-header title="经销商报价" hiddenPrint></page-header>
+        <page-header title="经销商报价" hiddenPrint>
+            <i-button class="blueButton" @click="addquoteFun">新增报价</i-button>
+        </page-header>
         <data-form hidden-date-search :model="busModal" :page="pageService" @on-search="seachBusiness">
             <template slot="input">
                 <i-form-item prop="quotationName" label="经销商">
@@ -38,9 +40,6 @@
                 </div>
             </i-modal>
         </template>
-        <div class="fixed-container">
-            <i-button size="large" class="highButton" @click="addquoteFun">新增报价</i-button>
-        </div>
     </section>
 </template>
 <script lang="ts">
