@@ -178,6 +178,11 @@ export default class ConfirmRepayment extends Vue {
   private collectMoneyId: any = "";
   private collectMoneyItemModel: any = [];
   private fodderList: any = [];
+  private uploadFodder: any = {};
+
+  mounted() {
+    this.uploadFodder = this.$refs["upload-voucher-two"];
+  }
 
   fileNumber(item) {
     this.fodderList = item;

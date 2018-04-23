@@ -2,9 +2,8 @@
     <section class="page customer-fodder-maintain">
         <page-header title="导出模板管理" hiddenPrint hiddenExport></page-header>
         <i-row>
-            <!--<i-button class="blueButton" style="margin-left:10px" @click="resetSeach">重置</i-button>-->
             <i-row class="data-form">
-                <i-col span="4">
+                <i-col :span="4">
                     <div class="data-form-item">
                         <div class="data-form-item-icon"></div>
                         <span>模版类型</span>
@@ -15,7 +14,7 @@
                         </div>
                     </div>
                 </i-col>
-                <i-col class="command" span="19" offset="1">
+                <i-col class="command" :span="20">
                     <data-form hidden-date-search :model="personalModel" :page="pageService" @on-search="search">
                         <template slot="input">
                             <i-form-item prop="name" label="模块功能">
@@ -144,8 +143,6 @@ export default class CustomerFodderMaintain extends Page {
     ]
   }
   checkMaintain(value) {
-    console.log(value)
-    console.log('测试点击事件')
     this.templateType = value
     this.addMater = true
     this.checkId = value
