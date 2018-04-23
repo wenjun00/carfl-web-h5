@@ -31,6 +31,9 @@
           <i-date-picker v-model="model.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
+      <template slot="button">
+            <i-button @click="confirmMakeInvoice">确认开票</i-button>
+      </template>
     </data-form>
     <data-box :columns="columns1" :data="data1" :page="pageService" @onPageChange="query"></data-box>
     <div class="submitBar">
@@ -41,10 +44,10 @@
         <i-col :span="10" pull="4">
           <span>申请时间： 2017-12-01 13:56:45</span>
         </i-col>
-        <i-col :span="6" class="bottom">
-          <!--<i-button @click="oneKeyToConnect" class="highButton">一键交接</i-button>-->
-          <i-button class="highButton" @click="confirmMakeInvoice">确认开票</i-button>
-        </i-col>
+        <!-- <i-col :span="6" class="bottom">
+          <i-button @click="oneKeyToConnect" class="highButton">一键交接</i-button>
+        
+        </i-col> -->
       </i-row>
     </div>
 

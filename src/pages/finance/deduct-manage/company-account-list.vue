@@ -39,6 +39,10 @@
           <i-date-picker type="daterange"></i-date-picker>
         </i-form-item>
       </template>
+      <template slot="button">
+           <i-button @click="addCompany">新增企业</i-button>
+          <i-button  @click="transferAccount">转账</i-button>
+      </template>
     </data-form>
     <data-box :columns="columns1" :data="data1"></data-box>
 
@@ -49,10 +53,6 @@
         </i-col>
         <i-col :span="10" pull="4">
           <span>申请时间： 2017-12-01 13:56:45</span>
-        </i-col>
-        <i-col :span="6" style="text-align:right;">
-          <i-button class="highButton" style="margin-left:10px;" @click="addCompany">新增企业</i-button>
-          <i-button class="highButton" style="margin-left:10px;" @click="transferAccount">转账</i-button>
         </i-col>
       </i-row>
     </div>

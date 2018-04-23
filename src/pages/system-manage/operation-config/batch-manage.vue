@@ -2,14 +2,14 @@
 <template>
     <section class="page system-backups">
         <page-header title="批量管理" hidden-print hidden-export></page-header>
-        <data-box :id="63" :columns="columns1" :data="batchList" @onPageChange="getBatchManageList" :page="pageService"></data-box>
-        <div class="submit-bar">
+          <div class="submit-bar">
             <i-row type="flex" align="middle">
                 <i-col :span="24" class="text-right">
-                    <i-button class="high-button" @click="batchManage">批量管理</i-button>
+                    <i-button class="blueButton" @click="batchManage">批量管理</i-button>
                 </i-col>
             </i-row>
         </div>
+        <data-box :id="63" :columns="columns1" :data="batchList" @onPageChange="getBatchManageList" :page="pageService"></data-box>
     </section>
 </template>
 
@@ -206,3 +206,10 @@ export default class SystemBackups extends Page {
 }
 </script>
 
+<style lang="less">
+    .page.system-backups{
+        .submit-bar{
+            margin-top: 20px;
+        }
+    }
+</style>
