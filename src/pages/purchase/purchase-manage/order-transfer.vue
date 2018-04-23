@@ -11,10 +11,6 @@
                     <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入客户姓名/证件号码/联系号码/订单所属人查询"></i-input>
                 </i-form-item>
             </template>
-            <template slot="button">
-                <i-button @click="oneKeyToConnect">一键交接</i-button>
-
-            </template>
         </data-form>
         <!--列表-->
         <data-box ref="databox" :id="192" :columns="columns1" :data="ordertransferDataSet" @onPageChange="refreshData" :page="pageService" style="z-index:100"></data-box>
@@ -65,6 +61,11 @@
                 <transfer-record ref="transfer" :customerName="customerName" :orderId="orderNumber"></transfer-record>
             </i-modal>
         </template>
+        <!--底部操作栏-start-->
+        <div class="fixed-container" >
+            <i-button size="large" class="highButton" @click="oneKeyToConnect">一键交接</i-button>
+        </div>
+        <!--底部操作栏-end-->
     </section>
 </template>
 
@@ -557,6 +558,18 @@ export default class OrderTransfer extends Page {
 
 <style lang="less" scoped>
 .page.order-transfer {
+  .fixed-container {
+    height: 65px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 10;
+    text-align: right;
+    padding: 10px 20px;
+    box-shadow: 0px -5px 10px #ccc;
+  }
   .seek-day {
     margin-top: 10px;
   }

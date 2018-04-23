@@ -1,6 +1,7 @@
 <!--提前结清收款明细-->
 <template>
     <section class="component gather-detail-early-pay">
+        <i-card>
         <table border="1" width="1100" class="gather-type-table">
             <tr height="40">
                 <td bgcolor="#F2F2F2" width="80">
@@ -32,7 +33,8 @@
             <Icon type="plus" class="add-icon"></Icon>
             <i-button type="text" class="add-button" @click="changeGatherItem">添加付款项</i-button>
         </div>
-        <div class="form-title">账户信息</div>
+         </i-card>
+         <i-card title="账户信息">
         <table border="1" width="1100" class="gather-type-table">
             <tr height="40">
                 <td bgcolor="#F2F2F2">户名</td>
@@ -58,6 +60,7 @@
                 </div>
             </i-modal>
         </template>
+        </i-card>
     </section>
 </template>
 
