@@ -55,7 +55,7 @@ import { CompanyService } from "~/services/manage-service/company.service";
 import { CarService } from "~/services/manage-service/car.service";
 import { Prop, Watch } from "vue-property-decorator";
 import AddCar from "~/components/purchase-manage/add-car.tsx.vue";
-import { Input, Button } from "iview";
+import { Input, Button,InputNumber } from "iview";
 
 @Component({
   components: {

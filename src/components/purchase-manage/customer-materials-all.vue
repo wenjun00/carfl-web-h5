@@ -68,7 +68,7 @@
           <i-col>
             <i-form-item label="代办服务" prop="orderServiceList">
               <i-checkbox-group v-model="customerModel.orderServiceList">
-                <i-checkbox v-for="{value,label} of $dict.getDictData('0313')" :key="value" :value="value" :label="label" ></i-checkbox>
+                <i-checkbox v-for="{value,label} of $dict.getDictData('0313')" :key="value" :value="value" :label="label"></i-checkbox>
               </i-checkbox-group>
             </i-form-item>
           </i-col>
@@ -87,6 +87,9 @@ import { CityService } from "~/utils/city.service";
 export default class CustomerMaterialsAll extends Vue {
   private customerModel: any = {};
   private customerRules: any = {};
+
+  //  个人信息 card
+  private parchaseForm: any = {};
 
   created() {
     this.customerRules = {
@@ -162,6 +165,10 @@ export default class CustomerMaterialsAll extends Vue {
     };
   }
 
+  mounted() {
+    this.parchaseForm = this.$refs["parchase-form"];
+  }
+
   /**
    * 信息反显
    */
@@ -180,6 +187,22 @@ export default class CustomerMaterialsAll extends Vue {
   getinfo(data) {
     this.customerModel = Object.assign({}, data);
     this.customerModel.mobileMain = data.customerPhone;
+  }
+
+  /**
+   * 页面重置
+   */
+  resetPage() {
+    this.parchaseForm.resetFileds();
+  }
+
+  /**
+   * 检测当前页面是否验证通过
+   */
+  isValid() {
+    let result = false;
+    this.parchaseForm.validate(v => (result = v));
+    return result;
   }
 }
 </script>
