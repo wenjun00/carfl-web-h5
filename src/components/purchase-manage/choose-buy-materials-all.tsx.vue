@@ -2,26 +2,21 @@
 <template>
   <section class="component choose-buy-materials-all">
     <i-card title="选购信息">
-
       <i-form :rules="choosRule" ref="parchase-form" :label-width="90" :model="choosModel">
         <i-row>
           <i-col :span="12">
-            <i-row type="flex" :gutter="16">
-              <i-col>
-                <i-form-item label="申请省份" prop="province">
-                  <i-select class="city-select" placeholder="选择省" v-model="choosModel.province" clearable>
-                    <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
-                  </i-select>
-                </i-form-item>
-              </i-col>
-              <i-col>
-                <i-form-item label="申请城市" prop="city">
-                  <i-select class="city-select" v-model="choosModel.city" placeholder="选择市" :disabled="!choosModel.province" clearable>
-                    <i-option v-for="{value,label} in this.choosModel.province ? this.$city.getCityData({ level: 1, id: this.choosModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
-                  </i-select>
-                </i-form-item>
-              </i-col>
-            </i-row>
+            <i-form-item label="申请省份" prop="province">
+              <i-select placeholder="选择省" v-model="choosModel.province" clearable>
+                <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+              </i-select>
+            </i-form-item>
+          </i-col>
+          <i-col :span="12">
+            <i-form-item label="申请城市" prop="city">
+              <i-select v-model="choosModel.city" placeholder="选择市" :disabled="!choosModel.province" clearable>
+                <i-option v-for="{value,label} in this.choosModel.province ? this.$city.getCityData({ level: 1, id: this.choosModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
+              </i-select>
+            </i-form-item>
           </i-col>
           <i-col :span="12">
             <i-form-item label="所属公司" prop="companyId">
@@ -58,7 +53,7 @@ import DataBox from "~/components/common/data-box.vue";
 import { ApplyQueryService } from "~/services/business-service/apply-query.service";
 import { CompanyService } from "~/services/manage-service/company.service";
 import { CarService } from "~/services/manage-service/car.service";
-import { Prop } from "vue-property-decorator";
+import { Prop, Watch } from "vue-property-decorator";
 import AddCar from "~/components/purchase-manage/add-car.tsx.vue";
 import { Input, Button } from "iview";
 
@@ -70,21 +65,15 @@ import { Input, Button } from "iview";
   }
 })
 export default class ChooseBuyMaterialsAll extends Vue {
+
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
   @Dependencies(CompanyService) private companyService: CompanyService;
   @Dependencies(CarService) private carService: CarService;
-  private columns1: any;
-  private data1: Array<Object> = [];
-  private editCarModal: Boolean = false;
-  private addOrEditFlag: Boolean = false;
+
   private addCar: Boolean = false;
   private totalPrice: any = "";
-  private carDataModal: Array<Object> = []; // 车辆信息
-  private choosModel: any = {
-    province: "", // 省份
-    city: "", // 城市
-    companyId: "" // 所属公司
-  };
+  private choosModel: any = {};
+
   private companyObject: Array<Object> = []; // 公司信息
   private addcarData: any = [];
   private rowData: any = null;
@@ -182,14 +171,15 @@ export default class ChooseBuyMaterialsAll extends Vue {
   @Prop() disabledStatus: String;
   @Prop() currentRowData: any;
   created() {
-    //   console.log(this.currentRowData.addcarData, 800)
-    //   this.addcarData = this.currentRowData.addcarData
+    this.choosModel = {
+      province: "", // 省份
+      city: "", // 城市
+      companyId: "" // 所属公司
+    };
+
     // 获取公司名称
     this.companyService.getAllEnableCompany().subscribe(val => {
       this.companyObject = val;
-    });
-    this.carService.findAllCarSeries().subscribe(val => {
-      this.carDataModal = val;
     });
   }
 
@@ -237,6 +227,20 @@ export default class ChooseBuyMaterialsAll extends Vue {
     }
   }
 
+  /**
+   * 检测车辆信息更新
+   */
+  @Watch("carDataSet", { immediate: true, deep: true })
+  onCarDataSetChange(value) {
+    if (this.carDataSet && this.carDataSet.length) {
+      this.totalPrice = this.carDataSet
+        .map(x => x.carAmount | 0)
+        .reduce((a, b) => a + b);
+    } else {
+      this.totalPrice = 0;
+    }
+  }
+
   Reverse(data) {
     this.choosModel.companyId = data.companyId;
     this.choosModel.city = data.city;
@@ -262,9 +266,6 @@ export default class ChooseBuyMaterialsAll extends Vue {
     .car-static {
       margin-top: 20px;
     }
-  }
-  .city-select {
-    width: 120px;
   }
 }
 </style>

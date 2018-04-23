@@ -66,8 +66,9 @@
                     <span>申请时间：{{applyTime}}</span>
                 </i-col>
                 <i-col :span="4">
-                    <!--<i-button class="highDefaultButton" @click="saveDraft">保存草稿</i-button>-->
-                    <i-button class="highButton" @click="saveSubmit">保存并提交</i-button>
+                    <div class="fixed-container">
+                        <i-button size="large" class="highButton" @click="saveSubmit">保存并提交</i-button>
+                    </div>
                 </i-col>
             </i-row>
         </div>
@@ -396,8 +397,8 @@ export default class PayApply extends Page {
 
 <style lang="less" scoped>
 .page.early-payment-apply {
-  .clear-button{
-     height: 100%;
+  .clear-button {
+    height: 100%;
   }
   .data-form {
     margin-top: 10px;
@@ -426,6 +427,18 @@ export default class PayApply extends Page {
 </style>
 <style lang="less">
 .page.early-payment-apply.special-input {
+  .fixed-container {
+    height: 65px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 10;
+    text-align: right;
+    padding: 10px 20px;
+    box-shadow: 0px -5px 10px #ccc;
+  }
   .special-input {
     .ivu-input {
       border-style: none;

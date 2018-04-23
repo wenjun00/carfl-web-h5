@@ -56,9 +56,9 @@
     <!--资料填写 end -->
 
     <!--底部操作栏-start-->
-    <div class="fixed-container" v-show="currentStep >= 5">
-      <i-button size="large" class="highDefaultButton" @click="draftsaveAndSubmit(true)">保存草稿</i-button>
-      <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit(false)">保存并提交</i-button>
+    <div class="fixed-container">
+      <!-- <i-button size="large" class="highDefaultButton" @click="draftsaveAndSubmit(true)">保存草稿</i-button> -->
+      <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit(false)">提交申请</i-button>
     </div>
     <!--底部操作栏-end-->
 

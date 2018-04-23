@@ -2,14 +2,11 @@
 <template>
     <section class="page system-backups">
         <page-header title="批量管理" hidden-print hidden-export></page-header>
-          <div class="submit-bar">
-            <i-row type="flex" align="middle">
-                <i-col :span="24" class="text-right">
-                    <i-button class="blueButton" @click="batchManage">批量管理</i-button>
-                </i-col>
-            </i-row>
-        </div>
+
         <data-box :id="63" :columns="columns1" :data="batchList" @onPageChange="getBatchManageList" :page="pageService"></data-box>
+        <div class="fixed-container">
+            <i-button size="large" class="highButton" style="margin-left:10px;" @click="batchManage">保存并提交</i-button>
+        </div>
     </section>
 </template>
 
@@ -59,56 +56,56 @@ export default class SystemBackups extends Page {
         editable: true,
         key: 'jobName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         title: '任务所在组',
         editable: true,
         key: 'jobGroup',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         title: '任务描述',
         editable: true,
         key: 'jobDescribe',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(6)
       },
       {
         title: '任务类名',
         editable: true,
         key: 'jobClassName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(12),
+        minWidth: this.$common.getColumnWidth(12)
       },
       {
         title: '触发器名称',
         editable: true,
         key: 'triggerName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         title: '触发器所在组',
         editable: true,
         key: 'triggerGroup',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         title: '下次执行时间',
         editable: true,
         key: 'nextExecutionTime',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         title: '表达式',
         editable: true,
         key: 'expression',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(5)
       },
       {
         title: '状态',
@@ -125,7 +122,7 @@ export default class SystemBackups extends Page {
         editable: true,
         key: 'timeZone',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(4)
       }
     ]
   }
@@ -207,9 +204,21 @@ export default class SystemBackups extends Page {
 </script>
 
 <style lang="less">
-    .page.system-backups{
-        .submit-bar{
-            margin-top: 20px;
-        }
-    }
+.page.system-backups {
+  .submit-bar {
+    margin-top: 20px;
+  }
+  .fixed-container {
+    height: 65px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 10;
+    text-align: right;
+    padding: 10px 20px;
+    box-shadow: 0px -5px 10px #ccc;
+  }
+}
 </style>

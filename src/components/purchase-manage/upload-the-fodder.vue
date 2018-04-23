@@ -1,8 +1,9 @@
 <!--上传素材 通用组件-->
 <template>
   <section class="component upload-the-fodder ">
-    <span class="form-title">文件数量</span>
+    <i-card title="文件数量">
     <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher"></upload-voucher>
+     </i-card>
   </section>
 </template>
 <script lang="ts">
