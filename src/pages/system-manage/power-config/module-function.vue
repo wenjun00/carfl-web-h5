@@ -1,4 +1,4 @@
-<!--模块功能--> 
+<!--模块功能-->
 <template>
     <section class="page module-function">
         <page-header title="模块功能" hidden-print hidden-export></page-header>
@@ -89,7 +89,7 @@
                         <i-input v-model="modifyNameDataset.resoName" :maxlength="20"></i-input>
                     </i-form-item>
                 </i-form>
-                <div style="text-align:right;">
+                <div style="text-align:right;" slot="footer">
                     <i-button @click="cancelmodifyName" class="defalut-button">取消</i-button>
                     <i-button @click="confirmmodifyName" class="blueButton">确定</i-button>
                 </div>
@@ -102,7 +102,7 @@
                         <i-input v-model="modifyIconData.resoIcon" :maxlength="15"></i-input>
                     </i-form-item>
                 </i-form>
-                <div class="pop-button">
+                <div class="pop-button" slot="footer">
                     <i-button @click="cancelmodifyIcon" class="defalut-button">取消</i-button>
                     <i-button @click="confirmmodifyIcon" class="blueButton">确定</i-button>
                 </div>
