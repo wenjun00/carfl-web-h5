@@ -103,5 +103,14 @@ export default {
     controller: CONTROLLER,
     action: 'getPreProcess',
     type: requestType.Get
+  },
+  /**
+   * 根据订单id查询选购信息
+   */
+  getPurchaseInfoById:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getPurchaseInfoById',
+    type: requestType.Get
   }
 }

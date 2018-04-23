@@ -119,21 +119,25 @@ body,
       width: @width;
     }
   }
-
   .ivu-form {
     .set-input-width(200px);
-
+    
     &.mini {
-      .set-input-width(120px);
+      .set-input-width(150px);
     }
-    &.normal {
+    &.small {
       .set-input-width(180px);
     }
-    &.large {
+    &.normal {
+      .set-input-width(200px);
+    }
+    &.medium {
       .set-input-width(240px);
     }
+    &.large {
+      .set-input-width(320px);
+    }
   }
-
   .data-form {
     .ivu-input-type,
     .ivu-input-wrapper,

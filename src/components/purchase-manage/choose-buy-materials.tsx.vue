@@ -90,8 +90,8 @@
     <!--产品信息-start-->
     <i-card title="产品信息" class="product-container">
       <div slot="extra">
-        <i-button v-show="productModel.productIssueId" @click="onOpenProductList" type="text">计算费用</i-button>
-        <i-button icon="plus" @click="onOpenProductList" type="text">{{productModel.productIssueId?"更改产品":"选择产品"}}</i-button>
+        <i-button v-show="productModel.productIssueId&&!productAmountModel" @click="onSetProductAmount" type="text">计算费用</i-button>
+        <i-button icon="plus" v-show="totalPrice>0" @click="onOpenProductList" type="text">{{productModel.productIssueId?"更改产品":"选择产品"}}</i-button>
       </div>
       <i-form v-show="productModel.productIssueId" ref="product-form" :rules="productRules" :model="productModel" :label-width="150">
         <i-row>
@@ -135,7 +135,7 @@
               <i-col span="12">
                 <i-form-item label="首付金额(元)" prop="Payment">
                   <i-select :disabled="!currentProduct.initialPayment" class="payment-amount-select" placeholder="请选择首付金额比例" v-model="productRadioModel.initialPaymentRadio" clearable @on-change="onInitialPaymentChange">
-                    <i-option v-for="item in currentProduct.initialPaymentList" :key="item" :value="item" :label="item"></i-option>
+                    <i-option v-for="item in currentProduct.initialPaymentList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
               </i-col>
@@ -153,8 +153,24 @@
               </i-input> -->
             </i-form-item>
           </i-col>
+          <i-col span="12">
+            <i-row :gutter="24">
+              <i-col span="12">
+                <i-form-item label="尾付总额(元)" prop="final">
+                  <i-select :disabled="!currentProduct.finalCash" placeholder="请选择尾付总额比例" v-model="productRadioModel.finalCashRadio" clearable>
+                    <i-option v-for="item in currentProduct.finalCashList" :key="item.value" :value="item.value" :label="item.label"></i-option>
+                  </i-select>
+                </i-form-item>
+              </i-col>
+              <i-col span="12">
+                <i-form-item prop="finalCash" :label-width="50">
+                  <i-input-number :disabled="!currentProduct.finalCash" v-model="productModel.finalCash" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
+                </i-form-item>
+              </i-col>
+            </i-row>
+          </i-col>
         </i-row>
-        <i-row v-show="calculationModel">
+        <i-row v-show="productAmountModel">
           <i-col span="12">
             <i-form-item label="月供金额(元)" prop="monthlySupply">
               <i-input-number v-model="productModel.monthlySupply" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
@@ -165,29 +181,13 @@
               <i-col span="12">
                 <i-form-item label="保证金金额(元)">
                   <i-select :disabled="!currentProduct.depositCash" placeholder="请选择保证金金额比例" v-model="productRadioModel.depositCashRadio" clearable>
-                    <i-option v-for="item in currentProduct.depositCashList" :key="item" :value="item" :label="item"></i-option>
+                    <i-option v-for="item in currentProduct.depositCashList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
               </i-col>
               <i-col span="12">
                 <i-form-item prop="depositCash" :label-width="50">
-                  <i-input-number :disabled="!currentProduct.depositCash" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
-                </i-form-item>
-              </i-col>
-            </i-row>
-          </i-col>
-          <i-col span="12">
-            <i-row :gutter="24">
-              <i-col span="12">
-                <i-form-item label="尾付总额(元)" prop="final">
-                  <i-select :disabled="!currentProduct.finalCash" placeholder="请选择尾付总额比例" v-model="productRadioModel.finalCashRadio" clearable>
-                    <i-option v-for="item in currentProduct.finalCashList" :key="item" :value="item" :label="item"></i-option>
-                  </i-select>
-                </i-form-item>
-              </i-col>
-              <i-col span="12">
-                <i-form-item prop="finalCash" :label-width="50">
-                  <i-input-number :disabled="!currentProduct.finalCash" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
+                  <i-input-number :disabled="!currentProduct.depositCash" v-model="productModel.depositCash" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" readonly/>
                 </i-form-item>
               </i-col>
             </i-row>
@@ -197,7 +197,7 @@
               <i-col span="12">
                 <i-form-item label="管理费(元)" prop="manageData">
                   <i-select :disabled="!currentProduct.manageCost" placeholder="请选择管理费比例" v-model="productRadioModel.manageCostRadio" clearable>
-                    <i-option v-for="item in currentProduct.manageCostList" :key="item" :value="item" :label="item"></i-option>
+                    <i-option v-for="item in currentProduct.manageCostList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
               </i-col>
@@ -269,7 +269,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { State, Mutation, namespace } from "vuex-class";
-import { ApplyQueryService } from "~/services/business-service/apply-query.service";
+import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { Dependencies } from "~/core/decorator";
 import AddCar from "~/components/purchase-manage/add-car.tsx.vue";
 import SvgIcon from "~/components/common/svg-icon.vue";
@@ -285,42 +285,23 @@ const ModuleMutation = namespace("purchase", Mutation);
     AddCar,
     ProductList
   },
-  filters:{
-    convertRadio(value){
-      return value?value.split(';'):[]
+  filters: {
+    convertRadio(value) {
+      return value ? value.split(";") : [];
     }
   }
 })
 export default class ChooseBuyMaterials extends Vue {
-  @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
   @Dependencies(CompanyService) private companyService: CompanyService;
+  @Dependencies(ProductOrderService)
+  private productOrderService: ProductOrderService;
   @ModuleMutation("updateProductId") updateProductId;
 
-  private carData: any = [];
-  private editCarModal: Boolean = false;
-  private addOrEditFlag: Boolean = false;
-  private prdInfoShow: Boolean = false;
-  private buttonShow: Boolean = true;
-  private addProductModal: Boolean = false;
-  private addPrdShow: Boolean = true;
-  private changePrdShow: Boolean = false;
+  @Prop() orderNumber;
+  @Prop() idCard;
   private companyList: any = []; // 公司信息
-
-  private rowData: any = null;
-  private depositCashData: any = []; // 保证金
-  private finalCashData: any = []; // 尾付金额
-  private initialPaymentData: any = []; // 首付款
-  private manageCostData: any = []; // 管理费
   private totalPrice: number = 0;
-  private DataSet: any = {};
-  private depositdisabled: Boolean = false;
-  private Paymentdisabled: Boolean = false;
-  private finaldisabled: Boolean = false;
-  private finalorddisabled: Boolean = false;
-  private manageDatadisabled: Boolean = false;
-  private addOpen: Boolean = false;
-  private flag: Boolean = true;
-  private index: any = "";
+
   public carDataSet: any = [];
 
   // 选购信息数据
@@ -356,13 +337,14 @@ export default class ChooseBuyMaterials extends Vue {
 
   // 产品金额比例
   private productRadioModel = {
-    depositCashRadio: "", // 保证金
-    finalCashRadio: "", // 尾付金额
-    initialPaymentRadio: "", // 首付款
-    manageCostRadio: "" // 管理费
+    depositCashRadio: 0, // 保证金
+    finalCashRadio: 0, // 尾付金额
+    initialPaymentRadio: 0, // 首付款
+    manageCostRadio: 0 // 管理费
   };
 
-  private currentProduct = {
+  // 当前选择产品
+  private currentProduct: any = {
     seriesName: "", // 产品系列
     productNanme: "", // 产品名称
     periods: "", // 产品期数
@@ -370,7 +352,7 @@ export default class ChooseBuyMaterials extends Vue {
     payWay: "" // 还款方式
   };
 
-  private calculationModel:any = null
+  private productAmountModel: any = null;
 
   // 选购数据校验
   private chooseRules: any = {
@@ -566,13 +548,46 @@ export default class ChooseBuyMaterials extends Vue {
     }
   }
 
-  getBaseAmount() {
-    //     保证金金额 = 融资总额x保证金比例
-    // 管理费 = 融资总额x管理费比例
+  /**
+   * 设置产品基础金额
+   */
+  onSetProductAmount() {
+    // 车辆参考价（可以修改） - 首付款 - 尾付本金
+    if (
+      this.productModel.vehicleAmount <
+      this.productModel.initialPayment + this.productModel.finalCash
+    ) {
+      this.$Message.error("车辆参考总价需大于首付金额+尾付本金");
+      return;
+    }
+
+    // 存储基本参数模型
+    this.productAmountModel = {
+      vehicleAmount: this.productModel.vehicleAmount,
+      initialPayment: this.productModel.initialPayment,
+      finalCash: this.productModel.finalCash
+    };
+
+    // 根据基础参数计算金额
+    this.getProductAllAmount();
+  }
+
+  /**
+   * 获取产品全部金额
+   */
+  getProductAllAmount() {
+    //  融资总额  = 车辆参考价 - 首付款 -尾付本金
+    this.productModel.financingAmount =
+      this.productModel.vehicleAmount -
+      this.productModel.initialPayment -
+      this.productModel.finalPayment;
+
     // 月供金额 = 融资总额x (1+月利率x期数)/期数
-    // 月供本金=融资总额/期数
-    // 月利息=融资总额x月利率
-    // if(this.productModel.financingAmount
+    this.productModel.monthlySupply =
+      this.productModel.financingAmount *
+      ((1 +
+        this.currentProduct.productRate * this.currentProduct.periodNumber) /
+        this.currentProduct.periodNumber);
   }
 
   /**
@@ -597,6 +612,36 @@ export default class ChooseBuyMaterials extends Vue {
     this.productModel.vehicleAmount = value;
   }
 
+  @Watch("productRadioModel", { immediate: true, deep: true })
+  onProductRadioModelChange() {
+    // initialPayment: 0, // 首付金额
+    // depositCash: 0, // 保证金金额
+    // finalCash: 0, // 尾付总额
+    // manageCost: 0, // 管理费
+
+    // 首付款=车辆参考价x首付比例
+    this.productModel.initialPayment =
+      this.productModel.vehicleAmount *
+      this.productRadioModel.initialPaymentRadio;
+
+    // 保证金金额 = 融资总额x保证金比例
+    this.productModel.depositCash =
+      this.productModel.financingAmount *
+      this.productRadioModel.depositCashRadio;
+
+    // 保证金金额 = 融资总额x保证金比例
+    this.productModel.manageCost =
+      this.productModel.financingAmount *
+      this.productRadioModel.manageCostRadio;
+
+    // 尾付利息=尾款本金x尾付月利率x期数
+    this.productModel.finalCash =
+      this.productModel.finalPayment +
+      this.productModel.finalPayment *
+        this.productRadioModel.finalCashRadio *
+        this.currentProduct.periodNumber;
+  }
+
   /**
    * 参考总价更新
    * 1.手动更新
@@ -604,8 +649,14 @@ export default class ChooseBuyMaterials extends Vue {
    */
   onVehicleAmountChange() {
     // TODO: 参考总价改变重置金额信息
-    this.productModel.finalCash = 0;
     this.productModel.initialPayment = 0;
+    this.productModel.finalCash = 0;
+    this.productModel.finalPayment = 0;
+
+    this.productRadioModel.initialPaymentRadio = 0;
+    this.productRadioModel.finalCashRadio = 0;
+
+    this.productAmountModel = null;
   }
 
   /**
@@ -646,12 +697,20 @@ export default class ChooseBuyMaterials extends Vue {
    * 格式化产品数据
    */
   formatProductModal(product) {
-    let formatRadio = x=>x?x.split(';'):[]
+    let formatRadio = x => {
+      if (!x) return [];
 
-    product.depositCashList = formatRadio(product.depositCash) // 预付金额
-    product.finalCashList = formatRadio(product.finalCash)  // 尾付金额
-    product.initialPaymentList = formatRadio(product.initialPayment)  // 首付款
-    product.manageCostList = formatRadio(product.manageCost)  // 管理费
+      return x.split(";").map(item => ({
+        label: `${item}%`,
+        value: item / 100
+      }));
+    };
+
+    product.depositCashList = formatRadio(product.depositCash); // 预付金额
+    product.finalCashList = formatRadio(product.finalCash); // 尾付金额
+    product.initialPaymentList = formatRadio(product.initialPayment); // 首付款
+    product.manageCostList = formatRadio(product.manageCost); // 管理费
+    product.periodNumber = parseInt(this.$dict.getDictName(product.periods));
 
     return product;
   }
@@ -670,6 +729,7 @@ export default class ChooseBuyMaterials extends Vue {
           // 转换数据产品信息数据格式
           this.currentProduct = this.formatProductModal(currentRow);
           this.productModel.productIssueId = currentRow.id;
+          this.onVehicleAmountChange();
           console.log(this.currentProduct);
         } else {
           this.$Message.error("请选择对应的产品");
@@ -736,8 +796,40 @@ export default class ChooseBuyMaterials extends Vue {
     return result;
   }
 
+  /**
+   * 获取订单数据
+   */
+  getOrderData() {
+    this.productOrderService
+      .getPurchaseInfoById(this.orderNumber)
+      .subscribe(data => {
+        console.log(data);
+        // TODO:加载订单数据
+      });
+  }
+
+  @Watch("orderNumber")
+  onOrderNumberChange(value) {
+    if (value) {
+      // TODO: 加载数据
+      this.getOrderData();
+    }
+  }
+
+  @Watch("idCard")
+  onIdCardChange(value) {
+    if (!value) {
+      // TODO: 重置数据
+    }
+  }
+
   mounted() {
+    // 获取公司列表
     this.getCompanyList();
+    // 加载历史订单
+    if (this.orderNumber) {
+      this.getOrderData();
+    }
   }
 }
 </script>
@@ -762,6 +854,8 @@ export default class ChooseBuyMaterials extends Vue {
       letter-spacing: 1px;
       box-shadow: 0px 0px 5px #ccc;
     }
+
+    padding-bottom: 100px;
   }
 
   .vehicle-list {
@@ -783,6 +877,11 @@ export default class ChooseBuyMaterials extends Vue {
       font-weight: bold;
     }
   }
+
+  .hidden {
+    visibility: hidden;
+  }
+
   .product-information {
     line-height: 30px;
     margin-top: 20px;
