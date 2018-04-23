@@ -218,7 +218,7 @@ export default class ModuleFunction extends Page {
                 },
                 on: {
                   click: () => {
-                    let _toview:any=this.$refs['to-view']
+                    let _toview: any = this.$refs['to-view']
                     _toview.getData(row)
                     this.toViewModal = true
                   }
@@ -507,13 +507,20 @@ export default class ModuleFunction extends Page {
 }
 </style>
 <style lang="less" scoped>
-    .modify-chart-resources{
-        .chart-resources-itiem{
-            margin-top:20px;
-        }
-        .pop-button{
-            text-align:right;
-        }
-    }
-
+.modify-chart-resources {
+  .chart-resources-itiem {
+    margin-top: 20px;
+  }
+  .pop-button {
+    text-align: right;
+  }
+}
+</style>
+<style lang="less">
+.page.module-function {
+  .ivu-select.ivu-select-single.ivu-select-small,
+  .ivu-select-selection {
+    width: 80px !important;
+  }
+}
 </style>

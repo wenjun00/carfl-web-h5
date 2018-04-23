@@ -23,9 +23,9 @@
                 <i-col :span="10" pull="4">
                     <!--<span>申请时间：{{applyTime}}</span>-->
                 </i-col>
-                <i-col class="submit-bar-text" :span="6">
+                <!-- <i-col class="submit-bar-text" :span="6">
                     <i-button @click="oneKeyToConnect" class="highButton">一键交接</i-button>
-                </i-col>
+                </i-col> -->
             </i-row>
         </div>
         <!--Model-->
@@ -61,6 +61,11 @@
                 <transfer-record ref="transfer" :customerName="customerName" :orderId="orderNumber"></transfer-record>
             </i-modal>
         </template>
+        <!--底部操作栏-start-->
+        <div class="fixed-container" >
+            <i-button size="large" class="highButton" @click="oneKeyToConnect">一键交接</i-button>
+        </div>
+        <!--底部操作栏-end-->
     </section>
 </template>
 
@@ -208,19 +213,19 @@ export default class OrderTransfer extends Page {
         align: 'center',
         key: 'userUsername',
         title: '用户名',
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(5)
       },
       {
         align: 'center',
         key: 'userRealname',
         title: '姓名',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(6)
       }
     ]
     this.columns1 = [
       {
         type: 'selection',
-        width:40,
+        width: 40,
         fixed: 'left',
         align: 'center'
       },
@@ -255,28 +260,28 @@ export default class OrderTransfer extends Page {
         editable: true,
         key: 'orderNumber',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(5)
       },
       {
         title: '制单人',
         editable: true,
         key: 'recorderName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(2)
       },
       {
         title: '所属部门',
         editable: true,
         key: 'deptName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(2)
       },
       {
         title: '转交人',
         editable: true,
         key: 'transferName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         title: '订单创建时间',
@@ -296,28 +301,28 @@ export default class OrderTransfer extends Page {
         editable: true,
         key: 'personalName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         title: '证件号码',
         key: 'idCard',
         editable: true,
         align: 'center',
-        minWidth: this.$common.getColumnWidth(6),
+        minWidth: this.$common.getColumnWidth(6)
       },
       {
         title: '联系号码',
         editable: true,
         key: 'mobileMain',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(4)
       },
       {
         title: '产品名称',
         editable: true,
         key: 'productName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(2)
       },
       {
         title: '产品期数',
@@ -500,8 +505,7 @@ export default class OrderTransfer extends Page {
       this.$Message.error('请选择要交接的订单！')
     } else {
       this.getTree()
-      this.userList=[],
-      this.openOneKeyToConnect = true
+      ;(this.userList = []), (this.openOneKeyToConnect = true)
     }
   }
   /**
@@ -554,6 +558,18 @@ export default class OrderTransfer extends Page {
 
 <style lang="less" scoped>
 .page.order-transfer {
+  .fixed-container {
+    height: 65px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 10;
+    text-align: right;
+    padding: 10px 20px;
+    box-shadow: 0px -5px 10px #ccc;
+  }
   .seek-day {
     margin-top: 10px;
   }

@@ -109,7 +109,8 @@
                   item.itemName === "surplusPrincipal" ||
                   item.itemName === "surplusPenaltyFreeze"
                 ) {
-                  item._disabled = true;
+                  item._checked = true;
+                  item._disabled= true;
                 }
               });
             });

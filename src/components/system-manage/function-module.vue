@@ -39,6 +39,7 @@
         },
         {
           title: '操作',
+          fixed:'left',
           minWidth: 170,
           align: 'center',
           render: (h, {

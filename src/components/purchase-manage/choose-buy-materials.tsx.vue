@@ -279,6 +279,7 @@ import { CompanyService } from "~/services/manage-service/company.service";
 import { Prop, Emit, Watch } from "vue-property-decorator";
 import { FilterService } from "~/utils/filter.service";
 import { Input, Button, InputNumber, Form } from "iview";
+
 const ModuleMutation = namespace("purchase", Mutation);
 @Component({
   components: {
@@ -504,12 +505,11 @@ export default class ChooseBuyMaterials extends Vue {
         return (
           <i-input-number
             value={amount}
-            formatter={value =>
-              `${value}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => s + ",")
-            }
+            formatter={value => this.$filter.moneyFormat(value)}
             onOn-change={value => (amount = value)}
-            parser={value => value.replace(/,*/g, "")}
+            parser={value => this.$filter.moneyParse(value)}
             onOn-blur={() => this.onCarAmountChange(index, amount)}
+            min={0}
           />
         );
       }

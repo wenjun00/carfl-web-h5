@@ -1,6 +1,6 @@
 <!--编辑经销商报价-->
 <template>
-  <section class="edit-car">
+  <section class="edit-car dealer-quotation">
     <i-form ref="form" :model="carFormItem" :rules="ruleValidate" :label-width="85" label-position="left">
       <i-row>
         <i-col :span="11">
@@ -235,6 +235,7 @@
         required: true,
         message: '请输入市场指导价',
         trigger: 'blur',
+        type: 'number',
       }],
       monthPay: [{
         required: true,
@@ -411,10 +412,13 @@
 
 </style>
 <style lang="less">
+ .edit-car.dealer-quotation {
   .ivu-input-wrapper.ivu-input-type,
   .ivu-select-selection,
-  .ivu-input-number{
-    width:180px;
+  .ivu-input-number {
+    width: 180px;
   }
+} 
+  
 </style>
 
