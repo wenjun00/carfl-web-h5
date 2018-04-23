@@ -1,6 +1,23 @@
 <!--客户联系人-->
 <template>
   <section class="component customer-contacts">
+<<<<<<< HEAD
+    <i-card title="直系亲属">
+      <div slot="extra">
+        <i-button icon="plus" @click="addNewContacts" class="form-button" type="text">添加联系人</i-button>
+      </div>
+      <i-table :columns="columns1" :data="data1"></i-table>
+      <p class="client-person">提示：配偶(已婚必填)+必填2个直系亲属</p>
+    </i-card>
+
+    <i-card title="其他联系人">
+      <div slot="extra">
+        <i-button icon="plus" @click="addNewContacts2" class="form-button" type="text">添加联系人</i-button>
+      </div>
+      <i-table :columns="columns2" :data="data2" width="1100"></i-table>
+      <p style="margin-left:10px;margin-top:20px;">其他联系人（提示：必填3个其他联系人）</p>
+    </i-card>
+=======
     <div class="form-title">客户联系人</div>
     <div class="client-person" >直系亲属（提示：配偶(已婚必填)+必填2个直系亲属）</div>
     <i-table :columns="columns1" :data="data1" :width="1100"></i-table>
@@ -16,6 +33,7 @@
       <Icon type="plus" class="client-person-icon"></Icon>
       <i-button class="form-button" @click="addNewContacts2"  type="text">添加联系人</i-button>
     </div>
+>>>>>>> a552363145a68c04bf065307455a34d3738f05d8
 
     <template>
       <i-modal :title="addNew?'添加联系人':'编辑联系人'" v-model="editOrAddContactsModal">
@@ -79,79 +97,79 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import DataBox from "~/components/common/data-box.vue";
-  import EditRelation from "~/components/purchase-manage/edit-relation.vue"
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    OrderService
-  } from "~/services/business-service/order.service";
+import Vue from "vue";
+import Component from "vue-class-component";
+import DataBox from "~/components/common/data-box.vue";
+import EditRelation from "~/components/purchase-manage/edit-relation.vue";
+import { Dependencies } from "~/core/decorator";
+import { OrderService } from "~/services/business-service/order.service";
 
-  @Component({
-    components: {
-      DataBox,
-      EditRelation
-    }
-  })
-  export default class CustomerContacts extends Vue {
-    @Dependencies(OrderService) private orderService: OrderService;
-    private columns1: any;
-    private columns2: any;
-    private data1: Array < Object >= [];
-    private data2: Array < Object >= [];
-    private editOrAddContactsModal: Boolean = false;
-    private editOrAddContactsModal2: Boolean = false;
-    private rowData: any;
-    private addNew: Boolean = false; //根据此判断是编辑还是新增
-    private contactsModel: any = {
-      relation: '',
-      name: '',
-      phone: '',
-      employer: '',
-      address: ''
-    };
-    private rules: any = {
-      relation: [{
+@Component({
+  components: {
+    DataBox,
+    EditRelation
+  }
+})
+export default class CustomerContacts extends Vue {
+  @Dependencies(OrderService) private orderService: OrderService;
+  private columns1: any;
+  private columns2: any;
+  private data1: Array<Object> = [];
+  private data2: Array<Object> = [];
+  private editOrAddContactsModal: Boolean = false;
+  private editOrAddContactsModal2: Boolean = false;
+  private rowData: any;
+  private addNew: Boolean = false; //根据此判断是编辑还是新增
+  private contactsModel: any = {
+    relation: "",
+    name: "",
+    phone: "",
+    employer: "",
+    address: ""
+  };
+  private rules: any = {
+    relation: [
+      {
         required: true,
         message: "与本人关系不能为空",
         trigger: "change",
-        type: 'number'
-      }],
-      name: [{
+        type: "number"
+      }
+    ],
+    name: [
+      {
         required: true,
         message: "姓名不能为空",
         trigger: "blur"
-      }],
-      phone: [{
+      }
+    ],
+    phone: [
+      {
         required: true,
         message: "电话不能为空",
         trigger: "blur"
       },
-      { validator: this.$validator.phoneNumber, trigger: "blur" }],
-    }
-    // private othercontactsModel: any = {
-    //   relation: '',
-    //   name: '',
-    //   phone: '',
-    //   employer: '',
-    //   address: ''
-    // }
+      { validator: this.$validator.phoneNumber, trigger: "blur" }
+    ]
+  };
+  // private othercontactsModel: any = {
+  //   relation: '',
+  //   name: '',
+  //   phone: '',
+  //   employer: '',
+  //   address: ''
+  // }
 
-    created() {
-      this.columns1 = [{
-        title: '操作',
-        align: 'center',
-        render: (h, {
-          row,
-          columns,
-          index
-        }) => {
+  created() {
+    this.columns1 = [
+      {
+        title: "操作",
+        align: "center",
+        render: (h, { row, columns, index }) => {
           return h("div", [
             h(
-              "i-button", {
+              "i-button",
+              {
                 props: {
                   type: "text"
                 },
@@ -160,16 +178,17 @@
                 },
                 on: {
                   click: () => {
-                    this.editContacts(row)
-                    this.addNew = false
-                    this.editOrAddContactsModal = true
+                    this.editContacts(row);
+                    this.addNew = false;
+                    this.editOrAddContactsModal = true;
                   }
                 }
               },
               "编辑"
             ),
             h(
-              "i-button", {
+              "i-button",
+              {
                 props: {
                   type: "text"
                 },
@@ -179,12 +198,12 @@
                 on: {
                   click: () => {
                     this.$Modal.confirm({
-                      title: '提示',
-                      content: '确定删除吗？',
+                      title: "提示",
+                      content: "确定删除吗？",
                       onOk: () => {
                         this.data1.splice(index, 1);
                       }
-                    })
+                    });
                   }
                 }
               },
@@ -192,45 +211,45 @@
             )
           ]);
         }
-      }, {
-        title: '与本人关系',
-        key: 'relation',
-        align: 'center',
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
+      },
+      {
+        title: "与本人关系",
+        key: "relation",
+        align: "center",
+        render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.relation));
         }
-      }, {
-        title: '姓名',
-        key: 'name',
-        align: 'center'
-      }, {
-        title: '联系方式',
-        key: 'phone',
-        align: 'center'
-      }, {
-        title: '单位名称',
-        key: 'employer',
-        align: 'center'
-      }, {
-        title: '家庭住址',
-        key: 'address',
-        align: 'center'
-      }]
-      this.columns2 = [{
-        title: '操作',
-        align: 'center',
-        render: (h, {
-          row,
-          columns,
-          index
-        }) => {
+      },
+      {
+        title: "姓名",
+        key: "name",
+        align: "center"
+      },
+      {
+        title: "联系方式",
+        key: "phone",
+        align: "center"
+      },
+      {
+        title: "单位名称",
+        key: "employer",
+        align: "center"
+      },
+      {
+        title: "家庭住址",
+        key: "address",
+        align: "center"
+      }
+    ];
+    this.columns2 = [
+      {
+        title: "操作",
+        align: "center",
+        render: (h, { row, columns, index }) => {
           return h("div", [
             h(
-              "i-button", {
+              "i-button",
+              {
                 props: {
                   type: "text"
                 },
@@ -239,16 +258,17 @@
                 },
                 on: {
                   click: () => {
-                    this.editContacts(row)
-                    this.addNew = false
-                    this.editOrAddContactsModal2 = true
+                    this.editContacts(row);
+                    this.addNew = false;
+                    this.editOrAddContactsModal2 = true;
                   }
                 }
               },
               "编辑"
             ),
             h(
-              "i-button", {
+              "i-button",
+              {
                 props: {
                   type: "text"
                 },
@@ -258,12 +278,12 @@
                 on: {
                   click: () => {
                     this.$Modal.confirm({
-                      title: '提示',
-                      content: '确定删除吗？',
+                      title: "提示",
+                      content: "确定删除吗？",
                       onOk: () => {
                         this.data2.splice(index, 1);
                       }
-                    })
+                    });
                   }
                 }
               },
@@ -271,165 +291,172 @@
             )
           ]);
         }
-      }, {
-        title: '与本人关系',
-        key: 'relation',
-        align: 'center',
-        render: (h, {
-          row,
-          column,
-          index
-        }) => {
+      },
+      {
+        title: "与本人关系",
+        key: "relation",
+        align: "center",
+        render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.relation));
         }
-      }, {
-        title: '姓名',
-        key: 'name',
-        align: 'center'
-      }, {
-        title: '联系方式',
-        key: 'phone',
-        align: 'center'
-      }, {
-        title: '单位名称',
-        key: 'employer',
-        align: 'center'
-      }, {
-        title: '家庭住址',
-        key: 'address',
-        align: 'center'
-      }]
-      this.data1 = []
-      this.data2 = []
-    }
-    reset() {
-      this.data1 = []
-      this.data2 = []
-    }
-    /**
-     * 客户联系人反显
-     */
-    Reverse(data) {
-      let personalContactsData1: any = data.personal.personalContacts.filter(v => v.relation === 56 || v.relation ===
-        57 || v.relation === 58)
-      let personalContactsData2: any = data.personal.personalContacts.filter(v => v.relation === 59 || v.relation ===
-        60 || v.relation === 61 || v.relation === 62)
-      this.data1 = personalContactsData1
-      this.data2 = personalContactsData2
-    }
-    editContacts(row) {
-      this.rowData = row
-      this.contactsModel = {
-        relation: row.relation,
-        name: row.name,
-        phone: row.phone,
-        employer: row.employer,
-        address: row.address
+      },
+      {
+        title: "姓名",
+        key: "name",
+        align: "center"
+      },
+      {
+        title: "联系方式",
+        key: "phone",
+        align: "center"
+      },
+      {
+        title: "单位名称",
+        key: "employer",
+        align: "center"
+      },
+      {
+        title: "家庭住址",
+        key: "address",
+        align: "center"
       }
-    }
-    deleteRelation(row) {
-
-    }
-    /**
-     * 添加直系联系人
-     */
-    saveAndBack() {
-      let registerForm: any = this.$refs["contacts"];
-      registerForm.validate(valid => {
-        if (!valid) {
-          return false
-        }
-        if (this.addNew) {
-          this.data1.push({
-            relation: this.contactsModel.relation,
-            name: this.contactsModel.name,
-            phone: this.contactsModel.phone,
-            employer: this.contactsModel.employer,
-            address: this.contactsModel.address
-          })
-        } else {
-          this.rowData.relation = this.contactsModel.relation
-          this.rowData.name = this.contactsModel.name
-          this.rowData.phone = this.contactsModel.phone
-          this.rowData.employer = this.contactsModel.employer
-          this.rowData.address = this.contactsModel.address
-        }
-        //   let contacts_ref = this.$refs['contacts']
-        //   contacts_ref.resetFields()
-        this.editOrAddContactsModal = false
-      })
-    }
-    /**
-     * 添加其他联系人
-     */
-    saveAndBack2() {
-      let registerForm: any = this.$refs["other-contacts"];
-      registerForm.validate(valid => {
-        if (!valid) {
-          return false
-        }
-        if (this.addNew) {
-          this.data2.push({
-            relation: this.contactsModel.relation,
-            name: this.contactsModel.name,
-            phone: this.contactsModel.phone,
-            employer: this.contactsModel.employer,
-            address: this.contactsModel.address
-          })
-        } else {
-          this.rowData.relation = this.contactsModel.relation
-          this.rowData.name = this.contactsModel.name
-          this.rowData.phone = this.contactsModel.phone
-          this.rowData.employer = this.contactsModel.employer
-          this.rowData.address = this.contactsModel.address
-        }
-        //   let other_ref = this.$refs['other-contacts']
-        //   other_ref.resetFields()
-        this.editOrAddContactsModal2 = false
-      })
-    }
-    addNewContacts() {
-      let form: any = this.$refs['contacts'];
-      form.resetFields();
-      this.addNew = true
-      this.editOrAddContactsModal = true
-      this.contactsModel = {
-        relation: '',
-        name: '',
-        phone: '',
-        companyName: '',
-        address: ''
+    ];
+    this.data1 = [];
+    this.data2 = [];
+  }
+  reset() {
+    this.data1 = [];
+    this.data2 = [];
+  }
+  /**
+   * 客户联系人反显
+   */
+  Reverse(data) {
+    let personalContactsData1: any = data.personal.personalContacts.filter(
+      v => v.relation === 56 || v.relation === 57 || v.relation === 58
+    );
+    let personalContactsData2: any = data.personal.personalContacts.filter(
+      v =>
+        v.relation === 59 ||
+        v.relation === 60 ||
+        v.relation === 61 ||
+        v.relation === 62
+    );
+    this.data1 = personalContactsData1;
+    this.data2 = personalContactsData2;
+  }
+  editContacts(row) {
+    this.rowData = row;
+    this.contactsModel = {
+      relation: row.relation,
+      name: row.name,
+      phone: row.phone,
+      employer: row.employer,
+      address: row.address
+    };
+  }
+  deleteRelation(row) {}
+  /**
+   * 添加直系联系人
+   */
+  saveAndBack() {
+    let registerForm: any = this.$refs["contacts"];
+    registerForm.validate(valid => {
+      if (!valid) {
+        return false;
       }
-    }
-
-    addNewContacts2() {
-      let form: any = this.$refs['other-contacts'];
-      form.resetFields();
-      this.addNew = true
-      this.editOrAddContactsModal2 = true
-      this.contactsModel = {
-        relation: '',
-        name: '',
-        phone: '',
-        companyName: '',
-        address: ''
+      if (this.addNew) {
+        this.data1.push({
+          relation: this.contactsModel.relation,
+          name: this.contactsModel.name,
+          phone: this.contactsModel.phone,
+          employer: this.contactsModel.employer,
+          address: this.contactsModel.address
+        });
+      } else {
+        this.rowData.relation = this.contactsModel.relation;
+        this.rowData.name = this.contactsModel.name;
+        this.rowData.phone = this.contactsModel.phone;
+        this.rowData.employer = this.contactsModel.employer;
+        this.rowData.address = this.contactsModel.address;
       }
-    }
+      //   let contacts_ref = this.$refs['contacts']
+      //   contacts_ref.resetFields()
+      this.editOrAddContactsModal = false;
+    });
+  }
+  /**
+   * 添加其他联系人
+   */
+  saveAndBack2() {
+    let registerForm: any = this.$refs["other-contacts"];
+    registerForm.validate(valid => {
+      if (!valid) {
+        return false;
+      }
+      if (this.addNew) {
+        this.data2.push({
+          relation: this.contactsModel.relation,
+          name: this.contactsModel.name,
+          phone: this.contactsModel.phone,
+          employer: this.contactsModel.employer,
+          address: this.contactsModel.address
+        });
+      } else {
+        this.rowData.relation = this.contactsModel.relation;
+        this.rowData.name = this.contactsModel.name;
+        this.rowData.phone = this.contactsModel.phone;
+        this.rowData.employer = this.contactsModel.employer;
+        this.rowData.address = this.contactsModel.address;
+      }
+      //   let other_ref = this.$refs['other-contacts']
+      //   other_ref.resetFields()
+      this.editOrAddContactsModal2 = false;
+    });
+  }
+  addNewContacts() {
+    let form: any = this.$refs["contacts"];
+    form.resetFields();
+    this.addNew = true;
+    this.editOrAddContactsModal = true;
+    this.contactsModel = {
+      relation: "",
+      name: "",
+      phone: "",
+      companyName: "",
+      address: ""
+    };
   }
 
+  addNewContacts2() {
+    let form: any = this.$refs["other-contacts"];
+    form.resetFields();
+    this.addNew = true;
+    this.editOrAddContactsModal2 = true;
+    this.contactsModel = {
+      relation: "",
+      name: "",
+      phone: "",
+      companyName: "",
+      address: ""
+    };
+  }
+}
 </script>
 
 <style lang="less" scoped>
-    .component.customer-contacts{
-        .client-person{
-            margin-left:10px;
-        }
-        .client-person-icon{
-            position:relative;left:26px;color:#265ea2;
-        }
-        .form-button{
-            margin-left:10px;color:#265ea2;  
-        }
-    }
-
+.component.customer-contacts {
+  .client-person {
+    margin-left: 10px;
+  }
+  .client-person-icon {
+    position: relative;
+    left: 26px;
+    color: #265ea2;
+  }
+  .form-button {
+    margin-left: 10px;
+    color: #265ea2;
+  }
+}
 </style>

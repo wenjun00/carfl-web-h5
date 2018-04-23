@@ -134,4 +134,13 @@ export class ProductOrderService {
       }
     })
   }
+
+  getPurchaseInfoById(id){
+    return this.netService.send({
+      server: manageService.productOrderController.getPurchaseInfoById,
+      data: {
+        orderNumber: id
+      }
+    })
+  }
 }

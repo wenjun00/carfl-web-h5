@@ -127,6 +127,7 @@
         {
           title: "操作",
           minWidth: this.$common.getColumnWidth(5),
+          fixed:'left',
           align: "center",
           render: (h, {row, column, index}) => {
             return h("div", [h("i-button", {

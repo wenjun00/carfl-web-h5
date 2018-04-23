@@ -97,6 +97,7 @@ export default class CustomerFodderMaintain extends Page {
       {
         title: '操作',
         align: 'center',
+        fixed: 'left',
         minWidth: this.$common.getColumnWidth(5),
         render: (h, { row, column, index }) => {
           return h('div', [

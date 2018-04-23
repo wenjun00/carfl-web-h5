@@ -232,6 +232,7 @@
       this.columns1 = [{
           title: '操作',
           align: 'center',
+        fixed:'left',
           render: (h, {
             row,
             column,
