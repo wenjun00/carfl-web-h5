@@ -49,17 +49,20 @@ export default class DataBoxConfig extends Vue {
 
   getTableColumn() {
     this.tableColumn = this.dataColumns
-      .filter(x => x.key !== "index" && x.type !== "selection" && x.title!=="操作")
+      .filter(
+        x => x.key !== "index" && x.type !== "selection" && x.title !== "操作"
+      )
       .map(x => {
         if (!x.editable) {
           x.check = true;
           x.sort = -1;
         } else {
           let target = this.remoteColumn.find(item => item.resoCode === x.key);
-          x.check = !!target.isCheck;
-          x.sort = target.sort;
+          if (target) {
+            x.check = !!target.isCheck;
+            x.sort = target.sort;
+          }
         }
-
         return x;
       })
       .sort((x: any, y: any) => x.sort - y.sort);

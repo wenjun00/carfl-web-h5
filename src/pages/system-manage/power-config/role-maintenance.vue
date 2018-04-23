@@ -151,7 +151,7 @@ export default class RoleMaintenance extends Page {
       {
         type: 'selection',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(1),
+        width:40,
         fixed: 'left'
       },
       {

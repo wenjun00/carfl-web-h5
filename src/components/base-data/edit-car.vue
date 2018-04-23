@@ -416,5 +416,5 @@
   .ivu-input-number{
     width:180px;
   }
-
 </style>
+

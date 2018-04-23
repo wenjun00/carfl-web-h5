@@ -79,7 +79,7 @@
         {
           type: 'selection',
           fixed: 'left',
-          minWidth: this.$common.getColumnWidth(2),
+          width: 40,
           align: 'center'
         },
         {
