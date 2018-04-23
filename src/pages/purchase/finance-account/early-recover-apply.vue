@@ -74,7 +74,9 @@
                     <span>申请时间：{{applyTime}}</span>
                 </i-col>
                 <i-col :span="4">
-                    <i-button class="highButton" @click="saveAndCommit">保存并提交</i-button>
+                    <div class="fixed-container">
+                        <i-button size="large" class="highButton" @click="saveAndCommit">保存并提交</i-button>
+                    </div>
                 </i-col>
             </i-row>
         </div>
@@ -722,6 +724,18 @@ export default class EarlyRecoverApply extends Page {
 
 <style lang="less" scoped>
 .page.early-recover-apply.special-input {
+  .fixed-container {
+    height: 65px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 10;
+    text-align: right;
+    padding: 10px 20px;
+    box-shadow: 0px -5px 10px #ccc;
+  }
   .shade {
     width: 98%;
     height: 666px;

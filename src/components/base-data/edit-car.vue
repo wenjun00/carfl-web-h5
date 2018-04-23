@@ -235,6 +235,7 @@
         required: true,
         message: '请输入市场指导价',
         trigger: 'blur',
+        type: 'number',
       }],
       monthPay: [{
         required: true,
