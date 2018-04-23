@@ -1,7 +1,10 @@
 <!--企业开户列表-->
 <template>
     <section class="page company-account-list">
-        <page-header title="企业开户列表" hiddenPrint hiddenExport></page-header>
+        <page-header title="企业开户列表" hiddenPrint hiddenExport>
+            <i-button class="blueButton" @click="addCompany">新增企业</i-button>
+            <i-button class="blueButton" @click="transferAccount">转账</i-button>
+        </page-header>
         <data-form hidden-reset hiddenDateSearch>
             <template slot="input">
                 <i-form-item>
@@ -50,12 +53,7 @@
                 <i-col :span="12" pull="4">
                     <span>申请时间： 2017-12-01 13:56:45</span>
                 </i-col>
-                <i-col :span="4">
-                    <div class="fixed-container">
-                        <i-button size="large" class="highDefaultButton" @click="addCompany">新增企业</i-button>
-                        <i-button size="large" class="highButton" @click="transferAccount">转账</i-button>
-                    </div>
-                </i-col>
+              
             </i-row>
 
         </div>

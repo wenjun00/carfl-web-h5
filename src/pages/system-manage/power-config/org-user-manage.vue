@@ -1,7 +1,11 @@
 <!--机构与用户管理-->
 <template>
     <section class="page org-user-manage">
-        <page-header title="机构与用户管理" hidden-print @on-export="exportName"></page-header>
+        <page-header title="机构与用户管理" hidden-print @on-export="exportName">
+            <i-button class="blueButton" @click="addNewUser">新增用户</i-button>
+            <i-button class="blueButton" @click="buttonOnlyOne1">批量分配角色</i-button>
+            <i-button class="blueButton" @click="buttonOnlyOne2">批量管理设备</i-button>
+        </page-header>
         <i-row class="data-form">
             <i-col :span="4" class="data-form-item">
 
@@ -30,11 +34,11 @@
                             </i-select>
                         </i-form-item>
                     </template>
-                    <template slot="button">
+                    <!-- <template slot="button">
                         <i-button class="blue-button" @click="addNewUser">新增用户</i-button>
                         <i-button class="blue-button" @click="buttonOnlyOne1">批量分配角色</i-button>
                         <i-button class="blue-button" @click="buttonOnlyOne2">批量管理设备</i-button>
-                    </template>
+                    </template> -->
 
                 </data-form>
 

@@ -1,7 +1,9 @@
 <!--提前收回申请-->
 <template>
     <section class="page early-recover-apply special-input">
-        <page-header title="提前收回申请"></page-header>
+        <page-header title="提前收回申请">
+            <i-button class="blueButton" @click="clearAll">清空</i-button>
+        </page-header>
         <i-row type="flex" class="data-form">
             <i-col :span="18">
                 <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
@@ -53,7 +55,6 @@
                     </i-col>
                 </i-form>
             </i-col>
-            <i-button class="blueButton clear-button" @click="clearAll">清空</i-button>
         </i-row>
         <i-tabs v-model="materialTabs" class="early-recover-tabs">
             <i-tab-pane name="gather-detail-early-pay" label="收款明细">
