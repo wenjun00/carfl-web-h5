@@ -35,7 +35,8 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :id="109" :columns="columns" :data="AppRoveReasonList" @onPageChange="seach" :page="pageService"></data-box>
+    <data-box :id="109" :columns="columns" :data="AppRoveReasonList" @onPageChange="seach"
+              :page="pageService"></data-box>
     <div class="submitBar">
       <i-row type="flex" align="middle" style="padding:10px">
         <i-col :span="24" style="text-align:right;">
@@ -54,7 +55,8 @@
     </template>
     <template>
       <i-modal title="编辑审批原因" v-model="editApprovalReasonModel">
-        <edit-approval-reason ref="edit-approval-reason" @close="closeEditApproval" :AppRoveReasonList="AppRoveReasonList"></edit-approval-reason>
+        <edit-approval-reason ref="edit-approval-reason" @close="closeEditApproval"
+                              :AppRoveReasonList="AppRoveReasonList"></edit-approval-reason>
         <div slot="footer">
           <i-button class="Ghost" @click="editcancel">取消</i-button>
           <i-button class="blueButton" @click="editApproval">保存并退出</i-button>
@@ -117,11 +119,11 @@
     private columns: any
     private columns2: any
     private appReasonModel: any = {}
-    private data2: Array < any > = []
+    private data2: Array<any> = []
     private searchOptions: Boolean = false
     private isDisabled: Boolean = true
     private fileDataOpen: Boolean = false
-    private AppRoveReasonList: Array < any > = []
+    private AppRoveReasonList: Array<any> = []
     private approvalReasonModel: Boolean = false
     private editApprovalReasonModel: Boolean = false
     private enterIntoReasonModel: Boolean = false
@@ -132,56 +134,57 @@
     created() {
       this.seach()
       this.columns = [{
-          align: 'center',
-          title: '操作',
-          minWidth: this.$common.getColumnWidth(5),
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h('div', [
-              h(
-                'i-button', {
-                  props: {
-                    type: 'text'
-                  },
-                  style: {
-                    color: '#265EA2'
-                  },
-                  on: {
-                    click: () => {
-                      this.showEditApproval(row)
-                    }
-                  }
+        align: 'center',
+        title: '操作',
+        fixed: 'left',
+        minWidth: this.$common.getColumnWidth(5),
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h('div', [
+            h(
+              'i-button', {
+                props: {
+                  type: 'text'
                 },
-                '编辑'
-              ),
-              h(
-                'i-button', {
-                  props: {
-                    type: 'text'
-                  },
-                  style: {
-                    color: '#265EA2'
-                  },
-                  on: {
-                    click: () => {
-                      this.$Modal.confirm({
-                        title: '提示',
-                        content: '确定删除吗？',
-                        onOk: () => {
-                          this.deleteApproval(row)
-                        }
-                      })
-                    }
-                  }
+                style: {
+                  color: '#265EA2'
                 },
-                '删除'
-              )
-            ])
-          }
-        },
+                on: {
+                  click: () => {
+                    this.showEditApproval(row)
+                  }
+                }
+              },
+              '编辑'
+            ),
+            h(
+              'i-button', {
+                props: {
+                  type: 'text'
+                },
+                style: {
+                  color: '#265EA2'
+                },
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: '提示',
+                      content: '确定删除吗？',
+                      onOk: () => {
+                        this.deleteApproval(row)
+                      }
+                    })
+                  }
+                }
+              },
+              '删除'
+            )
+          ])
+        }
+      },
         {
           title: '类型',
           key: 'type',
@@ -331,8 +334,8 @@
             _enterapprovalreason.reset()
           },
           ({
-            msg
-          }) => {
+             msg
+           }) => {
             this.$Message.error(msg);
           }
         );
@@ -356,13 +359,15 @@
       _addapprovalreason.reset()
     }
 
-    getOrderInfoByTime() {}
+    getOrderInfoByTime() {
+    }
 
     openSearch() {
       this.searchOptions = !this.searchOptions
     }
 
-    exportMonthReport() {}
+    exportMonthReport() {
+    }
 
     /**
      * selectChange
@@ -396,8 +401,8 @@
             })
           },
           ({
-            msg
-          }) => {
+             msg
+           }) => {
             this.$Message.error(msg)
           }
         )
@@ -447,8 +452,8 @@
             this.seach() //刷新
           },
           ({
-            msg
-          }) => {
+             msg
+           }) => {
             this.$Message.error(msg)
           }
         )

@@ -108,6 +108,7 @@
         title: '操作',
         align: 'center',
         width: 180,
+        fixed: 'left',
         render: (h, {
           row,
           columns,
