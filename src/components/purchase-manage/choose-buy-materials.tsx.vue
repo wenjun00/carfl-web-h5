@@ -427,6 +427,11 @@ export default class ChooseBuyMaterials extends Vue {
 
   // 自定义校验规则
   customRules = {
+    chooseForm: [
+      {
+        validator: this.$validator.formValidate
+      }
+    ],
     productIssueId: [
       {
         required: true,
@@ -446,7 +451,10 @@ export default class ChooseBuyMaterials extends Vue {
         min: 1,
         message: "请填写车辆价格"
       }
-    ]
+    ],
+    productForm:[{
+      validator: this.$validator.formValidate
+    }]
   };
 
   private carColumns = [
@@ -760,40 +768,25 @@ export default class ChooseBuyMaterials extends Vue {
     let chooseForm = this.$refs["choose-form"] as Form;
     let productForm = this.$refs["product-form"] as Form;
 
-    let result;
-
     // 自定义验证
-    result = await this.$validator
+    return await this.$validator
       .validate(
         {
+          chooseForm: this.$refs["choose-form"],
           productIssueId: this.productModel.productIssueId,
           carListCount: this.carDataSet.length,
-          totalPrice: this.totalPrice
+          totalPrice: this.totalPrice,
+          productForm: this.$refs["product-form"]
         },
         this.customRules
       )
       .then(error => {
-        if (error) {
-          this.$Message.error(error);
-          return false;
-        } else {
+        if (!error) {
           return true;
         }
+
+        this.$Message.error(error);
       });
-
-    if (!result) {
-      return false;
-    }
-
-    // 基础表单验证
-    result = await Promise.all([
-      chooseForm.validate(),
-      productForm.validate()
-    ]).then(result => {
-      return result.every(x => x);
-    });
-
-    return result;
   }
 
   /**
