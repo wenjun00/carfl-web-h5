@@ -7,7 +7,7 @@
     </page-header>
     <!-- 搜索表单-start -->
     <div class="search-container">
-      <i-form :label-width="90" ref="customer-form" class="search-form" :model="customerModel" label-position="left" :rules="customerRule">
+      <i-form :label-width="90" ref="customer-form" class="search-form" :model="customerModel" label-position="right" :rules="customerRule">
         <i-row :gutter="20">
           <i-col span="10">
             <i-form-item label="证件号码" prop="idCard">

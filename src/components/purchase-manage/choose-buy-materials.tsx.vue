@@ -395,7 +395,7 @@ export default class ChooseBuyMaterials extends Vue {
         required: true,
         message: "请输入意向首付比例",
         trigger: "blur"
-      },
+      }
     ],
     intentionFinancingAmount: [
       {
@@ -403,15 +403,14 @@ export default class ChooseBuyMaterials extends Vue {
         message: "请输入意向融资金额",
         trigger: "blur"
       }
-    ],
-    
+    ]
   };
 
   // 产品校验规则
   private productRules: any = {
     vehicleAmount: [
       {
-        type:'number',
+        type: "number",
         message: "请输入车辆参考总价",
         trigger: "blur"
       }
@@ -490,12 +489,11 @@ export default class ChooseBuyMaterials extends Vue {
         return (
           <i-input-number
             value={amount}
-            formatter={value =>
-              `${value}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => s + ",")
-            }
+            formatter={value => this.$filter.moneyFormat(value)}
             onOn-change={value => (amount = value)}
-            parser={value => value.replace(/,*/g, "")}
+            parser={value => this.$filter.moneyParse(value)}
             onOn-blur={() => this.onCarAmountChange(index, amount)}
+            min={0}
           />
         );
       }

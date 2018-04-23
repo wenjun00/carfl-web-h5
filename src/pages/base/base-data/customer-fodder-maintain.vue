@@ -138,6 +138,7 @@
           title: '操作',
           align: 'center',
           minWidth: this.$common.getColumnWidth(5),
+          fixed: "left",
           render: (h, {
             row,
             column,

@@ -1,201 +1,210 @@
 <!--全额付款申请客户资料-->
 <template>
   <section class="component customer-materials-all">
-    <i-tab-pane name="customerItem" label="客户资料" class="item-height50">
-      <span class="form-title">个人信息</span>
-      <i-row>
-        <i-form ref="parchase-form" :rules="customerRules" :model="customerData" :label-width="110">
-          <i-row>
-            <i-col span="12" class="bigSelect">
-              <i-form-item label="购车方" prop="name">
-                <i-input v-model="customerData.name"></i-input>
-              </i-form-item>
-            </i-col>
-            <i-col span="12" pull="3" class="bigSelect">
-              <i-form-item label="联系电话" prop="mobileMain">
-                <i-input v-model="customerData.mobileMain"></i-input>
-              </i-form-item>
-            </i-col>
-          </i-row>
-          <i-row>
-            <i-col span="12">
-              <i-form-item label="证件类型" prop="certificateType">
-                <i-select v-model="customerData.certificateType">
-                 <i-option v-for="{value,label} in $dict.getDictData('0433')" :key="value" :label="label" :value="value"></i-option>
-                </i-select>
-              </i-form-item>
-            </i-col>
-            <i-col span="12" pull="3">
-              <i-form-item label="证件号码" prop="idCard">
-                <i-input type="text" v-model="customerData.idCard">
-                </i-input>
-              </i-form-item>
-            </i-col>
-          </i-row>
-          <i-row>
-            <i-col :span="12">
-              <i-form-item label="联系地址" prop="idCardAddressDetail">
-                <i-row>
-                  <i-row>
-                    <i-col :span="5">
-                      <i-select class="item-width96" placeholder="省" v-model="customerData.province">
-                        <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
-                      </i-select>
-                    </i-col>
-                    <i-col :span="5">
-                      <i-select class="item-width96" placeholder="市" v-model="customerData.city">
-                        <i-option v-for="{value,label} in this.customerData.province ? this.$city.getCityData({ level: 1, id: this.customerData.province }) : []"
-                          :key="value" :label="label" :value="value"></i-option>
-                      </i-select>
-                    </i-col>
-                    <i-col :span="5">
-                      <i-select class="item-width96" placeholder="区" v-model="customerData.localHomeAddr">
-                        <i-option v-for="{value,label} in this.customerData.city ? this.$city.getCityData({ level: 1, id: this.customerData.city }) : []"
-                          :key="value" :label="label" :value="value"></i-option>
-                      </i-select>
-                    </i-col>
-                  </i-row>
-                  <i-row>
-                    <i-input type="text" v-model="customerData.idCardAddressDetail" placeholder="请具体到门牌号"></i-input>
-                  </i-row>
-                </i-row>
-              </i-form-item>
-            </i-col>
-            <i-col :span="12" pull="3">
-              <i-form-item label="邮政编码" prop="postalCode">
-                <i-input type="text" v-model="customerData.postalCode">
-                </i-input>
-              </i-form-item>
-            </i-col>
-          </i-row>
-          <i-row>
-            <i-col :span="12">
-              <i-form-item label="代办服务" prop="orderServiceList">
-                <i-checkbox-group v-model="customerData.orderServiceList">
-                  <i-checkbox :label="200" :value="200">上牌</i-checkbox>
-                  <i-checkbox :label="201" :value="201">办理保险</i-checkbox>
-                  <i-checkbox :label="202" :value="202">代缴购置税</i-checkbox>
-                  <i-checkbox :label="203" :value="203">代缴车船税</i-checkbox>
-                  <i-checkbox :label="204" :value="204">按揭贷款</i-checkbox>
-                  <i-checkbox :label="205" :value="205">车辆装潢</i-checkbox>
-                  <i-checkbox :label="206" :value="206">代缴其他费用</i-checkbox>
-                  <i-checkbox :label="207" :value="207">其他</i-checkbox>
-                </i-checkbox-group>
-              </i-form-item>
-            </i-col>
-          </i-row>
-        </i-form>
-      </i-row>
-    </i-tab-pane>
+    <i-card title="个人信息">
+      <i-form ref="parchase-form" :rules="customerRules" :model="customerModel" :label-width="90" >
+        <i-row :gutter="16">
+          <i-col :span="12">
+            <i-form-item label="购车方" prop="name">
+              <i-input v-model="customerModel.name"></i-input>
+            </i-form-item>
+          </i-col>
+          <i-col :span="12">
+            <i-form-item label="联系电话" prop="mobileMain">
+              <i-input v-model="customerModel.mobileMain"></i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+        <i-row>
+          <i-col :span="12">
+            <i-form-item label="证件类型" prop="certificateType">
+              <i-select v-model="customerModel.certificateType">
+                <i-option v-for="{value,label} in $dict.getDictData('0433')" :key="value" :label="label" :value="value"></i-option>
+              </i-select>
+            </i-form-item>
+          </i-col>
+          <i-col :span="12">
+            <i-form-item label="证件号码" prop="idCard">
+              <i-input type="text" v-model="customerModel.idCard">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+        <i-row>
+          <i-form-item label="联系地址" prop="idCardAddressDetail">
+            <i-row>
+              <i-row type="flex" :gutter="16">
+                <i-col>
+                  <i-select class="city-select" placeholder="省" v-model="customerModel.province" transfer>
+                    <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+                  </i-select>
+                </i-col>
+                <i-col>
+                  <i-select class="city-select" placeholder="市" :disabled="!customerModel.province" v-model="customerModel.city" transfer>
+                    <i-option v-for="{value,label} in this.customerModel.province ? this.$city.getCityData({ level: 1, id: this.customerModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
+                  </i-select>
+                </i-col>
+                <i-col>
+                  <i-select class="city-select" placeholder="区" :disabled="!customerModel.city" v-model="customerModel.localHomeAddr" transfer>
+                    <i-option v-for="{value,label} in this.customerModel.city ? this.$city.getCityData({ level: 1, id: this.customerModel.city }) : []" :key="value" :label="label" :value="value"></i-option>
+                  </i-select>
+                </i-col>
+                <i-col>
+                  <i-input class="city-input" type="text" v-model="customerModel.idCardAddressDetail" placeholder="请具体到门牌号"></i-input>
+                </i-col>
+              </i-row>
+            </i-row>
+          </i-form-item>
+        </i-row>
+        <i-row>
+          <i-col :span="12">
+            <i-form-item label="邮政编码" prop="postalCode">
+              <i-input type="text" v-model="customerModel.postalCode">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+        <i-row>
+          <i-col>
+            <i-form-item label="代办服务" prop="orderServiceList">
+              <i-checkbox-group v-model="customerModel.orderServiceList">
+                <i-checkbox :label="200" :value="200">上牌</i-checkbox>
+                <i-checkbox :label="201" :value="201">办理保险</i-checkbox>
+                <i-checkbox :label="202" :value="202">代缴购置税</i-checkbox>
+                <i-checkbox :label="203" :value="203">代缴车船税</i-checkbox>
+                <i-checkbox :label="204" :value="204">按揭贷款</i-checkbox>
+                <i-checkbox :label="205" :value="205">车辆装潢</i-checkbox>
+                <i-checkbox :label="206" :value="206">代缴其他费用</i-checkbox>
+                <i-checkbox :label="207" :value="207">其他</i-checkbox>
+              </i-checkbox-group>
+            </i-form-item>
+          </i-col>
+        </i-row>
+      </i-form>
+    </i-card>
   </section>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
-  import {
-    CityService
-  } from "~/utils/city.service";
-  // import {
-  //   Prop
-  // } from "vue-property-decorator";
+import Vue from "vue";
+import Component from "vue-class-component";
+import { CityService } from "~/utils/city.service";
 
-  @Component({})
-  export default class CustomerMaterialsAll extends Vue {
-    private customerData: any = {
-      name: '', // 购车方
-      mobileMain: '', // 联系电话
-      certificateType: '', // 证件类型
-      idCard: '', // 证件号码
-      province: '', // 省
-      city: '', // 市
-      localHomeAddr: '', // 区
-      postalCode: '', // 邮政编码
-      idCardAddressDetail: '', // 箱子地址
-      orderServiceList: [], // 代办服务
-    };
-    private customerRules: any = {
-      certificateType: [{
+@Component({})
+export default class CustomerMaterialsAll extends Vue {
+  private customerModel: any = {};
+  private customerRules: any = {};
+
+  created() {
+    this.customerRules = {
+      name: {
         required: true,
-        message: '请输入证件类型',
-        trigger: 'change',
-        type:'number'
-      }],
-      idCardAddressDetail: [{
-        required: true,
-        message: '请输入详细地址信息',
-        trigger: 'blur',
-      }],
-      idCard:[
+        message: "请输入购车方用户名称",
+        trigger: "blur"
+      },
+      certificateType: [
         {
           required: true,
-          message: '请输入证件号码',
-          trigger: 'blur'
+          message: "请输入证件类型",
+          trigger: "change",
+          type: "number"
+        }
+      ],
+      idCardAddressDetail: [
+        {
+          required: true,
+          message: "请输入详细地址信息",
+          trigger: "blur"
+        }
+      ],
+      idCard: [
+        {
+          required: true,
+          message: "请输入证件号码",
+          trigger: "blur"
         },
         {
           validator: this.$validator.idCard,
-          trigger: 'blur'
+          trigger: "blur"
         }
       ],
-      postalCode: [{
-        required: true,
-        message: '请输入邮政编码',
-        trigger: 'blur',
-      }],
-      orderServiceList: [{
-        required: true,
-        message: '选择代办服务',
-        trigger: 'change',
-        type: 'array'
-      }],
-      mobileMain: [{
-        required: true,
-        message: '请输入联系电话',
-        trigger: 'blur',
-      },
+      postalCode: [
+        {
+          required: true,
+          message: "请输入邮政编码",
+          trigger: "blur"
+        }
+      ],
+      orderServiceList: [
+        {
+          required: true,
+          message: "选择代办服务",
+          trigger: "change",
+          type: "array"
+        }
+      ],
+      mobileMain: [
+        {
+          required: true,
+          message: "请输入联系电话",
+          trigger: "blur"
+        },
         {
           validator: this.$validator.phoneNumber,
-          trigger: 'blur'
-        }],
-    }
-    /**
-     * 信息反显
-     */
-    Reverse(data) {
-      data.personal.localHomeAddr = Number(data.personal.localHomeAddr)
-      data.personal.city = CityService.getCityParent(Number(data.personal.localHomeAddr))[1]
-      data.personal.province = CityService.getCityParent(Number(data.personal.localHomeAddr))[
-        0]
-      data.orderServiceList = data.orderServices.map(v => v.service)
-      this.customerData = data.personal
-    }
-    getinfo(data) {
-      this.customerData = Object.assign({}, data)
-      this.customerData.mobileMain = data.customerPhone
-    }
-    // mounted() {}
-    // whgwgdhwgdh() {
-    //   console.log(this.customerData.orderServiceList, 700)
-    // }
+          trigger: "blur"
+        }
+      ]
+    };
+    this.customerModel = {
+      name: "", // 购车方
+      mobileMain: "", // 联系电话
+      certificateType: "", // 证件类型
+      idCard: "", // 证件号码
+      province: "", // 省
+      city: "", // 市
+      localHomeAddr: "", // 区
+      postalCode: "", // 邮政编码
+      idCardAddressDetail: "", // 箱子地址
+      orderServiceList: [] // 代办服务
+    };
   }
 
+  /**
+   * 信息反显
+   */
+  Reverse(data) {
+    data.personal.localHomeAddr = Number(data.personal.localHomeAddr);
+    data.personal.city = CityService.getCityParent(
+      Number(data.personal.localHomeAddr)
+    )[1];
+    data.personal.province = CityService.getCityParent(
+      Number(data.personal.localHomeAddr)
+    )[0];
+    data.orderServiceList = data.orderServices.map(v => v.service);
+    this.customerModel = data.personal;
+  }
+
+  getinfo(data) {
+    this.customerModel = Object.assign({}, data);
+    this.customerModel.mobileMain = data.customerPhone;
+  }
+}
 </script>
 
-<style lang="less" scoped>
-  .customer-materials-all {
-    .ivu-select-selection {
-      width: 100%!important;
-      display: inline-block;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
+<style lang="less">
+.component.customer-materials-all {
+  .ivu-select {
+    &.city-select {
+      width: 120px !important;
+      .ivu-select-selection {
+        width: 120px !important;
+      }
     }
   }
-  .item-height50{
-    height: 50px;
+  .city-input {
+    .ivu-input {
+      width: 400px;
+    }
   }
-  .item-width96{
-    width:96px;
-  }
-
+}
 </style>
