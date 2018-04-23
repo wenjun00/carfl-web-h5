@@ -202,10 +202,10 @@ export default class FinancingLeaseApply extends Page {
     // 验证当前页面
     let result = await tab.validate();
 
-    if (result) {
+    // if (result) {
       this.currentStep++;
       this.currentTab = this.applicationTabList[this.currentStep];
-    }
+    // }
   }
 
   /**
