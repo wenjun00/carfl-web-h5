@@ -14,14 +14,14 @@
           </i-select>
         </i-form-item>
         <i-form-item prop="first" label="一级">
-          <i-select placeholder="全部" v-model="appReasonModel.first" clearable @on-change="firstSelect">
+          <i-select placeholder="全部" :disabled="!appReasonModel.type" v-model="appReasonModel.first" clearable @on-change="firstSelect">
             <i-option :label="item" :value="item" :key="item" v-for="item in firstOption">
               <div :title="item">{{ item|subString(10)}}</div>
             </i-option>
           </i-select>
         </i-form-item>
         <i-form-item prop="second" label="二级">
-          <i-select placeholder="全部" v-model="appReasonModel.second" clearable @on-change="secondSelect">
+          <i-select placeholder="全部" :disabled="!appReasonModel.first" v-model="appReasonModel.second" clearable @on-change="secondSelect">
             <i-option :label="item" :value="item" :key="item" v-for="item in secondOption">
               <div :title="item">{{ item|subString(10)}}</div>
             </i-option>
