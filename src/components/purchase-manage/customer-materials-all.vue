@@ -2,8 +2,8 @@
 <template>
   <section class="component customer-materials-all">
     <i-card title="个人信息">
-      <i-form ref="parchase-form" :rules="customerRules" :model="customerModel" :label-width="90" >
-        <i-row :gutter="16">
+      <i-form ref="parchase-form" :rules="customerRules" :model="customerModel" :label-width="90">
+        <i-row>
           <i-col :span="12">
             <i-form-item label="购车方" prop="name">
               <i-input v-model="customerModel.name"></i-input>
@@ -68,14 +68,7 @@
           <i-col>
             <i-form-item label="代办服务" prop="orderServiceList">
               <i-checkbox-group v-model="customerModel.orderServiceList">
-                <i-checkbox :label="200" :value="200">上牌</i-checkbox>
-                <i-checkbox :label="201" :value="201">办理保险</i-checkbox>
-                <i-checkbox :label="202" :value="202">代缴购置税</i-checkbox>
-                <i-checkbox :label="203" :value="203">代缴车船税</i-checkbox>
-                <i-checkbox :label="204" :value="204">按揭贷款</i-checkbox>
-                <i-checkbox :label="205" :value="205">车辆装潢</i-checkbox>
-                <i-checkbox :label="206" :value="206">代缴其他费用</i-checkbox>
-                <i-checkbox :label="207" :value="207">其他</i-checkbox>
+                <i-checkbox v-for="{value,label} of $dict.getDictData('0313')" :key="value" :value="value" :label="label" ></i-checkbox>
               </i-checkbox-group>
             </i-form-item>
           </i-col>
