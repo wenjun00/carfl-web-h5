@@ -1,6 +1,7 @@
 <!--客户联系人-->
 <template>
   <section class="component customer-contacts">
+<<<<<<< HEAD
     <i-card title="直系亲属">
       <div slot="extra">
         <i-button icon="plus" @click="addNewContacts" class="form-button" type="text">添加联系人</i-button>
@@ -16,6 +17,23 @@
       <i-table :columns="columns2" :data="data2" width="1100"></i-table>
       <p style="margin-left:10px;margin-top:20px;">其他联系人（提示：必填3个其他联系人）</p>
     </i-card>
+=======
+    <div class="form-title">客户联系人</div>
+    <div class="client-person" >直系亲属（提示：配偶(已婚必填)+必填2个直系亲属）</div>
+    <i-table :columns="columns1" :data="data1" :width="1100"></i-table>
+    <!--<i-button @click="addNewContacts" style="margin:10px 0" class="blueButton">添加联系人</i-button>-->
+    <div>
+      <Icon class="client-person-icon" type="plus" ></Icon>
+      <i-button @click="addNewContacts" class="form-button" type="text">添加联系人</i-button>
+    </div>
+    <div style="margin-left:10px;margin-top:20px;">其他联系人（提示：必填3个其他联系人）</div>
+    <i-table :columns="columns2" :data="data2" :width="1100"></i-table>
+    <!--<i-button @click="addNewContacts2" style="margin:10px 0" class="blueButton">添加联系人</i-button>-->
+    <div>
+      <Icon type="plus" class="client-person-icon"></Icon>
+      <i-button class="form-button" @click="addNewContacts2"  type="text">添加联系人</i-button>
+    </div>
+>>>>>>> a552363145a68c04bf065307455a34d3738f05d8
 
     <template>
       <i-modal :title="addNew?'添加联系人':'编辑联系人'" v-model="editOrAddContactsModal">

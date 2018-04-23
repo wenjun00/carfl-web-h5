@@ -25,7 +25,7 @@
     <data-box :columns="columns1" :data="data1"></data-box>
 
     <template>
-      <i-modal title="还款记录" v-model="monthPersonalDetialModal" width="900">
+      <i-modal title="还款记录" v-model="monthPersonalDetialModal" :width="900">
         <month-personal-detail></month-personal-detail>
       </i-modal>
     </template>

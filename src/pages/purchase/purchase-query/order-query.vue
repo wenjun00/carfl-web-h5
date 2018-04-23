@@ -17,19 +17,19 @@
     </data-form>
     <data-box :id="466" :columns="queryColumns" :data="queryData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
     <template>
-      <i-modal v-model="modal2" width="360" title="编辑订单">
+      <i-modal v-model="modal2" :width="360" title="编辑订单">
       </i-modal>
     </template>
     <!--客户chaxun-->
     <template>
-      <i-modal v-model="openCustomerInformation" title="客户查询" width="600">
+      <i-modal v-model="openCustomerInformation" title="客户查询" :width="600">
         <customer-query :row="customerInformation"></customer-query>
       </i-modal>
     </template>
 
     <!--进度查询-->
     <template>
-      <i-modal v-model="orderProgressModal" title="审核进度" width="1000">
+      <i-modal v-model="orderProgressModal" title="审核进度" :width="1000">
         <order-progress ref="order-progress"></order-progress>
         <div slot="footer"></div>
       </i-modal>
@@ -37,7 +37,7 @@
 
     <!--订单详情-->
     <template>
-      <i-modal v-model="purchaseInfoModal" title="订单详情" width="1200" class="purchaseInformation">
+      <i-modal v-model="purchaseInfoModal" title="订单详情" :width="1200" class="purchaseInformation">
         <purchase-information ref="purchase-information"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>

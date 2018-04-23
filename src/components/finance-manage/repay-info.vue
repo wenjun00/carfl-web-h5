@@ -8,7 +8,7 @@
     <i-table ref="table" class="i-table" :columns="columns1" :data="repayList" stripe size="small"></i-table>
 
     <template>
-      <i-modal title="还款记录" v-model="repayRecordModal" width="1000">
+      <i-modal title="还款记录" v-model="repayRecordModal" :width="1000">
         <repay-record ref="repay-record"></repay-record>
         <div slot="footer">
           <i-button @click="repayRecordModal=false" class="highDefaultButton">关闭</i-button>
@@ -17,7 +17,7 @@
     </template>
 
     <template>
-      <i-modal v-model="addAttachmentModal" title="补传凭证" width="900" :transfer="false">
+      <i-modal v-model="addAttachmentModal" title="补传凭证" :width="900" :transfer="false">
         <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
         <div slot="footer">
           <i-button @click="cancelOne">取消</i-button>

@@ -16,7 +16,7 @@
               ref="databox"></data-box>
 
     <template>
-      <i-modal @on-visible-change="visibleChange" title="订单详情" width="1000" v-model="purchaseInfoModal"
+      <i-modal @on-visible-change="visibleChange" title="订单详情" :width="1200" v-model="purchaseInfoModal"
                class="purchaseInformation">
         <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
         <div slot="footer">
@@ -79,7 +79,7 @@
         {
           type: 'selection',
           fixed: 'left',
-          minWidth: this.$common.getColumnWidth(2),
+          width: 40,
           align: 'center'
         },
         {

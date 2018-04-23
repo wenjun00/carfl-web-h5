@@ -15,8 +15,9 @@
             </div>
           </div>
           <div class="data-form-list">
-            <div class="data-form-list-maintain" v-for="item in maintains" :key="item.id" :value="item.name" :class="{'maintainCss':item.id===checkId}"
-              @click="checkMaintain(item)">
+            <div class="data-form-list-maintain" v-for="item in maintains" :key="item.id" :value="item.name"
+                 :class="{'maintainCss':item.id===checkId}"
+                 @click="checkMaintain(item)">
               <span>{{item.name}}</span>
             </div>
           </div>
@@ -58,7 +59,8 @@
     </template>
     <template>
       <i-modal title="新增素材类型" v-model="MaterialTypeModel">
-        <add-material-type @close="closeMaterialType" ref="add-material-type" :maintains="maintains"></add-material-type>
+        <add-material-type @close="closeMaterialType" ref="add-material-type"
+                           :maintains="maintains"></add-material-type>
         <div slot="footer">
           <i-button class="Ghost" @click="cancelAddMaterialType">取消</i-button>
           <i-button class="blueButton" @click="addMatrialTypeSure">确定</i-button>
@@ -110,8 +112,8 @@
     @Dependencies(PersonalMaterialService) private personalMaterialService: PersonalMaterialService;
     @Dependencies(PageService) private pageService: PageService;
     private columns: any;
-    private data1: Array < Object > = [];
-    private maintains: Array < any > = [];
+    private data1: Array<Object> = [];
+    private maintains: Array<any> = [];
     private searchOptions: Boolean = false;
     private checkId: number = 376;
     private item: any;
@@ -135,56 +137,57 @@
         name: '',
       };
       this.columns = [{
-          title: '操作',
-          align: 'center',
-          minWidth: this.$common.getColumnWidth(5),
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h('div', [
-              h(
-                'i-button', {
-                  props: {
-                    type: 'text',
-                  },
-                  style: {
-                    color: '#265EA2',
-                  },
-                  on: {
-                    click: () => {
-                      this.editFun(row);
-                    },
+        title: '操作',
+        align: 'center',
+        fixed: 'left',
+        minWidth: this.$common.getColumnWidth(5),
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          return h('div', [
+            h(
+              'i-button', {
+                props: {
+                  type: 'text',
+                },
+                style: {
+                  color: '#265EA2',
+                },
+                on: {
+                  click: () => {
+                    this.editFun(row);
                   },
                 },
-                '编辑'
-              ),
-              h(
-                'i-button', {
-                  props: {
-                    type: 'text',
-                  },
-                  style: {
-                    color: '#265EA2',
-                  },
-                  on: {
-                    click: () => {
-                      this.$Modal.confirm({
-                        title: '提示',
-                        content: '您确定要删除吗？',
-                        onOk: () => {
-                          this.delectMaintain(row);
-                        },
-                      });
-                    },
+              },
+              '编辑'
+            ),
+            h(
+              'i-button', {
+                props: {
+                  type: 'text',
+                },
+                style: {
+                  color: '#265EA2',
+                },
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: '提示',
+                      content: '您确定要删除吗？',
+                      onOk: () => {
+                        this.delectMaintain(row);
+                      },
+                    });
                   },
                 },
-                '删除'
-              ),
-            ]);
-          },
+              },
+              '删除'
+            ),
+          ]);
         },
+      },
         {
           title: '名称',
           key: 'name',
@@ -236,11 +239,16 @@
         },
       ];
     }
-    getOrderInfoByTime() {}
+
+    getOrderInfoByTime() {
+    }
+
     openSearch() {
       this.searchOptions = !this.searchOptions;
     }
-    exportMonthReport() {}
+
+    exportMonthReport() {
+    }
 
     /**
      * 获取客户素材列表
@@ -254,6 +262,7 @@
           this.maintains = val;
         });
     }
+
     /**
      * 分页查询客户素材
      *
@@ -266,6 +275,7 @@
       };
       this.search();
     }
+
     /**@
      * 根据条件搜索
      */
@@ -275,12 +285,13 @@
           this.data1 = val;
         },
         ({
-          msg
-        }) => {
+           msg
+         }) => {
           this.$Message.error(msg);
         }
       );
     }
+
     /**
      * 删除客户素材
      */
@@ -295,12 +306,13 @@
             this.checkMaintain(this.item);
           },
           ({
-            msg
-          }) => {
+             msg
+           }) => {
             this.$Message.error(msg);
           }
         );
     }
+
     /**
      *新增素材 确定按钮
      */
@@ -308,10 +320,12 @@
       let materialOpen: any = this.$refs['add-material'];
       materialOpen.formRules(this.checkId);
     }
+
     closeMaterial() {
       this.materialModel = false;
       this.checkMaintain(this.itemData); //刷新
     }
+
     /**
      * 取消新增素材
      */
@@ -320,6 +334,7 @@
       let formReset: any = this.$refs['add-material'];
       formReset.reset();
     }
+
     /**
      * 编辑素材 确定按钮
      */
@@ -329,14 +344,17 @@
       this.editMaterialModel = true;
       this.editId = row.id;
     }
+
     editSure() {
       let materialOpen: any = this.$refs['edit-material'];
       materialOpen.formRules(this.checkId);
     }
+
     closeEditMaterial() {
       this.editMaterialModel = false;
       this.checkMaintain(this.itemData); //刷新
     }
+
     /**
      * 取消编辑素材
      */
@@ -345,6 +363,7 @@
       //   let _editmaterial: any = this.$refs['edit-material'];
       //   _editmaterial.reset();
     }
+
     /**
      * 新增素材类型  确定按钮
      */
@@ -352,10 +371,12 @@
       let materialOpen: any = this.$refs['add-material-type'];
       materialOpen.formRules();
     }
+
     closeMaterialType() {
       this.MaterialTypeModel = false;
       this.getCustomerList(); //刷新
     }
+
     /**
      * 取消新增素材类型
      */
@@ -364,6 +385,7 @@
       let formReset: any = this.$refs['add-material-type'];
       formReset.reset();
     }
+
     /**
      * 是否必传
      */
@@ -377,12 +399,13 @@
           this.$Message.success('修改成功！');
         },
         ({
-          msg
-        }) => {
+           msg
+         }) => {
           this.$Message.error('修改失败！');
         }
       );
     }
+
     /**
      * 重置搜索
      */

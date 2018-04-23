@@ -79,7 +79,7 @@
             </i-row>
         </div>
         <template>
-            <i-modal class="add-vehicle" v-model="addCar" title="添加车辆" width="1100">
+            <i-modal class="add-vehicle" v-model="addCar" title="添加车辆" :width="1100">
                 <i-row>
                     <i-input size="small" style="display:inline-block;width:20%;margin-right:10px" placeholder="请输入关键字"></i-input>
                     <i-button class="blueButton">搜索</i-button>
@@ -106,7 +106,7 @@
 
         <!--编辑收款项-->
         <template>
-            <i-modal v-model="modifyGatherItemModal" title="编辑收款项" width="300">
+            <i-modal v-model="modifyGatherItemModal" title="编辑收款项" :width="300">
                 <modify-gather-item></modify-gather-item>
             </i-modal>
         </template>
@@ -270,6 +270,7 @@ export default class EarlyRecoverApply extends Page {
         title: '操作',
         width: 240,
         align: 'center',
+        fixed: 'left',
         render: (h, { row, column, index }) => {
           if (row.itemName !== '合计') {
             return h('div', [

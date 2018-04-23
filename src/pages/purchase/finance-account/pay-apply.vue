@@ -73,7 +73,7 @@
         </div>
         <!--编辑收款项-->
         <template>
-            <i-modal v-model="modifyGatherItemModal" title="编辑收款项" width="300">
+            <i-modal v-model="modifyGatherItemModal" title="编辑收款项" :width="300">
                 <modify-gather-item></modify-gather-item>
             </i-modal>
         </template>

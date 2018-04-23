@@ -13,15 +13,11 @@
           <i-date-picker v-model="productModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
+      <template slot="button">
+           <i-button @click="pPackageModel=true">新增产品包</i-button>
+      </template>
     </data-form>
     <data-box :id="91" :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService"></data-box>
-    <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:10px">
-        <i-col :span="1" offset="22">
-          <i-button @click="pPackageModel=true" class="highButton">新增产品包</i-button>
-        </i-col>
-      </i-row>
-    </div>
     <template>
       <i-modal title="新增产品包" v-model="pPackageModel" :transfer="false">
         <add-product-package @close="close" ref="add-product-package"></add-product-package>
@@ -197,9 +193,6 @@
         dateRange:[]
       };
     }
-    // mounted() {
-    //   this.getProductPackage();
-    // }
     cancelClick() {
       this.pPackageModel = false
       let _addproductpackage: any = this.$refs['add-product-package']

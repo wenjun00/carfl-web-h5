@@ -65,13 +65,13 @@
       </Spin>
     </div>
     <template>
-      <i-modal title="历史记录" width="1200" v-model="historicalModal" :trandfer="false" class="historical">
+      <i-modal title="历史记录" :width="1200" v-model="historicalModal" :trandfer="false" class="historical">
         <historical-record @close="historicalModal=false" :historicalDataset="historicalDataset" @distributionData="distributionData"></historical-record>
       </i-modal>
     </template>
 
     <template>
-      <i-modal title="归属业务员" width="800" v-model="salesmanModal" :trandfer="false" class="historical">
+      <i-modal title="归属业务员" :width="800" v-model="salesmanModal" :trandfer="false" class="historical">
         <salesman-name @choosecurrentData="choosecurrentData" @close="salesmanModal=false"></salesman-name>
       </i-modal>
     </template>
@@ -232,6 +232,7 @@
       this.columns1 = [{
           title: '操作',
           align: 'center',
+        fixed:'left',
           render: (h, {
             row,
             column,

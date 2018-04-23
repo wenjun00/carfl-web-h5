@@ -17,10 +17,14 @@
           <i-input placeholder="请输入经销商" v-model="busModal.carName"></i-input>
         </i-form-item>
       </template>
+      <template slot="button">
+         <i-button @click="addquoteFun">新增报价</i-button>
+      </template>
+
     </data-form>
     <data-box :id="154" :columns="columns" :data="carList" @onPageChange="seachBusiness" :page="pageService"></data-box>
     <template>
-      <i-modal v-model="editModal" title="编辑报价" width="600" :mask-closable="false" class="edit_class">
+      <i-modal v-model="editModal" title="编辑报价" :width="600" :mask-closable="false" class="edit_class">
         <edit-car @seachBusiness="seachBusiness" @close="closeAndRefreshEdit" ref="edit-car"></edit-car>
         <div slot="footer">
           <i-button @click="cancelEditQuote">取消</i-button>
@@ -29,7 +33,7 @@
       </i-modal>
     </template>
     <template>
-      <i-modal v-model="addquoteModel" title="新增报价" width="600" @on-visible-change="addQuoteModalChange">
+      <i-modal v-model="addquoteModel" title="新增报价" :width="600" @on-visible-change="addQuoteModalChange">
         <new-quote ref="new-quote" @seachBusiness="seachBusiness" @close="addquoteModel=false"></new-quote>
         <div slot="footer">
           <i-button @click="cancelAddQuote">取消</i-button>
@@ -37,17 +41,7 @@
         </div>
       </i-modal>
     </template>
-    <!-- <div class="bottom_addPrice">
-      <i-button class="highButton" @click="addquoteFun">新增报价</i-button>
-    </div> -->
-    <!--新增报价-->
-    <div class="submitBar">
-      <i-row type="flex" align="middle">
-        <i-col :span="1" :offset="23">
-          <i-button @click="addquoteFun" class="highButton">新增报价</i-button>
-        </i-col>
-      </i-row>
-    </div>
+  
   </section>
 </template>
 <script lang="ts">

@@ -53,7 +53,7 @@
     </div>
     <div class="modal-item-origin">
       <i-row>
-        <i-col class="modal-item-col" :span="6" v-for="(v,i) in applicationPhaseResources" :key="v.id">
+        <i-col class="modal-item-col" :span="6" v-for="v in applicationPhaseResources" :key="v.id">
           <div>
           </div>
           <div class="modal-item-col-div">{{v.originName}}</div>
@@ -61,7 +61,6 @@
       </i-row>
     </div>
     <div class="modal-item-huakou">
-      <!--<span style="font-size:14px;font-weight:bold;position:relative;top:20px;">还款总额：1010<span></span></span>-->
       <i-button class="modal-item-huakoubutton blueButton" @click="checkDeductRecord">查看划扣记录</i-button>
     </div>
 
@@ -101,7 +100,8 @@
           <i-input class="modal-item-huakou-input" v-model="v.collectMoneyAmount" @on-blur="inputBlur"></i-input>
           <i-button class="blueButton">确认划扣</i-button>
         </td>
-        <td><span>已处理</span>
+        <td>
+          <span>已处理</span>
           <i-icon type="loop" size="20" color="#199ED8" class="modal-item-yichuli"></i-icon>
         </td>
       </tr>
@@ -135,7 +135,7 @@
             <h3 class="modal-item-upload-text">建议大小不超过10M</h3>
           </div>
         </i-col>
-        <i-col class="modal-item-upload-col" :span="8" v-for="(v,i) in financeUploadResources" :key="v.id">
+        <i-col class="modal-item-upload-col" :span="8" v-for="v in financeUploadResources" :key="v.id">
           <img class="modal-item-upload-img" :src="v.materialUrl">
         </i-col>
       </i-row>
@@ -147,7 +147,7 @@
       </i-modal>
     </template>
     <template>
-      <i-modal title="划扣记录" v-model="deductRecordModal" width="1200">
+      <i-modal title="划扣记录" v-model="deductRecordModal" :width="1200">
         <deduct-record ref="deduct-record"></deduct-record>
       </i-modal>
     </template>
@@ -475,8 +475,8 @@
       display: inline-block;
       width: 90%
     }
-    .td-wh{
-        width: 25%;
+    .td-wh {
+      width: 25%;
     }
     .modal-item-huakou-input {
       display: inline-block;

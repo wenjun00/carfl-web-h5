@@ -15,7 +15,7 @@
     <data-box :id="405" :columns="columns1" :data="paymentData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
 
     <template>
-      <i-modal v-model="confirmGatherModal" :title="checkGatherModal?'查看':'确认付款'" width="900" class="confirmGather" :transfer="false">
+      <i-modal v-model="confirmGatherModal" :title="checkGatherModal?'查看':'确认付款'" :width="900" class="confirmGather" :transfer="false">
         <confirm-pay ref="confirm-pay" :check="checkGatherModal"></confirm-pay>
         <div slot="footer">
           <i-button class="highButton" @click="sendBack" v-if="!checkGatherModal">退回</i-button>

@@ -133,6 +133,7 @@
           title: "操作",
           minWidth: this.$common.getColumnWidth(5),
           align: "center",
+          fixed:'left',
           render: (h, {
             row,
             column,
@@ -227,7 +228,7 @@
         },
         {
           type: "selection",
-          minWidth: this.$common.getColumnWidth(3),
+          width:40,
           align: "center"
         }
       ];

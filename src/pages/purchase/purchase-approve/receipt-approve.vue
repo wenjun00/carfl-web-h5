@@ -21,12 +21,12 @@
     <!--Model-->
 
     <template>
-      <i-modal title="审批" width="500" v-model="approvalModal">
+      <i-modal title="审批" :width="500" v-model="approvalModal">
       </i-modal>
     </template>
 
     <template>
-      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'收款审批':'查看'" width="800" :transfer="false">
+      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'收款审批':'查看'" :width="800" :transfer="false">
         <!--<add-apply></add-apply>-->
         <apply-detail ref="applyDetail"></apply-detail>
         <div slot="footer">

@@ -29,7 +29,7 @@
     <!--Model-->
 
     <template>
-      <i-modal v-model="checkApplyModal" title="查看" width="800">
+      <i-modal v-model="checkApplyModal" title="查看" :width="800">
         <!--<add-apply></add-apply>-->
         <apply-detail ref="applyDetail"></apply-detail>
       </i-modal>
@@ -106,6 +106,7 @@
       this.columns1 = [{
         title: '操作',
         align: 'center',
+        fixed: 'left',
         minWidth: this.$common.getColumnWidth(5),
         render: (h, {
           row,

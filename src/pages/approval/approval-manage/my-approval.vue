@@ -30,7 +30,7 @@
     <data-box :id="280" :columns="columns1" :data="myOrderList" @onPageChange="getMyOrderList" :page="pageService"></data-box>
     <!--Modal-->
     <template>
-      <i-modal class="modal" v-model="approveModal" title="审批" width="1030">
+      <i-modal class="modal" v-model="approveModal" title="审批" :width="1030">
         <approve ref="approve"></approve>
         <div slot="footer">
           <i-button class="left-button" @click="backToResource">退回资源池</i-button>
@@ -115,7 +115,7 @@
     </template>
 
     <template>
-      <i-modal title="订单详情" width="1000" v-model="purchaseInfoModal" class="purchaseInformation">
+      <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
         <purchase-information ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
@@ -165,7 +165,7 @@
 
     <!--复审终审-->
     <template>
-      <i-modal title="审批通过" v-model="secendLastApproval" width="800">
+      <i-modal title="审批通过" v-model="secendLastApproval" :width="800">
         <second-last-approve ref="second-last" @close="closeAndRefresh"></second-last-approve>
         <div slot="footer">
           <i-button @click="secendLastApprovalPassCancel">取消</i-button>

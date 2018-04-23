@@ -97,7 +97,7 @@
     </div>
 
     <template>
-      <i-modal title="申请单详情" v-model="purchaseInfoModel" width="1000" class="purchaseInformation">
+      <i-modal title="申请单详情" v-model="purchaseInfoModel" :width="1200" class="purchaseInformation">
         <purchase-information ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModel=false">返回</i-button>
