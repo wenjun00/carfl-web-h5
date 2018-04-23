@@ -346,6 +346,7 @@ export default class ProdConfig extends Page {
       {
         title: "操作",
         align: "center",
+        fixed: "left",
         render: (h, { row, column, index }) => {
           return h("div", [
             h(

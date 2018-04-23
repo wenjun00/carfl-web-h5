@@ -222,6 +222,7 @@ export default class VehicleMaintenance extends Page {
       },
       {
         title: '操作',
+        fixed:'left',
         minWidth: this.$common.getColumnWidth(4),
         align: 'center',
         render: (h, { row, column, index }) => {

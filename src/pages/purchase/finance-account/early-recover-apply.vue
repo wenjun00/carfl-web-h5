@@ -270,6 +270,7 @@ export default class EarlyRecoverApply extends Page {
         title: '操作',
         width: 240,
         align: 'center',
+        fixed: 'left',
         render: (h, { row, column, index }) => {
           if (row.itemName !== '合计') {
             return h('div', [

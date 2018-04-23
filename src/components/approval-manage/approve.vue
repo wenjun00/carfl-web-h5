@@ -170,46 +170,38 @@
         <div class="data-form-item"></div>
         <a name="kehulaiyuan" class="xinxi">客户来源</a>
       </div>
-      <table border="1" width="1000" class="data-form-table">
-        <tr>
-          <td bgColor="#F5F5F5">通过宣传</td>
-          <td colspan="4">
-            <!-- <span>{{personalResourcePublicity.resourceContent?personalResourcePublicity.resourceContent:''}}</span> -->
-            <i-checkbox-group v-model="byAdvertise">
-              <i-checkbox v-for="{value,label} in $dict.getDictData('0018')" :key="value" :label="value" :value="value" disabled>{{label}}
-              </i-checkbox>
-            </i-checkbox-group>
-          </td>
-        </tr>
-        <tr>
-          <td bgColor="#F5F5F5">通过介绍</td>
-          <td v-if="personalResourceIntroduce.resourceType===81">
+      <data-grid :labelWidth="110" labelAlign="left" contentAlign="left" class="data-form-grid">
+        <data-grid-item label="通过宣传" :span="12">
+          <i-checkbox-group v-model="byAdvertise">
+            <i-checkbox v-for="{value,label} in $dict.getDictData('0018')" :key="value" :label="value" :value="value" disabled>{{label}}
+            </i-checkbox>
+          </i-checkbox-group>
+        </data-grid-item>
+        <data-grid-item label="通过介绍" :span="12">
+          <div v-if="personalResourceIntroduce.resourceType===81">
             <span>同行姓名：</span>
             <span>{{personalResourceIntroduce.peerName}}</span>
             <span class="td-span">同行公司：</span>
             <span>{{personalResourceIntroduce.peerCompany}}</span>
             <span class="td-span">同行联系方式：</span>
             <span>{{personalResourceIntroduce.peerPhone}}</span>
-          </td>
-          <td v-else-if="personalResourceIntroduce.resourceType===82">
+          </div>
+          <div v-else-if="personalResourceIntroduce.resourceType===82">
             <span>客户姓名：</span>
             <span>{{personalResourceIntroduce.customerName}}</span>
             <span class="td-span">联系方式：</span>
             <span>{{personalResourceIntroduce.customerPhone}}</span>
             <span class="td-span">在我司是否成功购车：</span>
             <span>{{personalResourceIntroduce.isBuyCar===0?'是':'否'}}</span>
-          </td>
-          <td v-else-if="personalResourceIntroduce.resourceType===83">
+          </div>
+          <div v-else-if="personalResourceIntroduce.resourceType===83">
             <span>机构名称：</span>
             <span>{{personalResourceIntroduce.organizationNames}}</span>
             <span class="td-span">推荐人：</span>
             <span>{{personalResourceIntroduce.referrer}}</span>
-          </td>
-          <td v-else>
-            <span></span>
-          </td>
-        </tr>
-      </table>
+          </div>
+        </data-grid-item>
+      </data-grid>
     </i-row>
 
     <!--素材资料-->
@@ -565,7 +557,10 @@
   .data-form-grid {
     margin-top: 10px;
     width: 1000px;
-    font-size: 14px
+    font-size: 14px;
+    .td-span {
+      margin-left: 50px
+    }
   }
   
   .cheliangxinxi {

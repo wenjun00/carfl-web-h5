@@ -109,13 +109,33 @@ body,
 }
 
 .form-style() {
-  .ivu-form {
+  // 设置宽度
+  .set-input-width(@width) {
     .ivu-input-type,
     .ivu-input-wrapper,
     .ivu-select,
     .ivu-input-number,
     .ivu-select-single .ivu-select-selection {
-      width: 240px;
+      width: @width;
+    }
+  }
+  .ivu-form {
+    .set-input-width(200px);
+    
+    &.mini {
+      .set-input-width(150px);
+    }
+    &.small {
+      .set-input-width(180px);
+    }
+    &.normal {
+      .set-input-width(200px);
+    }
+    &.medium {
+      .set-input-width(240px);
+    }
+    &.large {
+      .set-input-width(320px);
     }
   }
   .data-form {

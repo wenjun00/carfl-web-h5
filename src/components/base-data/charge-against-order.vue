@@ -39,6 +39,7 @@
       }, {
         align: 'center',
         title: '操作',
+        fixed:'left',
         render: (h, {
           row,
           column,

@@ -198,7 +198,7 @@ export default class FinancingLeaseApply extends Page {
    */
   async onNextStep() {
     let tab = this.$refs[this.currentTab] as any;
-   console.log(tab)
+    console.log(tab);
     // 验证当前页面
     let result = await tab.validate();
 
@@ -405,7 +405,10 @@ export default class FinancingLeaseApply extends Page {
     // TODO: 自定义验证
   }
 
-  submitApplicationData(draft) {
+  /**
+   * 获取申请数据
+   */
+  getApplicationData() {
     let chooseBuyMaterials = this.$refs[
       "choose-buy-materials"
     ] as ChooseBuyMaterials;
@@ -431,21 +434,31 @@ export default class FinancingLeaseApply extends Page {
     let OrderCar = chooseBuyMaterials.carDataSet;
     let Personal = Object.assign({});
 
+    return {
+      CreateOrderModel: Object.assign(
+        {},
+        chooseBuyMaterials.chooseModel,
+        chooseBuyMaterials.productModel
+      ),
+      OrderCar: chooseBuyMaterials.carDataSet,
+      Personal: Object.assign({})
+    };
+  }
+
+  /**
+   * 提交申请数据
+   */
+  submitApplicationData(draft) {
+    let data = this.getApplicationData();
     // 添加订单
-    this.productOrderService
-      .saveFinanceApplyInfo({
-        CreateOrderModel,
-        OrderCar,
-        Personal
-      })
-      .subscribe(
-        data => {
-          this.$Message.success("保存成功");
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
-      );
+    this.productOrderService.saveFinanceApplyInfo(data).subscribe(
+      data => {
+        this.$Message.success("保存成功");
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
+    );
   }
 
   /**
