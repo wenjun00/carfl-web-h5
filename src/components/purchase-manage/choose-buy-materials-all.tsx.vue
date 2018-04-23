@@ -130,6 +130,7 @@
 
       this.columns1 = [{
           title: '操作',
+          fixed:'left',
           align: 'center',
           render: (h, {
             row,

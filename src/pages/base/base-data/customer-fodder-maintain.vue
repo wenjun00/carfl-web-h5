@@ -124,6 +124,7 @@ export default class CustomerFodderMaintain extends Page {
     }
     this.columns = [
       {
+        fixed:'left',
         title: '操作',
         align: 'center',
         minWidth: this.$common.getColumnWidth(5),
