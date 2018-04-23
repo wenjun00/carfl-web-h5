@@ -112,9 +112,8 @@ export default class WaitHandleCase extends Vue {
 <style lang="less" scoped>
 .component.wait-handle-case {
   .data-form {
-    border-bottom: 1px solid #e9e9e9;
-    padding-bottom: 6px;
-    margin-bottom: 6px;
+    padding-bottom: 3px;
+    margin-bottom: 3px;
   }
   .data-checkbox {
     width: 400px;

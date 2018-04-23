@@ -36,20 +36,10 @@ export class CommonService {
       return
     }
 
-    // 重组部门数据，以适应联级选择器
-    sourece = sourece.map(v => {
-      return {
-        id: v.id,
-        deptPid: v.deptPid,
-        value: v.id,
-        label: v.deptName
-      }
-    })
-
     // 生成部门结构数据
     let fun = node => {
       // 递归对象子元素
-      let children = sourece.filter(x => node.id === x.deptPid).map(fun);
+      let children = sourece.filter(x => node.id === x.pid).map(fun);
 
       if (children && children.length) {
         return Object.assign({}, node, { children })
@@ -64,7 +54,7 @@ export class CommonService {
         return true;
       }
 
-      return !sourece.find(item => item.id === x.deptPid);
+      return !sourece.find(item => item.id === x.pid);
     });
 
     // 生成树形结构

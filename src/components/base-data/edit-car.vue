@@ -57,48 +57,48 @@
       <i-row>
         <i-col :span="11">
           <i-form-item label="市场指导价" prop="marketGuidingPrice">
-            <i-input-number  v-model="carFormItem.marketGuidingPrice" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>  
+            <i-input-number  v-model="carFormItem.marketGuidingPrice" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12" :push="1">
           <i-form-item label="租金（月）" prop="monthPay">
-            <i-input-number  v-model="carFormItem.monthPay" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>  
+            <i-input-number  v-model="carFormItem.monthPay" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="11">
           <i-form-item label="经销商报价" prop="dealerGuidingPrice">
-            <i-input-number  v-model="carFormItem.dealerGuidingPrice" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>   
+            <i-input-number  v-model="carFormItem.dealerGuidingPrice" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12" :push="1">
           <i-form-item label="购置税" prop="purchaseTaxMoney">
-            <i-input-number  v-model="carFormItem.purchaseTaxMoney" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>    
+            <i-input-number  v-model="carFormItem.purchaseTaxMoney" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="11">
           <i-form-item label="首期金额" prop="firstPayment">
-             <i-input-number  v-model="carFormItem.firstPayment" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>      
+            <i-input-number  v-model="carFormItem.firstPayment" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12" :push="1">
           <i-form-item label="路桥费" prop="roadBridgeFee">
-            <i-input-number  v-model="carFormItem.roadBridgeFee" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>       
+            <i-input-number  v-model="carFormItem.roadBridgeFee" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="11">
           <i-form-item label="融资金额" prop="financeAmount">
-            <i-input-number  v-model="carFormItem.financeAmount" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>       
+            <i-input-number  v-model="carFormItem.financeAmount" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12" :push="1">
           <i-form-item label="保险费" prop="annualAmount">
-            <i-input-number  v-model="carFormItem.annualAmount" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>     
+            <i-input-number  v-model="carFormItem.annualAmount" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
           </i-form-item>
         </i-col>
       </i-row>
@@ -110,14 +110,14 @@
         </i-col>
         <i-col :span="12" :push="1">
           <i-form-item label="GPS费" prop="gpsFee">
-             <i-input-number  v-model="carFormItem.gpsFee" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>     
+            <i-input-number  v-model="carFormItem.gpsFee" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row>
         <i-col :span="11">
           <i-form-item label="其他费用" prop="otherFee">
-            <i-input-number v-model="carFormItem.otherFee" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>     
+            <i-input-number v-model="carFormItem.otherFee" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
           </i-form-item>
         </i-col>
         <i-col :span="12" :push="1">
@@ -295,8 +295,8 @@
           this.brandList = data;
         },
         ({
-          msg
-        }) => {
+           msg
+         }) => {
           this.$Message.error(msg);
         }
       );
@@ -306,8 +306,8 @@
           this.SeriesList = data;
         },
         ({
-          msg
-        }) => {
+           msg
+         }) => {
           this.$Message.error(msg);
         }
       );
@@ -317,8 +317,8 @@
           this.carList = data;
         },
         ({
-          msg
-        }) => {
+           msg
+         }) => {
           this.$Message.error(msg);
         }
       );
@@ -358,8 +358,8 @@
               this.$emit('close');
             },
             ({
-              msg
-            }) => {
+               msg
+             }) => {
               this.$Message.error(msg);
             }
           );
@@ -387,8 +387,8 @@
           this.allProdPackage = data;
         },
         ({
-          msg
-        }) => {
+           msg
+         }) => {
           this.$Message.error(msg);
         }
       );
@@ -410,11 +410,11 @@
   }
 
 </style>
- <style lang="less">
- .ivu-input-wrapper.ivu-input-type,
- .ivu-select-selection,
-   .ivu-input-number{
-     width:180px;
-   }
- 
- </style>
+<style lang="less">
+  .ivu-input-wrapper.ivu-input-type,
+  .ivu-select-selection,
+  .ivu-input-number{
+    width:180px;
+  }
+</style>
+

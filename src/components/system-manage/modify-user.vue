@@ -177,10 +177,22 @@ export default class ModifyUser extends Vue {
 
   mounted() {
     //获取所有组织机构
+    // 重组部门数据，以适应联级选择器
+
+
     this.manageService.getAllDepartment().subscribe(
       data => {
-        this.allOrg = data;
-        this.depatmentData = CommonService.departmentData(data);
+        this.allOrg = data
+
+        let treeSource = data.map(v => {
+          return {
+            id: v.id,
+            pid: v.deptPid,
+            value: v.id,
+            label: v.deptName
+          }
+        })
+        this.depatmentData = CommonService.departmentData(treeSource)
       },
       err => this.$Message.error(err.msg)
     );
