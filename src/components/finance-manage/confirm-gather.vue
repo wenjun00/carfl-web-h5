@@ -183,8 +183,8 @@
           this.$nextTick(()=>{
             let _uploadFodder:any = this.$refs['upload-voucher']
             _uploadFodder.Reverse(data.applicationPhaseUploadResources)
-            let _uploadFodderTwo:any = this.$refs['upload-voucher-two']
-            _uploadFodderTwo.Reverse(data.collectMoneyPhaseUploadResources)
+            // let _uploadFodderTwo:any = this.$refs['upload-voucher-two']
+            // _uploadFodderTwo.Reverse(data.collectMoneyPhaseUploadResources)
           })
           this.inputBlur()
         }, ({
