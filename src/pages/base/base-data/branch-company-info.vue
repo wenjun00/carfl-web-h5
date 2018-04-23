@@ -2,6 +2,7 @@
 <template>
     <section class="page branch-company-info">
         <page-header title="分公司管理">
+            <i-button class="blueButton" @click="addNewBranchFirmClick">新增分公司</i-button>
         </page-header>
         <data-form hidden-date-search :model="companyModel" @on-search="seachCompany" :page="pageService" hidden-reset>
             <template slot="input">
@@ -13,11 +14,6 @@
         <data-box :id="175" :columns="columns" :data="companyList" @onPageChange="seachCompany" :page="pageService"></data-box>
         <div class="submitBar">
             <i-row type="flex" align="middle" class="submitBar-row">
-                <i-col :span="22" class="submitBar-col">
-                    <div class="fixed-container">
-                        <i-button size="large" class="highButton" @click="addNewBranchFirmClick">新增分公司</i-button>
-                    </div>
-                </i-col>
             </i-row>
         </div>
 

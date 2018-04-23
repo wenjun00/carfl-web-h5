@@ -1,7 +1,9 @@
 <!--财务开票-->
 <template>
     <section class="page finance-make-invoice">
-        <page-header title="财务开票" hiddenPrint hiddenExport></page-header>
+        <page-header title="财务开票" hiddenPrint hiddenExport>
+            <i-button class="blueButton" @click="confirmMakeInvoice">确认开票</i-button>
+        </page-header>
         <data-form :model="model" hiddenDateSearch hidden-reset :page="pageService">
             <template slot="input">
                 <i-form-item label="关键字：" prop="dynamicCondition">
@@ -41,12 +43,7 @@
                 <i-col :span="10" pull="4">
                     <span>申请时间： 2017-12-01 13:56:45</span>
                 </i-col>
-                <i-col :span="4" class="bottom">
-                    <div class="fixed-container">
-                        <i-button size="large" class="highButton" @click="confirmMakeInvoice">确认开票</i-button>
-                    </div>
-
-                </i-col>
+               
             </i-row>
         </div>
 

@@ -1,7 +1,9 @@
 <!--系统日志下载-->
 <template>
     <section class="page system-log-download">
-        <page-header title="系统日志下载" @on-export="exportLogs" ></page-header>
+        <page-header title="系统日志下载" @on-export="exportLogs" >
+             <i-button class="blueButton" @click="addNewBackups">新增备份</i-button>
+        </page-header>
 
         <data-form hidden-date-search :model="systemLogModel" @on-search="search" :page="pageService">
             <template slot="input">
@@ -15,9 +17,7 @@
                     <i-date-picker v-model="systemLogModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
                 </i-form-item>
             </template>
-            <template slot="button">
-                <i-button @click="addNewBackups">新增备份</i-button>
-            </template>
+           
         </data-form>
 
         <data-box :id="57" :columns="columns1" :data="systemLogsList" @onPageChange="search" :page="pageService" ref="databox"></data-box>

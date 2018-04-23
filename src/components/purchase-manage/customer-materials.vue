@@ -229,7 +229,7 @@
                 </i-form-item>
               </i-col>
               <i-col span="12">
-                <i-form-item prop="cityOwnhouseOther">
+                <i-form-item prop="cityOwnhouseOther" v-if="customerModel.cityOwnhouseCondition===26">
                   <i-input type="text" placeholder="其他" v-model="customerModel.cityOwnhouseOther">
                   </i-input>
                 </i-form-item>

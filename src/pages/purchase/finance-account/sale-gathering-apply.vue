@@ -55,7 +55,7 @@
             请先填写证件信息
         </div>
         <div class="fixed-container">
-            <i-button size="large" class="highButton" >保存并提交</i-button>
+            <i-button size="large" class="highButton" @click="saveAndCommit">保存并提交</i-button>
         </div>
     </section>
 </template>

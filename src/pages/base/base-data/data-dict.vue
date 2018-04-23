@@ -1,7 +1,9 @@
 <!--数据字典-->
 <template>
   <section class="page data-dict">
-    <page-header title="数据字典" hiddenPrint hiddenExport></page-header>
+    <page-header title="数据字典" hiddenPrint hiddenExport>
+         <i-button class="blueButton command-add" @click="dataModal=true">新增数据</i-button>
+    </page-header>
     <i-row class="data-form">
       <i-row type="flex" align="top" justify="start">
         <i-col :span="4">
@@ -24,9 +26,6 @@
               <i-form-item prop="name" label="数据名称">
                 <i-input v-model="dictAguments.name"></i-input>
               </i-form-item>
-            </template>
-            <template slot="button">
-              <i-button class="blueButton command-add" @click="dataModal=true">新增数据</i-button>
             </template>
           </data-form>
           <data-box :width="600" :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService" :noDefaultRow="true"></data-box>

@@ -1,5 +1,5 @@
 import validator from 'async-validator'
-
+import { Form } from 'iview'
 export class ValidatorService {
   /**
    * 自定义验证器
@@ -12,11 +12,11 @@ export class ValidatorService {
     let schema = new validator(descriptor);
     let process = new Promise((reslove, reject) => {
       schema.validate(data, (errors, fields) => {
-        if(errors&&errors.length){
+        if (errors && errors.length) {
           let [error] = errors
           // 验证成功
           reslove(error.message)
-        }else{
+        } else {
           reslove()
         }
       });
@@ -57,13 +57,27 @@ export class ValidatorService {
   }
 
   /**
- * 验证金额
- */
+   * 验证金额
+   */
   static money(rule, value, callback) {
     if (ValidatorService.regex.money.test(value) || !value) {
       callback();
     } else {
       callback(new Error("请输入正确格式的金额"));
     }
+  }
+
+  /**
+   * 表单验证
+   * @param rule 
+   * @param value 
+   * @param callback 
+   */
+  static formValidate(rule, value, callback) {
+    value.validate().then(
+      callback()
+    ).catch(ex => {
+      callback(rule.message || "验证失败")
+    })
   }
 }
