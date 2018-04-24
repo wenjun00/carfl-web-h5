@@ -429,7 +429,8 @@ export default class ChooseBuyMaterials extends Vue {
   customRules = {
     chooseForm: [
       {
-        validator: this.$validator.formValidate
+        validator: this.$validator.formValidate,
+        message: "选购信息填写错误"
       }
     ],
     carListCount: [
@@ -734,7 +735,7 @@ export default class ChooseBuyMaterials extends Vue {
           // 转换数据产品信息数据格式
           this.currentProduct = this.formatProductModal(currentRow);
           this.productModel.productIssueId = currentRow.id;
-          this.updateProductId(currentRow.id)
+          this.updateProductId(currentRow.id);
           this.onVehicleAmountChange();
           console.log(this.currentProduct);
         } else {
@@ -778,7 +779,7 @@ export default class ChooseBuyMaterials extends Vue {
         },
         this.customRules
       )
-      .then(error => {
+      .then((error) => {
         if (!error) {
           return true;
         }
@@ -817,6 +818,8 @@ export default class ChooseBuyMaterials extends Vue {
   mounted() {
     // 获取公司列表
     this.getCompanyList();
+    // 清空产品Id
+    this.updateProductId();
     // 加载历史订单
     if (this.orderNumber) {
       this.getOrderData();

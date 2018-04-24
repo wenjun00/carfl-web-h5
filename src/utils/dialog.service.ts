@@ -9,7 +9,12 @@ export class DialogService {
    * @param option 
    */
   static show(option) {
+    let store = window['__store']
+    let router = window['__router']
+
     const Instance = new Vue({
+      store,
+      router,
       render(h) {
         let contentVNodes = option.render(h)
         let bodyVNodes = [contentVNodes]
