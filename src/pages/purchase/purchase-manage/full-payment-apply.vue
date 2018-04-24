@@ -56,7 +56,7 @@
     <!--资料填写 end -->
 
     <!--底部操作栏-start-->
-    <div class="fixed-container">
+    <div class="fixed-container" v-show="!submitHide">
       <!-- <i-button size="large" class="highDefaultButton" @click="draftsaveAndSubmit(true)">保存草稿</i-button> -->
       <i-button size="large" class="highButton" style="margin-left:10px;" @click="saveAndSubmit(false)">提交申请</i-button>
     </div>
@@ -102,6 +102,7 @@ export default class FullPaymentApply extends Page {
   @Dependencies(ProductOrderService)
   private productOrderService: ProductOrderService;
 
+  private submitHide: boolean = true
   private showApplicationTab = false; // 申请选项卡显示状态
   private currentIdCard: string = "";
   private transFlag: boolean = false; // 标识页面是否传入的页面
@@ -204,6 +205,7 @@ export default class FullPaymentApply extends Page {
   async onCheckHistoryOrder() {
     // 检测身份证
     if (!await this.checkIdCardValid()) {
+      this.submitHide = true
       return;
     }
 
@@ -213,32 +215,33 @@ export default class FullPaymentApply extends Page {
         idCard: this.customerModel.idCard
       })
       .subscribe(
-        data => {
-          if (data.length) {
-            return this.showHistoryOrder(data);
-          }
-
-          // 判断是否需要重置信息
-          if (
-            this.currentIdCard &&
-            this.currentIdCard !== this.customerModel.idCard
-          ) {
-            this.$Modal.confirm({
-              title: "提醒",
-              content: "证件号码更新,是否要重置申请信息?",
-              onOk: this.resetPage
-            });
-          }
-
-          // 更新历史查询身份证号
-          this.currentIdCard = this.customerModel.idCard;
-          this.showApplicationTab = true;
-
-          // TODO: 根据身份证获取性别和生日信息
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
+      data => {
+        if (data.length) {
+          return this.showHistoryOrder(data);
         }
+
+        // 判断是否需要重置信息
+        if (
+          this.currentIdCard &&
+          this.currentIdCard !== this.customerModel.idCard
+        ) {
+          this.$Modal.confirm({
+            title: "提醒",
+            content: "证件号码更新,是否要重置申请信息?",
+            onOk: this.resetPage(this.customerModel.idCard)
+          });
+        }
+
+        // 更新历史查询身份证号
+        this.currentIdCard = this.customerModel.idCard;
+        this.showApplicationTab = true;
+        this.submitHide = false
+
+        // TODO: 根据身份证获取性别和生日信息
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
       );
   }
 
@@ -257,6 +260,31 @@ export default class FullPaymentApply extends Page {
 
     // TODO: 18个1仅用于测试F
     return result || this.customerModel.idCard === "1".repeat(18);
+  }
+
+  /**
+   * 对每个card对象使用 validate 函数
+   * 前提是这些对象中都有这个方法
+   */
+  async validate() {
+
+    let result = true;
+
+    let forms = [this.materialsAllCard, this.materialsCard]
+    // 执行验证
+    for (let form of forms) {
+
+      result = result && (await (form as any).validate());
+      if (!result) {
+        break;
+      }
+    }
+
+    // 验证结果
+    if (!result) {
+      return result;
+    }
+
   }
 
   /**
@@ -314,11 +342,14 @@ export default class FullPaymentApply extends Page {
     });
   }
 
-  resetPage() {
+  resetPage(newCardId: string = "") {
     this.transFlag = false;
     this.showApplicationTab = false;
     // this.orderNumberIdModels = [];
     this.customerForm.resetFields();
+    if (newCardId.length === 18) {
+      this.customerModel.idCard = newCardId
+    }
     // this.gatherDetail.resetTable();
     // this.uploadFodder.fodder.reset();
   }
@@ -333,11 +364,11 @@ export default class FullPaymentApply extends Page {
       onOk: () => {
         this.resetPage();
       },
-      onCancel: () => {}
+      onCancel: () => { }
     });
   }
 
-  created() {}
+  created() { }
 
   mounted() {
     this.materialsAllCard = this.$refs["materials-all"];
@@ -362,15 +393,15 @@ export default class FullPaymentApply extends Page {
       this.personalService
         .getCustomerHistoryFinanceInfo(this.customerModel)
         .subscribe(
-          data => {
-            this.historicalDataset = data;
-            if (this.historicalDataset.length) {
-              this.historicalModal = true;
-            }
-          },
-          ({ msg }) => {
-            this.$Message.error(msg);
+        data => {
+          this.historicalDataset = data;
+          if (this.historicalDataset.length) {
+            this.historicalModal = true;
           }
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
         );
     }
   }
@@ -439,16 +470,16 @@ export default class FullPaymentApply extends Page {
     this.productOrderService
       .createFullPaymentOrder(savesubmitDataset)
       .subscribe(
-        data => {
-          this.spinShow = true;
-          setTimeout(() => {
-            this.$Message.success("保存成功！");
-            this.spinShow = false;
-          }, 1000);
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
+      data => {
+        this.spinShow = true;
+        setTimeout(() => {
+          this.$Message.success("保存成功！");
+          this.spinShow = false;
+        }, 1000);
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
       );
   }
   /**
@@ -456,106 +487,117 @@ export default class FullPaymentApply extends Page {
    */
   saveAndSubmit(type) {
 
-    if(!this.materialsCard.isValid()){
-      this.$Message.error('请填写客户资料--个人信息')
+    let result = false
+    this.customerForm.validate(v => result = v)
+    if (!result) {
+      return
     }
 
-    this.customerForm.validate(valid => {
-      if (!valid) {
-        return false;
-      } else {
-        let component: any = this.$refs["materials-all"];
-        let _parchaseform: any = component.$refs["parchase-form"];
-        console.log(_parchaseform, "_parchaseform");
-        _parchaseform.validate(valid => {
-          console.log(valid, "valid");
-          if (!valid) {
-            this.$Message.warning("您有未输入的选项，请先检查并输入后再提交！");
-            return false;
-          } else {
-            let _materials: any = this.$refs["materials"];
-            let _parchase: any = _materials.$refs["parchase-form"];
-            _parchase.validate(valid => {
-              if (!valid) {
-                this.$Message.warning(
-                  "您有未输入的选项，请先检查并输入后再提交！"
-                );
-                return false;
-              } else {
-                //   选购信息
-                let choosebusyData: any = component.choosebusyData;
-                for (let item of component.addcarData) {
-                  this.addcarData.push({
-                    brandId: item.brandId,
-                    brandName: item.brandName,
-                    carSeriesId: item.carSeriesId,
-                    modelName: item.modelName,
-                    otherExpenses: item.otherExpenses,
-                    vehicleAmount: item.vehicleAmount,
-                    vehicleColour: item.vehicleColour
-                  });
-                }
-                console.log(
-                  component.addcarData.length,
-                  "component.addcarData"
-                );
-                if (component.addcarData.length === 0) {
-                  this.$Message.warning("请添加车辆信息");
-                  return;
-                }
-                //   客户资料
-                let materials: any = this.$refs["materials"];
-                let customerData: any = materials.customerData;
-                console.log(customerData, 900000000000000);
-                if (type) {
-                  this.orderStatus = 303;
-                } else {
-                  this.orderStatus = 304;
-                }
-                component.addcarData.map(v => {
-                  (v.carSeriesId = v.seriesId),
-                    (v.amount = v.carAmount),
-                    (v.vehicleColour = v.carColour),
-                    (v.vehicleEmissions = v.carEmissions);
-                });
-                component.addcarData.forEach(v => delete v.id);
-                let savesubmitDataset: any = {
-                  idCard: this.customerModel.idCard,
-                  name: this.customerModel.name,
-                  mobileMain: this.customerModel.customerPhone,
-                  salesmanName: this.customerModel.salesmanName,
-                  salesmanId: this.customerModel.salesmanId,
-                  city: choosebusyData.city,
-                  companyId: choosebusyData.companyId,
-                  province: choosebusyData.province,
-                  orderCars: component.addcarData, // 车辆
-                  personal: customerData,
-                  orderServiceList: customerData.orderServiceList,
-                  orderStatus: this.orderStatus
-                };
-                console.log(savesubmitDataset, 8888);
-                this.productOrderService
-                  .createFullPaymentOrder(savesubmitDataset)
-                  .subscribe(
-                    data => {
-                      this.spinShow = true;
-                      setTimeout(() => {
-                        this.$Message.success("保存成功！");
-                        this.spinShow = false;
-                      }, 1000);
-                    },
-                    ({ msg }) => {
-                      this.$Message.error(msg);
-                    }
-                  );
-              }
-            });
-          }
-        });
-      }
-    });
+    this.validate().then( v => result = v)
+    console.log(result)
+
+
+
+    // if (!this.materialsCard.isValid()) {
+    //   this.$Message.error('请填写客户资料--个人信息')
+    // }
+
+    // this.customerForm.validate(valid => {
+    //   if (!valid) {
+    //     return false;
+    //   } else {
+    //     let component: any = this.$refs["materials-all"];
+    //     let _parchaseform: any = component.$refs["parchase-form"];
+    //     console.log(_parchaseform, "_parchaseform");
+    //     _parchaseform.validate(valid => {
+    //       console.log(valid, "valid");
+    //       if (!valid) {
+    //         this.$Message.warning("您有未输入的选项，请先检查并输入后再提交！");
+    //         return false;
+    //       } else {
+    //         let _materials: any = this.$refs["materials"];
+    //         let _parchase: any = _materials.$refs["parchase-form"];
+    //         _parchase.validate(valid => {
+    //           if (!valid) {
+    //             this.$Message.warning(
+    //               "您有未输入的选项，请先检查并输入后再提交！"
+    //             );
+    //             return false;
+    //           } else {
+    //             //   选购信息
+    //             let choosebusyData: any = component.choosebusyData;
+    //             for (let item of component.addcarData) {
+    //               this.addcarData.push({
+    //                 brandId: item.brandId,
+    //                 brandName: item.brandName,
+    //                 carSeriesId: item.carSeriesId,
+    //                 modelName: item.modelName,
+    //                 otherExpenses: item.otherExpenses,
+    //                 vehicleAmount: item.vehicleAmount,
+    //                 vehicleColour: item.vehicleColour
+    //               });
+    //             }
+    //             console.log(
+    //               component.addcarData.length,
+    //               "component.addcarData"
+    //             );
+    //             if (component.addcarData.length === 0) {
+    //               this.$Message.warning("请添加车辆信息");
+    //               return;
+    //             }
+    //             //   客户资料
+    //             let materials: any = this.$refs["materials"];
+    //             let customerData: any = materials.customerData;
+    //             console.log(customerData, 900000000000000);
+    //             if (type) {
+    //               this.orderStatus = 303;
+    //             } else {
+    //               this.orderStatus = 304;
+    //             }
+    //             component.addcarData.map(v => {
+    //               (v.carSeriesId = v.seriesId),
+    //                 (v.amount = v.carAmount),
+    //                 (v.vehicleColour = v.carColour),
+    //                 (v.vehicleEmissions = v.carEmissions);
+    //             });
+    //             component.addcarData.forEach(v => delete v.id);
+    //             let savesubmitDataset: any = {
+    //               idCard: this.customerModel.idCard,
+    //               name: this.customerModel.name,
+    //               mobileMain: this.customerModel.customerPhone,
+    //               salesmanName: this.customerModel.salesmanName,
+    //               salesmanId: this.customerModel.salesmanId,
+    //               city: choosebusyData.city,
+    //               companyId: choosebusyData.companyId,
+    //               province: choosebusyData.province,
+    //               orderCars: component.addcarData, // 车辆
+    //               personal: customerData,
+    //               orderServiceList: customerData.orderServiceList,
+    //               orderStatus: this.orderStatus
+    //             };
+    //             console.log(savesubmitDataset, 8888);
+    //             this.productOrderService
+    //               .createFullPaymentOrder(savesubmitDataset)
+    //               .subscribe(
+    //               data => {
+    //                 this.spinShow = true;
+    //                 setTimeout(() => {
+    //                   this.$Message.success("保存成功！");
+    //                   this.spinShow = false;
+    //                 }, 1000);
+    //               },
+    //               ({ msg }) => {
+    //                 this.$Message.error(msg);
+    //               }
+    //               );
+    //           }
+    //         });
+    //       }
+    //     });
+    //   }
+    // });
   }
-  
+
 }
 </script>
 

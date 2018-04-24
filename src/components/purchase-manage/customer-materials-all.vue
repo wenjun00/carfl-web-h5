@@ -90,66 +90,22 @@ export default class CustomerMaterialsAll extends Vue {
 
   //  个人信息 card
   private parchaseForm: any = {};
+  // 页面流程检测规则
+  private customRules: any = {}
 
   created() {
     this.customerRules = {
-      name: {
-        required: true,
-        message: "请输入购车方用户名称",
-        trigger: "blur"
-      },
-      certificateType: [
-        {
-          required: true,
-          message: "请输入证件类型",
-          trigger: "change",
-          type: "number"
-        }
-      ],
-      idCardAddressDetail: [
-        {
-          required: true,
-          message: "请输入详细地址信息",
-          trigger: "blur"
-        }
-      ],
+      name: { required: true, message: "请输入购车方用户名称", trigger: "blur" },
+      certificateType: { required: true, message: "请输入证件类型", trigger: "change", type: "number" },
+      idCardAddressDetail: { required: true, message: "请输入详细地址信息", trigger: "blur" },
       idCard: [
-        {
-          required: true,
-          message: "请输入证件号码",
-          trigger: "blur"
-        },
-        {
-          validator: this.$validator.idCard,
-          trigger: "blur"
-        }
-      ],
-      postalCode: [
-        {
-          required: true,
-          message: "请输入邮政编码",
-          trigger: "blur"
-        }
-      ],
-      orderServiceList: [
-        {
-          required: true,
-          message: "选择代办服务",
-          trigger: "change",
-          type: "array"
-        }
-      ],
+        { required: true, message: "请输入证件号码", trigger: "blur" },
+        { validator: this.$validator.idCard, trigger: "blur" }],
+      postalCode: { required: true, message: "请输入邮政编码", trigger: "blur" },
+      orderServiceList: { required: true, message: "选择代办服务", trigger: "change", type: "array" },
       mobileMain: [
-        {
-          required: true,
-          message: "请输入联系电话",
-          trigger: "blur"
-        },
-        {
-          validator: this.$validator.phoneNumber,
-          trigger: "blur"
-        }
-      ]
+        { required: true, message: "请输入联系电话", trigger: "blur" },
+        { validator: this.$validator.phoneNumber, trigger: "blur" }]
     };
     this.customerModel = {
       name: "", // 购车方
@@ -163,6 +119,12 @@ export default class CustomerMaterialsAll extends Vue {
       idCardAddressDetail: "", // 箱子地址
       orderServiceList: [] // 代办服务
     };
+
+    this.customRules = {
+      parchaseForm: {
+        validator: this.$validator.formValidate
+      }
+    }
   }
 
   mounted() {
@@ -199,9 +161,23 @@ export default class CustomerMaterialsAll extends Vue {
   /**
    * 检测当前页面是否验证通过
    */
-  isValid() {
-    let result = false;
-    this.parchaseForm.validate(v => (result = v));
+  /**
+   * 验证数据
+   */
+  async validate() {
+    console.log('1111')
+    console.log(222, this.parchaseForm, 111)
+    // 自定义验证
+    let result = await this.$validator
+      .validate({
+        parchaseForm: this.$refs['parchase-form']
+      }, this.customRules)
+      .then(error => {
+         if (!error) {
+          return true;
+        }
+        this.$Message.error(error);
+      });
     return result;
   }
 }
