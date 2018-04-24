@@ -105,4 +105,30 @@ export class CommonService {
       clearObject(target)
     }
   }
+
+  static revert(source, ...values) {
+    let sourceType = typeof source
+
+    if (!values.every(x => typeof x === sourceType)) {
+      return
+    }
+
+    if (source instanceof Array) {
+      source.length = 0
+      values.forEach(item => {
+        item.forEach(x => source.push(x))
+      })
+    } else {
+      values.forEach(item => {
+        for (let key in item) {
+          if (key in source) {
+            source[key] = item[key]
+          }
+        }
+      })
+    }
+
+
+    return source
+  }
 }
