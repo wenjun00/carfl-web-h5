@@ -371,9 +371,8 @@
      * 获取所有产品包
      */
     getAllProdPackage(row) {
-      console.log(row)
       this.carFormItem = clone(row)
-      this.carFormItem.marketGuidingPrice = String(this.carFormItem.marketGuidingPrice)
+      this.carFormItem.marketGuidingPrice = this.carFormItem.marketGuidingPrice
       this.carFormItem.monthPay = String(this.carFormItem.monthPay)
       this.carFormItem.dealerGuidingPrice = String(this.carFormItem.dealerGuidingPrice)
       this.carFormItem.purchaseTaxMoney = String(this.carFormItem.purchaseTaxMoney)
@@ -418,7 +417,7 @@
   .ivu-input-number {
     width: 180px;
   }
-} 
-  
+}
+
 </style>
 

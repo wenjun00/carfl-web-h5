@@ -1,184 +1,184 @@
 <!--新增期数-->
 <template>
-    <i-form class="add-new-periods" ref="formItems" :model="formItems" :rules="formRules" :label-width="100">
-        <section class="component add-periods">
-            <div class="add-periods-item">自然参数</div>
-            <data-grid :labelWidth="100">
-                <data-grid-item label="产品序号" :span="4">
-                    <div>
-                        {{pNameTitle.number}}
-                    </div>
-                </data-grid-item>
-                <data-grid-item label="产品名称" :span="8">
-                    <div>
-                        {{pNameTitle.name}}
-                    </div>
-                </data-grid-item>
-                <data-grid-item label="产品期数" :span="4">
-                    <i-form-item class="item-chanpin" prop="periods">
-                        <i-select v-model="formItems.periods" placeholder="请输入产品期数">
-                            <i-option v-for="{value,label} in $dict.getDictData('0435')" :key="value" :label="label" :value="value"></i-option>
-                        </i-select>
-                    </i-form-item>
-                </data-grid-item>
-                <data-grid-item label="产品利率" :span="4">
-                    <i-form-item class="item-chanpin" prop="productRates">
-                        <i-input v-model="formItems.productRates" placeholder="请输入产品利率"></i-input>
-                    </i-form-item>
-                    <div class="after_text">%/月</div>
-                </data-grid-item>
-                <data-grid-item label="还款方式" :span="4">
-                    <i-form-item class="item-chanpin" prop="payWay">
-                        <i-select v-model="formItems.payWay">
-                            <i-option label="等本等息" :value="384" key="等本等息"></i-option>
-                            <!--<i-option label="等额等息" :value="385" key="等额等息"></i-option>-->
-                        </i-select>
-                    </i-form-item>
-                </data-grid-item>
-                <data-grid-item label="周期类型" :span="4">
-                    <i-form-item class="item-chanpin" prop="periodType">
-                        <i-select v-model="formItems.periodType">
-                            <i-option label="月" :value="388" key="月"></i-option>
-                        </i-select>
-                    </i-form-item>
-                </data-grid-item>
-                <data-grid-item label="融资金额" :span="8">
-                    <i-form ref="finance" :model="amount" :rules="amountRules" inline>
-                        <i-form-item prop="financingAmount1" label="最小金额">
-                            <i-input-number v-model="amount.financingAmount1" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number> 
-                        </i-form-item>
-                        <i-form-item prop="financingAmount2" label="最大金额">
-                            <i-input-number v-model="amount.financingAmount2" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number> 
-                        </i-form-item>
-                    </i-form>
-                </data-grid-item>
-                <data-grid-item label="账期类型" :span="12">
-                    <i-form-item prop="paymentType">
-                        <i-radio-group class="item-chanpin-group" v-model="formItems.paymentType">
-                            <i-radio :label="386" class="item-chanpin-radio">正常账期</i-radio>
-                            <i-radio :label="387">固定账期</i-radio>
-                        </i-radio-group>
-                    </i-form-item>
-                    <i-select v-model="formItems.paymentDay" class="item-chanpin-select" v-if="formItems.paymentType === 387">
-                        <i-option :label="item.day" :key="item.key" :value="item.value" v-for="item in monthDay"></i-option>
-                    </i-select>
-                </data-grid-item>
-            </data-grid>
-            <div class="add-periods-item">首付款参数</div>
-            <data-grid :labelWidth="100">
-                <data-grid-item ref label="首付款" :span="12">
-                    <i-radio-group class="item-shoufu-group" v-model="initialParams">
-                        <i-radio label="无"></i-radio>
-                        <i-radio label="有"></i-radio>
-                    </i-radio-group>
-                    <div v-if="initialParams==='有'" class="item-shoufu-div initialPayment">
-                        <i-form-item prop="initialPayment" label="比例">
-                            <i-input v-model="formItems.initialPayment" class="item-shoufu-input"></i-input>
-                        </i-form-item>
-                        <span class="item-shoufu-span1 after_text">%</span>
-                        <span class="item-shoufu-span2 after_text">如果有多个则用英文分号隔开</span>
-                    </div>
-                </data-grid-item>
-            </data-grid>
-            <div class="add-periods-item">保证金参数</div>
-            <data-grid :labelWidth="100">
-                <data-grid-item label="保证金" :span="12">
-                    <i-radio-group class="item-bzj-group" v-model="promiseMoenyParams">
-                        <i-radio label="无"></i-radio>
-                        <i-radio label="有"></i-radio>
-                    </i-radio-group>
-                </data-grid-item>
-                <data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">
-                    <div class="item-bzjbl-div initialPayment">
-                        <i-form-item prop="depositCash" label="比例">
-                            <i-input v-model="formItems.depositCash"></i-input>
-                        </i-form-item>
-                        <span class="item-bzjbl-span after_text">%</span>
-                        <i-form-item prop="depositCashType">
-                            <i-select v-model="formItems.depositCashType" placeholder="缴纳方式">
-                                <i-option :value="396">退还</i-option>
-                                <i-option :value="397">不退还</i-option>
-                            </i-select>
-                        </i-form-item>
-                        <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
-                    </div>
-                </data-grid-item>
-            </data-grid>
-            <div class="add-periods-item">尾付款参数</div>
-            <data-grid :labelWidth="100">
-                <data-grid-item label="尾付款" :span="12">
-                    <i-radio-group class="item-mt6" v-model="residueParams">
-                        <i-radio label="无"></i-radio>
-                        <i-radio label="有"></i-radio>
-                    </i-radio-group>
-                    <div v-if="residueParams==='有'" class="initialPayment item-mt6-div">
-                        <span class="after_text">月利率:</span>
-                        <i-form-item prop="finalCash">
-                            <i-input v-model="formItems.finalCash"></i-input>
-                        </i-form-item>
-                        <span class="item-bzjbl-span after_text">%</span>
-                        <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
-                    </div>
-                </data-grid-item>
-            </data-grid>
-            <div class="add-periods-item">管理费参数</div>
-            <data-grid :labelWidth="100">
-                <data-grid-item label="管理费" :span="12">
-                    <i-radio-group class="item-mt6" v-model="manageMoneyParams">
-                        <i-radio label="无"></i-radio>
-                        <i-radio label="有"></i-radio>
-                    </i-radio-group>
-                    <div v-if="manageMoneyParams==='有'" class="item-mt6-div2 initialPayment">
-                        <i-form-item prop="manageCost" label="比例">
-                            <i-input v-model="formItems.manageCost"></i-input>
-                        </i-form-item>
-                        <span class="item-bzjbl-span after_text">%</span>
-                        <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
-                    </div>
-                </data-grid-item>
-                <data-grid-item label="管理费收取方式" :span="12" v-if="manageMoneyParams==='有'">
-                    <i-radio-group v-model="formItems.manageCostType">
-                        <i-radio :label="394">一次性收取</i-radio>
-                        <i-radio :label="395">分期数收取</i-radio>
-                    </i-radio-group>
-                    <div v-if="formItems.manageCostType===395" class="initialPayment item-input">
-                        <i-form-item prop="stagingPeriods" label="期数">
-                            <i-input v-model="formItems.stagingPeriods"></i-input>
-                        </i-form-item>
-                    </div>
-                </data-grid-item>
-            </data-grid>
-            <div class="add-periods-item">逾期违约惩罚参数</div>
-            <data-grid :labelWidth="100">
-                <data-grid-item :span="6" label="征信保护天数">
-                    <i-form-item prop="creditProtectDays" class="item-input">
-                        <i-input v-model="formItems.creditProtectDays"></i-input>&nbsp;天
-                    </i-form-item>
-                </data-grid-item>
-                <data-grid-item :span="6" label="逾期保护天数">
-                    <i-form-item class="item-input" prop="overdueProtectDays">
-                        <i-input v-model="formItems.overdueProtectDays"></i-input>&nbsp;天
-                    </i-form-item>
-                </data-grid-item>
-                <data-grid-item :span="6" label="合同违约金费率">
-                    <i-form-item class="item-input" prop="contractBreakRates">
-                        <i-input-number v-model="formItems.contractBreakRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>&nbsp;%
-                    </i-form-item>
-                </data-grid-item>
-                <data-grid-item :span="6" label="提前还款费率">
-                    <i-form-item class="item-input" prop="prepaymentRates">
-                        <i-input-number v-model="formItems.prepaymentRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>&nbsp;%
-                    </i-form-item>
-                </data-grid-item>
-                <data-grid-item :span="12" label="罚息费率">
-                    <i-form-item class="item-input" prop="penaltyRates">
-                        <i-input-number v-model="formItems.penaltyRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
-                    </i-form-item>
-                    <span>&nbsp;%/天</span>
-                </data-grid-item>
-            </data-grid>
-        </section>
-    </i-form>
+  <i-form class="add-new-periods" ref="formItems" :model="formItems" :rules="formRules" :label-width="100">
+    <section class="component add-periods">
+      <div class="add-periods-item">自然参数</div>
+      <data-grid :labelWidth="100">
+        <data-grid-item label="产品序号" :span="4">
+          <div>
+            {{pNameTitle.number}}
+          </div>
+        </data-grid-item>
+        <data-grid-item label="产品名称" :span="8">
+          <div>
+            {{pNameTitle.name}}
+          </div>
+        </data-grid-item>
+        <data-grid-item label="产品期数" :span="4">
+          <i-form-item class="item-chanpin" prop="periods">
+            <i-select v-model="formItems.periods" placeholder="请输入产品期数">
+              <i-option v-for="{value,label} in $dict.getDictData('0435')" :key="value" :label="label" :value="value"></i-option>
+            </i-select>
+          </i-form-item>
+        </data-grid-item>
+        <data-grid-item label="产品利率" :span="4">
+          <i-form-item class="item-chanpin" prop="productRates">
+            <i-input v-model="formItems.productRates" placeholder="请输入产品利率"></i-input>
+          </i-form-item>
+          <div class="after_text">%/月</div>
+        </data-grid-item>
+        <data-grid-item label="还款方式" :span="4">
+          <i-form-item class="item-chanpin" prop="payWay">
+            <i-select v-model="formItems.payWay">
+              <i-option label="等本等息" :value="384" key="等本等息"></i-option>
+              <!--<i-option label="等额等息" :value="385" key="等额等息"></i-option>-->
+            </i-select>
+          </i-form-item>
+        </data-grid-item>
+        <data-grid-item label="周期类型" :span="4">
+          <i-form-item class="item-chanpin" prop="periodType">
+            <i-select v-model="formItems.periodType">
+              <i-option label="月" :value="388" key="月"></i-option>
+            </i-select>
+          </i-form-item>
+        </data-grid-item>
+        <data-grid-item label="融资金额" :span="8">
+          <i-form ref="finance" :model="amount" :rules="amountRules" inline>
+            <i-form-item prop="financingAmount1" label="最小金额">
+              <i-input-number v-model="amount.financingAmount1" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+            </i-form-item>
+            <i-form-item prop="financingAmount2" label="最大金额">
+              <i-input-number v-model="amount.financingAmount2" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+            </i-form-item>
+          </i-form>
+        </data-grid-item>
+        <data-grid-item label="账期类型" :span="12">
+          <i-form-item prop="paymentType">
+            <i-radio-group class="item-chanpin-group" v-model="formItems.paymentType">
+              <i-radio :label="386" class="item-chanpin-radio">正常账期</i-radio>
+              <i-radio :label="387">固定账期</i-radio>
+            </i-radio-group>
+          </i-form-item>
+          <i-select v-model="formItems.paymentDay" class="item-chanpin-select" v-if="formItems.paymentType === 387">
+            <i-option :label="item.day" :key="item.key" :value="item.value" v-for="item in monthDay"></i-option>
+          </i-select>
+        </data-grid-item>
+      </data-grid>
+      <div class="add-periods-item">首付款参数</div>
+      <data-grid :labelWidth="100">
+        <data-grid-item ref label="首付款" :span="12">
+          <i-radio-group class="item-shoufu-group" v-model="initialParams">
+            <i-radio label="无"></i-radio>
+            <i-radio label="有"></i-radio>
+          </i-radio-group>
+          <div v-if="initialParams==='有'" class="item-shoufu-div initialPayment">
+            <i-form-item prop="initialPayment" label="比例">
+              <i-input v-model="formItems.initialPayment" class="item-shoufu-input"></i-input>
+            </i-form-item>
+            <span class="item-shoufu-span1 after_text">%</span>
+            <span class="item-shoufu-span2 after_text">如果有多个则用英文分号隔开</span>
+          </div>
+        </data-grid-item>
+      </data-grid>
+      <div class="add-periods-item">保证金参数</div>
+      <data-grid :labelWidth="100">
+        <data-grid-item label="保证金" :span="12">
+          <i-radio-group class="item-bzj-group" v-model="promiseMoenyParams">
+            <i-radio label="无"></i-radio>
+            <i-radio label="有"></i-radio>
+          </i-radio-group>
+        </data-grid-item>
+        <data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">
+          <div class="item-bzjbl-div initialPayment">
+            <i-form-item prop="depositCash" label="比例">
+              <i-input v-model="formItems.depositCash"></i-input>
+            </i-form-item>
+            <span class="item-bzjbl-span after_text">%</span>
+            <i-form-item prop="depositCashType">
+              <i-select v-model="formItems.depositCashType" placeholder="缴纳方式">
+                <i-option :value="396">退还</i-option>
+                <i-option :value="397">不退还</i-option>
+              </i-select>
+            </i-form-item>
+            <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
+          </div>
+        </data-grid-item>
+      </data-grid>
+      <div class="add-periods-item">尾付款参数</div>
+      <data-grid :labelWidth="100">
+        <data-grid-item label="尾付款" :span="12">
+          <i-radio-group class="item-mt6" v-model="residueParams">
+            <i-radio label="无"></i-radio>
+            <i-radio label="有"></i-radio>
+          </i-radio-group>
+          <div v-if="residueParams==='有'" class="initialPayment item-mt6-div">
+            <span class="after_text">月利率:</span>
+            <i-form-item prop="finalCash">
+              <i-input v-model="formItems.finalCash"></i-input>
+            </i-form-item>
+            <span class="item-bzjbl-span after_text">%</span>
+            <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
+          </div>
+        </data-grid-item>
+      </data-grid>
+      <div class="add-periods-item">管理费参数</div>
+      <data-grid :labelWidth="100">
+        <data-grid-item label="管理费" :span="12">
+          <i-radio-group class="item-mt6" v-model="manageMoneyParams">
+            <i-radio label="无"></i-radio>
+            <i-radio label="有"></i-radio>
+          </i-radio-group>
+          <div v-if="manageMoneyParams==='有'" class="item-mt6-div2 initialPayment">
+            <i-form-item prop="manageCost" label="比例">
+              <i-input v-model="formItems.manageCost"></i-input>
+            </i-form-item>
+            <span class="item-bzjbl-span after_text">%</span>
+            <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
+          </div>
+        </data-grid-item>
+        <data-grid-item label="管理费收取方式" :span="12" v-if="manageMoneyParams==='有'">
+          <i-radio-group v-model="formItems.manageCostType">
+            <i-radio :label="394">一次性收取</i-radio>
+            <i-radio :label="395">分期数收取</i-radio>
+          </i-radio-group>
+          <div v-if="formItems.manageCostType===395" class="initialPayment item-input">
+            <i-form-item prop="stagingPeriods" label="期数">
+              <i-input v-model="formItems.stagingPeriods"></i-input>
+            </i-form-item>
+          </div>
+        </data-grid-item>
+      </data-grid>
+      <div class="add-periods-item">逾期违约惩罚参数</div>
+      <data-grid :labelWidth="100">
+        <data-grid-item :span="6" label="征信保护天数">
+          <i-form-item prop="creditProtectDays" class="item-input">
+            <i-input v-model="formItems.creditProtectDays"></i-input>&nbsp;天
+          </i-form-item>
+        </data-grid-item>
+        <data-grid-item :span="6" label="逾期保护天数">
+          <i-form-item class="item-input" prop="overdueProtectDays">
+            <i-input v-model="formItems.overdueProtectDays"></i-input>&nbsp;天
+          </i-form-item>
+        </data-grid-item>
+        <data-grid-item :span="6" label="合同违约金费率">
+          <i-form-item class="item-input" prop="contractBreakRates">
+            <i-input-number v-model="formItems.contractBreakRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>&nbsp;%
+          </i-form-item>
+        </data-grid-item>
+        <data-grid-item :span="6" label="提前还款费率">
+          <i-form-item class="item-input" prop="prepaymentRates">
+            <i-input-number v-model="formItems.prepaymentRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>&nbsp;%
+          </i-form-item>
+        </data-grid-item>
+        <data-grid-item :span="12" label="罚息费率">
+          <i-form-item class="item-input" prop="penaltyRates">
+            <i-input-number v-model="formItems.penaltyRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+          </i-form-item>
+          <span>&nbsp;%/天</span>
+        </data-grid-item>
+      </data-grid>
+    </section>
+  </i-form>
 </template>
 
 <script lang="ts">
@@ -268,37 +268,48 @@ export default class AddPeriods extends Vue {
     if (!value) {
       callback(new Error('请输入最小金额'))
     } else {
-      if (
-        this.amount.financingAmount2 &&
-        value > this.amount.financingAmount2
-      ) {
-        callback(new Error('最小金额必须小于最大金额'))
-      } else {
-        callback()
+      if (this.amount.financingAmount2) {
+        let form2: any = this.$refs['finance']
+        form2.validateField('financingAmount2')
       }
+      callback()
     }
   }
-
   moneyBig(rule, value, callback) {
-    if (!value) {
-      callback(new Error('请输入最大金额'))
-    } else {
-      if (!this.amount.financingAmount1) {
-        callback(new Error('请再输入最小金额'))
-      } else if (this.amount.financingAmount1 > value) {
-        callback(new Error('最大金额必须大于最小金额'))
-      } else {
-        callback()
-      }
+    if (value < 0) {
+      return callback(new Error('请输入最大金额'))
     }
+    console.log(typeof this.amount.financingAmount1, typeof value, this.amount.financingAmount1 > value)
+    if (this.amount.financingAmount1 - value > 0) {
+      console.log('error2')
+      return callback(new Error('最大金额必须大于最小金额'))
+    }
+    console.log(1231)
+    callback()
+
+    // if (!value) {
+    //   callback(new Error('请输入最大金额'))
+    // } else {
+    //   if (!this.amount.financingAmount1) {
+    //     callback(new Error('请再输入最小金额'))
+    //   } else if (this.amount.financingAmount1 > value) {
+    //     console.log('ss')
+    //     callback(new Error('最大金额必须大于最小金额'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
   }
 
   created() {
     this.monthDay = []
-    this.monthDayFun()
     this.amountRules = {
-      financingAmount1: { validator: this.moneySmall, trigger: 'blur' },
-      financingAmount2: { validator: this.moneyBig, trigger: 'blur' }
+      financingAmount1: {
+        validator: this.moneySmall, trigger: 'change', type: 'number'
+      },
+      financingAmount2: {
+        validator: this.moneyBig, trigger: 'change', type: 'number'
+      }
     }
     this.formRules = {
       periods: [
@@ -404,7 +415,7 @@ export default class AddPeriods extends Vue {
         }
       ],
       contractBreakRates: [
-        { required: true, message: '请输入合同违约金费率', trigger: 'blur', type: 'number'},
+        { required: true, message: '请输入合同违约金费率', trigger: 'blur', type: 'number' },
         {
           pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g,
           message: '请输入0~100整数或四位小数',
@@ -412,7 +423,7 @@ export default class AddPeriods extends Vue {
         }
       ],
       prepaymentRates: [
-        { required: true, message: '请输入提前还款费率', trigger: 'blur',type: 'number'},
+        { required: true, message: '请输入提前还款费率', trigger: 'blur', type: 'number' },
         {
           pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g,
           message: '请输入0~100整数或四位小数',
@@ -420,26 +431,13 @@ export default class AddPeriods extends Vue {
         }
       ],
       penaltyRates: [
-        { required: true, message: '请输入罚期费率', trigger: 'blur', type:'number'},
+        { required: true, message: '请输入罚期费率', trigger: 'blur', type: 'number' },
         {
           pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g,
           message: '请输入0~100整数或四位小数',
           trigger: 'blur'
         }
       ]
-    }
-  }
-  /**
-   * 获取月份天数
-   */
-  monthDayFun() {
-    let arr: any = 31
-    for (let i = 1; i <= arr; i++) {
-      this.monthDay.push({
-        day: i + '日',
-        key: i + '日',
-        value: i
-      })
     }
   }
 
@@ -503,7 +501,7 @@ export default class AddPeriods extends Vue {
           ({ msg }) => {
             this.$Message.error(msg)
           }
-        )
+          )
       })
       if (!valid) return false
     })

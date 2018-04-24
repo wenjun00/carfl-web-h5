@@ -471,7 +471,7 @@ export default class AddPeriods extends Vue {
   cancelEditQuote() {
     this.editModal = false
     let _edit: any = this.$refs['edit-car']
-    _edit.resetInput()
+    // _edit.resetInput()
   }
   confirmEditQuote() {
     let _edit: any = this.$refs['edit-car']

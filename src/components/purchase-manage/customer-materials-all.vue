@@ -68,7 +68,7 @@
           <i-col>
             <i-form-item label="代办服务" prop="orderServiceList">
               <i-checkbox-group v-model="customerModel.orderServiceList">
-                <i-checkbox v-for="{value,label} of $dict.getDictData('0313')" :key="value" :value="value" :label="label" ></i-checkbox>
+                <i-checkbox v-for="{value,label} of $dict.getDictData('0313')" :key="value" :value="value" :label="label"></i-checkbox>
               </i-checkbox-group>
             </i-form-item>
           </i-col>
@@ -88,65 +88,24 @@ export default class CustomerMaterialsAll extends Vue {
   private customerModel: any = {};
   private customerRules: any = {};
 
+  //  个人信息 card
+  private parchaseForm: any = {};
+  // 页面流程检测规则
+  private customRules: any = {}
+
   created() {
     this.customerRules = {
-      name: {
-        required: true,
-        message: "请输入购车方用户名称",
-        trigger: "blur"
-      },
-      certificateType: [
-        {
-          required: true,
-          message: "请输入证件类型",
-          trigger: "change",
-          type: "number"
-        }
-      ],
-      idCardAddressDetail: [
-        {
-          required: true,
-          message: "请输入详细地址信息",
-          trigger: "blur"
-        }
-      ],
+      name: { required: true, message: "请输入购车方用户名称", trigger: "blur" },
+      certificateType: { required: true, message: "请输入证件类型", trigger: "change", type: "number" },
+      idCardAddressDetail: { required: true, message: "请输入详细地址信息", trigger: "blur" },
       idCard: [
-        {
-          required: true,
-          message: "请输入证件号码",
-          trigger: "blur"
-        },
-        {
-          validator: this.$validator.idCard,
-          trigger: "blur"
-        }
-      ],
-      postalCode: [
-        {
-          required: true,
-          message: "请输入邮政编码",
-          trigger: "blur"
-        }
-      ],
-      orderServiceList: [
-        {
-          required: true,
-          message: "选择代办服务",
-          trigger: "change",
-          type: "array"
-        }
-      ],
+        { required: true, message: "请输入证件号码", trigger: "blur" },
+        { validator: this.$validator.idCard, trigger: "blur" }],
+      postalCode: { required: true, message: "请输入邮政编码", trigger: "blur" },
+      orderServiceList: { required: true, message: "选择代办服务", trigger: "change", type: "array" },
       mobileMain: [
-        {
-          required: true,
-          message: "请输入联系电话",
-          trigger: "blur"
-        },
-        {
-          validator: this.$validator.phoneNumber,
-          trigger: "blur"
-        }
-      ]
+        { required: true, message: "请输入联系电话", trigger: "blur" },
+        { validator: this.$validator.phoneNumber, trigger: "blur" }]
     };
     this.customerModel = {
       name: "", // 购车方
@@ -160,6 +119,17 @@ export default class CustomerMaterialsAll extends Vue {
       idCardAddressDetail: "", // 箱子地址
       orderServiceList: [] // 代办服务
     };
+
+    this.customRules = {
+      parchaseForm: {
+        validator: this.$validator.formValidate,
+        message:"请检查填写的客户资料"
+      }
+    }
+  }
+
+  mounted() {
+    this.parchaseForm = this.$refs["parchase-form"];
   }
 
   /**
@@ -180,6 +150,34 @@ export default class CustomerMaterialsAll extends Vue {
   getinfo(data) {
     this.customerModel = Object.assign({}, data);
     this.customerModel.mobileMain = data.customerPhone;
+  }
+
+  /**
+   * 页面重置
+   */
+  resetPage() {
+    this.parchaseForm.resetFileds();
+  }
+
+  /**
+   * 检测当前页面是否验证通过
+   */
+  /**
+   * 验证数据
+   */
+  async validate() {
+    // 自定义验证
+    let result = await this.$validator
+      .validate({
+        parchaseForm: this.$refs['parchase-form']
+      }, this.customRules)
+      .then(error => {
+         if (!error) {
+          return true;
+        }
+        this.$Message.error(error);
+      });
+    return result;
   }
 }
 </script>
