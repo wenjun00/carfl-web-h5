@@ -122,7 +122,8 @@ export default class CustomerMaterialsAll extends Vue {
 
     this.customRules = {
       parchaseForm: {
-        validator: this.$validator.formValidate
+        validator: this.$validator.formValidate,
+        message:"请检查填写的客户资料"
       }
     }
   }
@@ -165,8 +166,6 @@ export default class CustomerMaterialsAll extends Vue {
    * 验证数据
    */
   async validate() {
-    console.log('1111')
-    console.log(222, this.parchaseForm, 111)
     // 自定义验证
     let result = await this.$validator
       .validate({

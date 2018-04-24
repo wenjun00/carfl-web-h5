@@ -91,11 +91,11 @@ export default class DataBox extends Vue {
 
   // 分页更新事件
   @Emit("onPageChange")
-  pageConfigChange(page) {}
+  pageConfigChange(page) { }
 
   // 单行点击事件
   @Emit("rowClick")
-  getRowByClick(row) {}
+  getRowByClick(row) { }
 
   // 当前选择行改变事件
   @Emit("on-current-change")
@@ -106,11 +106,11 @@ export default class DataBox extends Vue {
   }
 
   @Emit("on-selection-change")
-  emitSelectionChange(section) {}
+  emitSelectionChange(section) { }
 
   @Watch("data")
   onDataChange() {
-    this.multipleSelection = [];
+    this.multipleSelection = this.data.filter(r => r._checked === true)
     this.currentRow = null;
   }
 
@@ -207,7 +207,7 @@ export default class DataBox extends Vue {
         })
         .sort((x: any, y: any) => x.sort - y.sort)
         .filter(
-          (x: any) => !x.editable || (x.editable && filterKeys.includes(x.key))
+        (x: any) => !x.editable || (x.editable && filterKeys.includes(x.key))
         );
     }
     this.tableColumns = this.noDefaultRow

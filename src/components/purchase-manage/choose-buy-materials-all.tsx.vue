@@ -256,7 +256,6 @@ export default class chooseBuyMaterialsAll extends Vue {
    * 验证数据
    */
   async validate() {
-    console.log('ggg')
     // 自定义验证
     return await this.$validator
       .validate({
@@ -265,11 +264,9 @@ export default class chooseBuyMaterialsAll extends Vue {
         totalPrice: this.totalPrice
       }, this.customRules)
       .then((error) => {
-        console.log(444,error,666)
         if (!error) {
           return true;
         }
-        console.log(333, error)
         this.$Message.error(error);
       });
   }

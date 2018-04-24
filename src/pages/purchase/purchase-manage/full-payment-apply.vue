@@ -279,7 +279,7 @@ export default class FullPaymentApply extends Page {
         break;
       }
     }
-
+    console.log(result,'validate-000')
     // 验证结果
     if (!result) {
       return result;
@@ -493,8 +493,10 @@ export default class FullPaymentApply extends Page {
       return
     }
 
-    this.validate().then( v => result = v)
-    console.log(result)
+    this.validate().then( (v)=>{
+      console.log(v)
+    })
+   
 
 
 
