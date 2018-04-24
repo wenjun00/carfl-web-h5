@@ -321,7 +321,7 @@ export default class CustomerMaterials extends Vue {
   /**
    * 客户信息数据
    */
-  private customerModel: any = {
+  public customerModel: any = {
     // 基础信息-start
     name: "", // 姓名
     sex: "", // 性别
@@ -530,18 +530,17 @@ export default class CustomerMaterials extends Vue {
   }
 
   idCardChange(value) {
-    if (value) {
-      this.customerModel.province1 = this.customerModel.province;
-      this.customerModel.city1 = this.customerModel.city;
-      this.customerModel.localHomeAddr = this.customerModel.idCardAddress;
-      this.customerModel.localHomeAddrDetail = this.customerModel.idCardAddressDetail;
-      this.customerModel = JSON.parse(JSON.stringify(this.customerModel));
-    } else {
-      this.customerModel.province1 = "";
-      this.customerModel.city1 = "";
-      this.customerModel.localHomeAddr = "";
-      this.customerModel.localHomeAddrDetail = "";
-    }
+    this.customerModel.province1 = value ? this.customerModel.province : "";
+    this.customerModel.city1 = value ? this.customerModel.city : "";
+    this.customerModel.localHomeAddr = value
+      ? this.customerModel.idCardAddress
+      : "";
+    this.customerModel.localHomeAddrDetail = value
+      ? this.customerModel.idCardAddressDetail
+      : "";
+
+    let customerForm = this.$refs["customer-form"] as Form;
+    customerForm.validateField("localHomeAddrDetail");
   }
 
   reset() {

@@ -148,7 +148,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="尾付本金(元)" prop="finalPayment">
-              <i-input-number :disabled="!productModel.vehicleAmount" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" />
+              <i-input-number :disabled="!productModel.vehicleAmount" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" @on-change="onFinalPaymentChange"/>
               <!-- <i-input  :maxlength="14" type="text" v-model="productModel.finalPayment" @on-change="finalprincipalChange" :readonly="finaldisabled" @on-blur="finalprincipalBlur">
               </i-input> -->
             </i-form-item>
@@ -313,7 +313,7 @@ export default class ChooseBuyMaterials extends Vue {
     orderService: [], // 订单自缴费用服务
     financingUse: "", // 融资用途
     intentionFinancingAmount: 0, // 意向融资金额
-    intentionPeriods: 0, // 意向期限
+    intentionPeriods: "", // 意向期限
     rentPayable: 0, // 意向月供-租金支付
     intentionPaymentRatio: 0 //  意向首付比例
   };
@@ -338,10 +338,10 @@ export default class ChooseBuyMaterials extends Vue {
 
   // 产品金额比例
   private productRadioModel = {
-    depositCashRadio: 0, // 保证金
-    finalCashRadio: 0, // 尾付金额
-    initialPaymentRadio: 0, // 首付款
-    manageCostRadio: 0 // 管理费
+    depositCashRadio: "", // 保证金
+    finalCashRadio: "", // 尾付金额
+    initialPaymentRadio: "", // 首付款
+    manageCostRadio: "" // 管理费
   };
 
   // 当前选择产品
@@ -362,7 +362,7 @@ export default class ChooseBuyMaterials extends Vue {
         type: "number",
         required: true,
         message: "请输入意向期限",
-        trigger: "blur"
+        trigger: "change"
       }
     ],
     province: [
@@ -370,7 +370,7 @@ export default class ChooseBuyMaterials extends Vue {
         type: "number",
         required: true,
         message: "请选择申请省份",
-        trigger: "blur"
+        trigger: "change"
       }
     ],
     city: [
@@ -378,14 +378,14 @@ export default class ChooseBuyMaterials extends Vue {
         type: "number",
         required: true,
         message: "请选择申请城市",
-        trigger: "blur"
+        trigger: "change"
       }
     ],
     orderService: [
       {
         required: true,
         message: "请选择自缴费用",
-        trigger: "blur",
+        trigger: "change",
         type: "array"
       }
     ],
@@ -401,7 +401,7 @@ export default class ChooseBuyMaterials extends Vue {
         type: "number",
         required: true,
         message: "请输入意向首付比例",
-        trigger: "blur"
+        trigger: "change"
       }
     ],
     intentionFinancingAmount: [
@@ -409,7 +409,7 @@ export default class ChooseBuyMaterials extends Vue {
         type: "number",
         required: true,
         message: "请输入意向融资金额",
-        trigger: "blur"
+        trigger: "change"
       }
     ]
   };
@@ -628,23 +628,23 @@ export default class ChooseBuyMaterials extends Vue {
     // 首付款=车辆参考价x首付比例
     this.productModel.initialPayment =
       this.productModel.vehicleAmount *
-      this.productRadioModel.initialPaymentRadio;
+      parseFloat(this.productRadioModel.initialPaymentRadio || "0");
 
     // 保证金金额 = 融资总额x保证金比例
     this.productModel.depositCash =
       this.productModel.financingAmount *
-      this.productRadioModel.depositCashRadio;
+      parseFloat(this.productRadioModel.depositCashRadio || "0");
 
     // 保证金金额 = 融资总额x保证金比例
     this.productModel.manageCost =
       this.productModel.financingAmount *
-      this.productRadioModel.manageCostRadio;
+      parseFloat(this.productRadioModel.manageCostRadio || "0");
 
     // 尾付利息=尾款本金x尾付月利率x期数
     this.productModel.finalCash =
       this.productModel.finalPayment +
       this.productModel.finalPayment *
-        this.productRadioModel.finalCashRadio *
+        parseFloat(this.productRadioModel.finalCashRadio || "0") *
         this.currentProduct.periodNumber;
   }
 
@@ -659,10 +659,15 @@ export default class ChooseBuyMaterials extends Vue {
     this.productModel.finalCash = 0;
     this.productModel.finalPayment = 0;
 
-    this.productRadioModel.initialPaymentRadio = 0;
-    this.productRadioModel.finalCashRadio = 0;
+    this.productRadioModel.initialPaymentRadio = "";
+    this.productRadioModel.finalCashRadio = "";
 
     this.productAmountModel = null;
+  }
+
+  onFinalPaymentChange(){
+    this.onProductRadioModelChange()
+    this.getProductAllAmount()
   }
 
   /**
@@ -779,7 +784,7 @@ export default class ChooseBuyMaterials extends Vue {
         },
         this.customRules
       )
-      .then((error) => {
+      .then(error => {
         if (!error) {
           return true;
         }

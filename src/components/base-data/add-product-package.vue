@@ -4,7 +4,7 @@
       <i-row>
         <i-col span="18">
           <i-form-item label="文件名" prop="name">
-            <i-input class="item-input" v-model="files.name"></i-input>
+            <i-input class="item-input" v-model="files.name" readonly></i-input>
           </i-form-item>
         </i-col>
         <i-col span="6">

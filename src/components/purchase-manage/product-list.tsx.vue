@@ -50,7 +50,7 @@ import { Upload, Radio } from "iview";
     DataBox
   }
 })
-export default class AddProduct extends Vue {
+export default class ProductList extends Vue {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
   @Dependencies(ProductService) private productService: ProductService;

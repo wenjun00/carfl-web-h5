@@ -45,7 +45,7 @@ export default class UploadTheMaterial extends Vue {
   @ModuleState("productId") productId;
 
   private fileTypeList = [];
-  private uploadDataSet: Array<any> = [];
+  public uploadDataSet: Array<any> = [];
 
   private previewModel: Boolean = false;
   private url: any = "";
@@ -75,7 +75,9 @@ export default class UploadTheMaterial extends Vue {
             <i-button
               type="text"
               icon="arrow-down-a"
-              click={this.$common.downloadFile(row.materialUrl, row.uploadName)}
+              click={()=>{
+                this.$common.downloadFile(row.materialUrl, row.uploadName)
+              }}
             />
           </div>
         );
@@ -142,10 +144,15 @@ export default class UploadTheMaterial extends Vue {
    */
   async validate() {
     // 判断列表中是否包含所有必传
-    this.fileTypeList.map(item => item.isSelect === 0).every((item: any) => {
+    let result =  this.fileTypeList.map(item => item.isSelect === 0).every((item: any) => {
       return this.uploadDataSet.find(x => x.type === item.id);
     });
-    return true;
+
+    if(result){
+      return true
+    }
+
+    this.$Message.error("请上传必传的素材")
   }
 
   /**
