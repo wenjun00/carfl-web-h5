@@ -453,6 +453,8 @@ export default class FinancingLeaseApply extends Page {
         ...chooseBuyMaterials.chooseModel,
         ...chooseBuyMaterials.productModel,
         ...chooseBuyMaterials.productRadioModel,
+        productId: chooseBuyMaterials.currentProduct.productId,
+        seriesId: chooseBuyMaterials.currentProduct.seriesId,
         productIssueId: chooseBuyMaterials.currentProduct.id,
         productRate: chooseBuyMaterials.currentProduct.productRate,
         payWay: chooseBuyMaterials.currentProduct.payWay,

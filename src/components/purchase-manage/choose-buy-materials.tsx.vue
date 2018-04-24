@@ -281,6 +281,7 @@ import { FilterService } from "~/utils/filter.service";
 import { Input, Button, InputNumber, Form } from "iview";
 
 const ModuleMutation = namespace("purchase", Mutation);
+
 @Component({
   components: {
     AddCar,
@@ -296,6 +297,7 @@ export default class ChooseBuyMaterials extends Vue {
   @Dependencies(CompanyService) private companyService: CompanyService;
   @Dependencies(ProductOrderService)
   private productOrderService: ProductOrderService;
+
   @ModuleMutation("updateProductId") updateProductId;
 
   @Prop() orderNumber;
@@ -345,7 +347,7 @@ export default class ChooseBuyMaterials extends Vue {
   };
 
   // 当前选择产品
-  private currentProduct: any = {
+  public currentProduct: any = {
     seriesName: "", // 产品系列
     productNanme: "", // 产品名称
     periods: "", // 产品期数
