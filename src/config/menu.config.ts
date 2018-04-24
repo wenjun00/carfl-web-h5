@@ -23,6 +23,15 @@ export default [
                 }, {
                     title: '订单交接',
                     path: 'purchase/purchase-manage/order-transfer'
+                }, {
+                    title: '评估申请',
+                    path: 'purchase/purchase-manage/evaluation-application'
+                }, {
+                    title: '评估任务池',
+                    path: 'purchase/purchase-manage/evaluation-task-pool'
+                }, {
+                    title: '押品评估',
+                    path: 'purchase/purchase-manage/evaluation-of-collateral'
                 }]
             }, {
                 title: '进件查询',
