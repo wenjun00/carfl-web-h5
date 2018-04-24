@@ -4,16 +4,16 @@
         <page-header title="评估申请" hidden-print>
             <i-button type="text">新建申请</i-button>
         </page-header>
-        <data-form :model="applicationModel" hidden-reset>
+        <data-form :model="applicationModel">
             <template slot="input">
                 <i-form-item prop="brandModel" label="品牌型号">
                     <i-input placeholder="请输入品牌、系列" v-model="applicationModel.brandModel"></i-input>
                 </i-form-item>
                 <i-form-item prop="busNumber" label="车牌号码">
-                    <i-input v-model="applicationModel.busNumber"></i-input>
+                    <i-input placeholder="请输入车牌号码" v-model="applicationModel.busNumber"></i-input>
                 </i-form-item>
                 <i-form-item prop="customerName" label="客户姓名">
-                    <i-input v-model="applicationModel.customerName"></i-input>
+                    <i-input placeholder="请输入客户姓名" v-model="applicationModel.customerName"></i-input>
                 </i-form-item>
                 <i-form-item prop="containsSubmitted">
                     <i-checkbox v-model="applicationModel.containsSubmitted">包含已提交</i-checkbox>
@@ -38,7 +38,6 @@ import {Button} from 'iview'
 })
 export default class EvaluationApplication extends Page {
   @Dependencies(PageService) private pageService: PageService
-  private applicationColumns: any
   private dataSet: Array<any> = []
   private applicationModel: any = {
     brandModel: '', //品牌系列
@@ -47,7 +46,7 @@ export default class EvaluationApplication extends Page {
     containsSubmitted: false // 包含提交
   }
 
-  private applicationColumns =  [{
+  private applicationColumns:any =  [{
         title: '操作',
         align: 'center',
         fixed: 'left',
@@ -134,7 +133,7 @@ export default class EvaluationApplication extends Page {
         align: 'center'
       },
       {
-        title: '联系电话',
+        title: '手机号码',
         editable: true,
         minWidth: this.$common.getColumnWidth(3),
         key: 'b2',
@@ -150,6 +149,7 @@ export default class EvaluationApplication extends Page {
       {
         title: '申请时间',
         editable: true,
+        sortable: true,
         minWidth: this.$common.getColumnWidth(3),
         key: 'b4',
         align: 'center'
@@ -168,7 +168,9 @@ export default class EvaluationApplication extends Page {
    */
 
   mounted() {
-    // this.searchReceiptapprove()
+     this.dataSet=[
+         {a1:'666'}
+     ]
   }
 }
 </script>

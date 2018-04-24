@@ -8,10 +8,10 @@
                     <i-input placeholder="请输入品牌、系列" v-model="collateralModel.brandModel"></i-input>
                 </i-form-item>
                 <i-form-item prop="busNumber" label="车牌号码">
-                    <i-input v-model="collateralModel.busNumber"></i-input>
+                    <i-input placeholder="请输入车牌号" v-model="collateralModel.busNumber"></i-input>
                 </i-form-item>
                 <i-form-item prop="customerName" label="客户姓名">
-                    <i-input v-model="collateralModel.customerName"></i-input>
+                    <i-input placeholder="请输入客户姓名" v-model="collateralModel.customerName"></i-input>
                 </i-form-item>
             </template>
         </data-form>
@@ -36,7 +36,7 @@ import SvgIcon from '~/components/common/svg-icon.vue'
 })
 export default class EvaluationOfCollateral extends Page {
   @Dependencies(PageService) private pageService: PageService
-  private collateralColumns: any
+//   private collateralColumns: any
   private dataSet: Array<any> = []
   private status: Boolean = false
   private collateralModel: any = {
@@ -44,7 +44,7 @@ export default class EvaluationOfCollateral extends Page {
     busNumber: '', // 车牌号码
     customerName: '' // 客户姓名
   }
-  private collateralColumns = [
+  private collateralColumns:any = [
     {
       title: '操作',
       align: 'center',
@@ -83,6 +83,7 @@ export default class EvaluationOfCollateral extends Page {
       title: '评估编号',
       editable: true,
       sortable: true,
+      fixed: 'left',
       key: 'approvalDealStatus',
       align: 'center',
       minWidth: this.$common.getColumnWidth(3)
@@ -91,6 +92,7 @@ export default class EvaluationOfCollateral extends Page {
       title: '状态',
       editable: true,
       key: 'dealDate',
+      fixed: 'left',
       align: 'center',
       minWidth: this.$common.getColumnWidth(3)
     },
@@ -125,21 +127,21 @@ export default class EvaluationOfCollateral extends Page {
     {
       title: '车牌号码',
       editable: true,
-      key: 'operatorName',
+      key: 'operatorName2',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '车架号',
       editable: true,
-      key: 'operatorName',
+      key: 'operatorName3',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '发动机号',
       editable: true,
-      key: 'operatorName',
+      key: 'operatorName4',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -147,27 +149,27 @@ export default class EvaluationOfCollateral extends Page {
       title: '客户姓名',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName',
+      key: 'operatorName5',
       align: 'center'
     },
     {
-      title: '联系电话',
+      title: '手机号',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName',
+      key: 'operatorName6',
       align: 'center'
     },
     {
       title: '车况级别',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName',
+      key: 'operatorName7',
       align: 'center'
     },
     {
       title: '估价',
       editable: true,
-      key: 'operatorName',
+      key: 'operatorName8',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
