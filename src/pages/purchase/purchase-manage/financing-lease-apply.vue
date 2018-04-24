@@ -97,6 +97,7 @@ import CustomerJobMessage from "~/components/purchase-manage/customer-job-messag
 import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue"; // 上传素材
 import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue"; // 客户联系人
 import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue"; // 客户来源
+import { setTimeout } from "core-js/library/web/timers";
 
 const ModuleState = namespace("purchase", State);
 
@@ -203,8 +204,8 @@ export default class FinancingLeaseApply extends Page {
     let result = await tab.validate();
 
     // if (result) {
-      this.currentStep++;
-      this.currentTab = this.applicationTabList[this.currentStep];
+    this.currentStep++;
+    this.currentTab = this.applicationTabList[this.currentStep];
     // }
   }
 

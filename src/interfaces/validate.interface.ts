@@ -1,3 +1,5 @@
 export interface ValidateInterface {
-  validate():Promise<boolean>;
+  validate(): Promise<boolean>;
+  reset()
+  update()
 }

@@ -1,14 +1,20 @@
 <template>
   <section class="component upload-the-material ">
-    <i-card title="上传素材">
+    <i-card :title="`上传素材 (${uploadList.length})`">
       <div slot="extra">
-        <i-button type="text" @click="openClick">上传</i-button>
+        <i-dropdown transfer @on-click="onUploadFile">
+          <a>
+            上传
+            <Icon type="arrow-down-b"></Icon>
+          </a>
+          <i-dropdown-menu slot="list">
+            <i-dropdown-item v-for="fileType in fileTypeList" :key="fileType.id" :name="fileType.id">{{fileType.name}}</i-dropdown-item>
+          </i-dropdown-menu>
+        </i-dropdown>
       </div>
-      <div>
-        <p class="tip">建议文件大小100M以内</p>
-        <h3>文件数量({{dataList.length}})</h3>
-        <ul class="item-margin-top20">
-          <li v-for="item in dataList" :key="item.uid">
+      <div v-show="uploadList.length" class="file-list">
+        <ul>
+          <li v-for="item in uploadList" :key="item.uid" class="row">
             <p>{{item.name}}</p>
             <div>
               <i-button type="text" icon="arrow-down-a" @click="download(item)"></i-button>
@@ -18,25 +24,14 @@
           </li>
         </ul>
       </div>
+      <div v-show="!uploadList.length" class="empty-text row middle-span center-span">
+        暂无待上传素材
+      </div>
     </i-card>
 
     <template>
       <i-modal :loading="true" v-model="openUpload" @on-ok="postFile">
-        <i-row>
-          <i-col span="4">
-            <span class="item-line-height">文件类型</span>
-          </i-col>
-          <!-- <i-col span="6">
-            <i-select v-model="model1">
-              <i-option v-for="item in cityList" :label="item.name" :value="item.id" :key="item.id"></i-option>
-            </i-select>
-          </i-col> -->
-        </i-row>
-        <i-row>
-          <i-col span="24">
-            <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
-          </i-col>
-        </i-row>
+        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
       </i-modal>
     </template>
 
@@ -45,7 +40,6 @@
         <img :src="url" style="width: 100%">
       </i-modal>
     </template>
-
   </section>
 </template>
 
@@ -57,8 +51,9 @@ import { State, Mutation, namespace } from "vuex-class";
 import { Dependencies } from "~/core/decorator";
 import { CommonService } from "~/utils/common.service";
 import { PersonalMaterialService } from "~/services/manage-service/personal-material.service";
+import { Prop, Watch } from "vue-property-decorator";
+
 const ModuleState = namespace("purchase", State);
-import { Prop } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -69,18 +64,70 @@ export default class UploadTheMaterial extends Vue {
   @Dependencies(PersonalMaterialService)
   private personalMaterialService: PersonalMaterialService;
   @ModuleState("productId") productId;
+
+  private fileTypeList = [];
+  private currentFileType = "";
   private model1: String = "";
   private cityList: any = [];
-  private dataList: Array<any> = [];
+  private uploadList: Array<any> = [];
 
   private openUpload: Boolean = false;
   private previewModel: Boolean = false;
   private url: any = "";
+
+  @Watch("productId")
+  onProductIdChange(value) {
+    this.reset();
+    this.getFileTypeList();
+  }
+
+  getFileTypeList() {
+    if (this.productId) {
+      this.personalMaterialService
+        .getAllPersonalMaterialNoPage({
+          productId: this.productId
+        })
+        .subscribe(data => {
+          this.fileTypeList = data;
+        });
+    }
+  }
+
+  onUploadFile(aa) {
+    console.log(aa);
+    let dialog = this.$dialog.show({
+      title: "上传文件",
+      footer: true,
+      onOk: fileUpload => {},
+      onCancel: () => {},
+      render: h => {
+        return h(FileUpload, {});
+      }
+    });
+  }
+
+  reset() {}
+
+  update() {
+    this.reset();
+  }
+
+  /**
+   * 数据验证
+   */
+  async validate() {
+    this.fileTypeList.map(item => item.isSelect === 0).map(item => {
+      //  this.uploadList.find(x=>x.)
+    });
+    return true;
+  }
+
+  onProductId() {}
   /**
    * 重置
    */
   resetfileList() {
-    this.dataList = [];
+    this.uploadList = [];
   }
   /**
    * 反显
@@ -89,14 +136,16 @@ export default class UploadTheMaterial extends Vue {
     data.personal.personalDatas.map(v => {
       (v.url = v.materialUrl), (v.name = v.uploadName);
     });
-    this.dataList = data.personal.personalDatas;
+    this.uploadList = data.personal.personalDatas;
   }
+
   /**
    * 下载
    */
   download(file) {
     CommonService.downloadFile(file.url, file.name);
   }
+
   /**
    * 补充资料反显
    */
@@ -107,7 +156,7 @@ export default class UploadTheMaterial extends Vue {
         (v.typeup = v.materialType),
         (v.upid = v.id);
     });
-    this.dataList = data;
+    this.uploadList = data;
   }
   /**
    * 预览
@@ -129,7 +178,7 @@ export default class UploadTheMaterial extends Vue {
    * 删除
    */
   handleRemove(file) {
-    this.dataList.splice(this.dataList.indexOf(file), 1);
+    this.uploadList.splice(this.uploadList.indexOf(file), 1);
   }
 
   /**
@@ -141,7 +190,7 @@ export default class UploadTheMaterial extends Vue {
       let fileUpload = this.$refs["file-upload"] as FileUpload;
       fileUpload.reset();
       for (let item of fileUpload.makeList()) {
-        this.dataList.push({
+        this.uploadList.push({
           name: item.name,
           uid: item.uid,
           url: item.response.url,
@@ -150,7 +199,7 @@ export default class UploadTheMaterial extends Vue {
           id: item.response.id,
           size: item.size,
           status: item.status,
-          createTime: item.response.createTime,
+          createTime: item.response.createTime
           // typeup: this.cityList.find(v => v.id === this.model1).type || ""
         });
       }
@@ -164,38 +213,14 @@ export default class UploadTheMaterial extends Vue {
     let fileUpload = this.$refs["file-upload"] as FileUpload;
     fileUpload.upload();
   }
-
-  openClick() {
-    if (this.productId) {
-      this.personalMaterialService
-        .getAllPersonalMaterialNoPage({
-          productId: this.productId
-        })
-        .subscribe(data => {
-          this.cityList = data.filter(x => x.isSelect == 0);
-        });
-      this.openUpload = true;
-    } else {
-      this.$Message.warning("请先选择产品信息！");
-      return false;
-    }
-  }
 }
 </script>
 
 <style lang="less" scoped>
 .component.upload-the-material {
-  .item-margin-left50 {
-    margin-left: 50px;
-  }
-  .item-margin-left15 {
-    margin-left: 15px;
-  }
-  .item-margin-top20 {
-    margin-top: 20px;
-  }
-  .item-line-height {
-    line-height: 36px;
+  .empty-text {
+    height: 200px;
+    font-size: 16px;
   }
 }
 </style>
