@@ -57,7 +57,6 @@
       DataBox,
       SvgIcon,
       ApplyDetail
-      // Approval
     }
   })
   export default class PaymentApprove extends Page {
