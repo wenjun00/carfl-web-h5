@@ -41,7 +41,7 @@
 
     <!-- 资料申请选项卡-start -->
     <i-tabs v-show="showApplicationTab" v-model="currentTab" class="application-tabs">
-      <i-button size="small" type="ghost" @click="onNextStep" v-show="currentStep < 5" slot="extra">下一步</i-button>
+      <i-button size="small" type="ghost" @click="onNextStep" v-show="currentStep <= 5" slot="extra">下一步</i-button>
       <i-tab-pane label="选购资料" name="choose-buy-materials">
         <choose-buy-materials ref="choose-buy-materials" v-show="currentTab==='choose-buy-materials'"></choose-buy-materials>
       </i-tab-pane>
@@ -68,7 +68,7 @@
     <!-- 资料选项卡-end -->
 
     <!--底部操作栏-start-->
-    <div class="fixed-container" v-show="currentStep >= 5">
+    <div class="fixed-container" v-show="currentStep > 5">
       <i-button size="large" class="highDefaultButton" @click="onSubmit(true)">保存草稿</i-button>
       <i-button size="large" class="highButton" style="margin-left:10px;" @click="onSubmit(false)">保存并提交</i-button>
     </div>
@@ -202,8 +202,13 @@ export default class FinancingLeaseApply extends Page {
     // 验证当前页面
     let result = await tab.validate();
 
-    if (result) {
-      this.currentStep++;
+    if (!result) {
+      return;
+    }
+
+    this.currentStep++;
+
+    if (this.applicationTabList.length > this.currentStep) {
       this.currentTab = this.applicationTabList[this.currentStep];
     }
   }
@@ -374,12 +379,16 @@ export default class FinancingLeaseApply extends Page {
    */
   async onSubmit(validate) {
     let result = true;
+    let customerForm = this.$refs["customer-form"] as Form;
 
-    if (validate) {
-      result = await this.validate();
+    // 基础表单验证
+    if (!await customerForm.validate().then(x => x)) {
+      return;
     }
 
-    if (!result) {
+    // 数据验证
+    if (validate) {
+      result = await this.validate();
     }
 
     this.submitApplicationData(validate);
@@ -391,18 +400,14 @@ export default class FinancingLeaseApply extends Page {
     // 执行验证
     for (let key of this.applicationTabList) {
       let tab = this.$refs[key] as any;
-      result = result && (await tab.validate());
+      result = result && !!await tab.validate();
       if (!result) {
         break;
       }
     }
 
     // 验证结果
-    if (!result) {
-      return result;
-    }
-
-    // TODO: 自定义验证
+    return result;
   }
 
   /**
@@ -412,14 +417,19 @@ export default class FinancingLeaseApply extends Page {
     let chooseBuyMaterials = this.$refs[
       "choose-buy-materials"
     ] as ChooseBuyMaterials;
+
     let customerMaterials = this.$refs[
       "customer-materials"
     ] as CustomerMaterials;
+
     let customerJobMessage = this.$refs[
       "customer-job-message"
     ] as CustomerJobMessage;
+
     let customerContacts = this.$refs["customer-contacts"] as CustomerContacts;
+
     let customerOrigin = this.$refs["customer-origin"] as CustomerOrigin;
+
     let uploadTheMaterial = this.$refs[
       "upload-the-material"
     ] as UploadTheMaterial;
@@ -427,22 +437,29 @@ export default class FinancingLeaseApply extends Page {
     // 订单基础信息
     let CreateOrderModel = Object.assign(
       {},
+      // 选购资料
       chooseBuyMaterials.chooseModel,
-      chooseBuyMaterials.productModel
+      chooseBuyMaterials.productModel,
+      {
+        orderCars: [...chooseBuyMaterials.carDataSet],
+        // 客户资料
+        Personal: Object.assign({}, customerMaterials.customerModel),
+        // 客户职业
+        personalJob: Object.assign({}, customerJobMessage.jobModel),
+        // 客户联系人
+        personalContacts: [
+          ...customerContacts.familyDataSet,
+          ...customerContacts.friendDataSet
+        ],
+        // 客户来源
+        personalResourceIntroduce: customerOrigin.publicityModel,
+        personalResourcePublicity: customerOrigin.introduceModel,
+        // 客户素材
+        personalDatas: [...uploadTheMaterial.uploadDataSet]
+      }
     );
-    // 订单车辆信息
-    let OrderCar = chooseBuyMaterials.carDataSet;
-    let Personal = Object.assign({});
 
-    return {
-      CreateOrderModel: Object.assign(
-        {},
-        chooseBuyMaterials.chooseModel,
-        chooseBuyMaterials.productModel
-      ),
-      OrderCar: chooseBuyMaterials.carDataSet,
-      Personal: Object.assign({})
-    };
+    return CreateOrderModel
   }
 
   /**

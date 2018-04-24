@@ -14,23 +14,23 @@
     </i-card>
 
     <i-card title="单位信息" v-show="jobType === 37">
-      <i-form ref="job-form" :model="job" :rules="jobRules" :label-width="110" label-position="left">
+      <i-form ref="job-form" :model="jobModel" :rules="jobRules" :label-width="110" label-position="left">
         <i-row>
           <i-col :span="12">
             <i-form-item label="单位名称" prop="companyName">
-              <i-input type="text" v-model="job.companyName" placeholder="请输入单位名称">
+              <i-input type="text" v-model="jobModel.companyName" placeholder="请输入单位名称">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col :span="12">
             <i-form-item label="部门" prop="department">
-              <i-input type="text" v-model="job.department" placeholder="请输入部门">
+              <i-input type="text" v-model="jobModel.department" placeholder="请输入部门">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col :span="12">
             <i-form-item label="单位性质" prop="companyNature">
-              <i-select v-model="job.companyNature">
+              <i-select v-model="jobModel.companyNature">
                 <i-option label="机关事业" :value="39"></i-option>
                 <i-option label="国有企业" :value="40"></i-option>
                 <i-option label="社会团体" :value="41"></i-option>
@@ -43,13 +43,13 @@
           </i-col>
           <i-col :span="12">
             <i-form-item label="职务" prop="duty">
-              <i-input type="text" v-model="job.duty" placeholder="请输入职务">
+              <i-input type="text" v-model="jobModel.duty" placeholder="请输入职务">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col :span="12">
             <i-form-item label="职级" prop="rank">
-              <i-select v-model="job.rank">
+              <i-select v-model="jobModel.rank">
                 <i-option label="负责人" :value="46"></i-option>
                 <i-option label="高级管理人员" :value="47"></i-option>
                 <i-option label="中级管理人员" :value="48"></i-option>
@@ -63,29 +63,29 @@
           </i-col>
           <i-col :span="12">
             <i-form-item label="何时进入公司" prop="accessCompanyTime">
-              <i-date-picker type="month" placeholder="选择月" v-model="job.accessCompanyTime"></i-date-picker>
+              <i-date-picker type="month" placeholder="选择月" v-model="jobModel.accessCompanyTime"></i-date-picker>
             </i-form-item>
           </i-col>
           <i-col :span="24">
             <i-form-item label="单位地址" prop="companyAddress">
               <i-row type="flex" :gutter="16">
                 <i-col>
-                  <i-select class="city-select" placeholder="省" v-model="job.province">
+                  <i-select class="city-select" placeholder="省" v-model="jobModel.province">
                     <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
                   </i-select>
                 </i-col>
                 <i-col>
-                  <i-select class="city-select" placeholder="市" v-model="job.city">
-                    <i-option v-for="{value,label} in this.job.province ? this.$city.getCityData({ level: 1, id: this.job.province }) : []" :key="value" :label="label" :value="value"></i-option>
+                  <i-select class="city-select" placeholder="市" v-model="jobModel.city">
+                    <i-option v-for="{value,label} in this.jobModel.province ? this.$city.getCityData({ level: 1, id: this.jobModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
                   </i-select>
                 </i-col>
                 <i-col>
-                  <i-select class="city-select" placeholder="区" v-model="job.companyAddress">
-                    <i-option v-for="{value,label} in this.job.city ? this.$city.getCityData({ level: 1, id: this.job.city }) : []" :key="value" :label="label" :value="value"></i-option>
+                  <i-select class="city-select" placeholder="区" v-model="jobModel.companyAddress">
+                    <i-option v-for="{value,label} in this.jobModel.city ? this.$city.getCityData({ level: 1, id: this.jobModel.city }) : []" :key="value" :label="label" :value="value"></i-option>
                   </i-select>
                 </i-col>
                 <i-col>
-                  <i-input type="text" placeholder="请具体到门牌号" v-model="job.companyAddressDetail">
+                  <i-input type="text" placeholder="请具体到门牌号" v-model="jobModel.companyAddressDetail">
                   </i-input>
                 </i-col>
               </i-row>
@@ -93,7 +93,7 @@
           </i-col>
           <i-col :span="12">
             <i-form-item label="单位固定电话" prop="companyPhone">
-              <i-input type="text" v-model="job.companyPhone" placeholder="请输入单位固定电话">
+              <i-input type="text" v-model="jobModel.companyPhone" placeholder="请输入单位固定电话">
               </i-input>
             </i-form-item>
           </i-col>
@@ -102,56 +102,56 @@
     </i-card>
 
     <i-card title="企业信息" v-show="jobType === 38">
-      <i-form ref="company-form" :model="job" :rules="companyRules" :label-width="110" label-position="left">
+      <i-form ref="company-form" :model="jobModel" :rules="companyRules" :label-width="110" label-position="left">
         <i-row>
           <i-col span="12">
             <i-form-item label="身份" prop="identity">
               <i-row>
-                <i-radio-group v-model="job.identity">
+                <i-radio-group v-model="jobModel.identity">
                   <i-radio :label="54" :value="54">法人代表</i-radio>
                   <i-radio :label="55" :value="55">股东</i-radio>
                 </i-radio-group>
-                <i-input class="ratio-holding" placeholder="股份占比%" v-model="job.stockScale"></i-input>
+                <i-input class="ratio-holding" placeholder="股份占比%" v-model="jobModel.stockScale"></i-input>
               </i-row>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="企业经营年限" prop="enterpriseManageYears">
-              <i-input :maxlength="4" type="text" v-model="job.enterpriseManageYears" placeholder="请输入企业经营年限">
+              <i-input :maxlength="4" type="text" v-model="jobModel.enterpriseManageYears" placeholder="请输入企业经营年限">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="经营地归属" prop="enterpriseManageBelong">
-              <i-input type="text" v-model="job.enterpriseManageBelong" placeholder="请输入经营地归属">
+              <i-input type="text" v-model="jobModel.enterpriseManageBelong" placeholder="请输入经营地归属">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="员工人数" prop="employeesNumber">
-              <i-input :maxlength="4" type="text" v-model="job.employeesNumber" placeholder="请输入员工人数">
+              <i-input :maxlength="4" type="text" v-model="jobModel.employeesNumber" placeholder="请输入员工人数">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="注册资本(万元)" prop="registeredCapital">
-              <i-input-number v-model="job.registeredCapital" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number v-model="jobModel.registeredCapital" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="所属行业" prop="industry">
-              <i-input type="text" v-model="job.industry" placeholder="请输入所属行业">
+              <i-input type="text" v-model="jobModel.industry" placeholder="请输入所属行业">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="过去一年营业收入(万元)" prop="pastyearIncome">
-              <i-input-number v-model="job.pastyearIncome" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number v-model="jobModel.pastyearIncome" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="过去一年利润" prop="pastyearProfit">
-              <i-input-number v-model="job.pastyearProfit" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number v-model="jobModel.pastyearProfit" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
         </i-row>
@@ -159,39 +159,39 @@
     </i-card>
 
     <i-card title="收入信息">
-      <i-form ref="income-form" :rules="incomeRules" :model="job" :label-width="110" label-position="left">
+      <i-form ref="income-form" :rules="incomeRules" :model="jobModel" :label-width="110" label-position="left">
         <i-row>
           <i-col span="12">
             <i-form-item label="基本月薪(元)" prop="basicSalary">
-              <i-input-number v-model="job.basicSalary" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number v-model="jobModel.basicSalary" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="每月发薪日" prop="payDay">
-              <i-select v-model="job.payDay" placeholder="请选择每月发薪日" clearable>
+              <i-select v-model="jobModel.payDay" placeholder="请选择每月发薪日" clearable>
                 <i-option :label="item.day" :key="item.key" :value="item.value" v-for="item in monthDay"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="发薪方式" prop="payWay">
-              <i-input type="text" v-model="job.payWay" placeholder="请输入发薪方式">
+              <i-input type="text" v-model="jobModel.payWay" placeholder="请输入发薪方式">
               </i-input>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="年收入(万元)" prop="yearlySalaries">
-              <i-input-number v-model="job.yearlySalaries" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number v-model="jobModel.yearlySalaries" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="每月其他收入(元)" prop="monthOtherIncome">
-              <i-input-number v-model="job.monthOtherIncome" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number v-model="jobModel.monthOtherIncome" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="其他收入来源" prop="otherIncomeSource">
-              <i-input-number v-model="job.otherIncomeSource" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number v-model="jobModel.otherIncomeSource" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-col>
         </i-row>
@@ -209,7 +209,7 @@ import { Form } from "iview";
 
 @Component({})
 export default class CustomerJobMessage extends Vue {
-  private job: any = {
+  public jobModel: any = {
     companyName: "", // 单位名称
     department: "", // 部门
     companyNature: "", // 单位性质
@@ -302,11 +302,11 @@ export default class CustomerJobMessage extends Vue {
       data.personal.personalJob.province = CityService.getCityParent(
         Number(data.personal.personalJob.companyAddress)
       )[0];
-      this.job = data.personal.personalJob;
+      this.jobModel = data.personal.personalJob;
     }
   }
   jobchange() {
-    this.job = {};
+    this.jobModel = {};
   }
 
   /**

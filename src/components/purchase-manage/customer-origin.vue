@@ -70,9 +70,9 @@ import Component from "vue-class-component";
 
 @Component({})
 export default class CustomerOrigin extends Vue {
-  private publicityModel = []
+  public publicityModel = [];
 
-  private introduceModel: any = {
+  public introduceModel: any = {
     resourceType: "", // 来源
 
     peerName: "", // 同行姓名
@@ -84,8 +84,7 @@ export default class CustomerOrigin extends Vue {
     isBuyCar: "", // 在我司是否成功购车
 
     organizationNames: "", // 机构名称
-    referrer: "", // 推荐人
-    
+    referrer: "" // 推荐人
   };
 
   private typeList = [
@@ -114,8 +113,14 @@ export default class CustomerOrigin extends Vue {
     this.introduceModel = {};
   }
 
-  validate(){
-    
+  async validate() {
+    return Promise.resolve().then(() => {
+      if (this.publicityModel.length || this.introduceModel.resourceType) {
+        return true;
+      }
+
+      this.$Message.error("请选择客户来源方式");
+    });
   }
 }
 </script>
