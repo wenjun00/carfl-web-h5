@@ -362,7 +362,7 @@ export default [
     // path: 'system-manage/system-manage-index',
     children: [{
       title: '库存管理',
-      color: '#598AC5',
+      color: '#598AC6',
       icon: 'quanxianshezhi',
       path: 'inventory-management/inventory-data',
       children: [{

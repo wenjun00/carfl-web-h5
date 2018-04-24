@@ -162,9 +162,9 @@ export default class EvaluationApplication extends Page {
         align: 'center'
       }
     ]
-  
+
   /**
-   * 
+   *
    */
 
   mounted() {

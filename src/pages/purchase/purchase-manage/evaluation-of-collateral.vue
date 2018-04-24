@@ -36,7 +36,6 @@ import SvgIcon from '~/components/common/svg-icon.vue'
 })
 export default class EvaluationOfCollateral extends Page {
   @Dependencies(PageService) private pageService: PageService
-//   private collateralColumns: any
   private dataSet: Array<any> = []
   private status: Boolean = false
   private collateralModel: any = {
@@ -100,27 +99,27 @@ export default class EvaluationOfCollateral extends Page {
       title: '品牌',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'dealerName',
+      key: 'a3',
       align: 'center'
     },
     {
       title: '系列',
       editable: true,
-      key: 'applicationType',
+      key: 'a4',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '车型',
       editable: true,
-      key: 'totalPayment',
+      key: 'a5',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '颜色',
       editable: true,
-      key: 'operatorTime',
+      key: 'a6',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -177,7 +176,7 @@ export default class EvaluationOfCollateral extends Page {
       title: '评估日期',
       editable: true,
       sortable: true,
-      key: 'operatorName',
+      key: 'a13',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -185,7 +184,7 @@ export default class EvaluationOfCollateral extends Page {
       title: '估价员',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName',
+      key: 'a14',
       align: 'center'
     }
   ]
@@ -193,16 +192,16 @@ export default class EvaluationOfCollateral extends Page {
   mounted() {
       this.dataSet= [
         {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'},      
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'}, 
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'} 
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'}
       ]
   }
 }
