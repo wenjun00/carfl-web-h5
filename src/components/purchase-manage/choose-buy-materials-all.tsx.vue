@@ -71,7 +71,7 @@ export default class chooseBuyMaterialsAll extends Vue {
   @Dependencies(CarService) private carService: CarService;
 
   private addCar: Boolean = false;
-  private totalPrice: any = "";
+  public totalPrice: any = "";
 
   private companyObject: Array<Object> = []; // 公司信息
 

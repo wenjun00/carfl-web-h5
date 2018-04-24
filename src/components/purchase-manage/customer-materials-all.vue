@@ -59,7 +59,7 @@
         <i-row>
           <i-col :span="12">
             <i-form-item label="邮政编码" prop="postalCode">
-              <i-input type="text" v-model="customerModel.postalCode">
+              <i-input type="text" v-model="customerModel.postalCode" :maxlength="6">
               </i-input>
             </i-form-item>
           </i-col>
@@ -101,7 +101,7 @@ export default class CustomerMaterialsAll extends Vue {
       idCard: [
         { required: true, message: "请输入证件号码", trigger: "blur" },
         { validator: this.$validator.idCard, trigger: "blur" }],
-      postalCode: { required: true, message: "请输入邮政编码", trigger: "blur" },
+      postalCode: { required: true, validator: this.$validator.zipCode, trigger: "blur" },
       orderServiceList: { required: true, message: "选择代办服务", trigger: "change", type: "array" },
       mobileMain: [
         { required: true, message: "请输入联系电话", trigger: "blur" },

@@ -259,8 +259,7 @@ export default class FullPaymentApply extends Page {
       this.customerForm.validateField("idCard", error => reslove(!error));
     });
 
-    // TODO: 18个1仅用于测试F
-    return result || this.customerModel.idCard === "1".repeat(18);
+    return result
   }
 
   /**
@@ -492,7 +491,7 @@ export default class FullPaymentApply extends Page {
           {
             orderStatus: 304, // 提交
             orderType: 302, // 全额付款
-            otherFee : 0,
+            otherFee: 0,
             salesmanName: this.customerModel.salesmanName
           },
           this.materialsAllCard.chooseModel,
@@ -507,12 +506,10 @@ export default class FullPaymentApply extends Page {
           }
         )
 
-        console.log(model, 'Params')
-        this.productOrderService.createFullPaymentOrder(model).subscribe(() => {
-          this.$Message.success('订单申请成功')
-        })
-
-
+        this.productOrderService.createFullPaymentOrder(model).subscribe(
+          () => this.$Message.success('订单申请成功'),
+          err => this.$Message.error(err.msg)
+        )
       }
     })
 

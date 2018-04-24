@@ -6,14 +6,14 @@
         <div class="data-d-icon"></div>
         <a name="xuangouxinxi" class="data-d-content">选购信息</a>
       </div>
-      <data-grid class="data-d-item" :labelWidth="100" labelAlign="left" contentAlign="left">
+      <data-grid class="data-d-item" :labelWidth="100" labelAlign="right" contentAlign="left">
         <data-grid-item label="申请省份：" :span="3">{{orderInfo.province?$city.getCityName(orderInfo.province):''}}</data-grid-item>
         <data-grid-item label="申请城市：" :span="3">{{orderInfo.city?$city.getCityName(orderInfo.city):''}}</data-grid-item>
         <data-grid-item label="所属公司：" :span="6">{{orderInfo.company?orderInfo.company.companyChinaname:''}}</data-grid-item>
         <data-grid-item label="融资租赁用途" :span="3">{{orderInfo.financingUse}} </data-grid-item>
         <data-grid-item label="自缴费用" :span="9">
           <i-checkbox-group v-model="fee">
-            <i-checkbox v-for="{value,label} in $dict.getDictData('0307')" :key="value" :label="value" :value="value" disabled>{{label}}</i-checkbox>
+            <i-checkbox v-for="{value,label} in $dict.getDictData('0307')" :key="value" :label="value" disabled>{{label}}</i-checkbox>
           </i-checkbox-group>
         </data-grid-item>
         <data-grid-item label="意向融资金额" :span="3">{{orderInfo.intentionFinancingAmount}}</data-grid-item>
@@ -28,7 +28,7 @@
         <div class="data-d-icon"></div>
         <a name="cheliangxinxi" class="data-d-content">车辆信息</a>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" class="data-d-item" v-for="item in carOrderInfo" :key="item.id">
+      <data-grid :labelWidth="100" labelAlign="right" contentAlign="left" class="data-d-item" v-for="item in carOrderInfo" :key="item.id">
         <data-grid-item label="车辆型号" :span="4">{{item.modelName?item.modelName:''}}</data-grid-item>
         <data-grid-item label="上牌地区" :span="4">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>
         <data-grid-item label="车身颜色" :span="4">{{item.vehicleColour?item.vehicleColour:''}}</data-grid-item>
@@ -43,7 +43,7 @@
         <div class="data-d-icon"></div>
         <a name="chanpinxinxi" class="data-d-content">产品信息</a>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" class="data-d-item">
+      <data-grid :labelWidth="100" labelAlign="right" contentAlign="left" class="data-d-item">
         <data-grid-item label="产品系列" :span="3">{{orderInfo.productSeries?orderInfo.productSeries.name:''}}</data-grid-item>
         <data-grid-item label="产品名称" :span="3">{{orderInfo.product?orderInfo.product.name:''}}</data-grid-item>
         <data-grid-item label="产品期数" :span="3">{{!!orderInfo.periods ? $dict.getDictName(orderInfo.periods):0}}</data-grid-item>
@@ -75,7 +75,7 @@
         <div class="data-d-icon"></div>
         <a name="gerenziliao" class="data-d-content">个人资料</a>
       </div>
-      <data-grid :labelWidth="105" labelAlign="left" contentAlign="left" class="data-d-item">
+      <data-grid :labelWidth="105" labelAlign="right" contentAlign="left" class="data-d-item">
         <data-grid-item label="姓名" :span="3">{{orderInfo.personal?orderInfo.personal.name:''}}</data-grid-item>
         <data-grid-item label="性别" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.sex):''}}</data-grid-item>
         <data-grid-item label="出生日期" :span="3">{{personal.birthTime|dateFormat('yyyy-MM-dd')}}</data-grid-item>
@@ -123,7 +123,7 @@
         <div class="data-d-icon"></div>
         <a name="zhiyexinxi" class="data-d-content">职业信息</a>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" class="data-d-item">
+      <data-grid :labelWidth="100" labelAlign="right" contentAlign="left" class="data-d-item">
         <data-grid-item label="单位名称" :span="6">{{personalJobInfo.companyName}}</data-grid-item>
         <data-grid-item label="部门" :span="6">{{personalJobInfo.department}}</data-grid-item>
 
@@ -162,7 +162,7 @@
         <div class="data-d-icon"></div>
         <a name="kehulaiyuan" class="data-d-content">客户来源</a>
       </div>
-      <data-grid :labelWidth="100" labelAlign="left" contentAlign="left" class="data-d-item">
+      <data-grid :labelWidth="100" labelAlign="right" contentAlign="left" class="data-d-item">
         <data-grid-item label="通过宣传" :span="12">
           <i-checkbox-group v-model="byAdvertise">
             <i-checkbox v-for="{value,label} in $dict.getDictData('0018')" :key="value" :label="value" :value="value" disabled>{{label}}</i-checkbox>
