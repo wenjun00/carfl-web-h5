@@ -462,7 +462,7 @@ export default class FinancingLeaseApply extends Page {
       },
       // 客户资料
       {
-        Personal: customerMaterials.customerModel
+        personal: customerMaterials.customerModel
       },
       // 客户职业
       {
