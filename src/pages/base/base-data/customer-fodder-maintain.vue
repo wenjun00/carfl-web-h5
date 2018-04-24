@@ -1,7 +1,9 @@
 <!--客户素材维护-->
 <template>
     <section class="page customer-fodder-maintain">
-        <page-header title="客户素材维护" hiddenPrint hiddenExport></page-header>
+        <page-header title="客户素材维护" hiddenPrint hiddenExport>
+             <i-button class="blueButton command-item-add" @click="materialModel=true">新增素材</i-button>
+        </page-header>
         <i-row class="data-form">
             <i-row type="flex">
                 <i-col :span="4">
@@ -26,9 +28,6 @@
                             <i-form-item prop="name" label="素材名称">
                                 <i-input v-model="personalModel.name"></i-input>
                             </i-form-item>
-                        </template>
-                        <template slot="button">
-                            <i-button class="blueButton command-item-add" @click="materialModel=true">新增素材</i-button>
                         </template>
                     </data-form>
 

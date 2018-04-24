@@ -15,7 +15,7 @@
         </i-col>
       </i-row>
     </i-form>
-    <div v-if="applicationPhaseResources.length">
+    <div v-if=" financeUploadResources.length">
       <div class="modal-item-fujian"></div>
       <span>附件</span>
       <upload-voucher  ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
@@ -90,7 +90,7 @@
     </div>
     <i-table :columns="columns2" :data="personalBanks"></i-table>
 
-    <div v-if="!check||financeUploadResources.length">
+    <div v-if="!check || applicationPhaseResources.length">
       <div class="modal-item-xinxi"></div>
       <span >收款凭证</span>
       <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
@@ -182,9 +182,9 @@
           this.collectMoneyItemModels = data.collectMoneyItemModels
           this.$nextTick(()=>{
             let _uploadFodder:any = this.$refs['upload-voucher']
-            _uploadFodder.Reverse(data.applicationPhaseUploadResources)
+            _uploadFodder.Reverse(data.collectMoneyPhaseUploadResources)
             // let _uploadFodderTwo:any = this.$refs['upload-voucher-two']
-            // _uploadFodderTwo.Reverse(data.collectMoneyPhaseUploadResources)
+            // _uploadFodderTwo.Reverse(data.applicationPhaseUploadResources)
           })
           this.inputBlur()
         }, ({

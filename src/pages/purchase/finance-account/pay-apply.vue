@@ -1,7 +1,9 @@
 <!--付款申请-->
 <template>
     <section class="page early-payment-apply special-input">
-        <page-header title="付款申请"></page-header>
+        <page-header title="付款申请">
+             <i-button class="blueButton" @click="clearAll">清空</i-button>
+        </page-header>
         <i-row type="flex" class="data-form">
             <i-col span="18">
                 <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
@@ -45,7 +47,6 @@
                     </i-col>
                 </i-form>
             </i-col>
-            <i-button class="blueButton clear-button" @click="clearAll">清空</i-button>
         </i-row>
         <i-tabs v-model="materialTabs" class="early-pay-tabs">
             <i-tab-pane name="pay-detail" label="付款明细">

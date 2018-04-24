@@ -1,7 +1,9 @@
 <!--系统备份-->
 <template>
   <section class="page system-backups">
-    <page-header title="系统备份"></page-header>
+    <page-header title="系统备份">
+        <i-button class="blueButton" @click="addNewBackups">新增备份</i-button>
+    </page-header>
     <data-form hidden-date-search :model="systemBackUpModel" @on-search="getSystemBackupList" :page="pageService">
       <template slot="input">
         <i-form-item prop="mysqlName" label="mysql文件名：">
@@ -19,9 +21,6 @@
         <i-form-item prop="dateRange" label="备份时间：">
           <i-date-picker v-model="systemBackUpModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
-      </template>
-      <template slot="button">
-        <i-button @click="addNewBackups">新增备份</i-button>
       </template>
     </data-form>
 

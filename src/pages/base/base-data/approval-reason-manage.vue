@@ -2,6 +2,7 @@
 <template>
     <section class="page approval-reason-manage">
         <page-header title="审批原因管理" hiddenPrint hiddenExport>
+              <i-button class="blueButton" @click="addapprovalReasonBtn">新增审批原因</i-button>
             <command-button label="导入" icon="daoru" @click="enterInto"></command-button>
             <command-button label="模板下载" icon="xiazai" @click="downloadTemplate"></command-button>
         </page-header>
@@ -36,16 +37,7 @@
             </template>
         </data-form>
         <data-box :id="109" :columns="columns" :data="AppRoveReasonList" @onPageChange="seach" :page="pageService"></data-box>
-        <div class="submitBar">
-            <i-row type="flex" align="middle" style="padding:10px">
-                <i-col :span="22" style="text-align:right;">
-                    <div class="fixed-container">
-                        <i-button size="large" class="highButton" @click="addapprovalReasonBtn">新增审批原因</i-button>
-                    </div>
-
-                </i-col>
-            </i-row>
-        </div>
+      
         <template>
             <i-modal title="新增审批原因" v-model="approvalReasonModel">
                 <add-approval-reason ref="add-approval-reason" @close="closeApproval"></add-approval-reason>

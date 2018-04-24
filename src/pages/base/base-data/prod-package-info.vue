@@ -2,6 +2,7 @@
 <template>
   <section class="page prod-package-info">
     <page-header title="产品包管理" hiddenPrint hiddenExport>
+        <i-button class="blueButton" @click="pPackageModel=true">新增产品包</i-button>
       <command-button label="报价模板下载" icon="xiazai" @click="QuotationTemplatedownload"></command-button>
     </page-header>
     <data-form hidden-date-search :model="productModel" :page="pageService" @on-search="getProductPackage">
@@ -12,9 +13,6 @@
         <i-form-item prop="dateRange" label="上传时间">
           <i-date-picker v-model="productModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
-      </template>
-      <template slot="button">
-           <i-button @click="pPackageModel=true">新增产品包</i-button>
       </template>
     </data-form>
     <data-box :id="91" :columns="columns" :data="prdPackageList" @onPageChange="getProductPackage" :page="pageService"></data-box>
