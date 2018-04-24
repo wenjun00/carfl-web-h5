@@ -8,14 +8,14 @@
           <span>冲抵类型</span>
         </div>
         <div class="form-item-tree">
-          <div class="data-form-list-template" v-for="{value,label} in $dict.getDictData('0442')" :key="value" :label="label" :value="value" >
+          <div class="data-form-list-template" v-for="{value,label} in $dict.getDictData('0442')" :key="value" :label="label" :value="value" @click="checkMaintain(value)" :class="{'maintainCss':value===checkId}">
             <span>{{label}}</span>
           </div>
         </div>
       </i-col>
       <!--表格-->
       <i-col :span="20">
-        <data-box  :columns="treeColumns" :data="dataSet"  :page="pageService"></data-box>
+        <data-box  :columns="configColumns" :data="dataSet"  :page="pageService" @onPageChange="check"></data-box>
       </i-col>
     </i-row>
   </section>
@@ -27,18 +27,107 @@
   import { Dependencies } from "~/core/decorator";
   import { Layout } from "~/core/decorator";
   import { PageService } from "~/utils/page.service";
+  import { StagesMatchService} from "~/services/manage-service/stages-match.service";
+
   @Layout("workspace")
   @Component({
     components: {}
   })
   export default class FlushingConfig extends Page{
     @Dependencies(PageService) private pageService: PageService;
+    @Dependencies(StagesMatchService) private stagesMatchService: StagesMatchService;
     private dataSet: Array<any> = []
-    private treeColumns:any = [{
-
+    private checkId: any = ''
+    private configColumns:any = [{
+      title: '费用项',
+      key: 'costName',
+      align: 'center',
+      minWidth: this.$common.getColumnWidth(8)
+    },
+    {
+      title: '备注',
+      key: 'remark',
+      align: 'center',
+      minWidth: this.$common.getColumnWidth(4)
+    },
+    {
+      title: '排序',
+      key: 'sort',
+      align: 'center',
+      minWidth: this.$common.getColumnWidth(4),
+      render:(h,{ row }) => {
+        return h('div',[
+          h('span',{
+            on:{
+              click: () => {
+                this.upArrow(row)
+              }
+            }
+          },[
+            h('Icon', {
+              props: {
+                type: 'arrow-up-b'
+              },
+              style: {
+                fontSize:'26px',
+                color: '#265ea2',
+                cursor: 'pointer'
+              }
+            })
+          ]),
+          h('span',{
+            on:{
+              click: () => {
+                this.downArrow(row)
+              }
+            }
+          },[
+            h('Icon', {
+              props: {
+                type: 'arrow-down-b'
+              },
+              style: {
+                marginLeft:'10px',
+                fontSize:'26px',
+                color: '#265ea2',
+                cursor: 'pointer'
+              }
+            })
+          ])
+        ])
+      }
     }]
-    mounted(){
-      this.dataSet = [{}]
+
+    /**
+     *  点击冲抵类型获取当前value
+     */
+    checkMaintain(value){
+      this.checkId = value
+      this.check()
+    }
+    /**
+     *  查询冲抵项目
+     */
+    check(){
+      this.stagesMatchService.queryStagesMatchPage({type:this.checkId},this.pageService)
+        .subscribe( data => {
+          this.dataSet = data
+        },({msg})=>{
+          this.$Message.error(msg)
+        })
+     }
+
+    /**
+     *  向上移动
+     */
+    upArrow(val){
+
+    }
+    /**
+     *  向下移动
+     */
+    downArrow(val){
+
     }
   }
 </script>
@@ -79,6 +168,9 @@
         }
       }
     }
+  }
+  .maintainCss {
+    background: #e4f4fa;
   }
 </style>
 

@@ -38,6 +38,7 @@ import financeApprovalHistoryController from './finance-approval-history.control
 import chargeBackController from './charge-back.controller'
 import templateController from './template.controller'
 import financeInvoiceController from './finance-invoice.controller'
+import stagesMatch from './stages-match-controller'
 
 export const manageService = {
     financeInvoiceController,
@@ -79,5 +80,6 @@ export const manageService = {
     carParamController,
     withdrawApplicationController,
     financeApprovalHistoryController,
-    chargeBackController
+    chargeBackController,
+    stagesMatch
 }
