@@ -68,7 +68,7 @@
           <i-col>
             <i-form-item label="代办服务" prop="orderServiceList">
               <i-checkbox-group v-model="customerModel.orderServiceList">
-                <i-checkbox v-for="{value,label} of $dict.getDictData('0313')" :key="value" :value="value" :label="label"></i-checkbox>
+                <i-checkbox v-for="{value,label} of $dict.getDictData('0313')" :key="value" :label="value">{{label}}</i-checkbox>
               </i-checkbox-group>
             </i-form-item>
           </i-col>
@@ -85,7 +85,7 @@ import { CityService } from "~/utils/city.service";
 
 @Component({})
 export default class CustomerMaterialsAll extends Vue {
-  private customerModel: any = {};
+  public customerModel: any = {};
   private customerRules: any = {};
 
   //  个人信息 card

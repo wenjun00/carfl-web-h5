@@ -83,7 +83,7 @@ export default class chooseBuyMaterialsAll extends Vue {
 
   // 客户基本信息form
   private chooseForm: any = {};
-  private chooseModel: any = {};
+  public chooseModel: any = {};
   private chooseRule: any = {};
 
   // 页面流程检测规则
