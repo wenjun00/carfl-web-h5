@@ -82,6 +82,7 @@ import HistoricalRecord from "~/components/purchase-manage/historical-record.vue
 import ChooseBuyMaterialsAll from "~/components/purchase-manage/choose-buy-materials-all.tsx.vue";
 import CustomerMaterialsAll from "~/components/purchase-manage/customer-materials-all.vue";
 import SalesmanName from "~/components/purchase-manage/salesman-name.vue";
+import { resolve } from "url";
 
 @Layout("workspace")
 @Component({
@@ -266,24 +267,22 @@ export default class FullPaymentApply extends Page {
    * 对每个card对象使用 validate 函数
    * 前提是这些对象中都有这个方法
    */
-  async validate() {
+  validate() {
+    return new Promise(async (reslove, reject) => {
+      let result = true;
 
-    let result = true;
-
-    let forms = [this.materialsAllCard, this.materialsCard]
-    // 执行验证
-    for (let form of forms) {
-
-      result = result && (await (form as any).validate());
-      if (!result) {
-        break;
+      let forms = [this.materialsAllCard, this.materialsCard]
+      // 执行验证
+      for (let form of forms) {
+        let tmpResult = await (form as any).validate()
+        result = result && !!tmpResult
+        if (!result) {
+          break;
+        }
       }
-    }
-    console.log(result,'validate-000')
-    // 验证结果
-    if (!result) {
-      return result;
-    }
+
+      reslove(result)
+    })
 
   }
 
@@ -486,17 +485,42 @@ export default class FullPaymentApply extends Page {
    * 保存并提交
    */
   saveAndSubmit(type) {
+    Promise.all([this.customerForm.validate(), this.validate()]).then((v) => {
+      if (v[0] && v[1] && true) {
 
-    let result = false
-    this.customerForm.validate(v => result = v)
-    if (!result) {
-      return
-    }
+        let model = Object.assign(
+          {
+            orderStatus: 304, // 提交
+            orderType: 302, // 全额付款
+            otherFee : 0,
+            salesmanName: this.customerModel.salesmanName
+          },
+          this.materialsAllCard.chooseModel,
+          {
+            orderCars: this.materialsAllCard.carDataSet,
+            personal: this.materialsCard.customerModel // 客户资料所有数据
+          },
+          {
+            orderServiceList: this.materialsCard.customerModel.orderServiceList,
+            vehicleAmount: this.materialsAllCard.totalPrice,
+            orderAmount: this.materialsAllCard.totalPrice
+          }
+        )
 
-    this.validate().then( (v)=>{
-      console.log(v)
+        console.log(model, 'Params')
+        this.productOrderService.createFullPaymentOrder(model).subscribe(() => {
+          this.$Message.success('订单申请成功')
+        })
+
+
+      }
     })
-   
+
+    // this.validate().then(x=>console.log(2,x,4))
+
+
+
+    // console.log(result, '每个表单验证总结过')
 
 
 
