@@ -118,7 +118,7 @@ export default class FinancingLeaseApply extends Page {
   @Dependencies(PersonalService) private personalService: PersonalService;
   @Dependencies(ProductOrderService)
   private productOrderService: ProductOrderService;
-  @ModuleState collectiondata;
+  @ModuleState productId;
 
   private showApplicationTab = false; // 申请选项卡显示状态
   private currentIdCard = ""; // 上次查询的身份证号
@@ -148,7 +148,8 @@ export default class FinancingLeaseApply extends Page {
     idCard: "", // 证件号码
     name: "", // 客户姓名
     mobileMain: "", // 客户电话
-    salesmanName: "" // 归属业务员
+    salesmanName: "", // 归属业务员
+    salesmanId: ""
   };
 
   // 客户信息表单校验
@@ -188,8 +189,8 @@ export default class FinancingLeaseApply extends Page {
     if (
       this.$store.state.pageList.find(v => v.resoname === "融资租赁申请").flag
     ) {
-      this.customerModel = this.collectiondata;
-      this.customerModel.name = this.collectiondata.personalName;
+      // this.customerModel = this.collectiondata;
+      // this.customerModel.name = this.collectiondata.personalName;
       // this.showTab();
     }
   }
@@ -328,6 +329,8 @@ export default class FinancingLeaseApply extends Page {
           return false;
         }
 
+        this.getOrderData(currentRow.orderNumber);
+
         // TODO: 更新历史订单信息
       },
       onCancel: () => {
@@ -345,7 +348,7 @@ export default class FinancingLeaseApply extends Page {
   }
 
   /**
-   * 显示历史订单
+   * 显示销售员
    */
   showSalemanList() {
     let dialog = this.$dialog.show({
@@ -366,6 +369,14 @@ export default class FinancingLeaseApply extends Page {
         return h(SalesmanName);
       }
     });
+  }
+
+  getOrderData(orderNumber) {
+    this.productOrderService
+      .findOrderInfoByOrderNumber({ orderNumber })
+      .subscribe(data => {
+        console.log(data);
+      });
   }
 
   /**
@@ -435,27 +446,43 @@ export default class FinancingLeaseApply extends Page {
 
     // 订单基础信息
     let CreateOrderModel = Object.assign(
-      {},
+      // 客户信息
       this.customerModel,
-      // 选购资料
-      chooseBuyMaterials.chooseModel,
-      chooseBuyMaterials.productModel,
+      // 选购信息
       {
-        orderCars: [...chooseBuyMaterials.carDataSet],
-        // 客户资料
-        Personal: Object.assign({}, customerMaterials.customerModel),
-        // 客户职业
-        personalJob: Object.assign({}, customerJobMessage.jobModel),
-        // 客户联系人
+        ...chooseBuyMaterials.chooseModel,
+        ...chooseBuyMaterials.productModel,
+        ...chooseBuyMaterials.productRadioModel,
+        productId: chooseBuyMaterials.currentProduct.productId,
+        seriesId: chooseBuyMaterials.currentProduct.seriesId,
+        productIssueId: chooseBuyMaterials.currentProduct.id,
+        productRate: chooseBuyMaterials.currentProduct.productRate,
+        payWay: chooseBuyMaterials.currentProduct.payWay,
+        orderCars: chooseBuyMaterials.carDataSet
+      },
+      // 客户资料
+      {
+        personal: customerMaterials.customerModel
+      },
+      // 客户职业
+      {
+        personalJob: customerJobMessage.jobModel
+      },
+      // 客户联系人
+      {
         personalContacts: [
           ...customerContacts.familyDataSet,
           ...customerContacts.friendDataSet
-        ],
-        // 客户来源
+        ]
+      },
+      // 客户来源
+      {
         personalResourceIntroduce: customerOrigin.introduceModel,
-        personalResourcePublicity: customerOrigin.publicityModel,
-        // 客户素材
-        personalDatas: [...uploadTheMaterial.uploadDataSet]
+        resourceTypes: customerOrigin.publicityModel
+      },
+      // 客户素材
+      {
+        personalDatas: uploadTheMaterial.uploadDataSet
       }
     );
 

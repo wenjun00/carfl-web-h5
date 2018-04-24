@@ -134,7 +134,7 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="首付金额(元)" prop="Payment">
-                  <i-select :disabled="!currentProduct.initialPayment" class="payment-amount-select" placeholder="请选择首付金额比例" v-model="productRadioModel.initialPaymentRadio" clearable @on-change="onInitialPaymentChange">
+                  <i-select :disabled="!currentProduct.initialPayment" class="payment-amount-select" placeholder="请选择首付金额比例" v-model="productRadioModel.paymentScale" clearable @on-change="onInitialPaymentChange">
                     <i-option v-for="item in currentProduct.initialPaymentList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
@@ -157,7 +157,7 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="尾付总额(元)" prop="final">
-                  <i-select :disabled="!currentProduct.finalCash" placeholder="请选择尾付总额比例" v-model="productRadioModel.finalCashRadio" clearable>
+                  <i-select :disabled="!currentProduct.finalCash" placeholder="请选择尾付总额比例" v-model="productRadioModel.final" clearable>
                     <i-option v-for="item in currentProduct.finalCashList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
@@ -196,7 +196,7 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="管理费(元)" prop="manageData">
-                  <i-select :disabled="!currentProduct.manageCost" placeholder="请选择管理费比例" v-model="productRadioModel.manageCostRadio" clearable>
+                  <i-select :disabled="!currentProduct.manageCost" placeholder="请选择管理费比例" v-model="productRadioModel.manageCostPercent" clearable>
                     <i-option v-for="item in currentProduct.manageCostList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
@@ -281,6 +281,7 @@ import { FilterService } from "~/utils/filter.service";
 import { Input, Button, InputNumber, Form } from "iview";
 
 const ModuleMutation = namespace("purchase", Mutation);
+
 @Component({
   components: {
     AddCar,
@@ -296,6 +297,7 @@ export default class ChooseBuyMaterials extends Vue {
   @Dependencies(CompanyService) private companyService: CompanyService;
   @Dependencies(ProductOrderService)
   private productOrderService: ProductOrderService;
+
   @ModuleMutation("updateProductId") updateProductId;
 
   @Prop() orderNumber;
@@ -337,15 +339,15 @@ export default class ChooseBuyMaterials extends Vue {
   };
 
   // 产品金额比例
-  private productRadioModel = {
+  public productRadioModel = {
     depositCashRadio: "", // 保证金
-    finalCashRadio: "", // 尾付金额
-    initialPaymentRadio: "", // 首付款
-    manageCostRadio: "" // 管理费
+    final: "", // 尾付金额
+    paymentScale: "", // 首付款
+    manageCostPercent: "" // 管理费
   };
 
   // 当前选择产品
-  private currentProduct: any = {
+  public currentProduct: any = {
     seriesName: "", // 产品系列
     productNanme: "", // 产品名称
     periods: "", // 产品期数
@@ -628,7 +630,7 @@ export default class ChooseBuyMaterials extends Vue {
     // 首付款=车辆参考价x首付比例
     this.productModel.initialPayment =
       this.productModel.vehicleAmount *
-      parseFloat(this.productRadioModel.initialPaymentRadio || "0");
+      parseFloat(this.productRadioModel.paymentScale || "0");
 
     // 保证金金额 = 融资总额x保证金比例
     this.productModel.depositCash =
@@ -638,13 +640,13 @@ export default class ChooseBuyMaterials extends Vue {
     // 保证金金额 = 融资总额x保证金比例
     this.productModel.manageCost =
       this.productModel.financingAmount *
-      parseFloat(this.productRadioModel.manageCostRadio || "0");
+      parseFloat(this.productRadioModel.manageCostPercent || "0");
 
     // 尾付利息=尾款本金x尾付月利率x期数
     this.productModel.finalCash =
       this.productModel.finalPayment +
       this.productModel.finalPayment *
-        parseFloat(this.productRadioModel.finalCashRadio || "0") *
+        parseFloat(this.productRadioModel.final || "0") *
         this.currentProduct.periodNumber;
   }
 
@@ -659,8 +661,8 @@ export default class ChooseBuyMaterials extends Vue {
     this.productModel.finalCash = 0;
     this.productModel.finalPayment = 0;
 
-    this.productRadioModel.initialPaymentRadio = "";
-    this.productRadioModel.finalCashRadio = "";
+    this.productRadioModel.paymentScale = "";
+    this.productRadioModel.final = "";
 
     this.productAmountModel = null;
   }

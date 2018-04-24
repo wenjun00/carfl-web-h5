@@ -2,7 +2,7 @@
   <section class="component upload-the-material ">
     <i-card :title="`上传素材 (${uploadDataSet.length})`">
       <div slot="extra">
-        <i-dropdown transfer @on-click="onUploadFile">
+        <i-dropdown transfer @on-click="onUploadFile" trigger="click">
           <a>
             上传
             <Icon type="arrow-down-b"></Icon>
@@ -185,7 +185,6 @@ export default class UploadTheMaterial extends Vue {
     let type = this.fileTypeList.find(x => x.id === typeId);
     filelist.forEach(file => {
       this.uploadDataSet.push({
-        id: file.response.id,
         materialType: type.id,
         materialTypeName: type.name,
         materialUrl: file.response.url,
