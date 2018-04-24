@@ -34,12 +34,6 @@
                             </i-select>
                         </i-form-item>
                     </template>
-                    <!-- <template slot="button">
-                        <i-button class="blue-button" @click="addNewUser">新增用户</i-button>
-                        <i-button class="blue-button" @click="buttonOnlyOne1">批量分配角色</i-button>
-                        <i-button class="blue-button" @click="buttonOnlyOne2">批量管理设备</i-button>
-                    </template> -->
-
                 </data-form>
 
                 <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService" @on-selection-change="onSelectionChange"></data-box>

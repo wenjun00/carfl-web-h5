@@ -13,7 +13,7 @@ export class CommonService {
   public static getComponentName(page): string {
     let path = page.path
     let pathArray = path.split('/')
-    return `-${pathArray[pathArray.length - 1]}`.replace(/\-(\w)/g, ($0, $1) => $1.toUpperCase())
+    return `-${pathArray[pathArray.length - 1]}`.replace('.tsx','').replace(/\-(\w)/g, ($0, $1) => $1.toUpperCase())
   }
 
   /**

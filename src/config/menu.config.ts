@@ -25,7 +25,7 @@ export default [
                     path: 'purchase/purchase-manage/order-transfer'
                 }, {
                     title: '评估申请',
-                    path: 'purchase/purchase-manage/evaluation-application'
+                    path: 'purchase/purchase-manage/evaluation-application.tsx'
                 }, {
                     title: '评估任务池',
                     path: 'purchase/purchase-manage/evaluation-task-pool'
@@ -347,6 +347,9 @@ export default [
                     path: 'system-manage/operation-config/batch-manage'
                 }, {
                     title: '系统日志',
+                    path: 'system-manage/operation-config/system-log-download'
+                }, {
+                    title: '123123',
                     path: 'system-manage/operation-config/system-log-download'
                 }]
         }]
