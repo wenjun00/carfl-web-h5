@@ -353,7 +353,6 @@ export default class FinancingLeaseApply extends Page {
       footer: true,
       onOk: salesmanName => {
         let currentRow = salesmanName.getCurrentRow();
-        console.log(currentRow);
         if (!currentRow) {
           this.$Message.error("请选择对应销售员");
           return false;
@@ -437,6 +436,7 @@ export default class FinancingLeaseApply extends Page {
     // 订单基础信息
     let CreateOrderModel = Object.assign(
       {},
+      this.customerModel,
       // 选购资料
       chooseBuyMaterials.chooseModel,
       chooseBuyMaterials.productModel,
@@ -452,8 +452,8 @@ export default class FinancingLeaseApply extends Page {
           ...customerContacts.friendDataSet
         ],
         // 客户来源
-        personalResourceIntroduce: customerOrigin.publicityModel,
-        personalResourcePublicity: customerOrigin.introduceModel,
+        personalResourceIntroduce: customerOrigin.introduceModel,
+        personalResourcePublicity: customerOrigin.publicityModel,
         // 客户素材
         personalDatas: [...uploadTheMaterial.uploadDataSet]
       }
