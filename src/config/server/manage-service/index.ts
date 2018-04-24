@@ -39,6 +39,8 @@ import chargeBackController from './charge-back.controller'
 import templateController from './template.controller'
 import financeInvoiceController from './finance-invoice.controller'
 import stagesMatch from './stages-match-controller'
+import assessmentapply from './assess-ment-apply.controller'
+
 
 export const manageService = {
     financeInvoiceController,
@@ -81,5 +83,7 @@ export const manageService = {
     withdrawApplicationController,
     financeApprovalHistoryController,
     chargeBackController,
-    stagesMatch
+    stagesMatch,
+    assessmentapply
 }
+

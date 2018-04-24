@@ -10,10 +10,10 @@
                     <i-input placeholder="请输入品牌、系列" v-model="taskpoolModel.brandModel"></i-input>
                 </i-form-item>
                 <i-form-item prop="busNumber" label="车牌号码">
-                    <i-input v-model="taskpoolModel.busNumber"></i-input>
+                    <i-input placeholder="请输入车牌号码" v-model="taskpoolModel.busNumber"></i-input>
                 </i-form-item>
                 <i-form-item prop="customerName" label="客户姓名">
-                    <i-input v-model="taskpoolModel.customerName"></i-input>
+                    <i-input placeholder="请输入客户姓名" v-model="taskpoolModel.customerName"></i-input>
                 </i-form-item>
             </template>
         </data-form>
@@ -35,14 +35,13 @@ import { Button } from 'iview'
 })
 export default class EvaluationTaskPool extends Page {
   @Dependencies(PageService) private pageService: PageService
-  // private taskpoolColumns: any
   private dataSet: Array<any> = []
   private taskpoolModel: any = {
     brandModel: '', //品牌系列
     busNumber: '', // 车牌号码
     customerName: '' // 客户姓名
   }
-  private taskpoolColumns = [
+  private taskpoolColumns:any = [
     {
       type: 'selection',
       align: 'center',
@@ -110,20 +109,20 @@ export default class EvaluationTaskPool extends Page {
       title: '车牌号码',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'a6',
+      key: 'operatorName1',
       align: 'center'
     },
     {
       title: '车架号',
       editable: true,
-      key: 'a7',
+      key: 'operatorName2',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '发动机号',
       editable: true,
-      key: 'a8',
+      key: 'operatorName3',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -131,11 +130,11 @@ export default class EvaluationTaskPool extends Page {
       title: '客户姓名',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'a9',
+      key: 'operatorName4',
       align: 'center'
     },
     {
-      title: '联系电话',
+      title: '手机号',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
       key: 'a10',
