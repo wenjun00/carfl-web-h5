@@ -40,7 +40,7 @@
     <!-- 搜索表单-end -->
 
     <!-- 资料申请选项卡-start -->
-    <i-tabs v-show="showApplicationTab" v-model="currentTab" class="application-tabs">
+    <i-tabs v-show="!!currentIdCard" v-model="currentTab" class="application-tabs">
       <i-button size="small" type="ghost" @click="onNextStep" v-show="currentStep <= 5" slot="extra">下一步</i-button>
       <i-tab-pane label="选购资料" name="choose-buy-materials">
         <choose-buy-materials ref="choose-buy-materials" v-show="currentTab==='choose-buy-materials'"></choose-buy-materials>
@@ -62,7 +62,7 @@
       </i-tab-pane>
     </i-tabs>
 
-    <div v-show="!showApplicationTab" class="emptyText">
+    <div v-show="!currentIdCard" class="emptyText">
       请先填写证件信息
     </div>
     <!-- 资料选项卡-end -->
@@ -120,7 +120,6 @@ export default class FinancingLeaseApply extends Page {
   private productOrderService: ProductOrderService;
   @ModuleState productId;
 
-  private showApplicationTab = false; // 申请选项卡显示状态
   private currentIdCard = ""; // 上次查询的身份证号
   private currentStep = 0;
   private applicationTabList = [
@@ -132,16 +131,8 @@ export default class FinancingLeaseApply extends Page {
     "upload-the-material"
   ];
 
-  private addCar: Boolean = false;
   private currentTab = "choose-buy-materials";
-  private historicalModal: Boolean = false;
-  private historicalDataset: any = [];
-  private PersonalData: any = [];
-  private addcarData: any = [];
-  private type: Boolean = false;
-  private orderStatus: any = "";
-  private salesmanModal: Boolean = false;
-  private spinShow: Boolean = false;
+  private orderStatus = "";
 
   // 客户信息表单数据
   private customerModel: any = {
@@ -304,7 +295,6 @@ export default class FinancingLeaseApply extends Page {
 
           // 更新历史查询身份证号
           this.currentIdCard = this.customerModel.idCard;
-          this.showApplicationTab = true;
 
           // TODO: 根据身份证获取性别和生日信息
         },
@@ -371,12 +361,54 @@ export default class FinancingLeaseApply extends Page {
     });
   }
 
+  /**
+   * 获取订单数据
+   */
   getOrderData(orderNumber) {
     this.productOrderService
       .findOrderInfoByOrderNumber({ orderNumber })
       .subscribe(data => {
-        console.log(data);
+        this.revert(data);
       });
+  }
+
+  /**
+   * 更新数据
+   */
+  revert({ orderStatus, ...data }) {
+    this.currentIdCard = data.personal.idCard;
+    this.$common.revert(this.customerModel, data, data.personal);
+
+    // let _choosebuymaterials: any = this.$refs["choose-buy-materials"];
+    // _choosebuymaterials.Reverse(data, orderStatus);
+    // //   客户联系人反显
+    // let _customercontacts: any = this.$refs["customer-contacts"];
+    // _customercontacts.Reverse(data);
+    // //   职业信息
+    // let _customerjobmessage: any = this.$refs["customer-job-message"];
+    // _customerjobmessage.Reverse(data);
+    // //   客户资料
+    // let _customermaterials: any = this.$refs["customer-materials"];
+    // _customermaterials.Reverse(data);
+    // //   客户来源
+
+    // if ([303, 311].includes(orderStatus)) {
+    let chooseBuyMaterials = this.$refs[
+      "choose-buy-materials"
+    ] as ChooseBuyMaterials;
+    chooseBuyMaterials.revert(data);
+
+    let customerMaterials = this.$refs[
+      "customer-materials"
+    ] as CustomerMaterials;
+    customerMaterials.revert(data);
+
+    // }
+    // let _customerorigin: any = this.$refs["customer-origin"];
+    // _customerorigin.Reverse(data);
+    // //   上传资料反显
+    // let _uploadthematerial: any = this.$refs["upload-the-material"];
+    // _uploadthematerial.Reverse(data);
   }
 
   /**
@@ -509,33 +541,6 @@ export default class FinancingLeaseApply extends Page {
           this.$Message.error(msg);
         }
       );
-  }
-
-  /**
-   * 客户信息反显
-   */
-  distributionData(data, orderStatus) {
-    this.customerModel.name = data.personal.name;
-    this.customerModel.mobileMain = data.personal.mobileMain;
-    this.customerModel.salesmanName = data.salesmanName;
-    //   选购资料反显
-    let _choosebuymaterials: any = this.$refs["choose-buy-materials"];
-    _choosebuymaterials.Reverse(data, orderStatus);
-    //   客户联系人反显
-    let _customercontacts: any = this.$refs["customer-contacts"];
-    _customercontacts.Reverse(data);
-    //   职业信息
-    let _customerjobmessage: any = this.$refs["customer-job-message"];
-    _customerjobmessage.Reverse(data);
-    //   客户资料
-    let _customermaterials: any = this.$refs["customer-materials"];
-    _customermaterials.Reverse(data);
-    //   客户来源
-    let _customerorigin: any = this.$refs["customer-origin"];
-    _customerorigin.Reverse(data);
-    //   上传资料反显
-    let _uploadthematerial: any = this.$refs["upload-the-material"];
-    _uploadthematerial.Reverse(data);
   }
 
   /**

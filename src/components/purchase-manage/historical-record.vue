@@ -2,8 +2,9 @@
   <section class="component historical-record">
     <div class="order-type-radio row center-span middle-span">
       <RadioGroup v-model="orderType" type="button" size="large" @on-change="onOrderTypeChange">
-        <Radio :label="302">历史订单</Radio>
-        <Radio :label="301">草稿订单</Radio>
+        <Radio :label="0">历史订单</Radio>
+        <Radio :label="1">退件订单</Radio>
+        <Radio :label="2">草稿订单</Radio>
       </RadioGroup>
     </div>
     <i-table :height="500" highlight-row @on-current-change="onCurrentChange" ref="databox" :columns="orderColumns" :data="orderDataSet"></i-table>
@@ -82,9 +83,15 @@ export default class HistoricalRecord extends Vue {
     this.currentRow = currentRow;
   }
 
+  private typeFilter = {
+    0:x=>x!==303&&x!==311,
+    1:x=>x==303,
+    2:x=>x==311
+  }
+
   onOrderTypeChange(value) {
     this.currentRow = null;
-    this.orderDataSet = this.data.filter(x => x.orderType === value);
+    this.orderDataSet = this.data.filter(x => x.orderStatus).filter(this.typeFilter[value]);
   }
 
   /**

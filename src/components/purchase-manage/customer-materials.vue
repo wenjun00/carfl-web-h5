@@ -481,6 +481,10 @@ export default class CustomerMaterials extends Vue {
     ]
   };
 
+  revert(data) {
+    this.$common.revert(this.customerModel, data.personal);
+  }
+
   Reverse(data) {
     //   身份证地址回显
     data.personal.birthTime = FilterService.dateFormat(
