@@ -1,7 +1,7 @@
 <!--冲抵配置-->
 <template>
   <section class="page flushing-config">
-
+    
   </section>
 </template>
 

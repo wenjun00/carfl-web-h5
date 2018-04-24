@@ -36,7 +36,7 @@ import SvgIcon from '~/components/common/svg-icon.vue'
 })
 export default class EvaluationOfCollateral extends Page {
   @Dependencies(PageService) private pageService: PageService
-  private collateralColumns: any
+  // private collateralColumns: any
   private dataSet: Array<any> = []
   private status: Boolean = false
   private collateralModel: any = {
@@ -83,14 +83,14 @@ export default class EvaluationOfCollateral extends Page {
       title: '评估编号',
       editable: true,
       sortable: true,
-      key: 'approvalDealStatus',
+      key: 'a1',
       align: 'center',
       minWidth: this.$common.getColumnWidth(3)
     },
     {
       title: '状态',
       editable: true,
-      key: 'dealDate',
+      key: 'a2',
       align: 'center',
       minWidth: this.$common.getColumnWidth(3)
     },
@@ -98,48 +98,48 @@ export default class EvaluationOfCollateral extends Page {
       title: '品牌',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'dealerName',
+      key: 'a3',
       align: 'center'
     },
     {
       title: '系列',
       editable: true,
-      key: 'applicationType',
+      key: 'a4',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '车型',
       editable: true,
-      key: 'totalPayment',
+      key: 'a5',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '颜色',
       editable: true,
-      key: 'operatorTime',
+      key: 'a6',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '车牌号码',
       editable: true,
-      key: 'operatorName',
+      key: 'a7',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '车架号',
       editable: true,
-      key: 'operatorName',
+      key: 'a8',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '发动机号',
       editable: true,
-      key: 'operatorName',
+      key: 'a9',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -147,27 +147,27 @@ export default class EvaluationOfCollateral extends Page {
       title: '客户姓名',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName',
+      key: 'a10',
       align: 'center'
     },
     {
       title: '联系电话',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName',
+      key: 'a11',
       align: 'center'
     },
     {
       title: '车况级别',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName',
+      key: 'a12',
       align: 'center'
     },
     {
       title: '估价',
       editable: true,
-      key: 'operatorName',
+      key: 'a12',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -175,7 +175,7 @@ export default class EvaluationOfCollateral extends Page {
       title: '评估日期',
       editable: true,
       sortable: true,
-      key: 'operatorName',
+      key: 'a13',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -183,7 +183,7 @@ export default class EvaluationOfCollateral extends Page {
       title: '估价员',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName',
+      key: 'a14',
       align: 'center'
     }
   ]
@@ -191,16 +191,16 @@ export default class EvaluationOfCollateral extends Page {
   mounted() {
       this.dataSet= [
         {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'},      
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'}, 
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'},  
-        {approvalDealStatus:'测试'} 
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'},
+        {approvalDealStatus:'测试'}
       ]
   }
 }

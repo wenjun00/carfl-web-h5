@@ -162,13 +162,15 @@ export default class EvaluationApplication extends Page {
         align: 'center'
       }
     ]
-  
+
   /**
-   * 
+   *
    */
 
   mounted() {
-    // this.searchReceiptapprove()
+    this.dataSet = [{
+      a1:'123'
+    }]
   }
 }
 </script>
