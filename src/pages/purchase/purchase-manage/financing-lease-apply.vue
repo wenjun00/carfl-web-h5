@@ -459,7 +459,7 @@ export default class FinancingLeaseApply extends Page {
       }
     );
 
-    return CreateOrderModel
+    return CreateOrderModel;
   }
 
   /**
@@ -468,14 +468,20 @@ export default class FinancingLeaseApply extends Page {
   submitApplicationData(draft) {
     let data = this.getApplicationData();
     // 添加订单
-    this.productOrderService.saveFinanceApplyInfo(data).subscribe(
-      data => {
-        this.$Message.success("保存成功");
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
-    );
+    this.productOrderService
+      .saveFinanceApplyInfo(
+        Object.assign(data, {
+          orderStatus: draft ? 303 : 304
+        })
+      )
+      .subscribe(
+        data => {
+          this.$Message.success("保存成功");
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
   }
 
   /**
