@@ -294,6 +294,9 @@ export default [
             }, {
                 title: '导出模版管理',
                 path: 'base/base-data/export-template-manage'
+            }, {
+                title: '冲抵配置',
+                path: 'base/base-data/flushing-config'
             }]
         }]
     },
@@ -353,5 +356,53 @@ export default [
                     path: 'system-manage/operation-config/system-log-download'
                 }]
         }]
-    }
+    },
+  {
+    title: '库存管理',
+    // path: 'system-manage/system-manage-index',
+    children: [{
+      title: '库存管理',
+      color: '#598AC5',
+      icon: 'quanxianshezhi',
+      path: 'inventory-management/inventory-data',
+      children: [{
+        title: '押品入库',
+        path: 'inventory-management/inventory-data/goods-in-treasury'
+      }, {
+        title: '押品出库',
+        path: 'inventory-management/inventory-data/goods-out-treasury'
+      }]
+    }]
+  },
+  {
+    title: '客户中心',
+    // path: 'system-manage/system-manage-index',
+    children: [{
+      title: '客户中心',
+      color: '#598AC5',
+      icon: 'quanxianshezhi',
+      path: 'customer-center/customer-data',
+      children: [{
+        title: '个人意向客户',
+        path: 'customer-center/customer-data/personal-client'
+      }, {
+        title: '个人正式客户',
+        path: 'customer-center/customer-data/personal-customer'
+      }, {
+        title: '个人黑名单',
+        path: 'customer-center/customer-data/personal-blacklist'
+      }, {
+        title: '企业意向客户',
+        path: 'customer-center/customer-data/enterprise-intent-customer'
+      }, {
+        title: '企业正式客户',
+        path: 'customer-center/customer-data/enterprise-formal-customer'
+      }, {
+        title: '企业黑名单',
+        path: 'customer-center/customer-data/enterprises-blacklist'
+      }]
+    }]
+  }
+
+
 ]
