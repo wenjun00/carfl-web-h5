@@ -2,8 +2,8 @@
 <template>
   <section class="page company-account-list">
     <page-header title="企业开户列表" hiddenPrint hiddenExport>
-      <i-button class="blueButton" @click="addCompany">新增企业</i-button>
-      <i-button class="blueButton" @click="transferAccount">转账</i-button>
+      <command-button label="新增企业"  @click="addCompany"></command-button>
+      <command-button label="转账"  @click="transferAccount"></command-button>
     </page-header>
     <data-form hidden-reset hiddenDateSearch>
       <template slot="input">
