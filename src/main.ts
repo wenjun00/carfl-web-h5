@@ -12,6 +12,9 @@ async function startUp() {
   // 启动主体业务逻辑
   await bootstrap({ store, router })
 
+  window['__store'] = store
+  window['__router'] = router
+
   // 生成提示信息
   Vue.config.productionTip = false
 

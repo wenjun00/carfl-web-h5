@@ -74,7 +74,7 @@ import { PersonalService } from "~/services/manage-service/personal.service";
 import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
 import { Layout } from "~/core/decorator";
-import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue";
+import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.tsx.vue";
 
 @Layout("workspace")
 @Component({

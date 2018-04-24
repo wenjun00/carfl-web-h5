@@ -5,7 +5,7 @@
       <div slot="footer">
         <slot name="footer">
           <i-button @click="onCancelClick">{{cancelText}}</i-button>
-          <i-button type="primary" @click="onOkClick">{{okText}}</i-button>
+          <i-button type="primary" @click="onOkClick" :loading="loading">{{okText}}</i-button>
         </slot>
       </div>
     </i-modal>
@@ -73,6 +73,7 @@ export default class DialogBox extends Vue {
   }
 
   public state = false;
+  public loading = false;
 
   get visible() {
     return this.state;

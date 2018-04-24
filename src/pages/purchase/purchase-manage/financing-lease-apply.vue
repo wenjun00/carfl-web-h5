@@ -94,9 +94,10 @@ import SalesmanName from "~/components/purchase-manage/salesman-name.vue";
 import ChooseBuyMaterials from "~/components/purchase-manage/choose-buy-materials.tsx.vue"; // 选购资料
 import CustomerMaterials from "~/components/purchase-manage/customer-materials.vue"; // 客户资料
 import CustomerJobMessage from "~/components/purchase-manage/customer-job-message.vue"; // 客户职业
-import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue"; // 上传素材
 import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue"; // 客户联系人
 import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue"; // 客户来源
+import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.tsx.vue"; // 上传素材
+import { setTimeout } from "core-js/library/web/timers";
 
 const ModuleState = namespace("purchase", State);
 
@@ -198,14 +199,13 @@ export default class FinancingLeaseApply extends Page {
    */
   async onNextStep() {
     let tab = this.$refs[this.currentTab] as any;
-    console.log(tab);
     // 验证当前页面
     let result = await tab.validate();
 
-    // if (result) {
+    if (result) {
       this.currentStep++;
       this.currentTab = this.applicationTabList[this.currentStep];
-    // }
+    }
   }
 
   /**

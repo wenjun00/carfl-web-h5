@@ -8,7 +8,6 @@ export class ValidatorService {
    * @param callback 
    */
   static validate(data: any, descriptor: any) {
-    console.log(data)
     let schema = new validator(descriptor);
     let process = new Promise((reslove, reject) => {
       schema.validate(data, (errors, fields) => {
@@ -74,10 +73,12 @@ export class ValidatorService {
    * @param callback 
    */
   static formValidate(rule, value, callback) {
-    value.validate().then(
-      callback()
-    ).catch(ex => {
-      callback(rule.message || "验证失败")
+    value.validate((valid) => {
+      if (valid) {
+        callback()
+      } else {
+        callback(new Error(rule.message || "输入项填写错误"));
+      }
     })
   }
 }
