@@ -16,6 +16,17 @@
             </template>
         </data-form>
         <data-box :columns="collateralColumns" :data="dataSet" :page="pageService"></data-box>
+
+        <dialog-box v-model="assignModal"  title="新增评估" footer>
+          <add-collateral></add-collateral>
+          <div slot="footer">
+            <i-button >终止评估</i-button>
+            <i-button >退件</i-button>
+            <i-button >取消</i-button>
+            <i-button type="primary">保存草稿</i-button>
+            <i-button type="primary">确定</i-button>
+          </div>
+        </dialog-box>
     </section>
 </template>
 
@@ -26,12 +37,14 @@ import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import SvgIcon from '~/components/common/svg-icon.vue'
+import AddCollateral from '~/components/purchase-manage/add-collateral.vue'
 import { AssessMentApplyService } from "~/services/manage-service/assess-ment-apply.service";
 import { FilterService } from '~/utils/filter.service'
 @Layout('workspace')
 @Component({
   components: {
-    SvgIcon
+    SvgIcon,
+    AddCollateral
   }
 })
 export default class EvaluationOfCollateral extends Page {
@@ -39,6 +52,7 @@ export default class EvaluationOfCollateral extends Page {
   @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
   private dataSet: Array<any> = []
   private status: Boolean = false
+  private assignModal:Boolean = false
   private collateralModel: any = {
     carParams: '', //品牌系列
     carNo: '', // 车牌号码
@@ -61,6 +75,11 @@ export default class EvaluationOfCollateral extends Page {
                   },
                   style: {
                     color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.collateralClick()
+                    }
                   }
                 },
                 '评估'
@@ -76,6 +95,11 @@ export default class EvaluationOfCollateral extends Page {
                 },
                 style: {
                   color: '#265EA2'
+                },
+                on: {
+                  click: () => {
+
+                  }
                 }
               },
               '详情'
@@ -211,6 +235,13 @@ export default class EvaluationOfCollateral extends Page {
       },({msg}) => {
         this.$Message.error(msg)
       })
+  }
+
+  /**
+   *  评估弹窗
+   */
+  collateralClick(){
+    this.assignModal = true
   }
 }
 </script>
