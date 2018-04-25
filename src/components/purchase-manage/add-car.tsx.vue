@@ -104,7 +104,10 @@ export default class AddCar extends Vue {
    */
   getCurrentSelection() {
     let databoxadd: any = this.$refs["data-box"];
-    return databoxadd.getCurrentSelection();
+    return databoxadd.getCurrentSelection().map(x => {
+      x.id = undefined
+      return x
+    });
   }
 
   /**
@@ -176,7 +179,7 @@ export default class AddCar extends Vue {
   .series-container {
     padding: 10px;
     height: 560px;
-    width:200px;
+    width: 200px;
     flex-basis: 200px;
     overflow: auto;
 

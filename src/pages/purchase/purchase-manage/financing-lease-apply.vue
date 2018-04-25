@@ -391,10 +391,6 @@ export default class FinancingLeaseApply extends Page {
           }
         }
       }
-
-      if (orderStatus === 303) {
-        await tab.validate();
-      }
     });
   }
 
