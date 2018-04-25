@@ -119,7 +119,7 @@ export default class FinancingLeaseApply extends Page {
   @Dependencies(ProductOrderService)
   private productOrderService: ProductOrderService;
   @ModuleState productId;
-
+  @Mutation closePage;
   private currentIdCard = ""; // 上次查询的身份证号
   private currentStep = 0;
   private applicationTabList = [
@@ -176,14 +176,8 @@ export default class FinancingLeaseApply extends Page {
     ]
   };
 
-  mounted() {
-    if (
-      this.$store.state.pageList.find(v => v.resoname === "融资租赁申请").flag
-    ) {
-      // this.customerModel = this.collectiondata;
-      // this.customerModel.name = this.collectiondata.personalName;
-      // this.showTab();
-    }
+  loaded({ orderNumber }) {
+    this.getOrderData(orderNumber);
   }
 
   /**
@@ -545,6 +539,9 @@ export default class FinancingLeaseApply extends Page {
       .subscribe(
         data => {
           this.$Message.success("保存成功");
+          setTimeout(() => {
+            this.closePage("purchase/purchase-manage/financing-lease-apply");
+          },1000)
         },
         ({ msg }) => {
           this.$Message.error(msg);
