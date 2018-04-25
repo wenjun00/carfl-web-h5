@@ -29,6 +29,15 @@ export default {
     controller: CONTROLLER,
     action: 'updateOrderStatus',
     type: requestType.Get
+  },
+  /**
+   *  评估订单查询
+   */
+  orderBasicSearch:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'orderBasicSearch',
+    type: requestType.Get
   }
 
 }

@@ -35,4 +35,14 @@ export class AssessMentApplyService {
       data: data
     })
   }
+  /**
+   *  评估订单查询
+   */
+  orderBasicSearch(data,page){
+    return this.netService.send({
+      server: manageService.assessmentapply.orderBasicSearch,
+      data: data,
+      page:page
+    })
+  }
 }

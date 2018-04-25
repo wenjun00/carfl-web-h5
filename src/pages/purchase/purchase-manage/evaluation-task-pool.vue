@@ -185,7 +185,7 @@ export default class EvaluationTaskPool extends Page {
           this.assessMentApplyService
             .updateOrderStatus({
               orderIds: this.multipleUserId.orderId,
-              status: 305
+              status: 1189
             })
             .subscribe(data => {
                 this.$Message.success('领取成功！')

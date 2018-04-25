@@ -2,16 +2,16 @@
 <template>
     <section class="page evaluation-of-collateral">
         <page-header title="押品评估" hiddenPrint></page-header>
-        <data-form :model="collateralModel">
+        <data-form :model="collateralModel" date-prop="timeSearch" @on-search="getCollateralList">
             <template slot="input">
-                <i-form-item prop="brandModel" label="品牌型号">
-                    <i-input placeholder="请输入品牌、系列" v-model="collateralModel.brandModel"></i-input>
+                <i-form-item prop="carParams" label="品牌型号">
+                    <i-input placeholder="请输入品牌、系列" v-model="collateralModel.carParams"></i-input>
                 </i-form-item>
-                <i-form-item prop="busNumber" label="车牌号码">
-                    <i-input placeholder="请输入车牌号" v-model="collateralModel.busNumber"></i-input>
+                <i-form-item prop="carNo" label="车牌号码">
+                    <i-input placeholder="请输入车牌号" v-model="collateralModel.carNo"></i-input>
                 </i-form-item>
-                <i-form-item prop="customerName" label="客户姓名">
-                    <i-input placeholder="请输入客户姓名" v-model="collateralModel.customerName"></i-input>
+                <i-form-item prop="ownerName" label="客户姓名">
+                    <i-input placeholder="请输入客户姓名" v-model="collateralModel.ownerName"></i-input>
                 </i-form-item>
             </template>
         </data-form>
@@ -25,23 +25,24 @@ import Component from 'vue-class-component'
 import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
-import DataBox from '~/components/common/data-box.vue'
 import SvgIcon from '~/components/common/svg-icon.vue'
+import { AssessMentApplyService } from "~/services/manage-service/assess-ment-apply.service";
+import { FilterService } from '~/utils/filter.service'
 @Layout('workspace')
 @Component({
   components: {
-    DataBox,
     SvgIcon
   }
 })
 export default class EvaluationOfCollateral extends Page {
   @Dependencies(PageService) private pageService: PageService
+  @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
   private dataSet: Array<any> = []
   private status: Boolean = false
   private collateralModel: any = {
-    brandModel: '', //品牌系列
-    busNumber: '', // 车牌号码
-    customerName: '' // 客户姓名
+    carParams: '', //品牌系列
+    carNo: '', // 车牌号码
+    ownerName: '' // 客户姓名
   }
   private collateralColumns:any = [
     {
@@ -50,97 +51,103 @@ export default class EvaluationOfCollateral extends Page {
       fixed: 'left',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, { row }) => {
-        return h('div', [
-          h(
-            'i-button',
-            {
-              props: {
-                type: 'text'
+        if(row.assessmentStatus === 1190){
+          return h('div',[
+              h(
+                'i-button',
+                {
+                  props: {
+                    type: 'text'
+                  },
+                  style: {
+                    color: '#265EA2'
+                  }
+                },
+                '评估'
+              )
+          ])
+        }else if(row.assessmentStatus === 1191){
+          return h('div',[
+            h(
+              'i-button',
+              {
+                props: {
+                  type: 'text'
+                },
+                style: {
+                  color: '#265EA2'
+                }
               },
-              style: {
-                color: '#265EA2'
-              }
-            },
-            '评估'
-          ),
-           h(
-            'i-button',
-            {
-              props: {
-                type: 'text'
-              },
-              style: {
-                color: '#265EA2'
-              }
-            },
-            '详情'
-          )
-        ])
+              '详情'
+            )
+          ])
+        }
       }
     },
     {
       title: '评估编号',
       editable: true,
       sortable: true,
-      fixed: 'left',
-      key: 'approvalDealStatus',
+      key: 'assessmentNo',
       align: 'center',
       minWidth: this.$common.getColumnWidth(3)
     },
     {
       title: '状态',
       editable: true,
-      key: 'dealDate',
-      fixed: 'left',
+      key: 'assessmentStatus',
       align: 'center',
-      minWidth: this.$common.getColumnWidth(3)
+      minWidth: this.$common.getColumnWidth(3),
+      render: (h, { row }) => {
+        return h("span", {}, this.$dict.getDictName(row.assessmentStatus));
+      }
     },
     {
       title: '品牌',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'a3',
+      key: 'brandName',
       align: 'center'
     },
     {
       title: '系列',
       editable: true,
-      key: 'a4',
+      key: 'seriesName',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '车型',
       editable: true,
-      key: 'a5',
+      key: 'carName',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '颜色',
       editable: true,
-      key: 'a6',
+      key: 'carColor',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '车牌号码',
       editable: true,
-      key: 'operatorName2',
+      key: 'carNo',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '车架号',
       editable: true,
-      key: 'operatorName3',
+      key: 'frameNo',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '发动机号',
       editable: true,
-      key: 'operatorName4',
+      key: 'engineNo',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -148,27 +155,27 @@ export default class EvaluationOfCollateral extends Page {
       title: '客户姓名',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName5',
+      key: 'ownerName',
       align: 'center'
     },
     {
       title: '手机号',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName6',
+      key: 'ownPhone',
       align: 'center'
     },
     {
       title: '车况级别',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName7',
+      key: 'carSituation',
       align: 'center'
     },
     {
       title: '估价',
       editable: true,
-      key: 'operatorName8',
+      key: 'evaluation',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -176,33 +183,34 @@ export default class EvaluationOfCollateral extends Page {
       title: '评估日期',
       editable: true,
       sortable: true,
-      key: 'a13',
+      key: 'assessmentTime',
       minWidth: this.$common.getColumnWidth(3),
-      align: 'center'
+      align: 'center',
+      render: (h, { row }) => {
+        return h('span', FilterService.dateFormat(row.assessmentTime, 'yyyy-MM-dd'))
+      }
     },
     {
       title: '估价员',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'a14',
+      key: 'assessMentPerson',
       align: 'center'
     }
   ]
-
+  activated() {
+    this.getCollateralList()
+  }
   mounted() {
-      this.dataSet= [
-        {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'},
-        {approvalDealStatus:'测试'}
-      ]
+    this.getCollateralList()
+  }
+  getCollateralList(){
+    this.assessMentApplyService.orderBasicSearch(this.collateralModel,this.pageService)
+      .subscribe( data => {
+        this.dataSet = data
+      },({msg}) => {
+        this.$Message.error(msg)
+      })
   }
 }
 </script>
