@@ -2,18 +2,18 @@
 <template>
     <section class="page evaluation-task-pool">
         <page-header title="评估任务池" hidden-print>
-            <i-button type="text">批量领取</i-button>
+            <i-button type="text" @click="allReceive">批量领取</i-button>
         </page-header>
-        <data-form :model="taskpoolModel">
+        <data-form :model="taskpoolModel" @on-search="getPoolList" :page="pageService" date-prop="timeSearch">
             <template slot="input">
                 <i-form-item prop="brandModel" label="品牌型号">
-                    <i-input placeholder="请输入品牌、系列" v-model="taskpoolModel.brandModel"></i-input>
+                    <i-input placeholder="请输入品牌、系列" v-model="taskpoolModel.carParams"></i-input>
                 </i-form-item>
                 <i-form-item prop="busNumber" label="车牌号码">
-                    <i-input placeholder="请输入车牌号码" v-model="taskpoolModel.busNumber"></i-input>
+                    <i-input placeholder="请输入车牌号码" v-model="taskpoolModel.carNo"></i-input>
                 </i-form-item>
                 <i-form-item prop="customerName" label="客户姓名">
-                    <i-input placeholder="请输入客户姓名" v-model="taskpoolModel.customerName"></i-input>
+                    <i-input placeholder="请输入客户姓名" v-model="taskpoolModel.ownerName"></i-input>
                 </i-form-item>
             </template>
         </data-form>
@@ -29,17 +29,20 @@ import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import { Button } from 'iview'
+import { AssessMentApplyService } from "~/services/manage-service/assess-ment-apply.service";
+
 @Layout('workspace')
 @Component({
   components: {}
 })
 export default class EvaluationTaskPool extends Page {
   @Dependencies(PageService) private pageService: PageService
+  @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
   private dataSet: Array<any> = []
   private taskpoolModel: any = {
-    brandModel: '', //品牌系列
-    busNumber: '', // 车牌号码
-    customerName: '' // 客户姓名
+    carParams: '', //品牌系列
+    carNo: '', // 车牌号码
+    ownerName: '' // 客户姓名
   }
   private taskpoolColumns:any = [
     {
@@ -63,6 +66,11 @@ export default class EvaluationTaskPool extends Page {
               style: {
                 color: '#265EA2'
               },
+              on: {
+                click: () => {
+                  this.receive(row)
+                }
+              }
             },
             '领取'
           )
@@ -143,35 +151,34 @@ export default class EvaluationTaskPool extends Page {
   ]
 
   mounted() {
-    this.dataSet = [
-      {
-        approvalDealStatus: '用户客户号'
-      },
-      {
-        approvalDealStatus: '用户客户号'
-      },
-      {
-        approvalDealStatus: '用户客户号'
-      },
-      {
-        approvalDealStatus: '用户客户号'
-      },
-      {
-        approvalDealStatus: '用户客户号'
-      },
-      {
-        approvalDealStatus: '用户客户号'
-      },
-      {
-        approvalDealStatus: '用户客户号'
-      }
-    ]
+    this.getPoolList()
   }
+  activated() {
+    this.getPoolList()
+  }
+  /**
+   *  搜索评估任务池
+   */
+  getPoolList(){
+    this.assessMentApplyService.orderPoolSearch(this.taskpoolModel,this.pageService)
+      .subscribe( data => {
+        this.dataSet =data
+      },({msg}) => {
+        this.$Message.error(msg)
+      })
+  }
+  /**
+   *  批量领取
+   */
+  allReceive(){
 
+  }
   /**
    *  领取
    */
-  receive(row) {}
+  receive(row) {
+
+  }
 }
 </script>
 
