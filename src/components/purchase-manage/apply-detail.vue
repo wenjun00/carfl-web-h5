@@ -33,7 +33,7 @@
       <span class="title">付款明细</span>
       <i-table :columns="columns1" :data="payDetail" :noDefaultRow="true"></i-table>
       <span class="title">账户信息</span>
-      <i-table :columns="columns3" :data="accountDetail" :noDefaultRow="true"></i-table>
+      <i-table :columns="columns3" :data="accountDetail" ></i-table>
       <span class="title">附件</span>
       <upload-voucher  ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
     </i-row>
