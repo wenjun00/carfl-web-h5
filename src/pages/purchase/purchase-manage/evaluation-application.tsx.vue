@@ -4,7 +4,7 @@
         <page-header title="评估申请" hidden-print>
             <i-button type="text">新建申请</i-button>
         </page-header>
-        <data-form :model="applicationModel">
+        <data-form :model="applicationModel" @on-search="getApplicationList">
             <template slot="input">
                 <i-form-item prop="carParams" label="品牌型号">
                     <i-input placeholder="请输入品牌、系列" v-model="applicationModel.carParams"></i-input>
@@ -45,7 +45,7 @@ export default class EvaluationApplication extends Page {
     carParams: '', //品牌系列
     carNo: '', // 车牌号码
     ownerName: '', // 客户姓名
-    isSubmit: false // 包含提交
+    isSubmit: '' // 包含提交
   }
 
   private applicationColumns:any =  [{
@@ -168,10 +168,17 @@ export default class EvaluationApplication extends Page {
    *评估申请订单查询
    */
    getApplicationList() {
+       if(this.applicationModel.isSubmit){
+           this.applicationModel.isSubmit = "1"
+       }else{
+           this.applicationModel.isSubmit = "0" 
+       }
     this.assessMentApplyService
       .orderSearch(this.applicationModel, this.pageService)
       .subscribe(
         data => {
+            console.log(data)
+            console.log('666')
           this.dataSet = data;
         },
         ({ msg }) => {
@@ -181,7 +188,7 @@ export default class EvaluationApplication extends Page {
   }
 
   mounted() {
-     this.dataSet=[]
+      this.getApplicationList()
   }
 }
 </script>
