@@ -2,7 +2,7 @@
 <template>
   <section class="page data-dict">
     <page-header title="数据字典" hiddenPrint hiddenExport>
-         <i-button class="blueButton command-add" @click="dataModal=true">新增数据</i-button>
+      <i-button class="blueButton command-add" @click="dataModal=true">新增数据</i-button>
     </page-header>
     <i-row class="data-form">
       <i-row type="flex" align="top" justify="start">
@@ -28,7 +28,7 @@
               </i-form-item>
             </template>
           </data-form>
-          <data-box :width="600" :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService" :noDefaultRow="true"></data-box>
+          <data-box :columns="columns1" :data="dataNames" @onPageChange="seach" :page="pageService" :noDefaultRow="true"></data-box>
         </i-col>
       </i-row>
     </i-row>
@@ -175,12 +175,14 @@ export default class DataDict extends Page {
         title: "序号",
         type: "index",
         fixed: "left",
-        align: "center"
+        align: "center",
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         title: "操作",
         fixed: "left",
         align: "center",
+        minWidth: this.$common.getColumnWidth(3),
         render: (h, { row, column, index }) => {
           return h("div", [
             h(
@@ -227,7 +229,7 @@ export default class DataDict extends Page {
         align: "center",
         title: " 名称",
         key: "name",
-        minWidth: this.$common.getColumnWidth(3)
+        minWidth: this.$common.getColumnWidth(5)
       }
     ];
   }
@@ -238,13 +240,13 @@ export default class DataDict extends Page {
     _addData.resetFields();
   }
 
-  getOrderInfoByTime() {}
+  getOrderInfoByTime() { }
 
   openSearch() {
     this.searchOptions = !this.searchOptions;
   }
 
-  exportMonthReport() {}
+  exportMonthReport() { }
 
   /**
    * 新增数据
@@ -311,7 +313,7 @@ export default class DataDict extends Page {
   /**
    * 编辑
    */
-  editDict(val) {}
+  editDict(val) { }
 
   /**
    * 添加数据字典类型
@@ -338,15 +340,15 @@ export default class DataDict extends Page {
       this.dataDictTypeService
         .createOrModifyDataDictType(this.addDataType)
         .subscribe(
-          val => {
-            this.$Message.success("操作成功！");
-            this.getAllDictType();
-            this.adddatatypeModal = false;
-            this.addDataType.name = "";
-          },
-          ({ msg }) => {
-            this.$Message.error(msg);
-          }
+        val => {
+          this.$Message.success("操作成功！");
+          this.getAllDictType();
+          this.adddatatypeModal = false;
+          this.addDataType.name = "";
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
         );
     });
   }
@@ -388,13 +390,13 @@ export default class DataDict extends Page {
             id: item.id
           })
           .subscribe(
-            val => {
-              this.$Message.success("操作成功！");
-              this.seach();
-            },
-            ({ msg }) => {
-              this.$Message.error(msg);
-            }
+          val => {
+            this.$Message.success("操作成功！");
+            this.seach();
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
           );
       }
     });

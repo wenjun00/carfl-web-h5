@@ -1,63 +1,63 @@
 <!--销售收款申请-->
 <template>
-    <section class="page sale-gathering-apply">
-        <page-header title="销售收款申请" hiddenExport>
-            <command-button label="添加新申请" @click="clearAll"></command-button>
-        </page-header>
+  <section class="page sale-gathering-apply">
+    <page-header title="销售收款申请" hiddenExport>
+      <command-button label="添加新申请" @click="clearAll"></command-button>
+    </page-header>
 
-        <!-- 搜索表单-start -->
-        <div class="search-container">
-            <i-form :label-width="90" ref="customer-form" class="search-form" :model="applyModel" label-position="right" :rules="applyRule">
-                <i-row :gutter="20">
-                    <i-col span="10">
-                        <i-form-item label="证件号码" prop="idCard">
-                            <i-input type="text" v-model="applyModel.idCard" placeholder="请输入证件号码" :disabled="transFlag" @on-change="getUserInfo" :maxlength="18">
-                            </i-input>
-                        </i-form-item>
-                    </i-col>
-                    <i-col span="10">
-                        <i-form-item label="客户姓名" prop="customerName">
-                            <i-input type="text" v-model="applyModel.customerName" placeholder="请输入客户姓名">
-                            </i-input>
-                        </i-form-item>
-                    </i-col>
-                </i-row>
-                <i-row :gutter="20">
-                    <i-col span="10">
-                        <i-form-item label="客户电话" prop="mobileMain">
-                            <i-input type="text" v-model="applyModel.mobileMain" placeholder="请输入客户电话">
-                            </i-input>
-                        </i-form-item>
-                    </i-col>
-                    <i-col span="10">
-                        <i-form-item label="选择订单" prop="orderId">
-                            <i-input v-model="applyModel.orderNumber" :readonly="true" v-if="transFlag"></i-input>
-                            <i-select v-model="applyModel.orderId" placeholder="请选择订单" @on-change="changeOrderId" v-else>
-                                <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
-                            </i-select>
+    <!-- 搜索表单-start -->
+    <div class="search-container">
+      <i-form :label-width="90" ref="customer-form" class="search-form" :model="applyModel" label-position="right" :rules="applyRule">
+        <i-row :gutter="20">
+          <i-col span="10">
+            <i-form-item label="证件号码" prop="idCard">
+              <i-input type="text" v-model="applyModel.idCard" placeholder="请输入证件号码" :disabled="transFlag" @on-change="getUserInfo" :maxlength="18">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col span="10">
+            <i-form-item label="客户姓名" prop="customerName">
+              <i-input type="text" v-model="applyModel.customerName" placeholder="请输入客户姓名">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+        <i-row :gutter="20">
+          <i-col span="10">
+            <i-form-item label="客户电话" prop="mobileMain">
+              <i-input type="text" v-model="applyModel.mobileMain" placeholder="请输入客户电话">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col span="10">
+            <i-form-item label="选择订单" prop="orderId">
+              <i-input v-model="applyModel.orderNumber" :readonly="true" v-if="transFlag"></i-input>
+              <i-select v-model="applyModel.orderId" placeholder="请选择订单" @on-change="changeOrderId" v-else>
+                <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
+              </i-select>
 
-                        </i-form-item>
-                    </i-col>
-                </i-row>
-            </i-form>
-        </div>
+            </i-form-item>
+          </i-col>
+        </i-row>
+      </i-form>
+    </div>
 
-        <i-tabs v-show="applyModel.orderId" v-model="materialTabs" class="info-container">
-            <i-tab-pane name="gather-detail" label="收款明细">
-                <gather-detail :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="gather-detail"></gather-detail>
-            </i-tab-pane>
-            <i-tab-pane name="upload-the-fodder" label="上传素材">
-                <upload-the-fodder :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="upload-the-fodder"></upload-the-fodder>
-            </i-tab-pane>
-        </i-tabs>
+    <i-tabs v-show="applyModel.orderId" v-model="materialTabs" class="info-container">
+      <i-tab-pane name="gather-detail" label="收款明细">
+        <gather-detail :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="gather-detail"></gather-detail>
+      </i-tab-pane>
+      <i-tab-pane name="upload-the-fodder" label="上传素材">
+        <upload-the-fodder :checkOrderId="checkOrderId" :orderFodderInfo="orderFodderInfo" ref="upload-the-fodder"></upload-the-fodder>
+      </i-tab-pane>
+    </i-tabs>
 
-        <div v-show="!applyModel.orderId" class="emptyText">
-            请先填写证件信息
-        </div>
-        <div class="fixed-container">
-            <i-button size="large" class="highButton" @click="saveAndCommit">保存并提交</i-button>
-        </div>
-    </section>
+    <div v-show="!applyModel.orderId" class="emptyText">
+      请先填写证件信息
+    </div>
+    <div class="fixed-container" v-show="applyModel.orderId">
+      <i-button size="large" class="highButton" @click="saveAndCommit">保存并提交</i-button>
+    </div>
+  </section>
 </template>
 <script lang="ts">
 import Page from '~/core/page'
@@ -93,6 +93,9 @@ export default class SaleGatheringApply extends Page {
 
   private applyModel: any = {}
   private applyRule: any = {}
+
+  // 上次验证通过的身份证号
+  private currentIdCard = ""
 
   // 各组件变量，统一初始化赋值，以供使用
   private customerForm: any = {}
@@ -227,11 +230,9 @@ export default class SaleGatheringApply extends Page {
 
     this.transFlag = true
     this.applyModel.idCard = row.idCard
-    this.applyModel.customerName = row.personalName
-    this.applyModel.mobileMain = row.mobileMain
+    this.getOrderInfo()
+    this.currentIdCard = this.applyModel.idCard
     this.applyModel.orderId = row.orderId
-    this.personalId = row.personalId
-    this.applyModel.orderNumber = row.orderNumber
     this.changeOrderId(row.orderId)
   }
   /**
@@ -253,14 +254,14 @@ export default class SaleGatheringApply extends Page {
           this.withdrawApplicationService
             .saveSaleCollectMoneyApplication(saveAndCommitModel)
             .subscribe(
-              data => {
-                this.updatePaymentRecord(new Date())
-                this.$Message.success('保存并提交成功！')
-                this.resetPage()
-              },
-              ({ msg }) => {
-                this.$Message.error(msg)
-              }
+            data => {
+              this.updatePaymentRecord(new Date())
+              this.$Message.success('保存并提交成功！')
+              this.resetPage()
+            },
+            ({ msg }) => {
+              this.$Message.error(msg)
+            }
             )
         } else {
           this.$Message.info('请先选择订单！')
@@ -278,48 +279,59 @@ export default class SaleGatheringApply extends Page {
   }
 
   async getUserInfo() {
-    if (!this.applyModel.idCard) {
-      this.applyModel.orderId = ''
-      return
+    // 检测身份证
+    if (!await this.checkIdCardValid()) {
+      return;
     }
 
-    if (this.applyModel.idCard.length === 18) {
-      // 验证身份证信息
-      let result = await new Promise((reslove, reject) => {
-        this.customerForm.validateField('idCard', error => reslove(!error))
-      })
-
-      if (result) {
-        this.getOrderInfo()
-      }
+    if (this.currentIdCard && this.currentIdCard !== this.applyModel.idCard) {
+      this.$Modal.confirm({
+        title: "提醒",
+        content: "证件号码更新,是否要重置申请信息?",
+        onOk: this.resetPage(this.applyModel.idCard)
+      });
     }
+
+    this.currentIdCard = this.applyModel.idCard
+    this.getOrderInfo()
+  }
+
+  async checkIdCardValid() {
+    if (this.applyModel.idCard.length < 18) {
+      return;
+    }
+    // 验证身份证信息
+    return await new Promise((reslove, reject) => {
+      this.customerForm.validateField('idCard', error => reslove(!error))
+    })
   }
 
   getOrderInfo() {
     this.withdrawApplicationService
       .getPersonalProductOrderInfo(this.applyModel)
       .subscribe(
-        data => {
-          if (data[0] && data[0].orderNumberIdModels) {
-            this.orderNumberIdModels = data[0].orderNumberIdModels
-            this.applyModel.customerName = data[0].name
-            this.applyModel.mobileMain = data[0].mobileMain
-            this.personalId = data[0].personalId
-          }
-        },
-        err => {
-          this.$Message.error(err.msg)
-          this.customerForm.resetFields()
+      data => {
+        if (data[0] && data[0].orderNumberIdModels) {
+          this.orderNumberIdModels = data[0].orderNumberIdModels
+          this.applyModel.customerName = data[0].name
+          this.applyModel.mobileMain = data[0].mobileMain
+          this.personalId = data[0].personalId
         }
+      },
+      err => {
+        this.$Message.error(err.msg)
+        this.customerForm.resetFields()
+      }
       )
   }
 
-  resetPage() {
+  resetPage(newIdCard?: string) {
     this.transFlag = false
     this.orderNumberIdModels = []
     this.customerForm.resetFields()
     this.gatherDetail.resetTable()
     this.uploadFodder.fodder.reset()
+    this.applyModel.idCard = newIdCard
   }
 
   /**
@@ -335,22 +347,22 @@ export default class SaleGatheringApply extends Page {
           orderId: val
         })
         .subscribe(
-          data => {
-            this.orderFodderInfo = data
-            if (data.withdrawId) {
-              this.saveDraftModel.id = data.withdrawId // 获取保存草稿时需要的id
-            }
-            if (data.personalBank && data.personalBank.personalName) {
-              this.saveDraftModel.accountName = data.personalBank.personalName // 获取保存草稿时需要的accountName
-            }
-            // 给收款明细列表赋值
-            let gatherDetail: any = this.$refs['gather-detail']
-            gatherDetail.makeList(data)
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-            this.msg = msg
+        data => {
+          this.orderFodderInfo = data
+          if (data.withdrawId) {
+            this.saveDraftModel.id = data.withdrawId // 获取保存草稿时需要的id
           }
+          if (data.personalBank && data.personalBank.personalName) {
+            this.saveDraftModel.accountName = data.personalBank.personalName // 获取保存草稿时需要的accountName
+          }
+          // 给收款明细列表赋值
+          let gatherDetail: any = this.$refs['gather-detail']
+          gatherDetail.makeList(data)
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+          this.msg = msg
+        }
         )
     }
   }

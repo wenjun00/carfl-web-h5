@@ -216,33 +216,31 @@ export default class FullPaymentApply extends Page {
         idCard: this.customerModel.idCard
       })
       .subscribe(
-      data => {
-        if (data.length) {
-          return this.showHistoryOrder(data);
-        }
+        data => {
+          if (data.length) {
+            return this.showHistoryOrder(data);
+          }
 
-        // 判断是否需要重置信息
-        if (
-          this.currentIdCard &&
-          this.currentIdCard !== this.customerModel.idCard
-        ) {
-          this.$Modal.confirm({
-            title: "提醒",
-            content: "证件号码更新,是否要重置申请信息?",
-            onOk: this.resetPage(this.customerModel.idCard)
-          });
-        }
+          // 判断是否需要重置信息
+          if (
+            this.currentIdCard &&
+            this.currentIdCard !== this.customerModel.idCard
+          ) {
+            this.$Modal.confirm({
+              title: "提醒",
+              content: "证件号码更新,是否要重置申请信息?",
+              onOk: this.resetPage(this.customerModel.idCard)
+            });
+          }
 
-        // 更新历史查询身份证号
-        this.currentIdCard = this.customerModel.idCard;
-        this.showApplicationTab = true;
-        this.submitHide = false
+          // 更新历史查询身份证号
+          this.currentIdCard = this.customerModel.idCard;
+          this.showApplicationTab = true;
+          this.submitHide = false
 
-        // TODO: 根据身份证获取性别和生日信息
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
+          // TODO: 根据身份证获取性别和生日信息
+        },
+         err => this.$Message.error(err.msg)
       );
   }
 
@@ -259,8 +257,7 @@ export default class FullPaymentApply extends Page {
       this.customerForm.validateField("idCard", error => reslove(!error));
     });
 
-    // TODO: 18个1仅用于测试F
-    return result || this.customerModel.idCard === "1".repeat(18);
+    return result
   }
 
   /**
@@ -492,7 +489,7 @@ export default class FullPaymentApply extends Page {
           {
             orderStatus: 304, // 提交
             orderType: 302, // 全额付款
-            otherFee : 0,
+            otherFee: 0,
             salesmanName: this.customerModel.salesmanName
           },
           this.materialsAllCard.chooseModel,
@@ -507,12 +504,10 @@ export default class FullPaymentApply extends Page {
           }
         )
 
-        console.log(model, 'Params')
-        this.productOrderService.createFullPaymentOrder(model).subscribe(() => {
-          this.$Message.success('订单申请成功')
-        })
-
-
+        this.productOrderService.createFullPaymentOrder(model).subscribe(
+          () => this.$Message.success('订单申请成功'),
+          err => this.$Message.error(err.msg)
+        )
       }
     })
 
