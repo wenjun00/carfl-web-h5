@@ -652,29 +652,6 @@ export default class ProdConfig extends Page {
     this.productDetails = item;
   }
   /**
-   * 树形结构 新增产品
-   */
-  addProductFun() {
-<<<<<<< HEAD
-    if (this.seriId > -1 && this.seriId !== undefined) {
-      this.addProductModal = true;
-    } else {
-      this.$Message.error("产品中不可以增加产品");
-    }
-=======
-     console.log(this.scopes)
-     if(this.scopes){
-         if(this.scopes[0].flag == "产品系列"){
-             this.addProductModal = true;
-         }else if(this.scopes[0].flag == "产品"){
-             this.$Message.error("产品中不可以增加产品");
-         }   
-     }else{
-         this.$Message.error("请选择产品系列");
-     }
->>>>>>> dev
-  }
-  /**
    * 点击新增产品确认按钮
    */
   submintAddProduct() {
@@ -704,11 +681,6 @@ export default class ProdConfig extends Page {
    * 树形结构 新增产品系列
    */
   addSericeFun() {
-<<<<<<< HEAD
-    console.log(this.scopes)
-=======
-    // console.log(this.scopes)
->>>>>>> dev
     if(this.scopes){
         if(this.scopes[0].flag == "产品系列"){
             this.$Message.error("温馨提示：产品系列中只能添加产品！");
