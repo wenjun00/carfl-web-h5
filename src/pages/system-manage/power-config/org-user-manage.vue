@@ -1,123 +1,123 @@
 <!--机构与用户管理-->
 <template>
-    <section class="page org-user-manage">
-        <page-header title="机构与用户管理" hidden-print @on-export="exportName">
-            <i-button class="blueButton" @click="addNewUser">新增用户</i-button>
-            <i-button class="blueButton" @click="buttonOnlyOne1">批量分配角色</i-button>
-            <i-button class="blueButton" @click="buttonOnlyOne2">批量管理设备</i-button>
-        </page-header>
-        <i-row class="data-form">
-            <i-col :span="4" class="data-form-item">
+  <section class="page org-user-manage">
+    <page-header title="机构与用户管理" hidden-print @on-export="exportName">
+      <command-button @click="addNewUser" label="新增用户"></command-button>
+      <command-button @click="buttonOnlyOne1" label="批量分配角色"></command-button>
+      <command-button @click="buttonOnlyOne2" label="批量管理设备"></command-button>
+    </page-header>
+    <i-row class="data-form">
+      <i-col :span="4" class="data-form-item">
 
-                <i-row class="add-agency">
-                    <i-button class="blue-button" @click="addDept">添加机构</i-button>
-                </i-row>
-                <i-row>
-                    <div class="add-org-tree">
-                        <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
-                    </div>
-                </i-row>
-            </i-col>
-            <i-col :span="20">
-                <data-form hidden-date-search :model="userListModel" @on-search="searchUserListByCondition" :page="pageService">
-                    <template slot="input">
-                        <i-form-item prop="userName" label="用户名：">
-                            <i-input v-model="userListModel.userName" placeholder="请输入用户名"></i-input>
-                        </i-form-item>
-                        <i-form-item prop="realName" label="姓名：">
-                            <i-input v-model="userListModel.realName" placeholder="请输入姓名"></i-input>
-                        </i-form-item>
-                        <i-form-item prop="status" label="状态：">
-                            <i-select class="form-input" v-model="userListModel.status">
-                                <i-option label="启用" :value="0" :key="0"></i-option>
-                                <i-option label="停用" :value="1" :key="1"></i-option>
-                            </i-select>
-                        </i-form-item>
-                    </template>
-                    <!-- <template slot="button">
+        <i-row class="add-agency">
+          <i-button class="blue-button" @click="addDept">添加机构</i-button>
+        </i-row>
+        <i-row>
+          <div class="add-org-tree">
+            <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
+          </div>
+        </i-row>
+      </i-col>
+      <i-col :span="20">
+        <data-form hidden-date-search :model="userListModel" @on-search="searchUserListByCondition" :page="pageService">
+          <template slot="input">
+            <i-form-item prop="userName" label="用户名：">
+              <i-input v-model="userListModel.userName" placeholder="请输入用户名"></i-input>
+            </i-form-item>
+            <i-form-item prop="realName" label="姓名：">
+              <i-input v-model="userListModel.realName" placeholder="请输入姓名"></i-input>
+            </i-form-item>
+            <i-form-item prop="status" label="状态：">
+              <i-select class="form-input" v-model="userListModel.status">
+                <i-option label="启用" :value="0" :key="0"></i-option>
+                <i-option label="停用" :value="1" :key="1"></i-option>
+              </i-select>
+            </i-form-item>
+          </template>
+          <!-- <template slot="button">
                         <i-button class="blue-button" @click="addNewUser">新增用户</i-button>
                         <i-button class="blue-button" @click="buttonOnlyOne1">批量分配角色</i-button>
                         <i-button class="blue-button" @click="buttonOnlyOne2">批量管理设备</i-button>
                     </template> -->
 
-                </data-form>
+        </data-form>
 
-                <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService" @on-selection-change="onSelectionChange"></data-box>
-            </i-col>
-        </i-row>
+        <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService" @on-selection-change="onSelectionChange"></data-box>
+      </i-col>
+    </i-row>
 
-        <template>
-            <i-modal v-model="allotRoleModal" :title="batchAllotFlag?'批量分配角色':'分配角色'" @on-visible-change="visiableChange">
-                <allot-role-modal :userId="userId" :batchAllotFlag="batchAllotFlag" :userIds="userIds" ref="allot-role-modal" @closeAndRefreshTree="closeAndRefreshTree"></allot-role-modal>
-                <div slot="footer">
-                    <i-button @click="allotRoleModal=false">取消</i-button>
-                    <i-button @click="allotRoleClick" class="blueButton">确定分配</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal v-model="allotRoleModal" :title="batchAllotFlag?'批量分配角色':'分配角色'" @on-visible-change="visiableChange">
+        <allot-role-modal :userId="userId" :batchAllotFlag="batchAllotFlag" :userIds="userIds" ref="allot-role-modal" @closeAndRefreshTree="closeAndRefreshTree"></allot-role-modal>
+        <div slot="footer">
+          <i-button @click="allotRoleModal=false">取消</i-button>
+          <i-button @click="allotRoleClick" class="blueButton">确定分配</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal v-model="modifyUserModal" title="修改用户" :width="800">
-                <modify-user :modifyUserModel="modifyUserModel" @close="modifyUserClose" ref="modify-user"></modify-user>
-                <div slot="footer">
-                    <i-button @click="modifyUserModal=false">取消</i-button>
-                    <i-button class="blueButton" @click="confirmModifyUser">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal v-model="modifyUserModal" title="修改用户" :width="800">
+        <modify-user :modifyUserModel="modifyUserModel" @close="modifyUserClose" ref="modify-user"></modify-user>
+        <div slot="footer">
+          <i-button @click="modifyUserModal=false">取消</i-button>
+          <i-button class="blueButton" @click="confirmModifyUser">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal v-model="addNewUserModal" title="新增用户" :width="800" class="addUser" @on-visible-change="newUserModalChange">
-                <add-user :deptObject="deptObject" @close="closeAdd" ref="add-user"></add-user>
-                <div slot="footer">
-                    <i-button @click="addNewUserModal=false">取消</i-button>
-                    <i-button class="blueButton" @click="confirmAddUser">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal v-model="addNewUserModal" title="新增用户" :width="800" class="addUser" @on-visible-change="newUserModalChange">
+        <add-user :deptObject="deptObject" @close="closeAdd" ref="add-user"></add-user>
+        <div slot="footer">
+          <i-button @click="addNewUserModal=false">取消</i-button>
+          <i-button class="blueButton" @click="confirmAddUser">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal v-model="deviceManageModal" title="设备管理" :width="800" class="device-manage" class-name="no-footer">
-                <device-manage ref="device-manage"></device-manage>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal v-model="deviceManageModal" title="设备管理" :width="800" class="device-manage" class-name="no-footer">
+        <device-manage ref="device-manage"></device-manage>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal v-model="addNewOrgModal" title="添加机构" :width="400">
-                <add-org ref="add-org" :addOrgModel="addOrgModel" @close="closeOrg"></add-org>
-                <div slot="footer">
-                    <i-button @click="cancelAddOrg">取消</i-button>
-                    <i-button class="blueButton" @click="confirmAddOrg">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal v-model="addNewOrgModal" title="添加机构" :width="400">
+        <add-org ref="add-org" :addOrgModel="addOrgModel" @close="closeOrg"></add-org>
+        <div slot="footer">
+          <i-button @click="cancelAddOrg">取消</i-button>
+          <i-button class="blueButton" @click="confirmAddOrg">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal v-model="editNewOrgModal" title="编辑机构" :width="400">
-                <edit-org ref="edit-org" :deptObject="deptObject" @close="closeEditOrg"></edit-org>
-                <div slot="footer">
-                    <i-button @click="cancelEditOrg">取消</i-button>
-                    <i-button class="blueButton" @click="confirmEditOrg">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal v-model="editNewOrgModal" title="编辑机构" :width="400">
+        <edit-org ref="edit-org" :deptObject="deptObject" @close="closeEditOrg"></edit-org>
+        <div slot="footer">
+          <i-button @click="cancelEditOrg">取消</i-button>
+          <i-button class="blueButton" @click="confirmEditOrg">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal title="批量管理设备" v-model="batchManageDeviceModal" :width="700" class="batch-manage-device">
-                <batch-manage-device ref="batch-manage-device" @close="closeAndRefreshBatch"></batch-manage-device>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal title="批量管理设备" v-model="batchManageDeviceModal" :width="700" class="batch-manage-device">
+        <batch-manage-device ref="batch-manage-device" @close="closeAndRefreshBatch"></batch-manage-device>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal title="数据权限" v-model="dataPowerModal" @on-visible-change="dataPowerModalChange">
-                <data-power-modal ref="data-power" @close="dataPowerModal=false"></data-power-modal>
-                <div slot="footer">
-                    <i-button @click="dataPowerModal=false">取消</i-button>
-                    <i-button @click="confirmDataPower" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-    </section>
+    <template>
+      <i-modal title="数据权限" v-model="dataPowerModal" @on-visible-change="dataPowerModalChange">
+        <data-power-modal ref="data-power" @close="dataPowerModal=false"></data-power-modal>
+        <div slot="footer">
+          <i-button @click="dataPowerModal=false">取消</i-button>
+          <i-button @click="confirmDataPower" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+  </section>
 </template>
 
 <script lang="ts">
@@ -672,26 +672,26 @@ export default class OrgUserManage extends Page {
     this.manageService
       .getUsersByDeptPage(this.userListModel, this.pageService)
       .subscribe(
-        data => {
-          this.userList = data.filter(x => {
-            return x.userStatus == 0
-          })
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.userList = data.filter(x => {
+          return x.userStatus == 0
+        })
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
   searchUserListByCondition() {
     this.manageService
       .getUsersByDeptPage(this.userListModel, this.pageService)
       .subscribe(
-        data => {
-          this.userList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.userList = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
@@ -706,12 +706,12 @@ export default class OrgUserManage extends Page {
     this.manageService
       .getUsersByDeptPage(this.userListModel, this.pageService)
       .subscribe(
-        data => {
-          this.userList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.userList = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
@@ -743,13 +743,13 @@ export default class OrgUserManage extends Page {
             deptId: value.id
           })
           .subscribe(
-            val => {
-              this.$Message.success('删除成功！')
-              this.getTree()
-            },
-            ({ msg }) => {
-              this.$Message.error(msg)
-            }
+          val => {
+            this.$Message.success('删除成功！')
+            this.getTree()
+          },
+          ({ msg }) => {
+            this.$Message.error(msg)
+          }
           )
       }
     })

@@ -4,16 +4,8 @@
     <section class="component add-periods">
       <div class="add-periods-item">自然参数</div>
       <data-grid :labelWidth="100">
-        <data-grid-item label="产品序号" :span="4">
-          <div>
-            {{pNameTitle.number}}
-          </div>
-        </data-grid-item>
-        <data-grid-item label="产品名称" :span="8">
-          <div>
-            {{pNameTitle.name}}
-          </div>
-        </data-grid-item>
+        <data-grid-item label="产品序号" :span="4"> {{pNameTitle.number}}</data-grid-item>
+        <data-grid-item label="产品名称" :span="8"> {{pNameTitle.name}}</data-grid-item>
         <data-grid-item label="产品期数" :span="4">
           <i-form-item class="item-chanpin" prop="periods">
             <i-select v-model="formItems.periods" placeholder="请输入产品期数">
@@ -45,10 +37,10 @@
         <data-grid-item label="融资金额" :span="8">
           <i-form ref="finance" :model="amount" :rules="amountRules" inline>
             <i-form-item prop="financingAmount1" label="最小金额">
-              <i-input-number v-model="amount.financingAmount1" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number v-model="amount.financingAmount1" :max="100" :min="0" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
             </i-form-item>
             <i-form-item prop="financingAmount2" label="最大金额">
-              <i-input-number v-model="amount.financingAmount2" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number v-model="amount.financingAmount2" :max="100" :min="0" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
             </i-form-item>
           </i-form>
         </data-grid-item>

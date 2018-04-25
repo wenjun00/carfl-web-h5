@@ -175,4 +175,12 @@ export class FilterService {
   static moneyFormat(value: number) {
     return `${value}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => s + ',')
   }
+
+  static percentFormat(value){
+    return `${value}%`
+  }
+
+  static percentParse(value){
+    return  value.replace('%', '')
+  }
 }
