@@ -1,5 +1,5 @@
 <!--评估申请-->
-<template>
+<template> 
     <section class="page evaluation-application">
         <page-header title="评估申请" hidden-print>
             <i-button type="text">新建申请</i-button>
@@ -33,6 +33,7 @@ import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import { Button } from 'iview'
+import { FilterService } from '~/utils/filter.service'
 import { AssessMentApplyService } from '~/services/manage-service/assess-ment-apply.service'
 
 @Layout('workspace')
@@ -172,7 +173,10 @@ export default class EvaluationApplication extends Page {
       sortable: true,
       minWidth: this.$common.getColumnWidth(3),
       key: 'applyTime',
-      align: 'center'
+      align: 'center',
+       render: (h, { row }) => {
+        return h('span', FilterService.dateFormat(row.applyTime, 'yyyy-MM-dd'))
+      }
     },
     {
       title: '评估人',
