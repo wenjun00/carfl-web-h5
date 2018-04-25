@@ -45,4 +45,13 @@ export class AssessMentApplyService {
       page:page
     })
   }
+   /**
+   *  评估申请 查看详情
+   */
+  findOrderInfoByOrderNumber(data,page){
+    return this.netService.send({
+      server: manageService.assessmentapply.findOrderInfoByOrderNumber,
+      data: data,
+    })
+  }
 }

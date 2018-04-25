@@ -21,6 +21,16 @@
             </template>
         </data-form>
         <data-box :columns="applicationColumns" :data="dataSet" :page="pageService"></data-box>
+
+        <template>
+            <i-modal v-model="applicationModal" title="查看详情" class="apply-for-application">
+                <apply-for-application ref="apply-for-application"></apply-for-application>
+                <div slot="footer">
+                    <i-button class="Ghost" @click="applicationModal=false">取消</i-button>
+                    <i-button class="blueButton" @click="applicationModal">确定</i-button>
+                </div>
+            </i-modal>
+        </template>
     </section>
 </template>
 
@@ -40,12 +50,10 @@ import { AssessMentApplyService } from '~/services/manage-service/assess-ment-ap
 import applyForApplication from '~/components/purchase-manage/apply-for-application.vue'
 import { Modal } from 'iview'
 
-
-
 @Layout('workspace')
 @Component({
   components: {
-   applyForApplication
+    applyForApplication
   }
 })
 export default class EvaluationApplication extends Page {
@@ -60,6 +68,7 @@ export default class EvaluationApplication extends Page {
     ownerName: '', // 客户姓名
     isSubmit: '0' // 包含提交
   }
+  private assessmentNo:String = ''           // 车辆详情号
   private applicationColumns: any = [
     {
       title: '操作',
@@ -70,20 +79,44 @@ export default class EvaluationApplication extends Page {
         // 1187 (待提交), 1189(待領取), 1190(待评估), 1191(已评估)
         return (
           <div>
-            <i-button v-show={row.assessmentStatus === 1187} type="text">
+            <i-button  type="text"
+             v-show={row.assessmentStatus === 1187}
+             >
               编辑
             </i-button>
-            <i-button v-show={row.assessmentStatus === 1189} type="text">
+            <i-button  type="text"
+             v-show={row.assessmentStatus === 1189} 
+             onClick={() =>{
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '您确定是否删除？',
+                        onOk: () => {
+                          this.deleteRow(row);
+                        },
+                      });
+                    }}
+            >
               删除
             </i-button>
             <i-button
               v-show={[1189, 1190, 1191].includes(row.assessmentStatus)}
               type="text"
-              onClick={this.deleteData}
+              onClick={() => this.detailsData(row)}
             >
               详情
             </i-button>
-            <i-button v-show={row.assessmentStatus === 1189} type="text">
+            <i-button  type="text"
+            v-show={row.assessmentStatus === 1189}
+              onClick={() =>{
+                      this.$Modal.confirm({
+                        title: '提示',
+                        content: '是否确定撤回评估申请？撤回后可重新编辑并提交。',
+                        onOk: () => {
+                          this.withdrawRow(row);
+                        },
+                      });
+                    }}
+            >
               撤回
             </i-button>
           </div>
@@ -217,11 +250,26 @@ export default class EvaluationApplication extends Page {
       )
   }
   /**
-   * 操作（删除）
+   * 操作（详情）
    */
-  deleteData() {
+  detailsData(row) {
     this.applicationModal = true
+    this.assessmentNo = row.assessmentNo
+    let applyForApplication: any = this.$refs['apply-for-application']
+    applyForApplication.getData(this.assessmentNo)
   }
+   /**
+     * 操作（删除）
+     */
+    deleteRow(row) {
+     
+    }
+  /**
+   * 操作(撤回)
+   */
+   withdrawRow(row){
+
+   }
 
   mounted() {
     this.getApplicationList()
@@ -231,5 +279,12 @@ export default class EvaluationApplication extends Page {
 
 <style lang="less" scoped>
 .page.evaluation-application {
+}
+</style>
+<style lang="less">
+.apply-for-application {
+  .ivu-modal {
+    width: 680px!important;
+  }
 }
 </style>

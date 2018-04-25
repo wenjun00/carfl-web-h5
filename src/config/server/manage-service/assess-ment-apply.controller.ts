@@ -38,6 +38,16 @@ export default {
     controller: CONTROLLER,
     action: 'orderBasicSearch',
     type: requestType.Get
+  },
+
+    /**
+   *  评估申请 查看详情
+   */
+  findOrderInfoByOrderNumber:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findOrderInfoByOrderNumber',
+    type: requestType.Get
   }
 
 }
