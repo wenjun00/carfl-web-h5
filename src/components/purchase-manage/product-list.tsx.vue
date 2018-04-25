@@ -50,7 +50,7 @@ import { Upload, Radio } from "iview";
     DataBox
   }
 })
-export default class AddProduct extends Vue {
+export default class ProductList extends Vue {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
   @Dependencies(ProductService) private productService: ProductService;
@@ -134,6 +134,8 @@ export default class AddProduct extends Vue {
   onCurrentChange(row) {
     row.productName = this.currentProduct.title;
     row.seriesName = this.currentProduct.series;
+    row.productId = this.currentProduct.productId;
+    row.seriesId = this.currentProduct.seriesId;
     this.currentRow = row;
   }
 

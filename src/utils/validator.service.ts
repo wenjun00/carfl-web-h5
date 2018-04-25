@@ -8,7 +8,6 @@ export class ValidatorService {
    * @param callback 
    */
   static validate(data: any, descriptor: any) {
-    console.log(data)
     let schema = new validator(descriptor);
     let process = new Promise((reslove, reject) => {
       schema.validate(data, (errors, fields) => {
@@ -31,7 +30,9 @@ export class ValidatorService {
     // 身份证18位
     idCard: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)/,
     // 金额
-    money: /(^[1-9](\d+)?(\.\d{1,2})?$)|(^(0){1}$)|(^\d\.\d{1,2}?$)/
+    money: /(^[1-9](\d+)?(\.\d{1,2})?$)|(^(0){1}$)|(^\d\.\d{1,2}?$)/,
+    // 邮编
+    zipCode: /^[1-9]\d{5}(?!\d)$/
   }
 
   /**
@@ -67,6 +68,17 @@ export class ValidatorService {
     }
   }
 
+   /**
+   * 验证金额
+   */
+  static zipCode(rule, value, callback) {
+    if (ValidatorService.regex.zipCode.test(value) || !value) {
+      callback();
+    } else {
+      callback(new Error("请输入正确的邮政编码"));
+    }
+  }
+
   /**
    * 表单验证
    * @param rule 
@@ -74,10 +86,12 @@ export class ValidatorService {
    * @param callback 
    */
   static formValidate(rule, value, callback) {
-    value.validate().then(
-      callback()
-    ).catch(ex => {
-      callback(rule.message || "验证失败")
+    value.validate((valid) => {
+      if (valid) {
+        callback()
+      } else {
+        callback(new Error(rule.message || "输入项填写错误"));
+      }
     })
   }
 }

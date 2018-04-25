@@ -1,13 +1,11 @@
 <!--财务·上传图片-->
 <template>
   <section class="component file-upload">
-    <Upload :on-progress="onProgress" :on-success="onSuccess" :show-upload-list="false" :accept="acceptFileType" :headers="{'authorization':$store.token}" ref="upload" :action="uploadUrl" :before-upload="beforeUpload">
-      <i-row>
-        <i-col>
-          <Button class="blueButton">选择文件</Button>
-        </i-col>
-      </i-row>
-    </Upload>
+    <i-upload :on-progress="onProgress" :on-success="onSuccess" :show-upload-list="false" :accept="acceptFileType" :headers="{'authorization':$store.state.token}" ref="upload" :action="uploadUrl" :before-upload="beforeUpload">
+      <div class="command">
+        <i-button type="primary">选择文件</i-button>
+      </div>
+    </i-upload>
     <i-table :columns="uploadColumns" :data="uploadList"></i-table>
   </section>
 </template>
@@ -15,11 +13,15 @@
 <script lang="tsx">
 import Vue from "vue";
 import Component from "vue-class-component";
+
 import { NetService } from "~/utils/net.service";
 import { fileService } from "~/config/server";
 import { Prop, Emit } from "vue-property-decorator";
 import { Upload, Button } from "iview";
+import { State } from "vuex-class";
+
 import appConfig from "~/config/app.config";
+
 @Component({
   components: {}
 })
@@ -39,80 +41,62 @@ export default class FileUpload extends Vue {
   fileSizeLimit;
 
   @Prop({
-    type:String
+    type: String
   })
-  acceptFileType
+  acceptFileType;
 
   @Emit("on-success")
-  success() {}
+  success(filelist) {}
 
-  private uploadColumns: any;
+  @State token;
+
   private uploadList: Array<any> = [];
   private fileList: Array<any> = []; // 文件上传成功文件列表
-
-  /**
-   * 初始化
-   */
-  created() {
-    this.uploadColumns = [
-      {
-        title: "名称",
-        key: "name",
-        align: "center"
-      },
-      {
-        title: "大小",
-        key: "size",
-        align: "center"
-      },
-      {
-        title: "文件类型",
-        key: "type",
-        align: "center"
-      },
-    //   {
-    //     title: "状态",
-    //     align: "center",
-    //     key: "percentage",
-    //     render: (h, { row, column, index }) => {
-    //       let state = {
-    //         ready: "准备",
-    //         finish: "完成"
-    //       };
-
-    //       return <span>{state[row.state] || row.percentage}</span>;
-    //     }
-    //   },
-      {
-        title: "操作",
-        align: "center",
-        render: (h, { row, column, index }) => {
-          // 移除文件
-          let removeHandle = () => {
-            this.$Modal.confirm({
-              title: "提示",
-              content: "确定移出吗？",
-              transfer: false,
-              onOk: () => {
-                this.uploadList.splice(index, 1);
-              }
-            });
-          };
-          // 移除按钮
-          return (
-            <i-button
-              type="primary"
-              disabled={row.state !== "ready"}
-              style="#265ea2"
-              onClick={removeHandle}
-            >
-              移除
-            </i-button>
-          );
-        }
+  private uploadColumns = [
+    {
+      title: "名称",
+      key: "name",
+      align: "center"
+    },
+    {
+      title: "大小",
+      key: "size",
+      align: "center"
+    },
+    {
+      title: "文件类型",
+      key: "type",
+      align: "center"
+    },
+    {
+      title: "操作",
+      align: "center",
+      render: (h, { row, column, index }) => {
+        // 移除文件
+        let removeHandle = () => {
+          this.$Modal.confirm({
+            title: "提示",
+            content: "确定移出吗？",
+            transfer: false,
+            onOk: () => {
+              this.uploadList.splice(index, 1);
+            }
+          });
+        };
+        // 移除按钮
+        return (
+          <i-button
+            type="primary"
+            disabled={row.state !== "ready"}
+            style="#265ea2"
+            onClick={removeHandle}
+          >
+            移除
+          </i-button>
+        );
       }
-    ];
-  }
+    }
+  ];
 
   /**
    * 上传文件服务路径
@@ -123,6 +107,7 @@ export default class FileUpload extends Vue {
     );
     return `${appConfig.url.server}/${url}`;
   }
+
   /**
    * 上传预处理
    */
@@ -164,22 +149,21 @@ export default class FileUpload extends Vue {
   /**
    * 上传成功回调
    */
-  onSuccess(event, file,fileList) {
+  onSuccess(event, file, fileList) {
     let target = this.uploadList.find(x => x.file.uid === file.uid);
     target.state = "finish";
 
     if (this.uploadList.every(x => x.state === "finish")) {
-      this.fileList = fileList
-      this.success();
-      console.log(fileList,'fileList')
+      this.fileList = fileList;
+      this.success(this.fileList);
     }
   }
 
   /**
    * 返回上传成功时文件列表
    */
-  makeList(){
-    return this.fileList
+  makeList() {
+    return this.fileList;
   }
 
   /**
@@ -200,6 +184,10 @@ export default class FileUpload extends Vue {
 }
 </script>
 
-<style>
-
+<style lang="less" scoped>
+.component.file-upload {
+  .command {
+    padding-bottom: 10px;
+  }
+}
 </style>

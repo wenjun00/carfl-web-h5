@@ -90,10 +90,10 @@
     <!--产品信息-start-->
     <i-card title="产品信息" class="product-container">
       <div slot="extra">
-        <i-button v-show="productModel.productIssueId&&!productAmountModel" @click="onSetProductAmount" type="text">计算费用</i-button>
-        <i-button icon="plus" v-show="totalPrice>0" @click="onOpenProductList" type="text">{{productModel.productIssueId?"更改产品":"选择产品"}}</i-button>
+        <i-button v-show="currentProduct.productIssueId&&!productAmountModel" @click="onSetProductAmount" type="text">计算费用</i-button>
+        <i-button icon="plus" v-show="totalPrice>0" @click="onOpenProductList" type="text">{{currentProduct.productIssueId?"更改产品":"选择产品"}}</i-button>
       </div>
-      <i-form v-show="productModel.productIssueId" ref="product-form" :rules="productRules" :model="productModel" :label-width="150">
+      <i-form v-show="currentProduct.productIssueId" ref="product-form" :rules="productRules" :model="productModel" :label-width="150">
         <i-row>
           <i-col span="12">
             <i-form-item label="产品系列">
@@ -134,7 +134,7 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="首付金额(元)" prop="Payment">
-                  <i-select :disabled="!currentProduct.initialPayment" class="payment-amount-select" placeholder="请选择首付金额比例" v-model="productRadioModel.initialPaymentRadio" clearable @on-change="onInitialPaymentChange">
+                  <i-select :disabled="!currentProduct.initialPayment" class="payment-amount-select" placeholder="请选择首付金额比例" v-model="productRadioModel.paymentScale" clearable @on-change="onInitialPaymentChange">
                     <i-option v-for="item in currentProduct.initialPaymentList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
@@ -148,7 +148,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="尾付本金(元)" prop="finalPayment">
-              <i-input-number :disabled="!productModel.vehicleAmount" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" />
+              <i-input-number :disabled="!productModel.vehicleAmount" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" @on-change="onFinalPaymentChange" />
               <!-- <i-input  :maxlength="14" type="text" v-model="productModel.finalPayment" @on-change="finalprincipalChange" :readonly="finaldisabled" @on-blur="finalprincipalBlur">
               </i-input> -->
             </i-form-item>
@@ -157,7 +157,7 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="尾付总额(元)" prop="final">
-                  <i-select :disabled="!currentProduct.finalCash" placeholder="请选择尾付总额比例" v-model="productRadioModel.finalCashRadio" clearable>
+                  <i-select :disabled="!currentProduct.finalCash" placeholder="请选择尾付总额比例" v-model="productRadioModel.final" clearable>
                     <i-option v-for="item in currentProduct.finalCashList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
@@ -196,7 +196,7 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="管理费(元)" prop="manageData">
-                  <i-select :disabled="!currentProduct.manageCost" placeholder="请选择管理费比例" v-model="productRadioModel.manageCostRadio" clearable>
+                  <i-select :disabled="!currentProduct.manageCost" placeholder="请选择管理费比例" v-model="productRadioModel.manageCostPercent" clearable>
                     <i-option v-for="item in currentProduct.manageCostList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
@@ -257,7 +257,7 @@
           </i-col>
         </i-row>
       </i-form>
-      <div v-show="!productModel.productIssueId" class="empty-text row center-span middle-span">
+      <div v-show="!currentProduct.productIssueId" class="empty-text row center-span middle-span">
         请选择对应产品
       </div>
     </i-card>
@@ -279,8 +279,10 @@ import { CompanyService } from "~/services/manage-service/company.service";
 import { Prop, Emit, Watch } from "vue-property-decorator";
 import { FilterService } from "~/utils/filter.service";
 import { Input, Button, InputNumber, Form } from "iview";
+import { OrderService } from "~/services/business-service/order.service";
 
 const ModuleMutation = namespace("purchase", Mutation);
+
 @Component({
   components: {
     AddCar,
@@ -296,13 +298,11 @@ export default class ChooseBuyMaterials extends Vue {
   @Dependencies(CompanyService) private companyService: CompanyService;
   @Dependencies(ProductOrderService)
   private productOrderService: ProductOrderService;
+
   @ModuleMutation("updateProductId") updateProductId;
 
-  @Prop() orderNumber;
-  @Prop() idCard;
   private companyList: any = []; // 公司信息
   private totalPrice: number = 0;
-
   public carDataSet: any = [];
 
   // 选购信息数据
@@ -313,7 +313,7 @@ export default class ChooseBuyMaterials extends Vue {
     orderService: [], // 订单自缴费用服务
     financingUse: "", // 融资用途
     intentionFinancingAmount: 0, // 意向融资金额
-    intentionPeriods: 0, // 意向期限
+    intentionPeriods: "", // 意向期限
     rentPayable: 0, // 意向月供-租金支付
     intentionPaymentRatio: 0 //  意向首付比例
   };
@@ -337,17 +337,20 @@ export default class ChooseBuyMaterials extends Vue {
   };
 
   // 产品金额比例
-  private productRadioModel = {
-    depositCashRadio: 0, // 保证金
-    finalCashRadio: 0, // 尾付金额
-    initialPaymentRadio: 0, // 首付款
-    manageCostRadio: 0 // 管理费
+  public productRadioModel = {
+    depositCashRadio: "", // 保证金
+    final: "", // 尾付金额
+    paymentScale: "", // 首付款
+    manageCostPercent: "" // 管理费
   };
 
   // 当前选择产品
-  private currentProduct: any = {
+  public currentProduct: any = {
+    productIssueId: "",
+    productId: "",
+    seriesId: "",
     seriesName: "", // 产品系列
-    productNanme: "", // 产品名称
+    productName: "", // 产品名称
     periods: "", // 产品期数
     productRate: "", // 产品利率
     payWay: "" // 还款方式
@@ -362,7 +365,7 @@ export default class ChooseBuyMaterials extends Vue {
         type: "number",
         required: true,
         message: "请输入意向期限",
-        trigger: "blur"
+        trigger: "change"
       }
     ],
     province: [
@@ -370,7 +373,7 @@ export default class ChooseBuyMaterials extends Vue {
         type: "number",
         required: true,
         message: "请选择申请省份",
-        trigger: "blur"
+        trigger: "change"
       }
     ],
     city: [
@@ -378,14 +381,14 @@ export default class ChooseBuyMaterials extends Vue {
         type: "number",
         required: true,
         message: "请选择申请城市",
-        trigger: "blur"
+        trigger: "change"
       }
     ],
     orderService: [
       {
         required: true,
         message: "请选择自缴费用",
-        trigger: "blur",
+        trigger: "change",
         type: "array"
       }
     ],
@@ -401,7 +404,7 @@ export default class ChooseBuyMaterials extends Vue {
         type: "number",
         required: true,
         message: "请输入意向首付比例",
-        trigger: "blur"
+        trigger: "change"
       }
     ],
     intentionFinancingAmount: [
@@ -409,7 +412,7 @@ export default class ChooseBuyMaterials extends Vue {
         type: "number",
         required: true,
         message: "请输入意向融资金额",
-        trigger: "blur"
+        trigger: "change"
       }
     ]
   };
@@ -429,7 +432,8 @@ export default class ChooseBuyMaterials extends Vue {
   customRules = {
     chooseForm: [
       {
-        validator: this.$validator.formValidate
+        validator: this.$validator.formValidate,
+        message: "选购信息填写错误"
       }
     ],
     carListCount: [
@@ -490,12 +494,12 @@ export default class ChooseBuyMaterials extends Vue {
     },
     {
       title: "车身颜色",
-      key: "carColour",
+      key: "vehicleColour",
       align: "center"
     },
     {
       title: "车辆排量",
-      key: "carEmissions",
+      key: "vehicleEmissions",
       align: "center"
     },
     {
@@ -615,7 +619,7 @@ export default class ChooseBuyMaterials extends Vue {
   }
 
   /**
-   * 更新
+   * 更新金额
    */
   @Watch("totalPrice")
   onTotalProce(value) {
@@ -627,23 +631,23 @@ export default class ChooseBuyMaterials extends Vue {
     // 首付款=车辆参考价x首付比例
     this.productModel.initialPayment =
       this.productModel.vehicleAmount *
-      this.productRadioModel.initialPaymentRadio;
+      parseFloat(this.productRadioModel.paymentScale || "0");
 
     // 保证金金额 = 融资总额x保证金比例
     this.productModel.depositCash =
       this.productModel.financingAmount *
-      this.productRadioModel.depositCashRadio;
+      parseFloat(this.productRadioModel.depositCashRadio || "0");
 
     // 保证金金额 = 融资总额x保证金比例
     this.productModel.manageCost =
       this.productModel.financingAmount *
-      this.productRadioModel.manageCostRadio;
+      parseFloat(this.productRadioModel.manageCostPercent || "0");
 
     // 尾付利息=尾款本金x尾付月利率x期数
     this.productModel.finalCash =
       this.productModel.finalPayment +
       this.productModel.finalPayment *
-        this.productRadioModel.finalCashRadio *
+        parseFloat(this.productRadioModel.final || "0") *
         this.currentProduct.periodNumber;
   }
 
@@ -658,10 +662,18 @@ export default class ChooseBuyMaterials extends Vue {
     this.productModel.finalCash = 0;
     this.productModel.finalPayment = 0;
 
-    this.productRadioModel.initialPaymentRadio = 0;
-    this.productRadioModel.finalCashRadio = 0;
+    this.productRadioModel.paymentScale = "";
+    this.productRadioModel.final = "";
 
     this.productAmountModel = null;
+  }
+
+  /**
+   * 尾款本金改变重新计算金额
+   */
+  onFinalPaymentChange() {
+    this.onProductRadioModelChange();
+    this.getProductAllAmount();
   }
 
   /**
@@ -675,7 +687,14 @@ export default class ChooseBuyMaterials extends Vue {
         let currentSelection = addCar.getCurrentSelection();
 
         if (currentSelection && currentSelection.length) {
-          this.carDataSet.push(...currentSelection);
+          this.carDataSet.push(
+            ...currentSelection.map(x => {
+              x.vehicleId = x.id;
+              x.vehicleColour = x.carColour;
+              x.vehicleEmissions = x.carEmissions;
+              return x;
+            })
+          );
         }
       },
       onCancel: () => {},
@@ -733,10 +752,9 @@ export default class ChooseBuyMaterials extends Vue {
         if (currentRow) {
           // 转换数据产品信息数据格式
           this.currentProduct = this.formatProductModal(currentRow);
-          this.productModel.productIssueId = currentRow.id;
-          this.updateProductId(currentRow.id)
+          this.currentProduct.productIssueId = currentRow.id;
+          this.updateProductId(currentRow.id);
           this.onVehicleAmountChange();
-          console.log(this.currentProduct);
         } else {
           this.$Message.error("请选择对应的产品");
           return false;
@@ -771,7 +789,7 @@ export default class ChooseBuyMaterials extends Vue {
       .validate(
         {
           chooseForm: this.$refs["choose-form"],
-          productIssueId: this.productModel.productIssueId,
+          productIssueId: this.currentProduct.productIssueId,
           carListCount: this.carDataSet.length,
           totalPrice: this.totalPrice,
           productForm: this.$refs["product-form"]
@@ -787,40 +805,50 @@ export default class ChooseBuyMaterials extends Vue {
       });
   }
 
-  /**
-   * 获取订单数据
-   */
-  getOrderData() {
-    this.productOrderService
-      .getPurchaseInfoById(this.orderNumber)
-      .subscribe(data => {
-        console.log(data);
-        // TODO:加载订单数据
-      });
+  // 重置数据
+  public reset() {
+    let chooseForm = this.$refs["choose-form"] as Form;
+    let productForm = this.$refs["product-form"] as Form;
+
+    chooseForm.resetFields();
+    productForm.resetFields();
+    this.carDataSet = [];
+    this.$common.reset(this.currentProduct);
+    this.productAmountModel = {};
+    this.updateProductId();
+    this.totalPrice = 0;
   }
 
-  @Watch("orderNumber")
-  onOrderNumberChange(value) {
-    if (value) {
-      // TODO: 加载数据
-      this.getOrderData();
-    }
-  }
+  // 恢复数据
+  public revert(data) {
+    this.$common.revert(
+      this.chooseModel,
+      Object.assign(data, {
+        intentionPeriods: Number(data.intentionPeriods),
+        orderService: data.orderServices.map(x => x.service)
+      })
+    );
 
-  @Watch("idCard")
-  onIdCardChange(value) {
-    if (!value) {
-      // TODO: 重置数据
-    }
+    this.$common.revert(this.carDataSet, data.orderCars);
+    this.$common.revert(this.currentProduct, data, {
+      productName: data.product.name,
+      productSeries: data.product.name
+    });
+    this.$common.revert(this.productModel, data);
+
+    // 存储基本参数模型
+    this.productAmountModel = {
+      vehicleAmount: this.productModel.vehicleAmount,
+      initialPayment: this.productModel.initialPayment,
+      finalCash: this.productModel.finalCash
+    };
   }
 
   mounted() {
     // 获取公司列表
     this.getCompanyList();
-    // 加载历史订单
-    if (this.orderNumber) {
-      this.getOrderData();
-    }
+    // 清空产品Id
+    this.updateProductId();
   }
 }
 </script>

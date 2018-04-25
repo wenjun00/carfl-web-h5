@@ -30,7 +30,7 @@
 
         <!--新增分公司-->
         <template>
-            <i-modal title="新增分公司" v-model="addBranchCompanyModal" :mask-closable="false">
+            <i-modal width="318" title="新增分公司" v-model="addBranchCompanyModal" :mask-closable="false">
                 <add-branch-company ref="add-firm" @close="closeAndRefresh"></add-branch-company>
                 <div slot="footer">
                     <i-button @click="closeAndRefreshAddFirm">取消</i-button>

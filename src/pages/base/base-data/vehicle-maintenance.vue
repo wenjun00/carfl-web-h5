@@ -41,12 +41,12 @@
                                     <i-row v-for="item in paramList" :key="item.id" type="flex" align="middle">
                                         <i-col :span="12">
                                             <i-form-item>
-                                                <i-input v-model="item.name"></i-input>
+                                                <i-input class="canshu-input" v-model="item.name"></i-input>
                                             </i-form-item>
                                         </i-col>
                                         <i-col :span="12">
                                             <i-form-item>
-                                                <i-input v-model="item.value"></i-input>
+                                                <i-input class="canshu-input" v-model="item.value"></i-input>
                                             </i-form-item>
                                         </i-col>
                                     </i-row>
@@ -830,6 +830,9 @@ export default class VehicleMaintenance extends Page {
           // text-align-last: center;
           text-align: center;
           border: 1px solid #dddd;
+          .canshu-input{
+            margin-top: 25px;
+          }
           .ivu-row-flex {
             height: 40px;
             line-height: 40px;

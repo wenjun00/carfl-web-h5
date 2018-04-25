@@ -78,7 +78,7 @@ export class CommonService {
         }
         case 'object': {
           if (value instanceof Array) {
-            clearArray(value)
+            item[key] = []
           } else {
             clearObject(value)
           }
@@ -104,5 +104,31 @@ export class CommonService {
     } else {
       clearObject(target)
     }
+  }
+
+  static revert(source, ...values) {
+    let sourceType = typeof source
+
+    if (!values.every(x => typeof x === sourceType)) {
+      return
+    }
+
+    if (source instanceof Array) {
+      source.length = 0
+      values.forEach(item => {
+        item.forEach(x => source.push(x))
+      })
+    } else {
+      values.forEach(item => {
+        for (let key in item) {
+          if (key in source) {
+            source[key] = item[key]
+          }
+        }
+      })
+    }
+
+
+    return source
   }
 }

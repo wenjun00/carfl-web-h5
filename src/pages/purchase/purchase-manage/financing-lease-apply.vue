@@ -40,8 +40,8 @@
     <!-- 搜索表单-end -->
 
     <!-- 资料申请选项卡-start -->
-    <i-tabs v-show="showApplicationTab" v-model="currentTab" class="application-tabs">
-      <i-button size="small" type="ghost" @click="onNextStep" v-show="currentStep < 5" slot="extra">下一步</i-button>
+    <i-tabs v-show="!!currentIdCard" v-model="currentTab" class="application-tabs">
+      <i-button size="small" type="ghost" @click="onNextStep" v-show="currentStep <= 5" slot="extra">下一步</i-button>
       <i-tab-pane label="选购资料" name="choose-buy-materials">
         <choose-buy-materials ref="choose-buy-materials" v-show="currentTab==='choose-buy-materials'"></choose-buy-materials>
       </i-tab-pane>
@@ -62,14 +62,14 @@
       </i-tab-pane>
     </i-tabs>
 
-    <div v-show="!showApplicationTab" class="emptyText">
+    <div v-show="!currentIdCard" class="emptyText">
       请先填写证件信息
     </div>
     <!-- 资料选项卡-end -->
 
     <!--底部操作栏-start-->
-    <div class="fixed-container" v-show="currentStep >= 5">
-      <i-button size="large" class="highDefaultButton" @click="onSubmit(true)">保存草稿</i-button>
+    <div class="fixed-container" v-show="currentStep > 5">
+      <i-button v-show="!orderStatus" size="large" class="highDefaultButton" @click="onSubmit(true)">保存草稿</i-button>
       <i-button size="large" class="highButton" style="margin-left:10px;" @click="onSubmit(false)">保存并提交</i-button>
     </div>
     <!--底部操作栏-end-->
@@ -94,9 +94,9 @@ import SalesmanName from "~/components/purchase-manage/salesman-name.vue";
 import ChooseBuyMaterials from "~/components/purchase-manage/choose-buy-materials.tsx.vue"; // 选购资料
 import CustomerMaterials from "~/components/purchase-manage/customer-materials.vue"; // 客户资料
 import CustomerJobMessage from "~/components/purchase-manage/customer-job-message.vue"; // 客户职业
-import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.vue"; // 上传素材
 import CustomerContacts from "~/components/purchase-manage/customer-contacts.vue"; // 客户联系人
 import CustomerOrigin from "~/components/purchase-manage/customer-origin.vue"; // 客户来源
+import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.tsx.vue"; // 上传素材
 import { setTimeout } from "core-js/library/web/timers";
 
 const ModuleState = namespace("purchase", State);
@@ -118,9 +118,8 @@ export default class FinancingLeaseApply extends Page {
   @Dependencies(PersonalService) private personalService: PersonalService;
   @Dependencies(ProductOrderService)
   private productOrderService: ProductOrderService;
-  @ModuleState collectiondata;
-
-  private showApplicationTab = false; // 申请选项卡显示状态
+  @ModuleState productId;
+  @Mutation closePage;
   private currentIdCard = ""; // 上次查询的身份证号
   private currentStep = 0;
   private applicationTabList = [
@@ -132,23 +131,16 @@ export default class FinancingLeaseApply extends Page {
     "upload-the-material"
   ];
 
-  private addCar: Boolean = false;
   private currentTab = "choose-buy-materials";
-  private historicalModal: Boolean = false;
-  private historicalDataset: any = [];
-  private PersonalData: any = [];
-  private addcarData: any = [];
-  private type: Boolean = false;
-  private orderStatus: any = "";
-  private salesmanModal: Boolean = false;
-  private spinShow: Boolean = false;
+  private orderStatus = "";
 
   // 客户信息表单数据
   private customerModel: any = {
     idCard: "", // 证件号码
     name: "", // 客户姓名
     mobileMain: "", // 客户电话
-    salesmanName: "" // 归属业务员
+    salesmanName: "", // 归属业务员
+    salesmanId: ""
   };
 
   // 客户信息表单校验
@@ -184,14 +176,8 @@ export default class FinancingLeaseApply extends Page {
     ]
   };
 
-  mounted() {
-    if (
-      this.$store.state.pageList.find(v => v.resoname === "融资租赁申请").flag
-    ) {
-      this.customerModel = this.collectiondata;
-      this.customerModel.name = this.collectiondata.personalName;
-      // this.showTab();
-    }
+  loaded({ orderNumber }) {
+    this.getOrderData(orderNumber);
   }
 
   /**
@@ -199,14 +185,18 @@ export default class FinancingLeaseApply extends Page {
    */
   async onNextStep() {
     let tab = this.$refs[this.currentTab] as any;
-    console.log(tab);
     // 验证当前页面
     let result = await tab.validate();
 
-    // if (result) {
+    if (!result) {
+      return;
+    }
+
     this.currentStep++;
-    this.currentTab = this.applicationTabList[this.currentStep];
-    // }
+
+    if (this.applicationTabList.length > this.currentStep) {
+      this.currentTab = this.applicationTabList[this.currentStep];
+    }
   }
 
   /**
@@ -299,7 +289,6 @@ export default class FinancingLeaseApply extends Page {
 
           // 更新历史查询身份证号
           this.currentIdCard = this.customerModel.idCard;
-          this.showApplicationTab = true;
 
           // TODO: 根据身份证获取性别和生日信息
         },
@@ -324,11 +313,10 @@ export default class FinancingLeaseApply extends Page {
           return false;
         }
 
-        // TODO: 更新历史订单信息
+        this.getOrderData(currentRow.orderNumber);
       },
       onCancel: () => {
-        let customerForm = this.$refs["customer-form"] as Form;
-        customerForm.resetFields();
+        this.reset();
       },
       render: h => {
         return h(HistoricalRecord, {
@@ -341,7 +329,7 @@ export default class FinancingLeaseApply extends Page {
   }
 
   /**
-   * 显示历史订单
+   * 显示销售员
    */
   showSalemanList() {
     let dialog = this.$dialog.show({
@@ -349,7 +337,6 @@ export default class FinancingLeaseApply extends Page {
       footer: true,
       onOk: salesmanName => {
         let currentRow = salesmanName.getCurrentRow();
-        console.log(currentRow);
         if (!currentRow) {
           this.$Message.error("请选择对应销售员");
           return false;
@@ -366,21 +353,87 @@ export default class FinancingLeaseApply extends Page {
   }
 
   /**
+   * 获取订单数据
+   */
+  getOrderData(orderNumber) {
+    this.productOrderService
+      .findOrderInfoByOrderNumber({ orderNumber })
+      .subscribe(data => {
+        this.revert(data);
+      });
+  }
+
+  /**
+   * 更新数据
+   */
+  revert({ orderStatus, ...data }) {
+    this.currentIdCard = data.personal.idCard;
+    this.orderStatus = orderStatus;
+    this.$common.revert(this.customerModel, data, data.personal);
+    this.applicationTabList.forEach(async x => {
+      // 当前tab
+      let tab: any = this.$refs[x];
+
+      // 退件与草稿恢复产品信息
+      switch (orderStatus) {
+        case 303: {
+          tab.revert(data);
+          this.currentStep = 6;
+          break;
+        }
+        case 311: {
+          tab.revert(data);
+          break;
+        }
+        default: {
+          if (!["choose-buy-materials", "upload-the-material"].includes(x)) {
+            tab.revert(data);
+          }
+        }
+      }
+
+      if (orderStatus === 303) {
+        await tab.validate();
+      }
+    });
+  }
+
+  reset() {
+    this.currentIdCard = "";
+    this.orderStatus = "";
+    let customerForm = this.$refs["customer-form"] as Form;
+
+    customerForm.resetFields();
+    this.currentStep = 0;
+
+    this.resetApplicationTab();
+  }
+
+  /**
    * 重置申请选项卡数据
    */
-  resetApplicationTab() {}
+  resetApplicationTab() {
+    this.applicationTabList.forEach(x => {
+      let tab: any = this.$refs[x];
+      tab.reset();
+    });
+  }
 
   /**
    * 提交申请数据
    */
   async onSubmit(validate) {
     let result = true;
+    let customerForm = this.$refs["customer-form"] as Form;
 
-    if (validate) {
-      result = await this.validate();
+    // 基础表单验证
+    if (!await customerForm.validate().then(x => x)) {
+      return;
     }
 
-    if (!result) {
+    // 数据验证
+    if (validate) {
+      result = await this.validate();
     }
 
     this.submitApplicationData(validate);
@@ -392,18 +445,14 @@ export default class FinancingLeaseApply extends Page {
     // 执行验证
     for (let key of this.applicationTabList) {
       let tab = this.$refs[key] as any;
-      result = result && (await tab.validate());
+      result = result && !!await tab.validate();
       if (!result) {
         break;
       }
     }
 
     // 验证结果
-    if (!result) {
-      return result;
-    }
-
-    // TODO: 自定义验证
+    return result;
   }
 
   /**
@@ -413,37 +462,66 @@ export default class FinancingLeaseApply extends Page {
     let chooseBuyMaterials = this.$refs[
       "choose-buy-materials"
     ] as ChooseBuyMaterials;
+
     let customerMaterials = this.$refs[
       "customer-materials"
     ] as CustomerMaterials;
+
     let customerJobMessage = this.$refs[
       "customer-job-message"
     ] as CustomerJobMessage;
+
     let customerContacts = this.$refs["customer-contacts"] as CustomerContacts;
+
     let customerOrigin = this.$refs["customer-origin"] as CustomerOrigin;
+
     let uploadTheMaterial = this.$refs[
       "upload-the-material"
     ] as UploadTheMaterial;
 
     // 订单基础信息
     let CreateOrderModel = Object.assign(
-      {},
-      chooseBuyMaterials.chooseModel,
-      chooseBuyMaterials.productModel
+      // 客户信息
+      this.customerModel,
+      // 选购信息
+      {
+        ...chooseBuyMaterials.chooseModel,
+        ...chooseBuyMaterials.productModel,
+        ...chooseBuyMaterials.productRadioModel,
+        productId: chooseBuyMaterials.currentProduct.productId,
+        seriesId: chooseBuyMaterials.currentProduct.seriesId,
+        productIssueId: chooseBuyMaterials.currentProduct.id,
+        productRate: chooseBuyMaterials.currentProduct.productRate,
+        payWay: chooseBuyMaterials.currentProduct.payWay,
+        orderCars: chooseBuyMaterials.carDataSet
+      },
+      // 客户资料
+      {
+        personal: customerMaterials.customerModel
+      },
+      // 客户职业
+      {
+        personalJob: customerJobMessage.jobModel
+      },
+      // 客户联系人
+      {
+        personalContacts: [
+          ...customerContacts.familyDataSet,
+          ...customerContacts.friendDataSet
+        ]
+      },
+      // 客户来源
+      {
+        personalResourceIntroduce: customerOrigin.introduceModel,
+        resourceTypes: customerOrigin.publicityModel
+      },
+      // 客户素材
+      {
+        personalDatas: uploadTheMaterial.uploadDataSet
+      }
     );
-    // 订单车辆信息
-    let OrderCar = chooseBuyMaterials.carDataSet;
-    let Personal = Object.assign({});
 
-    return {
-      CreateOrderModel: Object.assign(
-        {},
-        chooseBuyMaterials.chooseModel,
-        chooseBuyMaterials.productModel
-      ),
-      OrderCar: chooseBuyMaterials.carDataSet,
-      Personal: Object.assign({})
-    };
+    return CreateOrderModel;
   }
 
   /**
@@ -452,41 +530,23 @@ export default class FinancingLeaseApply extends Page {
   submitApplicationData(draft) {
     let data = this.getApplicationData();
     // 添加订单
-    this.productOrderService.saveFinanceApplyInfo(data).subscribe(
-      data => {
-        this.$Message.success("保存成功");
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
-    );
-  }
-
-  /**
-   * 客户信息反显
-   */
-  distributionData(data, orderStatus) {
-    this.customerModel.name = data.personal.name;
-    this.customerModel.mobileMain = data.personal.mobileMain;
-    this.customerModel.salesmanName = data.salesmanName;
-    //   选购资料反显
-    let _choosebuymaterials: any = this.$refs["choose-buy-materials"];
-    _choosebuymaterials.Reverse(data, orderStatus);
-    //   客户联系人反显
-    let _customercontacts: any = this.$refs["customer-contacts"];
-    _customercontacts.Reverse(data);
-    //   职业信息
-    let _customerjobmessage: any = this.$refs["customer-job-message"];
-    _customerjobmessage.Reverse(data);
-    //   客户资料
-    let _customermaterials: any = this.$refs["customer-materials"];
-    _customermaterials.Reverse(data);
-    //   客户来源
-    let _customerorigin: any = this.$refs["customer-origin"];
-    _customerorigin.Reverse(data);
-    //   上传资料反显
-    let _uploadthematerial: any = this.$refs["upload-the-material"];
-    _uploadthematerial.Reverse(data);
+    this.productOrderService
+      .saveFinanceApplyInfo(
+        Object.assign(data, {
+          orderStatus: this.orderStatus || (draft ? 303 : 304)
+        })
+      )
+      .subscribe(
+        data => {
+          this.$Message.success("保存成功");
+          setTimeout(() => {
+            this.closePage("purchase/purchase-manage/financing-lease-apply");
+          },1000)
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
   }
 
   /**
@@ -497,8 +557,7 @@ export default class FinancingLeaseApply extends Page {
       title: "提示",
       content: "有未提交的申请，确定创建新申请吗？",
       onOk: () => {
-        // TODO: 重置表单数据
-        // TODO: 重置选项卡数据
+        this.reset();
       },
       onCancel: () => {}
     });

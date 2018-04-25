@@ -29,18 +29,18 @@
                     </i-form-item>
                 </i-col>
                 <i-col :span="12" :push="1">
-                    <i-form-item label="车型" prop="carId">
-                        <i-select v-model="quoteForm.carId" clearable>
-                            <i-option v-for="item in carList" :value="item.id" :label="item.modelName" :key="item.id"></i-option>
+                      <i-form-item label="车系" prop="carSeriesName">
+                        <i-select v-model="quoteForm.carSeriesName" clearable :disabled="!quoteForm.carBrandId">
+                            <i-option v-for="item in seriesDataList" :value="item.id" :label="item.seriesName" :key="item.id"></i-option>
                         </i-select>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row>
                 <i-col :span="11">
-                    <i-form-item label="车系" prop="carSeriesName">
-                        <i-select v-model="quoteForm.carSeriesName" clearable>
-                            <i-option v-for="item in SeriesList" :value="item.id" :label="item.seriesName" :key="item.id"></i-option>
+                   <i-form-item label="车型" prop="carId">
+                        <i-select v-model="quoteForm.carId" clearable  :disabled="!quoteForm.carSeriesName">
+                            <i-option v-for="item in carDataList" :value="item.id" :label="item.modelName" :key="item.id"></i-option>
                         </i-select>
                     </i-form-item>
                 </i-col>
@@ -185,6 +185,15 @@ export default class AddPeriods extends Vue {
 
   @Emit('seachBusiness')
   seachBusiness() {}
+
+  get seriesDataList(){
+    return this.SeriesList.filter(v => v.brandId === this.quoteForm.carBrandId)
+  }
+
+  get carDataList(){
+    return this.carList.filter(v => v.seriesId === this.quoteForm.carSeriesName)
+  }
+
   created() {
     this.rulesQuote = {
       quotationName: [
