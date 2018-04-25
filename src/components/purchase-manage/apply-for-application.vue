@@ -1,7 +1,7 @@
-<!--查看申请-->
+<!--查看申请--> 
 <template>
   <section class="component for-application">
-    
+     <div>666</div>
   </section>
 </template>
 

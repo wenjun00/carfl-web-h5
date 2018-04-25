@@ -1,39 +1,22 @@
 <template>
   <section class="component work-menu">
-    <div class="text-left row middle-span menu-container" @mouseleave="updatePoptipState(false)">
-      <!-- 一级菜单-start -->
-      <div class="row middle-span  one-level">
-        <div v-for="menu_lv1 in menuList" :key="menu_lv1.path" class="menu-level-1" @mouseenter="onCurrentMenuItemChange(menu_lv1)">
-          <div class="menu-level-1-title row middle-span center-span one-level" @click="redirect(menu_lv1)">
-            <span>{{menu_lv1.resoname}}</span>
-          </div>
-        </div>
-      </div>
-      <!-- 一级菜单-end -->
-      <div v-show="showMenuPoptip" class="menu-popue row center-span" slot="content" v-if="currentMenuItem&&currentMenuItem.children">
-        <!-- 二级菜单-start -->
-        <div v-for="menu_lv2 in currentMenuItem.children" :key="menu_lv2.path" class="menu-level-2 row">
-          <div>
-            <div class="two-level">
-              <div class="iconfont_container" :style="{background:menu_lv2.color}">
-                <svg-icon :iconClass="menu_lv2.icon" class="work_menu_iconfont"></svg-icon>
-              </div>
-              <div class="menu2" :style="{color:menu_lv2.color}">{{menu_lv2.resoname}}</div>
-            </div>
-            <div v-if="menu_lv2.children">
-              <!-- 三级菜单-start -->
-              <div v-for="menu_lv3 in menu_lv2.children" :key="menu_lv3.path" @click="redirect(menu_lv3,$event)" class="menu3">
-                <span>{{menu_lv3.resoname}}</span>
-              </div>
-              <!-- 三级菜单-end -->
-            </div>
-          </div>
-          <div class="separate">
-          </div>
-        </div>
-        <!-- 二级菜单-end -->
-      </div>
-    </div>
+    <Menu theme="light" @on-select="onSelectMenuItem">
+      <Submenu v-for="menu_level_1  in  menuList" :name="menu_level_1.path" :key="menu_level_1.path">
+        <template slot="title">
+          {{menu_level_1.resoname}}
+        </template>
+
+        <template v-for="menu_level_2  in  menu_level_1.children">
+          <Submenu v-if="menu_level_2.children&&menu_level_2.children.length" :name="menu_level_2.path" :key="menu_level_2.path">
+            <template slot="title">
+              {{menu_level_2.resoname}}
+            </template>
+            <MenuItem v-for="menu_level_3  in  menu_level_2.children" :key="menu_level_3.path" :name="menu_level_3.path">{{menu_level_3.resoname}}</MenuItem>
+          </Submenu>
+          <MenuItem v-else :name="menu_level_2.path" :key="menu_level_2.path">{{menu_level_2.resoname}}</MenuItem>
+        </template>
+      </Submenu>
+    </Menu>
   </section>
 </template>
 
@@ -54,7 +37,7 @@ export default class WorkMenu extends Vue {
   @State("pageList") pageList;
   @Mutation("openPage") openPage;
   @State("menuResource") menuResource;
-
+  @State("currentPage") currentPage;
   private currentMenuItem: any = null;
   private showMenuPoptip = false;
 
@@ -63,22 +46,14 @@ export default class WorkMenu extends Vue {
   }
 
   private menuList = [];
-  private enterTimer;
-
-  onCurrentMenuItemChange(item = null) {
-    if (!this.showMenuPoptip) {
-      this.updatePoptipState(true);
-    }
-
-    if (this.currentMenuItem !== item) {
-      this.currentMenuItem = item;
-    }
-  }
 
   @Watch("menuResource")
   onMenuResourceChange() {
     this.createMenuList();
   }
+
+  @Watch("currentPage")
+  onCurrentPageChange(value) {}
 
   createMenuList() {
     // 生成菜单项
@@ -101,24 +76,18 @@ export default class WorkMenu extends Vue {
       .filter(x => x.filetype === 429)
       .sort((x: any, y: any) => x.sort - y.sort)
       .map(createMenus);
-
+    console.log(menus);
     this.menuList = menus;
   }
 
-  /**
-   * 页面跳转
-   */
-  private redirect(page, event) {
-    if (event) {
-      event.stopPropagation();
-      event.preventDefault();
+  onSelectMenuItem(path) {
+    if (this.currentPage === path) {
+      return;
     }
-    // 关闭子菜单
-    this.showMenuPoptip = false;
 
     // 打开页面
-    if (page.path) {
-      this.openPage(page);
+    if (path) {
+      this.openPage(path);
     }
   }
 
@@ -131,6 +100,15 @@ export default class WorkMenu extends Vue {
 <style lang="less" scoped>
 .work-menu.component {
   height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  &::-webkit-scrollbar {display:none}
+  // .command {
+  //   line-height: 40px;
+  //   height: 40px;
+  //   padding-right:10px;
+  //   border-left: solid 1px
+  // }
   .menu-container {
     height: 100%;
     display: inline-block;
@@ -184,13 +162,16 @@ export default class WorkMenu extends Vue {
 
 <style lang="less" scoped>
 .work-menu.component {
-    .one-level{
-        height:100%;
-    }
-    .two-level{
-        position:relative;
-        right:32px;
-    }
+  .ivu-menu {
+    min-height: 100%;
+  }
+  .one-level {
+    height: 100%;
+  }
+  .two-level {
+    position: relative;
+    right: 32px;
+  }
   .ivu-poptip {
     height: 100%;
   }

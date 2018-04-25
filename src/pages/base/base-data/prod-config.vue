@@ -651,6 +651,19 @@ export default class ProdConfig extends Page {
     this.viewModal = true;
     this.productDetails = item;
   }
+  /**
+   * 树形结构 新增产品
+   */
+  addProductFun() {
+    if (this.seriId > -1 && this.seriId !== undefined) {
+      this.addProductModal = true;
+    } else {
+      this.$Message.error("产品中不可以增加产品");
+    }
+  }
+  /**
+   * 点击新增产品确认按钮
+   */
   submintAddProduct() {
     let openAddProduct: any = this.$refs["add-product"];
     openAddProduct.vaildFun(this.seriId);
@@ -777,14 +790,17 @@ export default class ProdConfig extends Page {
 </script>
 <style lang="less" scoped>
 .page.prod-config {
+
   .data-form {
     margin-top: 20px;
+
     .data-form-item {
       width: 250px;
       height: 30px;
       border: 1px solid #dddd;
       line-height: 30px;
       font-size: 16px;
+
       .data-form-item-icon {
         width: 4px;
         height: 15px;
@@ -794,10 +810,12 @@ export default class ProdConfig extends Page {
         position: relative;
         top: 2px;
       }
+
       .data-form-item-add {
         float: right;
         display: inline-block;
         font-weight: bold;
+
         .data-form-item-add-wenjian {
           font-size: 18px;
           cursor: pointer;
@@ -805,6 +823,7 @@ export default class ProdConfig extends Page {
           margin-left: 10px;
           color: rgb(38, 94, 162);
         }
+
         .data-form-item-add-wenjianjia {
           font-size: 18px;
           cursor: pointer;
@@ -815,6 +834,7 @@ export default class ProdConfig extends Page {
         }
       }
     }
+
     .data-form-tree {
       width: 250px;
       height: 600px;
@@ -823,14 +843,17 @@ export default class ProdConfig extends Page {
       position: relative;
       bottom: 8px;
     }
+
     .data-form-button {
       margin-left: 10px;
     }
+
     .data-form-addperiods {
       margin-top: 20px;
       width: auto;
       display: flex;
       flex-wrap: wrap;
+
       .add-periods {
         width: 300px;
         height: 450px;
@@ -845,12 +868,14 @@ export default class ProdConfig extends Page {
           font-size: 50px;
         }
       }
+
       .add-periods > div {
         display: flex;
         align-items: center;
         flex-direction: column;
         color: rgb(169, 168, 170);
       }
+
       .publish-form {
         margin-bottom: 10px;
         felx: 1;
@@ -882,6 +907,7 @@ export default class ProdConfig extends Page {
             }
           }
         }
+
         .box-container-content {
           width: 300px;
           height: 370px;
@@ -914,7 +940,7 @@ export default class ProdConfig extends Page {
 }
 
 .pulishCss {
-  background: url('./../../../../static/images/common/no-publish.png') no-repeat;
+  background: url('/static/images/common/no-publish.png') no-repeat;
   width: 90px;
   height: 90px;
   position: relative;
@@ -924,7 +950,7 @@ export default class ProdConfig extends Page {
 }
 
 .Publish {
-  background: url('./../../../../static/images/common/publish.png') no-repeat;
+  background: url('/static/images/common/publish.png') no-repeat;
   width: 90px;
   height: 90px;
   position: relative;

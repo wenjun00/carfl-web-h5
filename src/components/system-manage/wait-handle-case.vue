@@ -19,6 +19,7 @@ import { Prop } from "vue-property-decorator";
 import { PageService } from "~/utils/page.service";
 import { BackLogService } from "~/services/manage-service/back-log.service";
 
+
 @Component({
   components: {
     DataBox
