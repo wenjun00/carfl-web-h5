@@ -655,11 +655,16 @@ export default class ProdConfig extends Page {
    * 树形结构 新增产品
    */
   addProductFun() {
-    if (this.seriId > -1 && this.seriId !== undefined) {
-      this.addProductModal = true;
-    } else {
-      this.$Message.error("产品中不可以增加产品");
-    }
+     console.log(this.scopes)
+     if(this.scopes){
+         if(this.scopes[0].flag == "产品系列"){
+             this.addProductModal = true;
+         }else if(this.scopes[0].flag == "产品"){
+             this.$Message.error("产品中不可以增加产品");
+         }   
+     }else{
+         this.$Message.error("请选择产品系列");
+     }
   }
   /**
    * 点击新增产品确认按钮
