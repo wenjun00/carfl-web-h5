@@ -1,21 +1,27 @@
 <template>
   <div class="layout full" :class="[theme]">
     <work-header class="work-header"></work-header>
-    <div class="work-content">
-      <router-view></router-view>
+    <div class="row flex-nowarp full-height">
+      <work-menu></work-menu>
+      <div class="work-content col-span">
+        <router-view></router-view>
+      </div>
     </div>
+
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import WorkHeader from "~/components/workspace/work-header.vue";
+import WorkMenu from "~/components/workspace/work-menu.vue";
 import Component from "vue-class-component";
 import { State } from "vuex-class";
 
 @Component({
   components: {
-    WorkHeader
+    WorkHeader,
+    WorkMenu
   }
 })
 export default class WorkSpace extends Vue {

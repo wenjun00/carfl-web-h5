@@ -141,7 +141,7 @@ export default class WorkTab extends Vue {
       background: #fff;
       border-bottom: 1px solid #dedede;
       height: @tab-bar-height;
-      padding: 10px 0;
+      padding: 10px 5px;
       margin-bottom: 0;
 
       .ivu-tabs-nav-container {

@@ -3,7 +3,6 @@
         <div class="logo">
             <img class="logo-img" src="/static/images/common/logo.png" alt="">
         </div>
-        <work-menu class="col-span work-menu-col"></work-menu>
         <div class="row">
             <work-theme></work-theme>
         </div>
