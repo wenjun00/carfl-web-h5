@@ -40,12 +40,12 @@
     </div>
     <!-- 搜索表单-end -->
 
-    <div v-show="!showApplicationTab" class="emptyText">
+    <div v-show="submitHide" class="emptyText">
       请先填写证件信息
     </div>
 
     <!--资料填写 start-->
-    <i-tabs v-show="showApplicationTab" class="fulls-pay-tabs">
+    <i-tabs v-show="!submitHide" class="fulls-pay-tabs">
       <i-tab-pane label="选购资料" name="choose-buy-materials-all">
         <choose-buy-materials-all ref='materials-all'></choose-buy-materials-all>
       </i-tab-pane>
@@ -100,8 +100,7 @@ export default class FullPaymentApply extends Page {
   @Dependencies() private pageService: PageService;
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
   @Dependencies(PersonalService) private personalService: PersonalService;
-  @Dependencies(ProductOrderService)
-  private productOrderService: ProductOrderService;
+  @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
 
   private submitHide: boolean = true
   private showApplicationTab = false; // 申请选项卡显示状态
@@ -209,7 +208,8 @@ export default class FullPaymentApply extends Page {
       this.submitHide = true
       return;
     }
-
+    
+    this.submitHide = false
     // 查询历史数据
     this.personalService
       .getCustomerHistoryFinanceInfo({
@@ -232,11 +232,6 @@ export default class FullPaymentApply extends Page {
               onOk: this.resetPage(this.customerModel.idCard)
             });
           }
-
-          // 更新历史查询身份证号
-          this.currentIdCard = this.customerModel.idCard;
-          this.showApplicationTab = true;
-          this.submitHide = false
 
           // TODO: 根据身份证获取性别和生日信息
         },
@@ -298,7 +293,9 @@ export default class FullPaymentApply extends Page {
           return false;
         }
 
-        // TODO: 更新历史订单信息
+        this.customerModel.name = currentRow.personalName
+        this.customerModel.mobileMain = currentRow.mobileMain
+        this.getOrderInfo(currentRow.orderNumber)
       },
       onCancel: () => {
         this.customerForm.resetFields();
@@ -312,6 +309,29 @@ export default class FullPaymentApply extends Page {
       }
     });
   }
+
+    /**
+     * 根据订单单号查询订单详情，用于反显用户信息
+     */
+  getOrderInfo(orderNumber:string){
+    if(!orderNumber){ return }
+
+    this.productOrderService.findOrderInfoByOrderNumber({orderNumber}).subscribe(
+      data=>{
+          this.materialsAllCard.chooseModel = {
+            companyId : data.companyId,
+            province : data.province ,
+            city : data.city 
+          }
+          this.$common.revert(this.materialsCard.customerModel,Object.assign(data.personal,{
+            certificateType:Number(data.personal.certificateType)
+          }))
+          this.materialsCard.Reverse(data)
+      },
+      err => this.$Message(err.msg)
+    )
+  }
+
 
   /**
    * 显示历史订单
