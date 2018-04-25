@@ -1,5 +1,5 @@
 <!--评估申请-->
-<template> 
+<template>
     <section class="page evaluation-application">
         <page-header title="评估申请" hidden-print>
             <i-button type="text">新建申请</i-button>
@@ -23,6 +23,8 @@
         <data-box :columns="applicationColumns" :data="dataSet" :page="pageService"></data-box>
     </section>
 </template>
+
+
      
 
 
@@ -35,15 +37,22 @@ import { PageService } from '~/utils/page.service'
 import { Button } from 'iview'
 import { FilterService } from '~/utils/filter.service'
 import { AssessMentApplyService } from '~/services/manage-service/assess-ment-apply.service'
+import applyForApplication from '~/components/purchase-manage/apply-for-application.vue'
+import { Modal } from 'iview'
+
+
 
 @Layout('workspace')
 @Component({
-  components: {}
+  components: {
+   applyForApplication
+  }
 })
 export default class EvaluationApplication extends Page {
   @Dependencies(PageService) private pageService: PageService
   @Dependencies(AssessMentApplyService)
   private assessMentApplyService: AssessMentApplyService
+  private applicationModal: Boolean = false
   private dataSet: Array<any> = []
   private applicationModel: any = {
     carParams: '', //品牌系列
@@ -174,7 +183,7 @@ export default class EvaluationApplication extends Page {
       minWidth: this.$common.getColumnWidth(3),
       key: 'applyTime',
       align: 'center',
-       render: (h, { row }) => {
+      render: (h, { row }) => {
         return h('span', FilterService.dateFormat(row.applyTime, 'yyyy-MM-dd'))
       }
     },
@@ -211,7 +220,7 @@ export default class EvaluationApplication extends Page {
    * 操作（删除）
    */
   deleteData() {
-    alert(12)
+    this.applicationModal = true
   }
 
   mounted() {
