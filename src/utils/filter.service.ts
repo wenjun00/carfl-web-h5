@@ -173,7 +173,15 @@ export class FilterService {
    * @param value 要格式化的金额字符串
    */
   static moneyFormat(value: number) {
-    return `${value}`.replace(/\d{1,3}(?=(\d{3})+$)/g, s => s + ',')
+    return `${value}`.replace(/^\d+/g, (m) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
+  }
+
+  static safeNumber(value) {
+    if (isNaN(value) || value == undefined) {
+      return null
+    } else {
+      return value
+    }
   }
 
   static percentFormat(value){
