@@ -312,28 +312,28 @@ export default class ChooseBuyMaterials extends Vue {
     companyId: "", // 公司ID
     orderService: [], // 订单自缴费用服务
     financingUse: "", // 融资用途
-    intentionFinancingAmount: 0, // 意向融资金额
+    intentionFinancingAmount: null, // 意向融资金额
     intentionPeriods: "", // 意向期限
-    rentPayable: 0, // 意向月供-租金支付
-    intentionPaymentRatio: 0 //  意向首付比例
+    rentPayable: null, // 意向月供-租金支付
+    intentionPaymentRatio: null //  意向首付比例
   };
 
   // 产品信息
   public productModel: any = {
-    vehicleAmount: 0, // 车辆参考总价
-    finalPayment: 0, // 尾付本金
-    initialPayment: 0, // 首付金额
-    monthlySupply: 0, // 月供金额
-    depositCash: 0, // 保证金金额
-    finalCash: 0, // 尾付总额
-    manageCost: 0, // 管理费
+    vehicleAmount: null, // 车辆参考总价
+    finalPayment: null, // 尾付本金
+    initialPayment: null, // 首付金额
+    monthlySupply: null, // 月供金额
+    depositCash: null, // 保证金金额
+    finalCash: null, // 尾付总额
+    manageCost: null, // 管理费
     insuranceExpenses: 0, // 保险费
     purchaseTax: 0, // 购置税
     installLicenseFee: 0, // 上牌税
     gpsFee: 0, // gps费用
     otherFee: 0, // 其他费用
     remark: "", // 备注
-    financingAmount: 0 // 融资总额
+    financingAmount: null // 融资总额
   };
 
   // 产品金额比例
@@ -629,26 +629,30 @@ export default class ChooseBuyMaterials extends Vue {
   @Watch("productRadioModel", { immediate: true, deep: true })
   onProductRadioModelChange() {
     // 首付款=车辆参考价x首付比例
-    this.productModel.initialPayment =
+    this.productModel.initialPayment = this.$filter.safeNumber(
       this.productModel.vehicleAmount *
-      parseFloat(this.productRadioModel.paymentScale || "0");
+        parseFloat(this.productRadioModel.paymentScale)
+    );
 
     // 保证金金额 = 融资总额x保证金比例
-    this.productModel.depositCash =
+    this.productModel.depositCash = this.$filter.safeNumber(
       this.productModel.financingAmount *
-      parseFloat(this.productRadioModel.depositCashRadio || "0");
+        parseFloat(this.productRadioModel.depositCashRadio)
+    );
 
     // 保证金金额 = 融资总额x保证金比例
-    this.productModel.manageCost =
+    this.productModel.manageCost = this.$filter.safeNumber(
       this.productModel.financingAmount *
-      parseFloat(this.productRadioModel.manageCostPercent || "0");
+        parseFloat(this.productRadioModel.manageCostPercent)
+    );
 
     // 尾付利息=尾款本金x尾付月利率x期数
-    this.productModel.finalCash =
+    this.productModel.finalCash = this.$filter.safeNumber(
       this.productModel.finalPayment +
-      this.productModel.finalPayment *
-        parseFloat(this.productRadioModel.final || "0") *
-        this.currentProduct.periodNumber;
+        this.productModel.finalPayment *
+          parseFloat(this.productRadioModel.final) *
+          this.currentProduct.periodNumber
+    );
   }
 
   /**
@@ -753,7 +757,7 @@ export default class ChooseBuyMaterials extends Vue {
           // 转换数据产品信息数据格式
           this.currentProduct = this.formatProductModal(currentRow);
           this.currentProduct.productIssueId = currentRow.id;
-          this.updateProductId(currentRow.id);
+          this.updateProductId(currentRow.productId);
           this.onVehicleAmountChange();
         } else {
           this.$Message.error("请选择对应的产品");
