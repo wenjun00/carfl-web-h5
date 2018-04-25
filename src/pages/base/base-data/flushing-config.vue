@@ -13,7 +13,6 @@
           </div>
         </div>
       </i-col>
-      <!--表格-->
       <i-col :span="20">
         <data-box  :columns="configColumns" :data="dataSet"  :page="pageService" @onPageChange="check"></data-box>
       </i-col>
@@ -121,7 +120,15 @@
      *  向上移动
      */
     upArrow(val){
-
+      this.stagesMatchService.updateStagesMatch({
+        remark:val.remark,
+        sort:val.sort
+      })
+      .subscribe( data => {
+        this.$Message.success("修改成功！")
+      },({msg})=>{
+        this.$Message.error(msg)
+      })
     }
     /**
      *  向下移动
