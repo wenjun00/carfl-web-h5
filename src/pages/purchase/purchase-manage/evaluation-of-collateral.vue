@@ -16,17 +16,18 @@
             </template>
         </data-form>
         <data-box :columns="collateralColumns" :data="dataSet" :page="pageService"></data-box>
-
-        <dialog-box v-model="assignModal"  title="新增评估" footer>
-          <add-collateral></add-collateral>
-          <div slot="footer">
-            <i-button >终止评估</i-button>
-            <i-button >退件</i-button>
-            <i-button >取消</i-button>
-            <i-button type="primary">保存草稿</i-button>
-            <i-button type="primary">确定</i-button>
-          </div>
-        </dialog-box>
+        <template>
+          <i-modal v-model="assignModal"  title="新增评估" width="1000">
+            <add-collateral ref="add-collateral"></add-collateral>
+            <div slot="footer">
+              <i-button >终止评估</i-button>
+              <i-button >退件</i-button>
+              <i-button >取消</i-button>
+              <i-button type="primary">保存草稿</i-button>
+              <i-button type="primary">确定</i-button>
+            </div>
+          </i-modal>
+        </template>
     </section>
 </template>
 
@@ -78,7 +79,7 @@ export default class EvaluationOfCollateral extends Page {
                   },
                   on: {
                     click: () => {
-                      this.collateralClick()
+                      this.collateralClick(row)
                     }
                   }
                 },
@@ -240,8 +241,10 @@ export default class EvaluationOfCollateral extends Page {
   /**
    *  评估弹窗
    */
-  collateralClick(){
+  collateralClick({assessmentNo}){
     this.assignModal = true
+    let AddCollateral = this.$refs['add-collateral'] as AddCollateral
+    AddCollateral.getBrash(assessmentNo)
   }
 }
 </script>

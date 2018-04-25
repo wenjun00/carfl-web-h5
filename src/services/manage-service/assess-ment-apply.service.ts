@@ -45,4 +45,13 @@ export class AssessMentApplyService {
       page:page
     })
   }
+  /**
+   * 根据订单编号处理订单
+   */
+  beginOrderAssess(data){
+    return this.netService.send({
+      server: manageService.assessmentapply.beginOrderAssess,
+      data: data
+    })
+  }
 }

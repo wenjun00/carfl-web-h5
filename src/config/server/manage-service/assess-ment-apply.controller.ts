@@ -38,6 +38,14 @@ export default {
     controller: CONTROLLER,
     action: 'orderBasicSearch',
     type: requestType.Get
+  },
+  /**
+   * 根据订单编号处理订单
+   */
+  beginOrderAssess:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'beginOrderAssess',
+    type: requestType.Get
   }
-
 }
