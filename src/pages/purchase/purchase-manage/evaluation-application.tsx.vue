@@ -23,6 +23,11 @@
         <data-box :columns="applicationColumns" :data="dataSet" :page="pageService"></data-box>
     </section>
 </template>
+     
+   <template>
+        <i-modal v-model="makeInvoiceModal" title="查看申请" :width="600" class="confirmMakeInvoice">
+        </i-modal>
+    </template>
 
 <script lang="tsx">
 import Page from '~/core/page'
@@ -30,8 +35,8 @@ import Component from 'vue-class-component'
 import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
-import {Button} from 'iview'
-import { AssessMentApplyService} from "~/services/manage-service/assess-ment-apply.service";
+import { Button } from 'iview'
+import { AssessMentApplyService } from '~/services/manage-service/assess-ment-apply.service'
 
 @Layout('workspace')
 @Component({
@@ -39,162 +44,183 @@ import { AssessMentApplyService} from "~/services/manage-service/assess-ment-app
 })
 export default class EvaluationApplication extends Page {
   @Dependencies(PageService) private pageService: PageService
-  @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
+  @Dependencies(AssessMentApplyService)
+  private assessMentApplyService: AssessMentApplyService
   private dataSet: Array<any> = []
   private applicationModel: any = {
     carParams: '', //品牌系列
     carNo: '', // 车牌号码
     ownerName: '', // 客户姓名
-    isSubmit: '' // 包含提交
+    isSubmit: '0' // 包含提交
   }
 
-  private applicationColumns:any =  [{
-        title: '操作',
-        align: 'center',
-        fixed: 'left',
-        minWidth: this.$common.getColumnWidth(10),
-        render: (h, { row }) => {
-            return (
-                <div>
-                    <i-button type="text">编辑</i-button>
-                    <i-button type="text">删除</i-button>
-                    <i-button type="text">详情</i-button>
-                    <i-button type="text">撤回</i-button>
-                </div>
-            )
-        }
-      },
-      {
-        title: '评估编号',
-        editable: true,
-        key: 'assessmentNo',
-        minWidth: this.$common.getColumnWidth(3),
-        align: 'center'
-      },
-      {
-        title: '状态',
-        editable: true,
-        key: 'assessmentStatus',
-        minWidth: this.$common.getColumnWidth(3),
-        align: 'center'
-      },
-      {
-        title: '品牌',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'brandName',
-        align: 'center'
-      },
-      {
-        title: '系列',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'seriesName',
-        align: 'center'
-      },
-      {
-        title: '车型',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'carName',
-        align: 'center'
-      },
-      {
-        title: '颜色',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'carColor',
-        align: 'center'
-      },
-      {
-        title: '车牌号码',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'carNo',
-        align: 'center'
-      },
-      {
-        title: '车架号',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'frameNo',
-        align: 'center'
-      },
-      {
-        title: '发动机号',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'engineNo',
-        align: 'center'
-      },
-      {
-        title: '客户姓名',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'ownerName',
-        align: 'center'
-      },
-      {
-        title: '手机号码',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'ownPhone',
-        align: 'center'
-      },
-      {
-        title: '申请人',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        align: 'center'
-      },
-      {
-        title: '申请时间',
-        editable: true,
-        sortable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'applyTime',
-        align: 'center'
-      },
-      {
-        title: '评估人',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'assessmentPerson',
-        align: 'center'
+  private applicationColumns: any = [
+    {
+      title: '操作',
+      align: 'center',
+      fixed: 'left',
+      minWidth: this.$common.getColumnWidth(10),
+      render: (h, { row }) => {
+        // 1187 (待提交), 1189(待領取), 1190(待评估), 1191(已评估)
+        return (
+          <div>
+            <i-button v-show={row.assessmentStatus === 1187} type="text">
+              编辑
+            </i-button>
+            <i-button v-show={row.assessmentStatus === 1189} type="text">
+              删除
+            </i-button>
+            <i-button
+              v-show={[1189, 1190, 1191].includes(row.assessmentStatus)}
+              type="text"
+              onClick={this.deleteData}
+            >
+              详情
+            </i-button>
+            <i-button v-show={row.assessmentStatus === 1189} type="text">
+              撤回
+            </i-button>
+          </div>
+        )
       }
-    ]
+    },
+    {
+      title: '评估编号',
+      editable: true,
+      key: 'assessmentNo',
+      minWidth: this.$common.getColumnWidth(3),
+      align: 'center'
+    },
+    {
+      title: '状态',
+      editable: true,
+      key: 'assessmentStatus',
+      minWidth: this.$common.getColumnWidth(3),
+      align: 'center',
+      render: (h, { row }) => {
+        return h('span', {}, this.$dict.getDictName(row.assessmentStatus))
+      }
+    },
+    {
+      title: '品牌',
+      editable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'brandName',
+      align: 'center'
+    },
+    {
+      title: '系列',
+      editable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'seriesName',
+      align: 'center'
+    },
+    {
+      title: '车型',
+      editable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'carName',
+      align: 'center'
+    },
+    {
+      title: '颜色',
+      editable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'carColor',
+      align: 'center'
+    },
+    {
+      title: '车牌号码',
+      editable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'carNo',
+      align: 'center'
+    },
+    {
+      title: '车架号',
+      editable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'frameNo',
+      align: 'center'
+    },
+    {
+      title: '发动机号',
+      editable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'engineNo',
+      align: 'center'
+    },
+    {
+      title: '客户姓名',
+      editable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'ownerName',
+      align: 'center'
+    },
+    {
+      title: '手机号码',
+      editable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'ownPhone',
+      align: 'center'
+    },
+    {
+      title: '申请人',
+      editable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      align: 'center'
+    },
+    {
+      title: '申请时间',
+      editable: true,
+      sortable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'applyTime',
+      align: 'center'
+    },
+    {
+      title: '评估人',
+      editable: true,
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'assessmentPerson',
+      align: 'center'
+    }
+  ]
 
   /**
    *评估申请订单查询
    */
-   getApplicationList() {
-       if(this.applicationModel.isSubmit){
-           this.applicationModel.isSubmit = "1"
-       }else{
-           this.applicationModel.isSubmit = "0" 
-       }
+  getApplicationList() {
+    if (this.applicationModel.isSubmit == '1') {
+      this.applicationModel.isSubmit = '1'
+    } else {
+      this.applicationModel.isSubmit = '0'
+    }
     this.assessMentApplyService
       .orderSearch(this.applicationModel, this.pageService)
       .subscribe(
         data => {
-            console.log(data)
-            console.log('666')
-          this.dataSet = data;
+          this.dataSet = data
         },
         ({ msg }) => {
-          this.$Message.error(msg);
+          this.$Message.error(msg)
         }
-      );
+      )
+  }
+  /**
+   * 操作（删除）
+   */
+  deleteData() {
+    alert(12)
   }
 
   mounted() {
-      this.getApplicationList()
+    this.getApplicationList()
   }
 }
 </script>
 
 <style lang="less" scoped>
-.page.evaluation-application{
-
+.page.evaluation-application {
 }
 </style>
