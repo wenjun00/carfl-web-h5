@@ -1,77 +1,77 @@
 <!--提前结清申请-->
 <template>
-    <section class="page early-payment-apply special-input">
-        <page-header title="提前结清申请" hiddenExport>
-             <i-button class="blueButton" @click="clearAll">清空</i-button>
-        </page-header>
-        <i-row type="flex" class="data-form">
-            <i-col span="18">
-                <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
-                    <i-col span="12">
-                        <i-form-item label="证件号码" prop="idCard">
-                            <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
-                            </i-input>
-                        </i-form-item>
-                    </i-col>
-                    <i-col span="12">
-                        <i-form-item label="客户姓名" prop="customerName">
-                            <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名">
-                            </i-input>
-                        </i-form-item>
-                    </i-col>
-                    <i-col span="12">
-                        <i-form-item label="客户电话" prop="mobileMain">
-                            <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话">
-                            </i-input>
-                        </i-form-item>
-                    </i-col>
-                    <i-col span="12">
-                        <i-form-item label="选择订单" prop="orderId">
-                            <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
-                                <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
-                            </i-select>
-                        </i-form-item>
-                    </i-col>
-                    <i-col span="24">
-                        <i-form-item label="备注" prop="remark">
-                            <i-input type="text" style="width:77%;" v-model="applyData.remark" placeholder="请输入备注">
-                            </i-input>
-                        </i-form-item>
-                    </i-col>
-                </i-form>
-            </i-col>
-            <!-- <i-col span="6">
+  <section class="page early-payment-apply special-input">
+    <page-header title="提前结清申请" hiddenExport>
+      <i-button class="blueButton" @click="clearAll">清空</i-button>
+    </page-header>
+    <i-row type="flex" class="data-form">
+      <i-col span="18">
+        <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
+          <i-col span="12">
+            <i-form-item label="证件号码" prop="idCard">
+              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col span="12">
+            <i-form-item label="客户姓名" prop="customerName">
+              <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col span="12">
+            <i-form-item label="客户电话" prop="mobileMain">
+              <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col span="12">
+            <i-form-item label="选择订单" prop="orderId">
+              <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
+                <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
+              </i-select>
+            </i-form-item>
+          </i-col>
+          <i-col span="24">
+            <i-form-item label="备注" prop="remark">
+              <i-input type="text" style="width:77%;" v-model="applyData.remark" placeholder="请输入备注">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-form>
+      </i-col>
+      <!-- <i-col span="6">
                 <i-button class="blueButton clear-button" @click="clearAll">清空</i-button>
             </i-col> -->
 
-        </i-row>
-        <i-tabs v-model="materialTabs" class="early-pay-tabs">
-            <i-tab-pane name="gather-detail-early-pay" label="收款明细">
-                <gather-detail-early-pay :checkOrderId="checkOrderId" ref="gather-detail-early-pay"></gather-detail-early-pay>
-            </i-tab-pane>
-            <i-tab-pane name="upload-the-fodder" label="上传素材">
-                <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
-            </i-tab-pane>
-        </i-tabs>
-        <div class="shade" :style="{display:disabledStatus}">
-        </div>
-        <div class="submit-bar">
-            <i-row type="flex" align="middle" class="submit-bar-apply">
-                <i-col :span="8" push="1">
-                    <span>申请人：{{applyPerson}}</span>
-                </i-col>
-                <i-col :span="12" pull="4">
-                    <span>申请时间：{{applyTime}}</span>
-                </i-col>
-                <i-col :span="4">
-                    <div class="fixed-container">
-                        <i-button size="large" class="highButton" @click="saveAndCommit">保存并提交</i-button>
-                    </div>
-                </i-col>
-            </i-row>
-        </div>
+    </i-row>
+    <i-tabs v-model="materialTabs" class="early-pay-tabs">
+      <i-tab-pane name="gather-detail-early-pay" label="收款明细">
+        <gather-detail-early-pay :checkOrderId="checkOrderId" ref="gather-detail-early-pay"></gather-detail-early-pay>
+      </i-tab-pane>
+      <i-tab-pane name="upload-the-fodder" label="上传素材">
+        <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
+      </i-tab-pane>
+    </i-tabs>
+    <div class="shade" :style="{display:disabledStatus}">
+    </div>
+    <div class="submit-bar">
+      <i-row type="flex" align="middle" class="submit-bar-apply">
+        <i-col :span="8" push="1">
+          <span>申请人：{{applyPerson}}</span>
+        </i-col>
+        <i-col :span="12" pull="4">
+          <span>申请时间：{{applyTime}}</span>
+        </i-col>
+        <i-col :span="4">
+          <div class="fixed-container">
+            <i-button size="large" class="highButton" @click="saveAndCommit">保存并提交</i-button>
+          </div>
+        </i-col>
+      </i-row>
+    </div>
 
-    </section>
+  </section>
 </template>
 <script lang="ts">
 import Page from '~/core/page'
@@ -85,7 +85,7 @@ import UploadTheFodder from '~/components/purchase-manage/upload-the-fodder.vue'
 import ModifyGatherItem from '~/components/purchase-manage/modify-gather-item.vue'
 import ChangeGatherItem from '~/components/purchase-manage/change-gather-item.vue'
 import GatherDetailEarlyPay from '~/components/purchase-manage/gather-detail-early-pay.vue'
-import { WithdrawApplicationService } from '~/services/manage-service/withdraw-application.service'
+import { WithdrawApplicationService } from "~/services/manage-service/withdraw-application.service"
 import { setTimeout } from 'core-js/library/web/timers'
 
 @Layout('workspace')
@@ -208,23 +208,23 @@ export default class EarlyPaymentApply extends Page {
           orderId: val
         })
         .subscribe(
-          data => {
-            this.applyData.remark = data.remark
-            // 获取收款项和备注信息
-            let _gatherDetail: any = this.$refs['gather-detail-early-pay']
-            _gatherDetail.makeList(data)
-            if (data.personalBank && data.personalBank.personalName) {
-              this.saveDraftModel.accountName = data.personalBank.personalName // 获取保存草稿时需要的accountName
-            }
-            if (data.withdrawId) {
-              this.saveDraftModel.id = data.withdrawId // 获取保存草稿时需要的id
-              this.saveDraftModel.businessId = data.withdrawId
-            }
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-            this.msg = msg
+        data => {
+          this.applyData.remark = data.remark
+          // 获取收款项和备注信息
+          let _gatherDetail: any = this.$refs['gather-detail-early-pay']
+          _gatherDetail.makeList(data)
+          if (data.personalBank && data.personalBank.personalName) {
+            this.saveDraftModel.accountName = data.personalBank.personalName // 获取保存草稿时需要的accountName
           }
+          if (data.withdrawId) {
+            this.saveDraftModel.id = data.withdrawId // 获取保存草稿时需要的id
+            this.saveDraftModel.businessId = data.withdrawId
+          }
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+          this.msg = msg
+        }
         )
     }
   }
@@ -280,12 +280,12 @@ export default class EarlyPaymentApply extends Page {
     this.withdrawApplicationService
       .saveAdvancePayoffApplicationAsDraft(this.saveDraftModel)
       .subscribe(
-        data => {
-          this.$Message.success('保存草稿成功！')
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.$Message.success('保存草稿成功！')
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
@@ -311,14 +311,14 @@ export default class EarlyPaymentApply extends Page {
         this.withdrawApplicationService
           .saveAdvancePayoffApplication(saveAndCommitModel)
           .subscribe(
-            data => {
-              this.$Message.success('保存并提交成功！')
-              this.saveDraftDisabled = true
-              this.resetAll()
-            },
-            ({ msg }) => {
-              this.$Message.error(msg)
-            }
+          data => {
+            this.$Message.success('保存并提交成功！')
+            this.saveDraftDisabled = true
+            this.resetAll()
+          },
+          ({ msg }) => {
+            this.$Message.error(msg)
+          }
           )
       }
     })
@@ -361,17 +361,17 @@ export default class EarlyPaymentApply extends Page {
         mobileMain: this.applyData.mobileMain
       })
       .subscribe(
-        data => {
-          if (data[0] && data[0].orderNumberIdModels) {
-            this.orderNumberIdModels = data[0].orderNumberIdModels
-            this.applyData.customerName = data[0].name
-            this.applyData.mobileMain = data[0].mobileMain
-            this.personalId = data[0].personalId
-          }
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
+      data => {
+        if (data[0] && data[0].orderNumberIdModels) {
+          this.orderNumberIdModels = data[0].orderNumberIdModels
+          this.applyData.customerName = data[0].name
+          this.applyData.mobileMain = data[0].mobileMain
+          this.personalId = data[0].personalId
         }
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 

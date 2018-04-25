@@ -933,7 +933,7 @@ export default class ProdConfig extends Page {
 }
 
 .pulishCss {
-  background: url('./../../../../static/images/common/no-publish.png') no-repeat;
+  background: url('/static/images/common/no-publish.png') no-repeat;
   width: 90px;
   height: 90px;
   position: relative;
@@ -943,7 +943,7 @@ export default class ProdConfig extends Page {
 }
 
 .Publish {
-  background: url('./../../../../static/images/common/publish.png') no-repeat;
+  background: url('/static/images/common/publish.png') no-repeat;
   width: 90px;
   height: 90px;
   position: relative;
