@@ -20,17 +20,6 @@ import { State } from "vuex-class";
 })
 export default class WorkSpace extends Vue {
   @State("theme") theme: String;
-
-  get pageList() {
-    return this.$store.state.pageList.map(x => {
-      let pathList = x.path.split("/");
-      let name = pathList[pathList.length - 1];
-      let componentName = `-${name}`.replace(/\-(\w)/g, ($0, $1) =>
-        $1.toUpperCase()
-      );
-      return componentName;
-    });
-  }
 }
 </script>
 <style lang="less" scoped>
