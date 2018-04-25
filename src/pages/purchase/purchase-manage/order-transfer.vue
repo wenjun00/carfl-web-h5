@@ -1,72 +1,60 @@
 <!--订单交接-->
 <template>
-    <section class="page order-transfer">
-        <page-header title="订单交接"></page-header>
-        <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData" hidden-reset>
-            <template slot="input">
-                <i-form-item label="订单时间" prop="dateRange">
-                    <i-date-picker v-model="ordertransferModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
-                </i-form-item>
-                <i-form-item prop="orderInfo">
-                    <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入客户姓名/证件号码/联系号码/订单所属人查询"></i-input>
-                </i-form-item>
-            </template>
-        </data-form>
-        <!--列表-->
-        <data-box ref="databox" :id="192" :columns="columns1" :data="ordertransferDataSet" @onPageChange="refreshData" :page="pageService" style="z-index:100"></data-box>
-        <!--一键交接-->
-        <div class="submit-bar">
-            <i-row class="submit-bar-padding" type="flex" align="middle">
-                <i-col :span="8" push="1">
-                    <!--<span>申请人：{{applyPerson}}</span>-->
-                </i-col>
-                <i-col :span="10" pull="4">
-                    <!--<span>申请时间：{{applyTime}}</span>-->
-                </i-col>
-                <!-- <i-col class="submit-bar-text" :span="6">
-                    <i-button @click="oneKeyToConnect" class="highButton">一键交接</i-button>
-                </i-col> -->
-            </i-row>
-        </div>
-        <!--Model-->
-        <!--一键交接弹框-->
-        <template>
-            <i-modal class="views-handover" v-model="openOneKeyToConnect" title="一键交接" :width="800" @on-visible-change="onKey">
-                <i-row class="views-handover-margin">
-                    <i-input class="views-handover-input" placeholder="请输入关键字搜索"></i-input>
-                    <i-button class="views-handover-button">搜索</i-button>
-                </i-row>
-                <i-row>
-                    <!--树-->
-                    <i-col :span="6">
-                        <!--<i-tree show-checkbox :data="treeData"></i-tree>-->
-                        <organize-tree :dataList="dataList" @change="organizetreeChange"></organize-tree>
-                    </i-col>
-                    <!--表格-->
-                    <i-col :span="18">
-                        <RadioGroup v-model="checkRadio">
-                            <i-table highlight-row @on-current-change="currenttrablerowdata" ref="databox1" :columns="treeColumns" :data="userList"></i-table>
-                        </RadioGroup>
-                    </i-col>
-                </i-row>
-                <div slot="footer">
-                    <i-button class="blueButton" @click="orderconfirm">确认并返回</i-button>
-                </div>
-            </i-modal>
-        </template>
+  <section class="page order-transfer">
+    <page-header title="订单交接"></page-header>
+    <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData" hidden-reset>
+      <template slot="input">
+        <i-form-item label="订单时间" prop="dateRange">
+          <i-date-picker v-model="ordertransferModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="orderInfo">
+          <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入客户姓名/证件号码/联系号码/订单所属人查询"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
+    <!--列表-->
+    <data-box ref="databox" :id="192" :columns="columns1" :data="ordertransferDataSet" @onPageChange="refreshData" :page="pageService" style="z-index:100"></data-box>
 
-        <!--转交记录-->
-        <template>
-            <i-modal title="转交记录" v-model="transferRecordModal" class-name="no-footer">
-                <transfer-record ref="transfer" :customerName="customerName" :orderId="orderNumber"></transfer-record>
-            </i-modal>
-        </template>
-        <!--底部操作栏-start-->
-        <div class="fixed-container" >
-            <i-button size="large" class="highButton" @click="oneKeyToConnect">一键交接</i-button>
+    <!--Model-->
+    <!--一键交接弹框-->
+    <template>
+      <i-modal class="views-handover" v-model="openOneKeyToConnect" title="一键交接" :width="800" @on-visible-change="onKey" :transfer="false">
+        <!-- <i-row class="views-handover-margin">
+          <i-col :span="12" :offset="6">
+            <i-input placeholder="请输入关键字搜索"></i-input>
+          </i-col>
+          <i-col :span="6">
+            <i-button>搜索</i-button>
+          </i-col>
+        </i-row> -->
+        <i-row>
+          <!--树-->
+          <i-col :span="6">
+            <organize-tree :dataList="dataList" @change="organizetreeChange"></organize-tree>
+          </i-col>
+          <!--表格-->
+          <i-col :span="18">
+            <i-table highlight-row @on-current-change="currenttrablerowdata" ref="databox1" :columns="treeColumns" :data="userList"></i-table>
+          </i-col>
+        </i-row>
+        <div slot="footer">
+          <i-button class="blueButton" @click="orderconfirm">确认并返回</i-button>
         </div>
-        <!--底部操作栏-end-->
-    </section>
+      </i-modal>
+    </template>
+
+    <!--转交记录-->
+    <template>
+      <i-modal title="转交记录" v-model="transferRecordModal" class-name="no-footer">
+        <transfer-record ref="transfer" :customerName="customerName" :orderId="orderNumber"></transfer-record>
+      </i-modal>
+    </template>
+    <!--底部操作栏-start-->
+    <div class="fixed-container">
+      <i-button size="large" class="highButton" @click="oneKeyToConnect">一键交接</i-button>
+    </div>
+    <!--底部操作栏-end-->
+  </section>
 </template>
 
 <script lang="ts">
@@ -103,8 +91,6 @@ export default class OrderTransfer extends Page {
   private columns2: any
   private treeColumns: any
   private ordertransferDataSet: Array<Object> = []
-  private treeData: Array<Object> = []
-  private treeDatabox: Array<Object> = []
   private data2: Array<Object> = []
   private dataList: Array<any> = []
   private userList: Array<any> = []
@@ -117,7 +103,6 @@ export default class OrderTransfer extends Page {
     dateRange: []
   }
   private applyPerson: String = '' // 申请人
-  private applyTime: String = '' // 申请时间
   private openColumnsConfig: Boolean = false
   private openOneKeyToConnect: Boolean = false
   private transferRecordModal: Boolean = false
@@ -128,87 +113,16 @@ export default class OrderTransfer extends Page {
     deptId: 1
   }
   private mulipleSelection: any = []
-  private currentRowuserId: any = null
+  private currentRowuserId: string = ''
   private orderNumber: any = ''
 
-  activated() {}
+
   created() {
     this.applyPerson = this.$store.state.userData.username
     let time = new Date()
-    this.applyTime =
-      time.getFullYear() +
-      '-' +
-      (time.getMonth() + 1) +
-      '-' +
-      time.getDate() +
-      ' ' +
-      time.getHours() +
-      ':' +
-      time.getMinutes() +
-      ':' +
-      time.getSeconds()
-    this.refreshData()
+
     this.getTree()
-    this.treeData = [
-      {
-        title: '开呗管理',
-        expand: true,
-        children: [
-          {
-            title: '管理办公室'
-          },
-          {
-            title: '财务二中心'
-          }
-        ]
-      },
-      {
-        title: '营销中心',
-        expand: true,
-        children: [
-          {
-            title: '地推管理部',
-            expand: true,
-            children: [
-              {
-                title: '西安营业部'
-              },
-              {
-                title: '宝鸡营业部'
-              },
-              {
-                title: '咸阳营业部'
-              },
-              {
-                title: '渭南营业部'
-              },
-              {
-                title: '铜川营业部'
-              }
-            ]
-          },
-          {
-            title: '网络营销部'
-          },
-          {
-            title: '渠道销售部'
-          }
-        ]
-      }
-    ]
     this.treeColumns = [
-      {
-        align: 'center',
-        title: '选择',
-        minWidth: this.$common.getColumnWidth(6),
-        render: (h, { row, columns, index }) => {
-          return h('Radio', {
-            props: {
-              label: row.workId
-            }
-          })
-        }
-      },
       {
         align: 'center',
         key: 'userUsername',
@@ -408,35 +322,18 @@ export default class OrderTransfer extends Page {
         columnsName: '审批状态'
       }
     ]
-    //   this.orderService.getOrderConnect().subscribe(({
-    //     val
-    //   }) => {
-    //     this.data1 = val
-    //   })
-
-    // this.orderService.getTreeDatabox().subscribe(({
-    //   val
-    // }) => {
-    //   this.treeDatabox = val
-    // })
-    this.treeDatabox = [
-      {
-        workId: '001',
-        personalName: '张三丰'
-      },
-      {
-        workId: '002',
-        personalName: '张四丰'
-      }
-    ]
   }
+
+  mounted() {
+    this.refreshData()
+  }
+
   refreshData() {
-    console.log(this.ordertransferModel)
     this.productOrderService
       .getOrderHandover(this.ordertransferModel, this.pageService)
       .subscribe(
-        data => (this.ordertransferDataSet = data),
-        err => this.$Message.error(err)
+      data => (this.ordertransferDataSet = data),
+      err => this.$Message.error(err)
       )
   }
   currenttrablerowdata(currentRow, oldCurrentRow) {
@@ -459,12 +356,12 @@ export default class OrderTransfer extends Page {
     this.manageService
       .getUsersByDeptPage(this.userListModel, this.pageService)
       .subscribe(
-        data => {
-          this.userList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.userList = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
   /**
@@ -500,19 +397,23 @@ export default class OrderTransfer extends Page {
   oneKeyToConnect() {
     this.mulipleSelection = this.$refs['databox']
     this.mulipleSelection = this.mulipleSelection.getCurrentSelection()
-    // console.log(this.mulipleSelection)
-    if (!this.mulipleSelection) {
+    if (this.mulipleSelection.length === 0) {
       this.$Message.error('请选择要交接的订单！')
     } else {
       this.getTree()
-      ;(this.userList = []), (this.openOneKeyToConnect = true)
+      this.userList = []
+      this.openOneKeyToConnect = true
     }
   }
   /**
    * 订单交接（确定并返回）
    */
-  onKey(val) {}
+  onKey(val) { }
   orderconfirm() {
+    if (this.currentRowuserId === '') {
+      this.$Message('')
+      return
+    }
     let mulipledata = this.mulipleSelection.map(v => {
       return v.orderId
     })
@@ -520,17 +421,14 @@ export default class OrderTransfer extends Page {
       orderIds: mulipledata,
       userId: this.currentRowuserId
     }
-    // this.productOrderService.orderTransfer(orderconfirmData).subscribe(
-    //   data => {
-    //     this.$Message.success('交接成功!')
-    //     this.openOneKeyToConnect = false
-    //   },
-    //   ({
-    //     msg
-    //   }) => {
-    //     this.$Message.error(msg)
-    //   }
-    // )
+    this.productOrderService.orderTransfer(orderconfirmData).subscribe(
+      data => {
+        this.$Message.success('交接成功!')
+        this.openOneKeyToConnect = false
+        this.refreshData()
+      },
+      err => this.$Message.error(err.msg)
+    )
   }
   /**
    * 列配置
@@ -541,11 +439,11 @@ export default class OrderTransfer extends Page {
   /**
    * 多选
    */
-  multipleSelect(selection) {}
+  multipleSelect(selection) { }
   /**
    * 确定
    */
-  confirm() {}
+  confirm() { }
   transferRecord(row) {
     this.customerName = row.personalName
     this.orderId = row.orderId
@@ -570,6 +468,9 @@ export default class OrderTransfer extends Page {
     padding: 10px 20px;
     box-shadow: 0px -5px 10px #ccc;
   }
+  .views-handover-margin {
+    margin-bottom: 20px;
+  }
   .seek-day {
     margin-top: 10px;
   }
@@ -580,30 +481,6 @@ export default class OrderTransfer extends Page {
     }
     .submit-bar-text {
       text-align: right;
-    }
-  }
-}
-</style>
-
-<style lang="less">
-.page.order-transfer {
-  .views-handover {
-    .views-handover-margin {
-      margin-bottom:10px .views-handover-input {
-        width: 60%;
-        display: inline-block;
-        margin-left: 10px;
-      }
-      .views-handover-button {
-        margin-left: 10px;
-        background: #265ea2;
-        color: #fff;
-      }
-    }
-  }
-  .transfer-record {
-    .ivu-modal-footer {
-      display: none !important;
     }
   }
 }

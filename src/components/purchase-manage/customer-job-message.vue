@@ -111,14 +111,14 @@
                   <i-radio :label="54" :value="54">法人代表</i-radio>
                   <i-radio :label="55" :value="55">股东</i-radio>
                 </i-radio-group>
-                <i-input class="ratio-holding" placeholder="股份占比%" v-model="jobModel.stockScale"></i-input>
+                <input-number class="ratio-holding" placeholder="股份占比%" :max="100" :min="0" v-model="jobModel.stockScale" :formatter="value => `${value}%`" :parser="value => value.replace('%', '')"></input-number>
               </i-row>
             </i-form-item>
           </i-col>
           <i-col span="12">
             <i-form-item label="企业经营年限" prop="enterpriseManageYears">
-              <i-input :maxlength="4" type="text" v-model="jobModel.enterpriseManageYears" placeholder="请输入企业经营年限">
-              </i-input>
+              <i-input-number :min="0" :max="100" v-model="jobModel.enterpriseManageYears" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" placeholder="请输入企业经营年限">
+              </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
@@ -129,8 +129,8 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="员工人数" prop="employeesNumber">
-              <i-input :maxlength="4" type="text" v-model="jobModel.employeesNumber" placeholder="请输入员工人数">
-              </i-input>
+              <i-input-number placeholder="请输入员工人数" :min="0" :max="100000" v-model="jobModel.employeesNumber" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser">
+              </i-input-number>
             </i-form-item>
           </i-col>
           <i-col span="12">
@@ -158,7 +158,7 @@
       </i-form>
     </i-card>
 
-    <i-card title="收入信息">
+    <i-card title="收入信息" v-show="jobType === 37">
       <i-form ref="income-form" :rules="incomeRules" :model="jobModel" :label-width="110" label-position="left">
         <i-row>
           <i-col span="12">
@@ -219,21 +219,21 @@ export default class CustomerJobMessage extends Vue {
     companyAddress: "", // 单位地址
     companyAddressDetail: "", // 单位详细地址
     companyPhone: "", // 单位固定电话
-    basicSalary: 0, // 基本月薪
+    basicSalary: null, // 基本月薪
     payDay: "", // 每月发薪日
     payWay: "", // 发薪方式
-    yearlySalaries: 0, // 年收入
-    monthOtherIncome: 0, // 每月其他收入
+    yearlySalaries: null, // 年收入
+    monthOtherIncome: null, // 每月其他收入
     otherIncomeSource: "", // 其他收入来源
     identity: "", // 身份
-    enterpriseManageYears: "", // 企业经营年限
+    enterpriseManageYears: 1, // 企业经营年限
     enterpriseManageBelong: "", // 经营地归属
-    employeesNumber: "", // 员工人数
-    registeredCapital: 0, // 注册资本
+    employeesNumber: null, // 员工人数
+    registeredCapital: null, // 注册资本
     industry: "", // 所属行业
-    pastyearIncome: 0, // 过去一年营业收入
-    pastyearProfit: 0, // 过去一年利润
-    stockScale: ""
+    pastyearIncome: null, // 过去一年营业收入
+    pastyearProfit: null, // 过去一年利润
+    stockScale: null
   };
 
   private monthDay: any = null;
