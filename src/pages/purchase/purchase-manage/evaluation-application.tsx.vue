@@ -24,10 +24,7 @@
     </section>
 </template>
      
-   <template>
-        <i-modal v-model="makeInvoiceModal" title="查看申请" :width="600" class="confirmMakeInvoice">
-        </i-modal>
-    </template>
+
 
 <script lang="tsx">
 import Page from '~/core/page'
@@ -53,7 +50,6 @@ export default class EvaluationApplication extends Page {
     ownerName: '', // 客户姓名
     isSubmit: '0' // 包含提交
   }
-
   private applicationColumns: any = [
     {
       title: '操作',
