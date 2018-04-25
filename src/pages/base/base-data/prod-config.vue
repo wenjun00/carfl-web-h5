@@ -651,9 +651,6 @@ export default class ProdConfig extends Page {
     this.viewModal = true;
     this.productDetails = item;
   }
-  /**
-   * 点击新增产品确认按钮
-   */
   submintAddProduct() {
     let openAddProduct: any = this.$refs["add-product"];
     openAddProduct.vaildFun(this.seriId);
