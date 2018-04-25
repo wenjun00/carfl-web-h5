@@ -1,5 +1,5 @@
 <!--评估申请-->
-<template> 
+<template>
     <section class="page evaluation-application">
         <page-header title="评估申请" hidden-print>
             <i-button type="text">新建申请</i-button>
@@ -31,6 +31,7 @@ import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import {Button} from 'iview'
+import { AssessMentApplyService} from "~/services/manage-service/assess-ment-apply.service";
 
 @Layout('workspace')
 @Component({
@@ -38,6 +39,7 @@ import {Button} from 'iview'
 })
 export default class EvaluationApplication extends Page {
   @Dependencies(PageService) private pageService: PageService
+  @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
   private dataSet: Array<any> = []
   private applicationModel: any = {
     carParams: '', //品牌系列
@@ -166,7 +168,7 @@ export default class EvaluationApplication extends Page {
    *评估申请订单查询
    */
    getApplicationList() {
-    this.AssessMentApplyService
+    this.assessMentApplyService
       .orderSearch(this.applicationModel, this.pageService)
       .subscribe(
         data => {

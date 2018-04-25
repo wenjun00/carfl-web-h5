@@ -9,10 +9,21 @@ export class AssessMentApplyService {
     /**
      * 评估申请订单查询接口
      */
-    orderSearch(data) {
+    orderSearch(data,page) {
         return this.netService.send({
             server: manageService.assessmentapply.orderSearch,
-            data: data
+            data: data,
+            page:page
         })
     }
+  /**
+   * 评估任务池订单查询
+   */
+  orderPoolSearch(data,page) {
+    return this.netService.send({
+      server: manageService.assessmentapply.orderPoolSearch,
+      data: data,
+      page:page
+    })
+  }
 }

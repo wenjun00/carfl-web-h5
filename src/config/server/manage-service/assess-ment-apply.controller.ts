@@ -12,5 +12,15 @@ export default {
     action: 'orderSearch',
     type: requestType.Get
   },
- 
+  /**
+   *  评估任务池订单查询
+   */
+  orderPoolSearch: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'orderPoolSearch',
+    type: requestType.Get
+  },
+
+
 }

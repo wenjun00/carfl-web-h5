@@ -36,7 +36,7 @@
     private dataSet: Array<any> = []
     private personalBlacklistModel: any = {
       busNumber: '', //客户姓名
-      busNumber: '', // 手机号码
+      customerName: '', // 手机号码
       startTime: '', // 创建起止时间
     }
     private personalBlacklistColumns:any =  [{

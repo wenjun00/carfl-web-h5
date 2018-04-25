@@ -34,7 +34,7 @@
     private dataSet: Array<any> = []
     private personalCustomerModel: any = {
       busNumber: '', //客户姓名
-      busNumber: '', // 手机号码
+      customerName: '', // 手机号码
       startTime: '', // 创建起止时间
     }
     private personalCustomerColumns:any =  [{
