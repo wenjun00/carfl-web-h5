@@ -6,18 +6,18 @@
         </page-header>
         <data-form :model="taskpoolModel" @on-search="getPoolList" :page="pageService" date-prop="timeSearch">
             <template slot="input">
-                <i-form-item prop="brandModel" label="品牌型号">
+                <i-form-item prop="carParams" label="品牌型号">
                     <i-input placeholder="请输入品牌、系列" v-model="taskpoolModel.carParams"></i-input>
                 </i-form-item>
-                <i-form-item prop="busNumber" label="车牌号码">
+                <i-form-item prop="carNo" label="车牌号码">
                     <i-input placeholder="请输入车牌号码" v-model="taskpoolModel.carNo"></i-input>
                 </i-form-item>
-                <i-form-item prop="customerName" label="客户姓名">
+                <i-form-item prop="ownerName" label="客户姓名">
                     <i-input placeholder="请输入客户姓名" v-model="taskpoolModel.ownerName"></i-input>
                 </i-form-item>
             </template>
         </data-form>
-        <data-box :columns="taskpoolColumns" :data="dataSet" :page="pageService"></data-box>
+        <data-box :columns="taskpoolColumns" :data="dataSet" :page="pageService" ref="databox"></data-box>
 
     </section>
 </template>
@@ -39,6 +39,7 @@ export default class EvaluationTaskPool extends Page {
   @Dependencies(PageService) private pageService: PageService
   @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
   private dataSet: Array<any> = []
+  private multipleUserId: any  //table当前选中的项
   private taskpoolModel: any = {
     carParams: '', //品牌系列
     carNo: '', // 车牌号码
@@ -81,35 +82,35 @@ export default class EvaluationTaskPool extends Page {
       title: '评估编号',
       editable: true,
       sortable: true,
-      key: 'a1',
+      key: 'assessmentNo',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '品牌',
       editable: true,
-      key: 'a2',
+      key: 'brandName',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '系列',
       editable: true,
-      key: 'a3',
+      key: 'seriesName',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '车型',
       editable: true,
-      key: 'a4',
+      key: 'carName',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '颜色',
       editable: true,
-      key: 'a5',
+      key: 'carColor',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -117,20 +118,20 @@ export default class EvaluationTaskPool extends Page {
       title: '车牌号码',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName1',
+      key: 'carNo',
       align: 'center'
     },
     {
       title: '车架号',
       editable: true,
-      key: 'operatorName2',
+      key: 'frameNo',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
     {
       title: '发动机号',
       editable: true,
-      key: 'operatorName3',
+      key: 'engineNo',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -138,14 +139,14 @@ export default class EvaluationTaskPool extends Page {
       title: '客户姓名',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'operatorName4',
+      key: 'ownerName',
       align: 'center'
     },
     {
       title: '手机号',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'a10',
+      key: 'ownPhone',
       align: 'center'
     }
   ]
@@ -171,13 +172,55 @@ export default class EvaluationTaskPool extends Page {
    *  批量领取
    */
   allReceive(){
-
+    let multiple: any = this.$refs['databox']
+    this.multipleUserId = multiple.getCurrentSelection()
+    if(!this.multipleUserId.length){
+      return this.$Message.error('请选择评估案件')
+    }else{
+      this.$Modal.confirm({
+        title: '提示',
+        content: '确定批量领取至“押品评估列表”？',
+        onOk: () => {
+          console.log(this.multipleUserId)
+          this.assessMentApplyService
+            .updateOrderStatus({
+              orderIds: this.multipleUserId.orderId,
+              status: 305
+            })
+            .subscribe(data => {
+                this.$Message.success('领取成功！')
+                this.getPoolList()
+              }, ({msg}) => {
+                this.$Message.error(msg)
+              }
+            )
+        }
+      })
+    }
   }
   /**
    *  领取
    */
   receive(row) {
-
+    this.$Modal.confirm({
+      title: '提示',
+      content: '确定领取至“押品评估列表”？',
+      onOk: () => {
+        console.log(row)
+        this.assessMentApplyService
+          .updateOrderStatus({
+            orderIds:row.orderId,
+            status: row.assessmentStatus
+          })
+          .subscribe(data => {
+              this.$Message.success('领取成功！')
+              this.getPoolList()
+            }, ({msg}) => {
+              this.$Message.error(msg)
+            }
+          )
+      }
+    })
   }
 }
 </script>

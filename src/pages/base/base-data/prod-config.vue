@@ -436,7 +436,7 @@ export default class ProdConfig extends Page {
   }
   publishNext() {
     this.productPlanIssueService.publish(this.publishItem).subscribe(
-      val => {  
+      val => {
         this.productNameDetail(this.scopes);
         this.$Message.success("发布成功！");
       },
@@ -696,26 +696,12 @@ export default class ProdConfig extends Page {
         if(this.scopes[0].flag == "产品系列"){
             this.$Message.error("温馨提示：产品系列中只能添加产品！");
         }else if(this.scopes[0].flag == "产品"){
-           this.$Message.error("温馨提示：不能在产品中添加产品系列！"); 
+           this.$Message.error("温馨提示：不能在产品中添加产品系列！");
         }
     }else{
-           this.addSericeModal = true;  
+           this.addSericeModal = true;
         }
-
-
-    // if (this.scopes) {
-    //   if (
-    //     typeof this.scopes[0].flag === "undefined" ||
-    //     this.scopes[0].flag !== "产品"
-    //   ) {
-    //     this.addSericeModal = true;
-    //   } else {
-    //     this.$Message.error("温馨提示：不能在产品中添加产品系列！");
-    //   }
-    // } else {
-    //   this.$Message.error("请先选择产品系列！");
-    // }
-  }
+    }
   /**
    * 点击新增产品系列确认按钮
    */

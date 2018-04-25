@@ -21,6 +21,14 @@ export default {
     action: 'orderPoolSearch',
     type: requestType.Get
   },
-
+  /**
+   *  更改订单状态
+   */
+  updateOrderStatus:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'updateOrderStatus',
+    type: requestType.Get
+  }
 
 }

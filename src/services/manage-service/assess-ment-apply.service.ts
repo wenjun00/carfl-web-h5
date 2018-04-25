@@ -26,4 +26,13 @@ export class AssessMentApplyService {
       page:page
     })
   }
+  /**
+   *  更改订单状态
+   */
+  updateOrderStatus(data){
+    return this.netService.send({
+      server: manageService.assessmentapply.updateOrderStatus,
+      data: data
+    })
+  }
 }
