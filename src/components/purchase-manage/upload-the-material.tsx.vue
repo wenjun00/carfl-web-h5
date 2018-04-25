@@ -75,8 +75,8 @@ export default class UploadTheMaterial extends Vue {
             <i-button
               type="text"
               icon="arrow-down-a"
-              click={()=>{
-                this.$common.downloadFile(row.materialUrl, row.uploadName)
+              click={() => {
+                this.$common.downloadFile(row.materialUrl, row.uploadName);
               }}
             />
           </div>
@@ -133,10 +133,18 @@ export default class UploadTheMaterial extends Vue {
     });
   }
 
-  reset() {}
+  /**
+   * 重置数据
+   */
+  reset() {
+    this.uploadDataSet = [];
+  }
 
-  update() {
-    this.reset();
+  /**
+   * 恢复数据
+   */
+  revert(data) {
+    this.uploadDataSet = data.personal.personalDatas;
   }
 
   /**
@@ -144,15 +152,17 @@ export default class UploadTheMaterial extends Vue {
    */
   async validate() {
     // 判断列表中是否包含所有必传
-    let result =  this.fileTypeList.map(item => item.isSelect === 0).every((item: any) => {
-      return this.uploadDataSet.find(x => x.type === item.id);
-    });
+    let result = this.fileTypeList
+      .map(item => item.isSelect === 0)
+      .every((item: any) => {
+        return this.uploadDataSet.find(x => x.type === item.id);
+      });
 
-    if(result){
-      return true
+    if (result) {
+      return true;
     }
 
-    this.$Message.error("请上传必传的素材")
+    this.$Message.error("请上传必传的素材");
   }
 
   /**

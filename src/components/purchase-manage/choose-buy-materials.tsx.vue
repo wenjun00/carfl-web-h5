@@ -301,11 +301,8 @@ export default class ChooseBuyMaterials extends Vue {
 
   @ModuleMutation("updateProductId") updateProductId;
 
-  @Prop() orderNumber;
-  @Prop() idCard;
   private companyList: any = []; // 公司信息
   private totalPrice: number = 0;
-
   public carDataSet: any = [];
 
   // 选购信息数据
@@ -808,37 +805,29 @@ export default class ChooseBuyMaterials extends Vue {
       });
   }
 
-  /**
-   * 获取订单数据
-   */
-  getOrderData() {
-    this.productOrderService
-      .getPurchaseInfoById(this.orderNumber)
-      .subscribe(data => {
-        console.log(data);
-        // TODO:加载订单数据
-      });
+  // 重置数据
+  public reset() {
+    let chooseForm = this.$refs["choose-form"] as Form;
+    let productForm = this.$refs["product-form"] as Form;
+
+    chooseForm.resetFields();
+    productForm.resetFields();
+    this.carDataSet = [];
+    this.$common.reset(this.currentProduct);
+    this.productAmountModel = {};
+    this.updateProductId();
+    this.totalPrice = 0;
   }
 
-  @Watch("orderNumber")
-  onOrderNumberChange(value) {
-    if (value) {
-      // TODO: 加载数据
-      this.getOrderData();
-    }
-  }
-
-  @Watch("idCard")
-  onIdCardChange(value) {
-    if (!value) {
-      // TODO: 重置数据
-    }
-  }
-
+  // 恢复数据
   public revert(data) {
-    this.$common.revert(this.chooseModel, data, {
-      orderService: data.orderServices.map(x => x.service)
-    });
+    this.$common.revert(
+      this.chooseModel,
+      Object.assign(data, {
+        intentionPeriods: Number(data.intentionPeriods),
+        orderService: data.orderServices.map(x => x.service)
+      })
+    );
 
     this.$common.revert(this.carDataSet, data.orderCars);
     this.$common.revert(this.currentProduct, data, {
@@ -846,7 +835,7 @@ export default class ChooseBuyMaterials extends Vue {
       productSeries: data.product.name
     });
     this.$common.revert(this.productModel, data);
-    
+
     // 存储基本参数模型
     this.productAmountModel = {
       vehicleAmount: this.productModel.vehicleAmount,
@@ -860,10 +849,6 @@ export default class ChooseBuyMaterials extends Vue {
     this.getCompanyList();
     // 清空产品Id
     this.updateProductId();
-    // 加载历史订单
-    if (this.orderNumber) {
-      this.getOrderData();
-    }
   }
 }
 </script>

@@ -203,14 +203,14 @@ export default class CustomerContacts extends Vue {
   customRules = {
     familyDataSetCount: [
       {
-        type:'number',
+        type: "number",
         min: 2,
         message: "直系亲属不能少于2个"
       }
     ],
     friendDataSetCount: [
       {
-        type:'number',
+        type: "number",
         min: 3,
         message: "其他联系人不能少于3个"
       }
@@ -258,7 +258,29 @@ export default class CustomerContacts extends Vue {
     });
   }
 
-  reset() {}
+  /**
+   * 重置数据
+   */
+  reset() {
+    this.familyDataSet = [];
+    this.friendDataSet = [];
+  }
+
+  /**
+   * 恢复数据
+   */
+  revert(data) {
+    this.familyDataSet = data.personal.personalContacts.filter(
+      v => v.relation === 56 || v.relation === 57 || v.relation === 58
+    );
+    this.friendDataSet = data.personal.personalContacts.filter(
+      v =>
+        v.relation === 59 ||
+        v.relation === 60 ||
+        v.relation === 61 ||
+        v.relation === 62
+    );
+  }
 
   validate() {
     return this.$validator

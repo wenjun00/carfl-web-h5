@@ -481,57 +481,107 @@ export default class CustomerMaterials extends Vue {
     ]
   };
 
-  revert(data) {
-    this.$common.revert(this.customerModel, data.personal);
+  /**
+   * 重置数据
+   */
+  public reset() {
+    this.customerModel.province2 = "";
+    this.customerModel.city2 = "";
+    this.customerModel.cityOwnhouseAddress = "";
+    this.customerModel.cityOwnhouseAddressDetail = "";
+
+    let customerForm = this.$refs["customer-form"] as Form;
+    customerForm.resetFields();
+
+    this.idcardOwn = "";
+    this.idCardads = false;
+    this.idCardvalidity = false;
   }
 
-  Reverse(data) {
-    //   身份证地址回显
-    data.personal.birthTime = FilterService.dateFormat(
-      data.personal.birthTime,
-      "yyyy-MM-dd"
-    );
-    if (data.personal.localHomeAddr === data.personal.idCardAddress) {
-      this.idCardads = true;
-    }
+  /**
+   * 恢复数据
+   */
+  revert(data) {
     if (data.personal.cityOwnhouseAddress === data.personal.idCardAddress) {
       this.idcardOwn = 29;
     }
     if (data.personal.cityOwnhouseAddress === data.personal.localHomeAddr) {
       this.idcardOwn = 30;
     }
-    if (!this.customerModel.idCardValidityPeriodSection) {
-      this.idCardvalidity = true;
-    }
-    data.personal.idCardAddress = Number(data.personal.idCardAddress);
-    data.personal.city = CityService.getCityParent(
-      Number(data.personal.idCardAddress)
-    )[1];
-    data.personal.province = CityService.getCityParent(
-      Number(data.personal.idCardAddress)
-    )[0];
-    // 现居住地址
-    data.personal.localHomeAddr = Number(data.personal.localHomeAddr);
-    data.personal.city1 = CityService.getCityParent(
-      Number(data.personal.localHomeAddr)
-    )[1];
-    data.personal.province1 = CityService.getCityParent(
-      Number(data.personal.localHomeAddr)
-    )[0];
-    // 本市房产地址
-    data.personal.cityOwnhouseAddress = Number(
-      data.personal.cityOwnhouseAddress
+
+    this.idCardads =
+      data.personal.localHomeAddr === data.personal.idCardAddress;
+    this.idCardvalidity = !this.customerModel.idCardValidityPeriodSection;
+
+    this.$common.revert(
+      this.customerModel,
+      Object.assign(data.personal, {
+        // 出生日期
+        birthTime: FilterService.dateFormat(
+          data.personal.birthTime,
+          "yyyy-MM-dd"
+        ),
+        // 身份证地址
+        idCardAddress: Number(data.personal.idCardAddress),
+        province: CityService.getCityParent(
+          Number(data.personal.idCardAddress)
+        )[0],
+        city: CityService.getCityParent(Number(data.personal.idCardAddress))[1],
+        // 现居住地址
+        localHomeAddr: Number(data.personal.localHomeAddr),
+        city1: CityService.getCityParent(
+          Number(data.personal.localHomeAddr)
+        )[1],
+        province1: CityService.getCityParent(
+          Number(data.personal.localHomeAddr)
+        )[0],
+        // 本地房产地址
+        cityOwnhouseAddress: Number(data.personal.cityOwnhouseAddress),
+        city2: CityService.getCityParent(
+          Number(data.personal.cityOwnhouseAddress)
+        )[1],
+        province2: CityService.getCityParent(
+          Number(data.personal.cityOwnhouseAddress)
+        )[0],
+        // 每月租金
+        localLiveHouseMoney: Number(data.personal.localLiveHouseMoney)
+      })
     );
-    data.personal.city2 = CityService.getCityParent(
-      Number(data.personal.cityOwnhouseAddress)
-    )[1];
-    data.personal.province2 = CityService.getCityParent(
-      Number(data.personal.cityOwnhouseAddress)
-    )[0];
-    this.customerModel = data.personal;
+
+    // TODO: 不知道干什么的
     this.customerModel.id = data.personalId || null;
-    delete data.personalId;
   }
+
+  // Reverse(data) {
+  //   data.personal.idCardAddress = Number(data.personal.idCardAddress);
+  //   data.personal.city = CityService.getCityParent(
+  //     Number(data.personal.idCardAddress)
+  //   )[1];
+  //   data.personal.province = CityService.getCityParent(
+  //     Number(data.personal.idCardAddress)
+  //   )[0];
+  //   // 现居住地址
+  //   data.personal.localHomeAddr = Number(data.personal.localHomeAddr);
+  //   data.personal.city1 = CityService.getCityParent(
+  //     Number(data.personal.localHomeAddr)
+  //   )[1];
+  //   data.personal.province1 = CityService.getCityParent(
+  //     Number(data.personal.localHomeAddr)
+  //   )[0];
+  //   // 本市房产地址
+  //   data.personal.cityOwnhouseAddress = Number(
+  //     data.personal.cityOwnhouseAddress
+  //   );
+  //   data.personal.city2 = CityService.getCityParent(
+  //     Number(data.personal.cityOwnhouseAddress)
+  //   )[1];
+  //   data.personal.province2 = CityService.getCityParent(
+  //     Number(data.personal.cityOwnhouseAddress)
+  //   )[0];
+  //   this.customerModel = data.personal;
+  //   this.customerModel.id = data.personalId || null;
+  //   delete data.personalId;
+  // }
 
   idCardChange(value) {
     this.customerModel.province1 = value ? this.customerModel.province : "";
@@ -545,13 +595,6 @@ export default class CustomerMaterials extends Vue {
 
     let customerForm = this.$refs["customer-form"] as Form;
     customerForm.validateField("localHomeAddrDetail");
-  }
-
-  reset() {
-    this.customerModel.province2 = "";
-    this.customerModel.city2 = "";
-    this.customerModel.cityOwnhouseAddress = "";
-    this.customerModel.cityOwnhouseAddressDetail = "";
   }
 
   cityidcardChange(value) {

@@ -191,7 +191,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="其他收入来源" prop="otherIncomeSource">
-              <i-input-number v-model="jobModel.otherIncomeSource" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input v-model="jobModel.otherIncomeSource"> </i-input>
             </i-form-item>
           </i-col>
         </i-row>
@@ -224,7 +224,7 @@ export default class CustomerJobMessage extends Vue {
     payWay: "", // 发薪方式
     yearlySalaries: 0, // 年收入
     monthOtherIncome: 0, // 每月其他收入
-    otherIncomeSource: 0, // 其他收入来源
+    otherIncomeSource: "", // 其他收入来源
     identity: "", // 身份
     enterpriseManageYears: "", // 企业经营年限
     enterpriseManageBelong: "", // 经营地归属
@@ -281,6 +281,43 @@ export default class CustomerJobMessage extends Vue {
       }
     ]
   };
+
+  /**
+   * 重置数据
+   */
+  reset() {
+    this.jobType = 38;
+    let jobForm = this.$refs["job-form"] as Form;
+    jobForm.resetFields();
+  }
+
+  /**
+   * 重置数据
+   */
+  revert(data) {
+    if (data.personal.personalJob.identity) {
+      this.jobType = 38;
+    } else {
+      this.jobType = 37;
+    }
+
+    this.$common.revert(
+      this.jobModel,
+      Object.assign(data.personal.personalJob, {
+        accessCompanyTime: FilterService.dateFormat(
+          data.personal.personalJob.accessCompanyTime,
+          "yyyy-MM-dd"
+        ),
+        companyAddress: Number(data.personal.personalJob.companyAddress),
+        city: CityService.getCityParent(
+          Number(data.personal.personalJob.companyAddress)
+        )[1],
+        province: CityService.getCityParent(
+          Number(data.personal.personalJob.companyAddress)
+        )[0]
+      })
+    );
+  }
 
   Reverse(data) {
     if (data.personal.personalJob) {

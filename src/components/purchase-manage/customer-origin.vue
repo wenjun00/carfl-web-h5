@@ -97,9 +97,9 @@ export default class CustomerOrigin extends Vue {
     "个体户"
   ];
 
-  Reverse(data) {
+  revert(data) {
     if (data.personal && data.personal.personalResourcePublicity) {
-      this.introduceModel.resourceType = data.personal.personalResourcePublicity.map(
+      this.publicityModel = data.personal.personalResourcePublicity.map(
         v => v.resourceType
       );
     }

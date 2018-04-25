@@ -78,7 +78,7 @@ export class CommonService {
         }
         case 'object': {
           if (value instanceof Array) {
-            clearArray(value)
+            item[key] = []
           } else {
             clearObject(value)
           }

@@ -69,7 +69,7 @@
 
     <!--底部操作栏-start-->
     <div class="fixed-container" v-show="currentStep > 5">
-      <i-button size="large" class="highDefaultButton" @click="onSubmit(true)">保存草稿</i-button>
+      <i-button v-show="!orderStatus" size="large" class="highDefaultButton" @click="onSubmit(true)">保存草稿</i-button>
       <i-button size="large" class="highButton" style="margin-left:10px;" @click="onSubmit(false)">保存并提交</i-button>
     </div>
     <!--底部操作栏-end-->
@@ -320,12 +320,9 @@ export default class FinancingLeaseApply extends Page {
         }
 
         this.getOrderData(currentRow.orderNumber);
-
-        // TODO: 更新历史订单信息
       },
       onCancel: () => {
-        let customerForm = this.$refs["customer-form"] as Form;
-        customerForm.resetFields();
+        this.reset();
       },
       render: h => {
         return h(HistoricalRecord, {
@@ -377,44 +374,56 @@ export default class FinancingLeaseApply extends Page {
    */
   revert({ orderStatus, ...data }) {
     this.currentIdCard = data.personal.idCard;
+    this.orderStatus = orderStatus;
     this.$common.revert(this.customerModel, data, data.personal);
+    this.applicationTabList.forEach(async x => {
+      // 当前tab
+      let tab: any = this.$refs[x];
 
-    // let _choosebuymaterials: any = this.$refs["choose-buy-materials"];
-    // _choosebuymaterials.Reverse(data, orderStatus);
-    // //   客户联系人反显
-    // let _customercontacts: any = this.$refs["customer-contacts"];
-    // _customercontacts.Reverse(data);
-    // //   职业信息
-    // let _customerjobmessage: any = this.$refs["customer-job-message"];
-    // _customerjobmessage.Reverse(data);
-    // //   客户资料
-    // let _customermaterials: any = this.$refs["customer-materials"];
-    // _customermaterials.Reverse(data);
-    // //   客户来源
+      // 退件与草稿恢复产品信息
+      switch (orderStatus) {
+        case 303: {
+          tab.revert(data);
+          this.currentStep = 6;
+          break;
+        }
+        case 311: {
+          tab.revert(data);
+          break;
+        }
+        default: {
+          if (!["choose-buy-materials", "upload-the-material"].includes(x)) {
+            tab.revert(data);
+          }
+        }
+      }
 
-    // if ([303, 311].includes(orderStatus)) {
-    let chooseBuyMaterials = this.$refs[
-      "choose-buy-materials"
-    ] as ChooseBuyMaterials;
-    chooseBuyMaterials.revert(data);
+      if (orderStatus === 303) {
+        await tab.validate();
+      }
+    });
+  }
 
-    let customerMaterials = this.$refs[
-      "customer-materials"
-    ] as CustomerMaterials;
-    customerMaterials.revert(data);
+  reset() {
+    this.currentIdCard = "";
+    this.orderStatus = "";
+    let customerForm = this.$refs["customer-form"] as Form;
 
-    // }
-    // let _customerorigin: any = this.$refs["customer-origin"];
-    // _customerorigin.Reverse(data);
-    // //   上传资料反显
-    // let _uploadthematerial: any = this.$refs["upload-the-material"];
-    // _uploadthematerial.Reverse(data);
+    customerForm.resetFields();
+    this.currentStep = 0;
+
+    this.resetApplicationTab();
   }
 
   /**
    * 重置申请选项卡数据
    */
-  resetApplicationTab() {}
+  resetApplicationTab() {
+    this.applicationTabList.forEach(x => {
+      let tab: any = this.$refs[x];
+      tab.reset();
+    });
+  }
 
   /**
    * 提交申请数据
@@ -530,7 +539,7 @@ export default class FinancingLeaseApply extends Page {
     this.productOrderService
       .saveFinanceApplyInfo(
         Object.assign(data, {
-          orderStatus: draft ? 303 : 304
+          orderStatus: this.orderStatus || (draft ? 303 : 304)
         })
       )
       .subscribe(
@@ -551,8 +560,7 @@ export default class FinancingLeaseApply extends Page {
       title: "提示",
       content: "有未提交的申请，确定创建新申请吗？",
       onOk: () => {
-        // TODO: 重置表单数据
-        // TODO: 重置选项卡数据
+        this.reset();
       },
       onCancel: () => {}
     });
