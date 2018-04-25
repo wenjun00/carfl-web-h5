@@ -74,7 +74,7 @@ export default {
 
     if (!pageModel) {
       state.pageList.push(page)
-    }else{
+    } else {
       pageModel.params = target.params
     }
 
@@ -88,9 +88,12 @@ export default {
   closePage(state, path) {
     let page = state.pageList.find(x => x.path === path)
     let index = state.pageList.indexOf(page)
+    state.currentPage = state.pageList[index - 1].path
     if (index > 0) {
       state.pageList.splice(index, 1)
     }
+
+
   },
   /**
    * 关闭所有
