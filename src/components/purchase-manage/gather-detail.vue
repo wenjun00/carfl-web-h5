@@ -2,9 +2,9 @@
 <template>
   <section class="component gather-detail">
     <i-table :height="400" :columns="columns1" :data="saleItemList" stripe></i-table>
-    <div>
-      <i-button type="text" class="item-shoukuan-button" @click="changeGatherItem">变更收款项</i-button>
-    </div>
+    <!--<div>-->
+      <!--<i-button type="text" class="item-shoukuan-button" @click="changeGatherItem">变更收款项</i-button>-->
+    <!--</div>-->
     <div class="form-title">账户信息</div>
     <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
       <data-grid-item label="户名" :span="4">{{accountInfo.personalName}}</data-grid-item>
@@ -15,15 +15,15 @@
     </data-grid>
 
     <!--变更收款项-->
-    <template>
-      <i-modal v-model="changeGatherItemModal" title="变更收款项">
-        <change-gather-item ref="change-item" @change="changeSaleItem" @close="changeGatherItemModal=false"></change-gather-item>
-        <div slot="footer">
-          <i-button @click="changeGatherItemModal=false">取消</i-button>
-          <i-button @click="confirmChangeItem" class="blueButton">确定</i-button>
-        </div>
-      </i-modal>
-    </template>
+    <!--<template>-->
+      <!--<i-modal v-model="changeGatherItemModal" title="变更收款项">-->
+        <!--<change-gather-item ref="change-item" @change="changeSaleItem" @close="changeGatherItemModal=false"></change-gather-item>-->
+        <!--<div slot="footer">-->
+          <!--<i-button @click="changeGatherItemModal=false">取消</i-button>-->
+          <!--<i-button @click="confirmChangeItem" class="blueButton">确定</i-button>-->
+        <!--</div>-->
+      <!--</i-modal>-->
+    <!--</template>-->
   </section>
 </template>
 
@@ -106,9 +106,7 @@ export default class GatherDetail extends Vue {
   }
   makeList(val) {
     if (val.applicationCollectMoneyItems) {
-      this.saleItemList = val.applicationCollectMoneyItems.filter(
-        v => v.itemMoney
-      );
+      this.saleItemList = val.applicationCollectMoneyItems
     } else {
       this.saleItemList = [];
     }

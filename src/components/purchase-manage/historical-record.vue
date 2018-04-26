@@ -31,13 +31,14 @@ export default class HistoricalRecord extends Vue {
 
   private currentRow: any;
   private orderDataSet: Array<any> = [];
-  private orderType = 302;
+  private orderType = 0;
 
   private orderColumns: any = [
     {
       title: "订单号",
       key: "orderNumber",
-      align: "center"
+      align: "center",
+      minWidth:this.$common.getColumnWidth(5)
     },
     {
       title: "订单类型",
@@ -67,6 +68,7 @@ export default class HistoricalRecord extends Vue {
       title: "订单创建时间",
       key: "createTime",
       align: "center",
+      minWidth:this.$common.getColumnWidth(5),
       render: (h, { row, column, index }) => {
         return h(
           "span",
@@ -102,7 +104,7 @@ export default class HistoricalRecord extends Vue {
   }
 
   mounted() {
-    this.orderDataSet = this.data.filter(x => x.orderType === this.orderType);
+   this.onOrderTypeChange(this.orderType)
   }
 }
 </script>

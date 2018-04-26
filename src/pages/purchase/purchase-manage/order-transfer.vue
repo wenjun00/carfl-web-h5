@@ -174,21 +174,21 @@ export default class OrderTransfer extends Page {
         editable: true,
         key: 'orderNumber',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(5)
+        minWidth: this.$common.getColumnWidth(6)
       },
       {
         title: '制单人',
         editable: true,
         key: 'recorderName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2)
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         title: '所属部门',
         editable: true,
         key: 'deptName',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(2)
+        minWidth: this.$common.getColumnWidth(3)
       },
       {
         title: '转交人',
@@ -243,7 +243,7 @@ export default class OrderTransfer extends Page {
         editable: true,
         key: 'periods',
         align: 'center',
-        minWidth: this.$common.getColumnWidth(1),
+        minWidth: this.$common.getColumnWidth(2),
         render: (h, { row, column, index }) => {
           return h('span', {}, this.$dict.getDictName(row.periods))
         }
@@ -398,7 +398,7 @@ export default class OrderTransfer extends Page {
     this.mulipleSelection = this.$refs['databox']
     this.mulipleSelection = this.mulipleSelection.getCurrentSelection()
     if (this.mulipleSelection.length === 0) {
-      this.$Message.error('请选择要交接的订单！')
+      this.$Message.info('请选择要交接的订单！')
     } else {
       this.getTree()
       this.userList = []
@@ -411,7 +411,7 @@ export default class OrderTransfer extends Page {
   onKey(val) { }
   orderconfirm() {
     if (this.currentRowuserId === '') {
-      this.$Message('')
+      this.$Message.info('请选择交接对象')
       return
     }
     let mulipledata = this.mulipleSelection.map(v => {

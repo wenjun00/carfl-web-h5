@@ -56,30 +56,26 @@ export default {
    * @param page 
    */
   openPage(state, target) {
-    if (typeof target == 'string') {
-      target = {
-        path: target
-      }
-    }
+    // TODO: 传递至应该是菜单对象，从菜单中查询而非自定义对象
+    let page: any
 
-    let resource = state.menuResource.find(x => x.path === target.path)
-
-    if(!resource){
-      return 
-    }
-
-    let page = Object.assign({}, resource,
-      {
-        params: target.params
-      }
-    )
-
-    let currentPage = state.pageList.find(x => x.path === page.path)
-
-    if (currentPage) {
-      currentPage.params = target.params
+    if (typeof target === "string") {
+      page = state.pageList.find(x => x.path === target)
     } else {
+      // 菜单对象
+      page = {
+        path: target.path,
+        resoname: target.resoname,
+        params: target.params // 添加页面参数
+      }
+    }
+
+    let pageModel = state.pageList.find(x => x.path === page.path)
+
+    if (!pageModel) {
       state.pageList.push(page)
+    } else {
+      pageModel.params = target.params
     }
 
     state.currentPage = page.path
@@ -96,8 +92,6 @@ export default {
     if (index > 0) {
       state.pageList.splice(index, 1)
     }
-
-
   },
   /**
    * 关闭所有
