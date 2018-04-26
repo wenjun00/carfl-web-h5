@@ -39,7 +39,6 @@ export default {
     action: 'orderBasicSearch',
     type: requestType.Get
   },
- 
     /**
    *  评估申请 查看详情
    */
@@ -57,8 +56,16 @@ export default {
     controller: CONTROLLER,
     action: 'withdrawStatus',
     type: requestType.Get
+  },
+
+  /**
+   * 根据订单编号处理订单
+   */
+  beginOrderAssess:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'beginOrderAssess',
+    type: requestType.Get
   }
-
-
 
 }
