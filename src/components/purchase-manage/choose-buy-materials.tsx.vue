@@ -153,7 +153,7 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="尾付总额(元)" prop="final">
-                  <i-select :disabled="!currentProduct.finalCash" placeholder="请选择尾付总额比例" v-model="productRadioModel.final" clearable>
+                  <i-select :disabled="!currentProduct.finalCash" placeholder="请选择尾付总额比例" v-model="productRadioModel.final">
                     <i-option v-for="item in currentProduct.finalCashList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
@@ -176,7 +176,7 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="保证金金额(元)">
-                  <i-select :disabled="!currentProduct.depositCash" placeholder="请选择保证金金额比例" v-model="productRadioModel.depositCashRadio" clearable>
+                  <i-select :disabled="!currentProduct.depositCash" placeholder="请选择保证金金额比例" v-model="productRadioModel.depositCashRadio">
                     <i-option v-for="item in currentProduct.depositCashList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
@@ -192,7 +192,7 @@
             <i-row :gutter="24">
               <i-col span="12">
                 <i-form-item label="管理费(元)" prop="manageData">
-                  <i-select :disabled="!currentProduct.manageCost" placeholder="请选择管理费比例" v-model="productRadioModel.manageCostPercent" clearable>
+                  <i-select :disabled="!currentProduct.manageCost" placeholder="请选择管理费比例" v-model="productRadioModel.manageCostPercent">
                     <i-option v-for="item in currentProduct.manageCostList" :key="item.value" :value="item.value" :label="item.label"></i-option>
                   </i-select>
                 </i-form-item>
@@ -555,8 +555,6 @@ export default class ChooseBuyMaterials extends Vue {
     }
   ];
 
-
-
   private validateInitialPayment(rule, value, callback) {
     if (
       this.currentProduct.initialPaymentList.length &&
@@ -597,8 +595,9 @@ export default class ChooseBuyMaterials extends Vue {
     callback();
   }
 
-  
-  onInitialPaymentChange() {}
+  onInitialPaymentChange() {
+
+  }
 
   /**
    * 更新车辆金额
