@@ -38,6 +38,8 @@ export default {
       operator: user.operator,
       operateTime: user.operateTime
     });
+
+    commit('updateTokenExpire', false)
   },
   /**
    * 清除登录数据
@@ -51,7 +53,12 @@ export default {
     commit('updateUserControlResource', []);
     // 重置用户数据
     commit('updateUserData', {})
-    //重置token过期标识
-    commit('updateTokenExpire', false);
+    // 重置token过期标识
+    commit('updateTokenExpire', true);
+    // 关闭页面
+    commit('closeAllPage')
+    // 清空数据
+    localStorage.removeItem('vuex')
+    localStorage.removeItem('userToken')
   }
 }

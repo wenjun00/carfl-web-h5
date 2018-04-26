@@ -44,7 +44,7 @@
         </div>
       </div>
       <!--右边待办事项 洒洒水-->
-      <div class="command-right">
+      <div class="command-right" style="min-width:250px">
         <div class="container">
           <div class="command-right-icon"></div>
           <span>待办事项</span>
