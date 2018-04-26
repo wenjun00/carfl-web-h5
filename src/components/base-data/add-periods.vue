@@ -154,17 +154,17 @@
         </data-grid-item>
         <data-grid-item :span="6" label="合同违约金费率">
           <i-form-item class="item-input" prop="contractBreakRates">
-            <i-input-number v-model="formItems.contractBreakRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>&nbsp;%
+            <i-input-number v-model="formItems.contractBreakRates" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>&nbsp;%
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="6" label="提前还款费率">
           <i-form-item class="item-input" prop="prepaymentRates">
-            <i-input-number v-model="formItems.prepaymentRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>&nbsp;%
+            <i-input-number v-model="formItems.prepaymentRates" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>&nbsp;%
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="12" label="罚息费率">
           <i-form-item class="item-input" prop="penaltyRates">
-            <i-input-number v-model="formItems.penaltyRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+            <i-input-number v-model="formItems.penaltyRates" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
           </i-form-item>
           <span>&nbsp;%/天</span>
         </data-grid-item>
