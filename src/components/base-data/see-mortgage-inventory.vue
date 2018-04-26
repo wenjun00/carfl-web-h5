@@ -1,6 +1,6 @@
 <!--抵押入库 查看-->
 <template>
-    <section class="component mortgage-inventory">
+    <section class="component see-mortgage-inventory">
         <i-form>
             <!-- 车辆信息 -->
             <i-row class="data-form">
@@ -162,7 +162,7 @@ export default class addPeople extends Vue {}
 
 
 <style lang="less" scoped>
-.component.mortgage-inventory {
+.component.see-mortgage-inventory {
   .data-form {
     margin-top: 5px;
     .data-form-item {

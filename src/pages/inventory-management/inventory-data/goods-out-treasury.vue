@@ -22,6 +22,16 @@
       </template>
     </data-form>
     <data-box :columns="goodsOutColumns" :data="dataSet" :page="pageService"></data-box>
+       <template>
+            <i-modal  width="780" v-model="inventoryModal" title="确认出库" class="edit-from-storage">
+                <edit-from-storage ref="edit-from-storage"></edit-from-storage>
+                <div slot="footer">
+                     <i-button size="large" type="ghost" class="Ghost"  @click="inventoryModal=false">取消</i-button>
+                    <i-button size="large"  type="primary" class="blueButton"  @click="inventoryModal=false">确定</i-button>
+                </div>
+            </i-modal>
+        </template>
+
   </section>
 </template>
 
@@ -31,9 +41,12 @@
   import { Dependencies } from "~/core/decorator";
   import { Layout } from "~/core/decorator";
   import { PageService } from "~/utils/page.service";
+  import EditFromStorage from '~/components/base-data/edit-from-storage.vue'
   @Layout("workspace")
   @Component({
-    components: {}
+    components: {
+        EditFromStorage
+    }
   })
   export default class GoodsOutTreasury extends Page{
     @Dependencies(PageService) private pageService: PageService;
@@ -45,6 +58,7 @@
       customerName: '', // 车架号
       containsOut: false // 包含提交
     }
+    private inventoryModal:Boolean = false
     private goodsOutColumns :any =  [{
       title: '操作',
       align: 'center',
@@ -60,7 +74,13 @@
               },
               style: {
                 color: '#265EA2'
+              },
+               on: {
+                click: () => {
+                  this.getOutTreasuryList(row)
+                }
               }
+              
             },
             '出库'
           ),
@@ -186,6 +206,13 @@
         key: 'a14',
         align: 'center'
       }]
+/**
+ * 押品出库
+ */
+    getOutTreasuryList(row){
+        this.inventoryModal = true 
+    }
+
 
     mounted() {
       this.dataSet = [{
