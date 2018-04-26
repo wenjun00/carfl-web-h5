@@ -1,7 +1,8 @@
 <!--新增期数-->
 <template>
-  <i-form class="add-new-periods" ref="formItems" :model="formItems" :rules="formRules" :label-width="100">
-    <section class="component add-periods">
+  <section class="component add-periods">
+    <i-form class="mini" ref="formItems" :model="formItems" :rules="formRules">
+
       <div class="add-periods-item">自然参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="产品序号" :span="4"> {{pNameTitle.number}}</data-grid-item>
@@ -15,7 +16,7 @@
         </data-grid-item>
         <data-grid-item label="产品利率(月)" :span="4">
           <i-form-item class="item-chanpin" prop="productRates">
-            <i-input-numer v-model="formItems.productRates" placeholder="请输入产品利率" :format="$filter.percentFormat" :parse="$filter.percentParse"></i-input-numer>
+            <i-input-number placeholder="请输入产品利率" v-model="formItems.productRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
           </i-form-item>
         </data-grid-item>
         <data-grid-item label="还款方式" :span="4">
@@ -65,9 +66,9 @@
           <div v-if="initialParams==='有'" class="item-shoufu-div initialPayment">
             <i-form-item prop="initialPayment" label="比例">
               <i-input v-model="formItems.initialPayment" class="item-shoufu-input"></i-input>
+              <span style="color:red" class="after_text">%</span>
+              <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
             </i-form-item>
-            <span class="item-shoufu-span1 after_text">%</span>
-            <span class="item-shoufu-span2 after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
       </data-grid>
@@ -80,19 +81,24 @@
           </i-radio-group>
         </data-grid-item>
         <data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">
-          <div class="item-bzjbl-div initialPayment">
-            <i-form-item prop="depositCash" label="比例">
-              <i-input v-model="formItems.depositCash"></i-input>
-            </i-form-item>
-            <span class="item-bzjbl-span after_text">%</span>
-            <i-form-item prop="depositCashType">
-              <i-select v-model="formItems.depositCashType" placeholder="缴纳方式">
-                <i-option :value="396">退还</i-option>
-                <i-option :value="397">不退还</i-option>
-              </i-select>
-            </i-form-item>
-            <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
-          </div>
+          <i-row :gutter="16">
+            <i-col :span="16">
+              <i-form-item prop="depositCash" label="比例">
+                <i-input v-model="formItems.depositCash"></i-input>
+                <span style="color:red" class="after_text">%</span>
+                <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
+              </i-form-item>
+            </i-col>
+            <i-col :span="8">
+              <i-form-item prop="depositCashType" label="缴纳方式">
+                <i-select v-model="formItems.depositCashType" placeholder="缴纳方式">
+                  <i-option :value="396">退还</i-option>
+                  <i-option :value="397">不退还</i-option>
+                </i-select>
+              </i-form-item>
+            </i-col>
+          </i-row>
+
         </data-grid-item>
       </data-grid>
       <div class="add-periods-item">尾付款参数</div>
@@ -106,9 +112,10 @@
             <span class="after_text">月利率:</span>
             <i-form-item prop="finalCash">
               <i-input v-model="formItems.finalCash"></i-input>
+
+              <span style="color:red" class="after_text">%</span>
+              <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
             </i-form-item>
-            <span class="item-bzjbl-span after_text">%</span>
-            <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
       </data-grid>
@@ -122,9 +129,10 @@
           <div v-if="manageMoneyParams==='有'" class="item-mt6-div2 initialPayment">
             <i-form-item prop="manageCost" label="比例">
               <i-input v-model="formItems.manageCost"></i-input>
+
+              <span style="color:red" class="after_text">%</span>
+              <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
             </i-form-item>
-            <span class="item-bzjbl-span after_text">%</span>
-            <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
         <data-grid-item label="管理费收取方式" :span="12" v-if="manageMoneyParams==='有'">
@@ -153,23 +161,23 @@
         </data-grid-item>
         <data-grid-item :span="6" label="合同违约金费率">
           <i-form-item class="item-input" prop="contractBreakRates">
-            <i-input-number v-model="formItems.contractBreakRates" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>&nbsp;%
+            <i-input-number v-model="formItems.contractBreakRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="6" label="提前还款费率">
           <i-form-item class="item-input" prop="prepaymentRates">
-            <i-input-number v-model="formItems.prepaymentRates" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>&nbsp;%
+            <i-input-number v-model="formItems.prepaymentRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="12" label="罚息费率">
           <i-form-item class="item-input" prop="penaltyRates">
-            <i-input-number v-model="formItems.penaltyRates" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
+            <i-input-number v-model="formItems.penaltyRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
           </i-form-item>
-          <span>&nbsp;%/天</span>
         </data-grid-item>
       </data-grid>
-    </section>
-  </i-form>
+
+    </i-form>
+  </section>
 </template>
 
 <script lang="ts">
@@ -523,80 +531,17 @@ export default class AddPeriods extends Vue {
 }
 </script>
 
-<style lang="less" scoped>
-.add-new-periods {
+<style lang="less">
+.component.add-periods {
+  .data-grid-item {
+    min-height: 80px;
+  }
   .add-periods-item {
+    line-height: 40px;
     font-size: 14px;
     font-weight: bold;
-    margin-top: 16px;
   }
-  .after_text {
-    line-height: 33px;
-    margin-left: 5px;
-    margin-bottom: 20px;
-  }
-  .item-input {
-    margin-top: 15px;
-  }
-  .item-chanpin {
-    width: 70%;
-  }
-  .item-chanpin-group {
-    margin-top: 14px;
-  }
-  .item-chanpin-radio {
-    margin-right: 40px;
-  }
-  .item-chanpin-select {
-    width: 30%;
-  }
-  .item-shoufu-group {
-    margin-top: 6px;
-  }
-  .item-shoufu-div {
-    margin-top: 24px;
-    margin-left: -51px;
-  }
-  .item-shoufu-input {
-    width: 80%;
-  }
-  .item-shoufu-span1 {
-    color: red;
-    margin-left: -30px;
-  }
-  .item-shoufu-span2 {
-    color: blue;
-  }
-  .item-bzj-group {
-    float: left;
-    margin-top: 6px;
-  }
-  .item-bzjbl-div {
-    margin-left: -51px;
-    margin-top: 17px;
-  }
-  .item-bzjbl-span {
-    color: red;
-  }
-  .item-bzjbl-span2 {
-    color: blue;
-  }
-  .item-mt6 {
-    margin-top: 6px;
-  }
-  .item-mt6-div {
-    margin-top: 27px;
-  }
-  .item-mt6-div2 {
-    margin-top: 21px;
-    margin-left: -50px;
-  }
-}
-</style>
-<style lang="less">
-.add-new-periods {
   .ivu-form-item-content {
-    margin-left: 0 !important;
     margin-left: 0 !important;
   }
   .data-grid-item__content,
@@ -605,10 +550,8 @@ export default class AddPeriods extends Vue {
     display: flex;
     align-items: center;
   }
-  .add-periods {
-    .ivu-form-item {
-      margin-bottom: 16px;
-    }
+  .ivu-form-item {
+    margin-bottom: 0px;
   }
 }
 </style>
