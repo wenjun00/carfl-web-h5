@@ -691,7 +691,6 @@ export default class ProdConfig extends Page {
    * 树形结构 新增产品系列
    */
   addSericeFun() {
-<<<<<<< HEAD
     if(this.scopes){
         if(this.scopes[0].flag == "产品系列"){
             this.$Message.error("温馨提示：产品系列中只能添加产品！");
@@ -702,10 +701,7 @@ export default class ProdConfig extends Page {
            this.addSericeModal = true;
         }
     }
-=======
-    // console.log(this.scopes)
-  }
->>>>>>> dev
+
   /**
    * 点击新增产品系列确认按钮
    */
