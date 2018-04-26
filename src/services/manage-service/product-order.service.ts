@@ -82,6 +82,7 @@ export class ProductOrderService {
   /**
    * 创建融资租赁订单
    */
+  @Debounce(1000)
   saveFinanceApplyInfo(data) {
     return this.netService.send({
       server: manageService.productOrderController.saveFinanceApplyInfo,
