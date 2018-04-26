@@ -2,7 +2,7 @@ import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
-
+import {FilterService} from '~/utils/filter.service'
 export class AssessMentApplyService {
     @Inject(NetService)
     private netService: NetService
@@ -48,10 +48,22 @@ export class AssessMentApplyService {
    /**
    *  评估申请 查看详情
    */
-  findOrderInfoByOrderNumber(data,page){
+  findOrderInfoByOrderNumber(assessmentNo){
     return this.netService.send({
       server: manageService.assessmentapply.findOrderInfoByOrderNumber,
+      data: {
+          assessmentNo
+      },
+    })
+  }
+   /**
+   *  评估申请撤回
+   */
+  withdrawStatus(data){
+    return this.netService.send({
+      server: manageService.assessmentapply.withdrawStatus,
       data: data,
     })
   }
+
 }

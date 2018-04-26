@@ -21,7 +21,7 @@ export default {
     action: 'orderPoolSearch',
     type: requestType.Get
   },
-  /**
+  /** 
    *  更改订单状态
    */
   updateOrderStatus:{
@@ -39,7 +39,7 @@ export default {
     action: 'orderBasicSearch',
     type: requestType.Get
   },
-
+ 
     /**
    *  评估申请 查看详情
    */
@@ -48,6 +48,17 @@ export default {
     controller: CONTROLLER,
     action: 'findOrderInfoByOrderNumber',
     type: requestType.Get
+  },
+   /**
+   *  评估申请撤回
+   */
+  withdrawStatus:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'withdrawStatus',
+    type: requestType.Get
   }
+
+
 
 }

@@ -66,6 +66,11 @@
               },
               style: {
                 color: '#265EA2'
+              },
+               on: {
+                click: () => {
+                  this.receive(row)
+                }
               }
             },
             '领取'
@@ -143,6 +148,18 @@
         minWidth: this.$common.getColumnWidth(3),
         align: 'center'
       }]
+       /**
+   *  领取
+   */
+    receive(row) {
+        this.$Modal.confirm({
+        title: '提示',
+        content: '确定领取至“押品评估列表”？',
+        onOk: () => {
+            console.log(row)
+        }
+        })
+    }
 
     mounted() {
       this.dataSet = [{

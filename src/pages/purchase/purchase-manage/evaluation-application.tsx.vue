@@ -1,5 +1,5 @@
 <!--评估申请-->
-<template>
+<template> 
     <section class="page evaluation-application">
         <page-header title="评估申请" hidden-print>
             <i-button type="text">新建申请</i-button>
@@ -16,18 +16,17 @@
                     <i-input placeholder="请输入客户姓名" v-model="applicationModel.ownerName"></i-input>
                 </i-form-item>
                 <i-form-item prop="isSubmit">
-                    <i-checkbox v-model="applicationModel.isSubmit">包含已提交</i-checkbox>
+                    <i-checkbox v-model="whetherInclude">包含已提交</i-checkbox>
                 </i-form-item>
             </template>
-        </data-form>
+        </data-form> 
         <data-box :columns="applicationColumns" :data="dataSet" :page="pageService"></data-box>
 
         <template>
-            <i-modal v-model="applicationModal" title="查看详情" class="apply-for-application">
+            <i-modal  width="680" v-model="applicationModal" title="查看详情" class="apply-for-application">
                 <apply-for-application ref="apply-for-application"></apply-for-application>
                 <div slot="footer">
-                    <i-button class="Ghost" @click="applicationModal=false">取消</i-button>
-                    <i-button class="blueButton" @click="applicationModal">确定</i-button>
+                    <i-button size="large" type="ghost"  @click="applicationModal=false">关闭</i-button>
                 </div>
             </i-modal>
         </template>
@@ -47,13 +46,13 @@ import { PageService } from '~/utils/page.service'
 import { Button } from 'iview'
 import { FilterService } from '~/utils/filter.service'
 import { AssessMentApplyService } from '~/services/manage-service/assess-ment-apply.service'
-import applyForApplication from '~/components/purchase-manage/apply-for-application.vue'
+import ApplyForApplication from '~/components/purchase-manage/apply-for-application.vue'
 import { Modal } from 'iview'
 
 @Layout('workspace')
 @Component({
   components: {
-    applyForApplication
+    ApplyForApplication
   }
 })
 export default class EvaluationApplication extends Page {
@@ -61,6 +60,7 @@ export default class EvaluationApplication extends Page {
   @Dependencies(AssessMentApplyService)
   private assessMentApplyService: AssessMentApplyService
   private applicationModal: Boolean = false
+  private whetherInclude: Boolean = false;
   private dataSet: Array<any> = []
   private applicationModel: any = {
     carParams: '', //品牌系列
@@ -74,7 +74,7 @@ export default class EvaluationApplication extends Page {
       title: '操作',
       align: 'center',
       fixed: 'left',
-      minWidth: this.$common.getColumnWidth(10),
+      minWidth: this.$common.getColumnWidth(4),
       render: (h, { row }) => {
         // 1187 (待提交), 1189(待領取), 1190(待评估), 1191(已评估)
         return (
@@ -101,21 +101,13 @@ export default class EvaluationApplication extends Page {
             <i-button
               v-show={[1189, 1190, 1191].includes(row.assessmentStatus)}
               type="text"
-              onClick={() => this.detailsData(row)}
+              onClick={() => this.getDetailsList(row)}
             >
               详情
             </i-button>
             <i-button  type="text"
-            v-show={row.assessmentStatus === 1189}
-              onClick={() =>{
-                      this.$Modal.confirm({
-                        title: '提示',
-                        content: '是否确定撤回评估申请？撤回后可重新编辑并提交。',
-                        onOk: () => {
-                          this.withdrawRow(row);
-                        },
-                      });
-                    }}
+            // v-show={row.assessmentStatus === 1189}
+             onClick={() => this.getWithdrawRow(row)}
             >
               撤回
             </i-button>
@@ -232,12 +224,8 @@ export default class EvaluationApplication extends Page {
   /**
    *评估申请订单查询
    */
-  getApplicationList() {
-    if (this.applicationModel.isSubmit == '1') {
-      this.applicationModel.isSubmit = '1'
-    } else {
-      this.applicationModel.isSubmit = '0'
-    }
+  getApplicationList() { 
+   this.applicationModel.isSubmit = this.whetherInclude  ?'1' :'0'
     this.assessMentApplyService
       .orderSearch(this.applicationModel, this.pageService)
       .subscribe(
@@ -250,27 +238,54 @@ export default class EvaluationApplication extends Page {
       )
   }
   /**
-   * 操作（详情）
+   * 评估申请查看详情
    */
-  detailsData(row) {
+  getDetailsList({assessmentNo}) {
     this.applicationModal = true
-    this.assessmentNo = row.assessmentNo
-    let applyForApplication: any = this.$refs['apply-for-application']
-    applyForApplication.getData(this.assessmentNo)
+    let applyForApplication = this.$refs['apply-for-application'] as ApplyForApplication
+    applyForApplication.getApplicationDetail(assessmentNo)
   }
+
    /**
-     * 操作（删除）
+     * 评估申请删除
      */
     deleteRow(row) {
      
     }
   /**
-   * 操作(撤回)
+   * 评估申请撤回
    */
-   withdrawRow(row){
+   getWithdrawRow(row){
+      this.$Modal.confirm({
+      title: '提示',
+      content: '是否确定撤回评估申请？撤回后可重新编辑并提交。',
+      onOk: () => {
+        console.log(row)
+        console.log(row.orderId)
+        console.log(row.assessmentStatus)
+       this.assessMentApplyService.withdrawStatus(
+           {
+            orderId:row.orderId,
+            status: row.assessmentStatus
+            }
+        )
+        .subscribe(
+        data => {
+        console.log(data)
+        console.log('撤回')
+        },
+        ({ msg }) => {
+        this.$Message.error(msg)
+        }
+        )
 
+
+       
+            
+      }
+    })
    }
-
+     
   mounted() {
     this.getApplicationList()
   }
@@ -281,10 +296,10 @@ export default class EvaluationApplication extends Page {
 .page.evaluation-application {
 }
 </style>
-<style lang="less">
+<style lang="less" scoped>
 .apply-for-application {
-  .ivu-modal {
-    width: 680px!important;
-  }
+ .ivu-modal-footer{
+    text-align: center;
+ }
 }
 </style>

@@ -16,13 +16,21 @@
                 <i-form-item prop="VIN" label="车架号">
                     <i-input placeholder="请输入车架号" v-model="treasuryModel.VIN"></i-input>
                 </i-form-item>
-                 <i-form-item prop="containsSubmitted">
+                <i-form-item prop="containsSubmitted">
                     <i-checkbox v-model="treasuryModel.containsSubmitted">包含已提交</i-checkbox>
                 </i-form-item>
             </template>
         </data-form>
         <data-box :columns="treasuryColumns" :data="dataSet" :page="pageService"></data-box>
 
+          <template>
+            <i-modal  width="680" v-model="inventoryModal" title="押品入库" class="mortgage-inventory">
+                <mortgage-inventory ref="mortgage-inventory"></mortgage-inventory>
+                <div slot="footer">
+                    <i-button size="large" type="ghost"  @click="inventoryModal=false">关闭</i-button>
+                </div>
+            </i-modal>
+        </template>
     </section>
 </template>
 
@@ -33,21 +41,25 @@ import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import { Button } from 'iview'
+import MortgageInventory from '~/components/base-data/mortgage-inventory.vue'
 @Layout('workspace')
 @Component({
-  components: {}
+  components: {
+    MortgageInventory
+  }
 })
 export default class EvaluationTaskPool extends Page {
   @Dependencies(PageService) private pageService: PageService
   private dataSet: Array<any> = []
+  private inventoryModal:Boolean = false
   private treasuryModel: any = {
-    orderNumber: '',     // 订单编号
-    brandModel: '',      // 品牌系列
-    busNumber: '',       // 车牌号码
-    VIN: '',           // 车架号
-    containsSubmitted:false,  //包含已入库
+    orderNumber: '', // 订单编号
+    brandModel: '', // 品牌系列
+    busNumber: '', // 车牌号码
+    VIN: '', // 车架号
+    containsSubmitted: false //包含已入库
   }
- private treasuryColumns: any = [
+  private treasuryColumns: any = [
     {
       title: '操作',
       align: 'center',
@@ -62,6 +74,11 @@ export default class EvaluationTaskPool extends Page {
               },
               style: {
                 color: '#265EA2'
+              },
+              on: {
+                click: () => {
+                  this.getTreasuryStorage(row)
+                }
               }
             },
             '入库'
@@ -194,6 +211,14 @@ export default class EvaluationTaskPool extends Page {
       }
     ]
   }
+
+  /**
+   *  是否入库
+   */
+ getTreasuryStorage(row){
+    this.inventoryModal = true
+ }
+
 
   /**
    *  领取
