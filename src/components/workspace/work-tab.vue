@@ -80,14 +80,15 @@ export default class WorkTab extends Vue {
   @Watch("currentPage")
   onPageChanged(value: string) {
     let components = <Array<Vue>>this.$refs["pages"];
-
     let getTargetComponent = () =>
       components.find(
-        x =>
-          x.$options.name ===
+        x =>{
+          return  x.$options.name ===
           this.getComponentName({
             path: value
           })
+        }
+         
       );
 
     let component = getTargetComponent();
