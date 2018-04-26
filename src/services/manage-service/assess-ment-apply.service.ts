@@ -75,4 +75,31 @@ export class AssessMentApplyService {
       data: data
     })
   }
+  /**
+   * 新增/修改车辆评估基本信息
+   */
+  saveAssessmentBasicInfo(data){
+    return this.netService.send({
+      server: manageService.assessmentapply.saveAssessmentBasicInfo,
+      data: data
+    })
+  }
+  /**
+   * 终止评估
+   */
+  terminationStatus(data){
+    return this.netService.send({
+      server: manageService.assessmentapply.terminationStatus,
+      data: data
+    })
+  }
+  /**
+   * 退件
+   */
+  backPieceStatus(data){
+    return this.netService.send({
+      server: manageService.assessmentapply.backPieceStatus,
+      data: data
+    })
+  }
 }

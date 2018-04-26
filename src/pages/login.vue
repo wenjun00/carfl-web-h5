@@ -48,188 +48,180 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import {
-    LoginService
-  } from "~/services/manage-service/login.service";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    Action
-  } from "vuex-class";
-  import AppConfig from "~/config/app.config";
-  import Register from "~/components/common/register.vue";
-  import {
-    DataDictService
-  } from "~/services/manage-service/data-dict.service";
-  import {
-    StorageService
-  } from "~/utils/storage.service";
+import Vue from "vue";
+import Component from "vue-class-component";
+import { LoginService } from "~/services/manage-service/login.service";
+import { Dependencies } from "~/core/decorator";
+import { Action } from "vuex-class";
+import AppConfig from "~/config/app.config";
+import Register from "~/components/common/register.vue";
+import { StorageService } from "~/utils/storage.service";
 
-  @Component({
-    components: {
-      Register
+@Component({
+  components: {
+    Register
+  }
+})
+export default class Login extends Vue {
+  @Dependencies(LoginService) private loginService: LoginService;
+  @Action("updateUserLoginData") updateUserLoginData;
+
+  private loginRule: Object = {};
+  private loginModel: any = {
+    username: "",
+    password: "",
+    remember: false
+  };
+  private registerModal: Boolean = false;
+
+  mounted() {
+    if (StorageService.getItem("account") !== null) {
+      this.loginModel.username = StorageService.getItem("account").username;
+      this.loginModel.password = StorageService.getItem("account").password;
+      this.loginModel.remember = true;
     }
-  })
-  export default class Login extends Vue {
-    @Dependencies(LoginService) private loginService: LoginService;
-    @Dependencies(DataDictService) private dataDictService: DataDictService;
-    @Action("updateUserLoginData") updateUserLoginData;
+  }
+  created() {
+    // 设置表单数据
+    // this.loginModel = {};
 
-    private loginRule: Object = {};
-    private loginModel: any = {
-      username: "",
-      password: "",
-      remember: false
-    };
-    private registerModal: Boolean = false;
-
-    mounted(){
-      if(StorageService.getItem('account') !== null){
-        this.loginModel.username = StorageService.getItem('account').username
-        this.loginModel.password = StorageService.getItem('account').password
-        this.loginModel.remember = true
-      }
-    }
-    created() {
-      // 设置表单数据
-      // this.loginModel = {};
-
-      // 设置验证规则
-      this.loginRule = {
-        username: [{
+    // 设置验证规则
+    this.loginRule = {
+      username: [
+        {
           required: true,
           message: "用户名不能为空",
           trigger: "blur"
-        }],
-        password: [{
+        }
+      ],
+      password: [
+        {
           required: true,
           message: "密码不能为空",
           trigger: "blur"
-        }]
-      };
-    }
-
-    /**
-     * 取消注册
-     */
-    cancelRegister() {
-      this.registerModal = false;
-      let _register: any = this.$refs["register"];
-      _register.resetForm();
-    }
-
-    /**
-     * 确定注册
-     */
-    confirmRegister() {
-      let _register: any = this.$refs["register"];
-      _register.registerClick();
-    }
-    /**
-     * 提交登录表单
-     */
-    submitForm() {
-      let loginForm: any = this.$refs["login-form"];
-      loginForm.validate(success => {
-        if (!success) {
-          return;
         }
-        this.loginService
-          .login({
-            username: this.loginModel.username,
-            password: this.loginModel.password,
-            loginDevice: 414,
-            loginType: 411
-          })
-          .subscribe(
-            async data => {
-              // 更新基础数据
-              await this.updateUserLoginData(data);
-              // 进入首页
-              this.$router.push("/home");
-              if (this.loginModel.remember) {
-                StorageService.setItem("account", {
-                  username: this.loginModel.username,
-                  password: this.loginModel.password,
-                  timing: new Date(+new Date() + 1000 * 60 * 60 * 24 * 7).valueOf() // 默认七天过期
-                });
-              } else {
-                StorageService.removeItem("account");
-              }
-            },
-            ({
-              msg
-            }) => {
-              this.$Message.error(msg);
-            }
-          );
-      });
-    }
-    /**
-     * 如果账号重新输入，密码清空、验证码刷新、记住账号取消
-     */
-    checkAccount() {
-      if (!this.loginModel.username) {
-        console.log(878);
-        this.loginModel.password = "";
-        this.loginModel.remember = false;
-        // this.$refs['verify-code'].reset()
-      }
-    }
+      ]
+    };
   }
 
+  /**
+   * 取消注册
+   */
+  cancelRegister() {
+    this.registerModal = false;
+    let _register: any = this.$refs["register"];
+    _register.resetForm();
+  }
+
+  /**
+   * 确定注册
+   */
+  confirmRegister() {
+    let _register: any = this.$refs["register"];
+    _register.registerClick();
+  }
+  /**
+   * 提交登录表单
+   */
+  submitForm() {
+    let loginForm: any = this.$refs["login-form"];
+    loginForm.validate(success => {
+      if (!success) {
+        return;
+      }
+
+      this.loginService
+        .login({
+          username: this.loginModel.username,
+          password: this.loginModel.password,
+          loginDevice: 414,
+          loginType: 411
+        })
+        .subscribe(
+          async data => {
+            // 更新基础数据
+            await this.updateUserLoginData(data);
+            // 进入首页
+            this.$router.push("/home");
+
+            if (this.loginModel.remember) {
+              StorageService.setItem("account", {
+                username: this.loginModel.username,
+                password: this.loginModel.password,
+                timing: new Date(
+                  +new Date() + 1000 * 60 * 60 * 24 * 7
+                ).valueOf() // 默认七天过期
+              });
+            } else {
+              StorageService.removeItem("account");
+            }
+          },
+          ({ msg }) => {
+            this.$Message.error(msg);
+          }
+        );
+    });
+  }
+  /**
+   * 如果账号重新输入，密码清空、验证码刷新、记住账号取消
+   */
+  checkAccount() {
+    if (!this.loginModel.username) {
+      console.log(878);
+      this.loginModel.password = "";
+      this.loginModel.remember = false;
+      // this.$refs['verify-code'].reset()
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
-  .calculate {
-    .ivu-modal-footer {
-      display: none !important;
-    }
+.calculate {
+  .ivu-modal-footer {
+    display: none !important;
   }
+}
 
-  .full-absolute {
-    background: #265ea3;
-  }
+.full-absolute {
+  background: #265ea3;
+}
 
-  .login-bg {
-    width: 500px;
-    height: 500px;
-    background: url("/static/images/common/login-bg.png");
-    position: absolute;
-    left: 140px;
-    background-repeat: no-repeat;
-    background-size: 500px 500px;
-  }
+.login-bg {
+  width: 500px;
+  height: 500px;
+  background: url("/static/images/common/login-bg.png");
+  position: absolute;
+  left: 140px;
+  background-repeat: no-repeat;
+  background-size: 500px 500px;
+}
 
-  // .login-form {
-  //   width: 270px;
-  //   position: relative;
-  //   left: 55px;
-  //   position: absolute;
-  // }
-  .submit_btn {
-    width: 270px;
-    height: 40px;
-    background: #265ea2;
-    color: #fff;
-  }
+// .login-form {
+//   width: 270px;
+//   position: relative;
+//   left: 55px;
+//   position: absolute;
+// }
+.submit_btn {
+  width: 270px;
+  height: 40px;
+  background: #265ea2;
+  color: #fff;
+}
 
-  .submit_btn:hover {
-    background: #1d4f8b;
-    color: #fff;
-  }
+.submit_btn:hover {
+  background: #1d4f8b;
+  color: #fff;
+}
 
-  .loginContainer {
-    border: 1px solid #dddddd;
-    background: white;
-    height: 409px;
-    width: 378px;
-    padding-top: 50px;
-    position: relative;
-    left: 350px;
-    bottom: 20px;
-  }
-
+.loginContainer {
+  border: 1px solid #dddddd;
+  background: white;
+  height: 409px;
+  width: 378px;
+  padding-top: 50px;
+  position: relative;
+  left: 350px;
+  bottom: 20px;
+}
 </style>

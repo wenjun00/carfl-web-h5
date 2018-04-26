@@ -107,7 +107,7 @@
           </i-select>
         </td>
         <td>
-          <i-input style="display:inline-block;width:30%;margin-right:10px" v-model="v.collectMoneyAmount" @on-blur="inputBlur" readonly></i-input>
+          <i-input-number style="display:inline-block;width:30%;margin-right:10px" v-model="v.collectMoneyAmount" @on-blur="inputBlur" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
           <i-button class="blueButton">确认划扣</i-button>
         </td>
         <td>
@@ -230,7 +230,7 @@ export default class ConfirmRepayment extends Vue {
   addObj() {
     console.log("add");
     this.collectMoneyDetails.push({
-      collectMoneyAmount: "",
+      collectMoneyAmount: 0,
       collectMoneyChannel: "",
       collectItem: ""
     });
@@ -251,7 +251,7 @@ export default class ConfirmRepayment extends Vue {
   inputBlur() {
     let sum: any = 0;
     this.collectMoneyDetails.forEach(v => {
-      sum = sum + (Number(v.collectMoneyAmount) || 0);
+      sum = sum + v.collectMoneyAmount;
     });
     console.log(sum);
     this.collectMoneySum = sum;

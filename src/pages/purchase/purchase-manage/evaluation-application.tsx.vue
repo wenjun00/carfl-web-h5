@@ -1,5 +1,5 @@
 <!--评估申请-->
-<template> 
+<template>
     <section class="page evaluation-application">
         <page-header title="评估申请" hidden-print>
             <i-button type="text">新建申请</i-button>
@@ -19,7 +19,7 @@
                     <i-checkbox v-model="whetherInclude">包含已提交</i-checkbox>
                 </i-form-item>
             </template>
-        </data-form> 
+        </data-form>
         <data-box :columns="applicationColumns" :data="dataSet" :page="pageService"></data-box>
 
         <template>
@@ -34,7 +34,7 @@
 </template>
 
 
-     
+
 
 
 <script lang="tsx">
@@ -85,7 +85,7 @@ export default class EvaluationApplication extends Page {
               编辑
             </i-button>
             <i-button  type="text"
-             v-show={row.assessmentStatus === 1189} 
+             v-show={row.assessmentStatus === 1189}
              onClick={() =>{
                       this.$Modal.confirm({
                         title: '提示',
@@ -224,7 +224,7 @@ export default class EvaluationApplication extends Page {
   /**
    *评估申请订单查询
    */
-  getApplicationList() { 
+  getApplicationList() {
    this.applicationModel.isSubmit = this.whetherInclude  ?'1' :'0'
     this.assessMentApplyService
       .orderSearch(this.applicationModel, this.pageService)
@@ -250,7 +250,7 @@ export default class EvaluationApplication extends Page {
      * 评估申请删除
      */
     deleteRow(row) {
-     
+
     }
   /**
    * 评估申请撤回
@@ -275,14 +275,10 @@ export default class EvaluationApplication extends Page {
         this.$Message.error(msg)
         }
         )
-
-
-       
-            
       }
     })
    }
-     
+
   mounted() {
     this.getApplicationList()
   }

@@ -14,7 +14,11 @@ const routes = [
   {
     path: '/',
     name: 'login',
-    component: Login
+    component: Login,
+    beforeEnter: (to, from, next) => {
+      store.dispatch('clearUserLoginData')
+      next()
+    }
   }, {
     path: '/home',
     name: 'index',
