@@ -1,5 +1,5 @@
 <template>
-  <section class="component add-collateral">
+  <section class="component add-collateral-details">
     <!-- <span>选购信息</span> -->
     <i-row class="data-form">
       <i-col>
@@ -8,11 +8,10 @@
       </i-col>
     </i-row>
     <i-form  :model="customerModel" ref="form-item" :label-width="90">
-
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
           <i-form-item label="所选车辆">
-            <i-input disabled v-model="customerModel.carAllName"></i-input>
+            <i-input disabled v-model="customerModel.carAllName" ></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="8">
@@ -63,7 +62,7 @@
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
           <i-form-item label="初登日期" prop="firstTime">
-            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.firstTime"></i-date-picker>
+            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.firstTime" readonly></i-date-picker>
           </i-form-item>
         </i-col>
         <i-col :span="8">
@@ -76,12 +75,12 @@
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
           <i-form-item label="出厂日期" prop="factoryTime">
-            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.factoryTime"></i-date-picker>
+            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.factoryTime" readonly></i-date-picker>
           </i-form-item>
         </i-col>
         <i-col :span="15">
           <i-form-item label="行驶里程" prop="mileage">
-            <i-input  v-model="customerModel.mileage"></i-input>
+            <i-input  v-model="customerModel.mileage" readonly></i-input>
             <span>万公里</span>
           </i-form-item>
         </i-col>
@@ -90,12 +89,12 @@
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
           <i-form-item label="行驶证号" prop="drivingNo">
-            <i-input v-model="customerModel.drivingNo"></i-input>
+            <i-input v-model="customerModel.drivingNo" readonly></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="15">
           <i-form-item label="过户次数" prop="transferNo">
-            <i-input v-model="customerModel.transferNo"></i-input>
+            <i-input v-model="customerModel.transferNo" readonly></i-input>
             <span>次</span>
           </i-form-item>
         </i-col>
@@ -104,14 +103,14 @@
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
           <i-form-item label="车辆用途" prop="carPurpose">
-            <i-select v-model="customerModel.carPurpose">
+            <i-select v-model="customerModel.carPurpose" disabled>
               <i-option v-for="{value,label} in $dict.getDictData('0447')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="8">
           <i-form-item label="变速箱形式" prop="transmission">
-            <i-select v-model="customerModel.transmission">
+            <i-select v-model="customerModel.transmission" disabled>
               <i-option v-for="{value,label} in $dict.getDictData('0448')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
@@ -121,14 +120,14 @@
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
           <i-form-item label="驱动形式" prop="driver">
-            <i-select v-model="customerModel.driver">
+            <i-select v-model="customerModel.driver" disabled>
               <i-option v-for="{value,label} in $dict.getDictData('0449')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="8">
           <i-form-item label="排量" prop="displacement">
-            <i-input v-model="customerModel.displacement"></i-input>
+            <i-input v-model="customerModel.displacement" readonly></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -144,8 +143,8 @@
         <i-col v-for="item in appearance" :key="item.id">
           <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
-              <i-radio :label="1">正常</i-radio>
-              <i-radio :label="0">异常</i-radio>
+              <i-radio :label="1" disabled>正常</i-radio>
+              <i-radio :label="0" disabled>异常</i-radio>
             </i-radio-group>
           </i-form-item>
         </i-col>
@@ -162,8 +161,8 @@
         <i-col v-for="item in interiorInspection" :key="item.id">
           <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
-              <i-radio :label="1">正常</i-radio>
-              <i-radio :label="0">异常</i-radio>
+              <i-radio :label="1" disabled>正常</i-radio>
+              <i-radio :label="0" disabled>异常</i-radio>
             </i-radio-group>
           </i-form-item>
         </i-col>
@@ -180,8 +179,8 @@
         <i-col v-for="item in engineRoom" :key="item.id">
           <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
-              <i-radio :label="1">正常</i-radio>
-              <i-radio :label="0">异常</i-radio>
+              <i-radio :label="1" disabled>正常</i-radio>
+              <i-radio :label="0" disabled>异常</i-radio>
             </i-radio-group>
           </i-form-item>
         </i-col>
@@ -196,15 +195,15 @@
       </i-row>
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
-          <i-form-item label="车况" prop="carSituation">
-            <i-select v-model="customerModel.carSituation">
+          <i-form-item label="车况" prop="carSituation" >
+            <i-select v-model="customerModel.carSituation" disabled>
               <i-option v-for="{value,label} in $dict.getDictData('0450')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="15">
           <i-form-item label="估价" prop="evaluation">
-            <i-input v-model="customerModel.evaluation"></i-input>
+            <i-input v-model="customerModel.evaluation" readonly></i-input>
             <span>万元</span>
           </i-form-item>
         </i-col>
@@ -213,7 +212,7 @@
       <i-row>
         <i-col>
           <i-form-item label="备注" class="large">
-            <i-input type="textarea" v-model="customerModel.remarks" :rows="4" ></i-input>
+            <i-input type="textarea" v-model="customerModel.remarks" :rows="4" readonly></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -242,21 +241,27 @@
       UploadVoucher
     }
   })
-  export default class AddCollateral extends Vue {
+  export default class AddCollateralDetails extends Vue {
     @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
     private customerModel: any = {}
 
     /**
      *  获取详情数据
      */
-    getDetailsData(){
-
+    getDetailsData(row){
+      console.log(111111111111)
+      this.assessMentApplyService.findBasicInfoByOrderNumber({assessmentNo:row.assessmentNo})
+        .subscribe( data => {
+          console.log(data)
+        },({msg}) => {
+          this.$Message.error(msg)
+        })
     }
   }
 </script>
 
 <style lang="less" scoped>
-  .component.add-collateral{
+  .component.add-collateral-details{
     .data-form{
       margin-top:5px;
       .data-form-item {

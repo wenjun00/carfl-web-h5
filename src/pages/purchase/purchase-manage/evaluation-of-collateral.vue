@@ -112,7 +112,7 @@ export default class EvaluationOfCollateral extends Page {
                 },
                 on: {
                   click: () => {
-                    this.collateralClickDetails()
+                    this.collateralClickDetails(row)
                   }
                 }
               },
@@ -292,10 +292,10 @@ export default class EvaluationOfCollateral extends Page {
   /**
    *  查看详情
    */
-  collateralClickDetails(){
+  collateralClickDetails(row){
     this.detailsModal = true
     let AddCollateralDetails = this.$refs['add-collateral-details'] as AddCollateralDetails
-    AddCollateralDetails.getDetailsData()
+    AddCollateralDetails.getDetailsData(row)
   }
   canselDetails(){
     this.detailsModal = false

@@ -102,4 +102,13 @@ export class AssessMentApplyService {
       data: data
     })
   }
+  /**
+   * 根据订单编号查询订单基础信息详情
+   */
+  findBasicInfoByOrderNumber(data){
+    return this.netService.send({
+      server: manageService.assessmentapply.findBasicInfoByOrderNumber,
+      data: data
+    })
+  }
 }
