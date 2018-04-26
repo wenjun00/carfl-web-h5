@@ -34,7 +34,7 @@
         </template>
 
          <template>
-            <i-modal  width="780" v-model="seeInventoryModal" title="抵押入库" class="see-mortgage-inventory">
+            <i-modal  width="780" v-model="seeInventoryModal" title="入库查看" class="see-mortgage-inventory">
                 <see-mortgage-inventory ref="see-mortgage-inventory"></see-mortgage-inventory>
                 <div slot="footer">
                      <i-button size="large" type="ghost" class="Ghost"  @click="seeInventoryModal=false">关闭</i-button>

@@ -92,7 +92,7 @@
                 <i-col :span="8">
                     <i-form-item label="车况" :label-width="90">
                         <i-select placeholder="请选择车况" disabled>
-                            <i-option></i-option>
+                            <!-- <i-option></i-option> -->
                         </i-select>
                     </i-form-item>
                 </i-col>
@@ -113,7 +113,7 @@
                 <i-col :span="24">
                     <i-form-item label="停放状态" :label-width="90">
                         <i-select placeholder="请选择停放状态" disabled>
-                            <i-option></i-option>
+                            <!-- <i-option></i-option> -->
                         </i-select>
                     </i-form-item>
                 </i-col>
@@ -168,7 +168,7 @@ export default class addPeople extends Vue {}
     .data-form-item {
       width: 7px;
       height: 25px;
-      background: #8c9d69;
+      background: #1d4f88;
       display: inline-block;
       margin-right: 6px;
       position: relative;

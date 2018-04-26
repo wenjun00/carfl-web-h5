@@ -16,6 +16,16 @@
       </template>
     </data-form>
     <data-box :columns="personalCustomerColumns" :data="dataSet" :page="pageService"></data-box>
+
+      <template>
+            <i-modal  width="780" v-model="personalModal" title="客户详情" class="get-formal-customer">
+                <get-formal-customer ref="get-formal-customer"></get-formal-customer>
+                <div slot="footer">
+                     <i-button size="large" type="ghost" class="Ghost"  @click="personalModal=false">取消</i-button>
+                    <i-button size="large"  type="primary" class="blueButton"  @click="personalModal=false">加入黑名单</i-button>
+                </div>
+            </i-modal>
+        </template>
   </section>
 </template>
 
@@ -25,9 +35,12 @@
   import { Dependencies } from "~/core/decorator";
   import { Layout } from "~/core/decorator";
   import { PageService } from "~/utils/page.service";
+  import GetFormalCustomer from '~/components/purchase-manage/get-formal-customer.vue'
   @Layout("workspace")
   @Component({
-    components: {}
+    components: {
+        GetFormalCustomer
+    }
   })
   export default class PersonalCustomer extends Page{
     @Dependencies(PageService) private pageService: PageService;
@@ -37,6 +50,8 @@
       customerName: '', // 手机号码
       startTime: '', // 创建起止时间
     }
+
+    private personalModal:Boolean = false
     private personalCustomerColumns:any =  [{
       title: '操作',
       align: 'center',
@@ -52,6 +67,11 @@
               },
               style: {
                 color: '#265EA2'
+              },
+              on: {
+                click: () => {
+                  this.getFormalCustomerList(row)
+                }
               }
             },
             '客户详情'
@@ -129,6 +149,14 @@
         minWidth: this.$common.getColumnWidth(3),
         align: 'center'
       }]
+/**
+ * 个人正式账户客户详情
+ * 
+ */
+    getFormalCustomerList(row){
+        this.personalModal = true
+    }
+
 
     mounted() {
       this.dataSet = [{

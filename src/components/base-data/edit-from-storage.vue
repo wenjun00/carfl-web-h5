@@ -97,7 +97,7 @@
                 <i-col :span="8">
                     <i-form-item label="GPS状态" :label-width="90">
                          <i-select placeholder="请选择状态">
-                            <i-option></i-option>
+                            <!-- <i-option></i-option> -->
                         </i-select>
                     </i-form-item>
                 </i-col>
@@ -105,7 +105,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
                     <i-form-item label="车况" :label-width="90">
-                        <i-input style="width:100%" type="textarea"></i-input>
+                        <i-input style="width:485px" type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -119,14 +119,14 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
                     <i-form-item label="车况说明" :label-width="90">
-                        <i-input style="width:100%" type="textarea"></i-input>
+                        <i-input style="width:485px" type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
                     <i-form-item label="情况描述" :label-width="90">
-                        <i-input style="width:100%" type="textarea"></i-input>
+                        <i-input style="width:485px" type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -276,7 +276,7 @@ export default class addPeople extends Vue {}
     .data-form-item {
       width: 7px;
       height: 25px;
-      background: #8c9d69;
+      background: #1d4f88;
       display: inline-block;
       margin-right: 6px;
       position: relative;

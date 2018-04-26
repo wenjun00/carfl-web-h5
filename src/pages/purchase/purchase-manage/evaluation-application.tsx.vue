@@ -106,7 +106,7 @@ export default class EvaluationApplication extends Page {
               详情
             </i-button>
             <i-button  type="text"
-            // v-show={row.assessmentStatus === 1189}
+            v-show={row.assessmentStatus === 1189}
              onClick={() => this.getWithdrawRow(row)}
             >
               撤回
@@ -260,9 +260,6 @@ export default class EvaluationApplication extends Page {
       title: '提示',
       content: '是否确定撤回评估申请？撤回后可重新编辑并提交。',
       onOk: () => {
-        console.log(row)
-        console.log(row.orderId)
-        console.log(row.assessmentStatus)
        this.assessMentApplyService.withdrawStatus(
            {
             orderId:row.orderId,
@@ -271,8 +268,8 @@ export default class EvaluationApplication extends Page {
         )
         .subscribe(
         data => {
-        console.log(data)
-        console.log('撤回')
+         this.$Message.success("撤回申请成功");
+         this.getApplicationList()
         },
         ({ msg }) => {
         this.$Message.error(msg)
