@@ -11,7 +11,7 @@
               <div class="data-form-item-add-wenjian" @click="addProductFun">
                 <svg-icon iconClass="tianjiawenjian"></svg-icon>
               </div>
-              <div class="data-form-item-add-wenjianjia" @click="addSericeFun">
+              <div class="data-form-item-add-wenjianjia" @click="addSericeModal = true;">
                 <svg-icon iconClass="tianjiawenjianjia"></svg-icon>
               </div>
             </div>
@@ -697,15 +697,6 @@ export default class ProdConfig extends Page {
    */
   addSericeFun() {
     // console.log(this.scopes)
-    if (this.scopes) {
-      if (this.scopes[0].flag == "产品系列") {
-        this.$Message.error("温馨提示：产品系列中只能添加产品！");
-      } else if (this.scopes[0].flag == "产品") {
-        this.$Message.error("温馨提示：不能在产品中添加产品系列！");
-      }
-    } else {
-      this.addSericeModal = true;
-    }
   }
   /**
    * 点击新增产品系列确认按钮

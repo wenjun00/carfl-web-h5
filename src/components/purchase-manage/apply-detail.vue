@@ -2,8 +2,8 @@
 <template>
   <section class="component apply-detail">
     <!--付款申请-->
-    <i-row>
-      <i-form :rules="applyRules"  :label-width="110" class="item-kehu-form">
+    <i-form :rules="applyRules" :label-width="110" class="item-kehu-form">
+      <i-row>
         <i-col :span="12">
           <i-form-item label="客户姓名">
             <i-input v-model="addNewApplyModal.name" disabled></i-input>
@@ -14,6 +14,8 @@
             <i-input v-model="refundType" disabled></i-input>
           </i-form-item>
         </i-col>
+      </i-row>
+      <i-row>
         <i-col :span="12">
           <i-form-item label="身份证号">
             <i-input v-model="addNewApplyModal.idCard" disabled></i-input>
@@ -24,19 +26,25 @@
             <i-input v-model="orderNumber" disabled></i-input>
           </i-form-item>
         </i-col>
+      </i-row>
+      <i-row>
         <i-col :span="24">
           <i-form-item label="备注">
             <i-input type="textarea" v-model="remark" disabled></i-input>
           </i-form-item>
         </i-col>
-      </i-form>
-      <span class="title">付款明细</span>
+      </i-row>
+    </i-form>
+    <i-card title="付款明细">
       <i-table :columns="columns1" :data="payDetail" :noDefaultRow="true"></i-table>
-      <span class="title">账户信息</span>
-      <i-table :columns="columns3" :data="accountDetail" ></i-table>
-      <span class="title">附件</span>
-      <upload-voucher  ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
-    </i-row>
+    </i-card>
+    <i-card title="账户信息">
+      <i-table :columns="columns3" :data="accountDetail"></i-table>
+    </i-card>
+    <i-card title="附件">
+      <upload-voucher ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
+    </i-card>
+
   </section>
 </template>
 
@@ -70,12 +78,12 @@ export default class ApplyDetail extends Vue {
   private refundType: String = "";
   private remark: String = "";
   private orderNumber: String = "";
-  private type:any="";
+  private type: any = "";
   private applyRules: any = {}
-  getparentData(val, row ,type) {
+  getparentData(val, row, type) {
     //   上传资料反显
-    this.type=type
-    let _uploadFodder:any = this.$refs['upload-voucher']
+    this.type = type
+    let _uploadFodder: any = this.$refs['upload-voucher']
     _uploadFodder.Reverse(val.applicationPhaseUploadResources)
     this.orderNumber = val.orderNumber; // 订单号
     this.addNewApplyModal.name = val.customerName; // 客户姓名
@@ -83,11 +91,11 @@ export default class ApplyDetail extends Vue {
     this.addNewApplyModal.idCard = val.idCard; // 证件号
     this.remark = val.remark;
     this.refundType = val.applicationType ? this.$dict.getDictName(val.applicationType) : ""; // 付款类型
-    this.accountDetail = val.personalBank||[]; // 账户信息
+    this.accountDetail = val.personalBank || []; // 账户信息
   }
 
   created() {
-    this.applyRules={
+    this.applyRules = {
       idCard: [{
         validator: this.$validator.idCard,
         trigger: "blur"
@@ -137,20 +145,5 @@ export default class ApplyDetail extends Vue {
 }
 </script>
 <style lang="less" scoped>
-    .title {
-      font-size: 14px;
-      font-weight: bold;
-    }
-    .demo-upload-list:hover .demo-upload-list-cover{
-        display: block;
-    }
-    .demo-upload-list-cover i{
-        color: #fff;
-        font-size: 20px;
-        cursor: pointer;
-        margin: 0 2px;
-    }
-    .item-kehu-form{
-      margin-top:20px;position:relative;right:20px;
-    }
+
 </style>
