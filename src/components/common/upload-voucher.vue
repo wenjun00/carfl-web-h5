@@ -19,7 +19,7 @@
       </div>
     </div>
     <template>
-      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
+      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload" :transfer="false">
         <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
       </i-modal>
     </template>

@@ -21,7 +21,7 @@ export default {
     action: 'orderPoolSearch',
     type: requestType.Get
   },
-  /** 
+  /**
    *  更改订单状态
    */
   updateOrderStatus:{
@@ -66,6 +66,32 @@ export default {
     controller: CONTROLLER,
     action: 'beginOrderAssess',
     type: requestType.Get
+  },
+  /**
+   * 新增/修改车辆评估基本信息
+   */
+  saveAssessmentBasicInfo:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveAssessmentBasicInfo',
+    type: requestType.Post
+  },
+  /**
+   * 终止评估
+   */
+  terminationStatus:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'terminationStatus',
+    type: requestType.Get
+  },
+  /**
+   * 退件
+   */
+  backPieceStatus:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'backPieceStatus',
+    type: requestType.Get
   }
-
 }

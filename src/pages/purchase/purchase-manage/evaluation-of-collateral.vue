@@ -17,14 +17,14 @@
         </data-form>
         <data-box :columns="collateralColumns" :data="dataSet" :page="pageService"></data-box>
         <template>
-          <i-modal v-model="assignModal"  title="新增评估" width="1000">
-            <add-collateral ref="add-collateral"></add-collateral>
+          <i-modal v-model="assignModal"  title="新增评估" width="780">
+            <add-collateral ref="add-collateral" @close="close"></add-collateral>
             <div slot="footer">
-              <i-button >终止评估</i-button>
-              <i-button >退件</i-button>
-              <i-button >取消</i-button>
-              <i-button type="primary">保存草稿</i-button>
-              <i-button type="primary">确定</i-button>
+              <i-button @click="terminationAssessment">终止评估</i-button>
+              <i-button @click="backPiece">退件</i-button>
+              <i-button @click="cansel">取消</i-button>
+              <!--<i-button type="primary">保存草稿</i-button>-->
+              <i-button type="primary" @click="definitiveAssessment">确定</i-button>
             </div>
           </i-modal>
         </template>
@@ -54,6 +54,8 @@ export default class EvaluationOfCollateral extends Page {
   private dataSet: Array<any> = []
   private status: Boolean = false
   private assignModal:Boolean = false
+  private orderId:any = '' //当前案件的订单ID
+  private assessmentStatus:any = ''//当前案件的状态
   private collateralModel: any = {
     carParams: '', //品牌系列
     carNo: '', // 车牌号码
@@ -237,14 +239,43 @@ export default class EvaluationOfCollateral extends Page {
         this.$Message.error(msg)
       })
   }
-
   /**
    *  评估弹窗
    */
-  collateralClick({assessmentNo}){
+  collateralClick(row){
     this.assignModal = true
     let AddCollateral = this.$refs['add-collateral'] as AddCollateral
-    AddCollateral.getBrash(assessmentNo)
+    AddCollateral.getBrash(row)
+  }
+  /**
+   *  确定新增评估
+   */
+  definitiveAssessment(){
+    let definitiveAssessment = this.$refs['add-collateral'] as AddCollateral
+    definitiveAssessment.trueAssessment()
+  }
+  /**
+   *  取消
+   */
+  cansel(){
+    this.assignModal = false
+  }
+  close(){
+    this.assignModal = false
+  }
+  /**
+   *  取消评估
+   */
+  terminationAssessment(){
+    let orderIds = this.$refs['add-collateral'] as AddCollateral
+    orderIds.cancelAssessment()
+    }
+  /**
+   *  退件
+   */
+  backPiece(){
+    let statusId = this.$refs['add-collateral'] as AddCollateral
+    statusId.backSerice()
   }
 }
 </script>
