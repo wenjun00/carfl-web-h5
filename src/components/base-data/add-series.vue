@@ -16,45 +16,45 @@ import { Dependencies } from '~/core/decorator';
 import { ProductSeriesService } from '~/services/manage-service/product-series.service';
 
 @Component({
-	components: {
-		DataGrid,
-		DataGridItem,
-	},
+  components: {
+    DataGrid,
+    DataGridItem,
+  },
 })
 export default class addSeries extends Vue {
-	@Dependencies(ProductSeriesService) private productSeriesService: ProductSeriesService;
-	private addSeries: any = {};
-	private rulesAdd: any = {};
-	created() {
-		this.rulesAdd = {
-			// number: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-			name: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
-		};
-	}
-	reset(){
-    let _addseries: any = this.$refs['add-series']
-    _addseries.resetFields()
+  @Dependencies(ProductSeriesService) private productSeriesService: ProductSeriesService;
+  private addSeries: any = {};
+  private rulesAdd: any = {};
+
+  private seriesForm: any = {}
+
+  created() {
+    this.rulesAdd = {
+      // number: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
+      name: [{ required: true, message: '您输入的内容不能为空', trigger: 'blur' }],
+    };
   }
-	vaildFun(seriesId) {
-    delete this.addSeries.parentId
-		let form = <Form>this.$refs['add-series'];
-    if(seriesId !== -1) {
-		  this.addSeries.parentId = seriesId;
-    }
-		form.validate(valid => {
-			if (!valid) return false;
-			this.productSeriesService.createOrModifyProductSeries(this.addSeries).subscribe(
-				val => {
-					this.$emit('close');
-					this.$Message.success('新增产品系列成功！');
-                    this.reset()
-                    this.addSeries = ''
-				},
-				({ msg }) => {
-					this.$Message.error(msg);
-				}
-			);
-		});
-	}
+
+  mounted(){
+    this.seriesForm = this.$refs['add-series']
+  }
+
+
+  vaildFun() {
+    console.log( this.seriesForm,'form')
+    this.seriesForm.validate(valid => {
+      if (!valid) return false;
+      this.productSeriesService.createOrModifyProductSeries(this.addSeries).subscribe(
+        val => {
+          this.$emit('close');
+          this.$Message.success('新增产品系列成功！');
+          this.seriesForm.resetFields()
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+    });
+  }
 }
 </script>

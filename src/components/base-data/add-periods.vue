@@ -1,19 +1,12 @@
 <!--新增期数-->
 <template>
-  <i-form class="add-new-periods" ref="formItems" :model="formItems" :rules="formRules" :label-width="100">
-    <section class="component add-periods">
+  <section class="component add-periods">
+    <i-form class="mini" ref="formItems" :model="formItems" :rules="formRules">
+
       <div class="add-periods-item">自然参数</div>
       <data-grid :labelWidth="100">
-        <data-grid-item label="产品序号" :span="4">
-          <div>
-            {{pNameTitle.number}}
-          </div>
-        </data-grid-item>
-        <data-grid-item label="产品名称" :span="8">
-          <div>
-            {{pNameTitle.name}}
-          </div>
-        </data-grid-item>
+        <data-grid-item label="产品序号" :span="4"> {{pNameTitle.number}}</data-grid-item>
+        <data-grid-item label="产品名称" :span="8"> {{pNameTitle.name}}</data-grid-item>
         <data-grid-item label="产品期数" :span="4">
           <i-form-item class="item-chanpin" prop="periods">
             <i-select v-model="formItems.periods" placeholder="请输入产品期数">
@@ -21,11 +14,10 @@
             </i-select>
           </i-form-item>
         </data-grid-item>
-        <data-grid-item label="产品利率" :span="4">
+        <data-grid-item label="产品利率(月)" :span="4">
           <i-form-item class="item-chanpin" prop="productRates">
-            <i-input v-model="formItems.productRates" placeholder="请输入产品利率"></i-input>
+            <i-input-number placeholder="请输入产品利率" v-model="formItems.productRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
           </i-form-item>
-          <div class="after_text">%/月</div>
         </data-grid-item>
         <data-grid-item label="还款方式" :span="4">
           <i-form-item class="item-chanpin" prop="payWay">
@@ -74,9 +66,9 @@
           <div v-if="initialParams==='有'" class="item-shoufu-div initialPayment">
             <i-form-item prop="initialPayment" label="比例">
               <i-input v-model="formItems.initialPayment" class="item-shoufu-input"></i-input>
+              <span style="color:red" class="after_text">%</span>
+              <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
             </i-form-item>
-            <span class="item-shoufu-span1 after_text">%</span>
-            <span class="item-shoufu-span2 after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
       </data-grid>
@@ -89,19 +81,24 @@
           </i-radio-group>
         </data-grid-item>
         <data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">
-          <div class="item-bzjbl-div initialPayment">
-            <i-form-item prop="depositCash" label="比例">
-              <i-input v-model="formItems.depositCash"></i-input>
-            </i-form-item>
-            <span class="item-bzjbl-span after_text">%</span>
-            <i-form-item prop="depositCashType">
-              <i-select v-model="formItems.depositCashType" placeholder="缴纳方式">
-                <i-option :value="396">退还</i-option>
-                <i-option :value="397">不退还</i-option>
-              </i-select>
-            </i-form-item>
-            <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
-          </div>
+          <i-row :gutter="16">
+            <i-col :span="16">
+              <i-form-item prop="depositCash" label="比例">
+                <i-input v-model="formItems.depositCash"></i-input>
+                <span style="color:red" class="after_text">%</span>
+                <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
+              </i-form-item>
+            </i-col>
+            <i-col :span="8">
+              <i-form-item prop="depositCashType" label="缴纳方式">
+                <i-select v-model="formItems.depositCashType" placeholder="缴纳方式">
+                  <i-option :value="396">退还</i-option>
+                  <i-option :value="397">不退还</i-option>
+                </i-select>
+              </i-form-item>
+            </i-col>
+          </i-row>
+
         </data-grid-item>
       </data-grid>
       <div class="add-periods-item">尾付款参数</div>
@@ -115,9 +112,10 @@
             <span class="after_text">月利率:</span>
             <i-form-item prop="finalCash">
               <i-input v-model="formItems.finalCash"></i-input>
+
+              <span style="color:red" class="after_text">%</span>
+              <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
             </i-form-item>
-            <span class="item-bzjbl-span after_text">%</span>
-            <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
       </data-grid>
@@ -131,9 +129,10 @@
           <div v-if="manageMoneyParams==='有'" class="item-mt6-div2 initialPayment">
             <i-form-item prop="manageCost" label="比例">
               <i-input v-model="formItems.manageCost"></i-input>
+
+              <span style="color:red" class="after_text">%</span>
+              <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
             </i-form-item>
-            <span class="item-bzjbl-span after_text">%</span>
-            <span class="item-bzjbl-span2 after_text">如果有多个则用英文分号隔开</span>
           </div>
         </data-grid-item>
         <data-grid-item label="管理费收取方式" :span="12" v-if="manageMoneyParams==='有'">
@@ -162,34 +161,34 @@
         </data-grid-item>
         <data-grid-item :span="6" label="合同违约金费率">
           <i-form-item class="item-input" prop="contractBreakRates">
-            <i-input-number v-model="formItems.contractBreakRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>&nbsp;%
+            <i-input-number v-model="formItems.contractBreakRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="6" label="提前还款费率">
           <i-form-item class="item-input" prop="prepaymentRates">
-            <i-input-number v-model="formItems.prepaymentRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>&nbsp;%
+            <i-input-number v-model="formItems.prepaymentRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="12" label="罚息费率">
           <i-form-item class="item-input" prop="penaltyRates">
-            <i-input-number v-model="formItems.penaltyRates" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+            <i-input-number v-model="formItems.penaltyRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
           </i-form-item>
-          <span>&nbsp;%/天</span>
         </data-grid-item>
       </data-grid>
-    </section>
-  </i-form>
+
+    </i-form>
+  </section>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
-import { DataGrid, DataGridItem } from '@zct1989/vue-component'
-import { Form } from 'iview'
-import { Dependencies } from '~/core/decorator'
-import { ProductPlanIssueService } from '~/services/manage-service/product-plan-issue.service'
-import { ValidatorService } from '~/utils/validator.service'
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop } from "vue-property-decorator";
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
+import { Form } from "iview";
+import { Dependencies } from "~/core/decorator";
+import { ProductPlanIssueService } from "~/services/manage-service/product-plan-issue.service";
+import { ValidatorService } from "~/utils/validator.service";
 
 @Component({
   components: {
@@ -199,66 +198,66 @@ import { ValidatorService } from '~/utils/validator.service'
 })
 export default class AddPeriods extends Vue {
   @Dependencies(ProductPlanIssueService)
-  private ProductPlanIssueService: ProductPlanIssueService
-  @Prop() pNameTitle: any
-  private accountPeriodsList: String = '正常账期'
-  private initialParams: String = '有'
-  private promiseMoenyParams: String = '无'
-  private residueParams: String = '无'
-  private manageMoneyParams: String = '无'
-  private disabled: Boolean = false
-  private changePromiseMoenyShow: Boolean = false
+  private ProductPlanIssueService: ProductPlanIssueService;
+  @Prop() pNameTitle: any;
+  private accountPeriodsList: String = "正常账期";
+  private initialParams: String = "有";
+  private promiseMoenyParams: String = "无";
+  private residueParams: String = "无";
+  private manageMoneyParams: String = "无";
+  private disabled: Boolean = false;
+  private changePromiseMoenyShow: Boolean = false;
   private formItems: any = {
-    productId: '',
-    periods: '', //产品期数
-    periodType: '',
-    paymentType: '',
-    paymentDay: '',
-    productRates: '',
-    payWay: '',
-    financingAmount: '',
-    initialPayment: '',
-    depositCash: '',
-    depositCashType: '',
-    finalCash: '',
+    productId: "",
+    periods: "", //产品期数
+    periodType: "",
+    paymentType: "",
+    paymentDay: "",
+    productRates: null,
+    payWay: "",
+    financingAmount: "",
+    initialPayment: "",
+    depositCash: "",
+    depositCashType: "",
+    finalCash: "",
     manageCostType: 394,
-    stagingPeriods: '', // 期数
-    creditProtectDays: '0',
-    overdueProtectDays: '0',
+    stagingPeriods: "", // 期数
+    creditProtectDays: "0",
+    overdueProtectDays: "0",
     penaltyRates: 0,
     contractBreakRates: 0,
     prepaymentRates: 0,
-    productStatus: '',
+    productStatus: "",
     // isPublish: '',
-    manageCost: '',
+    manageCost: "",
 
-    penaltyRate: '',
-    contractBreakRate: '',
-    prepaymentRate: '',
-    productRate: ''
-  }
-  private amountRules: Object = {}
+    penaltyRate: "",
+    contractBreakRate: "",
+    prepaymentRate: "",
+    productRate: ""
+  };
+  private amountRules: Object = {};
   private amount: any = {
     financingAmount1: 0,
     financingAmount2: 0
-  }
-  private monthDay: any
-  private formRules: Object = {}
+  };
+  private monthDay: any;
+  private formRules: Object = {};
 
   refresh() {
     for (let v in this.formItems) {
-      this.formItems[v] = ''
+      this.formItems[v] = "";
     }
-    this.formItems.creditProtectDays = '0'
-    this.formItems.contractBreakRate = '0'
-    this.formItems.overdueProtectDays = '0'
-    this.formItems.prepaymentRate = '0'
-    this.formItems.penaltyRate = '1'
-    this.formItems.manageCostType = 394
-    let form1: any = this.$refs['formItems']
-    form1.resetFields()
-    let form2: any = this.$refs['finance']
-    form2.resetFields()
+    this.formItems.creditProtectDays = "0";
+    this.formItems.contractBreakRate = "0";
+    this.formItems.overdueProtectDays = "0";
+    this.formItems.prepaymentRate = "0";
+    this.formItems.penaltyRate = "1";
+    this.formItems.manageCostType = 394;
+    let form1: any = this.$refs["formItems"];
+    form1.resetFields();
+    let form2: any = this.$refs["finance"];
+    form2.resetFields();
   }
 
   /**
@@ -266,26 +265,30 @@ export default class AddPeriods extends Vue {
    */
   moneySmall(rule, value, callback) {
     if (!value) {
-      callback(new Error('请输入最小金额'))
+      callback(new Error("请输入最小金额"));
     } else {
       if (this.amount.financingAmount2) {
-        let form2: any = this.$refs['finance']
-        form2.validateField('financingAmount2')
+        let form2: any = this.$refs["finance"];
+        form2.validateField("financingAmount2");
       }
-      callback()
+      callback();
     }
   }
   moneyBig(rule, value, callback) {
     if (value < 0) {
-      return callback(new Error('请输入最大金额'))
+      return callback(new Error("请输入最大金额"));
     }
-    console.log(typeof this.amount.financingAmount1, typeof value, this.amount.financingAmount1 > value)
+    console.log(
+      typeof this.amount.financingAmount1,
+      typeof value,
+      this.amount.financingAmount1 > value
+    );
     if (this.amount.financingAmount1 - value > 0) {
-      console.log('error2')
-      return callback(new Error('最大金额必须大于最小金额'))
+      console.log("error2");
+      return callback(new Error("最大金额必须大于最小金额"));
     }
-    console.log(1231)
-    callback()
+    console.log(1231);
+    callback();
 
     // if (!value) {
     //   callback(new Error('请输入最大金额'))
@@ -302,287 +305,243 @@ export default class AddPeriods extends Vue {
   }
 
   created() {
-    this.monthDay = []
+    this.monthDay = [];
     this.amountRules = {
       financingAmount1: {
-        validator: this.moneySmall, trigger: 'change', type: 'number'
+        validator: this.moneySmall,
+        trigger: "change",
+        type: "number"
       },
       financingAmount2: {
-        validator: this.moneyBig, trigger: 'change', type: 'number'
+        validator: this.moneyBig,
+        trigger: "change",
+        type: "number"
       }
-    }
+    };
     this.formRules = {
       periods: [
         {
           required: true,
-          message: '请输入产品期数',
-          type: 'number',
-          trigger: 'change'
+          message: "请输入产品期数",
+          type: "number",
+          trigger: "change"
         }
       ],
       productRates: [
-        { required: true, message: '请输入产品利率', trigger: 'blur' },
         {
-          pattern: /^[0-9]{1,3}([.]{1}[0-9]{0,4}){0,1}$/g,
-          message: '请输入0~999整数或四位小数',
-          trigger: 'blur'
+          required: true,
+          type: "number",
+          message: "请输入产品利率",
+          trigger: "blur"
         }
       ],
       payWay: [
         {
           required: true,
-          message: '请选择还款方式',
-          trigger: 'change',
-          type: 'number'
+          message: "请选择还款方式",
+          trigger: "change",
+          type: "number"
         }
       ],
       periodType: [
         {
           required: true,
-          message: '请选择周期类型',
-          trigger: 'change',
-          type: 'number'
+          message: "请选择周期类型",
+          trigger: "change",
+          type: "number"
         }
       ],
       paymentDay: [
         {
           required: true,
-          message: '请选择固定账期期数',
-          trigger: 'change',
-          type: 'number'
+          message: "请选择固定账期期数",
+          trigger: "change",
+          type: "number"
         }
       ],
       initialPayment: [
-        { required: true, message: '请输入首付款比例', trigger: 'blur' },
+        { required: true, message: "请输入首付款比例", trigger: "blur" },
         {
           pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;)?\s*)+$/g,
-          message: '请输入0~100的数字',
-          trigger: 'blur'
+          message: "请输入0~100的数字",
+          trigger: "blur"
         }
         //   { pattern: /^((\d{1,2}|\d{1,2}\.[0-9]{1,2}|100)\;)+$/g, message: '请输入0~100的数字', trigger: 'blur' }
         // { pattern: /^(100|[0-9]{1,2}(\.{1}[0-9]{0,4})?(;|；)?){0,1}$/g, message: '请输入0~100的数字', trigger: 'blur' }
       ],
       depositCash: [
-        { required: true, message: '请输入保证金比例', trigger: 'blur' },
+        { required: true, message: "请输入保证金比例", trigger: "blur" },
         {
           pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;)?\s*)+$/g,
-          message: '请输入0~100的数字',
-          trigger: 'blur'
+          message: "请输入0~100的数字",
+          trigger: "blur"
         }
       ],
       depositCashType: [
         {
           required: true,
-          message: '请选择退还方式',
-          trigger: 'change',
-          type: 'number'
+          message: "请选择退还方式",
+          trigger: "change",
+          type: "number"
         }
       ],
       finalCash: [
-        { required: true, message: '请输入尾付款年利率', trigger: 'blur' },
+        { required: true, message: "请输入尾付款年利率", trigger: "blur" },
         {
           pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;)?\s*)+$/g,
-          message: '请输入0~100的数字',
-          trigger: 'blur'
+          message: "请输入0~100的数字",
+          trigger: "blur"
         }
       ],
       manageCost: [
-        { required: true, message: '请输入管理费比例', trigger: 'blur' },
+        { required: true, message: "请输入管理费比例", trigger: "blur" },
         {
           pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;)?\s*)+$/g,
-          message: '请输入0~100的数字',
-          trigger: 'blur'
+          message: "请输入0~100的数字",
+          trigger: "blur"
         }
       ],
       stagingPeriods: [
-        { required: true, message: '请输入管理费分期期数', trigger: 'blur' },
-        { pattern: /^[\d]+$/, message: '请输入整数', trigger: 'blur' }
+        { required: true, message: "请输入管理费分期期数", trigger: "blur" },
+        { pattern: /^[\d]+$/, message: "请输入整数", trigger: "blur" }
       ],
       creditProtectDays: [
-        { required: true, message: '请输入征信保护天数', trigger: 'blur' },
+        { required: true, message: "请输入征信保护天数", trigger: "blur" },
         {
           pattern: /^(0|[1-9][0-9]{0,3})$/g,
-          message: '请输入0~9999整数',
-          trigger: 'blur'
+          message: "请输入0~9999整数",
+          trigger: "blur"
         }
       ],
       overdueProtectDays: [
-        { required: true, message: '请输入逾期保护天数', trigger: 'blur' },
+        { required: true, message: "请输入逾期保护天数", trigger: "blur" },
         {
           pattern: /^(0|[1-9][0-9]{0,3})$/g,
-          message: '请输入0~9999整数',
-          trigger: 'blur'
+          message: "请输入0~9999整数",
+          trigger: "blur"
         }
       ],
       contractBreakRates: [
-        { required: true, message: '请输入合同违约金费率', trigger: 'blur', type: 'number' },
+        {
+          required: true,
+          message: "请输入合同违约金费率",
+          trigger: "blur",
+          type: "number"
+        },
         {
           pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g,
-          message: '请输入0~100整数或四位小数',
-          trigger: 'blur'
+          message: "请输入0~100整数或四位小数",
+          trigger: "blur"
         }
       ],
       prepaymentRates: [
-        { required: true, message: '请输入提前还款费率', trigger: 'blur', type: 'number' },
+        {
+          required: true,
+          message: "请输入提前还款费率",
+          trigger: "blur",
+          type: "number"
+        },
         {
           pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g,
-          message: '请输入0~100整数或四位小数',
-          trigger: 'blur'
+          message: "请输入0~100整数或四位小数",
+          trigger: "blur"
         }
       ],
       penaltyRates: [
-        { required: true, message: '请输入罚期费率', trigger: 'blur', type: 'number' },
+        {
+          required: true,
+          message: "请输入罚期费率",
+          trigger: "blur",
+          type: "number"
+        },
         {
           pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g,
-          message: '请输入0~100整数或四位小数',
-          trigger: 'blur'
+          message: "请输入0~100整数或四位小数",
+          trigger: "blur"
         }
       ]
-    }
+    };
   }
 
   /**@
    * 点击确定按钮
    */
   confirmPeriods() {
-    let form = <Form>this.$refs['formItems']
-    let formVal = <Form>this.$refs['finance']
+    let form = <Form>this.$refs["formItems"];
+    let formVal = <Form>this.$refs["finance"];
     form.validate(valid => {
       formVal.validate(vali => {
-        if (!vali || !valid) return false
+        if (!vali || !valid) return false;
         if (this.amount.financingAmount1 >= this.amount.financingAmount2) {
-          this.$Message.error('请输入正确的融资金额')
-          return false
+          this.$Message.error("请输入正确的融资金额");
+          return false;
         }
-        if (this.manageMoneyParams === '无') {
-          delete this.formItems.manageCost
-          delete this.formItems.manageCostType
-          delete this.formItems.stagingPeriods
+        if (this.manageMoneyParams === "无") {
+          delete this.formItems.manageCost;
+          delete this.formItems.manageCostType;
+          delete this.formItems.stagingPeriods;
         } else {
           if (this.formItems.manageCostType === 394) {
-            delete this.formItems.stagingPeriods
+            delete this.formItems.stagingPeriods;
           }
         }
-        if (this.initialParams === '无') {
-          delete this.formItems.initialPayment
+        if (this.initialParams === "无") {
+          delete this.formItems.initialPayment;
         }
 
-        if (this.promiseMoenyParams === '无') {
-          delete this.formItems.depositCash
+        if (this.promiseMoenyParams === "无") {
+          delete this.formItems.depositCash;
         }
-        if (this.residueParams === '无') {
-          delete this.formItems.finalCash
+        if (this.residueParams === "无") {
+          delete this.formItems.finalCash;
         }
         this.formItems.financingAmount =
-          this.amount.financingAmount1 + '~' + this.amount.financingAmount2
-        this.formItems.productId = this.pNameTitle.id
-        this.formItems.productStatus = this.pNameTitle.status
+          this.amount.financingAmount1 + "~" + this.amount.financingAmount2;
+        this.formItems.productId = this.pNameTitle.id;
+        this.formItems.productStatus = this.pNameTitle.status;
         this.formItems.creditProtectDays = String(
           this.formItems.creditProtectDays
-        )
+        );
         this.formItems.overdueProtectDays = String(
           this.formItems.overdueProtectDays
-        )
-        this.formItems.productRate = this.formItems.productRates * 0.01
+        );
+        this.formItems.productRate = this.formItems.productRates * 0.01;
         this.formItems.contractBreakRate = String(
           this.formItems.contractBreakRates * 0.01
-        )
+        );
         this.formItems.prepaymentRate = String(
           this.formItems.prepaymentRates * 0.01
-        )
-        this.formItems.penaltyRate = String(this.formItems.penaltyRates * 0.01)
+        );
+        this.formItems.penaltyRate = String(this.formItems.penaltyRates * 0.01);
         this.ProductPlanIssueService.createOrModifyProductPlan(
           this.formItems
         ).subscribe(
           val => {
-            this.$Message.success('新增成功！')
-            this.$emit('close', this.formItems)
+            this.$Message.success("新增成功！");
+            this.$emit("close", this.formItems);
           },
           ({ msg }) => {
-            this.$Message.error(msg)
+            this.$Message.error(msg);
           }
-          )
-      })
-      if (!valid) return false
-    })
+        );
+      });
+      if (!valid) return false;
+    });
   }
 }
 </script>
 
-<style lang="less" scoped>
-.add-new-periods {
+<style lang="less">
+.component.add-periods {
+  .data-grid-item {
+    min-height: 80px;
+  }
   .add-periods-item {
+    line-height: 40px;
     font-size: 14px;
     font-weight: bold;
-    margin-top: 16px;
   }
-  .after_text {
-    line-height: 33px;
-    margin-left: 5px;
-    margin-bottom: 20px;
-  }
-  .item-input {
-    margin-top: 15px;
-  }
-  .item-chanpin {
-    width: 70%;
-  }
-  .item-chanpin-group {
-    margin-top: 14px;
-  }
-  .item-chanpin-radio {
-    margin-right: 40px;
-  }
-  .item-chanpin-select {
-    width: 30%;
-  }
-  .item-shoufu-group {
-    margin-top: 6px;
-  }
-  .item-shoufu-div {
-    margin-top: 24px;
-    margin-left: -51px;
-  }
-  .item-shoufu-input {
-    width: 80%;
-  }
-  .item-shoufu-span1 {
-    color: red;
-    margin-left: -30px;
-  }
-  .item-shoufu-span2 {
-    color: blue;
-  }
-  .item-bzj-group {
-    float: left;
-    margin-top: 6px;
-  }
-  .item-bzjbl-div {
-    margin-left: -51px;
-    margin-top: 17px;
-  }
-  .item-bzjbl-span {
-    color: red;
-  }
-  .item-bzjbl-span2 {
-    color: blue;
-  }
-  .item-mt6 {
-    margin-top: 6px;
-  }
-  .item-mt6-div {
-    margin-top: 27px;
-  }
-  .item-mt6-div2 {
-    margin-top: 21px;
-    margin-left: -50px;
-  }
-}
-</style>
-<style lang="less">
-.add-new-periods {
   .ivu-form-item-content {
-    margin-left: 0 !important;
     margin-left: 0 !important;
   }
   .data-grid-item__content,
@@ -591,10 +550,8 @@ export default class AddPeriods extends Vue {
     display: flex;
     align-items: center;
   }
-  .add-periods {
-    .ivu-form-item {
-      margin-bottom: 16px;
-    }
+  .ivu-form-item {
+    margin-bottom: 0px;
   }
 }
 </style>

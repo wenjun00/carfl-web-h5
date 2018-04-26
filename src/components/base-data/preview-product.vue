@@ -1,43 +1,15 @@
 <!--预览期数-->
 <template>
-  <section class="component add-periods">
+  <section class="component preview-periods">
     <div class="addPeriodsItem">自然参数</div>
     <data-grid :labelWidth="100">
-      <data-grid-item label="产品序号" :span="4">
-        <div>
-          {{dpNameTitleView.number}}
-        </div>
-      </data-grid-item>
-      <data-grid-item label="产品名称" :span="8">
-        <div>
-          {{dpNameTitleView.name}}
-        </div>
-      </data-grid-item>
-      <data-grid-item label="产品期数" :span="4">
-        <div>
-          {{$dict.getDictName(productDetailView.periods)}}
-        </div>
-      </data-grid-item>
-      <data-grid-item label="产品利率" :span="4">
-        <div>
-          {{productDetailView.productRate*100}}%/月
-        </div>
-      </data-grid-item>
-      <data-grid-item label="还款方式" :span="4">
-        <div>
-          {{$dict.getDictName(productDetailView.payWay)}}
-        </div>
-      </data-grid-item>
-      <data-grid-item label="周期类型" :span="4">
-        <div>
-          {{$dict.getDictName(productDetailView.periodType)}}
-        </div>
-      </data-grid-item>
-      <data-grid-item label="融资金额" :span="8">
-        <div>
-          {{productDetailView.financingAmount}}
-        </div>
-      </data-grid-item>
+      <data-grid-item label="产品序号" :span="4">{{dpNameTitleView.number}}</data-grid-item>
+      <data-grid-item label="产品名称" :span="8"> {{dpNameTitleView.name}}</data-grid-item>
+      <data-grid-item label="产品期数" :span="4"> {{$dict.getDictName(productDetailView.periods)}}</data-grid-item>
+      <data-grid-item label="产品利率" :span="4"> {{productDetailView.productRate*100}}%/月</data-grid-item>
+      <data-grid-item label="还款方式" :span="4">{{$dict.getDictName(productDetailView.payWay)}}</data-grid-item>
+      <data-grid-item label="周期类型" :span="4"> {{$dict.getDictName(productDetailView.periodType)}} </data-grid-item>
+      <data-grid-item label="融资金额" :span="8">{{productDetailView.financingAmount}}</data-grid-item>
       <data-grid-item label="账期类型" :span="12">
         <i-radio-group class="item-float-left" v-model="productDetailView.paymentType">
           <i-radio :label="386" disabled>正常账期</i-radio>
@@ -56,7 +28,7 @@
           </i-radio-group>
           <div v-show="initialParams==='有'" class="item-float-left">
             <span>比例</span>
-            <span>{{productDetailView.manageCost}}</span>
+            <span>{{productDetailView.initialPayment}}</span>
             <span class="item-color-red">%</span>
           </div>
         </div>
@@ -161,54 +133,55 @@ import { Dependencies } from '~/core/decorator';
 import { DataGrid, DataGridItem } from '@zct1989/vue-component';
 import { Layout } from '~/core/decorator';
 @Component({
-	components: {
-		DataGrid,
-		DataGridItem,
-	},
+  components: {
+    DataGrid,
+    DataGridItem,
+  },
 })
 export default class AddPeriods extends Vue {
-	@Prop() productDetailView: any;
-	@Prop() dpNameTitleView: any;
-	private initialParams: String = '无';
-	private promiseMoenyParams: String = '无';
-	private residueParams: String = '无';
-	private manageMoneyParams: String = '无';
+  @Prop() productDetailView: any;
+  @Prop() dpNameTitleView: any;
+  private initialParams: String = '无';
+  private promiseMoenyParams: String = '无';
+  private residueParams: String = '无';
+  private manageMoneyParams: String = '无';
 
   @Watch('productDetailView')
-	class() {
-    this.productDetailView.manageCost?this.initialParams = '有':this.initialParams = '无';
-    this.productDetailView.depositCash?this.promiseMoenyParams = '有':this.promiseMoenyParams = '无';
-    this.productDetailView.finalCash?this.residueParams = '有':this.residueParams = '无';
-    this.productDetailView.manageCost?this.manageMoneyParams = '有':this.manageMoneyParams = '无';
-	}
+  class() {
+    this.initialParams = this.productDetailView.manageCost ? '有' : '无'
+    this.promiseMoenyParams = this.productDetailView.depositCash ? '有' : '无'
+    this.residueParams = this.productDetailView.finalCash ? '有' : '无'
+    this.manageMoneyParams = this.productDetailView.manageCost ? '有' : '无'
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .addPeriodsItem {
-	font-size: 14px;
-	font-weight: bold;
-	margin-top: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 16px;
 }
-  .item-float-left{
-    float: left;
-  }
-  .item-color-red{
-    color: red;
-  }
-  .item-margin-top6{
-    margin-top:6px;
-  }
-  .item-margin-top2{
-    margin-top: 2px;
-  }
-  .item-margin-top4{
-    margin-top: 4px;
-  }
-  .item-margin-top10{
-    margin-top: 10px;
-  }
-  .item-zhuangtai-div{
-    margin-right:10px;display:inline-block
-  }
+.item-float-left {
+  float: left;
+}
+.item-color-red {
+  color: red;
+}
+.item-margin-top6 {
+  margin-top: 6px;
+}
+.item-margin-top2 {
+  margin-top: 2px;
+}
+.item-margin-top4 {
+  margin-top: 4px;
+}
+.item-margin-top10 {
+  margin-top: 10px;
+}
+.item-zhuangtai-div {
+  margin-right: 10px;
+  display: inline-block;
+}
 </style>

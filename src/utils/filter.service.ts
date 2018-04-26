@@ -183,4 +183,12 @@ export class FilterService {
       return value
     }
   }
+
+  static percentFormat(value){
+    return `${value}%`
+  }
+
+  static percentParse(value){
+    return  value.replace('%', '')
+  }
 }
