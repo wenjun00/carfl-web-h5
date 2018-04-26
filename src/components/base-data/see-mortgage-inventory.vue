@@ -1,4 +1,4 @@
-<!--抵押入库 入库-->
+<!--抵押入库 查看-->
 <template>
     <section class="component mortgage-inventory">
         <i-form>
@@ -55,7 +55,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="车辆隶属" :label-width="90">
-                        <i-input placeholder="请填写车辆隶属"></i-input>
+                        <i-input readonly placeholder="请填写车辆隶属"></i-input>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
@@ -67,52 +67,52 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="牌照号码" :label-width="90">
-                        <i-input placeholder="请填写牌照号码"></i-input>
+                        <i-input readonly placeholder="请填写牌照号码"></i-input>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="上牌日期" :label-width="90">
-                        <i-date-picker type="date" placeholder="请填写上牌日期"></i-date-picker>
+                        <i-date-picker readonly type="date" placeholder="请填写上牌日期"></i-date-picker>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="入库日期" :label-width="90">
-                        <i-date-picker type="date" placeholder="请填写入库日期"></i-date-picker>
+                        <i-date-picker readonly type="date" placeholder="请填写入库日期"></i-date-picker>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="里程表值" :label-width="90">
-                        <i-input placeholder="请填写里程表"></i-input>
+                        <i-input readonly placeholder="请填写里程表"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="车况" :label-width="90">
-                        <i-select placeholder="请选择车况">
+                        <i-select placeholder="请选择车况" disabled>
                             <i-option></i-option>
                         </i-select>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="登记人" :label-width="90">
-                        <i-input placeholder="请选填写登记人"></i-input>
+                        <i-input readonly placeholder="请选填写登记人"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
                     <i-form-item label="车况说明" :label-width="90">
-                        <i-input style="width:100%" type="textarea"></i-input>
+                        <i-input readonly style="width:100%" type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="24">
                     <i-form-item label="停放状态" :label-width="90">
-                        <i-select placeholder="请选择停放状态">
+                        <i-select placeholder="请选择停放状态" disabled>
                             <i-option></i-option>
                         </i-select>
                     </i-form-item>
@@ -121,7 +121,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
                     <i-form-item label="情况描述" :label-width="90">
-                        <i-input style="width:100%" type="textarea"></i-input>
+                        <i-input readonly style="width:100%" type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>

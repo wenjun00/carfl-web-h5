@@ -24,10 +24,20 @@
         <data-box :columns="treasuryColumns" :data="dataSet" :page="pageService"></data-box>
 
           <template>
-            <i-modal  width="680" v-model="inventoryModal" title="押品入库" class="mortgage-inventory">
+            <i-modal  width="780" v-model="inventoryModal" title="押品入库" class="mortgage-inventory">
                 <mortgage-inventory ref="mortgage-inventory"></mortgage-inventory>
                 <div slot="footer">
-                    <i-button size="large" type="ghost"  @click="inventoryModal=false">关闭</i-button>
+                     <i-button size="large" type="ghost" class="Ghost"  @click="inventoryModal=false">取消</i-button>
+                    <i-button size="large"  type="primary" class="blueButton"  @click="inventoryModal=false">确定</i-button>
+                </div>
+            </i-modal>
+        </template>
+
+         <template>
+            <i-modal  width="780" v-model="seeInventoryModal" title="抵押入库" class="see-mortgage-inventory">
+                <see-mortgage-inventory ref="see-mortgage-inventory"></see-mortgage-inventory>
+                <div slot="footer">
+                     <i-button size="large" type="ghost" class="Ghost"  @click="seeInventoryModal=false">关闭</i-button>
                 </div>
             </i-modal>
         </template>
@@ -42,16 +52,20 @@ import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import { Button } from 'iview'
 import MortgageInventory from '~/components/base-data/mortgage-inventory.vue'
+import SeeMortgageInventory from '~/components/base-data/see-mortgage-inventory.vue'
+
 @Layout('workspace')
 @Component({
   components: {
-    MortgageInventory
+    MortgageInventory,
+    SeeMortgageInventory
   }
 })
 export default class EvaluationTaskPool extends Page {
   @Dependencies(PageService) private pageService: PageService
   private dataSet: Array<any> = []
   private inventoryModal:Boolean = false
+  private seeInventoryModal:Boolean = false
   private treasuryModel: any = {
     orderNumber: '', // 订单编号
     brandModel: '', // 品牌系列
@@ -91,6 +105,11 @@ export default class EvaluationTaskPool extends Page {
               },
               style: {
                 color: '#265EA2'
+              },
+              on: {
+                click: () => {
+                  this.seeTreasuryStorage(row)
+                }
               }
             },
             '查看'
@@ -220,10 +239,14 @@ export default class EvaluationTaskPool extends Page {
  }
 
 
+
+
   /**
-   *  领取
+   *  查看抵押入库
    */
-  receive(row) {}
+  seeTreasuryStorage(row) {
+      this.seeInventoryModal = true
+  }
 }
 </script>
 

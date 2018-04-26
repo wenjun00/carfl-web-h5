@@ -82,8 +82,8 @@ export default class addPeople extends Vue {
   private assessMentApplyService: AssessMentApplyService
   private selectedVehicles:String = ''
  private detailsModel = {
-     applyCars:'',      // 所选车辆
-     city:'',            // 上牌城市
+     applyCars:{},      // 所选车辆
+     city: '',            // 上牌城市
      carColor:'',        // 车身颜色
      engineNo:'',        // 发动机号
      carNo:'',           // 车牌号码
