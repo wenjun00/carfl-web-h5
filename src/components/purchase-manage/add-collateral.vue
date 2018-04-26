@@ -62,8 +62,8 @@
 
       <i-row type="flex" :gutter="110">
         <i-col>
-          <i-form-item label="初登日期" prop="firstTime" :label-width="90" >
-            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.firstTime"></i-date-picker>
+          <i-form-item label="初登日期" prop="firstTime" :label-width="90">
+            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.basicList.firstTime"></i-date-picker>
           </i-form-item>
         </i-col>
         <i-col>
@@ -76,12 +76,12 @@
       <i-row type="flex" :gutter="110">
         <i-col>
           <i-form-item label="出厂日期" prop="factoryTime" :label-width="90">
-            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.factoryTime"></i-date-picker>
+            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.basicList.factoryTime"></i-date-picker>
           </i-form-item>
         </i-col>
         <i-col>
           <i-form-item label="行驶里程" prop="mileage" :label-width="90" >
-            <i-input  v-model="customerModel.mileage"></i-input>
+            <i-input  v-model="customerModel.basicList.mileage"></i-input>
             <span>万公里</span>
           </i-form-item>
         </i-col>
@@ -90,12 +90,12 @@
       <i-row type="flex" :gutter="110">
         <i-col>
           <i-form-item label="行驶证号" prop="drivingNo" :label-width="90">
-            <i-input v-model="customerModel.drivingNo"></i-input>
+            <i-input v-model="customerModel.basicList.drivingNo"></i-input>
           </i-form-item>
         </i-col>
         <i-col>
           <i-form-item label="过户次数" prop="transferNo" :label-width="90">
-            <i-input v-model="customerModel.transferNo"></i-input>
+            <i-input v-model="customerModel.basicList.transferNo"></i-input>
             <span>次</span>
           </i-form-item>
         </i-col>
@@ -104,14 +104,14 @@
       <i-row type="flex" :gutter="110">
         <i-col>
           <i-form-item label="车辆用途" prop="carPurpose" :label-width="90">
-            <i-select v-model="customerModel.carPurpose">
+            <i-select v-model="customerModel.basicList.carPurpose">
               <i-option v-for="{value,label} in $dict.getDictData('0447')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col>
           <i-form-item label="变速箱形式" prop="transmission" :label-width="90">
-            <i-select v-model="customerModel.transmission">
+            <i-select v-model="customerModel.basicList.transmission">
               <i-option v-for="{value,label} in $dict.getDictData('0448')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
@@ -121,14 +121,14 @@
       <i-row type="flex" :gutter="110">
         <i-col>
           <i-form-item label="驱动形式" prop="driver" :label-width="90">
-            <i-select v-model="customerModel.driver">
+            <i-select v-model="customerModel.basicList.driver">
               <i-option v-for="{value,label} in $dict.getDictData('0449')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col>
           <i-form-item label="排量" prop="displacement" :label-width="90">
-            <i-input v-model="customerModel.displacement"></i-input>
+            <i-input v-model="customerModel.basicList.displacement"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -142,10 +142,10 @@
       </i-row>
       <i-row type="flex" :gutter="200">
         <i-col v-for="item in appearance" :key="item.id">
-          <i-form-item :label="item.attrValue"  :label-width="90">
-            <i-radio-group   v-model="formItem.radio">
-              <i-radio label="male">正常</i-radio>
-              <i-radio label="female">异常</i-radio>
+          <i-form-item :label="item.name"  :label-width="90">
+            <i-radio-group   v-model="item.value">
+              <i-radio :label="1">正常</i-radio>
+              <i-radio :label="0">异常</i-radio>
             </i-radio-group>
           </i-form-item>
         </i-col>
@@ -160,10 +160,10 @@
       </i-row>
       <i-row type="flex" :gutter="200">
         <i-col v-for="item in interiorInspection" :key="item.id">
-          <i-form-item :label="item.attrValue"  :label-width="90">
-            <i-radio-group   v-model="formItem.radio">
-              <i-radio label="male">正常</i-radio>
-              <i-radio label="female">异常</i-radio>
+          <i-form-item :label="item.name"  :label-width="90">
+            <i-radio-group   v-model="item.value">
+              <i-radio :label="1">正常</i-radio>
+              <i-radio :label="0">异常</i-radio>
             </i-radio-group>
           </i-form-item>
         </i-col>
@@ -178,10 +178,10 @@
       </i-row>
       <i-row type="flex" :gutter="200">
         <i-col v-for="item in engineRoom" :key="item.id">
-          <i-form-item :label="item.attrValue"  :label-width="90">
-            <i-radio-group   v-model="formItem.radio">
-              <i-radio label="male">正常</i-radio>
-              <i-radio label="female">异常</i-radio>
+          <i-form-item :label="item.name"  :label-width="90">
+            <i-radio-group   v-model="item.value">
+              <i-radio :label="1">正常</i-radio>
+              <i-radio :label="0">异常</i-radio>
             </i-radio-group>
           </i-form-item>
         </i-col>
@@ -235,11 +235,35 @@
   export default class AddCollateral extends Vue {
     @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
     private customerModel: any = {
+      carColor:'',
+      city:'',
+      carNo:'',
+      engineNo:'',
+      ownerName:'',
+      frameNo:'',
+      ownPhone:'',
+      idCard:'',
+      basicList:[{
+        firstTime:'',
+        factoryTime:'',
+        mileage:'',
+        drivingNo:'',
+        transferNo:'',
+        carPurpose:'',
+        transmission:'',
+        driver:'',
+        displacement:'',
+        carAttrList:[{
+          id: '',
+          attrType: '',
+          attrName: '',
+          attrValue: ''
+        }],
+
+      }]
 
     };
-    private formItem :any = {
-      radio:''
-    }
+
     private appearance :any = [] //得到评估外观数据
     private interiorInspection :any = [] //得到评估内饰检验数据
     private engineRoom :any = [] //得到评估机舱底盘数据
@@ -263,10 +287,22 @@
       this.assessMentApplyService.beginOrderAssess({assessmentNo:val})
         .subscribe( data => {
           this.customerModel = data
-          this.appearance = data.basicList[0].carAttrList.filter(v=> v.attrType === 1)
-          this.interiorInspection = data.basicList[0].carAttrList.filter(v=> v.attrType === 2)
-          this.engineRoom = data.basicList[0].carAttrList.filter(v=> v.attrType === 3)
-          this.customerModel.city = CityService.getCityName(Number(data.city))
+          this.appearance = data.basicList[0].carAttrList.filter(v=> v.attrType === 1).map(x=>({
+              name:x.attrValue,
+              id: x.id,
+              value: ''
+          }))
+          this.interiorInspection = data.basicList[0].carAttrList.filter(v=> v.attrType === 2).map(x=>({
+            name:x.attrValue,
+            id: x.id,
+            value: ''
+          }))
+          this.engineRoom = data.basicList[0].carAttrList.filter(v=> v.attrType === 3).map(x=>({
+            name:x.attrValue,
+            id: x.id,
+            value: ''
+          }))
+          this.customerModel.city = !!data.city? CityService.getCityName(Number(data.city)):''
         })
      }
   }

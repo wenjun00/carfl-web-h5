@@ -1,4 +1,4 @@
-<!--查看申请--> 
+<!--查看申请-->
 <template>
   <section class="component for-application">
       <i-form :model="detailsModel">
@@ -57,8 +57,8 @@
                     </i-form-item>
                 </i-col>
             </i-row>
-          
-          
+
+
 
         </i-form>
   </section>
@@ -81,30 +81,27 @@ export default class addPeople extends Vue {
   @Dependencies(AssessMentApplyService)
   private assessMentApplyService: AssessMentApplyService
   private selectedVehicles:String = ''
- private detailsModel = {
-     applyCars:{},      // 所选车辆
-     city: '',            // 上牌城市
-     carColor:'',        // 车身颜色
-     engineNo:'',        // 发动机号
-     carNo:'',           // 车牌号码
-     frameNo:'',         // 车架号码
-     ownerName:'',       // 客户姓名
-     idCard:'',          // 证件号码
-     ownPhone:'',        // 手机号码
-  } 
+   private detailsModel:any = {
+       applyCars:{},      // 所选车辆
+       city: '',            // 上牌城市
+       carColor:'',        // 车身颜色
+       engineNo:'',        // 发动机号
+       carNo:'',           // 车牌号码
+       frameNo:'',         // 车架号码
+       ownerName:'',       // 客户姓名
+       idCard:'',          // 证件号码
+       ownPhone:'',        // 手机号码
+    }
 
   /**
    * 获取评估申请查看详情
    */
   getApplicationDetail(assessmentNo) {
-    //   console.log(assessmentNo)
-    //   console.log(123)
     this.assessMentApplyService.findOrderInfoByOrderNumber(assessmentNo)
     .subscribe(
         data => {
           this.detailsModel.applyCars = data.applyCars ? data.applyCars : ''
-          this.selectedVehicles = this.detailsModel.applyCars[0].brandName + this.detailsModel.applyCars[0].carModel+ this.detailsModel.applyCars[0].carParam 
-          this.detailsModel.city = !!data.city? data.city : ''
+          this.selectedVehicles = this.detailsModel.applyCars[0].brandName + this.detailsModel.applyCars[0].carModel+ this.detailsModel.applyCars[0].carParam
           this.detailsModel.carColor = !!data.carColor? data.carColor : ''
           this.detailsModel.engineNo = !!data.engineNo? data.engineNo : ''
           this.detailsModel.carNo = !!data.carNo? data.carNo : ''
@@ -112,16 +109,12 @@ export default class addPeople extends Vue {
           this.detailsModel.ownerName = !!data.ownerName? data.ownerName : ''
           this.detailsModel.idCard = !!data.idCard? data.idCard : ''
           this.detailsModel.ownPhone = !!data.ownPhone? data.ownPhone : ''
-           this.detailsModel.city = !!this.detailsModel.city? CityService.getCityName(Number(this.detailsModel.city)):''
-          console.log(this.detailsModel)
-       
-         
+          this.detailsModel.city = !!data.city? CityService.getCityName(Number(data.city)):''
         },
         ({ msg }) => {
           this.$Message.error(msg)
         }
       )
-  }    
-
+  }
 }
 </script>
