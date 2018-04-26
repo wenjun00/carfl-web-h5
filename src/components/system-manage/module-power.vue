@@ -5,14 +5,14 @@
       <!--树-->
       <i-col :span="10">
         <span>模块名</span>
-        <div class="module-name" >
-          <data-tree  ref="data-tree" show-checkbox :data="menuResourceData" @on-select-change="getControlResourcesById"></data-tree>
+        <div class="module-name">
+          <data-tree ref="data-tree" show-checkbox :data="menuResourceData" @on-select-change="getControlResourcesById"></data-tree>
         </div>
       </i-col>
       <!--表格-->
       <i-col :span="14" class="module-form">
         <span>模块功能</span>
-        <data-box @on-selection-change="onSelectionChange"  ref="data-box" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
+        <data-box @on-selection-change="onSelectionChange" ref="data-box" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
       </i-col>
     </i-row>
   </section>
@@ -91,11 +91,11 @@ export default class ModulePower extends Vue {
    * 获取控件资源通过id
    */
   getControlResourcesById({ id }) {
-      console.log(this.controlResourceData)
-      console.log('656')
+    console.log(this.controlResourceData)
+    console.log('656')
     this.controlResourceData = this.controlResource.filter(
       x => [423, 424, 425].includes(x.resoFiletype) && x.resoPid === id
-     
+
     );
   }
 
@@ -121,9 +121,9 @@ export default class ModulePower extends Vue {
     });
   }
 
-  onSelectionChange(section){
-    this.controlResourceData.forEach(x=>{
-      x._checked = !!section.find(item=>item.id === x.id)
+  onSelectionChange(section) {
+    this.controlResourceData.forEach(x => {
+      x._checked = !!section.find(item => item.id === x.id)
     })
   }
 
@@ -179,15 +179,15 @@ export default class ModulePower extends Vue {
     this.getResourceData();
   }
 
-  public submit(){
+  public submit() {
     let dataTree = this.$refs['data-tree'] as DataTree
     let menuResourceIds = dataTree.getCheckedKeys()
-    let controlResourceIds = this.controlResource.filter(x=>x._checked).map(x=>x.id)
+    let controlResourceIds = this.controlResource.filter(x => x._checked).map(x => x.id)
 
     this.roleService.roleAllocateResources({
-      roleId:this.roleId,
-      resourcesId:[...menuResourceIds,...controlResourceIds]
-    }).subscribe(()=>{
+      roleId: this.roleId,
+      resourcesId: [...menuResourceIds, ...controlResourceIds]
+    }).subscribe(() => {
       this.$Message.success('模块权限配置成功！')
       this.$emit('close')
     })
@@ -195,13 +195,13 @@ export default class ModulePower extends Vue {
 }
 </script>
 <style  lang="less" scoped>
-    .component.module-power{
-        .module-name{
-            height:600px;
-            overflow:auto;
-        }
-        .module-form{
-            padding:0 10px;
-        }
-    }
+.component.module-power {
+  .module-name {
+    height: 600px;
+    overflow: auto;
+  }
+  .module-form {
+    padding: 0 10px;
+  }
+}
 </style>

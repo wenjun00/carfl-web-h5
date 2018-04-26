@@ -1,71 +1,70 @@
 <template>
-    <section class="page role-maintenance">
-        <page-header title="角色维护" hidden-print @on-export="exportRole">
-             <i-button class="blueButton" @click="addNewRole">新增角色</i-button>
-        </page-header>
-        <data-form hidden-date-search :model="roleModel" @on-search="getRoleListByCondition">
-            <template slot="input">
-                <i-form-item prop="roleName" label="角色名称：">
-                    <i-input placeholder="请输入角色姓名" v-model="roleModel.roleName"></i-input>
-                </i-form-item>
-                <i-form-item prop="roleStatus" label="状态：">
-                    <i-select v-model="roleModel.roleStatus" clearable>
-                        <i-option label="启用" :value="0" :key="0"></i-option>
-                        <i-option label="停用" :value="1" :key="1"></i-option>
-                    </i-select>
-                </i-form-item>
-            </template>
+  <section class="page role-maintenance">
+    <page-header title="角色维护" hidden-print @on-export="exportRole">
+      <command-button label="新增角色" @click="addNewRole"></command-button>
+    </page-header>
+    <data-form hidden-date-search :model="roleModel" @on-search="getRoleListByCondition">
+      <template slot="input">
+        <i-form-item prop="roleName" label="角色名称：">
+          <i-input placeholder="请输入角色姓名" v-model="roleModel.roleName"></i-input>
+        </i-form-item>
+        <i-form-item prop="roleStatus" label="状态：">
+          <i-select v-model="roleModel.roleStatus" clearable>
+            <i-option label="启用" :value="0" :key="0"></i-option>
+            <i-option label="停用" :value="1" :key="1"></i-option>
+          </i-select>
+        </i-form-item>
+      </template>
 
+    </data-form>
+    <data-box :id="20" :columns="columns1" :data="roleList" @onPageChange="getRoleListByCondition" :page="pageService" ref="databox"></data-box>
 
-        </data-form>
-        <data-box :id="20" :columns="columns1" :data="roleList" @onPageChange="getRoleListByCondition" :page="pageService" ref="databox"></data-box>
+    <template>
+      <i-modal v-model="modifyRoleModal" title="修改角色" class="modify-role">
+        <modify-role :modifyRoleModel="modifyRoleModel" ref="modify-role" @close="closeAndRefresh"></modify-role>
+        <div slot="footer">
+          <i-button class="Ghost" @click="modifyRoleModal=false">取消</i-button>
+          <i-button class="blueButton" @click="submitEditRole">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal v-model="modifyRoleModal" title="修改角色" class="modify-role">
-                <modify-role :modifyRoleModel="modifyRoleModel" ref="modify-role" @close="closeAndRefresh"></modify-role>
-                <div slot="footer">
-                    <i-button class="Ghost" @click="modifyRoleModal=false">取消</i-button>
-                    <i-button class="blueButton" @click="submitEditRole">确定</i-button>
-                </div>
-            </i-modal>
+    <template>
+      <i-modal v-model="modulePowerModal" title="模块权限" :width="600">
+        <module-power @close="modulePowerModal=false" ref="module-power" :roleId="currentRoleId"></module-power>
+        <div slot="footer">
+          <i-button @click="modulePowerModal=false">取消</i-button>
+          <i-button @click="saveModulePower" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="userListModal" title="用户列表" :width="800" class-name="no-footer" @on-visible-change="visibleChange">
+        <user-list ref="user-list"></user-list>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal width="160" v-model="waitHandleCaseModal" title="待办事项配置">
+        <wait-handle-case ref="wait-handle" @close="waitHandleCaseModal=false"></wait-handle-case>
+        <div slot="footer">
+          <i-button type="ghost" @click="waitHandleCaseModal=false">取消</i-button>
+          <i-button class="blueButton" @click="submitRole">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal title="新增角色" v-model="addRoleModal">
+        <add-role ref="add-role" @refreshRoleList="refreshRoleList"></add-role>
+        <template slot="footer">
+          <i-button @click="addRoleCancel">取消</i-button>
+          <i-button @click="addRole" class="blueButton">确定</i-button>
         </template>
-
-        <template>
-            <i-modal v-model="modulePowerModal" title="模块权限" :width="600">
-                <module-power @close="modulePowerModal=false" ref="module-power" :roleId="currentRoleId"></module-power>
-                <div slot="footer">
-                    <i-button @click="modulePowerModal=false">取消</i-button>
-                    <i-button @click="saveModulePower" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-
-        <template>
-            <i-modal v-model="userListModal" title="用户列表" :width="800" class-name="no-footer" @on-visible-change="visibleChange">
-                <user-list ref="user-list"></user-list>
-            </i-modal>
-        </template>
-
-        <template>
-            <i-modal width="160" v-model="waitHandleCaseModal" title="待办事项配置">
-                <wait-handle-case ref="wait-handle" @close="waitHandleCaseModal=false"></wait-handle-case>
-                <div slot="footer">
-                    <i-button type="ghost" @click="waitHandleCaseModal=false">取消</i-button>
-                    <i-button class="blueButton" @click="submitRole">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-
-        <template>
-            <i-modal title="新增角色" v-model="addRoleModal">
-                <add-role ref="add-role" @refreshRoleList="refreshRoleList"></add-role>
-                <template slot="footer">
-                    <i-button @click="addRoleCancel">取消</i-button>
-                    <i-button @click="addRole" class="blueButton">确定</i-button>
-                </template>
-            </i-modal>
-        </template>
-    </section>
+      </i-modal>
+    </template>
+  </section>
 </template>
 
 <script lang="ts">
@@ -151,7 +150,7 @@ export default class RoleMaintenance extends Page {
       {
         type: 'selection',
         align: 'center',
-        width:40,
+        width: 40,
         fixed: 'left'
       },
       {
@@ -323,21 +322,21 @@ export default class RoleMaintenance extends Page {
   getRoleListByCondition() {
     this.manageService
       .queryRolePage(
-        {
-          roleName: this.roleModel.roleName,
-          roleStatus: this.roleModel.roleStatus,
-          userId: ''
-        },
-        this.pageService
+      {
+        roleName: this.roleModel.roleName,
+        roleStatus: this.roleModel.roleStatus,
+        userId: ''
+      },
+      this.pageService
       )
       .subscribe(
-        data => {
-          console.log(data)
-          this.roleList = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        console.log(data)
+        this.roleList = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
   refreshRoleList() {
@@ -376,13 +375,13 @@ export default class RoleMaintenance extends Page {
             roleId: row.id
           })
           .subscribe(
-            val => {
-              this.$Message.success('删除成功！')
-              this.getRoleListByCondition()
-            },
-            ({ msg }) => {
-              this.$Message.error(msg)
-            }
+          val => {
+            this.$Message.success('删除成功！')
+            this.getRoleListByCondition()
+          },
+          ({ msg }) => {
+            this.$Message.error(msg)
+          }
           )
       }
     })
