@@ -51,42 +51,6 @@ import {
   Dependencies
 } from "~/core/decorator";
 
-<<<<<<< HEAD
-  @Layout("workspace")
-  @Component({
-    components: {
-      DataBox,
-      SvgIcon,
-      ApplyDetail
-    }
-  })
-  export default class PaymentApprove extends Page {
-    @Dependencies(RefundApplicationService)
-    private refundApplicationService: RefundApplicationService;
-    @Dependencies(PageService) private pageService: PageService;
-    private columns1: any;
-    private columns2: any;
-    private refundApproval: Array < Object > = [];
-    private applyInformation: Array < Object > = [];
-    private data2: Array < Object > = [];
-    private searchOptions: Boolean = false;
-    private openColumnsConfig: Boolean = false;
-    // private approvalModal: Boolean = false;
-    private checkApplyModal: Boolean = false;
-    private addAttachmentShow: Boolean = false;
-    private refundId: String = "";
-    private type: any = "";
-    private status: Boolean = false;
-    private approvalModel: any = {
-      dynamicParams: "",
-      processStatus: ""
-    };
-    addNewApply() {
-      this.$Modal.info({
-        title: "新增申请",
-        render: h => h(ApplyDetail)
-      });
-=======
 @Layout("workspace")
 @Component({
   components: {
@@ -128,7 +92,6 @@ export default class PaymentApprove extends Page {
       this.approvalModel.processStatus = "";
     } else {
       this.approvalModel.processStatus = 1130;
->>>>>>> dev
     }
     this.refundApplicationService
       .getApprovalRecord(this.approvalModel, this.pageService)
