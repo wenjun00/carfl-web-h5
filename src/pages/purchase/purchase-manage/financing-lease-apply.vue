@@ -132,7 +132,7 @@ export default class FinancingLeaseApply extends Page {
   ];
 
   private currentTab = "choose-buy-materials";
-  private orderStatus = "";
+  private orderStatus = null;
 
   // 客户信息表单数据
   private customerModel: any = {
@@ -392,6 +392,12 @@ export default class FinancingLeaseApply extends Page {
         }
       }
     });
+
+    if([303,311].includes(orderStatus)){
+      this.customerModel.id = data.id
+    }else{
+      this.orderStatus = null
+    }
   }
 
   reset() {

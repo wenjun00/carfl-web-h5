@@ -146,7 +146,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="尾付本金(元)" prop="finalPayment">
-              <i-input-number :disabled="!productModel.vehicleAmount" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" @on-change="onFinalPaymentChange" />
+              <i-input-number :readonly="productAmountModel" :disabled="!productModel.vehicleAmount" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" @on-change="onFinalPaymentChange" />
             </i-form-item>
           </i-col>
           <i-col span="12">
@@ -305,7 +305,7 @@ export default class ChooseBuyMaterials extends Vue {
   // 产品信息
   public productModel: any = {
     vehicleAmount: null, // 车辆参考总价
-    finalPayment: null, // 尾付本金
+    finalPayment: 0, // 尾付本金
     initialPayment: null, // 首付金额
     monthlySupply: null, // 月供金额
     depositCash: null, // 保证金金额
@@ -711,7 +711,7 @@ export default class ChooseBuyMaterials extends Vue {
     // TODO: 参考总价改变重置金额信息
     this.productModel.initialPayment = null;
     this.productModel.finalCash = null;
-    this.productModel.finalPayment = null;
+    this.productModel.finalPayment = 0;
 
     this.productRadioModel.paymentScale = null;
     this.productRadioModel.final = null;

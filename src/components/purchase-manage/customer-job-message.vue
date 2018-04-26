@@ -295,7 +295,9 @@ export default class CustomerJobMessage extends Vue {
    * 重置数据
    */
   revert(data) {
-    if (data.personal.personalJob.identity) {
+    let personalJob = data.personal.personalJob
+
+    if (personalJob.identity) {
       this.jobType = 38;
     } else {
       this.jobType = 37;
@@ -303,18 +305,14 @@ export default class CustomerJobMessage extends Vue {
 
     this.$common.revert(
       this.jobModel,
-      Object.assign(data.personal.personalJob, {
+      Object.assign(personalJob, {
         accessCompanyTime: FilterService.dateFormat(
-          data.personal.personalJob.accessCompanyTime,
+          personalJob.accessCompanyTime,
           "yyyy-MM-dd"
         ),
-        companyAddress: Number(data.personal.personalJob.companyAddress),
-        city: CityService.getCityParent(
-          Number(data.personal.personalJob.companyAddress)
-        )[1],
-        province: CityService.getCityParent(
-          Number(data.personal.personalJob.companyAddress)
-        )[0]
+        companyAddress:personalJob.companyAddress?Number(personalJob.companyAddress):null,
+        city:personalJob.city?Number(personalJob.city):null,
+        province:personalJob.province?Number(personalJob.province):null
       })
     );
   }

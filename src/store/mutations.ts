@@ -56,28 +56,32 @@ export default {
    * @param page 
    */
   openPage(state, target) {
-    // TODO: 传递至应该是菜单对象，从菜单中查询而非自定义对象
-    let page: any
+    let page, path, params
 
     if (typeof target === "string") {
-      page = state.pageList.find(x => x.path === target)
+      path = target
     } else {
-      // 菜单对象
-      page = {
-        path: target.path,
-        resoname: target.resoname,
-        params: target.params // 添加页面参数
-      }
+      path = target.path
+      params = target.params
     }
 
-    let pageModel = state.pageList.find(x => x.path === page.path)
+    // 获取是否是显示中的页面
+    page = state.pageList.find(x => x.path === path)
 
-    if (!pageModel) {
-      state.pageList.push(page)
+
+    if (page) {
+      // 当前页面已经打开
+      page.params = params
     } else {
-      pageModel.params = target.params
+      // 当前页面未打开
+      page = state.menuResource.find(x => x.path === path)
+      // 添加新页面
+      state.pageList.push(Object.assign({
+        params
+      }, page))
     }
-
+    
+    // 切换显示页面
     state.currentPage = page.path
   },
   /**
