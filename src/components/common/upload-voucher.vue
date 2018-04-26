@@ -69,8 +69,8 @@
         this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
           return {
             materialUrl: v.response.url,
-            materialType:v.response.type,
-            originName:v.response.name
+            // materialType:v.response.type,
+            // originName:v.response.name
           }
         }))
         this.$emit('financeUploadResources',this.financeUploadResources)

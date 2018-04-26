@@ -7,7 +7,7 @@
         <a  class="information">选购信息</a>
       </i-col>
     </i-row>
-    <i-form :rules="ruleValidateRule" :model="customerModel" ref="form-item" :label-width="90">
+    <i-form  :model="customerModel" ref="form-item" :label-width="90">
 
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
@@ -220,7 +220,7 @@
 
       <i-row>
         <i-col>
-          <upload-voucher  ref="upload-voucher" @financeUploadResources="fileNumber"></upload-voucher>
+          <upload-voucher  ref="upload-voucher" ></upload-voucher>
         </i-col>
       </i-row>
 
@@ -244,165 +244,14 @@
   })
   export default class AddCollateral extends Vue {
     @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
-    private customerModel: any = { basicList:'',}
-    private basicList:any =[{}]
-    private fodderList:any = [] //上传文件列
-    private appearance :any = [] //得到评估外观数据
-    private interiorInspection :any = [] //得到评估内饰检验数据
-    private engineRoom :any = [] //得到评估机舱底盘数据
-    private row:any = [] //父组件传的值
-    private carInformation:any = '' //所选车辆
-    private ruleValidateRule: any = {
-      firstTime: [{required: true, message: "请选择初登日期", trigger: 'change',type:'date'}],
-      factoryTime: [{required: true, message: "请选择出厂日期", trigger: "change",type:'date'}],
-      mileage: [{required: true, message: "请输入行驶里程", trigger: "blur"}],
-      drivingNo: [{required: true, message: "请输入行驶证号", trigger: "blur"}],
-      transferNo: [{required: true, message: "请输入过户次数", trigger: "blur"}],
-      carPurpose: [{required: true, message: "请选择车辆用途", trigger: "change",type: 'number'}],
-      transmission: [{required: true, message: "请选择形式", trigger: "change",type: 'number'}],
-      driver: [{required: true, message: "请选择驱动形式", trigger: "change",type: 'number'}],
-      displacement: [{required: true, message: "请输入排量", trigger: "blur"}],
-      carSituation:[{required: true, message: "请选择车况", trigger: 'change', type: 'number'}],
-      evaluation:[{required: true, message: "请输入估价", trigger: 'blur'}]
-    }
-    /**
-     *
-     * @param 查询评估信息
-     */
-    getBrash(row){
-      this.row = row
-      this.assessMentApplyService.beginOrderAssess({assessmentNo:row.assessmentNo})
-        .subscribe( data => {
-          this.appearance = data.basicList[0].carAttrList.filter(v=> v.attrType === 1).map(x=>({
-            attrName:x.attrName,
-            id: x.id,
-            attrType:x.attrType,
-            attrValue: 2,
-            attrCode:x.attrCode
-          }))
-          this.interiorInspection = data.basicList[0].carAttrList.filter(v=> v.attrType === 2).map(x=>({
-            attrName:x.attrName,
-            id: x.id,
-            attrType:x.attrType,
-            attrValue: 2,
-            attrCode:x.attrCode
-          }))
-          this.engineRoom = data.basicList[0].carAttrList.filter(v=> v.attrType === 3).map(x=>({
-            attrName:x.attrName,
-            id: x.id,
-            attrType:x.attrType,
-            attrValue: 2,
-            attrCode:x.attrCode
-          }))
-          this.customerModel.city = !!data.city? CityService.getCityName(Number(data.city)):''
-          this.customerModel.carColor = data.carColor
-          this.customerModel.carNo = data.carNo
-          this.customerModel.engineNo = data.engineNo
-          this.customerModel.ownerName = data.ownerName
-          this.customerModel.frameNo = data.frameNo
-          this.customerModel.ownPhone = data.ownPhone
-          this.customerModel.idCard = data.idCard
-          this.customerModel.id = data.id
-          this.customerModel.assessmentStatus = 1191 //保存是案件状态变更1191
-          this.basicList[0].id = data.basicList[0].id
-          this.customerModel.carAllName = data.applyCars[0].carAllName
-        })
-     }
-    /**
-     *  确定新增评估
-     */
-    trueAssessment(){
-      let form = <Form>this.$refs['form-item']
-      form.validate(valid => {
-        if (!valid) return false
-        this.basicList[0].carAttrList = this.appearance.concat(this.interiorInspection).concat(this.engineRoom)
-        this.basicList[0].carBasicFileList = this.fodderList
-        this.basicList[0].firstTime = this.customerModel.firstTime
-        this.basicList[0].factoryTime = this. customerModel.factoryTime
-        this.basicList[0].mileage = this.customerModel.mileage
-        this.basicList[0].drivingNo= this.customerModel.drivingNo
-        this.basicList[0].transferNo = this.customerModel.transferNo
-        this.basicList[0].carPurpose =this.customerModel.carPurpose
-        this.basicList[0].transmission = this.customerModel.transmission
-        this.basicList[0].driver = this. customerModel.driver
-        this.basicList[0].displacement = this.customerModel.displacement
-        this.basicList[0].carSituation= this.customerModel.carSituation
-        this.basicList[0].evaluation = this.customerModel.evaluation
-        this.basicList[0].remarks =this.customerModel.remarks
-        this.customerModel.basicList = this.basicList
-        delete this.customerModel.firstTime
-        delete this.customerModel.factoryTime
-        delete this.customerModel.mileage
-        delete this.customerModel.drivingNo
-        delete this.customerModel.transferNo
-        delete this.customerModel.carPurpose
-        delete this.customerModel.transmission
-        delete this.customerModel.driver
-        delete this.customerModel.displacement
-        delete this.customerModel.carSituation
-        delete this.customerModel.evaluation
-        delete this.customerModel.remarks
-        delete this.customerModel.city
-        delete this.customerModel.carColor
-        delete this.customerModel.carNo
-        delete this.customerModel.engineNo
-        delete this.customerModel.ownerName
-        delete this.customerModel.frameNo
-        delete this.customerModel.ownPhone
-        delete this.customerModel.idCard
-        delete this.customerModel.carAllName
-        this.assessMentApplyService.saveAssessmentBasicInfo(this.customerModel)
-          .subscribe( data => {
-            this.$Message.success("保存成功！")
-            this.$emit('close');
-          },({msg}) => {
-            this.$Message.error(msg)
-          })
-      })
-    }
-    /**
-     *  返回上传文件列
-     */
-    fileNumber(item) {
-      this.fodderList = item;
-    }
-    /**
-     *  取消评估
-     */
-    cancelAssessment(){
-      this.$Modal.confirm({
-        title: '提示',
-        content: '是否确定不再进行当前评估？',
-        onOk: () => {
-          this.assessMentApplyService.terminationStatus({orderId:this.row.id,status:this.row.assessmentStatus})
-            .subscribe(data => {
-                this.$Message.success("终止评估成功！")
-                this.$emit('close');
-              }, ({ msg }) => {
-                this.$Message.error(msg)
-              })
-          }
-        })
-    }
-    /**
-     *  退件
-     */
-    backSerice(){
-      this.$Modal.confirm({
-        title: '提示',
-        content: '是否将订单返回修改？再次提交后将继续由您进行评估。',
-        onOk: () => {
-          this.assessMentApplyService.backPieceStatus({orderId:this.row.id,status:this.row.assessmentStatus})
-            .subscribe(data => {
-              this.$Message.success("退件成功！")
-              this.$emit('close');
-            }, ({ msg }) => {
-              this.$Message.error(msg)
-            })
-        }
-      })
-    }
+    private customerModel: any = {}
 
+    /**
+     *  获取详情数据
+     */
+    getDetailsData(){
+
+    }
   }
 </script>
 

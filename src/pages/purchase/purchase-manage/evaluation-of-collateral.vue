@@ -28,6 +28,14 @@
             </div>
           </i-modal>
         </template>
+        <template>
+          <i-modal v-model="detailsModal"  title="查看评估" width="780">
+            <add-collateral-details ref="add-collateral-details"></add-collateral-details>
+            <div slot="footer">
+              <i-button @click="canselDetails">取消</i-button>
+            </div>
+          </i-modal>
+        </template>
     </section>
 </template>
 
@@ -41,11 +49,13 @@ import SvgIcon from '~/components/common/svg-icon.vue'
 import AddCollateral from '~/components/purchase-manage/add-collateral.vue'
 import { AssessMentApplyService } from "~/services/manage-service/assess-ment-apply.service";
 import { FilterService } from '~/utils/filter.service'
+import  AddCollateralDetails from '~/components/purchase-manage/add-collateral-details.vue'
 @Layout('workspace')
 @Component({
   components: {
     SvgIcon,
-    AddCollateral
+    AddCollateral,
+    AddCollateralDetails
   }
 })
 export default class EvaluationOfCollateral extends Page {
@@ -54,6 +64,7 @@ export default class EvaluationOfCollateral extends Page {
   private dataSet: Array<any> = []
   private status: Boolean = false
   private assignModal:Boolean = false
+  private detailsModal:Boolean = false
   private orderId:any = '' //当前案件的订单ID
   private assessmentStatus:any = ''//当前案件的状态
   private collateralModel: any = {
@@ -101,7 +112,7 @@ export default class EvaluationOfCollateral extends Page {
                 },
                 on: {
                   click: () => {
-
+                    this.collateralClickDetails()
                   }
                 }
               },
@@ -262,6 +273,7 @@ export default class EvaluationOfCollateral extends Page {
   }
   close(){
     this.assignModal = false
+    this.getCollateralList()
   }
   /**
    *  取消评估
@@ -276,6 +288,17 @@ export default class EvaluationOfCollateral extends Page {
   backPiece(){
     let statusId = this.$refs['add-collateral'] as AddCollateral
     statusId.backSerice()
+  }
+  /**
+   *  查看详情
+   */
+  collateralClickDetails(){
+    this.detailsModal = true
+    let AddCollateralDetails = this.$refs['add-collateral-details'] as AddCollateralDetails
+    AddCollateralDetails.getDetailsData()
+  }
+  canselDetails(){
+    this.detailsModal = false
   }
 }
 </script>
