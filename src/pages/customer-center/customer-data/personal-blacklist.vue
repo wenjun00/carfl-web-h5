@@ -18,7 +18,17 @@
       </template>
     </data-form>
     <data-box :columns="personalBlacklistColumns" :data="dataSet" :page="pageService"></data-box>
+        <template>
+            <i-modal width="780" v-model="personalModal" title="客户详情" class="get-customer-details">
+                <get-customer-details ref="get-customer-details"></get-customer-details>
+                <div slot="footer">
+                    <i-button size="large" type="ghost" class="Ghost" @click="personalModal=false">取消</i-button>
+                    <i-button size="large" type="primary" class="blueButton" @click="personalModal=false">移除黑名单</i-button>
+                </div>
+            </i-modal>
+        </template>
   </section>
+    
 </template>
 
 <script lang="ts">
@@ -27,18 +37,23 @@
   import { Dependencies } from "~/core/decorator";
   import { Layout } from "~/core/decorator";
   import { PageService } from "~/utils/page.service";
+  import GetCustomerDetails from '~/components/purchase-manage/get-customer-details.vue'
   @Layout("workspace")
   @Component({
-    components: {}
+    components: {
+         GetCustomerDetails
+    }
   })
   export default class PersonalBlacklist extends Page{
     @Dependencies(PageService) private pageService: PageService;
     private dataSet: Array<any> = []
+    private personalModal:Boolean = false
     private personalBlacklistModel: any = {
       busNumber: '', //客户姓名
       customerName: '', // 手机号码
       startTime: '', // 创建起止时间
     }
+    private customerDetailsModal:Boolean = false
     private personalBlacklistColumns:any =  [{
       title: '操作',
       align: 'center',
@@ -54,6 +69,11 @@
               },
               style: {
                 color: '#265EA2'
+              },
+              on: {
+                click: () => {
+                  this.getDetailsList(row)
+                }
               }
             },
             '客户详情'
@@ -131,6 +151,10 @@
         minWidth: this.$common.getColumnWidth(3),
         align: 'center'
       }]
+
+      getDetailsList(row){
+            this.personalModal = true
+      }
 
     mounted() {
       this.dataSet = [{
