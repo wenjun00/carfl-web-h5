@@ -38,6 +38,11 @@ import financeApprovalHistoryController from './finance-approval-history.control
 import chargeBackController from './charge-back.controller'
 import templateController from './template.controller'
 import financeInvoiceController from './finance-invoice.controller'
+import companyAccountController from './company-account.controller'
+import bankcardDetailCotroller from './bankcard-detail.cotroller'
+
+
+
 
 export const manageService = {
     financeInvoiceController,
@@ -79,5 +84,7 @@ export const manageService = {
     carParamController,
     withdrawApplicationController,
     financeApprovalHistoryController,
-    chargeBackController
+    chargeBackController,
+    companyAccountController,
+    bankcardDetailCotroller
 }

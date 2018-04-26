@@ -35,10 +35,10 @@ export default {
     /**
      * 获取客户开户列表
      */
-    getCustomerAccountList: {
+    getCustomerList: {
         service: SERVICE,
         controller: CONTROLLER,
-        action: 'getCustomerAccountList',
+        action: 'getCustomerList',
         type: requestType.Get
     },
     /**
@@ -71,10 +71,28 @@ export default {
     /**
      * 上传客户审批资料
      */
-    uploadPersonalApproveFile:{
+    uploadPersonalApproveFile: {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'uploadPersonalApproveFile',
+        type: requestType.Post
+    },
+    /**
+     * 客户开户手机验证码
+     */
+    customerOpenAccountVerificationPhone: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'customerOpenAccountVerificationPhone',
+        type: requestType.Get
+    },
+    /**
+     * 客户开户
+     */
+    customerOpenAccount: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'customerOpenAccount',
         type: requestType.Post
     }
 }
