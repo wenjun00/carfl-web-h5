@@ -197,7 +197,7 @@
       <i-row type="flex" :gutter="110">
         <i-col>
           <i-form-item label="车况" prop="m1" :label-width="90">
-            <i-select >carSituation
+            <i-select>
               <i-option v-for="{value,label} in $dict.getDictData('0450')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
