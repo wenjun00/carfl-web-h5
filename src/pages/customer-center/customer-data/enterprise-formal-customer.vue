@@ -13,7 +13,16 @@
             </template>
         </data-form>
         <data-box :columns="customerColumns" :data="dataSet" :page="pageService"></data-box>
-
+           <template>
+            <i-modal width="780" v-model="personalModal" title="客户详情" class="get-company-details">
+                <get-company-details ref="get-company-details"></get-company-details>
+                <div slot="footer">
+                    <i-button size="large" type="ghost" class="Ghost" @click="personalModal=false">加入黑名单</i-button>
+                    <i-button size="large" type="ghost" class="Ghost" @click="personalModal=false">取消</i-button>
+                    <i-button size="large" type="primary" class="blueButton" @click="personalModal=false">编辑</i-button>
+                </div>
+            </i-modal>
+        </template>
     </section>
 </template>
 
@@ -24,9 +33,12 @@ import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import { Button } from 'iview'
+import GetCompanyDetails from '~/components/purchase-manage/get-company-details.vue'
 @Layout('workspace')
 @Component({
-  components: {}
+  components: {
+      GetCompanyDetails
+  }
 })
 export default class EvaluationTaskPool extends Page {
   @Dependencies(PageService) private pageService: PageService
@@ -35,6 +47,7 @@ export default class EvaluationTaskPool extends Page {
     brandModel: '', //企业名称
     busNumber: '', // 证件号码
   }
+  private personalModal:Boolean =false 
   private customerColumns:any = [
     {
       title: '操作',
@@ -51,6 +64,11 @@ export default class EvaluationTaskPool extends Page {
               style: {
                 color: '#265EA2'
               },
+              on: {
+                click: () => {
+                  this.getCompanyList(row)
+                }
+              }
             },
             '企业详情'
           ),
@@ -135,6 +153,13 @@ export default class EvaluationTaskPool extends Page {
       align: 'center'
     }
   ]
+
+    /**
+ * 查看企业详情
+ */
+  getCompanyList(row) {
+      this.personalModal = true
+  }
 
   mounted() {
     this.dataSet = [

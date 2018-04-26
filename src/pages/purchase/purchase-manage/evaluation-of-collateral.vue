@@ -250,7 +250,7 @@ export default class EvaluationOfCollateral extends Page {
         this.$Message.error(msg)
       })
   }
-  /**
+  /** 
    *  评估弹窗
    */
   collateralClick(row){

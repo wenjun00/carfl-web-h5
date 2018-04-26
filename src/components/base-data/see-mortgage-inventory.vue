@@ -105,7 +105,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
                     <i-form-item label="车况说明" :label-width="90">
-                        <i-input readonly style="width:100%" type="textarea"></i-input>
+                        <i-input readonly class="textbox" type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -121,7 +121,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
                     <i-form-item label="情况描述" :label-width="90">
-                        <i-input readonly style="width:100%" type="textarea"></i-input>
+                        <i-input readonly class="textbox" type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -180,4 +180,9 @@ export default class addPeople extends Vue {}
     }
   }
 }
+</style>
+<style lang="less">
+  .textbox.ivu-input-wrapper.ivu-input-type{
+      width: 480px;
+  }
 </style>

@@ -16,13 +16,12 @@
       </template>
     </data-form>
     <data-box :columns="personalCustomerColumns" :data="dataSet" :page="pageService"></data-box>
-
-      <template>
-            <i-modal  width="780" v-model="personalModal" title="客户详情" class="get-formal-customer">
-                <get-formal-customer ref="get-formal-customer"></get-formal-customer>
+    <template>
+            <i-modal width="780" v-model="personalModal" title="客户详情" class="get-customer-details">
+                <get-customer-details ref="get-customer-details"></get-customer-details>
                 <div slot="footer">
-                     <i-button size="large" type="ghost" class="Ghost"  @click="personalModal=false">取消</i-button>
-                    <i-button size="large"  type="primary" class="blueButton"  @click="personalModal=false">加入黑名单</i-button>
+                    <i-button size="large" type="ghost" class="Ghost" @click="personalModal=false">取消</i-button>
+                    <i-button size="large" type="primary" class="blueButton" @click="personalModal=false">加入黑名单</i-button>
                 </div>
             </i-modal>
         </template>
@@ -35,11 +34,11 @@
   import { Dependencies } from "~/core/decorator";
   import { Layout } from "~/core/decorator";
   import { PageService } from "~/utils/page.service";
-  import GetFormalCustomer from '~/components/purchase-manage/get-formal-customer.vue'
+import GetCustomerDetails from '~/components/purchase-manage/get-customer-details.vue'
   @Layout("workspace")
   @Component({
     components: {
-        GetFormalCustomer
+        GetCustomerDetails
     }
   })
   export default class PersonalCustomer extends Page{

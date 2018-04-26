@@ -31,18 +31,18 @@
 
     </section>
 </template>
-
+ 
 <script lang="ts">
 import Page from '~/core/page'
 import Component from 'vue-class-component'
 import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
-import getCustomerDetails from '~/components/purchase-manage/get-customer-details.vue'
+import GetCustomerDetails from '~/components/purchase-manage/get-customer-details.vue'
 @Layout('workspace')
 @Component({
   components: {
-      getCustomerDetails
+      GetCustomerDetails
   }
 })
 export default class PersonalClient extends Page {
