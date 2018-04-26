@@ -37,10 +37,10 @@
         <data-grid-item label="融资金额" :span="8">
           <i-form ref="finance" :model="amount" :rules="amountRules" inline>
             <i-form-item prop="financingAmount1" label="最小金额">
-              <i-input-number v-model="amount.financingAmount1" :max="100" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number v-model="amount.financingAmount1" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
             <i-form-item prop="financingAmount2" label="最大金额">
-              <i-input-number v-model="amount.financingAmount2" :max="100" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+              <i-input-number v-model="amount.financingAmount2" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
             </i-form-item>
           </i-form>
         </data-grid-item>
