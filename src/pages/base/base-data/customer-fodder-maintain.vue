@@ -2,7 +2,7 @@
 <template>
     <section class="page customer-fodder-maintain">
         <page-header title="客户素材维护" hiddenPrint hiddenExport>
-             <i-button class="blueButton command-item-add" @click="materialModel=true">新增素材</i-button>
+             <command-button class="command-item-add" label="新增素材" @click="materialModel=true"></command-button>
         </page-header>
         <i-row class="data-form">
             <i-row type="flex">

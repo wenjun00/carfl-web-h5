@@ -46,20 +46,27 @@ export default [
         path: "purchase/finance-account",
         icon: "caiwujizhang",
         children: [{
-          title: "销售收款申请",
-          path: "purchase/finance-account/sale-gathering-apply",
-        }, {
-          title: "提前结清申请",
-          path: "purchase/finance-account/early-payment-apply",
-        }, {
-          title: "提前收回申请",
-          path: "purchase/finance-account/early-recover-apply",
-        }, {
-          title: "收款记录查询",
-          path: "purchase/finance-account/receipt-record-query",
-        }, {
-          title: "付款记录查询",
-          path: "purchase/finance-account/payment-record-query",
+            title: '基础数据',
+            icon: 'jichushuju',
+            color: '#598AC5',
+            path: 'base/base-data',
+            children: [{
+                title: '产品包管理',
+                path: 'base/base-data/prod-package-info'
+            },
+            {
+                title: '车辆维护',
+                path: 'base/base-data/vehicle-maintenance'
+            }, {
+                title: '数据字典',
+                path: 'base/base-data/data-dict'
+            }, {
+                title: '审批原因管理',
+                path: 'base/base-data/approval-reason-manage'
+            }, {
+                title: '分公司管理',
+                path: 'base/base-data/branch-company-info'
+            }]
         }, {
           title: "付款申请",
           path: "purchase/finance-account/pay-apply",

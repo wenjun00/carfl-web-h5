@@ -2,7 +2,7 @@
 <template>
     <section class="page system-log-download">
         <page-header title="系统日志下载" @on-export="exportLogs" >
-             <i-button class="blueButton" @click="addNewBackups">新增备份</i-button>
+             <command-button label="新增备份" @click="addNewBackups"></command-button>
         </page-header>
 
         <data-form hidden-date-search :model="systemLogModel" @on-search="search" :page="pageService">
