@@ -109,8 +109,10 @@ exports.getPageList = () => {
         var fullpath = path.join(directory, file);
         var stat = fs.statSync(fullpath);
         var extname = path.extname(fullpath);
+        // 更换windows路径
+        fullpath = fullpath.replace(/\\/g,'/')
         if (stat.isFile() && extname === '.vue') {
-          let match = fullpath.match(/pages\/(.*)/)
+          let match = fullpath.match(/pages[\/|\\](.*)/)
           if (match && match.length > 1) {
             pageList.push(match[1])
           }

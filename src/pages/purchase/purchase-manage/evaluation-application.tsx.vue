@@ -2,7 +2,7 @@
 <template>
     <section class="page evaluation-application">
         <page-header title="评估申请" hidden-print>
-            <command-button label="新建申请"></command-button>
+            <command-button label="新建申请" @click="newApplication"></command-button>
         </page-header>
         <data-form :model="applicationModel" @on-search="getApplicationList">
             <template slot="input">
@@ -38,6 +38,14 @@
             </div>
           </i-modal>
         </template>
+      <template>
+        <i-modal v-model="newModal"  title="新建申请" width="780">
+          <new-application ref="new-application"></new-application>
+          <div slot="footer">
+            <!--<i-button @click="canselDetails">取消</i-button>-->
+          </div>
+        </i-modal>
+      </template>
     </section>
 </template>
 <script lang="tsx">
@@ -52,12 +60,14 @@ import { AssessMentApplyService } from '~/services/manage-service/assess-ment-ap
 import ApplyForApplication from '~/components/purchase-manage/apply-for-application.vue'
 import { Modal } from 'iview'
 import  AddCollateralDetails from '~/components/purchase-manage/add-collateral-details.vue'
+import  NewApplication from '~/components/purchase-manage/new-application.vue'
 
 @Layout('workspace')
 @Component({
   components: {
     ApplyForApplication,
-    AddCollateralDetails
+    AddCollateralDetails,
+    NewApplication
   }
 })
 export default class EvaluationApplication extends Page {
@@ -68,6 +78,7 @@ export default class EvaluationApplication extends Page {
   private whetherInclude: Boolean = true;
   private dataSet: Array<any> = []
   private detailsModal:Boolean = false
+  private newModal:Boolean = false
   private applicationModel: any = {
     carParams: '', //品牌系列
     carNo: '', // 车牌号码
@@ -286,6 +297,14 @@ export default class EvaluationApplication extends Page {
         })}
       })
     }
+  /**
+   * 新建申请
+   */
+  newApplication(){
+    this.newModal = true
+  }
+
+
   mounted() {
     this.getApplicationList()
   }
