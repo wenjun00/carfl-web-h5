@@ -140,7 +140,7 @@
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
-        <i-col v-for="item in appearance" :key="item.id">
+        <i-col v-for="item in appearance" :key="item.attrCode">
           <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
               <i-radio :label="1" disabled>正常</i-radio>
@@ -158,7 +158,7 @@
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
-        <i-col v-for="item in interiorInspection" :key="item.id">
+        <i-col v-for="item in interiorInspection" :key="item.attrCode">
           <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
               <i-radio :label="1" disabled>正常</i-radio>
@@ -176,7 +176,7 @@
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
-        <i-col v-for="item in engineRoom" :key="item.id">
+        <i-col v-for="item in engineRoom" :key="item.attrCode">
           <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
               <i-radio :label="1" disabled>正常</i-radio>
@@ -219,7 +219,7 @@
 
       <i-row>
         <i-col>
-          <upload-voucher  ref="upload-voucher" ></upload-voucher>
+          <upload-voucher  ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
         </i-col>
       </i-row>
 
@@ -267,7 +267,10 @@
       evaluation:'',
       remarks:'',
     }
-
+    private fodderList:any = [] //上传文件列
+    private appearance :any = [] //得到评估外观数据
+    private interiorInspection :any = [] //得到评估内饰检验数据
+    private engineRoom :any = [] //得到评估机舱底盘数据
     /**
      *  获取详情数据
      */
@@ -295,6 +298,23 @@
           this.customerModel.carSituation =data.basicList[0].carSituation
           this.customerModel.evaluation = this.$filter.toThousands(data.basicList[0].evaluation)
           this.customerModel.remarks = data.basicList[0].remarks
+          this.appearance = data.basicList[0].carAttrList.filter(v=> v.attrType === 1).map(x=>({
+            attrName:x.attrName,
+            attrValue:Number(x.attrValue),
+            attrCode:x.attrCode
+          }))
+          this.interiorInspection = data.basicList[0].carAttrList.filter(v=> v.attrType === 2).map(x=>({
+            attrName:x.attrName,
+            attrValue: Number(x.attrValue),
+            attrCode:x.attrCode
+          }))
+          this.engineRoom = data.basicList[0].carAttrList.filter(v=> v.attrType === 3).map(x=>({
+            attrName:x.attrName,
+            attrValue: Number(x.attrValue),
+            attrCode:x.attrCode
+          }))
+          let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher
+          uploadVoucher.Reverse(data.basicList[0].carFileList)
         },({msg}) => {
           this.$Message.error(msg)
         })

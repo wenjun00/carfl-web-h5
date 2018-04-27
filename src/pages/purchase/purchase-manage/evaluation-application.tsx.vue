@@ -247,7 +247,7 @@ export default class EvaluationApplication extends Page {
    * 评估申请查看详情
    */
   getDetailsList(row) {
-    if(row.assessmentNo == 1191){
+    if(row.assessmentStatus == 1191){
       this.detailsModal = true
       let AddCollateralDetails = this.$refs['add-collateral-details'] as AddCollateralDetails
       AddCollateralDetails.getDetailsData(row)
