@@ -40,7 +40,6 @@ export default class DataPowerModal extends Vue {
   };
   private treeCheckId: Array<any> = []; // 点击树复选框时选择的id
   private defaultCheckId: Array<any> = []; // 反显的数据权限id
-
   private flag: Boolean = false; // 判断数组为空是本身为空还是点击后为空
   created() {}
   getAllOrg(userId) {

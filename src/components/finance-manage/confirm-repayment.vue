@@ -10,7 +10,7 @@
       <data-grid-item label="身份证号" :span="4">{{repaymentObj.idCard}}</data-grid-item>
       <data-grid-item label="融资金额（元）" :span="2">{{repaymentObj.financingAmount}}</data-grid-item>
       <data-grid-item label="期数" :span="2">{{repaymentObj.periods}}</data-grid-item>
-      <data-grid-item label="利率%/月" :span="2">{{repaymentObj.productRate}}</data-grid-item>
+      <data-grid-item label="月利率" :span="2">{{repaymentObj.productRate| decimalToPrecent}}</data-grid-item>
     </data-grid>
 
     <table class="modal-item-table" border="1" width="868">
@@ -108,17 +108,19 @@
         </td>
         <td>
           <i-input-number style="display:inline-block;width:30%;margin-right:10px" v-model="v.collectMoneyAmount" @on-blur="inputBlur" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
-          <i-button class="blueButton">确认划扣</i-button>
+          <!-- <i-button class="blueButton">确认划扣</i-button> -->
         </td>
         <td>
-          <span>已处理</span>
-          <i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>
+          <!-- <div>
+            <span>已处理</span>
+            <i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>
+          </div> -->
         </td>
       </tr>
       <tr height="40">
         <td></td>
         <td width="25%">合计（元）</td>
-        <td class="modal-item-td" colspan="3">{{collectMoneySum}}</td>
+        <td class="modal-item-td" colspan="3">{{collectMoneySum | toThousands}}</td>
       </tr>
     </table>
     <i-form>
@@ -151,6 +153,7 @@ import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { Dependencies } from "~/core/decorator";
 import { PaymentScheduleService } from "~/services/manage-service/payment-schedule.service";
 import UploadVoucher from "~/components/common/upload-voucher.vue";
+import { LodashService } from '~/utils/lodash.service'
 
 @Component({
   components: {
@@ -200,21 +203,20 @@ export default class ConfirmRepayment extends Vue {
         orderId: row.orderId
       })
       .subscribe(
-        data => {
-          console.log(data);
-          this.collectMoneyId = data.collectMoneyHistory
-            ? data.collectMoneyHistory.id
-            : "";
-          this.repaymentObj = data;
-          this.collectMoneyDetails = data.collectMoneyDetails || [];
-          this.financeUploadResources = data.financeUploadResources || [];
-          this.collectMoneyItemModel = data.collectMoneyItemModel;
-          this.remark = data.remark;
-          this.inputBlur();
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
+      data => {
+        this.collectMoneyId = data.collectMoneyHistory
+          ? data.collectMoneyHistory.id
+          : "";
+        this.repaymentObj = data;
+        this.collectMoneyDetails = data.collectMoneyDetails || [];
+        this.financeUploadResources = data.financeUploadResources || [];
+        this.collectMoneyItemModel = data.collectMoneyItemModel;
+        this.remark = data.remark;
+        this.inputBlur();
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
       );
   }
 
@@ -251,10 +253,9 @@ export default class ConfirmRepayment extends Vue {
   inputBlur() {
     let sum: any = 0;
     this.collectMoneyDetails.forEach(v => {
-      sum = sum + v.collectMoneyAmount;
+      sum += v.collectMoneyAmount;
     });
-    console.log(sum);
-    this.collectMoneySum = sum;
+    this.collectMoneySum = LodashService.round(sum,2);
   }
 
   selectWay(code, item) {
@@ -284,7 +285,7 @@ export default class ConfirmRepayment extends Vue {
                 color: "#199ED8"
               },
               on: {
-                click: () => {}
+                click: () => { }
               }
             }),
             h("Icon", {
@@ -298,7 +299,7 @@ export default class ConfirmRepayment extends Vue {
                 color: "#199ED8"
               },
               on: {
-                click: () => {}
+                click: () => { }
               }
             }),
             h("Icon", {
@@ -311,7 +312,7 @@ export default class ConfirmRepayment extends Vue {
                 color: "#199ED8"
               },
               on: {
-                click: () => {}
+                click: () => { }
               }
             })
           ]);
