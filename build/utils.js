@@ -124,6 +124,5 @@ exports.getPageList = () => {
   }
 
   walk(path.join(__dirname, "..", "src", "pages"))
-  console.log(pageList)
   return pageList
 }

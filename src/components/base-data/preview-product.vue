@@ -6,16 +6,15 @@
       <data-grid-item label="产品序号" :span="4">{{dpNameTitleView.number}}</data-grid-item>
       <data-grid-item label="产品名称" :span="8"> {{dpNameTitleView.name}}</data-grid-item>
       <data-grid-item label="产品期数" :span="4"> {{$dict.getDictName(productDetailView.periods)}}</data-grid-item>
-      <data-grid-item label="产品利率" :span="4"> {{productDetailView.productRate*100}}%/月</data-grid-item>
+      <data-grid-item label="产品月利率" :span="4"> {{productDetailView.productRate | decimalToPrecent}}</data-grid-item>
       <data-grid-item label="还款方式" :span="4">{{$dict.getDictName(productDetailView.payWay)}}</data-grid-item>
       <data-grid-item label="周期类型" :span="4"> {{$dict.getDictName(productDetailView.periodType)}} </data-grid-item>
       <data-grid-item label="融资金额" :span="8">{{productDetailView.financingAmount}}</data-grid-item>
       <data-grid-item label="账期类型" :span="12">
         <i-radio-group class="item-float-left" v-model="productDetailView.paymentType">
-          <i-radio :label="386" disabled>正常账期</i-radio>
-          <i-radio :label="387" disabled>固定账期</i-radio>
+          <i-radio v-for="{value,label} in $dict.getDictData('0409')" :key="value" :label="value" disabled>{{label}}</i-radio>
         </i-radio-group>
-        <span v-show="productDetailView.paymentType===387">{{productDetailView.paymentDay}}日</span>
+        <span class="item-float-left" v-if="productDetailView.paymentType === 387">{{productDetailView.paymentDay + '日'}} </span>
       </data-grid-item>
     </data-grid>
     <div class="addPeriodsItem">首付款参数</div>
@@ -47,7 +46,7 @@
           <span class="item-margin-top10">比例</span>
           <span>{{productDetailView.depositCash}}</span>
           <span class="item-color-red">%</span>
-          <span>{{productDetailView.depositCashType === 396 ? "退还" : "不退还"}}</span>
+          <span>{{ ` 缴纳方式：${productDetailView.depositCashType === 396 ? '退还' : '不退还'}`}}</span>
         </div>
       </data-grid-item>
     </data-grid>
@@ -83,7 +82,7 @@
           <i-radio :label="394" disabled>一次性收取</i-radio>
           <i-radio :label="395" disabled>分期数收取</i-radio>
         </i-radio-group>
-        <span v-if="productDetailView.manageCostType===395">{{productDetailView.stagingPeriods}}期</span>
+        <span v-if="productDetailView.manageCostType===395" class="item-float-left">{{productDetailView.stagingPeriods}}期</span>
       </data-grid-item>
     </data-grid>
     <div class="addPeriodsItem">逾期违约惩罚参数</div>
@@ -147,8 +146,8 @@ export default class AddPeriods extends Vue {
   private manageMoneyParams: String = '无';
 
   @Watch('productDetailView')
-  class() {
-    this.initialParams = this.productDetailView.manageCost ? '有' : '无'
+  onProductDetailView() {
+    this.initialParams = this.productDetailView.initialPayment ? '有' : '无'
     this.promiseMoenyParams = this.productDetailView.depositCash ? '有' : '无'
     this.residueParams = this.productDetailView.finalCash ? '有' : '无'
     this.manageMoneyParams = this.productDetailView.manageCost ? '有' : '无'
