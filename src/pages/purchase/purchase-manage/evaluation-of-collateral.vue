@@ -232,8 +232,8 @@ export default class EvaluationOfCollateral extends Page {
       title: '估价员',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'assessMentPerson',
-      align: 'center'
+      key: 'assessmentPerson',
+      align: 'center',
     }
   ]
   activated() {
@@ -250,7 +250,7 @@ export default class EvaluationOfCollateral extends Page {
         this.$Message.error(msg)
       })
   }
-  /** 
+  /**
    *  评估弹窗
    */
   collateralClick(row){

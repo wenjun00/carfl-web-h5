@@ -120,4 +120,13 @@ export class AssessMentApplyService {
       data: data
     })
   }
+  /**
+   *  新增/修改车辆评估申请订单
+   */
+  saveAssessmentApplyInfo(data){
+    return this.netService.send({
+      server: manageService.assessmentapply.saveAssessmentApplyInfo,
+      data: data
+    })
+  }
 }
