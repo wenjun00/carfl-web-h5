@@ -428,8 +428,14 @@ export default class OrgUserManage extends Page {
         editable: true,
         key: 'userRealname',
         minWidth: this.$common.getColumnWidth(4),
-        render:(h,{row,column,index})=>{
-            return h('div',{},this.$filter.subString(row.userRealname))
+        render: (h, { row, column, index }) => {
+          return h('div', {
+            attrs:
+              {
+                title: row.userRealname
+              }
+          }, this.$filter.subString(row.userRealname)
+          )
         }
       },
       {
@@ -466,8 +472,12 @@ export default class OrgUserManage extends Page {
         title: '备注',
         key: 'userRemark',
         minWidth: this.$common.getColumnWidth(8),
-        render:(h, {row, column,index}) => {
-            return h('div', {}, this.$filter.subString(row.userRemark,10))
+        render: (h, { row, column, index }) => {
+          return h('div', {
+            attrs: {
+              title: row.userRemark
+            }
+          }, this.$filter.subString(row.userRemark, 10))
         }
       },
 
@@ -477,8 +487,14 @@ export default class OrgUserManage extends Page {
         title: '创建人',
         key: 'operatorName',
         minWidth: this.$common.getColumnWidth(4),
-        render:(h,{row,column,index})=>{
-            return h('div',{},this.$filter.subString(row.operatorName))
+        render: (h, { row, column, index }) => {
+          return h('div',
+            {
+              attrs: {
+                title: row.operatorName
+              }
+            },
+            this.$filter.subString(row.operatorName))
         }
       },
       {
