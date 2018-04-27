@@ -552,37 +552,6 @@ export default class CustomerMaterials extends Vue {
     this.customerModel.id = data.personalId || null;
   }
 
-  // Reverse(data) {
-  //   data.personal.idCardAddress = Number(data.personal.idCardAddress);
-  //   data.personal.city = CityService.getCityParent(
-  //     Number(data.personal.idCardAddress)
-  //   )[1];
-  //   data.personal.province = CityService.getCityParent(
-  //     Number(data.personal.idCardAddress)
-  //   )[0];
-  //   // 现居住地址
-  //   data.personal.localHomeAddr = Number(data.personal.localHomeAddr);
-  //   data.personal.city1 = CityService.getCityParent(
-  //     Number(data.personal.localHomeAddr)
-  //   )[1];
-  //   data.personal.province1 = CityService.getCityParent(
-  //     Number(data.personal.localHomeAddr)
-  //   )[0];
-  //   // 本市房产地址
-  //   data.personal.cityOwnhouseAddress = Number(
-  //     data.personal.cityOwnhouseAddress
-  //   );
-  //   data.personal.city2 = CityService.getCityParent(
-  //     Number(data.personal.cityOwnhouseAddress)
-  //   )[1];
-  //   data.personal.province2 = CityService.getCityParent(
-  //     Number(data.personal.cityOwnhouseAddress)
-  //   )[0];
-  //   this.customerModel = data.personal;
-  //   this.customerModel.id = data.personalId || null;
-  //   delete data.personalId;
-  // }
-
   idCardChange(value) {
     this.customerModel.province1 = value ? this.customerModel.province : "";
     this.customerModel.city1 = value ? this.customerModel.city : "";

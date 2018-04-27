@@ -35,13 +35,12 @@ export default class addSeries extends Vue {
     };
   }
 
-  mounted(){
+  mounted() {
     this.seriesForm = this.$refs['add-series']
   }
 
 
   vaildFun() {
-    console.log( this.seriesForm,'form')
     this.seriesForm.validate(valid => {
       if (!valid) return false;
       this.productSeriesService.createOrModifyProductSeries(this.addSeries).subscribe(
