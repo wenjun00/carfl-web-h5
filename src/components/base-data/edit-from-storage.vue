@@ -105,7 +105,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
                     <i-form-item label="车况" :label-width="90">
-                        <i-input style="width:485px" type="textarea"></i-input>
+                        <i-input class="textbox" type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -119,14 +119,14 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
                     <i-form-item label="车况说明" :label-width="90">
-                        <i-input style="width:485px" type="textarea"></i-input>
+                        <i-input  class="textbox"  type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
                     <i-form-item label="情况描述" :label-width="90">
-                        <i-input style="width:485px" type="textarea"></i-input>
+                        <i-input class="textbox" type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -294,4 +294,9 @@ export default class addPeople extends Vue {}
       top: 8px;
   }
 }
+</style>
+<style lang="less">
+  .textbox.ivu-input-wrapper.ivu-input-type{
+      width: 480px;
+  }
 </style>

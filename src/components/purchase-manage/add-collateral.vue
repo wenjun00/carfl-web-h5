@@ -7,28 +7,28 @@
         <a  class="information">选购信息</a>
       </i-col>
     </i-row>
-    <i-form :rules="ruleValidateRule" :model="customerModel" ref="form-item">
+    <i-form :rules="ruleValidateRule" :model="customerModel" ref="form-item" :label-width="90">
 
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
-          <i-form-item label="所选车辆" :label-width="90">
-            <i-input disabled v-model="carInformation"></i-input>
+          <i-form-item label="所选车辆">
+            <i-input disabled v-model="customerModel.carAllName"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="8">
-          <i-form-item label="车身颜色"  :label-width="90">
+          <i-form-item label="车身颜色">
             <i-input disabled v-model="customerModel.carColor"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
-          <i-form-item label="上牌城市" :label-width="90">
+          <i-form-item label="上牌城市">
             <i-input disabled v-model="customerModel.city"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="8">
-          <i-form-item label="车牌号码"  :label-width="90">
+          <i-form-item label="车牌号码">
             <i-input disabled v-model="customerModel.carNo"></i-input>
           </i-form-item>
         </i-col>
@@ -36,12 +36,12 @@
 
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
-          <i-form-item label="发动机号" :label-width="90">
+          <i-form-item label="发动机号">
             <i-input disabled v-model="customerModel.engineNo"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="8">
-          <i-form-item label="客户姓名"  :label-width="90">
+          <i-form-item label="客户姓名">
             <i-input disabled v-model="customerModel.ownerName"></i-input>
           </i-form-item>
         </i-col>
@@ -49,12 +49,12 @@
 
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
-          <i-form-item label="车架号" :label-width="90">
+          <i-form-item label="车架号">
             <i-input disabled v-model="customerModel.frameNo"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="8">
-          <i-form-item label="手机号码"  :label-width="90">
+          <i-form-item label="手机号码">
             <i-input disabled v-model="customerModel.ownPhone"></i-input>
           </i-form-item>
         </i-col>
@@ -62,12 +62,12 @@
 
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
-          <i-form-item label="初登日期" prop="firstTime" :label-width="90">
-            <i-date-picker type="date" placeholder="年/月/日" v-model="basicList[0].firstTime"></i-date-picker>
+          <i-form-item label="初登日期" prop="firstTime">
+            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.firstTime"></i-date-picker>
           </i-form-item>
         </i-col>
         <i-col :span="8">
-          <i-form-item label="证件号码"  :label-width="90">
+          <i-form-item label="证件号码">
             <i-input disabled v-model="customerModel.idCard"></i-input>
           </i-form-item>
         </i-col>
@@ -75,13 +75,13 @@
 
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
-          <i-form-item label="出厂日期" prop="factoryTime" :label-width="90">
-            <i-date-picker type="date" placeholder="年/月/日" v-model="basicList[0].factoryTime"></i-date-picker>
+          <i-form-item label="出厂日期" prop="factoryTime">
+            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.factoryTime"></i-date-picker>
           </i-form-item>
         </i-col>
         <i-col :span="15">
-          <i-form-item label="行驶里程" prop="mileage" :label-width="90" >
-            <i-input  v-model="basicList[0].mileage"></i-input>
+          <i-form-item label="行驶里程" prop="mileage">
+            <i-input  v-model="customerModel.mileage"></i-input>
             <span>万公里</span>
           </i-form-item>
         </i-col>
@@ -89,13 +89,13 @@
 
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
-          <i-form-item label="行驶证号" prop="drivingNo" :label-width="90">
-            <i-input v-model="basicList[0].drivingNo"></i-input>
+          <i-form-item label="行驶证号" prop="drivingNo">
+            <i-input v-model="customerModel.drivingNo"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="15">
-          <i-form-item label="过户次数" prop="transferNo" :label-width="90">
-            <i-input v-model="basicList[0].transferNo"></i-input>
+          <i-form-item label="过户次数" prop="transferNo">
+            <i-input v-model="customerModel.transferNo"></i-input>
             <span>次</span>
           </i-form-item>
         </i-col>
@@ -103,15 +103,15 @@
 
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
-          <i-form-item label="车辆用途" prop="carPurpose" :label-width="90">
-            <i-select v-model="basicList[0].carPurpose">
+          <i-form-item label="车辆用途" prop="carPurpose">
+            <i-select v-model="customerModel.carPurpose">
               <i-option v-for="{value,label} in $dict.getDictData('0447')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="8">
-          <i-form-item label="变速箱形式" prop="transmission" :label-width="90">
-            <i-select v-model="basicList[0].transmission">
+          <i-form-item label="变速箱形式" prop="transmission">
+            <i-select v-model="customerModel.transmission">
               <i-option v-for="{value,label} in $dict.getDictData('0448')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
@@ -120,15 +120,15 @@
 
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
-          <i-form-item label="驱动形式" prop="driver" :label-width="90">
-            <i-select v-model="basicList[0].driver">
+          <i-form-item label="驱动形式" prop="driver">
+            <i-select v-model="customerModel.driver">
               <i-option v-for="{value,label} in $dict.getDictData('0449')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="8">
-          <i-form-item label="排量" prop="displacement" :label-width="90">
-            <i-input v-model="basicList[0].displacement"></i-input>
+          <i-form-item label="排量" prop="displacement">
+            <i-input v-model="customerModel.displacement"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -141,8 +141,8 @@
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
-        <i-col v-for="item in appearance" :key="item.id">
-          <i-form-item :label="item.attrName"  :label-width="90">
+        <i-col v-for="item in appearance" :key="item.attrCode">
+          <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
               <i-radio :label="1">正常</i-radio>
               <i-radio :label="0">异常</i-radio>
@@ -159,8 +159,8 @@
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
-        <i-col v-for="item in interiorInspection" :key="item.id">
-          <i-form-item :label="item.attrName"  :label-width="90">
+        <i-col v-for="item in interiorInspection" :key="item.attrCode">
+          <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
               <i-radio :label="1">正常</i-radio>
               <i-radio :label="0">异常</i-radio>
@@ -177,8 +177,8 @@
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
-        <i-col v-for="item in engineRoom" :key="item.id">
-          <i-form-item :label="item.attrName"  :label-width="90">
+        <i-col v-for="item in engineRoom" :key="item.attrCode">
+          <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
               <i-radio :label="1">正常</i-radio>
               <i-radio :label="0">异常</i-radio>
@@ -196,29 +196,30 @@
       </i-row>
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
-          <i-form-item label="车况" prop="carSituation" :label-width="90">
-            <i-select v-model="basicList[0].carSituation">
+          <i-form-item label="车况" prop="carSituation">
+            <i-select v-model="customerModel.carSituation">
               <i-option v-for="{value,label} in $dict.getDictData('0450')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="15">
-          <i-form-item label="估价" prop="evaluation" :label-width="90">
-            <i-input v-model="basicList[0].evaluation"></i-input>
+          <i-form-item label="估价" prop="evaluation">
+            <i-input v-model="customerModel.evaluation"></i-input>
             <span>万元</span>
           </i-form-item>
         </i-col>
       </i-row>
 
       <i-row>
-        <i-col :span="24">
-          <i-form-item label="备注" :label-width="90">
-            <i-input type="textarea" v-model="basicList[0].remarks" :rows="4"></i-input>
+        <i-col>
+          <i-form-item label="备注" class="large">
+            <i-input type="textarea" v-model="customerModel.remarks" :rows="4" ></i-input>
           </i-form-item>
         </i-col>
       </i-row>
+
       <i-row>
-        <i-col :span="24">
+        <i-col>
           <upload-voucher  ref="upload-voucher" @financeUploadResources="fileNumber"></upload-voucher>
         </i-col>
       </i-row>
@@ -243,10 +244,7 @@
   })
   export default class AddCollateral extends Vue {
     @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
-    private customerModel: any = {
-      basicList:'',
-
-    };
+    private customerModel: any = { basicList:'',}
     private basicList:any =[{}]
     private fodderList:any = [] //上传文件列
     private appearance :any = [] //得到评估外观数据
@@ -255,8 +253,8 @@
     private row:any = [] //父组件传的值
     private carInformation:any = '' //所选车辆
     private ruleValidateRule: any = {
-      firstTime: [{required: true, message: "请选择初登日期", trigger: 'change', type: 'number'}],
-      factoryTime: [{required: true, message: "请选择出厂日期", trigger: "change",type: 'number'}],
+      firstTime: [{required: true, message: "请选择初登日期", trigger: 'change',type:'date'}],
+      factoryTime: [{required: true, message: "请选择出厂日期", trigger: "change",type:'date'}],
       mileage: [{required: true, message: "请输入行驶里程", trigger: "blur"}],
       drivingNo: [{required: true, message: "请输入行驶证号", trigger: "blur"}],
       transferNo: [{required: true, message: "请输入过户次数", trigger: "blur"}],
@@ -264,8 +262,8 @@
       transmission: [{required: true, message: "请选择形式", trigger: "change",type: 'number'}],
       driver: [{required: true, message: "请选择驱动形式", trigger: "change",type: 'number'}],
       displacement: [{required: true, message: "请输入排量", trigger: "blur"}],
-      carSituation:[{required: true, message: "请输入排量", trigger: "blur"}],
-      evaluation:[{required: true, message: "请输入排量", trigger: "blur"}]
+      carSituation:[{required: true, message: "请选择车况", trigger: 'change', type: 'number'}],
+      evaluation:[{required: true, message: "请输入估价", trigger: 'blur'}]
     }
     /**
      *
@@ -277,21 +275,18 @@
         .subscribe( data => {
           this.appearance = data.basicList[0].carAttrList.filter(v=> v.attrType === 1).map(x=>({
             attrName:x.attrName,
-            id: x.id,
             attrType:x.attrType,
             attrValue: 2,
             attrCode:x.attrCode
           }))
           this.interiorInspection = data.basicList[0].carAttrList.filter(v=> v.attrType === 2).map(x=>({
             attrName:x.attrName,
-            id: x.id,
             attrType:x.attrType,
             attrValue: 2,
             attrCode:x.attrCode
           }))
           this.engineRoom = data.basicList[0].carAttrList.filter(v=> v.attrType === 3).map(x=>({
             attrName:x.attrName,
-            id: x.id,
             attrType:x.attrType,
             attrValue: 2,
             attrCode:x.attrCode
@@ -305,12 +300,11 @@
           this.customerModel.ownPhone = data.ownPhone
           this.customerModel.idCard = data.idCard
           this.customerModel.id = data.id
-          this.customerModel.assessmentStatus = data.assessmentStatus
+          this.customerModel.assessmentStatus = 1191 //保存是案件状态变更1191
           this.basicList[0].id = data.basicList[0].id
-          this.carInformation = data.applyCars[0].carAllName
+          this.customerModel.carAllName = data.applyCars[0].carAllName
         })
      }
-
     /**
      *  确定新增评估
      */
@@ -320,8 +314,40 @@
         if (!valid) return false
         this.basicList[0].carAttrList = this.appearance.concat(this.interiorInspection).concat(this.engineRoom)
         this.basicList[0].carBasicFileList = this.fodderList
+        this.basicList[0].firstTime = this.customerModel.firstTime
+        this.basicList[0].factoryTime = this. customerModel.factoryTime
+        this.basicList[0].mileage = this.customerModel.mileage
+        this.basicList[0].drivingNo= this.customerModel.drivingNo
+        this.basicList[0].transferNo = this.customerModel.transferNo
+        this.basicList[0].carPurpose =this.customerModel.carPurpose
+        this.basicList[0].transmission = this.customerModel.transmission
+        this.basicList[0].driver = this. customerModel.driver
+        this.basicList[0].displacement = this.customerModel.displacement
+        this.basicList[0].carSituation= this.customerModel.carSituation
+        this.basicList[0].evaluation = this.customerModel.evaluation
+        this.basicList[0].remarks =this.customerModel.remarks
         this.customerModel.basicList = this.basicList
-        console.log(this.customerModel)
+        delete this.customerModel.firstTime
+        delete this.customerModel.factoryTime
+        delete this.customerModel.mileage
+        delete this.customerModel.drivingNo
+        delete this.customerModel.transferNo
+        delete this.customerModel.carPurpose
+        delete this.customerModel.transmission
+        delete this.customerModel.driver
+        delete this.customerModel.displacement
+        delete this.customerModel.carSituation
+        delete this.customerModel.evaluation
+        delete this.customerModel.remarks
+        delete this.customerModel.city
+        delete this.customerModel.carColor
+        delete this.customerModel.carNo
+        delete this.customerModel.engineNo
+        delete this.customerModel.ownerName
+        delete this.customerModel.frameNo
+        delete this.customerModel.ownPhone
+        delete this.customerModel.idCard
+        delete this.customerModel.carAllName
         this.assessMentApplyService.saveAssessmentBasicInfo(this.customerModel)
           .subscribe( data => {
             this.$Message.success("保存成功！")

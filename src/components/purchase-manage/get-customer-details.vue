@@ -63,7 +63,7 @@
                     <div @click="fold" v-else="WhetherNotShown" class="putAway"> -收起 </div>
                 </i-col>
             </i-row>
-            <div v-show="WhetherNotShown">
+            <template v-show="WhetherNotShown">
                 <!-- 隐藏内容 -->
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
@@ -375,7 +375,7 @@
                         </i-form-item>
                     </i-col>
                 </i-row>
-            </div>
+            </template>
 
         </i-form>
     </section>
@@ -461,6 +461,9 @@ export default class addPeople extends Vue {
   }
   .ivu-form-item-content {
     width: 100% !important;
+  }
+  .ivu-rate {
+    font-size: 40px;
   }
 }
 </style>

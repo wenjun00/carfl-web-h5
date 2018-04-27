@@ -22,12 +22,12 @@ export default {
     type: requestType.Get
   },
   /**
-   *  更改订单状态
+   *  领取/批量领取案件
    */
-  updateOrderStatus:{
+  batchReceive:{
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'updateOrderStatus',
+    action: 'batchReceive',
     type: requestType.Get
   },
   /**
@@ -92,6 +92,15 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'backPieceStatus',
+    type: requestType.Get
+  },
+  /**
+   * 根据订单编号查询订单基础信息详情
+   */
+  findBasicInfoByOrderNumber:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findBasicInfoByOrderNumber',
     type: requestType.Get
   }
 }
