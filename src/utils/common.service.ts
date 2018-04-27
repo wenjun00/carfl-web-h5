@@ -10,16 +10,9 @@ export class CommonService {
    * 获取组件名称
    * @param path
    */
-<<<<<<< HEAD
-  public static getComponentName(page): string {
-    let path = page.path
-    let pathArray = path.split('/')
-    return `-${pathArray[pathArray.length - 1]}`.replace('.tsx','').replace(/\-(\w)/g, ($0, $1) => $1.toUpperCase())
-=======
   public static getComponentName(path): string {
     let pathArray = path.split('.')[0].split('/')
     return `-${pathArray[pathArray.length - 1]}`.replace(/\-(\w)/g, ($0, $1) => $1.toUpperCase())
->>>>>>> dev
   }
 
   /**
