@@ -352,6 +352,8 @@
           .subscribe( data => {
             this.$Message.success("保存成功！")
             this.$emit('close');
+            let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher
+            uploadVoucher.reset()
           },({msg}) => {
             this.$Message.error(msg)
           })

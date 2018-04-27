@@ -102,5 +102,14 @@ export default {
     controller: CONTROLLER,
     action: 'findBasicInfoByOrderNumber',
     type: requestType.Get
+  },
+  /**
+   * 删除车辆评估订单
+   */
+  deleteOrderInfoByOrderId:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'deleteOrderInfoByOrderId',
+    type: requestType.Delete
   }
 }

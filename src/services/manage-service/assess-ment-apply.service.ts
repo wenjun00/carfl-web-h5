@@ -111,4 +111,13 @@ export class AssessMentApplyService {
       data: data
     })
   }
+  /**
+   * 删除车辆评估订单
+   */
+  deleteOrderInfoByOrderId(data){
+    return this.netService.send({
+      server: manageService.assessmentapply.deleteOrderInfoByOrderId,
+      data: data
+    })
+  }
 }
