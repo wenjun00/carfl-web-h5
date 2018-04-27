@@ -109,7 +109,7 @@ exports.getPageList = () => {
         var fullpath = path.join(directory, file);
         var stat = fs.statSync(fullpath);
         var extname = path.extname(fullpath);
-        fullpath = fullpath.replace(/\\/, '\/')
+        fullpath = fullpath.replace(/\\/g,'/')
         if (stat.isFile() && extname === '.vue') {
           let match = fullpath.match(/pages\/(.*)/)
           if (match && match.length > 1) {
