@@ -27,12 +27,12 @@ export class AssessMentApplyService {
     })
   }
   /**
-   *  更改订单状态
+   *  领取/批量领取案件
    */
-  updateOrderStatus(data){
+  batchReceive(data){
     return this.netService.send({
-      server: manageService.assessmentapply.updateOrderStatus,
-      data: data
+      server: manageService.assessmentapply.batchReceive,
+      data: data,
     })
   }
   /**

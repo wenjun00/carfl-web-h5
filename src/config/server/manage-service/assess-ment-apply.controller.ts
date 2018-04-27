@@ -22,12 +22,12 @@ export default {
     type: requestType.Get
   },
   /**
-   *  更改订单状态
+   *  领取/批量领取案件
    */
-  updateOrderStatus:{
+  batchReceive:{
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'updateOrderStatus',
+    action: 'batchReceive',
     type: requestType.Get
   },
   /**

@@ -141,7 +141,7 @@
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
-        <i-col v-for="item in appearance" :key="item.id">
+        <i-col v-for="item in appearance" :key="item.attrCode">
           <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
               <i-radio :label="1">正常</i-radio>
@@ -159,7 +159,7 @@
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
-        <i-col v-for="item in interiorInspection" :key="item.id">
+        <i-col v-for="item in interiorInspection" :key="item.attrCode">
           <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
               <i-radio :label="1">正常</i-radio>
@@ -177,7 +177,7 @@
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
-        <i-col v-for="item in engineRoom" :key="item.id">
+        <i-col v-for="item in engineRoom" :key="item.attrCode">
           <i-form-item :label="item.attrName">
             <i-radio-group   v-model="item.attrValue">
               <i-radio :label="1">正常</i-radio>
@@ -275,21 +275,18 @@
         .subscribe( data => {
           this.appearance = data.basicList[0].carAttrList.filter(v=> v.attrType === 1).map(x=>({
             attrName:x.attrName,
-            id: x.id,
             attrType:x.attrType,
             attrValue: 2,
             attrCode:x.attrCode
           }))
           this.interiorInspection = data.basicList[0].carAttrList.filter(v=> v.attrType === 2).map(x=>({
             attrName:x.attrName,
-            id: x.id,
             attrType:x.attrType,
             attrValue: 2,
             attrCode:x.attrCode
           }))
           this.engineRoom = data.basicList[0].carAttrList.filter(v=> v.attrType === 3).map(x=>({
             attrName:x.attrName,
-            id: x.id,
             attrType:x.attrType,
             attrValue: 2,
             attrCode:x.attrCode

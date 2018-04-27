@@ -235,6 +235,7 @@
   import { CityService } from '~/utils/city.service'
   import UploadVoucher from "~/components/common/upload-voucher.vue"
   import { Form } from 'iview'
+  import { FilterService } from "~/utils/filter.service";
 
   @Component({
     components: {
@@ -243,16 +244,57 @@
   })
   export default class AddCollateralDetails extends Vue {
     @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
-    private customerModel: any = {}
+    private customerModel: any = {
+      city:'',
+      carColor:'',
+      carNo:'',
+      engineNo:'',
+      ownerName:'',
+      frameNo:'',
+      ownPhone:'',
+      idCard:'',
+      carAllName:'',
+      firstTime:'',
+      factoryTime:'',
+      mileage:'',
+      drivingNo:'',
+      transferNo:'',
+      carPurpose:'',
+      transmission:'',
+      driver:'',
+      displacement:'',
+      carSituation:'',
+      evaluation:'',
+      remarks:'',
+    }
 
     /**
      *  获取详情数据
      */
     getDetailsData(row){
-      console.log(111111111111)
       this.assessMentApplyService.findBasicInfoByOrderNumber({assessmentNo:row.assessmentNo})
         .subscribe( data => {
-          console.log(data)
+          this.customerModel.city = !!data.city? CityService.getCityName(Number(data.city)):''
+          this.customerModel.carColor = data.carColor
+          this.customerModel.carNo = data.carNo
+          this.customerModel.engineNo = data.engineNo
+          this.customerModel.ownerName = data.ownerName
+          this.customerModel.frameNo = data.frameNo
+          this.customerModel.ownPhone = data.ownPhone
+          this.customerModel.idCard = data.idCard
+          this.customerModel.carAllName = data.applyCars[0].carAllName
+          this.customerModel.firstTime = FilterService.dateFormat(data.basicList[0].firstTime, 'yyyy-MM-dd')
+          this.customerModel.factoryTime = FilterService.dateFormat(data.basicList[0].factoryTime, 'yyyy-MM-dd')
+          this.customerModel.mileage =data.basicList[0].mileage
+          this.customerModel.drivingNo =data.basicList[0].drivingNo
+          this.customerModel.transferNo =data.basicList[0].transferNo
+          this.customerModel.carPurpose =data.basicList[0].carPurpose
+          this.customerModel.transmission = data.basicList[0].transmission
+          this.customerModel.driver =data.basicList[0].driver
+          this.customerModel.displacement =data.basicList[0].displacement
+          this.customerModel.carSituation =data.basicList[0].carSituation
+          this.customerModel.evaluation = this.$filter.toThousands(data.basicList[0].evaluation)
+          this.customerModel.remarks = data.basicList[0].remarks
         },({msg}) => {
           this.$Message.error(msg)
         })
