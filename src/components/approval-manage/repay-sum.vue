@@ -26,7 +26,7 @@
           <div>{{repaySumObj.productOrder?$dict.getDictName(repaySumObj.productOrder.periods):''}}</div>
         </template>
       </data-grid-item>
-      <data-grid-item label="利率%/月" :span="2">
+      <data-grid-item label="月利率" :span="2">
         <template>
           <div>{{repaySumObj.productOrder?repaySumObj.productOrder.productRate:''}}</div>
         </template>

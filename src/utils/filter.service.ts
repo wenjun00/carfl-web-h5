@@ -210,11 +210,10 @@ export class FilterService {
     if (!value) {
       return '0'
     }
-
     let f = 0
     let result = ''
-    f = parseFloat(value) | f
+    f = parseFloat(value) || f
     result = LodashService.round(f * 100, d)
-    return this.percentFormat(result)
+    return FilterService.percentFormat(result)
   }
 }
