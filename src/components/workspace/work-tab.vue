@@ -2,7 +2,7 @@
   <section class="component work-tab full">
     <Tabs type="card" v-model="currentPage" closable :animated="false" @on-tab-remove="closePage">
       <TabPane v-for="page in pageList" :key="page.path" :label="page.resoname" :name="page.path" :closable="page.path !== 'home'">
-        <component ref="pages" :is="getComponentName(page)"></component>
+        <component ref="pages" :is="getComponentName(page.path)"></component>
       </TabPane>
     </Tabs>
     <div class="close-all-tabs" @click="closeAllTabs" title="关闭所有">
@@ -16,10 +16,9 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Watch } from "vue-property-decorator";
 import { State, Mutation } from "vuex-class";
-import menuConfig from "~/config/menu.config";
 import { CommonService } from "~/utils/common.service";
 import Home from "~/pages/home.vue";
-
+import appConfig from "~/config/app.config";
 @Component({
   name: "work-tab",
   components: {
@@ -27,20 +26,16 @@ import Home from "~/pages/home.vue";
   },
   beforeCreate() {
     // 动态导入组件
-    let importComponents = item => {
-      if (item.children) {
-        item.children.forEach(importComponents);
-      }
-      if (item.path) {
-        let componentName = CommonService.getComponentName(item);
+    let importComponents = path => {
+      if (path) {
+        let componentName = CommonService.getComponentName(path);
         let components = this.$options.components;
         if (components) {
-          components[componentName] = () =>
-            import("~/pages/" + item.path + ".vue");
+          components[componentName] = () => import("~/pages/" + path);
         }
       }
     };
-    menuConfig.forEach(importComponents);
+    appConfig.registerPageList.forEach(importComponents);
   }
 })
 export default class WorkTab extends Vue {
@@ -81,6 +76,7 @@ export default class WorkTab extends Vue {
   onPageChanged(value: string) {
     let components = <Array<Vue>>this.$refs["pages"];
     let getTargetComponent = () =>
+<<<<<<< HEAD
       components.find(
         x =>{
           return  x.$options.name ===
@@ -90,9 +86,12 @@ export default class WorkTab extends Vue {
         }
          
       );
+=======
+      components.find(x => x.$options.name === this.getComponentName(value));
+>>>>>>> dev
 
     let component = getTargetComponent();
-    
+
     // 处理页面切换回调
     if (
       component &&

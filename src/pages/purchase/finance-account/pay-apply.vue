@@ -2,7 +2,7 @@
 <template>
     <section class="page early-payment-apply special-input">
         <page-header title="付款申请">
-             <i-button class="blueButton" @click="clearAll">清空</i-button>
+            <command-button label="清空"  @click="clearAll"></command-button>            
         </page-header>
         <i-row type="flex" class="data-form">
             <i-col span="18">

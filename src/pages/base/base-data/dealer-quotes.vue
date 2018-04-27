@@ -2,7 +2,7 @@
 <template>
     <section class="page dealer-quotes">
         <page-header title="经销商报价" hiddenPrint>
-            <i-button class="blueButton" @click="addquoteFun">新增报价</i-button>
+            <command-button label="新增报价" @click="addquoteFun"></command-button>
         </page-header>
         <data-form hidden-date-search :model="busModal" :page="pageService" @on-search="seachBusiness">
             <template slot="input">

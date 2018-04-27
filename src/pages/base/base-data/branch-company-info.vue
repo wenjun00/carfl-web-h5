@@ -1,8 +1,8 @@
-<!--分公司信息-->
+<!--分公司管理-->
 <template>
     <section class="page branch-company-info">
         <page-header title="分公司管理">
-            <i-button class="blueButton" @click="addNewBranchFirmClick">新增分公司</i-button>
+            <command-button label="新增分公司" @click="addNewBranchFirmClick"></command-button>
         </page-header>
         <data-form hidden-date-search :model="companyModel" @on-search="seachCompany" :page="pageService" hidden-reset>
             <template slot="input">

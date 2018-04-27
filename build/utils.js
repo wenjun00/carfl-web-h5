@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const fs = require('fs')
 const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageConfig = require('../package.json')
@@ -30,7 +31,7 @@ exports.cssLoaders = function (options) {
   }
 
   // generate loader string to be used with extract text plugin
-  function generateLoaders (loader, loaderOptions) {
+  function generateLoaders(loader, loaderOptions) {
     const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
 
     if (loader) {
@@ -98,4 +99,29 @@ exports.createNotifierCallback = () => {
       icon: path.join(__dirname, 'logo.png')
     })
   }
+}
+
+exports.getPageList = () => {
+  let pageList = []
+  let walk = function (directory) {
+    fs.readdirSync(directory)
+      .forEach(function (file) {
+        var fullpath = path.join(directory, file);
+        var stat = fs.statSync(fullpath);
+        var extname = path.extname(fullpath);
+        if (stat.isFile() && extname === '.vue') {
+          let match = fullpath.match(/pages\/(.*)/)
+          if (match && match.length > 1) {
+            pageList.push(match[1])
+          }
+        } else if (stat.isDirectory()) {
+          var subdir = path.join(directory, file);
+          walk(subdir);
+        }
+      });
+  }
+
+  walk(path.join(__dirname, "..", "src", "pages"))
+  console.log(pageList)
+  return pageList
 }

@@ -26,7 +26,6 @@ import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 import { State, Mutation, Action } from "vuex-class";
 import SvgIcon from "~/components/common/svg-icon.vue";
-import menuConfig from "~/config/menu.config";
 
 @Component({
   components: {

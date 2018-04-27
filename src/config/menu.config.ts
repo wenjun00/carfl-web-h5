@@ -249,10 +249,9 @@ export default [
         //     path: 'finance/finance-statistics/query-template-manage'
         // }
       ]
-    }
-    ]
   },
   {
+<<<<<<< HEAD
     title: '基础数据',
     path: 'base/base-index',
     children: [{
@@ -402,5 +401,104 @@ export default [
         path: 'customer-center/customer-data/enterprises-blacklist'
       }]
     }]
+=======
+      title: '基础数据',
+      path: 'base/base-index',
+      children: [{
+          title: '基础数据',
+          icon: 'jichushuju',
+          color: '#598AC5',
+          path: 'base/base-data',
+          children: [{
+              title: '产品包管理',
+              path: 'base/base-data/prod-package-info'
+          },
+          {
+              title: '车辆维护',
+              path: 'base/base-data/vehicle-maintenance'
+          }, {
+              title: '数据字典',
+              path: 'base/base-data/data-dict'
+          }, {
+              title: '审批原因管理',
+              path: 'base/base-data/approval-reason-manage'
+          }, {
+              title: '分公司信息',
+              path: 'base/base-data/branch-company-info'
+          }]
+      }, {
+          title: '配置管理',
+          icon: 'peizhiguanli',
+          color: '#36B48C',
+          path: 'base/config-manage',
+          children: [{
+              title: '产品配置',
+              path: 'base/base-data/prod-config'
+          }, {
+              title: '客户素材维护',
+              path: 'base/base-data/customer-fodder-maintain'
+          }, {
+              title: '经销商报价',
+              path: 'base/base-data/dealer-quotes'
+          }, {
+              title: '导出模版管理',
+              path: 'base/base-data/export-template-manage'
+          }]
+      }]
+  },
+  {
+      title: '系统设置',
+      path: 'system-manage/system-manage-index',
+      children: [{
+          title: '权限设置',
+          color: '#598AC5',
+          icon: 'quanxianshezhi',
+          path: 'system-manage/power-config',
+          children: [{
+              title: '模块功能',
+              path: 'system-manage/power-config/module-function'
+          }, {
+              title: '角色维护',
+              path: 'system-manage/power-config/role-maintenance'
+          }, {
+              title: '机构与用户管理',
+              path: 'system-manage/power-config/org-user-manage'
+          }
+          ]
+      }, {
+          title: '运维设置',
+          icon: 'yunweishezhi',
+          color: '#36B48C',
+          path: 'system-manage/operation-config',
+          children: [{
+              title: '订单状态变更',
+              path: 'system-manage/operation-config/order-status-change'
+          }, {
+              title: '客户还款撤销',
+              path: 'system-manage/operation-config/customer-repay-revert'
+          }
+          ]
+      },
+      {
+          title: '其他设置',
+          icon: 'qitashezhi',
+          color: '#47AAB6',
+          path: 'system-manage/other-config',
+          children: [
+              {
+                  title: '系统参数管理',
+                  path: 'system-manage/operation-config/system-param-manage'
+              }, {
+                  title: '系统备份',
+                  path: 'system-manage/operation-config/system-backups'
+              }, {
+                  title: '批量管理',
+                  path: 'system-manage/operation-config/batch-manage'
+              }, {
+                  title: '系统日志',
+                  path: 'system-manage/operation-config/system-log-download'
+              }]
+      }]
+>>>>>>> dev
   }
 ]
