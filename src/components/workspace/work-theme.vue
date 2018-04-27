@@ -17,7 +17,6 @@ import Vue from "vue";
 import Component from "vue-class-component";
 // import { Prop } from "vue-property-decorator";
 import { State, Mutation, Action } from "vuex-class";
-// import menuConfig from "~/config/menu.config";
 
 @Component({})
 export default class WorkTheme extends Vue {

@@ -1,10 +1,15 @@
 'use strict'
 const path = require('path')
+const webpack = require('webpack')
 const utils = require('./utils')
 const config = require('../config')
+
 const vueLoaderConfig = require('./vue-loader.conf')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
+// 获取待注册页面列表
+let registerPageList = utils.getPageList()
+console.log(registerPageList)
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -106,6 +111,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      __REGISTER_PAGE_LIST__: JSON.stringify(registerPageList)
+    }),
     new ForkTsCheckerWebpackPlugin({
       vue: true,
       workers: ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE
