@@ -2,7 +2,7 @@
 <template>
   <section class="page prod-package-info">
     <page-header title="产品包管理" hiddenPrint hiddenExport>
-        <i-button class="blueButton" @click="pPackageModel=true">新增产品包</i-button>
+      <command-button label="新增产品包"  @click="pPackageModel=true"></command-button>
       <command-button label="报价模板下载" icon="xiazai" @click="QuotationTemplatedownload"></command-button>
     </page-header>
     <data-form hidden-date-search :model="productModel" :page="pageService" @on-search="getProductPackage">

@@ -1,6 +1,7 @@
 import store from '~/store'
 import * as enumData from '~/config/enum.config'
 import moment from 'moment'
+import { LodashService } from './lodash.service'
 
 export class FilterService {
   /**
@@ -184,11 +185,36 @@ export class FilterService {
     }
   }
 
-  static percentFormat(value){
+  /**
+   * 格式化显示金额追加百分比符号
+   * @param value 要格式化的金额
+   */
+  static percentFormat(value) {
     return `${value}%`
   }
 
-  static percentParse(value){
-    return  value.replace('%', '')
+  /**
+   * 格式化去掉百分比的符号
+   * @param value 要去掉%的数值
+   */
+  static percentParse(value) {
+    return value.replace('%', '')
+  }
+
+  /**
+   * 
+   * @param value 要格式化的金额或字符串
+   * @param d 要保留的小数位数
+   */
+  static decimalToPrecent(value, d: number = 2) {
+    if (!value) {
+      return '0'
+    }
+
+    let f = 0
+    let result = ''
+    f = parseFloat(value) | f
+    result = LodashService.round(f * 100, d)
+    return this.percentFormat(result)
   }
 }

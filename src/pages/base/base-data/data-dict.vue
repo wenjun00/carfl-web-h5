@@ -2,7 +2,7 @@
 <template>
   <section class="page data-dict">
     <page-header title="数据字典" hiddenPrint hiddenExport>
-      <i-button class="blueButton command-add" @click="dataModal=true">新增数据</i-button>
+      <command-button class="command-add" label="新增数据" @click="dataModal=true"></command-button>
     </page-header>
     <i-row class="data-form">
       <i-row type="flex" align="top" justify="start">

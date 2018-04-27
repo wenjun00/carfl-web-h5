@@ -82,6 +82,7 @@
     }
   })
   export default class CompanyBankCard extends Vue {
+
     private unbindBankCardModal: Boolean = false
     private addNewBankCardModal: Boolean = false
     private model: any = {
@@ -125,7 +126,7 @@
       display: none;
     }
   }
-
+  
   .triangle-topright {
     width: 0;
     height: 0;
@@ -135,7 +136,7 @@
     right: 1px;
     top: 1px;
   }
-
+  
   .component.company-bank-card {
     .modal-item {
       display: flex;
@@ -147,7 +148,6 @@
       border: 1px solid #d6d6d6;
       line-height: 40px;
       background: #F2F2F2;
-
     }
     .modal-item-title {
       margin-left: 6px;
@@ -160,8 +160,6 @@
       border-left: 1px solid #d6d6d6;
       border-right: 1px solid #d6d6d6;
       height: 130px;
-
-
     }
     .modal-item-default {
       position: absolute;
@@ -172,8 +170,8 @@
       font-size: 16px;
     }
     .modal-item-cardid {
-      margin-left: 97px;
-
+      text-align: center;
+      font-size: 25px;
     }
     .modal-item-p {
       color: #666
@@ -191,20 +189,17 @@
     .modal-item-tongguo {
       color: green
     }
-
     .modal-item-bind {
       float: right;
       margin-right: 6px;
       color: #666
     }
-
     .modal-item-card2 {
       width: 100%;
       height: 40px;
       border: 1px solid black;
       line-height: 40px;
       background: #F2F2F2;
-
     }
     .modal-item-title {
       margin-left: 6px;
@@ -221,30 +216,34 @@
       border-right: 1px solid black;
       height: 130px;
     }
-    .modal-item-cardid2{
-      margin-left:97px
+    .modal-item-cardid2 {
+      text-align: center;
+      font-size: 25px;
     }
-    .modal-item-yanzheng2{
-      border:1px solid black;height:40px;line-height:40px;
-
+    .modal-item-yanzheng2 {
+      border: 1px solid black;
+      height: 40px;
+      line-height: 40px;
     }
-    .modal-item-state2{
-      margin-left:6px;
+    .modal-item-state2 {
+      margin-left: 6px;
     }
-    .modal-item-bind2{
-      float:right;margin-right:6px;
+    .modal-item-bind2 {
+      float: right;
+      margin-right: 6px;
     }
-    .modal-item-add2{
-      text-align:center;margin-top:40px;
+    .modal-item-add2 {
+      text-align: center;
+      margin-top: 40px;
     }
-    .modal-item-addbutton2{
-      margin-left:60px;
+    .modal-item-addbutton2 {
+      margin-left: 60px;
     }
-    .modal-item-box2{
+    .modal-item-box2 {
       float: right;
     }
-    .modal-item-jiebang2{
-      margin-right:4px;
+    .modal-item-jiebang2 {
+      margin-right: 4px;
     }
   }
 

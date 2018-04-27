@@ -2,7 +2,7 @@
 <template>
     <section class="page finance-make-invoice">
         <page-header title="财务开票" hiddenPrint hiddenExport>
-            <i-button class="blueButton" @click="confirmMakeInvoice">确认开票</i-button>
+            <command-button label="确认开票" @click="confirmMakeInvoice"></command-button>
         </page-header>
         <data-form :model="model" hiddenDateSearch hidden-reset :page="pageService">
             <template slot="input">

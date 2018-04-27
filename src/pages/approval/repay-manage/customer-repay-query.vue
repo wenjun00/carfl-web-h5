@@ -304,9 +304,12 @@ export default class CustomerRepayQuery extends Page {
       {
         align: 'center',
         editable: true,
-        title: ' 利率%/月',
+        title: ' 月利率',
+        key: 'productRate',
         minWidth: this.$common.getColumnWidth(2),
-        key: 'productRate'
+        render: (h, { row }) => {
+          return h('p', this.$filter.decimalToPrecent(row.productRate))
+        }
       },
       {
         align: 'center',

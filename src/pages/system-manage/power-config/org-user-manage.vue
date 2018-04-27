@@ -34,11 +34,6 @@
               </i-select>
             </i-form-item>
           </template>
-          <!-- <template slot="button">
-                        <i-button class="blue-button" @click="addNewUser">新增用户</i-button>
-                        <i-button class="blue-button" @click="buttonOnlyOne1">批量分配角色</i-button>
-                        <i-button class="blue-button" @click="buttonOnlyOne2">批量管理设备</i-button>
-                    </template> -->
 
         </data-form>
 
