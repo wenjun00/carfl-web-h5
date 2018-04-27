@@ -436,10 +436,11 @@
         },
         {
           align: "center",
-          title: " 利率%/月",
+          title: "月利率",
           key: "productRate",
           editable: true,
           minWidth: this.$common.getColumnWidth(2),
+          render: (h,{row}) =>  h('p',this.$filter.decimalToPrecent(row.productRate))
         },
         {
           align: "center",
@@ -447,13 +448,7 @@
           title: " 结算通道",
           key: "settlementChannel",
           minWidth: this.$common.getColumnWidth(4),
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            return h("span", {}, this.$dict.getDictName(row.settlementChannel));
-          }
+          render: (h, { row}) => h("span", {}, this.$dict.getDictName(row.settlementChannel))
         },
         {
           align: "center",

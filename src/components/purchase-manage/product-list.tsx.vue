@@ -85,7 +85,8 @@ export default class ProductList extends Vue {
       title: "产品利率",
       key: "productRate",
       align: "center",
-      width: 100
+      width: 100,
+      render: (h, { row }) => h('p', this.$filter.decimalToPrecent(row.productRate))
     },
     {
       title: "还款方式",
@@ -189,12 +190,12 @@ export default class ProductList extends Vue {
     // 更新数据表
     this.productPlanIssueService
       .getAllProductPlan(
-        {
-          productId: node.productId,
-          status: 0,
-          isPublish: 360
-        },
-        this.pageService
+      {
+        productId: node.productId,
+        status: 0,
+        isPublish: 360
+      },
+      this.pageService
       )
       .subscribe(data => {
         this.periodDataSet = data;

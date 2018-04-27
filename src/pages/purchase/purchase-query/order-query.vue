@@ -472,10 +472,11 @@ export default class OrderQuery extends Page {
       },
       {
         align: "center",
-        title: "利率(月)",
+        title: "月利率",
         editable: true,
         key: "productRate",
-        minWidth: this.$common.getColumnWidth(2)
+        minWidth: this.$common.getColumnWidth(2),
+        render: (h,{row}) => h('p',this.$filter.decimalToPrecent(row.productRate))
       },
       {
         align: "center",
