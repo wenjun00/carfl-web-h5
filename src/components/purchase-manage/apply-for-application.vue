@@ -98,7 +98,7 @@ export default class addPeople extends Vue {
     .subscribe(
         data => {
           this.detailsModel.applyCars = data.applyCars ? data.applyCars : ''
-          this.selectedVehicles = this.detailsModel.applyCars[0].brandName + this.detailsModel.applyCars[0].carModel+ this.detailsModel.applyCars[0].carParam
+          this.selectedVehicles = data.carAllName
           this.detailsModel.carColor = !!data.carColor? data.carColor : ''
           this.detailsModel.engineNo = !!data.engineNo? data.engineNo : ''
           this.detailsModel.carNo = !!data.carNo? data.carNo : ''

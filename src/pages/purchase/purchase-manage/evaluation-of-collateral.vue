@@ -128,7 +128,7 @@ export default class EvaluationOfCollateral extends Page {
       sortable: true,
       key: 'assessmentNo',
       align: 'center',
-      minWidth: this.$common.getColumnWidth(3)
+      minWidth: this.$common.getColumnWidth(4)
     },
     {
       title: '状态',

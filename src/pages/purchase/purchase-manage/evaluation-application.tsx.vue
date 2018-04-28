@@ -44,7 +44,7 @@
           <div slot="footer">
             <i-button type="primary" size="large" @click="selectStep" v-if="selectButton">选择</i-button>
             <i-button type="ghost" size="large" @click="advanceStep" v-if="!selectButton">上一步</i-button>
-            <i-button type="primary" size="large"  v-if="!selectButton">保存草稿</i-button>
+            <i-button type="primary" size="large" @click="saveStep" v-if="!selectButton">保存草稿</i-button>
             <i-button type="primary" size="large" @click="commitApplication" v-if="!selectButton" >提交申请</i-button>
           </div>
         </i-modal>
@@ -109,6 +109,7 @@ export default class EvaluationApplication extends Page {
           <div>
             <i-button  type="text"
              v-show={row.assessmentStatus === 1187}
+             onClick={() => this.editList(row)}
              >
               编辑
             </i-button>
@@ -348,6 +349,23 @@ export default class EvaluationApplication extends Page {
     let newApplication = this.$refs['new-application'] as NewApplication
     newApplication.submission(this.assessmentStatus)
   }
+  /**
+   * 编辑
+   */
+  editList(row){
+    this.newModal = true
+    let newApplication = this.$refs['new-application'] as NewApplication
+    newApplication.editProject(row)
+  }
+
+  /**
+   *  保存草稿
+   */
+  saveStep(){
+    this.assessmentStatus = 1187
+    let newApplication = this.$refs['new-application'] as NewApplication
+    newApplication.submission(this.assessmentStatus)
+  }
 
   mounted() {
     this.getApplicationList()
@@ -360,6 +378,7 @@ export default class EvaluationApplication extends Page {
   }
   close(){
     this.newModal = false
+    this.selectButton = true
     this.getApplicationList()
   }
 }

@@ -151,7 +151,8 @@
       province:'',
       city:'',
       assessmentStatus:'',
-      applyCars:''
+      applyCars:'',
+      id:''
     }
     private requestRules: any = {
       carColor: [{required: true, message: "请输入车身颜色", trigger: "blur"}],
@@ -168,7 +169,6 @@
       this.carService.findAllCarSeries()
         .subscribe( data => {
           this.carList =data
-          // console.log(this.carList)
           this.brand = this.carList.filter(v=>v.id)
           console.log(this.brand)
         },({msg}) => {
@@ -229,14 +229,53 @@
         this.applyCars[0].carId = this.CarId
         this.requestModal.applyCars = this.applyCars
         this.requestModal.assessmentStatus = val
+        if(val === 1188 || !this.requestModal.id){
+          delete this.requestModal.id
+        }
         this.assessMentApplyService.saveAssessmentApplyInfo(this.requestModal)
           .subscribe( data => {
             this.$Message.success("申请成功！")
             this.$emit('close');
+            this.requestModal.ownPhone = ''
+            this.requestModal.province = ''
+            this.requestModal.city = ''
+            this.requestModal.carColor = ''
+            this.requestModal.engineNo = ''
+            this.requestModal.carNo = ''
+            this.requestModal.frameNo = ''
+            this.requestModal.ownerName = ''
+            this.requestModal.idCard = ''
+            this.brand =[]
+            this.series =[]
+            this.car =[]
+            this.judge = true
+            this.judgeDiv = false
           },({msg}) => {
             this.$Message.error(msg)
           })
       })
+    }
+
+    /**
+     *  编辑
+     */
+    editProject(row){
+      this.carTree()
+      this.assessMentApplyService.findOrderInfoByOrderNumber(row.assessmentNo)
+        .subscribe( data => {
+          this.requestModal.ownPhone = data.ownPhone
+          this.requestModal.province = data.province
+          this.requestModal.city = data.city
+          this.requestModal.carColor = data.carColor
+          this.requestModal.engineNo = data.engineNo
+          this.requestModal.carNo = data.carNo
+          this.requestModal.frameNo = data.frameNo
+          this.requestModal.ownerName = data.ownerName
+          this.requestModal.idCard = data.idCard
+          this.requestModal.id = data.id
+        },({msg}) => {
+          this.$Message.error(msg)
+        })
     }
   }
 </script>
