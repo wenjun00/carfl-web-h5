@@ -54,87 +54,70 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import {
-    DataGrid,
-    DataGridItem
-  } from "@zct1989/vue-component";
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Prop } from "vue-property-decorator";
+import { Action } from "vuex-class";
 
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import {
-    Action
-  } from "vuex-class";
-
-  @Component({
-    components: {
-      DataGrid,
-      DataGridItem
-    }
-  })
-  export default class ConfirmMakeInvoice extends Vue {
-    private single: Boolean = false;
-  }
+@Component({})
+export default class ConfirmMakeInvoice extends Vue {
+  private single: Boolean = false;
+}
 
 </script>
 
 <style scoped lang="less">
-  .confirm-make-invoice {
-    .ivu-form {
-      position: relative;
-      right: 30px;
-    }
+.confirm-make-invoice {
+  .ivu-form {
+    position: relative;
+    right: 30px;
   }
+}
 
-  .component.confirm-make-invoice {
-    .modal-item {
-      margin-top: 20px;
-    }
-    .modal-item-fapiao {
-      width: 7px;
-      height: 20px;
-      background: #265EA2;
-      display: inline-block;
-      margin-right: 6px;
-      position: relative;
-      top: 4px;
-    }
-    .modal-item-fujian {
-      margin-top: 10px
-    }
-    .modal-item-fujian-div {
-      height: 200px;
-      width: 200px;
-      border: 1px solid #C2C2C2;
-      cursor: pointer;
-      text-align: center;
-      position: relative;
-      left: 40px;
-    }
-    .modal-item-fujian-icon {
-      display: block;
-      margin-top: 53px;
-      color: #265ea2
-    }
-    .modal-item-fujian-text {
-      color: gray
-    }
-    .modal-item-div {
-      height: 200px;
-      width: 200px;
-      border: 1px solid #C2C2C2;
-      background-image: url('/static/images/common/invoice2.png');
-      background-repeat: no-repeat;
-      position: relative;
-      left: 72px;
-    }
-    .modal-item-input{
-        width:200px;
-    }
-
+.component.confirm-make-invoice {
+  .modal-item {
+    margin-top: 20px;
   }
-
-
+  .modal-item-fapiao {
+    width: 7px;
+    height: 20px;
+    background: #265ea2;
+    display: inline-block;
+    margin-right: 6px;
+    position: relative;
+    top: 4px;
+  }
+  .modal-item-fujian {
+    margin-top: 10px;
+  }
+  .modal-item-fujian-div {
+    height: 200px;
+    width: 200px;
+    border: 1px solid #c2c2c2;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    left: 40px;
+  }
+  .modal-item-fujian-icon {
+    display: block;
+    margin-top: 53px;
+    color: #265ea2;
+  }
+  .modal-item-fujian-text {
+    color: gray;
+  }
+  .modal-item-div {
+    height: 200px;
+    width: 200px;
+    border: 1px solid #c2c2c2;
+    background-image: url("/static/images/common/invoice2.png");
+    background-repeat: no-repeat;
+    position: relative;
+    left: 72px;
+  }
+  .modal-item-input {
+    width: 200px;
+  }
+}
 </style>
