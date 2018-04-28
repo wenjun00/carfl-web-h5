@@ -1,7 +1,7 @@
 <!--押品出库-->
 <template>
     <section class="page goods-out-treasury">
-        <page-header title="押品出库" hidden-print></page-header>
+        <page-header title="押品出库" hidden-print hidden-export></page-header>
         <data-form :model="goodsOutModel" @on-search="getOutTreasuryList" :page="pageService" date-prop="timeSearch">
             <template slot="input">
                 <i-form-item prop="assessmentNo" label="订单编号">
@@ -83,9 +83,14 @@ export default class GoodsOutTreasury extends Page {
                 },
                 style: {
                   color: '#265EA2'
+                },
+                on: {
+                  click: () => {
+                    this.getOutTreasuryPopup(row)
+                  }
                 }
               },
-              '详情'
+              '出库'
             )
           ])
         } else {
@@ -101,11 +106,11 @@ export default class GoodsOutTreasury extends Page {
                 },
                 on: {
                   click: () => {
-                    this.getOutTreasuryPopup(row)
+                    this.getDetailsPopup(row)
                   }
                 }
               },
-              '出库'
+              '详情'
             )
           ])
         }
@@ -230,6 +235,12 @@ export default class GoodsOutTreasury extends Page {
    */
   getOutTreasuryPopup(row) {
     this.inventoryModal = true
+  }
+  /**
+   * 押品出库详情
+   */
+  getDetailsPopup(row){
+
   }
 
   mounted() {
