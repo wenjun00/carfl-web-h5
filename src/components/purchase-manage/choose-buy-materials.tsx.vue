@@ -412,22 +412,26 @@ export default class ChooseBuyMaterials extends Vue {
     ],
     initialPayment: [
       {
-        validator: this.validateInitialPayment
+        validator: this.validateInitialPayment,
+        trigger: "change"
       }
     ],
     finalCash: [
       {
-        validator: this.validateFinalCash
+        validator: this.validateFinalCash,
+        trigger: "change"
       }
     ],
     manageCost: [
       {
-        validator: this.validateManageCost
+        validator: this.validateManageCost,
+        trigger: "change"
       }
     ],
     depositCash: [
       {
-        validator: this.validateDepositCash
+        validator: this.validateDepositCash,
+        trigger: "change"
       }
     ]
   };
@@ -566,7 +570,7 @@ export default class ChooseBuyMaterials extends Vue {
     if (
       this.currentProduct.initialPaymentList &&
       this.currentProduct.initialPaymentList.length &&
-      this.productModel.initialPayment === null
+      value === null
     ) {
       return callback(new Error("请输入首付金额"));
     }
@@ -577,7 +581,7 @@ export default class ChooseBuyMaterials extends Vue {
     if (
       this.currentProduct.finalCashList &&
       this.currentProduct.finalCashList.length &&
-      this.productModel.finalCash === null
+      value === null
     ) {
       return callback(new Error("请输入尾付总额"));
     }
@@ -588,7 +592,7 @@ export default class ChooseBuyMaterials extends Vue {
     if (
       this.currentProduct.manageCostList &&
       this.currentProduct.manageCostList.length &&
-      this.productModel.manageCost === null
+      value === null
     ) {
       return callback(new Error("请输入管理费"));
     }
@@ -599,7 +603,7 @@ export default class ChooseBuyMaterials extends Vue {
     if (
       this.currentProduct.depositCashList &&
       this.currentProduct.depositCashList.length &&
-      this.productModel.depositCash === null
+      value === null
     ) {
       return callback(new Error("请输入保证金金额"));
     }
