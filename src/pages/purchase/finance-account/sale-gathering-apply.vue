@@ -220,9 +220,14 @@ export default class SaleGatheringApply extends Page {
      * 获取上传素材信息start
      */
     let _uploadFodder: any = this.$refs['upload-the-fodder']
-    this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList
+    this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList.map(v => {
+      return {
+        materialType: v.materialType,
+        materialUrl: v.materialUrl
+      }
+    })
   }
-
+  
   loaded({ row }) {
     if (!row) {
       return
@@ -250,7 +255,6 @@ export default class SaleGatheringApply extends Page {
         this.getSaveModel()
         if (this.applyModel.orderId) {
           let saveAndCommitModel = this.saveDraftModel
-          console.log(saveAndCommitModel)
           this.withdrawApplicationService
             .saveSaleCollectMoneyApplication(saveAndCommitModel)
             .subscribe(

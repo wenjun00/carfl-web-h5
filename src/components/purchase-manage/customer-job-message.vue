@@ -117,7 +117,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="企业经营年限" prop="enterpriseManageYears">
-              <i-input-number :min="0" :max="100" v-model="jobModel.enterpriseManageYears" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" placeholder="请输入企业经营年限">
+              <i-input-number :min="0" :max="100" v-model="jobModel.enterpriseManageYears" :formatter="$filter.moneyFormat" :parser="$filter.moneyParser" placeholder="请输入企业经营年限">
               </i-input-number>
             </i-form-item>
           </i-col>
@@ -129,7 +129,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="员工人数" prop="employeesNumber">
-              <i-input-number placeholder="请输入员工人数" :min="0" :max="100000" v-model="jobModel.employeesNumber" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser">
+              <i-input-number placeholder="请输入员工人数" :min="0" :max="100000" v-model="jobModel.employeesNumber" :formatter="$filter.moneyFormat" :parser="$filter.moneyParser">
               </i-input-number>
             </i-form-item>
           </i-col>

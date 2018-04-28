@@ -40,8 +40,7 @@ const ModuleState = namespace("purchase", State);
   }
 })
 export default class UploadTheMaterial extends Vue {
-  @Dependencies(PersonalMaterialService)
-  private personalMaterialService: PersonalMaterialService;
+  @Dependencies(PersonalMaterialService) private personalMaterialService: PersonalMaterialService;
   @ModuleState("productId") productId;
 
   private fileTypeList = [];

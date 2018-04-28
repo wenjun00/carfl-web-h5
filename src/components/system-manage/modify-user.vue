@@ -113,65 +113,13 @@ export default class ModifyUser extends Vue {
 
   created() {
     this.rules = {
-      userUsername: [
-        {
-          required: true,
-          message: "用户名不能为空",
-          trigger: "blur"
-        }
-      ],
-      userRealname: [
-        {
-          required: true,
-          message: "姓名不能为空",
-          trigger: "blur"
-        }
-      ],
-      userPhone: [
-        {
-          required: true,
-          message: "电话号码不能为空",
-          trigger: "blur"
-        },
-        {
-          message: "请输入正确的电话号码",
-          trigger: "blur",
-          pattern: /^1(3|4|5|7|8)\d{9}$/
-        }
-      ],
-      userEmail: [
-        {
-          required: true,
-          message: "邮箱不能为空",
-          trigger: "blur"
-        },
-        {
-          message: "请输入正确的邮箱",
-          trigger: "blur",
-          type: "email"
-        }
-      ],
-      userSex: [
-        {
-          required: true,
-          message: "请选择性别",
-          type: "number",
-          trigger: "change"
-        }
-      ],
-      userManager: [
-        {
-          required: true,
-          type: "number",
-          message: "请选择数据权限",
-          trigger: "change"
-        }
-      ],
-      deptNames: {
-        required: true,
-        message: "用户必须有所属机构",
-        trigger: "blur"
-      }
+      userUsername: { required: true, message: "用户名不能为空", trigger: "blur" },
+      userRealname: { required: true, message: "姓名不能为空", trigger: "blur" },
+      userPhone: { required: true, validator: this.$validator.phoneNumber, message: "请输入正确的电话号码", trigger: "blur" },
+      userEmail: { required: true, message: "请输入正确的邮箱", trigger: "blur", type: "email" },
+      userSex: { required: true, message: "请选择性别", type: "number", trigger: "blur" },
+      userManager: { required: true, type: "number", message: "请选择数据权限", trigger: "change" },
+      deptNames: { required: true, message: "用户必须有所属机构", trigger: "blur" }
     };
   }
 
@@ -202,6 +150,7 @@ export default class ModifyUser extends Vue {
     this.$emit("close");
   }
   updateUser() {
+    this.modifyModel.deptId = this.modifyModel.deptName.id;
     this.manageService.updateUser(this.modifyModel).subscribe(
       val => {
         this.$Message.success("修改成功！");
@@ -231,7 +180,7 @@ export default class ModifyUser extends Vue {
         deptId: data.deptId
       })
       .subscribe(
-        data => (this.modifyModel.companyName = data.companyChinaname)
+      data => (this.modifyModel.companyName = data.companyChinaname)
       );
   }
   /**
@@ -243,7 +192,7 @@ export default class ModifyUser extends Vue {
         deptId: val
       })
       .subscribe(
-        data => (this.modifyModel.companyName = data.companyChinaname)
+      data => (this.modifyModel.companyName = data.companyChinaname)
       );
   }
 

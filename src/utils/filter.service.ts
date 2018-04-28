@@ -174,7 +174,8 @@ export class FilterService {
    * @param value 要格式化的金额字符串
    */
   static moneyFormat(value: number) {
-    return `${value}`.replace(/^\d+/g, (m) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
+    let result = LodashService.round(value as number, 2)
+    return `${result}`.replace(/^\d+/g, (m) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
   }
 
   static safeNumber(value) {
@@ -190,7 +191,8 @@ export class FilterService {
    * @param value 要格式化的金额
    */
   static percentFormat(value) {
-    return `${value}%`
+    let result = LodashService.round(value as number, 2)
+    return `${result}%`
   }
 
   /**
