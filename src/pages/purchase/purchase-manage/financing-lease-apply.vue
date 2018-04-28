@@ -157,21 +157,22 @@ export default class FinancingLeaseApply extends Page {
       {
         required: true,
         message: "请输入客户姓名",
-        trigger: "blur"
+        trigger: "change"
       }
     ],
     mobileMain: [
       {
         required: true,
         message: "请输入客户电话",
-        trigger: "blur"
+        trigger: "change"
       },
       { validator: this.$validator.phoneNumber, trigger: "blur" }
     ],
     salesmanName: [
       {
         required: true,
-        message: "请选择归属业务员"
+        message: "请选择归属业务员",
+        trigger: "change"
       }
     ]
   };
