@@ -1,15 +1,43 @@
 <!--机构与用户管理-->
 <template>
-  <section class="page org-user-manage">
-    <page-header title="机构与用户管理" hidden-print @on-export="exportName">
-      <command-button @click="addNewUser" label="新增用户"></command-button>
-      <command-button @click="buttonOnlyOne1" label="批量分配角色"></command-button>
-      <command-button @click="buttonOnlyOne2" label="批量管理设备"></command-button>
-    </page-header>
-    <i-row class="data-form">
-      <i-col :span="4" class="data-form-item">
-        <i-row class="add-agency">
-          <i-button class="blue-button" @click="addDept">添加机构</i-button>
+    <section class="page org-user-manage">
+        <page-header title="机构与用户管理" hidden-print @on-export="exportName">
+            <i-button class="blueButton" @click="addNewUser">新增用户</i-button>
+            <i-button class="blueButton" @click="buttonOnlyOne1">批量分配角色</i-button>
+            <i-button class="blueButton" @click="buttonOnlyOne2">批量管理设备</i-button>
+        </page-header>
+        <i-row class="data-form">
+            <i-col :span="4" class="data-form-item">
+
+                <i-row class="add-agency">
+                    <i-button class="blue-button" @click="addDept">添加机构</i-button>
+                </i-row>
+                <i-row>
+                    <div class="add-org-tree">
+                        <organize-tree :dataList="dataList" @add="addDept" @change="onChange" @remove="removeDept" @edit="editDept"></organize-tree>
+                    </div>
+                </i-row>
+            </i-col>
+            <i-col :span="20">
+                <data-form hidden-date-search :model="userListModel" @on-search="searchUserListByCondition" :page="pageService">
+                    <template slot="input">
+                        <i-form-item prop="userName" label="用户名：">
+                            <i-input v-model="userListModel.userName" placeholder="请输入用户名"></i-input>
+                        </i-form-item>
+                        <i-form-item prop="realName" label="姓名：">
+                            <i-input v-model="userListModel.realName" placeholder="请输入姓名"></i-input>
+                        </i-form-item>
+                        <i-form-item prop="status" label="状态：">
+                            <i-select class="form-input" v-model="userListModel.status">
+                                <i-option label="启用" :value="0" :key="0"></i-option>
+                                <i-option label="停用" :value="1" :key="1"></i-option>
+                            </i-select>
+                        </i-form-item>
+                    </template>
+                </data-form>
+
+                <data-box :id="9" :columns="columns1" :data="userList" ref="databox" @onPageChange="getUserListByCondition" :page="pageService" @on-selection-change="onSelectionChange"></data-box>
+            </i-col>
         </i-row>
 
         <template>
