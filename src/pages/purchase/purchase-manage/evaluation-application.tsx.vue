@@ -40,9 +40,12 @@
         </template>
       <template>
         <i-modal v-model="newModal"  title="新建申请" width="780">
-          <new-application ref="new-application"></new-application>
+          <new-application ref="new-application" @close="close"></new-application>
           <div slot="footer">
-            <!--<i-button @click="canselDetails">取消</i-button>-->
+            <i-button type="primary" size="large" @click="selectStep" v-if="selectButton">选择</i-button>
+            <i-button type="ghost" size="large" @click="advanceStep" v-if="!selectButton">上一步</i-button>
+            <i-button type="primary" size="large"  v-if="!selectButton">保存草稿</i-button>
+            <i-button type="primary" size="large" @click="commitApplication" v-if="!selectButton" >提交申请</i-button>
           </div>
         </i-modal>
       </template>
@@ -79,6 +82,14 @@ export default class EvaluationApplication extends Page {
   private dataSet: Array<any> = []
   private detailsModal:Boolean = false
   private newModal:Boolean = false
+  private selectButton :Boolean = true
+  private assessmentStatus:any = '' //传给后台的案件状态
+
+  private brand :any = '' //子组件传的品牌ID
+  private serice :any = ''//子组件传的系列ID
+  private car:any = '' //子组件传的型号ID
+
+
   private applicationModel: any = {
     carParams: '', //品牌系列
     carNo: '', // 车牌号码
@@ -215,6 +226,7 @@ export default class EvaluationApplication extends Page {
     {
       title: '申请人',
       editable: true,
+      key: 'applicant',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -302,8 +314,40 @@ export default class EvaluationApplication extends Page {
    */
   newApplication(){
     this.newModal = true
+    let newApplication = this.$refs['new-application'] as NewApplication
+    newApplication.carTree()
   }
-
+  /**
+   * 新建申请选择下一步
+   */
+  selectStep(){
+    let newApplication = this.$refs['new-application'] as NewApplication
+    this.brand = newApplication.fatherId
+    this.serice = newApplication.SerciseId
+    this.car = newApplication.CarId
+    if( this.brand && this.serice && this.car){
+      this.selectButton = false
+      newApplication.lastStep()
+    }else{
+      this.$Message.warning("请选择品牌、车系、车型!")
+    }
+  }
+  /**
+   * 选择上一步
+   */
+  advanceStep(){
+    this.selectButton = true
+    let newApplication = this.$refs['new-application'] as NewApplication
+    newApplication.backStep()
+  }
+  /**
+   * 提交申请
+   */
+  commitApplication(){
+    this.assessmentStatus = 1188
+    let newApplication = this.$refs['new-application'] as NewApplication
+    newApplication.submission(this.assessmentStatus)
+  }
 
   mounted() {
     this.getApplicationList()
@@ -312,6 +356,10 @@ export default class EvaluationApplication extends Page {
     this.detailsModal = false
   }
   activated() {
+    this.getApplicationList()
+  }
+  close(){
+    this.newModal = false
     this.getApplicationList()
   }
 }

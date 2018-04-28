@@ -111,5 +111,15 @@ export default {
     controller: CONTROLLER,
     action: 'deleteOrderInfoByOrderId',
     type: requestType.Delete
+  },
+  /**
+   *  新增/修改车辆评估申请订单
+   */
+  saveAssessmentApplyInfo:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveAssessmentApplyInfo',
+    type: requestType.Post
   }
+
 }
