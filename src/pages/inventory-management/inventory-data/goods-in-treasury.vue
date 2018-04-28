@@ -54,6 +54,7 @@ import { Button } from 'iview'
 import MortgageInventory from '~/components/base-data/mortgage-inventory.vue'
 import SeeMortgageInventory from '~/components/base-data/see-mortgage-inventory.vue'
 import { AssessMentPlacingService } from '~/services/manage-service/assess-ment-placing.service'
+import { FilterService } from '~/utils/filter.service'
 
 @Layout('workspace')
 @Component({
@@ -162,7 +163,10 @@ export default class EvaluationTaskPool extends Page {
       sortable: true,
       key: 'warehousingOperateTime',
       minWidth: this.$common.getColumnWidth(3),
-      align: 'center'
+      align: 'center',
+      render: (h, { row }) => {
+        return h('span', FilterService.dateFormat(row.warehousingOperateTime, 'yyyy-MM-dd'))
+      }
     },
     {
       title: '操作人',
@@ -229,7 +233,7 @@ export default class EvaluationTaskPool extends Page {
       align: 'center'
     }
   ]
-   
+
   /**
    *押品入库订单查询
    */
@@ -260,7 +264,7 @@ export default class EvaluationTaskPool extends Page {
    */
    confirmInventoryModal(){
     let confirmInventoryModal = this.$refs['mortgage-inventory'] as MortgageInventory
-    confirmInventoryModal.sendInventoryData() 
+    confirmInventoryModal.sendInventoryData()
    }
  /**
   * 入库取消
@@ -277,8 +281,10 @@ export default class EvaluationTaskPool extends Page {
   seeTreasuryStorage(row) {
     this.seeInventoryModal = true
   }
-
-    mounted() {
+  mounted() {
+    this.getInTreasuryList()
+  }
+  activated() {
     this.getInTreasuryList()
   }
 }
