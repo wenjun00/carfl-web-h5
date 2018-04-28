@@ -1,6 +1,6 @@
 <!--客户联系人-->
 <template>
-  <section class="component customer-contacts">
+  <section class="component personal-customer-contact">
     <i-card title="直系亲属">
       <div slot="extra">
         <i-button icon="plus" @click="onAddPeople(true)" class="form-button" type="text">添加联系人</i-button>
@@ -32,7 +32,7 @@ import AddPeople from "~/components/purchase-manage/add-people.vue";
     AddPeople
   }
 })
-export default class CustomerContacts extends Vue {
+export default class PersonalCustomerContact extends Vue {
   @Dependencies(OrderService) private orderService: OrderService;
 
   private editOrAddContactsModal: Boolean = false;
@@ -299,28 +299,11 @@ export default class CustomerContacts extends Vue {
         this.$Message.error(error);
       });
   }
-  /**
-   * 客户联系人反显
-   */
-  // Reverse(data) {
-  //   let personalContactsData1: any = data.personal.personalContacts.filter(
-  //     v => v.relation === 56 || v.relation === 57 || v.relation === 58
-  //   );
-  //   let personalContactsData2: any = data.personal.personalContacts.filter(
-  //     v =>
-  //       v.relation === 59 ||
-  //       v.relation === 60 ||
-  //       v.relation === 61 ||
-  //       v.relation === 62
-  //   );
-  //   this.familyDataSet = personalContactsData1;
-  //   this.data2 = personalContactsData2;
-  // }
 }
 </script>
 
 <style lang="less" scoped>
-.component.customer-contacts {
+.component.personal-customer-contact {
   .tip {
     font-size: 10px;
     padding: 10px 0;

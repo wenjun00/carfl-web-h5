@@ -120,6 +120,15 @@ export default {
     controller: CONTROLLER,
     action: 'saveAssessmentApplyInfo',
     type: requestType.Post
+  },
+  /**
+   * 已评估车辆订单查询
+   */
+  orderMortgageSearch:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'orderMortgageSearch',
+    type: requestType.Get 
   }
 
 }

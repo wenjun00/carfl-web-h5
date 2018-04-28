@@ -1,6 +1,6 @@
 <!--添加收款项-->
 <template>
-  <section class="component add-people">
+  <section class="component add-contact">
     <i-form :model="peopleModel" :rules="peopleRules" :label-width="150" ref="people-form">
       <i-form-item label="与本人关系" prop="relation">
         <i-select v-model="peopleModel.relation">
@@ -43,7 +43,7 @@ import { Form } from "iview";
 @Component({
   components: {}
 })
-export default class addPeople extends Vue {
+export default class AddContact extends Vue {
   @Prop({
     default: false
   })

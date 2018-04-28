@@ -1,6 +1,6 @@
 <!--客户职业-->
 <template>
-  <section class="component customer-job-message">
+  <section class="component customer-job">
 
     <i-card title="职业信息">
       <i-form>
@@ -394,7 +394,7 @@ export default class CustomerJob extends Vue {
 </script>
 
 <style lang="less">
-.component.customer-job-message {
+.component.customer-job {
   .ivu-select {
     .ivu-select-selection {
       display: inline-block;

@@ -1,6 +1,6 @@
 <!--客户职业-->
 <template>
-  <section class="component enterprise-customer-info">
+  <section class="component enterprise-bank-account">
 
   </section>
 </template>
@@ -10,13 +10,13 @@ import Vue from "vue";
 import Component from "vue-class-component";
 
 @Component({})
-export default class EnterpriseCustomerInfo extends Vue {
+export default class EnterpriseBankAccount extends Vue {
   
 }
 </script>
 
 <style lang="less" scoped>
-.component.enterprise-customer-info {
+.component.enterprise-bank-account {
   
 }
 </style>

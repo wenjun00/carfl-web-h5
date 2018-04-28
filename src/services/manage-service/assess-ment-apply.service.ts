@@ -2,34 +2,34 @@ import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
-import {FilterService} from '~/utils/filter.service'
+import { FilterService } from '~/utils/filter.service'
 export class AssessMentApplyService {
-    @Inject(NetService)
-    private netService: NetService
-    /**
-     * 评估申请订单查询接口
-     */
-    orderSearch(data,page) {
-        return this.netService.send({
-            server: manageService.assessmentapply.orderSearch,
-            data: data,
-            page:page
-        })
-    }
+  @Inject(NetService)
+  private netService: NetService
+  /**
+   * 评估申请订单查询接口
+   */
+  orderSearch(data, page) {
+    return this.netService.send({
+      server: manageService.assessmentapply.orderSearch,
+      data: data,
+      page: page
+    })
+  }
   /**
    * 评估任务池订单查询
    */
-  orderPoolSearch(data,page) {
+  orderPoolSearch(data, page) {
     return this.netService.send({
       server: manageService.assessmentapply.orderPoolSearch,
       data: data,
-      page:page
+      page: page
     })
   }
   /**
    *  领取/批量领取案件
    */
-  batchReceive(data){
+  batchReceive(data) {
     return this.netService.send({
       server: manageService.assessmentapply.batchReceive,
       data: data,
@@ -38,28 +38,28 @@ export class AssessMentApplyService {
   /**
    *  评估订单查询
    */
-  orderBasicSearch(data,page){
+  orderBasicSearch(data, page) {
     return this.netService.send({
       server: manageService.assessmentapply.orderBasicSearch,
       data: data,
-      page:page
+      page: page
     })
   }
-   /**
-   *  评估申请 查看详情
-   */
-  findOrderInfoByOrderNumber(assessmentNo){
+  /**
+  *  评估申请 查看详情
+  */
+  findOrderInfoByOrderNumber(assessmentNo) {
     return this.netService.send({
       server: manageService.assessmentapply.findOrderInfoByOrderNumber,
       data: {
-          assessmentNo
+        assessmentNo
       },
     })
   }
-   /**
-   *  评估申请撤回
-   */
-  withdrawStatus(data){
+  /**
+  *  评估申请撤回
+  */
+  withdrawStatus(data) {
     return this.netService.send({
       server: manageService.assessmentapply.withdrawStatus,
       data: data,
@@ -69,7 +69,7 @@ export class AssessMentApplyService {
   /**
    * 根据订单编号处理订单
    */
-  beginOrderAssess(data){
+  beginOrderAssess(data) {
     return this.netService.send({
       server: manageService.assessmentapply.beginOrderAssess,
       data: data
@@ -78,7 +78,7 @@ export class AssessMentApplyService {
   /**
    * 新增/修改车辆评估基本信息
    */
-  saveAssessmentBasicInfo(data){
+  saveAssessmentBasicInfo(data) {
     return this.netService.send({
       server: manageService.assessmentapply.saveAssessmentBasicInfo,
       data: data
@@ -87,7 +87,7 @@ export class AssessMentApplyService {
   /**
    * 终止评估
    */
-  terminationStatus(data){
+  terminationStatus(data) {
     return this.netService.send({
       server: manageService.assessmentapply.terminationStatus,
       data: data
@@ -96,7 +96,7 @@ export class AssessMentApplyService {
   /**
    * 退件
    */
-  backPieceStatus(data){
+  backPieceStatus(data) {
     return this.netService.send({
       server: manageService.assessmentapply.backPieceStatus,
       data: data
@@ -105,7 +105,7 @@ export class AssessMentApplyService {
   /**
    * 根据订单编号查询订单基础信息详情
    */
-  findBasicInfoByOrderNumber(data){
+  findBasicInfoByOrderNumber(data) {
     return this.netService.send({
       server: manageService.assessmentapply.findBasicInfoByOrderNumber,
       data: data
@@ -114,7 +114,7 @@ export class AssessMentApplyService {
   /**
    * 删除车辆评估订单
    */
-  deleteOrderInfoByOrderId(data){
+  deleteOrderInfoByOrderId(data) {
     return this.netService.send({
       server: manageService.assessmentapply.deleteOrderInfoByOrderId,
       data: data
@@ -123,10 +123,26 @@ export class AssessMentApplyService {
   /**
    *  新增/修改车辆评估申请订单
    */
-  saveAssessmentApplyInfo(data){
+  saveAssessmentApplyInfo(data) {
     return this.netService.send({
       server: manageService.assessmentapply.saveAssessmentApplyInfo,
       data: data
+    })
+  }
+  
+  /**
+   * 已评估车辆订单查询接口
+   * @param param
+   * @param page 
+   */
+  orderMortgageSearch({ cardNumber, orderNo }: { cardNumber: string, orderNo?: string }, page) {
+    return this.netService.send({
+      server: manageService.assessmentapply.orderMortgageSearch,
+      data: {
+        idCard: cardNumber,
+        orderNo: orderNo,
+      },
+      page
     })
   }
 }
