@@ -151,12 +151,33 @@ import { FilterService } from '~/utils/filter.service'
 import { CityService } from '~/utils/city.service'
 import { Form } from 'iview'
 import UploadVoucher from "~/components/common/upload-voucher.vue"
+import { AssessMentPlacingService } from '~/services/manage-service/assess-ment-placing.service'
 @Component({
   components: {
        UploadVoucher
   }
 })
-export default class addPeople extends Vue {}
+export default class addPeople extends Vue {
+ @Dependencies(AssessMentPlacingService)
+  private assessMentPlacingService: AssessMentPlacingService
+      /**
+   * 获取入库信息
+   */
+  acquireInventoryData(row) {
+    this.assessMentPlacingService
+      .findWarehousingInfoByWarehousingId({ warehousingId: row.warehousingId })
+      .subscribe(
+        data => {
+        
+            console.log(data)
+            console.log('入库信息')
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
+      )
+  }
+}
 </script>
 
 

@@ -1,5 +1,5 @@
 <!--抵押入库 入库-->
-<template>
+<template>  
     <section class="component mortgage-inventory">
         <i-form :rules="ruleValidateRule" :model="mortgageInventoryModel" ref="form-item">
             <!-- 车辆信息 -->
@@ -145,7 +145,7 @@
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="24">
-                    <upload-voucher ref="upload-voucher"></upload-voucher>
+                    <upload-voucher ref="upload-voucher" @financeUploadResources="fileNumber"></upload-voucher>
                 </i-col>
             </i-row>
         </i-form>
@@ -171,15 +171,20 @@ import { CityService } from '~/utils/city.service'
 export default class addPeople extends Vue {
   @Dependencies(AssessMentPlacingService)
   private assessMentPlacingService: AssessMentPlacingService
+  private fodderList:any = [] //上传文件列
   private mortgageInventoryModel: any = {
-    applyId:'',
-    carColor: '',
-    city: '',
-    carNo: '',
-    frameNo: '',
-    engineNo: '',
-    modelofcar: '',
-    fee: [],
+    warehousingSituation:'',          // 车况
+    warehousingDate:'',               // 入库日期
+    cardsDate:'',                     // 上牌日期 
+    applyId:'',                       // 当前id 
+    carColor: '',                     // 车辆颜色
+    city: '',                         // 车辆城市
+    carNo: '',                        // 车牌号码
+    frameNo: '',                      // 车架号
+    engineNo: '',                     // 发动机号 
+    modelofcar: '',                   // 所选车辆  
+    fee: [],                          // 措施内容       
+    placingTypeId:'',   
     assessmentPlacingTypeValueList:[ {
       placingId: '',
       placingTypeId: '',
@@ -228,6 +233,11 @@ export default class addPeople extends Vue {
    * 获取入库信息
    */
   getInventoryData(row) {
+      this.$common.reset(this.mortgageInventoryModel);
+      this.mortgageInventoryModel.warehousingDate =''         
+      this.mortgageInventoryModel.cardsDate= ''      
+      this.mortgageInventoryModel.warehousingSituation = ''  
+    //   this.mortgageInventoryModel.placingTypeId = ''           
     this.assessMentPlacingService
       .findWarehousingInfoByWarehousingId({ warehousingId: row.warehousingId })
       .subscribe(
@@ -251,7 +261,6 @@ export default class addPeople extends Vue {
             data.assessmentPlacingApplyModel.frameNo
           this.mortgageInventoryModel.engineNo =
             data.assessmentPlacingApplyModel.engineNo
-            console.log(data)
         },
         ({ msg }) => {
           this.$Message.error(msg)
@@ -301,15 +310,15 @@ export default class addPeople extends Vue {
     } else {
       this.parkingStateShow = []
     }
-    console.log(a)
   }
 
   /**
    * 入库点击确定
    */
   sendInventoryData() {
-     this.mortgageInventoryModel.applyId =  this.mortgageInventoryModel.applyId
-    this.mortgageInventoryModel.assessmentPlacingTypeValueList[0].placingTypeId = this.mortgageInventoryModel.placingTypeId
+    this.mortgageInventoryModel.applyId =  this.mortgageInventoryModel.applyId
+    // this.mortgageInventoryModel.assessmentPlacingTypeValueList[0].placingTypeId = this.mortgageInventoryModel.placingTypeId
+    this.mortgageInventoryModel.carBasicFileList = this.fodderList
     delete this.mortgageInventoryModel.modelofcar
     delete this.mortgageInventoryModel.carColor
     delete this.mortgageInventoryModel.city
@@ -326,14 +335,22 @@ export default class addPeople extends Vue {
           data => {
             this.$Message.success('保存成功！')
             this.$emit('close')
+            let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher
+            uploadVoucher.reset()
           },
           ({ msg }) => {
             this.$Message.error(msg)
           }
         )
-      console.log(this.mortgageInventoryModel)
     })
   }
+ /**
+     *  返回上传文件列
+     */
+    fileNumber(item) {
+      this.fodderList = item;
+    }
+
   mounted() {
     this.getCheckboxList()
   }

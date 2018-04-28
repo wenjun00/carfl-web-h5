@@ -20,14 +20,14 @@
                     <i-checkbox v-model="whetherInclude">包含已提交</i-checkbox>
                 </i-form-item>
             </template>
-        </data-form>
+        </data-form> 
         <data-box :columns="treasuryColumns" :data="dataSet" :page="pageService"></data-box>
 
         <template>
             <i-modal width="780" v-model="inventoryModal" title="押品入库" class="mortgage-inventory">
-                <mortgage-inventory ref="mortgage-inventory"></mortgage-inventory>
+                <mortgage-inventory  @close="close" ref="mortgage-inventory"></mortgage-inventory>
                 <div slot="footer">
-                    <i-button size="large" type="ghost" class="Ghost" @click="close">取消</i-button>
+                    <i-button size="large" type="ghost" class="Ghost" @click="nventoryModal= false">取消</i-button>
                     <i-button size="large" type="primary" class="blueButton" @click="confirmInventoryModal">确定</i-button>
                 </div>
             </i-modal>
