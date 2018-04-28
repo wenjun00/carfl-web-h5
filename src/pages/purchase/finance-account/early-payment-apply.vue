@@ -40,9 +40,6 @@
           </i-col>
         </i-form>
       </i-col>
-      <!-- <i-col span="6">
-                <i-button class="blueButton clear-button" @click="clearAll">清空</i-button>
-            </i-col> -->
 
     </i-row>
     <i-tabs v-model="materialTabs" class="early-pay-tabs">

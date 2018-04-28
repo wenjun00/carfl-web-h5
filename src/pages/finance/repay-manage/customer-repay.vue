@@ -25,7 +25,6 @@
       <i-modal v-model="confirmRepaymentModal" :transfer="false" title="确认还款" :width="900">
         <confirm-repayment ref="confirm-repayment"></confirm-repayment>
         <div slot="footer">
-          <!--<i-button @click="saveDraft" class="highDefaultButton">保存草稿</i-button>-->
           <i-button @click="confirmRepayment" class="highButton">确认</i-button>
         </div>
       </i-modal>
@@ -465,10 +464,13 @@ export default class CustomerRepay extends Page {
       },
       {
         align: "center",
-        title: " 利率%/月",
+        title: " 月利率",
         editable: true,
         key: "productRate",
-        minWidth: this.$common.getColumnWidth(1),
+        minWidth: this.$common.getColumnWidth(2),
+        render:(h,{row}) =>{
+          return h( 'p',this.$filter.decimalToPrecent(row.productRate))
+        }
       },
       {
         align: "center",

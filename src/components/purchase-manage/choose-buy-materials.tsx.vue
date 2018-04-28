@@ -146,7 +146,7 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="尾付本金(元)" prop="finalPayment">
-              <i-input-number :readonly="productAmountModel" :disabled="!productModel.vehicleAmount" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" @on-change="onFinalPaymentChange" />
+              <i-input-number :readonly="!!productAmountModel" :disabled="!productModel.vehicleAmount" v-model="productModel.finalPayment" :formatter="$filter.moneyFormatter" :parser="$filter.moneyParser" @on-change="onFinalPaymentChange" />
             </i-form-item>
           </i-col>
           <i-col span="12">
@@ -460,6 +460,12 @@ export default class ChooseBuyMaterials extends Vue {
         message: "请选择对应产品"
       }
     ],
+    productAmountModel: [
+      {
+        required: true,
+        message: "请计算产品费用"
+      }
+    ],
     productForm: [
       {
         validator: this.$validator.formValidate
@@ -556,48 +562,51 @@ export default class ChooseBuyMaterials extends Vue {
   ];
 
   private validateInitialPayment(rule, value, callback) {
+    console.log(this.currentProduct.initialPaymentList, this.productModel.initialPayment );
     if (
+      this.currentProduct.initialPaymentList &&
       this.currentProduct.initialPaymentList.length &&
       this.productModel.initialPayment === null
     ) {
-      callback(new Error("请输入首付金额"));
+      return callback(new Error("请输入首付金额"));
     }
     callback();
   }
 
   private validateFinalCash(rule, value, callback) {
     if (
+      this.currentProduct.finalCashList &&
       this.currentProduct.finalCashList.length &&
       this.productModel.finalCash === null
     ) {
-      callback(new Error("请输入尾付总额"));
+      return callback(new Error("请输入尾付总额"));
     }
     callback();
   }
 
   private validateManageCost(rule, value, callback) {
     if (
+      this.currentProduct.manageCostList &&
       this.currentProduct.manageCostList.length &&
       this.productModel.manageCost === null
     ) {
-      callback(new Error("请输入管理费"));
+      return callback(new Error("请输入管理费"));
     }
     callback();
   }
 
   private validateDepositCash(rule, value, callback) {
     if (
+      this.currentProduct.depositCashList &&
       this.currentProduct.depositCashList.length &&
       this.productModel.depositCash === null
     ) {
-      callback(new Error("请输入保证金金额"));
+      return callback(new Error("请输入保证金金额"));
     }
     callback();
   }
 
-  onInitialPaymentChange() {
-
-  }
+  onInitialPaymentChange() {}
 
   /**
    * 更新车辆金额
@@ -843,6 +852,7 @@ export default class ChooseBuyMaterials extends Vue {
           productIssueId: this.currentProduct.productIssueId,
           carListCount: this.carDataSet.length,
           totalPrice: this.totalPrice,
+          productAmountModel: this.productAmountModel,
           productForm: this.$refs["product-form"]
         },
         this.customRules

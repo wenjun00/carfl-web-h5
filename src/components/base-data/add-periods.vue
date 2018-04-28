@@ -2,7 +2,6 @@
 <template>
   <section class="component add-periods">
     <i-form class="mini" ref="formItems" :model="formItems" :rules="formRules">
-
       <div class="add-periods-item">自然参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="产品序号" :span="4"> {{pNameTitle.number}}</data-grid-item>
@@ -23,7 +22,6 @@
           <i-form-item class="item-chanpin" prop="payWay">
             <i-select v-model="formItems.payWay">
               <i-option label="等本等息" :value="384" key="等本等息"></i-option>
-              <!--<i-option label="等额等息" :value="385" key="等额等息"></i-option>-->
             </i-select>
           </i-form-item>
         </data-grid-item>
@@ -47,12 +45,11 @@
         <data-grid-item label="账期类型" :span="12">
           <i-form-item prop="paymentType">
             <i-radio-group class="item-chanpin-group" v-model="formItems.paymentType">
-              <i-radio :label="386" class="item-chanpin-radio">正常账期</i-radio>
-              <i-radio :label="387">固定账期</i-radio>
+              <i-radio v-for="{value,label} in $dict.getDictData('0409')" :key="value" :label="value" class="item-chanpin-radio">{{label}}</i-radio>
             </i-radio-group>
           </i-form-item>
           <i-select v-model="formItems.paymentDay" class="item-chanpin-select" v-if="formItems.paymentType === 387">
-            <i-option :label="item.day" :key="item.key" :value="item.value" v-for="item in monthDay"></i-option>
+            <i-option :label="item + '日'" :key="item" :value="item" v-for="item in 31"></i-option>
           </i-select>
         </data-grid-item>
       </data-grid>
@@ -211,7 +208,7 @@ export default class AddPeriods extends Vue {
     productId: "",
     periods: "", //产品期数
     periodType: "",
-    paymentType: "",
+    paymentType: 0,
     paymentDay: "",
     productRates: null,
     payWay: "",
@@ -241,7 +238,6 @@ export default class AddPeriods extends Vue {
     financingAmount1: 0,
     financingAmount2: 0
   };
-  private monthDay: any;
   private formRules: Object = {};
 
   refresh() {
@@ -278,16 +274,9 @@ export default class AddPeriods extends Vue {
     if (value < 0) {
       return callback(new Error("请输入最大金额"));
     }
-    console.log(
-      typeof this.amount.financingAmount1,
-      typeof value,
-      this.amount.financingAmount1 > value
-    );
     if (this.amount.financingAmount1 - value > 0) {
-      console.log("error2");
       return callback(new Error("最大金额必须大于最小金额"));
     }
-    console.log(1231);
     callback();
 
     // if (!value) {
@@ -305,7 +294,6 @@ export default class AddPeriods extends Vue {
   }
 
   created() {
-    this.monthDay = [];
     this.amountRules = {
       financingAmount1: {
         validator: this.moneySmall,
@@ -523,7 +511,7 @@ export default class AddPeriods extends Vue {
           ({ msg }) => {
             this.$Message.error(msg);
           }
-        );
+          );
       });
       if (!valid) return false;
     });

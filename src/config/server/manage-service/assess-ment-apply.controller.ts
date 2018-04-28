@@ -22,12 +22,12 @@ export default {
     type: requestType.Get
   },
   /**
-   *  更改订单状态
+   *  领取/批量领取案件
    */
-  updateOrderStatus:{
+  batchReceive:{
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'updateOrderStatus',
+    action: 'batchReceive',
     type: requestType.Get
   },
   /**
@@ -102,5 +102,24 @@ export default {
     controller: CONTROLLER,
     action: 'findBasicInfoByOrderNumber',
     type: requestType.Get
+  },
+  /**
+   * 删除车辆评估订单
+   */
+  deleteOrderInfoByOrderId:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'deleteOrderInfoByOrderId',
+    type: requestType.Delete
+  },
+  /**
+   *  新增/修改车辆评估申请订单
+   */
+  saveAssessmentApplyInfo:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveAssessmentApplyInfo',
+    type: requestType.Post
   }
+
 }

@@ -2,7 +2,7 @@
 <template>
     <section class="page evaluation-task-pool">
         <page-header title="评估任务池" hidden-print>
-            <i-button type="text" @click="allReceive">批量领取</i-button>
+          <command-button label="批量领取" @click="allReceive"></command-button>
         </page-header>
         <data-form :model="taskpoolModel" @on-search="getPoolList" :page="pageService" date-prop="timeSearch">
             <template slot="input">
@@ -183,8 +183,8 @@ export default class EvaluationTaskPool extends Page {
         onOk: () => {
           console.log(this.multipleUserId)
           this.assessMentApplyService
-            .updateOrderStatus({
-              orderIds: this.multipleUserId.orderId,
+            .batchReceive({
+              orderIds: this.multipleUserId.map(v=>v.orderId),
               status: 1189
             })
             .subscribe(data => {
@@ -206,9 +206,8 @@ export default class EvaluationTaskPool extends Page {
       title: '提示',
       content: '确定领取至“押品评估列表”？',
       onOk: () => {
-        console.log(row)
         this.assessMentApplyService
-          .updateOrderStatus({
+          .batchReceive({
             orderIds:row.orderId,
             status: row.assessmentStatus
           })

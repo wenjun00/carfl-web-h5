@@ -27,12 +27,12 @@ export class AssessMentApplyService {
     })
   }
   /**
-   *  更改订单状态
+   *  领取/批量领取案件
    */
-  updateOrderStatus(data){
+  batchReceive(data){
     return this.netService.send({
-      server: manageService.assessmentapply.updateOrderStatus,
-      data: data
+      server: manageService.assessmentapply.batchReceive,
+      data: data,
     })
   }
   /**
@@ -108,6 +108,24 @@ export class AssessMentApplyService {
   findBasicInfoByOrderNumber(data){
     return this.netService.send({
       server: manageService.assessmentapply.findBasicInfoByOrderNumber,
+      data: data
+    })
+  }
+  /**
+   * 删除车辆评估订单
+   */
+  deleteOrderInfoByOrderId(data){
+    return this.netService.send({
+      server: manageService.assessmentapply.deleteOrderInfoByOrderId,
+      data: data
+    })
+  }
+  /**
+   *  新增/修改车辆评估申请订单
+   */
+  saveAssessmentApplyInfo(data){
+    return this.netService.send({
+      server: manageService.assessmentapply.saveAssessmentApplyInfo,
       data: data
     })
   }

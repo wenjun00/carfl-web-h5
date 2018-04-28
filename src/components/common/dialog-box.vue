@@ -145,10 +145,13 @@ export default class DialogBox extends Vue {
     justify-content: center;
 
     .ivu-modal {
+      margin:100px 0;
+      position: absolute;
       top: 0;
       min-width: 70%;
 
       .ivu-modal-content {
+        position: relative;
         min-width: 700px;
       }
     }

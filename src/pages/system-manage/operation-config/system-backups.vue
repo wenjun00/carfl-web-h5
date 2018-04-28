@@ -2,7 +2,7 @@
 <template>
   <section class="page system-backups">
     <page-header title="系统备份">
-        <i-button class="blueButton" @click="addNewBackups">新增备份</i-button>
+        <command-button label="新增备份" @click="addNewBackups"></command-button>
     </page-header>
     <data-form hidden-date-search :model="systemBackUpModel" @on-search="getSystemBackupList" :page="pageService">
       <template slot="input">

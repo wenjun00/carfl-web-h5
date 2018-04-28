@@ -41,6 +41,9 @@ import financeInvoiceController from './finance-invoice.controller'
 import stagesMatch from './stages-match-controller'
 import assessmentapply from './assess-ment-apply.controller'
 import assessmentplacing from './assess-ment-placing.controller'
+import companyAccountController from './company-account.controller'
+import bankcardDetailCotroller from './bankcard-detail.cotroller'
+
 
 
 export const manageService = {
@@ -84,8 +87,10 @@ export const manageService = {
     withdrawApplicationController,
     financeApprovalHistoryController,
     chargeBackController,
-    stagesMatch,
+    stagesMatch, 
     assessmentapply,
-    assessmentplacing
+    assessmentplacing,
+    companyAccountController,
+    bankcardDetailCotroller,
 }
-
+ 

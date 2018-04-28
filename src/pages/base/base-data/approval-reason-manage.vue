@@ -2,7 +2,7 @@
 <template>
     <section class="page approval-reason-manage">
         <page-header title="审批原因管理" hiddenPrint hiddenExport>
-              <i-button class="blueButton" @click="addapprovalReasonBtn">新增审批原因</i-button>
+            <command-button label="新增审批原因" @click="addapprovalReasonBtn"></command-button>
             <command-button label="导入" icon="daoru" @click="enterInto"></command-button>
             <command-button label="模板下载" icon="xiazai" @click="downloadTemplate"></command-button>
         </page-header>

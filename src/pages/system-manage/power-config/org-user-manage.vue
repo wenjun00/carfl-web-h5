@@ -249,7 +249,7 @@ export default class OrgUserManage extends Page {
       },
       {
         title: '操作',
-        minWidth: this.$common.getColumnWidth(12),
+        minWidth: this.$common.getColumnWidth(14),
         fixed: 'left',
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -666,26 +666,26 @@ export default class OrgUserManage extends Page {
     this.manageService
       .getUsersByDeptPage(this.userListModel, this.pageService)
       .subscribe(
-      data => {
-        this.userList = data.filter(x => {
-          return x.userStatus == 0
-        })
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.userList = data.filter(x => {
+            return x.userStatus == 0
+          })
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
       )
   }
   searchUserListByCondition() {
     this.manageService
       .getUsersByDeptPage(this.userListModel, this.pageService)
       .subscribe(
-      data => {
-        this.userList = data
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.userList = data
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 
@@ -700,12 +700,12 @@ export default class OrgUserManage extends Page {
     this.manageService
       .getUsersByDeptPage(this.userListModel, this.pageService)
       .subscribe(
-      data => {
-        this.userList = data
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.userList = data
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 
@@ -737,13 +737,13 @@ export default class OrgUserManage extends Page {
             deptId: value.id
           })
           .subscribe(
-          val => {
-            this.$Message.success('删除成功！')
-            this.getTree()
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-          }
+            val => {
+              this.$Message.success('删除成功！')
+              this.getTree()
+            },
+            ({ msg }) => {
+              this.$Message.error(msg)
+            }
           )
       }
     })

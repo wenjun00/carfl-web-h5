@@ -2,65 +2,30 @@
 <template>
   <section class="page company-account-list">
     <page-header title="企业开户列表" hiddenPrint hiddenExport>
-      <command-button label="新增企业"  @click="addCompany"></command-button>
-      <command-button label="转账"  @click="transferAccount"></command-button>
+      <command-button label="企业开户" @click="openCompany"></command-button>
     </page-header>
-    <data-form hidden-reset hiddenDateSearch>
+    <data-form date-prop="timeSearch" :model="openAccountModel" :page="pageService" @on-search="CompanyAccountSearch" hidden-reset>
       <template slot="input">
-        <i-form-item>
-          <i-input placeholder="请录入门店\员工姓名查询" class="second-data-one"></i-input>
+        <i-form-item prop="companyName" label="企业名称">
+          <i-input v-model="openAccountModel.companyName"></i-input>
         </i-form-item>
-        <i-form-item label="下载日期：">
-          <i-date-picker type="daterange"></i-date-picker>
+        <i-form-item prop="companyLicensenNmber" label="营业执照注册号">
+          <i-input v-model="openAccountModel.companyLicensenNmber"></i-input>
         </i-form-item>
-        <i-form-item>
-          <i-select placeholder="全部状态">
-            <i-option value="拒绝" label="拒绝" key="拒绝"></i-option>
-            <i-option value="退单" label="退单" key="退单"></i-option>
-            <i-option value="通过" label="通过" key="通过"></i-option>
-          </i-select>
+        <i-form-item prop="accountNumber" label="用户客户号">
+          <i-input v-model="openAccountModel.accountNumber"></i-input>
         </i-form-item>
-        <i-form-item>
-          <i-select placeholder="全部拒单原因">
-            <i-option value="不符合进件操作" label="不符合进件操作" key="不符合进件操作"></i-option>
-            <i-option value="欺诈" label="欺诈" key="欺诈"></i-option>
-            <i-option value="黑名单" label="黑名单" key="黑名单"></i-option>
-            <i-option value="法院执行" label="法院执行" key="法院执行"></i-option>
-            <i-option value="还款能力不足" label="还款能力不足" key="还款能力不足"></i-option>
-            <i-option value="其他" label="其他" key="其他"></i-option>
-          </i-select>
+        <!--<i-form-item prop="personalInfo" label="用户子账户名">
+          <i-input v-model="openAccountModel.companyLicensenNmber"></i-input>
         </i-form-item>
-        <i-form-item>
-          <i-select placeholder="全部拒单细节">
-            <i-option value="行业限制" label="拒绝" key="拒绝"></i-option>
-            <i-option value="信用卡开户数超标" label="退单" key="退单"></i-option>
-            <i-option value="话单非本人名下且不满两年" label="通过" key="通过"></i-option>
-            <i-option value="话单本人名下但不满半年" label="通过" key="通过"></i-option>
-          </i-select>
-        </i-form-item>
-        <i-form-item label="日期：">
-          <i-date-picker type="daterange"></i-date-picker>
-        </i-form-item>
+        <i-form-item prop="personalInfo" label="审核状态">
+          <i-input v-model="openAccountModel.companyLicensenNmber"></i-input>
+        </i-form-item>-->
       </template>
     </data-form>
-    <data-box :columns="columns1" :data="data1"></data-box>
+    <data-box :columns="columns1" :data="accountData" @onPageChange="CompanyAccountSearch" :page="pageService"></data-box>
 
-    <div class="submitBar">
-      <i-row type="flex" align="middle" style="padding:5px">
-        <i-col :span="8" push="1">
-          <span>申请人：administrator</span>
-        </i-col>
-        <i-col :span="12" pull="4">
-          <span>申请时间： 2017-12-01 13:56:45</span>
-        </i-col>
-
-      </i-row>
-
-    </div>
     <!--弹出框-->
-    <template>
-
-    </template>
     <template>
       <i-modal v-model="openColumnsConfig" title="列配置" @on-ok="confirm">
         <i-table :columns="columns2" :data="data2"></i-table>
@@ -70,208 +35,6 @@
           <i-button>恢复默认</i-button>
           <i-button @click="openColumnsConfig=false">关闭</i-button>
         </div>
-      </i-modal>
-    </template>
-
-    <!--开户弹窗-->
-    <template>
-      <i-modal v-model="addCompanyModal" title="新增企业开户" :width="800" class="openAccount_modal" ok-text="确认开户">
-        <i-form :label-width="110" label-position="left">
-          <i-row>
-            <i-col :span="24">
-              <div>
-                <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
-                <span>企业信息</span>
-              </div>
-              <i-col :span="12">
-                <i-form-item label="客户类型">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="营业执照注册号">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="企业证照类型">
-                  <i-select style="width:160px;">
-                    <i-option label="三证合一企业" value="汇付" key="汇付"></i-option>
-                    <i-option label="普通营业执照企业" value="对公" key="对公"></i-option>
-                  </i-select>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="组织机构代码">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="企业类型">
-                  <i-select style="width:160px;">
-                    <i-option label="普通企业" value="身份证" key="身份证"></i-option>
-                  </i-select>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="税务登记证号">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="企业名称">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="统一社会信用代码">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="证照起始日期">
-                  <i-date-picker style="width:160px;"></i-date-picker>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="企业经营地址">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="证照结束日期">
-                  <i-date-picker style="width:160px;"></i-date-picker>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="企业注册地址">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="企业固定电话">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="经营范围">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="控股股东">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-            </i-col>
-          </i-row>
-
-          <i-row>
-
-            <i-col :span="24">
-              <div>
-                <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
-                <span>企业法人信息</span>
-              </div>
-              <i-col :span="12">
-                <i-form-item label="法定代表人姓名">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="法定代表人手机号码">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="法人证件类型">
-                  <i-select style="width:160px;">
-                    <i-option label="身份证" value="身份证" key="身份证"></i-option>
-                  </i-select>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="企业联系人姓名">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="法定证件号码">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="联系人手机号">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="法人证件起始日期">
-                  <i-date-picker style="width:160px;"></i-date-picker>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="联系人邮箱">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="法人证件结束日期">
-                  <i-date-picker style="width:160px;"></i-date-picker>
-                </i-form-item>
-              </i-col>
-            </i-col>
-          </i-row>
-          <i-row>
-            <i-col :span="24">
-              <div>
-                <div style="width:7px;height:20px;background:#265EA2;display:inline-block;margin-right:6px;position:relative;top:4px;"></div>
-                <span>开户信息（取现账户）</span>
-              </div>
-              <i-col :span="12">
-                <i-form-item label="开户银行账户名">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="开户银行支行名称">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="开户银行">
-                  <!--<i-input style="width:160px;"></i-input>-->
-                  <i-select>
-                    <i-option label="建设银行" value="建设银行" key="建设银行"></i-option>
-                    <i-option label="招商银行" value="招商银行" key="招商银行"></i-option>
-                    <i-option label="工商银行" value="工商银行" key="工商银行"></i-option>
-                  </i-select>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="开户银行账号">
-                  <i-input style="width:160px;"></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="开户银行省份">
-                  <i-select>
-                    <i-option label="陕西" value="陕西" key="陕西"></i-option>
-                  </i-select>
-                </i-form-item>
-              </i-col>
-              <i-col :span="12">
-                <i-form-item label="开户银行城市">
-                  <i-select>
-                    <i-option label="西安" value="西安" key="西安"></i-option>
-                    <i-option label="宝鸡" value="宝鸡" key="宝鸡"></i-option>
-                    <i-option label="咸阳" value="咸阳" key="咸阳"></i-option>
-                  </i-select>
-                </i-form-item>
-              </i-col>
-            </i-col>
-          </i-row>
-        </i-form>
       </i-modal>
     </template>
 
@@ -410,19 +173,28 @@
 import Page from '~/core/page'
 import DataBox from '~/components/common/data-box.vue'
 import BankCardInfo from '~/components/finance-manage/bank-card-info.vue'
+import AddCompany from '~/components/finance-manage/add-company.vue'
+
 import CompanyBankCard from '~/components/finance-manage/company-bank-card.vue'
 import Component from 'vue-class-component'
 import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
+import { CompanyAccountService } from "~/services/manage-service/company-account.service";
+import { PageService } from "~/utils/page.service";
+import { BankcardDetailService } from "~/services/manage-service/bankcard-detail.service";
 
 @Layout('workspace')
 @Component({
   components: {
     DataBox,
-    CompanyBankCard
+    CompanyBankCard,
+    AddCompany
   }
 })
 export default class CompanyAccountList extends Page {
+  @Dependencies(BankcardDetailService) private bankcardDetailService: BankcardDetailService;
+  @Dependencies(PageService) private pageService: PageService;
+  @Dependencies(CompanyAccountService) private companyAccountService: CompanyAccountService;
   private columns1: any
   private data1: Array<Object> = []
   private searchOptions: Boolean = false
@@ -433,26 +205,149 @@ export default class CompanyAccountList extends Page {
   private data3: Array<Object> = []
   private checkRadio: String = '融资租赁合同'
   private columns3: any
-  private addCompanyModal: Boolean = false
   private getCashModal: Boolean = false
   private setCodeModal: Boolean = false
   private transferAccountModal: Boolean = false
   private companyBankCardInfoModal: Boolean = false
-  private cashModel: any
+  private cashModel: any;
+  private accountData: any = [];
+  private dsds: any = {};
+  private bankInfo: any = [];
+  private openAccountModel: any = {
+    companyName: '', // 企业名称
+    companyLicensenNmber: '', // 企业执照注册号
+    accountNumber: '', // 用户客户号
+    //   用户子账户名
+    // 审核状态
+    timeSearch: ''
+  };
   /**
    * 转账
    */
   transferAccount() {
     this.transferAccountModal = true
   }
+  mounted() {
+    this.CompanyAccountSearch()
+  }
+  getbankInfo(row) {
+    this.bankcardDetailService
+      .getAllBankCards({
+        id: row.id
+      })
+      .subscribe(
+      val => {
+        this.bankInfo = val
+        this.companyBankCardInfoModal = true
+      },
+      ({
+            msg
+          }) => {
+        this.$Message.error(msg);
+      }
+      );
+  }
+  /**
+   * 搜索
+   */
+  CompanyAccountSearch() {
+    this.companyAccountService
+      .getAllAccountWithPage(this.pageService)
+      .subscribe(
+      val => {
+        console.log(val, 'val')
+        this.accountData = val;
+      },
+      ({
+            msg
+          }) => {
+        this.$Message.error(msg);
+      }
+      );
+  }
   close() {
     this.companyBankCardInfoModal = false
   }
   /**
-   * 开户
+   * 企业信息
    */
-  addCompany() {
-    this.addCompanyModal = true
+  companyInformation(row) {
+    this.companyAccountService
+      .finAccountDetail({
+        id: row.id
+      })
+      .subscribe(
+      val => {
+        let dialog = this.$dialog.show({
+          title: '企业信息',
+          footer: true,
+          onOk: addCompany => { },
+          onCancel: () => { },
+          render: h => {
+            return h(AddCompany, {
+              props: {
+                val
+              }
+            });
+          }
+        })
+      },
+      ({
+            msg
+          }) => {
+        this.$Message.error(msg);
+      }
+      );
+  }
+  /**
+   * 修改企业开户
+   */
+  modifyAccount(row) {
+    this.companyAccountService
+      .finAccountDetail({
+        id: row.id
+      })
+      .subscribe(
+      val => {
+        let modifyData: any = val
+        let dialog = this.$dialog.show({
+          title: '修改企业开户',
+          footer: true,
+          onOk: addCompany => {
+            addCompany.modifyAccountClick()
+          },
+          onCancel: () => { },
+          render: h => {
+            return h(AddCompany, {
+              props: {
+                modifyData
+              }
+            });
+          }
+        })
+      },
+      ({
+            msg
+          }) => {
+        this.$Message.error(msg);
+      }
+      );
+  }
+  /**
+   * 新增企业
+   */
+  openCompany() {
+    let dialog = this.$dialog.show({
+      title: '新增企业开户',
+      footer: true,
+      onOk: addCompany => {
+        addCompany.openaccountClick()
+      },
+      onCancel: () => { },
+      render: h => {
+        return h(AddCompany, {});
+      }
+    })
   }
   /**
    * 设置交易密码
@@ -467,191 +362,305 @@ export default class CompanyAccountList extends Page {
       cashWay: '',
       serviceCharge: ''
     }
-    this.columns1 = [
-      {
-        title: '操作',
-        minWidth: this.$common.getColumnWidth(5),
-        fixed: 'left',
-        align: 'center',
-        render: (h, { row, column, index }) => {
-          return h('div', [
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    this.addCompanyModal = true
-                  }
-                }
+    this.columns1 = [{
+      title: '操作',
+      minWidth: this.$common.getColumnWidth(5),
+      fixed: 'left',
+      align: 'center',
+      render: (h, {
+            row,
+        column,
+        index
+          }) => {
+        return h('div', [
+          h(
+            'i-button', {
+              props: {
+                type: 'text'
               },
-              '修改开户'
-            ),
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    this.getCashModal = true
-                  }
-                }
+              style: {
+                color: '#265EA2'
               },
-              '取现'
-            )
-          ])
-        }
-      },
-      {
-        title: '查看',
-        minWidth: this.$common.getColumnWidth(4),
-        align: 'center',
-        render: (h, { row, column, index }) => {
-          return h('div', [
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    // this.$Modal.info({
-                    //   title: '银行卡详情',
-                    //   // transfer:false,
-                    //   render: h => h(BankCardInfo)
-                    // })
-                    this.companyBankCardInfoModal = true
-                  }
+              on: {
+                click: () => {
+                  this.modifyAccount(row)
                 }
-              },
-              '银行卡详情'
-            ),
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    this.addCompanyModal = true
-                  }
-                }
-              },
-              '企业信息'
-            )
-          ])
-        }
-      },
-      {
-        title: '用户客户号',
-        align: 'center',
-        key: 'userCustomerId',
-        minWidth: this.$common.getColumnWidth(6)
-      },
-      {
-        align: 'center',
-        title: '用户子账户号',
-        key: 'userSonAccountId',
-        minWidth: this.$common.getColumnWidth(6)
-      },
-      {
-        align: 'center',
-        title: '企业证照类型',
-        minWidth: this.$common.getColumnWidth(4),
-        key: 'companyLicenseType'
-      },
-      {
-        align: 'center',
-        title: '企业名称',
-        minWidth: this.$common.getColumnWidth(10),
-        key: 'companyName'
-      },
-      {
-        align: 'center',
-        title: '营业执照注册号',
-        minWidth: this.$common.getColumnWidth(6),
-        key: 'businessLicenseId'
-      },
-      {
-        align: 'center',
-        title: '审核状态',
-        minWidth: this.$common.getColumnWidth(3),
-        key: 'approvalStatus'
+              }
+            },
+            '修改开户'
+          )
+          //   h(
+          //     'i-button', {
+          //       props: {
+          //         type: 'text'
+          //       },
+          //       style: {
+          //         color: '#265EA2'
+          //       },
+          //       on: {
+          //         click: () => {
+          //           this.getCashModal = true
+          //         }
+          //       }
+          //     },
+          //     '取现'
+          //   )
+        ])
       }
+    },
+    {
+      title: '查看',
+      minWidth: this.$common.getColumnWidth(4),
+      align: 'center',
+      render: (h, {
+            row,
+        column,
+        index
+          }) => {
+        return h('div', [
+          h(
+            'i-button', {
+              props: {
+                type: 'text'
+              },
+              style: {
+                color: '#265EA2'
+              },
+              on: {
+                click: () => {
+                  this.getbankInfo(row)
+                }
+              }
+            },
+            '银行卡详情'
+          ),
+          h(
+            'i-button', {
+              props: {
+                type: 'text'
+              },
+              style: {
+                color: '#265EA2'
+              },
+              on: {
+                click: () => {
+                  this.companyInformation(row)
+                }
+              }
+            },
+            '企业信息'
+          )
+        ])
+      }
+    },
+    {
+      title: '用户客户号',
+      align: 'center',
+      key: 'accountNumber',
+      minWidth: this.$common.getColumnWidth(6)
+    },
+    {
+      align: 'center',
+      title: '用户子账户号',
+      key: 'subAccountNumber',
+      minWidth: this.$common.getColumnWidth(6)
+    },
+    {
+      align: 'center',
+      title: '企业证照类型',
+      minWidth: this.$common.getColumnWidth(4),
+      key: 'certificateType'
+    },
+    {
+      align: 'center',
+      title: '企业名称',
+      minWidth: this.$common.getColumnWidth(10),
+      key: 'companyName'
+    },
+    {
+      align: 'center',
+      title: '营业执照注册号',
+      minWidth: this.$common.getColumnWidth(6),
+      key: 'companyLicensenNmber'
+    },
+    {
+      align: 'center',
+      title: '审核状态',
+      minWidth: this.$common.getColumnWidth(3),
+      key: 'verifyStatus'
+    }
     ]
-    this.columns2 = [
-      {
-        title: '序号',
-        type: 'index',
-        minWidth: this.$common.getColumnWidth(3),
-        align: 'center'
-      },
-      {
-        title: '列名',
-        key: 'columnsName',
-        minWidth: this.$common.getColumnWidth(3),
-        align: 'center'
-      },
-      {
-        type: 'selection',
-        width: 40,
-        align: 'center'
-      }
+    this.columns2 = [{
+      title: '序号',
+      type: 'index',
+      minWidth: this.$common.getColumnWidth(3),
+      align: 'center'
+    },
+    {
+      title: '列名',
+      key: 'columnsName',
+      minWidth: this.$common.getColumnWidth(3),
+      align: 'center'
+    },
+    {
+      type: 'selection',
+      width: 40,
+      align: 'center'
+    }
     ]
-    this.columns3 = [
-      {
-        title: '文件名称',
-        align: 'center',
-        minWidth: this.$common.getColumnWidth(5),
-        key: 'fileName'
-      },
-      {
-        type: 'selection',
-        align: 'center',
-        minWidth: this.$common.getColumnWidth(3)
-      }
+    this.columns3 = [{
+      title: '文件名称',
+      align: 'center',
+      minWidth: this.$common.getColumnWidth(5),
+      key: 'fileName'
+    },
+    {
+      type: 'selection',
+      align: 'center',
+      minWidth: this.$common.getColumnWidth(3)
+    }
     ]
-    this.data2 = [
-      {
-        columnsName: '用户客户号'
-      },
-      {
-        columnsName: '用户子账户号'
-      },
-      {
-        columnsName: '企业证照类型'
-      },
-      {
-        columnsName: '企业名称'
-      },
-      {
-        columnsName: '营业执照注册号'
-      },
-      {
-        columnsName: '审核状态'
-      }
+    this.data2 = [{
+      columnsName: '用户客户号'
+    },
+    {
+      columnsName: '用户子账户号'
+    },
+    {
+      columnsName: '企业证照类型'
+    },
+    {
+      columnsName: '企业名称'
+    },
+    {
+      columnsName: '营业执照注册号'
+    },
+    {
+      columnsName: '审核状态'
+    }
     ]
 
-    this.data3 = [
+    this.data3 = [{
+      fileName: '融资租赁申请单'
+    },
+    {
+      fileName: '融资租赁合同正文'
+    },
+    {
+      fileName: '合同附件一(付款时间表)'
+    },
+    {
+      fileName: '合同附件二(配偶确认书)'
+    },
+    {
+      fileName: '合同附件三(共同承租人确认书)'
+    },
+    {
+      fileName: '委托收款合同'
+    },
+    {
+      fileName: '首付款明细'
+    },
+    {
+      fileName: '服务确认书'
+    },
+    {
+      fileName: '责任告知书'
+    },
+    {
+      fileName: '车辆交接单'
+    },
+    {
+      fileName: '车辆出库单'
+    },
+    {
+      fileName: '补充协议（减免）'
+    }
+    ]
+  }
+  getOrderInfoByTime() { }
+  openSearch() {
+    this.searchOptions = !this.searchOptions
+  }
+  oneKeyToConnect() { }
+  columnsConfig() {
+    this.openColumnsConfig = true
+  }
+  changeGetCashWay(val) {
+    if (val === '(T+0)即时到账') {
+      this.cashModel.serviceCharge = '2'
+    }
+  }
+  /**
+   * 多选
+   */
+  multipleSelect(selection) { }
+  /**
+   * 切换合同种类
+   */
+  changeCompactType(type) {
+    if (type === '全款销售合同') {
+      this.data3 = [{
+        fileName: '融资租赁申请单'
+      },
       {
+        fileName: '融资租赁合同正文'
+      },
+      {
+        fileName: '合同附件一(付款时间表)'
+      },
+      {
+        fileName: '合同附件二(配偶确认书)'
+      },
+      {
+        fileName: '合同附件三(共同承租人确认书)'
+      }
+      ]
+    } else if (type === '长租合同（银行版）') {
+      this.data3 = [{
+        fileName: '融资租赁申请单'
+      },
+      {
+        fileName: '融资租赁合同正文'
+      },
+      {
+        fileName: '合同附件一(付款时间表)'
+      },
+      {
+        fileName: '合同附件二(配偶确认书)'
+      }
+      ]
+    } else if (type === '长租合同') {
+      this.data3 = [{
+        fileName: '长期租赁申请单'
+      },
+      {
+        fileName: '长期租赁合同正文'
+      },
+      {
+        fileName: '合同附件一(甲乙双方相关责任条款)'
+      },
+      {
+        fileName: '合同附件二(车辆交接清单)'
+      },
+      {
+        fileName: '委托收款合同'
+      },
+      {
+        fileName: '车辆销售协议'
+      },
+      {
+        fileName: '收款明细'
+      },
+      {
+        fileName: '车辆出库单'
+      },
+      {
+        fileName: '补充协议（减免）'
+      }
+      ]
+    } else {
+      this.data3 = [{
         fileName: '融资租赁申请单'
       },
       {
@@ -687,157 +696,6 @@ export default class CompanyAccountList extends Page {
       {
         fileName: '补充协议（减免）'
       }
-    ]
-
-    this.data1 = [
-      {
-        userCustomerId: '612535456485',
-        userSonAccountId: '6485',
-        companyLicenseType: '三证合一企业',
-        companyName: '开呗（上海）汽车租赁有限公司成都分公司',
-        businessLicenseId: '91510107MA61UP7F8M',
-        approvalStatus: '待审核'
-      },
-      {
-        userCustomerId: '612535456485',
-        userSonAccountId: '6485',
-        companyLicenseType: '三证合一企业',
-        companyName: '开呗（上海）汽车租赁有限公司成都分公司',
-        businessLicenseId: '91510107MA61UP7F8M',
-        approvalStatus: '待审核'
-      },
-      {
-        userCustomerId: '612535456485',
-        userSonAccountId: '6485',
-        companyLicenseType: '三证合一企业',
-        companyName: '开呗（上海）汽车租赁有限公司成都分公司',
-        businessLicenseId: '91510107MA61UP7F8M',
-        approvalStatus: '待审核'
-      }
-    ]
-  }
-  getOrderInfoByTime() { }
-  openSearch() {
-    this.searchOptions = !this.searchOptions
-  }
-  oneKeyToConnect() { }
-  columnsConfig() {
-    this.openColumnsConfig = true
-  }
-  changeGetCashWay(val) {
-    if (val === '(T+0)即时到账') {
-      this.cashModel.serviceCharge = '2'
-    }
-  }
-  /**
-   * 多选
-   */
-  multipleSelect(selection) { }
-  /**
-   * 切换合同种类
-   */
-  changeCompactType(type) {
-    if (type === '全款销售合同') {
-      this.data3 = [
-        {
-          fileName: '融资租赁申请单'
-        },
-        {
-          fileName: '融资租赁合同正文'
-        },
-        {
-          fileName: '合同附件一(付款时间表)'
-        },
-        {
-          fileName: '合同附件二(配偶确认书)'
-        },
-        {
-          fileName: '合同附件三(共同承租人确认书)'
-        }
-      ]
-    } else if (type === '长租合同（银行版）') {
-      this.data3 = [
-        {
-          fileName: '融资租赁申请单'
-        },
-        {
-          fileName: '融资租赁合同正文'
-        },
-        {
-          fileName: '合同附件一(付款时间表)'
-        },
-        {
-          fileName: '合同附件二(配偶确认书)'
-        }
-      ]
-    } else if (type === '长租合同') {
-      this.data3 = [
-        {
-          fileName: '长期租赁申请单'
-        },
-        {
-          fileName: '长期租赁合同正文'
-        },
-        {
-          fileName: '合同附件一(甲乙双方相关责任条款)'
-        },
-        {
-          fileName: '合同附件二(车辆交接清单)'
-        },
-        {
-          fileName: '委托收款合同'
-        },
-        {
-          fileName: '车辆销售协议'
-        },
-        {
-          fileName: '收款明细'
-        },
-        {
-          fileName: '车辆出库单'
-        },
-        {
-          fileName: '补充协议（减免）'
-        }
-      ]
-    } else {
-      this.data3 = [
-        {
-          fileName: '融资租赁申请单'
-        },
-        {
-          fileName: '融资租赁合同正文'
-        },
-        {
-          fileName: '合同附件一(付款时间表)'
-        },
-        {
-          fileName: '合同附件二(配偶确认书)'
-        },
-        {
-          fileName: '合同附件三(共同承租人确认书)'
-        },
-        {
-          fileName: '委托收款合同'
-        },
-        {
-          fileName: '首付款明细'
-        },
-        {
-          fileName: '服务确认书'
-        },
-        {
-          fileName: '责任告知书'
-        },
-        {
-          fileName: '车辆交接单'
-        },
-        {
-          fileName: '车辆出库单'
-        },
-        {
-          fileName: '补充协议（减免）'
-        }
       ]
     }
   }
@@ -859,6 +717,7 @@ export default class CompanyAccountList extends Page {
     }
   }
 }
+
 </script>
 
 <style lang="less">

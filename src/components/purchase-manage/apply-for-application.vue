@@ -57,9 +57,6 @@
                     </i-form-item>
                 </i-col>
             </i-row>
-
-
-
         </i-form>
   </section>
 </template>
@@ -96,8 +93,8 @@ export default class addPeople extends Vue {
   /**
    * 获取评估申请查看详情
    */
-  getApplicationDetail(assessmentNo) {
-    this.assessMentApplyService.findOrderInfoByOrderNumber(assessmentNo)
+  getApplicationDetail(row) {
+    this.assessMentApplyService.findOrderInfoByOrderNumber(row.assessmentNo)
     .subscribe(
         data => {
           this.detailsModel.applyCars = data.applyCars ? data.applyCars : ''

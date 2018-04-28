@@ -24,7 +24,7 @@
       </i-modal>
     </template>
     <template>
-      <i-modal title="预览" v-model="previewModel" >
+      <i-modal title="预览" v-model="previewModel" :transfer="false">
         <img :src="url" style="width: 100%">
       </i-modal>
     </template>

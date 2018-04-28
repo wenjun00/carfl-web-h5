@@ -2,7 +2,7 @@
 <template>
     <section class="page evaluation-application">
         <page-header title="评估申请" hidden-print>
-            <i-button type="text">新建申请</i-button>
+            <command-button label="新建申请" @click="newApplication"></command-button>
         </page-header>
         <data-form :model="applicationModel" @on-search="getApplicationList">
             <template slot="input">
@@ -30,13 +30,27 @@
                 </div>
             </i-modal>
         </template>
+        <template>
+          <i-modal v-model="detailsModal"  title="查看评估" width="780">
+            <add-collateral-details ref="add-collateral-details"></add-collateral-details>
+            <div slot="footer">
+              <i-button @click="canselDetails">取消</i-button>
+            </div>
+          </i-modal>
+        </template>
+      <template>
+        <i-modal v-model="newModal"  title="新建申请" width="780">
+          <new-application ref="new-application" @close="close"></new-application>
+          <div slot="footer">
+            <i-button type="primary" size="large" @click="selectStep" v-if="selectButton">选择</i-button>
+            <i-button type="ghost" size="large" @click="advanceStep" v-if="!selectButton">上一步</i-button>
+            <i-button type="primary" size="large"  v-if="!selectButton">保存草稿</i-button>
+            <i-button type="primary" size="large" @click="commitApplication" v-if="!selectButton" >提交申请</i-button>
+          </div>
+        </i-modal>
+      </template>
     </section>
 </template>
-
-
-
-
-
 <script lang="tsx">
 import Page from '~/core/page'
 import Component from 'vue-class-component'
@@ -48,11 +62,15 @@ import { FilterService } from '~/utils/filter.service'
 import { AssessMentApplyService } from '~/services/manage-service/assess-ment-apply.service'
 import ApplyForApplication from '~/components/purchase-manage/apply-for-application.vue'
 import { Modal } from 'iview'
+import  AddCollateralDetails from '~/components/purchase-manage/add-collateral-details.vue'
+import  NewApplication from '~/components/purchase-manage/new-application.vue'
 
 @Layout('workspace')
 @Component({
   components: {
-    ApplyForApplication
+    ApplyForApplication,
+    AddCollateralDetails,
+    NewApplication
   }
 })
 export default class EvaluationApplication extends Page {
@@ -60,15 +78,25 @@ export default class EvaluationApplication extends Page {
   @Dependencies(AssessMentApplyService)
   private assessMentApplyService: AssessMentApplyService
   private applicationModal: Boolean = false
-  private whetherInclude: Boolean = false;
+  private whetherInclude: Boolean = true;
   private dataSet: Array<any> = []
+  private detailsModal:Boolean = false
+  private newModal:Boolean = false
+  private selectButton :Boolean = true
+  private assessmentStatus:any = '' //传给后台的案件状态
+
+  private brand :any = '' //子组件传的品牌ID
+  private serice :any = ''//子组件传的系列ID
+  private car:any = '' //子组件传的型号ID
+
+
   private applicationModel: any = {
     carParams: '', //品牌系列
     carNo: '', // 车牌号码
     ownerName: '', // 客户姓名
     isSubmit: '0' // 包含提交
   }
-  private assessmentNo:String = ''           // 车辆详情号
+  private assessmentNo:String = '' // 车辆详情号
   private applicationColumns: any = [
     {
       title: '操作',
@@ -85,7 +113,7 @@ export default class EvaluationApplication extends Page {
               编辑
             </i-button>
             <i-button  type="text"
-             v-show={row.assessmentStatus === 1189}
+             v-show={row.assessmentStatus === 1187}
              onClick={() =>{
                       this.$Modal.confirm({
                         title: '提示',
@@ -198,6 +226,7 @@ export default class EvaluationApplication extends Page {
     {
       title: '申请人',
       editable: true,
+      key: 'applicant',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center'
     },
@@ -240,17 +269,28 @@ export default class EvaluationApplication extends Page {
   /**
    * 评估申请查看详情
    */
-  getDetailsList({assessmentNo}) {
-    this.applicationModal = true
-    let applyForApplication = this.$refs['apply-for-application'] as ApplyForApplication
-    applyForApplication.getApplicationDetail(assessmentNo)
+  getDetailsList(row) {
+    if(row.assessmentStatus == 1191){
+      this.detailsModal = true
+      let AddCollateralDetails = this.$refs['add-collateral-details'] as AddCollateralDetails
+      AddCollateralDetails.getDetailsData(row)
+    }else{
+      this.applicationModal = true
+      let applyForApplication = this.$refs['apply-for-application'] as ApplyForApplication
+      applyForApplication.getApplicationDetail(row)
+    }
   }
-
    /**
      * 评估申请删除
      */
     deleteRow(row) {
-
+      this.assessMentApplyService.deleteOrderInfoByOrderId({id:row.orderId})
+        .subscribe( data => {
+          this.$Message.success("删除成功");
+          this.getApplicationList()
+        },({msg}) => {
+          this.$Message.error(msg)
+        })
     }
   /**
    * 评估申请撤回
@@ -260,26 +300,66 @@ export default class EvaluationApplication extends Page {
       title: '提示',
       content: '是否确定撤回评估申请？撤回后可重新编辑并提交。',
       onOk: () => {
-       this.assessMentApplyService.withdrawStatus(
-           {
-            orderId:row.orderId,
-            status: row.assessmentStatus
-            }
-        )
-        .subscribe(
-        data => {
-         this.$Message.success("撤回申请成功");
-         this.getApplicationList()
-        },
-        ({ msg }) => {
-        this.$Message.error(msg)
-        }
-        )
-      }
-    })
-   }
+       this.assessMentApplyService.withdrawStatus({orderId:row.orderId, status: row.assessmentStatus})
+        .subscribe(data => {
+           this.$Message.success("撤回申请成功");
+           this.getApplicationList()
+        }, ({ msg }) => {
+          this.$Message.error(msg)
+        })}
+      })
+    }
+  /**
+   * 新建申请
+   */
+  newApplication(){
+    this.newModal = true
+    let newApplication = this.$refs['new-application'] as NewApplication
+    newApplication.carTree()
+  }
+  /**
+   * 新建申请选择下一步
+   */
+  selectStep(){
+    let newApplication = this.$refs['new-application'] as NewApplication
+    this.brand = newApplication.fatherId
+    this.serice = newApplication.SerciseId
+    this.car = newApplication.CarId
+    if( this.brand && this.serice && this.car){
+      this.selectButton = false
+      newApplication.lastStep()
+    }else{
+      this.$Message.warning("请选择品牌、车系、车型!")
+    }
+  }
+  /**
+   * 选择上一步
+   */
+  advanceStep(){
+    this.selectButton = true
+    let newApplication = this.$refs['new-application'] as NewApplication
+    newApplication.backStep()
+  }
+  /**
+   * 提交申请
+   */
+  commitApplication(){
+    this.assessmentStatus = 1188
+    let newApplication = this.$refs['new-application'] as NewApplication
+    newApplication.submission(this.assessmentStatus)
+  }
 
   mounted() {
+    this.getApplicationList()
+  }
+  canselDetails(){
+    this.detailsModal = false
+  }
+  activated() {
+    this.getApplicationList()
+  }
+  close(){
+    this.newModal = false
     this.getApplicationList()
   }
 }

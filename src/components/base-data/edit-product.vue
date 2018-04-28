@@ -48,13 +48,12 @@
         </data-grid-item>
         <data-grid-item label="账期类型" :span="12">
           <i-form-item prop="paymentType">
-            <i-radio-group v-model="productDetail.paymentType">
-              <i-radio :label="386">正常账期</i-radio>
-              <i-radio :label="387">固定账期</i-radio>
+            <i-radio-group class="item-chanpin-group" v-model="productDetail.paymentType">
+              <i-radio v-for="{value,label} in $dict.getDictData('0409')" :key="value" :label="value" class="item-chanpin-radio">{{label}}</i-radio>
             </i-radio-group>
           </i-form-item>
-          <i-select v-model="productDetail.paymentDay" v-if="productDetail.paymentType === 387">
-            <i-option :label="item.day" :key="item.key" :value="item.value" v-for="item in monthDay"></i-option>
+          <i-select v-model="productDetail.paymentDay" class="item-chanpin-select" v-if="productDetail.paymentType === 387">
+            <i-option :label="item + '日'" :key="item" :value="item" v-for="item in 31"></i-option>
           </i-select>
         </data-grid-item>
       </data-grid>
@@ -72,7 +71,6 @@
                 <div style="color:red" class="after_text">%</div>
                 <div style="color:blue" class="after_text">如果有多个则用分号隔开</div>
               </i-form-item>
-
             </div>
           </div>
         </data-grid-item>
@@ -108,12 +106,12 @@
       <div class="add-periods-item">尾付款参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="尾付款" :span="12">
-          <i-radio-group style="float:left;" v-model="residueParams">
+          <i-radio-group v-model="residueParams">
             <i-radio label="无"></i-radio>
             <i-radio label="有"></i-radio>
           </i-radio-group>
-          <div v-if="residueParams==='有'" class="initialPayment">
-            <i-form-item style="width:37%;" prop="finalCash" label="月利率">
+          <div v-if="residueParams==='有'">
+            <i-form-item prop="finalCash" label="月利率">
               <i-input v-model="productDetail.finalCash"></i-input>
               <div style="color:red" class="after_text">%</div>
               <div style="color:blue" class="after_text">如果有多个则用分号隔开</div>
@@ -230,8 +228,8 @@ export default class AddProduct extends Vue {
     manageCost: '', //管理费比例
     manageCostType: '', //管理费收取方式
     stagingPeriods: '', // 管理费分期 期数
-    creditProtectDays: '', // 征信保护天数
-    overdueProtectDays: '', //逾期保护天数
+    creditProtectDays: 0, // 征信保护天数
+    overdueProtectDays: 0, //逾期保护天数
     penaltyRates: 0, //罚息费率
     contractBreakRates: 0, //合同违约金费率
     prepaymentRates: 0, //提前还款费率
@@ -261,12 +259,12 @@ export default class AddProduct extends Vue {
    * 父组件向子组件传值  并转为字符串
    */
   moneyFun(item) {
-    this.productDetail.productRates = String(item.productRate * 100)
-    this.productDetail.creditProtectDays = String(item.creditProtectDays)
-    this.productDetail.overdueProtectDays = String(item.overdueProtectDays)
-    this.productDetail.contractBreakRates = String(item.contractBreakRate * 100)
-    this.productDetail.prepaymentRates = String(item.prepaymentRate * 100)
-    this.productDetail.penaltyRates = String(item.penaltyRate * 100)
+    this.productDetail.productRates = item.productRate * 100
+    this.productDetail.creditProtectDays = item.creditProtectDays
+    this.productDetail.overdueProtectDays = item.overdueProtectDays
+    this.productDetail.contractBreakRates = item.contractBreakRate * 100
+    this.productDetail.prepaymentRates = item.prepaymentRate * 100
+    this.productDetail.penaltyRates = item.penaltyRate * 100
     this.productDetail.payWay = item.payWay
     this.productDetail.periods = item.periods
     this.productDetail.periodType = item.periodType
@@ -302,11 +300,6 @@ export default class AddProduct extends Vue {
       this.productDetail.manageCost = item.manageCost
       this.productDetail.manageCostType = item.manageCostType
     }
-    // if (item.managecostType) {
-    //   this.costType = 395;
-    // }else{
-    //   this.costType = 394;
-    // }
   }
   /**@
    * 点击确定按钮
@@ -413,122 +406,24 @@ export default class AddProduct extends Vue {
           trigger: 'change'
         }
       ],
-      productRates: [
-        { required: true, message: '请输入产品利率', trigger: 'blur' },
-        {
-          pattern: /^[0-9]{1,3}([.]{1}[0-9]{0,4}){0,1}$/g,
-          message: '请输入0~999整数或四位小数',
-          trigger: 'blur'
-        }
-      ],
-      payWay: [
-        {
-          required: true,
-          message: '请选择还款方式',
-          trigger: 'change',
-          type: 'number'
-        }
-      ],
-      periodType: [
-        {
-          required: true,
-          message: '请选择周期类型',
-          trigger: 'change',
-          type: 'number'
-        }
-      ],
-      paymentDay: [
-        {
-          required: true,
-          message: '请选择固定账期期数',
-          trigger: 'change',
-          type: 'number'
-        }
-      ],
-      initialPayment: [
-        { required: true, message: '请输入首付款比例', trigger: 'blur' },
-        {
-          pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g,
-          message: '请输入0~100的数字',
-          trigger: 'blur'
-        }
-      ],
-      depositCash: [
-        { required: true, message: '请输入保证金比例', trigger: 'blur' },
-        {
-          pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g,
-          message: '请输入0~100的数字',
-          trigger: 'blur'
-        }
-      ],
-      depositCashType: [
-        {
-          required: true,
-          message: '请选择退还方式',
-          trigger: 'change',
-          type: 'number'
-        }
-      ],
-      finalCash: [
-        { required: true, message: '请输入尾付款年利率', trigger: 'blur' },
-        {
-          pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g,
-          message: '请输入0~100的数字',
-          trigger: 'blur'
-        }
-      ],
-      manageCost: [
-        { required: true, message: '请输入管理费比例', trigger: 'blur' },
-        {
-          pattern: /^((0|[1-9][0-9]{0,1}|([1-9]|0)\.[0-9]{0,1}|100)\s*(;|；)?\s*)+$/g,
-          message: '请输入0~100的数字',
-          trigger: 'blur'
-        }
-      ],
+      productRates: { required: true, type: 'number', message: '请输入产品利率', trigger: 'blur' },
+      payWay: { required: true, message: '请选择还款方式', trigger: 'change', type: 'number' },
+      periodType: { required: true, message: '请选择周期类型', trigger: 'change', type: 'number' },
+      paymentDay: { required: true, message: '请选择固定账期期数', trigger: 'change', type: 'number' },
+      initialPayment: { required: true, message: '请输入首付款比例', trigger: 'blur' },
+      depositCash: { required: true, message: '请输入保证金比例', trigger: 'blur' },
+      depositCashType: { required: true, message: '请选择退还方式', trigger: 'change', type: 'number' },
+      finalCash: { required: true, message: '请输入尾付款年利率', trigger: 'blur' },
+      manageCost: {required:true, message: '请输入0~100的数字', trigger: 'blur' },
       stagingPeriods: [
         { required: true, message: '请输入管理费分期期数', trigger: 'blur' },
         { pattern: /^[\d]+$/, message: '请输入整数', trigger: 'blur' }
       ],
-      creditProtectDays: [
-        { required: true, message: '请输入征信保护天数', trigger: 'blur' },
-        {
-          pattern: /^(0|[1-9][0-9]{0,3})$/g,
-          message: '请输入0~9999整数',
-          trigger: 'blur'
-        }
-      ],
-      overdueProtectDays: [
-        { required: true, message: '请输入逾期保护天数', trigger: 'blur' },
-        {
-          pattern: /^(0|[1-9][0-9]{0,3})$/g,
-          message: '请输入0~9999整数',
-          trigger: 'blur'
-        }
-      ],
-      contractBreakRates: [
-        { required: true, message: '请输入合同违约金费率', trigger: 'blur' },
-        {
-          pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g,
-          message: '请输入0~100整数或四位小数',
-          trigger: 'blur'
-        }
-      ],
-      prepaymentRates: [
-        { required: true, message: '请输入提前还款费率', trigger: 'blur' },
-        {
-          pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g,
-          message: '请输入0~100整数或四位小数',
-          trigger: 'blur'
-        }
-      ],
-      penaltyRates: [
-        { required: true, message: '请输入罚期费率', trigger: 'blur' },
-        {
-          pattern: /^(\d{1,2}(\.\d{1,4})?|100)$/g,
-          message: '请输入0~100整数或四位小数',
-          trigger: 'blur'
-        }
-      ]
+      creditProtectDays: { required: true, type: 'number', message: '请输入征信保护天数', trigger: 'blur' },
+      overdueProtectDays: { required: true, type: 'number', message: '请输入逾期保护天数', trigger: 'blur' },
+      contractBreakRates: { required: true, type: 'number', message: '请输入合同违约金费率', trigger: 'blur' },
+      prepaymentRates: { required: true, type: 'number', message: '请输入提前还款费率', trigger: 'blur' },
+      penaltyRates: { required: true, type: 'number', message: '请输入罚期费率', trigger: 'blur' }
     }
   }
 }
