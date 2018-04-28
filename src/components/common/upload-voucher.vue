@@ -48,47 +48,71 @@ export default class UploadVoucher extends Vue {
     type: Boolean,
     default: false
   })
-  export default class UploadVoucher extends Vue {
-    //隐藏上传
-    @Prop({
-      type: Boolean,
-      default: false
-    })
-    hiddenUpload: boolean;
-    //隐藏删除
-    @Prop({
-      type: Boolean,
-      default: false
-    })
-    hiddenDelete: boolean;
-    private openUpload: Boolean = false;
-    private financeUploadResources: any = [];
-    private previewModel: Boolean = false;
-    private url:any = ''
-    /**
-     * 上传文件成功回调
-     */
-    uploadSuccess() {
-      this.openUpload = false;
-      this.$nextTick(() => {
-        let fileUpload: any = this.$refs["file-upload"];
-        this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
-          return {
-            materialUrl: v.response.url,
-            // materialType:v.response.type,
-            // originName:v.response.name
-          }
-        }))
-        this.$emit('financeUploadResources',this.financeUploadResources)
-        fileUpload.reset();
-      });
-    }
-    /**
-     * 上传文件
-     */
-    postFile() {
-      let fileUpload = this.$refs["file-upload"] as FileUpload;
-      fileUpload.upload();
+  hiddenUpload: boolean;
+  //隐藏删除
+  @Prop({
+    type: Boolean,
+    default: false
+  })
+  hiddenDelete: boolean;
+  private openUpload: Boolean = false;
+  private financeUploadResources: any = [];
+  private previewModel: Boolean = false;
+  private url: any = ''
+  /**
+   * 上传文件成功回调
+   */
+  uploadSuccess() {
+    this.openUpload = false;
+    this.$nextTick(() => {
+      let fileUpload: any = this.$refs["file-upload"];
+      this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
+        return {
+          materialUrl: v.response.url,
+          materialType: v.response.type,
+          originName: v.response.name
+        }
+      }))
+      this.$emit('financeUploadResources', this.financeUploadResources)
+      fileUpload.reset();
+    });
+  }
+  /**
+   * 上传文件
+   */
+  postFile() {
+    let fileUpload = this.$refs["file-upload"] as FileUpload;
+    fileUpload.upload();
+  }
+  /**
+   * 预览
+   */
+  preview(file) {
+    // if (file.type === 'jpg' || file.type === 'png' || file.type === "JPG" || file.type === 'PNG') {
+    this.previewModel = true
+    this.url = file.materialUrl
+    // } else {
+    //   window.open(file.materialUrl)
+    // }
+  }
+  /**
+   * 下载附件
+   */
+  download(file) {
+    CommonService.downloadFile(file.materialUrl, '');
+  }
+  /**
+   *删除附件
+   */
+  handleRemove(file) {
+    this.financeUploadResources.splice(this.financeUploadResources.indexOf(file), 1);
+  }
+  reset() {
+    this.financeUploadResources = []
+  }
+  Reverse(data) {
+    if (data) {
+      this.financeUploadResources = data
     }
   }
 }
