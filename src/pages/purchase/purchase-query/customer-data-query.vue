@@ -6,11 +6,11 @@
     </page-header>
     <data-form date-prop="timeSearch" :model="ordertransferModel" @on-search="refreshData" hidden-reset :page="pageService">
       <template slot="input">
-        <i-form-item prop="dateRange">
-          <i-date-picker v-model="ordertransferModel.dateRange" type="daterange" @on-change="startTimeChange"  placeholder="请选择日期范围"></i-date-picker>
-        </i-form-item>
         <i-form-item prop="orderInfo">
           <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入订单编号/客户姓名/证件号码/联系号码查询"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="订单日期">
+          <i-date-picker v-model="ordertransferModel.dateRange" type="daterange" @on-change="startTimeChange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -38,30 +38,7 @@
       </i-modal>
     </template>
 
-    <template>
-      <i-modal v-model="uploadList" title="上传合同">
-        <i-form :label-width="110">
-          <i-form-item label="文件类型">
-            <i-select style="width:160px;">
-              <i-option label="身份证（必须）" value="身份证（必须）" key="身份证（必须）"></i-option>
-              <i-option label="银行流水（必须）" value="银行流水（必须）" key="银行流水（必须）"></i-option>
-              <i-option label="房产证（必须）" value="房产证（必须）" key="房产证（必须）"></i-option>
-              <i-option label="话单（必须）" value="话单（必须）" key="话单（必须）"></i-option>
-              <i-option label="行驶证（必须）" value="行驶证（必须）" key="行驶证（必须）"></i-option>
-              <i-option label="驾驶证（必须）" value="驾驶证（必须）" key="驾驶证（必须）"></i-option>
-              <i-option label="户口本" value="户口本" key="户口本"></i-option>
-              <i-option label="结婚证" value="结婚证" key="结婚证"></i-option>
-              <i-option label="学历证" value="学历证" key="学历证"></i-option>
-            </i-select>
-            <i-upload action="//jsonplaceholder.typicode.com/posts/" style="display:inline-block;margin-left:10px;">
-              <i-button type="ghost" icon="ios-cloud-upload-outline">上传</i-button>
-              <div style="margin-top:10px;">
-              </div>
-            </i-upload>
-          </i-form-item>
-        </i-form>
-      </i-modal>
-    </template>
+   
   </section>
 </template>
 
@@ -75,6 +52,9 @@ import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
 import { Layout } from "~/core/decorator";
 import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.tsx.vue";
+import { Mutation,namespace } from "vuex-class"
+
+const   ModuleMutation = namespace('purchase',Mutation)
 
 @Layout("workspace")
 @Component({
@@ -86,11 +66,11 @@ import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.
 export default class CustomerDataQuery extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(PersonalService) private personalService: PersonalService;
+  @ModuleMutation updateProductId
 
   private searchOptions: Boolean = false;
   private rowData: any = "";
   private openUpload: Boolean = false;
-  private uploadList: Boolean = false;
   private customName: String = "";
   private columns1: any = null;
   private customerDataSet: Array<Object> = [];
@@ -103,7 +83,7 @@ export default class CustomerDataQuery extends Page {
     startTime: "", // 起始日期
     endTime: "", // 终止日期
     timeSearch: "",
-    dateRange:[]
+    dateRange: []
   };
 
   created() {
@@ -272,8 +252,8 @@ export default class CustomerDataQuery extends Page {
     this.personalService
       .getCustomerDataOrder(this.ordertransferModel, this.pageService)
       .subscribe(
-        data =>this.customerDataSet = data,
-        err => this.$Message.error(err.msg)
+      data => this.customerDataSet = data,
+      err => this.$Message.error(err.msg)
       );
   }
   /**
@@ -308,7 +288,7 @@ export default class CustomerDataQuery extends Page {
    */
   uploadFiles(row) {
     let _uploadthematerial: any = this.$refs["upload-the-material"];
-    _uploadthematerial.resetfileList();
+    _uploadthematerial.reset();
     this.uploadOrAddFlag = true;
     this.openUpload = true;
   }
@@ -316,10 +296,12 @@ export default class CustomerDataQuery extends Page {
    * 补充资料
    */
   addFiles(row) {
-    this.rowData = row;
-    let _uploadthematerial: any = this.$refs["upload-the-material"];
-    _uploadthematerial.resetfileList();
     this.openUpload = true;
+    this.rowData = row;
+    // TODO 更新store 产品ID 进行查看所有资源数据和上传新的资源
+    let _uploadthematerial: any = this.$refs["upload-the-material"];
+    _uploadthematerial.reset();
+ 
     this.uploadOrAddFlag = false;
     if (row.personalMateriaList) {
       _uploadthematerial.supplement(row.personalMateriaList);
@@ -331,9 +313,6 @@ export default class CustomerDataQuery extends Page {
   columnsConfig() {
     this.openColumnsConfig = true;
   }
-  uploadDialog() {
-    this.uploadList = true;
-  }
 }
 </script>
 
@@ -343,9 +322,9 @@ export default class CustomerDataQuery extends Page {
     margin-top: 10px;
   }
 }
-.pop-update{
-    .high-default-button{
-        width:80px;
-    }
+.pop-update {
+  .high-default-button {
+    width: 80px;
+  }
 }
 </style>
