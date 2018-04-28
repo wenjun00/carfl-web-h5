@@ -1,4 +1,4 @@
-<!--客户详情-->
+<!--新增客户详情-->
 <template>
     <section class="component get-customer-details">
         <i-form>
@@ -12,33 +12,33 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="客户姓名" :label-width="90">
-                        <i-input readonly></i-input>
+                        <i-input></i-input>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="手机号码" :label-width="90">
-                        <i-input readonly></i-input>
+                        <i-input></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="证件类型" :label-width="90">
-                        <i-select disabled>
+                        <i-select placeholder="请选择停放状态">
                             <!-- <i-option></i-option> -->
                         </i-select>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="证件号码" :label-width="90">
-                        <i-input readonly></i-input>
+                        <i-input></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="居住地址" :label-width="90">
-                        <i-input readonly></i-input>
+                        <i-input></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -63,29 +63,29 @@
                     <i-button @click="fold" v-else="WhetherNotShown" type="primary" icon="minus-round">收起</i-button>
                 </i-col>
             </i-row>
-            <span class="showContent"  v-show="WhetherNotShown">
+            <span class="showContent" v-show="WhetherNotShown">
                 <!-- 隐藏内容 -->
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
                         <i-form-item label="性别" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
                         <i-form-item label="出生日期" :label-width="90">
-                            <i-date-picker disabled type="date"></i-date-picker>
+                            <i-date-picker type="date"></i-date-picker>
                         </i-form-item>
                     </i-col>
                 </i-row>
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
                         <i-form-item label="民族" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
                         <i-form-item label="健康状况" :label-width="90">
-                            <i-select disabled>
+                            <i-select>
                                 <!-- <i-option></i-option> -->
                             </i-select>
                         </i-form-item>
@@ -94,14 +94,14 @@
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
                         <i-form-item label="居住状况" :label-width="90">
-                            <i-select disabled>
+                            <i-select>
                                 <!-- <i-option></i-option> -->
                             </i-select>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
                         <i-form-item label="婚姻状况" :label-width="90">
-                            <i-select disabled>
+                            <i-select>
                                 <!-- <i-option></i-option> -->
                             </i-select>
                         </i-form-item>
@@ -110,7 +110,7 @@
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
                         <i-form-item label="通讯地址" :label-width="90">
-                            <i-input class="mailingAddress" readonly></i-input>
+                            <i-input class="mailingAddress"></i-input>
                         </i-form-item>
                     </i-col>
                 </i-row>
@@ -131,24 +131,24 @@
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
                         <i-form-item label="车牌号" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
                         <i-form-item label="车架号" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                         </i-form-item>
                     </i-col>
                 </i-row>
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
                         <i-form-item label="上牌时间" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
                         <i-form-item label="上牌地址" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                         </i-form-item>
                     </i-col>
                 </i-row>
@@ -162,30 +162,25 @@
                         <a class="information">相关联系人</a>
                     </i-col>
                 </i-row>
+
                 <i-row type="flex" :gutter="110">
                     <i-col :span="24" class="contacts">
-                        <i-form-item label="第一联系人" :label-width="90">
-                            <i-input readonly></i-input>
-                            <i-select disabled>
-                                <!-- <i-option></i-option> -->
-                            </i-select>
-                            <i-input readonly></i-input>
-                        </i-form-item>
+                        <div v-for="i in linkmanConent">
+                            <i-form-item :label="i.name" :label-width="90">
+                                {{i.val}}
+                                <i-input :model="i.val"></i-input>
+                                <i-select>
+                                    <!-- <i-option></i-option> -->
+                                </i-select>
+                                <i-input></i-input>
+                            </i-form-item>
+                        </div>
+
                     </i-col>
                 </i-row>
-                <i-row type="flex" :gutter="110">
-                    <i-col :span="24" class="contacts">
-                        <i-form-item label="第二联系人" :label-width="90">
-                            <i-input readonly></i-input>
-                            <i-select disabled>
-                                <!-- <i-option></i-option> -->
-                            </i-select>
-                            <i-input readonly></i-input>
-                        </i-form-item>
-                    </i-col>
-                </i-row>
+
                 <i-col>
-                    <span class="addingBet">+添加联系人</span>
+                    <span @click="addingBet" class="addingBet">+添加联系人</span>
                 </i-col>
                 <!-- 职业信息 -->
                 <i-row class="data-form">
@@ -241,14 +236,14 @@
                 <i-row type="flex">
                     <i-col :span="10">
                         <i-form-item label="个人月收入" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                             <span>元</span>
                         </i-form-item>
                     </i-col>
 
                     <i-col :span="10" class="familySize ">
                         <i-form-item label="家庭人数" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                             <span>人</span>
                         </i-form-item>
                     </i-col>
@@ -262,20 +257,20 @@
                 <i-row type="flex">
                     <i-col :span="16">
                         <i-form-item label="经营单位" :label-width="90">
-                            <i-input class="mailingAddress" readonly></i-input>
+                            <i-input class="mailingAddress"></i-input>
                         </i-form-item>
                     </i-col>
                 </i-row>
                 <i-row type="flex">
                     <i-col :span="10">
                         <i-form-item label="经营规模" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                             <span>人</span>
                         </i-form-item>
                     </i-col>
                     <i-col :span="10" class="familySize ">
                         <i-form-item label="所属行业" :label-width="90">
-                            <i-select disabled>
+                            <i-select>
                                 <!-- <i-option></i-option> -->
                             </i-select>
                         </i-form-item>
@@ -284,19 +279,19 @@
                 <i-row type="flex">
                     <i-col :span="16">
                         <i-form-item label="统一社会信用代码" :label-width="120">
-                            <i-input class="socialCredit " readonly></i-input>
+                            <i-input class="socialCredit "></i-input>
                         </i-form-item>
                     </i-col>
                 </i-row>
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
                         <i-form-item label="基本户" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
                         <i-form-item label="开户银行" :label-width="90">
-                            <i-select disabled>
+                            <i-select>
                                 <!-- <i-option></i-option> -->
                             </i-select>
                         </i-form-item>
@@ -305,13 +300,13 @@
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
                         <i-form-item label="注册时间" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
                         <i-form-item label="最新年检" :label-width="90">
-                            <i-select disabled>
-                                <i-input readonly></i-input>
+                            <i-select>
+                                <i-input></i-input>
                             </i-select>
                         </i-form-item>
                     </i-col>
@@ -319,7 +314,7 @@
                 <i-row type="flex" :gutter="110">
                     <i-col :span="24">
                         <i-form-item label="注册资金" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                             <span>万元</span>
                         </i-form-item>
                     </i-col>
@@ -327,7 +322,7 @@
                 <i-row type="flex">
                     <i-col :span="16">
                         <i-form-item label="单位地址" :label-width="90">
-                            <i-input class="mailingAddress" readonly></i-input>
+                            <i-input class="mailingAddress"></i-input>
                         </i-form-item>
                     </i-col>
                 </i-row>
@@ -341,13 +336,13 @@
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
                         <i-form-item label="银行账号" :label-width="90">
-                            <i-input readonly></i-input>
+                            <i-input></i-input>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
                         <i-form-item label="开户银行" :label-width="90">
-                            <i-select disabled>
-                                <i-input readonly></i-input>
+                            <i-select>
+                                <i-input></i-input>
                             </i-select>
                         </i-form-item>
                     </i-col>
@@ -355,22 +350,22 @@
                 <i-row type="flex">
                     <i-col :span="16">
                         <i-form-item label="开户支行" :label-width="90">
-                            <i-input class="mailingAddress" readonly></i-input>
+                            <i-input class="mailingAddress"></i-input>
                         </i-form-item>
                     </i-col>
                 </i-row>
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
                         <i-form-item label="账户类型" :label-width="90">
-                            <i-select disabled>
-                                <i-input readonly></i-input>
+                            <i-select>
+                                <i-input></i-input>
                             </i-select>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
                         <i-form-item label="账号用途" :label-width="90">
-                            <i-select disabled>
-                                <i-input readonly></i-input>
+                            <i-select>
+                                <i-input></i-input>
                             </i-select>
                         </i-form-item>
                     </i-col>
@@ -384,9 +379,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
-import { Dependencies } from '~/core/decorator'
-import { FormatInputPathObject } from 'path'
 import { FilterService } from '~/utils/filter.service'
 import { CityService } from '~/utils/city.service'
 import { Form } from 'iview'
@@ -398,6 +390,49 @@ import UploadVoucher from '~/components/common/upload-voucher.vue'
 })
 export default class addPeople extends Vue {
   private WhetherNotShown: Boolean = false
+  private linkmanNumber: Number = 2 // 联系人值
+  private linkmanConent: any = [
+    {
+      name: '第一联系人',
+      val: 'a1'
+    },
+    {
+      name: '第二联系人',
+      val: 'a2'
+    }
+  ]
+  /**
+   * 点击添加联系人
+   */
+  addingBet() {
+    if (this.linkmanNumber < 6) {
+      this.linkmanNumber++
+      this.addLinkmanConent()
+    } else {
+        this.linkmanNumber = 5
+      return
+    }
+  }
+  addLinkmanConent() {
+    if (this.linkmanNumber == 2) {
+      return
+    } else if (this.linkmanNumber == 3) {
+      this.linkmanConent.push({ name: '第三联系人', val: 'a3' })
+      return
+    } else if (this.linkmanNumber == 4) {
+      this.linkmanConent.push({ name: '第四联系人', val: 'a4' })
+      return
+    } else if (this.linkmanNumber == 5) {
+      this.linkmanConent.push({ name: '第五联系人', val: 'a5' })
+      return
+    } else {
+        this.$Message.error("温馨提示：最多只可以添加五名联系人！");
+    }
+  }
+
+  /**
+   * 点击切换显示隐藏
+   */
   fold() {
     this.WhetherNotShown = !this.WhetherNotShown
   }
@@ -455,7 +490,7 @@ export default class addPeople extends Vue {
   }
   .contacts {
     .ivu-select,
-    .ivu-select-disabled,
+    .ivu-select-,
     .ivu-select-single,
     .ivu-select-selection,
     .ivu-input-type,
