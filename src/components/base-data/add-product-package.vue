@@ -33,128 +33,114 @@
   </section>
 </template>
 <script lang="ts">
-  import Vue from "vue";
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import Component from "vue-class-component";
-  import {
-    ProductPackageService
-  } from '~/services/manage-service/product-package.service';
-  import {
-    Form
-  } from "iview";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    FileUploadControllerService
-  } from "~/services/manage-service/file-upload-controller.service";
+import Vue from "vue";
+import { Prop } from "vue-property-decorator";
+import Component from "vue-class-component";
+import { ProductPackageService } from '~/services/manage-service/product-package.service';
+import { Form } from "iview";
+import { Dependencies } from "~/core/decorator";
+import { FileUploadControllerService } from "~/services/manage-service/file-upload-controller.service";
+import { Emit } from "vue-property-decorator";
+import FileUpload from "~/components/common/file-upload.tsx.vue";
 
-  import {
-    Emit
-  } from "vue-property-decorator";
-  import FileUpload from "~/components/common/file-upload.tsx.vue";
-
-  @Component({
-    components: {
-      FileUpload
-    }
-  })
-  export default class AddProductPackage extends Vue {
-    @Dependencies(ProductPackageService) private productPackageService: ProductPackageService;
-    @Dependencies(FileUploadControllerService)
-    private fileUploadControllerService: FileUploadControllerService;
-    private productPackage: any = {
-      fileId: '',
-      fileName: "",
-      remark: "",
-      type: 393,
-      dataType: ""
-    };
-    private rulesProduct: any = {};
-    private openUpload: Boolean = false;
-    private files: any = {};
-    private fileList: any = [];
-    private actions: String = "0";
-    created() {
-      this.rulesProduct = {
-        dataType: [
-          { required: true, message: '请选择文件类型', trigger: 'change',type: 'number'  },
-        ],
-      }
-    }
-    reset() {
-      let _form: any = this.$refs['form']
-      _form.resetFields()
-      this.files = {}
-    }
-    addproductpackage() {
-      let form = <Form>this.$refs['form'];
-      form.validate(valid => {
-        if (!valid) return false;
-        this.productPackage.fileName = this.files.name
-        this.productPackage.fileId = this.files.response.id
-        this.productPackageService.createProductPackage(this.productPackage).subscribe(
-          val => {
-            this.$emit('close')
-            this.reset()
-          },
-          ({
-             msg
-           }) => {
-            this.$Message.error(msg);
-          }
-        );
-      })
-    }
-    /**
-     * 上传文件成功回调
-     */
-    uploadSuccess() {
-      this.openUpload = false;
-      this.$nextTick(() => {
-        let fileUpload = this.$refs["file-upload"] as FileUpload;
-        fileUpload.reset();
-        this.fileList = fileUpload.makeList()
-        let file: any = this.fileList[0]
-        this.files = file
-      });
-    }
-    /**
-     * 上传文件
-     */
-    postFile() {
-      let fileUpload = this.$refs["file-upload"] as FileUpload;
-      fileUpload.upload();
-    }
-    /**
-     *获取文件名称
-     */
-    handleUpload(file) {
-      this.files = file;
-    }
-    action() {
-      this.fileUploadControllerService.uploadFileGrid().subscribe(val => {
-        console.log(val);
-      });
+@Component({
+  components: {
+    FileUpload
+  }
+})
+export default class AddProductPackage extends Vue {
+  @Dependencies(ProductPackageService) private productPackageService: ProductPackageService;
+  @Dependencies(FileUploadControllerService)
+  private fileUploadControllerService: FileUploadControllerService;
+  private productPackage: any = {
+    fileId: '',
+    fileName: "",
+    remark: "",
+    type: 393,
+    dataType: ""
+  };
+  private rulesProduct: any = {};
+  private openUpload: Boolean = false;
+  private files: any = {};
+  private fileList: any = [];
+  private actions: String = "0";
+  created() {
+    this.rulesProduct = {
+      dataType: [
+        { required: true, message: '请选择文件类型', trigger: 'change', type: 'number' },
+      ],
     }
   }
+  reset() {
+    let _form: any = this.$refs['form']
+    _form.resetFields()
+    this.files = {}
+  }
+  addproductpackage() {
+    let form = <Form>this.$refs['form'];
+    form.validate(valid => {
+      if (!valid) return false;
+      this.productPackage.fileName = this.files.name
+      this.productPackage.fileId = this.files.response.id
+      this.productPackageService.createProductPackage(this.productPackage).subscribe(
+        val => {
+          this.$emit('close')
+          this.reset()
+        },
+        ({
+             msg
+           }) => {
+          this.$Message.error(msg);
+        }
+      );
+    })
+  }
+  /**
+   * 上传文件成功回调
+   */
+  uploadSuccess() {
+    this.openUpload = false;
+    this.$nextTick(() => {
+      let fileUpload = this.$refs["file-upload"] as FileUpload;
+      fileUpload.reset();
+      this.fileList = fileUpload.makeList()
+      let file: any = this.fileList[0]
+      this.files = file
+    });
+  }
+  /**
+   * 上传文件
+   */
+  postFile() {
+    let fileUpload = this.$refs["file-upload"] as FileUpload;
+    fileUpload.upload();
+  }
+  /**
+   *获取文件名称
+   */
+  handleUpload(file) {
+    this.files = file;
+  }
+  action() {
+    this.fileUploadControllerService.uploadFileGrid().subscribe(val => {
+      console.log(val);
+    });
+  }
+}
 
 </script>
 
 <style lang="less" scoped>
-  .add-product-package {
-    .ivu-select-selection {
-      width: 100%!important;
-      display: inline-block;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
+.add-product-package {
+  .ivu-select-selection {
+    width: 100% !important;
+    display: inline-block;
+    border-style: none;
+    border-bottom-style: solid;
+    border-radius: 0;
   }
-  .item-input{
-    width:300px;
-  }
-
+}
+.item-input {
+  width: 300px;
+}
 </style>

@@ -420,14 +420,23 @@ export default class OrgUserManage extends Page {
         title: '用户名',
         key: 'userUsername',
         editable: true,
-        minWidth: this.$common.getColumnWidth(3)
+        minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: 'center',
         title: '姓名',
         editable: true,
         key: 'userRealname',
-        minWidth: this.$common.getColumnWidth(3)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, column, index }) => {
+          return h('div', {
+            attrs:
+              {
+                title: row.userRealname
+              }
+          }, this.$filter.subString(row.userRealname)
+          )
+        }
       },
       {
         align: 'center',
@@ -462,8 +471,14 @@ export default class OrgUserManage extends Page {
         editable: true,
         title: '备注',
         key: 'userRemark',
-        ellipsis: true,
-        minWidth: this.$common.getColumnWidth(8)
+        minWidth: this.$common.getColumnWidth(8),
+        render: (h, { row, column, index }) => {
+          return h('div', {
+            attrs: {
+              title: row.userRemark
+            }
+          }, this.$filter.subString(row.userRemark, 10))
+        }
       },
 
       {
@@ -471,7 +486,16 @@ export default class OrgUserManage extends Page {
         editable: true,
         title: '创建人',
         key: 'operatorName',
-        minWidth: this.$common.getColumnWidth(3)
+        minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row, column, index }) => {
+          return h('div',
+            {
+              attrs: {
+                title: row.operatorName
+              }
+            },
+            this.$filter.subString(row.operatorName))
+        }
       },
       {
         align: 'center',
@@ -915,7 +939,7 @@ export default class OrgUserManage extends Page {
 }
 </style>
 <style lang="less">
-.page.org-user-manage {
+.ivu-page-options {
   .ivu-select.ivu-select-single.ivu-select-small,
   .ivu-select-selection {
     width: 80px !important;

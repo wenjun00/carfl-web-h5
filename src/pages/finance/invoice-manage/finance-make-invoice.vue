@@ -1,64 +1,52 @@
 <!--财务开票-->
 <template>
-    <section class="page finance-make-invoice">
-        <page-header title="财务开票" hiddenPrint hiddenExport>
-            <command-button label="确认开票" @click="confirmMakeInvoice"></command-button>
-        </page-header>
-        <data-form :model="model" hiddenDateSearch hidden-reset :page="pageService">
-            <template slot="input">
-                <i-form-item label="关键字：" prop="dynamicCondition">
-                    <i-input placeholder="客户姓名\发票号" v-model="model.dynamicCondition"></i-input>
-                </i-form-item>
-                <i-form-item prop="invoicingStatus" label="开票状态">
-                    <i-select placeholder="开票状态" v-model="model.invoicingStatus">
-                        <i-option label="已开票" value="已开票" key="已开票"></i-option>
-                        <i-option label="未开票" value="未开票" key="未开票"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="companyId" label="所属公司：">
-                    <i-select placeholder="全部机构" v-model="model.companyId">
-                        <i-option value="群泰上海" key="群泰上海" label="群泰上海"></i-option>
-                        <i-option value="群泰西安" key="群泰西安" label="群泰西安"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="collectItem" label="状态筛选：">
-                    <i-select placeholder="全部项目" v-model="model.collectItem">
-                        <i-option value="汇付" key="汇付" label="汇付"></i-option>
-                        <i-option value="富友" key="富友" label="富友"></i-option>
-                        <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
-                        <i-option value="现金" key="现金" label="现金"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="dateRange" label="付款日期：">
-                    <i-date-picker v-model="model.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
-                </i-form-item>
-            </template>
-        </data-form>
-        <data-box :columns="columns1" :data="data1" :page="pageService" @onPageChange="query"></data-box>
-        <div class="submitBar">
-            <i-row type="flex" align="middle">
-                <i-col :span="8" push="1">
-                    <span>申请人：administrator</span>
-                </i-col>
-                <i-col :span="10" pull="4">
-                    <span>申请时间： 2017-12-01 13:56:45</span>
-                </i-col>
-               
-            </i-row>
-        </div>
+  <section class="page finance-make-invoice">
+    <page-header title="财务开票" hiddenPrint hiddenExport>
+      <command-button label="确认开票" @click="confirmMakeInvoice"></command-button>
+    </page-header>
+    <data-form :model="model" hiddenDateSearch hidden-reset :page="pageService">
+      <template slot="input">
+        <i-form-item label="关键字：" prop="dynamicCondition">
+          <i-input placeholder="客户姓名\发票号" v-model="model.dynamicCondition"></i-input>
+        </i-form-item>
+        <i-form-item prop="invoicingStatus" label="开票状态">
+          <i-select placeholder="开票状态" v-model="model.invoicingStatus">
+            <i-option label="已开票" value="已开票" key="已开票"></i-option>
+            <i-option label="未开票" value="未开票" key="未开票"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="companyId" label="所属公司：">
+          <i-select placeholder="全部机构" v-model="model.companyId">
+            <i-option value="群泰上海" key="群泰上海" label="群泰上海"></i-option>
+            <i-option value="群泰西安" key="群泰西安" label="群泰西安"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="collectItem" label="状态筛选：">
+          <i-select placeholder="全部项目" v-model="model.collectItem">
+            <i-option value="汇付" key="汇付" label="汇付"></i-option>
+            <i-option value="富友" key="富友" label="富友"></i-option>
+            <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
+            <i-option value="现金" key="现金" label="现金"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="付款日期：">
+          <i-date-picker v-model="model.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+        </i-form-item>
+      </template>
+    </data-form>
+    <data-box :columns="columns1" :data="data1" :page="pageService" @onPageChange="query"></data-box>
+    <template>
+      <i-modal v-model="makeInvoiceModal" title="确认开票" :width="600" class="confirmMakeInvoice">
+        <confirm-make-invoice></confirm-make-invoice>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal v-model="makeInvoiceModal" title="确认开票" :width="600" class="confirmMakeInvoice">
-                <confirm-make-invoice></confirm-make-invoice>
-            </i-modal>
-        </template>
-
-        <template>
-            <i-modal title="查看附件" v-model="checkAttachmentModal">
-                <check-attachment></check-attachment>
-            </i-modal>
-        </template>
-    </section>
+    <template>
+      <i-modal title="查看附件" v-model="checkAttachmentModal">
+        <check-attachment></check-attachment>
+      </i-modal>
+    </template>
+  </section>
 </template>
 
 <script lang="ts">
@@ -89,8 +77,7 @@ import { FilterService } from '~/utils/filter.service'
   }
 })
 export default class FinanceMakeInvoice extends Page {
-  @Dependencies(FinanceInvoiceService)
-  private financeInvoiceService: FinanceInvoiceService
+  @Dependencies(FinanceInvoiceService) private financeInvoiceService: FinanceInvoiceService
   @Dependencies(PageService) private pageService: PageService
   private columns1: any
   private data1: any = []
@@ -113,12 +100,12 @@ export default class FinanceMakeInvoice extends Page {
     this.financeInvoiceService
       .getFinanceInvoiceList(this.model, this.pageService)
       .subscribe(
-        val => {
-          this.data1 = val
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      val => {
+        this.data1 = val
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
@@ -304,7 +291,7 @@ export default class FinanceMakeInvoice extends Page {
   /**
    * 确定
    */
-  confirm() {}
+  confirm() { }
   /**
    * 查看附件
    */

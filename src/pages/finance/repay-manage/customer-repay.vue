@@ -468,9 +468,7 @@ export default class CustomerRepay extends Page {
         editable: true,
         key: "productRate",
         minWidth: this.$common.getColumnWidth(2),
-        render:(h,{row}) =>{
-          return h( 'p',this.$filter.decimalToPrecent(row.productRate))
-        }
+        render:(h,{row}) => h( 'p',this.$filter.decimalToPrecent(row.productRate))
       },
       {
         align: "center",
