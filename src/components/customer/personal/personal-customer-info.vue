@@ -1,6 +1,6 @@
 <!--客户资料-->
 <template>
-  <section class="component customer-materials">
+  <section class="component personal-customer-info">
     <i-form ref="customer-form" :rules="customerRules" :model="customerModel" :label-width="110" label-position="left" class="item-xinxi-form">
       <!-- 基础信息-start -->
       <i-card title="基础信息">
@@ -311,7 +311,7 @@ import { FormatInputPathObject } from "path";
 import { Form } from "iview";
 
 @Component({})
-export default class CustomerInfo extends Vue {
+export default class PersonalCustomerInfo extends Vue {
   private ValidityPeriodValue: Boolean = false;
   private idCardads: Boolean = false;
   private idcardOwn: any = "";
@@ -552,37 +552,6 @@ export default class CustomerInfo extends Vue {
     this.customerModel.id = data.personalId || null;
   }
 
-  // Reverse(data) {
-  //   data.personal.idCardAddress = Number(data.personal.idCardAddress);
-  //   data.personal.city = CityService.getCityParent(
-  //     Number(data.personal.idCardAddress)
-  //   )[1];
-  //   data.personal.province = CityService.getCityParent(
-  //     Number(data.personal.idCardAddress)
-  //   )[0];
-  //   // 现居住地址
-  //   data.personal.localHomeAddr = Number(data.personal.localHomeAddr);
-  //   data.personal.city1 = CityService.getCityParent(
-  //     Number(data.personal.localHomeAddr)
-  //   )[1];
-  //   data.personal.province1 = CityService.getCityParent(
-  //     Number(data.personal.localHomeAddr)
-  //   )[0];
-  //   // 本市房产地址
-  //   data.personal.cityOwnhouseAddress = Number(
-  //     data.personal.cityOwnhouseAddress
-  //   );
-  //   data.personal.city2 = CityService.getCityParent(
-  //     Number(data.personal.cityOwnhouseAddress)
-  //   )[1];
-  //   data.personal.province2 = CityService.getCityParent(
-  //     Number(data.personal.cityOwnhouseAddress)
-  //   )[0];
-  //   this.customerModel = data.personal;
-  //   this.customerModel.id = data.personalId || null;
-  //   delete data.personalId;
-  // }
-
   idCardChange(value) {
     this.customerModel.province1 = value ? this.customerModel.province : "";
     this.customerModel.city1 = value ? this.customerModel.city : "";
@@ -649,7 +618,7 @@ export default class CustomerInfo extends Vue {
 </script>
 
 <style lang="less" scoped>
-.component.customer-materials {
+.component.personal-customer-info {
   .ivu-select-selection {
     width: 100% !important;
     display: inline-block;
@@ -660,7 +629,7 @@ export default class CustomerInfo extends Vue {
 }
 </style>
 <style lang="less">
-.component.customer-materials {
+.component.personal-customer-info {
   .ivu-select {
     .ivu-select-selection {
       display: inline-block;

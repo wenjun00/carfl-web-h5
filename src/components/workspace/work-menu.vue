@@ -1,13 +1,13 @@
 <template>
   <section class="component work-menu">
     <Menu theme="light" @on-select="onSelectMenuItem">
-      <Submenu v-for="menu_level_1  in  menuList" :name="menu_level_1.path" :key="menu_level_1.path">
+      <Submenu v-for="menu_level_1  in  menuList" :name="menu_level_1.path||Math.random()*1000" :key="menu_level_1.path">
         <template slot="title">
           {{menu_level_1.resoname}}
         </template>
 
         <template v-for="menu_level_2  in  menu_level_1.children">
-          <Submenu v-if="menu_level_2.children&&menu_level_2.children.length" :name="menu_level_2.path" :key="menu_level_2.path">
+          <Submenu v-if="menu_level_2.children&&menu_level_2.children.length" :name="menu_level_2.path||Math.random()*1000" :key="menu_level_2.path">
             <template slot="title">
               {{menu_level_2.resoname}}
             </template>
@@ -75,7 +75,6 @@ export default class WorkMenu extends Vue {
       .filter(x => x.filetype === 429)
       .sort((x: any, y: any) => x.sort - y.sort)
       .map(createMenus);
-    console.log(menus);
     this.menuList = menus;
   }
 
@@ -101,7 +100,9 @@ export default class WorkMenu extends Vue {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  &::-webkit-scrollbar {display:none}
+  &::-webkit-scrollbar {
+    display: none;
+  }
   // .command {
   //   line-height: 40px;
   //   height: 40px;
