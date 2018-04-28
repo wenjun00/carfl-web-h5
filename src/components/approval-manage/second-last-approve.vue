@@ -48,7 +48,7 @@
         <div>{{monthlySupply === undefined?0:monthlySupply}}</div>
       </data-grid-item>
       <data-grid-item label="月利率" :span="6">
-        <div>{{productRate === undefined?0:productRate}}</div>
+        <div>{{productRate | decimalToPrecent}}</div>
       </data-grid-item>
       <data-grid-item label="还款方式" :span="6">
         <!--<i-select v-model="passModel.payWay" clearable>-->

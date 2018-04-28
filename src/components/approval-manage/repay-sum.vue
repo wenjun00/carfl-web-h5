@@ -28,7 +28,7 @@
       </data-grid-item>
       <data-grid-item label="月利率" :span="2">
         <template>
-          <div>{{repaySumObj.productOrder?repaySumObj.productOrder.productRate:''}}</div>
+          <div>{{repaySumObj.productOrder?(repaySumObj.productOrder.productRate | decimalToPrecent):''}}</div>
         </template>
       </data-grid-item>
     </data-grid>
