@@ -1,5 +1,5 @@
 <!--押品评估-->
-<template>
+<template>  
     <section class="page evaluation-of-collateral">
         <page-header title="押品评估" hiddenPrint></page-header>
         <data-form :model="collateralModel" date-prop="timeSearch" @on-search="getCollateralList">

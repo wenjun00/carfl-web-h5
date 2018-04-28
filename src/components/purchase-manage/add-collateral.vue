@@ -273,6 +273,7 @@
       this.row = row
       this.assessMentApplyService.beginOrderAssess({assessmentNo:row.assessmentNo})
         .subscribe( data => {
+            // console.log(data)
           this.appearance = data.basicList[0].carAttrList.filter(v=> v.attrType === 1).map(x=>({
             attrName:x.attrName,
             id: x.id,
@@ -299,7 +300,7 @@
           this.customerModel.carNo = data.carNo
           this.customerModel.engineNo = data.engineNo
           this.customerModel.ownerName = data.ownerName
-          this.customerModel.frameNo = data.frameNo
+          this.customerModel.frameNo = data.frameNo 
           this.customerModel.ownPhone = data.ownPhone
           this.customerModel.idCard = data.idCard
           this.customerModel.id = data.id
@@ -351,6 +352,7 @@
         delete this.customerModel.ownPhone
         delete this.customerModel.idCard
         delete this.customerModel.carAllName
+        console.log(this.customerModel)
         this.assessMentApplyService.saveAssessmentBasicInfo(this.customerModel)
           .subscribe( data => {
             this.$Message.success("保存成功！")
