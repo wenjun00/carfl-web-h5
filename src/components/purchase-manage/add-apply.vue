@@ -40,7 +40,7 @@
       <span class="title">收款明细</span>
       <data-box :columns="columns1" :data="data1"></data-box>
       <span class="title">账户信息</span>
-      <data-box :columns="columns3" :data="data3"></data-box>
+      <bank-info :dataSet="data3"></bank-info>
       <span class="title">附件</span>
       <i-row>
         <i-col :span="12">
@@ -84,14 +84,14 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import DataBox from "~/components/common/data-box.vue";
-import {
-  Prop
-} from "vue-property-decorator";
+import {  Prop } from "vue-property-decorator";
+import BankInfo from "~/components/base-data/bank-info.vue"
 
 @Component({
 
   components: {
-    DataBox
+    DataBox,
+    BankInfo
   }
 })
 export default class AddApply extends Vue {
@@ -106,7 +106,6 @@ export default class AddApply extends Vue {
   private openColumnsConfig: Boolean = false
   private columns2: any;
   private data2: Array<Object> = [];
-  private columns3: any;
   private data3: Array<Object> = [];
   private addNewApplyModal: Object = {};
   private applyRules: any = {
@@ -211,27 +210,6 @@ export default class AddApply extends Vue {
     this.columns2 = [{}]
     this.data2 = [{}]
 
-    this.columns3 = [{
-      title: "户名",
-      align: 'center',
-      key: 'accountName'
-    }, {
-      title: "开户银行",
-      align: 'center',
-      key: 'accountBank'
-    }, {
-      title: "银行卡号",
-      align: 'center',
-      key: 'bankCardId'
-    }, {
-      title: "支行名称",
-      align: 'center',
-      key: 'branchBankName'
-    }, {
-      title: "第三方客户号",
-      align: 'center',
-      key: 'thirdCustomerId'
-    }]
     this.data3 = [{
       accountName: '胡开甲',
       accountBank: '中国建设银行',

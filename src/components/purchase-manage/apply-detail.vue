@@ -39,7 +39,7 @@
       <i-table :columns="columns1" :data="payDetail" :noDefaultRow="true"></i-table>
     </i-card>
     <i-card title="账户信息">
-      <i-table :columns="columns3" :data="accountDetail"></i-table>
+      <bank-info :dataSet="accountDetail"></bank-info>
     </i-card>
     <i-card title="附件">
       <upload-voucher ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
@@ -54,11 +54,13 @@ import Component from "vue-class-component";
 import DataBox from "~/components/common/data-box.vue";
 import { Prop } from "vue-property-decorator";
 import UploadVoucher from "~/components/common/upload-voucher.vue"
+import BankInfo from "~/components/base-data/bank-info.vue"
 
 @Component({
   components: {
     DataBox,
-    UploadVoucher
+    UploadVoucher,
+    BankInfo
   }
 })
 export default class ApplyDetail extends Vue {
@@ -67,7 +69,6 @@ export default class ApplyDetail extends Vue {
   private applyType: String = "销售收款申请";
   private payDetail: Array<Object> = [];
   private columns1: any;
-  private columns3: any;
   private accountDetail: Array<Object> = [];
   private fileList: Array<Object> = [];
   private addNewApplyModal: any = {
@@ -114,33 +115,6 @@ export default class ApplyDetail extends Vue {
       }
     ];
 
-    this.columns3 = [
-      {
-        title: "户名",
-        align: "center",
-        key: "personalName"
-      },
-      {
-        title: "开户银行",
-        align: "center",
-        key: "depositBank"
-      },
-      {
-        title: "银行卡号",
-        align: "center",
-        key: "cardNumber"
-      },
-      {
-        title: "支行名称",
-        align: "center",
-        key: "depositBranch"
-      },
-      {
-        title: "第三方客户号",
-        align: "center",
-        key: "clientNumber"
-      }
-    ];
   }
 }
 </script>

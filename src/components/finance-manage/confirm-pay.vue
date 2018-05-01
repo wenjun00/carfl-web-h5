@@ -120,7 +120,7 @@
       <div class="modal-item-zhanghuxinxi-div"></div>
       <span>账户信息</span>
     </div>
-    <i-table :columns="columns2" :data="personalBanks"></i-table>
+    <bank-info :dataSet="personalBanks"></bank-info>
 
     <div v-if="!check||financeUploadResources.length">
       <div class="modal-item-shoukuanpingzheng-div"></div>
@@ -205,7 +205,6 @@ export default class ConfirmPay extends Vue {
   check: boolean;
 
 
-  private columns2: any;
   private columns3: any;
   private data3: Array<Object> = [];
   private purchaseInfoModel: Boolean = false;
@@ -391,29 +390,6 @@ export default class ConfirmPay extends Vue {
     }]
     this.data3 = [{
       // projectName: ''
-    }]
-
-
-    this.columns2 = [{
-      title: "户名",
-      align: 'center',
-      key: 'personalName'
-    }, {
-      title: "开户银行",
-      align: 'center',
-      key: 'depositBank'
-    }, {
-      title: "银行卡号",
-      align: 'center',
-      key: 'cardNumber'
-    }, {
-      title: "支行名称",
-      align: 'center',
-      key: 'depositBranch'
-    }, {
-      title: "第三方客户号",
-      align: 'center',
-      key: 'clientNumber'
     }]
   }
 

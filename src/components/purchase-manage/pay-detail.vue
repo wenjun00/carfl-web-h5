@@ -1,67 +1,53 @@
 <!--提前结清收款明细-->
 <template>
-    <section class="component gather-detail-early-pay">
-        <i-card>
-        <table border="1" width="1100" class="gather-type-table">
-            <tr height="40">
-                <td bgcolor="#F2F2F2" width="80">
-                    <span>操作</span>
-                </td>
-                <td bgcolor="#F2F2F2">
-                    <span>项目名称</span>
-                </td>
-                <td bgcolor="#F2F2F2">
-                    <span>金额</span>
-                </td>
-            </tr>
-            <tr height="40" v-for="item in gatherItemList" :key="item.index">
-                <td width="40">
-                    <div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.refundItem!==1157" style="cursor:pointer">
-                        <Icon type="trash-a" size="18"></Icon>
-                    </div>
-                </td>
-                <td>
-                    <span>{{$dict.getDictName(item.refundItem)}}</span>
-                </td>
-                <td>
-                    <i-input v-if="item.refundItem===1159" style="width:10%" :value="item.refundAmount" @on-change="changeOtherFee" :maxlength="7"></i-input>
-                    <span v-else>{{item.refundAmount}}</span>
-                </td>
-            </tr>
-        </table>
-        <div>
-            <Icon type="plus" class="add-icon"></Icon>
-            <i-button type="text" class="add-button" @click="changeGatherItem">添加付款项</i-button>
+  <section class="component gather-detail-early-pay">
+    <i-card>
+      <table border="1" width="1100" class="gather-type-table">
+        <tr height="40">
+          <td bgcolor="#F2F2F2" width="80">
+            <span>操作</span>
+          </td>
+          <td bgcolor="#F2F2F2">
+            <span>项目名称</span>
+          </td>
+          <td bgcolor="#F2F2F2">
+            <span>金额</span>
+          </td>
+        </tr>
+        <tr height="40" v-for="item in gatherItemList" :key="item.index">
+          <td width="40">
+            <div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.refundItem!==1157" style="cursor:pointer">
+              <Icon type="trash-a" size="18"></Icon>
+            </div>
+          </td>
+          <td>
+            <span>{{$dict.getDictName(item.refundItem)}}</span>
+          </td>
+          <td>
+            <i-input v-if="item.refundItem===1159" style="width:10%" :value="item.refundAmount" @on-change="changeOtherFee" :maxlength="7"></i-input>
+            <span v-else>{{item.refundAmount}}</span>
+          </td>
+        </tr>
+      </table>
+      <div>
+        <Icon type="plus" class="add-icon"></Icon>
+        <i-button type="text" class="add-button" @click="changeGatherItem">添加付款项</i-button>
+      </div>
+    </i-card>
+    <i-card title="账户信息">
+      <bank-info :dataSet="accountInfoList"></bank-info>
+    </i-card>
+
+    <template>
+      <i-modal v-model="addGatherItemModal" title="收款项目">
+        <add-gather-item ref="add-gather-item" @change="changeItemdata"></add-gather-item>
+        <div slot="footer">
+          <i-button @click="addGatherItemModal=false">取消</i-button>
+          <i-button class="blueButton" @click="confirmAddGatherItem">确定</i-button>
         </div>
-         </i-card>
-         <i-card title="账户信息">
-        <table border="1" width="1100" class="gather-type-table">
-            <tr height="40">
-                <td bgcolor="#F2F2F2">户名</td>
-                <td bgcolor="#F2F2F2">开户银行</td>
-                <td bgcolor="#F2F2F2">银行卡号</td>
-                <td bgcolor="#F2F2F2">支行名称</td>
-                <td bgcolor="#F2F2F2">第三方客户号</td>
-            </tr>
-            <tr height="40" v-for="accountInfo in accountInfoList" :key="accountInfo.index">
-                <td>{{accountInfo.personalName}}</td>
-                <td>{{accountInfo.depositBank}}</td>
-                <td>{{accountInfo.cardNumber}}</td>
-                <td>{{accountInfo.depositBranch}}</td>
-                <td>{{accountInfo.clientNumber}}</td>
-            </tr>
-        </table>
-        <template>
-            <i-modal v-model="addGatherItemModal" title="收款项目">
-                <add-gather-item ref="add-gather-item" @change="changeItemdata"></add-gather-item>
-                <div slot="footer">
-                    <i-button @click="addGatherItemModal=false">取消</i-button>
-                    <i-button class="blueButton" @click="confirmAddGatherItem">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-        </i-card>
-    </section>
+      </i-modal>
+    </template>
+  </section>
 </template>
 
 <script lang="ts">
@@ -74,13 +60,15 @@ import DataBox from '~/components/common/data-box.vue'
 import { Prop } from 'vue-property-decorator'
 import ModifyGatherItem from '~/components/purchase-manage/modify-gather-item.vue'
 import AddGatherItem from '~/components/purchase-manage/add-gather-item.vue'
+import BankInfo from "~/components/base-data/bank-info.vue"
 
 @Component({
   components: {
     SvgIcon,
     DataBox,
     ModifyGatherItem,
-    AddGatherItem
+    AddGatherItem,
+    BankInfo
   }
 })
 export default class PayDetail extends Vue {

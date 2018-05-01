@@ -218,4 +218,13 @@ export class FilterService {
     result = LodashService.round(f * 100, d)
     return FilterService.percentFormat(result)
   }
+
+  /**
+   * 银行卡号码格式化
+   * @param value 要格式化的银行卡号
+   */
+  static formatBankCardNumber(value) {
+    let result = new String(value)
+    return result.replace(/(\d{4})(?=\d)/g, "$1" + "-")
+  }
 }

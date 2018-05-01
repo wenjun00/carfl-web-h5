@@ -37,7 +37,7 @@
     </i-card>
 
     <i-card title="账户信息">
-      <data-box :columns="dataColumnBank" :data="accountInfo" :showConfigColumn="false" :height="100"></data-box>
+      <bank-info :dataSet="accountInfo"></bank-info>
     </i-card>
 
     <template>
@@ -63,13 +63,15 @@ import DataBox from '~/components/common/data-box.vue'
 import { Prop } from 'vue-property-decorator'
 import ModifyGatherItem from '~/components/purchase-manage/modify-gather-item.vue'
 import AddGatherItem from '~/components/purchase-manage/add-gather-item.vue'
+import BankInfo from "~/components/base-data/bank-info.vue";
 
 @Component({
   components: {
     SvgIcon,
     DataBox,
     ModifyGatherItem,
-    AddGatherItem
+    AddGatherItem,
+    BankInfo
   }
 })
 export default class GatherDetailEarlyPay extends Vue {
@@ -84,36 +86,12 @@ export default class GatherDetailEarlyPay extends Vue {
   private gatherItemModel: any
   private otherFee: number = 0 // 输入框的其他费用
   private accountInfo: Array<any> = [] // 账户信息
-  private dataColumnBank: Array<any> = []
 
   created() {
     this.gatherItemModel = {
       itemName: '',
       itemMoney: ''
-    },
-      this.dataColumnBank = [
-        {
-          title: "户名",
-          align: 'center',
-          key: 'accountName'
-        }, {
-          title: "开户银行",
-          align: 'center',
-          key: 'accountBank'
-        }, {
-          title: "银行卡号",
-          align: 'center',
-          key: 'bankCardId'
-        }, {
-          title: "支行名称",
-          align: 'center',
-          key: 'branchBankName'
-        }, {
-          title: "第三方客户号",
-          align: 'center',
-          key: 'thirdCustomerId'
-        }
-      ]
+    }
   }
   /**
    * 确定添加收款项
