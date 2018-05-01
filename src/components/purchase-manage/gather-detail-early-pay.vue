@@ -1,68 +1,56 @@
 <!--提前结清收款明细-->
 <template>
-    <section class="component gather-detail-early-pay">
-        <i-card>
+  <section class="component gather-detail-early-pay">
+    <i-card>
 
-            <table border="1" width="1100" class="gather-type-table">
-                <tr height="40">
-                    <td bgcolor="#F2F2F2" width="80">
-                        <span>操作</span>
-                    </td>
-                    <td bgcolor="#F2F2F2">
-                        <span>项目名称</span>
-                    </td>
-                    <td bgcolor="#F2F2F2">
-                        <span>金额</span>
-                    </td>
-                </tr>
-                <tr height="40" v-for="item in gatherItemList" :key="item.index">
-                    <td width="40">
-                        <div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.itemName!=='surplusPrincipal'&&item.itemName!=='surplusPenaltyFreeze'" style="cursor:pointer">
-                            <Icon type="trash-a" size="18"></Icon>
-                        </div>
-                    </td>
-                    <td>
-                        <span>{{item.itemLabel}}</span>
-                    </td>
-                    <td>
-                        <i-input v-if="item.itemName==='otherFee'" class="item-money" :value="item.itemMoney" @on-change="changeOtherFee" :maxlength="7"></i-input>
-                        <span v-else>{{item.itemMoney}}</span>
-                    </td>
-                </tr>
-            </table>
-            <div>
-                <Icon type="plus" class="add-icon"></Icon>
-                <i-button type="text" class="add-button" @click="changeGatherItem">添加收款项</i-button>
+      <table border="1" width="100%" class="gather-type-table">
+        <tr height="40">
+          <td bgcolor="#F2F2F2" width="80">
+            <span>操作</span>
+          </td>
+          <td bgcolor="#F2F2F2">
+            <span>项目名称</span>
+          </td>
+          <td bgcolor="#F2F2F2">
+            <span>金额</span>
+          </td>
+        </tr>
+        <tr height="40" v-for="item in gatherItemList" :key="item.index">
+          <td :width="40">
+            <div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.itemName!=='surplusPrincipal'&&item.itemName!=='surplusPenaltyFreeze'" style="cursor:pointer">
+              <Icon type="trash-a" size="18"></Icon>
             </div>
-        </i-card>
-        <i-card title="账户信息">
-            <table border="1" width="1100" class="gather-type-table">
-                <tr height="40">
-                    <td bgcolor="#F2F2F2">户名</td>
-                    <td bgcolor="#F2F2F2">开户银行</td>
-                    <td bgcolor="#F2F2F2">银行卡号</td>
-                    <td bgcolor="#F2F2F2">支行名称</td>
-                    <td bgcolor="#F2F2F2">第三方客户号</td>
-                </tr>
-                <tr height="40">
-                    <td>{{accountInfo.personalName}}</td>
-                    <td>{{accountInfo.depositBank}}</td>
-                    <td>{{accountInfo.cardNumber}}</td>
-                    <td>{{accountInfo.depositBranch}}</td>
-                    <td>{{accountInfo.clientNumber}}</td>
-                </tr>
-            </table>
-            <template>
-                <i-modal v-model="addGatherItemModal" title="收款项目">
-                    <add-gather-item ref="add-gather-item" @change="changeItem" @close="addGatherItemModal=false"></add-gather-item>
-                    <div slot="footer">
-                        <i-button @click="addGatherItemModal=false">取消</i-button>
-                        <i-button class="blueButton" @click="confirmAddGatherItem">确定</i-button>
-                    </div>
-                </i-modal>
-            </template>
-        </i-card>
-    </section>
+          </td>
+          <td width="60%">
+            <span>{{item.itemLabel}}</span>
+          </td>
+          <td>
+            <i-input-number v-if="item.itemName==='otherFee'" class="item-money" v-model="item.itemMoney" @on-change="changeOtherFee" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
+            <div v-else style="text-align:right;padding-right:40%">{{item.itemMoney | toThousands}}</div>
+          </td>
+        </tr>
+      </table>
+      <div>
+        <Icon type="plus" class="add-icon"></Icon>
+        <i-button type="text" class="add-button" @click="changeGatherItem">添加收款项</i-button>
+      </div>
+    </i-card>
+
+    <i-card title="账户信息">
+      <data-box :columns="dataColumnBank" :data="accountInfo" :showConfigColumn="false" :height="100"></data-box>
+    </i-card>
+
+    <template>
+      <i-modal v-model="addGatherItemModal" title="收款项目">
+        <add-gather-item ref="add-gather-item" @change="changeItem" @close="addGatherItemModal=false"></add-gather-item>
+        <div slot="footer">
+          <i-button @click="addGatherItemModal=false">取消</i-button>
+          <i-button class="blueButton" @click="confirmAddGatherItem">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+  </section>
 </template>
 
 <script lang="ts">
@@ -94,13 +82,38 @@ export default class GatherDetailEarlyPay extends Vue {
   private otherTotal: number = 0 // 除其他费用的合计
   private gatherItemList: Array<any> = []
   private gatherItemModel: any
-  private accountInfo: any = {} // 账户信息
   private otherFee: number = 0 // 输入框的其他费用
+  private accountInfo: Array<any> = [] // 账户信息
+  private dataColumnBank: Array<any> = []
+
   created() {
     this.gatherItemModel = {
       itemName: '',
       itemMoney: ''
-    }
+    },
+      this.dataColumnBank = [
+        {
+          title: "户名",
+          align: 'center',
+          key: 'accountName'
+        }, {
+          title: "开户银行",
+          align: 'center',
+          key: 'accountBank'
+        }, {
+          title: "银行卡号",
+          align: 'center',
+          key: 'bankCardId'
+        }, {
+          title: "支行名称",
+          align: 'center',
+          key: 'branchBankName'
+        }, {
+          title: "第三方客户号",
+          align: 'center',
+          key: 'thirdCustomerId'
+        }
+      ]
   }
   /**
    * 确定添加收款项
@@ -133,7 +146,7 @@ export default class GatherDetailEarlyPay extends Vue {
       if (data.personalBank) {
         this.accountInfo = data.personalBank
       } else {
-        this.accountInfo = {}
+        this.accountInfo = []
       }
     }
   }
@@ -146,7 +159,7 @@ export default class GatherDetailEarlyPay extends Vue {
       if (data.personalBank) {
         this.accountInfo = data.personalBank
       } else {
-        this.accountInfo = {}
+        this.accountInfo = []
       }
     }
   }
@@ -196,11 +209,7 @@ export default class GatherDetailEarlyPay extends Vue {
   }
   resetTable() {
     this.gatherItemList = []
-    this.accountInfo.personalName = ''
-    this.accountInfo.depositBank = ''
-    this.accountInfo.cardNumber = ''
-    this.accountInfo.depositBranch = ''
-    this.accountInfo.clientNumber = ''
+    this.accountInfo = []
   }
   /**
    * 修改其他费用重新计算合计

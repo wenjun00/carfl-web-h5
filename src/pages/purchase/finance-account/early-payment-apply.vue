@@ -81,7 +81,6 @@ import ModifyGatherItem from '~/components/purchase-manage/modify-gather-item.vu
 import ChangeGatherItem from '~/components/purchase-manage/change-gather-item.vue'
 import GatherDetailEarlyPay from '~/components/purchase-manage/gather-detail-early-pay.vue'
 import { WithdrawApplicationService } from "~/services/manage-service/withdraw-application.service"
-import { setTimeout } from 'core-js/library/web/timers'
 
 @Layout('workspace')
 @Component({

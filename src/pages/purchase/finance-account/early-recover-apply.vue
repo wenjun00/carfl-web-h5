@@ -1,140 +1,106 @@
 <!--提前收回申请-->
 <template>
-    <section class="page early-recover-apply special-input">
-        <page-header title="提前收回申请">
-            <command-button label="清空"  @click="clearAll"></command-button>
-        </page-header>
-        <i-row type="flex" class="data-form">
-            <i-col :span="18">
-                <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
-                    <i-row>
-                        <i-col :span="12">
-                            <i-form-item label="证件号码" prop="idCard">
-                                <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab1" :maxlength="18">
-                                </i-input>
-                            </i-form-item>
-                        </i-col>
-                        <i-col :span="12">
-                            <i-form-item label="客户姓名" prop="customerName">
-                                <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名" @on-blur="showTab2">
-                                </i-input>
-                            </i-form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col :span="12">
-                            <i-form-item label="客户电话" prop="mobileMain">
-                                <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话" @on-blur="showTab3" :maxlength="11">
-                                </i-input>
-                            </i-form-item>
-                        </i-col>
-                        <i-col :span="12">
-                            <i-form-item label="选择订单" prop="orderId">
-                                <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="selectOrder">
-                                    <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
-                                </i-select>
-                            </i-form-item>
-                        </i-col>
-                    </i-row>
-                    <i-row>
+  <section class="page early-recover-apply special-input">
+    <page-header title="提前收回申请">
+      <command-button label="添加新申请" @click="clearAll"></command-button>
+    </page-header>
 
-                        <i-col :span="12">
-                            <i-form-item label="收回类型" prop="withdrawType">
-                                <i-select v-model="applyData.withdrawType" placeholder="请选择收回类型">
-                                    <i-option v-for="{value,label} in $dict.getDictData('0117')" :key="value" :label="label" :value="value"></i-option>
-                                </i-select>
-                            </i-form-item>
-                        </i-col>
-                        <i-col :span="12" :pull="1">
-                        </i-col>
-                    </i-row>
-                    <i-col :span="24">
-                        <i-form-item label="备注" prop="remark">
-                            <i-input style="width:77%" v-model="applyData.remark" placeholder="请输入备注"></i-input>
-                        </i-form-item>
-                    </i-col>
-                </i-form>
-            </i-col>
+    <div class="search-container">
+      <i-form ref="customer-form" :model="applyModel" :rules="applyRule" :label-width="90">
+        <i-row :gutter="20">
+          <i-col :span="12">
+            <i-form-item label="证件号码" prop="idCard">
+              <i-input type="text" v-model="applyModel.idCard" placeholder="请输入证件号码" @on-change="getUserInfo" :maxlength="18">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col :span="12">
+            <i-form-item label="客户姓名" prop="customerName">
+              <i-input type="text" v-model="applyModel.customerName" placeholder="请输入客户姓名">
+              </i-input>
+            </i-form-item>
+          </i-col>
         </i-row>
-        <i-tabs v-model="materialTabs" class="early-recover-tabs">
-            <i-tab-pane name="gather-detail-early-pay" label="收款明细">
-                <gather-detail-early-pay :checkOrderId="checkOrderId" :typeData="typeData" ref="gather-detail-early-pay"></gather-detail-early-pay>
-            </i-tab-pane>
-            <i-tab-pane name="upload-the-fodder" label="上传素材">
-                <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
-            </i-tab-pane>
-        </i-tabs>
-        <div class="shade" :style="{display:disabledStatus}">
-        </div>
-        <div class="submit-bar">
-            <i-row class="submit-bar-item" type="flex" align="middle">
-                <i-col :span="8" push="1">
-                    <span>申请人：{{applyPerson}}</span>
-                </i-col>
-                <i-col :span="12" pull="4">
-                    <span>申请时间：{{applyTime}}</span>
-                </i-col>
-                <i-col :span="4">
-                    <div class="fixed-container">
-                        <i-button size="large" class="highButton" @click="saveAndCommit">保存并提交</i-button>
-                    </div>
-                </i-col>
-            </i-row>
-        </div>
-        <template>
-            <i-modal class="add-vehicle" v-model="addCar" title="添加车辆" :width="1100">
-                <i-row>
-                    <i-input size="small" style="display:inline-block;width:20%;margin-right:10px" placeholder="请输入关键字"></i-input>
-                    <i-button class="blueButton">搜索</i-button>
-                </i-row>
-                <i-row>
-                    <i-col :span="4" style="border:1px solid #e4e4e4" :class="{open:isShown,close:!isShown}">
-                        <i-tree :data="categoryData"></i-tree>
-                    </i-col>
-                    <i-col :span="20">
-                        <i-row type="flex" justify="start">
-                            <i-col class="arrowButton" :span="2">
-                                <div :class="{arrowDown:!isShown,arrowUp:isShown}" @click="showCategory">＜</div>
-                            </i-col>
-                            <i-col span="22" style="overflow:auto">
-                                <div>
-                                    <i-table :columns="columns2" :data="data2" border stripe @on-select="multipleSelect"></i-table>
-                                </div>
-                            </i-col>
-                        </i-row>
-                    </i-col>
-                </i-row>
-            </i-modal>
-        </template>
+        <i-row :gutter="20">
+          <i-col :span="12">
+            <i-form-item label="客户电话" prop="mobileMain">
+              <i-input type="text" v-model="applyModel.mobileMain" placeholder="请输入客户电话">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col :span="12">
+            <i-form-item label="选择订单" prop="orderId">
+              <i-select v-model="applyModel.orderId" placeholder="请选择订单" @on-change="selectOrder">
+                <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
+              </i-select>
+            </i-form-item>
+          </i-col>
+        </i-row>
+        <i-row :gutter="20">
+          <i-col :span="12">
+            <i-form-item label="收回类型" prop="withdrawType">
+              <i-select v-model="applyModel.withdrawType" placeholder="请选择收回类型">
+                <i-option v-for="{value,label} in $dict.getDictData('0117')" :key="value" :label="label" :value="value"></i-option>
+              </i-select>
+            </i-form-item>
+          </i-col>
+          <i-col :span="12" :pull="1">
+          </i-col>
+        </i-row>
+        <i-row :gutter="20">
+          <i-col :span="24">
+            <i-form-item label="备注" prop="remark">
+              <i-input class="remark" v-model="applyModel.remark" placeholder="请输入备注"></i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+      </i-form>
+    </div>
 
-        <!--编辑收款项-->
-        <template>
-            <i-modal v-model="modifyGatherItemModal" title="编辑收款项" :width="300">
-                <modify-gather-item></modify-gather-item>
-            </i-modal>
-        </template>
-        <!--变更收款项-->
-        <template>
-            <i-modal v-model="changeGatherItemModal" title="变更收款项">
-                <change-gather-item></change-gather-item>
-            </i-modal>
-        </template>
-    </section>
+    <i-tabs v-show="applyModel.orderId" v-model="materialTabs" class="info-container">
+      <i-tab-pane name="gather-detail-early-pay" label="收款明细">
+        <gather-detail-early-pay :checkOrderId="checkOrderId" :typeData="typeData" ref="gather-detail-early-pay"></gather-detail-early-pay>
+      </i-tab-pane>
+      <i-tab-pane name="upload-the-fodder" label="上传素材">
+        <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
+      </i-tab-pane>
+    </i-tabs>
+
+    <div v-show="!applyModel.orderId" class="emptyText">
+      请先填写证件信息
+    </div>
+    <div v-show="applyModel.orderId" class="fixed-container">
+      <i-button size="large" class="highButton" @click="saveAndCommit">保存并提交</i-button>
+    </div>
+
+    <!--编辑收款项-->
+    <template>
+      <i-modal v-model="modifyGatherItemModal" title="编辑收款项" :width="300">
+        <modify-gather-item></modify-gather-item>
+      </i-modal>
+    </template>
+    <!--变更收款项-->
+    <template>
+      <i-modal v-model="changeGatherItemModal" title="变更收款项">
+        <change-gather-item></change-gather-item>
+      </i-modal>
+    </template>
+  </section>
 </template>
 <script lang="ts">
-import Page from '~/core/page'
-import Component from 'vue-class-component'
-import { Dependencies } from '~/core/decorator'
-import { ApplyQueryService } from '~/services/business-service/apply-query.service'
-import { WithdrawApplicationService } from '~/services/manage-service/withdraw-application.service'
-import DataBox from '~/components/common/data-box.vue'
-import { PageService } from '~/utils/page.service'
-import SvgIcon from '~/components/common/svg-icon.vue'
-import { Layout } from '~/core/decorator'
-import UploadTheFodder from '~/components/purchase-manage/upload-the-fodder.vue'
-import ChangeGatherItem from '~/components/purchase-manage/change-gather-item.vue'
-import ModifyGatherItem from '~/components/purchase-manage/modify-gather-item.vue'
-import GatherDetailEarlyPay from '~/components/purchase-manage/gather-detail-early-pay.vue'
+import Page from '~/core/page';
+import Component from 'vue-class-component';
+import { Dependencies } from '~/core/decorator';
+import { ApplyQueryService } from '~/services/business-service/apply-query.service';
+import { WithdrawApplicationService } from '~/services/manage-service/withdraw-application.service';
+import DataBox from '~/components/common/data-box.vue';
+import { PageService } from '~/utils/page.service';
+import SvgIcon from '~/components/common/svg-icon.vue';
+import { Layout } from '~/core/decorator';
+import UploadTheFodder from '~/components/purchase-manage/upload-the-fodder.vue';
+import ChangeGatherItem from '~/components/purchase-manage/change-gather-item.vue';
+import ModifyGatherItem from '~/components/purchase-manage/modify-gather-item.vue';
+import GatherDetailEarlyPay from '~/components/purchase-manage/gather-detail-early-pay.vue';
 
 @Layout('workspace')
 @Component({
@@ -148,82 +114,24 @@ import GatherDetailEarlyPay from '~/components/purchase-manage/gather-detail-ear
   }
 })
 export default class EarlyRecoverApply extends Page {
-  @Dependencies() private pageService: PageService
-  @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService
-  @Dependencies(WithdrawApplicationService)
-  private withdrawApplicationService: WithdrawApplicationService
+  @Dependencies() private pageService: PageService;
+  @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
+  @Dependencies(WithdrawApplicationService) private withdrawApplicationService: WithdrawApplicationService;
+  private customerForm: any = {};
+  private currentIdCard: string = "";
 
-  private applyData: any = {
-    idCard: '',
-    customerName: '',
-    mobileMain: '',
-    orderId: '',
-    withdrawType: '', // 收回类型
-    remark: '', // 备注
-    isAddToBlackList: []
-  }
-  private applyRule: Object = {
-    idCard: [
-      {
-        required: true,
-        message: '请输入证件号码',
-        trigger: 'blur'
-      },
-      {
-        validator: this.$validator.idCard,
-        trigger: 'blur'
-      }
-    ],
-    customerName: [
-      {
-        required: true,
-        message: '请输入客户姓名',
-        trigger: 'blur'
-      }
-    ],
-    mobileMain: [
-      {
-        required: true,
-        message: '请输入客户电话',
-        trigger: 'blur'
-      },
-      {
-        validator: this.$validator.phoneNumber,
-        trigger: 'blur'
-      }
-    ],
-    //   orderId: [{
-    //     required: true,
-    //     message: '请选择订单',
-    //     trigger:'change'
-    //   }],
-    withdrawType: [
-      {
-        required: true,
-        message: '请选择收回类型',
-        trigger: 'change',
-        type: 'number'
-      }
-    ]
-  }
-  private purchaseData: Object = {
-    province: '',
-    city: '',
-    company: ''
-  }
-  private applyPerson: String = '' // 申请人
-  private applyTime: String = '' // 申请时间
-  private columns1: any
-  private columns2: any
-  private columns3: any
-  private data1: Array<Object> = []
-  private data2: Array<Object> = []
-  private data3: Array<Object> = []
+  private gatherDetailEarlyPay: any = {};
+  private uploadTheFodder: any = {}
+
+  private transFlag: boolean = false;
+
+  private applyModel: any = {}
+  private applyRule: Object = {}
+
   private checkOrderId: Number = 0
   private personalId: Number = 0
   private categoryData: Array<Object>
   private loading: Boolean = false
-  private addCar: Boolean = false
   private isShown: Boolean = true
   private changeGatherItemModal: Boolean = false
   private modifyGatherItemModal: Boolean = false
@@ -232,228 +140,13 @@ export default class EarlyRecoverApply extends Page {
   private orderNumberIdModels: Array<Object> = []
   private orderIdModels: any = {}
   private single: Boolean = false
-  private type: Boolean = false
   private typeData: Boolean = true
   private msg: any = ''
-  private saveDraftModel: any = {
-    addFinanceUploadResources: [], // 新增上传资料列表
-    delFinanceUploadResources: [], // 删除上传资料Id列表
-    financeUploadResources: [], // 上传素材相关信息
-    accountName: '',
-    advancePayoffFee: 0, // 提前结清手续费
-    id: '', // 申请id
-    orderId: '', // 订单id
-    otherFee: 0,
-    surplusManageFee: 0, // 剩余管理费
-    surplusPenalty: 0, // 剩余罚息
-    surplusPenaltyFreeze: 0, // 剩余冻结罚金
-    surplusPrincipal: 0, // 剩余本金
-    totalPayment: 0, // 收款总额
-    remark: '', // 备注
-    withdrawType: ''
-  }
+  private saveDraftModel: any = {}
 
   created() {
-    this.applyPerson = this.$store.state.userData.username
-    let time = new Date()
-    this.applyTime =
-      time.getFullYear() +
-      '-' +
-      (time.getMonth() + 1) +
-      '-' +
-      time.getDate() +
-      ' ' +
-      time.getHours() +
-      ':' +
-      time.getMinutes() +
-      ':' +
-      time.getSeconds()
-    this.columns1 = [
-      {
-        title: '操作',
-        width: 240,
-        align: 'center',
-        fixed: 'left',
-        render: (h, { row, column, index }) => {
-          if (row.itemName !== '合计') {
-            return h('div', [
-              h(
-                'i-button',
-                {
-                  props: {
-                    type: 'text'
-                  },
-                  style: {
-                    color: '#265EA2'
-                  },
-                  on: {
-                    click: () => {
-                      this.modifyGatherItem()
-                    }
-                  }
-                },
-                '编辑'
-              ),
-              h(
-                'i-button',
-                {
-                  props: {
-                    type: 'text'
-                  },
-                  style: {
-                    color: '#265EA2'
-                  },
-                  on: {
-                    click: () => {
-                      this.$Modal.confirm({
-                        title: '提示',
-                        content: '确定删除吗？',
-                        onOk: () => {
-                          this.data1.forEach((x, i) => {
-                            if (i === index) {
-                              this.data1.splice(i, 1)
-                            }
-                          })
-                        }
-                      })
-                    }
-                  }
-                },
-                '删除'
-              )
-            ])
-          }
-        }
-      },
-      {
-        key: 'itemName',
-        title: '项目名称',
-        align: 'center'
-      },
-      {
-        key: 'itemMoney',
-        title: '金额',
-        align: 'center'
-      }
-    ]
 
-    this.columns3 = [
-      {
-        key: 'accountName',
-        align: 'center',
-        title: '户名'
-      },
-      {
-        key: 'openAccountBank',
-        align: 'center',
-        title: '开户银行'
-      },
-      {
-        key: 'bankCardId',
-        align: 'center',
-        title: '银行卡号'
-      },
-      {
-        key: 'branchBankName',
-        align: 'center',
-        title: '支行名称'
-      },
-      {
-        key: 'thirdCustomId',
-        align: 'center',
-        title: '第三方客户号'
-      }
-    ]
 
-    this.data3 = [
-      {
-        accountName: '李兵强',
-        openAccountBank: '中国建设银行',
-        bankCardId: '6227004171150315789',
-        branchBankName: '丈八六路支行',
-        thirdCustomId: '3456878774154'
-      }
-    ]
-
-    this.data1 = [
-      {
-        itemName: '首付金额',
-        itemMoney: '9000'
-      },
-      {
-        itemName: '首付月供',
-        itemMoney: '9000'
-      },
-      {
-        itemName: '合计',
-        itemMoney: '18000'
-      }
-    ]
-    this.columns2 = [
-      {
-        type: 'selection',
-        align: 'center'
-      },
-      {
-        title: '车辆品牌',
-        key: 'brand',
-        align: 'center',
-        width: '86'
-      },
-      {
-        title: '车辆型号',
-        key: 'model',
-        align: 'center',
-        width: '86'
-      },
-      {
-        title: '车身颜色',
-        key: 'color',
-        align: 'center',
-        width: '86'
-      },
-      {
-        title: '车辆排量',
-        key: 'output',
-        align: 'center',
-        width: '86'
-      },
-      {
-        title: '车辆配置',
-        key: 'configuration',
-        align: 'center',
-        width: '86'
-      },
-      {
-        title: '上牌地区',
-        key: 'area',
-        align: 'center',
-        width: '86'
-      },
-      {
-        title: '车辆牌照',
-        key: 'license',
-        align: 'center',
-        width: '86'
-      },
-      {
-        title: '所在门店',
-        key: 'store',
-        align: 'center',
-        width: '86'
-      },
-      {
-        title: '状态',
-        key: 'status',
-        align: 'center',
-        width: '86'
-      }
-    ]
-    // this.applyQueryService.addCarQueryData().subscribe(({
-    //   val
-    // }) => {
-    //   this.data2 = val
-    // })
     this.categoryData = [
       {
         title: '所有品牌',
@@ -504,11 +197,53 @@ export default class EarlyRecoverApply extends Page {
         ]
       }
     ]
+
+    this.applyRule = {
+      idCard: { required: true, validator: this.$validator.idCard, trigger: 'blur' },
+      customerName: { required: true, message: '请输入客户姓名', trigger: 'blur' },
+      mobileMain: { required: true, validator: this.$validator.phoneNumber, trigger: 'blur' },
+      withdrawType: { required: true, message: '请选择收回类型', trigger: 'change', type: 'number' }
+    }
+
+    this.saveDraftModel = {
+      addFinanceUploadResources: [], // 新增上传资料列表
+      delFinanceUploadResources: [], // 删除上传资料Id列表
+      financeUploadResources: [], // 上传素材相关信息
+      accountName: '',
+      advancePayoffFee: 0, // 提前结清手续费
+      id: '', // 申请id
+      orderId: '', // 订单id
+      otherFee: 0,
+      surplusManageFee: 0, // 剩余管理费
+      surplusPenalty: 0, // 剩余罚息
+      surplusPenaltyFreeze: 0, // 剩余冻结罚金
+      surplusPrincipal: 0, // 剩余本金
+      totalPayment: 0, // 收款总额
+      remark: '', // 备注
+      withdrawType: ''
+    }
+
+    this.applyModel = {
+      idCard: '',
+      customerName: '',
+      mobileMain: '',
+      orderId: '',
+      withdrawType: '', // 收回类型
+      remark: '', // 备注
+      isAddToBlackList: []
+    }
   }
+
+  mounted() {
+    this.customerForm = this.$refs['customer-form']
+    this.gatherDetailEarlyPay = this.$refs['gather-detail-early-pay']
+    this.uploadTheFodder = this.$refs['upload-the-fodder']
+  }
+
   /**
    * 多选
    */
-  multipleSelect(selection) {}
+  multipleSelect(selection) { }
   /**
     是否显示汽车分类
      */
@@ -524,7 +259,8 @@ export default class EarlyRecoverApply extends Page {
   modifyGatherItem() {
     this.modifyGatherItemModal = true
   }
-  /**
+
+    /**
    * 清空
    */
   clearAll() {
@@ -533,7 +269,7 @@ export default class EarlyRecoverApply extends Page {
       content:
         '您有未保存的提前结清申请,清空会删除页面内容，是否确认清空申请内容！',
       onOk: () => {
-        this.resetAll()
+        this.resetPage()
         // 显示遮罩
         this.disabledStatus = 'block'
         // 清空orderId
@@ -541,38 +277,55 @@ export default class EarlyRecoverApply extends Page {
       }
     })
   }
+
   /**
-   * 页面重置
+   * 清空
    */
-  resetAll() {
-    let _form: any = this.$refs['customer-form']
-    _form.resetFields()
-    this.applyData.orderId = ''
-    let _gatherDetail: any = this.$refs['gather-detail-early-pay']
-    _gatherDetail.resetTable()
-    let _uploadFodder: any = this.$refs['upload-the-fodder']
-    _uploadFodder.reset()
+  resetPage(newIdCard?: string) {
+    this.transFlag = false
+    this.orderNumberIdModels = []
+    this.customerForm.resetFields()
+    this.applyModel.idCard = newIdCard
+    this.gatherDetailEarlyPay.resetTable()
+    this.uploadTheFodder.fodder.reset()
   }
+
   showTab1() {
-    if (this.applyData.idCard.length === 18) {
+    if (this.applyModel.idCard.length === 18) {
       this.disabledStatus = 'none'
       this.getOrderInfo()
     } else {
-      this.applyData.customerName = ''
-      this.applyData.mobileMain = ''
+      this.applyModel.customerName = ''
+      this.applyModel.mobileMain = ''
     }
   }
-  showTab2() {
-    //   if (this.applyData.name.length > 2) {
-    //     this.disabledStatus = 'none';
-    //     this.getOrderInfo();
-    //   }
+
+  async getUserInfo() {
+    // 检测身份证
+    if (!await this.checkIdCardValid()) {
+      return;
+    }
+
+    if (this.currentIdCard && this.currentIdCard !== this.applyModel.idCard) {
+      this.$Modal.confirm({
+        title: "提醒",
+        content: "证件号码更新,是否要重置申请信息?",
+        onOk: this.resetPage(this.applyModel.idCard)
+      });
+    }
+
+    this.currentIdCard = this.applyModel.idCard
+    this.getOrderInfo()
   }
-  showTab3() {
-    //   if (this.applyData.mobileMain.length > 10) {
-    //     this.disabledStatus = 'none';
-    //     this.getOrderInfo();
-    //   }
+
+  async checkIdCardValid() {
+    if (this.applyModel.idCard.length < 18) {
+      return;
+    }
+    // 验证身份证信息
+    return await new Promise((reslove, reject) => {
+      this.customerForm.validateField('idCard', error => reslove(!error))
+    })
   }
   /**
    * 获取订单信息
@@ -580,22 +333,22 @@ export default class EarlyRecoverApply extends Page {
   getOrderInfo() {
     this.withdrawApplicationService
       .getPersonalProductOrderInfoForAdvance({
-        idCard: this.applyData.idCard,
-        customerName: this.applyData.customerName,
-        mobileMain: this.applyData.mobileMain
+        idCard: this.applyModel.idCard,
+        customerName: this.applyModel.customerName,
+        mobileMain: this.applyModel.mobileMain
       })
       .subscribe(
-        data => {
-          if (data[0] && data[0].orderNumberIdModels) {
-            this.orderNumberIdModels = data[0].orderNumberIdModels
-            this.applyData.customerName = data[0].name
-            this.applyData.mobileMain = data[0].mobileMain
-            this.personalId = data[0].personalId
-          }
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
+      data => {
+        if (data[0] && data[0].orderNumberIdModels) {
+          this.orderNumberIdModels = data[0].orderNumberIdModels
+          this.applyModel.customerName = data[0].name
+          this.applyModel.mobileMain = data[0].mobileMain
+          this.personalId = data[0].personalId
         }
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
   selectOrder(val) {
@@ -608,23 +361,23 @@ export default class EarlyRecoverApply extends Page {
           orderId: val
         })
         .subscribe(
-          data => {
-            this.applyData.remark = data.remark
-            this.applyData.withdrawType = data.withdrawType
-            // 获取收款项和备注信息
-            let _gatherDetail: any = this.$refs['gather-detail-early-pay']
-            _gatherDetail.makeListdataSet(data)
-            if (data.personalBank && data.personalBank.personalName) {
-              this.saveDraftModel.accountName = data.personalBank.personalName // 获取保存草稿时需要的accountName
-            }
-            if (data.withdrawId) {
-              this.saveDraftModel.applicationId = data.withdrawId // 获取保存草稿时需要的id
-            }
-          },
-          ({ msg }) => {
-            this.msg = msg
-            this.$Message.error(msg)
+        data => {
+          this.applyModel.remark = data.remark
+          this.applyModel.withdrawType = data.withdrawType
+          // 获取收款项和备注信息
+          let _gatherDetail: any = this.$refs['gather-detail-early-pay']
+          _gatherDetail.makeListdataSet(data)
+          if (data.personalBank && data.personalBank.personalName) {
+            this.saveDraftModel.accountName = data.personalBank.personalName // 获取保存草稿时需要的accountName
           }
+          if (data.withdrawId) {
+            this.saveDraftModel.applicationId = data.withdrawId // 获取保存草稿时需要的id
+          }
+        },
+        ({ msg }) => {
+          this.msg = msg
+          this.$Message.error(msg)
+        }
         )
     }
   }
@@ -636,14 +389,11 @@ export default class EarlyRecoverApply extends Page {
       v => {
         return {
           materialUrl: v.url
-          // type:v.response.type,
-          // name:v.name,
-          // id:v.response.id
         }
       }
     )
     this.saveDraftModel.otherFee = _gatherDetail.getOtherFee()
-    this.saveDraftModel.remark = this.applyData.remark
+    this.saveDraftModel.remark = this.applyModel.remark
     let surplusManageFee = itemList.find(v => v.itemName === 'surplusManageFee')
     if (surplusManageFee) {
       this.saveDraftModel.surplusManageFee = surplusManageFee.itemMoney
@@ -671,24 +421,7 @@ export default class EarlyRecoverApply extends Page {
       this.saveDraftModel.violateAmount = violateAmount.itemMoney
     }
   }
-  /**
-   * 保存草稿
-   */
-  saveDraftClick() {
-    this.getgather()
-    this.saveDraftModel.withdrawType = this.applyData.withdrawType
-    this.withdrawApplicationService
-      .saveAdvanceRevokeApplicationAsDraft(this.saveDraftModel)
-      .subscribe(
-        data => {
-          this.$Message.success('保存草稿成功！')
-          this.resetAll()
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
-      )
-  }
+
   /**
    * 保存并提交
    */
@@ -703,19 +436,18 @@ export default class EarlyRecoverApply extends Page {
           this.$Message.warning('请先审批未处理的申请订单！')
           return false
         }
-        this.saveDraftModel.withdrawType = this.applyData.withdrawType
+        this.saveDraftModel.withdrawType = this.applyModel.withdrawType
         let saveAndCommitModel = this.saveDraftModel
         this.withdrawApplicationService
           .saveAdvanceRevokeApplication(saveAndCommitModel)
           .subscribe(
-            data => {
-              this.$Message.success('保存并提交成功！')
-              this.resetAll()
-              this.type = true
-            },
-            ({ msg }) => {
-              this.$Message.error(msg)
-            }
+          data => {
+            this.$Message.success('保存并提交成功！')
+            this.resetPage()
+          },
+          ({ msg }) => {
+            this.$Message.error(msg)
+          }
           )
       }
     })
@@ -724,116 +456,39 @@ export default class EarlyRecoverApply extends Page {
 </script>
 
 <style lang="less" scoped>
-.page.early-recover-apply.special-input {
-  .fixed-container {
-    height: 65px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #fff;
-    z-index: 10;
-    text-align: right;
-    padding: 10px 20px;
-    box-shadow: 0px -5px 10px #ccc;
-  }
-  .shade {
-    width: 98%;
-    height: 666px;
-    background: rgba(250, 250, 250, 0.4);
-    position: absolute;
-    left: 21px;
-    top: 368px;
-    z-index: 999;
-  }
-  .data-form {
-    margin-top: 10px;
-  }
-  .header {
-    border-bottom: 1px solid #cccccc;
-    margin-bottom: 20px;
-    .command {
-      float: right;
-      margin-top: 10px;
-      margin-right: 10px;
-      .command-item {
-        font-size: 16px;
-        cursor: pointer;
-        display: inline-block;
-        margin-left: 10px;
-        color: #3367a7;
-        span {
-          font-size: 12px;
-        }
-      }
-    }
-  }
-  .clear-button {
-    height: 40px;
-    margin-top: 60px;
-  }
-  .submit-bar {
-    height: 70px;
-    width: 100%;
-    background: #fff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border: 1px solid #ddd;
-    .submit-bar-item {
-      padding: 10px;
-    }
-  }
+.search-container {
+  padding: 15px;
 }
-</style>
-<style lang="less">
-.page.early-recover-apply.special-input {
-  .special-input {
-    .ivu-input {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-  .bigSelect {
-    .ivu-select-selection {
-      display: inline-block;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-  .early-recover-tabs {
-    .ivu-tabs-bar {
-      border-bottom: 1px solid #dddee1;
-      .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
-        margin: 0;
-        margin-right: 4px;
-        padding: 5px 16px 4px;
-        border: 1px solid #dddee1;
-        border-bottom: 0;
-        border-radius: 4px 4px 0 0;
-        transition: all 0.3s ease-in-out;
-      }
-    }
-  }
-  .early-recover-apply {
-    .ivu-select-selection {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
+.info-container {
+  margin-bottom: 100px;
 }
-</style>
-<style lang="less" scoped>
-.add-vehicle {
-  .arrowButton {
-    line-height: 570px;
-    height: 100%;
-    background: #e4e4e4;
-    text-align: center;
-    width: 30px;
-  }
+
+.fixed-container {
+  height: 65px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 10;
+  text-align: right;
+  padding: 10px 20px;
+  box-shadow: 0px -5px 10px #ccc;
+}
+
+.emptyText {
+  font-size: 32px;
+  color: #ccc;
+  font-weight: bold;
+  background: #f2f2f2;
+  height: 500px;
+  text-align: center;
+  line-height: 500px;
+  letter-spacing: 1px;
+  box-shadow: 0px 0px 5px #ccc;
+}
+
+.remark {
+  width: 80% !important;
 }
 </style>
