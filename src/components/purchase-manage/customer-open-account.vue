@@ -112,7 +112,7 @@
       reservedPhoneNumber: '', // 银行预留手机号
       qCode: '', // 验证码
     };
-    private qCode:any='';
+    private qCode: any = '';
     mounted() {
       if (this.row) {
         this.CustomerOpenAccountModel = Object.assign({}, this.row);
@@ -131,7 +131,7 @@
         }).subscribe(
           data => {
             this.$Message.success('验证码发送成功！')
-            let qCode:any=data
+            let qCode: any = data
             this.qCode = qCode
           },
           ({
@@ -144,7 +144,8 @@
     }
     openaccountClick() {
       this.personalService.customerOpenAccount({
-        rowData: this.CustomerOpenAccountModel
+        rowData: this.CustomerOpenAccountModel,
+        personalId: this.row.id
       }).subscribe(
         data => {
           this.$Message.success('开户成功！')
