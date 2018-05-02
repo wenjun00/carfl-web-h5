@@ -38,5 +38,14 @@ export default {
     controller: CONTROLLER,
     action: 'ableOrUnable',
     type: requestType.Get
+  },
+  /**
+   * 查找期数信息
+   */
+  findProductPlanById: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findProductPlanById',
+    type: requestType.Get
   }
 }

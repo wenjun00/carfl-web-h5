@@ -1,8 +1,8 @@
 <!--个人黑名单-->
 <template>
     <section class="page personal-blacklist">
-        <page-header title="个人黑名单">
-            <i-button type="text">新增黑名单</i-button>
+        <page-header title="个人黑名单" hidden-print>
+            <i-button type="text" @click="addList">新增黑名单</i-button>
         </page-header>
         <data-form :model="personalBlacklistModel" date-prop="timeSearch" @on-search="getPersonalClientList">
             <template slot="input">
@@ -27,8 +27,24 @@
                 </div>
             </i-modal>
         </template>
-    </section>
+        <!--订单详情弹窗-->
+        <template>
+          <i-modal width="780" v-model="orderDetailsModal" title="订单详情">
+            <personal-order-details ref="personal-order-details"></personal-order-details>
+          </i-modal>
+        </template>
+        <!--新增黑名单弹窗-->
+        <template>
+          <i-modal width="780" v-model="newDetailsModal" title="新增黑名单">
+            <personal-new-blacklist ref="personal-new-blacklist"></personal-new-blacklist>
+            <div slot="footer">
+              <i-button size="large" type="ghost" >取消</i-button>
+              <i-button size="large" type="primary">保存</i-button>
+            </div>
+          </i-modal>
+        </template>
 
+    </section>
 </template>
 
 <script lang="ts">
@@ -40,10 +56,14 @@ import { PageService } from '~/utils/page.service'
 import GetCustomerDetails from '~/components/purchase-manage/get-customer-details.vue'
 import { PersonalService } from '~/services/manage-service/personal.service'
 import { FilterService } from '~/utils/filter.service'
+import PersonalOrderDetails from '~/components/customer-center/personal-center/personal-order-details.vue'
+import PersonalNewBlacklist from '~/components/customer-center/personal-center/personal-new-blacklist.vue'
 @Layout('workspace')
 @Component({
   components: {
-    GetCustomerDetails
+    GetCustomerDetails,
+    PersonalOrderDetails,
+    PersonalNewBlacklist
   }
 })
 export default class PersonalBlacklist extends Page {
@@ -51,6 +71,9 @@ export default class PersonalBlacklist extends Page {
   @Dependencies(PageService) private pageService: PageService
   private dataSet: Array<any> = []
   private personalModal: Boolean = false
+  private orderDetailsModal: Boolean = false
+  private newDetailsModal:Boolean = false
+
   private personalBlacklistModel: any = {
     personalType: '114',
     name: '', //客户姓名
@@ -59,7 +82,6 @@ export default class PersonalBlacklist extends Page {
     endDate: '', // 创建结束日期
     dateRange: []
   }
-  private customerDetailsModal: Boolean = false
   private personalBlacklistColumns: any = [
     {
       title: '操作',
@@ -93,6 +115,11 @@ export default class PersonalBlacklist extends Page {
               },
               style: {
                 color: '#265EA2'
+              },
+              on: {
+                click: () => {
+                  this.getOrderDetailsList(row)
+                }
               }
             },
             '订单详情'
@@ -186,16 +213,32 @@ export default class PersonalBlacklist extends Page {
   activated() {
     this.getPersonalClientList()
   }
-
-
-
-  getDetailsList(row) {
-    this.personalModal = true
-  }
-
   mounted() {
     this.getPersonalClientList()
   }
+
+  /**
+   *  客户详情
+   * @param row
+   */
+  getDetailsList(row) {
+    this.personalModal = true
+  }
+  /**
+   *  订单详情
+   * @param row
+   */
+  getOrderDetailsList(row){
+    this.orderDetailsModal = true
+  }
+  /**
+   *  新增黑名单
+   * @param row
+   */
+  addList(){
+    this.newDetailsModal = true
+  }
+
 }
 </script>
 
