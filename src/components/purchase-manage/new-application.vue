@@ -152,7 +152,7 @@
       city:'',
       assessmentStatus:'',
       applyCars:'',
-      id:''
+      id:null
     }
     private requestRules: any = {
       carColor: [{required: true, message: "请输入车身颜色", trigger: "blur"}],
@@ -229,9 +229,6 @@
         this.applyCars[0].carId = this.CarId
         this.requestModal.applyCars = this.applyCars
         this.requestModal.assessmentStatus = val
-        if(val === 1188 || !this.requestModal.id){
-          delete this.requestModal.id
-        }
         this.assessMentApplyService.saveAssessmentApplyInfo(this.requestModal)
           .subscribe( data => {
             this.$Message.success("申请成功！")
@@ -245,6 +242,7 @@
             this.requestModal.frameNo = ''
             this.requestModal.ownerName = ''
             this.requestModal.idCard = ''
+            this.requestModal.id = null
             this.brand =[]
             this.series =[]
             this.car =[]

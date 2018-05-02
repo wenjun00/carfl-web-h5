@@ -367,13 +367,13 @@ export default class OrderTransfer extends Page {
   /**
    *根据日月年查询
    */
-  getOrderInfoByTime(val) {
-    this.ordertransferModel.startTime = ''
-    this.ordertransferModel.endTime = ''
-    this.ordertransferModel.orderInfo = ''
-    this.ordertransferModel.timeSearch = val
-    this.refreshData()
-  }
+//   getOrderInfoByTime(val) {
+//     this.ordertransferModel.startTime = ''
+//     this.ordertransferModel.endTime = ''
+//     this.ordertransferModel.orderInfo = ''
+//     this.ordertransferModel.timeSearch = val
+//     this.refreshData()
+//   }
   /**
    * 清空timeSearch
    */

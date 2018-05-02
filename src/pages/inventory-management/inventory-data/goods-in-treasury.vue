@@ -1,7 +1,7 @@
 <!--押品入库-->
 <template>
     <section class="page goods-In-treasury">
-        <page-header title="押品入库" hidden-print></page-header>
+        <page-header title="押品入库" hidden-print hidden-export></page-header>
         <data-form :model="treasuryModel" @on-search="getInTreasuryList" :page="pageService" date-prop="timeSearch">
             <template slot="input">
                 <i-form-item prop="assessmentNo" label="订单编号">
@@ -20,7 +20,7 @@
                     <i-checkbox v-model="whetherInclude">包含已提交</i-checkbox>
                 </i-form-item>
             </template>
-        </data-form> 
+        </data-form>
         <data-box :columns="treasuryColumns" :data="dataSet" :page="pageService"></data-box>
 
         <template>
@@ -51,8 +51,8 @@ import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import { Button } from 'iview'
-import MortgageInventory from '~/components/base-data/mortgage-inventory.vue'
-import SeeMortgageInventory from '~/components/base-data/see-mortgage-inventory.vue'
+import MortgageInventory from '~/components/stock/mortgage-inventory.vue'
+import SeeMortgageInventory from '~/components/stock/see-mortgage-inventory.vue'
 import { AssessMentPlacingService } from '~/services/manage-service/assess-ment-placing.service'
 import { FilterService } from '~/utils/filter.service'
 
@@ -65,8 +65,7 @@ import { FilterService } from '~/utils/filter.service'
 })
 export default class EvaluationTaskPool extends Page {
   @Dependencies(PageService) private pageService: PageService
-  @Dependencies(AssessMentPlacingService)
-  private assessMentPlacingService: AssessMentPlacingService
+  @Dependencies(AssessMentPlacingService) private assessMentPlacingService: AssessMentPlacingService
   private dataSet: Array<any> = []
   private whetherInclude: Boolean = true
   private inventoryModal: Boolean = false
@@ -105,23 +104,6 @@ export default class EvaluationTaskPool extends Page {
                   }
                 },
                '入库'
-              )
-              ,h(
-                'i-button',
-                {
-                  props: {
-                    type: 'text'
-                  },
-                  style: {
-                    color: '#265EA2'
-                  },
-                  on: {
-                    click: () => {
-                      this.seeTreasuryStorage(row)
-                    }
-                  }
-                },
-               '查看'
               )
           ])
           }else{
@@ -257,7 +239,6 @@ export default class EvaluationTaskPool extends Page {
     this.inventoryModal = true
     let MortgageInventory = this.$refs['mortgage-inventory'] as MortgageInventory
     MortgageInventory.getInventoryData(row)
-    MortgageInventory.getCheckboxList()
   }
   /**
    * 入库点击确定
@@ -270,16 +251,17 @@ export default class EvaluationTaskPool extends Page {
   * 入库取消
   */
     close(){
-    this.inventoryModal = false
-    this.getInTreasuryList()
-  }
-
+      this.inventoryModal = false
+      this.getInTreasuryList()
+    }
 
   /**
-   *  查看抵押入库
+   *  查看入库
    */
   seeTreasuryStorage(row) {
     this.seeInventoryModal = true
+    let seeMortgageInventory = this.$refs['see-mortgage-inventory'] as SeeMortgageInventory
+    seeMortgageInventory.acquireInventoryData(row)
   }
   mounted() {
     this.getInTreasuryList()

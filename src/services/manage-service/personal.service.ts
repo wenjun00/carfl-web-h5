@@ -48,9 +48,18 @@ export class PersonalService {
      * 获取客户开户列表
      */
     getCustomerList(data, page) {
+        const dateRange = FilterService.dateRanageFormat(data.dateRange)
         return this.netService.send({
             server: manageService.personalController.getCustomerList,
-            data: data,
+            // data:data,
+            data:{
+                personalType:data.personalType,
+                name:data.name,
+                telephone:data.telephone,
+                timeSearch: data.timeSearch,
+                startTime: dateRange.start,
+                endTime: dateRange.end,
+            },
             page: page
         })
     }
