@@ -1,4 +1,4 @@
-<!--新增客户详情--> 
+<!--新增客户详情-->
 <template>
     <section class="component get-customer-details">
         <i-form :model="customerDetailsModel" ref="form-item" :label-width="90">
@@ -391,7 +391,7 @@ import UploadVoucher from '~/components/common/upload-voucher.vue'
 export default class addPeople extends Vue {
   @Dependencies(PersonalService) private personalService: PersonalService
   private WhetherNotShown: Boolean = false
-  private linkmanNumber: Number = 2 // 联系人值
+  private linkmanNumber: any = 2 // 联系人值
   private customerDetailsModel = {
     name: '', // 姓名
     mobileMain: '', // 手机号
@@ -463,7 +463,7 @@ export default class addPeople extends Vue {
       depositBranch: '', // 开户支行
       accountType: '', // 账户类型
       accountUse: '' // 账号用途
-    }, 
+    },
     cardNumber: '', // 银行账户
     depositBank: '', // 开户银行
     depositBranch: '', // 开户支行
