@@ -1,92 +1,89 @@
 <!--付款申请-->
 <template>
-    <section class="page early-payment-apply special-input">
-        <page-header title="付款申请">
-            <command-button label="清空"  @click="clearAll"></command-button>            
-        </page-header>
-        <i-row type="flex" class="data-form">
-            <i-col span="18">
-                <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
-                    <i-col span="12">
-                        <i-form-item label="证件号码" prop="certificateNumber">
-                            <i-input type="text" v-model="applyData.certificateNumber" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
-                            </i-input>
-                        </i-form-item>
-                    </i-col>
-                    <i-col span="12">
-                        <i-form-item label="客户姓名" prop="name">
-                            <i-input type="text" v-model="applyData.name" @on-blur="searchInfo" placeholder="请输入客户姓名">
-                            </i-input>
-                        </i-form-item>
-                    </i-col>
-                    <i-col span="12">
-                        <i-form-item label="客户电话" prop="mobileNumber">
-                            <i-input type="text" v-model="applyData.mobileNumber" placeholder="请输入客户电话">
-                            </i-input>
-                        </i-form-item>
-                    </i-col>
-                    <i-col span="12">
-                        <i-form-item label="选择订单" prop="orderNumber">
-                            <i-select v-model="applyData.orderNumber" placeholder="请选择订单" @on-change="changeOrder($event)">
-                                <i-option v-for="item in orderList" :value="item.orderNumber" :label="item.orderNumber" :key="item.orderId"></i-option>
-                            </i-select>
-                        </i-form-item>
-                    </i-col>
-                    <i-col span="12">
-                        <i-form-item label="付款类型" prop="refundType">
-                            <i-select v-model="applyData.refundType" placeholder="请选择付款类型">
-                                <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
-                            </i-select>
-                        </i-form-item>
-                    </i-col>
-                    <i-col span="12">
-                        <i-form-item label="备注" prop="remark">
-                            <i-input type="text" style="width:77%;" v-model="applyData.remark" placeholder="请输入备注">
-                            </i-input>
-                        </i-form-item>
-                    </i-col>
-                </i-form>
-            </i-col>
-        </i-row>
-        <i-tabs v-model="materialTabs" class="early-pay-tabs">
-            <i-tab-pane name="pay-detail" label="付款明细">
-                <pay-detail :checkOrderId="checkOrderId" ref="payDetail"></pay-detail>
-            </i-tab-pane>
-            <i-tab-pane name="upload-the-fodder" label="上传素材">
-                <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
-            </i-tab-pane>
-        </i-tabs>
-        <div class="shade" :style="{display:disabledStatus}">
-        </div>
-        <div class="submit-bar">
-            <i-row type="flex" align="middle" class="submit-bar-item">
-                <i-col :span="8" push="1">
-                    <span>申请人：{{applyPerson}}</span>
-                </i-col>
-                <i-col :span="12" pull="4">
-                    <span>申请时间：{{applyTime}}</span>
-                </i-col>
-                <i-col :span="4">
-                    <div class="fixed-container">
-                        <i-button size="large" class="highButton" @click="saveSubmit">保存并提交</i-button>
-                    </div>
-                </i-col>
-            </i-row>
-        </div>
-        <!--编辑收款项-->
-        <template>
-            <i-modal v-model="modifyGatherItemModal" title="编辑收款项" :width="300">
-                <modify-gather-item></modify-gather-item>
-            </i-modal>
-        </template>
+  <section class="page pay-apply">
+    <page-header title="付款申请">
+      <command-button label="清空" @click="clearAll"></command-button>
+    </page-header>
 
-        <!--变更收款项-->
-        <template>
-            <i-modal v-model="changeGatherItemModal" title="变更收款项">
-                <change-gather-item></change-gather-item>
-            </i-modal>
-        </template>
-    </section>
+    <div class="search-container">
+      <i-form ref="customer-form" :model="applyModel" :rules="applyRule" :label-width="90">
+        <i-row :gutter="20">
+          <i-col span="12">
+            <i-form-item label="证件号码" prop="certificateNumber">
+              <i-input type="text" v-model="applyModel.certificateNumber" placeholder="请输入证件号码" @on-change="getUserInfo" :maxlength="18">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col span="12">
+            <i-form-item label="客户姓名" prop="name">
+              <i-input type="text" v-model="applyModel.name" @on-blur="searchInfo" placeholder="请输入客户姓名">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+        <i-row :gutter="20">
+          <i-col span="12">
+            <i-form-item label="客户电话" prop="mobileNumber">
+              <i-input type="text" v-model="applyModel.mobileNumber" placeholder="请输入客户电话">
+              </i-input>
+            </i-form-item>
+          </i-col>
+          <i-col span="12">
+            <i-form-item label="选择订单" prop="orderNumber">
+              <i-select v-model="applyModel.orderNumber" placeholder="请选择订单" @on-change="changeOrder($event)">
+                <i-option v-for="item in orderList" :value="item.orderNumber" :label="item.orderNumber" :key="item.orderId"></i-option>
+              </i-select>
+            </i-form-item>
+          </i-col>
+        </i-row>
+        <i-row :gutter="20">
+          <i-col span="12">
+            <i-form-item label="付款类型" prop="refundType">
+              <i-select v-model="applyModel.refundType" placeholder="请选择付款类型">
+                <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
+              </i-select>
+            </i-form-item>
+          </i-col>
+          <i-col span="12">
+            <i-form-item label="备注" prop="remark">
+              <i-input type="text" style="width:77%;" v-model="applyModel.remark" placeholder="请输入备注">
+              </i-input>
+            </i-form-item>
+          </i-col>
+        </i-row>
+      </i-form>
+    </div>
+
+    <i-tabs v-show="applyModel.orderNumber" v-model="materialTabs" class="info-container">
+      <i-tab-pane name="pay-detail" label="付款明细">
+        <pay-detail :checkOrderId="checkOrderId" ref="payDetail"></pay-detail>
+      </i-tab-pane>
+      <i-tab-pane name="upload-the-fodder" label="上传素材">
+        <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
+      </i-tab-pane>
+    </i-tabs>
+
+    <div v-show="!applyModel.orderNumber" class="emptyText">
+      请先填写证件信息
+    </div>
+    <div class="fixed-container" v-show="applyModel.orderNumber">
+      <i-button size="large" class="highButton" @click="saveSubmit">保存并提交</i-button>
+    </div>
+
+    <!--编辑收款项-->
+    <template>
+      <i-modal v-model="modifyGatherItemModal" title="编辑收款项" :width="300">
+        <modify-gather-item></modify-gather-item>
+      </i-modal>
+    </template>
+
+    <!--变更收款项-->
+    <template>
+      <i-modal v-model="changeGatherItemModal" title="变更收款项">
+        <change-gather-item></change-gather-item>
+      </i-modal>
+    </template>
+  </section>
 </template>
 <script lang="ts">
 import Page from '~/core/page'
@@ -116,77 +113,19 @@ import UploadTheFodder from '~/components/purchase-manage/upload-the-fodder.vue'
   }
 })
 export default class PayApply extends Page {
-  @Dependencies(RefundApplicationService)
-  private refundApplicationService: RefundApplicationService
-  @Dependencies(PageService) private pageService: PageService
-  @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService
-  private applyData: any = {
-    orderNumber: '', // 订单号
-    name: '', // 客户姓名
-    certificateNumber: '', // 证件号
-    mobileNumber: '', // 客户电话
-    refundType: '', // 退款类型
-    remark: '' // 备注
-  }
-  private paramsData: any = {
-    itemList: [],
-    remark: '',
-    recordStatus: '',
-    refundTotalAmount: ''
-  }
-  private applyRule: Object = {
-    certificateNumber: [
-      {
-        required: true,
-        message: '请输入证件号码',
-        trigger: 'blur'
-      },
-      {
-        validator: this.$validator.idCard,
-        trigger: 'blur'
-      }
-    ],
-    name: [
-      {
-        required: true,
-        message: '请输入客户姓名',
-        trigger: 'blur'
-      }
-    ],
-    mobileNumber: [
-      {
-        required: true,
-        message: '请输入客户电话',
-        trigger: 'blur'
-      },
-      {
-        validator: this.$validator.phoneNumber,
-        trigger: 'blur'
-      }
-    ],
-    refundType: [
-      {
-        required: true,
-        message: '请选择付款类型',
-        trigger: 'change',
-        type: 'number'
-      }
-    ]
-  }
-  private purchaseData: Object = {
-    province: '',
-    city: '',
-    company: ''
-  }
-  private applyPerson: String = '' // 申请人
-  private applyTime: String = '' // 申请时间
-  private data1: Array<Object> = []
-  private data2: Array<Object> = []
-  private data3: Array<Object> = []
-  private categoryData: Array<Object>
-  private loading: Boolean = false
-  private addCar: Boolean = false
-  private isShown: Boolean = true
+  @Dependencies(RefundApplicationService) private refundApplicationService: RefundApplicationService;
+  @Dependencies(PageService) private pageService: PageService;
+  @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
+
+  private customerForm: any = {}
+  private transFlag: boolean = false;
+  private payDetail: any = {}
+  private uploadTheFodder: any = {}
+  private currentIdCard: string = ""
+
+  private applyModel: any = {}
+  private paramsData: any = {}
+  private applyRule: Object = {}
   private modifyGatherItemModal: Boolean = false
   private changeGatherItemModal: Boolean = false
   private materialTabs: String = 'pay-detail'
@@ -194,31 +133,49 @@ export default class PayApply extends Page {
   private orderList: Array<any> = []
   private dataSet: Array<any> = []
   private checkOrderId: Number = 0
-  private saveData: any = {
-    orderId: '', // 订单id
-    bankListk: [], // 客户开户信息
-    itemList: [], // 付款明细
-    refundType: '', // 付款类型
-    remark: '', // 备注
-    resourceList: [] // 上传资料
-  }
+  private saveData: any = {}
 
   created() {
-    this.applyPerson = this.$store.state.userData.username
-    let time = new Date()
-    this.applyTime =
-      time.getFullYear() +
-      '-' +
-      (time.getMonth() + 1) +
-      '-' +
-      time.getDate() +
-      ' ' +
-      time.getHours() +
-      ':' +
-      time.getMinutes() +
-      ':' +
-      time.getSeconds()
+
+    this.applyModel = {
+      orderNumber: '', // 订单号
+      name: '', // 客户姓名
+      idCard: '', // 证件号
+      mobileNumber: '', // 客户电话
+      refundType: '', // 退款类型
+      remark: '' // 备注
+    }
+
+    this.applyRule = {
+      certificateNumber: { required: true, validator: this.$validator.idCard, trigger: 'blur' },
+      name: { required: true, message: '请输入客户姓名', trigger: 'blur' },
+      mobileNumber: { required: true, message: '请输入客户电话', validator: this.$validator.phoneNumber, trigger: 'blur' },
+      refundType: { required: true, message: '请选择付款类型', trigger: 'change', type: 'number' }
+    }
+
+    this.paramsData = {
+      itemList: [],
+      remark: '',
+      recordStatus: '',
+      refundTotalAmount: ''
+    }
+
+    this.saveData = {
+      orderId: '', // 订单id
+      bankListk: [], // 客户开户信息
+      itemList: [], // 付款明细
+      refundType: '', // 付款类型
+      remark: '', // 备注
+      resourceList: [] // 上传资料
+    }
   }
+
+  mounted() {
+    this.customerForm = this.$refs['customer-form']
+    this.payDetail = this.$refs['payDetail']
+    this.uploadTheFodder = this.$refs['upload-the-fodder']
+  }
+
   /**
    * 清空
    */
@@ -228,7 +185,7 @@ export default class PayApply extends Page {
       content:
         '您有未保存的提前结清申请,清空会删除页面内容，是否确认清空申请内容！',
       onOk: () => {
-        this.resetAll()
+        this.resetPage()
         // 显示遮罩
         this.disabledStatus = 'block'
         // 清空orderId
@@ -239,35 +196,35 @@ export default class PayApply extends Page {
   /**
    * 页面重置
    */
-  resetAll() {
-    let _form: any = this.$refs['customer-form']
-    _form.resetFields()
-    this.applyData = {}
-    let _gatherDetail: any = this.$refs['payDetail']
-    _gatherDetail.resetTable()
-    let _uploadFodder: any = this.$refs['upload-the-fodder']
-    _uploadFodder.reset()
+  resetPage(newIdCard?: string) {
+    this.transFlag = false
+    this.orderList = []
+    this.customerForm.resetFields()
+    this.payDetail.resetTable()
+    this.uploadTheFodder.fodder.reset()
+    this.applyModel.certificateNumber = newIdCard
   }
+
   /**
    * 证件号、订单号、客户姓名查询订单/账户/付款信息
    */
   getAllMessage() {
     this.refundApplicationService
-      .getAllMessageByParams(this.applyData)
+      .getAllMessageByParams(this.applyModel)
       .subscribe(
-        data => {
-          if (data) {
-            this.orderList = data.filter(v => v.orderId)
-            if (data[0] && data[0].orderNumber) {
-              this.applyData.name = data[0].name
-              this.applyData.mobileNumber = data[0].mobileNumber
-            }
-            this.dataSet = data
+      data => {
+        if (data) {
+          this.orderList = data.filter(v => v.orderId)
+          if (data[0] && data[0].orderNumber) {
+            this.applyModel.name = data[0].name
+            this.applyModel.mobileNumber = data[0].mobileNumber
           }
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
+          this.dataSet = data
         }
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
@@ -278,42 +235,12 @@ export default class PayApply extends Page {
         console.log(val)
       })
   }
-  /**
-   * 保存草稿
-   */
-  saveDraft() {
-    let _message: any = this.$refs['payDetail']
-    this.saveData.bankListk = _message.accountInfoList
-    let gatherItem: any = Object.assign(_message.gatherItemList)
-    this.saveData.refundTotalAmount =
-      gatherItem.length > 0
-        ? gatherItem.find(v => v.itemLabel === '合计（元）').refundAmount
-        : ''
-    this.saveData.recordStatus = 1128
-    this.saveData.refundType = this.applyData.refundType
-    this.saveData.remark = this.applyData.remark
-    this.saveData.itemList = gatherItem.splice(
-      0,
-      _message.gatherItemList.length - 1
-    )
-    this.refundApplicationService
-      .saveSubmitApplication(this.saveData)
-      .subscribe(
-        data => {
-          this.$Message.success('保存并提交成功！')
-          this.resetAll()
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
-      )
-  }
+
   /**
    * 保存并提交
    */
   saveSubmit() {
-    let customerform: any = this.$refs['customer-form']
-    customerform.validate(valid => {
+    this.customerForm.validate(valid => {
       if (!valid) {
         return false
       } else {
@@ -325,8 +252,8 @@ export default class PayApply extends Page {
             ? gatherItem.find(v => v.itemName === 'totalPayment').refundAmount
             : ''
         this.saveData.recordStatus = 1129
-        this.saveData.refundType = this.applyData.refundType
-        this.saveData.remark = this.applyData.remark
+        this.saveData.refundType = this.applyModel.refundType
+        this.saveData.remark = this.applyModel.remark
         this.saveData.itemList = gatherItem.splice(
           0,
           _message.gatherItemList.length - 1
@@ -336,22 +263,16 @@ export default class PayApply extends Page {
         this.saveData.resourceList = _uploadthefodder.fodderList.map(v => {
           return {
             materialUrl: v.url
-            // type:v.response.type,
-            // name:v.name,
-            // id:v.response.id
           }
         })
         this.refundApplicationService
           .saveSubmitApplication(this.saveData)
           .subscribe(
-            data => {
-              this.$Message.success('保存并提交成功！')
-              this.resetAll()
-            },
-            ({ msg }) => {
-              this.$Message.error(msg)
-            }
-          )
+          data => {
+            this.$Message.success('保存并提交成功！')
+            this.resetPage()
+          },
+          err => this.$Message.error(err.msg))
       }
     })
   }
@@ -374,7 +295,7 @@ export default class PayApply extends Page {
       _message.refresh(this.dataSet.find(v => v.orderNumber === item))
     }
   }
-  multipleSelect(selection) {}
+  multipleSelect(selection) { }
   modifyGatherItem() {
     this.modifyGatherItemModal = true
   }
@@ -384,97 +305,67 @@ export default class PayApply extends Page {
   changeGatherItem() {
     this.changeGatherItemModal = true
   }
-  /**
-   * 根据证件号码搜索
-   */
-  showTab() {
-    if (this.applyData.certificateNumber.length === 18) {
-      this.disabledStatus = 'none'
-      this.getAllMessage()
+
+  async getUserInfo() {
+    // 检测身份证
+    if (!await this.checkIdCardValid()) {
+      return;
     }
+
+    if (this.currentIdCard && this.currentIdCard !== this.applyModel.certificateNumber) {
+      this.$Modal.confirm({
+        title: "提醒",
+        content: "证件号码更新,是否要重置申请信息?",
+        onOk: this.resetPage(this.applyModel.certificateNumber)
+      });
+    }
+
+    this.currentIdCard = this.applyModel.certificateNumber
+    this.getAllMessage()
+  }
+
+  async checkIdCardValid() {
+    if (this.applyModel.certificateNumber.length < 18) {
+      return;
+    }
+    // 验证身份证信息
+    return await new Promise((reslove, reject) => {
+      this.customerForm.validateField('certificateNumber', error => reslove(!error))
+    })
   }
 }
 </script>
 
 <style lang="less" scoped>
-.page.early-payment-apply {
-  .clear-button {
-    height: 100%;
-  }
-  .data-form {
-    margin-top: 10px;
-    margin-right: 10px;
-    .command-item {
-      font-size: 16px;
-      cursor: pointer;
-      display: inline-block;
-      margin-left: 10px;
-      color: #3367a7;
-      span {
-        font-size: 12px;
-      }
-    }
-  }
-  .shade {
-    width: 98%;
-    height: 666px;
-    background: rgba(250, 250, 250, 0.4);
-    position: absolute;
-    left: 21px;
-    top: 315px;
-    z-index: 999;
-  }
+.search-container {
+  padding: 15px;
 }
-</style>
-<style lang="less">
-.page.early-payment-apply.special-input {
-  .fixed-container {
-    height: 65px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #fff;
-    z-index: 10;
-    text-align: right;
-    padding: 10px 20px;
-    box-shadow: 0px -5px 10px #ccc;
-  }
-  .special-input {
-    .ivu-input {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-  .bigSelect {
-    .ivu-select-selection {
-      display: inline-block;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-  .early-payment-apply {
-    .ivu-select-selection {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-  .early-pay-tabs {
-    .ivu-tabs-bar {
-      border-bottom: 1px solid #dddee1;
-      .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
-        margin: 0;
-        margin-right: 4px;
-        padding: 5px 16px 4px;
-        border: 1px solid #dddee1;
-        border-bottom: 0;
-        border-radius: 4px 4px 0 0;
-        transition: all 0.3s ease-in-out;
-      }
-    }
-  }
+.info-container {
+  margin-bottom: 100px;
+}
+
+.fixed-container {
+  height: 65px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 10;
+  text-align: right;
+  padding: 10px 20px;
+  box-shadow: 0px -5px 10px #ccc;
+}
+
+.emptyText {
+  font-size: 32px;
+  color: #ccc;
+  font-weight: bold;
+  background: #f2f2f2;
+  height: 500px;
+  text-align: center;
+  line-height: 500px;
+  letter-spacing: 1px;
+  box-shadow: 0px 0px 5px #ccc;
 }
 </style>

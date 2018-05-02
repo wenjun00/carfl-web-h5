@@ -54,11 +54,13 @@ import Component from "vue-class-component";
 import DataBox from "~/components/common/data-box.vue";
 import { Prop } from "vue-property-decorator";
 import UploadVoucher from "~/components/common/upload-voucher.vue"
+import BankInfo from "~/components/base-data/bank-info.vue"
 
 @Component({
   components: {
     DataBox,
-    UploadVoucher
+    UploadVoucher,
+    BankInfo
   }
 })
 export default class ApplyDetail extends Vue {
@@ -67,7 +69,7 @@ export default class ApplyDetail extends Vue {
   private applyType: String = "销售收款申请";
   private payDetail: Array<Object> = [];
   private columns1: any;
-  private columns3: any;
+  private columns3:any;
   private accountDetail: Array<Object> = [];
   private fileList: Array<Object> = [];
   private addNewApplyModal: any = {
@@ -113,7 +115,6 @@ export default class ApplyDetail extends Vue {
         align: "center"
       }
     ];
-
     this.columns3 = [
       {
         title: "户名",
@@ -141,6 +142,7 @@ export default class ApplyDetail extends Vue {
         key: "clientNumber"
       }
     ];
+
   }
 }
 </script>

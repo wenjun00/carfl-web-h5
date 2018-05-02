@@ -4,7 +4,8 @@
     <i-form :label-width="110" label-position="left">
       <i-row class="modal-item-shenqing">
         <i-col class="modal-item-col" :span="24">
-          <span>收款类型：</span><span class="modal-item-leixing">{{$dict.getDictName(repaymentObj.applicationType)}}</span>
+          <span>收款类型：</span>
+          <span class="modal-item-leixing">{{$dict.getDictName(repaymentObj.applicationType)}}</span>
           <i-button class="modal-item-button" type="text" @click="saleApplyInfo">销售申请详情</i-button>
         </i-col>
         <i-col class="modal-item-beizhu" :span="24">
@@ -18,7 +19,7 @@
     <div v-if=" financeUploadResources.length">
       <div class="modal-item-fujian"></div>
       <span>附件</span>
-      <upload-voucher  ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
+      <upload-voucher ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
     </div>
     <div>
       <div class="modal-item-mingxi"></div>
@@ -74,7 +75,8 @@
           <i-input class="modal-item-huakou" v-model="v.collectMoneyAmount" @on-blur="inputBlur" readonly></i-input>
           <i-button class="blueButton" v-if="!check">确认划扣</i-button>
         </td>
-        <td><span>已处理</span>
+        <td>
+          <span>已处理</span>
           <i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
@@ -86,13 +88,14 @@
     </table>
     <div>
       <div class="modal-item-xinxi"></div>
-      <span >账户信息</span>
+      <span>账户信息</span>
     </div>
+    <!--<bank-info :dataSet="personalBanks"></bank-info>-->
     <i-table :columns="columns2" :data="personalBanks"></i-table>
 
     <div v-if="!check || applicationPhaseResources.length">
       <div class="modal-item-xinxi"></div>
-      <span >收款凭证</span>
+      <span>收款凭证</span>
       <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
     </div>
 
@@ -108,358 +111,356 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import ChangeCard from "~/components/purchase-manage/change-card.vue"
-  import DataBox from "~/components/common/data-box.vue";
-  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    CollectMoneyHistoryService
-  } from "~/services/manage-service/collect-money-history.service";
-  import UploadVoucher from "~/components/common/upload-voucher.vue"
-  import { Prop, Watch } from "vue-property-decorator";
+import Vue from "vue";
+import Component from "vue-class-component";
+import ChangeCard from "~/components/purchase-manage/change-card.vue"
+import DataBox from "~/components/common/data-box.vue";
+import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
+import { Dependencies } from "~/core/decorator";
+import { CollectMoneyHistoryService } from "~/services/manage-service/collect-money-history.service";
+import UploadVoucher from "~/components/common/upload-voucher.vue"
+import { Prop, Watch } from "vue-property-decorator";
+import BankInfo from "~/components/base-data/bank-info.vue";
 
-  @Component({
-    components: {
-      ChangeCard,
-      DataBox,
-      PurchaseInformation,
-      UploadVoucher
-    }
+@Component({
+  components: {
+    ChangeCard,
+    DataBox,
+    PurchaseInformation,
+    UploadVoucher,
+    BankInfo
+  }
+})
+export default class ConfirmGather extends Vue {
+  @Dependencies(CollectMoneyHistoryService) private collectMoneyHistoryService: CollectMoneyHistoryService;
+  @Prop({
+    default: false
   })
-  export default class ConfirmGather extends Vue {
-    @Dependencies(CollectMoneyHistoryService) private collectMoneyHistoryService: CollectMoneyHistoryService;
-    @Prop({
-      default: false
-    })
-    check: boolean;
-    @Prop() currentRow:any
-    private rowObj: any = {};
-    private repaymentObj: any = {};
-    private applicationPhaseResources: any = []
-    private financeUploadResources: any = [];
-    private collectMoneyDetails: any = [];
-    private paymentAmount: any = 0
-    private collectMoneyItemModels: any = []
-    private collectMoneyId: any = ''
-    private openUpload: Boolean = false;
-    private box: any = ''
-    private columns2: any;
-    private personalBanks: Array < Object > = [];
-    private columns3: any;
-    private data3: Array < Object > = [];
-    private purchaseInfoModel: Boolean = false;
-    private fodderList:any =[]
-    private gatherModal: Object = {
-      gatherType: '销售收款',
-      remarks: ''
-    }
+  check: boolean;
+  @Prop() currentRow: any
+  private rowObj: any = {};
+  private repaymentObj: any = {};
+  private applicationPhaseResources: any = []
+  private financeUploadResources: any = [];
+  private collectMoneyDetails: any = [];
+  private paymentAmount: any = 0
+  private collectMoneyItemModels: any = []
+  private collectMoneyId: any = ''
+  private openUpload: Boolean = false;
+  private box: any = ''
+  private personalBanks: Array<Object> = [];
+  private columns3: any;
+  private columns2: any;
+  private data3: Array<Object> = [];
+  private purchaseInfoModel: Boolean = false;
+  private fodderList: any = []
+  private gatherModal: Object = {
+    gatherType: '销售收款',
+    remarks: ''
+  }
 
-    @Watch('currentRow')
-    onChange(){
-      this.refresh(this.currentRow)
-    }
-    mounted(){
-      this.refresh(this.currentRow)
-    }
-    refresh(row) {
-      this.$nextTick(()=>{
-        if(!row)
-          return
-        this.rowObj = row
-        this.collectMoneyHistoryService.withdrawApplicationDetail({
-          applicationId: row.applicationId
-        }).subscribe(data => {
-          this.collectMoneyId = data.collectMoneyId || ''
-          this.repaymentObj = data
-          this.collectMoneyDetails = data.collectMoneyDetails || []
-          this.personalBanks = data.personalBanks
-          this.financeUploadResources = data.collectMoneyPhaseUploadResources
-          this.applicationPhaseResources = data.applicationPhaseUploadResources
-          this.collectMoneyItemModels = data.collectMoneyItemModels
-          this.$nextTick(()=>{
-            let _uploadFodder:any = this.$refs['upload-voucher']
-            _uploadFodder.Reverse(data.collectMoneyPhaseUploadResources)
-            // let _uploadFodderTwo:any = this.$refs['upload-voucher-two']
-            // _uploadFodderTwo.Reverse(data.applicationPhaseUploadResources)
-          })
-          this.inputBlur()
-        }, ({
+  @Watch('currentRow')
+  onChange() {
+    this.refresh(this.currentRow)
+  }
+  mounted() {
+    this.refresh(this.currentRow)
+  }
+  refresh(row) {
+    this.$nextTick(() => {
+      if (!row)
+        return
+      this.rowObj = row
+      this.collectMoneyHistoryService.withdrawApplicationDetail({
+        applicationId: row.applicationId
+      }).subscribe(data => {
+        this.collectMoneyId = data.collectMoneyId || ''
+        this.repaymentObj = data
+        this.collectMoneyDetails = data.collectMoneyDetails || []
+        this.personalBanks = data.personalBanks
+        this.financeUploadResources = data.collectMoneyPhaseUploadResources
+        this.applicationPhaseResources = data.applicationPhaseUploadResources
+        this.collectMoneyItemModels = data.collectMoneyItemModels
+        this.$nextTick(() => {
+          let _uploadFodder: any = this.$refs['upload-voucher']
+          _uploadFodder.Reverse(data.collectMoneyPhaseUploadResources)
+          // let _uploadFodderTwo:any = this.$refs['upload-voucher-two']
+          // _uploadFodderTwo.Reverse(data.applicationPhaseUploadResources)
+        })
+        this.inputBlur()
+      }, ({
               msg
             }) => {
           this.$Message.error(msg)
         })
-      })
-    }
-    /**
-     * 上传的文件
-     */
-    fileNumber(item){
-      this.fodderList = item
-    }
-    /**
-     * 计算总计
-     */
-    inputBlur() {
-      let sum: any = 0
-      this.collectMoneyDetails.forEach(v => {
-        sum = sum + (Number(v.collectMoneyAmount) || 0)
-      })
-      this.paymentAmount = sum
-    }
-    /**
-     * 增加还款对象
-     */
-    addObj() {
-      this.collectMoneyDetails.push({collectMoneyAmount: ''})
-    }
-    selectWay(code, item) {
-      let target: any = this.collectMoneyItemModels.find((d) => d.itemCode === code)
-      if (target) {
-        item.collectMoneyAmount = target.itemMoney
-        this.inputBlur()
-      }
-    }
-    /**
-     * 删除还款对象
-     */
-    deleteObj(index) {
-      console.log('add')
-      this.collectMoneyDetails.splice(index, 1)
+    })
+  }
+  /**
+   * 上传的文件
+   */
+  fileNumber(item) {
+    this.fodderList = item
+  }
+  /**
+   * 计算总计
+   */
+  inputBlur() {
+    let sum: any = 0
+    this.collectMoneyDetails.forEach(v => {
+      sum = sum + (Number(v.collectMoneyAmount) || 0)
+    })
+    this.paymentAmount = sum
+  }
+  /**
+   * 增加还款对象
+   */
+  addObj() {
+    this.collectMoneyDetails.push({ collectMoneyAmount: '' })
+  }
+  selectWay(code, item) {
+    let target: any = this.collectMoneyItemModels.find((d) => d.itemCode === code)
+    if (target) {
+      item.collectMoneyAmount = target.itemMoney
       this.inputBlur()
     }
-
-    created() {
-      this.columns3 = [{
-        align: "center",
-        width: "60",
-        renderHeader: (h, {
-          column,
-          index
-        }) => {
-          return h(
-            "div", {
-              on: {
-                click: () => {
-                  // this.columnsConfig();
-                }
-              },
-              style: {
-                cursor: "pointer"
-              }
-            }, [
-              h("Icon", {
-                props: {
-                  type: "plus",
-                  size: "20"
-                }
-              })
-            ]
-          );
-        },
-        render: (h, {
-          row,
-          columns,
-          index
-        }) => {
-          if (index === 1) {
-            return h("Icon", {
-              props: {
-                type: "loop",
-                size: "20"
-              }
-            })
-          } else {
-            return h("Icon", {
-              props: {
-                type: "trash-a",
-                size: "20"
-              }
-            })
-          }
-        }
-      }, {
-        title: '项目名称',
-        align: 'center',
-        key: 'projectName',
-        render: (h, {
-          row,
-          columns,
-          index
-        }) => {
-          return h('Select', {
-            props: {
-              width: '100px',
-              placeholder: '请选择收款方式'
-            }
-          }, [h('Option', {
-            props: {
-              label: '汇付',
-              value: '汇付'
-            }
-          }), h('Option', {
-            props: {
-              label: '富友',
-              value: '富友'
-            }
-          }), h('Option', {
-            props: {
-              label: '现金',
-              value: '现金'
-            }
-          })])
-        }
-      }]
-      this.data3 = [{
-        // projectName: ''
-      }]
-
-
-      this.columns2 = [{
-        title: "户名",
-        align: 'center',
-        key: 'personalName'
-      }, {
-        title: "开户银行",
-        align: 'center',
-        key: 'depositBank'
-      }, {
-        title: "银行卡号",
-        align: 'center',
-        key: 'cardNumber'
-      }, {
-        title: "支行名称",
-        align: 'center',
-        key: 'depositBranch'
-      }, {
-        title: "第三方客户号",
-        align: 'center',
-        key: 'clientNumber'
-      }]
-    }
-    saleApplyInfo() {
-      this.purchaseInfoModel = true
-      let _purchaseInfo: any = this.$refs["purchase-info"];
-      _purchaseInfo.getOrderDetail(this.rowObj);
-    }
   }
+  /**
+   * 删除还款对象
+   */
+  deleteObj(index) {
+    console.log('add')
+    this.collectMoneyDetails.splice(index, 1)
+    this.inputBlur()
+  }
+
+  created() {
+      this.columns2 = [{
+      title: "户名",
+      align: 'center',
+      key: 'personalName'
+    }, {
+      title: "开户银行",
+      align: 'center',
+      key: 'depositBank'
+    }, {
+      title: "银行卡号",
+      align: 'center',
+      key: 'cardNumber'
+    }, {
+      title: "支行名称",
+      align: 'center',
+      key: 'depositBranch'
+    }, {
+      title: "第三方客户号",
+      align: 'center',
+      key: 'clientNumber'
+    }];
+    this.columns3 = [{
+      align: "center",
+      width: "60",
+      renderHeader: (h, {
+          column,
+        index
+        }) => {
+        return h(
+          "div", {
+            on: {
+              click: () => {
+                // this.columnsConfig();
+              }
+            },
+            style: {
+              cursor: "pointer"
+            }
+          }, [
+            h("Icon", {
+              props: {
+                type: "plus",
+                size: "20"
+              }
+            })
+          ]
+        );
+      },
+      render: (h, {
+          row,
+        columns,
+        index
+        }) => {
+        if (index === 1) {
+          return h("Icon", {
+            props: {
+              type: "loop",
+              size: "20"
+            }
+          })
+        } else {
+          return h("Icon", {
+            props: {
+              type: "trash-a",
+              size: "20"
+            }
+          })
+        }
+      }
+    }, {
+      title: '项目名称',
+      align: 'center',
+      key: 'projectName',
+      render: (h, {
+          row,
+        columns,
+        index
+        }) => {
+        return h('Select', {
+          props: {
+            width: '100px',
+            placeholder: '请选择收款方式'
+          }
+        }, [h('Option', {
+          props: {
+            label: '汇付',
+            value: '汇付'
+          }
+        }), h('Option', {
+          props: {
+            label: '富友',
+            value: '富友'
+          }
+        }), h('Option', {
+          props: {
+            label: '现金',
+            value: '现金'
+          }
+        })])
+      }
+    }]
+    this.data3 = [{
+      // projectName: ''
+    }]
+
+
+
+  }
+  saleApplyInfo() {
+    this.purchaseInfoModel = true
+    let _purchaseInfo: any = this.$refs["purchase-info"];
+    _purchaseInfo.getOrderDetail(this.rowObj);
+  }
+}
 
 </script>
 
 <style lang="less" scoped>
-  .invoiceContainer {
-    display: flex;
-    justify-content: flex-start;
-    .invoices {
-      margin-top: 10px;
-    }
-    .invoiceItem {
-      margin-left: 10px;
-      width: 140px;
-      height: 100px;
-      border: 1px solid #dddddd;
-      background-image: url('/static/images/common/invoice.png')
-    }
-    .invoiceName {
-      text-align: center;
+.invoiceContainer {
+  display: flex;
+  justify-content: flex-start;
+  .invoices {
+    margin-top: 10px;
+  }
+  .invoiceItem {
+    margin-left: 10px;
+    width: 140px;
+    height: 100px;
+    border: 1px solid #dddddd;
+    background-image: url("/static/images/common/invoice.png");
+  }
+  .invoiceName {
+    text-align: center;
+  }
+}
+
+.component.confirm-gather {
+  .modal-item-shenqing {
+    background: #f5f5f5;
+  }
+  .modal-item-col {
+    padding: 6px;
+  }
+  .modal-item-leixing {
+    margin-left: 10px;
+  }
+  .modal-item-button {
+    float: right;
+    color: #265ea2;
+  }
+  .modal-item-beizhu {
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+  .modal-item-input {
+    display: inline-block;
+    width: 80%;
+  }
+  .modal-item-fujian {
+    width: 7px;
+    height: 20px;
+    background: #265ea2;
+    display: inline-block;
+    margin-right: 6px;
+    position: relative;
+    top: 4px;
+  }
+  .modal-item-mingxi {
+    width: 7px;
+    height: 20px;
+    background: #265ea2;
+    display: inline-block;
+    margin-right: 6px;
+    position: relative;
+    top: 4px;
+  }
+  .modal-item-table {
+    margin-top: 10px;
+    text-align: center;
+    border: 1px solid #dddee1;
+    .bg-color {
+      background-color: #f2f2f2;
     }
   }
-
-  .component.confirm-gather {
-    .modal-item-shenqing {
-      background: #F5F5F5
-    }
-    .modal-item-col {
-      padding: 6px;
-    }
-    .modal-item-leixing {
-      margin-left: 10px;
-    }
-    .modal-item-button {
-      float: right;
-      color: #265ea2
-    }
-    .modal-item-beizhu {
-      margin-top: 10px;
-      margin-left: 10px
-    }
-    .modal-item-input {
-      display: inline-block;
-      width: 80%;
-    }
-    .modal-item-fujian {
-      width: 7px;
-      height: 20px;
-      background: #265EA2;
-      display: inline-block;
-      margin-right: 6px;
-      position: relative;
-      top: 4px;
-    }
-    .modal-item-mingxi {
-      width: 7px;
-      height: 20px;
-      background: #265EA2;
-      display: inline-block;
-      margin-right: 6px;
-      position: relative;
-      top: 4px;
-    }
-    .modal-item-table {
-      margin-top: 10px;
-      text-align: center;
-      border: 1px solid #DDDEE1;
-      .bg-color{
-          background-color: #F2F2F2;
-      }
-    }
-    .modal-item-fangshi {
-      width: 7px;
-      height: 20px;
-      background: #265EA2;
-      display: inline-block;
-      margin-right: 6px;
-      position: relative;
-      top: 4px;
-    }
-    .modal-item-icon {
-      color: #199ED8;
-      cursor: pointer;
-    }
-    .modal-item-select {
-      display: inline-block;
-      width: 90%
-    }
-    .modal-item-input2 {
-      display: inline-block;
-      width: 80%;
-    }
-    .modal-item-huakou {
-      display: inline-block;
-      width: 30%;
-      margin-right: 10px
-    }
-    .modal-item-icon2 {
-      margin-left: 6px;
-      cursor: pointer
-    }
-    .modal-item-td {
-      font-weight: 700;
-      font-size: 14px
-    }
-    .modal-item-zhanghuxinxi {
-      width: 7px;
-      height: 20px;
-      background: #265EA2;
-      display: inline-block;
-      margin-right: 6px;
-      position: relative;
-      top: 4px;
-      margin-top: 10px;
-    }
+  .modal-item-fangshi {
+    width: 7px;
+    height: 20px;
+    background: #265ea2;
+    display: inline-block;
+    margin-right: 6px;
+    position: relative;
+    top: 4px;
   }
-
+  .modal-item-icon {
+    color: #199ed8;
+    cursor: pointer;
+  }
+  .modal-item-select {
+    display: inline-block;
+    width: 90%;
+  }
+  .modal-item-input2 {
+    display: inline-block;
+    width: 80%;
+  }
+  .modal-item-huakou {
+    display: inline-block;
+    width: 30%;
+    margin-right: 10px;
+  }
+  .modal-item-icon2 {
+    margin-left: 6px;
+    cursor: pointer;
+  }
+  .modal-item-td {
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .modal-item-zhanghuxinxi {
+    width: 7px;
+    height: 20px;
+    background: #265ea2;
+    display: inline-block;
+    margin-right: 6px;
+    position: relative;
+    top: 4px;
+    margin-top: 10px;
+  }
+}
 </style>

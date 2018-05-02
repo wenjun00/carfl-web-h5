@@ -1,48 +1,56 @@
 <!--提前结清申请-->
 <template>
-  <section class="page early-payment-apply special-input">
+  <section class="page early-payment-apply">
     <page-header title="提前结清申请" hiddenExport>
-      <i-button class="blueButton" @click="clearAll">清空</i-button>
+      <command-button label="添加新申请" @click="clearAll"></command-button>
     </page-header>
-    <i-row type="flex" class="data-form">
-      <i-col span="18">
-        <i-form ref="customer-form" :model="applyData" :rules="applyRule" :label-width="80">
-          <i-col span="12">
+
+    <!-- 搜索表单-start -->
+    <div class="search-container">
+      <i-form ref="customer-form" :model="applyModel" :rules="applyRule" :label-width="90">
+        <i-row :gutter="20">
+          <i-col span="10">
             <i-form-item label="证件号码" prop="idCard">
-              <i-input type="text" v-model="applyData.idCard" placeholder="请输入证件号码" @on-change="showTab" :maxlength="18">
+              <i-input type="text" v-model="applyModel.idCard" placeholder="请输入证件号码" :disabled="transFlag" @on-change="getUserInfo" :maxlength="18">
               </i-input>
             </i-form-item>
           </i-col>
-          <i-col span="12">
+          <i-col span="10">
             <i-form-item label="客户姓名" prop="customerName">
-              <i-input type="text" v-model="applyData.customerName" placeholder="请输入客户姓名">
+              <i-input type="text" v-model="applyModel.customerName" placeholder="请输入客户姓名">
               </i-input>
             </i-form-item>
           </i-col>
-          <i-col span="12">
+        </i-row>
+        <i-row :gutter="20">
+          <i-col span="10">
             <i-form-item label="客户电话" prop="mobileMain">
-              <i-input type="text" v-model="applyData.mobileMain" placeholder="请输入客户电话">
+              <i-input type="text" v-model="applyModel.mobileMain" placeholder="请输入客户电话">
               </i-input>
             </i-form-item>
           </i-col>
-          <i-col span="12">
+          <i-col span="10">
             <i-form-item label="选择订单" prop="orderId">
-              <i-select v-model="applyData.orderId" placeholder="请选择订单" @on-change="changeOrderId">
+              <i-input v-model="applyModel.orderNumber" :readonly="true" v-if="transFlag"></i-input>
+              <i-select v-model="applyModel.orderId" placeholder="请选择订单" @on-change="changeOrderId" v-else>
                 <i-option v-for="item in orderNumberIdModels" :key="item.orderId" :value="item.orderId" :label="item.orderNumber"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
-          <i-col span="24">
+        </i-row>
+        <i-row>
+          <i-col>
             <i-form-item label="备注" prop="remark">
-              <i-input type="text" style="width:77%;" v-model="applyData.remark" placeholder="请输入备注">
+              <i-input type="text" class="remark" v-model="applyModel.remark" placeholder="请输入备注">
               </i-input>
             </i-form-item>
           </i-col>
-        </i-form>
-      </i-col>
+        </i-row>
 
-    </i-row>
-    <i-tabs v-model="materialTabs" class="early-pay-tabs">
+      </i-form>
+    </div>
+
+    <i-tabs v-show="applyModel.orderId" v-model="materialTabs" class="info-container">
       <i-tab-pane name="gather-detail-early-pay" label="收款明细">
         <gather-detail-early-pay :checkOrderId="checkOrderId" ref="gather-detail-early-pay"></gather-detail-early-pay>
       </i-tab-pane>
@@ -50,22 +58,12 @@
         <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
       </i-tab-pane>
     </i-tabs>
-    <div class="shade" :style="{display:disabledStatus}">
+
+    <div v-show="!applyModel.orderId" class="emptyText">
+      请先填写证件信息
     </div>
-    <div class="submit-bar">
-      <i-row type="flex" align="middle" class="submit-bar-apply">
-        <i-col :span="8" push="1">
-          <span>申请人：{{applyPerson}}</span>
-        </i-col>
-        <i-col :span="12" pull="4">
-          <span>申请时间：{{applyTime}}</span>
-        </i-col>
-        <i-col :span="4">
-          <div class="fixed-container">
-            <i-button size="large" class="highButton" @click="saveAndCommit">保存并提交</i-button>
-          </div>
-        </i-col>
-      </i-row>
+    <div v-show="applyModel.orderId" class="fixed-container">
+      <i-button size="large" class="highButton" @click="saveAndCommit">保存并提交</i-button>
     </div>
 
   </section>
@@ -83,7 +81,6 @@ import ModifyGatherItem from '~/components/purchase-manage/modify-gather-item.vu
 import ChangeGatherItem from '~/components/purchase-manage/change-gather-item.vue'
 import GatherDetailEarlyPay from '~/components/purchase-manage/gather-detail-early-pay.vue'
 import { WithdrawApplicationService } from "~/services/manage-service/withdraw-application.service"
-import { setTimeout } from 'core-js/library/web/timers'
 
 @Layout('workspace')
 @Component({
@@ -98,47 +95,22 @@ import { setTimeout } from 'core-js/library/web/timers'
 })
 export default class EarlyPaymentApply extends Page {
   @Dependencies() private pageService: PageService
-  @Dependencies(WithdrawApplicationService)
-  private withdrawApplicationService: WithdrawApplicationService
-  private applyData: any = {
-    idCard: '',
-    customerName: '',
-    mobileMain: '',
-    salesManName: '',
-    orderId: '',
-    remark: ''
-  }
-  applyRule: Object = {
-    idCard: [
-      {
-        required: true,
-        message: '请输入证件号码',
-        trigger: 'blur'
-      },
-      {
-        validator: this.$validator.idCard,
-        trigger: 'blur'
-      }
-    ],
-    customerName: [
-      {
-        required: true,
-        message: '请输入客户姓名',
-        trigger: 'blur'
-      }
-    ],
-    mobileMain: [
-      {
-        validator: this.$validator.phoneNumber,
-        trigger: 'blur'
-      }
-    ]
-    //   orderId: [{
-    //     required: true,
-    //     message: '请选择订单',
-    //     trigger:'change'
-    //   }],
-  }
+  @Dependencies(WithdrawApplicationService) private withdrawApplicationService: WithdrawApplicationService
+
+  // 传值过来的页面
+  private transFlag: boolean = false
+  // 当前页面验证通过的身份证号
+  private currentIdCard: string = ""
+
+  // 当前form 表单
+  private customerForm: any = {}
+  private gatherDetail: any = {}
+  private uploadthefodder: any = {}
+
+
+  private applyModel: any = {}
+  private applyRule: any = {}
+
   private purchaseData: Object = {
     province: '',
     city: '',
@@ -176,21 +148,65 @@ export default class EarlyPaymentApply extends Page {
   private msg: any = ''
 
   created() {
-    this.applyPerson = this.$store.state.userData.username
-    let time = new Date()
-    this.applyTime =
-      time.getFullYear() +
-      '-' +
-      (time.getMonth() + 1) +
-      '-' +
-      time.getDate() +
-      ' ' +
-      time.getHours() +
-      ':' +
-      time.getMinutes() +
-      ':' +
-      time.getSeconds()
+    this.applyModel = {
+      idCard: '',
+      customerName: '',
+      mobileMain: '',
+      salesManName: '',
+      orderId: '',
+      remark: ''
+    }
+    this.applyRule = {
+      idCard: { required: true, message: '请输入证件号码', trigger: 'blur' },
+      customerName: { required: true, message: '请输入客户姓名', trigger: 'blur' },
+      mobileMain: { required: true, validator: this.$validator.phoneNumber, trigger: 'blur' }
+    }
   }
+
+  mounted() {
+    this.customerForm = this.$refs['customer-form']
+    this.gatherDetail = this.$refs['gather-detail-early-pay']
+    this.uploadthefodder = this.$refs['upload-the-fodder']
+  }
+
+  async getUserInfo() {
+    // 检测身份证
+    if (!await this.checkIdCardValid()) {
+      return;
+    }
+
+    if (this.currentIdCard && this.currentIdCard !== this.applyModel.idCard) {
+      this.$Modal.confirm({
+        title: "提醒",
+        content: "证件号码更新,是否要重置申请信息?",
+        onOk: this.resetPage(this.applyModel.idCard)
+      });
+    }
+
+    this.currentIdCard = this.applyModel.idCard
+    this.getOrderInfo()
+  }
+
+  async checkIdCardValid() {
+    if (this.applyModel.idCard.length < 18) {
+      return;
+    }
+    // 验证身份证信息
+    return await new Promise((reslove, reject) => {
+      this.customerForm.validateField('idCard', error => reslove(!error))
+    })
+  }
+
+  resetPage(newIdCard?: string) {
+    this.transFlag = false
+    this.orderNumberIdModels = []
+    this.customerForm.resetFields()
+    this.applyModel.idCard = newIdCard
+    this.gatherDetail.resetTable()
+    this.uploadthefodder.fodder.reset()
+  }
+
+
 
   /**
    * 订单号change
@@ -206,7 +222,7 @@ export default class EarlyPaymentApply extends Page {
         })
         .subscribe(
         data => {
-          this.applyData.remark = data.remark
+          this.applyModel.remark = data.remark
           // 获取收款项和备注信息
           let _gatherDetail: any = this.$refs['gather-detail-early-pay']
           _gatherDetail.makeList(data)
@@ -231,7 +247,7 @@ export default class EarlyPaymentApply extends Page {
     let itemList = _gatherDetail.getItem()
     this.saveDraftItem = itemList
     this.saveDraftModel.otherFee = _gatherDetail.getOtherFee()
-    this.saveDraftModel.remark = this.applyData.remark
+    this.saveDraftModel.remark = this.applyModel.remark
     let surplusManageFee = itemList.find(v => v.itemName === 'surplusManageFee')
     this.saveDraftModel.surplusManageFee = surplusManageFee
       ? surplusManageFee.itemMoney
@@ -269,22 +285,7 @@ export default class EarlyPaymentApply extends Page {
     this.saveDraftModel.financeUploadResources = _uploadFodder.fodderList
   }
 
-  /**
-   * 保存草稿
-   */
-  saveDraft() {
-    this.getModel()
-    this.withdrawApplicationService
-      .saveAdvancePayoffApplicationAsDraft(this.saveDraftModel)
-      .subscribe(
-      data => {
-        this.$Message.success('保存草稿成功！')
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
-      )
-  }
+
 
   /**
    * 保存并提交
@@ -311,7 +312,7 @@ export default class EarlyPaymentApply extends Page {
           data => {
             this.$Message.success('保存并提交成功！')
             this.saveDraftDisabled = true
-            this.resetAll()
+            this.resetPage()
           },
           ({ msg }) => {
             this.$Message.error(msg)
@@ -321,31 +322,9 @@ export default class EarlyPaymentApply extends Page {
     })
   }
 
-  /**
-   * 显示tab页，去掉遮罩
-   */
-  showTab() {
-    if (this.applyData.idCard.length === 18) {
-      this.disabledStatus = 'none'
-      this.getOrderInfo()
-    } else {
-      this.applyData.customerName = ''
-      this.applyData.mobileMain = ''
-    }
-  }
 
-  /**
-   * 页面重置
-   */
-  resetAll() {
-    let _form: any = this.$refs['customer-form']
-    _form.resetFields()
-    this.applyData.orderId = ''
-    let _gatherDetail: any = this.$refs['gather-detail-early-pay']
-    _gatherDetail.resetTable()
-    let _uploadthefodder: any = this.$refs['upload-the-fodder']
-    _uploadthefodder.fodder.reset()
-  }
+
+
 
   /**
    * 获取订单信息
@@ -353,16 +332,16 @@ export default class EarlyPaymentApply extends Page {
   getOrderInfo() {
     this.withdrawApplicationService
       .getPersonalProductOrderInfoForAdvance({
-        idCard: this.applyData.idCard,
-        customerName: this.applyData.customerName,
-        mobileMain: this.applyData.mobileMain
+        idCard: this.applyModel.idCard,
+        customerName: this.applyModel.customerName,
+        mobileMain: this.applyModel.mobileMain
       })
       .subscribe(
       data => {
         if (data[0] && data[0].orderNumberIdModels) {
           this.orderNumberIdModels = data[0].orderNumberIdModels
-          this.applyData.customerName = data[0].name
-          this.applyData.mobileMain = data[0].mobileMain
+          this.applyModel.customerName = data[0].name
+          this.applyModel.mobileMain = data[0].mobileMain
           this.personalId = data[0].personalId
         }
       },
@@ -381,7 +360,7 @@ export default class EarlyPaymentApply extends Page {
       content:
         '您有未保存的提前结清申请,清空会删除页面内容，是否确认清空申请内容！',
       onOk: () => {
-        this.resetAll()
+        this.resetPage()
         // 显示遮罩
         this.disabledStatus = 'block'
         // 清空orderId
@@ -395,97 +374,39 @@ export default class EarlyPaymentApply extends Page {
 </script>
 
 <style lang="less" scoped>
-.page.early-payment-apply {
-  .fixed-container {
-    height: 65px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #fff;
-    z-index: 10;
-    text-align: right;
-    padding: 10px 20px;
-    box-shadow: 0px -5px 10px #ccc;
-  }
-  .data-form {
-    margin-top: 10px;
-  }
-  .header {
-    border-bottom: 1px solid #cccccc;
-    margin-bottom: 20px;
-  }
-  .clear-button {
-    height: 40px;
-    position: relative;
-    top: 60px;
-  }
-  .submit-bar {
-    height: 70px;
-    width: 100%;
-    background: #fff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border: 1px solid #ddd;
-    .submit-bar-apply {
-      padding: 14px;
-      span {
-        height: 40px;
-        display: inline-block;
-        line-height: 3;
-      }
-    }
-  }
-  .shade {
-    width: 98%;
-    height: 666px;
-    background: rgba(250, 250, 250, 0.7);
-    position: absolute;
-    left: 21px;
-    top: 315px;
-    z-index: 999;
-  }
+.search-container {
+  padding: 15px;
 }
-</style>
-<style lang="less">
-.page.early-payment-apply.special-input {
-  .special-input {
-    .ivu-input {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    }
-  }
-  .bigSelect {
-    .ivu-select-selection {
-      display: inline-block;
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-  .early-payment-apply {
-    .ivu-select-selection {
-      border-style: none;
-      border-bottom-style: solid;
-      border-radius: 0;
-    }
-  }
-  .early-pay-tabs {
-    .ivu-tabs-bar {
-      border-bottom: 1px solid #dddee1;
-      .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
-        margin: 0;
-        margin-right: 4px;
-        padding: 5px 16px 4px;
-        border: 1px solid #dddee1;
-        border-bottom: 0;
-        border-radius: 4px 4px 0 0;
-        transition: all 0.3s ease-in-out;
-      }
-    }
-  }
+.info-container {
+  margin-bottom: 100px;
+}
+
+.fixed-container {
+  height: 65px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 10;
+  text-align: right;
+  padding: 10px 20px;
+  box-shadow: 0px -5px 10px #ccc;
+}
+
+.emptyText {
+  font-size: 32px;
+  color: #ccc;
+  font-weight: bold;
+  background: #f2f2f2;
+  height: 500px;
+  text-align: center;
+  line-height: 500px;
+  letter-spacing: 1px;
+  box-shadow: 0px 0px 5px #ccc;
+}
+
+.remark {
+  width: 80% !important;
 }
 </style>
