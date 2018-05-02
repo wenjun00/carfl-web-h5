@@ -57,7 +57,7 @@ export default {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'modifySettleChannel',
-        type: requestType.Put
+        type: requestType.Get
     },
     /**
      * 进件模块-客户资料
@@ -94,5 +94,14 @@ export default {
         controller: CONTROLLER,
         action: 'customerOpenAccount',
         type: requestType.Post
+    },
+    /**
+     * 查询客户银行卡信息
+     */
+    checkBankCard: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'checkBankCard',
+        type: requestType.Get
     }
 }

@@ -174,6 +174,7 @@ import Page from '~/core/page'
 import DataBox from '~/components/common/data-box.vue'
 import BankCardInfo from '~/components/finance-manage/bank-card-info.vue'
 import AddCompany from '~/components/finance-manage/add-company.vue'
+import CompanyInformation from '~/components/finance-manage/company-information.vue'
 
 import CompanyBankCard from '~/components/finance-manage/company-bank-card.vue'
 import Component from 'vue-class-component'
@@ -188,7 +189,8 @@ import { BankcardDetailService } from "~/services/manage-service/bankcard-detail
   components: {
     DataBox,
     CompanyBankCard,
-    AddCompany
+    AddCompany,
+    CompanyInformation
   }
 })
 export default class CompanyAccountList extends Page {
@@ -280,11 +282,11 @@ export default class CompanyAccountList extends Page {
       val => {
         let dialog = this.$dialog.show({
           title: '企业信息',
-          footer: true,
-          onOk: addCompany => { },
+          footer: false,
+          onOk: companyInformation => {  },
           onCancel: () => { },
           render: h => {
-            return h(AddCompany, {
+            return h(CompanyInformation, {
               props: {
                 val
               }

@@ -80,7 +80,7 @@ export class PersonalService {
             server: manageService.personalController.modifySettleChannel,
             data: {
                 settleChannel: settleChannel,
-                id: id
+                personId: id
             }
         })
     }
@@ -138,6 +138,17 @@ export class PersonalService {
                 reservedPhoneNumber: rowData.reservedPhoneNumber, // 银行预留手机号
                 accountType: rowData.accountType, // 账户类型
                 personalId: personalId
+            }
+        })
+    }
+    /**
+     * 查询客户银行卡信息
+     */
+    checkBankCard({personalId}) {
+        return this.netService.send({
+            server: manageService.personalController.checkBankCard,
+            data: {
+                personId: personalId
             }
         })
     }
