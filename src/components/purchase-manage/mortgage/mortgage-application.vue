@@ -166,10 +166,12 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Dependencies } from "~/core/decorator";
 import { Watch, Emit } from "vue-property-decorator";
 import { State, Mutation, Action } from "vuex-class";
 import MortgageCarList from "~/components/purchase-manage/mortgage/mortgage-car-list.vue";
 import ProductList from "~/components/purchase-manage/product-list.tsx.vue";
+import {ProductPlanIssueService}from "~/services/manage-service/product-plan-issue.service"
 import { Form } from "iview";
 @Component({
   components: {}
@@ -177,6 +179,7 @@ import { Form } from "iview";
 export default class MortgageApplication extends Vue {
   @State companyList;
   @Action getCompanyList;
+  @Dependencies(ProductPlanIssueService) productPlanIssueService:ProductPlanIssueService
 
   @Emit("on-product-change")
   emitProductChange(product) {}
@@ -503,7 +506,7 @@ export default class MortgageApplication extends Vue {
   async validate() {
     let applicationForm = this.$refs["application-form"] as Form;
     let productForm = this.$refs["product-form"] as Form;
-    console.log(productForm);
+
     // 自定义验证
     return await this.$validator
       .validate(
@@ -525,9 +528,28 @@ export default class MortgageApplication extends Vue {
   }
 
   /**
+   * 获取产品期数信息
+   */
+  async getProductIssisDetail(id){
+    return new Promise((reslove,reject)=>{
+       this.productPlanIssueService.findProductPlanById(id).subscribe(data=>{
+         let product = this.formatProductModal(data);
+          product.productIssueId = data.id;
+          // 更新当前产品
+          this.emitProductChange(product);
+           reslove(product)
+       },()=>{
+         reject()
+       })
+    })
+   
+  }
+
+  /**
    * 返回数据格式化
    */
-  revert(data) {
+  async revert(data) {
+    console.log(data)
     // 申请信息
     this.applicationModel = {
       province: data.province,
@@ -539,21 +561,23 @@ export default class MortgageApplication extends Vue {
       intentionMethod: data.intentionMethod
     };
 
-    this.currentProduct = {
-      productId: data.productId,
-      seriesId: data.seriesId,
-      productIssueId: data.productIssueId,
-      id: data.productIssueId,
-      productRate: data.productRate,
-      payWay: data.payWay
-    };
-
+    // 获取产品信息
+    this.currentProduct = await this.getProductIssisDetail(data.productIssueId)
+    
+    // 茶品数据
     this.productModel.loadAmount = data.financingAmount;
     this.productModel.gpsAmount = data.gpsFee;
     this.productModel.manageRatio = data.manageCostPercent;
     this.productModel.manageAmount = data.manageCost;
     this.productModel.otherAmount = data.otherFee;
     this.productModel.remark = data.remark;
+
+
+    this.carDataSet = data.orderCars.map(car=>{
+          car.carColor =  car.vehicleColour;
+          car.displacement = car.vehicleEmissions;
+          return car
+    })
 
     // 计算金额
     this.getComputedAmount();
