@@ -1,4 +1,4 @@
-<!--角色维护-->
+<!--角色维护--> 
 <template>
   <section class="page role-maintenance">
     <page-header title="角色维护" hidden-print @on-export="exportRole">
@@ -355,7 +355,7 @@ export default class RoleMaintenance extends Page {
    */
   addRole() {
     let _addRole = <Modal>this.$refs['add-role']
-    _addRole.addRole()
+    _addRole.addChangeRole()
   }
   openSearch() {
     this.searchOptions = !this.searchOptions

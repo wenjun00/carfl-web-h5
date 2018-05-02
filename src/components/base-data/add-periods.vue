@@ -15,7 +15,7 @@
         </data-grid-item>
         <data-grid-item label="产品利率(月)" :span="4">
           <i-form-item class="item-chanpin" prop="productRates">
-            <i-input-number placeholder="请输入产品利率" v-model="formItems.productRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
+            <i-input-number placeholder="请输入产品利率" :precision="4" v-model="formItems.productRates" :min="0" :max="100" > </i-input-number>
           </i-form-item>
         </data-grid-item>
         <data-grid-item label="还款方式" :span="4">
@@ -158,17 +158,17 @@
         </data-grid-item>
         <data-grid-item :span="6" label="合同违约金费率">
           <i-form-item class="item-input" prop="contractBreakRates">
-            <i-input-number v-model="formItems.contractBreakRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
+            <i-input-number v-model="formItems.contractBreakRates" :min="0" :max="100"  :precision="4"> </i-input-number>
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="6" label="提前还款费率">
           <i-form-item class="item-input" prop="prepaymentRates">
-            <i-input-number v-model="formItems.prepaymentRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
+            <i-input-number v-model="formItems.prepaymentRates" :min="0" :max="100" :precision="4"> </i-input-number>
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="12" label="罚息费率">
           <i-form-item class="item-input" prop="penaltyRates">
-            <i-input-number v-model="formItems.penaltyRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
+            <i-input-number v-model="formItems.penaltyRates" :min="0" :max="100" :precision="4"> </i-input-number>
           </i-form-item>
         </data-grid-item>
       </data-grid>
