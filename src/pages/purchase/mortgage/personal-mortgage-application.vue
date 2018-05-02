@@ -95,7 +95,7 @@ export default class PersonalMortgageApplication extends Page {
 
   private currentStep = 0;
   private currentTab = "mortgage-application";
-  private currentProduct = null;
+  private currentProduct = "";
   private orderStatus = null;
   private currentCardNumber = "";
   // 基础数据表单
@@ -358,11 +358,10 @@ export default class PersonalMortgageApplication extends Page {
     this.basisModel.cardNumber = data.personal.idCard;
     this.basisModel.phoneNumber = data.personal.phoneNumber;
     // this.basisModel.phoneNumbe
-
     this.applicationTabs.forEach(async ({ name }) => {
       // 当前tab
       let tab: any = this.$refs[name];
-
+      console.log(tab)
       // 退件与草稿恢复产品信息
       switch (orderStatus) {
         case 303: {
@@ -389,12 +388,23 @@ export default class PersonalMortgageApplication extends Page {
     }
   }
 
+  /**
+   * 加载页面数据
+   */
+  loaded({ orderNumber }) {
+    this.getOrderData(orderNumber);
+  }
+
+  
+  /**
+   * 重置页面数据
+   */
   reset() {
     this.currentCardNumber = "";
     this.orderStatus = "";
-    let customerForm = this.$refs["customer-form"] as Form;
+    let basisForm = this.$refs["basis-form"] as Form;
 
-    customerForm.resetFields();
+    basisForm.resetFields();
     this.currentStep = 0;
 
     this.resetApplicationTab();
@@ -461,7 +471,7 @@ export default class PersonalMortgageApplication extends Page {
           this.$Message.success("保存成功");
           setTimeout(() => {
             this.closePage(
-              "purchase/purchase-manage/mortgage/personal-mortgage-appplication"
+              "purchase/mortgage/personal-mortgage-application"
             );
           }, 1000);
         },
@@ -503,8 +513,9 @@ export default class PersonalMortgageApplication extends Page {
         salesmanName: this.basisModel.saler.userRealname,
         seriesId: this.basisModel.saler.id
       },
-      // 选购信息
+      // 抵押申请信息
       {
+        // 申请信息
         province: mortgageApplication.applicationModel.province,
         city: mortgageApplication.applicationModel.city,
         companyId: mortgageApplication.applicationModel.company,
@@ -513,7 +524,7 @@ export default class PersonalMortgageApplication extends Page {
           mortgageApplication.applicationModel.intentionAmount,
         intentionPeriods: mortgageApplication.applicationModel.intentionPeriods,
         intentionMethod: mortgageApplication.applicationModel.intentionMethod,
-
+        // 产品信息
         financingAmount: mortgageApplication.productModel.loadAmount, // 估价金额
         gpsFee: mortgageApplication.productModel.gpsAmount,
         manageCostPercent: mortgageApplication.productModel.manageRatio,
@@ -525,9 +536,10 @@ export default class PersonalMortgageApplication extends Page {
         productIssueId: mortgageApplication.currentProduct.id,
         productRate: mortgageApplication.currentProduct.productRate,
         payWay: mortgageApplication.currentProduct.payWay,
+        // 押品信息
         orderCars: mortgageApplication.carDataSet.map(car => {
           car.vehicleId = car.id | car.orderId;
-          car.assessment_id = car.id | car.orderId;
+          car.assessmentId = car.id | car.orderId;
           car.vehicleColour = car.carColor;
           car.vehicleEmissions = car.displacement;
           return car;
