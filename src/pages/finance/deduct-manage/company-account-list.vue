@@ -420,22 +420,22 @@ export default class CompanyAccountList extends Page {
         index
           }) => {
         return h('div', [
-          h(
-            'i-button', {
-              props: {
-                type: 'text'
-              },
-              style: {
-                color: '#265EA2'
-              },
-              on: {
-                click: () => {
-                  this.getbankInfo(row)
-                }
-              }
-            },
-            '银行卡详情'
-          ),
+        //   h(
+        //     'i-button', {
+        //       props: {
+        //         type: 'text'
+        //       },
+        //       style: {
+        //         color: '#265EA2'
+        //       },
+        //       on: {
+        //         click: () => {
+        //           this.getbankInfo(row)
+        //         }
+        //       }
+        //     },
+        //     '银行卡详情'
+        //   ),
           h(
             'i-button', {
               props: {

@@ -1,4 +1,4 @@
-<!--新增角色-->
+<!--新增角色--> 
 <template>
     <i-form :label-width="110" class="data-form role-maintenance" ref="add-role" :model="addRoleModel" :rules="rules">
       <i-form-item label="角色名称" prop="roleName">
@@ -87,8 +87,9 @@
       addChangeRole(){
         if(!/^[A-Za-z0-9\u4e00-\u9fa5]+$/.test(this.addRoleModel.roleName.toString())){
             this.$Message.warning('角色名称存在特殊字符，请重新输入！')
+        }else{
+           this.addRole()
         }
-        return
       }
     reset() {
       let _addRole = < Form > this.$refs['add-role']
