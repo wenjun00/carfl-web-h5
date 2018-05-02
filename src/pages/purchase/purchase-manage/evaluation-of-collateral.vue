@@ -1,7 +1,7 @@
 <!--押品评估-->
 <template>
     <section class="page evaluation-of-collateral">
-        <page-header title="押品评估" hiddenPrint></page-header>
+        <page-header title="押品评估" hiddenPrint hidden-export></page-header>
         <data-form :model="collateralModel" date-prop="timeSearch" @on-search="getCollateralList">
             <template slot="input">
                 <i-form-item prop="carParams" label="品牌型号">

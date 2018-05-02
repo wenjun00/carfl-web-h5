@@ -1,7 +1,7 @@
 <!--评估申请-->
 <template>
     <section class="page evaluation-application">
-        <page-header title="评估申请" hidden-print>
+        <page-header title="评估申请" hidden-print hidden-export>
             <command-button label="新建申请" @click="newApplication"></command-button>
         </page-header>
         <data-form :model="applicationModel" @on-search="getApplicationList">
