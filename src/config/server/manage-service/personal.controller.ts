@@ -3,7 +3,7 @@ import { requestType } from '~/config/enum.config'
 const SERVICE = 'service-manage'
 const CONTROLLER = 'personal'
 
-export default {
+export default { 
     /**
      * 根据客户三项查询历史订单
      */
@@ -111,5 +111,15 @@ export default {
         controller: CONTROLLER,
         action: 'checkBankCard',
         type: requestType.Get
+    },
+    /**
+     * 删除客户
+     */
+    deleteIntentionalCustomer: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'deleteIntentionalCustomer',
+        type: requestType.Get
     }
+
 }
