@@ -1,8 +1,6 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
-import { requestType } from "~/config/enum.config";
-import {FilterService} from '~/utils/filter.service'
 export class AssessMentPlacingService {
     @Inject(NetService)
     private netService: NetService
@@ -52,6 +50,24 @@ export class AssessMentPlacingService {
             server: manageService.assessmentplacing.findAllAssessmentPlacingType,
         })
     }
+    /**
+     * 根据ID查询出库详情
+     */
+    findPlacingByPlacingId(data) {
+      return this.netService.send({
+        server: manageService.assessmentplacing.findPlacingByPlacingId,
+        data: data,
+      })
+    }
+  /**
+   * 押品出库
+   */
+    createPlacingOrder(data) {
+      return this.netService.send({
+        server: manageService.assessmentplacing.createPlacingOrder,
+        data: data,
+      })
+    }
 
 
 
@@ -62,5 +78,4 @@ export class AssessMentPlacingService {
 
 
 
- 
 }

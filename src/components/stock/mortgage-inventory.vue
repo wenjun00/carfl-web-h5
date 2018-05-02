@@ -17,31 +17,31 @@
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="车身颜色">
-                        <i-input readonly v-model="mortgageInventoryModel.carColor" disabled></i-input>
+                        <i-input  v-model="mortgageInventoryModel.carColor" disabled></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="上牌城市" >
-                        <i-input readonly v-model="mortgageInventoryModel.city" disabled></i-input>
+                        <i-input  v-model="mortgageInventoryModel.city" disabled></i-input>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="车牌号码" >
-                        <i-input readonly v-model="mortgageInventoryModel.carNoShow" disabled></i-input>
+                        <i-input  v-model="mortgageInventoryModel.carNoShow" disabled></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="车架号" >
-                        <i-input readonly v-model="mortgageInventoryModel.frameNo" disabled></i-input>
+                        <i-input  v-model="mortgageInventoryModel.frameNo" disabled></i-input>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="发动机号" >
-                        <i-input readonly v-model="mortgageInventoryModel.engineNo" disabled></i-input>
+                        <i-input  v-model="mortgageInventoryModel.engineNo" disabled></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -278,7 +278,6 @@ export default class addPeople extends Vue {
     delete this.mortgageInventoryModel.carSource
     delete this.mortgageInventoryModel.placingTypeId
     delete this.mortgageInventoryModel.fee
-    console.log(this.mortgageInventoryModel)
       this.assessMentPlacingService
         .createWarehousingOrder(this.mortgageInventoryModel)
         .subscribe(
@@ -297,7 +296,12 @@ export default class addPeople extends Vue {
    *  返回上传文件列
    */
   fileNumber(item) {
-    this.fodderList = item;
+    this.fodderList = item.map(v => {
+      return {
+        materialUrl:v.materialUrl,
+        materialType: 1228
+      }
+    })
   }
 }
 </script>

@@ -128,7 +128,6 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'orderMortgageSearch',
-    type: requestType.Get 
-  }
-
+    type: requestType.Get
+  },
 }

@@ -1,7 +1,7 @@
 <!--评估任务池-->
 <template>
     <section class="page evaluation-task-pool">
-        <page-header title="评估任务池" hidden-print>
+        <page-header title="评估任务池" hidden-print hidden-export>
           <command-button label="批量领取" @click="allReceive"></command-button>
         </page-header>
         <data-form :model="taskpoolModel" @on-search="getPoolList" :page="pageService" date-prop="timeSearch">

@@ -23,15 +23,22 @@
         </data-form>
         <data-box :columns="goodsOutColumns" :data="dataSet" :page="pageService"></data-box>
         <template>
-            <i-modal width="780" v-model="inventoryModal" title="确认出库" class="edit-from-storage">
-                <edit-from-storage ref="edit-from-storage"></edit-from-storage>
+            <i-modal width="780" v-model="inventoryModal" title="确认出库">
+                <edit-from-storage ref="edit-from-storage" @close="close"></edit-from-storage>
                 <div slot="footer">
                     <i-button size="large" type="ghost" class="Ghost" @click="inventoryModal=false">取消</i-button>
-                    <i-button size="large" type="primary" class="blueButton" @click="inventoryModal=false">确定</i-button>
+                    <i-button size="large" type="primary" class="blueButton" @click="confirmOut">确定</i-button>
                 </div>
             </i-modal>
         </template>
-
+        <template>
+          <i-modal width="780" v-model="treasuryModal" title="查看详情">
+            <treasury-out-treasury ref="treasury-out-treasury"></treasury-out-treasury>
+            <div slot="footer">
+              <i-button size="large" type="ghost" class="Ghost" @click="treasuryModal=false">取消</i-button>
+            </div>
+          </i-modal>
+        </template>
     </section>
 </template>
 
@@ -41,12 +48,15 @@ import Component from 'vue-class-component'
 import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
-import EditFromStorage from '~/components/base-data/edit-from-storage.vue'
+import EditFromStorage from '~/components/stock/edit-from-storage.vue'
+import TreasuryOutTreasury from '~/components/stock/treasury-out-treasury.vue'
 import { AssessMentPlacingService } from '~/services/manage-service/assess-ment-placing.service'
+import { FilterService } from '~/utils/filter.service'
 @Layout('workspace')
 @Component({
   components: {
-    EditFromStorage
+    EditFromStorage,
+    TreasuryOutTreasury
   }
 })
 export default class GoodsOutTreasury extends Page {
@@ -66,6 +76,7 @@ export default class GoodsOutTreasury extends Page {
   }
   private whetherInclude: Boolean = true
   private inventoryModal: Boolean = false
+  private treasuryModal:Boolean = false
   private goodsOutColumns: any = [
     {
       title: '操作',
@@ -132,7 +143,10 @@ export default class GoodsOutTreasury extends Page {
       sortable: true,
       key: 'placingOperateTime',
       align: 'center',
-      minWidth: this.$common.getColumnWidth(3)
+      minWidth: this.$common.getColumnWidth(3),
+      render: (h, { row }) => {
+        return h('span', FilterService.dateFormat(row.placingOperateTime, 'yyyy-MM-dd'))
+      }
     },
     {
       title: '操作人',
@@ -231,19 +245,36 @@ export default class GoodsOutTreasury extends Page {
   }
 
   /**
-   * 押品出库
+   * 获取押品出库信息
    */
   getOutTreasuryPopup(row) {
     this.inventoryModal = true
+    let editFromStorage = this.$refs['edit-from-storage'] as EditFromStorage
+    editFromStorage.outTreasury(row)
+  }
+  /**
+   * 确定押品出库
+   */
+  confirmOut(){
+    let editFromStorage = this.$refs['edit-from-storage'] as EditFromStorage
+    editFromStorage.confirmTreasury()
   }
   /**
    * 押品出库详情
    */
   getDetailsPopup(row){
-
+    this.treasuryModal = true
+    let treasuryOutTreasury = this.$refs['treasury-out-treasury'] as TreasuryOutTreasury
+    treasuryOutTreasury.outTreasury(row)
   }
-
+  close(){
+    this.inventoryModal = false
+    this.getOutTreasuryList()
+  }
   mounted() {
+    this.getOutTreasuryList()
+  }
+  activated() {
     this.getOutTreasuryList()
   }
 }

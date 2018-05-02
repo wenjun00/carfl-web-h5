@@ -48,11 +48,22 @@ export default {
     action: 'findAllAssessmentPlacingType',
     type: requestType.Get
   },
-
-
-
-
-
-
- 
+  /**
+   * 根据ID查询出库详情
+   */
+  findPlacingByPlacingId:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findPlacingByPlacingId',
+    type: requestType.Get
+  },
+  /**
+   * 押品出库
+   */
+  createPlacingOrder:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'createPlacingOrder',
+    type: requestType.Post
+  }
 }

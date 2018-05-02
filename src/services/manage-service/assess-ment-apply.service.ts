@@ -129,11 +129,11 @@ export class AssessMentApplyService {
       data: data
     })
   }
-  
+
   /**
    * 已评估车辆订单查询接口
    * @param param
-   * @param page 
+   * @param page
    */
   orderMortgageSearch({ cardNumber, orderNo }: { cardNumber: string, orderNo?: string }, page) {
     return this.netService.send({
