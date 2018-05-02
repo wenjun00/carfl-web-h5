@@ -260,15 +260,15 @@ export default class MortgageApplication extends Vue {
         message: "请填写意向期限",
         trigger: "change"
       }
-    ],
-    intentionMethod: [
-      {
-        required: true,
-        type: "number",
-        message: "请填写意向抵押方式",
-        trigger: "change"
-      }
     ]
+    // intentionMethod: [
+    //   {
+    //     required: true,
+    //     type: "number",
+    //     message: "请填写意向抵押方式",
+    //     trigger: "change"
+    //   }
+    // ]
   };
 
   // 产品数据校验
