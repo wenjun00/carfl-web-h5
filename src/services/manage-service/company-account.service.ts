@@ -11,10 +11,11 @@ export class CompanyAccountService {
     /**
      * 分页查询所有企业开户信息
      */
-    getAllAccountWithPage(page) {
+    getAllAccountWithPage(data, page) {
         return this.netService.send({
             server: manageService.companyAccountController.getAllAccountWithPage,
-            page
+            data: data,
+            page: page
         })
     }
     /**
