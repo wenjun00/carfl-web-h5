@@ -1,5 +1,5 @@
-<!--个人意向客户-->
-<template>
+<!--个人意向客户--> 
+<template> 
     <section class="page personal-client">
         <page-header title="个人意向客户" hidden-print>
             <i-button @click="addCustomerDetails" type="text">新增客户</i-button>
@@ -23,7 +23,7 @@
                 <add-customer-details ref="add-customer-details"></add-customer-details>
                 <div slot="footer">
                     <i-button size="large" type="ghost" class="Ghost" @click="addCustomerDetailsModal=false">取消</i-button>
-                    <i-button size="large" type="primary" class="blueButton" @click="addCustomerDetailsModal=false">编辑</i-button>
+                    <i-button size="large" type="primary" class="blueButton" @click="addDetailsSave">保存</i-button>
                 </div>
             </i-modal>
         </template>
@@ -205,6 +205,15 @@ export default class PersonalClient extends Page {
         this.$Message.error(msg)
       })
   }
+ /**
+  * 新增意向保存
+  */
+    addDetailsSave(){
+       let addCustomerDetailsModal = this.$refs['add-customer-details'] as AddCustomerDetails
+       addCustomerDetailsModal.addClientSave()
+    //    this.getPersonalClientList()
+    }
+
   /**
    * 切换触发
    */
