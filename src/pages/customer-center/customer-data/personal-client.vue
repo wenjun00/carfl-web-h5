@@ -1,7 +1,7 @@
-<!--个人意向客户--> 
-<template> 
+<!--个人意向客户-->
+<template>
     <section class="page personal-client">
-        <page-header title="个人意向客户" hidden-print>
+        <page-header title="个人意向客户">
             <i-button @click="addCustomerDetails" type="text">新增客户</i-button>
         </page-header>
         <data-form :model="personalClientModel" date-prop="timeSearch" @on-search="getPersonalClientList">
@@ -40,7 +40,7 @@
 
     </section>
 </template>
- 
+
 <script lang="ts">
 import Page from '~/core/page'
 import Component from 'vue-class-component'
@@ -243,7 +243,7 @@ export default class PersonalClient extends Page {
     * 新增客户详情
     */
     addCustomerDetails(){
-     this.addCustomerDetailsModal= true 
+     this.addCustomerDetailsModal= true
     }
 
   mounted() {
