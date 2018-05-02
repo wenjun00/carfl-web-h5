@@ -154,7 +154,7 @@
       }
 
       if (data && data.bankList.length > 0) console.log(data.bankList, 'bankList')
-      this.accountInfoList = data.bankList
+      this.accountInfoList = data.bankList[0]
     }
     /**
      * 变更收款项
