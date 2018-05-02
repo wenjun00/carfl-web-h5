@@ -110,7 +110,7 @@ export default class DataBox extends Vue {
 
   @Watch("data")
   onDataChange() {
-    this.multipleSelection = this.data.filter(r => r._checked === true)
+    this.multipleSelection = this.data.filter(r => r._checked)
     this.currentRow = null;
   }
 
