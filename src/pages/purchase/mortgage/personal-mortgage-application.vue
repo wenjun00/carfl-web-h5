@@ -374,9 +374,9 @@ export default class PersonalMortgageApplication extends Page {
           break;
         }
         default: {
-          // if (!["mortgage-application", "upload-the-material"].includes(name)) {
+          if (!["mortgage-application", "upload-the-material"].includes(name)) {
             tab.revert(data);
-          // }
+          }
         }
       }
     });
