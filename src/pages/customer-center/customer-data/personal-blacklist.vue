@@ -1,7 +1,7 @@
 <!--个人黑名单-->
 <template>
     <section class="page personal-blacklist">
-        <page-header title="个人黑名单">
+        <page-header title="个人黑名单" hidden-print>
             <i-button type="text">新增黑名单</i-button>
         </page-header>
         <data-form :model="personalBlacklistModel" date-prop="timeSearch" @on-search="getPersonalClientList">
