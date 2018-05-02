@@ -3,12 +3,11 @@
     <page-header title="个人抵押贷款申请">
       <command-button type="text" label="业务流程图" @click="onShowBusinessFlow"></command-button>
     </page-header>
-
-    <i-form v-model="basisModel" :rules="basisRules" :label-width="120">
+    <i-form ref="basis-form" :model="basisModel" :rules="basisRules" :label-width="120">
       <i-row>
         <i-col :span="12">
           <i-form-item label="证件号码" prop="cardNumber">
-            <i-input v-model="basisModel.cardNumber"></i-input>
+            <i-input v-model="basisModel.cardNumber" :max="18"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -29,31 +28,71 @@
       </i-row>
     </i-form>
 
-    <i-tabs>
-      <i-tab-pane v-for="(tab,index) in applicationTabs" :key="tab.name" :label="tab.label" :name="tab.name" :disabled="currentStep<index">
-        <component :is="tab.name" :ref="tab.name"></component>
+    <i-tabs v-model="currentTab">
+      <div slot="extra">
+        <i-button type="text" v-show="currentStep<applicationTabs.length" @click="onNextStep">下一步</i-button>
+      </div>
+      <i-tab-pane name="mortgage-application" label="申请资料" :disabled="currentStep<0">
+        <mortgage-application @on-product-change="product=>currentProduct=product" ref="mortgage-application"></mortgage-application>
+      </i-tab-pane>
+      <i-tab-pane name="personal-customer-info" label="客户资料" :disabled="currentStep<1">
+        <personal-customer-info ref="personal-customer-info"></personal-customer-info>
+      </i-tab-pane>
+      <i-tab-pane name="customer-job" label="客户职业" :disabled="currentStep<2">
+        <customer-job ref="customer-job"></customer-job>
+      </i-tab-pane>
+      <i-tab-pane name="personal-customer-contact" label="客户联系人" :disabled="currentStep<3">
+        <personal-customer-contact ref="personal-customer-contact"></personal-customer-contact>
+      </i-tab-pane>
+      <i-tab-pane name="customer-origin" label="客户来源" :disabled="currentStep<4">
+        <customer-origin ref="customer-origin"></customer-origin>
+      </i-tab-pane>
+      <i-tab-pane name="upload-the-material" label="上传素材" :disabled="currentStep<5">
+        <upload-the-material :currentProduct="currentProduct" ref="upload-the-material"></upload-the-material>
       </i-tab-pane>
     </i-tabs>
+
+    <div class="fixed-container" v-show="currentStep > 5">
+      <!-- <i-button v-show="!orderStatus" size="large" class="highDefaultButton" @click="onSubmit(true)">保存草稿</i-button> -->
+      <i-button size="large" @click="onSubmit(false)">保存并提交</i-button>
+    </div>
   </section>
 </template>
 
 <script lang="ts">
 import Page from "~/core/page";
 import Component from "vue-class-component";
-import { Layout } from "~/core/decorator";
+import { Layout, Dependencies } from "~/core/decorator";
 import SalesmanName from "~/components/purchase-manage/salesman-name.vue";
-import PersonalCustomerInfo from "~/components/customer/personal/personal-customer-info.vue";
 import MortgageApplication from "~/components/purchase-manage/mortgage/mortgage-application.vue";
+import PersonalCustomerInfo from "~/components/customer/personal/personal-customer-info.vue";
+import CustomerJob from "~/components/customer/personal/customer-job.vue";
+import PersonalCustomerContact from "~/components/customer/personal/personal-customer-contact.vue";
+import CustomerOrigin from "~/components/customer/customer-origin.vue";
+import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.tsx.vue";
+import { Form } from "iview";
+import { Mutation } from "vuex-class";
+import MortgageCarList from "~/components/purchase-manage/mortgage/mortgage-car-list.vue";
+import { ProductOrderService } from "~/services/manage-service/product-order.service";
 @Layout("workspace")
 @Component({
   components: {
     MortgageApplication,
-    PersonalCustomerInfo
+    PersonalCustomerInfo,
+    CustomerJob,
+    PersonalCustomerContact,
+    CustomerOrigin,
+    UploadTheMaterial
   }
 })
 export default class PersonalMortgageApplication extends Page {
-  private currentStep = -1;
+  @Dependencies(ProductOrderService) productOrderService: ProductOrderService;
+  @Mutation closePage;
 
+  private currentStep = 0;
+  private currentTab = "mortgage-application";
+  private currentProduct = null;
+  private orderStatus = null;
   // 基础数据表单
   private basisModel = {
     cardNumber: "", // 证件号码
@@ -111,19 +150,23 @@ export default class PersonalMortgageApplication extends Page {
     {
       name: "personal-customer-info",
       label: "客户资料"
+    },
+    {
+      name: "customer-job",
+      label: "客户职业"
+    },
+    {
+      name: "personal-customer-contact",
+      label: "客户联系人"
+    },
+    {
+      name: "customer-origin",
+      label: "客户来源"
+    },
+    {
+      name: "upload-the-material",
+      label: "上传素材"
     }
-    // {
-    //   name: "customer-job",
-    //   label: "客户职业"
-    // },
-    // {
-    //   name: "customer-account",
-    //   label: "客户联系人"
-    // },
-    // {
-    //   name: "customer-origin",
-    //   label: "客户来源"
-    // }
   ];
 
   /**
@@ -152,6 +195,9 @@ export default class PersonalMortgageApplication extends Page {
     });
   }
 
+  /**
+   * 显示销售员列表
+   */
   onShowSalerList() {
     let dialog = this.$dialog.show({
       title: "销售员列表",
@@ -165,13 +211,179 @@ export default class PersonalMortgageApplication extends Page {
 
         // 更新销售人员信息
         this.basisModel.saler = currentRow;
-        // .salesmanName = currentRow.userRealname;
-        // this.customerModel.salesmanId = currentRow.id;
       },
       render: h => {
         return h(SalesmanName);
       }
     });
+  }
+
+  /**
+   * 步骤流程处理
+   */
+  async onNextStep() {
+    let tab = this.$refs[this.currentTab] as any;
+    // 验证当前页面
+    let result = await tab.validate();
+
+    if (!result) {
+      return;
+    }
+
+    this.currentStep += 1;
+
+    this.$nextTick(() => {
+      if (this.applicationTabs.length > this.currentStep) {
+        this.currentTab = this.applicationTabs[this.currentStep].name;
+      }
+    });
+  }
+
+  async validate() {
+    let result = true;
+
+    // 执行验证
+    for (let { name } of this.applicationTabs) {
+      console.log(name);
+      let tab = this.$refs[name] as any;
+      result = result && !!await tab.validate();
+      if (!result) {
+        break;
+      }
+    }
+
+    // 验证结果
+    return result;
+  }
+
+  /**
+   * 提交申请数据
+   */
+  async onSubmit(validate) {
+    let result = true;
+    let basisForm = this.$refs["basis-form"] as Form;
+
+    // 基础表单验证
+    if (!await basisForm.validate().then(x => x)) {
+      return;
+    }
+
+    // 数据验证
+    if (validate) {
+      result = await this.validate();
+    }
+
+    this.submitApplicationData(validate);
+  }
+
+  submitApplicationData(draft) {
+    let data = this.getApplicationData();
+    // 添加订单
+    this.productOrderService
+      .saveFinanceApplyInfo(
+        Object.assign(data, {
+          orderStatus: this.orderStatus || (draft ? 303 : 304)
+        })
+      )
+      .subscribe(
+        data => {
+          this.$Message.success("保存成功");
+          setTimeout(() => {
+            this.closePage(
+              "purchase/purchase-manage/mortgage/personal-mortgage-appplication"
+            );
+          }, 1000);
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+
+  /**
+   * 获取申请数据
+   */
+  getApplicationData() {
+    let mortgageApplication = this.$refs[
+      "mortgage-application"
+    ] as MortgageApplication;
+
+    let personalCustomerInfo = this.$refs[
+      "personal-customer-info"
+    ] as PersonalCustomerInfo;
+
+    let customerJob = this.$refs["customer-job"] as CustomerJob;
+
+    let personalCustomerContact = this.$refs[
+      "personal-customer-contact"
+    ] as PersonalCustomerContact;
+
+    let customerOrigin = this.$refs["customer-origin"] as CustomerOrigin;
+
+    let uploadTheMaterial = this.$refs[
+      "upload-the-material"
+    ] as UploadTheMaterial;
+
+    // 订单基础信息
+    let CreateOrderModel = Object.assign(
+      // 客户信息
+      this.basisModel,
+      // 选购信息
+      {
+        province: mortgageApplication.applicationModel.province,
+        city: mortgageApplication.applicationModel.city,
+        companyId: mortgageApplication.applicationModel.company,
+        financingUse: mortgageApplication.applicationModel.mortgageUse,
+        intentionFinancingAmount:
+          mortgageApplication.applicationModel.intentionAmount,
+        intentionPeriods: mortgageApplication.applicationModel.intentionPeriods,
+        intentionMethod: mortgageApplication.applicationModel.intentionMethod,
+
+        financingAmount: mortgageApplication.productModel.loadAmount, // 估价金额
+        gpsFee: mortgageApplication.productModel.gpsAmount,
+        manageCostPercent: mortgageApplication.productModel.manageRatio,
+        manageCost: mortgageApplication.productModel.manageAmount,
+        otherFee: mortgageApplication.productModel.otherAmount,
+        remark: mortgageApplication.productModel.remark,
+        productId: mortgageApplication.currentProduct.productId,
+        seriesId: mortgageApplication.currentProduct.seriesId,
+        productIssueId: mortgageApplication.currentProduct.id,
+        productRate: mortgageApplication.currentProduct.productRate,
+        payWay: mortgageApplication.currentProduct.payWay,
+        orderCars: mortgageApplication.carDataSet.map(car => {
+          car.vehicleId = car.id;
+          car.vehicleColour = car.carColour;
+          car.vehicleEmissions = car.carEmissions;
+          return car;
+        })
+      },
+      // 客户资料
+      {
+        personal: personalCustomerInfo.customerModel
+      },
+      // 客户职业
+      {
+        personalJob: customerJob.jobModel
+      },
+      // 客户联系人
+      {
+        personalContacts: [
+          ...personalCustomerContact.familyDataSet,
+          ...personalCustomerContact.friendDataSet
+        ]
+      },
+      // 客户来源
+      {
+        personalResourceIntroduce: customerOrigin.introduceModel,
+        resourceTypes: customerOrigin.publicityModel
+      },
+      // 客户素材
+      {
+        personalDatas: uploadTheMaterial.uploadDataSet
+      }
+    );
+
+    return CreateOrderModel;
   }
 }
 </script>
@@ -179,6 +391,19 @@ export default class PersonalMortgageApplication extends Page {
 .page.personal-mortgage-application {
   & > * {
     margin-bottom: 10px;
+  }
+
+  .fixed-container {
+    height: 65px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 10;
+    text-align: right;
+    padding: 10px 20px;
+    box-shadow: 0px -5px 10px #ccc;
   }
 }
 </style>

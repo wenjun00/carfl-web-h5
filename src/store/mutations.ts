@@ -80,7 +80,7 @@ export default {
         params
       }, page))
     }
-    
+
     // 切换显示页面
     state.currentPage = page.path
   },
@@ -130,6 +130,9 @@ export default {
    */
   ready(state) {
     state.ready = true
+  },
+  updateCompanyList(state, data) {
+    state.companyList = data
   }
 }
 

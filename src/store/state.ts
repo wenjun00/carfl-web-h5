@@ -31,5 +31,6 @@ export default {
   }, {
     name: 'theme-theme1',
     color: '#18879B'
-  }]
+  }],
+  companyList: []
 }

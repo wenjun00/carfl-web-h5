@@ -43,7 +43,7 @@
     <i-tabs v-show="!!currentIdCard" v-model="currentTab" class="application-tabs">
       <i-button size="small" type="ghost" @click="onNextStep" v-show="currentStep <= 5" slot="extra">下一步</i-button>
       <i-tab-pane label="选购资料" name="choose-buy-materials">
-        <choose-buy-materials ref="choose-buy-materials" v-show="currentTab==='choose-buy-materials'"></choose-buy-materials>
+        <choose-buy-materials @on-product-change="(product)=>currentProduct = product" ref="choose-buy-materials" v-show="currentTab==='choose-buy-materials'"></choose-buy-materials>
       </i-tab-pane>
       <i-tab-pane :disabled="currentStep < 1" label="客户资料" name="customer-materials">
         <customer-materials ref="customer-materials" v-show="currentTab==='customer-materials'"></customer-materials>
@@ -58,7 +58,7 @@
         <customer-origin ref="customer-origin" v-show="currentTab==='customer-origin'"></customer-origin>
       </i-tab-pane>
       <i-tab-pane :disabled="currentStep < 5" label="上传素材" name="upload-the-material">
-        <upload-the-material ref="upload-the-material" v-show="currentTab==='upload-the-material'"></upload-the-material>
+        <upload-the-material @currentProduct="currentProduct" ref="upload-the-material" v-show="currentTab==='upload-the-material'"></upload-the-material>
       </i-tab-pane>
     </i-tabs>
 
@@ -122,6 +122,7 @@ export default class FinancingLeaseApply extends Page {
   @Mutation closePage;
   private currentIdCard = ""; // 上次查询的身份证号
   private currentStep = 0;
+  private currentProduct = null;
   private applicationTabList = [
     "choose-buy-materials",
     "customer-materials",
@@ -394,10 +395,10 @@ export default class FinancingLeaseApply extends Page {
       }
     });
 
-    if([303,311].includes(orderStatus)){
-      this.customerModel.id = data.id
-    }else{
-      this.orderStatus = null
+    if ([303, 311].includes(orderStatus)) {
+      this.customerModel.id = data.id;
+    } else {
+      this.orderStatus = null;
     }
   }
 
@@ -544,7 +545,7 @@ export default class FinancingLeaseApply extends Page {
           this.$Message.success("保存成功");
           setTimeout(() => {
             this.closePage("purchase/purchase-manage/financing-lease-apply");
-          },1000)
+          }, 1000);
         },
         ({ msg }) => {
           this.$Message.error(msg);
