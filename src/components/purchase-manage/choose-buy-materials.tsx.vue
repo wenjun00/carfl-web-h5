@@ -264,8 +264,7 @@ import { Prop, Emit, Watch } from "vue-property-decorator";
 import { FilterService } from "~/utils/filter.service";
 import { Input, Button, InputNumber, Form } from "iview";
 import { OrderService } from "~/services/business-service/order.service";
-import { LodashService } from "~/utils/lodash.service"
-
+import { LodashService } from "~/utils/lodash.service";
 
 const ModuleMutation = namespace("purchase", Mutation);
 
@@ -285,7 +284,8 @@ export default class ChooseBuyMaterials extends Vue {
   @Dependencies(ProductOrderService)
   private productOrderService: ProductOrderService;
 
-  @ModuleMutation("updateProductId") updateProductId;
+  @Emit("on-product-change")
+  emitProductChange(product) {}
 
   private companyList: any = []; // 公司信息
   private totalPrice: number = 0;
@@ -568,7 +568,10 @@ export default class ChooseBuyMaterials extends Vue {
   ];
 
   private validateInitialPayment(rule, value, callback) {
-    console.log(this.currentProduct.initialPaymentList, this.productModel.initialPayment);
+    console.log(
+      this.currentProduct.initialPaymentList,
+      this.productModel.initialPayment
+    );
     if (
       this.currentProduct.initialPaymentList &&
       this.currentProduct.initialPaymentList.length &&
@@ -612,7 +615,7 @@ export default class ChooseBuyMaterials extends Vue {
     callback();
   }
 
-  onInitialPaymentChange() { }
+  onInitialPaymentChange() {}
 
   /**
    * 更新车辆金额
@@ -675,7 +678,7 @@ export default class ChooseBuyMaterials extends Vue {
       let total = this.carDataSet
         .map(x => x.carAmount || 0)
         .reduce((a, b) => a + b);
-      this.totalPrice = LodashService.round(total, 2)
+      this.totalPrice = LodashService.round(total, 2);
     } else {
       this.totalPrice = 0;
     }
@@ -692,30 +695,42 @@ export default class ChooseBuyMaterials extends Vue {
   @Watch("productRadioModel", { immediate: true, deep: true })
   onProductRadioModelChange() {
     // 首付款=车辆参考价x首付比例
-    this.productModel.initialPayment = LodashService.round(this.$filter.safeNumber(
-      this.productModel.vehicleAmount *
-      parseFloat(this.productRadioModel.paymentScale)
-    ), 2);
+    this.productModel.initialPayment = LodashService.round(
+      this.$filter.safeNumber(
+        this.productModel.vehicleAmount *
+          parseFloat(this.productRadioModel.paymentScale)
+      ),
+      2
+    );
 
     // 保证金金额 = 融资总额x保证金比例
-    this.productModel.depositCash = LodashService.round(this.$filter.safeNumber(
-      this.productModel.financingAmount *
-      parseFloat(this.productRadioModel.depositCashRadio)
-    ), 2);
+    this.productModel.depositCash = LodashService.round(
+      this.$filter.safeNumber(
+        this.productModel.financingAmount *
+          parseFloat(this.productRadioModel.depositCashRadio)
+      ),
+      2
+    );
 
     // 管理费金额 = 融资总额x管理费比例
-    this.productModel.manageCost = LodashService.round(this.$filter.safeNumber(
-      this.productModel.financingAmount *
-      parseFloat(this.productRadioModel.manageCostPercent)
-    ), 2);
+    this.productModel.manageCost = LodashService.round(
+      this.$filter.safeNumber(
+        this.productModel.financingAmount *
+          parseFloat(this.productRadioModel.manageCostPercent)
+      ),
+      2
+    );
 
     // 尾付利息=尾款本金x尾付月利率x期数
-    this.productModel.finalCash = LodashService.round(this.$filter.safeNumber(
-      this.productModel.finalPayment +
-      this.productModel.finalPayment *
-      parseFloat(this.productRadioModel.final) *
-      this.currentProduct.periodNumber
-    ), 2);
+    this.productModel.finalCash = LodashService.round(
+      this.$filter.safeNumber(
+        this.productModel.finalPayment +
+          this.productModel.finalPayment *
+            parseFloat(this.productRadioModel.final) *
+            this.currentProduct.periodNumber
+      ),
+      2
+    );
   }
 
   /**
@@ -764,7 +779,7 @@ export default class ChooseBuyMaterials extends Vue {
           );
         }
       },
-      onCancel: () => { },
+      onCancel: () => {},
       render: h => {
         return h(AddCar, {});
       }
@@ -820,14 +835,14 @@ export default class ChooseBuyMaterials extends Vue {
           // 转换数据产品信息数据格式
           this.currentProduct = this.formatProductModal(currentRow);
           this.currentProduct.productIssueId = currentRow.id;
-          this.updateProductId(currentRow.productId);
+          this.emitProductChange(currentRow);
           this.onVehicleAmountChange();
         } else {
           this.$Message.error("请选择对应的产品");
           return false;
         }
       },
-      onCancel: () => { },
+      onCancel: () => {},
       render: h => {
         return h(ProductList, {});
       }
@@ -854,15 +869,15 @@ export default class ChooseBuyMaterials extends Vue {
     // 自定义验证
     return await this.$validator
       .validate(
-      {
-        chooseForm: this.$refs["choose-form"],
-        productIssueId: this.currentProduct.productIssueId,
-        carListCount: this.carDataSet.length,
-        totalPrice: this.totalPrice,
-        productAmountModel: this.productAmountModel,
-        productForm: this.$refs["product-form"]
-      },
-      this.customRules
+        {
+          chooseForm: this.$refs["choose-form"],
+          productIssueId: this.currentProduct.productIssueId,
+          carListCount: this.carDataSet.length,
+          totalPrice: this.totalPrice,
+          productAmountModel: this.productAmountModel,
+          productForm: this.$refs["product-form"]
+        },
+        this.customRules
       )
       .then(error => {
         if (!error) {
@@ -883,7 +898,7 @@ export default class ChooseBuyMaterials extends Vue {
     this.carDataSet = [];
     this.$common.reset(this.currentProduct);
     this.productAmountModel = {};
-    this.updateProductId();
+    this.emitProductChange(null);
     this.totalPrice = 0;
   }
 
@@ -916,7 +931,7 @@ export default class ChooseBuyMaterials extends Vue {
     // 获取公司列表
     this.getCompanyList();
     // 清空产品Id
-    this.updateProductId();
+    this.emitProductChange(null);
   }
 }
 </script>

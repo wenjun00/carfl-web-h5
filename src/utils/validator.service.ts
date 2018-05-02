@@ -68,9 +68,9 @@ export class ValidatorService {
     }
   }
 
-   /**
-   * 验证金额
-   */
+  /**
+  * 验证金额
+  */
   static zipCode(rule, value, callback) {
     if (ValidatorService.regex.zipCode.test(value) || !value) {
       callback();
@@ -86,6 +86,10 @@ export class ValidatorService {
    * @param callback 
    */
   static formValidate(rule, value, callback) {
+    if (!value) {
+      return callback()
+    }
+    
     value.validate((valid) => {
       if (valid) {
         callback()

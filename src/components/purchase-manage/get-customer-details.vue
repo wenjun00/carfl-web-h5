@@ -24,7 +24,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="证件类型" :label-width="90">
-                        <i-select disabled placeholder="请选择停放状态">
+                        <i-select disabled>
                             <!-- <i-option></i-option> -->
                         </i-select>
                     </i-form-item>
@@ -59,11 +59,11 @@
             <!-- 收起 展开 -->
             <i-row class="data-form">
                 <i-col>
-                    <div @click="fold" v-if="!WhetherNotShown" class="putAway"> +展开更多 </div>
-                    <div @click="fold" v-else="WhetherNotShown" class="putAway"> -收起 </div>
+                    <i-button @click="fold" v-if="!WhetherNotShown" type="primary" icon="plus-round">展开更多</i-button>
+                    <i-button @click="fold" v-else="WhetherNotShown" type="primary" icon="minus-round">收起</i-button>
                 </i-col>
             </i-row>
-            <template v-show="WhetherNotShown">
+            <span class="showContent"  v-show="WhetherNotShown">
                 <!-- 隐藏内容 -->
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
@@ -375,7 +375,7 @@
                         </i-form-item>
                     </i-col>
                 </i-row>
-            </template>
+            </span>
 
         </i-form>
     </section>
@@ -438,6 +438,10 @@ export default class addPeople extends Vue {
     margin-left: 28px;
     cursor: pointer;
     color: #1d4f88;
+  }
+  .showContent {
+    margin-top: 20px;
+    display: block;
   }
 }
 </style>

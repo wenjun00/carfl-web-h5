@@ -20,7 +20,6 @@
               <i-checkbox :label="70">总部推荐</i-checkbox>
               <i-checkbox :label="80">其他</i-checkbox>
             </i-checkbox-group>
-            purchase/mortagage/enterprise-mortagage-application
           </i-form-item>
         </template>
         <template v-if="originType === 2">

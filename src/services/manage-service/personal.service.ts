@@ -1,4 +1,4 @@
-import { NetService } from '~/utils/net.service'
+import { NetService } from '~/utils/net.service' 
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
@@ -45,12 +45,21 @@ export class PersonalService {
     }
 
     /**
-     * 获取客户开户列表
+     * 获取个人意向客户开户列表
      */
     getCustomerList(data, page) {
+        const dateRange = FilterService.dateRanageFormat(data.dateRange)
         return this.netService.send({
             server: manageService.personalController.getCustomerList,
-            data: data,
+            // data:data,
+            data:{
+                personalType:data.personalType,
+                name:data.name,
+                telephone:data.telephone,
+                timeSearch: data.timeSearch,
+                startTime: dateRange.start,
+                endTime: dateRange.end,
+            },
             page: page
         })
     }
@@ -138,6 +147,15 @@ export class PersonalService {
                 reservedPhoneNumber: rowData.reservedPhoneNumber, // 银行预留手机号
                 accountType:rowData.accountType // 账户类型
             }
+        })
+    }
+    /**
+     * 个人意向客户新增客户
+     */
+    createCustomer(data) {
+        return this.netService.send({
+            server: manageService.personalController.createCustomer,
+            data:data
         })
     }
 }

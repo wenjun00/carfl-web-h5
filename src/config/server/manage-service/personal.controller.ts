@@ -1,6 +1,5 @@
-// 客户信息
+// 客户信息 
 import { requestType } from '~/config/enum.config'
-
 const SERVICE = 'service-manage'
 const CONTROLLER = 'personal'
 
@@ -93,6 +92,15 @@ export default {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'customerOpenAccount',
+        type: requestType.Post
+    },
+    /**
+     * 新增意向客户
+     */
+    createCustomer: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'createCustomer',
         type: requestType.Post
     }
 }

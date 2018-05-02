@@ -40,8 +40,9 @@ const ModuleState = namespace("purchase", State);
   }
 })
 export default class UploadTheMaterial extends Vue {
-  @Dependencies(PersonalMaterialService) private personalMaterialService: PersonalMaterialService;
-  @ModuleState("productId") productId;
+  @Dependencies(PersonalMaterialService)
+  private personalMaterialService: PersonalMaterialService;
+  @Prop() currentProduct;
 
   private fileTypeList = [];
   public uploadDataSet: Array<any> = [];
@@ -84,8 +85,8 @@ export default class UploadTheMaterial extends Vue {
     }
   ];
 
-  @Watch("productId")
-  onProductIdChange(value) {
+  @Watch("currentProduct")
+  onCurrentProductChange(value) {
     this.reset();
 
     if (!!value) {
@@ -97,10 +98,10 @@ export default class UploadTheMaterial extends Vue {
    * 获取文件类型列表
    */
   getFileTypeList() {
-    if (this.productId) {
+    if (this.currentProduct) {
       this.personalMaterialService
         .getAllPersonalMaterialNoPage({
-          productId: this.productId
+          productId: this.currentProduct.productId
         })
         .subscribe(data => {
           this.fileTypeList = data;
@@ -165,16 +166,6 @@ export default class UploadTheMaterial extends Vue {
   }
 
   /**
-   * 反显
-   */
-  Reverse(data) {
-    // data.personal.personalDatas.map(v => {
-    //   (v.url = v.materialUrl), (v.name = v.uploadName);
-    // });
-    // this.uploadDataSet = data.personal.personalDatas;
-  }
-
-  /**
    * 补充资料反显
    */
   supplement(data) {
@@ -203,7 +194,7 @@ export default class UploadTheMaterial extends Vue {
   }
 
   mounted() {
-    if (this.productId) {
+    if (this.currentProduct) {
       this.getFileTypeList();
     }
   }
