@@ -315,7 +315,7 @@ export default class CompanyAccountList extends Page {
           title: '修改企业开户',
           footer: true,
           onOk: addCompany => {
-            addCompany.modifyAccountClick()
+           return addCompany.modifyAccountClick()
           },
           onCancel: () => { },
           render: h => {
@@ -342,7 +342,7 @@ export default class CompanyAccountList extends Page {
       title: '新增企业开户',
       footer: true,
       onOk: addCompany => {
-        addCompany.openaccountClick()
+        return addCompany.openaccountClick()
       },
       onCancel: () => { },
       render: h => {
