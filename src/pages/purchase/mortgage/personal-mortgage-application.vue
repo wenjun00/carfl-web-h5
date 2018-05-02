@@ -7,17 +7,17 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="证件号码" prop="cardNumber">
-            <i-input v-model="basisModel.cardNumber" :max="18"></i-input>
+            <i-input v-model="basisModel.cardNumber" :maxlength="18" autofocus @on-change="onCheckHistoryOrder"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="企业名称">
+          <i-form-item label="客户名称">
             <i-input v-model="basisModel.customterName"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
           <i-form-item label="手机号码">
-            <i-input v-model="basisModel.phoneNumber"></i-input>
+            <i-input v-model="basisModel.phoneNumber" :maxlength="11"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -74,6 +74,9 @@ import { Form } from "iview";
 import { Mutation } from "vuex-class";
 import MortgageCarList from "~/components/purchase-manage/mortgage/mortgage-car-list.vue";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
+import HistoricalRecord from "~/components/purchase-manage/historical-record.vue";
+import { PersonalService } from "~/services/manage-service/personal.service";
+
 @Layout("workspace")
 @Component({
   components: {
@@ -87,14 +90,17 @@ import { ProductOrderService } from "~/services/manage-service/product-order.ser
 })
 export default class PersonalMortgageApplication extends Page {
   @Dependencies(ProductOrderService) productOrderService: ProductOrderService;
+  @Dependencies(PersonalService) private personalService: PersonalService;
   @Mutation closePage;
 
   private currentStep = 0;
   private currentTab = "mortgage-application";
   private currentProduct = null;
   private orderStatus = null;
+  private currentCardNumber = "";
   // 基础数据表单
-  private basisModel = {
+  private basisModel: any = {
+    id: "",
     cardNumber: "", // 证件号码
     customterName: "", // 企业名称
     phoneNumber: "", // 手机号码
@@ -239,6 +245,171 @@ export default class PersonalMortgageApplication extends Page {
     });
   }
 
+  /**
+   * 检测身份证信息
+   */
+  async checkIdCardValid() {
+    if (this.basisModel.cardNumber.length < 18) {
+      return;
+    }
+    // 客户表单
+    let basisForm = this.$refs["basis-form"] as Form;
+
+    // 验证身份证信息
+    let result = await new Promise((reslove, reject) => {
+      basisForm.validateField("cardNumber", error => reslove(!error));
+    });
+
+    // TODO: 18个1仅用于测试F
+    return result || this.basisModel.cardNumber === "1".repeat(18);
+  }
+
+  /**
+   * 检测历史订单
+   */
+  async onCheckHistoryOrder() {
+    // 检测身份证
+    if (!await this.checkIdCardValid()) {
+      return;
+    }
+
+    // 查询历史数据
+    this.personalService
+      .getCustomerHistoryFinanceInfo({
+        idCard: this.basisModel.cardNumber
+      })
+      .subscribe(
+        data => {
+          if (data.length) {
+            return this.showHistoryOrder(data);
+          }
+
+          // 判断是否需要重置信息
+          if (
+            this.currentCardNumber &&
+            this.currentCardNumber !== this.basisModel.cardNumber
+          ) {
+            this.$Modal.confirm({
+              title: "提醒",
+              content: "证件号码更新,是否要重置申请信息?",
+              onOk: this.resetApplicationTab
+            });
+          }
+
+          // 更新历史查询身份证号
+          this.currentCardNumber = this.basisModel.cardNumber;
+
+          // TODO: 根据身份证获取性别和生日信息
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
+      );
+  }
+
+  /**
+   * 显示历史订单
+   */
+  showHistoryOrder(data) {
+    let dialog = this.$dialog.show({
+      title: "历史订单",
+      footer: true,
+      onOk: historyRecord => {
+        let currentRow = historyRecord.getCurrentRow();
+
+        if (!currentRow) {
+          this.$Message.error("请选择对应的订单");
+          return false;
+        }
+
+        this.getOrderData(currentRow.orderNumber);
+      },
+      onCancel: () => {
+        this.reset();
+      },
+      render: h => {
+        return h(HistoricalRecord, {
+          props: {
+            data
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * 获取订单数据
+   */
+  getOrderData(orderNumber) {
+    this.productOrderService
+      .findOrderInfoByOrderNumber({ orderNumber })
+      .subscribe(data => {
+        this.revert(data);
+      });
+  }
+
+  /**
+   * 更新数据
+   */
+  revert({ orderStatus, ...data }) {
+    this.currentCardNumber = data.personal.idCard;
+    this.orderStatus = orderStatus;
+
+    this.basisModel.cardNumber = data.personal.idCard;
+    this.basisModel.phoneNumber = data.personal.phoneNumber;
+    // this.basisModel.phoneNumbe
+
+    this.applicationTabs.forEach(async ({ name }) => {
+      // 当前tab
+      let tab: any = this.$refs[name];
+
+      // 退件与草稿恢复产品信息
+      switch (orderStatus) {
+        case 303: {
+          tab.revert(data);
+          this.currentStep = 6;
+          break;
+        }
+        case 311: {
+          tab.revert(data);
+          break;
+        }
+        default: {
+          if (!["mortgage-application", "upload-the-material"].includes(name)) {
+            tab.revert(data);
+          }
+        }
+      }
+    });
+
+    if ([303, 311].includes(orderStatus)) {
+      this.basisModel.id = data.id;
+    } else {
+      this.orderStatus = null;
+    }
+  }
+
+  reset() {
+    this.currentCardNumber = "";
+    this.orderStatus = "";
+    let customerForm = this.$refs["customer-form"] as Form;
+
+    customerForm.resetFields();
+    this.currentStep = 0;
+
+    this.resetApplicationTab();
+  }
+
+  /**
+   * 重置申请选项卡数据
+   */
+  resetApplicationTab() {
+    this.applicationTabs.forEach(({ name }) => {
+      let tab: any = this.$refs[name];
+      tab.reset();
+    });
+  }
+
   async validate() {
     let result = true;
 
@@ -328,6 +499,10 @@ export default class PersonalMortgageApplication extends Page {
     let CreateOrderModel = Object.assign(
       // 客户信息
       this.basisModel,
+      {
+        salesmanName: this.basisModel.saler.userRealname,
+        seriesId: this.basisModel.saler.id
+      },
       // 选购信息
       {
         province: mortgageApplication.applicationModel.province,
@@ -351,9 +526,10 @@ export default class PersonalMortgageApplication extends Page {
         productRate: mortgageApplication.currentProduct.productRate,
         payWay: mortgageApplication.currentProduct.payWay,
         orderCars: mortgageApplication.carDataSet.map(car => {
-          car.vehicleId = car.id;
-          car.vehicleColour = car.carColour;
-          car.vehicleEmissions = car.carEmissions;
+          car.vehicleId = car.id | car.orderId;
+          car.assessment_id = car.id | car.orderId;
+          car.vehicleColour = car.carColor;
+          car.vehicleEmissions = car.displacement;
           return car;
         })
       },

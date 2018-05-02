@@ -527,14 +527,49 @@ export default class MortgageApplication extends Vue {
   /**
    * 返回数据格式化
    */
-  dataFormat() {
-    return {};
+  revert(data) {
+    // 申请信息
+    this.applicationModel = {
+      province: data.province,
+      city: data.city,
+      company: data.companyId,
+      mortgageUse: data.financingUse,
+      intentionAmount: data.intentionFinancingAmount,
+      intentionPeriods: data.intentionPeriods,
+      intentionMethod: data.intentionMethod
+    };
+
+    this.currentProduct = {
+      productId: data.productId,
+      seriesId: data.seriesId,
+      productIssueId: data.productIssueId,
+      id: data.productIssueId,
+      productRate: data.productRate,
+      payWay: data.payWay
+    };
+
+    this.productModel.loadAmount = data.financingAmount;
+    this.productModel.gpsAmount = data.gpsFee;
+    this.productModel.manageRatio = data.manageCostPercent;
+    this.productModel.manageAmount = data.manageCost;
+    this.productModel.otherAmount = data.otherFee;
+    this.productModel.remark = data.remark;
+
+    // 计算金额
+    this.getComputedAmount();
   }
 
-  /**
-   * 请求数据格式化
-   */
-  dataParser() {}
+  reset() {
+    let applicationForm = this.$refs["application-form"] as Form;
+    let productForm = this.$refs["product-form"] as Form;
+
+    applicationForm.resetFields();
+    productForm.resetFields();
+    this.carDataSet = [];
+
+    this.$common.reset(this.currentProduct);
+    this.emitProductChange(null);
+  }
 
   mounted() {
     this.getCompanyList();
