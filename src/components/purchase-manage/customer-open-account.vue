@@ -65,7 +65,7 @@
       </i-col>
       <i-col :span="18">
         <i-form-item label="验证码" prop="qCode" style="disably:inline-block">
-          <i-input class="open-input" v-model="CustomerOpenAccountModel.qCode"></i-input>
+          <i-input class="open-input" v-model="qCode"></i-input>
           <i-button @click='sendQcode' class="blue-button">发送验证码
           </i-button>
         </i-form-item>
@@ -112,6 +112,7 @@
       reservedPhoneNumber: '', // 银行预留手机号
       qCode: '', // 验证码
     };
+    private qCode:any='';
     mounted() {
       if (this.row) {
         this.CustomerOpenAccountModel = Object.assign({}, this.row);
@@ -121,19 +122,25 @@
      * 发送验证码
      */
     sendQcode() {
-      this.personalService.customerOpenAccountVerificationPhone({
-        id: this.row.id,
-        phone: this.CustomerOpenAccountModel.reservedPhoneNumber
-      }).subscribe(
-        data => {
-          this.$Message.success('验证码发送成功！')
-        },
-        ({
-          msg
-        }) => {
-          this.$Message.error(msg)
-        }
-      )
+      if (!this.CustomerOpenAccountModel.reservedPhoneNumber) {
+        this.$Message.warning('请输入银行预留手机号！')
+      } else {
+        this.personalService.customerOpenAccountVerificationPhone({
+          id: this.row.id,
+          phone: this.CustomerOpenAccountModel.reservedPhoneNumber
+        }).subscribe(
+          data => {
+            this.$Message.success('验证码发送成功！')
+            let qCode:any=data
+            this.qCode = qCode
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg)
+          }
+        )
+      }
     }
     openaccountClick() {
       this.personalService.customerOpenAccount({

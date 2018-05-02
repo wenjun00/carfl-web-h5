@@ -90,7 +90,8 @@
       <div class="modal-item-xinxi"></div>
       <span>账户信息</span>
     </div>
-    <bank-info :dataSet="personalBanks"></bank-info>
+    <!--<bank-info :dataSet="personalBanks"></bank-info>-->
+    <i-table :columns="columns2" :data="personalBanks"></i-table>
 
     <div v-if="!check || applicationPhaseResources.length">
       <div class="modal-item-xinxi"></div>
@@ -149,6 +150,7 @@ export default class ConfirmGather extends Vue {
   private box: any = ''
   private personalBanks: Array<Object> = [];
   private columns3: any;
+  private columns2: any;
   private data3: Array<Object> = [];
   private purchaseInfoModel: Boolean = false;
   private fodderList: any = []
@@ -232,6 +234,27 @@ export default class ConfirmGather extends Vue {
   }
 
   created() {
+      this.columns2 = [{
+      title: "户名",
+      align: 'center',
+      key: 'personalName'
+    }, {
+      title: "开户银行",
+      align: 'center',
+      key: 'depositBank'
+    }, {
+      title: "银行卡号",
+      align: 'center',
+      key: 'cardNumber'
+    }, {
+      title: "支行名称",
+      align: 'center',
+      key: 'depositBranch'
+    }, {
+      title: "第三方客户号",
+      align: 'center',
+      key: 'clientNumber'
+    }];
     this.columns3 = [{
       align: "center",
       width: "60",

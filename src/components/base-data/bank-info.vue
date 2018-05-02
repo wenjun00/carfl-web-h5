@@ -1,7 +1,7 @@
 <!--新增分公司-->
 <template>
   <section class="component bank-info">
-    <data-box :columns="dataSet" :data="accountInfo" :showConfigColumn="false" :height="height"></data-box>
+    <data-box :columns="columns" :data="dataSet" :showConfigColumn="false" :height="height"></data-box>
   </section>
 </template>
 

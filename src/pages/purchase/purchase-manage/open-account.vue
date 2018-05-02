@@ -3,8 +3,8 @@
     <page-header title="客户开户"></page-header>
     <data-form date-prop="timeSearch" :model="openAccountModel" :page="pageService" @on-search="getCustomerOpenAccount" hidden-reset>
       <template slot="input">
-        <i-form-item prop="personalInfo">
-          <i-input v-model="openAccountModel.personalInfo" placeholder="请输入客户姓名\证件号码\联系号码查询"></i-input>
+        <i-form-item prop="keyWord">
+          <i-input v-model="openAccountModel.keyWord" placeholder="请输入客户姓名\证件号码\联系号码查询"></i-input>
         </i-form-item>
       </template>
     </data-form>
@@ -198,7 +198,7 @@ export default class OpenAccount extends Page {
   private personalBankId: Number = 0 // 用户账户id
   private openAccountModel: any = {
     timeSearch: '',
-    personalInfo: ''
+    keyWord: ''
   }
   mounted() {
     this.getCustomerOpenAccount()
@@ -579,7 +579,7 @@ export default class OpenAccount extends Page {
    */
   getOrderInfoByTime(val) {
     this.openAccountModel.timeSearch = val
-    this.openAccountModel.personalInfo = ''
+    this.openAccountModel.keyWord = ''
     this.getCustomerOpenAccount()
     this.openAccountModel.timeSearch = ''
   }
