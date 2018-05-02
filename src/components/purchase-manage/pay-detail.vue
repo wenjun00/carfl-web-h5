@@ -38,14 +38,20 @@
       <bank-info :dataSet="accountInfoList"></bank-info>
     </i-card>-->
     <div class="form-title">账户信息</div>
-    <data-grid :labelWidth="120" labelAlign="right" contentAlign="left">
-      <data-grid-item label="户名" :span="4">{{accountInfoList.personalName}}</data-grid-item>
-      <data-grid-item label="开户银行" :span="4">{{accountInfoList.depositBank}}</data-grid-item>
-      <data-grid-item label="银行卡号" :span="4">{{accountInfoList.cardNumber}}</data-grid-item>
-      <data-grid-item label="支行名称" :span="4">{{accountInfoList.depositBranch}}</data-grid-item>
-      <data-grid-item label="第三方客户号" :span="8">{{accountInfoList.clientNumber}}</data-grid-item>
+    <data-grid v-if="accountInfoList.length===0" :labelWidth="120" labelAlign="right" contentAlign="left">
+       <data-grid-item label="户名" :span="4"></data-grid-item>
+      <data-grid-item label="开户银行" :span="4"></data-grid-item>
+      <data-grid-item label="银行卡号" :span="4"></data-grid-item>
+      <data-grid-item label="支行名称" :span="4"></data-grid-item>
+      <data-grid-item label="第三方客户号" :span="8"></data-grid-item>
     </data-grid>
-
+    <data-grid v-else v-for="item of accountInfoList" :key="item.id" :labelWidth="120" labelAlign="right" contentAlign="left">
+      <data-grid-item label="户名" :span="4">{{item.personalName}}</data-grid-item>
+      <data-grid-item label="开户银行" :span="4">{{item.depositBank}}</data-grid-item>
+      <data-grid-item label="银行卡号" :span="4">{{item.cardNumber}}</data-grid-item>
+      <data-grid-item label="支行名称" :span="4">{{item.depositBranch}}</data-grid-item>
+      <data-grid-item label="第三方客户号" :span="8">{{item.clientNumber}}</data-grid-item>
+    </data-grid>
     <template>
       <i-modal v-model="addGatherItemModal" title="收款项目">
         <add-gather-item ref="add-gather-item" @change="changeItemdata"></add-gather-item>
@@ -100,7 +106,7 @@
     private otherTotal: number = 0 // 除其他费用的合计
     private gatherItemList: Array < any > = []
     private gatherItemModel: any
-    private accountInfoList: any = {} // 账户信息
+    private accountInfoList: any = [] // 账户信息
     private otherFee: number = 0 // 输入框的其他费用
     private checkOrderId: any = ''
     created() {
@@ -153,8 +159,10 @@
         }
       }
 
-      if (data && data.bankList.length > 0) console.log(data.bankList, 'bankList')
-      this.accountInfoList = data.bankList[0]
+    //   if (data && data.bankList.length > 0) {
+        this.accountInfoList = data.bankList
+        console.log(this.accountInfoList, 'accountInfoList')
+    //   }
     }
     /**
      * 变更收款项
@@ -203,7 +211,7 @@
       //   this.accountInfo.cardNumber = "";
       //   this.accountInfo.depositBranch = "";
       //   this.accountInfo.clientNumber = "";
-      this.accountInfoList = []
+      //   this.accountInfoList = []
     }
     /**
      * 修改其他费用重新计算合计
