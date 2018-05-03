@@ -167,7 +167,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Dependencies } from "~/core/decorator";
-import { Watch, Emit } from "vue-property-decorator";
+import { Watch, Emit, Prop } from "vue-property-decorator";
 import { State, Mutation, Action } from "vuex-class";
 import MortgageCarList from "~/components/purchase-manage/mortgage/mortgage-car-list.vue";
 import ProductList from "~/components/purchase-manage/product-list.tsx.vue";
@@ -183,7 +183,7 @@ export default class MortgageApplication extends Vue {
 
   @Emit("on-product-change")
   emitProductChange(product) {}
-
+  @Prop() cardNumber; // 身份证号码
   // 车辆押品列表
   public carDataSet: Array<any> = [];
 
@@ -424,7 +424,7 @@ export default class MortgageApplication extends Vue {
       render: h => {
         return h(MortgageCarList, {
           props: {
-            cardNumber: "123"
+            cardNumber: this.cardNumber
           }
         });
       }
@@ -542,7 +542,7 @@ export default class MortgageApplication extends Vue {
          reject()
        })
     })
-   
+
   }
 
   /**
@@ -563,7 +563,7 @@ export default class MortgageApplication extends Vue {
 
     // 获取产品信息
     this.currentProduct = await this.getProductIssisDetail(data.productIssueId)
-    
+
     // 茶品数据
     this.productModel.loadAmount = data.financingAmount;
     this.productModel.gpsAmount = data.gpsFee;
@@ -600,7 +600,7 @@ export default class MortgageApplication extends Vue {
   }
 }
 </script>
-  
+
 <style lang="less" scoped>
 .component.mortgage-application {
   .empty-text {

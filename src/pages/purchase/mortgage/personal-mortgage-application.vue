@@ -33,7 +33,7 @@
         <i-button type="text" v-show="currentStep<applicationTabs.length" @click="onNextStep">下一步</i-button>
       </div>
       <i-tab-pane name="mortgage-application" label="申请资料" :disabled="currentStep<0">
-        <mortgage-application @on-product-change="product=>currentProduct=product" ref="mortgage-application"></mortgage-application>
+        <mortgage-application @on-product-change="product=>currentProduct=product" ref="mortgage-application" :cardNumber="basisModel.cardNumber"></mortgage-application>
       </i-tab-pane>
       <i-tab-pane name="personal-customer-info" label="客户资料" :disabled="currentStep<1">
         <personal-customer-info ref="personal-customer-info"></personal-customer-info>
@@ -395,7 +395,7 @@ export default class PersonalMortgageApplication extends Page {
     this.getOrderData(orderNumber);
   }
 
-  
+
   /**
    * 重置页面数据
    */

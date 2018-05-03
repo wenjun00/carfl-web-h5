@@ -80,7 +80,7 @@ export default class MortgageCarList extends Vue {
     this.assessMentApplyService
       .orderMortgageSearch(
         {
-          cardNumber: "110101190001010011"
+          cardNumber: this.cardNumber
         },
         this.pageService
       )
@@ -102,7 +102,7 @@ export default class MortgageCarList extends Vue {
   }
 }
 </script>
-  
+
 <style lang="less" scoped>
 .component.mortgage-car-list {
 }

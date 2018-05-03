@@ -1,4 +1,4 @@
-<!--个人订单详情-->
+<!--新增黑名单-->
 <template>
   <section class="component personal-new-blacklist">
 
