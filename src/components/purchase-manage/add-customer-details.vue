@@ -1,7 +1,7 @@
 <!--新增客户详情-->
-<template>
+<template> 
     <section class="component get-customer-details">
-        <i-form :model="customerDetailsModel" ref="form-item" :label-width="90">
+        <i-form :rules="customerDetailsRule" :model="customerDetailsModel" ref="form-item" :label-width="90">
             <!-- 基本信息 -->
             <i-row class="data-form">
                 <i-col>
@@ -11,33 +11,33 @@
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
-                    <i-form-item label="客户姓名" >
+                    <i-form-item label="客户姓名" prop="name">
                         <i-input v-model="customerDetailsModel.name"></i-input>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
-                    <i-form-item label="手机号码" >
+                    <i-form-item label="手机号码" prop="mobileMain">
                         <i-input v-model="customerDetailsModel.mobileMain"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
-                    <i-form-item label="证件类型" >
+                    <i-form-item label="证件类型">
                         <i-select v-model="customerDetailsModel.certificateType">
                             <i-option v-for="{value,label} in $dict.getDictData('0433')" :key="value" :label="label" :value="value"></i-option>
                         </i-select>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
-                    <i-form-item label="证件号码" >
+                    <i-form-item label="证件号码">
                         <i-input v-model="customerDetailsModel.certificateNumber"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
-                    <i-form-item label="居住地址" >
+                    <i-form-item label="居住地址">
                         <i-input v-model="customerDetailsModel.localHomeAddr"></i-input>
                     </i-form-item>
                 </i-col>
@@ -51,7 +51,7 @@
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="24">
-                    <i-form-item label="意向级别" >
+                    <i-form-item label="意向级别">
                         <i-rate allow-half v-model="customerDetailsModel.intentionalLevel"></i-rate>
                     </i-form-item>
                 </i-col>
@@ -67,7 +67,7 @@
                 <!-- 隐藏内容 -->
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
-                        <i-form-item label="性别" >
+                        <i-form-item label="性别">
                             <i-select v-model="customerDetailsModel.sex ">
                                 <i-option v-for="{value,label} in $dict.getDictData('0001')" :key="value" :label="label" :value="value"></i-option>
                             </i-select>
@@ -172,7 +172,7 @@
                                 <i-select v-model="i.relation ">
                                     <i-option v-for="{value,label} in $dict.getDictData('0457')" :key="value" :label="label" :value="value"></i-option>
                                 </i-select>
-                                <i-input v-model="i.phone"></i-input>
+                                <i-input placeholder="请输入手机号" v-model="i.phone"></i-input>
                             </i-form-item>
                         </div>
 
@@ -395,26 +395,28 @@ export default class addPeople extends Vue {
   private customerDetailsModel = {
     name: '', // 姓名
     mobileMain: '', // 手机号
-    certificateType: '', // 证件类型
+    certificateType: null, // 证件类型
     certificateNumber: '', // 证件号码
     localHomeAddr: '', // 居住地址
     intentionalLevel: 0, // 意向级别
-    sex: '', // 性别
+    sex: null, // 性别
     birthTime: '', // 出身日期
     nation: '', // 民族
-    healthStatus: '', // 健康状况
-    homeStatus: '', // 居住状况
-    marital: '', // 婚姻状况
+    healthStatus: null, // 健康状况
+    homeStatus: null, // 居住状况
+    marital: null, // 婚姻状况
     messageAddr: '', // 通讯地址
     personalContacts: [
       {
         val: '第一联系人',
+        level: 1,
         name: '',
         phone: '',
         relation: ''
       },
       {
         val: '第二联系人',
+        level: 2,
         name: '',
         phone: '',
         relation: ''
@@ -422,53 +424,58 @@ export default class addPeople extends Vue {
     ],
     personalJob: {
       companyName: '', // 所在单位
-      companyNature: '', // 单位性质
+      companyNature: null, // 单位性质
       companyAddressDetail: '', // 单位地址
-      jobType: '', // 职业
-      duty: '', // 职务
-      basicSalary: '', // 收入情况
-      familyCount: '', // 家庭人数
+      jobType: null, // 职业
+      duty: null, // 职务
+      basicSalary: 0, // 收入情况
+      familyCount: 0, // 家庭人数
       companyhostName: '', // 经营单位
-      employeesNumber: '', // 经营规模
-      industry: '', // 所属行业
+      employeesNumber: 0, // 经营规模
+      industry: null, // 所属行业
       companyhostNumber: '', // 信用代码
       companyhostBasic: '', // 基本户
-      companyhostBank: '', // 经营公司开户银行
+      companyhostBank: null, // 经营公司开户银行
       companyhostCreatTime: '', // 注册时间
       companyhostCheckTime: '', // 最新年检
-      registeredCapital: '', // 注册资金
+      registeredCapital: 0, // 注册资金
       companyhostAddr: '' // 经营公司单位地址
     }, // 职业信息
     companyName: '', // 所在单位
-    companyNature: '', // 单位性质
+    companyNature: null, // 单位性质
     companyAddressDetail: '', // 单位地址
-    jobType: '', // 职业
-    duty: '', // 职务
-    basicSalary: '', // 收入情况
-    familyCount: '', // 家庭人数
+    jobType: null, // 职业
+    duty: null, // 职务
+    basicSalary: 0, // 收入情况
+    familyCount: 0, // 家庭人数
     companyhostName: '', // 经营单位
-    employeesNumber: '', // 经营规模
-    industry: '', // 所属行业
+    employeesNumber: 0, // 经营规模
+    industry: null, // 所属行业
     companyhostNumber: '', // 信用代码
     companyhostBasic: '', // 基本户
-    companyhostBank: '', // 经营公司开户银行
+    companyhostBank: null, // 经营公司开户银行
     companyhostCreatTime: '', // 注册时间
     companyhostCheckTime: '', // 最新年检
-    registeredCapital: '', // 注册资金
+    registeredCapital: 0, // 注册资金
     companyhostAddr: '', // 经营公司单位地址
 
-    personalBank: {  //银行账户对象
+    personalBank: {
+      //银行账户对象
       cardNumber: '', // 银行账户
-      depositBank: '', // 开户银行
+      depositBank: null, // 开户银行
       depositBranch: '', // 开户支行
-      accountType: '', // 账户类型
-      accountUse: '' // 账号用途
+      accountType: null, // 账户类型
+      accountUse: null // 账号用途
     },
     cardNumber: '', // 银行账户
-    depositBank: '', // 开户银行
+    depositBank: null, // 开户银行
     depositBranch: '', // 开户支行
-    accountType: '', // 账户类型
-    accountUse: '' // 账号用途
+    accountType: null, // 账户类型
+    accountUse: null, // 账号用途
+  }
+  private customerDetailsRule: any = {
+    name: [{ required: true, message: '请输入姓名', trigger: 'change' }],
+    mobileMain: [{ required: true, message: '请输入手机号', trigger: 'change' }]
   }
 
   /**
@@ -489,6 +496,7 @@ export default class addPeople extends Vue {
     } else if (this.linkmanNumber == 3) {
       this.customerDetailsModel.personalContacts.push({
         val: '第三联系人',
+        level: 3,
         name: '',
         phone: '',
         relation: ''
@@ -497,6 +505,7 @@ export default class addPeople extends Vue {
     } else if (this.linkmanNumber == 4) {
       this.customerDetailsModel.personalContacts.push({
         val: '第四联系人',
+        level: 4,
         name: '',
         phone: '',
         relation: ''
@@ -505,6 +514,7 @@ export default class addPeople extends Vue {
     } else if (this.linkmanNumber == 5) {
       this.customerDetailsModel.personalContacts.push({
         val: '第五联系人',
+        level: 5,
         name: '',
         phone: '',
         relation: ''
@@ -518,62 +528,75 @@ export default class addPeople extends Vue {
    * 点击保存
    */
   addClientSave() {
-    this.customerDetailsModel.personalJob.companyName = this.customerDetailsModel.companyName
-    this.customerDetailsModel.personalJob.companyNature = this.customerDetailsModel.companyNature
-    this.customerDetailsModel.personalJob.companyAddressDetail = this.customerDetailsModel.companyAddressDetail
-    this.customerDetailsModel.personalJob.jobType = this.customerDetailsModel.jobType
-    this.customerDetailsModel.personalJob.duty = this.customerDetailsModel.duty
-    this.customerDetailsModel.personalJob.basicSalary = this.customerDetailsModel.basicSalary
-    this.customerDetailsModel.personalJob.familyCount = this.customerDetailsModel.familyCount
-    this.customerDetailsModel.personalJob.companyhostName = this.customerDetailsModel.companyhostName
-    this.customerDetailsModel.personalJob.employeesNumber = this.customerDetailsModel.employeesNumber
-    this.customerDetailsModel.personalJob.industry = this.customerDetailsModel.industry
-    this.customerDetailsModel.personalJob.companyhostNumber = this.customerDetailsModel.companyhostNumber
-    this.customerDetailsModel.personalJob.companyhostBasic = this.customerDetailsModel.companyhostBasic
-    this.customerDetailsModel.personalJob.companyhostBank = this.customerDetailsModel.companyhostBank
-    this.customerDetailsModel.personalJob.companyhostCreatTime = this.customerDetailsModel.companyhostCreatTime
-    this.customerDetailsModel.personalJob.companyhostCheckTime = this.customerDetailsModel.companyhostCheckTime
-    this.customerDetailsModel.personalJob.registeredCapital = this.customerDetailsModel.registeredCapital
-    this.customerDetailsModel.personalJob.companyhostAddr = this.customerDetailsModel.companyhostAddr
-    this.customerDetailsModel.personalBank.cardNumber = this.customerDetailsModel.cardNumber
-    this.customerDetailsModel.personalBank.depositBank = this.customerDetailsModel.depositBank
-    this.customerDetailsModel.personalBank.depositBranch = this.customerDetailsModel.depositBranch
-    this.customerDetailsModel.personalBank.accountType = this.customerDetailsModel.accountType
-    this.customerDetailsModel.personalBank.accountUse = this.customerDetailsModel.accountUse
+    let form = <Form>this.$refs['form-item']
+    form.validate(valid => {
+      if (!valid) return false
 
-    delete this.customerDetailsModel.companyName
-    delete this.customerDetailsModel.companyNature
-    delete this.customerDetailsModel.companyAddressDetail
-    delete this.customerDetailsModel.jobType
-    delete this.customerDetailsModel.duty
-    delete this.customerDetailsModel.basicSalary
-    delete this.customerDetailsModel.familyCount
-    delete this.customerDetailsModel.companyhostName
-    delete this.customerDetailsModel.employeesNumber
-    delete this.customerDetailsModel.industry
-    delete this.customerDetailsModel.companyhostNumber
-    delete this.customerDetailsModel.companyhostBasic
-    delete this.customerDetailsModel.companyhostBank
-    delete this.customerDetailsModel.companyhostCreatTime
-    delete this.customerDetailsModel.companyhostCheckTime
-    delete this.customerDetailsModel.registeredCapital
-    delete this.customerDetailsModel.companyhostAddr
-    delete this.customerDetailsModel.cardNumber
-    delete this.customerDetailsModel.depositBank
-    delete this.customerDetailsModel.depositBranch
-    delete this.customerDetailsModel.accountType
-    delete this.customerDetailsModel.accountUse
+      this.customerDetailsModel.personalJob.companyName = this.customerDetailsModel.companyName
+      this.customerDetailsModel.personalJob.companyNature = this.customerDetailsModel.companyNature
+      this.customerDetailsModel.personalJob.companyAddressDetail = this.customerDetailsModel.companyAddressDetail
+      this.customerDetailsModel.personalJob.jobType = this.customerDetailsModel.jobType
+      this.customerDetailsModel.personalJob.duty = this.customerDetailsModel.duty
+      this.customerDetailsModel.personalJob.basicSalary = this.customerDetailsModel.basicSalary
+      this.customerDetailsModel.personalJob.familyCount = this.customerDetailsModel.familyCount
+      this.customerDetailsModel.personalJob.companyhostName = this.customerDetailsModel.companyhostName
+      this.customerDetailsModel.personalJob.employeesNumber = this.customerDetailsModel.employeesNumber
+      this.customerDetailsModel.personalJob.industry = this.customerDetailsModel.industry
+      this.customerDetailsModel.personalJob.companyhostNumber = this.customerDetailsModel.companyhostNumber
+      this.customerDetailsModel.personalJob.companyhostBasic = this.customerDetailsModel.companyhostBasic
+      this.customerDetailsModel.personalJob.companyhostBank = this.customerDetailsModel.companyhostBank
+      this.customerDetailsModel.personalJob.companyhostCreatTime = this.customerDetailsModel.companyhostCreatTime
+      this.customerDetailsModel.personalJob.companyhostCheckTime = this.customerDetailsModel.companyhostCheckTime
+      this.customerDetailsModel.personalJob.registeredCapital = this.customerDetailsModel.registeredCapital
+      this.customerDetailsModel.personalJob.companyhostAddr = this.customerDetailsModel.companyhostAddr
+      this.customerDetailsModel.personalBank.cardNumber = this.customerDetailsModel.cardNumber
+      this.customerDetailsModel.personalBank.depositBank = this.customerDetailsModel.depositBank
+      this.customerDetailsModel.personalBank.depositBranch = this.customerDetailsModel.depositBranch
+      this.customerDetailsModel.personalBank.accountType = this.customerDetailsModel.accountType
+      this.customerDetailsModel.personalBank.accountUse = this.customerDetailsModel.accountUse
 
-    console.log(this.customerDetailsModel)
-
-    this.personalService.createCustomer(this.customerDetailsModel).subscribe(
-      data => {
-        this.$Message.success('保存成功！')
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
+      delete this.customerDetailsModel.companyName
+      delete this.customerDetailsModel.companyNature
+      delete this.customerDetailsModel.companyAddressDetail
+      delete this.customerDetailsModel.jobType
+      delete this.customerDetailsModel.duty
+      delete this.customerDetailsModel.basicSalary
+      delete this.customerDetailsModel.familyCount
+      delete this.customerDetailsModel.companyhostName
+      delete this.customerDetailsModel.employeesNumber
+      delete this.customerDetailsModel.industry
+      delete this.customerDetailsModel.companyhostNumber
+      delete this.customerDetailsModel.companyhostBasic
+      delete this.customerDetailsModel.companyhostBank
+      delete this.customerDetailsModel.companyhostCreatTime
+      delete this.customerDetailsModel.companyhostCheckTime
+      delete this.customerDetailsModel.registeredCapital
+      delete this.customerDetailsModel.companyhostAddr
+      delete this.customerDetailsModel.cardNumber
+      delete this.customerDetailsModel.depositBank
+      delete this.customerDetailsModel.depositBranch
+      delete this.customerDetailsModel.accountType
+      delete this.customerDetailsModel.accountUse
+      for (
+        let i = 0;
+        i < this.customerDetailsModel.personalContacts.length;
+        i++
+      ) {
+        delete this.customerDetailsModel.personalContacts[i].val
       }
-    )
+
+      // console.log(this.customerDetailsModel)
+      this.personalService.createCustomer(this.customerDetailsModel).subscribe(
+        data => {
+          this.$Message.success('保存成功！')
+          this.$emit('close')
+          this.$common.revert(this.customerDetailsModel)
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
+      )
+    })
   }
 
   /**
