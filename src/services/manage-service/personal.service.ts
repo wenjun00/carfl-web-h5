@@ -190,7 +190,7 @@ export class PersonalService {
     }
     /**
      * 个人意向 客户查询
-     */
+     */ 
     getDetailPersonal(data) {
         return this.netService.send({
             server: manageService.personalController.getDetailPersonal,
@@ -203,6 +203,15 @@ export class PersonalService {
     updateCustomer(data) {
         return this.netService.send({
             server: manageService.personalController.updateCustomer,
+            data:data
+        })
+    }
+    /**
+     * 个人正式客户加入黑名单
+     */
+    personalJoinBlacklist(data) {
+        return this.netService.send({
+            server: manageService.personalController.personalJoinBlacklist,
             data:data
         })
     }

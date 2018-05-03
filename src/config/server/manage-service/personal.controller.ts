@@ -149,6 +149,15 @@ export default {
         controller: CONTROLLER,
         action: 'getDetailPersonal',
         type: requestType.Get
+    },
+    /**
+     * 个人正式客户 加入黑名单
+     */
+    personalJoinBlacklist: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'personalJoinBlacklist',
+        type: requestType.Get
     }
 
 

@@ -1,5 +1,5 @@
 <!--个人正式客户-->
-<template> 
+<template>  
     <section class="page personal-customer">
         <page-header title="个人正式客户" hidden-print></page-header>
         <data-form :model="personalCustomerModel" date-prop="timeSearch" @on-search="getPersonalClientList">
@@ -21,7 +21,7 @@
                 <get-customer-details ref="get-customer-details"></get-customer-details>
                 <div slot="footer">
                     <i-button size="large" type="ghost" class="Ghost" @click="personalModal=false">取消</i-button>
-                    <i-button size="large" type="primary" class="blueButton" @click="personalModal=false">加入黑名单</i-button>
+                    <i-button size="large" type="primary" class="blueButton" @click="blacklistModal">加入黑名单</i-button>
                 </div>
             </i-modal>
         </template>
@@ -190,6 +190,8 @@ export default class PersonalCustomer extends Page {
    */
   getFormalCustomerList(row) {
     this.personalModal = true
+    let personalModal = this.$refs['get-customer-details'] as GetCustomerDetails
+    personalModal.getDetailsData(row.personalId)
   }
 
   mounted() {
