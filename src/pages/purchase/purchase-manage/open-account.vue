@@ -522,7 +522,6 @@
      * 获取客户开户列表
      */
     getCustomerOpenAccount() {
-      console.log(this.personalService.getCustomerList, 'personalService')
       this.personalService
         .getCustomerList(this.openAccountModel, this.pageService)
         .subscribe(
@@ -674,7 +673,7 @@
       color: #fff;
     }
   }
-  
+
   .bank-popover {
     .binding-choose {
       margin-left: 40px;

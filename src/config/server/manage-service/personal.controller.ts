@@ -1,9 +1,9 @@
-// 客户信息 
+// 客户信息
 import { requestType } from '~/config/enum.config'
 const SERVICE = 'service-manage'
 const CONTROLLER = 'personal'
 
-export default { 
+export default {
     /**
      * 根据客户三项查询历史订单
      */
@@ -33,8 +33,8 @@ export default {
     },
     /**
      * 获取客户开户列表
-     */ 
-    getCustomeriIntentionList: { 
+     */
+    getCustomeriIntentionList: {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'getCustomeriIntentionList',
@@ -151,14 +151,22 @@ export default {
         type: requestType.Get
     },
     /**
-     * 个人正式客户 加入黑名单
+     * 新增黑名单客户
      */
-    personalJoinBlacklist: {
+    createBlacklistCustomer:{
         service: SERVICE,
         controller: CONTROLLER,
-        action: 'personalJoinBlacklist',
+        action: 'createBlacklistCustomer',
         type: requestType.Get
+    },
+    /**
+     * 进件模块 获取客户开户列表
+     */
+    getCustomerList:{
+      service: SERVICE,
+      controller: CONTROLLER,
+      action: 'getCustomerList',
+      type: requestType.Get
     }
-
-
 }
+

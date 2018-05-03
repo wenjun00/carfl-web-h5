@@ -1,4 +1,4 @@
-<!--个人意向客户--> 
+<!--个人意向客户-->
 <template>
     <section class="page personal-client">
         <page-header title="个人意向客户" hidden-print>
@@ -395,15 +395,15 @@ export default class PersonalClient extends Page {
    */
   reviseClient(row) {
     this.reviseDetailsModal = true
-    let reviseDetailsModal = this.$refs['revise-customer-details'] as reviseCustomerDetails
+    let reviseDetailsModal = this.$refs['revise-customer-details'] as ReviseCustomerDetails
     reviseDetailsModal.getDetailsData(row.personalId)
   }
   /**
    * 编辑客户点击确定
    */
   reviseDetailsSave(){
-    this.reviseDetailsModal = false 
-    let reviseDetailsModal = this.$refs['revise-customer-details'] as reviseCustomerDetails
+    this.reviseDetailsModal = false
+    let reviseDetailsModal = this.$refs['revise-customer-details'] as ReviseCustomerDetails
     reviseDetailsModal.reviseConfirmData()
   }
 

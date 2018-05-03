@@ -372,7 +372,7 @@
 
         </i-form>
     </section>
-</template> 
+</template>
 
 <script lang="ts">
 import Vue from 'vue'
@@ -391,7 +391,7 @@ import { constants } from 'zlib'
     UploadVoucher
   }
 })
-export default class addPeople extends Vue {
+export default class ReviseCustomerDetails extends Vue {
   @Dependencies(PersonalService) private personalService: PersonalService
   private WhetherNotShown: Boolean = false
   private customerDetailsModel: any = {}
@@ -440,15 +440,12 @@ export default class addPeople extends Vue {
           .subscribe(
             data => {
               this.$Message.success('修改成功！')
-              this.getPersonalClientList()
             },
             ({ msg }) => {
               this.$Message.error(msg)
             }
           )
-
   }
-
   fold() {
     this.WhetherNotShown = !this.WhetherNotShown
   }

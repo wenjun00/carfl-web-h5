@@ -31,15 +31,16 @@
         <template>
           <i-modal width="780" v-model="orderDetailsModal" title="订单详情">
             <personal-order-details ref="personal-order-details"></personal-order-details>
+            <div slot="footer"></div>
           </i-modal>
         </template>
         <!--新增黑名单弹窗-->
         <template>
           <i-modal width="780" v-model="newDetailsModal" title="新增黑名单">
-            <personal-new-blacklist ref="personal-new-blacklist"></personal-new-blacklist>
+            <personal-new-blacklist ref="personal-new-blacklist" @close="cancalBlack"></personal-new-blacklist>
             <div slot="footer">
-              <i-button size="large" type="ghost" >取消</i-button>
-              <i-button size="large" type="primary">保存</i-button>
+              <i-button  type="ghost" @click="cancalBlack">取消</i-button>
+              <i-button  type="primary" @click="saveBlack">保存</i-button>
             </div>
           </i-modal>
         </template>
@@ -197,7 +198,7 @@ export default class PersonalBlacklist extends Page {
    */
   getPersonalClientList() {
     this.personalService
-      .getPersonalClientList(this.personalBlacklistModel, this.pageService)
+      .getCustomeriIntentionList(this.personalBlacklistModel, this.pageService)
       .subscribe(
         data => {
           this.dataSet = data
@@ -238,7 +239,24 @@ export default class PersonalBlacklist extends Page {
   addList(){
     this.newDetailsModal = true
   }
-
+  /**
+   *  保存黑名单
+   * @param row
+   */
+  saveBlack(){
+    let personalNewBlacklist = this.$refs['personal-new-blacklist'] as PersonalNewBlacklist
+    personalNewBlacklist.saveList()
+  }
+  /**
+   *  取消保存黑名单
+   * @param row
+   */
+  cancalBlack(){
+    this.newDetailsModal = false
+    let personalNewBlacklist = this.$refs['personal-new-blacklist'] as PersonalNewBlacklist
+    personalNewBlacklist.reset()
+    this.getPersonalClientList()
+  }
 }
 </script>
 
