@@ -208,7 +208,10 @@ export default class EvaluationOfCollateral extends Page {
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
       key: 'carSituation',
-      align: 'center'
+      align: 'center',
+      render: (h, { row }) => {
+        return h("span", {}, this.$dict.getDictName(row.carSituation));
+      }
     },
     {
       title: '估价',
