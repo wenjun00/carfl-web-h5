@@ -198,7 +198,7 @@ export default class PersonalBlacklist extends Page {
    */
   getPersonalClientList() {
     this.personalService
-      .getCustomerList(this.personalBlacklistModel, this.pageService)
+      .getCustomeriIntentionList(this.personalBlacklistModel, this.pageService)
       .subscribe(
         data => {
           this.dataSet = data

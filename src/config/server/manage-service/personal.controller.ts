@@ -34,10 +34,10 @@ export default {
     /**
      * 获取客户开户列表
      */
-    getCustomerList: {
+    getCustomeriIntentionList: {
         service: SERVICE,
         controller: CONTROLLER,
-        action: 'getCustomerList',
+        action: 'getCustomeriIntentionList',
         type: requestType.Get
     },
     /**
@@ -119,6 +119,35 @@ export default {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'deleteIntentionalCustomer',
+        type: requestType.Delete
+    },
+    /**
+     * 个人意向客户领取
+     */
+    receiveIntentionalCustomer:{
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'receiveIntentionalCustomer',
+        type: requestType.Get
+    },
+    /**
+     * 个人意向编辑
+     */
+    updateCustomer:{
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'updateCustomer',
+        type: requestType.Post
+    },
+
+
+    /**
+     * 查询客户
+     */
+    getDetailPersonal: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getDetailPersonal',
         type: requestType.Get
     },
     /**
@@ -129,5 +158,15 @@ export default {
         controller: CONTROLLER,
         action: 'createBlacklistCustomer',
         type: requestType.Get
+    },
+    /**
+     * 进件模块 获取客户开户列表
+     */
+    getCustomerList:{
+      service: SERVICE,
+      controller: CONTROLLER,
+      action: 'getCustomerList',
+      type: requestType.Get
     }
 }
+
