@@ -1,22 +1,8 @@
 <template>
   <section class="component work-menu">
-    <Menu theme="light" @on-select="onSelectMenuItem">
-      <Submenu v-for="menu_level_1  in  menuList" :name="menu_level_1.path||Math.random()*1000" :key="menu_level_1.path">
-        <template slot="title">
-          {{menu_level_1.resoname}}
-        </template>
-
-        <template v-for="menu_level_2  in  menu_level_1.children">
-          <Submenu v-if="menu_level_2.children&&menu_level_2.children.length" :name="menu_level_2.path||Math.random()*1000" :key="menu_level_2.path">
-            <template slot="title">
-              {{menu_level_2.resoname}}
-            </template>
-            <MenuItem v-for="menu_level_3  in  menu_level_2.children" :key="menu_level_3.path" :name="menu_level_3.path">{{menu_level_3.resoname}}</MenuItem>
-          </Submenu>
-          <MenuItem v-else :name="menu_level_2.path" :key="menu_level_2.path">{{menu_level_2.resoname}}</MenuItem>
-        </template>
-      </Submenu>
-    </Menu>
+    <i-menu theme="light" @on-select="onSelectMenuItem">
+      <work-menu-item :level="1" v-for="node  in  menuList" :key="node.id" :data="node"></work-menu-item>
+    </i-menu>
   </section>
 </template>
 
@@ -25,11 +11,11 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 import { State, Mutation, Action } from "vuex-class";
-import SvgIcon from "~/components/common/svg-icon.vue";
+import WorkMenuItem from "~/components/workspace/work-menu-item.vue";
 
 @Component({
   components: {
-    SvgIcon
+    WorkMenuItem
   }
 })
 export default class WorkMenu extends Vue {
@@ -103,119 +89,17 @@ export default class WorkMenu extends Vue {
   &::-webkit-scrollbar {
     display: none;
   }
-  // .command {
-  //   line-height: 40px;
-  //   height: 40px;
-  //   padding-right:10px;
-  //   border-left: solid 1px
-  // }
   .menu-container {
     height: 100%;
     display: inline-block;
-    .menu-level-1 {
-      height: 100%;
-      min-width: 100px;
-
-      .menu-level-1-title {
-        padding: 0 15px;
-        font-size: 16px;
-        color: #feffff;
-        padding: 0 3px;
-        font-size: 14px;
-      }
-    }
-
-    .menu-popue {
-      z-index: 10;
-      position: absolute;
-      top: 60px;
-      width: 100%;
-      left: 0;
-      background: #ffffff;
-      box-shadow: 5px 5px 5px #dddddd;
-      min-height: 300px;
-
-      .menu-level-2 {
-        flex-wrap: nowrap;
-        padding: 0 60px;
-        text-align: center;
-
-        .separate {
-          width: 1px;
-          height: 150px;
-          background-color: #dddddd;
-          position: relative;
-          top: 46px;
-          left: 60px;
-        }
-
-        &:last-child {
-          .separate {
-            display: none;
-          }
-        }
-      }
-    }
   }
 }
 </style>
 
-<style lang="less" scoped>
+<style lang="less">
 .work-menu.component {
   .ivu-menu {
-    min-height: 100%;
-  }
-  .one-level {
-    height: 100%;
-  }
-  .two-level {
-    position: relative;
-    right: 32px;
-  }
-  .ivu-poptip {
-    height: 100%;
-  }
-  .ivu-poptip-rel {
-    height: 100%;
-  }
-  .ivu-poptip-arrow {
-    display: none;
-    border-bottom-color: #1d4f8b;
-  }
-  .ivu-poptip-inner {
-    border: solid 2px #1d4f8b;
-    border-radius: 0;
-  }
-
-  .menu2 {
-    display: inline-block;
-    font-size: 14px;
-    font-weight: bold;
-    color: #1d4f8b;
-    margin-bottom: 20px;
-    padding-top: 30px; // text-align: left;
-    padding-left: 4px;
-  }
-  .menu3 {
-    margin: 12px 0;
-    cursor: pointer;
-    text-align: left;
-  }
-  .menu3:hover {
-    color: #265ea2 !important;
-  }
-  .iconfont_container {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: inline-block;
-    .work_menu_iconfont {
-      font-size: 18px;
-      text-align: center;
-      color: #fff;
-      position: relative;
-      top: 3px;
-    }
+    min-height: 110%;
   }
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div class="layout full" :class="[theme]">
     <work-header class="work-header"></work-header>
-    <div class="row flex-nowarp full-height">
+    <div class="row flex-nowarp work-content">
       <work-menu></work-menu>
-      <div class="work-content col-span">
+      <div class="col-span">
         <router-view></router-view>
       </div>
     </div>
@@ -29,14 +29,14 @@ export default class WorkSpace extends Vue {
 }
 </script>
 <style lang="less" scoped>
-.layout {
-  // display: grid;
-  // grid-template-rows: 60px auto;
-}
-.work-header {
-  // grid-row-start: 1;
-  // grid-row-end: 2;
-}
+// .layout {
+//   // display: grid;
+//   // grid-template-rows: 60px auto;
+// }
+// .work-header {
+//   // grid-row-start: 1;
+//   // grid-row-end: 2;
+// }
 
 .work-content {
   background: #eff3f5;
