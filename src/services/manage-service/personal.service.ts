@@ -1,4 +1,4 @@
-import { NetService } from '~/utils/net.service'  
+import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
@@ -179,5 +179,14 @@ export class PersonalService {
             data:data
         })
     }
+  /**
+   * 新增黑名单客户
+   */
+  createBlacklistCustomer(data) {
+    return this.netService.send({
+      server: manageService.personalController.createBlacklistCustomer,
+      data:data
+    })
+  }
 
 }

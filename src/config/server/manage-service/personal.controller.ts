@@ -1,9 +1,9 @@
-// 客户信息 
+// 客户信息
 import { requestType } from '~/config/enum.config'
 const SERVICE = 'service-manage'
 const CONTROLLER = 'personal'
 
-export default { 
+export default {
     /**
      * 根据客户三项查询历史订单
      */
@@ -120,6 +120,14 @@ export default {
         controller: CONTROLLER,
         action: 'deleteIntentionalCustomer',
         type: requestType.Get
+    },
+    /**
+     * 新增黑名单客户
+     */
+    createBlacklistCustomer:{
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'createBlacklistCustomer',
+        type: requestType.Get
     }
-
 }
