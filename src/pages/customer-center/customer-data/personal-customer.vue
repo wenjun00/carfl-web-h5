@@ -1,5 +1,5 @@
 <!--个人正式客户-->
-<template>
+<template>  
     <section class="page personal-customer">
         <page-header title="个人正式客户" hidden-print></page-header>
         <data-form :model="personalCustomerModel" date-prop="timeSearch" @on-search="getPersonalClientList">
@@ -21,7 +21,7 @@
                 <get-customer-details ref="get-customer-details"></get-customer-details>
                 <div slot="footer">
                     <i-button size="large" type="ghost" class="Ghost" @click="personalModal=false">取消</i-button>
-                    <i-button size="large" type="primary" class="blueButton" @click="personalModal=false">加入黑名单</i-button>
+                    <i-button size="large" type="primary" class="blueButton" @click="blacklistModal">加入黑名单</i-button>
                 </div>
             </i-modal>
         </template>
@@ -43,7 +43,7 @@ import { FilterService } from '~/utils/filter.service'
     GetCustomerDetails
   }
 })
-export default class PersonalCustomer extends Page {
+export default class personalCustomer extends Page {
   @Dependencies(PersonalService) private personalService: PersonalService
   @Dependencies(PageService) private pageService: PageService
   private dataSet: Array<any> = []
@@ -167,7 +167,7 @@ export default class PersonalCustomer extends Page {
    */
   getPersonalClientList() {
     this.personalService
-      .getCustomerList(this.personalCustomerModel, this.pageService)
+      .getCustomeriIntentionList(this.personalCustomerModel, this.pageService)
       .subscribe(
         data => {
           this.dataSet = data
@@ -190,6 +190,14 @@ export default class PersonalCustomer extends Page {
    */
   getFormalCustomerList(row) {
     this.personalModal = true
+    let personalModal = this.$refs['get-customer-details'] as GetCustomerDetails
+    personalModal.getDetailsData(row.personalId)
+  }
+  /**
+   * 个人正式客户添加黑名单
+   */
+  blacklistModal(){
+      this.personalModal = false
   }
 
   mounted() {

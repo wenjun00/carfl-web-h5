@@ -1,9 +1,9 @@
-// 客户信息 
+// 客户信息
 import { requestType } from '~/config/enum.config'
 const SERVICE = 'service-manage'
 const CONTROLLER = 'personal'
 
-export default { 
+export default {
     /**
      * 根据客户三项查询历史订单
      */
@@ -34,10 +34,10 @@ export default {
     /**
      * 获取客户开户列表
      */
-    getCustomerList: {
+    getCustomeriIntentionList: {
         service: SERVICE,
         controller: CONTROLLER,
-        action: 'getCustomerList',
+        action: 'getCustomeriIntentionList',
         type: requestType.Get
     },
     /**
@@ -119,7 +119,63 @@ export default {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'deleteIntentionalCustomer',
+        type: requestType.Delete
+    },
+    /**
+     * 个人意向客户领取
+     */
+    receiveIntentionalCustomer:{
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'receiveIntentionalCustomer',
         type: requestType.Get
-    }
+    },
+    /**
+     * 个人意向编辑
+     */
+    updateCustomer:{
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'updateCustomer',
+        type: requestType.Post
+    },
 
+
+    /**
+     * 查询客户
+     */
+    getDetailPersonal: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getDetailPersonal',
+        type: requestType.Get
+    },
+    /**
+     * 新增黑名单客户
+     */
+    createBlacklistCustomer:{
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'createBlacklistCustomer',
+        type: requestType.Get
+    },
+    /**
+     * 进件模块 获取客户开户列表
+     */
+    getCustomerList:{
+      service: SERVICE,
+      controller: CONTROLLER,
+      action: 'getCustomerList',
+      type: requestType.Get
+    },
+     /**
+     * 个人正式客户 添加个人黑名单
+     */
+    personalJoinBlacklist:{
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'personalJoinBlacklist',
+        type: requestType.Get
+      }
 }
+
