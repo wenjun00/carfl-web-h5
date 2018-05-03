@@ -1,7 +1,7 @@
 <template>
   <section class="page open-account">
     <page-header title="客户开户"></page-header>
-    <data-form date-prop="timeSearch" :model="openAccountModel" :page="pageService" @on-search="getCustomerOpenAccount" hidden-reset>
+    <data-form hidden-date-search :model="openAccountModel" :page="pageService" @on-search="getCustomerOpenAccount" hidden-reset>
       <template slot="input">
         <i-form-item prop="keyWord">
           <i-input v-model="openAccountModel.keyWord" placeholder="请输入客户姓名\证件号码\联系号码查询"></i-input>
@@ -21,7 +21,7 @@
         <i-form :label-width="60">
           <i-form-item label="结算通道">
             <i-select style="width:150px;" v-model="settleChannel">
-              <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+              <i-option v-for="{value,label} in $dict.getDictData('0444')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-form>
@@ -123,13 +123,15 @@
     FilterService
   } from '~/utils/filter.service'
   import CustomerOpenAccount from "~/components/purchase-manage/customer-open-account.vue";
+  import CheckBankCard from "~/components/purchase-manage//check-bank-card.vue"
 
   @Layout('workspace')
   @Component({
     components: {
       DataBox,
       SvgIcon,
-      CustomerOpenAccount
+      CustomerOpenAccount,
+      CheckBankCard
     }
   })
   export default class OpenAccount extends Page {
@@ -162,7 +164,7 @@
     private certificateId: String = ''
     private openHelp: Boolean = false
     private dataHelp: Array < Object > = []
-    private settleChannel: any = ''// 结算通道
+    private settleChannel: any = '' // 结算通道
     private personalBankId: any = '' // 用户账户id
     private openAccountModel: any = {
       timeSearch: '',
@@ -395,7 +397,7 @@
         // },
         {
           title: '结算通道',
-        //   editable: true,
+          //   editable: true,
           minWidth: this.$common.getColumnWidth(4),
           key: 'defaultChannel',
           align: 'center',
@@ -608,7 +610,20 @@
         personalId: row.id
       }).subscribe(
         data => {
-          console.log(data, 'data')
+          let dialog = this.$dialog.show({
+            title: '客户开户信息',
+            footer: false,
+            size: 'small',
+            onOk: checkBankCard => {},
+            onCancel: () => {},
+            render: h => {
+              return h(CheckBankCard, {
+                props: {
+                  data
+                }
+              });
+            }
+          })
         },
         ({
           msg
@@ -616,7 +631,7 @@
           this.$Message.error(msg)
         }
       );
-    //   this.openChangeBankCard = true
+      //   this.openChangeBankCard = true
     }
     /**
      * 绑卡

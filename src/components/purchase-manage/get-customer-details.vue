@@ -1,7 +1,7 @@
 <!--客户详情-->
 <template>
     <section class="component get-customer-details">
-        <i-form v-model="customerDetailsModel">
+        <i-form v-model="customerDetailsModel" :label-width="90">
             <!-- 基本信息 -->
             <i-row class="data-form">
                 <i-col>
@@ -11,19 +11,19 @@
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
-                    <i-form-item label="客户姓名" :label-width="90">
+                    <i-form-item label="客户姓名" >
                         <i-input readonly v-model="customerDetailsModel.name"></i-input>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
-                    <i-form-item label="手机号码" :label-width="90">
+                    <i-form-item label="手机号码">
                         <i-input readonly v-model="customerDetailsModel.mobileMain"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
-                    <i-form-item label="证件类型" :label-width="90">
+                    <i-form-item label="证件类型">
                         <i-select readonly v-model="customerDetailsModel.certificateType" disabled>
                             <i-option v-for="{value,label} in $dict.getDictData('0433')" :key="value" :label="label" :value="value"></i-option>
                         </i-select>
@@ -31,14 +31,14 @@
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
-                    <i-form-item label="证件号码" :label-width="90">
+                    <i-form-item label="证件号码">
                         <i-input readonly v-model="customerDetailsModel.certificateNumber"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
-                    <i-form-item label="居住地址" :label-width="90">
+                    <i-form-item label="居住地址">
                         <i-input readonly v-model="customerDetailsModel.localHomeAddr"></i-input>
                     </i-form-item>
                 </i-col>
@@ -52,7 +52,7 @@
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="24">
-                    <i-form-item label="意向级别" :label-width="90">
+                    <i-form-item label="意向级别">
                         <i-rate disabled allow-half v-model="customerDetailsModel.intentionalLevel"></i-rate>
                     </i-form-item>
                 </i-col>
@@ -68,26 +68,26 @@
                 <!-- 隐藏内容 -->
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
-                        <i-form-item label="性别" :label-width="90">
+                        <i-form-item label="性别">
                             <i-select disabled v-model="customerDetailsModel.sex ">
                                 <i-option v-for="{value,label} in $dict.getDictData('0001')" :key="value" :label="label" :value="value"></i-option>
                             </i-select>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
-                        <i-form-item label="出生日期" :label-width="90">
+                        <i-form-item label="出生日期">
                             <i-date-picker disabled v-model="customerDetailsModel.birthTime" type="date"></i-date-picker>
                         </i-form-item>
                     </i-col>
                 </i-row>
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
-                        <i-form-item label="民族" :label-width="90">
+                        <i-form-item label="民族">
                             <i-input readonly v-model="customerDetailsModel.nation"></i-input>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
-                        <i-form-item label="健康状况" :label-width="90">
+                        <i-form-item label="健康状况">
                             <i-select disabled v-model="customerDetailsModel.healthStatus">
                                 <i-option v-for="{value,label} in $dict.getDictData('0453')" :key="value" :label="label" :value="value"></i-option>
                             </i-select>
@@ -96,14 +96,14 @@
                 </i-row>
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
-                        <i-form-item label="居住状况" :label-width="90">
+                        <i-form-item label="居住状况">
                             <i-select disabled v-model="customerDetailsModel.homeStatus ">
                                 <i-option v-for="{value,label} in $dict.getDictData('0454')" :key="value" :label="label" :value="value"></i-option>
                             </i-select>
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
-                        <i-form-item label="婚姻状况" :label-width="90">
+                        <i-form-item label="婚姻状况">
                             <i-select disabled v-model="customerDetailsModel.marital ">
                                 <i-option v-for="{value,label} in $dict.getDictData('0003')" :key="value" :label="label" :value="value"></i-option>
                             </i-select>
@@ -112,7 +112,7 @@
                 </i-row>
                 <i-row type="flex" :gutter="110">
                     <i-col :span="8">
-                        <i-form-item label="通讯地址" :label-width="90">
+                        <i-form-item label="通讯地址">
                             <i-input v-model="customerDetailsModel.messageAddr" class="mailingAddress" readonly></i-input>
                         </i-form-item>
                     </i-col>
@@ -168,7 +168,7 @@
                 <i-row type="flex" :gutter="110">
                     <i-col :span="24" class="contacts">
                         <div v-for="i in customerDetailsModel.personalContacts">
-                            <i-form-item :label="联系人" :label-width="90">
+                            <i-form-item label="联系人">
                                 <i-input readonly v-model="i.name"></i-input>
                                 <i-select disabled v-model="i.relation ">
                                     <i-option v-for="{value,label} in $dict.getDictData('0457')" :key="value" :label="label" :value="value"></i-option>
@@ -394,7 +394,10 @@ import { constants } from 'zlib'
 export default class addPeople extends Vue {
   @Dependencies(PersonalService) private personalService: PersonalService
   private WhetherNotShown: Boolean = false
-  private customerDetailsModel: any = {}
+  private customerDetailsModel: any = {
+      personalJob:{},
+      personalBank:{}
+  }
 
   /**
    * 获取客户详情信息

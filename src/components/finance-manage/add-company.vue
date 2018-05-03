@@ -455,39 +455,57 @@
     /**
      * 发送验证码
      */
-    sendQcode() {
-
-    }
+    sendQcode() {}
     /**
      * 企业开户
      */
     openaccountClick() {
-      let _opencompany: any = this.$refs['open-company']
-      _opencompany.validate(valid => {
-        console.log(valid, 'valid')
-        if (!valid) return false;
-        this.companyAccountService.companyOpenAccount(this.addCompanyModel).subscribe(
-          data => {
-            this.$Message.success('开户成功！')
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg)
-          }
-        );
+      return new Promise((reslove, reject) => {
+        let _opencompany: any = this.$refs['open-company']
+        _opencompany.validate(valid => {
+          if (!valid) return reslove(false);
+
+          this.companyAccountService.companyOpenAccount(this.addCompanyModel).subscribe(
+            data => {
+              this.$Message.success('开户成功！')
+            },
+            ({
+              msg
+            }) => {
+              this.$Message.error(msg)
+              return reslove(false);
+            }
+          );
+        })
       })
     }
     /**
      * 修改企业开户
      */
     modifyAccountClick() {
-      this.companyAccountService.editAccount(this.addCompanyModel).subscribe(
-        data => this.$Message.success('修改成功！'),
-        err => this.$Message.error(err.msg)
-      )
-    }
+      return new Promise((reslove, reject) => {
+        let _opencompany: any = this.$refs['open-company']
+        _opencompany.validate(valid => {
+          if (!valid) return reslove(false);
 
+          this.companyAccountService.editAccount(this.addCompanyModel).subscribe(
+            data => {
+              this.$Message.success('修改成功！')
+            },
+            ({
+              msg
+            }) => {
+              this.$Message.error(msg)
+              return reslove(false);
+            }
+          );
+        })
+      })
+      //   this.companyAccountService.editAccount(this.addCompanyModel).subscribe(
+      //     data => this.$Message.success('修改成功！'),
+      //     err => this.$Message.error(err.msg)
+      //   )
+    }
   }
 
 </script>

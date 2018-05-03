@@ -23,14 +23,25 @@ export default class SvgIcon extends Vue {
   @Prop({})
   iconColor: String;
 
+  @Prop({})
+  iconSize: String;
+
   get iconName() {
     return `#icon-${this.iconClass}`;
   }
 
   get iconStyle() {
-    return {
-      color: this.iconColor
-    };
+    let style: any = {};
+
+    if (this.iconColor) {
+      style.color = this.iconColor;
+    }
+
+    if (this.iconSize) {
+      style.fontSize = `${this.iconSize}px`;
+    }
+
+    return style;
   }
 }
 </script>

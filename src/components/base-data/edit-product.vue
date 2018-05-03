@@ -16,7 +16,7 @@
         <data-grid-item label="产品利率" :span="4">
           <i-form-item class="select" prop="productRates">
             <i-form-item class="item-chanpin" prop="productRates">
-              <i-input-number placeholder="请输入产品利率" v-model="productDetail.productRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
+              <i-input-number placeholder="请输入产品利率" v-model="productDetail.productRates" :min="0" :max="100" :precision="4"> </i-input-number>
               <div class="after_text">/月</div>
             </i-form-item>
           </i-form-item>
@@ -162,17 +162,17 @@
         </data-grid-item>
         <data-grid-item :span="6" label="合同违约金费率">
           <i-form-item prop="contractBreakRates">
-            <i-input-number v-model="productDetail.contractBreakRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
+            <i-input-number v-model="productDetail.contractBreakRates" :min="0" :max="100" :precision="4"> </i-input-number>
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="6" label="提前还款费率">
           <i-form-item prop="prepaymentRates">
-            <i-input-number v-model="productDetail.prepaymentRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
+            <i-input-number v-model="productDetail.prepaymentRates" :min="0" :max="100" :precision="4"> </i-input-number>
           </i-form-item>
         </data-grid-item>
         <data-grid-item :span="12" label="罚息费率">
           <i-form-item prop="penaltyRates">
-            <i-input-number v-model="productDetail.penaltyRates" :min="0" :max="100" :formatter="$filter.percentFormat" :parser="$filter.percentParse"> </i-input-number>
+            <i-input-number v-model="productDetail.penaltyRates" :min="0" :max="100" :precision="4"> </i-input-number>
           </i-form-item>
         </data-grid-item>
       </data-grid>
