@@ -46,9 +46,7 @@
   @Layout('workspace')
   @Component({
     components: {
-      DataBox,
-      PurchaseInformation,
-      SvgIcon
+      PurchaseInformation
     }
   })
   export default class ApprovalOrderQuery extends Page {
