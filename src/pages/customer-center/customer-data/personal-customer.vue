@@ -43,7 +43,7 @@ import { FilterService } from '~/utils/filter.service'
     GetCustomerDetails
   }
 })
-export default class PersonalCustomer extends Page {
+export default class personalCustomer extends Page {
   @Dependencies(PersonalService) private personalService: PersonalService
   @Dependencies(PageService) private pageService: PageService
   private dataSet: Array<any> = []
@@ -192,6 +192,12 @@ export default class PersonalCustomer extends Page {
     this.personalModal = true
     let personalModal = this.$refs['get-customer-details'] as GetCustomerDetails
     personalModal.getDetailsData(row.personalId)
+  }
+  /**
+   * 个人正式客户添加黑名单
+   */
+  blacklistModal(){
+      this.personalModal = false
   }
 
   mounted() {

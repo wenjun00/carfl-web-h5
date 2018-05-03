@@ -226,4 +226,15 @@ export class PersonalService {
         page:page
       })
     }
+     /**
+     * 个人正式客户 添加黑名单
+     */
+    personalJoinBlacklist(data,page){
+        return this.netService.send({
+          server: manageService.personalController.personalJoinBlacklist,
+          data:data,
+          page:page
+        })
+      }
+
 }
