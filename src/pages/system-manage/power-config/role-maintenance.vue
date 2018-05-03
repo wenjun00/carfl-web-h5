@@ -143,7 +143,8 @@ export default class RoleMaintenance extends Page {
   }
 
   mounted() {
-    this.getRoleListByCondition()
+    this.getRoleListByConditionOn()
+
   }
 
   created() {
@@ -332,8 +333,29 @@ export default class RoleMaintenance extends Page {
       )
       .subscribe(
       data => {
-        console.log(data)
         this.roleList = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
+      )
+  }
+  /**
+   *只获取已启用状态的角色
+   */
+  getRoleListByConditionOn() {
+    this.manageService
+      .queryRolePage(
+      {
+        roleName: this.roleModel.roleName,
+        roleStatus: this.roleModel.roleStatus,
+        userId: ''
+      },
+      this.pageService
+      )
+      .subscribe(
+      data => {
+        this.roleList = data.filter(v=>v.roleStatus==0)
       },
       ({ msg }) => {
         this.$Message.error(msg)
