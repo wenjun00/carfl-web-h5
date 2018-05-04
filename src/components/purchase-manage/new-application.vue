@@ -55,7 +55,7 @@
           </i-col>
           <i-col :span="12">
             <i-form-item label="联系电话" prop="ownPhone">
-              <i-input v-model="requestModal.ownPhone"></i-input>
+              <i-input v-model="requestModal.ownPhone" :maxlength="13"></i-input>
             </i-form-item>
           </i-col>
           <i-col :span="12">
@@ -74,32 +74,32 @@
           </i-col>
           <i-col :span="12">
             <i-form-item label="车身颜色" prop="carColor">
-              <i-input v-model="requestModal.carColor"></i-input>
+              <i-input v-model="requestModal.carColor" :maxlength="4"></i-input>
             </i-form-item>
           </i-col>
           <i-col :span="12">
             <i-form-item label="发动机号" prop="engineNo">
-              <i-input v-model="requestModal.engineNo"></i-input>
+              <i-input v-model="requestModal.engineNo" :maxlength="15"></i-input>
             </i-form-item>
           </i-col>
           <i-col :span="12">
             <i-form-item label="车牌号码" prop="carNo">
-              <i-input v-model="requestModal.carNo"></i-input>
+              <i-input v-model="requestModal.carNo" :maxlength="10"></i-input>
             </i-form-item>
           </i-col>
           <i-col :span="12">
             <i-form-item label="车架号" prop="frameNo">
-              <i-input v-model="requestModal.frameNo"></i-input>
+              <i-input v-model="requestModal.frameNo" :maxlength="17"></i-input>
             </i-form-item>
           </i-col>
           <i-col :span="12">
             <i-form-item label="客户姓名" prop="ownerName">
-              <i-input v-model="requestModal.ownerName"></i-input>
+              <i-input v-model="requestModal.ownerName" :maxlength="15"></i-input>
             </i-form-item>
           </i-col>
           <i-col :span="12">
             <i-form-item label="证件号码" prop="idCard">
-              <i-input v-model="requestModal.idCard"></i-input>
+              <i-input v-model="requestModal.idCard" :maxlength="18"></i-input>
             </i-form-item>
           </i-col>
         </i-form>
@@ -155,13 +155,13 @@
       id:null
     }
     private requestRules: any = {
-      carColor: [{required: true, message: "请输入车身颜色", trigger: "blur"}],
-      engineNo: [{required: true, message: "请输入发动机号", trigger: "blur"}],
-      carNo: [{required: true, message: "请输入车牌号码", trigger: "blur"}],
-      frameNo: [{required: true, message: "请输入车架号", trigger: "blur"}],
-      ownerName: [{required: true, message: "请输入客户姓名", trigger: "blur"}],
-      idCard: [{required: true, message: "请输入证件号码", trigger: "blur"}],
-      ownPhone: [{required: true, message: "请输入联系电话", trigger: "blur"}],
+      carColor: [{required: true, message: "请输入车身颜色", trigger: "blur"},{type: 'string', max:4, message: "车身颜色不能超过4位", trigger: "blur"}],
+      engineNo: [{required: true, message: "请输入发动机号", trigger: "blur"},{type: 'string', max:15, message: "发动机号不能超过15位", trigger: "blur"}],
+      carNo: [{required: true, message: "请输入车牌号码", trigger: "blur"},{type: 'string', max:10, message: "车牌号码不能超过10位", trigger: "blur"}],
+      frameNo: [{required: true, message: "请输入车架号", trigger: "blur"},{type: 'string',min:17, max:17, message: "请输入17位车架号", trigger: "blur"}],
+      ownerName: [{required: true, message: "请输入客户姓名", trigger: "blur"},{type: 'string', max:15, message: "客户姓名不能超过15位", trigger: "blur"}],
+      idCard: [{required: true, message: "请输入证件号码", trigger: "blur"},{type: 'string',min:18, max:18, message: "证件号码不能超过18位", trigger: "blur"}],
+      ownPhone: [{required: true, message: "请输入联系电话", trigger: "blur"},{type: 'string', max:13, message: "联系电话不能超过13位", trigger: "blur"}],
       province: [{required: true, message: "请选择省份", trigger: "change",type: 'number'}],
       city: [{required: true, message: "请选择城市", trigger: "change",type: 'number'}],
     }

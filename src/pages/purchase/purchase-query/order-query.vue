@@ -1,9 +1,7 @@
 <!--订单查询-->
 <template>
   <section class="page order-query">
-    <page-header title="订单查询" hiddenPrint hiddenExport>
-
-    </page-header>
+    <page-header title="订单查询" hiddenPrint ></page-header>
     <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getOrderQuery" hidden-reset :page="pageService">
       <template slot="input">
         <i-form-item prop="orderInfo">
@@ -12,7 +10,6 @@
         <i-form-item prop="dataRange" label="日期">
           <i-date-picker v-model="approvalModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
-
       </template>
     </data-form>
     <data-box :id="466" :columns="queryColumns" :data="queryData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
