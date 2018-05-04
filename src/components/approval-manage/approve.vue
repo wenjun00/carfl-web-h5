@@ -5,7 +5,7 @@
       <div>
         <div class="data-form-item"></div>
         <!-- <span>选购信息</span> -->
-        <a name="xuangouxinxi" class="xinxi">选购信息</a>
+        <a name="xuangouxinxi" class="xinxi">申请信息</a>
       </div>
       <data-grid class="data-form-grid" :labelWidth="110" labelAlign="right" contentAlign="left">
         <data-grid-item label="申请省份：" :span="3">{{orderInfo.province?$city.getCityName(orderInfo.province):''}}
@@ -13,36 +13,36 @@
         <data-grid-item label="申请城市：" :span="3">{{orderInfo.city?$city.getCityName(orderInfo.city):''}}</data-grid-item>
         <data-grid-item label="所属公司：" :span="6">{{orderInfo.company?orderInfo.company.companyChinaname:''}}
         </data-grid-item>
-        <data-grid-item label="融资租赁用途" :span="3">{{orderInfo.financingUse}}</data-grid-item>
-        <data-grid-item label="自缴费用" :span="9">
+        <data-grid-item label="抵押贷款用途" :span="3">{{orderInfo.financingUse}}</data-grid-item>
+        <!--<data-grid-item label="自缴费用" :span="9">
           <i-checkbox-group v-model="fee">
             <i-checkbox v-for="{value,label} in $dict.getDictData('0307')" :key="value" :label="value" :value="value" disabled>{{label}}
             </i-checkbox>
           </i-checkbox-group>
+        </data-grid-item>-->
+        <data-grid-item label="意向贷款金额" :span="3">{{orderInfo.intentionFinancingAmount}}</data-grid-item>
+        <!--<data-grid-item label="租金支付" :span="3">{{$dict.getDictName(orderInfo.rentPayable)}}</data-grid-item>-->
+        <data-grid-item label="意向期限" :span="6">{{ orderInfo.intentionPeriods?$dict.getDictName(Number(orderInfo.intentionPeriods)):''}}
         </data-grid-item>
-        <data-grid-item label="意向融资金额" :span="3">{{orderInfo.intentionFinancingAmount}}</data-grid-item>
-        <data-grid-item label="租金支付" :span="3">{{$dict.getDictName(orderInfo.rentPayable)}}</data-grid-item>
-        <data-grid-item label="意向期限" :span="3">{{ orderInfo.intentionPeriods?$dict.getDictName(Number(orderInfo.intentionPeriods)):''}}
-        </data-grid-item>
-        <data-grid-item label="意向首付比例" :span="3">
+        <!--<data-grid-item label="意向首付比例" :span="3">
           {{orderInfo.intentionPaymentRatio?orderInfo.intentionPaymentRatio+'%':''}}
-        </data-grid-item>
+        </data-grid-item>-->
       </data-grid>
     </i-row>
     <!--车辆信息-->
     <i-row class="cheliangxinxi" v-if="carOrderInfo.length">
       <div>
         <div class="data-form-item"></div>
-        <a name="cheliangxinxi" class="xinxi">车辆信息</a>
+        <a name="cheliangxinxi" class="xinxi">押品信息</a>
       </div>
       <data-grid :labelWidth="110" labelAlign="right" contentAlign="left" class="data-form-grid" v-for="item in carOrderInfo" :key="item.id">
-        <data-grid-item label="车辆型号" :span="4">{{item.modelName?item.modelName:''}}</data-grid-item>
-        <data-grid-item label="上牌地区" :span="4">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>
-        <data-grid-item label="车身颜色" :span="4">{{item.vehicleColour?item.vehicleColour:''}}</data-grid-item>
-        <data-grid-item label="购车排量" :span="4">{{item.vehicleEmissions?item.vehicleEmissions:''}}</data-grid-item>
-        <data-grid-item label="购车配置" :span="4">{{item.vehicleConfiguration?item.vehicleConfiguration:''}}
-        </data-grid-item>
-        <data-grid-item label="车辆牌照" :span="4">{{item.carLicence?item.carLicence:''}}</data-grid-item>
+        <data-grid-item label="车辆型号" :span="6">{{item.modelName?item.modelName:''}}</data-grid-item>
+        <!--<data-grid-item label="上牌地区" :span="4">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>-->
+        <data-grid-item label="车身颜色" :span="6">{{item.vehicleColour?item.vehicleColour:''}}</data-grid-item>
+        <data-grid-item label="购车排量" :span="6">{{item.vehicleEmissions?item.vehicleEmissions:''}}</data-grid-item>
+        <!--<data-grid-item label="购车配置" :span="4">{{item.vehicleConfiguration?item.vehicleConfiguration:''}}
+        </data-grid-item>-->
+        <data-grid-item label="车辆牌照" :span="6">{{item.carLicence?item.carLicence:''}}</data-grid-item>
       </data-grid>
     </i-row>
     <!--产品信息-->
@@ -58,22 +58,22 @@
         <data-grid-item label="产品利率" :span="3">{{!!orderInfo.productRate | decimalToPrecent}}</data-grid-item>
 
         <data-grid-item label="还款方式" :span="3">{{$dict.getDictName(orderInfo.payWay)}}</data-grid-item>
-        <data-grid-item label="融资总额" :span="3">{{!!orderInfo.financingAmount?orderInfo.financingAmount:0}}</data-grid-item>
+        <data-grid-item label="贷款总额" :span="3">{{!!orderInfo.financingAmount?orderInfo.financingAmount:0}}</data-grid-item>
         <data-grid-item label="月供金额" :span="3">{{!!orderInfo.monthlySupply ?orderInfo.monthlySupply:0}}</data-grid-item>
-        <data-grid-item label="首付金额" :span="3">{{!!orderInfo.initialPayment?orderInfo.initialPayment:0}}</data-grid-item>
+        <!--<data-grid-item label="首付金额" :span="3">{{!!orderInfo.initialPayment?orderInfo.initialPayment:0}}</data-grid-item>-->
 
-        <data-grid-item label="保证金金额" :span="3">{{!!orderInfo.depositCash?orderInfo.depositCash:0}}</data-grid-item>
-        <data-grid-item label="尾付金额" :span="3">{{!!orderInfo.finalCash ? orderInfo.finalCash:0}}</data-grid-item>
+        <!--<data-grid-item label="保证金金额" :span="3">{{!!orderInfo.depositCash?orderInfo.depositCash:0}}</data-grid-item>-->
+        <!--<data-grid-item label="尾付金额" :span="3">{{!!orderInfo.finalCash ? orderInfo.finalCash:0}}</data-grid-item>-->
         <data-grid-item label="管理费" :span="3">{{!!orderInfo.manageCost?orderInfo.manageCost:0}}</data-grid-item>
-        <data-grid-item label="保险费" :span="3">{{!!orderInfo.insuranceExpenses ?orderInfo.insuranceExpenses:0}}</data-grid-item>
+        <!--<data-grid-item label="保险费" :span="3">{{!!orderInfo.insuranceExpenses ?orderInfo.insuranceExpenses:0}}</data-grid-item>-->
 
-        <data-grid-item label="购置税" :span="3">{{!!orderInfo.purchaseTax ?orderInfo.purchaseTax:0}}</data-grid-item>
-        <data-grid-item label="上牌费" :span="3">{{!!orderInfo.installLicenseFee?orderInfo.installLicenseFee:0}}</data-grid-item>
+        <!--<data-grid-item label="购置税" :span="3">{{!!orderInfo.purchaseTax ?orderInfo.purchaseTax:0}}</data-grid-item>-->
+        <!--<data-grid-item label="上牌费" :span="3">{{!!orderInfo.installLicenseFee?orderInfo.installLicenseFee:0}}</data-grid-item>-->
         <data-grid-item label="GPS费" :span="3">{{!!orderInfo.gpsFee?orderInfo.gpsFee:0}}</data-grid-item>
         <data-grid-item label="其他费用" :span="3">{{!!orderInfo.otherFee?orderInfo.otherFee:0}}</data-grid-item>
 
-        <data-grid-item label="车辆参考总价" :span="3">{{!!orderInfo.vehicleAmount?orderInfo.vehicleAmount:0}}</data-grid-item>
-        <data-grid-item label="备注" :span="9">{{orderInfo.remark}}</data-grid-item>
+        <data-grid-item label="抵押贷款估价" :span="6">{{!!orderInfo.vehicleAmount?orderInfo.vehicleAmount:0}}</data-grid-item>
+        <!--<data-grid-item label="备注" :span="9">{{orderInfo.remark}}</data-grid-item>-->
       </data-grid>
     </i-row>
     <!--个人资料-->

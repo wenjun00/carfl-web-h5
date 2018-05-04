@@ -73,7 +73,7 @@
                     <span class="item-name">融资金额</span>
                     <span class="item">{{item.financingAmount === '~'?0:item.financingAmount}}元</span>
                   </div>
-                  <div class="item-container">
+                  <!--<div class="item-container">
                     <span class="item-name">首付款</span>
                     <span class="item">{{item.initialPayment === undefined?0:item.initialPayment}} %</span>
                   </div>
@@ -84,7 +84,7 @@
                   <div class="item-container">
                     <span class="item-name">尾付款</span>
                     <span class="item">{{item.finalCash === undefined?0:item.finalCash}} %</span>
-                  </div>
+                  </div>-->
                   <div class="item-container">
                     <span class="item-name">管理费</span>
                     <span class="item">{{item.manageCost === undefined?0:item.manageCost}} %</span>

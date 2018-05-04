@@ -217,11 +217,21 @@ export class PersonalService {
         })
     }
     /**
-     * 进件模块 获取客户开户列表
+     * 开户列表
      */
     getCustomerList(data,page){
       return this.netService.send({
         server: manageService.personalController.getCustomerList,
+        data:data,
+        page:page
+      })
+    }
+    /**
+     * 进件模块 获取客户开户列表
+     */
+    getCustomerAccount(data,page){
+      return this.netService.send({
+        server: manageService.personalController.getCustomerAccount,
         data:data,
         page:page
       })

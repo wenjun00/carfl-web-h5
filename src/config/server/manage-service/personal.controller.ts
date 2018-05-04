@@ -103,9 +103,9 @@ export default {
         action: 'createCustomer',
         type: requestType.Post
     },
-   /**
-    * 查询客户银行卡信息
-    */
+    /**
+     * 查询客户银行卡信息
+     */
     checkBankCard: {
         service: SERVICE,
         controller: CONTROLLER,
@@ -124,7 +124,7 @@ export default {
     /**
      * 个人意向客户领取
      */
-    receiveIntentionalCustomer:{
+    receiveIntentionalCustomer: {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'receiveIntentionalCustomer',
@@ -133,7 +133,7 @@ export default {
     /**
      * 个人意向编辑
      */
-    updateCustomer:{
+    updateCustomer: {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'updateCustomer',
@@ -153,48 +153,57 @@ export default {
     /**
      * 新增黑名单客户
      */
-    createBlacklistCustomer:{
+    createBlacklistCustomer: {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'createBlacklistCustomer',
         type: requestType.Get
     },
     /**
+     * 开户列表
+     */
+    getCustomerList: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getCustomerList',
+        type: requestType.Get
+    },
+    /**
      * 进件模块 获取客户开户列表
      */
-    getCustomerList:{
-      service: SERVICE,
-      controller: CONTROLLER,
-      action: 'getCustomerList',
-      type: requestType.Get
+    getCustomerAccount: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getCustomerAccount',
+        type: requestType.Get
     },
-     /**
-     * 个人正式客户 添加黑名单
-     */
-    personalJoinBlacklist:{
+    /**
+    * 个人正式客户 添加黑名单
+    */
+    personalJoinBlacklist: {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'personalJoinBlacklist',
         type: requestType.Get
-      },
-     /**
-     * 个人正式客户 移除黑名单
-     */
-    personalCancelBlacklist:{ 
+    },
+    /**
+    * 个人正式客户 移除黑名单
+    */
+    personalCancelBlacklist: {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'personalCancelBlacklist',
         type: requestType.Get
-      },
+    },
     /**
      * 个人正式客户 订单详情
      */
-    getOrderListBypersonalId:{ 
+    getOrderListBypersonalId: {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'getOrderListBypersonalId',
         type: requestType.Get
-      }
+    }
 
 }
 
