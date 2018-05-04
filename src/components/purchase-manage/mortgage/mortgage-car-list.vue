@@ -85,13 +85,21 @@ export default class MortgageCarList extends Vue {
         this.pageService
       )
       .subscribe(data => {
-        this.carDataSet = data.map((car:any)=>{
-          car.assessmentId = car.id;
-          car.vehicleColour = car.carColor;
-          car.vehicleEmissions = car.displacement;
-          car.id = null
-          return car
-        });
+        this.carDataSet = data.map(car => ({
+          assessmentId: car.id,
+          assessmentNo: car.assessmentNo,
+          brandName: car.brandName,
+          seriesName: car.seriesName,
+          carName: car.carName,
+          assessmentStatus: car.assessmentStatus,
+          assessmentTime: car.assessmentTime,
+          vehicleColour: car.carColor,
+          vehicleEmissions: car.displacement,
+          carNo: car.carNo,
+          carSituation: car.carSituation,
+          evaluation: car.evaluation,
+          mileage: car.mileage
+        }));
       });
   }
 

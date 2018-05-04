@@ -1,13 +1,13 @@
 <template>
   <section class="component work-tab full">
     <Tabs type="card" v-model="currentPage" closable :animated="false" @on-tab-remove="closePage">
+      <div slot="extra" class="extra-container">
+        <i-icon type="close" @click.native="closeAllTabs"></i-icon>
+      </div>
       <TabPane v-for="page in pageList" :key="page.path" :label="page.resoname" :name="page.path" :closable="page.path !== 'home'">
         <component ref="pages" :is="getComponentName(page.path)"></component>
       </TabPane>
     </Tabs>
-    <div class="close-all-tabs" @click="closeAllTabs" title="关闭所有">
-      <Icon type="close"></Icon>
-    </div>
   </section>
 </template>
 
@@ -112,17 +112,18 @@ export default class WorkTab extends Vue {
   }
 }
 </script>
+<style lang="less" scoped>
+.component.work-tab {
+  .extra-container {
+    padding: 7px 10px;
+    cursor: pointer;
+  }
+}
+</style>
+
 
 <style lang="less">
 .component.work-tab {
-  .close-all-tabs {
-    position: absolute;
-    top: 70px;
-    right: 10px;
-    border-bottom-style: none;
-    font-size: 14px;
-    cursor: pointer;
-  }
   & > .ivu-tabs {
     height: 100%;
     @tab-bar-height: 45px;
@@ -135,7 +136,6 @@ export default class WorkTab extends Vue {
 
       .ivu-tabs-nav-container {
         background: #fff;
-        width: 95%;
 
         .ivu-tabs-tab {
           min-width: 100px;

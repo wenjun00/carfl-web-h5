@@ -11,18 +11,18 @@
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="客户名称">
+          <i-form-item label="客户名称" prop="customterName">
             <i-input v-model="basisModel.customterName"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="手机号码">
+          <i-form-item label="手机号码" prop="phoneNumber">
             <i-input v-model="basisModel.phoneNumber" :maxlength="11"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="归属业务员">
-            <i-input v-model="basisModel.saler.userRealname" @on-focus="onShowSalerList" readyonly></i-input>
+          <i-form-item label="归属业务员" prop="salesmanName">
+            <i-input v-model="basisModel.salesmanName" @on-focus="onShowSalerList" readyonly></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -104,7 +104,9 @@ export default class PersonalMortgageApplication extends Page {
     cardNumber: "", // 证件号码
     customterName: "", // 企业名称
     phoneNumber: "", // 手机号码
-    saler: {} // 销售员
+    saler: {}, // 销售员
+    salesmanName: "",
+    seriesId: ""
   };
 
   // 基础数据验证
@@ -123,7 +125,7 @@ export default class PersonalMortgageApplication extends Page {
     customterName: [
       {
         required: true,
-        message: "请输入企业姓名",
+        message: "请输入客户姓名",
         trigger: "change"
       }
     ],
@@ -138,7 +140,7 @@ export default class PersonalMortgageApplication extends Page {
         trigger: "blur"
       }
     ],
-    saler: [
+    salesmanName: [
       {
         required: true,
         message: "请选择归属业务员",
@@ -214,9 +216,12 @@ export default class PersonalMortgageApplication extends Page {
           this.$Message.error("请选择对应销售员");
           return false;
         }
-
         // 更新销售人员信息
         this.basisModel.saler = currentRow;
+        this.basisModel.salesmanName = currentRow.userRealname;
+        this.basisModel.salesmanId = currentRow.id;
+        let basisForm = this.$refs['basis-form'] as Form
+        basisForm.validateField('salesmanName')
       },
       render: h => {
         return h(SalesmanName);
@@ -361,7 +366,7 @@ export default class PersonalMortgageApplication extends Page {
     this.applicationTabs.forEach(async ({ name }) => {
       // 当前tab
       let tab: any = this.$refs[name];
-      console.log(tab)
+      console.log(tab);
       // 退件与草稿恢复产品信息
       switch (orderStatus) {
         case 303: {
@@ -394,7 +399,6 @@ export default class PersonalMortgageApplication extends Page {
   loaded({ orderNumber }) {
     this.getOrderData(orderNumber);
   }
-
 
   /**
    * 重置页面数据
@@ -470,9 +474,7 @@ export default class PersonalMortgageApplication extends Page {
         data => {
           this.$Message.success("保存成功");
           setTimeout(() => {
-            this.closePage(
-              "purchase/mortgage/personal-mortgage-application"
-            );
+            this.closePage("purchase/mortgage/personal-mortgage-application");
           }, 1000);
         },
         ({ msg }) => {

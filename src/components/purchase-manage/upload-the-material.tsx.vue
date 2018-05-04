@@ -155,11 +155,12 @@ export default class UploadTheMaterial extends Vue {
   async validate() {
     // 判断列表中是否包含所有必传
     let result = this.fileTypeList
-      .map(item => item.isSelect === 0)
+      .filter(item => item.isSelect === 0)
       .every((item: any) => {
-        return this.uploadDataSet.find(x => x.type === item.id);
+        console.log(this.uploadDataSet.find(x => x.materialType === item.id))
+        return !!this.uploadDataSet.find(x => x.materialType === item.id);
       });
-
+  console.log(result)
     if (result) {
       return true;
     }

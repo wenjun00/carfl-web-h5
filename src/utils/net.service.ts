@@ -99,9 +99,9 @@ export class NetService {
         }
 
         // 过滤空数组
-        if (value instanceof Array && (value.length === 0 || value.every(x => x === ''))) {
-          return true
-        }
+        // if (value instanceof Array && (value.length === 0 || value.every(x => x === ''))) {
+        //   return true
+        // }
       })
       .forEach(([key, value]) => {
         delete data[key]
@@ -127,7 +127,7 @@ export class NetService {
     }
 
     // 判断参数类型
-    getType.indexOf(method) > -1 ? (getData = this.filterEmptyData(data)) : (postData = data)
+    getType.indexOf(method) > -1 ? (getData = this.filterEmptyData(data)) : (postData = this.filterEmptyData(data))
 
     // 创建待观察对象
     var observable = Observable.create((observer) => {

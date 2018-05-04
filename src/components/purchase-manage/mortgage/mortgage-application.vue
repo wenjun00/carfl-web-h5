@@ -5,7 +5,7 @@
       <i-form ref="application-form" :label-width="120" :model="applicationModel" :rules="applicationRules">
         <i-row>
           <i-col :span="12">
-            <i-form-item label="申请省份" porp="province">
+            <i-form-item label="申请省份" prop="province">
               <i-select v-model="applicationModel.province">
                 <i-option v-for="{value,label} in $city.getCityData({ level : 1 })" :key="value" :value="value" :label="label"></i-option>
               </i-select>
@@ -125,7 +125,7 @@
           </i-col>
           <i-col :span="12">
             <i-col :span="12">
-              <i-form-item label="管理费(元)" porp="manageRatio">
+              <i-form-item label="管理费(元)" prop="manageRatio">
                 <i-select :disabled="!currentProduct||currentProduct.manageRatioList.length===0" v-model="productModel.manageRatio" @on-change="getComputedAmount">
                   <template v-if="currentProduct">
                     <i-option v-for="item in currentProduct.manageRatioList" :key="item.value" :value="item.value" :label="item.label"></i-option>
@@ -171,7 +171,7 @@ import { Watch, Emit, Prop } from "vue-property-decorator";
 import { State, Mutation, Action } from "vuex-class";
 import MortgageCarList from "~/components/purchase-manage/mortgage/mortgage-car-list.vue";
 import ProductList from "~/components/purchase-manage/product-list.tsx.vue";
-import {ProductPlanIssueService}from "~/services/manage-service/product-plan-issue.service"
+import { ProductPlanIssueService } from "~/services/manage-service/product-plan-issue.service";
 import { Form } from "iview";
 @Component({
   components: {}
@@ -179,7 +179,8 @@ import { Form } from "iview";
 export default class MortgageApplication extends Vue {
   @State companyList;
   @Action getCompanyList;
-  @Dependencies(ProductPlanIssueService) productPlanIssueService:ProductPlanIssueService
+  @Dependencies(ProductPlanIssueService)
+  productPlanIssueService: ProductPlanIssueService;
 
   @Emit("on-product-change")
   emitProductChange(product) {}
@@ -278,6 +279,12 @@ export default class MortgageApplication extends Vue {
         required: true,
         type: "number",
         message: "请填写贷款总额",
+        trigger: "change"
+      },
+      {
+        min: 1,
+        type: "number",
+        message: "贷款总额必须大于0",
         trigger: "change"
       }
     ],
@@ -383,8 +390,9 @@ export default class MortgageApplication extends Vue {
 
   private validateManageRatio(rule, value, callback) {
     if (
-      this.currentProduct.manageCostList &&
-      this.currentProduct.manageCostList.length &&
+      this.currentProduct &&
+      this.currentProduct.manageRatioList &&
+      this.currentProduct.manageRatioList.length &&
       value === null
     ) {
       return callback(new Error("选择管理费比例"));
@@ -409,6 +417,16 @@ export default class MortgageApplication extends Vue {
    * 显示质押车辆列表
    */
   private showMortgageCarList() {
+    if (!this.cardNumber) {
+      this.$Message.info("请输入证件号码后添加押品");
+      // return
+    }
+
+    if (!this.$validator.regex.idCard.test(this.cardNumber)) {
+      this.$Message.info("请输入正确的证件号码");
+      // return
+    }
+
     let dialog = this.$dialog.show({
       title: "销售员列表",
       footer: true,
@@ -530,26 +548,28 @@ export default class MortgageApplication extends Vue {
   /**
    * 获取产品期数信息
    */
-  async getProductIssisDetail(id){
-    return new Promise((reslove,reject)=>{
-       this.productPlanIssueService.findProductPlanById(id).subscribe(data=>{
-         let product = this.formatProductModal(data);
+  async getProductIssisDetail(id) {
+    return new Promise((reslove, reject) => {
+      this.productPlanIssueService.findProductPlanById(id).subscribe(
+        data => {
+          let product = this.formatProductModal(data);
           product.productIssueId = data.id;
           // 更新当前产品
           this.emitProductChange(product);
-           reslove(product)
-       },()=>{
-         reject()
-       })
-    })
-
+          reslove(product);
+        },
+        () => {
+          reject();
+        }
+      );
+    });
   }
 
   /**
    * 返回数据格式化
    */
   async revert(data) {
-    console.log(data)
+    console.log(data);
     // 申请信息
     this.applicationModel = {
       province: data.province,
@@ -562,7 +582,7 @@ export default class MortgageApplication extends Vue {
     };
 
     // 获取产品信息
-    this.currentProduct = await this.getProductIssisDetail(data.productIssueId)
+    this.currentProduct = await this.getProductIssisDetail(data.productIssueId);
 
     // 茶品数据
     this.productModel.loadAmount = data.financingAmount;
@@ -572,12 +592,11 @@ export default class MortgageApplication extends Vue {
     this.productModel.otherAmount = data.otherFee;
     this.productModel.remark = data.remark;
 
-
-    this.carDataSet = data.orderCars.map(car=>{
-          car.carColor =  car.vehicleColour;
-          car.displacement = car.vehicleEmissions;
-          return car
-    })
+    this.carDataSet = data.orderCars.map(car => {
+      car.carColor = car.vehicleColour;
+      car.displacement = car.vehicleEmissions;
+      return car;
+    });
 
     // 计算金额
     this.getComputedAmount();
