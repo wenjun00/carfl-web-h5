@@ -2,7 +2,7 @@
 <template>
   <section class="component gather-detail-early-pay">
     <i-card>
-      <table border="1" width="1100" class="gather-type-table">
+      <table border="1" width="100%" class="gather-type-table">
         <tr height="40">
           <td bgcolor="#F2F2F2" width="80">
             <span>操作</span>
