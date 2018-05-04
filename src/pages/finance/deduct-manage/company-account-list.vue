@@ -15,12 +15,12 @@
         <i-form-item prop="accountNumber" label="用户客户号">
           <i-input v-model="openAccountModel.accountNumber"></i-input>
         </i-form-item>
-        <!--<i-form-item prop="personalInfo" label="用户子账户名">
-          <i-input v-model="openAccountModel.companyLicensenNmber"></i-input>
+        <i-form-item prop="subAccountNumber" label="用户子账户名">
+          <i-input v-model="openAccountModel.subAccountNumber"></i-input>
         </i-form-item>
-        <i-form-item prop="personalInfo" label="审核状态">
-          <i-input v-model="openAccountModel.companyLicensenNmber"></i-input>
-        </i-form-item>-->
+        <i-form-item prop="verifyStatus" label="审核状态">
+          <i-input v-model="openAccountModel.verifyStatus"></i-input>
+        </i-form-item>
       </template>
     </data-form>
     <data-box :columns="columns1" :data="accountData" @onPageChange="CompanyAccountSearch" :page="pageService"></data-box>
@@ -219,8 +219,8 @@ export default class CompanyAccountList extends Page {
     companyName: '', // 企业名称
     companyLicensenNmber: '', // 企业执照注册号
     accountNumber: '', // 用户客户号
-    //   用户子账户名
-    // 审核状态
+    subAccountNumber:'',//   用户子账户名
+    verifyStatus:'',// 审核状态
     timeSearch: ''
   };
   /**
@@ -254,10 +254,9 @@ export default class CompanyAccountList extends Page {
    */
   CompanyAccountSearch() {
     this.companyAccountService
-      .getAllAccountWithPage(this.pageService)
+      .getAllAccountWithPage(this.openAccountModel,this.pageService)
       .subscribe(
       val => {
-        console.log(val, 'val')
         this.accountData = val;
       },
       ({
@@ -316,7 +315,7 @@ export default class CompanyAccountList extends Page {
           title: '修改企业开户',
           footer: true,
           onOk: addCompany => {
-            addCompany.modifyAccountClick()
+           return addCompany.modifyAccountClick()
           },
           onCancel: () => { },
           render: h => {
@@ -343,7 +342,7 @@ export default class CompanyAccountList extends Page {
       title: '新增企业开户',
       footer: true,
       onOk: addCompany => {
-        addCompany.openaccountClick()
+        return addCompany.openaccountClick()
       },
       onCancel: () => { },
       render: h => {
