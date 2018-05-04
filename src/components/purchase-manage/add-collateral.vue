@@ -81,7 +81,7 @@
         </i-col>
         <i-col :span="15">
           <i-form-item label="行驶里程" prop="mileage">
-            <i-input  v-model="customerModel.mileage"></i-input>
+            <i-input  v-model="customerModel.mileage" :maxlength="5"></i-input>
             <span>万公里</span>
           </i-form-item>
         </i-col>
@@ -90,12 +90,12 @@
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
           <i-form-item label="行驶证号" prop="drivingNo">
-            <i-input v-model="customerModel.drivingNo"></i-input>
+            <i-input v-model="customerModel.drivingNo" :maxlength="18"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="15">
           <i-form-item label="过户次数" prop="transferNo">
-            <i-input v-model="customerModel.transferNo"></i-input>
+            <i-input v-model="customerModel.transferNo" :maxlength="2"></i-input>
             <span>次</span>
           </i-form-item>
         </i-col>
@@ -128,7 +128,7 @@
         </i-col>
         <i-col :span="8">
           <i-form-item label="排量" prop="displacement">
-            <i-input v-model="customerModel.displacement"></i-input>
+            <i-input v-model="customerModel.displacement" :maxlength="3"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -204,8 +204,8 @@
         </i-col>
         <i-col :span="15">
           <i-form-item label="估价" prop="evaluation">
-            <i-input v-model="customerModel.evaluation"></i-input>
-            <span>万元</span>
+            <i-input v-model="customerModel.evaluation" :maxlength="9"></i-input>
+            <span>元</span>
           </i-form-item>
         </i-col>
       </i-row>
@@ -255,15 +255,15 @@
     private ruleValidateRule: any = {
       firstTime: [{required: true, message: "请选择初登日期", trigger: 'change',type:'date'}],
       factoryTime: [{required: true, message: "请选择出厂日期", trigger: "change",type:'date'}],
-      mileage: [{required: true, message: "请输入行驶里程", trigger: "blur"}],
-      drivingNo: [{required: true, message: "请输入行驶证号", trigger: "blur"}],
-      transferNo: [{required: true, message: "请输入过户次数", trigger: "blur"}],
+      mileage: [{required: true, message: "请输入行驶里程", trigger: "blur"},{type: 'number', max:5, message: "行驶里程不能超过5位", trigger: "blur"}],
+      drivingNo: [{required: true, message: "请输入行驶证号", trigger: "blur"},{type: 'string', min:18 ,max:18, message: "请输入18位的行驶证号", trigger: "blur"}],
+      transferNo: [{required: true, message: "请输入过户次数", trigger: "blur"},{type: 'string', max:2, message: "过户次数不能超过2位", trigger: "blur"}],
       carPurpose: [{required: true, message: "请选择车辆用途", trigger: "change",type: 'number'}],
       transmission: [{required: true, message: "请选择形式", trigger: "change",type: 'number'}],
       driver: [{required: true, message: "请选择驱动形式", trigger: "change",type: 'number'}],
-      displacement: [{required: true, message: "请输入排量", trigger: "blur"}],
+      displacement: [{required: true, message: "请输入排量", trigger: "blur"},{type: 'string', max:3, message: "排量不能超过3位", trigger: "blur"}],
       carSituation:[{required: true, message: "请选择车况", trigger: 'change', type: 'number'}],
-      evaluation:[{required: true, message: "请输入估价", trigger: 'blur'}]
+      evaluation:[{required: true, message: "请输入估价", trigger: 'blur'},{type: 'string', max:9, message: "估价不能超过9位", trigger: "blur"}]
     }
     /**
      *
@@ -297,7 +297,7 @@
           this.customerModel.carNo = data.carNo
           this.customerModel.engineNo = data.engineNo
           this.customerModel.ownerName = data.ownerName
-          this.customerModel.frameNo = data.frameNo 
+          this.customerModel.frameNo = data.frameNo
           this.customerModel.ownPhone = data.ownPhone
           this.customerModel.idCard = data.idCard
           this.customerModel.id = data.id
