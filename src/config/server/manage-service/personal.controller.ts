@@ -169,13 +169,32 @@ export default {
       type: requestType.Get
     },
      /**
-     * 个人正式客户 添加个人黑名单
+     * 个人正式客户 添加黑名单
      */
     personalJoinBlacklist:{
         service: SERVICE,
         controller: CONTROLLER,
         action: 'personalJoinBlacklist',
         type: requestType.Get
+      },
+     /**
+     * 个人正式客户 移除黑名单
+     */
+    personalCancelBlacklist:{ 
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'personalCancelBlacklist',
+        type: requestType.Get
+      },
+    /**
+     * 个人正式客户 订单详情
+     */
+    getOrderListBypersonalId:{ 
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getOrderListBypersonalId',
+        type: requestType.Get
       }
+
 }
 

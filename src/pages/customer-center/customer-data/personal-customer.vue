@@ -1,5 +1,5 @@
 <!--个人正式客户-->
-<template>  
+<template> 
     <section class="page personal-customer">
         <page-header title="个人正式客户" hidden-print></page-header>
         <data-form :model="personalCustomerModel" date-prop="timeSearch" @on-search="getPersonalClientList">
@@ -25,6 +25,13 @@
                 </div>
             </i-modal>
         </template>
+          <!--订单详情弹窗-->
+        <template>
+            <i-modal width="780" v-model="orderDetailsModal" title="订单详情">
+                <personal-order-details ref="personal-order-details"></personal-order-details>
+                <div slot="footer"></div>
+            </i-modal>
+        </template>
     </section>
 </template>
 
@@ -36,17 +43,21 @@ import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import GetCustomerDetails from '~/components/purchase-manage/get-customer-details.vue'
 import { PersonalService } from '~/services/manage-service/personal.service'
+import PersonalOrderDetails from '~/components/customer-center/personal-center/personal-order-details.vue'
 import { FilterService } from '~/utils/filter.service'
 @Layout('workspace')
 @Component({
   components: {
-    GetCustomerDetails
+    GetCustomerDetails,
+    PersonalOrderDetails,
   }
 })
 export default class personalCustomer extends Page {
   @Dependencies(PersonalService) private personalService: PersonalService
   @Dependencies(PageService) private pageService: PageService
+  private orderDetailsModal: Boolean = false
   private dataSet: Array<any> = []
+  private presentId:String=""
   private personalCustomerModel: any = {
     personalType: '118',
     name: '', //客户姓名
@@ -90,6 +101,11 @@ export default class personalCustomer extends Page {
               },
               style: {
                 color: '#265EA2'
+              },
+               on: {
+                click: () => {
+                  this.getOrderDetailsList(row)
+                }
               }
             },
             '订单详情'
@@ -190,14 +206,44 @@ export default class personalCustomer extends Page {
    */
   getFormalCustomerList(row) {
     this.personalModal = true
+    this.presentId = row.personalId
     let personalModal = this.$refs['get-customer-details'] as GetCustomerDetails
-    personalModal.getDetailsData(row.personalId)
+    personalModal.getDetailsData(this.presentId)
+    
   }
+   /**
+   *  订单详情
+   * @param row
+   */
+    getOrderDetailsList(row) {
+        this.orderDetailsModal = true
+        let orderDetailsModal = this.$refs['personal-order-details'] as PersonalOrderDetails
+        orderDetailsModal.getIndentDetails(row.personalId)
+    }
+
   /**
    * 个人正式客户添加黑名单
    */
-  blacklistModal(){
-      this.personalModal = false
+  blacklistModal() {
+    this.personalModal = false
+     this.$Modal.confirm({
+      title: '提示',
+      content: '确定将该客户加入黑名单？加入后将立即结束相关未完成订单！',
+      onOk: () => {
+        this.personalService
+        .personalJoinBlacklist({ personalDataId:this.presentId })
+          .subscribe(
+            data => {
+              this.$Message.success('加入黑名单成功！')
+              this.getPersonalClientList()
+            },
+            ({ msg }) => {
+              this.$Message.error(msg)
+            }
+          )
+      }
+    })
+    
   }
 
   mounted() {

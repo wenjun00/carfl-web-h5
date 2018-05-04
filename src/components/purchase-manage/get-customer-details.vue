@@ -1,5 +1,5 @@
 <!--客户详情-->
-<template>
+<template> 
     <section class="component get-customer-details">
         <i-form v-model="customerDetailsModel" :label-width="90">
             <!-- 基本信息 -->
@@ -408,59 +408,24 @@ export default class addPeople extends Vue {
       .subscribe(
         data => {
           this.customerDetailsModel = data
-          this.customerDetailsModel.certificateType = Number(
-            this.customerDetailsModel.certificateType
-          )
-          this.customerDetailsModel.intentionalLevel = Number(
-            this.customerDetailsModel.intentionalLevel
-          )
-          this.customerDetailsModel.sex = Number(this.customerDetailsModel.sex)
-          this.customerDetailsModel.birthTime = FilterService.dateFormat(
-            data.birthTime,
-            'yyyy-MM-dd'
-          )
-          this.customerDetailsModel.healthStatus = Number(
-            this.customerDetailsModel.healthStatus
-          )
-          this.customerDetailsModel.homeStatus = Number(
-            this.customerDetailsModel.homeStatus
-          )
-          this.customerDetailsModel.marital = Number(
-            this.customerDetailsModel.marital
-          )
-          this.customerDetailsModel.personalJob = this.customerDetailsModel.personalJob
-          this.customerDetailsModel.personalJob.companyNature = Number(
-            this.customerDetailsModel.personalJob.companyNature
-          )
-          this.customerDetailsModel.personalJob.jobType = Number(
-            this.customerDetailsModel.personalJob.jobType
-          )
-          this.customerDetailsModel.personalJob.duty = Number(
-            this.customerDetailsModel.personalJob.duty
-          )
-          this.customerDetailsModel.personalJob.industry = Number(
-            this.customerDetailsModel.personalJob.industry
-          )
-          this.customerDetailsModel.personalJob.companyhostBank = Number(
-            this.customerDetailsModel.personalJob.companyhostBank
-          )
-          this.customerDetailsModel.personalJob.companyhostCreatTime = FilterService.dateFormat(
-            data.personalJob.companyhostCreatTime,
-            'yyyy-MM-dd'
-          )
-          this.customerDetailsModel.personalJob.companyhostCheckTime = FilterService.dateFormat(
-            data.personalJob.companyhostCheckTime,
-            'yyyy-MM-dd'
-          )
-          this.customerDetailsModel.personalBank.depositBank = Number(
-            this.customerDetailsModel.personalBank.depositBank
-          )
-          this.customerDetailsModel.personalBank.accountType = Number(
-            this.customerDetailsModel.personalBank.accountType
-          )
-          this.customerDetailsModel.personalBank.accountUse = Number(
-            this.customerDetailsModel.personalBank.accountUse
-          )
+          this.customerDetailsModel.certificateType = !!this.customerDetailsModel.certificateType ?Number(this.customerDetailsModel.certificateType):null;
+          this.customerDetailsModel.intentionalLevel =!!this.customerDetailsModel.intentionalLevel ?Number(this.customerDetailsModel.intentionalLevel):null;
+          this.customerDetailsModel.sex = !!this.customerDetailsModel.sex?Number(this.customerDetailsModel.sex):'' ;
+          this.customerDetailsModel.birthTime = !!data.birthTime ? FilterService.dateFormat(data.birthTime,'yyyy-MM-dd'):null;
+          this.customerDetailsModel.healthStatus = !!this.customerDetailsModel.healthStatus ?Number(this.customerDetailsModel.healthStatus):null;
+          this.customerDetailsModel.homeStatus = !!this.customerDetailsModel.homeStatus ? Number(this.customerDetailsModel.homeStatus):null;
+          this.customerDetailsModel.marital = !!this.customerDetailsModel.marital ? Number(this.customerDetailsModel.marital) :null;
+          this.customerDetailsModel.personalJob = this.customerDetailsModel.personalJob;
+          this.customerDetailsModel.personalJob.companyNature = !!this.customerDetailsModel.personalJob.companyNature ? Number(this.customerDetailsModel.personalJob.companyNature):null;
+          this.customerDetailsModel.personalJob.jobType = !!this.customerDetailsModel.personalJob.jobType ?Number(this.customerDetailsModel.personalJob.jobType):null;
+          this.customerDetailsModel.personalJob.duty =  !!this.customerDetailsModel.personalJob.duty? Number(this.customerDetailsModel.personalJob.duty):null;
+          this.customerDetailsModel.personalJob.industry = !!this.customerDetailsModel.personalJob.industry ? Number(this.customerDetailsModel.personalJob.industry):null;
+          this.customerDetailsModel.personalJob.companyhostBank = !!this.customerDetailsModel.personalJob.companyhostBank ? Number(this.customerDetailsModel.personalJob.companyhostBank):null;
+          this.customerDetailsModel.personalJob.companyhostCreatTime = FilterService.dateFormat(data.personalJob.companyhostCreatTime,'yyyy-MM-dd');
+          this.customerDetailsModel.personalJob.companyhostCheckTime = FilterService.dateFormat(data.personalJob.companyhostCheckTime,'yyyy-MM-dd');
+          this.customerDetailsModel.personalBank.depositBank = !!this.customerDetailsModel.personalBank.depositBank ? Number(this.customerDetailsModel.personalBank.depositBank):null;
+          this.customerDetailsModel.personalBank.accountType = !!this.customerDetailsModel.personalBank.accountType ? Number(this.customerDetailsModel.personalBank.accountType):null;
+          this.customerDetailsModel.personalBank.accountUse = !!this.customerDetailsModel.personalBank.accountUse ? Number(this.customerDetailsModel.personalBank.accountUse):null;
         },
         ({ msg }) => {
           this.$Message.error(msg)

@@ -229,12 +229,31 @@ export class PersonalService {
      /**
      * 个人正式客户 添加黑名单
      */
-    personalJoinBlacklist(data,page){
+    personalJoinBlacklist(data){
         return this.netService.send({
           server: manageService.personalController.personalJoinBlacklist,
           data:data,
-          page:page
         })
       }
+    /**
+     * 个人正式客户 移除黑名单
+     */ 
+    personalCancelBlacklist(data){
+        return this.netService.send({
+          server: manageService.personalController.personalCancelBlacklist,
+          data:data,
+        })
+      }  
+
+     /**
+     * 个人正式客户 订单详情
+     */ 
+    getOrderListBypersonalId(data,page){
+        return this.netService.send({
+          server: manageService.personalController.getOrderListBypersonalId,
+          data:data,
+          page:page
+        })
+      }  
 
 }
