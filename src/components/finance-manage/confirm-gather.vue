@@ -6,7 +6,7 @@
         <i-col class="modal-item-col" :span="24">
           <span>收款类型：</span>
           <span class="modal-item-leixing">{{$dict.getDictName(repaymentObj.applicationType)}}</span>
-          <i-button class="modal-item-button" type="text" @click="saleApplyInfo">销售申请详情</i-button>
+          <i-button class="modal-item-button" type="text" @click="saleApplyInfo">进件收款申请详情</i-button>
         </i-col>
         <i-col class="modal-item-beizhu" :span="24">
           <i-form-item>
@@ -68,15 +68,15 @@
         </td>
         <td>
           <i-select class="modal-item-select" placeholder="选择收款项目" v-model="v.collectItem" :disabled="check" @on-change="selectWay($event, v)">
-            <i-option v-for="item in collectMoneyItemModels" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>
+            <i-option v-for="item in collectMoneyItemModels" :key="item.itemName" :label="item.itemLabel" :value="item.itemName"></i-option>
           </i-select>
         </td>
         <td>
           <i-input class="modal-item-huakou" v-model="v.collectMoneyAmount" @on-blur="inputBlur" readonly></i-input>
-          <i-button class="blueButton" v-if="!check">确认划扣</i-button>
+          <i-button class="blueButton" v-if="!check" @click="huakouTest" >确认划扣</i-button>
         </td>
         <td>
-          <span>已处理</span>
+          <span>{{huakou}}</span>
           <i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
@@ -90,7 +90,6 @@
       <div class="modal-item-xinxi"></div>
       <span>账户信息</span>
     </div>
-    <!--<bank-info :dataSet="personalBanks"></bank-info>-->
     <i-table :columns="columns2" :data="personalBanks"></i-table>
 
     <div v-if="!check || applicationPhaseResources.length">
@@ -121,6 +120,7 @@ import { CollectMoneyHistoryService } from "~/services/manage-service/collect-mo
 import UploadVoucher from "~/components/common/upload-voucher.vue"
 import { Prop, Watch } from "vue-property-decorator";
 import BankInfo from "~/components/base-data/bank-info.vue";
+import {ChargeBackService} from "~/services/manage-service/charge-back.service";
 
 @Component({
   components: {
@@ -133,6 +133,7 @@ import BankInfo from "~/components/base-data/bank-info.vue";
 })
 export default class ConfirmGather extends Vue {
   @Dependencies(CollectMoneyHistoryService) private collectMoneyHistoryService: CollectMoneyHistoryService;
+  @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
   @Prop({
     default: false
   })
@@ -146,18 +147,12 @@ export default class ConfirmGather extends Vue {
   private paymentAmount: any = 0
   private collectMoneyItemModels: any = []
   private collectMoneyId: any = ''
-  private openUpload: Boolean = false;
-  private box: any = ''
   private personalBanks: Array<Object> = [];
   private columns3: any;
   private columns2: any;
-  private data3: Array<Object> = [];
   private purchaseInfoModel: Boolean = false;
   private fodderList: any = []
-  private gatherModal: Object = {
-    gatherType: '销售收款',
-    remarks: ''
-  }
+  private huakou:any = '未处理'
 
   @Watch('currentRow')
   onChange() {
@@ -182,15 +177,13 @@ export default class ConfirmGather extends Vue {
         this.applicationPhaseResources = data.applicationPhaseUploadResources
         this.collectMoneyItemModels = data.collectMoneyItemModels
         this.$nextTick(() => {
-          let _uploadFodder: any = this.$refs['upload-voucher']
-          _uploadFodder.Reverse(data.collectMoneyPhaseUploadResources)
+          let uploadFodder: any = this.$refs['upload-voucher']
+          uploadFodder.Reverse(data.collectMoneyPhaseUploadResources)
           // let _uploadFodderTwo:any = this.$refs['upload-voucher-two']
           // _uploadFodderTwo.Reverse(data.applicationPhaseUploadResources)
         })
         this.inputBlur()
-      }, ({
-              msg
-            }) => {
+      }, ({ msg }) => {
           this.$Message.error(msg)
         })
     })
@@ -218,7 +211,7 @@ export default class ConfirmGather extends Vue {
     this.collectMoneyDetails.push({ collectMoneyAmount: '' })
   }
   selectWay(code, item) {
-    let target: any = this.collectMoneyItemModels.find((d) => d.itemCode === code)
+    let target: any = this.collectMoneyItemModels.find((d) => d.itemName === code)
     if (target) {
       item.collectMoneyAmount = target.itemMoney
       this.inputBlur()
@@ -335,17 +328,20 @@ export default class ConfirmGather extends Vue {
         })])
       }
     }]
-    this.data3 = [{
-      // projectName: ''
-    }]
-
-
-
   }
   saleApplyInfo() {
     this.purchaseInfoModel = true
     let _purchaseInfo: any = this.$refs["purchase-info"];
     _purchaseInfo.getOrderDetail(this.rowObj);
+  }
+  huakouTest(){
+    this.chargeBackService.saveChargeback({personalId:1})
+      .subscribe( data => {
+        this.$Message.success('划扣成功')
+        this.huakou = '已处理'
+      },(msg) => {
+        this.$Message.error(msg)
+      })
   }
 }
 

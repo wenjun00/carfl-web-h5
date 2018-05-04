@@ -44,5 +44,8 @@ export default class WorkSpace extends Vue {
   height: calc(~"100% - 60px");
   // grid-row-start: 2;
   // grid-row-end: 3;
+  & > * {
+    height: 100%;
+  }
 }
 </style>
