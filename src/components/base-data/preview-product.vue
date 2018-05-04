@@ -17,7 +17,7 @@
         <span class="item-float-left" v-if="productDetailView.paymentType === 387">{{productDetailView.paymentDay + '日'}} </span>
       </data-grid-item>
     </data-grid>
-    <div class="addPeriodsItem">首付款参数</div>
+    <!--<div class="addPeriodsItem">首付款参数</div>
     <data-grid :labelWidth="100">
       <data-grid-item label="首付款" :span="12">
         <div type="flex" align="middle">
@@ -63,7 +63,7 @@
           <span class="item-color-red">%</span>
         </div>
       </data-grid-item>
-    </data-grid>
+    </data-grid>-->
     <div class="addPeriodsItem">管理费参数</div>
     <data-grid :labelWidth="100">
       <data-grid-item label="管理费" :span="12">
