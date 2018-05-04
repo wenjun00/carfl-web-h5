@@ -53,7 +53,7 @@
           </i-select>
         </data-grid-item>
       </data-grid>
-      <div class="add-periods-item">首付款参数</div>
+      <!--<div class="add-periods-item">首付款参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item ref label="首付款" :span="12">
           <i-radio-group class="item-shoufu-group" v-model="initialParams">
@@ -115,7 +115,7 @@
             </i-form-item>
           </div>
         </data-grid-item>
-      </data-grid>
+      </data-grid>-->
       <div class="add-periods-item">管理费参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="管理费" :span="12">
