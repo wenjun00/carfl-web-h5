@@ -219,7 +219,6 @@
     /**
      *  提交申请
      */
-    /**
     submission(val){
       let form = <Form>this.$refs['form-item']
       form.validate(valid => {
@@ -254,7 +253,6 @@
           })
       })
     }
-     */
 
     /**
      *  编辑

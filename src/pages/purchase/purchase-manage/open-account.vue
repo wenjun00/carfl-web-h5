@@ -21,7 +21,7 @@
         <i-form :label-width="60">
           <i-form-item label="结算通道">
             <i-select style="width:150px;" v-model="settleChannel">
-              <i-option v-for="{value,label} in $dict.getDictData('0444')" :key="value" :label="label" :value="value"></i-option>
+              <i-option v-for="{value,label} in $dict.getDictData('0105')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-form>
