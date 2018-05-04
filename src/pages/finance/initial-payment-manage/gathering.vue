@@ -118,7 +118,7 @@
       let data: any = {}
       data.collectMoneyId = _repayment.collectMoneyId
       data.financeUploadResource = _repayment.fodderList
-      data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.collectHistoryDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.applicationId
       data.totalPayment = _repayment.paymentAmount
