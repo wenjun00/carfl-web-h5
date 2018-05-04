@@ -64,7 +64,7 @@
             合计数量: {{carDataSet.length}}
           </i-col>
           <i-col :span="6">
-            合计数量(元): {{productModel.evaluateAmount|toThousands}}
+            合计数量(万元): {{productModel.evaluateAmount|toThousands}}
           </i-col>
         </i-row>
       </template>
@@ -339,12 +339,12 @@ export default class MortgageApplication extends Vue {
       key: "carNo"
     },
     {
-      title: "行驶里程(公里)",
+      title: "行驶里程(万公里)",
       align: "center",
       key: "mileage"
     },
     {
-      title: "评估价(元)",
+      title: "评估价(万元)",
       align: "center",
       key: "evaluation",
       render: (h, { row }) =>
@@ -410,7 +410,7 @@ export default class MortgageApplication extends Vue {
    */
   private showMortgageCarList() {
     let dialog = this.$dialog.show({
-      title: "销售员列表",
+      title: "押品列表",
       footer: true,
       onOk: mortgageCarList => {
         let currentSelection = mortgageCarList.getCurrentSelection();

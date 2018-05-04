@@ -1,8 +1,8 @@
 <!--销售收款申请-->
 <template>
   <section class="page sale-gathering-apply">
-    <page-header title="销售收款申请" hiddenExport>
-      <command-button label="添加新申请" @click="clearAll"></command-button>
+    <page-header title="进件收款申请" hiddenExport>
+      <command-button label="重置" @click="clearAll"></command-button>
     </page-header>
 
     <!-- 搜索表单-start -->
@@ -227,7 +227,7 @@ export default class SaleGatheringApply extends Page {
       }
     })
   }
-  
+
   loaded({ row }) {
     if (!row) {
       return

@@ -60,12 +60,12 @@ export default class MortgageCarList extends Vue {
       key: "carNo"
     },
     {
-      title: "行驶里程(公里)",
+      title: "行驶里程(万公里)",
       align: "center",
       key: "mileage"
     },
     {
-      title: "评估价(元)",
+      title: "评估价(万元)",
       align: "center",
       key: "evaluation",
       render: (h, { row }) =>

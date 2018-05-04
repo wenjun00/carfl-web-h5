@@ -1,15 +1,15 @@
 <!--个人订单详情-->
 <template>
     <section class="component personal-order-details">
-        <div style="font-size: 16px;font-weight: bolder;margin-left: 10px;">订单环节</div>
-        <i-steps :current="5" style="margin:20px 10px">
-            <Step title="车辆评估"></Step>
-            <Step title="贷款申请"></Step>
-            <Step title="资料审核"></Step>
-            <Step title="签约"></Step>
-            <Step title="押品入库"></Step>
-            <Step title="放款"></Step>
-        </i-steps>
+        <!--<div style="font-size: 16px;font-weight: bolder;margin-left: 10px;">订单环节</div>-->
+        <!--<i-steps :current="5" style="margin:20px 10px">-->
+            <!--<Step title="车辆评估"></Step>-->
+            <!--<Step title="贷款申请"></Step>-->
+            <!--<Step title="资料审核"></Step>-->
+            <!--<Step title="签约"></Step>-->
+            <!--<Step title="押品入库"></Step>-->
+            <!--<Step title="放款"></Step>-->
+        <!--</i-steps>-->
         <data-box :data="uploadDataSet" :columns="detailsColumns" :showConfigColumn="false" :page="pageService" height="400px;"></data-box>
     </section>
 </template>
