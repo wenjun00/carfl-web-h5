@@ -419,12 +419,12 @@ export default class MortgageApplication extends Vue {
   private showMortgageCarList() {
     if (!this.cardNumber) {
       this.$Message.info("请输入证件号码后添加押品");
-      // return
+      return
     }
 
     if (!this.$validator.regex.idCard.test(this.cardNumber)) {
       this.$Message.info("请输入正确的证件号码");
-      // return
+      return
     }
 
     let dialog = this.$dialog.show({

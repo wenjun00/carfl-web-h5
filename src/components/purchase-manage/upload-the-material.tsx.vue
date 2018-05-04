@@ -157,10 +157,8 @@ export default class UploadTheMaterial extends Vue {
     let result = this.fileTypeList
       .filter(item => item.isSelect === 0)
       .every((item: any) => {
-        console.log(this.uploadDataSet.find(x => x.materialType === item.id))
         return !!this.uploadDataSet.find(x => x.materialType === item.id);
       });
-  console.log(result)
     if (result) {
       return true;
     }

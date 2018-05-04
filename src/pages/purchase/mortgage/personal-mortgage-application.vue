@@ -429,7 +429,6 @@ export default class PersonalMortgageApplication extends Page {
 
     // 执行验证
     for (let { name } of this.applicationTabs) {
-      console.log(name);
       let tab = this.$refs[name] as any;
       result = result && !!await tab.validate();
       if (!result) {
