@@ -47,12 +47,12 @@ export default class MortgageCarList extends Vue {
     {
       title: "车身颜色",
       align: "center",
-      key: "carColor"
+      key: "vehicleColour"
     },
     {
       title: "车辆排量",
       align: "center",
-      key: "displacement"
+      key: "vehicleEmissions"
     },
     {
       title: "车辆牌照",
@@ -85,7 +85,13 @@ export default class MortgageCarList extends Vue {
         this.pageService
       )
       .subscribe(data => {
-        this.carDataSet = data;
+        this.carDataSet = data.map((car:any)=>{
+          car.assessmentId = car.id;
+          car.vehicleColour = car.carColor;
+          car.vehicleEmissions = car.displacement;
+          data.id = null
+          return car
+        });
       });
   }
 

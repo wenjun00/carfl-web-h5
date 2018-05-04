@@ -326,12 +326,12 @@ export default class MortgageApplication extends Vue {
     {
       title: "车身颜色",
       align: "center",
-      key: "carColor"
+      key: "vehicleColour"
     },
     {
       title: "车辆排量",
       align: "center",
-      key: "displacement"
+      key: "vehicleEmissions"
     },
     {
       title: "车辆牌照",

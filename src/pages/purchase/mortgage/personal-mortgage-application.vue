@@ -537,13 +537,7 @@ export default class PersonalMortgageApplication extends Page {
         productRate: mortgageApplication.currentProduct.productRate,
         payWay: mortgageApplication.currentProduct.payWay,
         // 押品信息
-        orderCars: mortgageApplication.carDataSet.map(car => {
-          car.vehicleId = car.id | car.orderId;
-          car.assessmentId = car.id | car.orderId;
-          car.vehicleColour = car.carColor;
-          car.vehicleEmissions = car.displacement;
-          return car;
-        })
+        orderCars: mortgageApplication.carDataSet
       },
       // 客户资料
       {
