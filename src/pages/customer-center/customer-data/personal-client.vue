@@ -1,5 +1,5 @@
 <!--个人意向客户-->
-<template>
+<template> 
     <section class="page personal-client">
         <page-header title="个人意向客户" hidden-print>
             <i-button @click="addCustomerDetails" type="text">新增客户</i-button>
