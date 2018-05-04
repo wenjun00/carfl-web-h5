@@ -191,7 +191,7 @@ export class FilterService {
    * @param value 要格式化的金额
    */
   static percentFormat(value) {
-    let result = LodashService.round(value as number, 2)
+    let result = LodashService.round(value as number, 4)
     return `${result}%`
   }
 
