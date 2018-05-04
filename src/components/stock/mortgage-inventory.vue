@@ -55,19 +55,19 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="车辆隶属" >
-                        <i-input v-model="mortgageInventoryModel.carSubjection" placeholder="请填写车辆隶属"></i-input>
+                        <i-input v-model="mortgageInventoryModel.carSubjection" placeholder="请填写车辆隶属" :maxlength="9"></i-input>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="车辆来源" >
-                        <i-input  v-model="mortgageInventoryModel.carSource" disabled></i-input>
+                        <i-input  v-model="mortgageInventoryModel.carSource" disabled :maxlength="9"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="牌照号码" >
-                        <i-input placeholder="请填写牌照号码" v-model="mortgageInventoryModel.carNo"></i-input>
+                        <i-input placeholder="请填写牌照号码" v-model="mortgageInventoryModel.carNo" :maxlength="9"></i-input>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
@@ -84,7 +84,7 @@
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="里程表值" prop="odometer">
-                        <i-input v-model="mortgageInventoryModel.odometer" placeholder="请填写里程表"></i-input>
+                        <i-input v-model="mortgageInventoryModel.odometer" placeholder="请填写里程表" :maxlength="9"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -98,7 +98,7 @@
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="登记人">
-                        <i-input placeholder="请选填写登记人" v-model="mortgageInventoryModel.warehousingPerson"></i-input>
+                        <i-input placeholder="请选填写登记人" v-model="mortgageInventoryModel.warehousingPerson" :maxlength="9"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -195,7 +195,7 @@ export default class addPeople extends Vue {
   private id:any = '' //该条数据的订单ID
   private ruleValidateRule: any = {
     warehousingDate: [{required: true, message: '请选入库日期', trigger: 'change', type: 'date'}],
-    odometer: [{ required: true, message: '请填写里程表', trigger: 'change' }],
+    odometer: [{ required: true, message: '请填写里程表', trigger: 'change' },{type: 'number', max:10, message: "里程表值不能超过10位", trigger: "blur"}],
     warehousingSituation: [{required: true, message: '请选择车况', trigger: 'change', type: 'number'}],
     placingTypeId: [{required: true, message: '请选择停放状态', trigger: 'change', type: 'number'}]
   }

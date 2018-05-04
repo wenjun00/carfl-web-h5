@@ -2,7 +2,7 @@
   <section class="component upload-voucher">
     <div class="row image-container">
       <div class="modal-item-upload" v-if="!hiddenUpload">
-        <div class="modal-item-upload-div" @click="openUpload=true">
+        <div class="modal-item-upload-div" @click="showFileUpload">
           <Icon type="plus-circled" class="modal-item-upload-icon" color="#265ea2" size="40"></Icon>
           <h2 class="modal-item-upload-add">点击添加附件</h2>
           <h3 class="modal-item-upload-text">支持jpg/png格式</h3>
@@ -19,12 +19,7 @@
       </div>
     </div>
     <template>
-      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload" :transfer="false">
-        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
-      </i-modal>
-    </template>
-    <template>
-      <i-modal title="预览" v-model="previewModel" :transfer="false">
+      <i-modal title="预览" v-model="previewModel">
         <img :src="url" style="width: 100%">
       </i-modal>
     </template>
@@ -59,31 +54,37 @@ export default class UploadVoucher extends Vue {
   private financeUploadResources: any = [];
   private previewModel: Boolean = false;
   private url: any = ''
-  /**
-   * 上传文件成功回调
-   */
-  uploadSuccess() {
-    this.openUpload = false;
-    this.$nextTick(() => {
-      let fileUpload: any = this.$refs["file-upload"];
-      this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
-        return {
-          materialUrl: v.response.url,
-          materialType: v.response.type,
-          originName: v.response.name
-        }
-      }))
-      this.$emit('financeUploadResources', this.financeUploadResources)
-      fileUpload.reset();
+
+  showFileUpload(){
+    let fileUploadModel
+    let dialog = this.$dialog.show({
+      title: "上传文件",
+      footer: true,
+      onOk: fileUpload => {
+        fileUploadModel = fileUpload
+        fileUpload.upload();
+      },
+      render: h => {
+        return h(FileUpload, {
+          on: {
+            "on-success": ()=>{
+              this.$nextTick(() => {
+                this.financeUploadResources = this.financeUploadResources.concat(fileUploadModel.fileList.map(v => {
+                  return {
+                    materialUrl: v.response.url,
+                    materialType: v.response.type,
+                    originName: v.response.name
+                  }
+                }))
+                this.$emit('financeUploadResources', this.financeUploadResources)
+              });
+            }
+          }
+        });
+      }
     });
   }
-  /**
-   * 上传文件
-   */
-  postFile() {
-    let fileUpload = this.$refs["file-upload"] as FileUpload;
-    fileUpload.upload();
-  }
+
   /**
    * 预览
    */

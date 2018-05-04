@@ -55,7 +55,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="车辆隶属">
-                        <i-input placeholder="请填写车辆隶属" v-model="outTreasuryModel.carSubjection"></i-input>
+                        <i-input placeholder="请填写车辆隶属" v-model="outTreasuryModel.carSubjection" :maxlength="10"></i-input>
                     </i-form-item>
                 </i-col>
                 <!--<i-col :span="8">-->
@@ -67,7 +67,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="牌照号码">
-                        <i-input placeholder="请填写牌照号码" v-model="outTreasuryModel.carNo"></i-input>
+                        <i-input placeholder="请填写牌照号码" v-model="outTreasuryModel.carNo" :maxlength="10"></i-input>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
@@ -79,7 +79,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="里程表值" prop="odometer">
-                        <i-input placeholder="请填写里程表" v-model="outTreasuryModel.odometer"></i-input>
+                        <i-input placeholder="请填写里程表" v-model="outTreasuryModel.odometer" :maxlength="10"></i-input>
                     </i-form-item>
                 </i-col>
                  <i-col :span="8">
@@ -114,7 +114,7 @@
                 </i-col>
               <i-col :span="8">
                 <i-form-item label="经办人">
-                  <i-input placeholder="请填写经办人" v-model="outTreasuryModel.placingPerson"></i-input>
+                  <i-input placeholder="请填写经办人" v-model="outTreasuryModel.placingPerson" :maxlength="10"></i-input>
                 </i-form-item>
               </i-col>
             </i-row>
@@ -191,7 +191,7 @@ export default class EditFromStorage extends Vue {
     placingType:''
   }
   private ruleValidateRule: any = {
-    odometer: [{ required: true, message: '请填写里程表', trigger: 'change' }],
+    odometer: [{ required: true, message: '请填写里程表', trigger: 'change' },{type: 'number', max:10, message: "里程表值不能超过10位", trigger: "blur"}],
     placingDate:[{required: true, message: '请选出库日期', trigger: 'change', type: 'date'}],
     placingType: [{required: true, message: '请选择出库类型', trigger: 'change', type: 'number'}],
     placingSituation: [{required: true, message: '请选择车况', trigger: 'change', type: 'number'}]

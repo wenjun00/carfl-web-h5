@@ -2,7 +2,7 @@
 <template>
   <section class="component gather-detail-early-pay">
     <i-card>
-      <table border="1" width="1100" class="gather-type-table">
+      <table border="1" width="100%" class="gather-type-table">
         <tr height="40">
           <td bgcolor="#F2F2F2" width="80">
             <span>操作</span>
@@ -14,25 +14,36 @@
             <span>金额</span>
           </td>
         </tr>
-        <tr height="40" v-for="item in gatherItemList" :key="item.index">
-          <td width="40">
-            <div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.refundItem!==1157" style="cursor:pointer">
-              <Icon type="trash-a" size="18"></Icon>
-            </div>
+        <tr height="40">
+          <td width="80">
+            <span>1</span>
           </td>
           <td>
-            <span>{{$dict.getDictName(item.refundItem)}}</span>
+            <span>贷款总额</span>
           </td>
           <td>
-            <i-input v-if="item.refundItem===1159" style="width:10%" :value="item.refundAmount" @on-change="changeOtherFee" :maxlength="7"></i-input>
-            <span v-else>{{item.refundAmount}}</span>
+            <span>{{this.totalMoneyTwo}}</span>
           </td>
         </tr>
+        <!--<tr height="40" v-for="item in gatherItemList" :key="item.index">-->
+          <!--<td width="40">-->
+            <!--<div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.refundItem!==1157" style="cursor:pointer">-->
+              <!--<Icon type="trash-a" size="18"></Icon>-->
+            <!--</div>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<span>{{$dict.getDictName(item.refundItem)}}</span>-->
+          <!--</td>-->
+          <!--<td>-->
+            <!--<i-input v-if="item.refundItem===1159" style="width:10%" :value="item.refundAmount" @on-change="changeOtherFee" :maxlength="7"></i-input>-->
+            <!--<span v-else>{{item.refundAmount}}</span>-->
+          <!--</td>-->
+        <!--</tr>-->
       </table>
-      <div>
-        <Icon type="plus" class="add-icon"></Icon>
-        <i-button type="text" class="add-button" @click="changeGatherItem">添加付款项</i-button>
-      </div>
+      <!--<div>-->
+        <!--<Icon type="plus" class="add-icon"></Icon>-->
+        <!--<i-button type="text" class="add-button" @click="changeGatherItem">添加付款项</i-button>-->
+      <!--</div>-->
     </i-card>
     <!--<i-card title="账户信息">
       <bank-info :dataSet="accountInfoList"></bank-info>
@@ -99,6 +110,7 @@
   })
   export default class PayDetail extends Vue {
     // @Prop() checkOrderId: Number;
+    @Prop() totalMoneyTwo;
     @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService
     private modifyGatherItemModal: Boolean = false
     private changeGatherItemModal: Boolean = false
@@ -164,46 +176,46 @@
         console.log(this.accountInfoList, 'accountInfoList')
     //   }
     }
-    /**
-     * 变更收款项
-     */
-    changeGatherItem() {
-      if (this.checkOrderId) {
-        this.addGatherItemModal = true // 添加收款项
-        let _addGatherItem: any = this.$refs['add-gather-item']
-        _addGatherItem.getOrderSaleItemData(
-          this.checkOrderId,
-          this.gatherItemList
-        )
-      } else {
-        this.$Message.info('请选择订单！')
-      }
-    }
-    deleteGatherItem(item) {
-      console.log(item, 'item')
-      this.$Modal.confirm({
-        title: '提示',
-        content: '确定删除吗？',
-        onOk: () => {
-          // 删除
-          this.changeGatherItemModal = false
-          console.log(this.gatherItemList, 'gatherItemList')
-          this.gatherItemList = this.gatherItemList.filter(
-            v => v.refundItem !== item.refundItem
-          )
-          // 重新计算合计
-          console.log(this.gatherItemList, 'ddd')
-          let oldTotalPayment = this.gatherItemList.find(
-            v => v.itemName === 'totalPayment'
-          ).refundAmount
-          let deleteFee = item.refundAmount // 删除的金额
-          this.gatherItemList.find(
-              v => v.itemName === 'totalPayment'
-            ).refundAmount =
-            oldTotalPayment - deleteFee
-        }
-      })
-    }
+    // /**
+    //  * 变更收款项
+    //  */
+    // changeGatherItem() {
+    //   if (this.checkOrderId) {
+    //     this.addGatherItemModal = true // 添加收款项
+    //     let _addGatherItem: any = this.$refs['add-gather-item']
+    //     _addGatherItem.getOrderSaleItemData(
+    //       this.checkOrderId,
+    //       this.gatherItemList
+    //     )
+    //   } else {
+    //     this.$Message.info('请选择订单！')
+    //   }
+    // }
+    // deleteGatherItem(item) {
+    //   console.log(item, 'item')
+    //   this.$Modal.confirm({
+    //     title: '提示',
+    //     content: '确定删除吗？',
+    //     onOk: () => {
+    //       // 删除
+    //       this.changeGatherItemModal = false
+    //       console.log(this.gatherItemList, 'gatherItemList')
+    //       this.gatherItemList = this.gatherItemList.filter(
+    //         v => v.refundItem !== item.refundItem
+    //       )
+    //       // 重新计算合计
+    //       console.log(this.gatherItemList, 'ddd')
+    //       let oldTotalPayment = this.gatherItemList.find(
+    //         v => v.itemName === 'totalPayment'
+    //       ).refundAmount
+    //       let deleteFee = item.refundAmount // 删除的金额
+    //       this.gatherItemList.find(
+    //           v => v.itemName === 'totalPayment'
+    //         ).refundAmount =
+    //         oldTotalPayment - deleteFee
+    //     }
+    //   })
+    // }
     resetTable() {
       this.gatherItemList = []
       //   this.accountInfo.personalName = "";

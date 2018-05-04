@@ -1,7 +1,7 @@
 <!--付款申请-->
 <template>
   <section class="page pay-apply">
-    <page-header title="付款申请">
+    <page-header title="放款申请">
       <command-button label="清空" @click="clearAll"></command-button>
     </page-header>
 
@@ -36,30 +36,31 @@
             </i-form-item>
           </i-col>
         </i-row>
-        <i-row :gutter="20">
-          <i-col span="12">
-            <i-form-item label="付款类型" prop="refundType">
-              <i-select v-model="applyModel.refundType" placeholder="请选择付款类型">
-                <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
-              </i-select>
-            </i-form-item>
-          </i-col>
-          <i-col span="12">
-            <i-form-item label="备注" prop="remark">
-              <i-input type="text" style="width:77%;" v-model="applyModel.remark" placeholder="请输入备注">
-              </i-input>
-            </i-form-item>
-          </i-col>
-        </i-row>
+        <!--<i-row :gutter="20">-->
+          <!--<i-col span="12">-->
+            <!--<i-form-item label="付款类型" prop="refundType">-->
+              <!--<i-select v-model="applyModel.refundType" placeholder="请选择付款类型">-->
+                <!--<i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>-->
+              <!--</i-select>-->
+            <!--</i-form-item>-->
+          <!--</i-col>-->
+          <!--<i-col span="12">-->
+            <!--<i-form-item label="备注" prop="remark">-->
+              <!--<i-input type="text" style="width:77%;" v-model="applyModel.remark" placeholder="请输入备注">-->
+              <!--</i-input>-->
+            <!--</i-form-item>-->
+          <!--</i-col>-->
+        <!--</i-row>-->
       </i-form>
     </div>
 
     <i-tabs v-show="applyModel.orderNumber" v-model="materialTabs" class="info-container">
       <i-tab-pane name="pay-detail" label="付款明细">
-        <pay-detail :checkOrderId="checkOrderId" ref="payDetail"></pay-detail>
+        <pay-detail  ref="payDetail" :totalMoneyTwo="totalMoneyTwo"></pay-detail>
       </i-tab-pane>
       <i-tab-pane name="upload-the-fodder" label="上传素材">
-        <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
+        <div style="font-size: 16px;font-weight: bolder;margin-left:10px">文件数量</div>
+        <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher"></upload-voucher>
       </i-tab-pane>
     </i-tabs>
 
@@ -71,18 +72,18 @@
     </div>
 
     <!--编辑收款项-->
-    <template>
-      <i-modal v-model="modifyGatherItemModal" title="编辑收款项" :width="300">
-        <modify-gather-item></modify-gather-item>
-      </i-modal>
-    </template>
+    <!--<template>-->
+      <!--<i-modal v-model="modifyGatherItemModal" title="编辑收款项" :width="300">-->
+        <!--<modify-gather-item></modify-gather-item>-->
+      <!--</i-modal>-->
+    <!--</template>-->
 
     <!--变更收款项-->
-    <template>
-      <i-modal v-model="changeGatherItemModal" title="变更收款项">
-        <change-gather-item></change-gather-item>
-      </i-modal>
-    </template>
+    <!--<template>-->
+      <!--<i-modal v-model="changeGatherItemModal" title="变更收款项">-->
+        <!--<change-gather-item></change-gather-item>-->
+      <!--</i-modal>-->
+    <!--</template>-->
   </section>
 </template>
 <script lang="ts">
@@ -99,14 +100,14 @@ import UploadTheMaterial from '~/components/purchase-manage/upload-the-material.
 import ModifyGatherItem from '~/components/purchase-manage/modify-gather-item.vue'
 import ChangeGatherItem from '~/components/purchase-manage/change-gather-item.vue'
 import PayDetail from '~/components/purchase-manage/pay-detail.vue'
-import UploadTheFodder from '~/components/purchase-manage/upload-the-fodder.vue'
+import UploadVoucher from "~/components/common/upload-voucher.vue"
 
 @Layout('workspace')
 @Component({
   components: {
     DataBox,
     SvgIcon,
-    UploadTheFodder,
+    UploadVoucher,
     ModifyGatherItem,
     ChangeGatherItem,
     PayDetail
@@ -120,7 +121,7 @@ export default class PayApply extends Page {
   private customerForm: any = {}
   private transFlag: boolean = false;
   private payDetail: any = {}
-  private uploadTheFodder: any = {}
+  private UploadVoucher: any = {}
   private currentIdCard: string = ""
 
   private applyModel: any = {}
@@ -134,6 +135,10 @@ export default class PayApply extends Page {
   private dataSet: Array<any> = []
   private checkOrderId: Number = 0
   private saveData: any = {}
+  private fodderList:any = [] //上传文件列
+  private totalMoney:any = []
+  private totalMoneyTwo:any = ''
+  private totalMoneyId:any = ''
 
   created() {
 
@@ -162,10 +167,7 @@ export default class PayApply extends Page {
 
     this.saveData = {
       orderId: '', // 订单id
-      bankListk: [], // 客户开户信息
-      itemList: [], // 付款明细
-      refundType: '', // 付款类型
-      remark: '', // 备注
+      refundTotalAmount : '',
       resourceList: [] // 上传资料
     }
   }
@@ -173,7 +175,7 @@ export default class PayApply extends Page {
   mounted() {
     this.customerForm = this.$refs['customer-form']
     this.payDetail = this.$refs['payDetail']
-    this.uploadTheFodder = this.$refs['upload-the-fodder']
+    this.UploadVoucher = this.$refs['upload-voucher']
   }
 
   /**
@@ -201,7 +203,7 @@ export default class PayApply extends Page {
     this.orderList = []
     this.customerForm.resetFields()
     this.payDetail.resetTable()
-    this.uploadTheFodder.fodder.reset()
+    this.UploadVoucher.reset()
     this.applyModel.certificateNumber = newIdCard
   }
 
@@ -214,6 +216,7 @@ export default class PayApply extends Page {
       .subscribe(
       data => {
         if (data) {
+          this.totalMoney = data
           this.orderList = data.filter(v => v.orderId)
           if (data[0] && data[0].orderNumber) {
             this.applyModel.name = data[0].name
@@ -244,27 +247,24 @@ export default class PayApply extends Page {
       if (!valid) {
         return false
       } else {
-        let _message: any = this.$refs['payDetail']
-        this.saveData.bankListk = _message.accountInfoList
-        let gatherItem: any = Object.assign(_message.gatherItemList)
-        this.saveData.refundTotalAmount =
-          gatherItem.length > 0
-            ? gatherItem.find(v => v.itemName === 'totalPayment').refundAmount
-            : ''
-        this.saveData.recordStatus = 1129
-        this.saveData.refundType = this.applyModel.refundType
-        this.saveData.remark = this.applyModel.remark
-        this.saveData.itemList = gatherItem.splice(
-          0,
-          _message.gatherItemList.length - 1
-        )
-        let _uploadthefodder: any = this.$refs['upload-the-fodder']
-        console.log('dhfjgdfjgdjf')
-        this.saveData.resourceList = _uploadthefodder.fodderList.map(v => {
-          return {
-            materialUrl: v.url
-          }
-        })
+
+        // let _message: any = this.$refs['payDetail']
+        // this.saveData.bankListk = _message.accountInfoList
+        // let gatherItem: any = Object.assign(_message.gatherItemList)
+        // this.saveData.refundTotalAmount =
+        //   gatherItem.length > 0
+        //     ? gatherItem.find(v => v.itemName === 'totalPayment').refundAmount
+        //     : ''
+        // this.saveData.recordStatus = 1129
+        // this.saveData.refundType = this.applyModel.refundType
+        // this.saveData.remark = this.applyModel.remark
+        // this.saveData.itemList = gatherItem.splice(
+        //   0,
+        //   _message.gatherItemList.length - 1
+        // )
+        this.saveData.resourceList = this.fodderList
+        this.saveData.refundTotalAmount  = this.totalMoneyTwo
+        this.saveData.orderId = this.totalMoneyId
         this.refundApplicationService
           .saveSubmitApplication(this.saveData)
           .subscribe(
@@ -287,6 +287,8 @@ export default class PayApply extends Page {
    */
   changeOrder(item) {
     if (item) {
+      this.totalMoneyTwo = this.totalMoney.find(v=>v.orderNumber === item).financingAmount
+      this.totalMoneyId = this.totalMoney.find(v=>v.orderNumber === item).orderId
       this.saveData.orderId = this.dataSet.find(
         v => v.orderNumber === item
       ).orderId
@@ -298,6 +300,12 @@ export default class PayApply extends Page {
   multipleSelect(selection) { }
   modifyGatherItem() {
     this.modifyGatherItemModal = true
+  }
+  /**
+   *  返回上传文件列
+   */
+  fileNumber(item) {
+    this.fodderList = item;
   }
   /**
    * 变更收款项

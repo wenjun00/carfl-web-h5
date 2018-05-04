@@ -28,18 +28,6 @@
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="所属机构" prop="deptNames">
-            <Cascader :data="depatmentData" :render-format="format" v-model="modifyModel.deptNames" change-on-select></Cascader>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="公司名称" prop="companyName">
-            <i-input v-model="modifyModel.companyName" :disabled="true"></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row>
-        <i-col :span="12">
           <i-form-item label="性别" prop="userSex">
             <i-select v-model="modifyModel.userSex">
               <i-option v-for="{value,label} in $dict.getDictData('0406')" :key="value" :label="label" :value="value"></i-option>
@@ -55,6 +43,16 @@
         </i-col>
       </i-row>
       <i-row>
+        <i-col :span="12">
+          <i-form-item label="所属机构" prop="deptNames">
+            <Cascader :data="depatmentData" :render-format="format" v-model="modifyModel.deptNames" change-on-select></Cascader>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
+          <i-form-item label="公司名称" prop="companyName">
+            <i-input v-model="modifyModel.companyName" :disabled="true"></i-input>
+          </i-form-item>
+        </i-col>
       </i-row>
       <i-row>
         <i-col :span="12">
@@ -65,9 +63,9 @@
             </i-select>
           </i-form-item>
         </i-col>
-        <i-col :span="12">
-
-        </i-col>
+        <i-col :span="12"></i-col>
+      </i-row>
+      <i-row>
         <i-col :span="24">
           <i-form-item label="备注" prop="userRemark">
             <i-input type="textarea" v-model="modifyModel.userRemark" :maxlength="100"></i-input>
@@ -222,16 +220,13 @@ export default class ModifyUser extends Vue {
   }
 }
 </script>
-<style lang="less" scoped>
+
+<style lang="less">
 .component.modify-user {
   .modify-user-form {
     position: relative;
     right: 30px;
   }
-}
-</style>
-<style lang="less">
-.component.modify-user {
   .ivu-form {
     .ivu-input-type,
     .ivu-input-wrapper,
