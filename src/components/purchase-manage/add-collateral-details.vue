@@ -204,7 +204,7 @@
         <i-col :span="15">
           <i-form-item label="估价" prop="evaluation">
             <i-input v-model="customerModel.evaluation" readonly></i-input>
-            <span>万元</span>
+            <span>元</span>
           </i-form-item>
         </i-col>
       </i-row>
