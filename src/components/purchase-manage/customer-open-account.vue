@@ -34,7 +34,9 @@
       </i-col>
       <i-col :span="12">
         <i-form-item label="开户银行" prop="depositBank">
-          <i-input class="open-input" v-model="CustomerOpenAccountModel.depositBank"></i-input>
+          <i-select class="open-input" placeholder="请选择开户银行" v-model="CustomerOpenAccountModel.depositBank">
+            <i-option v-for="{value,label} in $dict.getDictData('0456')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
         </i-form-item>
       </i-col>
       <i-col :span="12">
@@ -177,7 +179,7 @@
       color: #fff;
     }
   }
-  
+
   //   }
 
 </style>
