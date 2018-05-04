@@ -67,7 +67,7 @@ export default class ProductList extends Vue {
       title: "期数(月)",
       key: "periods",
       align: "center",
-      width: 100,
+      minWidth: this.$common.getColumnWidth(4),
       render: (h, { row, column, index }) => {
         return h("span", {}, this.$dict.getDictName(row.periods));
       }
@@ -76,7 +76,7 @@ export default class ProductList extends Vue {
       title: "账期类型",
       key: "periodType",
       align: "center",
-      width: 100,
+     minWidth: this.$common.getColumnWidth(4),
       render: (h, { row, column, index }) => {
         return h("span", {}, this.$dict.getDictName(row.periodType));
       }
@@ -85,14 +85,14 @@ export default class ProductList extends Vue {
       title: "产品利率",
       key: "productRate",
       align: "center",
-      width: 100,
+      minWidth: this.$common.getColumnWidth(4),
       render: (h, { row }) => h('p', this.$filter.decimalToPrecent(row.productRate))
     },
     {
       title: "还款方式",
       key: "payWay",
       align: "center",
-      width: 100,
+     minWidth: this.$common.getColumnWidth(4),
       render: (h, { row, column, index }) => {
         return h("span", {}, this.$dict.getDictName(row.payWay));
       }
@@ -101,31 +101,31 @@ export default class ProductList extends Vue {
       title: "融资金额(元)",
       key: "financingAmount",
       align: "center",
-      width: 110
+      minWidth: this.$common.getColumnWidth(6)
     },
     {
-      title: "首付款",
+      title: "首付款(%)",
       key: "initialPayment",
       align: "center",
-      width: 100
+      minWidth: this.$common.getColumnWidth(4),
     },
     {
-      title: "保证金",
+      title: "保证金(%)",
       key: "depositCash",
       align: "center",
-      width: 100
+      minWidth: this.$common.getColumnWidth(4),
     },
     {
-      title: "尾付款",
+      title: "尾付款(%)",
       key: "finalCash",
       align: "center",
-      width: 100
+      minWidth: this.$common.getColumnWidth(4),
     },
     {
-      title: "管理费",
+      title: "管理费(%)",
       key: "manageCost",
       align: "center",
-      width: 100
+      minWidth: this.$common.getColumnWidth(4),
     }
   ];
 

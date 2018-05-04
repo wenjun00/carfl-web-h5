@@ -328,7 +328,7 @@ export default class PersonalClient extends Page {
   receive(row) {
     this.$Modal.confirm({
       title: '提示',
-      content: '确定领取至“押品评估列表”？',
+      content: `确定将“${row.personalName}”领取至自己名下并负责跟进？`,
       onOk: () => {
         this.personalService
           .receiveIntentionalCustomer({ personalDataId: row.personalId })
