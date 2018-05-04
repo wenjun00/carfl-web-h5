@@ -4,9 +4,6 @@
     <i-card>
       <table border="1" width="100%" class="gather-type-table">
         <tr height="40">
-          <td bgcolor="#F2F2F2" width="80">
-            <span>操作</span>
-          </td>
           <td bgcolor="#F2F2F2">
             <span>项目名称</span>
           </td>
@@ -14,35 +11,32 @@
             <span>金额</span>
           </td>
         </tr>
+        <tr height="40" v-for="item in this.totalMoneyTwo.applicationCollectMoneyItems">
+          <td>{{item.itemLabel}}</td>
+          <td>{{item.itemMoney}}</td>
+        </tr>
         <tr height="40">
-          <td width="80">
-            <span>1</span>
-          </td>
-          <td>
-            <span>贷款总额</span>
-          </td>
-          <td>
-            <span>{{this.totalMoneyTwo}}</span>
-          </td>
+          <td>合计（元）</td>
+          <td>{{this.totalMoneyTwo.totalPayment}}</td>
         </tr>
         <!--<tr height="40" v-for="item in gatherItemList" :key="item.index">-->
-          <!--<td width="40">-->
-            <!--<div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.refundItem!==1157" style="cursor:pointer">-->
-              <!--<Icon type="trash-a" size="18"></Icon>-->
-            <!--</div>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<span>{{$dict.getDictName(item.refundItem)}}</span>-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--<i-input v-if="item.refundItem===1159" style="width:10%" :value="item.refundAmount" @on-change="changeOtherFee" :maxlength="7"></i-input>-->
-            <!--<span v-else>{{item.refundAmount}}</span>-->
-          <!--</td>-->
+        <!--<td width="40">-->
+        <!--<div @click="deleteGatherItem(item)" v-show="item.itemName!=='totalPayment'&&item.refundItem!==1157" style="cursor:pointer">-->
+        <!--<Icon type="trash-a" size="18"></Icon>-->
+        <!--</div>-->
+        <!--</td>-->
+        <!--<td>-->
+        <!--<span>{{$dict.getDictName(item.refundItem)}}</span>-->
+        <!--</td>-->
+        <!--<td>-->
+        <!--<i-input v-if="item.refundItem===1159" style="width:10%" :value="item.refundAmount" @on-change="changeOtherFee" :maxlength="7"></i-input>-->
+        <!--<span v-else>{{item.refundAmount}}</span>-->
+        <!--</td>-->
         <!--</tr>-->
       </table>
       <!--<div>-->
-        <!--<Icon type="plus" class="add-icon"></Icon>-->
-        <!--<i-button type="text" class="add-button" @click="changeGatherItem">添加付款项</i-button>-->
+      <!--<Icon type="plus" class="add-icon"></Icon>-->
+      <!--<i-button type="text" class="add-button" @click="changeGatherItem">添加付款项</i-button>-->
       <!--</div>-->
     </i-card>
     <!--<i-card title="账户信息">
@@ -50,7 +44,7 @@
     </i-card>-->
     <div class="form-title">账户信息</div>
     <data-grid v-if="accountInfoList.length===0" :labelWidth="120" labelAlign="right" contentAlign="left">
-       <data-grid-item label="户名" :span="4"></data-grid-item>
+      <data-grid-item label="户名" :span="4"></data-grid-item>
       <data-grid-item label="开户银行" :span="4"></data-grid-item>
       <data-grid-item label="银行卡号" :span="4"></data-grid-item>
       <data-grid-item label="支行名称" :span="4"></data-grid-item>
@@ -171,10 +165,10 @@
         }
       }
 
-    //   if (data && data.bankList.length > 0) {
-        this.accountInfoList = data.bankList
-        console.log(this.accountInfoList, 'accountInfoList')
-    //   }
+      //   if (data && data.bankList.length > 0) {
+      this.accountInfoList = data.bankList
+      console.log(this.accountInfoList, 'accountInfoList')
+      //   }
     }
     // /**
     //  * 变更收款项
@@ -232,8 +226,8 @@
       this.otherFee = parseFloat(event.target.value) // 获取输入框输入的其他费用
       if (this.otherFee) {
         this.gatherItemList.find(
-            v => v.itemName === 'totalPayment'
-          ).refundAmount =
+          v => v.itemName === 'totalPayment'
+        ).refundAmount =
           this.otherTotal + this.otherFee
       } else {
         this.gatherItemList.find(

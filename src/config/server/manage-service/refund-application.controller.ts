@@ -84,5 +84,14 @@ export default {
         controller: CONTROLLER,
         action: 'getRefundRecord',
         type: requestType.Get
-    }
+    },
+    /**
+     * 根据订单编号查询总贷款金额
+     */
+      paymentApply:{
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'paymentApply',
+        type: requestType.Get
+      }
 }

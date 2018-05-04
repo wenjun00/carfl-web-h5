@@ -101,14 +101,16 @@
       data.businessId = _repayment.rowObj.applicationId
       data.totalPayment = _repayment.paymentAmount
       data.withdrawApplicationId = _repayment.rowObj.applicationId
-      this.collectMoneyHistoryService.saveCollectMoneyHistoryAsDraft(data).subscribe(data => {
-        this.$Message.info('保存草稿成功！')
-        this.confirmGatherModal = false
-      }, ({
-        msg
-      }) => {
-        this.$Message.error(msg)
-      })
+      data.collectMoneyChannel = _repayment.pipeSelect
+      console.log(data)
+      // this.collectMoneyHistoryService.saveCollectMoneyHistoryAsDraft(data).subscribe(data => {
+      //   this.$Message.info('保存草稿成功！')
+      //   this.confirmGatherModal = false
+      // }, ({
+      //   msg
+      // }) => {
+      //   this.$Message.error(msg)
+      // })
     }
     /**
      * 确认还款
@@ -116,17 +118,19 @@
     confirmRepayment() {
       let _repayment: any = this.$refs['confirm-gather']
       let data: any = {}
-      data.collectMoneyId = _repayment.collectMoneyId
+      // data.collectMoneyId = _repayment.collectMoneyId
       data.financeUploadResource = _repayment.fodderList
-      data.collectHistoryDetails = _repayment.collectMoneyDetails
+      // data.collectHistoryDetails = _repayment.collectMoneyDetails
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.applicationId
-      data.totalPayment = _repayment.paymentAmount
+      data.totalPayment = _repayment.repaymentObj.totalPayment
       data.withdrawApplicationId = _repayment.rowObj.applicationId
-      if(!_repayment.collectMoneyDetails.length || (_repayment.repaymentObj.totalPayment >_repayment.paymentAmount)){
-        this.$Message.warning("总金额小于应收总金额，请检查后确定！")
-        return
-      }else{
+      data.collectMoneyChannel = _repayment.pipeSelect
+      console.log(data)
+      // if(!_repayment.collectMoneyDetails.length || (_repayment.repaymentObj.totalPayment >_repayment.paymentAmount)){
+      //   this.$Message.warning("总金额小于应收总金额，请检查后确定！")
+      //   return
+      // }else{
         this.collectMoneyHistoryService.saveCollectMoneyHistory(data).subscribe(data => {
           this.$Message.info('操作成功！')
           this.confirmGatherModal = false
@@ -137,7 +141,7 @@
             }) => {
           this.$Message.error(msg)
         })
-      }
+      // }
     }
     /**
      * 退回

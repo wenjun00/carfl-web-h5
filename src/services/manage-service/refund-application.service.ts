@@ -127,4 +127,14 @@ export class RefundApplicationService {
       page: page
     })
   }
+  /**
+   * 根据订单编号查询总贷款金额
+   */
+  paymentApply(data) {
+    return this.netService.send({
+      server: manageService.refundApplicationController.paymentApply,
+      data
+    })
+  }
+
 }

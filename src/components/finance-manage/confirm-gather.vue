@@ -45,34 +45,34 @@
     </div>
     <table class="modal-item-table" border="1" width="850">
       <tr height="40">
-        <td class="bg-color" colspan="1" width="5%" v-if="!check">
-          <div @click="addObj">
-            <i-icon type="plus" class="modal-item-icon"></i-icon>
-          </div>
-        </td>
+        <!--<td class="bg-color" colspan="1" width="5%" v-if="!check">-->
+          <!--<div @click="addObj">-->
+            <!--<i-icon type="plus" class="modal-item-icon"></i-icon>-->
+          <!--</div>-->
+        <!--</td>-->
         <td class="bg-color" colspan="1" width="20%">结算通道</td>
-        <td class="bg-color" colspan="1" width="20%">收款项</td>
-        <td class="bg-color" colspan="1">金额（元）</td>
+        <!--<td class="bg-color" colspan="1" width="20%">收款项</td>-->
+        <td class="bg-color" colspan="1">合计金额（元）</td>
         <td class="bg-color" colspan="1">状态</td>
       </tr>
-      <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
-        <td v-if="!check">
-          <div @click="deleteObj(i)">
-            <i-icon type="minus" class="modal-item-icon"></i-icon>
-          </div>
-        </td>
+      <tr height="40">
+        <!--<td v-if="!check">-->
+          <!--<div @click="deleteObj(i)">-->
+            <!--<i-icon type="minus" class="modal-item-icon"></i-icon>-->
+          <!--</div>-->
+        <!--</td>-->
         <td>
-          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="v.collectMoneyChannel" :disabled="check">
+          <i-select class="modal-item-select" placeholder="选择结算通道"  :disabled="check" v-model="pipeSelect">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
+        <!--<td>-->
+          <!--<i-select class="modal-item-select" placeholder="选择收款项目" v-model="v.collectItem" :disabled="check" @on-change="selectWay($event, v)">-->
+            <!--<i-option v-for="item in collectMoneyItemModels" :key="item.itemName" :label="item.itemLabel" :value="item.itemName"></i-option>-->
+          <!--</i-select>-->
+        <!--</td>-->
         <td>
-          <i-select class="modal-item-select" placeholder="选择收款项目" v-model="v.collectItem" :disabled="check" @on-change="selectWay($event, v)">
-            <i-option v-for="item in collectMoneyItemModels" :key="item.itemName" :label="item.itemLabel" :value="item.itemName"></i-option>
-          </i-select>
-        </td>
-        <td>
-          <i-input class="modal-item-huakou" v-model="v.collectMoneyAmount" @on-blur="inputBlur" readonly></i-input>
+          <i-input class="modal-item-huakou"  v-model="repaymentObj.totalPayment" readonly></i-input>
           <i-button class="blueButton" v-if="!check" @click="huakouTest" >确认划扣</i-button>
         </td>
         <td>
@@ -80,11 +80,11 @@
           <i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
-      <tr height="40">
-        <td v-if="!check"></td>
-        <td width="25%">合计（元）</td>
-        <td colspan="3" class="modal-item-td">{{paymentAmount}}</td>
-      </tr>
+      <!--<tr height="40">-->
+        <!--<td v-if="!check"></td>-->
+        <!--<td width="25%">合计（元）</td>-->
+        <!--<td colspan="3" class="modal-item-td">{{paymentAmount}}</td>-->
+      <!--</tr>-->
     </table>
     <div>
       <div class="modal-item-xinxi"></div>
@@ -153,6 +153,7 @@ export default class ConfirmGather extends Vue {
   private purchaseInfoModel: Boolean = false;
   private fodderList: any = []
   private huakou:any = '未处理'
+  private pipeSelect:any = ''
 
   @Watch('currentRow')
   onChange() {
