@@ -160,21 +160,12 @@ export default {
         type: requestType.Get
     },
     /**
-     * 开户列表
+     * 进件模块 获取客户开户列表
      */
     getCustomerList: {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'getCustomerList',
-        type: requestType.Get
-    },
-    /**
-     * 进件模块 获取客户开户列表
-     */
-    getCustomerAccount: {
-        service: SERVICE,
-        controller: CONTROLLER,
-        action: 'getCustomerAccount',
         type: requestType.Get
     },
     /**
