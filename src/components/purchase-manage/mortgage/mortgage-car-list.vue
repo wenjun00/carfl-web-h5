@@ -89,7 +89,7 @@ export default class MortgageCarList extends Vue {
           car.assessmentId = car.id;
           car.vehicleColour = car.carColor;
           car.vehicleEmissions = car.displacement;
-          data.id = null
+          car.id = null
           return car
         });
       });
