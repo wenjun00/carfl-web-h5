@@ -167,7 +167,7 @@ export default class PayApply extends Page {
 
     this.saveData = {
       orderId: '', // 订单id
-      financingAmount: '',
+      refundTotalAmount : '',
       resourceList: [] // 上传资料
     }
   }
@@ -247,6 +247,7 @@ export default class PayApply extends Page {
       if (!valid) {
         return false
       } else {
+
         // let _message: any = this.$refs['payDetail']
         // this.saveData.bankListk = _message.accountInfoList
         // let gatherItem: any = Object.assign(_message.gatherItemList)
@@ -262,7 +263,7 @@ export default class PayApply extends Page {
         //   _message.gatherItemList.length - 1
         // )
         this.saveData.resourceList = this.fodderList
-        this.saveData.financingAmount = this.totalMoneyTwo
+        this.saveData.refundTotalAmount  = this.totalMoneyTwo
         this.saveData.orderId = this.totalMoneyId
         this.refundApplicationService
           .saveSubmitApplication(this.saveData)
