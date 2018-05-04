@@ -338,11 +338,11 @@
                         </i-form-item>
                     </i-col>
                     <i-col :span="8">
-                        <!-- <i-form-item label="开户银行" :label-width="90">
+                        <i-form-item label="开户银行" :label-width="90">
                             <i-select v-model="customerDetailsModel.personalBank.depositBank  ">
                                 <i-option v-for="{value,label} in $dict.getDictData('0456')" :key="value" :label="label" :value="value"></i-option>
                             </i-select>
-                        </i-form-item> -->
+                        </i-form-item>
                     </i-col>
                 </i-row>
                 <i-row type="flex">
@@ -394,7 +394,10 @@ import { constants } from 'zlib'
 export default class ReviseCustomerDetails extends Vue {
   @Dependencies(PersonalService) private personalService: PersonalService
   private WhetherNotShown: Boolean = false
-  private customerDetailsModel: any = {}
+  private customerDetailsModel: any = {
+      personalJob:{},
+      personalBank:{}
+  }
 
   /**
    * 获取客户详情信息
