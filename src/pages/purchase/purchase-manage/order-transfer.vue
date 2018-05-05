@@ -1,7 +1,7 @@
 <!--订单交接-->
 <template>
   <section class="page order-transfer">
-    <page-header title="订单交接"></page-header>
+    <page-header title="订单交接" hiddenPrint  hiddenExport></page-header>
     <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData" hidden-reset>
       <template slot="input">
         <i-form-item label="订单时间" prop="dateRange">

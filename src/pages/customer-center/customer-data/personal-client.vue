@@ -16,14 +16,14 @@
                     <i-date-picker type="daterange" v-model="personalClientModel.dateRange"></i-date-picker>
                 </i-form-item>
             </template>
-        </data-form>
+        </data-form>                              
         <data-box :columns="personalClientColumns" :data="dataSet" :page="pageService"></data-box>
         <template>
-            <i-modal width="780" v-model="addCustomerDetailsModal" title="新增客户详情" class="add-customer-details">
+            <i-modal width="780" @on-visible-change="closeDetailsModal" v-model="addCustomerDetailsModal" title="新增客户详情" class="add-customer-details">
                 <add-customer-details @close="close" ref="add-customer-details"></add-customer-details>
                 <div slot="footer">
-                    <i-button size="large" type="ghost" class="Ghost" @click="addCustomerDetailsModal=false">取消</i-button>
-                    <i-button size="large" type="primary" class="blueButton" @click="addDetailsSave">保存</i-button>
+                    <i-button size="large" type="ghost" class="Ghost" @click="addCustomerDetailsModal = false">取消</i-button>
+                    <i-button size="large" type="primary"  @click="addDetailsSave">保存</i-button>
                 </div>
             </i-modal>
         </template>
@@ -33,17 +33,17 @@
                 <get-customer-details ref="get-customer-details"></get-customer-details>
                 <div slot="footer">
                     <i-button size="large" type="ghost" class="Ghost" @click="customerDetailsModal=false">取消</i-button>
-                    <i-button size="large" type="primary" class="blueButton" @click="customerDetailsModal = false">关闭</i-button>
+                    <i-button size="large" type="primary" @click="customerDetailsModal = false">关闭</i-button>
                 </div>
             </i-modal>
         </template>
 
         <template>
             <i-modal width="780" v-model="reviseDetailsModal" title="编辑客户详情" class="revise-customer-details">
-                <revise-customer-details @close="close" ref="revise-customer-details"></revise-customer-details>
+                <revise-customer-details @closeTwo="closeTwo" ref="revise-customer-details"></revise-customer-details>
                 <div slot="footer">
                     <i-button size="large" type="ghost" class="Ghost" @click="reviseDetailsModal=false">取消</i-button>
-                    <i-button size="large" type="primary" class="blueButton" @click="reviseDetailsSave">确定</i-button>
+                    <i-button size="large" type="primary" @click="reviseDetailsSave">确定</i-button>
                 </div>
             </i-modal>
         </template>
@@ -308,12 +308,21 @@ export default class PersonalClient extends Page {
    * 新增意向保存
    */
   addDetailsSave() {
-    let addCustomerDetailsModal = this.$refs[
-      'add-customer-details'
-    ] as AddCustomerDetails
+    let addCustomerDetailsModal = this.$refs['add-customer-details'] as AddCustomerDetails
     addCustomerDetailsModal.addClientSave()
     //    this.getPersonalClientList()
   }
+  /**
+  * 个人意向取消
+  */
+   closeDetailsModal(){
+     let addCustomerDetailsModal = this.$refs['add-customer-details'] as AddCustomerDetails
+     addCustomerDetailsModal.closeDetailsModal()
+    //  this.addCustomerDetailsModal = false
+
+   }
+
+
 
   /**
    * 切换触发
@@ -374,6 +383,10 @@ export default class PersonalClient extends Page {
     this.addCustomerDetailsModal = false
     this.getPersonalClientList()
   }
+  closeTwo(){
+      this.reviseDetailsModal = false
+    this.getPersonalClientList()
+  }
 
   /**
    * 获取客户详情弹窗
@@ -402,9 +415,9 @@ export default class PersonalClient extends Page {
    * 编辑客户点击确定
    */
   reviseDetailsSave(){
-    this.reviseDetailsModal = false
     let reviseDetailsModal = this.$refs['revise-customer-details'] as ReviseCustomerDetails
     reviseDetailsModal.reviseConfirmData()
+    // this.reviseDetailsModal = false
   }
 
 

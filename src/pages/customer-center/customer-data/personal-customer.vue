@@ -4,15 +4,16 @@
         <page-header title="个人正式客户" hidden-print></page-header>
         <data-form :model="personalCustomerModel" date-prop="timeSearch" @on-search="getPersonalClientList">
             <template slot="input">
-                <i-form-item prop="busNumber" label="客户姓名">
+                <i-form-item prop="name" label="客户姓名">
                     <i-input v-model="personalCustomerModel.name"></i-input>
                 </i-form-item>
-                <i-form-item prop="customerName" label="手机号码">
+                <i-form-item prop="telephone" label="手机号码">
                     <i-input v-model="personalCustomerModel.telephone"></i-input>
                 </i-form-item>
                 <i-form-item prop="dateRange" label="创建起止时间">
                     <i-date-picker type="daterange" v-model="personalCustomerModel.dateRange"></i-date-picker>
                 </i-form-item>
+                
             </template>
         </data-form>
         <data-box :columns="personalCustomerColumns" :data="dataSet" :page="pageService"></data-box>
