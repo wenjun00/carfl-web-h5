@@ -115,7 +115,8 @@ import GatherDetailEarlyPay from '~/components/purchase-manage/gather-detail-ear
   }
 })
 export default class EarlyRecoverApply extends Page {
-  @Dependencies() private pageService: PageService;
+//   @Dependencies() private pageService: PageService;
+  @Dependencies(PageService) private pageService: PageService
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
   @Dependencies(WithdrawApplicationService) private withdrawApplicationService: WithdrawApplicationService;
    @Dependencies(AdvanceRevokeService) private advanceRevokeService: AdvanceRevokeService;
