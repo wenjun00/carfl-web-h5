@@ -84,7 +84,8 @@ export default class MortgageCarList extends Vue {
     {
       title: '行驶里程(公里)',
       align: 'center',
-      key: 'mileage'
+      key: 'mileage',
+      minWidth: this.$common.getColumnWidth(3),
     },
     {
       title: '评估价(元)',
