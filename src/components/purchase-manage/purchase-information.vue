@@ -31,8 +31,8 @@
       <data-grid :labelWidth="100" labelAlign="right" contentAlign="left" class="data-d-item" v-for="item in carOrderInfo" :key="item.id">
         <data-grid-item label="车辆型号" :span="6">{{item.modelName?item.modelName:''}}</data-grid-item>
         <!--<data-grid-item label="上牌地区" :span="4">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>-->
-        <data-grid-item label="车身颜色" :span="6">{{item.vehicleColour?item.vehicleColour:''}}</data-grid-item>
-        <data-grid-item label="车辆排量" :span="6">{{item.vehicleEmissions?item.vehicleEmissions:''}}</data-grid-item>
+        <data-grid-item label="车身颜色" :span="6">{{item.carColour?item.carColour:''}}</data-grid-item>
+        <data-grid-item label="车辆排量" :span="6">{{item.carEmissions?item.carEmissions:''}}</data-grid-item>
         <!--<data-grid-item label="购车配置" :span="4">{{item.vehicleConfiguration?item.vehicleConfiguration:''}}</data-grid-item>-->
         <data-grid-item label="车辆牌照" :span="6">{{item.carLicence?item.carLicence:''}}</data-grid-item>
       </data-grid>
@@ -539,27 +539,27 @@
       }
     }
   }
-  
+
   .color {
     color: #333333 !important;
   }
-  
+
   td {
     font-size: 14px;
     padding: 5px;
   }
-  
+
   .quick-link {
     color: #999999;
   }
-  
+
   .quick-link:active {
     color: #333333;
   }
   /*.quick-link:visited{
   color: #333333;
 }*/
-  
+
   .material {
     height: 200px;
     width: 200px;
@@ -569,7 +569,7 @@
     position: relative;
     left: 0px;
   }
-  
+
   .outFalg {
     height: 200px;
     width: 200px;
@@ -578,12 +578,12 @@
     border: 1px solid #C2C2C2;
     float: left;
   }
-  
+
   .imgFlag {
     height: 100%;
     width: 100%;
   }
-  
+
   .blackFlag {
     position: absolute;
     top: 0;
@@ -594,11 +594,11 @@
     opacity: .4;
     display: none;
   }
-  
+
   .outFalg:hover .blackFlag {
     display: block;
   }
-  
+
   .buttonFlag {
     position: absolute;
     top: -5px;
@@ -606,7 +606,7 @@
     display: block;
     font-size: 20px;
   }
-  
+
   .buttonFlagOne {
     position: absolute;
     top: -5px;

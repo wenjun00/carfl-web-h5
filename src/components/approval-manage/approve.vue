@@ -38,8 +38,8 @@
       <data-grid :labelWidth="110" labelAlign="right" contentAlign="left" class="data-form-grid" v-for="item in carOrderInfo" :key="item.id">
         <data-grid-item label="车辆型号" :span="6">{{item.modelName?item.modelName:''}}</data-grid-item>
         <!--<data-grid-item label="上牌地区" :span="4">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>-->
-        <data-grid-item label="车身颜色" :span="6">{{item.vehicleColour?item.vehicleColour:''}}</data-grid-item>
-        <data-grid-item label="购车排量" :span="6">{{item.vehicleEmissions?item.vehicleEmissions:''}}</data-grid-item>
+        <data-grid-item label="车身颜色" :span="6">{{item.carColour?item.carColour:''}}</data-grid-item>
+        <data-grid-item label="购车排量" :span="6">{{item.carEmissions?item.carEmissions:''}}</data-grid-item>
         <!--<data-grid-item label="购车配置" :span="4">{{item.vehicleConfiguration?item.vehicleConfiguration:''}}
         </data-grid-item>-->
         <data-grid-item label="车辆牌照" :span="6">{{item.carLicence?item.carLicence:''}}</data-grid-item>

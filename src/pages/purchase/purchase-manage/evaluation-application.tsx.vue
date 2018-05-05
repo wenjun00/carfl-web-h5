@@ -108,7 +108,7 @@ export default class EvaluationApplication extends Page {
         return (
           <div>
             <i-button  type="text"
-             v-show={row.assessmentStatus === 1187}
+             v-show={row.assessmentStatus === 1187 || row.assessmentStatus === 1192}
              onClick={() => this.editList(row)}
              >
               编辑
