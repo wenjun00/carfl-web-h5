@@ -191,7 +191,7 @@ export default class EditFromStorage extends Vue {
     placingType:''
   }
   private ruleValidateRule: any = {
-    odometer: [{ required: true, message: '请填写里程表', trigger: 'change' },{type: 'number', max:10, message: "里程表值不能超过10位", trigger: "blur"}],
+    odometer: [{ required: true, message: '请填写里程表', trigger: 'change' }],
     placingDate:[{required: true, message: '请选出库日期', trigger: 'change', type: 'date'}],
     placingType: [{required: true, message: '请选择出库类型', trigger: 'change', type: 'number'}],
     placingSituation: [{required: true, message: '请选择车况', trigger: 'change', type: 'number'}]

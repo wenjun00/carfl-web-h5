@@ -1,4 +1,4 @@
-<!--销售收款申请-->
+<!--进件收款申请-->
 <template>
   <section class="page sale-gathering-apply">
     <page-header title="进件收款申请" hiddenExport>
