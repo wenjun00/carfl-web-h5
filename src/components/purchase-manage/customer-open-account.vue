@@ -145,19 +145,24 @@
       }
     }
     openaccountClick() {
-      this.personalService.customerOpenAccount({
-        rowData: this.CustomerOpenAccountModel,
-        personalId: this.row.id
-      }).subscribe(
-        data => {
-          this.$Message.success('开户成功！')
-        },
-        ({
-          msg
-        }) => {
-          this.$Message.error(msg)
-        }
-      )
+      return new Promise((resolve ,reject) => {
+        this.personalService.customerOpenAccount({
+          rowData: this.CustomerOpenAccountModel,
+          personalId: this.row.id
+        }).subscribe(
+          data => {
+            this.$Message.success('开户成功！')
+            resolve(true)
+          },
+          ({
+             msg
+           }) => {
+            this.$Message.error(msg)
+            reject(false)
+          }
+        )
+      })
+
     }
 
   }

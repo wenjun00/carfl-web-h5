@@ -497,7 +497,7 @@
       this.personalService
         .modifySettleChannel({
           settleChannel: this.settleChannel,
-          id: this.personalBankId
+          personalId: this.personalBankId
         })
         .subscribe(
           data => {
@@ -590,7 +590,9 @@
         footer: true,
         size: 'small',
         onOk: customerOpenAccount => {
-          customerOpenAccount.openaccountClick()
+          customerOpenAccount.openaccountClick().then(() => {
+            this.getCustomerOpenAccount()
+          })
         },
         onCancel: () => {},
         render: h => {
