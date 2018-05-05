@@ -82,7 +82,7 @@
         <i-col :span="15">
           <i-form-item label="行驶里程" prop="mileage">
             <i-input  v-model="customerModel.mileage" :maxlength="5"></i-input>
-            <span>万公里</span>
+            <span>公里</span>
           </i-form-item>
         </i-col>
       </i-row>
@@ -255,7 +255,8 @@
     private ruleValidateRule: any = {
       firstTime: [{required: true, message: "请选择初登日期", trigger: 'change',type:'date'}],
       factoryTime: [{required: true, message: "请选择出厂日期", trigger: "change",type:'date'}],
-      mileage: [{required: true, message: "请输入行驶里程", trigger: "blur"},{type: 'number', max:5, message: "行驶里程不能超过5位", trigger: "blur"}],
+      mileage: [{required: true, message: "请输入行驶里程", trigger: "blur"},
+                {pattern: /^\d{0,5}$/g, message: "行驶里程不能超过5位", trigger: "blur"}],
       drivingNo: [{required: true, message: "请输入行驶证号", trigger: "blur"},{type: 'string', min:18 ,max:18, message: "请输入18位的行驶证号", trigger: "blur"}],
       transferNo: [{required: true, message: "请输入过户次数", trigger: "blur"},{type: 'string', max:2, message: "过户次数不能超过2位", trigger: "blur"}],
       carPurpose: [{required: true, message: "请选择车辆用途", trigger: "change",type: 'number'}],
