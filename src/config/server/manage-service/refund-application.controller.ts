@@ -88,10 +88,19 @@ export default {
     /**
      * 根据订单编号查询总贷款金额
      */
-      paymentApply:{
+    getQueryLoanTermById:{
         service: SERVICE,
         controller: CONTROLLER,
-        action: 'paymentApply',
+        action: 'getQueryLoanTermById',
         type: requestType.Get
-      }
+      },
+     /**
+      * 保存并提交付款申请
+      */
+     paymentApply:{
+       service: SERVICE,
+       controller: CONTROLLER,
+       action: 'paymentApply',
+       type: requestType.Post
+     }
 }

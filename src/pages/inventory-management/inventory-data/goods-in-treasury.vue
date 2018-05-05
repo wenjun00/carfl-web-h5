@@ -27,7 +27,7 @@
             <i-modal width="780" v-model="inventoryModal" title="押品入库" class="mortgage-inventory">
                 <mortgage-inventory  @close="close" ref="mortgage-inventory"></mortgage-inventory>
                 <div slot="footer">
-                    <i-button size="large" type="ghost" class="Ghost" @click="nventoryModal= false">取消</i-button>
+                    <i-button size="large" type="ghost" class="Ghost" @click="inventoryModal= false">取消</i-button>
                     <i-button size="large" type="primary" class="blueButton" @click="confirmInventoryModal">确定</i-button>
                 </div>
             </i-modal>

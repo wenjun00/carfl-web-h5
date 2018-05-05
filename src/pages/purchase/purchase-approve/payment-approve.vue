@@ -34,7 +34,6 @@ import PurchaseInformation from "~/components/purchase-manage/purchase-informati
 import SvgIcon from "~/components/common/svg-icon.vue";
 // 添加新申请
 import ApplyDetail from "~/components/purchase-manage/apply-detail.vue";
-// import Approval from "~/components/common/approval.vue";
 import {
   FilterService
 } from "~/utils/filter.service";
@@ -76,7 +75,7 @@ export default class PaymentApprove extends Page {
   private addAttachmentShow: Boolean = false;
   private refundId: String = "";
   private type: any = "";
-  private status: Boolean = false;
+  private status: Boolean = true;
   private approvalModel: any = {
     dynamicParams: "",
     processStatus: ""
@@ -89,9 +88,9 @@ export default class PaymentApprove extends Page {
   }
   getApproval() {
     if (this.status) {
-      this.approvalModel.processStatus = "";
-    } else {
       this.approvalModel.processStatus = 1130;
+    } else {
+      this.approvalModel.processStatus = '';
     }
     this.refundApplicationService
       .getApprovalRecord(this.approvalModel, this.pageService)
@@ -289,20 +288,6 @@ export default class PaymentApprove extends Page {
         minWidth: this.$common.getColumnWidth(3),
         key: "processName",
         align: "center"
-      },
-      {
-        title: "付款类型",
-        editable: true,
-        key: "refundType",
-        align: "center",
-        minWidth: this.$common.getColumnWidth(4),
-        render: (h, {
-            row,
-          column,
-          index
-          }) => {
-          return h("span", {}, this.$dict.getDictName(row.refundType));
-        }
       },
       {
         title: "付款金额",
