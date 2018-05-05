@@ -160,7 +160,7 @@
             column,
             index
           }) => {
-            if (row.processStatus === 1130) {
+            if (row.processStatus === 1132) {
               return h("div", [
                 h(
                   "i-button", {
