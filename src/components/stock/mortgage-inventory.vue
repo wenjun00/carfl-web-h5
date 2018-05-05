@@ -195,7 +195,7 @@ export default class addPeople extends Vue {
   private id:any = '' //该条数据的订单ID
   private ruleValidateRule: any = {
     warehousingDate: [{required: true, message: '请选入库日期', trigger: 'change', type: 'date'}],
-    odometer: [{ required: true, message: '请填写里程表', trigger: 'change' },{type: 'number', max:10, message: "里程表值不能超过10位", trigger: "blur"}],
+    odometer: [{ required: true, message: '请填写里程表', trigger: 'change' }],
     warehousingSituation: [{required: true, message: '请选择车况', trigger: 'change', type: 'number'}],
     placingTypeId: [{required: true, message: '请选择停放状态', trigger: 'change', type: 'number'}]
   }
