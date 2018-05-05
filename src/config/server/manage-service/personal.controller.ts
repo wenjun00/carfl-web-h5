@@ -56,7 +56,7 @@ export default {
         service: SERVICE,
         controller: CONTROLLER,
         action: 'modifySettleChannel',
-        type: requestType.Get
+        type: requestType.Put
     },
     /**
      * 进件模块-客户资料

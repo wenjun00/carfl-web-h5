@@ -81,7 +81,7 @@
         <i-col :span="15">
           <i-form-item label="行驶里程" prop="mileage">
             <i-input  v-model="customerModel.mileage" readonly></i-input>
-            <span>万公里</span>
+            <span>公里</span>
           </i-form-item>
         </i-col>
       </i-row>

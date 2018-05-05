@@ -85,6 +85,7 @@ export default class EvaluationTaskPool extends Page {
       title: '操作',
       align: 'center',
       fixed: 'left',
+      minWidth: this.$common.getColumnWidth(3),
       render: (h, { row }) => {
           if(row.warehousingStatus == 1198){
             return h('div',[

@@ -5,14 +5,14 @@
     <i-form :model="CustomerOpenAccountModel" class="form-window" :label-width="110">
       <i-col :span="12">
         <i-form-item label="开户渠道" prop="settleChannel">
-          <i-select class="open-input" v-model="CustomerOpenAccountModel.settleChannel" placeholder="请输入产品期数">
+          <i-select class="open-input" v-model="CustomerOpenAccountModel.settleChannel" placeholder="请选择开户渠道">
             <i-option v-for="{value,label} in $dict.getDictData('0419')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
       </i-col>
       <i-col :span="12">
         <i-form-item label="账户类型" prop="accountType">
-          <i-select class="open-input" v-model="CustomerOpenAccountModel.accountType" placeholder="请输入产品期数">
+          <i-select class="open-input" v-model="CustomerOpenAccountModel.accountType" placeholder="请选择账户类型">
             <i-option v-for="{value,label} in $dict.getDictData('0436')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
