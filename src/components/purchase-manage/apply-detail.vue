@@ -10,17 +10,12 @@
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="付款类型">
-            <i-input v-model="refundType" disabled></i-input>
-          </i-form-item>
-        </i-col>
-      </i-row>
-      <i-row>
-        <i-col :span="12">
           <i-form-item label="身份证号">
             <i-input v-model="addNewApplyModal.idCard" disabled></i-input>
           </i-form-item>
         </i-col>
+      </i-row>
+      <i-row>
         <i-col :span="12">
           <i-form-item label="选择订单">
             <i-input v-model="orderNumber" disabled></i-input>

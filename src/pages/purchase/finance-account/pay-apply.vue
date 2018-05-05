@@ -261,7 +261,7 @@
           //   0,
           //   _message.gatherItemList.length - 1
           // )
-          this.saveData.refundRecordItems = this.totalMoneyTwo.applicationCollectMoneyItems.map(v=>{
+          this.saveData.itemList = this.totalMoneyTwo.applicationCollectMoneyItems.map(v=>{
             return {
               refundItem:v.itemName,
               refundAmount:v.itemMoney
@@ -271,7 +271,7 @@
           this.saveData.resourceList = this.fodderList
           this.saveData.refundTotalAmount = Number(this.totalMoneyTwo.totalPayment)
           this.refundApplicationService
-            .saveSubmitApplication(this.saveData)
+            .paymentApply(this.saveData)
             .subscribe(
               data => {
                 this.$Message.success('保存并提交成功！')
@@ -292,7 +292,7 @@
      */
     changeOrder(item) {
       if (item) {
-        this.refundApplicationService.paymentApply({personalId :this.totalMoney[0].personalId,orderId :item})
+        this.refundApplicationService.getQueryLoanTermById({personalId :this.totalMoney[0].personalId,orderId :item})
           .subscribe( data => {
             this.totalMoneyTwo = data
           },({msg}) => {

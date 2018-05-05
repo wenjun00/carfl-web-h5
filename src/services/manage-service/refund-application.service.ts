@@ -130,11 +130,19 @@ export class RefundApplicationService {
   /**
    * 根据订单编号查询总贷款金额
    */
-  paymentApply(data) {
+  getQueryLoanTermById(data) {
+    return this.netService.send({
+      server: manageService.refundApplicationController.getQueryLoanTermById,
+      data
+    })
+  }
+  /**
+   * 保存并提交付款申请
+   */
+  paymentApply(data){
     return this.netService.send({
       server: manageService.refundApplicationController.paymentApply,
       data
     })
   }
-
 }
