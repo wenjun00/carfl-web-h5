@@ -115,8 +115,7 @@ import GatherDetailEarlyPay from '~/components/purchase-manage/gather-detail-ear
   }
 })
 export default class EarlyRecoverApply extends Page {
-//   @Dependencies() private pageService: PageService;
-  @Dependencies(PageService) private pageService: PageService
+  @Dependencies() private pageService: PageService;
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
   @Dependencies(WithdrawApplicationService) private withdrawApplicationService: WithdrawApplicationService;
    @Dependencies(AdvanceRevokeService) private advanceRevokeService: AdvanceRevokeService;
@@ -334,8 +333,12 @@ export default class EarlyRecoverApply extends Page {
    * 获取订单信息
    */
   getOrderInfo() {
-    this.advanceRevokeService 
-      .getAdvanceRevokeList(this.pageService)
+    this.withdrawApplicationService
+    .getPersonalProductOrderInfoForAdvance({
+        idCard: this.applyModel.idCard,
+        customerName: this.applyModel.customerName,
+        mobileMain: this.applyModel.mobileMain
+      })
       .subscribe(
       data => {
         if (data[0] && data[0].orderNumberIdModels) {
