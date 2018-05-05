@@ -44,7 +44,7 @@
           <div slot="footer">
             <i-button type="primary" size="large" @click="selectStep" v-if="selectButton">选择</i-button>
             <i-button type="ghost" size="large" @click="advanceStep" v-if="!selectButton">上一步</i-button>
-            <i-button type="primary" size="large" @click="saveStep" v-if="!selectButton">保存草稿</i-button>
+            <!--<i-button type="primary" size="large" @click="saveStep" v-if="!selectButton">保存草稿</i-button>-->
             <i-button type="primary" size="large" @click="commitApplication" v-if="!selectButton" >提交申请</i-button>
           </div>
         </i-modal>

@@ -9,31 +9,31 @@
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <i-form-item label="付款类型" prop="refundType">
-            <i-select v-model="repaymentObj.refundType" disabled>
-              <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
-            </i-select>
-          </i-form-item>
-          <i-button class="modal-item-salebutton" type="text" @click="saleApplyInfo">销售申请详情</i-button>
+          <!--<i-form-item label="付款类型" prop="refundType">-->
+            <!--<i-select v-model="repaymentObj.refundType" disabled>-->
+              <!--<i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>-->
+            <!--</i-select>-->
+          <!--</i-form-item>-->
+          <i-col :span="12">
+            <i-form-item label="身份证号" prop="idCard">
+              <i-input v-model="personal.idCard" readonly></i-input>
+            </i-form-item>
+          </i-col>
+          <i-button class="modal-item-salebutton" type="text" @click="saleApplyInfo">进件申请详情</i-button>
         </i-col>
       </i-row>
       <i-row>
-        <i-col :span="12">
-          <i-form-item label="身份证号" prop="idCard">
-            <i-input v-model="personal.idCard" readonly></i-input>
-          </i-form-item>
-        </i-col>
         <i-col :span="12">
           <i-form-item label="选择订单" prop="orderNumber">
             <i-input v-model="productOrder.orderNumber" readonly></i-input>
           </i-form-item>
         </i-col>
+        <i-col :span="12">
+          <i-form-item label="备注">
+            <i-input class="modal-item-beizhu-input" type="textarea" v-model="repaymentObj.remark" disabled></i-input>
+          </i-form-item>
+        </i-col>
       </i-row>
-      <i-col :span="24">
-        <i-form-item label="备注">
-          <i-input class="modal-item-beizhu-input" type="textarea" v-model="repaymentObj.remark" disabled></i-input>
-        </i-form-item>
-      </i-col>
     </i-form>
     <div v-if="applicationPhaseResources.length">
       <div class="modal-item-fujian-div"></div>

@@ -1,7 +1,7 @@
 <!--付款-->
 <template>
   <section class="page payment">
-    <page-header title="付款"></page-header>
+    <page-header title="放款"></page-header>
     <data-form data-prop="timeSearch" hidden-reset :model="approvalModel" :page="pageService" @on-search="getOrderQuery">
       <template slot="input">
          <i-form-item prop="refundName" label="付款账户">
