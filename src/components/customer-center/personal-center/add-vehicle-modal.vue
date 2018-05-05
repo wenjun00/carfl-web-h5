@@ -1,4 +1,4 @@
-<!--个人意向客户选择车型-->
+<!--个人意向客户选择车型--> 
 <template>
     <section class="component add-vehicle-modal">
         <i-row class="smallPinkie">
@@ -40,7 +40,7 @@ import { CarService } from '~/services/manage-service/car.service'
 @Component({
   components: {}
 })
-export default class AddVehicleModal extends Vue {
+export default class AddvehicleModal extends Vue {
   @Dependencies(CarService) private carService: CarService
     private carList: any = []
     private brand: any = [] //车辆品牌
@@ -50,6 +50,10 @@ export default class AddVehicleModal extends Vue {
     public fatherId = '' //保存的根Id
     public SerciseId = '' //车系Id
     public CarId = ''  //车型Id
+
+    private fatherName = '' //选择的品牌名称
+    private SerciseName = '' //选择的车系名称
+    private CarName= ''  //选择的车型名称
   /**
    * 获取车辆信息
    */
