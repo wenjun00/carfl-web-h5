@@ -85,13 +85,10 @@ export class PersonalService {
     /**
      * 修改结算通道
      */
-    modifySettleChannel({ settleChannel, id }) {
+    modifySettleChannel(data) {
         return this.netService.send({
             server: manageService.personalController.modifySettleChannel,
-            data: {
-                settleChannel: settleChannel,
-                personId: id
-            }
+            data: data
         })
     }
 
@@ -200,7 +197,7 @@ export class PersonalService {
     }
     /**
      * 个人意向 客户查询
-     */ 
+     */
     getDetailPersonal(data) {
         return this.netService.send({
             server: manageService.personalController.getDetailPersonal,
@@ -237,23 +234,23 @@ export class PersonalService {
       }
     /**
      * 个人正式客户 移除黑名单
-     */ 
+     */
     personalCancelBlacklist(data){
         return this.netService.send({
           server: manageService.personalController.personalCancelBlacklist,
           data:data,
         })
-      }  
+      }
 
      /**
      * 个人正式客户 订单详情
-     */ 
+     */
     getOrderListBypersonalId(data,page){
         return this.netService.send({
           server: manageService.personalController.getOrderListBypersonalId,
           data:data,
           page:page
         })
-      }  
+      }
 
 }

@@ -494,10 +494,11 @@
      * 确认修改结算通道
      */
     confirmModifySettleChannel() {
+      console.log(this.settleChannel,this.personalBankId)
       this.personalService
         .modifySettleChannel({
-          settleChannel: this.settleChannel,
-          personalId: this.personalBankId
+          settleChannel:this.settleChannel,
+          personalId:this.personalBankId
         })
         .subscribe(
           data => {
