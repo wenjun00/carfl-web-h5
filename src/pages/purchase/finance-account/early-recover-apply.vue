@@ -1,4 +1,4 @@
-<!--提前收回申请-->
+<!--提前收回申请--> 
 <template>
   <section class="page early-recover-apply special-input">
     <page-header title="提前收回申请">
@@ -93,6 +93,7 @@ import Component from 'vue-class-component';
 import { Dependencies } from '~/core/decorator';
 import { ApplyQueryService } from '~/services/business-service/apply-query.service';
 import { WithdrawApplicationService } from '~/services/manage-service/withdraw-application.service';
+import { AdvanceRevokeService } from '~/services/manage-service/advance-revoke.service';
 import DataBox from '~/components/common/data-box.vue';
 import { PageService } from '~/utils/page.service';
 import SvgIcon from '~/components/common/svg-icon.vue';
@@ -117,6 +118,7 @@ export default class EarlyRecoverApply extends Page {
   @Dependencies() private pageService: PageService;
   @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
   @Dependencies(WithdrawApplicationService) private withdrawApplicationService: WithdrawApplicationService;
+   @Dependencies(AdvanceRevokeService) private advanceRevokeService: AdvanceRevokeService;
   private customerForm: any = {};
   private currentIdCard: string = "";
 
@@ -327,12 +329,12 @@ export default class EarlyRecoverApply extends Page {
       this.customerForm.validateField('idCard', error => reslove(!error))
     })
   }
-  /**
+  /** 
    * 获取订单信息
    */
   getOrderInfo() {
     this.withdrawApplicationService
-      .getPersonalProductOrderInfoForAdvance({
+    .getPersonalProductOrderInfoForAdvance({
         idCard: this.applyModel.idCard,
         customerName: this.applyModel.customerName,
         mobileMain: this.applyModel.mobileMain
