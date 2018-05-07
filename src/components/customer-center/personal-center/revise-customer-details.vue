@@ -464,11 +464,12 @@ export default class ReviseCustomerDetails extends Vue {
    * 编辑保存 
    */
   reviseConfirmData() {
-      let form = <Form>this.$refs['form-item']
-     
-      form.validate(valid => {
-          if (!valid) return false
-          this.personalService.updateCustomer(this.customerDetailsModel).subscribe(
+        if(this.customerDetailsModel.idCard == ''){
+             this.$Message.error('请填写身份号码')
+            return 
+        }
+
+        this.personalService.updateCustomer(this.customerDetailsModel).subscribe(
         data => {
             this.$Message.success('修改成功！')
             this.$emit('closeTwo')
@@ -477,7 +478,7 @@ export default class ReviseCustomerDetails extends Vue {
             this.$Message.error(msg)
         }
     )
-      })
+    
   }
   fold() {
     this.WhetherNotShown = !this.WhetherNotShown
