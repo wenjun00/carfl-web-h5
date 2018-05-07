@@ -3,10 +3,10 @@
   <section class="component second-last-approve">
     <data-grid :labelWidth="140">
       <data-grid-item label="抵押贷款估价" :span="6">
-        <div>{{vehicleAmount === undefined?0:vehicleAmount}}</div>
+        <div>{{!!carAmount?carAmount:0}}</div>
       </data-grid-item>
       <data-grid-item label="贷款总额" :span="6">
-        <div>{{financingAmount === undefined?0:financingAmount}}</div>
+        <div>{{!!financingAmount?financingAmount:0}}</div>
       </data-grid-item>
       <!--<data-grid-item label="首付比例" :span="6">
         <div>{{paymentScale === undefined?0:paymentScale}}</div>
@@ -30,16 +30,16 @@
         <!--<i-select v-model="passModel.manageCostPercent" clearable @on-change="manageChange">-->
           <!--<i-option v-for="item in manageCost" :key="item" :value="item" :label="item+'%'"></i-option>-->
         <!--</i-select>-->
-        <div>{{manageCostPercent === undefined?0:manageCostPercent}}</div>
+        <div>{{!!manageCostPercent?manageCostPercent:0}}</div>
       </data-grid-item>
       <data-grid-item label="管理费金额" :span="6">
-        <div>{{manageCost === undefined?0:manageCost}}</div>
+        <div>{{!!manageCost?manageCost:0}}</div>
       </data-grid-item>
       <data-grid-item label="融资期数" :span="6">
-        <div>{{periods === undefined?0:$dict.getDictName(periods)}}</div>
+        <div>{{!!periods?$dict.getDictName(periods):0}}</div>
       </data-grid-item>
       <data-grid-item label="月供金额" :span="6">
-        <div>{{monthlySupply === undefined?0:monthlySupply}}</div>
+        <div>{{!!monthlySupply?monthlySupply:0}}</div>
       </data-grid-item>
       <data-grid-item label="月利率" :span="6">
         <div>{{productRate | decimalToPrecent}}</div>
@@ -48,7 +48,7 @@
         <!--<i-select v-model="passModel.payWay" clearable>-->
           <!--<i-option v-for="{value,label} in $dict.getDictData('0408')" :key="value" :label="label" :value="value"></i-option>-->
         <!--</i-select>-->
-        <div>{{payWay === undefined?'':$dict.getDictName(payWay)}}</div>
+        <div>{{!!payWay?$dict.getDictName(payWay):''}}</div>
       </data-grid-item>
       <!--<data-grid-item label="保险费" :span="6">
         <div>{{insuranceExpenses === undefined?0:insuranceExpenses}}</div>
@@ -57,7 +57,7 @@
         <div>0</div>
       </data-grid-item>-->
       <data-grid-item label="GPS费" :span="6">
-        <div>{{gpsFee === undefined?0:gpsFee}}</div>
+        <div>{{!!gpsFee?gpsFee:0}}</div>
       </data-grid-item>
       <!--<data-grid-item label="上牌费" :span="6">
         <div>{{installLicenseFee === undefined?0:installLicenseFee}}</div>
@@ -66,7 +66,7 @@
         <div>{{purchaseTax === undefined?0:purchaseTax}}</div>
       </data-grid-item>-->
       <data-grid-item label="其他费用" :span="6">
-        <div>{{otherFee === undefined?0:otherFee}}</div>
+        <div>{{!!otherFee?otherFee:0}}</div>
       </data-grid-item>
       <!--<data-grid-item label="备注" :span="12">
         <div>{{remark === undefined?'':remark}}</div>
@@ -104,7 +104,7 @@ export default class SecondLastApprove extends Vue {
   private installLicenseFee:any = ''; // 上牌费
   private purchaseTax :any= ''; // 购置税
   private remark:any =''; // 备注
-  private vehicleAmount :any= ''; // 车辆参考总价1
+  private carAmount :any= ''; // 车辆参考总价1
   private paymentScale:any = ''; // 首付比例1
   private depositPercent :any= ''; // 保证金比例1
   private financingAmount :any = ''; // 融资金额1
@@ -129,7 +129,7 @@ export default class SecondLastApprove extends Vue {
    installLicenseFee: '',
    purchaseTax : '',
    remark: '',
-   vehicleAmount : '',
+    carAmount : '',
    paymentScale: '',
    depositPercent : '',
    financingAmount : '',
@@ -156,7 +156,7 @@ export default class SecondLastApprove extends Vue {
     this.installLicenseFee = pageData.installLicenseFee; // 上牌费
     this.purchaseTax = pageData.purchaseTax; // 购置税
     this.remark = pageData.remark; // 备注
-    this.vehicleAmount = pageData.vehicleAmount; // 抵押贷款估价
+    this.carAmount = pageData.carAmount; // 抵押贷款估价
     this.paymentScale = pageData.paymentScale; // 首付比例1
     this.depositPercent = pageData.depositPercent; // 保证金比例1
     this.finalPayment = pageData.finalPayment; // 尾付本金1
@@ -210,7 +210,7 @@ export default class SecondLastApprove extends Vue {
     this.passModel.installLicenseFee = this.installLicenseFee; // 上牌费
     this.passModel.purchaseTax = this.purchaseTax; // 购置税
     this.passModel.remark = this.remark; // 备注
-    this.passModel.vehicleAmount = this.vehicleAmount; // 抵押贷款估价
+    this.passModel.carAmount = this.carAmount; // 抵押贷款估价
     this.passModel.paymentScale = this.paymentScale; // 首付比例1
     this.passModel.depositPercent = this.depositPercent; // 保证金比例1
     this.passModel.finalPayment = this.finalPayment; // 尾付本金1

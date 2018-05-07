@@ -1,9 +1,7 @@
 <!--客户资料查询-->
 <template>
   <section class="page customer-data-query">
-    <page-header title="客户资料查询" hiddenPrint hiddenExport>
-
-    </page-header>
+    <page-header title="资料补充查询" hiddenPrint hiddenExport></page-header>
     <data-form date-prop="timeSearch" :model="ordertransferModel" @on-search="refreshData" hidden-reset :page="pageService">
       <template slot="input">
         <i-form-item prop="orderInfo">
@@ -15,18 +13,6 @@
       </template>
     </data-form>
     <data-box :id="376" :columns="columns1" :data="customerDataSet" :page="pageService" @onPageChange="refreshData"></data-box>
-    <!--Model-->
-    <template> 
-      <i-modal v-model="openColumnsConfig" title="列配置"> 
-        <i-table :columns="columns2" :data="data2"></i-table>
-        <div slot="footer">
-          <i-button>上移</i-button>
-          <i-button>下移</i-button>
-          <i-button>恢复默认</i-button>
-          <i-button @click="openColumnsConfig=false">关闭</i-button>
-        </div>
-      </i-modal>
-    </template>
     <!--上传资料、补充资料-->
     <template>  
       <i-modal class="pop-update" v-model="openUpload" :transfer="false" :width="700" title="补充资料">
@@ -38,7 +24,7 @@
       </i-modal>
     </template>
 
-   
+
   </section>
 </template>
 
@@ -301,7 +287,7 @@ export default class CustomerDataQuery extends Page {
     // TODO 更新store 产品ID 进行查看所有资源数据和上传新的资源
     let _uploadthematerial: any = this.$refs["upload-the-material"];
     _uploadthematerial.reset();
- 
+
     this.uploadOrAddFlag = false;
     if (row.personalMateriaList) {
       _uploadthematerial.supplement(row.personalMateriaList);
