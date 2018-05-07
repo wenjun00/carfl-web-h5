@@ -107,27 +107,30 @@ export default class CustomerOrigin extends Vue {
     "个体户"
   ];
 
-  onOriginTypeChange(){
-    this.reset()
+  onOriginTypeChange() {
+    this.reset();
   }
 
   revert(data) {
-    if (data.personal && data.personal.personalResourcePublicity) {
+    if (
+      data.personal &&
+      data.personal.personalResourcePublicity &&
+      data.personal.personalResourcePublicity.length > 0
+    ) {
       this.publicityModel = data.personal.personalResourcePublicity.map(
         v => v.resourceType
       );
       this.originType = 1;
-    }
-    if (data.personal && data.personal.personalResourceIntroduce) {
+    } else if (data.personal && data.personal.personalResourceIntroduce) {
       this.introduceModel = data.personal.personalResourceIntroduce;
       this.originType = 2;
     }
   }
 
   reset() {
-    this.publicityModel = []
+    this.publicityModel = [];
     this.introduceModel.resourceType = "";
-    this.$common.reset(this.introduceModel)
+    this.$common.reset(this.introduceModel);
   }
 
   async validate() {
