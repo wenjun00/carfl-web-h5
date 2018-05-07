@@ -1,6 +1,6 @@
 <!--新增报价-->
 <template>
-    <section class="new-quote dealer-quotation">
+    <section class="new-quote dealer-quotation addOffer">
         <i-form ref="quoteForm" :model="quoteForm" :rules="rulesQuote" :label-width="85" class="quoteForm" label-position="left">
             <i-row>
                 <i-col :span="11">
@@ -489,7 +489,7 @@ export default class AddPeriods extends Vue {
 }
 </style>
 <style lang="less">
-.new-quote.dealer-quotation {
+.addOffer.new-quote.dealer-quotation {
   .ivu-input-wrapper.ivu-input-type,
   .ivu-select-selection,
   .ivu-input-number {

@@ -32,7 +32,7 @@ import carParamTypeController from './car-param-type-controller.controller'
 import carParamController from './car-param-controller.controller'
 import withdrawApplicationController from './withdraw-application.controller'
 import advancePayoffController from './advance-payoff.controller'
-import advanceRevokeController from './advance-revoke.controller'
+import advanceRevokeController from './advance-revoke.controller' 
 import payoffProductOrderController from './payoff-product-order.controller'
 import financeApprovalHistoryController from './finance-approval-history.controller'
 import chargeBackController from './charge-back.controller'
@@ -43,7 +43,7 @@ import assessmentapply from './assess-ment-apply.controller'
 import assessmentplacing from './assess-ment-placing.controller'
 import companyAccountController from './company-account.controller'
 import bankcardDetailCotroller from './bankcard-detail.cotroller'
-
+import contractDownloadController from './contract-download.controller'
 
 
 export const manageService = {
@@ -92,5 +92,9 @@ export const manageService = {
     assessmentplacing,
     companyAccountController,
     bankcardDetailCotroller,
+    contractDownloadController,
+
+    
+  
 }
  
