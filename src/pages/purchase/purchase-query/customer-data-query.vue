@@ -16,8 +16,8 @@
     </data-form>
     <data-box :id="376" :columns="columns1" :data="customerDataSet" :page="pageService" @onPageChange="refreshData"></data-box>
     <!--Model-->
-    <template>
-      <i-modal v-model="openColumnsConfig" title="列配置">
+    <template> 
+      <i-modal v-model="openColumnsConfig" title="列配置"> 
         <i-table :columns="columns2" :data="data2"></i-table>
         <div slot="footer">
           <i-button>上移</i-button>
@@ -28,7 +28,7 @@
       </i-modal>
     </template>
     <!--上传资料、补充资料-->
-    <template>
+    <template>  
       <i-modal class="pop-update" v-model="openUpload" :transfer="false" :width="700" title="补充资料">
         <upload-the-material ref="upload-the-material"></upload-the-material>
         <div slot="footer">
