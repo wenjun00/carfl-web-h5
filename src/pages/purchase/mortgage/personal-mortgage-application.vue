@@ -220,8 +220,8 @@ export default class PersonalMortgageApplication extends Page {
         this.basisModel.saler = currentRow;
         this.basisModel.salesmanName = currentRow.userRealname;
         this.basisModel.salesmanId = currentRow.id;
-        let basisForm = this.$refs['basis-form'] as Form
-        basisForm.validateField('salesmanName')
+        let basisForm = this.$refs["basis-form"] as Form;
+        basisForm.validateField("salesmanName");
       },
       render: h => {
         return h(SalesmanName);
@@ -286,7 +286,11 @@ export default class PersonalMortgageApplication extends Page {
       .subscribe(
         data => {
           if (data.length) {
-            return this.showHistoryOrder(data);
+            if (data.any(x => x.personalType === 114)) {
+              return this.$Message.info("黑名单用户禁止创建申请")
+            } else {
+              return this.showHistoryOrder(data);
+            }
           }
 
           // 判断是否需要重置信息
