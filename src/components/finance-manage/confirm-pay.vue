@@ -185,7 +185,7 @@ export default class ConfirmPay extends Vue {
   private personalBanks: any = [];
   private openUpload: Boolean = false;
   private huakou:any = '未处理'
-  private pipeSelect:any = ''
+  public pipeSelect:any = ''
   public fodderList: any = []
   @Prop({
     default: false

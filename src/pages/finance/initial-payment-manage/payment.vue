@@ -105,7 +105,8 @@
       // data.orderId = _repayment.rowObj.orderId
       // data.businessId = _repayment.rowObj.businessId
       data.id = _repayment.rowObj.refundApplicationId
-      // data.file = _repayment.fodderList
+      data.resourceList  = _repayment.fodderList
+      data.settlementChannel = _repayment.pipeSelect
       // data.recordStatus = 1129
       this.refundApplicationService.comfireRefund(data).subscribe(data => {
         this.$Message.info('操作成功！')

@@ -170,13 +170,15 @@ export default class CustomerRepay extends Page {
     let _repayment: any = this.$refs["confirm-repayment"];
     let data: any = {};
     data.financeUploadResource = _repayment.fodderList;
-    data.collectMoneyDetails = _repayment.collectMoneyDetails;
+    // data.collectMoneyDetails = _repayment.collectMoneyDetails;
     data.orderId = _repayment.rowObj.orderId;
     data.paymentScheduleId = _repayment.repaymentObj.paymentScheduleId;
     data.historyId = _repayment.repaymentObj.historyId;
     data.collectMoneyId = _repayment.collectMoneyId;
-    data.collectMoneySum = _repayment.collectMoneySum;
+    data.collectMoneySum = _repayment.totalMoney;
     data.periods = _repayment.repaymentObj.periods;
+    data.settlementChannel = _repayment.pipeSelect
+    data.remark = _repayment.remark
     this.paymentScheduleService.saveCustomerPaymentInfo(data).subscribe(
       data => {
         this.$Message.info("还款成功！");
