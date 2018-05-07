@@ -143,7 +143,7 @@
     private columnsHelp: any
     private openAccountList: Array < Object > = []
     private data2: Array < Object >
-      private searchOptions: Boolean = false
+    private searchOptions: Boolean = false
     private customName: String = ''
     private openColumnsConfig: Boolean = false
     private openCreateAccount: Boolean = false
@@ -494,7 +494,6 @@
      * 确认修改结算通道
      */
     confirmModifySettleChannel() {
-      console.log(this.settleChannel,this.personalBankId)
       this.personalService
         .modifySettleChannel({
           settleChannel:this.settleChannel,

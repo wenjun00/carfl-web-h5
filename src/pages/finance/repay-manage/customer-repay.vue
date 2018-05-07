@@ -170,13 +170,15 @@ export default class CustomerRepay extends Page {
     let _repayment: any = this.$refs["confirm-repayment"];
     let data: any = {};
     data.financeUploadResource = _repayment.fodderList;
-    data.collectMoneyDetails = _repayment.collectMoneyDetails;
+    // data.collectMoneyDetails = _repayment.collectMoneyDetails;
     data.orderId = _repayment.rowObj.orderId;
     data.paymentScheduleId = _repayment.repaymentObj.paymentScheduleId;
     data.historyId = _repayment.repaymentObj.historyId;
     data.collectMoneyId = _repayment.collectMoneyId;
-    data.collectMoneySum = _repayment.collectMoneySum;
+    data.collectMoneySum = _repayment.totalMoney;
     data.periods = _repayment.repaymentObj.periods;
+    data.settlementChannel = _repayment.pipeSelect
+    data.remark = _repayment.remark
     this.paymentScheduleService.saveCustomerPaymentInfo(data).subscribe(
       data => {
         this.$Message.info("还款成功！");
@@ -275,7 +277,7 @@ export default class CustomerRepay extends Page {
         align: "center",
         title: "订单号",
         editable: true,
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(6),
         key: "orderNumber",
         render: (h, { row, column, index }) => {
           return h(
@@ -301,7 +303,7 @@ export default class CustomerRepay extends Page {
         title: "客户结算号",
         key: "clientNumber",
         editable: true,
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(10),
         render: (h, { row, column, index }) => {
           return h(
             "i-button",

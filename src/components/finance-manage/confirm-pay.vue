@@ -1,4 +1,4 @@
-<!--确认收款-->
+<!--确认放款-->
 <template>
   <section class="component confirm-pay">
     <i-form :label-width="80" :model="repaymentObj" ref="modify-user">
@@ -57,7 +57,7 @@
         <td class="bg-color" colspan="1" width="60%">金额（元）</td>
       </tr>
       <tr height="40" v-for="(v,i) in itemList" :key="i">
-        <td>{{$dict.getDictName(v.refundItem)}}</td>
+        <td>{{v.refundItem}}</td>
         <td>{{v.refundAmount}}</td>
       </tr>
       <tr height="40">
@@ -73,46 +73,52 @@
 
     <table class="modal-item-table" border="1" width="850">
       <tr height="40">
-        <td class="bg-color" colspan="1" width="5%" v-if="!check">
-          <div @click="addObj">
-            <i-icon class="modal-item-icon" type="plus"></i-icon>
-          </div>
-        </td>
+        <!--<td class="bg-color" colspan="1" width="5%" v-if="!check">-->
+          <!--<div @click="addObj">-->
+            <!--<i-icon class="modal-item-icon" type="plus"></i-icon>-->
+          <!--</div>-->
+        <!--</td>-->
         <td class="bg-color" colspan="1" width="20%">结算通道</td>
-        <td class="bg-color" colspan="1" width="20%">收款项</td>
-        <td class="bg-color" colspan="1">金额（元）</td>
+        <!--<td class="bg-color" colspan="1" width="20%">收款项</td>-->
+        <td class="bg-color" colspan="1">合计金额（元）</td>
         <td class="bg-color" colspan="1">状态</td>
       </tr>
-      <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
-        <td v-if="!check">
-          <div @click="deleteObj(i)">
-            <i-icon type="minus" class="modal-item-icon"></i-icon>
-          </div>
-        </td>
+      <!--<tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">-->
+      <tr height="40">
+        <!--<td v-if="!check">-->
+          <!--<div @click="deleteObj(i)">-->
+            <!--<i-icon type="minus" class="modal-item-icon"></i-icon>-->
+          <!--</div>-->
+        <!--</td>-->
         <td>
-          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="v.refundChannel" :disabled="check">
+          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="pipeSelect" :disabled="check">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
+        <!--<td>-->
+          <!--<i-select placeholder="选择收款项目" class="modal-item-select" v-model="v.refundItem" :disabled="check">-->
+            <!--<i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>-->
+          <!--</i-select>-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--<i-input class="modal-item-huakou-input" v-model="v.refundAmount" @on-blur="inputBlur" :readonly="check"></i-input>-->
+          <!--<i-button class="blueButton" v-if="!check">确认划扣</i-button>-->
+        <!--</td>-->
         <td>
-          <i-select placeholder="选择收款项目" class="modal-item-select" v-model="v.refundItem" :disabled="check">
-            <i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>
-          </i-select>
+          <i-input class="modal-item-huakou"  v-model="repaymentObj.refundTotalAmount" readonly></i-input>
+          <i-button class="blueButton" v-if="!check" @click="huakouTest" >确认划扣</i-button>
         </td>
         <td>
-          <i-input class="modal-item-huakou-input" v-model="v.refundAmount" @on-blur="inputBlur" :readonly="check"></i-input>
-          <i-button class="blueButton" v-if="!check">确认划扣</i-button>
-        </td>
-        <td>
-          <span>{{$dict.getDictName(v.dealStatus)}}</span>
+          <!--<span>{{$dict.getDictName(v.dealStatus)}}</span>-->
+          <span>{{huakou}}</span>
           <i-icon class="modal-item-huakou-icon" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
-      <tr height="40">
-        <td v-if="!check"></td>
-        <td width="25%">合计（元）</td>
-        <td class="modal-item-heji-td" colspan="3">{{paymentAmount | toThousands}}</td>
-      </tr>
+      <!--<tr height="40">-->
+        <!--<td v-if="!check"></td>-->
+        <!--<td width="25%">合计（元）</td>-->
+        <!--<td class="modal-item-heji-td" colspan="3">{{paymentAmount | toThousands}}</td>-->
+      <!--</tr>-->
     </table>
 
     <!--<i-table :columns3="columns3" :data3="data3"></i-table>-->
@@ -123,38 +129,17 @@
     <!--<bank-info :dataSet="personalBanks"></bank-info>-->
     <i-table :columns="columns2" :data="personalBanks"></i-table>
 
-    <div v-if="!check||financeUploadResources.length">
+    <div v-if="!check||applicationPhaseResources.length">
       <div class="modal-item-shoukuanpingzheng-div"></div>
       <span>收款凭证</span>
+      <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
     </div>
-
-    <i-row class="modal-item-upload">
-      <i-col :span="12" v-if="!check">
-        <div class="modal-item-upload-div" @click="openUpload=true">
-          <Icon type="plus-circled" class="modal-item-upload-icon" size="40" color="#265ea2"></Icon>
-          <div>点击添加附件</div>
-          <span class="modal-item-upload-text">支持jpg/pdf/png格式建议大小不超过10M</span>
-        </div>
-      </i-col>
-      <i-col :span="8" v-for="(v,i) in financeUploadResources" :key="i" class="modal-item-upload-col">
-        <div :style="`height:200px;width:200px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
-        </div>
-      </i-col>
-    </i-row>
-
     <template>
       <i-modal title="订单详情" v-model="purchaseInfoModel" :width="1200" class="purchaseInformation">
         <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
         <div slot="footer">
           <i-button class="blueButton" @click="purchaseInfoModel=false">返回</i-button>
         </div>
-      </i-modal>
-    </template>
-
-    <!-- 弹出框 -->
-    <template>
-      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
-        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
       </i-modal>
     </template>
   </section>
@@ -171,17 +156,21 @@ import { Dependencies } from "~/core/decorator";
 import { RefundApplicationService } from "~/services/manage-service/refund-application.service";
 import { Prop } from "vue-property-decorator";
 import { LodashService } from "~/utils/lodash.service.ts"
+import {ChargeBackService} from "~/services/manage-service/charge-back.service";
+import UploadVoucher from "~/components/common/upload-voucher.vue"
 
 @Component({
   components: {
     FileUpload,
     ChangeCard,
     DataBox,
-    PurchaseInformation
+    PurchaseInformation,
+    UploadVoucher
   }
 })
 export default class ConfirmPay extends Vue {
   @Dependencies(RefundApplicationService) private refundApplicationService: RefundApplicationService;
+  @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
   private rowObj: any = {};
   private repaymentObj: any = {};
   private personal: any = {};
@@ -195,6 +184,9 @@ export default class ConfirmPay extends Vue {
   private addFinanceUploadResource: any = []
   private personalBanks: any = [];
   private openUpload: Boolean = false;
+  private huakou:any = '未处理'
+  public pipeSelect:any = ''
+  public fodderList: any = []
   @Prop({
     default: false
   })
@@ -213,32 +205,11 @@ export default class ConfirmPay extends Vue {
   private scrollTopHeight = 0
   private collectMoneyId: any = ''
 
-  /**
-   * 上传文件成功回调
-   */
-  uploadSuccess() {
-    this.openUpload = false;
-    this.$nextTick(() => {
-      let fileUpload: any = this.$refs["file-upload"];
-      this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => v.response))
-      fileUpload.reset();
-    });
-  }
-
-  /**
-   * 上传文件
-   */
-  postFile() {
-    let fileUpload: any = this.$refs["file-upload"];
-    fileUpload.upload();
-  }
-
   refresh(row) {
     this.rowObj = row
     this.refundApplicationService.getRefundApplicationById({
       refundId: row.refundApplicationId
     }).subscribe(data => {
-      console.log(data)
       this.collectMoneyId = data.collectMoneyHistory ? data.collectMoneyHistory.id : ''
       this.personal = data.personal
       this.productOrder = data.productOrder
@@ -246,7 +217,6 @@ export default class ConfirmPay extends Vue {
       this.repaymentObj = data
       this.collectMoneyDetails = data.refundRecordItems
       this.personalBanks = data.bankListk
-      console.log(this.personalBanks)
       this.financeUploadResources = data.resourceList.filter(v => v.materialType === 1163)
       this.applicationPhaseResources = data.resourceList.filter(v => v.materialType === 1162)
       this.inputBlur()
@@ -433,6 +403,21 @@ export default class ConfirmPay extends Vue {
     let _purchaseInfo: any = this.$refs["purchase-info"];
     _purchaseInfo.getOrderDetail(this.rowObj);
   }
+  huakouTest(){
+    this.chargeBackService.saveChargeback({personalId:1})
+      .subscribe( data => {
+        this.$Message.success('划扣成功')
+        this.huakou = '已处理'
+      },(msg) => {
+        this.$Message.error(msg)
+      })
+  }
+  /**
+   * 上传的文件
+   */
+  fileNumber(item) {
+    this.fodderList = item
+  }
 }
 
 </script>
@@ -510,6 +495,11 @@ export default class ConfirmPay extends Vue {
   .modal-item-select {
     display: inline-block;
     width: 90%;
+  }
+  .modal-item-huakou {
+    display: inline-block;
+    width: 30%;
+    margin-right: 10px;
   }
   .modal-item-huakou-input {
     display: inline-block;
