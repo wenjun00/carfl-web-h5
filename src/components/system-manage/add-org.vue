@@ -31,7 +31,7 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="公司名称" prop="companyId">
-            <i-select v-model="addModel.companyId">
+            <i-select v-model="addModel.companyId" disabled>
               <i-option v-for="item in companyObject" :key="item.id" :value="item.id" :label="item.companyChinaname"></i-option>
             </i-select>
           </i-form-item>

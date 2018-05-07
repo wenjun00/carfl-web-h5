@@ -20,7 +20,7 @@
             </div>
           </div>
         </i-col>
-        <i-col class="command" :span="19" offset="1">
+        <i-col class="command" :span="20">
           <data-form hidden-date-search :model="dictAguments" @on-search="seach" hidden-reset>
             <template slot="input">
               <i-form-item prop="name" label="数据名称">

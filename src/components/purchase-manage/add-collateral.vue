@@ -256,8 +256,8 @@
       firstTime: [{required: true, message: "请选择初登日期", trigger: 'change',type:'date'}],
       factoryTime: [{required: true, message: "请选择出厂日期", trigger: "change",type:'date'}],
       mileage: [{required: true, message: "请输入行驶里程", trigger: "blur"},
-                {pattern: /^\d{0,5}$/g, message: "行驶里程不能超过5位", trigger: "blur"}],
-      drivingNo: [{required: true, message: "请输入行驶证号", trigger: "blur"},{type: 'string', min:18 ,max:18, message: "请输入18位的行驶证号", trigger: "blur"}],
+                {pattern: /^[1-9]\d*$/g, message: "行驶里程不能为小数", trigger: "blur"}],
+      drivingNo: [{required: true, message: "请输入行驶证号", trigger: "blur"},{type: 'string', min:18 ,max:18, message: "请输入18位行驶证号", trigger: "blur"}],
       transferNo: [{required: true, message: "请输入过户次数", trigger: "blur"},{type: 'string', max:2, message: "过户次数不能超过2位", trigger: "blur"}],
       carPurpose: [{required: true, message: "请选择车辆用途", trigger: "change",type: 'number'}],
       transmission: [{required: true, message: "请选择形式", trigger: "change",type: 'number'}],
@@ -404,7 +404,6 @@
         }
       })
     }
-
   }
 </script>
 
