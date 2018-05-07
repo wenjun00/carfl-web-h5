@@ -284,10 +284,10 @@ export default class PersonalMortgageApplication extends Page {
         idCard: this.basisModel.cardNumber
       })
       .subscribe(
-        data => {
+        (data) => {
           if (data.length) {
-            if (data.any(x => x.personalType === 114)) {
-              return this.$Message.info("黑名单用户禁止创建申请")
+            if (data.some(x => x.personalType === 114)) {
+              return this.$Message.info("黑名单用户禁止创建申请");
             } else {
               return this.showHistoryOrder(data);
             }
