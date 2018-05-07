@@ -1,15 +1,14 @@
-<!--合同监控-->
+<!--合同监控--> 
 <template>
     <section class="page compact-monitor">
         <page-header title="合同下载监控" hiddenPrint hiddenExport></page-header>
-        <data-form :model="approvalModel" @on-search="getAllOrderList"  :page="pageService" hidden-reset>
+        <data-form :model="compactMonitorModel" date-prop="timeSearch" @on-search="getPersonalClientList">
             <template slot="input">
                 <i-form-item label="日期：">
-                    <i-date-picker type="daterange" placeholder="请选择日期范围"></i-date-picker>
+                    <i-date-picker v-model="compactMonitorModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
                 </i-form-item>
-
                 <i-form-item label="姓名">
-                    <i-input placeholder="请输入员工姓名"></i-input>
+                    <i-input v-model="compactMonitorModel.userName" placeholder="请输入员工姓名"></i-input>
                 </i-form-item>
                 <i-form-item label="门店">
                     <i-select placeholder="全部门店">
@@ -21,7 +20,7 @@
             </template>
         </data-form>
 
-        <data-box :columns="columns1" :data="compactList" @onPageChange="getCompactMonitorList" :page="pageService" :noDefaultRow="true"></data-box>
+        <data-box :columns="monitorColumns" :data="dataSet" :page="pageService"></data-box>
 
         <template>
             <i-modal title="合同下载详情" v-model="compactDownloadInfoModal" :width="1300">
@@ -33,110 +32,109 @@
 
 <script lang="ts">
 import Page from '~/core/page'
-import DataBox from '~/components/common/data-box.vue'
 import Component from 'vue-class-component'
-import RepaySum from '~/components/approval-manage/repay-sum.vue'
+import { Layout } from '~/core/decorator'
+import { PageService } from '~/utils/page.service'
+import DataBox from '~/components/common/data-box.vue'
 import PurchaseInformation from '~/components/purchase-manage/purchase-information.vue'
 import CompactDownloadInfo from '~/components/approval-manage/compact-download-info.vue'
 import { Dependencies } from '~/core/decorator'
-import { Layout } from '~/core/decorator'
-import { PageService } from '~/utils/page.service'
+import { ContractDownloadService } from '~/services/manage-service/contract-download.service'
 
 @Layout('workspace')
 @Component({
   components: {
     DataBox,
-    RepaySum,
     PurchaseInformation,
     CompactDownloadInfo
   }
 })
 export default class CompactMonitor extends Page {
+  @Dependencies(ContractDownloadService)
+  private contractDownloadService: ContractDownloadService
   @Dependencies(PageService) private pageService: PageService
-  private columns1: any
-  private compactList: Array<Object> = []
-  private repayInfo: Boolean = false
-  private ceshiShow: Boolean = false
-  private searchOptions: Boolean = false
+  private monitorColumns: any = [
+    {
+      align: 'center',
+      type: 'index',
+      title: '序号',
+      width: 60,
+      fixed: 'left'
+    },
+    {
+      title: '操作',
+      minWidth: this.$common.getColumnWidth(1),
+      fixed: 'left',
+      align: 'center',
+      render: (h, { row, column, index }) => {
+        return h('div', [
+          h(
+            'i-button',
+            {
+              props: {
+                type: 'text'
+              },
+              style: {
+                color: '#265EA2'
+              },
+              on: {
+                click: () => {
+                  this.compactDownloadInfoModal = true
+                }
+              }
+            },
+            '查看'
+          )
+        ])
+      }
+    },
+    {
+      align: 'center',
+      title: '门店',
+      key: 'branchAddress',
+      minWidth: this.$common.getColumnWidth(3)
+    },
+    {
+      align: 'center',
+      title: '员工姓名',
+      key: 'employeeName',
+      minWidth: this.$common.getColumnWidth(3)
+    },
+    {
+      align: 'center',
+      title: ' 下载量',
+      key: 'downloadNum',
+      minWidth: this.$common.getColumnWidth(3)
+    }
+  ]
+  private dataSet: Array<Object> = []
+  private compactMonitorModel: any = {
+    dateRange: [],
+    startDate: '', //起始时间
+    endDate: '', //结束时间
+    userName: '' //姓名
+  }
   private compactDownloadInfoModal: Boolean = false
 
-  mounted() {
-    this.getCompactMonitorList()
-  }
-
-  created() {
-    this.columns1 = [
-      {
-        align: 'center',
-        type: 'index',
-        title: '序号',
-        fixed: 'left',
-        minWidth: this.$common.getColumnWidth(3),
-      },
-      {
-        title: '操作',
-        minWidth: this.$common.getColumnWidth(6),
-        fixed: 'left',
-        align: 'center',
-        render: (h, { row, column, index }) => {
-          return h('div', [
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
-                },
-                style: {
-                  color: '#265EA2'
-                },
-                on: {
-                  click: () => {
-                    this.compactDownloadInfoModal = true
-                  }
-                }
-              },
-              '查看'
-            )
-          ])
-        }
-      },
-      {
-        align: 'center',
-        title: '门店',
-        key: 'branchAddress',
-        minWidth: this.$common.getColumnWidth(3)
-      },
-      {
-        align: 'center',
-        title: '员工姓名',
-        key: 'employeeName',
-        minWidth: this.$common.getColumnWidth(3)
-      },
-      {
-        align: 'center',
-        title: ' 下载量',
-        key: 'downloadNum',
-        minWidth: this.$common.getColumnWidth(3)
-      }
-    ]
-  }
-
-  openSearch() {
-    this.searchOptions = !this.searchOptions
-  }
-
-  getCompactMonitorList() {}
-
-  repaySum(row) {}
-
-  trailerCar(row) {}
-
   /**
-   * 查看凭证
+   * 获取合同下载列表
    */
-  checkProof(row) {}
+  getPersonalClientList() {
+    this.contractDownloadService
+      .getAllContractInfo(this.compactMonitorModel, this.pageService)
+      .subscribe(
+        data => {
+          this.dataSet = data
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
+      )
+  }
 
-  getOrderInfoByTime() {}
+  mounted() {
+    this.getPersonalClientList()
+  }
 }
 </script>
 <style lang="less" scoped>

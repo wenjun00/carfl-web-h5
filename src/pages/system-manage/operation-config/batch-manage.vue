@@ -1,12 +1,10 @@
 <!--批量管理-->
 <template>
     <section class="page system-backups">
-        <page-header title="批量管理" hidden-print hidden-export></page-header>
-
+        <page-header title="批量管理" hidden-print hidden-export>
+          <command-button label="新增备份"></command-button>
+        </page-header>
         <data-box :id="63" :columns="columns1" :data="batchList" @onPageChange="getBatchManageList" :page="pageService"></data-box>
-        <div class="fixed-container">
-            <i-button size="large" class="highButton" style="margin-left:10px;" @click="batchManage">保存并提交</i-button>
-        </div>
     </section>
 </template>
 
@@ -51,6 +49,50 @@ export default class SystemBackups extends Page {
   }
   created() {
     this.columns1 = [
+      {
+        title: '操作',
+        align: "center",
+        fixed: "left",
+        minWidth: this.$common.getColumnWidth(5),
+        render: (h, { row }) => {
+          return h('div', [
+            h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    // this.addFiles(row);
+                  }
+                }
+              },
+              "启用"
+            ),
+            h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    // this.addFiles(row);
+                  }
+                }
+              },
+              "暂停"
+            ),
+          ])
+        }
+      },
       {
         title: '任务名称',
         editable: true,

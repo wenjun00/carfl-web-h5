@@ -65,7 +65,7 @@
         <data-grid-item label="GPS费" :span="3">{{orderInfo.gpsFee | toThousands}}</data-grid-item>
         <data-grid-item label="其他费用" :span="3">{{orderInfo.otherFee | toThousands}}</data-grid-item>
 
-        <data-grid-item label="抵押车辆估价" :span="6">{{orderInfo.vehicleAmount | toThousands}}</data-grid-item>
+        <data-grid-item label="抵押贷款估价" :span="6" v-if="orderInfo.orderCars&&orderInfo.orderCars.length">{{orderInfo.orderCars[0].carAmount}}</data-grid-item>
         <!--<data-grid-item label="备注" :span="9">{{orderInfo.remark}}</data-grid-item>-->
       </data-grid>
     </i-row>
