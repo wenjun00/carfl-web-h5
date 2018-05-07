@@ -1,4 +1,4 @@
-<!--付款-->
+<!--放款-->
 <template>
   <section class="page payment">
     <page-header title="放款"></page-header>
@@ -15,7 +15,7 @@
     <data-box :id="405" :columns="columns1" :data="paymentData" @onPageChange="getOrderQuery" :page="pageService"></data-box>
 
     <template>
-      <i-modal v-model="confirmGatherModal" :title="checkGatherModal?'查看':'确认付款'" :width="900" class="confirmGather" :transfer="false">
+      <i-modal v-model="confirmGatherModal" :title="checkGatherModal?'查看':'确认放款'" :width="900" class="confirmGather" :transfer="false">
         <confirm-pay ref="confirm-pay" :check="checkGatherModal"></confirm-pay>
         <div slot="footer">
           <i-button class="highButton" @click="sendBack" v-if="!checkGatherModal">退回</i-button>
@@ -100,12 +100,13 @@
     confirmRepayment() {
       let _repayment: any = this.$refs['confirm-pay']
       let data: any = {}
-      data.financeUploadResources = _repayment.financeUploadResources
-      data.refundRecordItems = _repayment.collectMoneyDetails
-      data.orderId = _repayment.rowObj.orderId
-      data.businessId = _repayment.rowObj.businessId
+      // data.financeUploadResources = _repayment.financeUploadResources
+      // data.refundRecordItems = _repayment.collectMoneyDetails
+      // data.orderId = _repayment.rowObj.orderId
+      // data.businessId = _repayment.rowObj.businessId
       data.id = _repayment.rowObj.refundApplicationId
-      data.recordStatus = 1129
+      // data.file = _repayment.fodderList
+      // data.recordStatus = 1129
       this.refundApplicationService.comfireRefund(data).subscribe(data => {
         this.$Message.info('操作成功！')
         this.confirmGatherModal = false
@@ -179,7 +180,7 @@
                       }
                     }
                   },
-                  "确认付款"
+                  "确认放款"
                 )
               ]);
             } else if (row.processStatus === 1131) {
