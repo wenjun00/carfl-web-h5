@@ -2,7 +2,7 @@
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'service-manage'
-const CONTROLLER = 'contractDownload'
+const CONTROLLER = 'ContractDownload'
 export default {
   /**
    * 获取合同下载列表

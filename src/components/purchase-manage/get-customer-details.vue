@@ -32,7 +32,7 @@
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="证件号码">
-                        <i-input readonly v-model="customerDetailsModel.certificateNumber"></i-input>
+                        <i-input readonly v-model="customerDetailsModel.idCard"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -325,10 +325,10 @@
                     </i-col>
                 </i-row>
                 <!-- 银行账户 -->
-                <i-row class="data-form">
+                <!-- <i-row class="data-form">
                     <i-col>
                         <div class="data-form-item"></div>
-                        <a class="information">基本信息</a>
+                        <a class="information">银行账户</a>
                     </i-col>
                 </i-row>
                 <i-row type="flex" :gutter="110">
@@ -367,7 +367,7 @@
                             </i-select>
                         </i-form-item>
                     </i-col>
-                </i-row>
+                </i-row> -->
             </span>
 
         </i-form>

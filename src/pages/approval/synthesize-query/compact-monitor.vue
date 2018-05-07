@@ -2,7 +2,7 @@
 <template>
     <section class="page compact-monitor">
         <page-header title="合同下载监控" hiddenPrint hiddenExport></page-header>
-        <data-form :model="compactMonitorModel" date-prop="timeSearch" @on-search="getPersonalClientList">
+        <data-form :model="compactMonitorModel" date-prop="timeSearch" @on-search="getPersonalClientList" hidden-reset>
             <template slot="input">
                 <i-form-item label="日期：">
                     <i-date-picker v-model="compactMonitorModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>

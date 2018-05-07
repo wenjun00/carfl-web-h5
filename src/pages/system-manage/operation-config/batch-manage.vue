@@ -90,11 +90,28 @@ export default class SystemBackups extends Page {
               },
               "暂停"
             ),
+                h(
+              "i-button",
+              {
+                props: {
+                  type: "text"
+                },
+                style: {
+                  color: "#265EA2"
+                },
+                on: {
+                  click: () => {
+                    // this.addFiles(row);
+                  }
+                }
+              },
+              "运行"
+            ),
           ])
         }
       },
       {
-        title: '任务名称',
+        title: '任务名',
         editable: true,
         key: 'jobName',
         align: 'center',

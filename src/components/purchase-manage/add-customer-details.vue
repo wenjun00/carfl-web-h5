@@ -30,8 +30,8 @@
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
-                    <i-form-item  label="证件号码" prop="certificateNumber">
-                        <i-input placeholder="请输入证件号码" v-model="customerDetailsModel.certificateNumber"></i-input>
+                    <i-form-item  label="证件号码" prop="idCard">
+                        <i-input placeholder="请输入证件号码" v-model="customerDetailsModel.idCard"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -325,7 +325,7 @@
                     </i-col>
                 </i-row>
                 <!-- 银行账户 -->
-                <i-row class="data-form">
+                <!-- <i-row class="data-form">
                     <i-col>
                         <div class="data-form-item"></div>
                         <a class="information">银行账户</a>
@@ -367,7 +367,7 @@
                             </i-select>
                         </i-form-item>
                     </i-col>
-                </i-row>
+                </i-row> -->
             </span>
 
         </i-form>
@@ -409,7 +409,7 @@ export default class addPeople extends Vue {
     name: '', // 姓名
     mobileMain: '', // 手机号
     certificateType: null, // 证件类型
-    certificateNumber: '', // 证件号码
+    idCard: '', // 证件号码
     localHomeAddr: '', // 居住地址
     intentionalLevel: 0, // 意向级别
     sex: null, // 性别
@@ -499,7 +499,7 @@ export default class addPeople extends Vue {
         trigger: "blur"
       }
     ],
-    certificateNumber:[
+    idCard:[
       {
         required: true,
         message: "请输入证件号码",
