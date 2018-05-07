@@ -268,7 +268,7 @@ export default class OrderQuery extends Page {
                       }
                     }
                   },
-                  "申请收款"
+                  "申请款"
                 )
               ]);
             } else if (row.orderStatus === 314) {

@@ -23,8 +23,8 @@
           </i-form-item>
         </i-col>
         <i-col>
-          <i-form-item label="证件号码" prop="certificateNumber">
-            <i-input placeholder="请输入证件号码"  v-model="blackListModel.certificateNumber"></i-input>
+          <i-form-item label="证件号码" prop=" idCard">
+            <i-input placeholder="请输入证件号码"  v-model="blackListModel.idCard"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -47,13 +47,13 @@
       name:'',
       telephone:'',
       certificateType:'',
-      certificateNumber:''
+       idCard:''
     }
     private ruleValidateRule: any = {
       name: [{required: true, message: "请输入客户姓名", trigger: 'blur'} ],
       telephone: [{required: true, message: "请输入手机号码", trigger: "blur"},{validator: this.$validator.phoneNumber,trigger: "blur"}],
       certificateType:[{required: true, message: "请输入证件类型", trigger: "change",type: 'number'}],
-      certificateNumber:[{required: true, message: "请输入证件号码", trigger: 'blur'}, {validator: this.$validator.idCard,trigger: "blur"}]
+       idCard:[{required: true, message: "请输入证件号码", trigger: 'blur'}, {validator: this.$validator.idCard,trigger: "blur"}]
     }
 
     /**
