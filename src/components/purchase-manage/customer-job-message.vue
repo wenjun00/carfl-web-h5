@@ -140,8 +140,9 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="所属行业" prop="industry">
-              <i-input type="text" v-model="jobModel.industry" placeholder="请输入所属行业">
-              </i-input>
+              <i-select placeholder="请选择所属行业" v-model="jobModel.industry" clearable>
+                <i-option v-for="{value,label} in $dict.getDictData('0459')" :key="value" :label="label" :value="value"></i-option>
+              </i-select>
             </i-form-item>
           </i-col>
           <i-col span="12">
