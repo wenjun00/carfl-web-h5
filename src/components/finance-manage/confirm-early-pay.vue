@@ -77,7 +77,7 @@
         <!--</td>-->
         <td class="td-bg" colspan="1" width="20%">结算通道</td>
         <!--<td class="td-bg" colspan="1" width="20%">收款项</td>-->
-        <td class="td-bg" colspan="1">金额（元）</td>
+        <td class="td-bg" colspan="1">合计金额（元）</td>
         <td class="td-bg" colspan="1">状态</td>
       </tr>
       <tr height="40">
@@ -101,7 +101,7 @@
           <!--<i-button class="blueButton">确认划扣</i-button>-->
         <!--</td>-->
         <td>
-          <i-input class="modal-item-querenhuakou-input" v-model="totalMoney" readonly></i-input>
+          <i-input class="modal-item-querenhuakou-input" v-model="totalMoney" ></i-input>
           <i-button class="blueButton" @click="huakouTest">确认划扣</i-button>
         </td>
         <!--<td>-->

@@ -184,7 +184,7 @@
       data.withdrawApplicationId = _repayment.withdrawApplicationId
       data.collectMoneyId = _repayment.repaymentObj.withdrawApplicationId
       data.collectMoneyChannel = _repayment.pipeSelect
-      data.remake = _repayment.remark
+      data.remark = _repayment.remark
       this.advancePayoffService.saveCollectMoneyHistory(data).subscribe(data => {
         this.$Message.info('操作成功！')
         this.confirmRepaymentModal = false
