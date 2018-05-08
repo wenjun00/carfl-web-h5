@@ -77,18 +77,18 @@ export default class ApplyDetail extends Vue {
   private orderNumber: String = "";
   private type: any = "";
   private applyRules: any = {}
-  getparentData(val, row, type) {
+  getparentreceipt(val, row, type) {
     //   上传资料反显
     this.type = type
     let _uploadFodder: any = this.$refs['upload-voucher']
     _uploadFodder.Reverse(val.applicationPhaseUploadResources)
-    this.orderNumber = val.orderNumber; // 订单号
-    this.addNewApplyModal.name = val.customerName; // 客户姓名
-    this.payDetail = val.collectMoneyItemModels; // 付款明细
-    this.addNewApplyModal.idCard = val.idCard; // 证件号
-    this.remark = val.remark;
+    this.orderNumber = !!val.orderNumber ? val.orderNumber:'' ; // 订单号
+    this.addNewApplyModal.name = !!val.customerName ? val.customerName:''; // 客户姓名
+    this.payDetail = !!val.collectMoneyItemModels ? val.collectMoneyItemModels:[{}]; // 付款明细
+    this.addNewApplyModal.idCard = !!val.idCard ? val.idCard : ''; // 证件号
+    this.remark = !!val.remark ? val.remark:'' ;
     this.refundType = val.applicationType ? this.$dict.getDictName(val.applicationType) : ""; // 付款类型
-    this.accountDetail = val.personalBank || []; // 账户信息
+    this.accountDetail = !!val.personalBank ? val.personalBank :[{}]; // 账户信息
   }
 
   created() {

@@ -1,5 +1,5 @@
 <!--收款记录查询-->
-<template>
+<template> 
   <section class="page receipt-record-query">
     <page-header title="收款记录查询" hiddenPrint hiddenExport>
     </page-header>
