@@ -2,16 +2,16 @@
 <template>
     <section class="page system-backups">
         <page-header title="批量管理" hidden-print hidden-export>
-          <i-button @click="addManagement" type="text">新增管理</i-button>
+            <i-button @click="addManagement" type="text">新增管理</i-button>
         </page-header>
-        <data-box :id="63" :columns="columns1" :data="batchList"  :page="pageService"></data-box>
+        <data-box :id="63" :columns="columns1" :data="batchList" :page="pageService"></data-box>
 
         <template>
             <i-modal width="780" v-model="addmanagementModal" title="新增管理" class="add-management-list">
                 <add-management-list ref="add-management-list"></add-management-list>
                 <div slot="footer">
                     <i-button size="large" type="ghost" class="Ghost" @click="addmanagementModal=false">取消</i-button>
-                    <i-button size="large" type="primary" @click="addmanagementModal = false">新增</i-button>
+                    <i-button size="large" type="primary" @click="confirmManagementModal">新增</i-button>
                 </div>
             </i-modal>
         </template>
@@ -30,20 +30,20 @@ import { OrderService } from '~/services/business-service/order.service'
 import SvgIcon from '~/components/common/svg-icon.vue'
 import { Layout } from '~/core/decorator'
 import { ScheduleJobService } from '~/services/manage-service/schedule-job.service'
-import {jobService} from '~/services/manage-service/job.service'
+import { jobService } from '~/services/manage-service/job.service'
 import AddManagementList from '~/components/purchase-manage/add-management-list.vue'
-
 
 @Layout('workspace')
 @Component({
   components: {
-   AddManagementList
+    AddManagementList
   }
 })
 export default class SystemBackups extends Page {
   @Dependencies(jobService) private jobService: jobService
   @Dependencies(PageService) private pageService: PageService
-  @Dependencies(ScheduleJobService) private scheduleJobService: ScheduleJobService
+  @Dependencies(ScheduleJobService)
+  private scheduleJobService: ScheduleJobService
   private addmanagementModal: Boolean = false
   private columns1: any
   private batchList: Array<Object> = []
@@ -57,19 +57,19 @@ export default class SystemBackups extends Page {
     this.columns1 = [
       {
         title: '操作',
-        align: "center",
-        fixed: "left",
+        align: 'center',
+        fixed: 'left',
         minWidth: this.$common.getColumnWidth(5),
         render: (h, { row }) => {
           return h('div', [
             h(
-              "i-button",
+              'i-button',
               {
                 props: {
-                  type: "text"
+                  type: 'text'
                 },
                 style: {
-                  color: "#265EA2"
+                  color: '#265EA2'
                 },
                 on: {
                   click: () => {
@@ -77,16 +77,16 @@ export default class SystemBackups extends Page {
                   }
                 }
               },
-              "启用"
+              '启用'
             ),
             h(
-              "i-button",
+              'i-button',
               {
                 props: {
-                  type: "text"
+                  type: 'text'
                 },
                 style: {
-                  color: "#265EA2"
+                  color: '#265EA2'
                 },
                 on: {
                   click: () => {
@@ -94,16 +94,16 @@ export default class SystemBackups extends Page {
                   }
                 }
               },
-              "暂停"
+              '暂停'
             ),
-                h(
-              "i-button",
+            h(
+              'i-button',
               {
                 props: {
-                  type: "text"
+                  type: 'text'
                 },
                 style: {
-                  color: "#265EA2"
+                  color: '#265EA2'
                 },
                 on: {
                   click: () => {
@@ -111,8 +111,8 @@ export default class SystemBackups extends Page {
                   }
                 }
               },
-              "运行"
-            ),
+              '运行'
+            )
           ])
         }
       },
@@ -191,97 +191,101 @@ export default class SystemBackups extends Page {
       }
     ]
   }
-//   getBatchManageList() {
-//     this.scheduleJobService.queryScheduleJobList(this.pageService).subscribe(
-//       data => {
-//         this.batchList = data
-//       },
-//       ({ msg }) => {
-//         this.$Message.error(msg)
-//       }
-//     )
-//   }
-//   startOrStop(row) {
-//     console.log(row, 134)
-//     if (row.status) {
-//       // 停用
-//       this.scheduleJobService
-//         .pauseScheduleJob({
-//           jobGroup: row.jobGroup,
-//           jobName: row.jobName
-//         })
-//         .subscribe(
-//           data => {
-//             this.$Message.success('停用成功！')
-//             this.getBatchManageList()
-//           },
-//           ({ msg }) => {
-//             this.$Message.error(msg)
-//           }
-//         )
-//     } else {
-//       // 启用
-//       this.scheduleJobService
-//         .resumeScheduleJob({
-//           jobGroup: row.jobGroup,
-//           jobName: row.jobName
-//         })
-//         .subscribe(
-//           data => {
-//             this.$Message.success('启用成功！')
-//             this.getBatchManageList()
-//           },
-//           ({ msg }) => {
-//             this.$Message.error(msg)
-//           }
-//         )
-//     }
-//   }
-//   batchManage() {
-//     this.$Modal.confirm({
-//       title: '提示',
-//       content: '确认进行批量管理？',
-//       onOk: () => {
-//         this.scheduleJobService.scheduleJobBatchManager().subscribe(
-//           data => {
-//             this.$Message.success('批量管理成功！')
-//           },
-//           ({ msg }) => {
-//             this.$Message.error(msg)
-//           }
-//         )
-//       }
-//     })
-//   }
+  //   getBatchManageList() {
+  //     this.scheduleJobService.queryScheduleJobList(this.pageService).subscribe(
+  //       data => {
+  //         this.batchList = data
+  //       },
+  //       ({ msg }) => {
+  //         this.$Message.error(msg)
+  //       }
+  //     )
+  //   }
+  //   startOrStop(row) {
+  //     console.log(row, 134)
+  //     if (row.status) {
+  //       // 停用
+  //       this.scheduleJobService
+  //         .pauseScheduleJob({
+  //           jobGroup: row.jobGroup,
+  //           jobName: row.jobName
+  //         })
+  //         .subscribe(
+  //           data => {
+  //             this.$Message.success('停用成功！')
+  //             this.getBatchManageList()
+  //           },
+  //           ({ msg }) => {
+  //             this.$Message.error(msg)
+  //           }
+  //         )
+  //     } else {
+  //       // 启用
+  //       this.scheduleJobService
+  //         .resumeScheduleJob({
+  //           jobGroup: row.jobGroup,
+  //           jobName: row.jobName
+  //         })
+  //         .subscribe(
+  //           data => {
+  //             this.$Message.success('启用成功！')
+  //             this.getBatchManageList()
+  //           },
+  //           ({ msg }) => {
+  //             this.$Message.error(msg)
+  //           }
+  //         )
+  //     }
+  //   }
+  //   batchManage() {
+  //     this.$Modal.confirm({
+  //       title: '提示',
+  //       content: '确认进行批量管理？',
+  //       onOk: () => {
+  //         this.scheduleJobService.scheduleJobBatchManager().subscribe(
+  //           data => {
+  //             this.$Message.success('批量管理成功！')
+  //           },
+  //           ({ msg }) => {
+  //             this.$Message.error(msg)
+  //           }
+  //         )
+  //       }
+  //     })
+  //   }
   /**
    * 列配置
    */
   columnsConfig() {
     this.openColumnsConfig = true
   }
- 
+
   /**
    * 获取列表
    */
   getPersonalClientList() {
-      console.log(666666)
-    this.jobService
-      .list(this.pageService)
-      .subscribe(
-        data => {
-          console.log(data)
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
-      )
+    this.jobService.list(this.pageService).subscribe(
+      data => {
+        console.log(data)
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
+    )
   }
 
   /**
    * 新增管理
    */
-  addManagement(){
-      this.addmanagementModal= true
+  addManagement() {
+    this.addmanagementModal = true
+  }
+  /**
+   * 新增管理点击确定
+   */
+  confirmManagementModal() {
+    let addmanagementModal = this.$refs['add-management-list'] as AddManagementList
+    addmanagementModal.newManagement()
   }
 
   /**

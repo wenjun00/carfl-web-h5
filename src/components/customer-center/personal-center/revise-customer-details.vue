@@ -1,7 +1,7 @@
 <!--编辑客户详情-->
 <template>
     <section class="component revise-customer-details">
-        <i-form v-model="customerDetailsModel"  ref="form-item" :label-width="90">
+        <i-form v-model="customerDetailsModel" :rules="customerDetailsRule"  ref="form-item" :label-width="90">
             <!-- 基本信息 -->
             <i-row class="data-form">
                 <i-col>
@@ -11,12 +11,12 @@
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
-                    <i-form-item label="客户姓名">
+                    <i-form-item label="客户姓名" porp="name">
                         <i-input placeholder="请输入客户姓名" v-model="customerDetailsModel.name"></i-input>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
-                    <i-form-item label="手机号码">
+                    <i-form-item label="手机号码" porp="mobileMain">
                         <i-input placeholder="请输入手机号码" v-model="customerDetailsModel.mobileMain"></i-input>
                     </i-form-item>
                 </i-col>
@@ -31,7 +31,7 @@
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
-                    <i-form-item label="证件号码">
+                    <i-form-item label="证件号码" prop="idCard">
                         <i-input placeholder="请输入证件号码" v-model="customerDetailsModel.idCard"></i-input>
                     </i-form-item>
                 </i-col>
@@ -410,6 +410,24 @@ export default class ReviseCustomerDetails extends Vue {
     personalBank: {}
 
   }
+private customerDetailsRule: any = {
+    name: [{ required: false, message: '请输入姓名', trigger: 'change', }],
+    mobileMain:[
+      {required: false,message: "请输入手机号",trigger: "change"},{validator: this.$validator.phoneNumber,trigger: "blur"}
+    ],
+    idCard:[
+      {
+        required: false,
+        message: "请输入证件号码",
+        trigger: "blur"
+      },
+      {
+        validator: this.$validator.idCard,
+        trigger: "blur"
+      }
+    ]
+
+  }
 
  
 
@@ -464,7 +482,29 @@ export default class ReviseCustomerDetails extends Vue {
    * 编辑保存 
    */
   reviseConfirmData() {
-        if(this.customerDetailsModel.idCard == ''){
+       if(this.customerDetailsModel.name == null || this.customerDetailsModel.name == ''){
+           this.$Message.error('请填写姓名')
+            return  
+        }
+
+        if(!!this.customerDetailsModel.mobileMain){
+            let reg=/^1(3|4|5|7|8)\d{9}$/;
+            if(!reg.test(this.customerDetailsModel.mobileMain)){
+             this.$Message.error('请填写正确的手机号码')
+               return  
+            }
+        }else{
+             this.$Message.error('请填写手机号码')
+            return 
+        }
+
+        if(!!this.customerDetailsModel.idCard){
+            let reg=/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)/;
+            if(!reg.test(this.customerDetailsModel.idCard)){
+             this.$Message.error('请填写正确的身份号码')
+               return  
+            }
+        }else{
              this.$Message.error('请填写身份号码')
             return 
         }

@@ -1,3 +1,4 @@
+// 批量管理
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'service-manage'
@@ -13,6 +14,15 @@ export default {
     action: 'list',
     type: requestType.Get
   },
+  /**
+   * 新增管理
+   */
+   add:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'add',
+    type: requestType.Get  
+   }
  
  
  
@@ -22,3 +32,4 @@ export default {
   
 
 }
+ 
