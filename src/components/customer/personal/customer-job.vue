@@ -140,7 +140,10 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="所属行业" prop="industry">
-              <i-input type="text" v-model="jobModel.industry" placeholder="请输入所属行业">
+              <i-select v-model="jobModel.industry" transfer clearable>
+                <i-option v-for="{label,value} in $dict.getDictData('0459')" :key="value" :label="label" :value="value"></i-option>
+              </i-select>
+              <i-input type="text" v-model="jobModel.otherIndustry" v-show="jobModel.industry === '其他'" placeholder="请输入所属行业">
               </i-input>
             </i-form-item>
           </i-col>
@@ -230,7 +233,8 @@ export default class CustomerJob extends Vue {
     enterpriseManageBelong: "", // 经营地归属
     employeesNumber: null, // 员工人数
     registeredCapital: null, // 注册资本
-    industry: "", // 所属行业
+    industry: 0, // 所属行业
+    otherIndustry: "", // 其他行业
     pastyearIncome: null, // 过去一年营业收入
     pastyearProfit: null, // 过去一年利润
     stockScale: null
@@ -310,9 +314,9 @@ export default class CustomerJob extends Vue {
           personalJob.accessCompanyTime,
           "yyyy-MM-dd"
         ),
-        companyAddress:personalJob.companyAddress?Number(personalJob.companyAddress):null,
-        city:personalJob.city?Number(personalJob.city):null,
-        province:personalJob.province?Number(personalJob.province):null
+        companyAddress: personalJob.companyAddress ? Number(personalJob.companyAddress) : null,
+        city: personalJob.city ? Number(personalJob.city) : null,
+        province: personalJob.province ? Number(personalJob.province) : null
       })
     );
   }
