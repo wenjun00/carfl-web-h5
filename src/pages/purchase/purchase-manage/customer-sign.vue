@@ -579,9 +579,9 @@
       if (this.multipleSelection) {
         this.contractService.createOneContract(printData).subscribe(
           data => {
-            if (data.resultJson && data.resultJson.contractInfo) {
-              window.open(data.resultJson.contractInfo[0].pdfUrl)
-            }
+            // if (data.resultJson && data.resultJson.contractInfo) {
+            //   window.open(data.resultJson.contractInfo[0].pdfUrl)
+            // }
             this.openCreateCompact = false
             // this.multipleSelection = []
           },

@@ -71,7 +71,6 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Form } from "iview";
-import { AnonymousSubscription } from "../../../node_modules/_rxjs@5.5.10@rxjs/Subscription";
 
 // 通过宣传资源
 const PUBLIC_TYPE = [
