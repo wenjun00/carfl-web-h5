@@ -22,7 +22,7 @@
                         </div>
                     </div>
                 </i-col>
-                <i-col class="command" :span="19" :offset="1">
+                <i-col class="command" :span="20">
                     <data-form hidden-date-search :model="personalModel" @on-search="search" hidden-reset>
                         <template slot="input">
                             <i-form-item prop="name" label="素材名称">
@@ -179,48 +179,48 @@ export default class CustomerFodderMaintain extends Page {
         editable: true,
         minWidth: this.$common.getColumnWidth(4)
       },
-      {
-        title: '是否必传',
-        key: 'isNecessary',
-        align: 'center',
-        editable: true,
-        minWidth: this.$common.getColumnWidth(2),
-        render: (h, { row, columns, index }) => {
-          return h(
-            'i-switch',
-            {
-              props: {
-                value: !row.isNecessary ? true : false
-              },
-              on: {
-                'on-change': val => {
-                  this.isPass(val, row) //是否必传
-                }
-              }
-            },
-            [
-              h(
-                'span',
-                {
-                  props: {
-                    slot: 'open'
-                  }
-                },
-                '是'
-              ),
-              h(
-                'span',
-                {
-                  props: {
-                    slot: 'close'
-                  }
-                },
-                '否'
-              )
-            ]
-          )
-        }
-      }
+      // {
+      //   title: '是否启用',
+      //   key: 'isNecessary',
+      //   align: 'center',
+      //   editable: true,
+      //   minWidth: this.$common.getColumnWidth(2),
+      //   render: (h, { row, columns, index }) => {
+      //     return h(
+      //       'i-switch',
+      //       {
+      //         props: {
+      //           value: !row.isNecessary ? true : false
+      //         },
+      //         on: {
+      //           'on-change': val => {
+      //             this.isPass(val, row) //是否必传
+      //           }
+      //         }
+      //       },
+      //       [
+      //         h(
+      //           'span',
+      //           {
+      //             props: {
+      //               slot: 'open'
+      //             }
+      //           },
+      //           '是'
+      //         ),
+      //         h(
+      //           'span',
+      //           {
+      //             props: {
+      //               slot: 'close'
+      //             }
+      //           },
+      //           '否'
+      //         )
+      //       ]
+      //     )
+      //   }
+      // }
     ]
   }
   getOrderInfoByTime() {}
