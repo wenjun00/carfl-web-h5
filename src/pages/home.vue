@@ -12,15 +12,15 @@
                 <div class="quick-start">
                   <svg-icon class="svg" iconClass="tianxie"></svg-icon>
                 </div>
-                <div class="quick-text">融资租赁申请</div>
+                <div class="quick-text">抵押贷款申请</div>
               </div>
 
-              <div class="quick-start-container" @click="fullPayClick">
-                <div class="quick-start">
-                  <svg-icon class="svg" iconClass="shenqingbaoming"></svg-icon>
-                </div>
-                <div class="quick-text">全额付款申请</div>
-              </div>
+              <!--<div class="quick-start-container" @click="fullPayClick">-->
+                <!--<div class="quick-start">-->
+                  <!--<svg-icon class="svg" iconClass="shenqingbaoming"></svg-icon>-->
+                <!--</div>-->
+                <!--<div class="quick-text">全额付款申请</div>-->
+              <!--</div>-->
 
               <div class="quick-start-container" @click="customerAccountClick">
                 <div class="quick-start">
@@ -97,34 +97,34 @@ export default class Home extends Vue {
     );
   }
   pageToOrderQuery() {
-    this.openPage({
-      title: "订单查询",
-      path: "purchase/purchase-query/order-query"
-    });
+    // this.openPage({
+    //   title: "订单查询",
+    //   path: "purchase/purchase-query/order-query"
+    // });
   }
   financeLeaseApply() {
-    this.openPage({
-      title: "融资租赁申请",
-      path: "purchase/purchase-manage/financing-lease-apply"
-    });
+    // this.openPage({
+    //   title: "融资租赁申请",
+    //   path: "purchase/purchase-manage/financing-lease-apply"
+    // });
   }
   fullPayClick() {
-    this.openPage({
-      title: "全额付款申请",
-      path: "purchase/purchase-manage/full-payment-apply"
-    });
+    // this.openPage({
+    //   title: "全额付款申请",
+    //   path: "purchase/purchase-manage/full-payment-apply"
+    // });
   }
   customerAccountClick() {
-    this.openPage({
-      title: "客户开户",
-      path: "purchase/purchase-manage/open-account"
-    });
+    // this.openPage({
+    //   title: "客户开户",
+    //   path: "purchase/purchase-manage/open-account"
+    // });
   }
   customerSignClick() {
-    this.openPage({
-      title: "客户签约",
-      path: "purchase/purchase-manage/customer-sign"
-    });
+    // this.openPage({
+    //   title: "客户签约",
+    //   path: "purchase/purchase-manage/customer-sign"
+    // });
   }
 }
 </script>

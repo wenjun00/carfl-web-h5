@@ -1,4 +1,4 @@
-<!--付款申请-->
+<!--放款申请-->
 <template>
   <section class="page pay-apply">
     <page-header title="放款申请">

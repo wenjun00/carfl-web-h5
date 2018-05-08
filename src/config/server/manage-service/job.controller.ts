@@ -1,20 +1,24 @@
-// 合同下载controller
 import { requestType } from '~/config/enum.config'
 
 const SERVICE = 'service-manage'
-const CONTROLLER = 'ContractDownload'
+const CONTROLLER = 'job'
+
 export default {
   /**
-   * 获取合同下载列表
+   * 批量管理查询
    */
-  getAllContractInfo: {
+  list: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'getAllContractInfo',
+    action: 'list',
     type: requestType.Get
   },
  
-
-
  
+ 
+
+  
+
+  
+
 }

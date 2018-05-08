@@ -21,13 +21,13 @@
           <i-radio-group v-model="checkRadio" @on-change="changeCompactType">
             <i-row>
               <i-col :span="12">
-                <i-radio label="融资租赁合同"></i-radio>
+                <i-radio label="抵押贷款合同"></i-radio>
                 <!--<i-radio label="长租合同"></i-radio>-->
               </i-col>
-              <i-col :span="12">
-                <i-radio label="全款销售合同"></i-radio>
-                <!--<i-radio label="长租合同（银行版）"></i-radio>-->
-              </i-col>
+              <!--<i-col :span="12">-->
+                <!--<i-radio label="全款销售合同"></i-radio>-->
+                <!--&lt;!&ndash;<i-radio label="长租合同（银行版）"></i-radio>&ndash;&gt;-->
+              <!--</i-col>-->
             </i-row>
             <!--<i-row>-->
             <!--<i-table :columns="columns3" :data="data3" border stripe></i-table>-->
@@ -36,7 +36,7 @@
           <i-table :columns="columns3" :data="data3" @on-selection-change="currentSelect" ref="changeTable"></i-table>
         </i-row>
         <div slot="footer">
-          <i-button class="blue-button" @click="printPreview">打印预览</i-button>
+          <i-button class="blue-button" @click="printPreview">确认打印</i-button>
         </div>
       </i-modal>
     </template>
@@ -150,7 +150,7 @@
     private columns2: any
     private data2: Array < Object > = []
     private data3: Array < Object > = []
-    private checkRadio: String = '融资租赁合同'
+    private checkRadio: String = '抵押贷款合同'
     private columns3: any
     private rowData: any
     private type: any
@@ -766,7 +766,7 @@
   .contract-types {
     .order-type {
       position: relative;
-      bottom: 6px;
+      /*bottom: 6px;*/
       margin-right: 10px;
     }
     .blue-button {

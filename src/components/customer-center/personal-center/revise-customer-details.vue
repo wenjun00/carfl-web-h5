@@ -32,7 +32,7 @@
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="证件号码">
-                        <i-input placeholder="请输入证件号码" v-model="customerDetailsModel.certificateNumber"></i-input>
+                        <i-input placeholder="请输入证件号码" v-model="customerDetailsModel.idCard"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -325,7 +325,7 @@
                     </i-col>
                 </i-row>
                 <!-- 银行账户 -->
-                <i-row class="data-form">
+                <!-- <i-row class="data-form">
                     <i-col>
                         <div class="data-form-item"></div>
                         <a class="information">基本信息</a>
@@ -367,7 +367,7 @@
                             </i-select>
                         </i-form-item>
                     </i-col>
-                </i-row>
+                </i-row> -->
             </span>
 
         </i-form>
@@ -399,7 +399,7 @@ export default class ReviseCustomerDetails extends Vue {
     name:'',
     mobileMain:'',
     certificateType:'',
-    certificateNumber:'',
+    idCard:'',
     localHomeAddr:'',
     intentionalLevel:0,
     nation:'',
@@ -426,7 +426,7 @@ export default class ReviseCustomerDetails extends Vue {
           this.customerDetailsModel.id = data.id;
           this.customerDetailsModel.name = data.name;
           this.customerDetailsModel.mobileMain = data.mobileMain;
-          this.customerDetailsModel.certificateNumber = data.certificateNumber;
+          this.customerDetailsModel.idCard = data.idCard;
           this.customerDetailsModel.localHomeAddr = data.localHomeAddr;
           this.customerDetailsModel.nation = data.nation;
           this.customerDetailsModel.messageAddr = data.messageAddr;
@@ -464,11 +464,12 @@ export default class ReviseCustomerDetails extends Vue {
    * 编辑保存 
    */
   reviseConfirmData() {
-      let form = <Form>this.$refs['form-item']
-     
-      form.validate(valid => {
-          if (!valid) return false
-          this.personalService.updateCustomer(this.customerDetailsModel).subscribe(
+        if(this.customerDetailsModel.idCard == ''){
+             this.$Message.error('请填写身份号码')
+            return 
+        }
+
+        this.personalService.updateCustomer(this.customerDetailsModel).subscribe(
         data => {
             this.$Message.success('修改成功！')
             this.$emit('closeTwo')
@@ -477,7 +478,7 @@ export default class ReviseCustomerDetails extends Vue {
             this.$Message.error(msg)
         }
     )
-      })
+    
   }
   fold() {
     this.WhetherNotShown = !this.WhetherNotShown

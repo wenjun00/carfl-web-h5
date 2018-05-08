@@ -44,6 +44,7 @@ import assessmentplacing from './assess-ment-placing.controller'
 import companyAccountController from './company-account.controller'
 import bankcardDetailCotroller from './bankcard-detail.cotroller'
 import contractDownloadController from './contract-download.controller'
+import jobController from './job.controller'
 
 
 export const manageService = {
@@ -93,6 +94,7 @@ export const manageService = {
     companyAccountController,
     bankcardDetailCotroller,
     contractDownloadController,
+    jobController,
 
     
   

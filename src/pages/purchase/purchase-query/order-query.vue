@@ -268,10 +268,10 @@ export default class OrderQuery extends Page {
                       }
                     }
                   },
-                  "申请收款"
+                  "申请款"
                 )
               ]);
-            } else if (row.orderStatus === 314) {
+            } else if (row.orderStatus === 1264) {
               // 查看&&收款
               return h("div", [
                 h(

@@ -34,8 +34,7 @@
     <div class="modal-item-resources">
       <i-row>
         <i-col :span="6" v-for="v in applicationPhaseResources" :key="v.id" class="modal-item-resources-col">
-          <div :style="`height:150px;width:150px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`">
-          </div>
+          <div :style="`height:150px;width:150px;border:1px solid #C2C2C2;background-image:url(${v.materialUrl});background-repeat:no-repeat;`"></div>
           <div class="modal-item-resources-div">{{v.originName}}</div>
         </i-col>
       </i-row>
@@ -51,24 +50,24 @@
     </div>
     <table class="modal-item-table" border="1" width="868">
       <tr height="40">
-        <td bgcolor="#F2F2F2" colspan="1" width="5%">
-          <div @click="addObj">
-            <i-icon class="modal-item-shoukuanfangshi-icon" type="plus"></i-icon>
-          </div>
-        </td>
+        <!--<td bgcolor="#F2F2F2" colspan="1" width="5%">-->
+          <!--<div @click="addObj">-->
+            <!--<i-icon class="modal-item-shoukuanfangshi-icon" type="plus"></i-icon>-->
+          <!--</div>-->
+        <!--</td>-->
         <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
-        <td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>
+        <!--<td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>-->
         <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
         <td bgcolor="#F2F2F2" colspan="1">状态</td>
       </tr>
-      <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
+      <tr height="40">
+        <!--<td>-->
+          <!--<div @click="deleteObj(i)">-->
+            <!--<i-icon class="modal-item-shoukuanfangshi-icon" type="minus"></i-icon>-->
+          <!--</div>-->
+        <!--</td>-->
         <td>
-          <div @click="deleteObj(i)">
-            <i-icon class="modal-item-shoukuanfangshi-icon" type="minus"></i-icon>
-          </div>
-        </td>
-        <td>
-          <i-select class="modal-item-shoukuanfangshi-select" placeholder="选择结算通道" v-model="v.collectMoneyChannel">
+          <i-select class="modal-item-shoukuanfangshi-select" placeholder="选择结算通道" v-model="pipeSelect">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
@@ -77,25 +76,29 @@
         <!--<i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>-->
         <!--</i-select>-->
         <!--</td>-->
+        <!--<td>-->
+          <!--<i-select class="modal-item-shoukuanfangshi-select" placeholder="选择收款项目" v-model="v.collectItem" @on-change="selectWay($event, v)">-->
+            <!--<i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>-->
+          <!--</i-select>-->
+        <!--</td>-->
         <td>
-          <i-select class="modal-item-shoukuanfangshi-select" placeholder="选择收款项目" v-model="v.collectItem" @on-change="selectWay($event, v)">
-            <i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>
-          </i-select>
+          <i-input class="modal-item-querenhuakou-input" v-model="totalMoney"></i-input>
+          <i-button class="blueButton" @click="huakouTest">确认划扣</i-button>
         </td>
+        <!--<td>-->
+          <!--<span>已处理</span>-->
+          <!--<i-icon class="modal-item-yichuli-icon" type="loop" size="20" color="#199ED8"></i-icon>-->
+        <!--</td>-->
         <td>
-          <i-input class="modal-item-querenhuakou-input" v-model="v.collectMoneyAmount" @on-blur="inputBlur" readonly></i-input>
-          <i-button class="blueButton">确认划扣</i-button>
-        </td>
-        <td>
-          <span>已处理</span>
-          <i-icon class="modal-item-yichuli-icon" type="loop" size="20" color="#199ED8"></i-icon>
+          <span>{{huakou}}</span>
+          <i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
-      <tr height="40">
-        <td></td>
-        <td width="25%">合计（元）</td>
-        <td class="modal-item-heji-td" colspan="3">{{paymentAmount}}</td>
-      </tr>
+      <!--<tr height="40">-->
+        <!--<td></td>-->
+        <!--<td width="25%">合计（元）</td>-->
+        <!--<td class="modal-item-heji-td" colspan="3">{{paymentAmount}}</td>-->
+      <!--</tr>-->
     </table>
     <i-form>
       <i-form-item label="备注">
@@ -111,7 +114,7 @@
       <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher"></upload-voucher>
     </div>
     <template>
-      <i-modal title="划扣记录" v-model="deductRecordModal" :width="1200">
+      <i-modal title="划扣记录" v-model="deductRecordModal" :width="1200" :transfer="false">
         <deduct-record ref="deduct-record"></deduct-record>
       </i-modal>
     </template>
@@ -127,6 +130,7 @@ import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { Dependencies } from "~/core/decorator";
 import { AdvanceRevokeService } from "~/services/manage-service/advance-revoke.service";
 import UploadVoucher from "~/components/common/upload-voucher.vue";
+import {ChargeBackService} from "~/services/manage-service/charge-back.service";
 
 @Component({
   components: {
@@ -138,8 +142,8 @@ import UploadVoucher from "~/components/common/upload-voucher.vue";
   }
 })
 export default class ConfirmWithdraw extends Vue {
-  @Dependencies(AdvanceRevokeService)
-  private advanceRevokeService: AdvanceRevokeService;
+  @Dependencies(AdvanceRevokeService) private advanceRevokeService: AdvanceRevokeService;
+  @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
   private repaymentObj: any = {};
   private rowObj: any = {};
   private collectMoneyDetails: any = [];
@@ -148,13 +152,14 @@ export default class ConfirmWithdraw extends Vue {
   private deductRecordModal: Boolean = false;
   private remark: String = "";
   private paymentAmount: any = 0;
-  private delFinanceUploadResource: any = [];
-  private addFinanceUploadResource: any = [];
   private applicationPhaseResources: any = [];
   private collectMoneyId: any = "";
   private collectMoneyItemModel: any = [];
   private openUpload: Boolean = false;
   private fodderList: any = [];
+  private huakou:any = '未处理'
+  private pipeSelect:any = ''
+  public totalMoney:any = 0
 
   refresh(row) {
     this.rowObj = row;
@@ -172,6 +177,7 @@ export default class ConfirmWithdraw extends Vue {
           this.financeUploadResources = data.collectMoneyPhaseResources;
           this.applicationPhaseResources = data.applicationPhaseResources;
           this.collectMoneyItemModel = data.collectMoneyItemModel;
+          this.totalMoney = data.totalPayment
           this.inputBlur();
           this.remark = data.collectMoneyHistory
             ? data.collectMoneyHistory.remark
@@ -228,6 +234,15 @@ export default class ConfirmWithdraw extends Vue {
       item.collectMoneyAmount = target.itemMoney;
       this.inputBlur();
     }
+  }
+  huakouTest(){
+    this.chargeBackService.saveChargeback({personalId:1})
+      .subscribe( data => {
+        this.$Message.success('划扣成功')
+        this.huakou = '已处理'
+      },(msg) => {
+        this.$Message.error(msg)
+      })
   }
 }
 </script>

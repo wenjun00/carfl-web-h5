@@ -1,5 +1,5 @@
 <!--个人正式客户-->
-<template> 
+<template>  
     <section class="page personal-customer">
         <page-header title="个人正式客户" hidden-print></page-header>
         <data-form :model="personalCustomerModel" date-prop="timeSearch" @on-search="getPersonalClientList">

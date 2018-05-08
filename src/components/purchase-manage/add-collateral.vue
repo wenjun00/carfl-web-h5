@@ -81,7 +81,7 @@
         </i-col>
         <i-col :span="15">
           <i-form-item label="行驶里程" prop="mileage">
-            <i-input  v-model="customerModel.mileage" :maxlength="5"></i-input>
+            <i-input  v-model="customerModel.mileage" :maxlength="6"></i-input>
             <span>公里</span>
           </i-form-item>
         </i-col>

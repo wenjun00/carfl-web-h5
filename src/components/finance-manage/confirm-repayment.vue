@@ -80,48 +80,53 @@
     </div>
     <table class="modal-item-table" border="1" width="868">
       <tr height="40">
-        <td bgcolor="#F2F2F2" colspan="1" width="5%">
-          <div @click="addObj">
-            <i-icon class="modal-item-icon" type="plus"></i-icon>
-          </div>
-        </td>
+        <!--<td bgcolor="#F2F2F2" colspan="1" width="5%">-->
+          <!--<div @click="addObj">-->
+            <!--<i-icon class="modal-item-icon" type="plus"></i-icon>-->
+          <!--</div>-->
+        <!--</td>-->
         <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
-        <td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>
-        <td bgcolor="#F2F2F2" colspan="1">金额（元）</td>
+        <!--<td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>-->
+        <td bgcolor="#F2F2F2" colspan="1">合计金额（元）</td>
         <td bgcolor="#F2F2F2" colspan="1">状态</td>
       </tr>
-      <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
+      <tr height="40">
+        <!--<td>-->
+          <!--<div @click="deleteObj(i)">-->
+            <!--<i-icon type="minus" class="modal-item-icon"></i-icon>-->
+          <!--</div>-->
+        <!--</td>-->
         <td>
-          <div @click="deleteObj(i)">
-            <i-icon type="minus" class="modal-item-icon"></i-icon>
-          </div>
-        </td>
-        <td>
-          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="v.collectMoneyChannel">
+          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="pipeSelect">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
+        <!--<td>-->
+          <!--<i-select class="modal-item-select" placeholder="选择收款项" v-model="v.collectItem" @on-change="selectWay($event, v)">-->
+            <!--<i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>-->
+          <!--</i-select>-->
+        <!--</td>-->
         <td>
-          <i-select class="modal-item-select" placeholder="选择收款项" v-model="v.collectItem" @on-change="selectWay($event, v)">
-            <i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>
-          </i-select>
+          <i-input-number style="display:inline-block;width:30%;margin-right:10px" v-model="totalMoney"  :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
+          <i-button class="blueButton" @click="huakouTest" >确认划扣</i-button>
         </td>
+        <!--<td>-->
+          <!--<div>-->
+            <!--<span>已处理</span>-->
+            <!--<i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>-->
+          <!--</div> -->
+        <!--</td>-->
         <td>
-          <i-input-number style="display:inline-block;width:30%;margin-right:10px" v-model="v.collectMoneyAmount" @on-blur="inputBlur" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
-          <!-- <i-button class="blueButton">确认划扣</i-button> -->
-        </td>
-        <td>
-          <!-- <div>
-            <span>已处理</span>
-            <i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>
-          </div> -->
+          <!--<span>{{$dict.getDictName(v.dealStatus)}}</span>-->
+          <span>{{huakou}}</span>
+          <i-icon class="modal-item-huakou-icon" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
-      <tr height="40">
-        <td></td>
-        <td width="25%">合计（元）</td>
-        <td class="modal-item-td" colspan="3">{{collectMoneySum | toThousands}}</td>
-      </tr>
+      <!--<tr height="40">-->
+        <!--<td></td>-->
+        <!--<td width="25%">合计（元）</td>-->
+        <!--<td class="modal-item-td" colspan="3">{{collectMoneySum | toThousands}}</td>-->
+      <!--</tr>-->
     </table>
     <i-form>
       <i-form-item label="备注">
@@ -154,6 +159,7 @@ import { Dependencies } from "~/core/decorator";
 import { PaymentScheduleService } from "~/services/manage-service/payment-schedule.service";
 import UploadVoucher from "~/components/common/upload-voucher.vue";
 import { LodashService } from '~/utils/lodash.service'
+import {ChargeBackService} from "~/services/manage-service/charge-back.service";
 
 @Component({
   components: {
@@ -165,8 +171,8 @@ import { LodashService } from '~/utils/lodash.service'
   }
 })
 export default class ConfirmRepayment extends Vue {
-  @Dependencies(PaymentScheduleService)
-  private paymentScheduleService: PaymentScheduleService;
+  @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
+  @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
   private columns1: any;
   private repaymentObj: any = {};
   private rowObj: any = {};
@@ -176,12 +182,15 @@ export default class ConfirmRepayment extends Vue {
   private data2: any = [];
   private deductRecordModal: Boolean = false;
   private openUpload: Boolean = false;
-  private remark: String = "";
+  public remark: String = "";
   private collectMoneySum: any = 0;
   private collectMoneyId: any = "";
   private collectMoneyItemModel: any = [];
   private fodderList: any = [];
   private uploadFodder: any = {};
+  public pipeSelect:any = ''
+  private huakou:any = '未处理'
+  public totalMoney:any = 0
 
   mounted() {
     this.uploadFodder = this.$refs["upload-voucher-two"];
@@ -212,6 +221,7 @@ export default class ConfirmRepayment extends Vue {
         this.financeUploadResources = data.financeUploadResources || [];
         this.collectMoneyItemModel = data.collectMoneyItemModel;
         this.remark = data.remark;
+        this.totalMoney = data.amountSurplus
         this.inputBlur();
       },
       ({ msg }) => {
@@ -265,7 +275,15 @@ export default class ConfirmRepayment extends Vue {
       this.inputBlur();
     }
   }
-
+  huakouTest(){
+    this.chargeBackService.saveChargeback({personalId:1})
+      .subscribe( data => {
+        this.$Message.success('划扣成功')
+        this.huakou = '已处理'
+      },(msg) => {
+        this.$Message.error(msg)
+      })
+  }
   created() {
     this.columns1 = [
       {
