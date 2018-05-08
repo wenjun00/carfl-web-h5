@@ -12,19 +12,13 @@
         <template v-if="originType === 1">
           <i-form-item label="通过宣传:">
             <i-checkbox-group v-model="publicityModel">
-              <i-checkbox :label="65">宣传页</i-checkbox>
-              <i-checkbox :label="66">网络推广</i-checkbox>
-              <i-checkbox :label="67">电销</i-checkbox>
-              <i-checkbox :label="68">营销活动</i-checkbox>
-              <i-checkbox :label="69">到店经营</i-checkbox>
-              <i-checkbox :label="70">总部推荐</i-checkbox>
-              <i-checkbox :label="80">其他</i-checkbox>
+              <i-checkbox v-for="(item,index) in publicResource" :key="index" :label="item.resourceType">{{item.label}}</i-checkbox>
             </i-checkbox-group>
           </i-form-item>
         </template>
         <template v-if="originType === 2">
           <i-form-item label="通过介绍:">
-            <i-radio-group v-model="introduceModel.resourceType">
+            <i-radio-group v-model="introduceModel.resourceType" @on-change="introduceTypeChange">
               <i-radio :label="81" :value="81" :key="81">同行推荐</i-radio>
               <i-radio :label="82" :value="82" :key="82">客户转介绍</i-radio>
               <i-radio :label="83" :value="83" :key="83">分支机构推荐</i-radio>
@@ -76,11 +70,24 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Form } from "iview";
+import { AnonymousSubscription } from "../../../node_modules/_rxjs@5.5.10@rxjs/Subscription";
+
+// 通过宣传资源
+const PUBLIC_TYPE = [
+  { label: '宣传页', resourceType: 65 },
+  { label: '网络推广', resourceType: 66 },
+  { label: '电销', resourceType: 67 },
+  { label: '营销活动', resourceType: 68 },
+  { label: '到店经营', resourceType: 69 },
+  { label: '总部推荐', resourceType: 70 },
+  { label: '其他', resourceType: 80 }
+]
 
 @Component({})
 export default class CustomerOrigin extends Vue {
-  private originType = 1; // 来源类型
-  public publicityModel = [];
+  public originType = 1; // 来源类型
+  private publicityModel = [];
 
   public introduceModel: any = {
     resourceType: "", // 来源
@@ -97,25 +104,23 @@ export default class CustomerOrigin extends Vue {
     referrer: "" // 推荐人
   };
 
-  private typeList = [
-    "机关事业",
-    "国有企业",
-    "社会团体",
-    "外资",
-    "合资",
-    "私营有限公司",
-    "个体户"
-  ];
+  // 通过宣传数据来源
+  private publicityDataResource: Array<any> = []
+  private publicResource = PUBLIC_TYPE
 
-  onOriginTypeChange(){
+  // 接口返回的数据。用于获取id。personalId
+  private personalResourcePublicity: Array<any> = []
+
+
+  onOriginTypeChange() {
     this.reset()
   }
 
   revert(data) {
     if (data.personal && data.personal.personalResourcePublicity) {
-      this.publicityModel = data.personal.personalResourcePublicity.map(
-        v => v.resourceType
-      );
+      this.personalResourcePublicity = data.personal.personalResourcePublicity
+      // 获取返回的Type 用于显示
+      this.publicityModel = this.personalResourcePublicity.map(v => v.resourceType)
       this.originType = 1;
     }
     if (data.personal && data.personal.personalResourceIntroduce) {
@@ -124,10 +129,30 @@ export default class CustomerOrigin extends Vue {
     }
   }
 
+  /**
+   * 获取公共推荐对象列表
+   */
+  getPublicityModel() {
+    return this.publicityModel.map(v => {
+      let current = this.publicityDataResource.find(k => k.resourceType === v)
+      // 如果在回填数据中找到了当前选中项目。就原分不动的返回去
+      // 否则，只返回一个带有resourceType 的对象
+      return current || { resourceType: v }
+    })
+  }
+
+
   reset() {
     this.publicityModel = []
     this.introduceModel.resourceType = "";
     this.$common.reset(this.introduceModel)
+  }
+
+  introduceTypeChange(value) {
+    let form = this.$refs['job-form'] as Form;
+    form.resetFields();
+    this.originType = 2;
+    this.introduceModel.resourceType = value;
   }
 
   async validate() {
@@ -146,6 +171,5 @@ export default class CustomerOrigin extends Vue {
 </script>
 
 <style lang="less" scoped>
-.component.customer-origin {
-}
+
 </style>
