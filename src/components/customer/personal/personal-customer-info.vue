@@ -127,12 +127,12 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="身份证有效期" prop="idCardValidityPeriodSection">
-              <i-row type="flex">
+              <i-row type="flex" :gutter="16">
                 <i-col>
-                  <i-checkbox label="长期" v-model="idCardvalidity" :value="14" @on-change="ValidityPeriodChange">长期</i-checkbox>
+                  <i-checkbox label="长期" v-model="idCardvalidity" @on-change="ValidityPeriodChange">长期</i-checkbox>
                 </i-col>
                 <i-col>
-                  <i-date-picker v-bind:style="{'display': idCardvalidity ? 'none' : 'inline'}" type="date" placeholder="有效期截止日期" v-model="customerModel.idCardValidityPeriodSection" :readonly="customerModel.idCardValidityPeriodType===14">
+                  <i-date-picker type="date" placeholder="有效期截止日期" v-model="customerModel.idCardValidityPeriodSection" v-show="!idCardvalidity">
                   </i-date-picker>
                 </i-col>
               </i-row>
@@ -573,13 +573,11 @@ export default class PersonalCustomerInfo extends Vue {
       this.customerModel.city2 = this.customerModel.city;
       this.customerModel.cityOwnhouseAddress = this.customerModel.idCardAddress;
       this.customerModel.cityOwnhouseAddressDetail = this.customerModel.idCardAddressDetail;
-      this.customerModel = JSON.parse(JSON.stringify(this.customerModel));
     } else if (value === 30) {
       this.customerModel.province2 = this.customerModel.province1;
       this.customerModel.city2 = this.customerModel.city1;
       this.customerModel.cityOwnhouseAddress = this.customerModel.localHomeAddr;
       this.customerModel.cityOwnhouseAddressDetail = this.customerModel.localHomeAddrDetail;
-      this.customerModel = JSON.parse(JSON.stringify(this.customerModel));
     } else {
       this.reset();
     }
@@ -588,10 +586,9 @@ export default class PersonalCustomerInfo extends Vue {
   ValidityPeriodChange(value) {
     if (value) {
       this.customerModel.idCardValidityPeriodType = 14;
-      this.customerModel = JSON.parse(JSON.stringify(this.customerModel));
+      this.customerModel.idCardValidityPeriodSection = '';
     } else {
       this.customerModel.idCardValidityPeriodType = 15;
-      this.customerModel = JSON.parse(JSON.stringify(this.customerModel));
     }
     this.ValidityPeriodValue = value;
   }
