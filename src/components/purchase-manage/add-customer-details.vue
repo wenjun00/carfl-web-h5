@@ -489,15 +489,7 @@ export default class addPeople extends Vue {
   private customerDetailsRule: any = {
     name: [{ required: true, message: '请输入姓名', trigger: 'change', }],
     mobileMain:[
-      {
-        required: true,
-        message: "请输入手机号",
-        trigger: "change"
-      },
-      {
-        validator: this.$validator.phoneNumber,
-        trigger: "blur"
-      }
+      {required: true,message: "请输入手机号",trigger: "change"},{validator: this.$validator.phoneNumber,trigger: "blur"}
     ],
     idCard:[
       {

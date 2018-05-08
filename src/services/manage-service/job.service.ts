@@ -1,5 +1,6 @@
+//批量管理
 import { NetService } from '~/utils/net.service'
-import { Inject, Debounce } from "~/core/decorator";
+import { Inject, Debounce } from "~/core/decorator"; 
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
 
@@ -10,13 +11,21 @@ export class jobService {
   /**
    * 批量管理查询
   */
- list( page) {
+ list(page) {
     return this.netService.send({
       server: manageService.jobController.list,
       page: page
     })
   }
- 
+   /**
+   * 新增批量
+  */
+ add(data) {
+    return this.netService.send({
+      server: manageService.jobController.add,
+      data: data
+    })
+  }
 
 
 

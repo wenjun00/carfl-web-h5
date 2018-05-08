@@ -132,7 +132,7 @@ export default class personalCustomer extends Page {
       title: '证件号码',
       editable: true,
       minWidth: this.$common.getColumnWidth(3),
-      key: 'certificateNumber',
+      key: 'idCard',
       align: 'center'
     },
     {
