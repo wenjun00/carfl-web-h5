@@ -346,7 +346,6 @@ export default class ModuleFunction extends Page {
    */
   getTreeDate() {
     this.roleResoService.findRoleResoMenu().subscribe(data => {
-      console.log(data, 999)
       this.allData = data
       this.resoPid = data.pid
       this.createNewTree(this.allData)
@@ -357,7 +356,7 @@ export default class ModuleFunction extends Page {
    */
   createNewTree(allData) {
     let root = allData.filter(v => v.pid === 10000).sort(function(a, b) {
-      return a.sort > b.sort
+      return a.sort - b.sort
     }) // 获取树根
     this.treeData = []
     // 遍历根对象push进树中
