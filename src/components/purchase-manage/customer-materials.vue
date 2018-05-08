@@ -23,7 +23,7 @@
         <i-row>
           <i-col span="12">
             <i-form-item label="出生日期" prop="birthTime">
-              <i-date-picker type="date" placeholder="选择出生日期" v-model="customerModel.birthTime"></i-date-picker>
+              <i-date-picker type="date" placeholder="选择出生日期" transfer v-model="customerModel.birthTime" :editable="false"></i-date-picker>
             </i-form-item>
           </i-col>
           <i-col span="12">
@@ -345,20 +345,20 @@ export default class CustomerMaterials extends Vue {
     houseProspecting: "", // 是否接受现场勘查
     idCardValidityPeriodType: 15, // 身份证有效期（长期）
     idCardValidityPeriodSection: "", // 身份证有效期（非长期）
-    province: "", // 省
-    city: "", // 市
-    province1: "", // 省
-    city1: "", // 市
-    province2: "", // 省
-    city2: "", // 市
+    province: 0, // 省
+    city: 0, // 市
+    province1: 0, // 省
+    city1: 0, // 市
+    province2: 0, // 省
+    city2: 0, // 市
     localLiveHouseOwner: "", // 现居住地房产归属
     cityOwnhouseCondition: "", // 本市子属房产状况
     cityOwnhouseOther: "", // 本市子属房产状况(其他)
     electricityAccount: "", // 电费账号
     electricityPassword: "", // 电费密码
     localLiveHouseMoney: 0, // 每月租金
-    idCardAddress: "", // 身份证地址（区）
-    localHomeAddr: "", // 先居住地址（区）
+    idCardAddress: 0, // 身份证地址（区）
+    localHomeAddr: 0, // 先居住地址（区）
     cityOwnhouseAddress: "" // 本市房产地址（区）
   };
 
@@ -521,28 +521,6 @@ export default class CustomerMaterials extends Vue {
           data.personal.birthTime,
           "yyyy-MM-dd"
         ),
-        // 身份证地址
-        idCardAddress: Number(data.personal.idCardAddress),
-        province: CityService.getCityParent(
-          Number(data.personal.idCardAddress)
-        )[0],
-        city: CityService.getCityParent(Number(data.personal.idCardAddress))[1],
-        // 现居住地址
-        localHomeAddr: Number(data.personal.localHomeAddr),
-        city1: CityService.getCityParent(
-          Number(data.personal.localHomeAddr)
-        )[1],
-        province1: CityService.getCityParent(
-          Number(data.personal.localHomeAddr)
-        )[0],
-        // 本地房产地址
-        cityOwnhouseAddress: Number(data.personal.cityOwnhouseAddress),
-        city2: CityService.getCityParent(
-          Number(data.personal.cityOwnhouseAddress)
-        )[1],
-        province2: CityService.getCityParent(
-          Number(data.personal.cityOwnhouseAddress)
-        )[0],
         // 每月租金
         localLiveHouseMoney: Number(data.personal.localLiveHouseMoney)
       })
@@ -608,12 +586,12 @@ export default class CustomerMaterials extends Vue {
       .then(valid => {
         return valid;
       })
-      .catch(() => {});
+      .catch(() => { });
 
     return result;
   }
 
-  mounted() {}
+  mounted() { }
 }
 </script>
 

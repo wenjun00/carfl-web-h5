@@ -14,19 +14,9 @@
         <data-grid-item label="所属公司：" :span="6">{{orderInfo.company?orderInfo.company.companyChinaname:''}}
         </data-grid-item>
         <data-grid-item label="抵押贷款用途" :span="3">{{orderInfo.financingUse}}</data-grid-item>
-        <!--<data-grid-item label="自缴费用" :span="9">
-          <i-checkbox-group v-model="fee">
-            <i-checkbox v-for="{value,label} in $dict.getDictData('0307')" :key="value" :label="value" :value="value" disabled>{{label}}
-            </i-checkbox>
-          </i-checkbox-group>
-        </data-grid-item>-->
         <data-grid-item label="意向贷款金额" :span="3">{{orderInfo.intentionFinancingAmount}}</data-grid-item>
-        <!--<data-grid-item label="租金支付" :span="3">{{$dict.getDictName(orderInfo.rentPayable)}}</data-grid-item>-->
         <data-grid-item label="意向期限" :span="6">{{ orderInfo.intentionPeriods?$dict.getDictName(Number(orderInfo.intentionPeriods)):''}}
         </data-grid-item>
-        <!--<data-grid-item label="意向首付比例" :span="3">
-          {{orderInfo.intentionPaymentRatio?orderInfo.intentionPaymentRatio+'%':''}}
-        </data-grid-item>-->
       </data-grid>
     </i-row>
     <!--车辆信息-->
@@ -37,10 +27,8 @@
       </div>
       <data-grid :labelWidth="110" labelAlign="right" contentAlign="left" class="data-form-grid" v-for="item in carOrderInfo" :key="item.id">
         <data-grid-item label="车辆型号" :span="6">{{item.modelName?item.modelName:''}}</data-grid-item>
-        <!--<data-grid-item label="上牌地区" :span="4">{{item.registrationArea?item.registrationArea:''}}</data-grid-item>-->
         <data-grid-item label="车身颜色" :span="6">{{item.carColour?item.carColour:''}}</data-grid-item>
         <data-grid-item label="购车排量" :span="6">{{item.carEmissions?item.carEmissions:''}}</data-grid-item>
-        <!--<data-grid-item label="购车配置" :span="4">{{item.vehicleConfiguration?item.vehicleConfiguration:''}}
         </data-grid-item>-->
         <data-grid-item label="车辆牌照" :span="6">{{item.carLicence?item.carLicence:''}}</data-grid-item>
       </data-grid>
@@ -56,24 +44,13 @@
         <data-grid-item label="产品名称" :span="3">{{orderInfo.product?orderInfo.product.name:''}}</data-grid-item>
         <data-grid-item label="产品期数" :span="3">{{!!orderInfo.periods ? $dict.getDictName(orderInfo.periods):0}}</data-grid-item>
         <data-grid-item label="产品利率" :span="3">{{!!orderInfo.productRate | decimalToPrecent}}</data-grid-item>
-
         <data-grid-item label="还款方式" :span="3">{{$dict.getDictName(orderInfo.payWay)}}</data-grid-item>
         <data-grid-item label="贷款总额" :span="3">{{!!orderInfo.financingAmount?orderInfo.financingAmount:0}}</data-grid-item>
         <data-grid-item label="月供金额" :span="3">{{!!orderInfo.monthlySupply ?orderInfo.monthlySupply:0}}</data-grid-item>
-        <!--<data-grid-item label="首付金额" :span="3">{{!!orderInfo.initialPayment?orderInfo.initialPayment:0}}</data-grid-item>-->
-
-        <!--<data-grid-item label="保证金金额" :span="3">{{!!orderInfo.depositCash?orderInfo.depositCash:0}}</data-grid-item>-->
-        <!--<data-grid-item label="尾付金额" :span="3">{{!!orderInfo.finalCash ? orderInfo.finalCash:0}}</data-grid-item>-->
         <data-grid-item label="管理费" :span="3">{{!!orderInfo.manageCost?orderInfo.manageCost:0}}</data-grid-item>
-        <!--<data-grid-item label="保险费" :span="3">{{!!orderInfo.insuranceExpenses ?orderInfo.insuranceExpenses:0}}</data-grid-item>-->
-
-        <!--<data-grid-item label="购置税" :span="3">{{!!orderInfo.purchaseTax ?orderInfo.purchaseTax:0}}</data-grid-item>-->
-        <!--<data-grid-item label="上牌费" :span="3">{{!!orderInfo.installLicenseFee?orderInfo.installLicenseFee:0}}</data-grid-item>-->
         <data-grid-item label="GPS费" :span="3">{{!!orderInfo.gpsFee?orderInfo.gpsFee:0}}</data-grid-item>
         <data-grid-item label="其他费用" :span="3">{{!!orderInfo.otherFee?orderInfo.otherFee:0}}</data-grid-item>
-
         <data-grid-item label="抵押贷款估价" :span="6" v-if="orderInfo.orderCars&&orderInfo.orderCars.length">{{orderInfo.orderCars[0].carAmount}}</data-grid-item>
-        <!--<data-grid-item label="备注" :span="9">{{orderInfo.remark}}</data-grid-item>-->
       </data-grid>
     </i-row>
     <!--个人资料-->
@@ -87,33 +64,29 @@
         <data-grid-item label="性别" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.sex):''}}</data-grid-item>
         <data-grid-item label="出生日期" :span="3">{{personal.birthTime|dateFormat('yyyy-MM-dd')}}</data-grid-item>
         <data-grid-item label="微信号" :span="3">{{orderInfo.personal?orderInfo.personal.wechat:''}}</data-grid-item>
-
         <data-grid-item label="手机号码(主)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMain:''}}</data-grid-item>
         <data-grid-item label="手机号码(次)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMinor:''}}</data-grid-item>
         <data-grid-item label="身份证有效期" :span="3">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? orderInfo.personal.idCardValidityPeriodType :orderInfo.personal.idCardValidityPeriodSection):''}}
         </data-grid-item>
         <data-grid-item label="婚属状况" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.marital):''}}</data-grid-item>
-
         <data-grid-item label="身份证号" :span="6">{{orderInfo.personal?orderInfo.personal.idCard:''}}</data-grid-item>
-
         <data-grid-item label="发证机关" :span="6">{{orderInfo.personal?orderInfo.personal.issuer:''}}</data-grid-item>
-
-        <data-grid-item label="身份证地址" :span="12">{{orderInfo.personal?(orderInfo.personal.idCardAddressDetail?orderInfo.personal.idCardAddressDetail:''):''}}</data-grid-item>
-
-        <data-grid-item label="现居住地址" :span="12">{{orderInfo.personal?(orderInfo.personal.localHomeAddrDetail?orderInfo.personal.localHomeAddrDetail:''):''}}</data-grid-item>
-
+        <data-grid-item label="身份证地址" :span="12">
+          {{$city.getCityName(personal.province)}} {{$city.getCityName(personal.city)}} {{$city.getCityName(personal.idCardAddress)}} {{personal.idCardAddressDetail}}
+        </data-grid-item>
+        <data-grid-item label="现居住地址" :span="12">
+          {{$city.getCityName(personal.province1)}} {{$city.getCityName(personal.city1)}} {{$city.getCityName(personal.localHomeAddr)}} {{personal.localHomeAddrDetail}}
+        </data-grid-item>
         <data-grid-item label="居住地址家庭座机" :span="6">{{orderInfo.personal?orderInfo.personal.localHomePhone:''}}</data-grid-item>
         <data-grid-item label="本市生活时长" :span="3">{{orderInfo.personal?orderInfo.personal.cityLiveTime:''}}</data-grid-item>
         <data-grid-item label="现居住地生活时长" :span="3">{{orderInfo.personal?orderInfo.personal.localLiveTime:''}}</data-grid-item>
-
         <data-grid-item label="现居住地房产归属" :span="12">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.localLiveHouseOwner):''}}</data-grid-item>
-
         <data-grid-item label="本市自有房产状况归属" :span="6">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.cityOwnhouseCondition):''}}</data-grid-item>
         <data-grid-item label="电费账号" :span="3">{{orderInfo.personal?orderInfo.personal.electricityAccount:''}}</data-grid-item>
         <data-grid-item label="电费密码" :span="3">{{orderInfo.personal?orderInfo.personal.electricityPassword:''}}</data-grid-item>
-
-        <data-grid-item label="本市房产地址" :span="12">{{orderInfo.personal?orderInfo.personal.cityOwnhouseAddressDetail:''}}</data-grid-item>
-
+        <data-grid-item label="本市房产地址" :span="12">
+          {{$city.getCityName(personal.province2)}} {{$city.getCityName(personal.city2)}} {{$city.getCityName(personal.cityOwnhouseAddress)}} {{personal.cityOwnhouseAddressDetail}}
+        </data-grid-item>
         <data-grid-item label="教育程度" :span="4">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.education):''}}</data-grid-item>
         <data-grid-item label="毕业院校" :span="4">{{orderInfo.personal?orderInfo.personal.school:''}}</data-grid-item>
         <data-grid-item label="是否接受现场勘查" :span="4">
