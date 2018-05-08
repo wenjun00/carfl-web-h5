@@ -1,5 +1,5 @@
 <!--添加新申请-->
-<template>
+<template> 
   <section class="component apply-detail">
     <!--付款申请-->
     <i-form :rules="applyRules" :label-width="110" class="item-kehu-form">
