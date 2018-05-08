@@ -27,9 +27,34 @@ export class jobService {
     })
   }
 
+  /**
+   * 暂停管理
+  */
+ pause(data) {
+    return this.netService.send({
+      server: manageService.jobController.pause,
+      data: data
+    })
+  }
 
+  /**
+   * 启用管理
+  */
+ resume(data) {
+    return this.netService.send({
+      server: manageService.jobController.resume,
+      data: data
+    })
+  }
 
- 
-
+ /**
+  * 运行管理
+  */
+ run(data) {
+    return this.netService.send({
+      server: manageService.jobController.run,
+      data: data
+    })
+  }
  
 }
