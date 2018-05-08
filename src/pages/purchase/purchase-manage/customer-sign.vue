@@ -566,10 +566,10 @@
      * 打印预览
      */
     printPreview() {
-      if (this.checkRadio === '全款销售合同') {
-        this.contectEnum = 'FULL_SALES'
-      }
-      if (this.checkRadio === '融资租赁合同') {
+      // if (this.checkRadio === '全款销售合同') {
+      //   this.contectEnum = 'FULL_SALES'
+      // }
+      if (this.checkRadio === '抵押贷款合同') {
         this.contectEnum = 'DIRECT_RENT'
       }
       let printData: any = {
@@ -684,14 +684,13 @@
       this.contractService
         .uploadContractResource({
           orderId: this.orderId,
-          materialUrl: this.materialUrl,
-          contractEnum: "DIRECT_RENT"
+          materialUrl: this.materialUrl
         })
         .subscribe(
           data => {
             this.openCompact = false
             this.dataList = []
-            this.$Message.success('上传成功！')
+            this.$Message.success('签约成功！')
           },
           ({
             msg
