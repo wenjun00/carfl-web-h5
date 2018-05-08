@@ -1,7 +1,7 @@
 <!--财务·上传图片-->
 <template>
   <section class="component file-upload">
-    <i-upload :on-progress="onProgress" :on-success="onSuccess" :show-upload-list="false" :accept="acceptFileType" :headers="{'authorization':$store.state.token}" ref="upload" :action="uploadUrl" :before-upload="beforeUpload">
+    <i-upload :on-progress="onProgress" :on-success="onSuccess"  :on-error="onError" :show-upload-list="false" :accept="acceptFileType" :headers="{'authorization':$store.state.token}" ref="upload" :action="uploadUrl" :before-upload="beforeUpload">
       <div class="command">
         <i-button type="primary">选择文件</i-button>
       </div>
@@ -180,6 +180,13 @@ export default class FileUpload extends Vue {
     let upload = this.$refs["upload"] as Upload;
     this.uploadList = [];
     upload.clearFiles();
+  }
+  /**
+   *
+   */
+  onError(event, file, fileList) {
+    let index = this.uploadList.findIndex(x => x.file.uid === file.uid);
+    this.uploadList.splice(index, 0)
   }
 }
 </script>

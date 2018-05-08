@@ -232,13 +232,14 @@ export default class SaleGatheringApply extends Page {
     if (!row) {
       return
     }
-
     this.transFlag = true
     this.applyModel.idCard = row.idCard
-    this.getOrderInfo()
-    this.currentIdCard = this.applyModel.idCard
-    this.applyModel.orderId = row.orderId
-    this.changeOrderId(row.orderId)
+    this.getOrderInfo().then(() => {
+      this.currentIdCard = this.applyModel.idCard
+      this.applyModel.orderId = row.orderId
+      this.applyModel.orderNumber = row.orderNumber
+      this.changeOrderId(row.orderId)
+    })
   }
   /**
    * 保存并提交
@@ -311,22 +312,26 @@ export default class SaleGatheringApply extends Page {
   }
 
   getOrderInfo() {
-    this.withdrawApplicationService
-      .getPersonalProductOrderInfo(this.applyModel)
-      .subscribe(
-      data => {
-        if (data[0] && data[0].orderNumberIdModels) {
-          this.orderNumberIdModels = data[0].orderNumberIdModels
-          this.applyModel.customerName = data[0].name
-          this.applyModel.mobileMain = data[0].mobileMain
-          this.personalId = data[0].personalId
-        }
-      },
-      err => {
-        this.$Message.error(err.msg)
-        this.customerForm.resetFields()
-      }
-      )
+    return new Promise((resolve, reject) => {
+      this.withdrawApplicationService
+        .getPersonalProductOrderInfo(this.applyModel)
+        .subscribe(
+          data => {
+            if (data[0] && data[0].orderNumberIdModels) {
+              this.orderNumberIdModels = data[0].orderNumberIdModels
+              this.applyModel.customerName = data[0].name
+              this.applyModel.mobileMain = data[0].mobileMain
+              this.personalId = data[0].personalId
+            }
+            resolve(true)
+          },
+          err => {
+            this.$Message.error(err.msg)
+            this.customerForm.resetFields()
+            reject(err.msg)
+          }
+        )
+    })
   }
 
   resetPage(newIdCard?: string) {
