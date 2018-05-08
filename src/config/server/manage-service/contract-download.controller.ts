@@ -9,12 +9,20 @@ export default {
    */
   getAllContractInfo: {
     service: SERVICE,
-    controller: CONTROLLER,
+    controller: CONTROLLER, 
     action: 'getAllContractInfo',
     type: requestType.Get
   },
  
-
+  /**
+   * 合同下载详情
+   */
+  getAllContractDetails: {
+    service: SERVICE,
+    controller: CONTROLLER, 
+    action: 'getAllContractDetails',
+    type: requestType.Get
+  },
 
  
 }

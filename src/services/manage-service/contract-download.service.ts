@@ -25,6 +25,18 @@ export class ContractDownloadService {
         })
     }
 
+    /**
+     * 合同下载详情
+     */
+    getAllContractDetails(data, page) {
+        const dateRange = FilterService.dateRanageFormat(data.dateRange)
+            return this.netService.send({
+                server: manageService.contractDownloadController.getAllContractDetails,
+                data: data,
+                page: page
+            })
+        }
+
  
 
 }
