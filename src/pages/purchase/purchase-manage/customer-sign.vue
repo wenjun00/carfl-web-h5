@@ -75,7 +75,7 @@
         </ul>
         <div slot="footer">
           <i-button @click="cancelButton">取消</i-button>
-          <i-button class="blueButton" @click="confirm">确定</i-button>
+          <i-button class="blueButton" @click="confirm">确认签约</i-button>
         </div>
       </i-modal>
     </template>
@@ -684,7 +684,8 @@
       this.contractService
         .uploadContractResource({
           orderId: this.orderId,
-          materialUrl: this.materialUrl
+          materialUrl: this.materialUrl,
+          contractEnum: "DIRECT_RENT"
         })
         .subscribe(
           data => {
