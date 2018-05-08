@@ -1,5 +1,5 @@
-<!--合同监控--> 
-<template>
+<!--合同监控-->  
+<template> 
     <section class="page compact-monitor">
         <page-header title="合同下载监控" hiddenPrint hiddenExport></page-header>
         <data-form :model="compactMonitorModel" date-prop="timeSearch" @on-search="getPersonalClientList" hidden-reset>
@@ -24,7 +24,7 @@
 
         <template>
             <i-modal title="合同下载详情" v-model="compactDownloadInfoModal" :width="1300">
-                <compact-download-info></compact-download-info>
+                <compact-download-info ref="compact-download-info"></compact-download-info>
             </i-modal>
         </template>
     </section>
@@ -50,10 +50,9 @@ import { ContractDownloadService } from '~/services/manage-service/contract-down
   }
 })
 export default class CompactMonitor extends Page {
-  @Dependencies(ContractDownloadService)
-  private contractDownloadService: ContractDownloadService
+  @Dependencies(ContractDownloadService)private contractDownloadService: ContractDownloadService
   @Dependencies(PageService) private pageService: PageService
-  private monitorColumns: any = [
+private monitorColumns: any = [
     {
       align: 'center',
       type: 'index',
@@ -77,11 +76,11 @@ export default class CompactMonitor extends Page {
               style: {
                 color: '#265EA2'
               },
-              on: {
-                click: () => {
-                  this.compactDownloadInfoModal = true
+               on: {
+                  click: () => {
+                    this.compactDownloadInfoPopup(row)
+                  }
                 }
-              }
             },
             '查看'
           )
@@ -91,19 +90,18 @@ export default class CompactMonitor extends Page {
     {
       align: 'center',
       title: '门店',
-      key: 'branchAddress',
+      key: 'deptName',
       minWidth: this.$common.getColumnWidth(3)
     },
     {
       align: 'center',
       title: '员工姓名',
-      key: 'employeeName',
+      key: 'userName',
       minWidth: this.$common.getColumnWidth(3)
     },
     {
       align: 'center',
       title: ' 下载量',
-      key: 'downloadNum',
       minWidth: this.$common.getColumnWidth(3)
     }
   ]
@@ -130,6 +128,14 @@ export default class CompactMonitor extends Page {
           this.$Message.error(msg)
         }
       )
+  }
+/**
+ * 查看弹窗 userName
+ */
+  compactDownloadInfoPopup(row){
+    this.compactDownloadInfoModal = true
+    let compactDownloadInfoPopup = this.$refs['compact-download-info'] as CompactDownloadInfo
+    compactDownloadInfoPopup.contractDetails(row.userName)
   }
 
   mounted() {
