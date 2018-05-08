@@ -19,10 +19,8 @@ import { Dependencies } from "~/core/decorator";
   }
 })
 export default class AddGatherItem extends Vue {
-  @Dependencies(WithdrawApplicationService)
-  private withdrawApplicationService: WithdrawApplicationService;
-  @Dependencies(RefundApplicationService)
-  private refundApplicationService: RefundApplicationService;
+  @Dependencies(WithdrawApplicationService) private withdrawApplicationService: WithdrawApplicationService;
+  @Dependencies(RefundApplicationService) private refundApplicationService: RefundApplicationService;
   private columns1: any;
   private saleItemList: Array<any> = [];
   private multipleSelection; // 多选数据
@@ -31,7 +29,8 @@ export default class AddGatherItem extends Vue {
     this.columns1 = [{
       align: "center",
       type: "selection",
-      width: 60
+      width: 60,
+      _checked: true
     },
     {
       align: "center",

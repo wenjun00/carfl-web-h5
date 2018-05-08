@@ -175,18 +175,16 @@
      * 确认还款
      */
     confirmRepayment() {
-      // let earlyClear: any = this.$refs['confirm-early-pay']
-      // earlyClear.earlyClear()
       let _repayment: any = this.$refs['confirm-early-pay']
       let data: any = {}
-      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
-      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
-      data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.financeUploadResource = _repayment.fodderList
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.withdrawId
-      data.totalPayment = _repayment.paymentAmount
+      data.totalPayment = _repayment.totalMoney
       data.withdrawApplicationId = _repayment.withdrawApplicationId
       data.collectMoneyId = _repayment.repaymentObj.withdrawApplicationId
+      data.collectMoneyChannel = _repayment.pipeSelect
+      data.remake = _repayment.remark
       this.advancePayoffService.saveCollectMoneyHistory(data).subscribe(data => {
         this.$Message.info('操作成功！')
         this.confirmRepaymentModal = false

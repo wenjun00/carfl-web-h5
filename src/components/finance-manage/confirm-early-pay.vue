@@ -70,52 +70,66 @@
     </div>
     <table class="modal-item-table" border="1" width="868">
       <tr height="40">
-        <td class="td-bg" colspan="1" width="5%">
-          <div @click="addObj">
-            <i-icon type="plus" class="modal-item-shoukuanfangshi-icon"></i-icon>
-          </div>
-        </td>
+        <!--<td class="td-bg" colspan="1" width="5%">-->
+          <!--<div @click="addObj">-->
+            <!--<i-icon type="plus" class="modal-item-shoukuanfangshi-icon"></i-icon>-->
+          <!--</div>-->
+        <!--</td>-->
         <td class="td-bg" colspan="1" width="20%">结算通道</td>
-        <td class="td-bg" colspan="1" width="20%">收款项</td>
+        <!--<td class="td-bg" colspan="1" width="20%">收款项</td>-->
         <td class="td-bg" colspan="1">金额（元）</td>
         <td class="td-bg" colspan="1">状态</td>
       </tr>
-      <tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">
+      <tr height="40">
+        <!--<td>-->
+          <!--<div @click="deleteObj(i)">-->
+            <!--<i-icon type="minus" class="modal-item-shoukuanfangshi-icon"></i-icon>-->
+          <!--</div>-->
+        <!--</td>-->
         <td>
-          <div @click="deleteObj(i)">
-            <i-icon type="minus" class="modal-item-shoukuanfangshi-icon"></i-icon>
-          </div>
-        </td>
-        <td>
-          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="v.collectMoneyChannel">
+          <i-select class="modal-item-select" placeholder="选择结算通道" v-model="pipeSelect">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
+        <!--<td>-->
+          <!--<i-select class="modal-item-select" placeholder="选择收款项" v-model="v.collectItem" @on-change="selectWay($event, v)">-->
+            <!--<i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>-->
+          <!--</i-select>-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--<i-input class="modal-item-huakou-input" v-model="v.collectMoneyAmount" @on-blur="inputBlur"></i-input>-->
+          <!--<i-button class="blueButton">确认划扣</i-button>-->
+        <!--</td>-->
         <td>
-          <i-select class="modal-item-select" placeholder="选择收款项" v-model="v.collectItem" @on-change="selectWay($event, v)">
-            <i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>
-          </i-select>
+          <i-input class="modal-item-querenhuakou-input" v-model="totalMoney" readonly></i-input>
+          <i-button class="blueButton" @click="huakouTest">确认划扣</i-button>
         </td>
+        <!--<td>-->
+          <!--<span>已处理</span>-->
+          <!--<i-icon type="loop" size="20" color="#199ED8" class="modal-item-yichuli"></i-icon>-->
+        <!--</td>-->
         <td>
-          <i-input class="modal-item-huakou-input" v-model="v.collectMoneyAmount" @on-blur="inputBlur"></i-input>
-          <i-button class="blueButton">确认划扣</i-button>
-        </td>
-        <td>
-          <span>已处理</span>
-          <i-icon type="loop" size="20" color="#199ED8" class="modal-item-yichuli"></i-icon>
+          <span>{{huakou}}</span>
+          <i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
-      <tr height="40">
-        <td></td>
-        <td class="td-wh">合计（元）</td>
-        <td colspan="3" class="modal-item-heji">{{paymentAmount}}</td>
-      </tr>
+      <!--<tr height="40">-->
+        <!--<td></td>-->
+        <!--<td class="td-wh">合计（元）</td>-->
+        <!--<td colspan="3" class="modal-item-heji">{{paymentAmount}}</td>-->
+      <!--</tr>-->
     </table>
     <i-form>
-      <div class="modal-item-beizhu">备注</div>
-      <i-form-item>
-        <i-input type="textarea" v-model="remark" class="modal-item-beizhu-input"></i-input>
-      </i-form-item>
+      <!--<div class="modal-item-beizhu">备注</div>-->
+      <!--<i-form-item>-->
+        <!--<i-input type="textarea" v-model="remark" class="modal-item-beizhu-input"></i-input>-->
+      <!--</i-form-item>-->
+      <i-form>
+        <i-form-item label="备注">
+          <i-input class="modal-item-beizhu-input" type="textarea" v-model="remark"></i-input>
+        </i-form-item>
+      </i-form>
+
     </i-form>
 
     <div class="modal-item-shoukuanpingzheng">
@@ -123,29 +137,8 @@
         <div class="modal-item-shoukuanpingzheng-div"></div>
         <span>收款凭证</span>
       </div>
-      <!--<i-button class="blueButton" style="float:right">凭证上传</i-button>
-      <i-button class="blueButton" style="float:right">全部下载</i-button>-->
-
-      <i-row>
-        <i-col class="modal-item-upload" :span="8">
-          <div class="modal-item-upload-div" @click="openUpload=true">
-            <Icon type="plus-circled" class="modal-item-upload-icon" color="#265ea2" size="40"></Icon>
-            <h2 class="modal-item-upload-add">点击添加附件</h2>
-            <h3 class="modal-item-upload-text">支持jpg/png格式</h3>
-            <h3 class="modal-item-upload-text">建议大小不超过10M</h3>
-          </div>
-        </i-col>
-        <i-col class="modal-item-upload-col" :span="8" v-for="v in financeUploadResources" :key="v.id">
-          <img class="modal-item-upload-img" :src="v.materialUrl">
-        </i-col>
-      </i-row>
+      <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher"></upload-voucher>
     </div>
-    <!-- 弹出框 -->
-    <template>
-      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
-        <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
-      </i-modal>
-    </template>
     <template>
       <i-modal title="划扣记录" v-model="deductRecordModal" :width="1200">
         <deduct-record ref="deduct-record"></deduct-record>
@@ -170,6 +163,8 @@
   import {
     AdvancePayoffService
   } from "~/services/manage-service/advance-payoff.service";
+  import {ChargeBackService} from "~/services/manage-service/charge-back.service";
+  import UploadVoucher from "~/components/common/upload-voucher.vue";
 
   @Component({
     components: {
@@ -177,11 +172,13 @@
       DataGrid,
       DataGridItem,
       DeductRecord,
-      FileUpload
+      FileUpload,
+      UploadVoucher
     }
   })
   export default class ConfirmEarlyPay extends Vue {
     @Dependencies(AdvancePayoffService) private advancePayoffService: AdvancePayoffService;
+    @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
     private columns1: any;
     private repaymentObj: any = {};
     private rowObj: any = {};
@@ -199,35 +196,24 @@
     private collectMoneyItemModel: any = []
     private openUpload: Boolean = false;
     private withdrawApplicationId: any = ''
+    private huakou:any = '未处理'
+    private pipeSelect:any = ''
+    public totalMoney:any = 0
+    private fodderList: any = [];
 
 
-    /**
-     * 上传文件成功回调
-     */
-    uploadSuccess() {
-      this.openUpload = false;
-      this.$nextTick(() => {
-        let fileUpload: any = this.$refs["file-upload"];
-        this.financeUploadResources = this.financeUploadResources.concat(fileUpload.fileList.map(v => {
-          return {
-            id: v.response.id,
-            materialUrl: v.response.url,
-            orderId: this.rowObj.orderId,
-            businessId: this.rowObj.businessId
-          }
-        }))
-        fileUpload.reset();
-      });
+    huakouTest(){
+      this.chargeBackService.saveChargeback({personalId:1})
+        .subscribe( data => {
+          this.$Message.success('划扣成功')
+          this.huakou = '已处理'
+        },(msg) => {
+          this.$Message.error(msg)
+        })
     }
-
-    /**
-     * 上传文件
-     */
-    postFile() {
-      let fileUpload = this.$refs["file-upload"] as FileUpload;
-      fileUpload.upload();
+    fileNumber(item) {
+      this.fodderList = item;
     }
-
     refresh(row) {
       this.rowObj = row
       this.advancePayoffService.getAdvancePayoffBillInfo({
@@ -240,6 +226,7 @@
         this.applicationPhaseResources = data.applicationPhaseResources
         this.collectMoneyItemModel = data.collectMoneyItemModel
         this.withdrawApplicationId = data.withdrawApplicationId
+        this.totalMoney = data.totalPayment
         this.inputBlur()
         // this.remark = data.collectMoneyHistory.remark
       }, ({
@@ -540,5 +527,16 @@
       }
     }
   }
-
+</style>
+<style lang="less">
+  .component.confirm-early-pay{
+    .modal-item-beizhu-input.ivu-input-wrapper.ivu-input-type{
+      width:870px!important;
+    }
+    .modal-item-querenhuakou-input {
+      display: inline-block;
+      width: 30%;
+      margin-right: 10px;
+    }
+  }
 </style>
