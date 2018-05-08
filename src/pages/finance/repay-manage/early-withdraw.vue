@@ -1,4 +1,4 @@
-<!--客户还款-->
+<!--提前收回-->
 <template>
   <section class="page early-withdraw">
     <page-header title="提前收回"></page-header>
@@ -172,19 +172,14 @@
     confirmRepayment() {
       let _repayment: any = this.$refs['confirm-withdraw']
       let data: any = {}
-      data.addFinanceUploadResource = _repayment.addFinanceUploadResource
-      data.delFinanceUploadResource = _repayment.delFinanceUploadResource
-      data.collectMoneyDetails = _repayment.collectMoneyDetails
+      data.financeUploadResource = _repayment.fodderList //上传资料
+      data.totalPayment = _repayment.totalMoney //收款总金额
+      data.collectMoneyChannel = _repayment.pipeSelect //结算通道
+      data.remark = _repayment.remark //备注
       data.orderId = _repayment.rowObj.orderId
       data.businessId = _repayment.rowObj.withdrawId
-      data.totalPayment = _repayment.paymentAmount
       data.withdrawApplicationId = _repayment.rowObj.withdrawId
       data.collectMoneyId = _repayment.collectMoneyId
-      let name: any = data.collectMoneyDetails.map(v => v.collectItem)
-      if (!name.length || name[0] === undefined) {
-        this.$Message.warning("请选择收款方式!")
-        return
-      }
       this.advanceRevokeService.saveCollectMoneyHistory(data).subscribe(data => {
         this.$Message.info('操作成功！')
         this.confirmWithdrawModal = false
