@@ -1,13 +1,12 @@
 <!--提前收回-->
 <template>
   <section class="page early-withdraw">
-    <page-header title="提前收回"></page-header>
-    <data-form data-prop="timeSearch" @on-search="getEarlyPayList" hidden-reset>
+    <page-header title="提前收回" hiddenPrint hiddenExport></page-header>
+    <data-form data-prop="timeSearch"  hidden-reset @on-search="getEarlyPayList">
       <template slot="input">
         <i-form-item>
           <i-input placeholder="请录入客户姓名\证件号码"></i-input>
         </i-form-item>
-
       </template>
     </data-form>
     <data-box :id="428" :columns="columns1" :data="data1" @onPageChange="getEarlyPayList" :page="pageService"></data-box>
