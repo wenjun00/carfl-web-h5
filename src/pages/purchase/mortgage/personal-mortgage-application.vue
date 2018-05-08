@@ -284,35 +284,35 @@ export default class PersonalMortgageApplication extends Page {
         idCard: this.basisModel.cardNumber
       })
       .subscribe(
-        (data) => {
-          if (data.length) {
-            if (data.some(x => x.personalType === 114)) {
-              return this.$Message.info("黑名单用户禁止创建申请");
-            } else {
-              return this.showHistoryOrder(data);
-            }
+      (data) => {
+        if (data.length) {
+          if (data.some(x => x.personalType === 114)) {
+            return this.$Message.info("黑名单用户禁止创建申请");
+          } else {
+            return this.showHistoryOrder(data);
           }
-
-          // 判断是否需要重置信息
-          if (
-            this.currentCardNumber &&
-            this.currentCardNumber !== this.basisModel.cardNumber
-          ) {
-            this.$Modal.confirm({
-              title: "提醒",
-              content: "证件号码更新,是否要重置申请信息?",
-              onOk: this.resetApplicationTab
-            });
-          }
-
-          // 更新历史查询身份证号
-          this.currentCardNumber = this.basisModel.cardNumber;
-
-          // TODO: 根据身份证获取性别和生日信息
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
         }
+
+        // 判断是否需要重置信息
+        if (
+          this.currentCardNumber &&
+          this.currentCardNumber !== this.basisModel.cardNumber
+        ) {
+          this.$Modal.confirm({
+            title: "提醒",
+            content: "证件号码更新,是否要重置申请信息?",
+            onOk: this.resetApplicationTab
+          });
+        }
+
+        // 更新历史查询身份证号
+        this.currentCardNumber = this.basisModel.cardNumber;
+
+        // TODO: 根据身份证获取性别和生日信息
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
       );
   }
 
@@ -469,20 +469,20 @@ export default class PersonalMortgageApplication extends Page {
     // 添加订单
     this.productOrderService
       .saveFinanceApplyInfo(
-        Object.assign(data, {
-          orderStatus: this.orderStatus || (draft ? 303 : 304)
-        })
+      Object.assign(data, {
+        orderStatus: this.orderStatus || (draft ? 303 : 304)
+      })
       )
       .subscribe(
-        data => {
-          this.$Message.success("保存成功");
-          setTimeout(() => {
-            this.closePage("purchase/mortgage/personal-mortgage-application");
-          }, 1000);
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
+      data => {
+        this.$Message.success("保存成功");
+        setTimeout(() => {
+          this.closePage("purchase/mortgage/personal-mortgage-application");
+        }, 1000);
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
       );
   }
 
@@ -561,8 +561,8 @@ export default class PersonalMortgageApplication extends Page {
       },
       // 客户来源
       {
-        personalResourceIntroduce: customerOrigin.introduceModel,
-        resourceTypes: customerOrigin.publicityModel
+        personalResourceIntroduce: customerOrigin.originType === 2 ? customerOrigin.introduceModel : null,
+        personalResourcePublicity: customerOrigin.originType === 1 ? customerOrigin.getPublicityModel() : null,
       },
       // 客户素材
       {
