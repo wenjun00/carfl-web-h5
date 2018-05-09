@@ -1,4 +1,4 @@
-<!--新增期数-->
+<!--新增期数--> 
 <template>
   <section class="component add-periods">
     <i-form class="mini" ref="formItems" :model="formItems" :rules="formRules">
@@ -139,7 +139,7 @@
           </i-radio-group>
           <div v-if="formItems.manageCostType===395" class="initialPayment item-input">
             <i-form-item prop="stagingPeriods" label="期数">
-              <i-input v-model="formItems.stagingPeriods"></i-input>
+              <i-input v-model="formItems.stagingPeriods" @on-change="monitorPeriods"></i-input>  
             </i-form-item>
           </div>
         </data-grid-item>
@@ -439,7 +439,7 @@ export default class AddPeriods extends Vue {
         {
           required: true,
           message: "请输入罚期费率",
-          trigger: "blur",
+          trigger: "blur", 
           type: "number"
         },
         {
@@ -450,6 +450,18 @@ export default class AddPeriods extends Vue {
       ]
     };
   }
+/**
+ * 监听管理费收取方式
+ */
+ monitorPeriods(){
+     if(Number(this.formItems.stagingPeriods) > Number(this.$dict.getDictName(this.formItems.periods))){
+         this.$Message.error('管理费期数不能大于产品期数')
+         this.formItems.stagingPeriods = ''
+         
+     }
+    
+ }
+
 
   /**@
    * 点击确定按钮
