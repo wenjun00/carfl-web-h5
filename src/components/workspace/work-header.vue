@@ -1,7 +1,8 @@
 <template>
     <div class="component work-header row between-span middle-span">
         <div class="logo">
-            <img class="logo-img" src="/static/images/common/logo.png" alt="">
+            <img class="logo-img" src="/static/images/common/logo2.png" alt="">
+            <h5 class="logo-font">指旺汽车金融系统</h5>
         </div>
         <div class="row">
             <work-theme></work-theme>
@@ -134,8 +135,16 @@ export default class WorkHeader extends Vue {
   min-height: 60px;
   .logo {
     padding: 10px;
+    display: flex;
     .logo-img {
-      margin-left: 5px;
+      width:40px;
+      height:40px;
+    }
+    .logo-font{
+      color: white;
+      font-size: 20px;
+      padding-left:18px;
+      letter-spacing:2px;
       margin-top: 8px;
     }
   }

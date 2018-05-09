@@ -30,7 +30,7 @@ export default class WorkMenuTitle extends Vue {
 .work-menu-title.component {
   display: inline-block;
   width: 100%;
-  
+
   & > * {
     display: inline-block;
   }
