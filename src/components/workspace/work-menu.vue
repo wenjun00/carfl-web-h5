@@ -111,6 +111,7 @@ export default class WorkMenu extends Vue {
     height: 100%;
     .button {
       width: 8px;
+      position: absolute;
       background-color: #4b79bd;
       height: 100px;
       line-height: 100px;
@@ -124,9 +125,6 @@ export default class WorkMenu extends Vue {
       }
       &:hover {
         background-color: #6d98d0;
-        .icon {
-          color: #4b79bd;
-        }
       }
     }
   }

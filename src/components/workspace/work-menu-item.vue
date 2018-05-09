@@ -44,6 +44,7 @@ export default class WorkMenuItem extends Vue {
     padding-left: 0 !important;
     border-right: 0 !important;
     margin-right: 1px;
+    text-align:left;
     .ivu-menu-submenu-title-icon {
       line-height: 50px;
       top: 0;

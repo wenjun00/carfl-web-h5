@@ -11,17 +11,29 @@
     background-color: @COLOR2;
     .sub-menu-container,
     .leaf-menu-container {
+      &>.ivu-menu-submenu-title{
+        background-color: @COLOR1;
+      }
+      background-color: @COLOR1;
       .work-menu-title {
         background-color: @COLOR6;
       }
     } // 1级菜单颜色
     .menu-level-1 {
       &>.sub-menu-container {
+        &>.ivu-menu-submenu-title{
+          background-color: @COLOR2;
+        }
+        background-color: @COLOR2;
         &>.ivu-menu-submenu-title>.work-menu-title {
           background-color: @COLOR2;
         }
       }
       &>.leaf-menu-container {
+        background-color: @COLOR2;
+        &>.ivu-menu-submenu-title{
+          background-color: @COLOR2;
+        }
         &>.work-menu-title {
           background-color: @COLOR2;
         }
