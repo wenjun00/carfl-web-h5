@@ -57,68 +57,68 @@
           </i-select>
         </data-grid-item>
       </data-grid>
-      <div class="add-periods-item">首付款参数</div>
-      <data-grid :labelWidth="100">
-        <data-grid-item label="首付款" :span="12">
-          <div class="row middle-span">
-            <i-radio-group v-model="initialParams">
-              <i-radio label="无"></i-radio>
-              <i-radio label="有"></i-radio>
-            </i-radio-group>
-            <div v-if="initialParams==='有'" style="margin-left:10px;" class="initialPayment">
-              <i-form-item prop="initialPayment" label="比例">
-                <i-input v-model="productDetail.initialPayment"></i-input>
-                <div style="color:red" class="after_text">%</div>
-                <div style="color:blue" class="after_text">如果有多个则用分号隔开</div>
-              </i-form-item>
-            </div>
-          </div>
-        </data-grid-item>
-      </data-grid>
-      <div class="add-periods-item">保证金参数</div>
-      <data-grid :labelWidth="100">
-        <data-grid-item label="保证金" :span="12">
-          <i-radio-group v-model="promiseMoenyParams">
-            <i-radio label="无"></i-radio>
-            <i-radio label="有"></i-radio>
-          </i-radio-group>
-        </data-grid-item>
-        <data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">
-          <i-row :gutter="16">
-            <i-col :span="16">
-              <i-form-item prop="depositCash" label="比例">
-                <i-input v-model="productDetail.depositCash"></i-input>
-                <span style="color:red" class="after_text">%</span>
-                <span style="color:blue" class="after_text">如果有多个则用分号隔开</span>
-              </i-form-item>
-            </i-col>
-            <i-col :span="8">
-              <i-form-item prop="depositCashType" label="缴纳方式">
-                <i-select v-model="productDetail.depositCashType" placeholder="缴纳方式">
-                  <i-option :value="396">退还</i-option>
-                  <i-option :value="397">不退还</i-option>
-                </i-select>
-              </i-form-item>
-            </i-col>
-          </i-row>
-        </data-grid-item>
-      </data-grid>
-      <div class="add-periods-item">尾付款参数</div>
-      <data-grid :labelWidth="100">
-        <data-grid-item label="尾付款" :span="12">
-          <i-radio-group v-model="residueParams">
-            <i-radio label="无"></i-radio>
-            <i-radio label="有"></i-radio>
-          </i-radio-group>
-          <div v-if="residueParams==='有'">
-            <i-form-item prop="finalCash" label="月利率">
-              <i-input v-model="productDetail.finalCash"></i-input>
-              <div style="color:red" class="after_text">%</div>
-              <div style="color:blue" class="after_text">如果有多个则用分号隔开</div>
-            </i-form-item>
-          </div>
-        </data-grid-item>
-      </data-grid>
+      <!--<div class="add-periods-item">首付款参数</div>-->
+      <!--<data-grid :labelWidth="100">-->
+        <!--<data-grid-item label="首付款" :span="12">-->
+          <!--<div class="row middle-span">-->
+            <!--<i-radio-group v-model="initialParams">-->
+              <!--<i-radio label="无"></i-radio>-->
+              <!--<i-radio label="有"></i-radio>-->
+            <!--</i-radio-group>-->
+            <!--<div v-if="initialParams==='有'" style="margin-left:10px;" class="initialPayment">-->
+              <!--<i-form-item prop="initialPayment" label="比例">-->
+                <!--<i-input v-model="productDetail.initialPayment"></i-input>-->
+                <!--<div style="color:red" class="after_text">%</div>-->
+                <!--<div style="color:blue" class="after_text">如果有多个则用分号隔开</div>-->
+              <!--</i-form-item>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</data-grid-item>-->
+      <!--</data-grid>-->
+      <!--<div class="add-periods-item">保证金参数</div>-->
+      <!--<data-grid :labelWidth="100">-->
+        <!--<data-grid-item label="保证金" :span="12">-->
+          <!--<i-radio-group v-model="promiseMoenyParams">-->
+            <!--<i-radio label="无"></i-radio>-->
+            <!--<i-radio label="有"></i-radio>-->
+          <!--</i-radio-group>-->
+        <!--</data-grid-item>-->
+        <!--<data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">-->
+          <!--<i-row :gutter="16">-->
+            <!--<i-col :span="16">-->
+              <!--<i-form-item prop="depositCash" label="比例">-->
+                <!--<i-input v-model="productDetail.depositCash"></i-input>-->
+                <!--<span style="color:red" class="after_text">%</span>-->
+                <!--<span style="color:blue" class="after_text">如果有多个则用分号隔开</span>-->
+              <!--</i-form-item>-->
+            <!--</i-col>-->
+            <!--<i-col :span="8">-->
+              <!--<i-form-item prop="depositCashType" label="缴纳方式">-->
+                <!--<i-select v-model="productDetail.depositCashType" placeholder="缴纳方式">-->
+                  <!--<i-option :value="396">退还</i-option>-->
+                  <!--<i-option :value="397">不退还</i-option>-->
+                <!--</i-select>-->
+              <!--</i-form-item>-->
+            <!--</i-col>-->
+          <!--</i-row>-->
+        <!--</data-grid-item>-->
+      <!--</data-grid>-->
+      <!--<div class="add-periods-item">尾付款参数</div>-->
+      <!--<data-grid :labelWidth="100">-->
+        <!--<data-grid-item label="尾付款" :span="12">-->
+          <!--<i-radio-group v-model="residueParams">-->
+            <!--<i-radio label="无"></i-radio>-->
+            <!--<i-radio label="有"></i-radio>-->
+          <!--</i-radio-group>-->
+          <!--<div v-if="residueParams==='有'">-->
+            <!--<i-form-item prop="finalCash" label="月利率">-->
+              <!--<i-input v-model="productDetail.finalCash"></i-input>-->
+              <!--<div style="color:red" class="after_text">%</div>-->
+              <!--<div style="color:blue" class="after_text">如果有多个则用分号隔开</div>-->
+            <!--</i-form-item>-->
+          <!--</div>-->
+        <!--</data-grid-item>-->
+      <!--</data-grid>-->
       <div class="add-periods-item">管理费参数</div>
       <data-grid :labelWidth="100">
         <data-grid-item label="管理费" :span="12">
