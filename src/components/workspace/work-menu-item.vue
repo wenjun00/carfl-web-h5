@@ -42,11 +42,14 @@ export default class WorkMenuItem extends Vue {
     height: 50px;
     line-height: 50px;
     padding-left: 0 !important;
+    border-right: 0 !important;
+    margin-right: 1px;
     .ivu-menu-submenu-title-icon {
       line-height: 50px;
       top: 0;
       position: absolute;
       right: 0;
+      display: none;
     }
   }
 }
