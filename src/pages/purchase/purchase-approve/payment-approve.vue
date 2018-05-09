@@ -1,7 +1,7 @@
-<!--付款审批-->
+<!--放款审批-->
 <template>
   <section class="page payment-approve">
-    <page-header title="付款审批" hiddenPrint></page-header>
+    <page-header title="放款审批" hiddenPrint></page-header>
     <data-form hidden-date-search :model="approvalModel" @on-search="openSearch">
       <template slot="input">
         <i-form-item prop="dynamicParams">

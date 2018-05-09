@@ -65,7 +65,7 @@ export class CityService {
     let results: Array<string> = []
 
     ids.forEach(id => {
-      let item = cityData.find(c => c.id === id)
+      let item = cityData.find(c => c.id === id) || {}
       results.push(item.name)
     })
 

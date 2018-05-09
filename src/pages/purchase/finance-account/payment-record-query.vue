@@ -1,7 +1,7 @@
-<!--付款记录查询-->
+<!--放款记录查询-->
 <template>
   <section class="page payment-record-query">
-    <page-header title="付款记录查询" hiddenPrint hiddenExport></page-header>
+    <page-header title="放款记录查询" hiddenPrint hiddenExport></page-header>
     <data-form hidden-date-search :model="paymentModel" :page="pageService" @on-search="searchPaymentrecord">
       <template slot="input">
         <i-form-item prop="dateRange" label="申请日期">

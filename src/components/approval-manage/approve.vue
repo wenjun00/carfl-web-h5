@@ -29,7 +29,6 @@
         <data-grid-item label="车辆型号" :span="6">{{item.modelName?item.modelName:''}}</data-grid-item>
         <data-grid-item label="车身颜色" :span="6">{{item.carColour?item.carColour:''}}</data-grid-item>
         <data-grid-item label="购车排量" :span="6">{{item.carEmissions?item.carEmissions:''}}</data-grid-item>
-        </data-grid-item>-->
         <data-grid-item label="车辆牌照" :span="6">{{item.carLicence?item.carLicence:''}}</data-grid-item>
       </data-grid>
     </i-row>

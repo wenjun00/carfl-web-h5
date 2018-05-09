@@ -1,7 +1,7 @@
 <!--添加收款项-->
 <template>
   <section class="component add-gather-item">
-    <data-box :columns="columns1" :data="saleItemList" ref="table" @on-selection-change="currentSelect" :showConfigColumn="false" :height="400"></data-box>
+    <data-box :columns="columns1" :data="saleItemList" ref="table" @on-selection-change="currentSelect" :showConfigColumn="false" :height="400" :noDefaultRow="true"></data-box>
   </section>
 </template>
 
