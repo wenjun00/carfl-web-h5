@@ -29,7 +29,7 @@
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="车牌号码" >
-                        <i-input  v-model="mortgageInventoryModel.carNoShow" disabled></i-input>
+                        <i-input  v-model="mortgageInventoryModel.carNo" disabled></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -45,6 +45,13 @@
                     </i-form-item>
                 </i-col>
             </i-row>
+          <i-row type="flex" :gutter="110">
+            <i-col :span="8">
+              <i-form-item label="初登日期" >
+                <i-date-picker v-model="mortgageInventoryModel.cardsDate" type="date" disabled></i-date-picker>
+              </i-form-item>
+            </i-col>
+          </i-row>
             <!-- 库房信息 -->
             <i-row class="data-form">
                 <i-col>
@@ -54,7 +61,7 @@
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
-                    <i-form-item label="车辆隶属" >
+                    <i-form-item label="车辆隶属" prop="carSubjection">
                         <i-input v-model="mortgageInventoryModel.carSubjection" placeholder="请填写车辆隶属" :maxlength="9"></i-input>
                     </i-form-item>
                 </i-col>
@@ -66,50 +73,38 @@
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
-                    <i-form-item label="牌照号码" >
-                        <i-input placeholder="请填写牌照号码" v-model="mortgageInventoryModel.carNo" :maxlength="9"></i-input>
-                    </i-form-item>
-                </i-col>
-                <i-col :span="8">
-                    <i-form-item label="上牌日期" >
-                        <i-date-picker v-model="mortgageInventoryModel.cardsDate" type="date" placeholder="请填写上牌日期"></i-date-picker>
-                    </i-form-item>
-                </i-col>
-            </i-row>
-            <i-row type="flex" :gutter="110">
-                <i-col :span="8">
                     <i-form-item label="入库日期"  prop="warehousingDate">
                         <i-date-picker v-model="mortgageInventoryModel.warehousingDate" type="date" placeholder="请填写入库日期"></i-date-picker>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
-                    <i-form-item label="里程表值" prop="odometer">
+                    <i-form-item label="里程表值"  prop="odometer">
                         <i-input v-model="mortgageInventoryModel.odometer" placeholder="请填写里程表" :maxlength="9"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
-                    <i-form-item label="车况" prop="warehousingSituation">
+                    <i-form-item label="车况"  prop="warehousingSituation">
                         <i-select placeholder="请选择车况" v-model="mortgageInventoryModel.warehousingSituation">
                             <i-option v-for="{value,label} in $dict.getDictData('0445')" :key="value" :label="label" :value="value"></i-option>
                         </i-select>
                     </i-form-item>
                 </i-col>
                 <i-col :span="8">
-                    <i-form-item label="登记人">
+                    <i-form-item label="登记人" prop="warehousingPerson">
                         <i-input placeholder="请选填写登记人" v-model="mortgageInventoryModel.warehousingPerson" :maxlength="9"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
-                    <i-form-item label="车况说明" >
+                    <i-form-item label="车况说明" prop="carWarehousingExplain">
                         <i-input v-model="mortgageInventoryModel.carWarehousingExplain" class="textbox" type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
-            <i-row type="flex" :gutter="110">
+            <i-row type="flex" :gutter="110" >
                 <i-col :span="8">
                     <i-form-item label="停放状态"  prop="placingTypeId">
                         <i-select placeholder="请选择停放状态" @on-change="haltState" v-model="mortgageInventoryModel.placingTypeId">
@@ -127,7 +122,7 @@
             </i-row>
             <i-row type="flex" :gutter="110" v-if="!!mortgageInventoryModel.placingTypeId">
                 <i-col>
-                    <i-form-item label="措施内容">
+                    <i-form-item label="措施内容" prop="fee">
                         <i-checkbox-group v-model="mortgageInventoryModel.fee">
                             <i-checkbox  v-for="item in parkingStateShow" :key="item.id" :label="item.parkeAttr" :value="item.id">
                             </i-checkbox>
@@ -137,7 +132,7 @@
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
-                    <i-form-item label="情况描述">
+                    <i-form-item label="情况描述" prop="warehousingDesc">
                         <i-input class="textbox" v-model="mortgageInventoryModel.warehousingDesc" type="textarea"></i-input>
                     </i-form-item>
                 </i-col>
@@ -165,6 +160,7 @@ import { Form } from 'iview'
 import  UploadVoucher from "~/components/common/upload-voucher.vue"
 import { AssessMentPlacingService } from '~/services/manage-service/assess-ment-placing.service'
 import { CityService } from '~/utils/city.service'
+import { FilterService } from "~/utils/filter.service";
 @Component({
   components: {
     UploadVoucher
@@ -217,9 +213,10 @@ export default class addPeople extends Vue {
           this.mortgageInventoryModel.modelofcar = data.assessmentPlacingApplyModel.brandName + data.assessmentPlacingApplyModel.seriesName + data.assessmentPlacingApplyModel.carName
           this.mortgageInventoryModel.carColor = data.assessmentPlacingApplyModel.carColor
           this.mortgageInventoryModel.city = !!data.assessmentPlacingApplyModel.city ? CityService.getCityName(Number(data.assessmentPlacingApplyModel.city)) : ''
-          this.mortgageInventoryModel.carNoShow = data.assessmentPlacingApplyModel.carNo
+          this.mortgageInventoryModel.carNo = data.carNo
           this.mortgageInventoryModel.frameNo = data.assessmentPlacingApplyModel.frameNo
           this.mortgageInventoryModel.engineNo = data.assessmentPlacingApplyModel.engineNo
+          this.mortgageInventoryModel.cardsDate = FilterService.dateFormat(data.cardsDate, 'yyyy-MM-dd')
           this.mortgageInventoryModel.carSource = data.carSource
         }, ({ msg }) => {
           this.$Message.error(msg)
@@ -285,6 +282,8 @@ export default class addPeople extends Vue {
           data => {
             this.$Message.success('保存成功！')
             this.$emit('close')
+            let productForm = this.$refs["form-item"] as Form;
+            productForm.resetFields();
             let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher
             uploadVoucher.reset()
           }, ({ msg }) => {

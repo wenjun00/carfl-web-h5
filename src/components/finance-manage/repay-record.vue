@@ -57,7 +57,7 @@
     created() {
       this.columns1 = [{
         title: '期数',
-        type: 'index',
+        key: 'periods',
         width: 60,
         align: 'center'
       },
