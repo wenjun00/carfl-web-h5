@@ -34,10 +34,10 @@ export default {
     /**
      * 获取客户开户列表
      */
-    getCustomeriIntentionList: {
+    getCustomerIntentionList: {
         service: SERVICE,
         controller: CONTROLLER,
-        action: 'getCustomeriIntentionList',
+        action: 'getCustomerIntentionList',
         type: requestType.Get
     },
     /**

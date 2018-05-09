@@ -1,5 +1,5 @@
 <!--客户资料查询-->
-<template>
+<template> 
   <section class="page customer-data-query">
     <page-header title="资料补充查询" hiddenPrint hiddenExport></page-header>
     <data-form date-prop="timeSearch" :model="ordertransferModel" @on-search="refreshData" hidden-reset :page="pageService">

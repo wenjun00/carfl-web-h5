@@ -39,7 +39,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="居住地址">
-                        <i-input readonly v-model="customerDetailsModel.localHomeAddr"></i-input>
+                        <i-input readonly v-model="customerDetailsModel.intentionHomeAddr"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>

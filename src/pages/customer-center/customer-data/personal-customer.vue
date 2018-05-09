@@ -184,7 +184,7 @@ export default class personalCustomer extends Page {
    */
   getPersonalClientList() {
     this.personalService
-      .getCustomeriIntentionList(this.personalCustomerModel, this.pageService)
+      .getCustomerIntentionList(this.personalCustomerModel, this.pageService)
       .subscribe(
         data => {
           this.dataSet = data

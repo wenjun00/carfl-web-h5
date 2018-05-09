@@ -48,10 +48,10 @@ export class PersonalService {
     /**
      * 获取个人意向客户开户列表
      */
-    getCustomeriIntentionList(data, page) {
+    getCustomerIntentionList(data, page) {
         const dateRange = FilterService.dateRanageFormat(data.dateRange)
         return this.netService.send({
-            server: manageService.personalController.getCustomeriIntentionList,
+            server: manageService.personalController.getCustomerIntentionList,
             // data:data,
             data:{
                 personalType:data.personalType,
