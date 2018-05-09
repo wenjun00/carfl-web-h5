@@ -146,7 +146,7 @@
             <i-row class="data-form">
                 <i-col>
                     <div class="data-form-item"></div>
-                    <a class="information">文件数量</a>
+                    <a class="information">文件数量({{fileNumberList}})</a>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
@@ -199,6 +199,7 @@ export default class addPeople extends Vue {
     warehousingSituation: [{required: true, message: '请选择车况', trigger: 'change', type: 'number'}],
     placingTypeId: [{required: true, message: '请选择停放状态', trigger: 'change', type: 'number'}]
   }
+  private fileNumberList:any = 0
 
   created() {
     this.getCheckboxList()
@@ -302,6 +303,7 @@ export default class addPeople extends Vue {
         materialType: 1228
       }
     })
+    this.fileNumberList = item.length
   }
 }
 </script>

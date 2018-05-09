@@ -59,7 +59,7 @@
       </template>
       <template>
         <i-table :columns="carColumns" :data="carDataSet"></i-table>
-        <i-row>
+        <i-row class="total">
           <i-col :span="6">
             合计数量: {{carDataSet.length}}
           </i-col>
@@ -346,14 +346,26 @@ export default class MortgageApplication extends Vue {
       key: "carNo"
     },
     {
+      title: '订单编号',
+      align: 'center',
+      key: 'assessmentNo'
+    },
+    {
+      title: '车架号',
+      align: 'center',
+      key: 'frameNo'
+    },
+    {
       title: "行驶里程(公里)",
       align: "center",
-      key: "mileage"
+      key: "mileage",
+      minWidth: this.$common.getColumnWidth(2),
     },
     {
       title: "评估价(元)",
       align: "center",
       key: "evaluation",
+      minWidth: this.$common.getColumnWidth(2),
       render: (h, { row }) =>
         h("span", this.$filter.toThousands(row.evaluation))
     }
@@ -430,6 +442,7 @@ export default class MortgageApplication extends Vue {
     let dialog = this.$dialog.show({
       title: "押品列表",
       footer: true,
+      size: 'large',
       onOk: mortgageCarList => {
         let currentSelection = mortgageCarList.getCurrentSelection();
         if (!currentSelection || currentSelection.length === 0) {
@@ -632,6 +645,9 @@ export default class MortgageApplication extends Vue {
     line-height: 500px;
     letter-spacing: 1px;
     box-shadow: 0px 0px 5px #ccc;
+  }
+  .total{
+    margin-top: 15px;
   }
 }
 </style>

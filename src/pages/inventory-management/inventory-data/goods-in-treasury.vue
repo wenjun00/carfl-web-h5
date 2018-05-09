@@ -8,7 +8,7 @@
                     <i-input placeholder="请输入订单订单编号" v-model="treasuryModel.assessmentNo "></i-input>
                 </i-form-item>
                 <i-form-item prop="carParams" label="品牌型号">
-                    <i-input placeholder="请输入品牌型号" v-model="treasuryModel.carParams"></i-input>
+                    <i-input placeholder="请输入品牌、系列、车型关键字查询" v-model="treasuryModel.carParams"></i-input>
                 </i-form-item>
                 <i-form-item prop="carNo" label="车牌号码">
                     <i-input placeholder="请输入车牌号码" v-model="treasuryModel.carNo"></i-input>

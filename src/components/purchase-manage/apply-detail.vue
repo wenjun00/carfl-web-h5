@@ -1,8 +1,8 @@
-<!--添加新申请-->
-<template> 
+<!--收款审批-->
+<template>
   <section class="component apply-detail">
-    <!--付款申请-->
-    <i-form :rules="applyRules" :label-width="110" class="item-kehu-form">
+    <!--收款审批-->
+    <i-form  :label-width="110" class="item-kehu-form">
       <i-row>
         <i-col :span="12">
           <i-form-item label="客户姓名">
@@ -21,9 +21,7 @@
             <i-input v-model="orderNumber" disabled></i-input>
           </i-form-item>
         </i-col>
-      </i-row>
-      <i-row>
-        <i-col :span="24">
+        <i-col :span="12">
           <i-form-item label="备注">
             <i-input type="textarea" v-model="remark" disabled></i-input>
           </i-form-item>
@@ -37,9 +35,8 @@
       <i-table :columns="columns3" :data="accountDetail"></i-table>
     </i-card>
     <i-card title="附件">
-      <upload-voucher ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
+      <upload-voucher ref="upload-voucher" @financeUploadResources="fileNumber"></upload-voucher>
     </i-card>
-
   </section>
 </template>
 
@@ -60,23 +57,18 @@ import BankInfo from "~/components/base-data/bank-info.vue"
 })
 export default class ApplyDetail extends Vue {
   @Prop() orderType;
-  addAttachmentShow: Boolean;
-  private applyType: String = "销售收款申请";
-  private payDetail: Array<Object> = [];
+  private payDetail: any = [];
   private columns1: any;
   private columns3:any;
-  private accountDetail: Array<Object> = [];
-  private fileList: Array<Object> = [];
-  private addNewApplyModal: any = {
+  private accountDetail: any = [];
+  private addNewApplyModal = {
     name: "",
     idCard: ""
   };
   private fodderList: any = [];
-  private refundType: String = "";
   private remark: String = "";
   private orderNumber: String = "";
   private type: any = "";
-  private applyRules: any = {}
   getparentreceipt(val, row, type) {
     //   上传资料反显
     this.type = type
@@ -87,17 +79,10 @@ export default class ApplyDetail extends Vue {
     this.payDetail = !!val.collectMoneyItemModels ? val.collectMoneyItemModels:[{}]; // 付款明细
     this.addNewApplyModal.idCard = !!val.idCard ? val.idCard : ''; // 证件号
     this.remark = !!val.remark ? val.remark:'' ;
-    this.refundType = val.applicationType ? this.$dict.getDictName(val.applicationType) : ""; // 付款类型
-    this.accountDetail = !!val.personalBank ? val.personalBank :[{}]; // 账户信息
+    this.accountDetail = !!val.personalBank ? this.accountDetail.concat(val.personalBank) :[{}]; // 账户信息
   }
 
   created() {
-    this.applyRules = {
-      idCard: [{
-        validator: this.$validator.idCard,
-        trigger: "blur"
-      }]
-    };
     this.columns1 = [
       {
         title: "项目名称",
@@ -137,7 +122,12 @@ export default class ApplyDetail extends Vue {
         key: "clientNumber"
       }
     ];
-
+  }
+  reset(){
+    this.accountDetail = []
+  }
+  fileNumber(item) {
+    this.fodderList = item;
   }
 }
 </script>

@@ -107,6 +107,7 @@ export default class UploadVoucher extends Vue {
    */
   handleRemove(file) {
     this.financeUploadResources.splice(this.financeUploadResources.indexOf(file), 1);
+    this.$emit('financeUploadResources', this.financeUploadResources)
   }
   reset() {
     this.financeUploadResources = []

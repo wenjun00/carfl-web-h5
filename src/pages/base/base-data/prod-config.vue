@@ -20,7 +20,7 @@
             <i-tree :data="treeData" @on-select-change="productNameDetail"></i-tree>
           </div>
         </i-col>
-        <i-col :span="20">
+        <i-col :span="19" offset="1">
           <i-row>
             <i-col :span="12">
               <data-grid :labelWidth="100" labelAlign="right" contentAlign="left;">

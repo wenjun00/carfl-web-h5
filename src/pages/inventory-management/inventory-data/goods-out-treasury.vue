@@ -7,8 +7,8 @@
                 <i-form-item prop="assessmentNo" label="订单编号">
                     <i-input v-model="goodsOutModel.assessmentNo"></i-input>
                 </i-form-item>
-                <i-form-item prop="carParams" label="品牌系列">
-                    <i-input v-model="goodsOutModel.carParams" placeholder="请录入品牌、系列"></i-input>
+                <i-form-item prop="carParams" label="品牌型号">
+                    <i-input v-model="goodsOutModel.carParams" placeholder="请输入品牌、系列、车型关键字查询"></i-input>
                 </i-form-item>
                 <i-form-item prop="carNo" label="车牌号码">
                     <i-input v-model="goodsOutModel.carNo"></i-input>
@@ -178,7 +178,7 @@ export default class GoodsOutTreasury extends Page {
       align: 'center'
     },
     {
-      title: '车辆型号',
+      title: '车型',
       editable: true,
       key: 'carName',
       minWidth: this.$common.getColumnWidth(3),
