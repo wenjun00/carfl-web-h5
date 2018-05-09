@@ -1,7 +1,7 @@
 <template>
   <section class="component upload-the-material ">
     <i-row class="item-margin-left50">
-      <h2>上传素材</h2>
+      <h2>上传素材2</h2>
       <br>
       <i-button class="blueButton" @click="openClick">上传</i-button>
       <span class="item-margin-left15">建议文件大小100M以内</span>

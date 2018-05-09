@@ -39,7 +39,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="居住地址" :label-width="90">
-                        <i-input placeholder="请输入居住地址" v-model="customerDetailsModel.localHomeAddr"></i-input>
+                        <i-input placeholder="请输入居住地址" v-model="customerDetailsModel.intentionHomeAddr"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -400,7 +400,7 @@ export default class ReviseCustomerDetails extends Vue {
     mobileMain:'',
     certificateType:'',
     idCard:'',
-    localHomeAddr:'',
+    intentionHomeAddr:'',
     intentionalLevel:0,
     nation:'',
     messageAddr:'',
@@ -445,7 +445,7 @@ private customerDetailsRule: any = {
           this.customerDetailsModel.name = data.name;
           this.customerDetailsModel.mobileMain = data.mobileMain;
           this.customerDetailsModel.idCard = data.idCard;
-          this.customerDetailsModel.localHomeAddr = data.localHomeAddr;
+          this.customerDetailsModel.intentionHomeAddr = data.intentionHomeAddr;
           this.customerDetailsModel.nation = data.nation;
           this.customerDetailsModel.messageAddr = data.messageAddr;
           this.customerDetailsModel.personalContacts = data.personalContacts

@@ -1,5 +1,5 @@
-<!--个人意向客户--> 
-<template>     
+<!--个人意向客户-->  
+<template>      
     <section class="page personal-client">
         <page-header title="个人意向客户" hidden-print>
             <i-button @click="addCustomerDetails" type="text">新增客户</i-button>
@@ -294,7 +294,7 @@ export default class PersonalClient extends Page {
    */
   getPersonalClientList() {
     this.personalService
-      .getCustomeriIntentionList(this.personalClientModel, this.pageService)
+      .getCustomerIntentionList(this.personalClientModel, this.pageService)
       .subscribe(
         data => {
           this.dataSet = data
