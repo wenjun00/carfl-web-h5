@@ -57,7 +57,7 @@
                         </div>
                     </i-row>
 
-                </i-row>
+                </i-row> 
             </i-col>
         </i-row>
 
@@ -735,12 +735,20 @@ export default class VehicleMaintenance extends Page {
    * 修改品牌和车系
    */
   repairCar(data) {
+    // console.log(data)
+    // console.log(data.title)
     this.repairModal = true
+    this.repairName = data.title
     this.brandOneId = data.brandId
   }
+  /**
+   * 修改车系
+   */
   repairServiceCar(data) {
+    // console.log(data.title)
     this.repairServiceModal = true
     this.serviceOneId = data.seriesId
+    this.repairServiceName = data.title
   }
 }
 </script>

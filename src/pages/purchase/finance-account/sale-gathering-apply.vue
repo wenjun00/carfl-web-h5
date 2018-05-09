@@ -1,7 +1,7 @@
 <!--进件收款申请-->
 <template>
   <section class="page sale-gathering-apply">
-    <page-header title="进件收款申请" hiddenExport>
+    <page-header title="进件收款申请" hiddenPrint hiddenExport>
       <command-button label="重置" @click="clearAll"></command-button>
     </page-header>
 

@@ -136,7 +136,7 @@
     </template>
 
     <template>
-      <i-modal v-model="addPeriodsModal" title="新增期数" :width="900">
+      <i-modal v-model="addPeriodsModal" @on-visible-change="closePeriods" title="新增期数" :width="900">
         <add-periods :pNameTitle="productMessage" ref="add-periods-ref" @close="closeModal"></add-periods>
         <div slot="footer">
           <i-button type="primary" @click="submiteButton">保存并退出</i-button>
@@ -749,6 +749,17 @@ export default class ProdConfig extends Page {
       }
     );
   }
+ /**
+  * 关闭新增期数弹窗
+  */
+ closePeriods(val){
+     if(!val){
+        let closePeriodModal = this.$refs['add-periods-ref'] as AddPeriods
+        closePeriodModal.resetClose()
+     }
+ }
+
+
   /**
    * 客户素材配置
    */

@@ -1,5 +1,5 @@
 <!--新增期数--> 
-<template>
+<template> 
   <section class="component add-periods">
     <i-form class="mini" ref="formItems" :model="formItems" :rules="formRules">
       <div class="add-periods-item">自然参数</div>
@@ -456,10 +456,16 @@ export default class AddPeriods extends Vue {
  monitorPeriods(){
      if(Number(this.formItems.stagingPeriods) > Number(this.$dict.getDictName(this.formItems.periods))){
          this.$Message.error('管理费期数不能大于产品期数')
-         this.formItems.stagingPeriods = ''
-         
-     }
-    
+         this.formItems.stagingPeriods = ''   
+     }  
+ }
+/**
+ * 关闭弹窗数据初始化
+ */
+ resetClose(){
+     let restoreDatas = <Form>this.$refs["formItems"];
+     restoreDatas.resetFields();
+     this.manageMoneyParams = '无'
  }
 
 
