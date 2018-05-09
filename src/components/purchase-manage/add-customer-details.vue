@@ -116,8 +116,8 @@
                         </i-form-item>
                     </i-col>
                 </i-row>
-                <i-row class="data-form">
-                    <!-- 押品登记 -->
+                      <!-- 押品登记 -->
+                <!-- <i-row class="data-form">
                     <i-col>
                         <div class="data-form-item"></div>
                         <a class="information">押品登记</a>
@@ -129,8 +129,8 @@
                             </i-form-item>
                         </i-col>
                     </i-row>
-                </i-row>
-                <i-row type="flex" :gutter="110">
+                </i-row> -->
+                <!-- <i-row type="flex" :gutter="110">
                     <i-col :span="8">
                         <i-form-item label="车牌号" >
                             <i-input placeholder="请输入车牌号"></i-input>
@@ -156,7 +156,7 @@
                 </i-row>
                 <i-col>
                     <span class="addingBet">+添加押品</span>
-                </i-col>
+                </i-col> -->
                 <!-- 相关联系人 -->
                 <i-row class="data-form">
                     <i-col>

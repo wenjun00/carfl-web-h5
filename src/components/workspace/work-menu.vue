@@ -1,8 +1,13 @@
 <template>
-  <section class="component work-menu">
-    <i-menu theme="light" @on-select="onSelectMenuItem">
+  <section class="component work-menu row">
+    <i-menu theme="light" @on-select="onSelectMenuItem" v-show="isExpand">
       <work-menu-item :level="1" v-for="node  in  menuList" :key="node.id" :data="node"></work-menu-item>
     </i-menu>
+    <div class="expand row middle-span">
+      <div class="button" @click="isExpand=!isExpand">
+        <i-icon class="icon" :class="{expand:isExpand}" type="arrow-right-b"></i-icon>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -25,7 +30,7 @@ export default class WorkMenu extends Vue {
   @State("currentPage") currentPage;
   private currentMenuItem: any = null;
   private showMenuPoptip = false;
-
+  private isExpand = true;
   updatePoptipState(state) {
     this.showMenuPoptip = state;
   }
@@ -100,6 +105,30 @@ export default class WorkMenu extends Vue {
 .work-menu.component {
   .ivu-menu {
     min-height: 110%;
+  }
+  // TODO: 颜色没有移到主题里
+  .expand {
+    height: 100%;
+    .button {
+      width: 8px;
+      background-color: #4b79bd;
+      height: 100px;
+      line-height: 100px;
+      border-radius: 0 10px 10px 0;
+      .icon {
+        height: unset;
+        color: #fff;
+        &.expand {
+          transform: rotate(180deg);
+        }
+      }
+      &:hover {
+        background-color: #6d98d0;
+        .icon {
+          color: #4b79bd;
+        }
+      }
+    }
   }
 }
 </style>

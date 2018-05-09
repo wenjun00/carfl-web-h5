@@ -49,7 +49,7 @@
       <i-row class="data-form">
         <i-col>
           <div class="data-form-item"></div>
-          <a class="information">库放信息</a>
+          <a class="information">库房信息</a>
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="110">

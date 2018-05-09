@@ -121,7 +121,7 @@ export default class GoodsOutTreasury extends Page {
                   }
                 }
               },
-              '详情'
+              '查看'
             )
           ])
         }

@@ -1,5 +1,5 @@
 <!--个人开户列表-->
-<template>
+<template> 
   <section class="page personal-account-list">
     <page-header title="个人开户列表" hiddenPrint></page-header>
     <data-form data-prop="timeSearch" :model="gatherModel" :page="pageService" @on-search="getGatherListByCondition" hidden-reset>
@@ -155,21 +155,23 @@ export default class PersonalAccountList extends Page {
                 _card.refresh(row)
               }
             }
-          }, "银行卡信息"), h("i-button", {
-            props: {
-              type: "text"
-            },
-            style: {
-              color: "#265EA2"
-            },
-            on: {
-              click: () => {
-                let _deduct: any = this.$refs.deduct
-                _deduct.refresh(row)
-                this.deductModal = true
-              }
-            }
-          }, "划扣")]);
+          }, "银行卡信息"), 
+        //   h("i-button", {
+        //     props: {
+        //       type: "text"
+        //     },
+        //     style: {
+        //       color: "#265EA2"
+        //     },
+        //     on: {
+        //       click: () => {
+        //         let _deduct: any = this.$refs.deduct
+        //         _deduct.refresh(row)
+        //         this.deductModal = true
+        //       }
+        //     }
+        //   }, "划扣")
+          ]);
         }
       },
       {

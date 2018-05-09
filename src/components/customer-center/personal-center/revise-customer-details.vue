@@ -117,8 +117,8 @@
                         </i-form-item>
                     </i-col>
                 </i-row>
-                <i-row class="data-form">
-                    <!-- 押品登记 -->
+                 <!-- 押品登记 -->
+                <!-- <i-row class="data-form">
                     <i-col>
                         <div class="data-form-item"></div>
                         <a class="information">押品登记</a>
@@ -157,7 +157,7 @@
                 </i-row>
                 <i-col>
                     <span class="addingBet">+添加押品</span>
-                </i-col>
+                </i-col> -->
                 <!-- 相关联系人 -->
                 <i-row class="data-form">
                     <i-col>
