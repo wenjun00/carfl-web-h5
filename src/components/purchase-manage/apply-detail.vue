@@ -28,7 +28,7 @@
         </i-col>
       </i-row>
     </i-form>
-    <i-card title="付款明细">
+    <i-card title="收款明细">
       <i-table :columns="columns1" :data="payDetail" :noDefaultRow="true"></i-table>
     </i-card>
     <i-card title="账户信息">
