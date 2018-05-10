@@ -1,8 +1,8 @@
 <!--客户资料查询-->
-<template> 
+<template>
   <section class="page customer-data-query">
     <page-header title="资料补充查询" hiddenPrint hiddenExport></page-header>
-    <data-form date-prop="timeSearch" :model="ordertransferModel" @on-search="refreshData" hidden-reset :page="pageService">
+    <data-form date-prop="timeSearch" :model="ordertransferModel" @on-search="refreshData"  :page="pageService">
       <template slot="input">
         <i-form-item prop="orderInfo">
           <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入订单编号/客户姓名/证件号码/联系号码查询"></i-input>
@@ -14,7 +14,7 @@
     </data-form>
     <data-box :id="376" :columns="columns1" :data="customerDataSet" :page="pageService" @onPageChange="refreshData"></data-box>
     <!--上传资料、补充资料-->
-    <template>  
+    <template>
       <i-modal class="pop-update" v-model="openUpload" :transfer="false" :width="700" title="补充资料">
         <upload-the-material ref="upload-the-material"></upload-the-material>
         <div slot="footer">

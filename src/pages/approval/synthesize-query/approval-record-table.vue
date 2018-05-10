@@ -1,23 +1,23 @@
 <!--审核记录表-->
-<template>
+<template> 
   <section class="page approval-record-table">
     <page-header title="审核记录表" hiddenPrint hiddenExport></page-header>
-    <data-form date-prop="timeSearch" :model="approvalRecordModel" @on-search="getApprovaRecordList" :page="pageService" hidden-reset>
+    <data-form date-prop="timeSearch" :model="approvalRecordModel" @on-search="getApprovaRecordList" :page="pageService">
       <template slot="input">
-        <i-form-item prop="type" label="状态">
+        <i-form-item prop="type" label="审核状态">
           <i-select placeholder="选择状态" v-model="approvalRecordModel.type" @on-change="changeSelectOne" clearable>
             <i-option label="通过" :value="0" :key="0"></i-option>
             <i-option label="退件" :value="374" :key="374"></i-option>
             <i-option label="拒绝" :value="375" :key="375"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="second" label="通过类型">
+        <!-- <i-form-item prop="second" label="通过类型">
           <i-select placeholder="请选择通过类型" v-if="passSelect" v-model="approvalRecordModel.second" clearable>
             <i-option label="通过" :key="310" :value="310"></i-option>
             <i-option label="提交内审/通过" :key="321" :value="321"></i-option>
             <i-option label="灰名单/通过" :key="322" :value="322"></i-option>
           </i-select>
-        </i-form-item>
+        </i-form-item> -->
         <i-form-item prop="second" label="拒单原因">
           <i-select placeholder="请选择拒单原因" v-if="!passSelect" v-model="approvalRecordModel.second" @on-change="changeSelectTwo" clearable>
             <i-option v-for="item in refuseReason" :key="item.second" :label="item.second" :value="item.second">
@@ -34,7 +34,7 @@
         </i-form-item>
 
         <i-form-item prop="dateRange" label="日期">
-          <i-date-picker v-model="approvalRecordModel.dateRange"  placeholder="请选择日期范围"></i-date-picker>
+           <i-date-picker v-model="approvalRecordModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
 
       </template>

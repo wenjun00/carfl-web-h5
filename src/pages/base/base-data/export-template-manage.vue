@@ -135,7 +135,7 @@ export default class CustomerFodderMaintain extends Page {
       },
       {
         title: '创建人',
-        key: 'operator',
+        key: 'operatorName',
         align: 'center',
         editable: true,
         minWidth: this.$common.getColumnWidth(4)

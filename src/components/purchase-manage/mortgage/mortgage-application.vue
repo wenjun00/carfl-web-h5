@@ -119,8 +119,8 @@
         <!--产品计算金额-->
         <i-row>
           <i-col :span="12">
-            <i-form-item label="月供金额(元)" prop="monthAmount">
-              <i-input-number readonly v-model="productModel.monthAmount" :formatter="this.$filter.moneyFormat" :parser="this.$filter.moneyParse"></i-input-number>
+            <i-form-item label="月供金额(元)" prop="monthlySupply  ">
+              <i-input-number readonly v-model="productModel.monthlySupply" :formatter="this.$filter.moneyFormat" :parser="this.$filter.moneyParse"></i-input-number>
             </i-form-item>
           </i-col>
           <i-col :span="12">
@@ -204,7 +204,7 @@ export default class MortgageApplication extends Vue {
   // 当前产品数据
   public productModel = {
     evaluateAmount: 0, // 估价金额
-    monthAmount: 0, // 月供金额
+    monthlySupply  : 0, // 月供金额
     loadAmount: 0, // 贷款金额
     gpsAmount: 0, // gps金额
     manageRatio: null, // 管理费比例
@@ -449,8 +449,12 @@ export default class MortgageApplication extends Vue {
           this.$Message.error("请选择待添加的押品");
           return false;
         }
-
-        this.carDataSet = [...this.carDataSet, ...currentSelection];
+        if(this.carDataSet.length === 0){
+          this.carDataSet = [...this.carDataSet, ...currentSelection];
+        }else if(this.carDataSet.map(v=>v.assessmentId).forEach((v)=>{ return v}) === currentSelection.map(v=>v.assessmentId).forEach((m)=>{ return m})){
+          this.$Message.error("该押品已经添加！");
+          return false;
+        }
       },
       render: h => {
         return h(MortgageCarList, {
@@ -525,7 +529,7 @@ export default class MortgageApplication extends Vue {
       this.productModel.loadAmount * (this.productModel.manageRatio || 0);
 
     // 月供金额 = 贷款总额x (1+月利率x期数)/期数
-    this.productModel.monthAmount =
+    this.productModel.monthlySupply =
       this.productModel.loadAmount *
       (1 + this.currentProduct.productRate * this.currentProduct.periodNumber) /
       this.currentProduct.periodNumber;
@@ -582,7 +586,6 @@ export default class MortgageApplication extends Vue {
    * 返回数据格式化
    */
   async revert(data) {
-    console.log(data);
     // 申请信息
     this.applicationModel = {
       province: data.province,

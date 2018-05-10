@@ -170,7 +170,6 @@ export default class CustomerRepay extends Page {
     let _repayment: any = this.$refs["confirm-repayment"];
     let data: any = {};
     data.financeUploadResource = _repayment.fodderList;
-    // data.collectMoneyDetails = _repayment.collectMoneyDetails;
     data.orderId = _repayment.rowObj.orderId;
     data.paymentScheduleId = _repayment.repaymentObj.paymentScheduleId;
     data.historyId = _repayment.repaymentObj.historyId;

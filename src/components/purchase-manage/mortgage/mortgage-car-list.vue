@@ -140,7 +140,8 @@ export default class MortgageCarList extends Vue {
           carNo: car.carNo,
           carSituation: car.carSituation,
           evaluation: car.evaluation,
-          mileage: car.mileage
+          mileage: car.mileage,
+          frameNo:car.frameNo
         }))
       })
   }
@@ -154,7 +155,6 @@ export default class MortgageCarList extends Vue {
   }
 
   mounted() {
-    console.log(this.cardNumber)
     this.getMortgageCatList()
   }
   search(){

@@ -42,7 +42,7 @@
         <data-grid-item label="产品系列" :span="3">{{orderInfo.productSeries?orderInfo.productSeries.name:''}}</data-grid-item>
         <data-grid-item label="产品名称" :span="3">{{orderInfo.product?orderInfo.product.name:''}}</data-grid-item>
         <data-grid-item label="产品期数" :span="3">{{!!orderInfo.periods ? $dict.getDictName(orderInfo.periods):0}}</data-grid-item>
-        <data-grid-item label="产品利率" :span="3">{{!!orderInfo.productRate | decimalToPrecent}}</data-grid-item>
+        <data-grid-item label="产品利率" :span="3">{{orderInfo.productRate | decimalToPrecent}}</data-grid-item>
         <data-grid-item label="还款方式" :span="3">{{$dict.getDictName(orderInfo.payWay)}}</data-grid-item>
         <data-grid-item label="贷款总额" :span="3">{{!!orderInfo.financingAmount?orderInfo.financingAmount:0}}</data-grid-item>
         <data-grid-item label="月供金额" :span="3">{{!!orderInfo.monthlySupply ?orderInfo.monthlySupply:0}}</data-grid-item>

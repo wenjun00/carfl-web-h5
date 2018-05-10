@@ -21,7 +21,7 @@
                     </div>
                 </i-col>
                 <i-col class="command" :span="20">
-                    <data-form hidden-date-search :model="dictAguments" @on-search="seach" hidden-reset>
+                    <data-form hidden-date-search :model="dictAguments" @on-search="seach">
                         <template slot="input">
                             <i-form-item prop="name" label="数据名称">
                                 <i-input v-model="dictAguments.name"></i-input>

@@ -193,6 +193,7 @@ export default class EditFromStorage extends Vue {
         this.outTreasuryModel.city = this.$city.getCityName((data.assessmentPlacingApplyModel || {}).city)
         this.outTreasuryModel.frameNo = data.assessmentPlacingApplyModel.frameNo
         this.outTreasuryModel.engineNo = data.assessmentPlacingApplyModel.engineNo
+        this.outTreasuryModel.carSubjection = data.carSubjection
         this.outTreasuryModel.cardsDate = FilterService.dateFormat(data.cardsDate, 'yyyy-MM-dd')
       }, ({ msg }) => {
         this.$Message.error(msg)

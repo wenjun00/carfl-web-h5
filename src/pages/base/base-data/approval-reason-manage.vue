@@ -15,14 +15,14 @@
                     </i-select>
                 </i-form-item>
                 <i-form-item prop="first" label="一级">
-                    <i-select placeholder="全部" v-model="appReasonModel.first" clearable @on-change="firstSelect">
+                    <i-select placeholder="全部" :disabled="forbiddenOne" v-model="appReasonModel.first" clearable @on-change="firstSelect">
                         <i-option :label="item" :value="item" :key="item" v-for="item in firstOption">
                             <div :title="item">{{ item|subString(10)}}</div>
                         </i-option>
                     </i-select>
                 </i-form-item>
                 <i-form-item prop="second" label="二级">
-                    <i-select placeholder="全部" v-model="appReasonModel.second" clearable @on-change="secondSelect">
+                    <i-select placeholder="全部" :disabled="forbiddenTwo" v-model="appReasonModel.second" clearable @on-change="secondSelect">
                         <i-option :label="item" :value="item" :key="item" v-for="item in secondOption">
                             <div :title="item">{{ item|subString(10)}}</div>
                         </i-option>
@@ -97,6 +97,8 @@ export default class ApprovalReasonManage extends Page {
   @Dependencies(ApproveReasonService)
   private approveReasonService: ApproveReasonService
   @Dependencies(PageService) private pageService: PageService
+  private forbiddenOne:Boolean = true
+  private forbiddenTwo:Boolean = true
   private columns: any
   private columns2: any
   private appReasonModel: any = {}
@@ -489,13 +491,21 @@ export default class ApprovalReasonManage extends Page {
    * 选择类型 查询一级二级的select
    */
   selectType(val) {
+    if(val == ''){
+      this.firstOption = []
+      this.secondOption = []
+      this.forbiddenOne = true
+      return
+    }else{
+      this.forbiddenOne = false
+    }
     this.appReasonModel.type = val
     this.appReasonModel.first = ''
     this.appReasonModel.second = ''
     this.approveReasonService
       .getApproveReasonByCondition(this.appReasonModel)
       .subscribe(val => {
-        console.log(val)
+        // console.log(val)
         let optionArray = val.map(v => v.first)
         let set1 = new Set(optionArray)
         this.firstOption = Array.from(set1)
@@ -503,6 +513,13 @@ export default class ApprovalReasonManage extends Page {
   }
 
   firstSelect(val) {
+    if(val == ''){
+      this.secondOption = []
+      this.forbiddenTwo = true
+      return
+    }else{
+       this.forbiddenTwo = false
+    }
     this.appReasonModel.type = this.appReasonModel.type
     this.appReasonModel.first = val
     this.appReasonModel.second = ''

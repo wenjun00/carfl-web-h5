@@ -4,7 +4,7 @@
         <page-header title="分公司管理">
             <command-button label="新增分公司" @click="addNewBranchFirmClick"></command-button>
         </page-header>
-        <data-form hidden-date-search :model="companyModel" @on-search="seachCompany" :page="pageService" hidden-reset>
+        <data-form hidden-date-search :model="companyModel" @on-search="seachCompany" :page="pageService">
             <template slot="input">
                 <i-form-item prop="keyWord" label="关键字搜索">
                     <i-input placeholder="请输入公司名称、户名、开户银行、银行卡号搜索" v-model="companyModel.keyWord"></i-input>

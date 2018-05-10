@@ -274,6 +274,16 @@ export default class addPeople extends Vue {
     })
   }
   /**
+   * 关闭弹窗清空数据
+   */
+  resetClose(){
+    let restoreDatas = <Form>this.$refs["form-item"];
+    restoreDatas.resetFields(); 
+    this.mortgageInventoryModel.warehousingDesc='' 
+  }
+
+
+  /**
    *  返回上传文件列
    */
   fileNumber(item) {

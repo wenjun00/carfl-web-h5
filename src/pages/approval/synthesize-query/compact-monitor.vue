@@ -2,7 +2,7 @@
 <template> 
     <section class="page compact-monitor">
         <page-header title="合同下载监控" hiddenPrint hiddenExport></page-header>
-        <data-form :model="compactMonitorModel" date-prop="timeSearch" @on-search="getPersonalClientList" hidden-reset>
+        <data-form :model="compactMonitorModel" date-prop="timeSearch" @on-search="getPersonalClientList">
             <template slot="input">
                 <i-form-item label="日期：">
                     <i-date-picker v-model="compactMonitorModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
@@ -53,13 +53,6 @@ export default class CompactMonitor extends Page {
   @Dependencies(ContractDownloadService)private contractDownloadService: ContractDownloadService
   @Dependencies(PageService) private pageService: PageService
 private monitorColumns: any = [
-    {
-      align: 'center',
-      type: 'index',
-      title: '序号',
-      width: 60,
-      fixed: 'left'
-    },
     {
       title: '操作',
       minWidth: this.$common.getColumnWidth(1),

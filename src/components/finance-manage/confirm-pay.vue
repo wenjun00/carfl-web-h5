@@ -106,7 +106,7 @@
         <!--</td>-->
         <td>
           <i-input class="modal-item-huakou"  v-model="repaymentObj.refundTotalAmount" readonly></i-input>
-          <i-button class="blueButton" v-if="!check" @click="huakouTest" >确认划扣</i-button>
+          <i-button class="blueButton" v-if="!check" @click="huakouTest" >确认付款</i-button>
         </td>
         <td>
           <!--<span>{{$dict.getDictName(v.dealStatus)}}</span>-->
