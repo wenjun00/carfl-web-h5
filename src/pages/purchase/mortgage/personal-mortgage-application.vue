@@ -194,7 +194,7 @@ export default class PersonalMortgageApplication extends Page {
           [
             h("img", {
               attrs: {
-                src: "/static/images/common/yewuliucheng-bg.jpg"
+                src: "/static/images/common/liuchengtu.png"
               }
             })
           ]
