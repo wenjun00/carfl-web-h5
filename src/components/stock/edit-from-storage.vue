@@ -29,7 +29,7 @@
                 </i-col>
                 <i-col :span="8">
                     <i-form-item label="车牌号码">
-                        <i-input v-model="outTreasuryModel.carNoShow" disabled></i-input>
+                        <i-input v-model="outTreasuryModel.carNo" disabled></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
@@ -45,6 +45,13 @@
                     </i-form-item>
                 </i-col>
             </i-row>
+          <i-row type="flex" :gutter="110">
+            <i-col :span="8">
+              <i-form-item label="初登日期">
+                <i-date-picker type="date"  v-model="outTreasuryModel.cardsDate" disabled></i-date-picker>
+              </i-form-item>
+            </i-col>
+          </i-row>
             <!-- 库房信息 -->
             <i-row class="data-form">
                 <i-col>
@@ -54,7 +61,7 @@
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
-                    <i-form-item label="车辆隶属">
+                    <i-form-item label="车辆隶属" prop="carSubjection">
                         <i-input placeholder="请填写车辆隶属" v-model="outTreasuryModel.carSubjection" :maxlength="10"></i-input>
                     </i-form-item>
                 </i-col>
@@ -63,18 +70,6 @@
                         <!--<i-input></i-input>-->
                     <!--</i-form-item>-->
                 <!--</i-col>-->
-            </i-row>
-            <i-row type="flex" :gutter="110">
-                <i-col :span="8">
-                    <i-form-item label="牌照号码">
-                        <i-input placeholder="请填写牌照号码" v-model="outTreasuryModel.carNo" :maxlength="10"></i-input>
-                    </i-form-item>
-                </i-col>
-                <i-col :span="8">
-                    <i-form-item label="上牌日期">
-                        <i-date-picker type="date" placeholder="请填写上牌日期" v-model="outTreasuryModel.cardsDate"></i-date-picker>
-                    </i-form-item>
-                </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
@@ -113,21 +108,21 @@
                     </i-form-item>
                 </i-col>
               <i-col :span="8">
-                <i-form-item label="经办人">
+                <i-form-item label="经办人" prop="placingPerson">
                   <i-input placeholder="请填写经办人" v-model="outTreasuryModel.placingPerson" :maxlength="10"></i-input>
                 </i-form-item>
               </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
-                    <i-form-item label="车况说明">
+                    <i-form-item label="车况说明" prop="carPlacingExplain">
                         <i-input  class="textbox" type="textarea" v-model="outTreasuryModel.carPlacingExplain"></i-input>
                     </i-form-item>
                 </i-col>
             </i-row>
             <i-row type="flex" :gutter="110">
                 <i-col :span="16">
-                    <i-form-item label="情况描述">
+                    <i-form-item label="情况描述" prop="placingDesc">
                         <i-input class="textbox" type="textarea" v-model="outTreasuryModel.placingDesc"></i-input>
                     </i-form-item>
                 </i-col>
@@ -161,6 +156,7 @@ import { CityService } from '../../utils/city.service'
 import { Form } from 'iview'
 import UploadVoucher from "../common/upload-voucher.vue"
 import { AssessMentPlacingService } from "~/services/manage-service/assess-ment-placing.service";
+import { FilterService } from '~/utils/filter.service'
 
 @Component({
   components: {
@@ -177,7 +173,6 @@ export default class EditFromStorage extends Vue {
     engineNo: '',  // 发动机号
     modelofcar: '', // 所选车辆
     carSubjection:'',
-    carNoShow:'',
     cardsDate:'',
     odometer:'',
     placingDate:'',
@@ -207,12 +202,13 @@ export default class EditFromStorage extends Vue {
     this.assessMentPlacingService.findPlacingByPlacingId({placingId:row.placingId})
       .subscribe( data => {
         this.outTreasuryModel.applyId = data.applyId
+        this.outTreasuryModel.carNo = data.carNo
         this.outTreasuryModel.modelofcar = data.assessmentPlacingApplyModel.brandName + data.assessmentPlacingApplyModel.seriesName + data.assessmentPlacingApplyModel.carName
         this.outTreasuryModel.carColor = data.assessmentPlacingApplyModel.carColor
         this.outTreasuryModel.city = !!data.assessmentPlacingApplyModel.city ? CityService.getCityName(Number(data.assessmentPlacingApplyModel.city)) : ''
-        this.outTreasuryModel.carNoShow = data.assessmentPlacingApplyModel.carNo
         this.outTreasuryModel.frameNo = data.assessmentPlacingApplyModel.frameNo
         this.outTreasuryModel.engineNo = data.assessmentPlacingApplyModel.engineNo
+        this.outTreasuryModel.cardsDate = FilterService.dateFormat(data.cardsDate, 'yyyy-MM-dd')
       },({msg}) => {
         this.$Message.error(msg)
       })
@@ -229,13 +225,16 @@ export default class EditFromStorage extends Vue {
       delete this.outTreasuryModel.modelofcar
       delete this.outTreasuryModel.carColor
       delete this.outTreasuryModel.city
-      delete this.outTreasuryModel.carNoShow
       delete this.outTreasuryModel.frameNo
       delete this.outTreasuryModel.engineNo
       this.assessMentPlacingService.createPlacingOrder(this.outTreasuryModel)
         .subscribe( data => {
           this.$Message.success('保存成功')
           this.$emit('close');
+          let productForm = this.$refs["form-item"] as Form;
+          productForm.resetFields();
+          let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher
+          uploadVoucher.reset()
         },({msg}) => {
           this.$Message.error(msg)
         })
@@ -251,7 +250,6 @@ export default class EditFromStorage extends Vue {
         materialType:this.carStatus
       }
     }))
-    console.log(this.fodderList)
   }
   carValue(val){
     this.carStatus = val

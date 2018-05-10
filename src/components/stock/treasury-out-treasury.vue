@@ -29,7 +29,7 @@
         </i-col>
         <i-col :span="8">
           <i-form-item label="车牌号码">
-            <i-input v-model="outTreasuryModel.carNoShow" disabled></i-input>
+            <i-input v-model="outTreasuryModel.carNo" disabled></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -42,6 +42,13 @@
         <i-col :span="8">
           <i-form-item label="发动机号">
             <i-input v-model="outTreasuryModel.engineNo" disabled></i-input>
+          </i-form-item>
+        </i-col>
+      </i-row>
+      <i-row type="flex" :gutter="110">
+        <i-col :span="8">
+          <i-form-item label="初登日期">
+            <i-date-picker type="date" v-model="outTreasuryModel.cardsDate" disabled></i-date-picker>
           </i-form-item>
         </i-col>
       </i-row>
@@ -63,18 +70,6 @@
         <!--<i-input></i-input>-->
         <!--</i-form-item>-->
         <!--</i-col>-->
-      </i-row>
-      <i-row type="flex" :gutter="110">
-        <i-col :span="8">
-          <i-form-item label="牌照号码">
-            <i-input placeholder="请填写牌照号码" v-model="outTreasuryModel.carNo" readonly></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="8">
-          <i-form-item label="上牌日期">
-            <i-date-picker type="date" placeholder="请填写上牌日期" v-model="outTreasuryModel.cardsDate" readonly></i-date-picker>
-          </i-form-item>
-        </i-col>
       </i-row>
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
@@ -270,7 +265,6 @@
       engineNo: '',  // 发动机号
       modelofcar: '', // 所选车辆
       carSubjection:'',
-      carNoShow:'',
       cardsDate:'',
       odometer:'',
       placingDate:'',
@@ -300,7 +294,6 @@
           this.outTreasuryModel.modelofcar = data.assessmentPlacingApplyModel.brandName + data.assessmentPlacingApplyModel.seriesName + data.assessmentPlacingApplyModel.carName
           this.outTreasuryModel.carColor = data.assessmentPlacingApplyModel.carColor
           this.outTreasuryModel.city = !!data.assessmentPlacingApplyModel.city ? CityService.getCityName(Number(data.assessmentPlacingApplyModel.city)) : ''
-          this.outTreasuryModel.carNoShow = data.assessmentPlacingApplyModel.carNo
           this.outTreasuryModel.frameNo = data.assessmentPlacingApplyModel.frameNo
           this.outTreasuryModel.engineNo = data.assessmentPlacingApplyModel.engineNo
           this.outTreasuryModel.carSubjection = data.carSubjection
