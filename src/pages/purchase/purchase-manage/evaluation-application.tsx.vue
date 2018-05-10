@@ -227,14 +227,14 @@ export default class EvaluationApplication extends Page {
       title: '申请人',
       editable: true,
       key: 'applicant',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(4),
       align: 'center'
     },
     {
       title: '申请时间',
       editable: true,
       sortable: true,
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(4),
       key: 'applyTime',
       align: 'center',
       render: (h, { row }) => {

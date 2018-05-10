@@ -284,7 +284,7 @@
           editable: true,
           key: "operatorName",
           align: "center",
-          minWidth: this.$common.getColumnWidth(3),
+          minWidth: this.$common.getColumnWidth(4),
         }
       ];
     }

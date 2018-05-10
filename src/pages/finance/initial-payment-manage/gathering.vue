@@ -315,7 +315,7 @@
           align: "center",
           title: "申请人",
           editable: true,
-          minWidth: this.$common.getColumnWidth(3),
+          minWidth: this.$common.getColumnWidth(4),
           key: "operatorName"
         }
       ];

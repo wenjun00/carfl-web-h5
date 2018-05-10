@@ -213,18 +213,24 @@ export default class EvaluationOfCollateral extends Page {
       }
     },
     {
-      title: '估价',
+      title: '估价（元）',
       editable: true,
       key: 'evaluation',
-      minWidth: this.$common.getColumnWidth(3),
-      align: 'center'
+      minWidth: this.$common.getColumnWidth(4),
+      align: 'center',
+      render: (h, { row }) => h('div', {
+        style: {
+          textAlign: 'right',
+          panddingRight: '10px'
+        }
+      }, this.$filter.toThousands(row.evaluation))
     },
     {
       title: '评估日期',
       editable: true,
       sortable: true,
       key: 'assessmentTime',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(4),
       align: 'center',
       render: (h, { row }) => {
         return h('span', FilterService.dateFormat(row.assessmentTime, 'yyyy-MM-dd'))
