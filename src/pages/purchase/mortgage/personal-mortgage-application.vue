@@ -541,6 +541,7 @@ export default class PersonalMortgageApplication extends Page {
         productIssueId: mortgageApplication.currentProduct.id,
         productRate: mortgageApplication.currentProduct.productRate,
         payWay: mortgageApplication.currentProduct.payWay,
+        monthlySupply:mortgageApplication.productModel.monthlySupply,
         // 押品信息
         orderCars: mortgageApplication.carDataSet
       },
