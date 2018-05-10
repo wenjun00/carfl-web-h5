@@ -2,7 +2,7 @@
 <template> 
   <section class="page approval-record-table">
     <page-header title="审核记录表" hiddenPrint hiddenExport></page-header>
-    <data-form date-prop="timeSearch" :model="approvalRecordModel" @on-search="getApprovaRecordList" :page="pageService" hidden-reset>
+    <data-form date-prop="timeSearch" :model="approvalRecordModel" @on-search="getApprovaRecordList" :page="pageService">
       <template slot="input">
         <i-form-item prop="type" label="审核状态">
           <i-select placeholder="选择状态" v-model="approvalRecordModel.type" @on-change="changeSelectOne" clearable>
