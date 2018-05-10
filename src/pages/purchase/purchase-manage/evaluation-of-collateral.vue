@@ -1,42 +1,41 @@
 <!--押品评估-->
 <template>
-    <section class="page evaluation-of-collateral">
-        <page-header title="押品评估" hiddenPrint hidden-export></page-header>
-        <data-form :model="collateralModel" date-prop="timeSearch" @on-search="getCollateralList">
-            <template slot="input">
-                <i-form-item prop="carParams" label="品牌型号">
-                    <i-input placeholder="请输入品牌、系列" v-model="collateralModel.carParams"></i-input>
-                </i-form-item>
-                <i-form-item prop="carNo" label="车牌号码">
-                    <i-input placeholder="请输入车牌号" v-model="collateralModel.carNo"></i-input>
-                </i-form-item>
-                <i-form-item prop="ownerName" label="客户姓名">
-                    <i-input placeholder="请输入客户姓名" v-model="collateralModel.ownerName"></i-input>
-                </i-form-item>
-            </template>
-        </data-form>
-        <data-box :columns="collateralColumns" :data="dataSet" :page="pageService"></data-box>
-        <template>
-          <i-modal v-model="assignModal"  title="新增评估" width="780">
-            <add-collateral ref="add-collateral" @close="close"></add-collateral>
-            <div slot="footer">
-              <i-button @click="terminationAssessment">终止评估</i-button>
-              <i-button @click="backPiece">退件</i-button>
-              <i-button @click="cansel">取消</i-button>
-              <!--<i-button type="primary">保存草稿</i-button>-->
-              <i-button type="primary" @click="definitiveAssessment">确定</i-button>
-            </div>
-          </i-modal>
-        </template>
-        <template>
-          <i-modal v-model="detailsModal"  title="查看评估" width="780">
-            <add-collateral-details ref="add-collateral-details"></add-collateral-details>
-            <div slot="footer">
-              <i-button @click="canselDetails">取消</i-button>
-            </div>
-          </i-modal>
-        </template>
-    </section>
+  <section class="page evaluation-of-collateral">
+    <page-header title="押品评估" hiddenPrint hidden-export></page-header>
+    <data-form :model="collateralModel" date-prop="timeSearch" @on-search="getCollateralList">
+      <template slot="input">
+        <i-form-item prop="carParams" label="品牌型号">
+          <i-input placeholder="请输入品牌、系列" v-model="collateralModel.carParams"></i-input>
+        </i-form-item>
+        <i-form-item prop="carNo" label="车牌号码">
+          <i-input placeholder="请输入车牌号" v-model="collateralModel.carNo"></i-input>
+        </i-form-item>
+        <i-form-item prop="ownerName" label="客户姓名">
+          <i-input placeholder="请输入客户姓名" v-model="collateralModel.ownerName"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
+    <data-box :columns="collateralColumns" :data="dataSet" :page="pageService"></data-box>
+    <template>
+      <i-modal v-model="assignModal" title="新增评估" width="780">
+        <add-collateral ref="add-collateral" @close="close"></add-collateral>
+        <div slot="footer">
+          <i-button @click="terminationAssessment">终止评估</i-button>
+          <i-button @click="backPiece">退件</i-button>
+          <i-button @click="cancel">取消</i-button>
+          <i-button type="primary" @click="definitiveAssessment">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+    <template>
+      <i-modal v-model="detailsModal" title="查看评估" width="780">
+        <add-collateral-details ref="add-collateral-details"></add-collateral-details>
+        <div slot="footer">
+          <i-button @click="canselDetails">取消</i-button>
+        </div>
+      </i-modal>
+    </template>
+  </section>
 </template>
 
 <script lang="ts">
@@ -49,7 +48,7 @@ import SvgIcon from '~/components/common/svg-icon.vue'
 import AddCollateral from '~/components/purchase-manage/add-collateral.vue'
 import { AssessMentApplyService } from "~/services/manage-service/assess-ment-apply.service";
 import { FilterService } from '~/utils/filter.service'
-import  AddCollateralDetails from '~/components/purchase-manage/add-collateral-details.vue'
+import AddCollateralDetails from '~/components/purchase-manage/add-collateral-details.vue'
 @Layout('workspace')
 @Component({
   components: {
@@ -63,44 +62,44 @@ export default class EvaluationOfCollateral extends Page {
   @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
   private dataSet: Array<any> = []
   private status: Boolean = false
-  private assignModal:Boolean = false
-  private detailsModal:Boolean = false
-  private orderId:any = '' //当前案件的订单ID
-  private assessmentStatus:any = ''//当前案件的状态
+  private assignModal: Boolean = false
+  private detailsModal: Boolean = false
+  private orderId: any = '' //当前案件的订单ID
+  private assessmentStatus: any = ''//当前案件的状态
   private collateralModel: any = {
     carParams: '', //品牌系列
     carNo: '', // 车牌号码
     ownerName: '' // 客户姓名
   }
-  private collateralColumns:any = [
+  private collateralColumns: any = [
     {
       title: '操作',
       align: 'center',
       fixed: 'left',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, { row }) => {
-        if(row.assessmentStatus === 1190){
-          return h('div',[
-              h(
-                'i-button',
-                {
-                  props: {
-                    type: 'text'
-                  },
-                  style: {
-                    color: '#265EA2'
-                  },
-                  on: {
-                    click: () => {
-                      this.collateralClick(row)
-                    }
-                  }
+        if (row.assessmentStatus === 1190) {
+          return h('div', [
+            h(
+              'i-button',
+              {
+                props: {
+                  type: 'text'
                 },
-                '评估'
-              )
+                style: {
+                  color: '#265EA2'
+                },
+                on: {
+                  click: () => {
+                    this.collateralClick(row)
+                  }
+                }
+              },
+              '评估'
+            )
           ])
-        }else if(row.assessmentStatus === 1191){
-          return h('div',[
+        } else if (row.assessmentStatus === 1191) {
+          return h('div', [
             h(
               'i-button',
               {
@@ -128,7 +127,7 @@ export default class EvaluationOfCollateral extends Page {
       sortable: true,
       key: 'assessmentNo',
       align: 'center',
-      minWidth: this.$common.getColumnWidth(4)
+      minWidth: this.$common.getColumnWidth(5)
     },
     {
       title: '状态',
@@ -179,14 +178,14 @@ export default class EvaluationOfCollateral extends Page {
       title: '车架号',
       editable: true,
       key: 'frameNo',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       align: 'center'
     },
     {
       title: '发动机号',
       editable: true,
       key: 'engineNo',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       align: 'center'
     },
     {
@@ -206,7 +205,7 @@ export default class EvaluationOfCollateral extends Page {
     {
       title: '车况级别',
       editable: true,
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(5),
       key: 'carSituation',
       align: 'center',
       render: (h, { row }) => {
@@ -245,18 +244,18 @@ export default class EvaluationOfCollateral extends Page {
   mounted() {
     this.getCollateralList()
   }
-  getCollateralList(){
-    this.assessMentApplyService.orderBasicSearch(this.collateralModel,this.pageService)
-      .subscribe( data => {
+  getCollateralList() {
+    this.assessMentApplyService.orderBasicSearch(this.collateralModel, this.pageService)
+      .subscribe(data => {
         this.dataSet = data
-      },({msg}) => {
+      }, ({ msg }) => {
         this.$Message.error(msg)
       })
   }
   /**
    *  评估弹窗
    */
-  collateralClick(row){
+  collateralClick(row) {
     this.assignModal = true
     let AddCollateral = this.$refs['add-collateral'] as AddCollateral
     AddCollateral.getBrash(row)
@@ -264,43 +263,44 @@ export default class EvaluationOfCollateral extends Page {
   /**
    *  确定新增评估
    */
-  definitiveAssessment(){
+  definitiveAssessment() {
     let definitiveAssessment = this.$refs['add-collateral'] as AddCollateral
     definitiveAssessment.trueAssessment()
   }
   /**
    *  取消
    */
-  cansel(){
-    this.assignModal = false
+  cancel() {
+    let orderIds = this.$refs['add-collateral'] as AddCollateral
+    orderIds.onClose()
   }
-  close(){
+  close() {
     this.assignModal = false
     this.getCollateralList()
   }
   /**
    *  取消评估
    */
-  terminationAssessment(){
+  terminationAssessment() {
     let orderIds = this.$refs['add-collateral'] as AddCollateral
     orderIds.cancelAssessment()
-    }
+  }
   /**
    *  退件
    */
-  backPiece(){
+  backPiece() {
     let statusId = this.$refs['add-collateral'] as AddCollateral
     statusId.backSerice()
   }
   /**
    *  查看详情
    */
-  collateralClickDetails(row){
+  collateralClickDetails(row) {
     this.detailsModal = true
     let AddCollateralDetails = this.$refs['add-collateral-details'] as AddCollateralDetails
     AddCollateralDetails.getDetailsData(row)
   }
-  canselDetails(){
+  canselDetails() {
     this.detailsModal = false
   }
 }

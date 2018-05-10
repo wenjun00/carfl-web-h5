@@ -4,129 +4,110 @@
     <i-row class="data-form">
       <i-col>
         <div class="data-form-item"></div>
-        <a  class="information">选购信息</a>
+        <a class="information">选购信息</a>
       </i-col>
     </i-row>
     <i-form :rules="ruleValidateRule" :model="customerModel" ref="form-item" :label-width="90">
-
-      <i-row type="flex" :gutter="110">
-        <i-col :span="8">
+      <i-row type="flex" :gutter="8">
+        <i-col :span="12">
           <i-form-item label="所选车辆">
             <i-input disabled v-model="customerModel.carAllName"></i-input>
           </i-form-item>
         </i-col>
-        <i-col :span="8">
+        <i-col :span="12">
           <i-form-item label="车身颜色">
             <i-input disabled v-model="customerModel.carColor"></i-input>
           </i-form-item>
         </i-col>
-      </i-row>
-      <i-row type="flex" :gutter="110">
-        <i-col :span="8">
-          <i-form-item label="上牌城市">
-            <i-input disabled v-model="customerModel.city"></i-input>
+        <i-col :span="12">
+          <i-form-item label="上牌省份">
+            <i-input disabled v-model="tempShowModel.province"></i-input>
           </i-form-item>
         </i-col>
-        <i-col :span="8">
+        <i-col :span="12">
+          <i-form-item label="上牌城市">
+            <i-input disabled v-model="tempShowModel.city"></i-input>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
           <i-form-item label="车牌号码">
             <i-input disabled v-model="customerModel.carNo"></i-input>
           </i-form-item>
         </i-col>
-      </i-row>
-
-      <i-row type="flex" :gutter="110">
-        <i-col :span="8">
+        <i-col :span="12">
           <i-form-item label="发动机号">
             <i-input disabled v-model="customerModel.engineNo"></i-input>
           </i-form-item>
         </i-col>
-        <i-col :span="8">
+        <i-col :span="12">
           <i-form-item label="客户姓名">
             <i-input disabled v-model="customerModel.ownerName"></i-input>
           </i-form-item>
         </i-col>
-      </i-row>
-
-      <i-row type="flex" :gutter="110">
-        <i-col :span="8">
+        <i-col :span="12">
           <i-form-item label="车架号">
             <i-input disabled v-model="customerModel.frameNo"></i-input>
           </i-form-item>
         </i-col>
-        <i-col :span="8">
+        <i-col :span="12">
           <i-form-item label="手机号码">
             <i-input disabled v-model="customerModel.ownPhone"></i-input>
           </i-form-item>
         </i-col>
-      </i-row>
-
-      <i-row type="flex" :gutter="110">
-        <i-col :span="8">
-          <i-form-item label="初登日期" prop="firstTime">
-            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.firstTime"></i-date-picker>
+        <i-col :span="12">
+          <i-form-item label="出厂日期" prop="factoryTime">
+            <i-date-picker type="date" placeholder="出厂日期" v-model="customerModel.factoryTime" :editable="false"></i-date-picker>
           </i-form-item>
         </i-col>
-        <i-col :span="8">
+        <i-col :span="12">
+          <i-form-item label="初登日期" prop="firstTime">
+            <i-date-picker type="date" placeholder="初登日期" v-model="customerModel.firstTime" :editable="false" :disabled="!customerModel.factoryTime"></i-date-picker>
+          </i-form-item>
+        </i-col>
+        <i-col :span="12">
           <i-form-item label="证件号码">
             <i-input disabled v-model="customerModel.idCard"></i-input>
           </i-form-item>
         </i-col>
-      </i-row>
-
-      <i-row type="flex" :gutter="110">
-        <i-col :span="8">
-          <i-form-item label="出厂日期" prop="factoryTime">
-            <i-date-picker type="date" placeholder="年/月/日" v-model="customerModel.factoryTime"></i-date-picker>
-          </i-form-item>
-        </i-col>
-        <i-col :span="15">
+        <i-col :span="12">
           <i-form-item label="行驶里程" prop="mileage">
-            <i-input  v-model="customerModel.mileage" :maxlength="6"></i-input>
+            <i-input v-model="customerModel.mileage" :maxlength="6"></i-input>
             <span>公里</span>
           </i-form-item>
         </i-col>
-      </i-row>
-
-      <i-row type="flex" :gutter="110">
-        <i-col :span="8">
+        <i-col :span="12">
           <i-form-item label="行驶证号" prop="drivingNo">
             <i-input v-model="customerModel.drivingNo" :maxlength="18"></i-input>
           </i-form-item>
         </i-col>
-        <i-col :span="15">
+        <i-col :span="12">
           <i-form-item label="过户次数" prop="transferNo">
-            <i-input v-model="customerModel.transferNo" :maxlength="2"></i-input>
+            <i-input-number v-model="customerModel.transferNo" :min="0" :max="20"></i-input-number>
             <span>次</span>
           </i-form-item>
         </i-col>
-      </i-row>
-
-      <i-row type="flex" :gutter="110">
-        <i-col :span="8">
+        <i-col :span="12">
           <i-form-item label="车辆用途" prop="carPurpose">
             <i-select v-model="customerModel.carPurpose">
               <i-option v-for="{value,label} in $dict.getDictData('0447')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
-        <i-col :span="8">
+        <i-col :span="12">
           <i-form-item label="变速箱形式" prop="transmission">
             <i-select v-model="customerModel.transmission">
               <i-option v-for="{value,label} in $dict.getDictData('0448')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
-      </i-row>
-
-      <i-row type="flex" :gutter="110">
-        <i-col :span="8">
+        <i-col :span="12">
           <i-form-item label="驱动形式" prop="driver">
             <i-select v-model="customerModel.driver">
               <i-option v-for="{value,label} in $dict.getDictData('0449')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
-        <i-col :span="8">
+        <i-col :span="12">
           <i-form-item label="排量" prop="displacement">
             <i-input v-model="customerModel.displacement" :maxlength="3"></i-input>
           </i-form-item>
@@ -137,13 +118,13 @@
       <i-row class="data-form">
         <i-col>
           <div class="data-form-item"></div>
-          <a  class="information">外观</a>
+          <a class="information">外观</a>
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
         <i-col v-for="item in appearance" :key="item.attrCode">
           <i-form-item :label="item.attrName">
-            <i-radio-group   v-model="item.attrValue">
+            <i-radio-group v-model="item.attrValue">
               <i-radio :label="1">正常</i-radio>
               <i-radio :label="0">异常</i-radio>
             </i-radio-group>
@@ -155,13 +136,13 @@
       <i-row class="data-form">
         <i-col>
           <div class="data-form-item"></div>
-          <a  class="information">内饰检验</a>
+          <a class="information">内饰检验</a>
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
         <i-col v-for="item in interiorInspection" :key="item.attrCode">
           <i-form-item :label="item.attrName">
-            <i-radio-group   v-model="item.attrValue">
+            <i-radio-group v-model="item.attrValue">
               <i-radio :label="1">正常</i-radio>
               <i-radio :label="0">异常</i-radio>
             </i-radio-group>
@@ -173,13 +154,13 @@
       <i-row class="data-form">
         <i-col>
           <div class="data-form-item"></div>
-          <a  class="information">机舱/底盘</a>
+          <a class="information">机舱/底盘</a>
         </i-col>
       </i-row>
       <i-row type="flex" :gutter="85">
         <i-col v-for="item in engineRoom" :key="item.attrCode">
           <i-form-item :label="item.attrName">
-            <i-radio-group   v-model="item.attrValue">
+            <i-radio-group v-model="item.attrValue">
               <i-radio :label="1">正常</i-radio>
               <i-radio :label="0">异常</i-radio>
             </i-radio-group>
@@ -191,36 +172,33 @@
       <i-row class="data-form">
         <i-col>
           <div class="data-form-item"></div>
-          <a  class="information">评估结果</a>
+          <a class="information">评估结果</a>
         </i-col>
       </i-row>
-      <i-row type="flex" :gutter="110">
-        <i-col :span="8">
+      <i-row type="flex" :gutter="8">
+        <i-col :span="12">
           <i-form-item label="车况" prop="carSituation">
             <i-select v-model="customerModel.carSituation">
               <i-option v-for="{value,label} in $dict.getDictData('0450')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
-        <i-col :span="15">
+        <i-col :span="12">
           <i-form-item label="估价" prop="evaluation">
-            <i-input v-model="customerModel.evaluation" :maxlength="9"></i-input>
+            <i-input-number v-model="customerModel.evaluation" :min="0" :max="99999999"></i-input-number>
             <span>元</span>
           </i-form-item>
         </i-col>
-      </i-row>
-
-      <i-row>
-        <i-col>
+        <i-col :span="24">
           <i-form-item label="备注" class="large">
-            <i-input type="textarea" v-model="customerModel.remarks" :rows="4" ></i-input>
+            <i-input type="textarea" v-model="customerModel.remarks" :rows="4"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
 
       <i-row>
         <i-col>
-          <upload-voucher  ref="upload-voucher" @financeUploadResources="fileNumber"></upload-voucher>
+          <upload-voucher ref="upload-voucher" @financeUploadResources="fileNumber"></upload-voucher>
         </i-col>
       </i-row>
 
@@ -229,203 +207,241 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import { Dependencies } from '~/core/decorator'
-  import Component from "vue-class-component";
-  import { AssessMentApplyService} from "~/services/manage-service/assess-ment-apply.service";
-  import { CityService } from '~/utils/city.service'
-  import UploadVoucher from "~/components/common/upload-voucher.vue"
-  import { Form } from 'iview'
+import Vue from "vue";
+import { Dependencies } from '~/core/decorator'
+import Component from "vue-class-component";
+import { Emit } from "vue-property-decorator";
+import { AssessMentApplyService } from "~/services/manage-service/assess-ment-apply.service";
+import { CityService } from '~/utils/city.service'
+import UploadVoucher from "~/components/common/upload-voucher.vue"
+import { Form } from 'iview'
 
-  @Component({
-    components: {
-      UploadVoucher
-    }
-  })
-  export default class AddCollateral extends Vue {
-    @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
-    private customerModel: any = { basicList:'',}
-    private basicList:any =[{}]
-    private fodderList:any = [] //上传文件列
-    private appearance :any = [] //得到评估外观数据
-    private interiorInspection :any = [] //得到评估内饰检验数据
-    private engineRoom :any = [] //得到评估机舱底盘数据
-    private row:any = [] //父组件传的值
-    private carInformation:any = '' //所选车辆
-    private ruleValidateRule: any = {
-      firstTime: [{required: true, message: "请选择初登日期", trigger: 'change',type:'date'}],
-      factoryTime: [{required: true, message: "请选择出厂日期", trigger: "change",type:'date'}],
-      mileage: [{required: true, message: "请输入行驶里程", trigger: "blur"},
-                {pattern: /^[1-9]\d*$/g, message: "行驶里程不能为小数", trigger: "blur"}],
-      drivingNo: [{required: true, message: "请输入行驶证号", trigger: "blur"},{type: 'string', min:18 ,max:18, message: "请输入18位行驶证号", trigger: "blur"}],
-      transferNo: [{required: true, message: "请输入过户次数", trigger: "blur"},{type: 'string', max:2, message: "过户次数不能超过2位", trigger: "blur"}],
-      carPurpose: [{required: true, message: "请选择车辆用途", trigger: "change",type: 'number'}],
-      transmission: [{required: true, message: "请选择形式", trigger: "change",type: 'number'}],
-      driver: [{required: true, message: "请选择驱动形式", trigger: "change",type: 'number'}],
-      displacement: [{required: true, message: "请输入排量", trigger: "blur"},{type: 'string', max:3, message: "排量不能超过3位", trigger: "blur"}],
-      carSituation:[{required: true, message: "请选择车况", trigger: 'change', type: 'number'}],
-      evaluation:[{required: true, message: "请输入估价", trigger: 'blur'},{type: 'string', max:9, message: "估价不能超过9位", trigger: "blur"}]
-    }
-    /**
-     *
-     * @param 查询评估信息
-     */
-    getBrash(row){
-      this.row = row
-      this.assessMentApplyService.beginOrderAssess({assessmentNo:row.assessmentNo})
-        .subscribe( data => {
-            // console.log(data)
-          this.appearance = data.basicList[0].carAttrList.filter(v=> v.attrType === 1).map(x=>({
-            attrName:x.attrName,
-            attrType:x.attrType,
-            attrValue: 2,
-            attrCode:x.attrCode
-          }))
-          this.interiorInspection = data.basicList[0].carAttrList.filter(v=> v.attrType === 2).map(x=>({
-            attrName:x.attrName,
-            attrType:x.attrType,
-            attrValue: 2,
-            attrCode:x.attrCode
-          }))
-          this.engineRoom = data.basicList[0].carAttrList.filter(v=> v.attrType === 3).map(x=>({
-            attrName:x.attrName,
-            attrType:x.attrType,
-            attrValue: 2,
-            attrCode:x.attrCode
-          }))
-          this.customerModel.city = !!data.city? CityService.getCityName(Number(data.city)):''
-          this.customerModel.carColor = data.carColor
-          this.customerModel.carNo = data.carNo
-          this.customerModel.engineNo = data.engineNo
-          this.customerModel.ownerName = data.ownerName
-          this.customerModel.frameNo = data.frameNo
-          this.customerModel.ownPhone = data.ownPhone
-          this.customerModel.idCard = data.idCard
-          this.customerModel.id = data.id
-          this.customerModel.assessmentStatus = 1191 //保存是案件状态变更1191
-          this.basicList[0].id = data.basicList[0].id
-          this.customerModel.carAllName = data.applyCars[0].carAllName
-        })
-     }
-    /**
-     *  确定新增评估
-     */
-    trueAssessment(){
-      let form = <Form>this.$refs['form-item']
-      form.validate(valid => {
-        if (!valid) return false
-        this.basicList[0].carAttrList = this.appearance.concat(this.interiorInspection).concat(this.engineRoom)
-        this.basicList[0].carBasicFileList = this.fodderList
-        this.basicList[0].firstTime = this.customerModel.firstTime
-        this.basicList[0].factoryTime = this. customerModel.factoryTime
-        this.basicList[0].mileage = this.customerModel.mileage
-        this.basicList[0].drivingNo= this.customerModel.drivingNo
-        this.basicList[0].transferNo = this.customerModel.transferNo
-        this.basicList[0].carPurpose =this.customerModel.carPurpose
-        this.basicList[0].transmission = this.customerModel.transmission
-        this.basicList[0].driver = this. customerModel.driver
-        this.basicList[0].displacement = this.customerModel.displacement
-        this.basicList[0].carSituation= this.customerModel.carSituation
-        this.basicList[0].evaluation = this.customerModel.evaluation
-        this.basicList[0].remarks =this.customerModel.remarks
-        this.customerModel.basicList = this.basicList
-        delete this.customerModel.firstTime
-        delete this.customerModel.factoryTime
-        delete this.customerModel.mileage
-        delete this.customerModel.drivingNo
-        delete this.customerModel.transferNo
-        delete this.customerModel.carPurpose
-        delete this.customerModel.transmission
-        delete this.customerModel.driver
-        delete this.customerModel.displacement
-        delete this.customerModel.carSituation
-        delete this.customerModel.evaluation
-        delete this.customerModel.remarks
-        delete this.customerModel.city
-        delete this.customerModel.carColor
-        delete this.customerModel.carNo
-        delete this.customerModel.engineNo
-        delete this.customerModel.ownerName
-        delete this.customerModel.frameNo
-        delete this.customerModel.ownPhone
-        delete this.customerModel.idCard
-        delete this.customerModel.carAllName
-        console.log(this.customerModel)
-        this.assessMentApplyService.saveAssessmentBasicInfo(this.customerModel)
-          .subscribe( data => {
-            this.$Message.success("保存成功！")
-            this.$emit('close');
-            let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher
-            uploadVoucher.reset()
-          },({msg}) => {
-            this.$Message.error(msg)
-          })
-      })
-    }
-    /**
-     *  返回上传文件列
-     */
-    fileNumber(item) {
-      this.fodderList = item;
-    }
-    /**
-     *  取消评估
-     */
-    cancelAssessment(){
-      this.$Modal.confirm({
-        title: '提示',
-        content: '是否确定不再进行当前评估？',
-        onOk: () => {
-          this.assessMentApplyService.terminationStatus({orderId:this.row.id,status:this.row.assessmentStatus})
-            .subscribe(data => {
-                this.$Message.success("终止评估成功！")
-                this.$emit('close');
-              }, ({ msg }) => {
-                this.$Message.error(msg)
-              })
-          }
-        })
-    }
-    /**
-     *  退件
-     */
-    backSerice(){
-      this.$Modal.confirm({
-        title: '提示',
-        content: '是否将订单返回修改？再次提交后将继续由您进行评估。',
-        onOk: () => {
-          this.assessMentApplyService.backPieceStatus({orderId:this.row.id,status:this.row.assessmentStatus})
-            .subscribe(data => {
-              this.$Message.success("退件成功！")
-              this.$emit('close');
-            }, ({ msg }) => {
-              this.$Message.error(msg)
-            })
-        }
-      })
+@Component({
+  components: {
+    UploadVoucher
+  }
+})
+export default class AddCollateral extends Vue {
+  @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
+  @Emit('close')
+  onClose() {
+    let form = this.$refs['form-item'] as Form;
+    form.resetFields();
+    this.tempShowModel.city = '';
+    this.tempShowModel.province = '';
+
+    let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher;
+    uploadVoucher.reset();
+  }
+
+  private submitModel: any = {}
+
+  private tempShowModel = {
+    city: '',
+    province: ''
+  }
+
+
+  private customerModel: any = {
+    firstTime: '',
+    factoryTime: '',
+    mileage: '',
+    drivingNo: '',
+    transferNo: 0,
+    carPurpose: 0,
+    transmission: 0,
+    driver: 0,
+    displacement: '',
+    carSituation: 0,
+    evaluation: 0,
+    remarks: '',
+    carColor: '',
+    carNo: '',
+    engineNo: '',
+    ownerName: '',
+    frameNo: '',
+    ownPhone: '',
+    idCard: '',
+    carAllName: '',
+    carAttrList: []
+  }
+  private basicList: any = [{}]
+  private fodderList: any = [] //上传文件列
+  private appearance: any = [] //得到评估外观数据
+  private interiorInspection: any = [] //得到评估内饰检验数据
+  private engineRoom: any = [] //得到评估机舱底盘数据
+  private row: any = [] //父组件传的值
+  private carInformation: any = '' //所选车辆
+  private ruleValidateRule: any = {
+    factoryTime: [{ required: true, message: "请选择出厂日期", trigger: "blur", type: 'date' }],
+    firstTime: { required: true, validator: this.validatorfirstTime, trigger: 'change' },
+    mileage: [
+      { required: true, message: "请输入行驶里程", trigger: "blur" },
+      { pattern: /^[1-9]\d*$/g, message: "行驶里程不能为小数", trigger: "blur" }],
+    drivingNo: [
+      { required: true, message: "请输入行驶证号", trigger: "blur" },
+      { type: 'string', min: 18, max: 18, message: "请输入18位行驶证号", trigger: "blur" }],
+    transferNo: { required: true, message: "请输入过户次数", trigger: "blur", type: 'number' },
+    carPurpose: [{ required: true, message: "请选择车辆用途", trigger: "change", type: 'number' }],
+    transmission: [{ required: true, message: "请选择形式", trigger: "change", type: 'number' }],
+    driver: [{ required: true, message: "请选择驱动形式", trigger: "change", type: 'number' }],
+    displacement: [
+      { required: true, message: "请输入排量", trigger: "blur" },
+      { type: 'string', max: 3, message: "排量不能超过3位", trigger: "blur" }],
+    carSituation: [{ required: true, message: "请选择车况", trigger: 'change', type: 'number' }],
+    evaluation: { required: true, message: "请输入估价", trigger: 'blur', type: 'number' }
+  }
+
+
+  /**
+   * 初次登记日期校验
+   */
+  private validatorfirstTime(rule, value, callback) {
+    if (!value) {
+      callback(new Error('请选择初登日期'))
+    } else {
+      let startDate = this.customerModel.factoryTime
+      if (value <= startDate) {
+        callback(new Error('初登日期不能早于出厂日期'))
+      } else {
+        callback()
+      }
     }
   }
+
+
+  /**
+   *
+   * @param 查询评估信息
+   */
+  getBrash(row) {
+    this.row = row
+    this.assessMentApplyService.beginOrderAssess({ assessmentNo: row.assessmentNo })
+      .subscribe(data => {
+        // console.log(data)
+        this.appearance = data.basicList[0].carAttrList.filter(v => v.attrType === 1).map(x => ({
+          attrName: x.attrName,
+          attrType: x.attrType,
+          attrValue: 2,
+          attrCode: x.attrCode
+        }))
+        this.interiorInspection = data.basicList[0].carAttrList.filter(v => v.attrType === 2).map(x => ({
+          attrName: x.attrName,
+          attrType: x.attrType,
+          attrValue: 2,
+          attrCode: x.attrCode
+        }))
+        this.engineRoom = data.basicList[0].carAttrList.filter(v => v.attrType === 3).map(x => ({
+          attrName: x.attrName,
+          attrType: x.attrType,
+          attrValue: 2,
+          attrCode: x.attrCode
+        }))
+
+        // 只显示 所以不用下拉框组件，节省UI性能
+        this.tempShowModel.city = this.$city.getCityName(data.city)
+        this.tempShowModel.province = this.$city.getCityName(data.province)
+
+        this.customerModel.carColor = data.carColor
+        this.customerModel.carNo = data.carNo;
+        this.customerModel.engineNo = data.engineNo
+        this.customerModel.ownerName = data.ownerName
+        this.customerModel.frameNo = data.frameNo
+        this.customerModel.ownPhone = data.ownPhone
+        this.customerModel.idCard = data.idCard
+        this.customerModel.carAllName = data.applyCars[0].carAllName
+
+        this.submitModel = data
+        this.submitModel.assessmentStatus = 1191 //保存是案件状态变更1191
+      })
+  }
+  /**
+   *  确定新增评估
+   */
+  trueAssessment() {
+    let form = this.$refs['form-item'] as Form
+    form.validate(valid => {
+      if (!valid) return false
+      this.customerModel.carAttrList = this.appearance.concat(this.interiorInspection).concat(this.engineRoom)
+
+      this.customerModel.firstTime = this.$filter.dateFormat(this.customerModel.firstTime)
+      this.customerModel.factoryTime = this.$filter.dateFormat(this.customerModel.factoryTime)
+      // 删除原来的basicList
+      delete this.submitModel.basicList
+      // 增加现有数据model
+      this.submitModel.assessmentBasicModel = this.customerModel
+      this.assessMentApplyService.saveAssessmentBasicInfo(this.submitModel)
+        .subscribe(data => {
+          this.$Message.success("保存成功！")
+          this.onClose()
+        }, ({ msg }) => {
+          this.$Message.error(msg)
+        })
+    })
+  }
+  /**
+   *  返回上传文件列
+   */
+  fileNumber(item) {
+    this.fodderList = item;
+  }
+  /**
+   *  取消评估
+   */
+  cancelAssessment() {
+    this.$Modal.confirm({
+      title: '提示',
+      content: '是否确定不再进行当前评估？',
+      onOk: () => {
+        this.assessMentApplyService.terminationStatus({ orderId: this.row.id, status: this.row.assessmentStatus })
+          .subscribe(data => {
+            this.$Message.success("终止评估成功！")
+            this.$emit('close');
+          }, ({ msg }) => {
+            this.$Message.error(msg)
+          })
+      }
+    })
+  }
+  /**
+   *  退件
+   */
+  backSerice() {
+    this.$Modal.confirm({
+      title: '提示',
+      content: '是否将订单返回修改？再次提交后将继续由您进行评估。',
+      onOk: () => {
+        this.assessMentApplyService.backPieceStatus({ orderId: this.row.id, status: this.row.assessmentStatus })
+          .subscribe(data => {
+            this.$Message.success("退件成功！")
+            this.$emit('close');
+          }, ({ msg }) => {
+            this.$Message.error(msg)
+          })
+      }
+    })
+  }
+}
 </script>
 
 <style lang="less" scoped>
-  .component.add-collateral{
-    .data-form{
-      margin-top:5px;
-      .data-form-item {
-        width: 7px;
-        height: 25px;
-        background: #265ea2;
-        display: inline-block;
-        margin-right: 6px;
-        position: relative;
-        top: 4px;
-      }
-      .information{
-        font-size: 16px;
-        color: black;
-      }
+.component.add-collateral {
+  .data-form {
+    margin-top: 5px;
+    .data-form-item {
+      width: 7px;
+      height: 25px;
+      background: #265ea2;
+      display: inline-block;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+    }
+    .information {
+      font-size: 16px;
+      color: black;
     }
   }
-
+}
 </style>
 

@@ -1,25 +1,25 @@
 <!--评估任务池-->
 <template>
-    <section class="page evaluation-task-pool">
-        <page-header title="评估任务池" hidden-print hidden-export>
-          <command-button label="批量领取" @click="allReceive"></command-button>
-        </page-header>
-        <data-form :model="taskpoolModel" @on-search="getPoolList" :page="pageService" date-prop="timeSearch">
-            <template slot="input">
-                <i-form-item prop="carParams" label="品牌型号">
-                    <i-input placeholder="请输入品牌、系列" v-model="taskpoolModel.carParams"></i-input>
-                </i-form-item>
-                <i-form-item prop="carNo" label="车牌号码">
-                    <i-input placeholder="请输入车牌号码" v-model="taskpoolModel.carNo"></i-input>
-                </i-form-item>
-                <i-form-item prop="ownerName" label="客户姓名">
-                    <i-input placeholder="请输入客户姓名" v-model="taskpoolModel.ownerName"></i-input>
-                </i-form-item>
-            </template>
-        </data-form>
-        <data-box :columns="taskpoolColumns" :data="dataSet" :page="pageService" ref="databox"></data-box>
+  <section class="page evaluation-task-pool">
+    <page-header title="评估任务池" hidden-print hidden-export>
+      <command-button label="批量领取" @click="allReceive"></command-button>
+    </page-header>
+    <data-form :model="taskpoolModel" @on-search="getPoolList" :page="pageService" date-prop="timeSearch">
+      <template slot="input">
+        <i-form-item prop="carParams" label="品牌型号">
+          <i-input placeholder="请输入品牌、系列" v-model="taskpoolModel.carParams"></i-input>
+        </i-form-item>
+        <i-form-item prop="carNo" label="车牌号码">
+          <i-input placeholder="请输入车牌号码" v-model="taskpoolModel.carNo"></i-input>
+        </i-form-item>
+        <i-form-item prop="ownerName" label="客户姓名">
+          <i-input placeholder="请输入客户姓名" v-model="taskpoolModel.ownerName"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
+    <data-box :columns="taskpoolColumns" :data="dataSet" :page="pageService" ref="databox"></data-box>
 
-    </section>
+  </section>
 </template>
 
 <script lang="ts">
@@ -45,18 +45,19 @@ export default class EvaluationTaskPool extends Page {
     carNo: '', // 车牌号码
     ownerName: '' // 客户姓名
   }
-  private taskpoolColumns:any = [
+  private taskpoolColumns: any = [
     {
       type: 'selection',
       align: 'center',
       fixed: 'left',
-      width:40,
+      width: 40,
     },
     {
       title: '操作',
       align: 'center',
       fixed: 'left',
-      render: (h, { row}) => {
+      minWidth: this.$common.getColumnWidth(3),
+      render: (h, { row }) => {
         return h('div', [
           h(
             'i-button',
@@ -83,7 +84,7 @@ export default class EvaluationTaskPool extends Page {
       editable: true,
       sortable: true,
       key: 'assessmentNo',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       align: 'center'
     },
     {
@@ -125,14 +126,14 @@ export default class EvaluationTaskPool extends Page {
       title: '车架号',
       editable: true,
       key: 'frameNo',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       align: 'center'
     },
     {
       title: '发动机号',
       editable: true,
       key: 'engineNo',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       align: 'center'
     },
     {
@@ -160,23 +161,23 @@ export default class EvaluationTaskPool extends Page {
   /**
    *  搜索评估任务池
    */
-  getPoolList(){
-    this.assessMentApplyService.orderPoolSearch(this.taskpoolModel,this.pageService)
-      .subscribe( data => {
-        this.dataSet =data
-      },({msg}) => {
+  getPoolList() {
+    this.assessMentApplyService.orderPoolSearch(this.taskpoolModel, this.pageService)
+      .subscribe(data => {
+        this.dataSet = data
+      }, ({ msg }) => {
         this.$Message.error(msg)
       })
   }
   /**
    *  批量领取
    */
-  allReceive(){
+  allReceive() {
     let multiple: any = this.$refs['databox']
     this.multipleUserId = multiple.getCurrentSelection()
-    if(!this.multipleUserId.length){
+    if (!this.multipleUserId.length) {
       return this.$Message.error('请选择评估案件')
-    }else{
+    } else {
       this.$Modal.confirm({
         title: '提示',
         content: '确定批量领取至“押品评估列表”？',
@@ -184,15 +185,15 @@ export default class EvaluationTaskPool extends Page {
           console.log(this.multipleUserId)
           this.assessMentApplyService
             .batchReceive({
-              orderIds: this.multipleUserId.map(v=>v.orderId),
+              orderIds: this.multipleUserId.map(v => v.orderId),
               status: 1189
             })
             .subscribe(data => {
-                this.$Message.success('领取成功！')
-                this.getPoolList()
-              }, ({msg}) => {
-                this.$Message.error(msg)
-              }
+              this.$Message.success('领取成功！')
+              this.getPoolList()
+            }, ({ msg }) => {
+              this.$Message.error(msg)
+            }
             )
         }
       })
@@ -208,15 +209,15 @@ export default class EvaluationTaskPool extends Page {
       onOk: () => {
         this.assessMentApplyService
           .batchReceive({
-            orderIds:row.orderId,
+            orderIds: row.orderId,
             status: row.assessmentStatus
           })
           .subscribe(data => {
-              this.$Message.success('领取成功！')
-              this.getPoolList()
-            }, ({msg}) => {
-              this.$Message.error(msg)
-            }
+            this.$Message.success('领取成功！')
+            this.getPoolList()
+          }, ({ msg }) => {
+            this.$Message.error(msg)
+          }
           )
       }
     })
