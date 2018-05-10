@@ -1,5 +1,5 @@
 <!--押品入库-->
-<template>
+<template> 
     <section class="page goods-In-treasury">
         <page-header title="押品入库" hidden-print hidden-export></page-header>
         <data-form :model="treasuryModel" @on-search="getInTreasuryList" :page="pageService" date-prop="timeSearch">
@@ -24,7 +24,7 @@
         <data-box :columns="treasuryColumns" :data="dataSet" :page="pageService"></data-box>
 
         <template>
-            <i-modal width="780" v-model="inventoryModal" title="押品入库" class="mortgage-inventory">
+            <i-modal width="780" v-model="inventoryModal" title="押品入库" @on-visible-change="closeCollateral" class="mortgage-inventory">
                 <mortgage-inventory  @close="close" ref="mortgage-inventory"></mortgage-inventory>
                 <div slot="footer">
                     <i-button size="large" type="ghost" class="Ghost" @click="inventoryModal= false">取消</i-button>
@@ -241,6 +241,16 @@ export default class EvaluationTaskPool extends Page {
     let MortgageInventory = this.$refs['mortgage-inventory'] as MortgageInventory
     MortgageInventory.getInventoryData(row)
   }
+ /**
+  * 关闭押品弹窗
+  */
+   closeCollateral(val){
+     if(!val){
+        let closeCollateralBt = this.$refs['mortgage-inventory'] as MortgageInventory
+        closeCollateralBt.resetClose()
+     }
+ }
+
   /**
    * 入库点击确定
    */
