@@ -23,14 +23,13 @@
                     </div>
                 </i-col>
                 <i-col class="command" :span="20">
-                    <data-form hidden-date-search :model="personalModel" @on-search="search" hidden-reset>
+                    <data-form hidden-date-search :model="personalModel" @on-search="search">
                         <template slot="input">
                             <i-form-item prop="name" label="素材名称">
                                 <i-input v-model="personalModel.name"></i-input>
                             </i-form-item>
                         </template>
                     </data-form>
-
                     <data-box :id="144" :columns="columns" :data="data1" @onPageChange="search" :page="pageService">
                     </data-box>
                 </i-col>
