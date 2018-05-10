@@ -1,5 +1,5 @@
 <!--客户还款-->
-<template>
+<template> 
   <section class="page customer-repay">
     <page-header title="客户还款"></page-header>
     <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList" hidden-reset>

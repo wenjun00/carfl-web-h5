@@ -121,3 +121,11 @@ export default class WaitHandleCase extends Vue {
   }
 }
 </style>
+<style lang="less">
+.component.wait-handle-case{
+    .ivu-checkbox-group{
+      overflow: hidden;
+  }
+}
+ 
+</style>
