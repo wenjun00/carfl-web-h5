@@ -26,8 +26,7 @@
     </template>
 
     <template>
-      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'收款审批':'查看'" :width="800" :transfer="false">
-        <!--<add-apply></add-apply>-->
+      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'收款审批':'查看'" :width="800" :transfer="false" @on-visible-change="resetData">
         <apply-detail ref="applyDetail"></apply-detail>
         <div slot="footer">
           <i-button class="highDefaultButton" style="width:80px" @click="rebackClick" v-if="type===1">退回</i-button>
@@ -41,23 +40,19 @@
 <script lang="ts">
   import Page from "~/core/page";
   import Component from "vue-class-component";
-  import {
-    Dependencies
-  } from "~/core/decorator";
+  import {Dependencies} from "~/core/decorator";
   import DataBox from "~/components/common/data-box.vue";
   import {
     State,
     Mutation,
     namespace
   } from "vuex-class";
-  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
   import SvgIcon from "~/components/common/svg-icon.vue";
   import {
     Watch
   } from "vue-property-decorator";
   // 添加新申请
   import AddApply from "~/components/purchase-manage/add-apply.vue";
-  // import Approval from "~/components/common/approval.vue";
   import {
     FinanceApprovalHistoryService
   } from "~/services/manage-service/finance-approval-history.service";
@@ -79,7 +74,6 @@
       DataBox,
       SvgIcon,
       AddApply,
-      // Approval,
       ApplyDetail
     }
   })
@@ -148,10 +142,9 @@
                             withdrawId: row.applicationId
                           })
                           .subscribe(val => {
-                            console.log(val, "val");
                             this.applyInformation = val;
-                            let _applyInfo: any = this.$refs["applyDetail"];
-                            _applyInfo.getparentData(this.applyInformation, row, 1);
+                            let applyInfo: any = this.$refs["applyDetail"] as ApplyDetail;
+                            applyInfo.getparentreceipt(this.applyInformation, row, 1);
                           });
                       }
                     }
@@ -180,7 +173,7 @@
                           .subscribe(val => {
                             this.applyInformation = val;
                             let _applyInfo: any = this.$refs["applyDetail"];
-                            _applyInfo.getparentData(this.applyInformation, row, 0);
+                            _applyInfo.getparentreceipt(this.applyInformation, row, 0);
                           });
                       }
                     }
@@ -368,14 +361,10 @@
           }
         );
     }
-    /**
-     * 多选
-     */
-    multipleSelect(selection) {}
-    /**
-     * 确定
-     */
-    confirm() {}
+    resetData(){
+        let applyInfo: any = this.$refs["applyDetail"] as ApplyDetail;
+        applyInfo.reset();
+      }
   }
 
 </script>

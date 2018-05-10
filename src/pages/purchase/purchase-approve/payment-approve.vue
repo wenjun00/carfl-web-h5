@@ -15,8 +15,8 @@
     <data-box :id="390" :columns="columns1" :data="refundApproval"></data-box>
 
     <template>
-      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'付款审批':'查看'" :width="800">
-        <apply-detail ref="applyDetail"></apply-detail>
+      <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'放款审批':'查看'" :width="800" @on-visible-change="resetData">
+        <apply-out ref="applyOut"></apply-out>
         <div slot="footer">
           <i-button class="highDefaultButton" style="width:80px" @click="backApply" v-if="type===1">退回</i-button>
           <i-button class="highButton" style="width:80px" @click="passApply" v-if="type===1">通过</i-button>
@@ -30,10 +30,9 @@
 import Page from "~/core/page";
 import Component from "vue-class-component";
 import DataBox from "~/components/common/data-box.vue";
-import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
 import SvgIcon from "~/components/common/svg-icon.vue";
 // 添加新申请
-import ApplyDetail from "~/components/purchase-manage/apply-detail.vue";
+import ApplyOut from "~/components/purchase-manage/apply-out.vue";
 import {
   FilterService
 } from "~/utils/filter.service";
@@ -55,8 +54,7 @@ import {
   components: {
     DataBox,
     SvgIcon,
-    ApplyDetail
-    // Approval
+    ApplyOut
   }
 })
 export default class PaymentApprove extends Page {
@@ -83,7 +81,7 @@ export default class PaymentApprove extends Page {
   addNewApply() {
     this.$Modal.info({
       title: "新增申请",
-      render: h => h(ApplyDetail)
+      render: h => h(ApplyOut)
     });
   }
   getApproval() {
@@ -187,19 +185,19 @@ export default class PaymentApprove extends Page {
                         })
                         .subscribe(val => {
                           this.applyInformation = val;
-                          let _applyInfo: any = this.$refs["applyDetail"];
+                          let _applyInfo: any = this.$refs["applyOut"];
                           let value = Object.assign(
                             {
-                              applicationType: val.refundType,
                               collectMoneyItemModels: val.itemList,
                               personalBank: "",
-                              customerName: val.personal.name
+                              customerName: val.personal.name,
+                              refundTotalAmount:val.refundTotalAmount
                             },
                             val.personal,
                             val.productOrder
                           )
                           value.personalBank = val.bankListk
-                          _applyInfo.getparentData(value, 1);
+                          _applyInfo.getparentreceipt(value, 1);
                         });
                     }
                   }
@@ -228,7 +226,7 @@ export default class PaymentApprove extends Page {
                         })
                         .subscribe(val => {
                           this.applyInformation = val;
-                          let _applyInfo: any = this.$refs["applyDetail"];
+                          let _applyInfo: any = this.$refs["applyOut"];
                           let value = Object.assign(
                             {
                               applicationType: val.refundType,
@@ -399,14 +397,10 @@ export default class PaymentApprove extends Page {
   columnsConfig() {
     this.openColumnsConfig = true;
   }
-  /**
-   * 多选
-   */
-  multipleSelect(selection) { }
-  /**
-   * 确定
-   */
-  confirm() { }
+  resetData(){
+    let applyInfo: any = this.$refs["applyOut"] as ApplyOut;
+    applyInfo.reset();
+  }
 }
 
 </script>

@@ -1,6 +1,6 @@
 <template>
   <section class="page customer-sign">
-    <page-header title="客户签约"></page-header>
+    <page-header title="客户签约" hiddenPrint hiddenExport></page-header>
     <data-form date-prop="timeSearch" :model="customerSignModel" @on-search="getSignList" :page="pageService">
       <template slot="input">
         <i-form-item prop="dateRange" label="日期">
@@ -218,7 +218,7 @@
                     }
                   }
                 },
-                '合同资料'
+                '上传合同'
               )
             ])
           }

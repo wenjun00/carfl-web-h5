@@ -29,7 +29,7 @@
             </i-col>
             <i-col :span="8">
               <i-form-item label="车牌号码" >
-                <i-input readonly v-model="mortgageInventoryModel.carNoShow" disabled></i-input>
+                <i-input readonly v-model="mortgageInventoryModel.carNo" disabled></i-input>
               </i-form-item>
             </i-col>
           </i-row>
@@ -42,6 +42,13 @@
             <i-col :span="8">
               <i-form-item label="发动机号" >
                 <i-input readonly v-model="mortgageInventoryModel.engineNo" disabled></i-input>
+              </i-form-item>
+            </i-col>
+          </i-row>
+          <i-row type="flex" :gutter="110">
+            <i-col :span="8">
+              <i-form-item label="初登日期" >
+                <i-date-picker v-model="mortgageInventoryModel.cardsDate" type="date" disabled></i-date-picker>
               </i-form-item>
             </i-col>
           </i-row>
@@ -64,18 +71,7 @@
                     </i-form-item>
                 </i-col>
             </i-row>
-            <i-row type="flex" :gutter="110">
-              <i-col :span="8">
-                <i-form-item label="牌照号码" >
-                  <i-input  v-model="mortgageInventoryModel.carNo" readonly></i-input>
-                </i-form-item>
-              </i-col>
-              <i-col :span="8">
-                <i-form-item label="上牌日期" >
-                  <i-date-picker v-model="mortgageInventoryModel.cardsDate" type="date" readonly></i-date-picker>
-                </i-form-item>
-              </i-col>
-            </i-row>
+
             <i-row type="flex" :gutter="110">
               <i-col :span="8">
                 <i-form-item label="入库日期"  prop="warehousingDate">
@@ -191,9 +187,9 @@ export default class SeeMortgageInventory extends Vue {
           this.mortgageInventoryModel.modelofcar = data.assessmentPlacingApplyModel.brandName + data.assessmentPlacingApplyModel.seriesName + data.assessmentPlacingApplyModel.carName
           this.mortgageInventoryModel.carColor = data.assessmentPlacingApplyModel.carColor
           this.mortgageInventoryModel.city = !!data.assessmentPlacingApplyModel.city ? CityService.getCityName(Number(data.assessmentPlacingApplyModel.city)) : ''
-          this.mortgageInventoryModel.carNoShow = data.assessmentPlacingApplyModel.carNo
           this.mortgageInventoryModel.frameNo = data.assessmentPlacingApplyModel.frameNo
           this.mortgageInventoryModel.engineNo = data.assessmentPlacingApplyModel.engineNo
+          this.mortgageInventoryModel.cardsDate = FilterService.dateFormat(data.cardsDate, 'yyyy-MM-dd')
           this.mortgageInventoryModel.carSubjection = data.carSubjection
           this.mortgageInventoryModel.carNo = data.carNo
           this.mortgageInventoryModel.odometer = data.odometer
@@ -202,7 +198,6 @@ export default class SeeMortgageInventory extends Vue {
           this.mortgageInventoryModel.carWarehousingExplain = data.carWarehousingExplain
           this.mortgageInventoryModel.warehousingDesc = data.warehousingDesc
           this.mortgageInventoryModel.carSource = data.carSource
-          this.mortgageInventoryModel.cardsDate = FilterService.dateFormat(data.cardsDate, 'yyyy-MM-dd')
           this.mortgageInventoryModel.warehousingDate = FilterService.dateFormat(data.warehousingDate, 'yyyy-MM-dd')
           this.content = data.assessmentPlacingTypeValueList
           this.mortgageInventoryModel.fee = data.assessmentPlacingTypeValueList.find(v=>v.placingTypeId).placingTypeId

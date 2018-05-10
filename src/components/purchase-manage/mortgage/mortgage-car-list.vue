@@ -6,20 +6,20 @@
                 <i-row type="flex">
                     <i-col>
                         <i-form-item label="客户姓名">
-                            <i-input></i-input>
+                            <i-input v-model="owmModel.ownerName"></i-input>
                         </i-form-item>
                     </i-col>
                     <i-col>
                         <i-form-item label="联系电话">
-                            <i-input></i-input>
+                            <i-input v-model="owmModel.ownPhone"></i-input>
                         </i-form-item>
                     </i-col>
                     <i-col>
                         <i-form-item label="评估编号">
-                            <i-input></i-input>
+                            <i-input v-model="owmModel.orderNo"></i-input>
                         </i-form-item>
                     </i-col>
-                    <i-button class="iSeek" type="text">搜索</i-button>
+                    <i-button class="iSeek" @click="search">搜索</i-button>
                 </i-row>
             </i-form>
         </template>
@@ -44,6 +44,12 @@ export default class MortgageCarList extends Vue {
   @Prop() cardNumber // 身份证号码
 
   private carDataSet: Array<any> = []
+
+  private owmModel = {
+     ownerName:'',
+     ownPhone:'',
+     orderNo:''
+  }
   // 车辆列配置
   private carColumns = [
     {
@@ -82,6 +88,16 @@ export default class MortgageCarList extends Vue {
       key: 'carNo'
     },
     {
+      title: '订单编号',
+      align: 'center',
+      key: 'assessmentNo'
+    },
+    {
+      title: '车架号',
+      align: 'center',
+      key: 'frameNo'
+    },
+    {
       title: '行驶里程(公里)',
       align: 'center',
       key: 'mileage',
@@ -103,7 +119,10 @@ export default class MortgageCarList extends Vue {
     this.assessMentApplyService
       .orderMortgageSearch(
         {
-          cardNumber: this.cardNumber
+          idCard: this.cardNumber,
+          ownerName: this.owmModel.ownerName,
+          ownPhone: this.owmModel.ownPhone,
+          orderNo: this.owmModel.orderNo
         },
         this.pageService
       )
@@ -135,6 +154,10 @@ export default class MortgageCarList extends Vue {
   }
 
   mounted() {
+    console.log(this.cardNumber)
+    this.getMortgageCatList()
+  }
+  search(){
     this.getMortgageCatList()
   }
 }

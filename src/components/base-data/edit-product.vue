@@ -150,13 +150,13 @@
       <data-grid :labelWidth="100">
         <data-grid-item :span="6" label="征信保护天数">
           <i-form-item prop="creditProtectDays">
-            <i-input v-model="productDetail.creditProtectDays"></i-input>
+            <i-input v-model.number="productDetail.creditProtectDays"></i-input>
           </i-form-item>
           <span>&nbsp;天</span>
         </data-grid-item>
         <data-grid-item :span="6" label="逾期保护天数">
           <i-form-item prop="overdueProtectDays">
-            <i-input v-model="productDetail.overdueProtectDays"></i-input>
+            <i-input v-model.number="productDetail.overdueProtectDays"></i-input>
           </i-form-item>
           <span>&nbsp;天</span>
         </data-grid-item>

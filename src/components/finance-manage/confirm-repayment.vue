@@ -70,8 +70,7 @@
     </table>
 
     <div class="modal-item-huakoujilu">
-      <!--<span style="font-size:14px;font-weight:bold;position:relative;top:20px;">还款总额：1010<span></span></span>-->
-      <i-button class="modal-item-huakoubutton blueButton" @click="checkDeductRecord">查看划扣记录</i-button>
+      <i-button class="modal-item-huakoubutton blueButton" @click="checkDeductRecord">本期划扣详情</i-button>
     </div>
 
     <div>
@@ -142,8 +141,8 @@
       <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
     </div>
     <template>
-      <i-modal title="划扣记录" v-model="deductRecordModal" :width="1200">
-        <deduct-record ref="deduct-record"></deduct-record>
+      <i-modal title="本期划扣详情" v-model="deductRecordModal" :width="1200">
+        <deduct-Detail ref="deduct-Detail"></deduct-Detail>
       </i-modal>
     </template>
   </section>
@@ -153,7 +152,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import DataBox from "~/components/common/data-box.vue";
-import DeductRecord from "~/components/finance-manage/deduct-record.vue";
+import DeductDetail from "~/components/finance-manage/deduct-Detail.vue";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { Dependencies } from "~/core/decorator";
 import { PaymentScheduleService } from "~/services/manage-service/payment-schedule.service";
@@ -166,7 +165,7 @@ import {ChargeBackService} from "~/services/manage-service/charge-back.service";
     DataBox,
     DataGrid,
     DataGridItem,
-    DeductRecord,
+    DeductDetail,
     UploadVoucher
   }
 })
@@ -175,7 +174,12 @@ export default class ConfirmRepayment extends Vue {
   @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
   private columns1: any;
   private repaymentObj: any = {};
-  private rowObj: any = {};
+  private rowObj: any = {
+    personalId:'',
+    businessId:'',
+    orderId:'',
+    periods:''
+  };
   private data1: any = [];
   private collectMoneyDetails: any = [];
   private financeUploadResources: any = [];
@@ -206,17 +210,18 @@ export default class ConfirmRepayment extends Vue {
     this.collectMoneyDetails = [];
     this.financeUploadResources = [];
     this.inputBlur();
-    this.rowObj = row;
+    this.rowObj.personalId = row.personalId
+    this.rowObj.businessId = row.businessId
+    this.rowObj.orderId = row.orderId
     this.paymentScheduleService
       .getCustomerScheduleBillDetail({
         orderId: row.orderId
       })
       .subscribe(
       data => {
-        this.collectMoneyId = data.collectMoneyHistory
-          ? data.collectMoneyHistory.id
-          : "";
+        this.collectMoneyId = data.collectMoneyHistory ? data.collectMoneyHistory.id : "";
         this.repaymentObj = data;
+        this.rowObj.periods = data.periods
         this.collectMoneyDetails = data.collectMoneyDetails || [];
         this.financeUploadResources = data.financeUploadResources || [];
         this.collectMoneyItemModel = data.collectMoneyItemModel;
@@ -226,13 +231,12 @@ export default class ConfirmRepayment extends Vue {
       },
       ({ msg }) => {
         this.$Message.error(msg);
-      }
-      );
+      });
   }
 
   checkDeductRecord() {
     this.deductRecordModal = true;
-    let _record: any = this.$refs["deduct-record"];
+    let _record: any = this.$refs["deduct-Detail"];
     _record.refresh(this.rowObj);
   }
 

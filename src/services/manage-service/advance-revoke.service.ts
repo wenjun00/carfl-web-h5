@@ -19,7 +19,7 @@ export class AdvanceRevokeService {
     })
   }
   /**
-   * 
+   *
    * @param data 获取客户提前收回账单信息
    */
   getAdvanceRevokeBillInfo(data) {
@@ -90,6 +90,20 @@ export class AdvanceRevokeService {
     return this.netService.send({
       server: manageService.advanceRevokeController.supplementUploadResources,
       data
+    })
+  }
+  /**
+   * 本期划扣详情
+   */
+  getCurrentPaymentRecordDetail({ personalId, businessId, orderId,periods }){
+    return this.netService.send({
+      server: manageService.advanceRevokeController.getCurrentPaymentRecordDetail,
+      data: {
+        personalId,
+        businessId,
+        orderId,
+        periods
+      }
     })
   }
 }

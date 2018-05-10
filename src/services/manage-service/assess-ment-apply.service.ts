@@ -135,13 +135,10 @@ export class AssessMentApplyService {
    * @param param
    * @param page
    */
-  orderMortgageSearch({ cardNumber, orderNo }: { cardNumber: string, orderNo?: string }, page) {
+  orderMortgageSearch(data, page) {
     return this.netService.send({
       server: manageService.assessmentapply.orderMortgageSearch,
-      data: {
-        idCard: cardNumber,
-        orderNo: orderNo,
-      },
+      data,
       page
     })
   }

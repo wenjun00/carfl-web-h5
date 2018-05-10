@@ -82,5 +82,14 @@ export default {
     controller: CONTROLLER,
     action: 'supplementUploadResources',
     type: requestType.Post
+  },
+  /**
+   * 本期划扣详情
+   */
+  getCurrentPaymentRecordDetail:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCurrentPaymentRecordDetail',
+    type: requestType.Get
   }
 }

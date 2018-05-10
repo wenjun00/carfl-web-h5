@@ -11,8 +11,8 @@
         <i-input v-model="model.name"></i-input>
       </i-form-item>
       <i-form-item label="证件类型" prop="certificateType">
-        <i-select v-model="model.certificateType">
-          <i-option label="身份证" value="身份证" key="身份证"></i-option>
+        <i-select placeholder="请选择证件类型" v-model="model.certificateType">
+          <i-option v-for="{value,label} in $dict.getDictData('0433')" :key="value" :label="label" :value="value"></i-option>
         </i-select>
       </i-form-item>
       <i-form-item label="证件号码" prop="certificateNumber">
@@ -25,6 +25,8 @@
         <i-select class="select-city" v-model="model.province">
           <i-option v-for="{value,label} in $city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
         </i-select>
+      </i-form-item>
+      <i-form-item>
         <i-select class="select-city" v-model="model.depositCity">
           <i-option v-for="{value,label} in model.province ? $city.getCityData({ level: 1, id: model.province }) : []" :key="value" :label="label" :value="value"></i-option>
         </i-select>
