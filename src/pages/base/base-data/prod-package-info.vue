@@ -94,22 +94,6 @@
                   },
                   on: {
                     click: () => {
-                      this.preView(row);
-                    }
-                  },
-                },
-                '预览'
-              ),
-              h(
-                'i-button', {
-                  props: {
-                    type: 'text',
-                  },
-                  style: {
-                    color: '#265EA2',
-                  },
-                  on: {
-                    click: () => {
                       this.$Modal.confirm({
                         title: '提示',
                         content: '您确定是否下载？',
@@ -286,26 +270,6 @@
         minDate: '',
         maxDate: '',
       };
-    }
-    /**
-     * 预览
-     */
-    preView(row) {
-      this.productPackageService
-        .downloadProductPackage({
-          fileId: row.fileId,
-        })
-        .subscribe(
-          val => {
-            window.open(val)
-            // CommonService.downloadFile(val,"文件下载")
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg);
-          }
-        );
     }
   }
 

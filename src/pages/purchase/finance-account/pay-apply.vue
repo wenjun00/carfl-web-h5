@@ -263,7 +263,7 @@
           // )
           this.saveData.itemList = this.totalMoneyTwo.applicationCollectMoneyItems.map(v=>{
             return {
-              refundItem:v.itemName,
+              refundItem:v.itemLabel,
               refundAmount:v.itemMoney
             }
           })
