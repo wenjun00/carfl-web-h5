@@ -25,11 +25,13 @@ export class DialogService {
 
         let vnode = h(DialogBox, {
           props: {
+            width: option.width,
             title: option.title,
             footer: !!option.footer,
             value: true,
             onOk: option.onOk,
-            onCancel: option.onCancel
+            onCancel: option.onCancel,
+            isView: option.isView
           },
           on: {
             "on-remove": () => {

@@ -1,11 +1,11 @@
 <template>
   <section class="component dialog">
-    <i-modal :class-name="getClassName()" :okText="okText" :cancelText="cancelText" :title="title" v-model="visible" :transfer="transfer" :mask-closable="maskClosable">
+    <i-modal :class-name="getClassName()" :width="width" :okText="okText" :cancelText="cancelText" :title="title" v-model="visible" :transfer="transfer" :mask-closable="maskClosable">
       <slot></slot>
       <div slot="footer">
         <slot name="footer">
-          <i-button @click="onCancelClick">{{cancelText}}</i-button>
-          <i-button type="primary" @click="onOkClick" :loading="loading">{{okText}}</i-button>
+          <i-button @click="onCancelClick">{{isView ? '关闭' : cancelText }}</i-button>
+          <i-button type="primary" @click="onOkClick" :loading="loading" v-if="!isView">{{okText}}</i-button>
         </slot>
       </div>
     </i-modal>
@@ -51,6 +51,17 @@ export default class DialogBox extends Vue {
   })
   cancelText;
 
+  @Prop({
+    type: Number
+  })
+  width;
+
+  @Prop({
+    type: Boolean,
+    default: false
+  })
+  isView;
+
   @Prop({})
   onOk;
 
@@ -65,7 +76,7 @@ export default class DialogBox extends Vue {
   }
 
   @Emit("on-remove")
-  emitRemove() {}
+  emitRemove() { }
 
   @Watch("value")
   onVisibleChange(value) {
@@ -145,7 +156,7 @@ export default class DialogBox extends Vue {
     justify-content: center;
 
     .ivu-modal {
-      margin:100px 0;
+      margin: 100px 0;
       position: absolute;
       top: 0;
       min-width: 40%;

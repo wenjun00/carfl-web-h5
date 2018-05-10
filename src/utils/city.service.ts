@@ -69,6 +69,6 @@ export class CityService {
       results.push(item.name)
     })
 
-    return results.length === 1 ? results[0] : results
+    return results.length < 2 ? results[0] : results
   }
 }

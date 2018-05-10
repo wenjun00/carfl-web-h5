@@ -1,7 +1,7 @@
 <!--订单查询-->
 <template>
   <section class="page order-query">
-    <page-header title="订单查询" hiddenPrint ></page-header>
+    <page-header title="订单查询" hiddenPrint></page-header>
     <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getOrderQuery" hidden-reset :page="pageService">
       <template slot="input">
         <i-form-item prop="orderInfo">
@@ -166,14 +166,13 @@ export default class OrderQuery extends Page {
                         this.$Modal.confirm({
                           title: "提示",
                           content:
-                            "融资租赁申请中有您未保存的内容，建议先保存在做编辑，是否继续编辑？",
+                            "个人抵押贷款中有您未保存的内容，建议先保存在做编辑，是否继续编辑？",
                           onOk: () => {
                             this.collectionRowData(row);
                             this.$nextTick(() => {
                               this.openPage({
-                                resoname: "融资租赁申请",
-                                path:
-                                  "purchase/purchase-manage/financing-lease-apply",
+                                resoname: "个人抵押贷款",
+                                path: "purchase/mortgage/personal-mortgage-application",
                                 params: {
                                   row: row
                                 }
@@ -221,14 +220,13 @@ export default class OrderQuery extends Page {
                         this.$Modal.confirm({
                           title: "提示",
                           content:
-                            "融资租赁申请中有您未保存的内容，建议先保存在做编辑，是否继续编辑？",
+                            "个人抵押贷款有您未保存的内容，建议先保存在做编辑，是否继续编辑？",
                           onOk: () => {
                             this.collectionRowData(row);
                             this.$nextTick(() => {
                               this.openPage({
-                                resoname: "融资租赁申请",
-                                path:
-                                  "purchase/purchase-manage/financing-lease-apply",
+                                resoname: "个人抵押贷款",
+                                path: "purchase/mortgage/personal-mortgage-application",
                                 flag: true
                               });
                             });
@@ -425,12 +423,12 @@ export default class OrderQuery extends Page {
                         personalId: params.row.personalId
                       })
                       .subscribe(
-                        val => {
-                          this.customerInformation = val;
-                        },
-                        ({ msg }) => {
-                          this.$Message.error(msg);
-                        }
+                      val => {
+                        this.customerInformation = val;
+                      },
+                      ({ msg }) => {
+                        this.$Message.error(msg);
+                      }
                       );
                   }
                 }
@@ -473,7 +471,7 @@ export default class OrderQuery extends Page {
         editable: true,
         key: "productRate",
         minWidth: this.$common.getColumnWidth(2),
-        render: (h,{row}) => h('p',this.$filter.decimalToPrecent(row.productRate))
+        render: (h, { row }) => h('p', this.$filter.decimalToPrecent(row.productRate))
       },
       {
         align: "center",
@@ -566,12 +564,12 @@ export default class OrderQuery extends Page {
     this.productOrderService
       .orderSearch(this.approvalModel, this.pageService)
       .subscribe(
-        val => {
-          this.queryData = val;
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
+      val => {
+        this.queryData = val;
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
       );
   }
   getTimeSearch(val) {
@@ -584,7 +582,7 @@ export default class OrderQuery extends Page {
   openSearch() {
     this.searchOptions = !this.searchOptions;
   }
-  oneKeyToConnect() {}
+  oneKeyToConnect() { }
   changeLoading() {
     this.loading = !this.loading;
   }

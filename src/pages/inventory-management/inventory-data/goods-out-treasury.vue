@@ -1,45 +1,29 @@
 <!--押品出库-->
 <template>
-    <section class="page goods-out-treasury">
-        <page-header title="押品出库" hidden-print hidden-export></page-header>
-        <data-form :model="goodsOutModel" @on-search="getOutTreasuryList" :page="pageService" date-prop="timeSearch">
-            <template slot="input">
-                <i-form-item prop="assessmentNo" label="订单编号">
-                    <i-input v-model="goodsOutModel.assessmentNo"></i-input>
-                </i-form-item>
-                <i-form-item prop="carParams" label="品牌型号">
-                    <i-input v-model="goodsOutModel.carParams" placeholder="请输入品牌、系列、车型关键字查询"></i-input>
-                </i-form-item>
-                <i-form-item prop="carNo" label="车牌号码">
-                    <i-input v-model="goodsOutModel.carNo"></i-input>
-                </i-form-item>
-                <i-form-item prop="frameNo" label="车架号">
-                    <i-input v-model="goodsOutModel.frameNo"></i-input>
-                </i-form-item>
-                <i-form-item prop="whetherInclude">
-                    <i-checkbox v-model="whetherInclude">包含已出库</i-checkbox>
-                </i-form-item>
-            </template>
-        </data-form>
-        <data-box :columns="goodsOutColumns" :data="dataSet" :page="pageService"></data-box>
-        <template>
-            <i-modal width="780" v-model="inventoryModal" title="确认出库">
-                <edit-from-storage ref="edit-from-storage" @close="close"></edit-from-storage>
-                <div slot="footer">
-                    <i-button size="large" type="ghost" class="Ghost" @click="inventoryModal=false">取消</i-button>
-                    <i-button size="large" type="primary" class="blueButton" @click="confirmOut">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-        <template>
-          <i-modal width="780" v-model="treasuryModal" title="查看详情">
-            <treasury-out-treasury ref="treasury-out-treasury"></treasury-out-treasury>
-            <div slot="footer">
-              <i-button size="large" type="ghost" class="Ghost" @click="treasuryModal=false">取消</i-button>
-            </div>
-          </i-modal>
-        </template>
-    </section>
+  <section class="page goods-out-treasury">
+    <page-header title="押品出库" hidden-print hidden-export></page-header>
+    <data-form :model="goodsOutModel" @on-search="getOutTreasuryList" :page="pageService" date-prop="timeSearch">
+      <template slot="input">
+        <i-form-item prop="assessmentNo" label="订单编号">
+          <i-input v-model="goodsOutModel.assessmentNo"></i-input>
+        </i-form-item>
+        <i-form-item prop="carParams" label="品牌型号">
+          <i-input v-model="goodsOutModel.carParams" placeholder="请输入品牌、系列、车型关键字查询"></i-input>
+        </i-form-item>
+        <i-form-item prop="carNo" label="车牌号码">
+          <i-input v-model="goodsOutModel.carNo"></i-input>
+        </i-form-item>
+        <i-form-item prop="frameNo" label="车架号">
+          <i-input v-model="goodsOutModel.frameNo"></i-input>
+        </i-form-item>
+        <i-form-item prop="whetherInclude">
+          <i-checkbox v-model="whetherInclude">包含已出库</i-checkbox>
+        </i-form-item>
+      </template>
+    </data-form>
+    <data-box :columns="goodsOutColumns" :data="dataSet" :page="pageService"></data-box>
+
+  </section>
 </template>
 
 <script lang="ts">
@@ -76,7 +60,7 @@ export default class GoodsOutTreasury extends Page {
   }
   private whetherInclude: Boolean = true
   private inventoryModal: Boolean = false
-  private treasuryModal:Boolean = false
+  private treasuryModal: Boolean = false
   private goodsOutColumns: any = [
     {
       title: '操作',
@@ -97,7 +81,20 @@ export default class GoodsOutTreasury extends Page {
                 },
                 on: {
                   click: () => {
-                    this.getOutTreasuryPopup(row)
+                    let dialog = this.$dialog.show({
+                      title: '确认出库',
+                      footer: true,
+                      width: 800,
+                      onOk: editFromStorage => {
+                        return editFromStorage.confirmTreasury()
+                          .then(() => this.getOutTreasuryList())
+                          .catch(() => false)
+                      },
+                      onCancel: () => { },
+                      render: h => {
+                        return h(EditFromStorage, { props: { id: row.placingId } });
+                      }
+                    })
                   }
                 }
               },
@@ -117,7 +114,13 @@ export default class GoodsOutTreasury extends Page {
                 },
                 on: {
                   click: () => {
-                    this.getDetailsPopup(row)
+                    this.$dialog.show({
+                      title: '押品出库查看',
+                      footer: true,
+                      isView: true,
+                      width: 800,
+                      render: h => h(TreasuryOutTreasury, { props: { id: row.placingId } })
+                    })
                   }
                 }
               },
@@ -160,7 +163,7 @@ export default class GoodsOutTreasury extends Page {
       editable: true,
       sortable: true,
       key: 'assessmentNo',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       align: 'center'
     },
     {
@@ -201,14 +204,14 @@ export default class GoodsOutTreasury extends Page {
     {
       title: '车架号',
       editable: true,
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       key: 'frameNo',
       align: 'center'
     },
     {
       title: '发动机号',
       editable: true,
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       key: 'engineNo',
       align: 'center'
     },
@@ -235,42 +238,15 @@ export default class GoodsOutTreasury extends Page {
     this.assessMentPlacingService
       .orderPlacingSerach(this.goodsOutModel, this.pageService)
       .subscribe(
-        data => {
-          this.dataSet = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.dataSet = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 
-  /**
-   * 获取押品出库信息
-   */
-  getOutTreasuryPopup(row) {
-    this.inventoryModal = true
-    let editFromStorage = this.$refs['edit-from-storage'] as EditFromStorage
-    editFromStorage.outTreasury(row)
-  }
-  /**
-   * 确定押品出库
-   */
-  confirmOut(){
-    let editFromStorage = this.$refs['edit-from-storage'] as EditFromStorage
-    editFromStorage.confirmTreasury()
-  }
-  /**
-   * 押品出库详情
-   */
-  getDetailsPopup(row){
-    this.treasuryModal = true
-    let treasuryOutTreasury = this.$refs['treasury-out-treasury'] as TreasuryOutTreasury
-    treasuryOutTreasury.outTreasury(row)
-  }
-  close(){
-    this.inventoryModal = false
-    this.getOutTreasuryList()
-  }
   mounted() {
     this.getOutTreasuryList()
   }

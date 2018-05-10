@@ -185,7 +185,7 @@
         </i-col>
         <i-col :span="12">
           <i-form-item label="估价" prop="evaluation">
-            <i-input-number v-model="customerModel.evaluation" :min="0" :max="99999999"></i-input-number>
+            <i-input-number v-model="customerModel.evaluation" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse" :min="0" :max="99999999"></i-input-number>
             <span>元</span>
           </i-form-item>
         </i-col>

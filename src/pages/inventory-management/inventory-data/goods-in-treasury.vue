@@ -1,47 +1,28 @@
 <!--押品入库-->
 <template>
-    <section class="page goods-In-treasury">
-        <page-header title="押品入库" hidden-print hidden-export></page-header>
-        <data-form :model="treasuryModel" @on-search="getInTreasuryList" :page="pageService" date-prop="timeSearch">
-            <template slot="input">
-                <i-form-item prop="assessmentNo" label="订单编号">
-                    <i-input placeholder="请输入订单订单编号" v-model="treasuryModel.assessmentNo "></i-input>
-                </i-form-item>
-                <i-form-item prop="carParams" label="品牌型号">
-                    <i-input placeholder="请输入品牌、系列、车型关键字查询" v-model="treasuryModel.carParams"></i-input>
-                </i-form-item>
-                <i-form-item prop="carNo" label="车牌号码">
-                    <i-input placeholder="请输入车牌号码" v-model="treasuryModel.carNo"></i-input>
-                </i-form-item>
-                <i-form-item prop="frameNo" label="车架号">
-                    <i-input placeholder="请输入车架号" v-model="treasuryModel.frameNo"></i-input>
-                </i-form-item>
-                <i-form-item prop="whetherInclude">
-                    <i-checkbox v-model="whetherInclude">包含已提交</i-checkbox>
-                </i-form-item>
-            </template>
-        </data-form>
-        <data-box :columns="treasuryColumns" :data="dataSet" :page="pageService"></data-box>
-
-        <template>
-            <i-modal width="780" v-model="inventoryModal" title="押品入库" class="mortgage-inventory">
-                <mortgage-inventory  @close="close" ref="mortgage-inventory"></mortgage-inventory>
-                <div slot="footer">
-                    <i-button size="large" type="ghost" class="Ghost" @click="inventoryModal= false">取消</i-button>
-                    <i-button size="large" type="primary" class="blueButton" @click="confirmInventoryModal">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-
-        <template>
-            <i-modal width="780" v-model="seeInventoryModal" title="入库查看" class="see-mortgage-inventory">
-                <see-mortgage-inventory ref="see-mortgage-inventory"></see-mortgage-inventory>
-                <div slot="footer">
-                    <i-button size="large" type="ghost" class="Ghost" @click="seeInventoryModal=false">关闭</i-button>
-                </div>
-            </i-modal>
-        </template>
-    </section>
+  <section class="page goods-In-treasury">
+    <page-header title="押品入库" hidden-print hidden-export></page-header>
+    <data-form :model="treasuryModel" @on-search="getInTreasuryList" :page="pageService" date-prop="timeSearch">
+      <template slot="input">
+        <i-form-item prop="assessmentNo" label="订单编号">
+          <i-input placeholder="请输入订单订单编号" v-model="treasuryModel.assessmentNo "></i-input>
+        </i-form-item>
+        <i-form-item prop="carParams" label="品牌型号">
+          <i-input placeholder="请输入品牌、系列、车型关键字查询" v-model="treasuryModel.carParams"></i-input>
+        </i-form-item>
+        <i-form-item prop="carNo" label="车牌号码">
+          <i-input placeholder="请输入车牌号码" v-model="treasuryModel.carNo"></i-input>
+        </i-form-item>
+        <i-form-item prop="frameNo" label="车架号">
+          <i-input placeholder="请输入车架号" v-model="treasuryModel.frameNo"></i-input>
+        </i-form-item>
+        <i-form-item prop="whetherInclude">
+          <i-checkbox v-model="whetherInclude">包含已提交</i-checkbox>
+        </i-form-item>
+      </template>
+    </data-form>
+    <data-box :columns="treasuryColumns" :data="dataSet" :page="pageService"></data-box>
+  </section>
 </template>
 
 <script lang="ts">
@@ -87,47 +68,64 @@ export default class EvaluationTaskPool extends Page {
       fixed: 'left',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, { row }) => {
-          if(row.warehousingStatus == 1198){
-            return h('div',[
-              h(
-                'i-button',
-                {
-                  props: {
-                    type: 'text'
-                  },
-                  style: {
-                    color: '#265EA2'
-                  },
-                  on: {
-                    click: () => {
-                      this.getTreasuryStorage(row)
-                    }
-                  }
+        if (row.warehousingStatus == 1198) {
+          return h('div', [
+            h(
+              'i-button',
+              {
+                props: {
+                  type: 'text'
                 },
-               '入库'
-              )
-          ])
-          }else{
-            return h('div',[
-              h(
-                'i-button',
-                {
-                  props: {
-                    type: 'text'
-                  },
-                  style: {
-                    color: '#265EA2'
-                  },
-                  on: {
-                    click: () => {
-                      this.seeTreasuryStorage(row)
-                    }
-                  }
+                style: {
+                  color: '#265EA2'
                 },
-               '查看'
-              )
+                on: {
+                  click: () => {
+                    this.$dialog.show({
+                      title: "押品入库",
+                      footer: true,
+                      onOk: mortgageInventory => {
+                        return mortgageInventory.confirmInventoryModal
+                          .then(() => this.getInTreasuryList())
+                          .catch(() => false)
+                      },
+                      onCalcel: () => { },
+                      render: h => h(MortgageInventory, { props: { id: row.warehousingId } })
+                    })
+                  }
+                }
+              },
+              '入库'
+            )
           ])
-          }
+        } else {
+          return h('div', [
+            h(
+              'i-button',
+              {
+                props: {
+                  type: 'text'
+                },
+                style: {
+                  color: '#265EA2'
+                },
+                on: {
+                  click: () => {
+                    this.$dialog.show({
+                      title: '押品入库查看',
+                      footer: true,
+                      isView: true,
+                      width: 800,
+                      render: h => h(SeeMortgageInventory, { props: { id: row.warehousingId } })
+                    })
+
+                  }
+                }
+              },
+              '查看'
+            )
+          ])
+        }
       }
     },
     {
@@ -163,7 +161,7 @@ export default class EvaluationTaskPool extends Page {
       editable: true,
       sortable: true,
       key: 'assessmentNo',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       align: 'center'
     },
     {
@@ -204,14 +202,14 @@ export default class EvaluationTaskPool extends Page {
     {
       title: '车架号',
       editable: true,
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       key: 'frameNo',
       align: 'center'
     },
     {
       title: '发动机号',
       editable: true,
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       key: 'engineNo',
       align: 'center'
     }
@@ -225,45 +223,15 @@ export default class EvaluationTaskPool extends Page {
     this.assessMentPlacingService
       .orderWarehousingSerach(this.treasuryModel, this.pageService)
       .subscribe(
-        data => {
-          this.dataSet = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.dataSet = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
-  /**
-   *  点击入库
-   */
-  getTreasuryStorage(row) {
-    this.inventoryModal = true
-    let MortgageInventory = this.$refs['mortgage-inventory'] as MortgageInventory
-    MortgageInventory.getInventoryData(row)
-  }
-  /**
-   * 入库点击确定
-   */
-   confirmInventoryModal(){
-    let confirmInventoryModal = this.$refs['mortgage-inventory'] as MortgageInventory
-    confirmInventoryModal.sendInventoryData()
-   }
- /**
-  * 入库取消
-  */
-    close(){
-      this.inventoryModal = false
-      this.getInTreasuryList()
-    }
 
-  /**
-   *  查看入库
-   */
-  seeTreasuryStorage(row) {
-    this.seeInventoryModal = true
-    let seeMortgageInventory = this.$refs['see-mortgage-inventory'] as SeeMortgageInventory
-    seeMortgageInventory.acquireInventoryData(row)
-  }
   mounted() {
     this.getInTreasuryList()
   }
