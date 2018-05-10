@@ -276,6 +276,10 @@ export default class addPeople extends Vue {
     delete this.mortgageInventoryModel.carSource
     delete this.mortgageInventoryModel.placingTypeId
     delete this.mortgageInventoryModel.fee
+    if(!this.mortgageInventoryModel.fee){
+      this.$Message.error('请选择措施内容')
+      return
+    }
       this.assessMentPlacingService
         .createWarehousingOrder(this.mortgageInventoryModel)
         .subscribe(
