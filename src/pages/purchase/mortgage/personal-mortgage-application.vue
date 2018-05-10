@@ -1,6 +1,6 @@
 <template>
   <section class="page personal-mortgage-application">
-    <page-header title="个人抵押贷款申请">
+    <page-header title="个人抵押贷款申请" hiddenExport>
       <command-button type="text" label="业务流程图" @click="onShowBusinessFlow"></command-button>
     </page-header>
     <i-form ref="basis-form" :model="basisModel" :rules="basisRules" :label-width="120">

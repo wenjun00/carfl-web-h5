@@ -2,7 +2,7 @@
 <template>
   <section class="page closed-order-query">
     <page-header title="已结清订单查询"></page-header>
-    <data-form data-prop="timeSearch" :model="customerRepayModel" @on-search="getEarlyPayList" hidden-reset>
+    <data-form data-prop="timeSearch" :model="customerRepayModel" @on-search="getEarlyPayList">
       <template slot="input">
         <i-form-item prop="dynamicParam">
           <i-input placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
