@@ -12,14 +12,12 @@
         </i-form-item>
         <i-form-item prop="province" label="省市：">
           <i-select placeholder="选择省" v-model="approvalModel.province" clearable>
-            <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label"
-                      :value="value"></i-option>
+            <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item prop="city">
           <i-select placeholder="选择市" v-model="approvalModel.city" :disabled="!approvalModel.province" clearable>
-            <i-option
-              v-for="{value,label} in this.approvalModel.province ? this.$city.getCityData({ level: 1, id: this.approvalModel.province }) : []"
+            <i-option v-for="{value,label} in this.approvalModel.province ? this.$city.getCityData({ level: 1, id: this.approvalModel.province }) : []"
               :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
@@ -29,8 +27,7 @@
       </template>
     </data-form>
 
-    <data-box :id="313" :columns="columns1" :data="blackList" @onPageChange="getBlackList"
-              :page="pageService"></data-box>
+    <data-box :id="313" :columns="columns1" :data="blackList" @onPageChange="getBlackList" :page="pageService"></data-box>
 
     <template>
       <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
@@ -48,14 +45,26 @@
   import DataBox from '~/components/common/data-box.vue'
   import Page from '~/core/page'
   import Component from 'vue-class-component'
-  import {Dependencies} from '~/core/decorator'
-  import {Layout} from '~/core/decorator'
+  import {
+    Dependencies
+  } from '~/core/decorator'
+  import {
+    Layout
+  } from '~/core/decorator'
   import PurchaseInformation from '~/components/purchase-manage/purchase-information.vue'
   import SvgIcon from '~/components/common/svg-icon.vue'
-  import {ApprovalService} from '~/services/manage-service/approval.service'
-  import {PageService} from '~/utils/page.service'
-  import {CityService} from '~/utils/city.service'
-  import {FilterService} from '~/utils/filter.service'
+  import {
+    ApprovalService
+  } from '~/services/manage-service/approval.service'
+  import {
+    PageService
+  } from '~/utils/page.service'
+  import {
+    CityService
+  } from '~/utils/city.service'
+  import {
+    FilterService
+  } from '~/utils/filter.service'
 
   @Layout('workspace')
   @Component({
@@ -69,7 +78,7 @@
     @Dependencies(ApprovalService) private approvalService: ApprovalService
     @Dependencies(PageService) private pageService: PageService
     private columns1: any
-    private blackList: Array<Object> = []
+    private blackList: Array < Object > = []
     private orderModal: Boolean = false
     private searchOptions: Boolean = false
     private purchaseInfoModal: Boolean = false
@@ -94,17 +103,19 @@
     }
 
     created() {
-      this.columns1 = [
-        {
+      this.columns1 = [{
           title: '操作',
           minWidth: this.$common.getColumnWidth(5),
           fixed: 'left',
           align: 'center',
-          render: (h, {row, column, index}) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('div', [
               h(
-                'i-button',
-                {
+                'i-button', {
                   props: {
                     type: 'text'
                   },
@@ -121,8 +132,7 @@
                 '查看'
               ),
               h(
-                'i-button',
-                {
+                'i-button', {
                   props: {
                     type: 'text'
                   },
@@ -152,18 +162,20 @@
           editable: true,
           title: '环节',
           minWidth: this.$common.getColumnWidth(4),
-          render: (h, {row, columns, index}) => {
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
             if (row.riskStatus) {
               return h('div', [
                 h('span', {}, this.$dict.getDictName(row.orderLink)),
                 h(
-                  'Tooltip',
-                  {
+                  'Tooltip', {
                     props: {
                       content: row.riskRemark
                     }
-                  },
-                  [
+                  }, [
                     h('svg-icon', {
                       props: {
                         iconClass: this.getIconClass(row)
@@ -191,7 +203,11 @@
           editable: true,
           key: 'orderStatus',
           minWidth: this.$common.getColumnWidth(3),
-          render: (h, {row, columns, index}) => {
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
             return h('span', {}, this.$dict.getDictName(row.orderStatus))
           }
         },
@@ -201,10 +217,13 @@
           key: 'orderNumber',
           align: 'center',
           minWidth: this.$common.getColumnWidth(6),
-          render: (h, {row, columns, index}) => {
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
             return h(
-              'i-button',
-              {
+              'i-button', {
                 props: {
                   type: 'text'
                 },
@@ -224,7 +243,11 @@
           title: '订单创建时间',
           key: 'createTime',
           minWidth: this.$common.getColumnWidth(6),
-          render: (h, {row, column, index}) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h(
               'span',
               FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
@@ -237,7 +260,11 @@
           title: '进入资源池时间',
           key: 'intoPoolDate',
           minWidth: this.$common.getColumnWidth(6),
-          render: (h, {row, column, index}) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h(
               'span',
               FilterService.dateFormat(row.intoPoolDate, 'yyyy-MM-dd hh:mm:ss')
@@ -250,7 +277,11 @@
           title: '省份',
           key: 'province',
           minWidth: this.$common.getColumnWidth(3),
-          render: (h, {row, column, index}) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('span', CityService.getCityName(row.province))
           }
         },
@@ -260,7 +291,11 @@
           title: '城市',
           key: 'city',
           minWidth: this.$common.getColumnWidth(3),
-          render: (h, {row, column, index}) => {
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
             return h('span', CityService.getCityName(row.city))
           }
         },
@@ -270,7 +305,11 @@
           title: '订单类型',
           key: 'orderType',
           minWidth: this.$common.getColumnWidth(4),
-          render: (h, {row, columns, index}) => {
+          render: (h, {
+            row,
+            columns,
+            index
+          }) => {
             return h('span', {}, this.$dict.getDictName(row.orderType))
           }
         },
@@ -372,12 +411,15 @@
             this.$Message.success('移出成功')
             this.getBlackList()
           },
-          ({msg}) => {
+          ({
+            msg
+          }) => {
             this.$Message.error(msg)
           }
         )
     }
   }
+
 </script>
 
 <style lang="less" scoped>
@@ -442,4 +484,5 @@
       }
     }
   }
+
 </style>

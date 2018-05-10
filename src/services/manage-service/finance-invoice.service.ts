@@ -1,8 +1,9 @@
-//backlog-controller : 待办事项管理
+//财务开票
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
+import {FilterService} from "~/utils/filter.service";
 
 export class FinanceInvoiceService {
   @Inject(NetService)
@@ -12,10 +13,23 @@ export class FinanceInvoiceService {
    * 财务开票列表
    */
   getFinanceInvoiceList(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.financeInvoiceController.getFinanceInvoiceList,
-      data,
-      page
+      data:{
+        startTime: dateRange.start,
+        endTime: dateRange.end,
+        timeSearch: data.timeSearch,
+        dynamicCondition:data.dynamicCondition,
+        collectMoneyChannel:data.collectMoneyChannel,
+        invoicingStatus:data.invoicingStatus,
+        companyId:data.companyId,
+        collectItem:data.collectItem,
+      },
+      page:page
     })
   }
 }
+
+
+  
