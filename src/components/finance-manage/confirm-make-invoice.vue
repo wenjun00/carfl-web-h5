@@ -1,5 +1,5 @@
 <!--确认开票-->
-<template>
+<template> 
   <div class="component confirm-make-invoice">
     <i-form :label-width="110">
       <i-row>
@@ -31,23 +31,14 @@
       </i-row>
     </i-form>
     <!--发票-->
+
     <i-row class="modal-item">
       <div>
         <div class="modal-item-fapiao"></div>
         <span>发票</span>
       </div>
       <i-row class="modal-item-fujian">
-        <i-col :span="12">
-          <div class="modal-item-fujian-div">
-            <Icon type="plus-circled" class="modal-item-fujian-icon" size="40"></Icon>
-            <div>点击添加附件</div>
-            <span class="modal-item-fujian-text">支持jpg/pdf/png格式建议大小不超过10M</span>
-          </div>
-        </i-col>
-        <i-col :span="12">
-          <div class="modal-item-div">
-          </div>
-        </i-col>
+             <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher"></upload-voucher>
       </i-row>
     </i-row>
   </div>
@@ -58,10 +49,33 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { Action } from "vuex-class";
+import UploadVoucher from "~/components/common/upload-voucher.vue";
 
-@Component({})
+@Component({
+  components: {
+    UploadVoucher
+  }
+})
 export default class ConfirmMakeInvoice extends Vue {
   private single: Boolean = false;
+  private fodderList: any = [];
+   /**
+    *上传图片
+    */
+   fileNumber(item) {
+       alert(1)
+      this.fodderList = item;
+    }
+
+
+   
+   
+
+   
+
+
+
+
 }
 
 </script>

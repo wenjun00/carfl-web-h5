@@ -175,7 +175,7 @@
 
     <!--合规通过-->
     <template>
-      <i-modal title="审批通过" v-model="meetConditionApproval">
+      <i-modal title="审批通过" v-model="meetConditionApproval" @on-visible-change="closeApproval">
         <i-form :label-width="100">
           <i-row>
             <i-col>
@@ -623,10 +623,12 @@ export default class MyApproval extends Page {
   }
 
   /**
-   * 合规通过取消
+   * 合规通过取消  meetConditionPassCancel
    */
-  meetConditionPassCancel() {
+  meetConditionPassCancel(){
     this.meetConditionApproval = false
+  }
+  closeApproval() {
     this.passModel.remark = ''
     this.passModel.contractDate = ''
     // this.passModel.effectiveType = 1160

@@ -2,39 +2,39 @@
 <template>
   <section class="page finance-make-invoice">
     <page-header title="财务开票" hiddenPrint hiddenExport>
-      <command-button label="确认开票" @click="confirmMakeInvoice"></command-button>
     </page-header>
-    <data-form :model="model" hiddenDateSearch hidden-reset :page="pageService">
+
+    <data-form data-prop="timeSearch" :model="model" :page="pageService" @on-search="query">
       <template slot="input">
-        <i-form-item label="关键字：" prop="dynamicCondition">
-          <i-input placeholder="客户姓名\发票号" v-model="model.dynamicCondition"></i-input>
+        <i-form-item label="客户姓名" prop="dynamicCondition">
+          <i-input v-model="model.dynamicCondition" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
-        <i-form-item prop="invoicingStatus" label="开票状态">
-          <i-select placeholder="开票状态" v-model="model.invoicingStatus">
-            <i-option label="已开票" value="已开票" key="已开票"></i-option>
-            <i-option label="未开票" value="未开票" key="未开票"></i-option>
+        <i-form-item label="订单编号" prop="collectMoneyChannel">
+          <i-input v-model="model.collectMoneyChannel" placeholder="请输入订单编号"></i-input>
+        </i-form-item>
+        <i-form-item label="开票状态" prop="invoicingStatus">
+          <i-select v-model="model.invoicingStatus" placeholder="请选择开票状态">
+            <i-option v-for="{value,label} in $dict.getDictData('0119')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="companyId" label="所属公司：">
-          <i-select placeholder="全部机构" v-model="model.companyId">
-            <i-option value="群泰上海" key="群泰上海" label="群泰上海"></i-option>
-            <i-option value="群泰西安" key="群泰西安" label="群泰西安"></i-option>
+        <i-form-item label="所属公司" prop="companyId">
+          <i-select v-model="model.companyId" placeholder="请选择所属公司">
+            <!-- <i-option v-for="{value,label} in $dict.getDictData('0001')" :key="value" :label="label" :value="value"></i-option> -->
           </i-select>
         </i-form-item>
-        <i-form-item prop="collectItem" label="状态筛选：">
-          <i-select placeholder="全部项目" v-model="model.collectItem">
-            <i-option value="汇付" key="汇付" label="汇付"></i-option>
-            <i-option value="富友" key="富友" label="富友"></i-option>
-            <i-option value="支付宝" key="支付宝" label="支付宝"></i-option>
-            <i-option value="现金" key="现金" label="现金"></i-option>
+        <i-form-item label="开票项目" prop="collectItem">
+          <i-select v-model="model.collectItem" placeholder="请选择开票项目">
+            <!-- <i-option v-for="{value,label} in $dict.getDictData('0001')" :key="value" :label="label" :value="value"></i-option> -->
           </i-select>
         </i-form-item>
-        <i-form-item prop="dateRange" label="付款日期：">
-          <i-date-picker v-model="model.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+        <i-form-item label="收款日期" prop="dateRange">
+          <i-date-picker v-model="model.dateRange" type="daterange"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="columns1" :data="data1" :page="pageService" @onPageChange="query"></data-box>
+
+
+    <data-box :columns="columnsData" :data="dataSet" :page="pageService"></data-box>
     <template>
       <i-modal v-model="makeInvoiceModal" title="确认开票" :width="600" class="confirmMakeInvoice">
         <confirm-make-invoice></confirm-make-invoice>
@@ -50,80 +50,62 @@
 </template>
 
 <script lang="ts">
-import DataBox from '~/components/common/data-box.vue'
-import Page from '~/core/page'
-import Component from 'vue-class-component'
-import ConfirmRepayment from '~/components/finance-manage/confirm-repayment.vue'
-import DeductRecord from '~/components/finance-manage/deduct-record.vue'
-import RepayInfo from '~/components/finance-manage/repay-info.vue'
-import CheckAttachment from '~/components/finance-manage/check-attachment.vue'
-import ConfirmMakeInvoice from '~/components/finance-manage/confirm-make-invoice.vue'
-import { Tooltip } from 'iview'
-import { Dependencies } from '~/core/decorator'
-import { Layout } from '~/core/decorator'
-import { FinanceInvoiceService } from '~/services/manage-service/finance-invoice.service'
-import { PageService } from '~/utils/page.service'
-import { FilterService } from '~/utils/filter.service'
+  import Page from '~/core/page'
+  import Component from 'vue-class-component'
+  import ConfirmRepayment from '~/components/finance-manage/confirm-repayment.vue'
+  import DeductRecord from '~/components/finance-manage/deduct-record.vue'
+  import RepayInfo from '~/components/finance-manage/repay-info.vue'
+  import CheckAttachment from '~/components/finance-manage/check-attachment.vue'
+  import ConfirmMakeInvoice from '~/components/finance-manage/confirm-make-invoice.vue'
+  import {
+    Tooltip
+  } from 'iview'
+  import {
+    Dependencies
+  } from '~/core/decorator'
+  import {
+    Layout
+  } from '~/core/decorator'
+  import {
+    FinanceInvoiceService
+  } from '~/services/manage-service/finance-invoice.service'
+  import {
+    PageService
+  } from '~/utils/page.service'
+  import {
+    FilterService
+  } from '~/utils/filter.service'
 
-@Layout('workspace')
-@Component({
-  components: {
-    DataBox,
-    ConfirmRepayment,
-    DeductRecord,
-    RepayInfo,
-    CheckAttachment,
-    ConfirmMakeInvoice
-  }
-})
-export default class FinanceMakeInvoice extends Page {
-  @Dependencies(FinanceInvoiceService) private financeInvoiceService: FinanceInvoiceService
-  @Dependencies(PageService) private pageService: PageService
-  private columns1: any
-  private data1: any = []
-  private searchOptions: Boolean = false
-  private openColumnsConfig: Boolean = false
-  private makeInvoiceModal: Boolean = false
-  private checkAttachmentModal: Boolean = false
-  private model: any = {
-    dynamicCondition: '',
-    invoicingStatus: '',
-    companyId: '',
-    collectItem: '',
-    collectMoneyChannel: '',
-    startDate: '',
-    endDate: '',
-    dateRange: []
-  }
 
-  query() {
-    this.financeInvoiceService
-      .getFinanceInvoiceList(this.model, this.pageService)
-      .subscribe(
-      val => {
-        this.data1 = val
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
-      )
-  }
-
-  openSearch() {
-    this.searchOptions = !this.searchOptions
-  }
-
-  /**
-   * 确认开票
-   */
-  confirmMakeInvoice() {
-    this.makeInvoiceModal = true
-  }
-
-  created() {
-    this.query()
-    this.columns1 = [
-      {
+  @Layout('workspace')
+  @Component({
+    components: {
+      ConfirmRepayment,
+      DeductRecord,
+      RepayInfo,
+      CheckAttachment,
+      ConfirmMakeInvoice
+    }
+  })
+  export default class FinanceMakeInvoice extends Page {
+    @Dependencies(FinanceInvoiceService) private financeInvoiceService: FinanceInvoiceService
+    @Dependencies(PageService) private pageService: PageService
+    private dataSet: Array < any > = []
+    private searchOptions: Boolean = false
+    private openColumnsConfig: Boolean = false
+    private makeInvoiceModal: Boolean = false
+    private checkAttachmentModal: Boolean = false
+    private model: any = {
+      dynamicCondition: '', // 客户姓名
+      invoicingStatus: '', // 开票状态
+      companyId: '', // 所属公司
+      collectItem: '', // 开票项目
+      collectMoneyChannel: '', // 订单编号
+      startDate: '', // 起始日期
+      endDate: '', // 结束日期
+      dateRange: [] // 日期
+    }
+    private columnsData: any = [{
         align: 'center',
         type: 'selection',
         width: 40,
@@ -131,60 +113,107 @@ export default class FinanceMakeInvoice extends Page {
       },
       {
         title: '操作',
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(8),
         align: 'center',
         fixed: 'left',
-        render: (h, { row, column, index }) => {
-          return h('div', [
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
-                },
-                on: {
-                  click: () => {
-                    this.checkAttachment(row)
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
+          // 190 未开票 //191 已开票  // 192 开票撤销
+          if (row.invoicingStatus == '190') {
+            return h('div', [
+              h(
+                'i-button', {
+                  props: {
+                    type: 'text'
+                  },
+                  on: {
+                    click: () => {
+                      this.checkAttachment(row)
+                    }
+                  },
+                  style: {
+                    color: '#265EA2'
                   }
                 },
-                style: {
-                  color: '#265EA2'
-                }
-              },
-              '查看附件'
-            ),
-            h(
-              'i-button',
-              {
-                props: {
-                  type: 'text'
+                '查看附件'
+              ),
+              h(
+                'i-button', {
+                  props: {
+                    type: 'text'
+                  },
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.paymentDetails()
+                    }
+                  },
                 },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '提示',
-                      content: '确定撤销吗？',
-                      onOk: () => {
-                        this.$Message.info('撤销成功！')
-                      }
-                    })
+                '收款详情'
+              )
+            ])
+          } else {
+            return h('div', [
+              h(
+                'i-button', {
+                  props: {
+                    type: 'text'
+                  },
+                  on: {
+                    click: () => {
+                      this.confirmMakeInvoice()
+                    }
+                  },
+                  style: {
+                    color: '#265EA2'
                   }
                 },
-                style: {
-                  color: '#265EA2'
-                }
-              },
-              '撤销'
-            )
-          ])
+                '确认开票'
+              ),
+              h(
+                'i-button', {
+                  props: {
+                    type: 'text'
+                  },
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.paymentDetails()
+                    }
+                  },
+                },
+                '收款详情'
+              )
+            ])
+          }
+
+
         }
       },
       {
-        title: '付款日期',
+        align: 'center',
+        title: '订单编号',
+        key: 'orderNumber',
+        minWidth: this.$common.getColumnWidth(8)
+      },
+      {
+        title: '收款日期',
         key: 'actualCollectDate',
+        sortable: true,
         align: 'center',
         minWidth: this.$common.getColumnWidth(6),
-        render: (h, { row, column, index }) => {
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
           return h(
             'span',
             FilterService.dateFormat(row.actualCollectDate, 'yyyy-MM-dd')
@@ -199,10 +228,14 @@ export default class FinanceMakeInvoice extends Page {
       },
       {
         align: 'center',
-        title: '项目',
+        title: '开票项目',
         key: 'collectItem',
         minWidth: this.$common.getColumnWidth(3),
-        render: (h, { row, column, index }) => {
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
           return h('span', {}, this.$dict.getDictName(row.collectItem))
         }
       },
@@ -211,10 +244,11 @@ export default class FinanceMakeInvoice extends Page {
         title: '金额',
         key: 'collectMoneyAmount',
         minWidth: this.$common.getColumnWidth(4),
-        render: (h, { row }) => {
+        render: (h, {
+          row
+        }) => {
           return h(
-            'div',
-            {
+            'div', {
               style: {
                 textAlign: 'right'
               }
@@ -240,16 +274,25 @@ export default class FinanceMakeInvoice extends Page {
         title: '结算通道',
         minWidth: this.$common.getColumnWidth(3),
         key: 'colectMoneyChannel',
-        render: (h, { row, column, index }) => {
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
           return h('span', {}, this.$dict.getDictName(row.colectMoneyChannel))
         }
       },
       {
         align: 'center',
         title: '开票状态',
-        minWidth: this.$common.getColumnWidth(2),
+        sortable: true,
+        minWidth: this.$common.getColumnWidth(3),
         key: 'invoicingStatus',
-        render: (h, { row, column, index }) => {
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
           return h('span', {}, this.$dict.getDictName(row.invoicingStatus))
         }
       },
@@ -264,7 +307,11 @@ export default class FinanceMakeInvoice extends Page {
         title: '开票日期',
         minWidth: this.$common.getColumnWidth(5),
         key: 'invoicingDate',
-        render: (h, { row, column, index }) => {
+        render: (h, {
+          row,
+          column,
+          index
+        }) => {
           return h(
             'span',
             FilterService.dateFormat(row.invoicingDate, 'yyyy-MM-dd')
@@ -284,66 +331,115 @@ export default class FinanceMakeInvoice extends Page {
         minWidth: this.$common.getColumnWidth(6)
       }
     ]
+
+    /**
+     * 获取财务开票列表
+     */
+    query() {
+      this.financeInvoiceService
+        .getFinanceInvoiceList(this.model, this.pageService)
+        .subscribe(
+          val => {
+            this.dataSet = val
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg)
+          }
+        )
+    }
+
+    openSearch() {
+      this.searchOptions = !this.searchOptions
+    }
+
+    /**
+     * 确认开票
+     */
+    confirmMakeInvoice() {
+      this.makeInvoiceModal = true
+    }
+    /**
+     * 收款详情
+     */
+    paymentDetails() {
+
+    }
+
+
+
+    columnsConfig() {
+      this.openColumnsConfig = true
+    }
+    /**
+     * 确定
+     */
+    confirm() {}
+    /**
+     * 查看附件
+     */
+    checkAttachment(row) {
+      this.checkAttachmentModal = true
+    }
+    /**
+     * 切换触发
+     */
+    activated() {
+      this.query()
+    }
+
+    mounted() {
+      this.query()
+    }
   }
-  columnsConfig() {
-    this.openColumnsConfig = true
-  }
-  /**
-   * 确定
-   */
-  confirm() { }
-  /**
-   * 查看附件
-   */
-  checkAttachment(row) {
-    this.checkAttachmentModal = true
-  }
-}
+
 </script>
 
 <style lang="less">
-.page.finance-make-invoice {
-  .fixed-container {
-    height: 65px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #fff;
-    z-index: 10;
-    text-align: right;
-    padding: 10px 20px;
-    box-shadow: 0px -5px 10px #ccc;
-  }
-  .title {
-    margin-left: 10px;
-  }
-  .form-input {
-    display: inline-block;
-    width: 10%;
-  }
-  .form-select {
-    margin-left: 10px;
-    width: 10%;
-  }
-  .form-button {
-    margin-left: 10px;
-    color: #265ea2;
-  }
-  .second-data {
-    margin: 6px;
-    .second-select {
-      margin-left: 10px;
-      width: 15%;
+  .page.finance-make-invoice {
+    .fixed-container {
+      height: 65px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      z-index: 10;
+      text-align: right;
+      padding: 10px 20px;
+      box-shadow: 0px -5px 10px #ccc;
     }
-    .second-picker {
+    .title {
+      margin-left: 10px;
+    }
+    .form-input {
+      display: inline-block;
       width: 10%;
     }
+    .form-select {
+      margin-left: 10px;
+      width: 10%;
+    }
+    .form-button {
+      margin-left: 10px;
+      color: #265ea2;
+    }
+    .second-data {
+      margin: 6px;
+      .second-select {
+        margin-left: 10px;
+        width: 15%;
+      }
+      .second-picker {
+        width: 10%;
+      }
+    }
   }
-}
 
-.bottom {
-  text-align: right;
-  padding: 10px;
-}
+  .bottom {
+    text-align: right;
+    padding: 10px;
+  }
+
 </style>
