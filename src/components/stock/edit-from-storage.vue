@@ -62,7 +62,7 @@
             <i-row type="flex" :gutter="110">
                 <i-col :span="8">
                     <i-form-item label="车辆隶属" prop="carSubjection">
-                        <i-input placeholder="请填写车辆隶属" v-model="outTreasuryModel.carSubjection" :maxlength="10"></i-input>
+                        <i-input placeholder="请填写车辆隶属" v-model="outTreasuryModel.carSubjection" :maxlength="10" disabled></i-input>
                     </i-form-item>
                 </i-col>
                 <!--<i-col :span="8">-->
@@ -208,6 +208,7 @@ export default class EditFromStorage extends Vue {
         this.outTreasuryModel.city = !!data.assessmentPlacingApplyModel.city ? CityService.getCityName(Number(data.assessmentPlacingApplyModel.city)) : ''
         this.outTreasuryModel.frameNo = data.assessmentPlacingApplyModel.frameNo
         this.outTreasuryModel.engineNo = data.assessmentPlacingApplyModel.engineNo
+        this.outTreasuryModel.carSubjection = data.carSubjection
         this.outTreasuryModel.cardsDate = FilterService.dateFormat(data.cardsDate, 'yyyy-MM-dd')
       },({msg}) => {
         this.$Message.error(msg)

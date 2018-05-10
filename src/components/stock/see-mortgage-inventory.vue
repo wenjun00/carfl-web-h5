@@ -134,7 +134,7 @@
             <i-row class="data-form">
                 <i-col>
                     <div class="data-form-item"></div>
-                    <a class="information">文件数量</a>
+                    <a class="information">文件数量({{fileNumberList}})</a>
                 </i-col>
             </i-row>
                <i-row type="flex" :gutter="110">
@@ -164,6 +164,7 @@ export default class SeeMortgageInventory extends Vue {
  @Dependencies(AssessMentPlacingService) private assessMentPlacingService: AssessMentPlacingService
   private content:any = []
   private cuoContent:any = []
+  private fileNumberList:any = 0
   private mortgageInventoryModel: any = {
     warehousingSituation:'',
     warehousingDate:'',
@@ -204,6 +205,7 @@ export default class SeeMortgageInventory extends Vue {
           this.cuoContent =data.assessmentPlacingTypeValueList.map(x=>x.placingTypeValue)
           let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher
           uploadVoucher.Reverse(data.assessmentPlacingFileList)
+          this.fileNumberList = data.assessmentPlacingFileList.length
         },({msg}) => {
           this.$Message.error(msg)
         })
