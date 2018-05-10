@@ -489,13 +489,18 @@ export default class ApprovalReasonManage extends Page {
    * 选择类型 查询一级二级的select
    */
   selectType(val) {
+    if(val == ''){
+      this.firstOption = []
+      this.secondOption = []
+      return
+    }
     this.appReasonModel.type = val
     this.appReasonModel.first = ''
     this.appReasonModel.second = ''
     this.approveReasonService
       .getApproveReasonByCondition(this.appReasonModel)
       .subscribe(val => {
-        console.log(val)
+        // console.log(val)
         let optionArray = val.map(v => v.first)
         let set1 = new Set(optionArray)
         this.firstOption = Array.from(set1)
@@ -503,6 +508,10 @@ export default class ApprovalReasonManage extends Page {
   }
 
   firstSelect(val) {
+    if(val == ''){
+      this.secondOption = []
+      return
+    }
     this.appReasonModel.type = this.appReasonModel.type
     this.appReasonModel.first = val
     this.appReasonModel.second = ''
