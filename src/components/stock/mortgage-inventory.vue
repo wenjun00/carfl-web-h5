@@ -99,7 +99,7 @@
           </i-form-item>
         </i-col>
         <i-col :span="24">
-          <i-form-item label="措施内容" prop="fee" v-if="!!mortgageInventoryModel.placingTypeId">
+          <i-form-item label="措施内容" prop="fee" v-show="mortgageInventoryModel.placingTypeId">
             <i-checkbox-group v-model="mortgageInventoryModel.fee">
               <i-checkbox v-for="item in parkingStateShow" :key="item.id" :label="item.parkeAttr" :value="item.id">
               </i-checkbox>
@@ -131,7 +131,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { Dependencies } from '~/core/decorator'
-import { Emit, Prop, Watch } from "vue-property-decorator";
+import { Prop, Watch } from "vue-property-decorator";
 import { Form } from 'iview'
 import UploadVoucher from "~/components/common/upload-voucher.vue"
 import { AssessMentPlacingService } from '~/services/manage-service/assess-ment-placing.service'
@@ -143,21 +143,14 @@ import { AssessMentPlacingService } from '~/services/manage-service/assess-ment-
 })
 export default class addPeople extends Vue {
   @Dependencies(AssessMentPlacingService) private assessMentPlacingService: AssessMentPlacingService
-  @Emit('close')
-  emitClose() {
-    let productForm = this.$refs["form-item"] as Form;
-    productForm.resetFields();
-    let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher
-    uploadVoucher.reset()
-  }
 
   /**
    * 当前订单ID
    */
   @Prop({ required: true })
   id: number;
-  @Watch('id', { immediate: true })
-  onIdChange() {
+
+  mounted() {
     this.getInventoryData()
   }
 
@@ -176,6 +169,7 @@ export default class addPeople extends Vue {
     fee: [],                          // 措施内容
     placingTypeId: '',
     assessmentPlacingFileList: '', //文件列表
+    id: ''
   }
   private parkingStateShow: any = []
   private parkingState: any = []
@@ -186,7 +180,7 @@ export default class addPeople extends Vue {
     warehousingDate: [{ required: true, message: '请选入库日期', trigger: 'change', type: 'date' }],
     odometer: [{ required: true, message: '请填写里程表', trigger: 'change' }],
     warehousingSituation: [{ required: true, message: '请选择车况', trigger: 'change', type: 'number' }],
-    placingTypeId: [{ required: true, message: '请选择停放状态', trigger: 'change', type: 'number' }]
+    placingTypeId: [{ required: true, message: '请选择停放状态', trigger: 'blur', type: 'number' }]
   }
   private fileNumberList: any = 0
 
@@ -253,7 +247,7 @@ export default class addPeople extends Vue {
 
     return new Promise((resolve, reject) => {
       form.validate(v => {
-        if (!v) reject()
+        if (!v) return reject()
 
         this.mortgageInventoryModel.applyId = this.mortgageInventoryModel.applyId
         this.mortgageInventoryModel.assessmentPlacingFileList = this.fodderList
@@ -276,10 +270,10 @@ export default class addPeople extends Vue {
   /**
    * 关闭弹窗清空数据
    */
-  resetClose(){
+  resetClose() {
     let restoreDatas = <Form>this.$refs["form-item"];
-    restoreDatas.resetFields(); 
-    this.mortgageInventoryModel.warehousingDesc='' 
+    restoreDatas.resetFields();
+    this.mortgageInventoryModel.warehousingDesc = ''
   }
 
 

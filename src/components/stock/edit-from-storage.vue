@@ -207,7 +207,7 @@ export default class EditFromStorage extends Vue {
 
     return new Promise((resolve, reject) => {
       form.validate(result => {
-        if (!result) reject()
+        if (!result) return reject()
 
         this.outTreasuryModel.id = this.id
         this.outTreasuryModel.assessmentPlacingFileList = this.fodderList

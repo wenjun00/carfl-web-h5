@@ -85,9 +85,10 @@ export default class EvaluationTaskPool extends Page {
                       title: "押品入库",
                       footer: true,
                       onOk: mortgageInventory => {
-                        return mortgageInventory.confirmInventoryModal
-                          .then(() => this.getInTreasuryList())
-                          .catch(() => false)
+                        let result = mortgageInventory.sendInventoryData()
+                          .then(() => { this.getInTreasuryList(); return true })
+                          .catch(() => { return false })
+                        return result
                       },
                       onCalcel: () => { },
                       render: h => h(MortgageInventory, { props: { id: row.warehousingId } })

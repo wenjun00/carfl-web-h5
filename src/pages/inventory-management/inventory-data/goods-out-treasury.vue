@@ -87,8 +87,11 @@ export default class GoodsOutTreasury extends Page {
                       width: 800,
                       onOk: editFromStorage => {
                         return editFromStorage.confirmTreasury()
-                          .then(() => this.getOutTreasuryList())
-                          .catch(() => false)
+                          .then(() =>{ 
+                            this.getOutTreasuryList()
+                            return true
+                            })
+                          .catch(() =>{ return false})
                       },
                       onCancel: () => { },
                       render: h => {
