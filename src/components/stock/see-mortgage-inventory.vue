@@ -131,7 +131,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { Dependencies } from '~/core/decorator'
-import { Watch, Prop } from 'vue-Property-decorator';
+import { Watch, Prop } from 'vue-property-decorator';
 import { Form } from 'iview'
 import UploadVoucher from "~/components/common/upload-voucher.vue"
 import { AssessMentPlacingService } from '~/services/manage-service/assess-ment-placing.service'
