@@ -114,6 +114,13 @@
                 on: {
                   click: () => {
                     this.addAttachmentModal = true
+                    this.paymentScheduleService.getFinanceUploadResource({ periods:row.periods,orderNumber:this.rowObj.orderNumber})
+                      .subscribe( data =>{
+                        let uploadVoucherOne = this.$refs['upload-voucher-two'] as UploadVoucher
+                        uploadVoucherOne.Reverse(data)
+                      },({msg}) => {
+                        this.$Message.error(msg)
+                      })
                   }
                 },
                 style: {
