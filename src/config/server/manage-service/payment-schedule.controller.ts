@@ -94,5 +94,14 @@ export default {
     controller: CONTROLLER,
     action: 'saveCustomerPaymentInfoAsDraft',
     type: requestType.Post
+  },
+  /**
+   *  客户还款当期补传凭证查看当期凭证
+   */
+  getFinanceUploadResource:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getFinanceUploadResource',
+    type: requestType.Get
   }
 }
