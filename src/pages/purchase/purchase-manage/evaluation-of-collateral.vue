@@ -15,7 +15,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="collateralColumns" :data="dataSet" :page="pageService"></data-box>
+    <data-box :columns="collateralColumns" :data="dataSet" :page="pageService"  @onPageChange="getCollateralList"></data-box>
     <template>
       <i-modal v-model="assignModal" title="新增评估" width="780">
         <add-collateral ref="add-collateral" @close="close"></add-collateral>

@@ -63,6 +63,8 @@
     private repayRecordModal: Boolean = false;
     private addAttachmentModal: Boolean = false;
     private fodderList:any = []
+    private periods:any = '' //当期期数
+    private backFile:any = [] //当期返现数据
 
     refresh(row) {
       this.repayList = []
@@ -114,8 +116,10 @@
                 on: {
                   click: () => {
                     this.addAttachmentModal = true
+                    this.periods = row.periods
                     this.paymentScheduleService.getFinanceUploadResource({ periods:row.periods,orderNumber:this.rowObj.orderNumber})
                       .subscribe( data =>{
+                        this.backFile = data
                         let uploadVoucherOne = this.$refs['upload-voucher-two'] as UploadVoucher
                         uploadVoucherOne.Reverse(data)
                       },({msg}) => {
@@ -327,13 +331,22 @@
         }
       ]
     }
-
     cancelOne() {
       this.addAttachmentModal = false
     }
-
     confirmOne() {
-
+      if(this.fodderList.length === 0){
+        this.fodderList = this.backFile
+      }
+      this.paymentScheduleService.saveScheduleUploadResources({ periods:this.periods,orderNumber:this.rowObj.orderNumber,financeUploadResources:this.fodderList})
+        .subscribe( data => {
+          this.$Message.success("保存成功")
+          this.addAttachmentModal = false
+          let uploadVoucherOne = this.$refs['upload-voucher-two'] as UploadVoucher
+          uploadVoucherOne.reset()
+        },({msg}) => {
+         this.$Message.error(msg)
+        })
     }
   }
 

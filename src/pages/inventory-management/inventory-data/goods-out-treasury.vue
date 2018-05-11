@@ -21,7 +21,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="goodsOutColumns" :data="dataSet" :page="pageService"></data-box>
+    <data-box :columns="goodsOutColumns" :data="dataSet" :page="pageService" @onPageChange="getOutTreasuryList"></data-box>
 
   </section>
 </template>

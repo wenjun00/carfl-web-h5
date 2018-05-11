@@ -170,6 +170,9 @@ export default class FileUpload extends Vue {
    * 上传操作
    */
   upload() {
+    if(this.uploadList.length === 0){
+      return false
+    }
     let upload = this.$refs["upload"] as Upload;
     this.uploadList.filter(x => x.state === "ready").forEach(({ file }) => {
       upload.post(file);

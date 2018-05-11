@@ -5,7 +5,7 @@
       <data-grid-item label="客户姓名" :span="6">{{row.personalName}}</data-grid-item>
       <data-grid-item label="订单数" :span="6">{{row.orderNumber}}</data-grid-item>
 
-      <data-grid-item label="创建时间" :span="6">{{row.createTime}}</data-grid-item>
+      <data-grid-item label="创建时间" :span="6">{{row.createTime | dateFormat('yyyy-MM-dd')}}</data-grid-item>
       <data-grid-item label="归属公司" :span="6">{{row.companyName}}</data-grid-item>
 
       <data-grid-item label="证件号码" :span="6">{{row.idCard}}</data-grid-item>
