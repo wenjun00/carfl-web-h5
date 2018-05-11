@@ -76,8 +76,9 @@ export default class WorkTab extends Vue {
   onPageChanged(value: string) {
     let components = <Array<Vue>>this.$refs["pages"];
 
-    let getTargetComponent = () =>
-      components.find(x => x.$options.name === this.getComponentName(value));
+    let getTargetComponent = () => {
+      return components.find(x => x.$options.name === this.getComponentName(value));
+    }
 
     let component = getTargetComponent();
 
@@ -94,12 +95,14 @@ export default class WorkTab extends Vue {
     // 处理页面传参情况
     if (page.params) {
       this.$nextTick(() => {
-        let component = getTargetComponent();
-        if (component && component["loaded"]) {
-          let loaded = component["loaded"];
-          loaded.call(component, Object.assign({}, page.params));
-          page.params = null;
-        }
+        setTimeout(() => {
+          let component = getTargetComponent();
+          if (component && component["loaded"]) {
+            let loaded = component["loaded"];
+            loaded.call(component, Object.assign({}, page.params));
+            page.params = null;
+          }
+        }, 100)
       });
     }
   }
