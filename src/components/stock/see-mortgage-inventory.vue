@@ -131,7 +131,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { Dependencies } from '~/core/decorator'
-import { Watch, Prop } from 'vue-property-decorator';
+import { Prop } from 'vue-property-decorator';
 import { Form } from 'iview'
 import UploadVoucher from "~/components/common/upload-voucher.vue"
 import { AssessMentPlacingService } from '~/services/manage-service/assess-ment-placing.service'
@@ -149,11 +149,6 @@ export default class SeeMortgageInventory extends Vue {
   })
   id;
 
-  @Watch('id', { immediate: true })
-  onIdChange() {
-    this.acquireInventoryData()
-  }
-
   private content: any = []
   private cuoContent: any = []
   private mortgageInventoryModel: any = {
@@ -167,6 +162,10 @@ export default class SeeMortgageInventory extends Vue {
     engineNo: '',
     modelofcar: '',
     fee: [],
+  }
+
+  mounted() {
+    this.acquireInventoryData()
   }
 
   /**
@@ -192,7 +191,7 @@ export default class SeeMortgageInventory extends Vue {
         this.mortgageInventoryModel.carSource = data.carSource
         this.mortgageInventoryModel.warehousingDate = data.warehousingDate
         this.content = data.assessmentPlacingTypeValueList
-        this.mortgageInventoryModel.fee = data.assessmentPlacingTypeValueList.find(v => v.placingTypeId).placingTypeId
+        this.mortgageInventoryModel.fee = (data.assessmentPlacingTypeValueList.find(v => v.placingTypeId) || {}).placingTypeId
         this.cuoContent = data.assessmentPlacingTypeValueList.map(x => x.placingTypeValue)
         let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher
         uploadVoucher.Reverse(data.assessmentPlacingFileList)

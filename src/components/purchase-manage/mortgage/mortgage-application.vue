@@ -183,7 +183,7 @@ export default class MortgageApplication extends Vue {
   productPlanIssueService: ProductPlanIssueService;
 
   @Emit("on-product-change")
-  emitProductChange(product) {}
+  emitProductChange(product) { }
   @Prop() cardNumber; // 身份证号码
   // 车辆押品列表
   public carDataSet: Array<any> = [];
@@ -204,7 +204,7 @@ export default class MortgageApplication extends Vue {
   // 当前产品数据
   public productModel = {
     evaluateAmount: 0, // 估价金额
-    monthlySupply  : 0, // 月供金额
+    monthlySupply: 0, // 月供金额
     loadAmount: 0, // 贷款金额
     gpsAmount: 0, // gps金额
     manageRatio: null, // 管理费比例
@@ -262,14 +262,6 @@ export default class MortgageApplication extends Vue {
         trigger: "change"
       }
     ]
-    // intentionMethod: [
-    //   {
-    //     required: true,
-    //     type: "number",
-    //     message: "请填写意向抵押方式",
-    //     trigger: "change"
-    //   }
-    // ]
   };
 
   // 产品数据校验
@@ -318,54 +310,62 @@ export default class MortgageApplication extends Vue {
     {
       title: "品牌",
       align: "center",
+      minWidth: this.$common.getColumnWidth(4),
       key: "brandName"
     },
     {
       title: "系列",
       align: "center",
+      minWidth: this.$common.getColumnWidth(4),
       key: "seriesName"
     },
     {
       title: "型号",
       align: "center",
+      minWidth: this.$common.getColumnWidth(4),
       key: "carName"
     },
     {
       title: "车身颜色",
       align: "center",
-      key: "vehicleColour"
+      minWidth: this.$common.getColumnWidth(3),
+      key: "carColor"
     },
     {
       title: "车辆排量",
       align: "center",
-      key: "vehicleEmissions"
+      minWidth: this.$common.getColumnWidth(3),
+      key: "displacement"
     },
     {
       title: "车辆牌照",
       align: "center",
+      minWidth: this.$common.getColumnWidth(3),
       key: "carNo"
     },
     {
-      title: '订单编号',
+      title: '押品单号',
       align: 'center',
+      minWidth: this.$common.getColumnWidth(6),
       key: 'assessmentNo'
     },
     {
       title: '车架号',
       align: 'center',
+      minWidth: this.$common.getColumnWidth(6),
       key: 'frameNo'
     },
     {
       title: "行驶里程(公里)",
       align: "center",
       key: "mileage",
-      minWidth: this.$common.getColumnWidth(2),
+      minWidth: this.$common.getColumnWidth(4),
     },
     {
       title: "评估价(元)",
       align: "center",
       key: "evaluation",
-      minWidth: this.$common.getColumnWidth(2),
+      minWidth: this.$common.getColumnWidth(4),
       render: (h, { row }) =>
         h("span", this.$filter.toThousands(row.evaluation))
     }
@@ -442,6 +442,7 @@ export default class MortgageApplication extends Vue {
     let dialog = this.$dialog.show({
       title: "押品列表",
       footer: true,
+      width: 1200,
       size: 'large',
       onOk: mortgageCarList => {
         let currentSelection = mortgageCarList.getCurrentSelection();
@@ -449,9 +450,9 @@ export default class MortgageApplication extends Vue {
           this.$Message.error("请选择待添加的押品");
           return false;
         }
-        if(this.carDataSet.length === 0){
+        if (this.carDataSet.length === 0) {
           this.carDataSet = [...this.carDataSet, ...currentSelection];
-        }else if(this.carDataSet.map(v=>v.assessmentId).forEach((v)=>{ return v}) === currentSelection.map(v=>v.assessmentId).forEach((m)=>{ return m})){
+        } else if (this.carDataSet.map(v => v.assessmentId).forEach((v) => { return v }) === currentSelection.map(v => v.assessmentId).forEach((m) => { return m })) {
           this.$Message.error("该押品已经添加！");
           return false;
         }
@@ -506,7 +507,7 @@ export default class MortgageApplication extends Vue {
           return false;
         }
       },
-      onCancel: () => {},
+      onCancel: () => { },
       render: h => {
         return h(ProductList, {});
       }
@@ -545,13 +546,13 @@ export default class MortgageApplication extends Vue {
     // 自定义验证
     return await this.$validator
       .validate(
-        {
-          applicationForm,
-          carListCount: this.carDataSet.length,
-          currentProduct: this.currentProduct,
-          productForm
-        },
-        this.customRules
+      {
+        applicationForm,
+        carListCount: this.carDataSet.length,
+        currentProduct: this.currentProduct,
+        productForm
+      },
+      this.customRules
       )
       .then(error => {
         if (!error) {
@@ -608,11 +609,19 @@ export default class MortgageApplication extends Vue {
     this.productModel.otherAmount = data.otherFee;
     this.productModel.remark = data.remark;
 
-    this.carDataSet = data.orderCars.map(car => {
-      car.carColor = car.vehicleColour;
-      car.displacement = car.vehicleEmissions;
-      return car;
-    });
+    this.carDataSet = data.orderCars.map(v => {
+      return {
+        brandName: v.brandName,
+        seriesName: v.serisesName,
+        carColor: v.carColor,
+        displacement: v.carEmissions,
+        carNo: v.carLicence,
+        assessmentNo: v.carNumber,
+        frameNo: '',
+        mileage: v.mileage,
+        evaluation: v.carAmount
+      }
+    })
 
     // 计算金额
     this.getComputedAmount();
@@ -649,7 +658,7 @@ export default class MortgageApplication extends Vue {
     letter-spacing: 1px;
     box-shadow: 0px 0px 5px #ccc;
   }
-  .total{
+  .total {
     margin-top: 15px;
   }
 }

@@ -1,30 +1,30 @@
 <!--抵押申请-->
 <template>
-    <section class="component mortgage-car-list">
-        <template>
-            <i-form class="iForm" ref="basis-form" :label-width="90">
-                <i-row type="flex">
-                    <i-col>
-                        <i-form-item label="客户姓名">
-                            <i-input v-model="owmModel.ownerName"></i-input>
-                        </i-form-item>
-                    </i-col>
-                    <i-col>
-                        <i-form-item label="联系电话">
-                            <i-input v-model="owmModel.ownPhone"></i-input>
-                        </i-form-item>
-                    </i-col>
-                    <i-col>
-                        <i-form-item label="评估编号">
-                            <i-input v-model="owmModel.orderNo"></i-input>
-                        </i-form-item>
-                    </i-col>
-                    <i-button class="iSeek" @click="search">搜索</i-button>
-                </i-row>
-            </i-form>
-        </template>
-        <data-box ref="data-box" :show-config-column="false" :data="carDataSet" :page="pageService" :columns="carColumns"></data-box>
-    </section>
+  <section class="component mortgage-car-list">
+    <template>
+      <i-form class="iForm" ref="basis-form" :label-width="90">
+        <i-row type="flex">
+          <i-col>
+            <i-form-item label="客户姓名">
+              <i-input v-model="owmModel.ownerName"></i-input>
+            </i-form-item>
+          </i-col>
+          <i-col>
+            <i-form-item label="联系电话">
+              <i-input v-model="owmModel.ownPhone"></i-input>
+            </i-form-item>
+          </i-col>
+          <i-col>
+            <i-form-item label="评估编号">
+              <i-input v-model="owmModel.orderNo"></i-input>
+            </i-form-item>
+          </i-col>
+          <i-button class="iSeek" @click="search">搜索</i-button>
+        </i-row>
+      </i-form>
+    </template>
+    <data-box ref="data-box" :show-config-column="false" :data="carDataSet" :page="pageService" :columns="carColumns"></data-box>
+  </section>
 </template>
 
 <script lang="ts">
@@ -46,9 +46,9 @@ export default class MortgageCarList extends Vue {
   private carDataSet: Array<any> = []
 
   private owmModel = {
-     ownerName:'',
-     ownPhone:'',
-     orderNo:''
+    ownerName: '',
+    ownPhone: '',
+    orderNo: ''
   }
   // 车辆列配置
   private carColumns = [
@@ -60,53 +60,62 @@ export default class MortgageCarList extends Vue {
     {
       title: '品牌',
       align: 'center',
+      minWidth: this.$common.getColumnWidth(4),
       key: 'brandName'
     },
     {
       title: '系列',
       align: 'center',
+      minWidth: this.$common.getColumnWidth(4),
       key: 'seriesName'
     },
     {
       title: '型号',
       align: 'center',
+      minWidth: this.$common.getColumnWidth(4),
       key: 'carName'
     },
     {
       title: '车身颜色',
       align: 'center',
+      minWidth: this.$common.getColumnWidth(3),
       key: 'vehicleColour'
     },
     {
       title: '车辆排量',
       align: 'center',
+      minWidth: this.$common.getColumnWidth(3),
       key: 'vehicleEmissions'
     },
     {
       title: '车辆牌照',
       align: 'center',
+      minWidth: this.$common.getColumnWidth(4),
       key: 'carNo'
     },
     {
-      title: '订单编号',
+      title: '押品单号',
       align: 'center',
+      minWidth: this.$common.getColumnWidth(6),
       key: 'assessmentNo'
     },
     {
       title: '车架号',
       align: 'center',
+      minWidth: this.$common.getColumnWidth(6),
       key: 'frameNo'
     },
     {
       title: '行驶里程(公里)',
       align: 'center',
       key: 'mileage',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(4),
     },
     {
       title: '评估价(元)',
       align: 'center',
       key: 'evaluation',
+      minWidth: this.$common.getColumnWidth(4),
       render: (h, { row }) =>
         h('span', this.$filter.toThousands(row.evaluation))
     }
@@ -118,13 +127,13 @@ export default class MortgageCarList extends Vue {
   private getMortgageCatList() {
     this.assessMentApplyService
       .orderMortgageSearch(
-        {
-          idCard: this.cardNumber,
-          ownerName: this.owmModel.ownerName,
-          ownPhone: this.owmModel.ownPhone,
-          orderNo: this.owmModel.orderNo
-        },
-        this.pageService
+      {
+        idCard: this.cardNumber,
+        ownerName: this.owmModel.ownerName,
+        ownPhone: this.owmModel.ownPhone,
+        orderNo: this.owmModel.orderNo
+      },
+      this.pageService
       )
       .subscribe(data => {
         this.carDataSet = data.map(car => ({
@@ -141,9 +150,9 @@ export default class MortgageCarList extends Vue {
           carSituation: car.carSituation,
           evaluation: car.evaluation,
           mileage: car.mileage,
-          frameNo:car.frameNo
+          frameNo: car.frameNo
         }))
-      })
+      }, err => this.$Message.error(err.msg))
   }
 
   /**
@@ -157,7 +166,7 @@ export default class MortgageCarList extends Vue {
   mounted() {
     this.getMortgageCatList()
   }
-  search(){
+  search() {
     this.getMortgageCatList()
   }
 }
