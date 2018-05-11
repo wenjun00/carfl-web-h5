@@ -61,7 +61,7 @@
         <data-grid-item label="微信号" :span="3">{{orderInfo.personal?orderInfo.personal.wechat:''}}</data-grid-item>
         <data-grid-item label="手机号码(主)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMain:''}}</data-grid-item>
         <data-grid-item label="手机号码(次)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMinor:''}}</data-grid-item>
-        <data-grid-item label="身份证有效期" :span="3">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? orderInfo.personal.idCardValidityPeriodType :orderInfo.personal.idCardValidityPeriodSection):''}}
+        <data-grid-item label="身份证有效期" :span="3">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? $dict.getDictName(orderInfo.personal.idCardValidityPeriodType ) :orderInfo.personal.idCardValidityPeriodSection):''}}
         </data-grid-item>
         <data-grid-item label="婚属状况" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.marital):''}}</data-grid-item>
         <data-grid-item label="身份证号" :span="6">{{orderInfo.personal?orderInfo.personal.idCard:''}}</data-grid-item>

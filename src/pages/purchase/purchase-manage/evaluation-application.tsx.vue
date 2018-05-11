@@ -20,7 +20,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="applicationColumns" :data="dataSet" :page="pageService"></data-box>
+    <data-box :columns="applicationColumns" :data="dataSet" :page="pageService"  @onPageChange="getApplicationList"></data-box>
 
     <template>
       <i-modal width="680" v-model="applicationModal" title="查看详情" class="apply-for-application">
