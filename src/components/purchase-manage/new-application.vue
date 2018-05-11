@@ -155,16 +155,27 @@ export default class NewApplication extends Vue {
     id: null
   }
   private requestRules: any = {
-    carColor: [{ required: true, message: "请输入车身颜色", trigger: "blur" }, { type: 'string', max: 4, message: "车身颜色不能超过4位", trigger: "blur" }],
-    engineNo: [{ required: true, message: "请输入发动机号", trigger: "blur" }, { type: 'string', max: 15, message: "发动机号不能超过15位", trigger: "blur" }],
-    carNo: [{ required: true, message: "请输入车牌号码", trigger: "blur" }, { type: 'string', max: 10, message: "车牌号码不能超过10位", trigger: "blur" }],
-    frameNo: [{ required: true, message: "请输入车架号", trigger: "blur" }, { type: 'string', min: 17, max: 17, message: "请输入17位车架号", trigger: "blur" }],
-    ownerName: [{ required: true, message: "请输入客户姓名", trigger: "blur" },
-    { pattern: /^([\u4e00-\u9fa5]){2,7}$/g, message: "请输入正确客户姓名", trigger: "blur" }],
-    idCard: [{ required: true, message: "请输入证件号码", trigger: "blur" },
-    { validator: this.$validator.idCard, trigger: 'blur' }],
-    ownPhone: [{ required: true, message: "请输入联系电话", trigger: "blur" },
-    { validator: this.$validator.phoneNumber, trigger: 'blur' }],
+    carColor: [
+      { required: true, message: "请输入车身颜色", trigger: "blur" },
+      { type: 'string', maxlength: 4, message: "车身颜色不能超过4位", trigger: "blur" }],
+    engineNo: [
+      { required: true, message: "请输入发动机号", trigger: "blur" },
+      { pattern: /^[A-Z|0-9]{10,15}$/, message: "请输入正确的发动机号", trigger: "blur" }],
+    carNo: [
+      { required: true, message: '请输入车牌号码', trigger: 'blur' },
+      { required: true, validator: this.$validator.carCardNo, trigger: "blur" }],
+    frameNo: [
+      { required: true, message: "请输入车架号", trigger: "blur" }, 
+      { pattern: /^[A-Z|0-9]{17}$/, message: "请输入正确的车架号", trigger: "blur" }],
+    ownerName: [
+      { required: true, message: "请输入客户姓名", trigger: "blur" },
+      { pattern: /^([\u4e00-\u9fa5]){2,7}$/g, message: "请输入正确客户姓名", trigger: "blur" }],
+    idCard: [
+      { required: true, message: "请输入证件号码", trigger: "blur" },
+      { validator: this.$validator.idCard, trigger: 'blur' }],
+    ownPhone: [
+      { required: true, message: "请输入联系电话", trigger: "blur" },
+      { validator: this.$validator.phoneNumber, trigger: 'blur' }],
     province: [{ required: true, message: "请选择省份", trigger: "change", type: 'number' }],
     city: [{ required: true, message: "请选择城市", trigger: "change", type: 'number' }],
   }
@@ -173,7 +184,6 @@ export default class NewApplication extends Vue {
       .subscribe(data => {
         this.carList = data
         this.brand = this.carList.filter(v => v.id)
-        console.log(this.brand)
       }, ({ msg }) => {
         this.$Message.error(msg)
       })
