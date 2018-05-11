@@ -26,7 +26,7 @@
     </i-form>
 
     <template>
-      <i-modal :loading="true" @on-ok="postFile" title="上传素材" v-model="openUpload">
+      <i-modal  @on-ok="postFile" title="上传素材" v-model="openUpload">
         <file-upload @on-success="uploadSuccess" ref="file-upload"></file-upload>
       </i-modal>
     </template>

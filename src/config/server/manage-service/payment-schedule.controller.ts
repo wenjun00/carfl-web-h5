@@ -103,5 +103,15 @@ export default {
     controller: CONTROLLER,
     action: 'getFinanceUploadResource',
     type: requestType.Get
+  },
+  /**
+   *  客户还款当期补传凭证保存当期补传凭证
+   *
+   */
+  saveScheduleUploadResources:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveScheduleUploadResources',
+    type: requestType.Post
   }
 }

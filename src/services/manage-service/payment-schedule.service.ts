@@ -128,4 +128,14 @@ export class PaymentScheduleService {
       data
     })
   }
+  /**
+   *  客户还款当期补传凭证保存当期补传凭证
+   *
+   */
+  saveScheduleUploadResources(data) {
+    return this.netService.send({
+      server: manageService.paymentScheduleController.saveScheduleUploadResources,
+      data
+    })
+  }
 }
