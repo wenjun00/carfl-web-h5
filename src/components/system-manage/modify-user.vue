@@ -120,12 +120,9 @@ export default class ModifyUser extends Vue {
       deptNames: { required: true, message: "用户必须有所属机构", trigger: "blur" }
     };
   }
-
-  mounted() {
+  getAllDepartment(){
     //获取所有组织机构
     // 重组部门数据，以适应联级选择器
-
-
     this.manageService.getAllDepartment().subscribe(
       data => {
          let stairList = []
@@ -186,6 +183,10 @@ export default class ModifyUser extends Vue {
     );
   }
 
+  mounted() {
+    this.getAllDepartment()  
+  }
+
   cancelUpdate() {
     this.$emit("close");
   }
@@ -212,7 +213,7 @@ export default class ModifyUser extends Vue {
     this.modifyModel.userManager = data.userManager;
     this.modifyModel.userRemark = data.userRemark;
     this.modifyModel.userStatus = data.userStatus;
-
+    this.getAllDepartment()
     this.getOwnerData();
     // 根据deptId获取公司名称
     this.departmentService

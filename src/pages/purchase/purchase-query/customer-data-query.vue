@@ -238,7 +238,8 @@ export default class CustomerDataQuery extends Page {
     this.personalService
       .getCustomerDataOrder(this.ordertransferModel, this.pageService)
       .subscribe(
-      data => this.customerDataSet = data,
+      data => this.customerDataSet = data
+      ,
       err => this.$Message.error(err.msg)
       );
   }

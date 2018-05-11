@@ -7,7 +7,7 @@
       <i-row>
         <i-col :span="12">
           <i-form-item label="证件号码" prop="cardNumber">
-            <i-input v-model="basisModel.cardNumber" :maxlength="18" autofocus @on-change="onCheckHistoryOrder"></i-input>
+            <i-input v-model="basisModel.cardNumber" :maxlength="18" autofocus @on-change="onCheckHistoryOrder" :disabled="transFlag"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -93,6 +93,8 @@ export default class PersonalMortgageApplication extends Page {
   @Dependencies(PersonalService) private personalService: PersonalService;
   @Mutation closePage;
 
+  // 是否跳转过来的页面
+  private transFlag: boolean = false;
   private currentStep = 0;
   private currentTab = "mortgage-application";
   private currentProduct = "";
@@ -273,6 +275,9 @@ export default class PersonalMortgageApplication extends Page {
    * 检测历史订单
    */
   async onCheckHistoryOrder() {
+
+    // 如果是跳转过来的页面就不触发
+    if (this.transFlag) return
     // 检测身份证
     if (!await this.checkIdCardValid()) {
       return;
@@ -287,6 +292,7 @@ export default class PersonalMortgageApplication extends Page {
       (data) => {
         if (data.length) {
           if (data.some(x => x.personalType === 114)) {
+            this.basisModel.cardNumber = ''
             return this.$Message.info("黑名单用户禁止创建申请");
           } else {
             return this.showHistoryOrder(data);
@@ -365,12 +371,12 @@ export default class PersonalMortgageApplication extends Page {
     this.orderStatus = orderStatus;
 
     this.basisModel.cardNumber = data.personal.idCard;
-    this.basisModel.phoneNumber = data.personal.phoneNumber;
+    this.basisModel.phoneNumber = data.personal.mobileMain;
+    this.basisModel.customterName = data.personal.name;
     // this.basisModel.phoneNumbe
     this.applicationTabs.forEach(async ({ name }) => {
       // 当前tab
       let tab: any = this.$refs[name];
-      console.log(tab);
       // 退件与草稿恢复产品信息
       switch (orderStatus) {
         case 303: {
@@ -400,8 +406,13 @@ export default class PersonalMortgageApplication extends Page {
   /**
    * 加载页面数据
    */
-  loaded({ orderNumber }) {
-    this.getOrderData(orderNumber);
+  loaded({ row }) {
+    if (!row) {
+      return
+    }
+
+    this.transFlag = true
+    this.getOrderData(row.orderNumber)
   }
 
   /**
@@ -490,25 +501,13 @@ export default class PersonalMortgageApplication extends Page {
    * 获取申请数据
    */
   getApplicationData() {
-    let mortgageApplication = this.$refs[
-      "mortgage-application"
-    ] as MortgageApplication;
 
-    let personalCustomerInfo = this.$refs[
-      "personal-customer-info"
-    ] as PersonalCustomerInfo;
-
+    let mortgageApplication = this.$refs["mortgage-application"] as MortgageApplication;
+    let personalCustomerInfo = this.$refs["personal-customer-info"] as PersonalCustomerInfo;
     let customerJob = this.$refs["customer-job"] as CustomerJob;
-
-    let personalCustomerContact = this.$refs[
-      "personal-customer-contact"
-    ] as PersonalCustomerContact;
-
+    let personalCustomerContact = this.$refs["personal-customer-contact"] as PersonalCustomerContact;
     let customerOrigin = this.$refs["customer-origin"] as CustomerOrigin;
-
-    let uploadTheMaterial = this.$refs[
-      "upload-the-material"
-    ] as UploadTheMaterial;
+    let uploadTheMaterial = this.$refs["upload-the-material"] as UploadTheMaterial;
 
     // 订单基础信息
     let CreateOrderModel = Object.assign(
@@ -525,8 +524,7 @@ export default class PersonalMortgageApplication extends Page {
         city: mortgageApplication.applicationModel.city,
         companyId: mortgageApplication.applicationModel.company,
         financingUse: mortgageApplication.applicationModel.mortgageUse,
-        intentionFinancingAmount:
-          mortgageApplication.applicationModel.intentionAmount,
+        intentionFinancingAmount: mortgageApplication.applicationModel.intentionAmount,
         intentionPeriods: mortgageApplication.applicationModel.intentionPeriods,
         intentionMethod: mortgageApplication.applicationModel.intentionMethod,
         // 产品信息
@@ -541,7 +539,7 @@ export default class PersonalMortgageApplication extends Page {
         productIssueId: mortgageApplication.currentProduct.id,
         productRate: mortgageApplication.currentProduct.productRate,
         payWay: mortgageApplication.currentProduct.payWay,
-        monthlySupply:mortgageApplication.productModel.monthlySupply,
+        monthlySupply: mortgageApplication.productModel.monthlySupply,
         // 押品信息
         orderCars: mortgageApplication.carDataSet
       },

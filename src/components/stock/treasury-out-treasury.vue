@@ -216,7 +216,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Dependencies } from '~/core/decorator';
-import { Prop, Watch } from 'vue-property-decorator';
+import { Prop } from 'vue-property-decorator';
 import UploadVoucher from "~/components/common/upload-voucher.vue";
 import { AssessMentPlacingService } from "~/services/manage-service/assess-ment-placing.service";
 
@@ -232,11 +232,6 @@ export default class TreasuryOutTreasury extends Vue {
     type: Number
   })
   id;
-
-  @Watch('id', { immediate: true })
-  onIdChange() {
-    this.outTreasury()
-  }
 
   private outTreasuryModel: any = {
     carColor: '', // 车辆颜色
@@ -265,6 +260,12 @@ export default class TreasuryOutTreasury extends Vue {
   private pictureSeven: any = [] //1235
   private pictureEight: any = [] //1236
   private pictureNine: any = [] //1262
+
+
+  mounted() {
+    this.outTreasury()
+  }
+
   /**
    *  获取出库信息
    */
