@@ -51,7 +51,7 @@
                                         </i-col>
                                     </i-row>
                                 </i-form>
-                                <i-button type="text" style="color:#265ea2;" @click="addItem" v-if="!viewStatus">+添加参数</i-button>
+                                <span class="addParameters" style="color:#265ea2;" @click="addItem" v-if="!viewStatus">+添加参数</span>
                             </i-col>
                             <div v-if="!dataLength" class="empty-text">空空如也，请选择车辆^_^</div>
                         </div>
@@ -754,6 +754,12 @@ export default class VehicleMaintenance extends Page {
 </script>
 <style lang="less" scoped>
 .page.vehicle-maintenance {
+  .addParameters{
+    color: rgb(38, 94, 162);
+    margin-top: 20px;
+    display: inline-block;
+    cursor: pointer;
+  }
   .textButton {
     width: 61px;
     color: #265ea2;
@@ -835,6 +841,7 @@ export default class VehicleMaintenance extends Page {
         height: 450px;
         position: relative;
         .table-container {
+          overflow: hidden;
           // text-align-last: center;
           text-align: center;
           border: 1px solid #dddd;

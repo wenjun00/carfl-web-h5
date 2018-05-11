@@ -1,4 +1,4 @@
-<!--个人黑名单-->
+<!--个人黑名单--> 
 <template> 
     <section class="page personal-blacklist">
         <page-header title="个人黑名单" hidden-print>
@@ -141,7 +141,10 @@ export default class PersonalBlacklist extends Page {
       editable: true,
       key: 'certificateType',
       align: 'center',
-      minWidth: this.$common.getColumnWidth(3)
+      minWidth: this.$common.getColumnWidth(3),
+      render: (h, { row }) => {
+        return h("span", {}, this.$dict.getDictName(row.certificateType));
+      }
     },
     {
       title: '证件号码',

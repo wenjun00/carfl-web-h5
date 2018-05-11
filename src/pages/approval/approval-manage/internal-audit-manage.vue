@@ -103,7 +103,8 @@ export default class InternalAuditManage extends Page {
                 },
                 on: {
                   click: () => {
-                    this.purchaseInfoModal = true
+                    this.internalExamine(row)
+                    
                   }
                 }
               },
@@ -290,12 +291,23 @@ export default class InternalAuditManage extends Page {
   openSearch() {
     this.searchOptions = !this.searchOptions
   }
-
+  /**
+   * 订单编号
+   */
   checkOrderInfo(row) {
     this.purchaseInfoModal = true
     let _purchaseInfo: any = this.$refs['purchase-info']
     _purchaseInfo.getOrderDetail(row)
   }
+  /**
+   * 点击查看
+   */
+  internalExamine(row){
+    this.purchaseInfoModal = true
+    let _purchaseInfo: any = this.$refs['purchase-info']
+    _purchaseInfo.getOrderDetail(row)
+  }
+
 
   getInternalAuditList() {
     this.approvalService
