@@ -55,6 +55,7 @@
         {
           title: "操作",
           align: "center",
+          minWidth: this.$common.getColumnWidth(1),
           render: (h, {
             row,
             column,

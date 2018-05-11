@@ -2,7 +2,7 @@
 <template>
   <!--<section class="component customer-open-account">-->
   <i-row>
-    <i-form :model="CustomerOpenAccountModel" class="form-window" :label-width="110">
+    <i-form :model="CustomerOpenAccountModel" class="form-window" :label-width="110" :rules="ruleValidateRule">
       <i-col :span="12">
         <i-form-item label="开户渠道" prop="settleChannel">
           <i-select class="open-input" v-model="CustomerOpenAccountModel.settleChannel" placeholder="请选择开户渠道">
@@ -115,6 +115,12 @@
       qCode: '', // 验证码
     };
     private qCode: any = '';
+
+    private ruleValidateRule: any = {
+      cardNumber: [{validator: this.$validator.bankNumber,trigger: "change"}],
+    }
+
+
     mounted() {
       if (this.row) {
         this.CustomerOpenAccountModel = Object.assign({}, this.row);

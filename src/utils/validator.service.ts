@@ -3,9 +3,9 @@ import { Form } from 'iview'
 export class ValidatorService {
   /**
    * 自定义验证器
-   * @param data 
-   * @param descriptor 
-   * @param callback 
+   * @param data
+   * @param descriptor
+   * @param callback
    */
   static validate(data: any, descriptor: any) {
     let schema = new validator(descriptor);
@@ -34,9 +34,21 @@ export class ValidatorService {
     // 邮编
     zipCode: /^[1-9]\d{5}(?!\d)$/,
     // 车牌照正则表达式
-    carCardNo: /^(([\u4e00-\u9fa5][a-zA-Z]|[\u4e00-\u9fa5]{2}\d{2}|[\u4e00-\u9fa5]{2}[a-zA-Z])[-]?|([wW][Jj][\u4e00-\u9fa5]{1}[-]?)|([a-zA-Z]{2}))([A-Za-z0-9]{5}|[DdFf][A-HJ-NP-Za-hj-np-z0-9][0-9]{4}|[0-9]{5}[DdFf])$/
+    carCardNo: /^(([\u4e00-\u9fa5][a-zA-Z]|[\u4e00-\u9fa5]{2}\d{2}|[\u4e00-\u9fa5]{2}[a-zA-Z])[-]?|([wW][Jj][\u4e00-\u9fa5]{1}[-]?)|([a-zA-Z]{2}))([A-Za-z0-9]{5}|[DdFf][A-HJ-NP-Za-hj-np-z0-9][0-9]{4}|[0-9]{5}[DdFf])$/,
+    //验证银行卡号
+    bankNumber:/^([1-9]{1})(\d{15}|\d{18})$/
   }
 
+  /**
+   * 验证银行卡号
+   */
+  static bankNumber(rule, value, callback) {
+    if (ValidatorService.regex.bankNumber.test(value) || !value) {
+      callback();
+    } else {
+      callback(new Error("请输入正确银行卡号"));
+    }
+  }
   /**
    * 验证手机号
    */
@@ -79,7 +91,7 @@ export class ValidatorService {
     } else {
       callback(new Error("请输入正确的邮政编码"));
     }
-  } 
+  }
   /**
    * 验证手机号
    */
@@ -93,15 +105,15 @@ export class ValidatorService {
 
   /**
    * 表单验证
-   * @param rule 
-   * @param value 
-   * @param callback 
+   * @param rule
+   * @param value
+   * @param callback
    */
   static formValidate(rule, value, callback) {
     if (!value) {
       return callback()
     }
-    
+
     value.validate((valid) => {
       if (valid) {
         callback()
