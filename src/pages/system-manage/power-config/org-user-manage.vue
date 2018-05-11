@@ -522,6 +522,7 @@ export default class OrgUserManage extends Page {
       }
     ]
   }
+  
   onSelectionChange(selection) {
     this.multipleSelection = selection
   }
@@ -588,6 +589,7 @@ export default class OrgUserManage extends Page {
     this.modifyUserModel = row
     let _modifyUser: any = this.$refs['modify-user']
     _modifyUser.getData(this.modifyUserModel)
+    _modifyUser.getAllDepartment()
   }
 
   resetPwd(row) {

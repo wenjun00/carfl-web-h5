@@ -120,28 +120,71 @@ export default class ModifyUser extends Vue {
       deptNames: { required: true, message: "用户必须有所属机构", trigger: "blur" }
     };
   }
-
-  mounted() {
+  getAllDepartment(){
     //获取所有组织机构
     // 重组部门数据，以适应联级选择器
-
-
     this.manageService.getAllDepartment().subscribe(
       data => {
-        this.allOrg = data
-
-        let treeSource = data.map(v => {
-          return {
-            id: v.id,
-            pid: v.deptPid,
-            value: v.id,
-            label: v.deptName
+         let stairList = []
+          for (let i of data) {
+            if (i.deptPid == 0) {
+              stairList.push({
+                pid: i.deptPid,
+                label: i.deptName,
+                id: i.id,
+                value: i.id,
+                children: [],
+              })
+            }
           }
-        })
-        this.depatmentData = CommonService.departmentData(treeSource)
+          for (let i of stairList) {
+            for (let s of data) {
+              if (i.id == s.deptPid) {
+                i.children.push({
+                  pid: s.deptPid,
+                  label: s.deptName,
+                  id: s.id,
+                  value: s.id,
+                  children: [],
+                })
+              }
+            }
+          }
+          for (let i of stairList[0].children) {
+            for (let s of data) {
+              if (i.id == s.deptPid) {
+                i.children.push({
+                  pid: s.deptPid,
+                  label: s.deptName,
+                  id: s.id,
+                  value: s.id,
+                  children: [],
+                })
+              }
+            }
+          }
+         this.depatmentData = stairList
+
+
+
+        this.allOrg = data
+        // let treeSource = data.map(v => {
+        //   return {
+        //     id: v.id,
+        //     pid: v.deptPid,
+        //     value: v.id,
+        //     label: v.deptName
+        //   }
+        // })
+        // this.depatmentData = CommonService.departmentData(treeSource)
+        console.log(this.depatmentData)
       },
       err => this.$Message.error(err.msg)
     );
+  }
+
+  mounted() {
+    this.getAllDepartment()  
   }
 
   cancelUpdate() {
@@ -170,7 +213,7 @@ export default class ModifyUser extends Vue {
     this.modifyModel.userManager = data.userManager;
     this.modifyModel.userRemark = data.userRemark;
     this.modifyModel.userStatus = data.userStatus;
-
+    this.getAllDepartment()
     this.getOwnerData();
     // 根据deptId获取公司名称
     this.departmentService

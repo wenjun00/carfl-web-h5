@@ -119,4 +119,13 @@ export class PaymentScheduleService {
       data
     })
   }
+  /**
+   *  客户还款当期补传凭证查看当期凭证
+   */
+  getFinanceUploadResource(data) {
+    return this.netService.send({
+      server: manageService.paymentScheduleController.getFinanceUploadResource,
+      data
+    })
+  }
 }
