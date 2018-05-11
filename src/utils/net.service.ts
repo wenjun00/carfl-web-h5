@@ -163,7 +163,6 @@ export class NetService {
           })
         }
       }).catch((ex) => {
-        console.log(ex, 4545)
         // 错误信息
         let error: any = {
           msg: "",
