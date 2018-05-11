@@ -287,6 +287,7 @@ export default class PersonalMortgageApplication extends Page {
       (data) => {
         if (data.length) {
           if (data.some(x => x.personalType === 114)) {
+            this.basisModel.cardNumber = ''
             return this.$Message.info("黑名单用户禁止创建申请");
           } else {
             return this.showHistoryOrder(data);
