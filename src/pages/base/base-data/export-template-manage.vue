@@ -253,4 +253,14 @@ export default class CustomerFodderMaintain extends Page {
   }
 }
 </style>
+<style lang="less">
+  .page.customer-fodder-maintain{
+   .ivu-select.ivu-select-single.ivu-select-small,
+   .ivu-select-single .ivu-select-selection {
+      width: 80px !important;
+      display: inline-block;
+    }
+  } 
+
+</style>
 
