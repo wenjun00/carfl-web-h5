@@ -1,5 +1,5 @@
 <!--收款记录查询-->
-<template> 
+<template>
   <section class="page receipt-record-query">
     <page-header title="收款记录查询" hiddenPrint hiddenExport>
     </page-header>
@@ -26,7 +26,7 @@
     <data-box :id="447" :columns="columns1" :data="receiptDataSet" :page="pageService" @onPageChange="receiptRecordSearch"></data-box>
     <!--Model-->
     <template>
-      <i-modal v-model="checkApplyModal" title="查看" :width="800">
+      <i-modal v-model="checkApplyModal" title="查看" :width="800" @on-visible-change="checkModal">
         <apply-detail ref="applyDetail"></apply-detail>
       </i-modal>
     </template>
@@ -265,16 +265,9 @@
     openSearch() {
       this.searchOptions = !this.searchOptions
     }
-
-    /**
-     * 多选
-     */
-    multipleSelect(selection) {}
-    /**
-     * 确定
-     */
-    confirm() {
-
+    checkModal(){
+      let applyInfo: any = this.$refs['applyDetail']
+      applyInfo.reset()
     }
   }
 

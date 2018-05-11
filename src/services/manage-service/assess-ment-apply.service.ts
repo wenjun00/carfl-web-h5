@@ -1,8 +1,6 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
-import { Inject, Debounce } from "~/core/decorator";
-import { requestType } from "~/config/enum.config";
-import { FilterService } from '~/utils/filter.service'
+import { Inject } from "~/core/decorator";
 export class AssessMentApplyService {
   @Inject(NetService)
   private netService: NetService
