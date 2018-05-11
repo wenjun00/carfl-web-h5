@@ -32,7 +32,9 @@ export class ValidatorService {
     // 金额
     money: /(^[1-9](\d+)?(\.\d{1,2})?$)|(^(0){1}$)|(^\d\.\d{1,2}?$)/,
     // 邮编
-    zipCode: /^[1-9]\d{5}(?!\d)$/
+    zipCode: /^[1-9]\d{5}(?!\d)$/,
+    // 车牌照正则表达式
+    carCardNo: /^(([\u4e00-\u9fa5][a-zA-Z]|[\u4e00-\u9fa5]{2}\d{2}|[\u4e00-\u9fa5]{2}[a-zA-Z])[-]?|([wW][Jj][\u4e00-\u9fa5]{1}[-]?)|([a-zA-Z]{2}))([A-Za-z0-9]{5}|[DdFf][A-HJ-NP-Za-hj-np-z0-9][0-9]{4}|[0-9]{5}[DdFf])$/
   }
 
   /**
@@ -76,6 +78,16 @@ export class ValidatorService {
       callback();
     } else {
       callback(new Error("请输入正确的邮政编码"));
+    }
+  } 
+  /**
+   * 验证手机号
+   */
+  static carCardNo(rule, value, callback) {
+    if (ValidatorService.regex.carCardNo.test(value) || !value) {
+      callback();
+    } else {
+      callback(new Error("请输入正确的车牌照号码"));
     }
   }
 

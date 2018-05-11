@@ -75,7 +75,6 @@ export default class BranchCompanyInfo extends Page {
   private modal: Boolean = false
   private formItem: any
   private addBranchCompanyModal: Boolean = false
-  private openColumnsConfig: Boolean = false
 
   mounted() {
     this.seachCompany()
@@ -220,12 +219,7 @@ export default class BranchCompanyInfo extends Page {
     let _addFirm: any = this.$refs['add-firm']
     _addFirm.resetForm()
   }
-  /**
-   * 列配置
-   */
-  columnsConfig() {
-    this.openColumnsConfig = true
-  }
+
   /**
    * 确定新增分公司
    */
@@ -242,8 +236,7 @@ export default class BranchCompanyInfo extends Page {
    * 查询分公司信息
    */
   seachCompany() {
-    this.companyService
-      .getAllCompanyWithPage(this.companyModel, this.pageService)
+    this.companyService.getAllCompanyWithPage(this.companyModel, this.pageService)
       .subscribe(
         val => {
           this.companyList = val
