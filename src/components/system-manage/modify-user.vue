@@ -128,17 +128,59 @@ export default class ModifyUser extends Vue {
 
     this.manageService.getAllDepartment().subscribe(
       data => {
-        this.allOrg = data
-
-        let treeSource = data.map(v => {
-          return {
-            id: v.id,
-            pid: v.deptPid,
-            value: v.id,
-            label: v.deptName
+         let stairList = []
+          for (let i of data) {
+            if (i.deptPid == 0) {
+              stairList.push({
+                pid: i.deptPid,
+                label: i.deptName,
+                id: i.id,
+                value: i.id,
+                children: [],
+              })
+            }
           }
-        })
-        this.depatmentData = CommonService.departmentData(treeSource)
+          for (let i of stairList) {
+            for (let s of data) {
+              if (i.id == s.deptPid) {
+                i.children.push({
+                  pid: s.deptPid,
+                  label: s.deptName,
+                  id: s.id,
+                  value: s.id,
+                  children: [],
+                })
+              }
+            }
+          }
+          for (let i of stairList[0].children) {
+            for (let s of data) {
+              if (i.id == s.deptPid) {
+                i.children.push({
+                  pid: s.deptPid,
+                  label: s.deptName,
+                  id: s.id,
+                  value: s.id,
+                  children: [],
+                })
+              }
+            }
+          }
+         this.depatmentData = stairList
+
+
+
+        this.allOrg = data
+        // let treeSource = data.map(v => {
+        //   return {
+        //     id: v.id,
+        //     pid: v.deptPid,
+        //     value: v.id,
+        //     label: v.deptName
+        //   }
+        // })
+        // this.depatmentData = CommonService.departmentData(treeSource)
+        console.log(this.depatmentData)
       },
       err => this.$Message.error(err.msg)
     );

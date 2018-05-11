@@ -3,6 +3,8 @@ import axios from 'axios'
 import Qs from 'qs'
 import app from '~/config/app.config'
 import { StorageService } from '~/utils/storage.service'
+import { resolve } from "url";
+import { LoadingService } from "~/utils/loading.service";
 // import cookie from 'js-cookie'
 
 const getType = ['GET', 'DELETE'] // 使用GET请求类型
@@ -128,7 +130,30 @@ export class NetService {
 
     // 判断参数类型
     getType.indexOf(method) > -1 ? (getData = this.filterEmptyData(data)) : (postData = this.filterEmptyData(data))
-    
+
+    let loadingPromise = new Promise((resolve, reject) => {
+      if (options.loading) {
+        let loading = LoadingService.show();
+        resolve(loading)
+      } else {
+        resolve()
+      }
+    })
+
+    // 发送通讯结果
+    let emitResult = (fn) => {
+      return function (loading) {
+        if (loading) {
+          loading.remove()
+        }
+
+        if (fn && typeof fn === 'function') {
+          fn.call(this)
+        }
+      }
+    }
+
+
     // 创建待观察对象
     var observable = Observable.create((observer) => {
       this.axiosInstance.request({
@@ -144,10 +169,6 @@ export class NetService {
             allowDots: true
           })
       }).then(({ data }) => {
-        if (options.loading && options.loading.state) {
-          options.loading.state = false
-        }
-
         if (data.status === "SUCCESS") {
           let { object } = data
 
@@ -155,30 +176,30 @@ export class NetService {
             options.page.update(object)
             object = object.list
           }
-
-          observer.next(object)
+          loadingPromise.then(emitResult(() => {
+            observer.next(object)
+          }))
         } else {
-          observer.error({
-            msg: data.msg
-          })
+          loadingPromise.then(emitResult(() => {
+            observer.error({
+              msg: data.msg
+            })
+          }))
         }
       }).catch((ex) => {
-        console.log(ex, 4545)
         // 错误信息
         let error: any = {
           msg: "",
           params: ""
         }
 
-        if (options.loading && options.loading.state) {
-          options.loading.state = false
-        }
 
         // 逻辑异常检测
         if (!ex.response && !ex.request) {
           error.msg = ex.message
           error.params = ex.stack
           console.error(ex.stack)
+          loadingPromise.then(emitResult(() => { }))
           return Observable.empty()
         }
 
@@ -188,8 +209,9 @@ export class NetService {
             msg: "服务端连接异常，请检查服务端状态.",
           }
           console.error(error.msg)
-          observer.error(error)
-          return
+          return loadingPromise.then(emitResult(() => {
+            observer.error(error)
+          }))
         }
 
         // 错误类型检测
