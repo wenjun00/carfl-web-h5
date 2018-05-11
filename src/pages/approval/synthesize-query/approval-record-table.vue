@@ -140,7 +140,7 @@ export default class ApprovalRecordTable extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.approvalDate, 'yyyy-MM-dd')
+            FilterService.dateFormat(row.approvalDate, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
