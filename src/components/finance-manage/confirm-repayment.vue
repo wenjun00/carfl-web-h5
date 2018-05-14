@@ -142,7 +142,7 @@
     </div>
     <template>
       <i-modal title="本期划扣详情" v-model="deductRecordModal" :width="1200">
-        <deduct-Detail ref="deduct-Detail"></deduct-Detail>
+        <deduct-detail ref="deduct-Detail"></deduct-detail>
       </i-modal>
     </template>
   </section>
@@ -152,7 +152,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import DataBox from "~/components/common/data-box.vue";
-import DeductDetail from "~/components/finance-manage/deduct-Detail.vue";
+import DeductDetail from "~/components/finance-manage/deduct-detail.vue";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { Dependencies } from "~/core/decorator";
 import { PaymentScheduleService } from "~/services/manage-service/payment-schedule.service";
