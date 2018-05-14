@@ -37,12 +37,13 @@ export default class HistoricalRecord extends Vue {
       title: "订单号",
       key: "orderNumber",
       align: "center",
-      minWidth: this.$common.getColumnWidth(5)
+      minWidth: this.$common.getColumnWidth(6)
     },
     {
       title: "订单类型",
       key: "orderType",
       align: "center",
+      minWidth: this.$common.getColumnWidth(3),
       render: (h, { row, column, index }) => {
         return h("span", {}, this.$dict.getDictName(row.orderType));
       }
@@ -51,6 +52,7 @@ export default class HistoricalRecord extends Vue {
       title: "订单环节",
       key: "orderLink",
       align: "center",
+      minWidth: this.$common.getColumnWidth(3),
       render: (h, { row, column, index }) => {
         return h("span", {}, this.$dict.getDictName(row.orderLink));
       }
@@ -59,6 +61,7 @@ export default class HistoricalRecord extends Vue {
       title: "订单状态",
       key: "orderStatus",
       align: "center",
+      minWidth: this.$common.getColumnWidth(3),
       render: (h, { row, column, index }) => {
         return h("span", {}, this.$dict.getDictName(row.orderStatus));
       }
