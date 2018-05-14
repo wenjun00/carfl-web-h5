@@ -61,7 +61,7 @@
         <data-grid-item label="微信号" :span="3">{{personal.wechat}}</data-grid-item>
         <data-grid-item label="手机号码(主)" :span="3">{{personal.mobileMain}}</data-grid-item>
         <data-grid-item label="手机号码(次)" :span="3">{{personal.mobileMinor}}</data-grid-item>
-        <data-grid-item label="身份证有效期" :span="3">{{personal.idCardValidityPeriodType ? (personal.idCardValidityPeriodType | dictConvert ) :personal.idCardValidityPeriodSection}}
+        <data-grid-item label="身份证有效期" :span="3">{{personal.idCardValidityPeriodType ? $filter.dictConvert(personal.idCardValidityPeriodType) :personal.idCardValidityPeriodSection}}
         </data-grid-item>
         <data-grid-item label="婚属状况" :span="3">{{personal.marital | dictConvert}}</data-grid-item>
         <data-grid-item label="身份证号" :span="6">{{personal.idCard}}</data-grid-item>
@@ -272,7 +272,7 @@ export default class PurchaseInformation extends Vue {
   scrollTopHeight: Number;
 
   @Prop({
-    type: Number
+    type: String
   })
   orderNumber
 
