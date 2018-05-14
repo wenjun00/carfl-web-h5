@@ -419,9 +419,7 @@ export default class PersonalClient extends Page {
     reviseDetailsModal.reviseConfirmData()
     // this.reviseDetailsModal = false
   }
-
-
-
+  
 
   mounted() {
     this.getPersonalClientList()

@@ -5,16 +5,6 @@
       <i-form class="iForm" ref="basis-form" :label-width="90">
         <i-row type="flex">
           <i-col>
-            <i-form-item label="客户姓名">
-              <i-input v-model="owmModel.ownerName"></i-input>
-            </i-form-item>
-          </i-col>
-          <i-col>
-            <i-form-item label="联系电话">
-              <i-input v-model="owmModel.ownPhone"></i-input>
-            </i-form-item>
-          </i-col>
-          <i-col>
             <i-form-item label="评估编号">
               <i-input v-model="owmModel.orderNo"></i-input>
             </i-form-item>
@@ -46,8 +36,6 @@ export default class MortgageCarList extends Vue {
   private carDataSet: Array<any> = []
 
   private owmModel = {
-    ownerName: '',
-    ownPhone: '',
     orderNo: ''
   }
   // 车辆列配置
@@ -129,8 +117,6 @@ export default class MortgageCarList extends Vue {
       .orderMortgageSearch(
       {
         idCard: this.cardNumber,
-        ownerName: this.owmModel.ownerName,
-        ownPhone: this.owmModel.ownPhone,
         orderNo: this.owmModel.orderNo
       },
       this.pageService
