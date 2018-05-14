@@ -493,6 +493,7 @@ export default class MortgageApplication extends Vue {
     let dialog = this.$dialog.show({
       title: "选择产品",
       footer: true,
+      width: 1000,
       onOk: productList => {
         let currentRow = productList.getCurrentRow();
 
