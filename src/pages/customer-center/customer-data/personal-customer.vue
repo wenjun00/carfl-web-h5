@@ -126,7 +126,12 @@ export default class personalCustomer extends Page {
       editable: true,
       key: 'certificateType',
       align: 'center',
-      minWidth: this.$common.getColumnWidth(3)
+      minWidth: this.$common.getColumnWidth(3),
+      render: (h, {row, column, index}) => {
+            return h("span", {}, this.$dict.getDictName(row.certificateType));
+          }
+      
+
     },
     {
       title: '证件号码',

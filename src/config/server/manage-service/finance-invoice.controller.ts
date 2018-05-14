@@ -11,5 +11,24 @@ export default {
     controller: CONTROLLER,
     action: 'getFinanceInvoiceList',
     type: requestType.Get
+  },
+  /**
+   * 新增财务开票
+   */
+  saveFinanceInvoiceRecord: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'saveFinanceInvoiceRecord',
+    type: requestType.Post
+  },
+   /**
+   * 获取财务附件
+   */
+  getFinanceUploadResources: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getFinanceUploadResources',
+    type: requestType.Get
   }
+
 }

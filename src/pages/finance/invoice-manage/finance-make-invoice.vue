@@ -2,6 +2,7 @@
 <template>
   <section class="page finance-make-invoice">
     <page-header title="财务开票" hiddenPrint hiddenExport>
+      <i-button type="text" @click="allMakeModal">确认开票</i-button>
     </page-header>
 
     <data-form data-prop="timeSearch" :model="model" :page="pageService" @on-search="query">
@@ -24,7 +25,7 @@
         </i-form-item>
         <i-form-item label="开票项目" prop="collectItem">
           <i-select v-model="model.collectItem" placeholder="请选择开票项目">
-            <!-- <i-option v-for="{value,label} in $dict.getDictData('0001')" :key="value" :label="label" :value="value"></i-option> -->
+            <i-option v-for="{value,label} in $dict.getDictData('0113')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
         <i-form-item label="收款日期" prop="dateRange">
@@ -34,16 +35,20 @@
     </data-form>
 
 
-    <data-box :columns="columnsData" :data="dataSet" :page="pageService"></data-box>
+    <data-box :columns="columnsData" :data="dataSet" @on-selection-change="headSelect"  :page="pageService"></data-box>
     <template>
-      <i-modal v-model="makeInvoiceModal" title="确认开票" :width="600" class="confirmMakeInvoice">
-        <confirm-make-invoice></confirm-make-invoice>
+      <i-modal v-model="makeInvoiceModal" @on-visible-change="closeEmpty" title="确认开票" :width="700" class="confirmMakeInvoice">
+        <confirm-make-invoice @close="close" ref="confirm-make-invoice"></confirm-make-invoice>
+         <div slot="footer">
+              <i-button size="large" type="ghost" class="Ghost" @click="makeInvoiceModal=false">取消</i-button>
+              <i-button size="large" type="primary" @click="addedConfirm">确定</i-button>
+          </div>
       </i-modal>
     </template>
 
     <template>
       <i-modal title="查看附件" v-model="checkAttachmentModal">
-        <check-attachment></check-attachment>
+        <check-attachment ref="check-attachment"></check-attachment>
       </i-modal>
     </template>
   </section>
@@ -57,24 +62,12 @@
   import RepayInfo from '~/components/finance-manage/repay-info.vue'
   import CheckAttachment from '~/components/finance-manage/check-attachment.vue'
   import ConfirmMakeInvoice from '~/components/finance-manage/confirm-make-invoice.vue'
-  import {
-    Tooltip
-  } from 'iview'
-  import {
-    Dependencies
-  } from '~/core/decorator'
-  import {
-    Layout
-  } from '~/core/decorator'
-  import {
-    FinanceInvoiceService
-  } from '~/services/manage-service/finance-invoice.service'
-  import {
-    PageService
-  } from '~/utils/page.service'
-  import {
-    FilterService
-  } from '~/utils/filter.service'
+  import {Tooltip} from 'iview'
+  import {Dependencies} from '~/core/decorator'
+  import {Layout} from '~/core/decorator'
+  import {FinanceInvoiceService} from '~/services/manage-service/finance-invoice.service'
+  import {PageService} from '~/utils/page.service'
+  import { FilterService} from '~/utils/filter.service'
 
 
   @Layout('workspace')
@@ -95,6 +88,9 @@
     private openColumnsConfig: Boolean = false
     private makeInvoiceModal: Boolean = false
     private checkAttachmentModal: Boolean = false
+    private makeId: any = [] // 开票数组       
+    private makeMoney: Number = 0 // 开票金额
+
     private model: any = {
       dynamicCondition: '', // 客户姓名
       invoicingStatus: '', // 开票状态
@@ -122,8 +118,8 @@
           index
         }) => {
           // 190 未开票 //191 已开票  // 192 开票撤销
-          if (row.invoicingStatus == '190') {
-            return h('div', [
+          if (row.invoicingStatus == '190' || row.invoicingStatus== null ) {
+             return h('div', [
               h(
                 'i-button', {
                   props: {
@@ -131,14 +127,14 @@
                   },
                   on: {
                     click: () => {
-                      this.checkAttachment(row)
+                      this.confirmMakeInvoicePop(row)
                     }
                   },
                   style: {
                     color: '#265EA2'
                   }
                 },
-                '查看附件'
+                '确认开票'
               ),
               h(
                 'i-button', {
@@ -158,7 +154,7 @@
               )
             ])
           } else {
-            return h('div', [
+              return h('div', [
               h(
                 'i-button', {
                   props: {
@@ -166,14 +162,14 @@
                   },
                   on: {
                     click: () => {
-                      this.confirmMakeInvoice()
+                      this.checkAttachment(row)
                     }
                   },
                   style: {
                     color: '#265EA2'
                   }
                 },
-                '确认开票'
+                '查看附件'
               ),
               h(
                 'i-button', {
@@ -331,6 +327,34 @@
         minWidth: this.$common.getColumnWidth(6)
       }
     ]
+    /**
+     * 财务开票头部选择
+     */
+    headSelect(val) {
+      if(val.length){
+        let arr = 0 
+        let array = []
+         for(let i in val){
+          arr += Number(val[i].collectMoneyAmount)
+          array.push(val[i].collectMoneyDetailId)
+         }
+        this.makeMoney = arr
+        this.makeId = array
+      }else{
+        this.makeId = []
+        this.makeMoney = 0
+      }
+     
+    }
+    /**
+     * 多选确认开票
+     */
+    allMakeModal(){
+      this.makeInvoiceModal = true
+      let allMakeModal = this.$refs['confirm-make-invoice'] as ConfirmMakeInvoice
+      allMakeModal.allMakeInvoice(this.makeId, this.makeMoney)
+    }
+
 
     /**
      * 获取财务开票列表
@@ -353,13 +377,40 @@
     openSearch() {
       this.searchOptions = !this.searchOptions
     }
+    /**
+     * 关闭弹窗数据清空
+     */
+    closeEmpty(val){
+       if (!val) {
+        let closeEmpty = this.$refs["confirm-make-invoice"] as ConfirmMakeInvoice;
+        closeEmpty.allCloseEmpty()
+      }
+    }
 
     /**
-     * 确认开票
+     * 确认开票弹窗
      */
-    confirmMakeInvoice() {
+    confirmMakeInvoicePop(val) {
       this.makeInvoiceModal = true
+      let makeInvoiceModal = this.$refs['confirm-make-invoice'] as ConfirmMakeInvoice
+      makeInvoiceModal.saveMake(val.collectMoneyDetailId,val.collectMoneyAmount)
     }
+    /**
+     * 单个确定开票确定
+     */
+    addedConfirm(){
+      let makeInvoiceModal = this.$refs['confirm-make-invoice'] as ConfirmMakeInvoice
+      makeInvoiceModal.makeInvoice()
+    }
+   /**
+   * 新增取消
+   */
+  close() {
+    this.makeInvoiceModal = false
+    this.query()
+  }
+
+
     /**
      * 收款详情
      */
@@ -381,6 +432,9 @@
      */
     checkAttachment(row) {
       this.checkAttachmentModal = true
+      let checkAttachmentModal = this.$refs['check-attachment'] as CheckAttachment
+      checkAttachmentModal.checkAccessory(row.collectMoneyDetailId)
+
     }
     /**
      * 切换触发
