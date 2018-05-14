@@ -16,15 +16,13 @@
     <!--上传资料、补充资料-->
     <template>
       <i-modal class="pop-update" v-model="openUpload" :transfer="false" :width="700" title="补充资料">
-        <upload-the-material ref="upload-the-material"></upload-the-material>
+        <upload-material ref="upload-material"></upload-material>
         <div slot="footer">
           <i-button class="high-default-button" @click="openUpload=false">取消</i-button>
           <i-button class="high-default-button" @click="confirm">确定</i-button>
         </div>
       </i-modal>
     </template>
-
-
   </section>
 </template>
 
@@ -37,7 +35,7 @@ import { PersonalService } from "~/services/manage-service/personal.service";
 import { PageService } from "~/utils/page.service";
 import { FilterService } from "~/utils/filter.service";
 import { Layout } from "~/core/decorator";
-import UploadTheMaterial from "~/components/purchase-manage/upload-the-material.tsx.vue";
+import UploadMaterial from "~/components/purchase-manage/upload-material.tsx.vue";
 import { Mutation,namespace } from "vuex-class"
 
 const   ModuleMutation = namespace('purchase',Mutation)
@@ -46,7 +44,7 @@ const   ModuleMutation = namespace('purchase',Mutation)
 @Component({
   components: {
     DataBox,
-    UploadTheMaterial
+    UploadMaterial
   }
 })
 export default class CustomerDataQuery extends Page {
@@ -208,11 +206,11 @@ export default class CustomerDataQuery extends Page {
    * 补充资料确定
    */
   confirm() {
-    let uploadTheMaterial: any = this.$refs["upload-the-material"];
-    let MaterialData: any = uploadTheMaterial.dataList.map(v => {
+    let uploadTheMaterial: any = this.$refs["upload-material"];
+    let MaterialData: any = uploadTheMaterial.uploadDataSet.map(v => {
       return {
         id: v.upid,
-        materialUrl: v.url,
+        materialUrl: v.materialUrl,
         uploadName: v.name,
         personalId: v.personalId,
         materialType: v.typeup,
@@ -274,7 +272,7 @@ export default class CustomerDataQuery extends Page {
    * 上传资料
    */
   uploadFiles(row) {
-    let _uploadthematerial: any = this.$refs["upload-the-material"];
+    let _uploadthematerial: any = this.$refs["upload-material"];
     _uploadthematerial.reset();
     this.uploadOrAddFlag = true;
     this.openUpload = true;
@@ -286,7 +284,7 @@ export default class CustomerDataQuery extends Page {
     this.openUpload = true;
     this.rowData = row;
     // TODO 更新store 产品ID 进行查看所有资源数据和上传新的资源
-    let _uploadthematerial: any = this.$refs["upload-the-material"];
+    let _uploadthematerial: any = this.$refs["upload-material"];
     _uploadthematerial.reset();
 
     this.uploadOrAddFlag = false;

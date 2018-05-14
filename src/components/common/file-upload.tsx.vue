@@ -48,6 +48,9 @@ export default class FileUpload extends Vue {
   @Emit("on-success")
   success(filelist) {}
 
+  @Emit('on-error')
+  emitOnError(){}
+
   @State token;
 
   private uploadList: Array<any> = [];
@@ -188,8 +191,12 @@ export default class FileUpload extends Vue {
    *
    */
   onError(event, file, fileList) {
-    let index = this.uploadList.findIndex(x => x.file.uid === file.uid);
-    this.uploadList.splice(index, 0)
+    let fileName = fileList.name
+    this.$Message.error(`文件 [${fileName}] 上传失败,已移除`)
+    // 查找这个文件并且移除掉
+    let fileIndex = this.uploadList.findIndex( x => x.name === fileName && x.state !== 'ready')
+    this.uploadList.splice(fileIndex, 1)
+    this.emitOnError();
   }
 }
 </script>

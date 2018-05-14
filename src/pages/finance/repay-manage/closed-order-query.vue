@@ -38,14 +38,6 @@
       </i-modal>
     </template>
 
-    <template>
-      <i-modal title="订单详情" :width="1200" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
-        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
-        <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInformationModal=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -61,15 +53,12 @@ import CustomerSettleModal from "~/components/finance-manage/customer-settle-mod
 import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
 import { PayoffProductOrderService } from "~/services/manage-service/payoff-product-order.service";
 import { PageService } from "~/utils/page.service";
-import { FilterService } from "~/utils/filter.service"
-import { Tooltip } from 'iview'
 import { Dependencies } from "~/core/decorator";
 import { Layout } from "~/core/decorator";
 
 @Layout("workspace")
 @Component({
   components: {
-    PurchaseInformation,
     CustomerSettleModal,
     SvgIcon,
     DataBox,
@@ -88,7 +77,6 @@ export default class ClosedOrderQuery extends Page {
   private searchOptions: Boolean = false;
   private openColumnsConfig: Boolean = false;
   private repayInfoModal: Boolean = false;
-  private purchaseInformationModal: Boolean = false;
   private customerRepayModel: any = {
     settlementChannel: '',
     paymentStatus: '',
@@ -176,10 +164,13 @@ export default class ClosedOrderQuery extends Page {
           },
           on: {
             click: () => {
-              this.purchaseInformationModal = true;
-              let _purchaseInfo: any = this.$refs["purchase-info"];
-              // row.orderNumber = row.orderId
-              _purchaseInfo.getOrderDetail(row);
+              this.$dialog.show({
+                title: '订单详情',
+                footer: true,
+                width: 1200,
+                isView: true,
+                render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+              })
             }
           }
         }, row.orderNumber)

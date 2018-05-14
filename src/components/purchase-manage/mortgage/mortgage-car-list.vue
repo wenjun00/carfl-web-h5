@@ -67,13 +67,13 @@ export default class MortgageCarList extends Vue {
       title: '车身颜色',
       align: 'center',
       minWidth: this.$common.getColumnWidth(3),
-      key: 'vehicleColour'
+      key: 'carColor'
     },
     {
       title: '车辆排量',
       align: 'center',
       minWidth: this.$common.getColumnWidth(3),
-      key: 'vehicleEmissions'
+      key: 'displacement'
     },
     {
       title: '车辆牌照',
@@ -130,8 +130,8 @@ export default class MortgageCarList extends Vue {
           carName: car.carName,
           assessmentStatus: car.assessmentStatus,
           assessmentTime: car.assessmentTime,
-          vehicleColour: car.carColor,
-          vehicleEmissions: car.displacement,
+          carColor: car.carColor,
+          displacement: car.displacement,
           carNo: car.carNo,
           carSituation: car.carSituation,
           evaluation: car.evaluation,

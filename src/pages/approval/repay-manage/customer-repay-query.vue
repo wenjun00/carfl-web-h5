@@ -43,16 +43,6 @@
         </div>
       </i-modal>
     </template>
-
-    <template>
-      <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
-        <purchase-information ref="purchase-info"></purchase-information>
-        <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
-
   </section>
 </template>
 
@@ -67,7 +57,6 @@ import { PaymentScheduleService } from '~/services/manage-service/payment-schedu
 import { Layout } from '~/core/decorator'
 import RepayInfo from '~/components/approval-manage/repay-info.vue'
 import { PageService } from '~/utils/page.service'
-import { FilterService } from '~/utils/filter.service'
 import PurchaseInformation from '~/components/purchase-manage/purchase-information.vue'
 
 @Layout('workspace')
@@ -78,8 +67,7 @@ import PurchaseInformation from '~/components/purchase-manage/purchase-informati
     // 客户结算号弹窗
     CustomerSettleModal,
     // 还款详情
-    RepayInfo,
-    PurchaseInformation
+    RepayInfo
   }
 })
 export default class CustomerRepayQuery extends Page {
@@ -93,7 +81,6 @@ export default class CustomerRepayQuery extends Page {
   private searchOptions: Boolean = false
   private repaySumModal: Boolean = false
   private customerSettleModal: Boolean = false
-  private purchaseInfoModal: Boolean = false
   private customerRepayModel: any = {
     settlementChannel: '',
     paymentStatus: '',
@@ -168,7 +155,13 @@ export default class CustomerRepayQuery extends Page {
               },
               on: {
                 click: () => {
-                  this.checkOrderInfo(row)
+                  this.$dialog.show({
+                    title: '订单详情',
+                    footer: true,
+                    width: 1200,
+                    isView: true,
+                    render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                  })
                 }
               }
             },
@@ -229,7 +222,7 @@ export default class CustomerRepayQuery extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -242,7 +235,7 @@ export default class CustomerRepayQuery extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -331,12 +324,6 @@ export default class CustomerRepayQuery extends Page {
 
   openSearch() {
     this.searchOptions = !this.searchOptions
-  }
-
-  checkOrderInfo(row) {
-    this.purchaseInfoModal = true
-    let _purchaseInfo: any = this.$refs['purchase-info']
-    _purchaseInfo.getOrderDetail(row)
   }
 
   repaySum(row) { }

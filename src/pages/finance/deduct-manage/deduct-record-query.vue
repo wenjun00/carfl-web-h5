@@ -26,240 +26,225 @@
 </template>
 
 <script lang="ts">
-  import DataBox from "~/components/common/data-box.vue";
-  import Page from "~/core/page";
-  import Component from "vue-class-component";
-  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue";
-  import {
-    ChargeBackService
-  } from "~/services/manage-service/charge-back.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  import {
-    FilterService
-  } from "~/utils/filter.service"
-  import SvgIcon from '~/components/common/svg-icon.vue';
+import DataBox from "~/components/common/data-box.vue";
+import Page from "~/core/page";
+import Component from "vue-class-component";
+import { ChargeBackService } from "~/services/manage-service/charge-back.service";
+import { PageService } from "~/utils/page.service";
+import { FilterService } from "~/utils/filter.service"
+import SvgIcon from '~/components/common/svg-icon.vue';
+import { Tooltip } from 'iview'
+import { Dependencies } from "~/core/decorator";
+import { Layout } from "~/core/decorator";
 
-  import {
-    Tooltip
-  } from 'iview'
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    Layout
-  } from "~/core/decorator";
+@Layout("workspace")
+@Component({
+  components: {
+    SvgIcon,
+    DataBox
+  }
+})
+export default class DeductRecordQuery extends Page {
+  @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
+  @Dependencies(PageService) private pageService: PageService;
+  private columns1: any;
+  private data1: Array<Object> = [];
+  private searchOptions: Boolean = false;
 
-  @Layout("workspace")
-  @Component({
-    components: {
-      SvgIcon,
-      DataBox,
-      PurchaseInformation
-    }
-  })
-  export default class DeductRecordQuery extends Page {
-    @Dependencies(ChargeBackService) private chargeBackService: ChargeBackService;
-    @Dependencies(PageService) private pageService: PageService;
-    private columns1: any;
-    private data1: Array<Object> = [];
-    private searchOptions: Boolean = false;
+  private model: any = {
+    personalInfo: '',
+    startTime: '',
+    endTime: '',
+    payStatus: '',
+    dateRange: []
+  };
 
-    private model: any = {
-      personalInfo: '',
-      startTime: '',
-      endTime: '',
-      payStatus: '',
-      dateRange: []
-    };
+  /**
+   * 获取划扣记录
+   */
+  getRecord() {
+    this.chargeBackService.getChargeRecordList(this.model, this.pageService).subscribe(
+      data => this.data1 = data,
+      err => this.$Message.error(err)
+    )
+  }
 
-    /**
-     * 获取划扣记录
-     */
-    getRecord() {
-      this.chargeBackService.getChargeRecordList(this.model, this.pageService).subscribe(
-        data => this.data1 = data,
-        err => this.$Message.error(err)
-      )
-    }
+  openSearch() {
+    this.searchOptions = !this.searchOptions;
+  }
 
-    openSearch() {
-      this.searchOptions = !this.searchOptions;
-    }
-
-    created() {
-      this.getRecord()
-      this.columns1 = [{
-        title: "出账日期",
-        align: "center",
-        key: "paymentDate",
-        minWidth: this.$common.getColumnWidth(6),
-        render: (h, {
+  created() {
+    this.getRecord()
+    this.columns1 = [{
+      title: "出账日期",
+      align: "center",
+      key: "paymentDate",
+      minWidth: this.$common.getColumnWidth(6),
+      render: (h, {
           row,
-          column,
-          index
+        column,
+        index
         }) => {
-          return h('span', FilterService.dateFormat(row.paymentDate, 'yyyy-MM-dd'))
-        }
-      },
-        {
-          title: "出账客户号",
-          key: "clientNumber",
-          align: "center",
-          minWidth: this.$common.getColumnWidth(5),
-          render: (h, params) => {
-            return h('i-button', {
-              props: {
-                type: 'text'
-              },
-              on: {
-                click: () => {
+        return h('span', this.$filter.dateFormat(row.paymentDate, 'yyyy-MM-dd'))
+      }
+    },
+    {
+      title: "出账客户号",
+      key: "clientNumber",
+      align: "center",
+      minWidth: this.$common.getColumnWidth(5),
+      render: (h, params) => {
+        return h('i-button', {
+          props: {
+            type: 'text'
+          },
+          on: {
+            click: () => {
 
-                }
-              }
-            }, params.row.clientNumber)
-          }
-        },
-        {
-          align: "center",
-          title: "出账卡号",
-          key: "cardNumber",
-          minWidth: this.$common.getColumnWidth(6),
-        },
-        {
-          align: "center",
-          title: "客户姓名",
-          key: "clientName",
-          minWidth: this.$common.getColumnWidth(3),
-        },
-        {
-          align: "center",
-          title: "支付银行",
-          key: "depositBank",
-          minWidth: this.$common.getColumnWidth(4),
-        },
-        {
-          align: "center",
-          title: "支付金额",
-          key: "paymentAmount",
-          minWidth: this.$common.getColumnWidth(4),
-          render: (h, { row }) => {
-            return h(
-              "div",
-              {
-                style: {
-                  textAlign: "right"
-                }
-              },
-              this.$filter.toThousands(row.paymentAmount)
-            );
-          }
-
-        },
-        {
-          align: "center",
-          title: "订单号",
-          key: "orderNumber",
-          minWidth: this.$common.getColumnWidth(6),
-        },
-        {
-          key: 'tradingStatus',
-          title: '交易状态',
-          align: 'center',
-          minWidth: this.$common.getColumnWidth(3),
-          render: (h, {
-            row,
-            column,
-            index
-          }) => {
-            if (row.customerName === '王泽杰') {
-              return h('div', {}, [h('span', {}, row.tradingStatus),
-                h('Icon', {
-                  props: {
-                    type: 'eye',
-                    size: '20',
-                    color: '#265EA2'
-                  },
-                  style: {
-                    position: 'relative',
-                    top: '2px',
-                    left: '6px',
-                    cursor: 'pointer'
-                  }
-                })
-              ])
-            } else if (row.customerName === '陈丽') {
-              return h('div', {}, [h('span', {}, row.tradingStatus),
-                h('Icon', {
-                  props: {
-                    type: 'loop',
-                    size: '20',
-                    color: '#265EA2'
-                  },
-                  style: {
-                    position: 'relative',
-                    top: '2px',
-                    left: '6px',
-                    cursor: 'pointer'
-                  }
-                })
-              ])
             }
           }
-        },
-        {
-          align: "center",
-          title: "失败原因",
-          key: "failReason",
-          minWidth: this.$common.getColumnWidth(5),
-        },
-        {
-          align: "center",
-          title: "操作人",
-          minWidth: this.$common.getColumnWidth(3),
-          key: "operateName"
+        }, params.row.clientNumber)
+      }
+    },
+    {
+      align: "center",
+      title: "出账卡号",
+      key: "cardNumber",
+      minWidth: this.$common.getColumnWidth(6),
+    },
+    {
+      align: "center",
+      title: "客户姓名",
+      key: "clientName",
+      minWidth: this.$common.getColumnWidth(3),
+    },
+    {
+      align: "center",
+      title: "支付银行",
+      key: "depositBank",
+      minWidth: this.$common.getColumnWidth(4),
+    },
+    {
+      align: "center",
+      title: "支付金额",
+      key: "paymentAmount",
+      minWidth: this.$common.getColumnWidth(4),
+      render: (h, { row }) => {
+        return h(
+          "div",
+          {
+            style: {
+              textAlign: "right"
+            }
+          },
+          this.$filter.toThousands(row.paymentAmount)
+        );
+      }
+
+    },
+    {
+      align: "center",
+      title: "订单号",
+      key: "orderNumber",
+      minWidth: this.$common.getColumnWidth(6),
+    },
+    {
+      key: 'tradingStatus',
+      title: '交易状态',
+      align: 'center',
+      minWidth: this.$common.getColumnWidth(3),
+      render: (h, {
+            row,
+        column,
+        index
+          }) => {
+        if (row.customerName === '王泽杰') {
+          return h('div', {}, [h('span', {}, row.tradingStatus),
+          h('Icon', {
+            props: {
+              type: 'eye',
+              size: '20',
+              color: '#265EA2'
+            },
+            style: {
+              position: 'relative',
+              top: '2px',
+              left: '6px',
+              cursor: 'pointer'
+            }
+          })
+          ])
+        } else if (row.customerName === '陈丽') {
+          return h('div', {}, [h('span', {}, row.tradingStatus),
+          h('Icon', {
+            props: {
+              type: 'loop',
+              size: '20',
+              color: '#265EA2'
+            },
+            style: {
+              position: 'relative',
+              top: '2px',
+              left: '6px',
+              cursor: 'pointer'
+            }
+          })
+          ])
         }
-      ];
+      }
+    },
+    {
+      align: "center",
+      title: "失败原因",
+      key: "failReason",
+      minWidth: this.$common.getColumnWidth(5),
+    },
+    {
+      align: "center",
+      title: "操作人",
+      minWidth: this.$common.getColumnWidth(3),
+      key: "operateName"
     }
+    ];
   }
+}
 
 </script>
 
 <style lang="less">
-  .page.deduct-record-query {
-    .data-form {
-      margin: 6px;
-      .title {
-        margin-left: 10px;
-      }
-      .form-picker {
-        display: inline-block;
-        width: 10%;
-      }
-      .form-input {
-        display: inline-block;
-        width: 18%;
-        margin-left: 20px;
-      }
-      .form-select-one {
-        width: 120px;
-        margin-left: 10px;
-      }
-      .form-search-one {
-        margin-left: 20px;
-      }
-      .commend {
-        font-size: 16px;
-        cursor: pointer;
-        display: inline-block;
-        margin-right: 10px;
-        color: #3367a7;
-        float: right;
-        .export-one {
-          font-size: 12px;
-        }
+.page.deduct-record-query {
+  .data-form {
+    margin: 6px;
+    .title {
+      margin-left: 10px;
+    }
+    .form-picker {
+      display: inline-block;
+      width: 10%;
+    }
+    .form-input {
+      display: inline-block;
+      width: 18%;
+      margin-left: 20px;
+    }
+    .form-select-one {
+      width: 120px;
+      margin-left: 10px;
+    }
+    .form-search-one {
+      margin-left: 20px;
+    }
+    .commend {
+      font-size: 16px;
+      cursor: pointer;
+      display: inline-block;
+      margin-right: 10px;
+      color: #3367a7;
+      float: right;
+      .export-one {
+        font-size: 12px;
       }
     }
   }
+}
 </style>

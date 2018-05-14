@@ -1,39 +1,38 @@
 <!--个人正式客户-->
-<template>  
-    <section class="page personal-customer">
-        <page-header title="个人正式客户" hidden-print></page-header>
-        <data-form :model="personalCustomerModel" date-prop="timeSearch" @on-search="getPersonalClientList">
-            <template slot="input">
-                <i-form-item prop="name" label="客户姓名">
-                    <i-input v-model="personalCustomerModel.name"></i-input>
-                </i-form-item>
-                <i-form-item prop="telephone" label="手机号码">
-                    <i-input v-model="personalCustomerModel.telephone"></i-input>
-                </i-form-item>
-                <i-form-item prop="dateRange" label="创建起止时间">
-                    <i-date-picker type="daterange" v-model="personalCustomerModel.dateRange"></i-date-picker>
-                </i-form-item>
-                
-            </template>
-        </data-form>
-        <data-box :columns="personalCustomerColumns" :data="dataSet" :page="pageService"></data-box>
-        <template>
-            <i-modal width="780" v-model="personalModal" title="客户详情" class="get-customer-details">
-                <get-customer-details ref="get-customer-details"></get-customer-details>
-                <div slot="footer">
-                    <i-button size="large" type="ghost" class="Ghost" @click="personalModal=false">取消</i-button>
-                    <i-button size="large" type="primary" class="blueButton" @click="blacklistModal">加入黑名单</i-button>
-                </div>
-            </i-modal>
-        </template>
-          <!--订单详情弹窗-->
-        <template>
-            <i-modal width="780" v-model="orderDetailsModal" title="订单详情">
-                <personal-order-details ref="personal-order-details"></personal-order-details>
-                <div slot="footer"></div>
-            </i-modal>
-        </template>
-    </section>
+<template>
+  <section class="page personal-customer">
+    <page-header title="个人正式客户" hidden-print></page-header>
+    <data-form :model="personalCustomerModel" date-prop="timeSearch" @on-search="getPersonalClientList">
+      <template slot="input">
+        <i-form-item prop="name" label="客户姓名">
+          <i-input v-model="personalCustomerModel.name"></i-input>
+        </i-form-item>
+        <i-form-item prop="telephone" label="手机号码">
+          <i-input v-model="personalCustomerModel.telephone"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="创建起止时间">
+          <i-date-picker type="daterange" v-model="personalCustomerModel.dateRange"></i-date-picker>
+        </i-form-item>
+      </template>
+    </data-form>
+    <data-box :columns="personalCustomerColumns" :data="dataSet" :page="pageService"></data-box>
+    <template>
+      <i-modal width="780" v-model="personalModal" title="客户详情" class="get-customer-details">
+        <get-customer-details ref="get-customer-details"></get-customer-details>
+        <div slot="footer">
+          <i-button size="large" type="ghost" class="Ghost" @click="personalModal=false">取消</i-button>
+          <i-button size="large" type="primary" class="blueButton" @click="blacklistModal">加入黑名单</i-button>
+        </div>
+      </i-modal>
+    </template>
+    <!--订单详情弹窗-->
+    <template>
+      <i-modal width="780" v-model="orderDetailsModal" title="订单详情">
+        <personal-order-details ref="personal-order-details"></personal-order-details>
+        <div slot="footer"></div>
+      </i-modal>
+    </template>
+  </section>
 </template>
 
 <script lang="ts">
@@ -58,7 +57,7 @@ export default class personalCustomer extends Page {
   @Dependencies(PageService) private pageService: PageService
   private orderDetailsModal: Boolean = false
   private dataSet: Array<any> = []
-  private presentId:String=""
+  private presentId: String = ""
   private personalCustomerModel: any = {
     personalType: '118',
     name: '', //客户姓名
@@ -74,7 +73,7 @@ export default class personalCustomer extends Page {
       title: '操作',
       align: 'center',
       fixed: 'left',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       render: (h, { row }) => {
         return h('div', [
           h(
@@ -103,7 +102,7 @@ export default class personalCustomer extends Page {
               style: {
                 color: '#265EA2'
               },
-               on: {
+              on: {
                 click: () => {
                   this.getOrderDetailsList(row)
                 }
@@ -127,16 +126,12 @@ export default class personalCustomer extends Page {
       key: 'certificateType',
       align: 'center',
       minWidth: this.$common.getColumnWidth(3),
-      render: (h, {row, column, index}) => {
-            return h("span", {}, this.$dict.getDictName(row.certificateType));
-          }
-      
-
+      render: (h, { row }) => h('p', {}, this.$filter.dictConvert(row.certificateType))
     },
     {
       title: '证件号码',
       editable: true,
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(5),
       key: 'idCard',
       align: 'center'
     },
@@ -160,7 +155,8 @@ export default class personalCustomer extends Page {
       editable: true,
       key: 'city',
       minWidth: this.$common.getColumnWidth(3),
-      align: 'center'
+      align: 'center',
+      render: (h, { row }) => h('p', {}, this.$city.getCityName(row.city))
     },
     {
       title: '创建时间',
@@ -191,12 +187,12 @@ export default class personalCustomer extends Page {
     this.personalService
       .getCustomerIntentionList(this.personalCustomerModel, this.pageService)
       .subscribe(
-        data => {
-          this.dataSet = data
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      data => {
+        this.dataSet = data
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
   /**
@@ -215,41 +211,41 @@ export default class personalCustomer extends Page {
     this.presentId = row.personalId
     let personalModal = this.$refs['get-customer-details'] as GetCustomerDetails
     personalModal.getDetailsData(this.presentId)
-    
+
   }
-   /**
-   *  订单详情
-   * @param row
-   */
-    getOrderDetailsList(row) {
-        this.orderDetailsModal = true
-        let orderDetailsModal = this.$refs['personal-order-details'] as PersonalOrderDetails
-        orderDetailsModal.getIndentDetails(row.personalId)
-    }
+  /**
+  *  订单详情
+  * @param row
+  */
+  getOrderDetailsList(row) {
+    this.orderDetailsModal = true
+    let orderDetailsModal = this.$refs['personal-order-details'] as PersonalOrderDetails
+    orderDetailsModal.getIndentDetails(row.personalId)
+  }
 
   /**
    * 个人正式客户添加黑名单
    */
   blacklistModal() {
     this.personalModal = false
-     this.$Modal.confirm({
+    this.$Modal.confirm({
       title: '提示',
       content: '确定将该客户加入黑名单？加入后将立即结束相关未完成订单！',
       onOk: () => {
         this.personalService
-        .personalJoinBlacklist({ personalDataId:this.presentId })
+          .personalJoinBlacklist({ personalDataId: this.presentId })
           .subscribe(
-            data => {
-              this.$Message.success('加入黑名单成功！')
-              this.getPersonalClientList()
-            },
-            ({ msg }) => {
-              this.$Message.error(msg)
-            }
+          data => {
+            this.$Message.success('加入黑名单成功！')
+            this.getPersonalClientList()
+          },
+          ({ msg }) => {
+            this.$Message.error(msg)
+          }
           )
       }
     })
-    
+
   }
 
   mounted() {

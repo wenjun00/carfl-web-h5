@@ -9,11 +9,6 @@
           </i-form-item>
         </i-col>
         <i-col :span="12">
-          <!--<i-form-item label="付款类型" prop="refundType">-->
-            <!--<i-select v-model="repaymentObj.refundType" disabled>-->
-              <!--<i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>-->
-            <!--</i-select>-->
-          <!--</i-form-item>-->
           <i-col :span="12">
             <i-form-item label="身份证号" prop="idCard">
               <i-input v-model="personal.idCard" readonly></i-input>
@@ -73,40 +68,20 @@
 
     <table class="modal-item-table" border="1" width="850">
       <tr height="40">
-        <!--<td class="bg-color" colspan="1" width="5%" v-if="!check">-->
-          <!--<div @click="addObj">-->
-            <!--<i-icon class="modal-item-icon" type="plus"></i-icon>-->
-          <!--</div>-->
-        <!--</td>-->
         <td class="bg-color" colspan="1" width="20%">结算通道</td>
         <!--<td class="bg-color" colspan="1" width="20%">收款项</td>-->
         <td class="bg-color" colspan="1">合计金额（元）</td>
         <td class="bg-color" colspan="1">状态</td>
       </tr>
-      <!--<tr height="40" v-for="(v,i) in collectMoneyDetails" :key="i">-->
       <tr height="40">
-        <!--<td v-if="!check">-->
-          <!--<div @click="deleteObj(i)">-->
-            <!--<i-icon type="minus" class="modal-item-icon"></i-icon>-->
-          <!--</div>-->
-        <!--</td>-->
         <td>
           <i-select class="modal-item-select" placeholder="选择结算通道" v-model="pipeSelect" :disabled="check">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
-        <!--<td>-->
-          <!--<i-select placeholder="选择收款项目" class="modal-item-select" v-model="v.refundItem" :disabled="check">-->
-            <!--<i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>-->
-          <!--</i-select>-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--<i-input class="modal-item-huakou-input" v-model="v.refundAmount" @on-blur="inputBlur" :readonly="check"></i-input>-->
-          <!--<i-button class="blueButton" v-if="!check">确认划扣</i-button>-->
-        <!--</td>-->
         <td>
-          <i-input class="modal-item-huakou"  v-model="repaymentObj.refundTotalAmount" readonly></i-input>
-          <i-button class="blueButton" v-if="!check" @click="huakouTest" >确认付款</i-button>
+          <i-input class="modal-item-huakou" v-model="repaymentObj.refundTotalAmount" readonly></i-input>
+          <i-button class="blueButton" v-if="!check" @click="huakouTest">确认付款</i-button>
         </td>
         <td>
           <!--<span>{{$dict.getDictName(v.dealStatus)}}</span>-->
@@ -114,11 +89,6 @@
           <i-icon class="modal-item-huakou-icon" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
-      <!--<tr height="40">-->
-        <!--<td v-if="!check"></td>-->
-        <!--<td width="25%">合计（元）</td>-->
-        <!--<td class="modal-item-heji-td" colspan="3">{{paymentAmount | toThousands}}</td>-->
-      <!--</tr>-->
     </table>
 
     <!--<i-table :columns3="columns3" :data3="data3"></i-table>-->
@@ -134,14 +104,6 @@
       <span>收款凭证</span>
       <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
     </div>
-    <template>
-      <i-modal title="订单详情" v-model="purchaseInfoModel" :width="1200" class="purchaseInformation">
-        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
-        <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInfoModel=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -156,7 +118,7 @@ import { Dependencies } from "~/core/decorator";
 import { RefundApplicationService } from "~/services/manage-service/refund-application.service";
 import { Prop } from "vue-property-decorator";
 import { LodashService } from "~/utils/lodash.service.ts"
-import {ChargeBackService} from "~/services/manage-service/charge-back.service";
+import { ChargeBackService } from "~/services/manage-service/charge-back.service";
 import UploadVoucher from "~/components/common/upload-voucher.vue"
 
 @Component({
@@ -164,7 +126,6 @@ import UploadVoucher from "~/components/common/upload-voucher.vue"
     FileUpload,
     ChangeCard,
     DataBox,
-    PurchaseInformation,
     UploadVoucher
   }
 })
@@ -184,8 +145,8 @@ export default class ConfirmPay extends Vue {
   private addFinanceUploadResource: any = []
   private personalBanks: any = [];
   private openUpload: Boolean = false;
-  private huakou:any = '未处理'
-  public pipeSelect:any = ''
+  private huakou: any = '未处理'
+  public pipeSelect: any = ''
   public fodderList: any = []
   @Prop({
     default: false
@@ -269,7 +230,6 @@ export default class ConfirmPay extends Vue {
    * 删除还款对象
    */
   deleteObj(index) {
-    console.log('add')
     this.collectMoneyDetails.splice(index, 1)
     this.inputBlur()
   }
@@ -385,30 +345,23 @@ export default class ConfirmPay extends Vue {
 
   }
 
-  addRow() {
-    // let tr: any = document.createElement('tr');
-    // let tb: any = document.getElementsByClassName('gather_type_table')[0]
-    // let cellsNum = tb.rows[0].cells.length;
-    // console.log(444, cellsNum)
-    // for (let j = 0; j < cellsNum; j++) {
-    //   let td = document.createElement('td');
-    //   td.innerHTML = 'test';
-    //   tr.appendChild(td);
-    // }
-    // tb.tBodies[0].appendChild(tr);
-  }
+  addRow() { }
 
   saleApplyInfo() {
-    this.purchaseInfoModel = true
-    let _purchaseInfo: any = this.$refs["purchase-info"];
-    _purchaseInfo.getOrderDetail(this.rowObj);
+    this.$dialog.show({
+      title: '订单详情',
+      footer: true,
+      isView: true,
+      width: 1200,
+      render: h => h(PurchaseInformation, { props: { orderNumber: this.rowObj.orderNumber } })
+    })
   }
-  huakouTest(){
-    this.chargeBackService.saveChargeback({personalId:1})
-      .subscribe( data => {
+  huakouTest() {
+    this.chargeBackService.saveChargeback({ personalId: 1 })
+      .subscribe(data => {
         this.$Message.success('划扣成功')
         this.huakou = '已处理'
-      },(msg) => {
+      }, (msg) => {
         this.$Message.error(msg)
       })
   }

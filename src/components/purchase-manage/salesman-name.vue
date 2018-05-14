@@ -1,7 +1,7 @@
 <!--机构与用户管理-->
-<template> 
+<template>
   <section>
-    <data-form  :model="userModel" @on-search="getUserListByCondition" :page="pageService" hidden-date-search hidden-reset>
+    <data-form :model="userModel" @on-search="getUserListByCondition" :page="pageService" hidden-date-search hidden-reset>
       <template slot="input">
         <i-form-item prop="userName" label="用户名:">
           <i-input v-model="userModel.userName" placeholder="请输入用户名"></i-input>
@@ -28,7 +28,6 @@ import { Dependencies } from "~/core/decorator";
 import { ManageService } from "~/services/manage-service/manage.service";
 import { Layout } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
-import { FilterService } from "~/utils/filter.service";
 import { Emit } from "vue-property-decorator";
 //TODO
 @Layout("workspace")
@@ -91,12 +90,12 @@ export default class SalesmanName extends Page {
     this.manageService
       .getUsersByDeptPage(this.userModel, this.pageService)
       .subscribe(
-        data => {
-          this.userDataSet = data;
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
+      data => {
+        this.userDataSet = data;
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
       );
   }
 

@@ -1,34 +1,26 @@
 <!--冻结申请记录-->
 <template>
-    <section class="page frozen-apply-record">
-        <page-header title="冻结申请记录" hiddenPrint></page-header>
-        <data-form date-prop="timeSearch" :model="frozenModel" @on-search="getFrozenList" :page="pageService" hidden-reset>
-            <template slot="input">
-                <i-form-item prop="orderInfo">
-                     <i-input v-model="frozenModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
-                </i-form-item>
-                <i-form-item prop="dateRange" label="日期：">
-                     <i-date-picker v-model="frozenModel.dateRange"  placeholder="请选择日期范围"></i-date-picker>
-                </i-form-item>
-                <i-form-item prop="collectMoneyMethod" label="结算通道">
-                     <i-select placeholder="请选择结算通道" v-model="frozenModel.collectMoneyMethod" clearable>
-                        <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
-                    </i-select>
-                </i-form-item>
-            </template>
-        </data-form>
+  <section class="page frozen-apply-record">
+    <page-header title="冻结申请记录" hiddenPrint></page-header>
+    <data-form date-prop="timeSearch" :model="frozenModel" @on-search="getFrozenList" :page="pageService" hidden-reset>
+      <template slot="input">
+        <i-form-item prop="orderInfo">
+          <i-input v-model="frozenModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="日期：">
+          <i-date-picker v-model="frozenModel.dateRange" placeholder="请选择日期范围"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="collectMoneyMethod" label="结算通道">
+          <i-select placeholder="请选择结算通道" v-model="frozenModel.collectMoneyMethod" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+      </template>
+    </data-form>
 
-        <data-box :id="348" :columns="columns1" :data="frozenList" @onPageChange="getFrozenList" :page="pageService"></data-box>
+    <data-box :id="348" :columns="columns1" :data="frozenList" @onPageChange="getFrozenList" :page="pageService"></data-box>
 
-        <template>
-            <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
-                <purchase-information ref="purchase-info"></purchase-information>
-                <div slot="footer">
-                    <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-                </div>
-            </i-modal>
-        </template>
-    </section>
+  </section>
 </template>
 
 <script lang="ts">
@@ -41,7 +33,6 @@ import SvgIcon from '~/components/common/svg-icon.vue'
 import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
-import { FilterService } from '~/utils/filter.service'
 import { RemitApplicationService } from '~/services/manage-service/remit-application.service'
 
 @Layout('workspace')
@@ -49,8 +40,7 @@ import { RemitApplicationService } from '~/services/manage-service/remit-applica
   components: {
     DataBox,
     RepaySum,
-    SvgIcon,
-    PurchaseInformation
+    SvgIcon
   }
 })
 export default class FrozenApplyRecord extends Page {
@@ -60,7 +50,6 @@ export default class FrozenApplyRecord extends Page {
   private columns1: any
   private frozenList: Array<Object> = []
   private repayInfo: Boolean = false
-  private purchaseInfoModal: Boolean = false
   private searchOptions: Boolean = false
   private frozenModel: any = {
     remitItem: 1122,
@@ -69,7 +58,7 @@ export default class FrozenApplyRecord extends Page {
     timeSearch: '',
     collectMoneyMethod: '',
     orderInfo: '',
-    dateRange:[]
+    dateRange: []
   }
 
   mounted() {
@@ -166,7 +155,7 @@ export default class FrozenApplyRecord extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.applyDate, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.applyDate, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -200,7 +189,7 @@ export default class FrozenApplyRecord extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.orderCreateTime, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.orderCreateTime, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -209,7 +198,7 @@ export default class FrozenApplyRecord extends Page {
         editable: true,
         title: '订单号',
         key: 'orderNumber',
-      minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, { row, column, index }) => {
           return h(
             'i-button',
@@ -219,7 +208,13 @@ export default class FrozenApplyRecord extends Page {
               },
               on: {
                 click: () => {
-                  this.checkOrderInfo(row)
+                  this.$dialog.show({
+                    title: '订单详情',
+                    footer: true,
+                    width: 1200,
+                    isView: true,
+                    render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                  })
                 }
               }
             },
@@ -236,7 +231,7 @@ export default class FrozenApplyRecord extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -254,29 +249,24 @@ export default class FrozenApplyRecord extends Page {
     this.searchOptions = !this.searchOptions
   }
 
-  repaySum(row) {}
+  repaySum(row) { }
 
-  trailerCar(row) {}
+  trailerCar(row) { }
 
   /**
    * 查看凭证
    */
-  checkProof(row) {}
+  checkProof(row) { }
 
   getFrozenList() {
     this.remitApplicationService
       .selectApplyForReliefHistory(this.frozenModel, this.pageService)
       .subscribe(
-        data =>this.frozenList = data,
-        err =>this.$Message.error(err)
+      data => this.frozenList = data,
+      err => this.$Message.error(err)
       )
   }
 
-  checkOrderInfo(row) {
-    this.purchaseInfoModal = true
-    let _purchaseInfo: any = this.$refs['purchase-info']
-    _purchaseInfo.getOrderDetail(row)
-  }
 
   /**
    * 解冻
@@ -287,13 +277,13 @@ export default class FrozenApplyRecord extends Page {
         applyId: row.applyId
       })
       .subscribe(
-        val => {
-          this.$Message.success('解冻成功！')
-          this.getFrozenList()
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      val => {
+        this.$Message.success('解冻成功！')
+        this.getFrozenList()
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 

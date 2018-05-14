@@ -18,7 +18,6 @@ import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { Dependencies } from "~/core/decorator";
 import { Emit } from "vue-property-decorator";
-import { FilterService } from "~/utils/filter.service";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 //TODO
 @Component({
@@ -38,12 +37,13 @@ export default class HistoricalRecord extends Vue {
       title: "订单号",
       key: "orderNumber",
       align: "center",
-      minWidth:this.$common.getColumnWidth(5)
+      minWidth: this.$common.getColumnWidth(6)
     },
     {
       title: "订单类型",
       key: "orderType",
       align: "center",
+      minWidth: this.$common.getColumnWidth(3),
       render: (h, { row, column, index }) => {
         return h("span", {}, this.$dict.getDictName(row.orderType));
       }
@@ -52,6 +52,7 @@ export default class HistoricalRecord extends Vue {
       title: "订单环节",
       key: "orderLink",
       align: "center",
+      minWidth: this.$common.getColumnWidth(3),
       render: (h, { row, column, index }) => {
         return h("span", {}, this.$dict.getDictName(row.orderLink));
       }
@@ -60,6 +61,7 @@ export default class HistoricalRecord extends Vue {
       title: "订单状态",
       key: "orderStatus",
       align: "center",
+      minWidth: this.$common.getColumnWidth(3),
       render: (h, { row, column, index }) => {
         return h("span", {}, this.$dict.getDictName(row.orderStatus));
       }
@@ -68,11 +70,11 @@ export default class HistoricalRecord extends Vue {
       title: "订单创建时间",
       key: "createTime",
       align: "center",
-      minWidth:this.$common.getColumnWidth(5),
+      minWidth: this.$common.getColumnWidth(5),
       render: (h, { row, column, index }) => {
         return h(
           "span",
-          FilterService.dateFormat(row.createTime, "yyyy-MM-dd hh:mm:ss")
+          this.$filter.dateFormat(row.createTime, "yyyy-MM-dd hh:mm:ss")
         );
       }
     }
@@ -86,9 +88,9 @@ export default class HistoricalRecord extends Vue {
   }
 
   private typeFilter = {
-    0:x=>x!==303&&x!==311,
-    1:x=>x==303,
-    2:x=>x==311
+    0: x => x !== 303 && x !== 311,
+    1: x => x == 303,
+    2: x => x == 311
   }
 
   onOrderTypeChange(value) {
@@ -104,7 +106,7 @@ export default class HistoricalRecord extends Vue {
   }
 
   mounted() {
-   this.onOrderTypeChange(this.orderType)
+    this.onOrderTypeChange(this.orderType)
   }
 }
 </script>

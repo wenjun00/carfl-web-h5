@@ -51,14 +51,6 @@
       </i-modal>
     </template>
 
-    <template>
-      <i-modal title="订单详情" :width="1200" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
-        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
-        <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInformationModal=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -87,8 +79,7 @@ import { FilterService } from "~/utils/filter.service";
     DataBox,
     ConfirmRepayment,
     DeductRecordHasSearch,
-    RepayInfo,
-    PurchaseInformation
+    RepayInfo
   }
 })
 export default class CustomerRepay extends Page {
@@ -98,7 +89,6 @@ export default class CustomerRepay extends Page {
   private scrollTopHeight = 0;
   private columns1: any;
   private customerRepayList: Array<Object> = [];
-  private purchaseInformationModal: Boolean = false;
   private searchOptions: Boolean = false;
   private confirmRepaymentModal: Boolean = false;
   private repayInfoModal: Boolean = false;
@@ -182,7 +172,7 @@ export default class CustomerRepay extends Page {
         this.confirmRepaymentModal = false;
         this.pageService.reset();
         this.getCustomerRepayList();
-        let _confirmRepayment:any = this.$refs['confirm-repayment']
+        let _confirmRepayment: any = this.$refs['confirm-repayment']
         _confirmRepayment.uploadFodder.reset()
       },
       ({ msg }) => {
@@ -199,53 +189,53 @@ export default class CustomerRepay extends Page {
         fixed: "left",
         render: (h, { row, column, index }) => {
           let arr =
-            !([317,318,324].includes(row.orderStatus))
+            !([317, 318, 324].includes(row.orderStatus))
               ? [
-                  h(
-                    "i-button",
-                    {
-                      props: {
-                        type: "text"
-                      },
-                      on: {
-                        click: () => {
-                          console.log(row.orderStatus)
-                          this.confirmRepaymentModal = true;
-                          let _repayment: any = this.$refs["confirm-repayment"];
-                          _repayment.refresh(row);
-                        }
-                      },
-                      style: {
-                        color: "#265EA2"
+                h(
+                  "i-button",
+                  {
+                    props: {
+                      type: "text"
+                    },
+                    on: {
+                      click: () => {
+                        console.log(row.orderStatus)
+                        this.confirmRepaymentModal = true;
+                        let _repayment: any = this.$refs["confirm-repayment"];
+                        _repayment.refresh(row);
                       }
                     },
-                    "确认还款"
-                  )
-                ]
+                    style: {
+                      color: "#265EA2"
+                    }
+                  },
+                  "确认还款"
+                )
+              ]
               : [
-                  h(
-                    "i-button",
-                    {
-                      props: {
-                        type: "text"
-                      },
-                      on: {
-                        click: () => {
-                          console.log(row.orderStatus)
-                          this.deductRecordModal = true;
-                          let _record: any = this.$refs[
-                            "deduct-record-has-search"
-                          ];
-                          _record.refresh(row);
-                        }
-                      },
-                      style: {
-                        color: "#265EA2"
+                h(
+                  "i-button",
+                  {
+                    props: {
+                      type: "text"
+                    },
+                    on: {
+                      click: () => {
+                        console.log(row.orderStatus)
+                        this.deductRecordModal = true;
+                        let _record: any = this.$refs[
+                          "deduct-record-has-search"
+                        ];
+                        _record.refresh(row);
                       }
                     },
-                    "划扣记录"
-                  )
-                ];
+                    style: {
+                      color: "#265EA2"
+                    }
+                  },
+                  "划扣记录"
+                )
+              ];
           arr.push(
             h(
               "i-button",
@@ -285,9 +275,13 @@ export default class CustomerRepay extends Page {
               },
               on: {
                 click: () => {
-                  this.purchaseInformationModal = true;
-                  let _purchaseInfo: any = this.$refs["purchase-info"];
-                  _purchaseInfo.getOrderDetail(row);
+                  this.$dialog.show({
+                    title: '订单详情',
+                    footer: true,
+                    width: 1200,
+                    isView: true,
+                    render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                  })
                 }
               }
             },
@@ -467,7 +461,7 @@ export default class CustomerRepay extends Page {
         editable: true,
         key: "productRate",
         minWidth: this.$common.getColumnWidth(2),
-        render:(h,{row}) => h( 'p',this.$filter.decimalToPrecent(row.productRate))
+        render: (h, { row }) => h('p', this.$filter.decimalToPrecent(row.productRate))
       },
       {
         align: "center",
@@ -498,18 +492,18 @@ export default class CustomerRepay extends Page {
     this.paymentScheduleService
       .getCustomerPayments(this.customerRepayModel, this.pageService)
       .subscribe(
-        data => {
-          this.customerRepayList = data;
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
+      data => {
+        this.customerRepayList = data;
+      },
+      ({ msg }) => {
+        this.$Message.error(msg);
+      }
       );
   }
   /**
    * 确定
    */
-  confirm() {}
+  confirm() { }
 }
 </script>
 

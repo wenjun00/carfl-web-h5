@@ -80,9 +80,9 @@
     <table class="modal-item-table" border="1" width="868">
       <tr height="40">
         <!--<td bgcolor="#F2F2F2" colspan="1" width="5%">-->
-          <!--<div @click="addObj">-->
-            <!--<i-icon class="modal-item-icon" type="plus"></i-icon>-->
-          <!--</div>-->
+        <!--<div @click="addObj">-->
+        <!--<i-icon class="modal-item-icon" type="plus"></i-icon>-->
+        <!--</div>-->
         <!--</td>-->
         <td bgcolor="#F2F2F2" colspan="1" width="20%">结算通道</td>
         <!--<td bgcolor="#F2F2F2" colspan="1" width="20%">收款项</td>-->
@@ -91,9 +91,9 @@
       </tr>
       <tr height="40">
         <!--<td>-->
-          <!--<div @click="deleteObj(i)">-->
-            <!--<i-icon type="minus" class="modal-item-icon"></i-icon>-->
-          <!--</div>-->
+        <!--<div @click="deleteObj(i)">-->
+        <!--<i-icon type="minus" class="modal-item-icon"></i-icon>-->
+        <!--</div>-->
         <!--</td>-->
         <td>
           <i-select class="modal-item-select" placeholder="选择结算通道" v-model="pipeSelect">
@@ -101,19 +101,19 @@
           </i-select>
         </td>
         <!--<td>-->
-          <!--<i-select class="modal-item-select" placeholder="选择收款项" v-model="v.collectItem" @on-change="selectWay($event, v)">-->
-            <!--<i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>-->
-          <!--</i-select>-->
+        <!--<i-select class="modal-item-select" placeholder="选择收款项" v-model="v.collectItem" @on-change="selectWay($event, v)">-->
+        <!--<i-option v-for="item in collectMoneyItemModel" :key="item.itemCode" :label="item.itemLabel" :value="item.itemCode"></i-option>-->
+        <!--</i-select>-->
         <!--</td>-->
         <td>
-          <i-input-number style="display:inline-block;width:30%;margin-right:10px" v-model="totalMoney"  :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
-          <i-button class="blueButton" @click="huakouTest" >确认划扣</i-button>
+          <i-input-number style="display:inline-block;width:30%;margin-right:10px" v-model="totalMoney" :min="0" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"></i-input-number>
+          <i-button class="blueButton" @click="huakouTest">确认划扣</i-button>
         </td>
         <!--<td>-->
-          <!--<div>-->
-            <!--<span>已处理</span>-->
-            <!--<i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>-->
-          <!--</div> -->
+        <!--<div>-->
+        <!--<span>已处理</span>-->
+        <!--<i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>-->
+        <!--</div> -->
         <!--</td>-->
         <td>
           <!--<span>{{$dict.getDictName(v.dealStatus)}}</span>-->
@@ -122,9 +122,9 @@
         </td>
       </tr>
       <!--<tr height="40">-->
-        <!--<td></td>-->
-        <!--<td width="25%">合计（元）</td>-->
-        <!--<td class="modal-item-td" colspan="3">{{collectMoneySum | toThousands}}</td>-->
+      <!--<td></td>-->
+      <!--<td width="25%">合计（元）</td>-->
+      <!--<td class="modal-item-td" colspan="3">{{collectMoneySum | toThousands}}</td>-->
       <!--</tr>-->
     </table>
     <i-form>
@@ -142,7 +142,7 @@
     </div>
     <template>
       <i-modal title="本期划扣详情" v-model="deductRecordModal" :width="1200">
-        <deduct-Detail ref="deduct-Detail"></deduct-Detail>
+        <deduct-detail ref="deduct-Detail"></deduct-detail>
       </i-modal>
     </template>
   </section>
@@ -152,13 +152,13 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import DataBox from "~/components/common/data-box.vue";
-import DeductDetail from "~/components/finance-manage/deduct-Detail.vue";
+import DeductDetail from "~/components/finance-manage/deduct-detail.vue";
 import { DataGrid, DataGridItem } from "@zct1989/vue-component";
 import { Dependencies } from "~/core/decorator";
 import { PaymentScheduleService } from "~/services/manage-service/payment-schedule.service";
 import UploadVoucher from "~/components/common/upload-voucher.vue";
 import { LodashService } from '~/utils/lodash.service'
-import {ChargeBackService} from "~/services/manage-service/charge-back.service";
+import { ChargeBackService } from "~/services/manage-service/charge-back.service";
 
 @Component({
   components: {
@@ -175,10 +175,10 @@ export default class ConfirmRepayment extends Vue {
   private columns1: any;
   private repaymentObj: any = {};
   private rowObj: any = {
-    personalId:'',
-    businessId:'',
-    orderId:'',
-    periods:''
+    personalId: '',
+    businessId: '',
+    orderId: '',
+    periods: ''
   };
   private data1: any = [];
   private collectMoneyDetails: any = [];
@@ -192,9 +192,9 @@ export default class ConfirmRepayment extends Vue {
   private collectMoneyItemModel: any = [];
   private fodderList: any = [];
   private uploadFodder: any = {};
-  public pipeSelect:any = ''
-  private huakou:any = '未处理'
-  public totalMoney:any = 0
+  public pipeSelect: any = ''
+  private huakou: any = '未处理'
+  public totalMoney: any = 0
 
   mounted() {
     this.uploadFodder = this.$refs["upload-voucher-two"];
@@ -269,7 +269,7 @@ export default class ConfirmRepayment extends Vue {
     this.collectMoneyDetails.forEach(v => {
       sum += v.collectMoneyAmount;
     });
-    this.collectMoneySum = LodashService.round(sum,2);
+    this.collectMoneySum = LodashService.round(sum, 2);
   }
 
   selectWay(code, item) {
@@ -279,12 +279,12 @@ export default class ConfirmRepayment extends Vue {
       this.inputBlur();
     }
   }
-  huakouTest(){
-    this.chargeBackService.saveChargeback({personalId:1})
-      .subscribe( data => {
+  huakouTest() {
+    this.chargeBackService.saveChargeback({ personalId: 1 })
+      .subscribe(data => {
         this.$Message.success('划扣成功')
         this.huakou = '已处理'
-      },(msg) => {
+      }, (msg) => {
         this.$Message.error(msg)
       })
   }

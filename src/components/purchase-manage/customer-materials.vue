@@ -305,7 +305,6 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { CityService } from "~/utils/city.service";
-import { FilterService } from "~/utils/filter.service";
 import { Prop } from "vue-property-decorator";
 import { FormatInputPathObject } from "path";
 import { Form } from "iview";
@@ -517,7 +516,7 @@ export default class CustomerMaterials extends Vue {
       this.customerModel,
       Object.assign(data.personal, {
         // 出生日期
-        birthTime: FilterService.dateFormat(
+        birthTime: this.$filter.dateFormat(
           data.personal.birthTime,
           "yyyy-MM-dd"
         ),

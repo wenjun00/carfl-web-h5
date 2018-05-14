@@ -128,7 +128,6 @@ import { CityService } from '~/utils/city.service';
 import { Form } from 'iview';
 import UploadVoucher from "~/components/common/upload-voucher.vue";
 import { AssessMentPlacingService } from "~/services/manage-service/assess-ment-placing.service";
-import { FilterService } from '~/utils/filter.service';
 import { Prop, Watch } from 'vue-property-decorator';
 
 @Component({
@@ -194,7 +193,7 @@ export default class EditFromStorage extends Vue {
         this.outTreasuryModel.frameNo = data.assessmentPlacingApplyModel.frameNo
         this.outTreasuryModel.engineNo = data.assessmentPlacingApplyModel.engineNo
         this.outTreasuryModel.carSubjection = data.carSubjection
-        this.outTreasuryModel.cardsDate = FilterService.dateFormat(data.cardsDate, 'yyyy-MM-dd')
+        this.outTreasuryModel.cardsDate = this.$filter.dateFormat(data.cardsDate, 'yyyy-MM-dd')
       }, ({ msg }) => {
         this.$Message.error(msg)
       })
