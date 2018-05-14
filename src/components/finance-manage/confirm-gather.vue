@@ -45,46 +45,26 @@
     </div>
     <table class="modal-item-table" border="1" width="850">
       <tr height="40">
-        <!--<td class="bg-color" colspan="1" width="5%" v-if="!check">-->
-          <!--<div @click="addObj">-->
-            <!--<i-icon type="plus" class="modal-item-icon"></i-icon>-->
-          <!--</div>-->
-        <!--</td>-->
         <td class="bg-color" colspan="1" width="20%">结算通道</td>
         <!--<td class="bg-color" colspan="1" width="20%">收款项</td>-->
         <td class="bg-color" colspan="1">合计金额（元）</td>
         <td class="bg-color" colspan="1">状态</td>
       </tr>
       <tr height="40">
-        <!--<td v-if="!check">-->
-          <!--<div @click="deleteObj(i)">-->
-            <!--<i-icon type="minus" class="modal-item-icon"></i-icon>-->
-          <!--</div>-->
-        <!--</td>-->
         <td>
-          <i-select class="modal-item-select" placeholder="选择结算通道"  :disabled="check" v-model="pipeSelect">
+          <i-select class="modal-item-select" placeholder="选择结算通道" :disabled="check" v-model="pipeSelect">
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </td>
-        <!--<td>-->
-          <!--<i-select class="modal-item-select" placeholder="选择收款项目" v-model="v.collectItem" :disabled="check" @on-change="selectWay($event, v)">-->
-            <!--<i-option v-for="item in collectMoneyItemModels" :key="item.itemName" :label="item.itemLabel" :value="item.itemName"></i-option>-->
-          <!--</i-select>-->
-        <!--</td>-->
         <td>
-          <i-input class="modal-item-huakou"  v-model="repaymentObj.totalPayment" readonly></i-input>
-          <i-button class="blueButton" v-if="!check" @click="huakouTest" >确认划扣</i-button>
+          <i-input class="modal-item-huakou" v-model="repaymentObj.totalPayment" readonly></i-input>
+          <i-button class="blueButton" v-if="!check" @click="huakouTest">确认划扣</i-button>
         </td>
         <td>
           <span>{{huakou}}</span>
           <i-icon class="modal-item-icon2" type="loop" size="20" color="#199ED8"></i-icon>
         </td>
       </tr>
-      <!--<tr height="40">-->
-        <!--<td v-if="!check"></td>-->
-        <!--<td width="25%">合计（元）</td>-->
-        <!--<td colspan="3" class="modal-item-td">{{paymentAmount}}</td>-->
-      <!--</tr>-->
     </table>
     <div>
       <div class="modal-item-xinxi"></div>
@@ -98,14 +78,6 @@
       <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
     </div>
 
-    <template>
-      <i-modal title="申请单详情" v-model="purchaseInfoModel" :width="1200" class="purchaseInformation">
-        <purchase-information ref="purchase-info"></purchase-information>
-        <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInfoModel=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -120,13 +92,12 @@ import { CollectMoneyHistoryService } from "~/services/manage-service/collect-mo
 import UploadVoucher from "~/components/common/upload-voucher.vue"
 import { Prop, Watch } from "vue-property-decorator";
 import BankInfo from "~/components/base-data/bank-info.vue";
-import {ChargeBackService} from "~/services/manage-service/charge-back.service";
+import { ChargeBackService } from "~/services/manage-service/charge-back.service";
 
 @Component({
   components: {
     ChangeCard,
     DataBox,
-    PurchaseInformation,
     UploadVoucher,
     BankInfo
   }
@@ -152,8 +123,8 @@ export default class ConfirmGather extends Vue {
   private columns2: any;
   private purchaseInfoModel: Boolean = false;
   private fodderList: any = []
-  private huakou:any = '未处理'
-  private pipeSelect:any = ''
+  private huakou: any = '未处理'
+  private pipeSelect: any = ''
 
   @Watch('currentRow')
   onChange() {
@@ -185,8 +156,8 @@ export default class ConfirmGather extends Vue {
         })
         this.inputBlur()
       }, ({ msg }) => {
-          this.$Message.error(msg)
-        })
+        this.$Message.error(msg)
+      })
     })
   }
   /**
@@ -228,7 +199,7 @@ export default class ConfirmGather extends Vue {
   }
 
   created() {
-      this.columns2 = [{
+    this.columns2 = [{
       title: "户名",
       align: 'center',
       key: 'personalName'
@@ -331,16 +302,20 @@ export default class ConfirmGather extends Vue {
     }]
   }
   saleApplyInfo() {
-    this.purchaseInfoModel = true
-    let _purchaseInfo: any = this.$refs["purchase-info"];
-    _purchaseInfo.getOrderDetail(this.rowObj);
+    this.$dialog.show({
+      title: '订单详情',
+      footer: true,
+      isView: true,
+      width: 1200,
+      render: h => h(PurchaseInformation, { props: { orderNumber: this.rowObj.orderNumber } })
+    })
   }
-  huakouTest(){
-    this.chargeBackService.saveChargeback({personalId:1})
-      .subscribe( data => {
+  huakouTest() {
+    this.chargeBackService.saveChargeback({ personalId: 1 })
+      .subscribe(data => {
         this.$Message.success('划扣成功')
         this.huakou = '已处理'
-      },(msg) => {
+      }, (msg) => {
         this.$Message.error(msg)
       })
   }

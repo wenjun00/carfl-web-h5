@@ -27,16 +27,6 @@
     </data-form>
 
     <data-box :id="304" :columns="columns1" :data="grayList" @onPageChange="getGrayList" :page="pageService"></data-box>
-
-    <template>
-      <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
-        <purchase-information ref="purchase-info"></purchase-information>
-        <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
-
   </section>
 </template>
 
@@ -56,7 +46,6 @@ import { CityService } from '~/utils/city.service'
 @Component({
   components: {
     DataBox,
-    PurchaseInformation,
     SvgIcon
   }
 })
@@ -67,7 +56,6 @@ export default class GrayList extends Page {
   private grayList: Array<Object> = []
   private orderModal: Boolean = false
   private searchOptions: Boolean = false
-  private purchaseInfoModal: Boolean = false
   private approvalModel: any = {
     riskStatus: 1,
     timeSearch: '',
@@ -103,8 +91,13 @@ export default class GrayList extends Page {
                 },
                 on: {
                   click: () => {
-                    this.purchaseInfoModal = true
-                    this.checkOrderInfo(row)
+                    this.$dialog.show({
+                      title: '订单详情',
+                      footer: true,
+                      width: 1200,
+                      isView: true,
+                      render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                    })
                   }
                 }
               },
@@ -200,7 +193,13 @@ export default class GrayList extends Page {
               },
               on: {
                 click: () => {
-                  this.checkOrderInfo(row)
+                  this.$dialog.show({
+                    title: '订单详情',
+                    footer: true,
+                    width: 1200,
+                    isView: true,
+                    render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                  })
                 }
               }
             },
@@ -294,11 +293,7 @@ export default class GrayList extends Page {
       }
     ]
   }
-  checkOrderInfo(row) {
-    this.purchaseInfoModal = true
-    let _purchaseInfo: any = this.$refs['purchase-info']
-    _purchaseInfo.getOrderDetail(row)
-  }
+
   openSearch() {
     this.searchOptions = !this.searchOptions
   }

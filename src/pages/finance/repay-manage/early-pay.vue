@@ -96,7 +96,6 @@ export default class EarlyPay extends Page {
   private columns1: any;
   private columns2: any = [];
   private searchOptions: Boolean = false;
-  private purchaseInformationModal: Boolean = false;
   private confirmRepaymentModal: Boolean = false;
   private repayInfoModal: Boolean = false;
   private deductRecordModal: Boolean = false;
@@ -112,18 +111,6 @@ export default class EarlyPay extends Page {
   }
   activated() {
     this.getEarlyPayList();
-  }
-  visibleChange() {
-    let target = document.querySelector(".purchaseInformation .ivu-modal-body");
-    if (target) {
-      target.addEventListener("scroll", this.monitorScorll);
-    }
-  }
-  monitorScorll() {
-    let target = document.querySelector(".purchaseInformation .ivu-modal-body");
-    if (target) {
-      this.scrollTopHeight = target.scrollTop;
-    }
   }
   /**
    * 保存草稿

@@ -41,16 +41,6 @@
       </i-modal>
     </template>
 
-    <!--Model-->
-
-    <template>
-      <i-modal title="订单详情" :width="1200" id="orderDetail" v-model="purchaseInformationModal" class="purchaseInformation" @on-visible-change="visibleChange">
-        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
-        <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInformationModal=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -71,7 +61,6 @@ import { CityService } from '~/utils/city.service'
 @Component({
   components: {
     DataBox,
-    PurchaseInformation
   }
 })
 export default class ApprovalResourcePool extends Page {
@@ -81,7 +70,6 @@ export default class ApprovalResourcePool extends Page {
   private resourcePoolList: Array<Object> = []
   private orderModal: Boolean = false
   private searchOptions: Boolean = false
-  private purchaseInformationModal: Boolean = false
   private scrollTopHeight = 0
   private val: Date
   private resourcePoolModel: any = {
@@ -197,7 +185,13 @@ export default class ApprovalResourcePool extends Page {
                 },
                 on: {
                   click: () => {
-                    this.checkOrderInfo(row)
+                    this.$dialog.show({
+                      title: '订单详情',
+                      footer: true,
+                      isView: true,
+                      width: 1200,
+                      render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                    })
                   }
                 }
               },
@@ -391,13 +385,6 @@ export default class ApprovalResourcePool extends Page {
     endTime = new Date(val[1])
     this.resourcePoolModel.startTime = startTime
     this.resourcePoolModel.endTime = endTime
-  }
-
-  //   clearTime() {}
-  checkOrderInfo(row) {
-    this.purchaseInformationModal = true
-    let _purchaseInfo: any = this.$refs['purchase-info']
-    _purchaseInfo.getOrderDetail(row)
   }
 }
 </script>

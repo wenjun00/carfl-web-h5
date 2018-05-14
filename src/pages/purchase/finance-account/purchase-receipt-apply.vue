@@ -57,7 +57,6 @@ export default class PurchaseReceiptApply extends Page {
   private data2: Array<Object> = [];
   private searchOptions: Boolean = false;
   private openColumnsConfig: Boolean = false
-  private purchaseInfoModal: Boolean = false;
 
   addNewApply() {
     // this.$Modal.info({

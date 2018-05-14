@@ -77,7 +77,6 @@ export default class ClosedOrderQuery extends Page {
   private searchOptions: Boolean = false;
   private openColumnsConfig: Boolean = false;
   private repayInfoModal: Boolean = false;
-  private purchaseInformationModal: Boolean = false;
   private customerRepayModel: any = {
     settlementChannel: '',
     paymentStatus: '',

@@ -89,7 +89,6 @@ export default class CustomerRepay extends Page {
   private scrollTopHeight = 0;
   private columns1: any;
   private customerRepayList: Array<Object> = [];
-  private purchaseInformationModal: Boolean = false;
   private searchOptions: Boolean = false;
   private confirmRepaymentModal: Boolean = false;
   private repayInfoModal: Boolean = false;

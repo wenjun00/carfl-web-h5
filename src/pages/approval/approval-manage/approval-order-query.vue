@@ -14,15 +14,6 @@
     </data-form>
     <data-box :id="322" :columns="columns1" :data="allOrderList" @onPageChange="getAllOrderList" :page="pageService" ref="databox"></data-box>
 
-    <template>
-      <i-modal @on-visible-change="visibleChange" title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
-        <purchase-information :scrollTopHeight="scrollTopHeight" ref="purchase-info"></purchase-information>
-        <div slot="footer">
-          <i-button class="bluebutton" @click="purchaseInfoModal=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
-
   </section>
 </template>
 
@@ -42,9 +33,7 @@ import { ProductOrderService } from '~/services/manage-service/product-order.ser
 
 @Layout('workspace')
 @Component({
-  components: {
-    PurchaseInformation
-  }
+  components: {}
 })
 export default class ApprovalOrderQuery extends Page {
   @Dependencies(ApprovalService) private approvalService: ApprovalService
@@ -95,8 +84,13 @@ export default class ApprovalOrderQuery extends Page {
                 },
                 on: {
                   click: () => {
-                    // this.purchaseInfoModal = true;
-                    this.checkOrderInfo(row)
+                    this.$dialog.show({
+                      title: '订单详情',
+                      footer: true,
+                      width: 1200,
+                      isView: true,
+                      render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                    })
                   }
                 }
               },
@@ -182,8 +176,13 @@ export default class ApprovalOrderQuery extends Page {
               },
               on: {
                 click: () => {
-                  // this.purchaseInfoModal = true;
-                  this.checkOrderInfo(row)
+                  this.$dialog.show({
+                    title: '订单详情',
+                    footer: true,
+                    isView: true,
+                    width: 1200,
+                    render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                  })
                 }
               }
             },
@@ -320,12 +319,6 @@ export default class ApprovalOrderQuery extends Page {
    */
   getOrder(row) {
     this.orderModal = true
-  }
-
-  checkOrderInfo(row) {
-    this.purchaseInfoModal = true
-    let _purchaseInfo: any = this.$refs['purchase-info']
-    _purchaseInfo.getOrderDetail(row)
   }
 
   getAllOrderList() {

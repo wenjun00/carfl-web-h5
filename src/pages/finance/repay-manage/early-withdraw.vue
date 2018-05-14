@@ -74,7 +74,6 @@ export default class EarlyWithdraw extends Page {
   private columns1: any;
   private data1: Array<Object> = [];
   private searchOptions: Boolean = false;
-  private purchaseInformationModal: Boolean = false;
   private openColumnsConfig: Boolean = false;
   private confirmWithdrawModal: Boolean = false;
   private repayInfoModal: Boolean = false;
@@ -87,18 +86,6 @@ export default class EarlyWithdraw extends Page {
   }
   mounted() {
     this.getEarlyPayList();
-  }
-  visibleChange() {
-    let target = document.querySelector(".purchaseInformation .ivu-modal-body");
-    if (target) {
-      target.addEventListener("scroll", this.monitorScorll);
-    }
-  }
-  monitorScorll() {
-    let target = document.querySelector(".purchaseInformation .ivu-modal-body");
-    if (target) {
-      this.scrollTopHeight = target.scrollTop;
-    }
   }
   getEarlyPayList() {
     this.advanceRevokeService.getAdvanceRevokeList(this.customerRepayModel, this.pageService).subscribe(data => {

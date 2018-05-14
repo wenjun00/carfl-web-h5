@@ -38,15 +38,6 @@
       </i-modal>
     </template>
 
-    <template>
-      <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
-        <purchase-information ref="purchase-info"></purchase-information>
-        <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
-
   </section>
 </template>
 
@@ -66,7 +57,6 @@ import SvgIcon from '~/components/common/svg-icon.vue'
 @Component({
   components: {
     DataBox,
-    PurchaseInformation,
     SvgIcon
   }
 })
@@ -181,7 +171,13 @@ export default class MeetConditionCheck extends Page {
               },
               on: {
                 click: () => {
-                  this.checkOrderInfo(row)
+                  this.$dialog.show({
+                    title: '订单详情',
+                    footer: true,
+                    width: 1200,
+                    isView: true,
+                    render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                  })
                 }
               }
             },
@@ -335,12 +331,6 @@ export default class MeetConditionCheck extends Page {
       }
     )
     this.orderModal = false
-  }
-
-  checkOrderInfo(row) {
-    this.purchaseInfoModal = true
-    let _purchaseInfo: any = this.$refs['purchase-info']
-    _purchaseInfo.getOrderDetail(row)
   }
 
   getTimeSearch(val) {

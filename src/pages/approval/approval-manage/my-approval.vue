@@ -231,7 +231,6 @@ export default class MyApproval extends Page {
   private blackListModal: Boolean = false
   private grayListModal: Boolean = false
   private rejectModal: Boolean = false
-  private purchaseInfoModal: Boolean = false
   private rebackModal: Boolean = false
   private approvePassedModal: Boolean = false
   private secendLastApproval: Boolean = false // 复审终审通过弹窗
@@ -389,7 +388,13 @@ export default class MyApproval extends Page {
             },
             on: {
               click: () => {
-                this.checkOrderInfo(row)
+                this.$dialog.show({
+                  title: '订单详情',
+                  footer: true,
+                  width: 1200,
+                  isView: true,
+                  render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                })
               }
             }
           },
@@ -652,21 +657,6 @@ export default class MyApproval extends Page {
 
   openSearch() {
     this.searchOptions = !this.searchOptions
-  }
-
-  checkOrderInfo(row) {
-    this.$dialog.show({
-      title: '订单详情',
-      footer: true,
-      width: 1200,
-      isView: true,
-      render: h => h(PurchaseInformation,
-        {
-          props: {
-            orderNumber: row.orderNumber
-          }
-        })
-    })
   }
 
   changeSelectOne(val) {

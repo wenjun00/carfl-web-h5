@@ -83,7 +83,6 @@ export default class OrderQuery extends Page {
   private modal2: Boolean = false;
   private openCustomerInformation: Boolean = false;
   private orderProgressModal: Boolean = false;
-  private purchaseInfoModal: Boolean = false;
   private editData: any = "";
   private orderInfo: any;
   private startTime: any;

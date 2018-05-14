@@ -81,7 +81,6 @@ export default class CustomerRepayQuery extends Page {
   private searchOptions: Boolean = false
   private repaySumModal: Boolean = false
   private customerSettleModal: Boolean = false
-  private purchaseInfoModal: Boolean = false
   private customerRepayModel: any = {
     settlementChannel: '',
     paymentStatus: '',

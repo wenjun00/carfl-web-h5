@@ -65,7 +65,6 @@ export default class SecondApproval extends Page {
   private secondList: Array<Object> = []
   private orderModal: Boolean = false
   private searchOptions: Boolean = false
-  private purchaseInfoModal: Boolean = false
   private resourcePoolModel: any = {
     orderLink: 333,
     startTime: '',

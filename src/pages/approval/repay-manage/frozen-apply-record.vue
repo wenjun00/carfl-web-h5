@@ -50,7 +50,6 @@ export default class FrozenApplyRecord extends Page {
   private columns1: any
   private frozenList: Array<Object> = []
   private repayInfo: Boolean = false
-  private purchaseInfoModal: Boolean = false
   private searchOptions: Boolean = false
   private frozenModel: any = {
     remitItem: 1122,

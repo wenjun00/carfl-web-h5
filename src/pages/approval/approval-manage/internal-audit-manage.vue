@@ -28,15 +28,6 @@
 
     <data-box :id="295" :columns="columns1" :data="internalList" @onPageChange="getInternalAuditList" :page="pageService"></data-box>
 
-    <template>
-      <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
-        <purchase-information ref="purchase-info"></purchase-information>
-        <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
-
   </section>
 </template>
 
@@ -56,7 +47,6 @@ import { CityService } from '~/utils/city.service'
 @Component({
   components: {
     DataBox,
-    PurchaseInformation,
     SvgIcon
   }
 })
@@ -67,7 +57,6 @@ export default class InternalAuditManage extends Page {
   private internalList: Array<Object> = []
   private orderModal: Boolean = false
   private searchOptions: Boolean = false
-  private purchaseInfoModal: Boolean = false
   private approvalModel: any = {
     riskStatus: 0,
     timeSearch: '',
@@ -102,8 +91,13 @@ export default class InternalAuditManage extends Page {
                 },
                 on: {
                   click: () => {
-                    this.internalExamine(row)
-
+                    this.$dialog.show({
+                      title: '订单详情',
+                      footer: true,
+                      width: 1200,
+                      isView: true,
+                      render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                    })
                   }
                 }
               },
@@ -189,7 +183,13 @@ export default class InternalAuditManage extends Page {
               },
               on: {
                 click: () => {
-                  this.checkOrderInfo(row)
+                  this.$dialog.show({
+                    title: '订单详情',
+                    footer: true,
+                    width: 1200,
+                    isView: true,
+                    render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                  })
                 }
               }
             },
@@ -289,22 +289,6 @@ export default class InternalAuditManage extends Page {
 
   openSearch() {
     this.searchOptions = !this.searchOptions
-  }
-  /**
-   * 订单编号
-   */
-  checkOrderInfo(row) {
-    this.purchaseInfoModal = true
-    let _purchaseInfo: any = this.$refs['purchase-info']
-    _purchaseInfo.getOrderDetail(row)
-  }
-  /**
-   * 点击查看
-   */
-  internalExamine(row) {
-    this.purchaseInfoModal = true
-    let _purchaseInfo: any = this.$refs['purchase-info']
-    _purchaseInfo.getOrderDetail(row)
   }
 
 
