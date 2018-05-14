@@ -160,7 +160,7 @@ export default class NewApplication extends Vue {
       { type: 'string', maxlength: 4, message: "车身颜色不能超过4位", trigger: "blur" }],
     engineNo: [
       { required: true, message: "请输入发动机号", trigger: "blur" },
-      { pattern: /^[A-Z|0-9]{10,15}$/, message: "请输入正确的发动机号", trigger: "blur" }],
+      { pattern: /^[A-Z|0-9]{6,15}$/, message: "请输入正确的发动机号", trigger: "blur" }],
     carNo: [
       { required: true, message: '请输入车牌号码', trigger: 'blur' },
       { required: true, validator: this.$validator.carCardNo, trigger: "blur" }],

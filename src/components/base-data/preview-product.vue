@@ -5,10 +5,10 @@
     <data-grid :labelWidth="100">
       <data-grid-item label="产品序号" :span="4">{{dpNameTitleView.number}}</data-grid-item>
       <data-grid-item label="产品名称" :span="8"> {{dpNameTitleView.name}}</data-grid-item>
-      <data-grid-item label="产品期数" :span="4"> {{$dict.getDictName(productDetailView.periods)}}</data-grid-item>
-      <data-grid-item label="产品月利率" :span="4"> {{productDetailView.productRate | decimalToPrecent}}</data-grid-item>
-      <data-grid-item label="还款方式" :span="4">{{$dict.getDictName(productDetailView.payWay)}}</data-grid-item>
-      <data-grid-item label="周期类型" :span="4"> {{$dict.getDictName(productDetailView.periodType)}} </data-grid-item>
+      <data-grid-item label="产品期数" :span="4"> {{productDetailView.periods | dictConvert}}</data-grid-item>
+      <data-grid-item label="产品月利率" :span="4"> {{productDetailView.productRate | decimalToPrecent(4)}}</data-grid-item>
+      <data-grid-item label="还款方式" :span="4">{{productDetailView.payWay | dictConvert}}</data-grid-item>
+      <data-grid-item label="周期类型" :span="4"> {{productDetailView.periodType | dictConvert}} </data-grid-item>
       <data-grid-item label="融资金额" :span="8">{{productDetailView.financingAmount}}</data-grid-item>
       <data-grid-item label="账期类型" :span="12">
         <i-radio-group class="item-float-left" v-model="productDetailView.paymentType">
@@ -17,53 +17,6 @@
         <span class="item-float-left" v-if="productDetailView.paymentType === 387">{{productDetailView.paymentDay + '日'}} </span>
       </data-grid-item>
     </data-grid>
-    <!--<div class="addPeriodsItem">首付款参数</div>
-    <data-grid :labelWidth="100">
-      <data-grid-item label="首付款" :span="12">
-        <div type="flex" align="middle">
-          <i-radio-group class="item-float-left" v-model="initialParams">
-            <i-radio label="无" disabled></i-radio>
-            <i-radio label="有" disabled></i-radio>
-          </i-radio-group>
-          <div v-show="initialParams==='有'" class="item-float-left">
-            <span>比例</span>
-            <span>{{productDetailView.initialPayment}}</span>
-            <span class="item-color-red">%</span>
-          </div>
-        </div>
-      </data-grid-item>
-    </data-grid>
-    <div class="addPeriodsItem">保证金参数</div>
-    <data-grid :labelWidth="100">
-      <data-grid-item label="保证金" :span="12">
-        <i-radio-group class="item-float-left item-margin-top6" v-model="promiseMoenyParams">
-          <i-radio label="无" disabled></i-radio>
-          <i-radio label="有" disabled></i-radio>
-        </i-radio-group>
-      </data-grid-item>
-      <data-grid-item label="保证金比例" :span="12" v-if="promiseMoenyParams==='有'">
-        <div class="item-float-left">
-          <span class="item-margin-top10">比例</span>
-          <span>{{productDetailView.depositCash}}</span>
-          <span class="item-color-red">%</span>
-          <span>{{ ` 缴纳方式：${productDetailView.depositCashType === 396 ? '退还' : '不退还'}`}}</span>
-        </div>
-      </data-grid-item>
-    </data-grid>
-    <div class="addPeriodsItem">尾付款参数</div>
-    <data-grid :labelWidth="100">
-      <data-grid-item label="尾付款" :span="12">
-        <i-radio-group class="item-float-left item-margin-top2" v-model="residueParams">
-          <i-radio label="无" disabled></i-radio>
-          <i-radio label="有" disabled></i-radio>
-        </i-radio-group>
-        <div v-show="residueParams==='有'" class="item-float-left item-margin-top4">
-          <span>月利率：</span>
-          <span>{{productDetailView.finalCash}}</span>
-          <span class="item-color-red">%</span>
-        </div>
-      </data-grid-item>
-    </data-grid>-->
     <div class="addPeriodsItem">管理费参数</div>
     <data-grid :labelWidth="100">
       <data-grid-item label="管理费" :span="12">
