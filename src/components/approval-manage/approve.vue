@@ -49,7 +49,7 @@
         <data-grid-item label="管理费" :span="3">{{!!orderInfo.manageCost?orderInfo.manageCost:0}}</data-grid-item>
         <data-grid-item label="GPS费" :span="3">{{!!orderInfo.gpsFee?orderInfo.gpsFee:0}}</data-grid-item>
         <data-grid-item label="其他费用" :span="3">{{!!orderInfo.otherFee?orderInfo.otherFee:0}}</data-grid-item>
-        <data-grid-item label="抵押贷款估价" :span="6" v-if="orderInfo.orderCars&&orderInfo.orderCars.length">{{orderInfo.orderCars[0].carAmount}}</data-grid-item>
+        <data-grid-item label="抵押贷款估价" :span="6">{{orderInfo.financingAmount | toThousands}}</data-grid-item>
       </data-grid>
     </i-row>
     <!--个人资料-->
