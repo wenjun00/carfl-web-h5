@@ -26,8 +26,8 @@
         <a name="cheliangxinxi" class="xinxi">押品信息</a>
       </div>
       <data-grid :labelWidth="110" labelAlign="right" contentAlign="left" class="data-form-grid" v-for="item in carOrderInfo" :key="item.id">
-        <data-grid-item label="车辆型号" :span="6">{{item.modelName?item.modelName:''}}</data-grid-item>
-        <data-grid-item label="车身颜色" :span="6">{{item.carColour?item.carColour:''}}</data-grid-item>
+        <data-grid-item label="车辆型号" :span="6">{{item.modelName}}</data-grid-item>
+        <data-grid-item label="车身颜色" :span="6">{{item.carColor}}</data-grid-item>
         <data-grid-item label="购车排量" :span="6">{{item.carEmissions?item.carEmissions:''}}</data-grid-item>
         <data-grid-item label="车辆牌照" :span="6">{{item.carLicence?item.carLicence:''}}</data-grid-item>
       </data-grid>
@@ -59,35 +59,35 @@
         <a name="gerenziliao" class="xinxi">个人资料</a>
       </div>
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left" class="data-form-grid">
-        <data-grid-item label="姓名" :span="3">{{orderInfo.personal?orderInfo.personal.name:''}}</data-grid-item>
-        <data-grid-item label="性别" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.sex):''}}</data-grid-item>
+        <data-grid-item label="姓名" :span="3">{{personal.name}}</data-grid-item>
+        <data-grid-item label="性别" :span="3">{{personal.sex | dictConvert}}</data-grid-item>
         <data-grid-item label="出生日期" :span="3">{{personal.birthTime|dateFormat('yyyy-MM-dd')}}</data-grid-item>
-        <data-grid-item label="微信号" :span="3">{{orderInfo.personal?orderInfo.personal.wechat:''}}</data-grid-item>
-        <data-grid-item label="手机号码(主)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMain:''}}</data-grid-item>
-        <data-grid-item label="手机号码(次)" :span="3">{{orderInfo.personal?orderInfo.personal.mobileMinor:''}}</data-grid-item>
-        <data-grid-item label="身份证有效期" :span="3">{{orderInfo.personal?(orderInfo.personal.idCardValidityPeriodType!==null ? $dict.getDictName(orderInfo.personal.idCardValidityPeriodType ):orderInfo.personal.idCardValidityPeriodSection):''}}
+        <data-grid-item label="微信号" :span="3">{{personal.wechat}}</data-grid-item>
+        <data-grid-item label="手机号码(主)" :span="3">{{personal.mobileMain}}</data-grid-item>
+        <data-grid-item label="手机号码(次)" :span="3">{{personal.mobileMinor}}</data-grid-item>
+        <data-grid-item label="身份证有效期" :span="3">{{ personal.idCardValidityPeriodType ? (personal.idCardValidityPeriodType | dictConvert) :personal.idCardValidityPeriodSection}}
         </data-grid-item>
-        <data-grid-item label="婚属状况" :span="3">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.marital):''}}</data-grid-item>
-        <data-grid-item label="身份证号" :span="6">{{orderInfo.personal?orderInfo.personal.idCard:''}}</data-grid-item>
-        <data-grid-item label="发证机关" :span="6">{{orderInfo.personal?orderInfo.personal.issuer:''}}</data-grid-item>
+        <data-grid-item label="婚属状况" :span="3">{{personal.marital | dictConvert}}</data-grid-item>
+        <data-grid-item label="身份证号" :span="6">{{personal.idCard}}</data-grid-item>
+        <data-grid-item label="发证机关" :span="6">{{personal.issuer}}</data-grid-item>
         <data-grid-item label="身份证地址" :span="12">
           {{$city.getCityName(personal.province)}} {{$city.getCityName(personal.city)}} {{$city.getCityName(personal.idCardAddress)}} {{personal.idCardAddressDetail}}
         </data-grid-item>
         <data-grid-item label="现居住地址" :span="12">
           {{$city.getCityName(personal.province1)}} {{$city.getCityName(personal.city1)}} {{$city.getCityName(personal.localHomeAddr)}} {{personal.localHomeAddrDetail}}
         </data-grid-item>
-        <data-grid-item label="居住地址家庭座机" :span="6">{{orderInfo.personal?orderInfo.personal.localHomePhone:''}}</data-grid-item>
-        <data-grid-item label="本市生活时长" :span="3">{{orderInfo.personal?orderInfo.personal.cityLiveTime:''}}</data-grid-item>
-        <data-grid-item label="现居住地生活时长" :span="3">{{orderInfo.personal?orderInfo.personal.localLiveTime:''}}</data-grid-item>
-        <data-grid-item label="现居住地房产归属" :span="12">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.localLiveHouseOwner):''}}</data-grid-item>
-        <data-grid-item label="本市自有房产状况归属" :span="6">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.cityOwnhouseCondition):''}}</data-grid-item>
-        <data-grid-item label="电费账号" :span="3">{{orderInfo.personal?orderInfo.personal.electricityAccount:''}}</data-grid-item>
-        <data-grid-item label="电费密码" :span="3">{{orderInfo.personal?orderInfo.personal.electricityPassword:''}}</data-grid-item>
+        <data-grid-item label="居住地址家庭座机" :span="6">{{personal.localHomePhone}}</data-grid-item>
+        <data-grid-item label="本市生活时长" :span="3">{{personal.cityLiveTime}}</data-grid-item>
+        <data-grid-item label="现居住地生活时长" :span="3">{{personal.localLiveTime}}</data-grid-item>
+        <data-grid-item label="现居住地房产归属" :span="12">{{personal.localLiveHouseOwner| dictConvert}}</data-grid-item>
+        <data-grid-item label="本市自有房产状况归属" :span="6">{{personal.cityOwnhouseCondition | dictConvert}}</data-grid-item>
+        <data-grid-item label="电费账号" :span="3">{{personal.electricityAccount}}</data-grid-item>
+        <data-grid-item label="电费密码" :span="3">{{personal.electricityPassword}}</data-grid-item>
         <data-grid-item label="本市房产地址" :span="12">
           {{$city.getCityName(personal.province2)}} {{$city.getCityName(personal.city2)}} {{$city.getCityName(personal.cityOwnhouseAddress)}} {{personal.cityOwnhouseAddressDetail}}
         </data-grid-item>
-        <data-grid-item label="教育程度" :span="4">{{orderInfo.personal?$dict.getDictName(orderInfo.personal.education):''}}</data-grid-item>
-        <data-grid-item label="毕业院校" :span="4">{{orderInfo.personal?orderInfo.personal.school:''}}</data-grid-item>
+        <data-grid-item label="教育程度" :span="4">{{personal.education | dictConvert}}</data-grid-item>
+        <data-grid-item label="毕业院校" :span="4">{{personal.school}}</data-grid-item>
         <data-grid-item label="是否接受现场勘查" :span="4">
           <i-radio-group v-model="personal.houseProspecting">
             <i-radio :label="29" :value="29" :key="29" disabled>是</i-radio>
@@ -106,10 +106,10 @@
         <data-grid-item label="单位名称" :span="6">{{personalJobInfo.companyName}}</data-grid-item>
         <data-grid-item label="部门" :span="6">{{personalJobInfo.department}}</data-grid-item>
 
-        <data-grid-item label="单位性质" :span="6">{{$dict.getDictName(personalJobInfo.companyNature)}}</data-grid-item>
+        <data-grid-item label="单位性质" :span="6">{{personalJobInfo.companyNature | dictConvert}}</data-grid-item>
         <data-grid-item label="职务" :span="6">{{personalJobInfo.duty}}</data-grid-item>
 
-        <data-grid-item label="职级" :span="6">{{$dict.getDictName(personalJobInfo.rank)}}</data-grid-item>
+        <data-grid-item label="职级" :span="6">{{personalJobInfo.rank | dictConvert}}</data-grid-item>
         <data-grid-item label="单位地址" :span="6">{{personalJobInfo.companyAddressDetail}}</data-grid-item>
 
         <data-grid-item label="单位固定电话" :span="6">{{personalJobInfo.companyPhone}}</data-grid-item>
@@ -209,25 +209,12 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import {
-  DataGrid,
-  DataGridItem
-} from "@zct1989/vue-component";
-import {
-  ProductOrderService
-} from "~/services/manage-service/product-order.service";
-import {
-  Prop
-} from "vue-property-decorator";
-import {
-  Action
-} from "vuex-class";
-import {
-  Dependencies
-} from "~/core/decorator";
-import {
-  CommonService
-} from "~/utils/common.service";
+import {  DataGrid,  DataGridItem} from "@zct1989/vue-component";
+import {  ProductOrderService} from "~/services/manage-service/product-order.service";
+import {  Prop} from "vue-property-decorator";
+import {  Action} from "vuex-class";
+import {  Dependencies} from "~/core/decorator";
+import {  CommonService} from "~/utils/common.service";
 
 @Component({
   components: {
@@ -346,7 +333,7 @@ export default class Approve extends Vue {
       data => {
         let allData = JSON.stringify(data);
         this.orderInfo = JSON.parse(allData);
-        this.personal = this.orderInfo.personal; // 个人资料
+        this.personal = this.orderInfo.personal || {}; // 个人资料
         if (this.personal.personalJob) {
           this.personalJobInfo = this.personal.personalJob; // 职业信息
         }
