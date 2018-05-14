@@ -184,6 +184,7 @@ export default class UploadTheMaterial extends Vue {
    */
   uploadSuccess(typeId, filelist) {
     let type = this.fileTypeList.find(x => x.id === typeId);
+    console.log(type)
     filelist.forEach(file => {
       this.uploadDataSet.push({
         materialType: type.id,

@@ -223,6 +223,9 @@ import { Prop } from "vue-property-decorator";
 import { Action } from "vuex-class";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { CommonService } from "~/utils/common.service";
+
+const IMAGE_TYPE = ['jpg', 'png', 'JPG', 'PNG'];
+
 @Component({
   components: {
     DataGrid,
@@ -256,9 +259,6 @@ export default class PurchaseInformation extends Vue {
   private personalResourcePublicity: any = {}; // 客户来源相关信息
   private personalResourceIntroduce: any = {}; // 客户来源介绍相关信息
   private byAdvertise: Array<any> = []; // 客户来源通过宣传
-  private ImgArray: Array<any> = [];
-  private OtherArray: Array<any> = [];
-  private NewArray: Array<any> = [];
   private materialInfoImg: any = []; // 素材资料相关图片信息
   private materialInfoOther: any = []; //素材资料相关其他信息
   private previewModel: Boolean = false;
@@ -403,18 +403,16 @@ export default class PurchaseInformation extends Vue {
             v => v.resourceType
           );
         }
+
         this.personal.personalDatas.forEach((value) => {
-          this.NewArray.push(value.uploadName)
-        })
-        for (let i in this.NewArray) {
-          if (this.NewArray[i].search('jpg' || 'png' || 'JPG' || 'PNG') !== -1) {
-            this.ImgArray.push(this.NewArray[i])
+          let fileType: string = value.uploadName.split('.').pop()
+          if (IMAGE_TYPE.includes(fileType)) {
+            this.materialInfoImg.push(value)
           } else {
-            this.OtherArray.push(this.NewArray[i])
+            this.materialInfoOther.push(value)
           }
-        }
-        this.materialInfoImg = this.personal.personalDatas.filter(x => this.ImgArray.includes(x.uploadName))
-        this.materialInfoOther = this.personal.personalDatas.filter(x => this.OtherArray.includes(x.uploadName))
+        })
+
         this.immediateContacts = this.contactsInfo.filter(
           v => v.relation === 56 || v.relation === 57 || v.relation === 58
         );
