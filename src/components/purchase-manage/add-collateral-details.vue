@@ -235,7 +235,6 @@
   import { CityService } from '~/utils/city.service'
   import UploadVoucher from "~/components/common/upload-voucher.vue"
   import { Form } from 'iview'
-  import { FilterService } from "~/utils/filter.service";
 
   @Component({
     components: {
@@ -286,8 +285,8 @@
           this.customerModel.ownPhone = data.ownPhone
           this.customerModel.idCard = data.idCard
           this.customerModel.carAllName = data.applyCars[0].carAllName
-          this.customerModel.firstTime = FilterService.dateFormat(data.basicList[0].firstTime, 'yyyy-MM-dd')
-          this.customerModel.factoryTime = FilterService.dateFormat(data.basicList[0].factoryTime, 'yyyy-MM-dd')
+          this.customerModel.firstTime = this.$filter.dateFormat(data.basicList[0].firstTime, 'yyyy-MM-dd')
+          this.customerModel.factoryTime = this.$filter.dateFormat(data.basicList[0].factoryTime, 'yyyy-MM-dd')
           this.customerModel.mileage =data.basicList[0].mileage
           this.customerModel.drivingNo =data.basicList[0].drivingNo
           this.customerModel.transferNo =data.basicList[0].transferNo

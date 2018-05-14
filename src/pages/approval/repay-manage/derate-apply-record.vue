@@ -1,36 +1,27 @@
 <!--减免申请记录-->
 <template>
-    <section class="page derate-apply-record">
-        <page-header title="减免申请记录" hiddenPrint></page-header>
-        <data-form date-prop="timeSearch" :model="derateModel" @on-search="getDerateList" :page="pageService"  hidden-reset>
-            <template slot="input">
-                    <i-form-item prop="orderInfo">
-                        <i-input v-model="derateModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
-                    </i-form-item>
-                    <i-form-item prop="dateRange" label="日期：">
-                        <i-date-picker v-model="derateModel.dateRange"  placeholder="请选择日期范围"></i-date-picker>
-                    </i-form-item>
-                    <i-form-item prop="collectMoneyMethod" label="结算通道">
-                        <i-select placeholder="请选择结算通道" v-model="derateModel.collectMoneyMethod" clearable>
-                            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
-                        </i-select>
-                    </i-form-item>
-                </template>
+  <section class="page derate-apply-record">
+    <page-header title="减免申请记录" hiddenPrint></page-header>
+    <data-form date-prop="timeSearch" :model="derateModel" @on-search="getDerateList" :page="pageService" hidden-reset>
+      <template slot="input">
+        <i-form-item prop="orderInfo">
+          <i-input v-model="derateModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="日期：">
+          <i-date-picker v-model="derateModel.dateRange" placeholder="请选择日期范围"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="collectMoneyMethod" label="结算通道">
+          <i-select placeholder="请选择结算通道" v-model="derateModel.collectMoneyMethod" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+      </template>
 
-        </data-form>
+    </data-form>
 
-        <data-box :id="340" :columns="columns1" :data="derateList" :page="pageService" @onPageChange="getDerateList"></data-box>
-
-        <template>
-            <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
-                <purchase-information ref="purchase-info"></purchase-information>
-                <div slot="footer">
-                    <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-                </div>
-            </i-modal>
-        </template>
-    </section>
-    </template>
+    <data-box :id="340" :columns="columns1" :data="derateList" :page="pageService" @onPageChange="getDerateList"></data-box>
+  </section>
+</template>
 
 <script lang="ts">
 import Page from '~/core/page'
@@ -43,15 +34,13 @@ import { Dependencies } from '~/core/decorator'
 import { RemitApplicationService } from '~/services/manage-service/remit-application.service'
 import { Layout } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
-import { FilterService } from '~/utils/filter.service'
 
 @Layout('workspace')
 @Component({
   components: {
     DataBox,
     RepaySum,
-    SvgIcon,
-    PurchaseInformation
+    SvgIcon
   }
 })
 export default class DerateApplyRecord extends Page {
@@ -70,7 +59,7 @@ export default class DerateApplyRecord extends Page {
     timeSearch: '',
     collectMoneyMethod: '',
     orderInfo: '',
-    dateRange:[]
+    dateRange: []
   }
 
   mounted() {
@@ -167,7 +156,7 @@ export default class DerateApplyRecord extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.applyDate, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.applyDate, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -201,7 +190,7 @@ export default class DerateApplyRecord extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.orderCreateTime, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.orderCreateTime, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -220,7 +209,13 @@ export default class DerateApplyRecord extends Page {
               },
               on: {
                 click: () => {
-                  this.checkOrderInfo(row)
+                  this.$dialog.show({
+                    title: '订单详情',
+                    footer: true,
+                    width: 1200,
+                    isView: true,
+                    render: h => h(PurchaseInformation, { props: { orderNumber: row.orderNumber } })
+                  })
                 }
               }
             },
@@ -237,7 +232,7 @@ export default class DerateApplyRecord extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -255,27 +250,21 @@ export default class DerateApplyRecord extends Page {
     this.searchOptions = !this.searchOptions
   }
 
-  repaySum(row) {}
+  repaySum(row) { }
 
-  trailerCar(row) {}
+  trailerCar(row) { }
 
   /**
    * 查看凭证
    */
-  checkProof(row) {}
-
-  checkOrderInfo(row) {
-    this.purchaseInfoModal = true
-    let _purchaseInfo: any = this.$refs['purchase-info']
-    _purchaseInfo.getOrderDetail(row)
-  }
+  checkProof(row) { }
 
   getDerateList() {
     this.remitApplicationService
       .selectApplyForReliefHistory(this.derateModel, this.pageService)
       .subscribe(
-        data =>this.derateList = data,
-        err => this.$Message.error(err)
+      data => this.derateList = data,
+      err => this.$Message.error(err)
       )
   }
 
@@ -288,13 +277,13 @@ export default class DerateApplyRecord extends Page {
         applyId: row.applyId
       })
       .subscribe(
-        val => {
-          this.$Message.success('撤销成功！')
-          this.getDerateList()
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      val => {
+        this.$Message.success('撤销成功！')
+        this.getDerateList()
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 

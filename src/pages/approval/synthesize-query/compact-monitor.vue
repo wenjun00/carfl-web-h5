@@ -36,7 +36,6 @@
   import {Layout} from '~/core/decorator'
   import {PageService} from '~/utils/page.service'
   import DataBox from '~/components/common/data-box.vue'
-  import PurchaseInformation from '~/components/purchase-manage/purchase-information.vue'
   import CompactDownloadInfo from '~/components/approval-manage/compact-download-info.vue'
   import {Dependencies} from '~/core/decorator'
   import {ContractDownloadService} from '~/services/manage-service/contract-download.service'
@@ -46,7 +45,6 @@
   @Component({
     components: {
       DataBox,
-      PurchaseInformation,
       CompactDownloadInfo
     }
   })

@@ -3,11 +3,11 @@
     <page-header title="客户签约" hiddenPrint hiddenExport></page-header>
     <data-form date-prop="timeSearch" :model="customerSignModel" @on-search="getSignList" :page="pageService">
       <template slot="input">
-        <i-form-item prop="dateRange" label="日期">
-          <i-date-picker v-model="customerSignModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
-        </i-form-item>
         <i-form-item prop="orderInfo">
           <i-input v-model="customerSignModel.orderInfo" placeholder="请输入订单编号\客户姓名\证件号码\联系号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="日期">
+          <i-date-picker v-model="customerSignModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -89,35 +89,19 @@
 </template>
 
 <script lang="ts">
-import Page from '~/core/page'
-import DataBox from '~/components/common/data-box.vue'
-import Component from 'vue-class-component'
-import SvgIcon from '~/components/common/svg-icon.vue'
-import FileUpload from '~/components/common/file-upload.tsx.vue'
-import {
-  Dependencies
-} from '~/core/decorator'
-import {
-  OrderService
-} from '~/services/business-service/order.service'
-import {
-  Layout
-} from '~/core/decorator'
-import {
-  PersonalService
-} from '~/services/manage-service/personal.service'
-import {
-  PageService
-} from '~/utils/page.service'
-import {
-  FilterService
-} from '~/utils/filter.service'
-import {
-  ContractService
-} from '~/services/contract-service/contract.service'
-import {
-  CommonService
-} from '~/utils/common.service'
+import Page from '~/core/page';
+import DataBox from '~/components/common/data-box.vue';
+import Component from 'vue-class-component';
+import SvgIcon from '~/components/common/svg-icon.vue';
+import FileUpload from '~/components/common/file-upload.tsx.vue';
+import { Dependencies } from '~/core/decorator';
+import { OrderService } from '~/services/business-service/order.service';
+import { Layout } from '~/core/decorator';
+import { PersonalService } from '~/services/manage-service/personal.service';
+import { PageService } from '~/utils/page.service';
+import { FilterService } from '~/utils/filter.service';
+import { ContractService } from '~/services/contract-service/contract.service';
+import { CommonService } from '~/utils/common.service';
 
 @Layout('workspace')
 @Component({
@@ -172,7 +156,7 @@ export default class CustomerSign extends Page {
   created() {
     this.columns1 = [{
       title: '操作',
-      minWidth: this.$common.getColumnWidth(5),
+      minWidth: this.$common.getColumnWidth(6),
       fixed: 'left',
       align: 'center',
       render: (h, {

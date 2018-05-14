@@ -31,16 +31,6 @@
         <div slot="footer"></div>
       </i-modal>
     </template>
-
-    <!--订单详情-->
-    <template>
-      <i-modal v-model="purchaseInfoModal" title="订单详情" :width="1200" class="purchaseInformation">
-        <purchase-information ref="purchase-information"></purchase-information>
-        <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
   </section>
 </template>
 
@@ -67,7 +57,6 @@ const ModuleMutation = namespace("purchase", Mutation);
 @Component({
   components: {
     OrderProgress,
-    PurchaseInformation,
     DataBox,
     DataGrid,
     DataGridItem,
@@ -374,11 +363,13 @@ export default class OrderQuery extends Page {
                         render: h => h(PurchaseInformationTotal)
                       });
                     } else {
-                      let _purchaseinformation: any = this.$refs[
-                        "purchase-information"
-                      ];
-                      _purchaseinformation.getOrderDetail(params.row);
-                      this.purchaseInfoModal = true;
+                      this.$dialog.show({
+                        title: '订单详情',
+                        footer: true,
+                        width: 1200,
+                        isView: true,
+                        render: h => h(PurchaseInformation, { props: { orderNumber: params.row.orderNumber } })
+                      })
                     }
                   }
                 }

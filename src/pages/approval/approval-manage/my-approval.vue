@@ -114,15 +114,6 @@
     </template>
 
     <template>
-      <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
-        <purchase-information ref="purchase-info"></purchase-information>
-        <div slot="footer">
-          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-        </div>
-      </i-modal>
-    </template>
-
-    <template>
       <i-modal title="退回申请" v-model="rebackModal" @on-ok="approveModal=false">
         <i-form>
           <i-form-item>
@@ -212,7 +203,6 @@ import Approve from '~/components/approval-manage/approve.vue'
 import SecondLastApprove from '~/components/approval-manage/second-last-approve.vue' // 复审终审通过
 import { ApprovalService } from '~/services/manage-service/approval.service'
 import { PageService } from '~/utils/page.service'
-import { FilterService } from '~/utils/filter.service'
 import { CityService } from '~/utils/city.service'
 import { ApproveReasonService } from '~/services/manage-service/approve-reason.service'
 import SvgIcon from '~/components/common/svg-icon.vue'
@@ -221,7 +211,6 @@ import SvgIcon from '~/components/common/svg-icon.vue'
 @Component({
   components: {
     DataBox,
-    PurchaseInformation,
     Approve,
     SecondLastApprove,
     SvgIcon
@@ -421,7 +410,7 @@ export default class MyApproval extends Page {
           }) => {
         return h(
           'span',
-          FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
+          this.$filter.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
         )
       }
     },
@@ -438,7 +427,7 @@ export default class MyApproval extends Page {
           }) => {
         return h(
           'span',
-          FilterService.dateFormat(row.receiveDate, 'yyyy-MM-dd hh:mm:ss')
+          this.$filter.dateFormat(row.receiveDate, 'yyyy-MM-dd hh:mm:ss')
         )
       }
     },
@@ -455,7 +444,7 @@ export default class MyApproval extends Page {
           }) => {
         return h(
           'span',
-          FilterService.dateFormat(row.approvalDate, 'yyyy-MM-dd hh:mm:ss')
+          this.$filter.dateFormat(row.approvalDate, 'yyyy-MM-dd hh:mm:ss')
         )
       }
     },
@@ -625,7 +614,7 @@ export default class MyApproval extends Page {
   /**
    * 合规通过取消  meetConditionPassCancel
    */
-  meetConditionPassCancel(){
+  meetConditionPassCancel() {
     this.meetConditionApproval = false
   }
   closeApproval() {
@@ -638,7 +627,7 @@ export default class MyApproval extends Page {
    * 合规通过确定
    */
   meetConditionPassConfirm() {
-    this.passModel.contractDate = FilterService.dateFormat(
+    this.passModel.contractDate = this.$filter.dateFormat(
       this.passModel.contractDate,
       'yyyy-MM-dd'
     )
@@ -666,9 +655,18 @@ export default class MyApproval extends Page {
   }
 
   checkOrderInfo(row) {
-    this.purchaseInfoModal = true
-    let _purchaseInfo: any = this.$refs['purchase-info']
-    _purchaseInfo.getOrderDetail(row)
+    this.$dialog.show({
+      title: '订单详情',
+      footer: true,
+      width: 1200,
+      isView: true,
+      render: h => h(PurchaseInformation,
+        {
+          props: {
+            orderNumber: row.orderNumber
+          }
+        })
+    })
   }
 
   changeSelectOne(val) {

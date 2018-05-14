@@ -217,25 +217,12 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import {
-  DataGrid,
-  DataGridItem
-} from "@zct1989/vue-component";
-import {
-  Dependencies
-} from "~/core/decorator";
-import {
-  Prop
-} from "vue-property-decorator";
-import {
-  Action
-} from "vuex-class";
-import {
-  ProductOrderService
-} from "~/services/manage-service/product-order.service";
-import {
-  CommonService
-} from "~/utils/common.service";
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
+import { Dependencies } from "~/core/decorator";
+import { Prop } from "vue-property-decorator";
+import { Action } from "vuex-class";
+import { ProductOrderService } from "~/services/manage-service/product-order.service";
+import { CommonService } from "~/utils/common.service";
 @Component({
   components: {
     DataGrid,
@@ -283,6 +270,11 @@ export default class PurchaseInformation extends Vue {
     default: 0
   })
   scrollTopHeight: Number;
+
+  @Prop({
+    type:Number
+  })
+  orderNumber
 
   get getClassName() {
     this.c.a1 = this.scrollTopHeight >= 0 && this.scrollTopHeight < 170;
@@ -367,10 +359,11 @@ export default class PurchaseInformation extends Vue {
   }
 
   mounted() {
-    document.getElementsByClassName("purchase-information")[0].addEventListener("scroll", this.handleScroll);
+    // document.getElementsByClassName("purchase-information")[0].addEventListener("scroll", this.handleScroll);
+    this.getOrderDetail()
   }
   handleScroll() {
-    let target = document.getElementsByClassName("purchase-information")[0].scrollTop
+    // let target = document.getElementsByClassName("purchase-information")[0].scrollTop
   }
   getMaterialUrl(item) {
     let url = item.materialUrl;
@@ -381,10 +374,10 @@ export default class PurchaseInformation extends Vue {
   /**
    * 获取弹窗内所有订单信息
    */
-  getOrderDetail(row) {
+  getOrderDetail() {
     this.productOrderService
       .findOrderInfoByOrderNumber({
-        orderNumber: row.orderNumber
+        orderNumber: this.orderNumber
       })
       .subscribe(data => {
         let allData = JSON.stringify(data);

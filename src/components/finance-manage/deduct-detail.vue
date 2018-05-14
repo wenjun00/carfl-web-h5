@@ -16,7 +16,6 @@ import DataBox from "~/components/common/data-box.vue";
 import SvgIcon from '~/components/common/svg-icon.vue'
 import { Dependencies } from "~/core/decorator";
 import { PageService } from "~/utils/page.service";
-import { FilterService } from "~/utils/filter.service"
 import { PaymentScheduleService } from "~/services/manage-service/payment-schedule.service";
 import { AdvanceRevokeService } from "~/services/manage-service/advance-revoke.service";
 
@@ -71,7 +70,7 @@ export default class DeductDetail extends Vue {
           column,
           index
           }) => {
-          return h('span', FilterService.dateFormat(row.actualCollectDate, 'yyyy-MM-dd'))
+          return h('span', this.$filter.dateFormat(row.actualCollectDate, 'yyyy-MM-dd'))
         }
       },
       {

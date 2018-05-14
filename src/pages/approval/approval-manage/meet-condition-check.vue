@@ -1,53 +1,53 @@
 <!--合规检查-->
 <template>
-    <section class="page meet-condition-check">
-        <page-header title="合规检查"></page-header>
-        <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getMeetConditionList" :page="pageService" hidden-reset>
-            <template slot="input">
-                <i-form-item prop="personalInfo">
-                    <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.personalInfo"></i-input>
-                </i-form-item>
-                <i-form-item prop="dateRange" label="日期：">
-                     <i-date-picker v-model="resourcePoolModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
-                </i-form-item>
-                <i-form-item prop="province" label="省市：">
-                     <i-select placeholder="选择省" v-model="resourcePoolModel.province" clearable>
-                        <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="city">
-                   <i-select placeholder="选择市" v-model="resourcePoolModel.city" :disabled="!resourcePoolModel.province" clearable>
-                        <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="productType" label="产品名称：">
-                    <i-input v-model="resourcePoolModel.productType"></i-input>
-                </i-form-item>
-            </template>
-        </data-form>
+  <section class="page meet-condition-check">
+    <page-header title="合规检查"></page-header>
+    <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getMeetConditionList" :page="pageService" hidden-reset>
+      <template slot="input">
+        <i-form-item prop="personalInfo">
+          <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="resourcePoolModel.personalInfo"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="日期：">
+          <i-date-picker v-model="resourcePoolModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="province" label="省市：">
+          <i-select placeholder="选择省" v-model="resourcePoolModel.province" clearable>
+            <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="city">
+          <i-select placeholder="选择市" v-model="resourcePoolModel.city" :disabled="!resourcePoolModel.province" clearable>
+            <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="productType" label="产品名称：">
+          <i-input v-model="resourcePoolModel.productType"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
 
-        <data-box :id="271" :columns="columns1" :data="meetConditionList" @onPageChange="getMeetConditionList" :page="pageService"></data-box>
-        <!--Modal-->
-        <template>
-            <i-modal title="订单领取" v-model="orderModal" :width="300">
-                <span>确定将所选订单领取到我的审核？</span>
-                <div slot="footer">
-                    <i-button @click="orderModal=false">取消</i-button>
-                    <i-button @click="confirmGetOrder" class="blueButton">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <data-box :id="271" :columns="columns1" :data="meetConditionList" @onPageChange="getMeetConditionList" :page="pageService"></data-box>
+    <!--Modal-->
+    <template>
+      <i-modal title="订单领取" v-model="orderModal" :width="300">
+        <span>确定将所选订单领取到我的审核？</span>
+        <div slot="footer">
+          <i-button @click="orderModal=false">取消</i-button>
+          <i-button @click="confirmGetOrder" class="blueButton">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
-                <purchase-information ref="purchase-info"></purchase-information>
-                <div slot="footer">
-                    <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
+        <purchase-information ref="purchase-info"></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-    </section>
+  </section>
 </template>
 
 <script lang="ts">
@@ -58,7 +58,6 @@ import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import PurchaseInformation from '~/components/purchase-manage/purchase-information.vue'
 import { PageService } from '~/utils/page.service'
-import { FilterService } from '~/utils/filter.service'
 import { CityService } from '~/utils/city.service'
 import { ApprovalService } from '~/services/manage-service/approval.service'
 import SvgIcon from '~/components/common/svg-icon.vue'
@@ -88,7 +87,7 @@ export default class MeetConditionCheck extends Page {
     personalInfo: '',
     timeSearch: '',
     productType: '',
-    dateRange:[]
+    dateRange: []
   }
   private getOrderModel: any = {
     userId: '',
@@ -199,7 +198,7 @@ export default class MeetConditionCheck extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -212,7 +211,7 @@ export default class MeetConditionCheck extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.intoPoolDate, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.intoPoolDate, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -320,8 +319,8 @@ export default class MeetConditionCheck extends Page {
     this.approvalService
       .auditResourcePool(this.resourcePoolModel, this.pageService)
       .subscribe(
-        data =>this.meetConditionList = data,
-        err => this.$Message.error(err)
+      data => this.meetConditionList = data,
+      err => this.$Message.error(err)
       )
   }
 
@@ -351,7 +350,7 @@ export default class MeetConditionCheck extends Page {
     this.resourcePoolModel.province = ''
     this.resourcePoolModel.personalInfo = ''
     this.resourcePoolModel.productType = ''
-     this.resourcePoolModel.timeSearch = val
+    this.resourcePoolModel.timeSearch = val
     this.getMeetConditionList()
     this.resourcePoolModel.timeSearch = ''
   }

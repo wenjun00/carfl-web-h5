@@ -261,7 +261,6 @@ import DataBox from "~/components/common/data-box.vue";
 import ProductList from "~/components/purchase-manage/product-list.tsx.vue";
 import { CompanyService } from "~/services/manage-service/company.service";
 import { Prop, Emit, Watch } from "vue-property-decorator";
-import { FilterService } from "~/utils/filter.service";
 import { Input, Button, InputNumber, Form } from "iview";
 import { OrderService } from "~/services/business-service/order.service";
 import { LodashService } from "~/utils/lodash.service";
@@ -285,7 +284,7 @@ export default class ChooseBuyMaterials extends Vue {
   private productOrderService: ProductOrderService;
 
   @Emit("on-product-change")
-  emitProductChange(product) {}
+  emitProductChange(product) { }
 
   private companyList: any = []; // 公司信息
   private totalPrice: number = 0;
@@ -615,7 +614,7 @@ export default class ChooseBuyMaterials extends Vue {
     callback();
   }
 
-  onInitialPaymentChange() {}
+  onInitialPaymentChange() { }
 
   /**
    * 更新车辆金额
@@ -698,7 +697,7 @@ export default class ChooseBuyMaterials extends Vue {
     this.productModel.initialPayment = LodashService.round(
       this.$filter.safeNumber(
         this.productModel.vehicleAmount *
-          parseFloat(this.productRadioModel.paymentScale)
+        parseFloat(this.productRadioModel.paymentScale)
       ),
       2
     );
@@ -707,7 +706,7 @@ export default class ChooseBuyMaterials extends Vue {
     this.productModel.depositCash = LodashService.round(
       this.$filter.safeNumber(
         this.productModel.financingAmount *
-          parseFloat(this.productRadioModel.depositCashRadio)
+        parseFloat(this.productRadioModel.depositCashRadio)
       ),
       2
     );
@@ -716,7 +715,7 @@ export default class ChooseBuyMaterials extends Vue {
     this.productModel.manageCost = LodashService.round(
       this.$filter.safeNumber(
         this.productModel.financingAmount *
-          parseFloat(this.productRadioModel.manageCostPercent)
+        parseFloat(this.productRadioModel.manageCostPercent)
       ),
       2
     );
@@ -725,9 +724,9 @@ export default class ChooseBuyMaterials extends Vue {
     this.productModel.finalCash = LodashService.round(
       this.$filter.safeNumber(
         this.productModel.finalPayment +
-          this.productModel.finalPayment *
-            parseFloat(this.productRadioModel.final) *
-            this.currentProduct.periodNumber
+        this.productModel.finalPayment *
+        parseFloat(this.productRadioModel.final) *
+        this.currentProduct.periodNumber
       ),
       2
     );
@@ -779,7 +778,7 @@ export default class ChooseBuyMaterials extends Vue {
           );
         }
       },
-      onCancel: () => {},
+      onCancel: () => { },
       render: h => {
         return h(AddCar, {});
       }
@@ -842,7 +841,7 @@ export default class ChooseBuyMaterials extends Vue {
           return false;
         }
       },
-      onCancel: () => {},
+      onCancel: () => { },
       render: h => {
         return h(ProductList, {});
       }
@@ -869,15 +868,15 @@ export default class ChooseBuyMaterials extends Vue {
     // 自定义验证
     return await this.$validator
       .validate(
-        {
-          chooseForm: this.$refs["choose-form"],
-          productIssueId: this.currentProduct.productIssueId,
-          carListCount: this.carDataSet.length,
-          totalPrice: this.totalPrice,
-          productAmountModel: this.productAmountModel,
-          productForm: this.$refs["product-form"]
-        },
-        this.customRules
+      {
+        chooseForm: this.$refs["choose-form"],
+        productIssueId: this.currentProduct.productIssueId,
+        carListCount: this.carDataSet.length,
+        totalPrice: this.totalPrice,
+        productAmountModel: this.productAmountModel,
+        productForm: this.$refs["product-form"]
+      },
+      this.customRules
       )
       .then(error => {
         if (!error) {

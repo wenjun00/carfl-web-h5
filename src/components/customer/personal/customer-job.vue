@@ -207,7 +207,6 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { CityService } from "~/utils/city.service";
-import { FilterService } from "~/utils/filter.service";
 import { Form } from "iview";
 
 @Component({})
@@ -310,7 +309,7 @@ export default class CustomerJob extends Vue {
     this.$common.revert(
       this.jobModel,
       Object.assign(personalJob, {
-        accessCompanyTime: FilterService.dateFormat(
+        accessCompanyTime: this.$filter.dateFormat(
           personalJob.accessCompanyTime,
           "yyyy-MM-dd"
         ),
@@ -328,7 +327,7 @@ export default class CustomerJob extends Vue {
       } else {
         this.jobType = 37;
       }
-      data.personal.personalJob.accessCompanyTime = FilterService.dateFormat(
+      data.personal.personalJob.accessCompanyTime = this.$filter.dateFormat(
         data.personal.personalJob.accessCompanyTime,
         "yyyy-MM-dd"
       );

@@ -1,43 +1,43 @@
 <!--灰名单-->
 <template>
-    <section class="page gray-list">
-        <page-header title="灰名单"></page-header>
-        <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getGrayList" :page="pageService" hidden-reset>
-            <template slot="input">
-                <i-form-item prop="personalInfo">
-                    <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>
-                </i-form-item>
-                <i-form-item prop="dateRange" label="日期：">
-                    <i-date-picker v-model="approvalModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
-                </i-form-item>
-                <i-form-item prop="province" label="省市：">
-                    <i-select placeholder="选择省" v-model="approvalModel.province" clearable>
-                        <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="city">
-                    <i-select placeholder="选择市" v-model="approvalModel.city" :disabled="!approvalModel.province" clearable>
-                        <i-option v-for="{value,label} in this.approvalModel.province ? this.$city.getCityData({ level: 1, id: this.approvalModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
-                    </i-select>
-                </i-form-item>
-                <i-form-item prop="productType" label="产品名称：">
-                    <i-input v-model="approvalModel.productType"></i-input>
-                </i-form-item>
-            </template>
-        </data-form>
+  <section class="page gray-list">
+    <page-header title="灰名单"></page-header>
+    <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getGrayList" :page="pageService" hidden-reset>
+      <template slot="input">
+        <i-form-item prop="personalInfo">
+          <i-input placeholder="请录入客户姓名\证件号码\手机号查询" v-model="approvalModel.personalInfo"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="日期：">
+          <i-date-picker v-model="approvalModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+        </i-form-item>
+        <i-form-item prop="province" label="省市：">
+          <i-select placeholder="选择省" v-model="approvalModel.province" clearable>
+            <i-option v-for="{value,label} in this.$city.getCityData({ level : 1 })" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="city">
+          <i-select placeholder="选择市" v-model="approvalModel.city" :disabled="!approvalModel.province" clearable>
+            <i-option v-for="{value,label} in this.approvalModel.province ? this.$city.getCityData({ level: 1, id: this.approvalModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item prop="productType" label="产品名称：">
+          <i-input v-model="approvalModel.productType"></i-input>
+        </i-form-item>
+      </template>
+    </data-form>
 
-        <data-box :id="304" :columns="columns1" :data="grayList" @onPageChange="getGrayList" :page="pageService"></data-box>
+    <data-box :id="304" :columns="columns1" :data="grayList" @onPageChange="getGrayList" :page="pageService"></data-box>
 
-        <template>
-            <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
-                <purchase-information ref="purchase-info"></purchase-information>
-                <div slot="footer">
-                    <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal title="订单详情" :width="1200" v-model="purchaseInfoModal" class="purchaseInformation">
+        <purchase-information ref="purchase-info"></purchase-information>
+        <div slot="footer">
+          <i-button class="blueButton" @click="purchaseInfoModal=false">返回</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-    </section>
+  </section>
 </template>
 
 <script lang="ts">
@@ -51,7 +51,6 @@ import SvgIcon from '~/components/common/svg-icon.vue'
 import { ApprovalService } from '~/services/manage-service/approval.service'
 import { PageService } from '~/utils/page.service'
 import { CityService } from '~/utils/city.service'
-import { FilterService } from '~/utils/filter.service'
 
 @Layout('workspace')
 @Component({
@@ -218,7 +217,7 @@ export default class GrayList extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -231,7 +230,7 @@ export default class GrayList extends Page {
         render: (h, { row, column, index }) => {
           return h(
             'span',
-            FilterService.dateFormat(row.intoPoolDate, 'yyyy-MM-dd hh:mm:ss')
+            this.$filter.dateFormat(row.intoPoolDate, 'yyyy-MM-dd hh:mm:ss')
           )
         }
       },
@@ -314,8 +313,8 @@ export default class GrayList extends Page {
     this.approvalService
       .approvalOrderSearch(this.approvalModel, this.pageService)
       .subscribe(
-        data =>this.grayList = data,
-        err =>this.$Message.error(err)
+      data => this.grayList = data,
+      err => this.$Message.error(err)
       )
   }
   /**
@@ -361,13 +360,13 @@ export default class GrayList extends Page {
         isBlack: false
       })
       .subscribe(
-        val => {
-          this.$Message.success('移出成功')
-          this.getGrayList()
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
+      val => {
+        this.$Message.success('移出成功')
+        this.getGrayList()
+      },
+      ({ msg }) => {
+        this.$Message.error(msg)
+      }
       )
   }
 }

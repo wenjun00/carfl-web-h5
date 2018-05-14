@@ -193,10 +193,8 @@
           </i-col>
           <i-col :span="12">
             <i-form-item label="开户银行城市" prop="accountCity">
-              <i-select style="width:160px;" placeholder="选择市" v-model="addCompanyModel.accountCity" :readonly="companyReadonly" :disabled="!addCompanyModel.accountProvince"
-                clearable>
-                <i-option v-for="{value,label} in this.addCompanyModel.accountProvince ? this.$city.getCityData({ level: 1, id: this.addCompanyModel.accountProvince}) : []"
-                  :key="value" :label="label" :value="value"></i-option>
+              <i-select style="width:160px;" placeholder="选择市" v-model="addCompanyModel.accountCity" :readonly="companyReadonly" :disabled="!addCompanyModel.accountProvince" clearable>
+                <i-option v-for="{value,label} in this.addCompanyModel.accountProvince ? this.$city.getCityData({ level: 1, id: this.addCompanyModel.accountProvince}) : []" :key="value" :label="label" :value="value"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
@@ -207,325 +205,313 @@
 </template>j
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import {
-    Dependencies
-  } from '~/core/decorator'
-  import {
-    PersonalService
-  } from '~/services/manage-service/personal.service'
-  import {
-    Prop
-  } from "vue-property-decorator";
-  import {
-    CompanyAccountService
-  } from "~/services/manage-service/company-account.service";
-  import {
-    FilterService
-  } from "~/utils/filter.service"
+import Vue from "vue";
+import Component from "vue-class-component";
+import { Dependencies } from '~/core/decorator'
+import { PersonalService } from '~/services/manage-service/personal.service'
+import { Prop } from "vue-property-decorator";
+import { CompanyAccountService } from "~/services/manage-service/company-account.service";
 
-  @Component({
-    components: {}
-  })
-  export default class AddCompany extends Vue {
-    @Dependencies(CompanyAccountService) private companyAccountService: CompanyAccountService;
-    @Dependencies(PersonalService) private personalService: PersonalService
-    @Prop() row;
-    @Prop() modifyData;
-    @Prop() val; // 企业信息
+@Component({
+  components: {}
+})
+export default class AddCompany extends Vue {
+  @Dependencies(CompanyAccountService) private companyAccountService: CompanyAccountService;
+  @Dependencies(PersonalService) private personalService: PersonalService
+  @Prop() row;
+  @Prop() modifyData;
+  @Prop() val; // 企业信息
 
-    private companyReadonly: Boolean = false;
-    private addCompanyModel: any = {
-      companyLicensenNmber: '', // 营业执照注册号
-      certificateType: '', // 企业证照类型
-      organizationCode: '', // 组织机构代码
-      companyType: '', // 企业类型
-      taxRegistration: '', // 税务登记证号
-      companyName: '', // 企业名称
-      socialCreditCode: '', // 统一社会信用代码
-      licenseBeginTime: '', // 证照起始日期
-      busnessAddr: '', // 企业经营地址
-      licenseEndTime: '', // 证照结束日期
-      registAddr: '', // 企业注册地址
-      busnessScope: '', // 经营范围
-      companyPhone: '', // 企业固定电话
-      controllShareholder: '', // 控股股东
+  private companyReadonly: Boolean = false;
+  private addCompanyModel: any = {
+    companyLicensenNmber: '', // 营业执照注册号
+    certificateType: '', // 企业证照类型
+    organizationCode: '', // 组织机构代码
+    companyType: '', // 企业类型
+    taxRegistration: '', // 税务登记证号
+    companyName: '', // 企业名称
+    socialCreditCode: '', // 统一社会信用代码
+    licenseBeginTime: '', // 证照起始日期
+    busnessAddr: '', // 企业经营地址
+    licenseEndTime: '', // 证照结束日期
+    registAddr: '', // 企业注册地址
+    busnessScope: '', // 经营范围
+    companyPhone: '', // 企业固定电话
+    controllShareholder: '', // 控股股东
 
-      legalman: '', // 法人代表姓名
-      legpersonPhoneNumber: '', // 法定代表人手机号码
-      legpersonCertificate: '', // 法人证件类型
-      linkman: '', // 企业联系人姓名
-      legpersonCertificateNumber: '', // 法人证件号码
-      linkmanPhone: '', // 联系人手机号
-      legpersonCertificateStime: '', // 法人证件起始日期
-      linkmanMail: '', // 联系人邮箱
-      legpersonCertificateEtime: '', // 法人证件结束日期
+    legalman: '', // 法人代表姓名
+    legpersonPhoneNumber: '', // 法定代表人手机号码
+    legpersonCertificate: '', // 法人证件类型
+    linkman: '', // 企业联系人姓名
+    legpersonCertificateNumber: '', // 法人证件号码
+    linkmanPhone: '', // 联系人手机号
+    legpersonCertificateStime: '', // 法人证件起始日期
+    linkmanMail: '', // 联系人邮箱
+    legpersonCertificateEtime: '', // 法人证件结束日期
 
-      accountName: '', // 开户银行账户名
-      branchName: '', // 开户银行支行姓名
-      depositBank: '', // 开户银行
-      bankCardNumber: '', // 开户银行账号
-      accountProvince: '', // 开户银行省份
-      accountCity: '', // 开户银行城市
-    };
-    private rules: any = {
-      certificateType: [{
-        type: "number",
-        required: true,
-        message: "请选择企业证照类型",
-        trigger: "change"
-      }],
-      companyType: [{
-        type: "number",
-        required: true,
-        message: "请选择企业类型",
-        trigger: "change"
-      }],
-      companyName: [{
-        required: true,
-        message: "请输入企业名称",
-        trigger: "blur"
-      }],
-      licenseBeginTime: [{
-        required: true,
-        message: "请选择证照起始日期",
-        trigger: "change",
-        type: "date"
-      }],
-      busnessAddr: [{
-        required: true,
-        message: "请输入企业经营地址",
-        trigger: "blur"
-      }],
-      licenseEndTime: [{
-        required: true,
-        message: "请选择证照结束日期",
-        trigger: "change",
-        type: "date"
-      }],
-      registAddr: [{
-        required: true,
-        message: "请输入企业注册地址",
-        trigger: "blur"
-      }],
-      companyPhone: [{
-        required: true,
-        message: "请输入企业固定电话",
-        trigger: "blur",
-        pattern: /^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/
-      }],
-      busnessScope: [{
-        required: true,
-        message: "请输入企业经营范围",
-        trigger: "blur"
-      }],
-      controllShareholder: [{
-        required: true,
-        message: "请输入控股股东",
-        trigger: "blur"
-      }],
-      legalman: [{
-        required: true,
-        message: "请输入法定代表人姓名",
-        trigger: "blur"
-      }],
-      legpersonPhoneNumber: [{
-          required: true,
-          message: "请输入法定代表人手机号码",
-          trigger: "blur"
-        },
-        {
-          validator: this.$validator.phoneNumber,
-          trigger: "blur"
-        }
-      ],
-      legpersonCertificate: [{
-        required: true,
-        message: "请输入法人证件类型",
-        trigger: "change",
-        type: 'number'
-      }],
-      linkman: [{
-        required: true,
-        message: "请输入企业联系人姓名",
-        trigger: "blur"
-      }],
-      legpersonCertificateNumber: [{
-          required: true,
-          message: "请输入法人证件号码",
-          trigger: "blur"
-        },
-        {
-          trigger: 'blur',
-          validator: this.$validator.idCard
-        }
-      ],
-      linkmanPhone: [{
-          required: true,
-          message: "请输入联系人手机号",
-          trigger: "blur"
-        },
-        {
-          validator: this.$validator.phoneNumber,
-          trigger: "blur"
-        }
-      ],
-      legpersonCertificateStime: [{
-        required: true,
-        message: "请输入法人证件起始日期",
-        trigger: "change",
-        type: "date"
-      }],
-      linkmanMail: [{
-        required: true,
-        message: "请输入联系人邮箱",
-        trigger: "blur"
-      }, {
-        message: "请输入正确的邮箱",
-        trigger: "blur",
-        type: "email"
-      }],
-      legpersonCertificateEtime: [{
-        required: true,
-        message: "请输入法人证件结束日期",
-        trigger: "change",
-        type: "date"
-      }],
-      accountName: [{
-        required: true,
-        message: "请输入开户银行账户名",
-        trigger: "blur"
-      }],
-      branchName: [{
-        required: true,
-        message: "请输入开户银行支行名称",
-        trigger: "blur"
-      }],
-      depositBank: [{
-        required: true,
-        message: "请选择开户银行",
-        trigger: "blur",
-        // type: 'number'
-      }],
-      bankCardNumber: [{
-        required: true,
-        message: "请输入开户银行账号",
-        trigger: "blur"
-      }],
-      accountProvince: [{
-        required: true,
-        message: "请选择开户银行省份",
-        trigger: "change",
-        type: 'number'
-      }],
-      accountCity: [{
-        required: true,
-        message: "请选择开户银行城市",
-        trigger: "change",
-        type: 'number'
-      }]
+    accountName: '', // 开户银行账户名
+    branchName: '', // 开户银行支行姓名
+    depositBank: '', // 开户银行
+    bankCardNumber: '', // 开户银行账号
+    accountProvince: '', // 开户银行省份
+    accountCity: '', // 开户银行城市
+  };
+  private rules: any = {
+    certificateType: [{
+      type: "number",
+      required: true,
+      message: "请选择企业证照类型",
+      trigger: "change"
+    }],
+    companyType: [{
+      type: "number",
+      required: true,
+      message: "请选择企业类型",
+      trigger: "change"
+    }],
+    companyName: [{
+      required: true,
+      message: "请输入企业名称",
+      trigger: "blur"
+    }],
+    licenseBeginTime: [{
+      required: true,
+      message: "请选择证照起始日期",
+      trigger: "change",
+      type: "date"
+    }],
+    busnessAddr: [{
+      required: true,
+      message: "请输入企业经营地址",
+      trigger: "blur"
+    }],
+    licenseEndTime: [{
+      required: true,
+      message: "请选择证照结束日期",
+      trigger: "change",
+      type: "date"
+    }],
+    registAddr: [{
+      required: true,
+      message: "请输入企业注册地址",
+      trigger: "blur"
+    }],
+    companyPhone: [{
+      required: true,
+      message: "请输入企业固定电话",
+      trigger: "blur",
+      pattern: /^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/
+    }],
+    busnessScope: [{
+      required: true,
+      message: "请输入企业经营范围",
+      trigger: "blur"
+    }],
+    controllShareholder: [{
+      required: true,
+      message: "请输入控股股东",
+      trigger: "blur"
+    }],
+    legalman: [{
+      required: true,
+      message: "请输入法定代表人姓名",
+      trigger: "blur"
+    }],
+    legpersonPhoneNumber: [{
+      required: true,
+      message: "请输入法定代表人手机号码",
+      trigger: "blur"
+    },
+    {
+      validator: this.$validator.phoneNumber,
+      trigger: "blur"
     }
-    mounted() {
-      // 企业信息
-      if (this.val) {
-        this.companyReadonly = true
-        this.addCompanyModel = Object.assign({}, this.val)
-        this.TimeChange()
-        // 日期格式转换
-      }
-      //   修改卡户
-      if (this.modifyData) {
-        this.addCompanyModel = Object.assign({}, this.modifyData)
-        this.TimeChange()
-      }
+    ],
+    legpersonCertificate: [{
+      required: true,
+      message: "请输入法人证件类型",
+      trigger: "change",
+      type: 'number'
+    }],
+    linkman: [{
+      required: true,
+      message: "请输入企业联系人姓名",
+      trigger: "blur"
+    }],
+    legpersonCertificateNumber: [{
+      required: true,
+      message: "请输入法人证件号码",
+      trigger: "blur"
+    },
+    {
+      trigger: 'blur',
+      validator: this.$validator.idCard
     }
-    // 日期格式转化
-    TimeChange() {
-      this.addCompanyModel.licenseBeginTime = FilterService.dateFormat(this.addCompanyModel.licenseBeginTime,
-        'yyyy-MM-dd')
-      this.addCompanyModel.licenseEndTime = FilterService.dateFormat(this.addCompanyModel.licenseEndTime,
-        'yyyy-MM-dd')
-      this.addCompanyModel.legpersonCertificateStime = FilterService.dateFormat(this.addCompanyModel.legpersonCertificateStime,
-        'yyyy-MM-dd')
-      this.addCompanyModel.legpersonCertificateEtime = FilterService.dateFormat(this.addCompanyModel.legpersonCertificateEtime,
-        'yyyy-MM-dd')
-
+    ],
+    linkmanPhone: [{
+      required: true,
+      message: "请输入联系人手机号",
+      trigger: "blur"
+    },
+    {
+      validator: this.$validator.phoneNumber,
+      trigger: "blur"
     }
-    /**
-     * 发送验证码
-     */
-    sendQcode() {}
-    /**
-     * 企业开户
-     */
-    openaccountClick() {
-      return new Promise((reslove, reject) => {
-        let _opencompany: any = this.$refs['open-company']
-        _opencompany.validate(valid => {
-          if (!valid) return reslove(false);
-
-          this.companyAccountService.companyOpenAccount(this.addCompanyModel).subscribe(
-            data => {
-              this.$Message.success('开户成功！')
-            },
-            ({
-              msg
-            }) => {
-              this.$Message.error(msg)
-              return reslove(false);
-            }
-          );
-        })
-      })
+    ],
+    legpersonCertificateStime: [{
+      required: true,
+      message: "请输入法人证件起始日期",
+      trigger: "change",
+      type: "date"
+    }],
+    linkmanMail: [{
+      required: true,
+      message: "请输入联系人邮箱",
+      trigger: "blur"
+    }, {
+      message: "请输入正确的邮箱",
+      trigger: "blur",
+      type: "email"
+    }],
+    legpersonCertificateEtime: [{
+      required: true,
+      message: "请输入法人证件结束日期",
+      trigger: "change",
+      type: "date"
+    }],
+    accountName: [{
+      required: true,
+      message: "请输入开户银行账户名",
+      trigger: "blur"
+    }],
+    branchName: [{
+      required: true,
+      message: "请输入开户银行支行名称",
+      trigger: "blur"
+    }],
+    depositBank: [{
+      required: true,
+      message: "请选择开户银行",
+      trigger: "blur",
+      // type: 'number'
+    }],
+    bankCardNumber: [{
+      required: true,
+      message: "请输入开户银行账号",
+      trigger: "blur"
+    }],
+    accountProvince: [{
+      required: true,
+      message: "请选择开户银行省份",
+      trigger: "change",
+      type: 'number'
+    }],
+    accountCity: [{
+      required: true,
+      message: "请选择开户银行城市",
+      trigger: "change",
+      type: 'number'
+    }]
+  }
+  mounted() {
+    // 企业信息
+    if (this.val) {
+      this.companyReadonly = true
+      this.addCompanyModel = Object.assign({}, this.val)
+      this.TimeChange()
+      // 日期格式转换
     }
-    /**
-     * 修改企业开户
-     */
-    modifyAccountClick() {
-      return new Promise((reslove, reject) => {
-        let _opencompany: any = this.$refs['open-company']
-        _opencompany.validate(valid => {
-          if (!valid) return reslove(false);
-
-          this.companyAccountService.editAccount(this.addCompanyModel).subscribe(
-            data => {
-              this.$Message.success('修改成功！')
-            },
-            ({
-              msg
-            }) => {
-              this.$Message.error(msg)
-              return reslove(false);
-            }
-          );
-        })
-      })
-      //   this.companyAccountService.editAccount(this.addCompanyModel).subscribe(
-      //     data => this.$Message.success('修改成功！'),
-      //     err => this.$Message.error(err.msg)
-      //   )
+    //   修改卡户
+    if (this.modifyData) {
+      this.addCompanyModel = Object.assign({}, this.modifyData)
+      this.TimeChange()
     }
   }
+  // 日期格式转化
+  TimeChange() {
+    this.addCompanyModel.licenseBeginTime = this.$filter.dateFormat(this.addCompanyModel.licenseBeginTime,
+      'yyyy-MM-dd')
+    this.addCompanyModel.licenseEndTime = this.$filter.dateFormat(this.addCompanyModel.licenseEndTime,
+      'yyyy-MM-dd')
+    this.addCompanyModel.legpersonCertificateStime = this.$filter.dateFormat(this.addCompanyModel.legpersonCertificateStime,
+      'yyyy-MM-dd')
+    this.addCompanyModel.legpersonCertificateEtime = this.$filter.dateFormat(this.addCompanyModel.legpersonCertificateEtime,
+      'yyyy-MM-dd')
+
+  }
+  /**
+   * 发送验证码
+   */
+  sendQcode() { }
+  /**
+   * 企业开户
+   */
+  openaccountClick() {
+    return new Promise((reslove, reject) => {
+      let _opencompany: any = this.$refs['open-company']
+      _opencompany.validate(valid => {
+        if (!valid) return reslove(false);
+
+        this.companyAccountService.companyOpenAccount(this.addCompanyModel).subscribe(
+          data => {
+            this.$Message.success('开户成功！')
+          },
+          ({
+              msg
+            }) => {
+            this.$Message.error(msg)
+            return reslove(false);
+          }
+        );
+      })
+    })
+  }
+  /**
+   * 修改企业开户
+   */
+  modifyAccountClick() {
+    return new Promise((reslove, reject) => {
+      let _opencompany: any = this.$refs['open-company']
+      _opencompany.validate(valid => {
+        if (!valid) return reslove(false);
+
+        this.companyAccountService.editAccount(this.addCompanyModel).subscribe(
+          data => {
+            this.$Message.success('修改成功！')
+          },
+          ({
+              msg
+            }) => {
+            this.$Message.error(msg)
+            return reslove(false);
+          }
+        );
+      })
+    })
+    //   this.companyAccountService.editAccount(this.addCompanyModel).subscribe(
+    //     data => this.$Message.success('修改成功！'),
+    //     err => this.$Message.error(err.msg)
+    //   )
+  }
+}
 
 </script>
 <style lang="less" scoped>
 //   .component.customer-open-account {
-  .form-window {
-    position: relative;
-    left: 30px;
-    .open-input {
-      width: 160px;
-    }
-    .select-pull-down {
-      width: 80px;
-    }
-    .blue-button {
-      background: #265ea2;
-      color: #fff;
-    }
+.form-window {
+  position: relative;
+  left: 30px;
+  .open-input {
+    width: 160px;
   }
-  
-  //   }
+  .select-pull-down {
+    width: 80px;
+  }
+  .blue-button {
+    background: #265ea2;
+    color: #fff;
+  }
+}
 
+//   }
 </style>

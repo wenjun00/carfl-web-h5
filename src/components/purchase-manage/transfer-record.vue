@@ -21,7 +21,6 @@ import SvgIcon from "~/components/common/svg-icon.vue";
 import DataBox from "~/components/common/data-box.vue";
 import SimulateCalculate from "~/components/common/simulate-calculate.vue";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
-import { FilterService } from "~/utils/filter.service";
 import { Prop } from "vue-property-decorator";
 import { PageService } from "~/utils/page.service";
 
@@ -69,7 +68,7 @@ export default class TransferRecord extends Vue {
         render: (h, { row, columns, index }) => {
           return h(
             "span",
-            FilterService.dateFormat(row.handoverDate, "yyyy-MM-dd hh:mm:ss")
+            this.$filter.dateFormat(row.handoverDate, "yyyy-MM-dd hh:mm:ss")
           );
         }
       },
@@ -114,14 +113,16 @@ export default class TransferRecord extends Vue {
 </script>
 
 <style lang="less" scoped>
-  .component.transfer-record{
-    .item-margin-left10{
-      margin-left:10px;
-    }
-    .item-kehu-div{
-      float:right;display:inline-block;margin-right:10px;
-    }
+.component.transfer-record {
+  .item-margin-left10 {
+    margin-left: 10px;
   }
+  .item-kehu-div {
+    float: right;
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
 .choose-buy-materials {
   .ivu-select-selection {
     width: 240%;
