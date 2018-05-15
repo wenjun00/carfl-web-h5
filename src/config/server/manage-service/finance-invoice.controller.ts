@@ -29,6 +29,15 @@ export default {
     controller: CONTROLLER,
     action: 'getFinanceUploadResources',
     type: requestType.Get
+  },
+  /**
+   * 获取收款详情
+   */
+  getCollectMoneyDetail: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCollectMoneyDetail',
+    type: requestType.Get
   }
 
 }
