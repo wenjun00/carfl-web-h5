@@ -28,7 +28,7 @@
       </i-row>
     </i-form>
 
-    <i-tabs v-model="currentTab">
+    <i-tabs v-model="currentTab" @on-click="onClickCurrentTab">
       <div slot="extra">
         <i-button type="text" v-show="currentStep<applicationTabs.length" @click="onNextStep">下一步</i-button>
       </div>
@@ -206,6 +206,13 @@ export default class PersonalMortgageApplication extends Page {
     });
   }
 
+  private onClickCurrentTab(name) {
+    let index = this.applicationTabs.findIndex(v => v.name === name);
+    if (index > -1) {
+      this.currentStep = index
+    }
+  }
+
   /**
    * 步骤流程处理
    */
@@ -242,8 +249,7 @@ export default class PersonalMortgageApplication extends Page {
       basisForm.validateField("cardNumber", error => reslove(!error));
     });
 
-    // TODO: 18个1仅用于测试F
-    return result || this.basisModel.cardNumber === "1".repeat(18);
+    return result
   }
 
   /**
@@ -258,6 +264,28 @@ export default class PersonalMortgageApplication extends Page {
       return;
     }
 
+
+
+    // 判断是否需要重置信息
+    if (this.currentCardNumber && this.currentCardNumber !== this.basisModel.cardNumber) {
+      await new Promise((resolve) => {
+        this.$Modal.confirm({
+          title: "提醒",
+          content: "证件号码更新,是否要重置申请信息?",
+          onCancel: () => { return resolve() },
+          onOk: () => {
+            this.currentCardNumber = this.basisModel.cardNumber;
+            this.resetApplicationTab()
+            return resolve()
+          }
+        });
+      })
+    }
+    this.currentCardNumber = this.basisModel.cardNumber;
+    this.findOrderInfo()
+  }
+
+  private findOrderInfo() {
     // 查询历史数据
     this.personalService
       .getCustomerHistoryFinanceInfo({
@@ -267,33 +295,12 @@ export default class PersonalMortgageApplication extends Page {
         (data) => {
           if (data.length) {
             if (data.some(x => x.personalType === 114)) {
-              this.basisModel.cardNumber = ''
-              return this.$Message.info("黑名单用户禁止创建申请");
+              this.$Message.info("黑名单用户禁止创建申请");
             } else {
-              return this.showHistoryOrder(data);
+              this.showHistoryOrder(data);
             }
           }
-
-          // 判断是否需要重置信息
-          if (
-            this.currentCardNumber &&
-            this.currentCardNumber !== this.basisModel.cardNumber
-          ) {
-            this.$Modal.confirm({
-              title: "提醒",
-              content: "证件号码更新,是否要重置申请信息?",
-              onOk: this.resetApplicationTab
-            });
-          }
-
-          // 更新历史查询身份证号
-          this.currentCardNumber = this.basisModel.cardNumber;
-
-          // TODO: 根据身份证获取性别和生日信息
-        },
-        ({ msg }) => {
-          this.$Message.error(msg);
-        }
+        }, err => this.$Message.error(err.msg)
       );
   }
 
@@ -314,9 +321,7 @@ export default class PersonalMortgageApplication extends Page {
 
         this.getOrderData(currentRow.orderNumber);
       },
-      onCancel: () => {
-        this.reset();
-      },
+      onCancel: () => { },
       render: h => {
         return h(HistoricalRecord, {
           props: {
@@ -404,20 +409,20 @@ export default class PersonalMortgageApplication extends Page {
    * 重置页面数据
    */
   reset() {
-    this.currentCardNumber = "";
     this.orderStatus = "";
     let basisForm = this.$refs["basis-form"] as Form;
 
     basisForm.resetFields();
     this.currentStep = 0;
 
-    this.resetApplicationTab();
+    this.basisModel.cardNumber = this.currentCardNumber
   }
 
   /**
    * 重置申请选项卡数据
    */
   resetApplicationTab() {
+    this.reset()
     this.applicationTabs.forEach(({ name }) => {
       let tab: any = this.$refs[name];
       tab.reset();
