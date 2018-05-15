@@ -102,12 +102,13 @@ export default class PersonalMortgageApplication extends Page {
   private currentCardNumber = "";
   // 基础数据表单
   private basisModel: any = {
-    id: "",
+    id: -1, // 新增表示 -1
     cardNumber: "", // 证件号码
     customterName: "", // 企业名称
     phoneNumber: "", // 手机号码
     saler: {}, // 销售员
     salesmanName: "",
+    salesmanId:0,
     seriesId: ""
   };
 

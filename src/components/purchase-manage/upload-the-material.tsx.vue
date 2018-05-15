@@ -12,10 +12,10 @@
           </i-dropdown-menu>
         </i-dropdown>
       </div>
-      <div v-show="uploadDataSet.length" class="file-list">
+      <div v-if="uploadDataSet.length" class="file-list">
         <i-table :data="uploadDataSet" :columns="uploadColumns"></i-table>
       </div>
-      <div v-show="!uploadDataSet.length" class="empty-text row middle-span center-span">
+      <div v-else class="empty-text row middle-span center-span">
         暂无待上传素材
       </div>
     </i-card>
@@ -43,7 +43,7 @@ export default class UploadTheMaterial extends Vue {
   @Dependencies(PersonalMaterialService)
   private personalMaterialService: PersonalMaterialService;
   @Prop({
-    default:()=>null
+    default: () => null
   }) currentProduct;
 
   private fileTypeList = [];
@@ -146,7 +146,9 @@ export default class UploadTheMaterial extends Vue {
    * 恢复数据
    */
   revert(data) {
+    console.log(data.personal.personalDatas, '2232')
     this.uploadDataSet = data.personal.personalDatas;
+    console.log(this.uploadDataSet.length, 'f34')
   }
 
   /**
