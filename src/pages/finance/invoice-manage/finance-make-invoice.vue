@@ -1,5 +1,5 @@
 <!--财务开票-->
-<template>
+<template> 
   <section class="page finance-make-invoice">
     <page-header title="财务开票" hiddenPrint hiddenExport>
       <i-button type="text" @click="allMakeModal">确认开票</i-button>
@@ -220,13 +220,13 @@
         align: 'center',
         title: '客户姓名',
         key: 'customerName',
-        minWidth: this.$common.getColumnWidth(3)
+        minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: 'center',
         title: '开票项目',
         key: 'collectItem',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, {
           row,
           column,
@@ -239,7 +239,7 @@
         align: 'center',
         title: '金额',
         key: 'collectMoneyAmount',
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, {
           row
         }) => {
@@ -257,18 +257,18 @@
         align: 'center',
         title: '期数',
         key: 'periods',
-        minWidth: this.$common.getColumnWidth(2)
+        minWidth: this.$common.getColumnWidth(4)
       },
       {
         align: 'center',
         title: '所属公司',
         key: 'companyChinaName',
-        minWidth: this.$common.getColumnWidth(3)
+        minWidth: this.$common.getColumnWidth(6)
       },
       {
         align: 'center',
         title: '结算通道',
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(6),
         key: 'colectMoneyChannel',
         render: (h, {
           row,
@@ -282,7 +282,7 @@
         align: 'center',
         title: '开票状态',
         sortable: true,
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(5),
         key: 'invoicingStatus',
         render: (h, {
           row,
@@ -296,7 +296,7 @@
         align: 'center',
         title: '发票号',
         key: 'invoiceNumber',
-        minWidth: this.$common.getColumnWidth(5)
+        minWidth: this.$common.getColumnWidth(6)
       },
       {
         align: 'center',
@@ -317,14 +317,14 @@
       {
         align: 'center',
         title: '发票抬头',
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(6),
         key: 'invoicingTitle'
       },
       {
         align: 'center',
         title: '备注',
         key: 'remark',
-        minWidth: this.$common.getColumnWidth(6)
+        minWidth: this.$common.getColumnWidth(8)
       }
     ]
     /**
@@ -386,6 +386,7 @@
         closeEmpty.allCloseEmpty()
       }
     }
+ 
 
     /**
      * 确认开票弹窗

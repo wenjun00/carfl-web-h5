@@ -180,4 +180,15 @@
     background: #e4f4fa;
   }
 </style>
+<style lang="less">
+  .page.flushing-config{
+    .ivu-select.ivu-select-single.ivu-select-small,
+    .ivu-select-single .ivu-select-selection {
+      width: 80px !important;
+      display: inline-block;
+    }
+  }
+
+
+</style>
 
