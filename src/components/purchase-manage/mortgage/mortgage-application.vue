@@ -316,7 +316,7 @@ export default class MortgageApplication extends Vue {
     {
       title: "系列",
       align: "center",
-      minWidth: this.$common.getColumnWidth(4),
+      minWidth: this.$common.getColumnWidth(5),
       key: "seriesName"
     },
     {
@@ -328,19 +328,19 @@ export default class MortgageApplication extends Vue {
     {
       title: "车身颜色",
       align: "center",
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(4),
       key: "carColor"
     },
     {
       title: "车辆排量",
       align: "center",
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(4),
       key: "displacement"
     },
     {
       title: "车辆牌照",
       align: "center",
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(4),
       key: "carNo"
     },
     {
@@ -356,7 +356,7 @@ export default class MortgageApplication extends Vue {
       key: 'frameNo'
     },
     {
-      title: "行驶里程(公里)",
+      title: "行驶公里数",
       align: "center",
       key: "mileage",
       minWidth: this.$common.getColumnWidth(4),
@@ -618,9 +618,12 @@ export default class MortgageApplication extends Vue {
         displacement: v.carEmissions,
         carNo: v.carLicence,
         assessmentNo: v.carNumber,
-        frameNo: '',
+        frameNo: v.frameNo,
         mileage: v.mileage,
-        evaluation: v.carAmount
+        evaluation: v.carAmount,
+        carName: v.modelName,
+        assessmentId: v.assessmentId,
+        id: v.id
       }
     })
 

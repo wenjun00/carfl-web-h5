@@ -36,7 +36,7 @@
         <mortgage-application @on-product-change="product=>currentProduct=product" ref="mortgage-application" :cardNumber="basisModel.cardNumber"></mortgage-application>
       </i-tab-pane>
       <i-tab-pane name="personal-customer-info" label="客户资料" :disabled="currentStep<1">
-        <personal-customer-info ref="personal-customer-info"></personal-customer-info>
+        <personal-customer-info ref="personal-customer-info" @on-RefBaseData="onRefBaseData"></personal-customer-info>
       </i-tab-pane>
       <i-tab-pane name="customer-job" label="客户职业" :disabled="currentStep<2">
         <customer-job ref="customer-job"></customer-job>
@@ -104,52 +104,26 @@ export default class PersonalMortgageApplication extends Page {
   private basisModel: any = {
     id: -1, // 新增表示 -1
     cardNumber: "", // 证件号码
-    customterName: "", // 企业名称
+    customterName: "", // 客户姓名
     phoneNumber: "", // 手机号码
     saler: {}, // 销售员
     salesmanName: "",
-    salesmanId:0,
+    salesmanId: 0,
     seriesId: ""
   };
 
   // 基础数据验证
   private basisRules = {
     cardNumber: [
-      {
-        required: true,
-        message: "请输入证件号码",
-        trigger: "blur"
-      },
-      {
-        validator: this.$validator.idCard,
-        trigger: "blur"
-      }
-    ],
+      { required: true, message: "请输入证件号码", trigger: "blur" },
+      { validator: this.$validator.idCard, trigger: "blur" }],
     customterName: [
-      {
-        required: true,
-        message: "请输入客户姓名",
-        trigger: "change"
-      }
-    ],
+      { required: true, message: "请输入客户姓名", trigger: "change" }],
     phoneNumber: [
-      {
-        required: true,
-        message: "请输入客户电话",
-        trigger: "change"
-      },
-      {
-        validator: this.$validator.phoneNumber,
-        trigger: "blur"
-      }
-    ],
+      { required: true, message: "请输入客户电话", trigger: "change" },
+      { validator: this.$validator.phoneNumber, trigger: "blur" }],
     salesmanName: [
-      {
-        required: true,
-        message: "请选择归属业务员",
-        trigger: "change"
-      }
-    ]
+      { required: true, message: "请选择归属业务员", trigger: "change" }]
   };
 
   // 业务选项卡列表
@@ -290,36 +264,36 @@ export default class PersonalMortgageApplication extends Page {
         idCard: this.basisModel.cardNumber
       })
       .subscribe(
-      (data) => {
-        if (data.length) {
-          if (data.some(x => x.personalType === 114)) {
-            this.basisModel.cardNumber = ''
-            return this.$Message.info("黑名单用户禁止创建申请");
-          } else {
-            return this.showHistoryOrder(data);
+        (data) => {
+          if (data.length) {
+            if (data.some(x => x.personalType === 114)) {
+              this.basisModel.cardNumber = ''
+              return this.$Message.info("黑名单用户禁止创建申请");
+            } else {
+              return this.showHistoryOrder(data);
+            }
           }
+
+          // 判断是否需要重置信息
+          if (
+            this.currentCardNumber &&
+            this.currentCardNumber !== this.basisModel.cardNumber
+          ) {
+            this.$Modal.confirm({
+              title: "提醒",
+              content: "证件号码更新,是否要重置申请信息?",
+              onOk: this.resetApplicationTab
+            });
+          }
+
+          // 更新历史查询身份证号
+          this.currentCardNumber = this.basisModel.cardNumber;
+
+          // TODO: 根据身份证获取性别和生日信息
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
         }
-
-        // 判断是否需要重置信息
-        if (
-          this.currentCardNumber &&
-          this.currentCardNumber !== this.basisModel.cardNumber
-        ) {
-          this.$Modal.confirm({
-            title: "提醒",
-            content: "证件号码更新,是否要重置申请信息?",
-            onOk: this.resetApplicationTab
-          });
-        }
-
-        // 更新历史查询身份证号
-        this.currentCardNumber = this.basisModel.cardNumber;
-
-        // TODO: 根据身份证获取性别和生日信息
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
       );
   }
 
@@ -374,6 +348,8 @@ export default class PersonalMortgageApplication extends Page {
     this.basisModel.cardNumber = data.personal.idCard;
     this.basisModel.phoneNumber = data.personal.mobileMain;
     this.basisModel.customterName = data.personal.name;
+    this.basisModel.salesmanName = data.salesmanName;
+    this.basisModel.salesmanId = data.salesmanId;
     // this.basisModel.phoneNumbe
     this.applicationTabs.forEach(async ({ name }) => {
       // 当前tab
@@ -414,6 +390,14 @@ export default class PersonalMortgageApplication extends Page {
 
     this.transFlag = true
     this.getOrderData(row.orderNumber)
+  }
+
+  /**
+   * 将当前页面的基础数据实体传递给子页面
+  */
+  private onRefBaseData() {
+    let customer: any = this.$refs['personal-customer-info']
+    customer.setBaseData(this.basisModel)
   }
 
   /**
@@ -481,20 +465,20 @@ export default class PersonalMortgageApplication extends Page {
     // 添加订单
     this.productOrderService
       .saveFinanceApplyInfo(
-      Object.assign(data, {
-        orderStatus: this.orderStatus || (draft ? 303 : 304)
-      })
+        Object.assign(data, {
+          orderStatus: this.orderStatus || (draft ? 303 : 304)
+        })
       )
       .subscribe(
-      data => {
-        this.$Message.success("保存成功");
-        setTimeout(() => {
-          this.closePage("purchase/mortgage/personal-mortgage-application");
-        }, 1000);
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
+        data => {
+          this.$Message.success("保存成功");
+          setTimeout(() => {
+            this.closePage("purchase/mortgage/personal-mortgage-application");
+          }, 1000);
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
       );
   }
 
