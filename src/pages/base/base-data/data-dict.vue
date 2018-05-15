@@ -1,5 +1,5 @@
 <!--数据字典-->
-<template>
+<template> 
     <section class="page data-dict">
         <page-header title="数据字典" hiddenPrint hiddenExport>
             <command-button class="command-add" label="新增数据" @click="dataModal=true"></command-button>

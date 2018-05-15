@@ -1,7 +1,7 @@
 <!--查看附件-->
 <template>
   <section class="component check-attachment">
-      <upload-voucher ref="upload-voucher"></upload-voucher>
+      <upload-voucher hiddenUpload ref="upload-voucher"></upload-voucher>
   </section>
 </template>
 
@@ -22,9 +22,8 @@
     }
   })
   export default class CheckAttachment extends Vue {
-    @Dependencies(PaymentScheduleService)
+    @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
     @Dependencies(FinanceInvoiceService) private financeInvoiceService: FinanceInvoiceService
-    private paymentScheduleService: PaymentScheduleService;
     private attachmentList: Array<Object> = [];
     private fodderList: any = [];
 
