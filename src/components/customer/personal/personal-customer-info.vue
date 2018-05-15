@@ -4,6 +4,9 @@
     <i-form ref="customer-form" :rules="customerRules" :model="customerModel" :label-width="110" label-position="left" class="item-xinxi-form">
       <!-- 基础信息-start -->
       <i-card title="基础信息">
+        <div slot="extra">
+          <i-button @click="emitRefBaseData">使用基础数据</i-button>
+        </div>
         <i-row>
           <i-col span="12">
             <i-form-item label="姓名" prop="name">
@@ -305,12 +308,16 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { CityService } from "~/utils/city.service";
-import { Prop } from "vue-property-decorator";
+import { Prop, Emit } from "vue-property-decorator";
 import { FormatInputPathObject } from "path";
 import { Form } from "iview";
+import PersonalMortgageApplication from "~/pages/purchase/mortgage/personal-mortgage-application.vue";
 
 @Component({})
 export default class PersonalCustomerInfo extends Vue {
+  @Emit('on-RefBaseData')
+  emitRefBaseData() { }
+
   private ValidityPeriodValue: Boolean = false;
   private idCardads: Boolean = false;
   private idcardOwn: any = "";
@@ -497,6 +504,16 @@ export default class PersonalCustomerInfo extends Vue {
     this.idCardvalidity = false;
   }
 
+  setBaseData(data) {
+    this.customerModel.idCard = data.cardNumber;
+    this.customerModel.name = data.customterName;
+    this.customerModel.mobileMain = data.phoneNumber;
+    let sexNumber = Number(data.cardNumber[16])
+    this.customerModel.sex = sexNumber % 2 === 1 ? 1 : 2
+    let birthDate = data.cardNumber.substr(6, 8)
+    this.customerModel.birthTime = `${birthDate.substr(0, 4)}-${birthDate.substr(4, 2)}-${birthDate.substr(6, 2)}`
+  }
+
   /**
    * 恢复数据
    */
@@ -508,40 +525,26 @@ export default class PersonalCustomerInfo extends Vue {
       this.idcardOwn = 30;
     }
 
-    this.idCardads =
-      data.personal.localHomeAddr === data.personal.idCardAddress;
+    this.idCardads = data.personal.localHomeAddr === data.personal.idCardAddress;
     this.idCardvalidity = !this.customerModel.idCardValidityPeriodSection;
 
     this.$common.revert(
       this.customerModel,
       Object.assign(data.personal, {
         // 出生日期
-        birthTime: this.$filter.dateFormat(
-          data.personal.birthTime,
-          "yyyy-MM-dd"
-        ),
+        birthTime: this.$filter.dateFormat(data.personal.birthTime, "yyyy-MM-dd"),
         // 身份证地址
         idCardAddress: Number(data.personal.idCardAddress),
-        province: CityService.getCityParent(
-          Number(data.personal.idCardAddress)
-        )[0],
+        province: CityService.getCityParent(Number(data.personal.idCardAddress))[0],
         city: CityService.getCityParent(Number(data.personal.idCardAddress))[1],
         // 现居住地址
         localHomeAddr: Number(data.personal.localHomeAddr),
-        city1: CityService.getCityParent(
-          Number(data.personal.localHomeAddr)
-        )[1],
-        province1: CityService.getCityParent(
-          Number(data.personal.localHomeAddr)
-        )[0],
+        city1: CityService.getCityParent(Number(data.personal.localHomeAddr))[1],
+        province1: CityService.getCityParent(Number(data.personal.localHomeAddr))[0],
         // 本地房产地址
         cityOwnhouseAddress: Number(data.personal.cityOwnhouseAddress),
-        city2: CityService.getCityParent(
-          Number(data.personal.cityOwnhouseAddress)
-        )[1],
-        province2: CityService.getCityParent(
-          Number(data.personal.cityOwnhouseAddress)
-        )[0],
+        city2: CityService.getCityParent(Number(data.personal.cityOwnhouseAddress))[1],
+        province2: CityService.getCityParent(Number(data.personal.cityOwnhouseAddress))[0],
         // 每月租金
         localLiveHouseMoney: Number(data.personal.localLiveHouseMoney)
       })
@@ -604,12 +607,12 @@ export default class PersonalCustomerInfo extends Vue {
       .then(valid => {
         return valid;
       })
-      .catch(() => {});
+      .catch(() => { });
 
     return result;
   }
 
-  mounted() {}
+  mounted() { }
 }
 </script>
 

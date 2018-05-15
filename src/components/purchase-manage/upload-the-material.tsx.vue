@@ -12,12 +12,14 @@
           </i-dropdown-menu>
         </i-dropdown>
       </div>
-      <div v-show="uploadDataSet.length" class="file-list">
-        <i-table :data="uploadDataSet" :columns="uploadColumns"></i-table>
+
+      <i-table :data="uploadDataSet" :columns="uploadColumns"></i-table>
+      <!-- <div v-if="uploadDataSet.length" class="file-list">
+       
       </div>
-      <div v-show="!uploadDataSet.length" class="empty-text row middle-span center-span">
+      <div v-else class="empty-text row middle-span center-span">
         暂无待上传素材
-      </div>
+      </div> -->
     </i-card>
   </section>
 </template>
@@ -43,7 +45,7 @@ export default class UploadTheMaterial extends Vue {
   @Dependencies(PersonalMaterialService)
   private personalMaterialService: PersonalMaterialService;
   @Prop({
-    default:()=>null
+    default: () => null
   }) currentProduct;
 
   private fileTypeList = [];
@@ -51,6 +53,9 @@ export default class UploadTheMaterial extends Vue {
 
   private previewModel: Boolean = false;
   private url: any = "";
+
+  // 回填备用数据
+  private revertPersonalDatas: any = [];
 
   private uploadColumns = [
     {
@@ -87,13 +92,9 @@ export default class UploadTheMaterial extends Vue {
     }
   ];
 
-  @Watch("currentProduct")
+  @Watch("currentProduct", { immediate: true })
   onCurrentProductChange(value) {
-    this.reset();
-
-    if (!!value) {
-      this.getFileTypeList();
-    }
+    this.getFileTypeList()
   }
 
   /**
@@ -107,6 +108,7 @@ export default class UploadTheMaterial extends Vue {
         })
         .subscribe(data => {
           this.fileTypeList = data;
+          this.revert();
         });
     }
   }
@@ -136,17 +138,25 @@ export default class UploadTheMaterial extends Vue {
   }
 
   /**
-   * 重置数据
-   */
-  reset() {
-    this.uploadDataSet = [];
-  }
-
-  /**
    * 恢复数据
    */
-  revert(data) {
-    this.uploadDataSet = data.personal.personalDatas;
+  revert(data?: any) {
+    if (data) {
+      this.revertPersonalDatas = data.personal.personalDatas
+    }
+
+    if (this.fileTypeList.length) {
+      this.uploadDataSet = this.revertPersonalDatas.map(v => {
+        let type = this.fileTypeList.find(x => x.id === v.materialType);
+        return {
+          id: v.id,
+          materialType: v.materialType,
+          materialTypeName: (type || {}).name,
+          materialUrl: v.materialUrl,
+          uploadName: v.uploadName
+        }
+      })
+    }
   }
 
   /**
@@ -166,18 +176,6 @@ export default class UploadTheMaterial extends Vue {
     this.$Message.error("请上传必传的素材");
   }
 
-  /**
-   * 补充资料反显
-   */
-  supplement(data) {
-    data.map(v => {
-      (v.name = v.uploadName),
-        (v.url = v.materialUrl),
-        (v.typeup = v.materialType),
-        (v.upid = v.id);
-    });
-    this.uploadDataSet = data;
-  }
 
   /**
    * 上传文件成功回调
