@@ -13,13 +13,12 @@
         </i-dropdown>
       </div>
 
-      <i-table :data="uploadDataSet" :columns="uploadColumns"></i-table>
-      <!-- <div v-if="uploadDataSet.length" class="file-list">
-       
+      <div v-if="uploadDataSet.length" class="file-list">
+        <i-table :data="uploadDataSet" :columns="uploadColumns"></i-table>
       </div>
       <div v-else class="empty-text row middle-span center-span">
         暂无待上传素材
-      </div> -->
+      </div>
     </i-card>
   </section>
 </template>
@@ -82,7 +81,7 @@ export default class UploadTheMaterial extends Vue {
             <i-button
               type="text"
               icon="arrow-down-a"
-              click={() => {
+              onClick={() => {
                 this.$common.downloadFile(row.materialUrl, row.uploadName);
               }}
             />
@@ -135,6 +134,14 @@ export default class UploadTheMaterial extends Vue {
         });
       }
     });
+  }
+
+  /**
+   * 页面重置
+  */
+  public reset() {
+    this.revertPersonalDatas = [];
+    this.uploadDataSet = [];
   }
 
   /**

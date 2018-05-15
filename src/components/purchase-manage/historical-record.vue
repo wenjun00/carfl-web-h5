@@ -4,7 +4,7 @@
       <RadioGroup v-model="orderType" type="button" size="large" @on-change="onOrderTypeChange">
         <Radio :label="0">历史订单</Radio>
         <Radio :label="1">退件订单</Radio>
-        <Radio :label="2">草稿订单</Radio>
+        <!-- <Radio :label="2">草稿订单</Radio> -->
       </RadioGroup>
     </div>
     <i-table :height="500" highlight-row @on-current-change="onCurrentChange" ref="databox" :columns="orderColumns" :data="orderDataSet"></i-table>

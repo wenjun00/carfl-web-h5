@@ -519,13 +519,18 @@ export default class MortgageApplication extends Vue {
   onCarDataSetChange() {
     this.productModel.evaluateAmount = this.carDataSet
       .map(x => x.evaluation)
-      .reduce((x, y) => x + y);
+      .reduce((x, y) => x + y, 0);
+
   }
 
   /**
    * 获取计算金额
    */
   getComputedAmount() {
+    if (!this.currentProduct) {
+      return
+    }
+
     // 管理费 = 贷款总额x管理费比例
     this.productModel.manageAmount =
       this.productModel.loadAmount * (this.productModel.manageRatio || 0);
@@ -547,13 +552,13 @@ export default class MortgageApplication extends Vue {
     // 自定义验证
     return await this.$validator
       .validate(
-      {
-        applicationForm,
-        carListCount: this.carDataSet.length,
-        currentProduct: this.currentProduct,
-        productForm
-      },
-      this.customRules
+        {
+          applicationForm,
+          carListCount: this.carDataSet.length,
+          currentProduct: this.currentProduct,
+          productForm
+        },
+        this.customRules
       )
       .then(error => {
         if (!error) {
@@ -631,15 +636,29 @@ export default class MortgageApplication extends Vue {
     this.getComputedAmount();
   }
 
+  /**
+   * 重置数据
+   * 1 重置申请表单
+   * 2 重置产品表单
+   * 3 清空当前产品
+   * 4 清空车辆数据
+   */
   reset() {
+    // 申请信息表单
     let applicationForm = this.$refs["application-form"] as Form;
+    // 产品表单
     let productForm = this.$refs["product-form"] as Form;
 
+    // step1 - 重置申请表单
     applicationForm.resetFields();
+    // step2 - 重置产品表单
     productForm.resetFields();
+    // step3 - 清空当前产品
     this.carDataSet = [];
+    // step3 - 清空车辆数据
+    this.currentProduct = null
 
-    this.$common.reset(this.currentProduct);
+    // 通知当前产品变更，清空上传素材，素材种类列表
     this.emitProductChange(null);
   }
 
