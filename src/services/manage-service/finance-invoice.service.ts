@@ -1,5 +1,5 @@
 //财务开票
-import { manageService } from '~/config/server/manage-service'
+import { manageService } from '~/config/server/manage-service' 
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
@@ -27,6 +27,24 @@ export class FinanceInvoiceService {
         collectItem:data.collectItem,
       },
       page:page
+    })
+  }
+   /**
+   * 新增财务开票
+   */
+  saveFinanceInvoiceRecord(data) {
+    return this.netService.send({
+      server: manageService.financeInvoiceController.saveFinanceInvoiceRecord,
+      data:data
+    })
+  }
+   /**
+   * 获取财务附件
+   */
+  getFinanceUploadResources(data) {
+    return this.netService.send({
+      server: manageService.financeInvoiceController.getFinanceUploadResources,
+      data:data
     })
   }
 }

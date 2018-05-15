@@ -1,16 +1,10 @@
 <!--查看附件-->
 <template>
   <section class="component check-attachment">
-    <div class="modal-item">
-      <div v-for="item in attachmentList" :key="item.index">
-        <div class="modal-item-ml">
-          <img :src="item.materialUrl" alt="" class="modal-item-img">
-          <div class="modal-item-div">{{item.originName}}</div>
-        </div>
-      </div>
-    </div>
+      <upload-voucher ref="upload-voucher"></upload-voucher>
   </section>
 </template>
+
 
 <script lang="ts">
   import Vue from "vue";
@@ -18,38 +12,48 @@
   import ChangeCard from "~/components/purchase-manage/change-card.vue";
   import {PaymentScheduleService} from "~/services/manage-service/payment-schedule.service";
   import {Dependencies} from "~/core/decorator";
+  import UploadVoucher from "~/components/common/upload-voucher.vue"
+  import {FinanceInvoiceService} from '~/services/manage-service/finance-invoice.service'
 
   @Component({
     components: {
-      ChangeCard
+      ChangeCard,
+      UploadVoucher
     }
   })
   export default class CheckAttachment extends Vue {
     @Dependencies(PaymentScheduleService)
+    @Dependencies(FinanceInvoiceService) private financeInvoiceService: FinanceInvoiceService
     private paymentScheduleService: PaymentScheduleService;
     private attachmentList: Array<Object> = [];
+    private fodderList: any = [];
 
-    created() {
-    }
+ 
 
     /**
      * 获取附件列表
      */
-    getAttachmentList(row) {
-      let businessId = row.id;
-      this.paymentScheduleService
-        .checkTheVoucher({
-          businessId: businessId
-        })
+    checkAccessory(id) {
+      // console.log(id)
+      this.financeInvoiceService
+        .getFinanceUploadResources({collectMoneyDetailId:id})
         .subscribe(
-          data => {
-            this.attachmentList = data;
+          val => {
+             let uploadFodder: any = this.$refs['upload-voucher']
+              uploadFodder.Reverse(val)
+            // this.fodderList = val.materialUrl
           },
-          ({msg}) => {
-            this.$Message.error(msg);
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg)
           }
-        );
+        )
     }
+
+
+
+   
   }
 </script>
 
