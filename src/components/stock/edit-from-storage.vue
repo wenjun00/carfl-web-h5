@@ -202,12 +202,11 @@ export default class EditFromStorage extends Vue {
    *  确认出库
    */
   confirmTreasury() {
-    let form = <Form>this.$refs['form-item']
-
     return new Promise((resolve, reject) => {
+      console.log(this.outTreasuryModel.placingDate)
+      let form = <Form>this.$refs['form-item']
       form.validate(result => {
         if (!result) return reject()
-
         this.outTreasuryModel.id = this.id
         this.outTreasuryModel.assessmentPlacingFileList = this.fodderList
         this.assessMentPlacingService.createPlacingOrder(this.outTreasuryModel)

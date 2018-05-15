@@ -263,7 +263,8 @@ export default class AddCollateral extends Vue {
     ownPhone: '',
     idCard: '',
     carAllName: '',
-    carAttrList: []
+    carAttrList: [],
+    carFileList:[]
   }
   private basicList: any = [{}]
   private fodderList: any = [] //上传文件列
@@ -363,13 +364,15 @@ export default class AddCollateral extends Vue {
     form.validate(valid => {
       if (!valid) return false
       this.customerModel.carAttrList = this.appearance.concat(this.interiorInspection).concat(this.engineRoom)
-
+      this.customerModel.carBasicFileList = this.fodderList
       this.customerModel.firstTime = this.$filter.dateFormat(this.customerModel.firstTime)
       this.customerModel.factoryTime = this.$filter.dateFormat(this.customerModel.factoryTime)
+      
       // 删除原来的basicList
       delete this.submitModel.basicList
       // 增加现有数据model
       this.submitModel.assessmentBasicModel = this.customerModel
+    
       this.assessMentApplyService.saveAssessmentBasicInfo(this.submitModel)
         .subscribe(data => {
           this.$Message.success("保存成功！")

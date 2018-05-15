@@ -47,6 +47,15 @@ export class FinanceInvoiceService {
       data:data
     })
   }
+   /**
+   * 获取收款详情
+   */
+  getCollectMoneyDetail(data) {
+    return this.netService.send({
+      server: manageService.financeInvoiceController.getCollectMoneyDetail,
+      data:data
+    })
+  }
 }
 
 
