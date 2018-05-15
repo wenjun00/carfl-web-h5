@@ -30,7 +30,7 @@
         <!--<i-select v-model="passModel.manageCostPercent" clearable @on-change="manageChange">-->
           <!--<i-option v-for="item in manageCost" :key="item" :value="item" :label="item+'%'"></i-option>-->
         <!--</i-select>-->
-        <div>{{!!manageCostPercent?manageCostPercent:0}}</div>
+        <div>{{!!manageCostPercent? (manageCostPercent | decimalToPrecent):0}}</div>
       </data-grid-item>
       <data-grid-item label="管理费金额" :span="6">
         <div>{{!!manageCost?manageCost:0}}</div>

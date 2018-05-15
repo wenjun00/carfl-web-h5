@@ -281,7 +281,7 @@ export default class CustomerSign extends Page {
           'span',
           FilterService.dateFormat(
             row.latelyContractTime,
-            'yyyy-MM-dd hh:mm:ss'
+            'yyyy-MM-dd'
           )
         )
       }
@@ -669,6 +669,7 @@ export default class CustomerSign extends Page {
       data => {
         this.openCompact = false
         this.dataList = []
+        this.getSignList()
         this.$Message.success('签约成功！')
       },
       ({
