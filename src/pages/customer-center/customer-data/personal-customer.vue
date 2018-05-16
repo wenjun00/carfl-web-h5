@@ -147,7 +147,7 @@ export default class personalCustomer extends Page {
       editable: true,
       sortable: true,
       key: 'intentionalLevel',
-      minWidth: this.$common.getColumnWidth(3),
+      minWidth: this.$common.getColumnWidth(6),
       align: 'center',
       render: (h, { row }) => {
          return h('div', [
@@ -181,7 +181,7 @@ export default class personalCustomer extends Page {
       render: (h, { row, column, index }) => {
         return h(
           'span',
-          FilterService.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
+          FilterService.dateFormat(row.createTime, 'yyyy-MM-dd')
         )
       }
     },
