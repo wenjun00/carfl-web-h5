@@ -247,13 +247,13 @@ export default class AddCollateral extends Vue {
     factoryTime: '',
     mileage: '',
     drivingNo: '',
-    transferNo: 0,
+    transferNo: null,
     carPurpose: "",
     transmission: "",
     driver: "",
     displacement: '',
     carSituation: "",
-    evaluation: 0,
+    evaluation: null,
     remarks: '',
     carColor: '',
     carNo: '',
@@ -274,7 +274,7 @@ export default class AddCollateral extends Vue {
   private row: any = [] //父组件传的值
   private carInformation: any = '' //所选车辆
   private ruleValidateRule: any = {
-    factoryTime: [{ required: true, message: "请选择出厂日期", trigger: "blur", type: 'date' }],
+    factoryTime: [{ required: true, message: "请选择出厂日期", trigger: "change", type: 'date' }],
     firstTime: { required: true, validator: this.validatorfirstTime, trigger: 'change' },
     mileage: [
       { required: true, message: "请输入行驶里程", trigger: "blur" },
@@ -282,7 +282,7 @@ export default class AddCollateral extends Vue {
     drivingNo: [
       { required: true, message: "请输入行驶证号", trigger: "blur" },
       { type: 'string', min: 18, max: 18, message: "请输入18位行驶证号", trigger: "blur" }],
-    transferNo: { required: true, message: "请输入过户次数", trigger: "blur", type: 'number' },
+    transferNo: { required: true, message: "请输入过户次数", trigger: "change", type: 'number' },
     carPurpose: [{ required: true, message: "请选择车辆用途", trigger: "change", type: 'number' }],
     transmission: [{ required: true, message: "请选择形式", trigger: "change", type: 'number' }],
     driver: [{ required: true, message: "请选择驱动形式", trigger: "change", type: 'number' }],
@@ -290,7 +290,7 @@ export default class AddCollateral extends Vue {
       { required: true, message: "请输入排量", trigger: "blur" },
       { type: 'string', max: 3, message: "排量不能超过3位", trigger: "blur" }],
     carSituation: [{ required: true, message: "请选择车况", trigger: 'change', type: 'number' }],
-    evaluation: { required: true, message: "请输入估价", trigger: 'blur', type: 'number' }
+    evaluation: { required: true, message: "请输入估价", trigger: 'change', type: 'number' }
   }
 
 
