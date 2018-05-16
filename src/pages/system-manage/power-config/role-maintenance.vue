@@ -30,15 +30,15 @@
       </i-modal>
     </template>
 
-    <template>
-      <i-modal v-model="modulePowerModal" title="模块权限" :width="600">
+    <!-- <template>
+      <i-modal v-model="modulePowerModal" title="模块权限" :width="800">
         <module-power @close="modulePowerModal=false" ref="module-power" :roleId="currentRoleId"></module-power>
         <div slot="footer">
           <i-button @click="modulePowerModal=false">取消</i-button>
           <i-button @click="saveModulePower" class="blueButton">确定</i-button>
         </div>
       </i-modal>
-    </template>
+    </template> -->
 
     <template>
       <i-modal v-model="userListModal" title="用户列表" :width="800" class-name="no-footer" @on-visible-change="visibleChange">
@@ -122,14 +122,14 @@ export default class RoleMaintenance extends Page {
   private checkRadio: String = '融资租赁合同'
 
   private modifyRoleModal: Boolean = false // 修改角色
-  private modulePowerModal: Boolean = false // 模块权限
+  // private modulePowerModal: Boolean = false // 模块权限
   private userListModal: Boolean = false // 用户列表
   private waitHandleCaseModal: Boolean = false // 待办事项配置
   private addRoleModal: Boolean = false // 新增角色
 
   private rowIdFun: any = ''
   private roleId: Number = 0
-  private currentRoleId: number | null = null
+  // private currentRoleId: number | null = null
   private roleModel = {
     roleName: '',
     roleStatus: '',
@@ -324,20 +324,20 @@ export default class RoleMaintenance extends Page {
   getRoleListByCondition() {
     this.manageService
       .queryRolePage(
-      {
-        roleName: this.roleModel.roleName,
-        roleStatus: this.roleModel.roleStatus,
-        userId: ''
-      },
-      this.pageService
+        {
+          roleName: this.roleModel.roleName,
+          roleStatus: this.roleModel.roleStatus,
+          userId: ''
+        },
+        this.pageService
       )
       .subscribe(
-      data => {
-        this.roleList = data
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.roleList = data
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
       )
   }
   /**
@@ -346,20 +346,20 @@ export default class RoleMaintenance extends Page {
   getRoleListByConditionOn() {
     this.manageService
       .queryRolePage(
-      {
-        roleName: this.roleModel.roleName,
-        roleStatus: this.roleModel.roleStatus,
-        userId: ''
-      },
-      this.pageService
+        {
+          roleName: this.roleModel.roleName,
+          roleStatus: this.roleModel.roleStatus,
+          userId: ''
+        },
+        this.pageService
       )
       .subscribe(
-      data => {
-        this.roleList = data.filter(v=>v.roleStatus==0)
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.roleList = data.filter(v => v.roleStatus == 0)
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
       )
   }
   refreshRoleList() {
@@ -398,13 +398,13 @@ export default class RoleMaintenance extends Page {
             roleId: row.id
           })
           .subscribe(
-          val => {
-            this.$Message.success('删除成功！')
-            this.getRoleListByCondition()
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-          }
+            val => {
+              this.$Message.success('删除成功！')
+              this.getRoleListByCondition()
+            },
+            ({ msg }) => {
+              this.$Message.error(msg)
+            }
           )
       }
     })
@@ -421,8 +421,18 @@ export default class RoleMaintenance extends Page {
    * 显示模块权限
    */
   showModulePower(row) {
-    this.currentRoleId = row.id
-    this.modulePowerModal = true
+    // this.currentRoleId = row.id
+    // this.modulePowerModal = true
+    this.$dialog.show({
+      title: '权限模块维护',
+      footer: true,
+      width: 1000,
+      onOk: modulePower => {
+        return modulePower.submit().catch(v => {return false})
+      },
+      render: h => h(ModulePower, { props: { roleId: row.id } })
+    })
+
   }
 
   userList(row) {

@@ -102,4 +102,13 @@ export class RoleResoService {
       }
     })
   }
+  /**
+   * 角色权限维护获取角色对应的所有资源信息
+   */
+  findAllResourceAndMenu(roleId) {
+    return this.netService.send({
+      server: manageService.roleResoController.findAllResourceAndMenu,
+      data: { roleId: roleId }
+    })
+  }
 }

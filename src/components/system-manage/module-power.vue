@@ -1,18 +1,20 @@
 <!--修改角色--> 
 <template>
   <section class="component module-power">
-    <i-row>
+    <i-row :gutter="16">
       <!--树-->
       <i-col :span="10">
-        <span>模块名</span>
-        <div class="module-name">
-          <data-tree ref="data-tree" show-checkbox :data="menuResourceData" @on-select-change="getControlResourcesById"></data-tree>
-        </div>
+        <i-card title="模块名">
+          <div class="module-name">
+            <data-tree ref="data-tree" @on-currentChecked-change="onCurrentCheckedChange" show-checkbox :data="menuResourceData" @on-select-change="getControlResourcesById"></data-tree>
+          </div>
+        </i-card>
       </i-col>
       <!--表格-->
-      <i-col :span="14" class="module-form">
-        <span>模块功能</span>
-        <data-box @on-selection-change="onSelectionChange" ref="data-box" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
+      <i-col :span="14">
+        <i-card title="模块功能">
+          <data-box @on-selection-change="onSelectionChange" ref="data-box" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
+        </i-card>
       </i-col>
     </i-row>
   </section>
@@ -44,17 +46,14 @@ export default class ModulePower extends Vue {
   // 角色id
   @Prop() roleId;
 
-  @Watch("roleId")
-  onRoleIdChange(value) {
-    this.getResourceDataByRole();
-    this.controlResourceData = []
-  }
-
   private resourceData = [];
   private menuResource = [];
   private controlResource = [];
   private menuResourceData = [];
   private controlResourceData = [];
+
+  // 树组件
+  private tree: any = {};
 
   private columns = [];
 
@@ -64,67 +63,78 @@ export default class ModulePower extends Vue {
         align: "center",
         type: "index",
         title: "序号",
-        minWidth: 30
+        minWidth: this.$common.getColumnWidth(1)
       },
       {
         align: "center",
         type: "selection",
-        key: "checked",
+        key: "_checked",
         title: "选择",
-        minWidth: 60
+        minWidth: this.$common.getColumnWidth(1)
       },
       {
-        align: "center",
-        key: "resoName",
+        align: "left",
+        key: "resoname",
         title: "功能名称",
-        minWidth: 90
+        minWidth: this.$common.getColumnWidth(4)
       },
       {
-        align: "center",
+        align: "left",
         key: "resoRemark",
-        title: "描述"
+        title: "描述",
+        minWidth: this.$common.getColumnWidth(6)
       }
     ];
+  }
+
+
+  /**
+   * 当前选中节点的checked 发生变化
+  */
+  onCurrentCheckedChange(id, value) {
+    this.controlResource.filter(x => x.pid === id).forEach(x => { x._checked = value })
   }
 
   /**
    * 获取控件资源通过id
    */
-  getControlResourcesById({ id }) {
-    console.log(this.controlResourceData)
-    console.log('656')
+  getControlResourcesById(data) {
     this.controlResourceData = this.controlResource.filter(
-      x => [423, 424, 425].includes(x.resoFiletype) && x.resoPid === id
-
+      x => [423, 424, 425].includes(x.filetype) && x.pid === data.id
     );
   }
 
+  /**
+   * 获取资源数据
+   * 分两组数据
+   * menuResource 左侧树使用
+   * controlResource 右侧列表使用
+  */
   getResourceData() {
-    this.roleResoService.getAllResource().subscribe(data => {
+    this.roleResoService.findAllResourceAndMenu(this.roleId).subscribe(data => {
       // 全部资源数据
       this.resourceData = data;
 
       // 菜单资源数据
-      this.menuResource = data
-        .filter(x => [422, 421, 429].includes(x.resoFiletype))
+      this.menuResource = data.filter(x => [422, 421, 429].includes(x.filetype))
         .map(x => {
-          x.title = x.resoName;
-          return x;
+          x.title = x.resoname;
+          return x
         });
 
       // 菜单资源数据
-      this.controlResource = data.filter(x =>
-        [423, 424, 425].includes(x.resoFiletype)
-      );
+      this.controlResource = data.filter(x => [423, 424, 425].includes(x.filetype))
 
       this.createMenuResourceData();
     });
   }
 
+  /**
+   * 当右侧按钮选中项改变的时候
+   * 控制左侧树的节点的checked 值
+  */
   onSelectionChange(section) {
-    this.controlResourceData.forEach(x => {
-      x._checked = !!section.find(item => item.id === x.id)
-    })
+    this.tree.currentNode.checked = this.controlResourceData.length === section.length
   }
 
   /**
@@ -132,10 +142,10 @@ export default class ModulePower extends Vue {
    * 生成树形结构
    */
   createMenuResourceData() {
-    let parents = this.menuResource.filter(x => x.resoPid === 10000);
+    let parents = this.menuResource.filter(x => x.pid === 10000);
 
     let fun = item => {
-      let children = this.menuResource.filter(x => x.resoPid === item.id);
+      let children = this.menuResource.filter(x => x.pid === item.id);
 
       if (children && children.length) {
         item.children = children.map(fun);
@@ -147,50 +157,30 @@ export default class ModulePower extends Vue {
     this.menuResourceData = parents.map(fun);
   }
 
-  /**
-   * 获取角色资源数据
-   */
-  getResourceDataByRole() {
-    Observable.zip(
-      this.roleResoService.findRoleResoResourceByRoleId({
-        roleIds: [this.roleId]
-      }),
-      this.roleResoService.findRoleResoMenuByRoleId({
-        roleIds: [this.roleId]
-      })
-    ).subscribe(([controlItems, menuItems]) => {
-      // 筛选菜单选中项
-      let menuCheckedKeys = this.menuResource
-        .filter(item => menuItems.find(x => item.id === x.id))
-        .map(x => x.id);
-
-      // 筛选资源选中项
-      this.controlResource.forEach(item => {
-        item._checked = !!controlItems.find(x => item.id === x.id);
-      });
-
-      let dataTree = this.$refs["data-tree"] as DataTree;
-      dataTree.setCheckedKeys(menuCheckedKeys);
-    });
-  }
 
   mounted() {
+    this.tree = this.$refs['data-tree']
     // 获取所有资源数据
     this.getResourceData();
   }
 
   public submit() {
-    let dataTree = this.$refs['data-tree'] as DataTree
-    let menuResourceIds = dataTree.getCheckedKeys()
+    let menuResourceIds = this.tree.getCheckedKeys()
     let controlResourceIds = this.controlResource.filter(x => x._checked).map(x => x.id)
 
-    this.roleService.roleAllocateResources({
-      roleId: this.roleId,
-      resourcesId: [...menuResourceIds, ...controlResourceIds]
-    }).subscribe(() => {
-      this.$Message.success('模块权限配置成功！')
-      this.$emit('close')
+    return new Promise((resolve, reject) => {
+      this.roleService.roleAllocateResources({
+        roleId: this.roleId,
+        resourcesId: [...menuResourceIds, ...controlResourceIds]
+      }).subscribe(() => {
+        this.$Message.success('模块权限配置成功！')
+        resolve()
+      }, err => {
+        this.$Message.err(err.msg)
+        reject()
+      })
     })
+
   }
 }
 </script>
@@ -199,9 +189,6 @@ export default class ModulePower extends Vue {
   .module-name {
     height: 600px;
     overflow: auto;
-  }
-  .module-form {
-    padding: 0 10px;
   }
 }
 </style>

@@ -93,5 +93,14 @@ export default {
     controller: CONTROLLER,
     action: 'findRoleResoMenuByRoleId',
     type: requestType.Post
+  },
+  /**
+ * 角色权限维护获取角色对应的所有资源信息
+ */
+  findAllResourceAndMenu: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'findAllResourceAndMenu',
+    type: requestType.Get
   }
 }
