@@ -166,7 +166,20 @@ export default class PersonalBlacklist extends Page {
       sortable: true,
       key: 'intentionalLevel',
       minWidth: this.$common.getColumnWidth(3),
-      align: 'center'
+      align: 'center',
+      render: (h, { row }) => {
+         return h('div', [
+          h(
+            'Rate', {
+              props: {
+                allowHalf: true,
+                value:row.intentionalLevel,
+                disabled:true 
+              },
+            },
+          )
+        ])
+      }
     },
     {
       title: '所属地区',
