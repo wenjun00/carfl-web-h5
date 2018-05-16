@@ -57,7 +57,7 @@
       </i-col>
       <i-col :span="12">
         <i-form-item label="银行卡号" prop="cardNumber">
-          <i-input class="open-input" v-model="CustomerOpenAccountModel.cardNumber"></i-input>
+          <i-input class="open-input" v-model="CustomerOpenAccountModel.cardNumber" :maxlength="19"></i-input>
         </i-form-item>
       </i-col>
       <i-col :span="12">
@@ -117,7 +117,8 @@
     private qCode: any = '';
 
     private ruleValidateRule: any = {
-      cardNumber: [{validator: this.$validator.bankNumber,trigger: "change"}],
+      // cardNumber: [{validator: this.$validator.bankNumber,trigger: "change"}],
+      cardNumber:[{ pattern: /^([1-9]{1})(\d{15}|\d{18})$/, message: "请输入正确银行卡号", trigger: "change" }]
     }
 
 
