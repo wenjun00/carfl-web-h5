@@ -8,24 +8,6 @@
       <data-grid-item label="贷款总额" :span="6">
         <div>{{!!financingAmount?financingAmount:0}}</div>
       </data-grid-item>
-      <!--<data-grid-item label="首付比例" :span="6">
-        <div>{{paymentScale === undefined?0:paymentScale}}</div>
-      </data-grid-item>-->
-      <!--<data-grid-item label="首付金额" :span="6">
-        <div>{{initialPayment === undefined?0:initialPayment}}</div>
-      </data-grid-item>-->
-      <!--<data-grid-item label="保证金比例" :span="6">
-        <div>{{depositPercent === undefined?0:depositPercent}}</div>
-      </data-grid-item>-->
-      <!--<data-grid-item label="保证金额" :span="6">
-        <div>{{depositCash === undefined?0:depositCash}}</div>
-      </data-grid-item>-->
-      <!--<data-grid-item label="尾付本金" :span="6">
-        <div>{{finalPayment === undefined?0:finalPayment}}</div>
-      </data-grid-item>
-      <data-grid-item label="尾付金额" :span="6">
-        <div>{{finalCash === undefined?0:finalCash}}</div>
-      </data-grid-item>-->
       <data-grid-item label="管理费率" :span="6">
         <!--<i-select v-model="passModel.manageCostPercent" clearable @on-change="manageChange">-->
           <!--<i-option v-for="item in manageCost" :key="item" :value="item" :label="item+'%'"></i-option>-->
@@ -50,27 +32,12 @@
         <!--</i-select>-->
         <div>{{!!payWay?$dict.getDictName(payWay):''}}</div>
       </data-grid-item>
-      <!--<data-grid-item label="保险费" :span="6">
-        <div>{{insuranceExpenses === undefined?0:insuranceExpenses}}</div>
-      </data-grid-item>-->
-      <!--<data-grid-item label="路桥费" :span="6">
-        <div>0</div>
-      </data-grid-item>-->
       <data-grid-item label="GPS费" :span="6">
         <div>{{!!gpsFee?gpsFee:0}}</div>
       </data-grid-item>
-      <!--<data-grid-item label="上牌费" :span="6">
-        <div>{{installLicenseFee === undefined?0:installLicenseFee}}</div>
-      </data-grid-item>-->
-      <!--<data-grid-item label="购置税" :span="6">
-        <div>{{purchaseTax === undefined?0:purchaseTax}}</div>
-      </data-grid-item>-->
       <data-grid-item label="其他费用" :span="6">
         <div>{{!!otherFee?otherFee:0}}</div>
       </data-grid-item>
-      <!--<data-grid-item label="备注" :span="12">
-        <div>{{remark === undefined?'':remark}}</div>
-      </data-grid-item>-->
     </data-grid>
   </section>
 </template>
@@ -199,7 +166,6 @@ export default class SecondLastApprove extends Vue {
    * 复审终审确定通过
    */
   confirmPass() {
-    console.log(this.orderId)
     this.passModel.financingAmount = this.financingAmount; // 融资金额1
     this.passModel.initialPayment = this.initialPayment; // 首付金额1
     this.passModel.depositCash = this.depositCash; // 保证金额1

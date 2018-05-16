@@ -49,7 +49,7 @@
         <data-grid-item label="管理费" :span="3">{{!!orderInfo.manageCost?orderInfo.manageCost:0}}</data-grid-item>
         <data-grid-item label="GPS费" :span="3">{{!!orderInfo.gpsFee?orderInfo.gpsFee:0}}</data-grid-item>
         <data-grid-item label="其他费用" :span="3">{{!!orderInfo.otherFee?orderInfo.otherFee:0}}</data-grid-item>
-        <data-grid-item label="抵押贷款估价" :span="6">{{orderInfo.financingAmount | toThousands}}</data-grid-item>
+        <data-grid-item label="抵押贷款估价" :span="6">{{!!orderInfo.orderCars?(orderInfo.orderCars.reduce((t,c) =>t+c.carAmount,0)):''}}</data-grid-item>
       </data-grid>
     </i-row>
     <!--个人资料-->
@@ -401,7 +401,7 @@ export default class Approve extends Vue {
     approveData.installLicenseFee = this.orderInfo.installLicenseFee; // 上牌费
     approveData.purchaseTax = this.orderInfo.purchaseTax; // 购置税
     approveData.remark = this.orderInfo.remark; // 备注
-    approveData.carAmount = this.orderInfo.orderCars[0].carAmount; // 抵押贷款估价1
+    approveData.carAmount = !!this.orderInfo.orderCars?this.orderInfo.orderCars.reduce((t,c) =>t+c.carAmount,0):''; // 抵押贷款估价1
     approveData.paymentScale = this.orderInfo.paymentScale; // 首付比例1
     approveData.depositPercent = this.orderInfo.depositPercent; // 保证金比例1
     approveData.finalPayment = this.orderInfo.finalPayment; // 尾付本金1

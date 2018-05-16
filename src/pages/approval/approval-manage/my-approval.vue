@@ -893,7 +893,6 @@ export default class MyApproval extends Page {
       let pageData = _approve.getApproveData()
       this.secendLastApproval = true
       let _secondLast: any = this.$refs['second-last']
-      // _secondLast.getRate(this.approvalOrderId, pageData);
       _secondLast.getPassData(pageData)
     } else if (this.approveStatue === 337) {
       this.meetConditionApproval = true
@@ -905,7 +904,6 @@ export default class MyApproval extends Page {
 
   rejectOrder() {
     this.reset()
-    // this.rejectModal = true
     this.blackListModal = true
     this.rejectOrBlackFlag = true // 拒绝或者黑名单判断标识
   }
