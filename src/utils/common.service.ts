@@ -87,6 +87,7 @@ export class CommonService {
     }
 
     let clearObject = (object) => {
+      if(!object) return
       Object.entries(object).forEach(([key, value]) => {
         check(object, key, value)
       })

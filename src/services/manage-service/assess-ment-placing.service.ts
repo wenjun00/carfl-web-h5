@@ -2,6 +2,7 @@ import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { FilterService } from "~/utils/filter.service";
+import clone from "clone";
 export class AssessMentPlacingService {
   @Inject(NetService)
   private netService: NetService
@@ -77,11 +78,12 @@ export class AssessMentPlacingService {
    * 押品出库
    */
   createPlacingOrder(data) {
-    data.placingDate = FilterService.dateFormat(data.placingDate)
-    delete data.cardsDate
+    let params = clone(data)
+    params.placingDate = FilterService.dateFormat(params.placingDate)
+    delete params.cardsDate
     return this.netService.send({
       server: manageService.assessmentplacing.createPlacingOrder,
-      data: data,
+      data: params,
     })
   }
 
