@@ -1,4 +1,4 @@
-<!--客户还款-->
+<!--客户还款--> 
 <template>
   <section class="page customer-repay">
     <page-header title="客户还款"></page-header>
@@ -157,6 +157,7 @@ export default class CustomerRepay extends Page {
   confirmRepayment() {
     let _repayment: any = this.$refs["confirm-repayment"];
     let data: any = {};
+    data.collectMoneyChannel = _repayment.pipeSelect
     data.financeUploadResource = _repayment.fodderList;
     data.orderId = _repayment.rowObj.orderId;
     data.paymentScheduleId = _repayment.repaymentObj.paymentScheduleId;
