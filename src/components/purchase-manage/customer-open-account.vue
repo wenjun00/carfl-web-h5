@@ -118,7 +118,11 @@
 
     private ruleValidateRule: any = {
       // cardNumber: [{validator: this.$validator.bankNumber,trigger: "change"}],
-      cardNumber:[{ pattern: /^([1-9]{1})(\d{15}|\d{18})$/, message: "请输入正确银行卡号", trigger: "change" }]
+      cardNumber: [{
+        pattern: /^([1-9]{1})(\d{15}|\d{18})$/,
+        message: "请输入正确银行卡号",
+        trigger: "change"
+      }]
     }
 
 
@@ -152,7 +156,14 @@
       }
     }
     openaccountClick() {
-      return new Promise((resolve ,reject) => {
+
+        let reg = /^([1-9]{1})(\d{15}|\d{18})$/;
+        if (!reg.test(this.CustomerOpenAccountModel.cardNumber)) {
+          this.$Message.error('请填写正确的银行卡号')
+          return
+        }
+    
+      return new Promise((resolve, reject) => {
         this.personalService.customerOpenAccount({
           rowData: this.CustomerOpenAccountModel,
           personalId: this.row.id
@@ -162,8 +173,8 @@
             resolve(true)
           },
           ({
-             msg
-           }) => {
+            msg
+          }) => {
             this.$Message.error(msg)
             reject(false)
           }
@@ -176,7 +187,7 @@
 
 </script>
 <style lang="less" scoped>
-//   .component.customer-open-account {
+  //   .component.customer-open-account {
   .form-window {
     position: relative;
     left: 30px;
@@ -190,8 +201,6 @@
       background: #265ea2;
       color: #fff;
     }
-  }
-
-  //   }
+  } //   }
 
 </style>

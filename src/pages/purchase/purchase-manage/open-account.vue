@@ -1,4 +1,4 @@
-<template> 
+<template>   
   <section class="page open-account">
     <page-header title="客户开户"  hiddenPrint hiddenExport></page-header>
     <data-form hidden-date-search :model="openAccountModel" :page="pageService" @on-search="getCustomerOpenAccount" hidden-reset>
