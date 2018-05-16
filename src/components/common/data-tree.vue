@@ -26,7 +26,7 @@ export default class DataTree extends Vue {
 
   // 属性参数
   @Prop({
-    default: () => {},
+    default: () => { },
     type: Object
   })
   props;
@@ -45,7 +45,10 @@ export default class DataTree extends Vue {
   }
 
   @Emit("on-select-change")
-  emitSelectChange(data) {}
+  emitSelectChange(data) { }
+
+  @Emit("on-currentChecked-change")
+  emitCurrentCheckedChange(id, value) {}
 
   private nodeMap = new Map<DataTreeNode, any>();
 
@@ -84,20 +87,6 @@ export default class DataTree extends Vue {
   }
 
   /**
-   * 设置选中节点
-   */
-  public setCheckedKeys(checkList) {
-    for (let [node, data] of Array.from(this.nodeMap.entries())) {
-      node.setCheck(checkList.includes(data.id));
-    }
-
-    if (this.currentNode) {
-      this.currentNode.selected = false;
-      this.currentNode = null;
-    }
-  }
-
-  /**
    * 获取选中key
    */
   public getCheckedKeys() {
@@ -109,5 +98,4 @@ export default class DataTree extends Vue {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

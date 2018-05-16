@@ -64,7 +64,7 @@
             合计数量: {{carDataSet.length}}
           </i-col>
           <i-col :span="6">
-            合计数量(元): {{productModel.evaluateAmount|toThousands}}
+            合计金额(元): <b>{{productModel.evaluateAmount|toThousands}}</b>
           </i-col>
         </i-row>
       </template>
