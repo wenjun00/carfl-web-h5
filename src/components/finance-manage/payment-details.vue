@@ -6,8 +6,11 @@
         <i-col :span="3">
           <span>收款类型</span>
         </i-col>
-        <i-col :span="6">
+        <i-col :span="17">
           <span>{{this.$dict.getDictName(this.paymentDetailsModel.applicationType)}}</span>
+        </i-col>
+        <i-col :span="4">
+          <span @click="orderIncident" class="orderDetails">订单详情</span>
         </i-col>
       </i-row>
       <i-row class="noteBox head">
@@ -52,9 +55,8 @@
       <i-row class="adjunct">
         <upload-voucher hiddenUpload ref="upload-voucher"></upload-voucher>
       </i-row>
-
-
     </i-form>
+
   </section>
 </template>
 
@@ -67,18 +69,23 @@
   import {Dependencies} from "~/core/decorator"
   import UploadVoucher from "~/components/common/upload-voucher.vue"
   import {FinanceInvoiceService} from '~/services/manage-service/finance-invoice.service'
+  import PurchaseInformation from "~/components/purchase-manage/purchase-information.vue"
+  import { Prop } from 'vue-property-decorator';
 
   @Component({
     components: {
       ChangeCard,
-      UploadVoucher
+      UploadVoucher,
+      PurchaseInformation,
     }
   })
   export default class CheckAttachment extends Vue {
     @Dependencies(PaymentScheduleService) private paymentScheduleService: PaymentScheduleService;
     @Dependencies(FinanceInvoiceService) private financeInvoiceService: FinanceInvoiceService
     private paymentDetailsModel: any = {}
+    private purchaseInformationModal:Boolean = false
     private dataOne: Array<any> = []
+    private orderNumber:String = ''
     private dataThree: any = [
       {
         personalName:'',     // 户名
@@ -192,6 +199,7 @@
       .getCollectMoneyDetail(this.id)
       .subscribe(
       val => {
+        this.orderNumber = val.orderNumber
         this.paymentDetailsModel = val
         this.dataOne = val.collectMoneyItemModels
         this.dataThree[0].personalName = !!val.personalBank.personalName ?val.personalBank.personalName:''
@@ -203,8 +211,7 @@
         this.dataTwo[0].totalPayment = !!val.totalPayment?val.totalPayment:0
         let uploadFodder: any = this.$refs['upload-voucher']
         uploadFodder.Reverse(val.applicationPhaseUploadResources)
-        console.log(this.dataTwo)
-       
+        // console.log(this.dataTwo)
       },
       ({
             msg
@@ -216,7 +223,23 @@
     // console.log(a)
     // console.log(b)
   }
+  /**
+   * 获取订单详情弹窗
+   */
 
+   orderIncident(){
+    //  console.log(this.orderNumber)
+    //  this.purchaseInformationModal = true
+    this.$dialog.show({
+      title: '订单详情',
+      footer: true,
+      isView: true,
+      width: 1200,
+      render: h => h(PurchaseInformation, { props: { orderNumber: this.orderNumber } })
+    })
+
+
+   }
 
 
 
@@ -227,14 +250,10 @@
 
 <style lang="less" scoped>
   .component.payment-details {
-    // .table{
-    //   width: 720px;
-    //   height: 75px;
-    // }
-    // .elasticBox{
-    //   display: flex;
-    //   justify-content: center;
-    // }
+    .orderDetails{
+      color: rgb(38, 94, 162);
+      cursor: pointer;
+    }
     .adjunct {
       min-height: 50px;
     }
