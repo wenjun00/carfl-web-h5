@@ -248,11 +248,11 @@ export default class AddCollateral extends Vue {
     mileage: '',
     drivingNo: '',
     transferNo: 0,
-    carPurpose: 0,
-    transmission: 0,
-    driver: 0,
+    carPurpose: "",
+    transmission: "",
+    driver: "",
     displacement: '',
-    carSituation: 0,
+    carSituation: "",
     evaluation: 0,
     remarks: '',
     carColor: '',
@@ -367,12 +367,12 @@ export default class AddCollateral extends Vue {
       this.customerModel.carBasicFileList = this.fodderList
       this.customerModel.firstTime = this.$filter.dateFormat(this.customerModel.firstTime)
       this.customerModel.factoryTime = this.$filter.dateFormat(this.customerModel.factoryTime)
-      
+
       // 删除原来的basicList
       delete this.submitModel.basicList
       // 增加现有数据model
       this.submitModel.assessmentBasicModel = this.customerModel
-    
+
       this.assessMentApplyService.saveAssessmentBasicInfo(this.submitModel)
         .subscribe(data => {
           this.$Message.success("保存成功！")

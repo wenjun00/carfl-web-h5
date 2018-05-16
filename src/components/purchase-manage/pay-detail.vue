@@ -39,23 +39,13 @@
       <!--<i-button type="text" class="add-button" @click="changeGatherItem">添加付款项</i-button>-->
       <!--</div>-->
     </i-card>
-    <!--<i-card title="账户信息">
-      <bank-info :dataSet="accountInfoList"></bank-info>
-    </i-card>-->
     <div class="form-title">账户信息</div>
-    <data-grid v-if="accountInfoList.length===0" :labelWidth="120" labelAlign="right" contentAlign="left">
-      <data-grid-item label="户名" :span="4"></data-grid-item>
-      <data-grid-item label="开户银行" :span="4"></data-grid-item>
-      <data-grid-item label="银行卡号" :span="4"></data-grid-item>
-      <data-grid-item label="支行名称" :span="4"></data-grid-item>
-      <data-grid-item label="第三方客户号" :span="8"></data-grid-item>
-    </data-grid>
-    <data-grid v-else v-for="item of accountInfoList" :key="item.id" :labelWidth="120" labelAlign="right" contentAlign="left">
-      <data-grid-item label="户名" :span="4">{{item.personalName}}</data-grid-item>
-      <data-grid-item label="开户银行" :span="4">{{item.depositBank}}</data-grid-item>
-      <data-grid-item label="银行卡号" :span="4">{{item.cardNumber}}</data-grid-item>
-      <data-grid-item label="支行名称" :span="4">{{item.depositBranch}}</data-grid-item>
-      <data-grid-item label="第三方客户号" :span="8">{{item.clientNumber}}</data-grid-item>
+    <data-grid  :labelWidth="120" labelAlign="right" contentAlign="left">
+      <data-grid-item label="户名" :span="4">{{!!totalMoneyTwo.personalBank?totalMoneyTwo.personalBank.personalName:''}}</data-grid-item>
+      <data-grid-item label="开户银行" :span="4">{{!!totalMoneyTwo.personalBank?($dict.getDictName(Number(totalMoneyTwo.personalBank.depositBank))):''}}</data-grid-item>
+      <data-grid-item label="银行卡号" :span="4">{{!!totalMoneyTwo.personalBank?totalMoneyTwo.personalBank.cardNumber:''}}</data-grid-item>
+      <data-grid-item label="支行名称" :span="4">{{!!totalMoneyTwo.personalBank?totalMoneyTwo.personalBank.depositBranch:''}}</data-grid-item>
+      <data-grid-item label="第三方客户号" :span="8">{{!!totalMoneyTwo.personalBank?totalMoneyTwo.personalBank.clientNumber:''}}</data-grid-item>
     </data-grid>
     <template>
       <i-modal v-model="addGatherItemModal" title="收款项目">
@@ -111,16 +101,16 @@
     private addGatherItemModal: Boolean = false // 添加收款项
     private otherTotal: number = 0 // 除其他费用的合计
     private gatherItemList: Array < any > = []
-    private gatherItemModel: any
-    private accountInfoList: any = [] // 账户信息
+    // private gatherItemModel: any
+    private accountInfoList: any = {} // 账户信息
     private otherFee: number = 0 // 输入框的其他费用
     private checkOrderId: any = ''
-    created() {
-      this.gatherItemModel = {
-        itemName: '',
-        refundAmount: ''
-      }
-    }
+    // created() {
+    //   this.gatherItemModel = {
+    //     itemName: '',
+    //     refundAmount: ''
+    //   }
+    // }
     /**
      * 确定添加收款项
      */
