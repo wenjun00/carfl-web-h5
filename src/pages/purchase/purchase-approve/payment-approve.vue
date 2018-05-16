@@ -320,6 +320,9 @@ export default class PaymentApprove extends Page {
         key: "depositBank",
         align: "center",
         minWidth: this.$common.getColumnWidth(4),
+        render: (h, { row}) => {
+          return h('span', {}, this.$dict.getDictName(row.depositBank))
+        }
       },
       {
         title: "银行卡号",

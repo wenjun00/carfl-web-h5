@@ -55,7 +55,7 @@
     </div>
 
     <i-tabs v-show="applyModel.orderNumber" v-model="materialTabs" class="info-container">
-      <i-tab-pane name="pay-detail" label="付款明细">
+      <i-tab-pane name="pay-detail" label="放款明细">
         <pay-detail  ref="payDetail" :totalMoneyTwo="totalMoneyTwo"></pay-detail>
       </i-tab-pane>
       <i-tab-pane name="upload-the-fodder" label="上传素材">

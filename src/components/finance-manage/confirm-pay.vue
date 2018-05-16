@@ -19,7 +19,7 @@
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="选择订单" prop="orderNumber">
+          <i-form-item label="订单编号" prop="orderNumber">
             <i-input v-model="productOrder.orderNumber" readonly></i-input>
           </i-form-item>
         </i-col>

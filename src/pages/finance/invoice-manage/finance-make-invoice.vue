@@ -52,7 +52,7 @@
     </template>
 
      <template>
-      <i-modal title="收款详情" v-model="paymentDetailsModal"  width="780">
+      <i-modal title="收款详情" v-model="paymentDetailsModal"  :width="780">
         <payment-details ref="payment-details"></payment-details>
       </i-modal>
     </template>

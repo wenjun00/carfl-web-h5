@@ -560,6 +560,7 @@ export default class CustomerSign extends Page {
           //   window.open(data.resultJson.contractInfo[0].pdfUrl)
           // }
           this.openCreateCompact = false
+          this.getSignList()
           // this.multipleSelection = []
         },
         ({

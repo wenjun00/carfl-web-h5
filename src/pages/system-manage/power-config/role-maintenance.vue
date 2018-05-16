@@ -47,7 +47,7 @@
     </template>
 
     <template>
-      <i-modal width="160" v-model="waitHandleCaseModal" title="待办事项配置">
+      <i-modal width="300" v-model="waitHandleCaseModal" title="待办事项配置">
         <wait-handle-case ref="wait-handle" @close="waitHandleCaseModal=false"></wait-handle-case>
         <div slot="footer">
           <i-button type="ghost" @click="waitHandleCaseModal=false">取消</i-button>
