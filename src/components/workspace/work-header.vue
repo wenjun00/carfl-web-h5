@@ -14,7 +14,7 @@
                 <div class="head-portrait-content" slot="content">
                     <div class="portrait-content-one">{{loginPerson}}</div>
                     <div class="portrait-content-two">上次登录时间</div>
-                    <div class="portrait-content-three">2018-01-10 15:31:56</div>
+                    <div class="portrait-content-three">{{operateTime}}</div>
                     <div class="portrait-content-four">
                         <i-button class="content-four-button" type="text" @click="modifyPwd">修改密码</i-button>
                         <i-button type="text" @click="logOut">退出登录</i-button>
@@ -56,6 +56,7 @@ import WorkTheme from '~/components/workspace/work-theme.vue'
 import { Dependencies } from '~/core/decorator'
 import { LoginService } from '~/services/manage-service/login.service'
 import md5 from 'md5'
+import {FilterService} from "~/utils/filter.service";
 @Component({
   components: {
     WorkMenu,
@@ -72,12 +73,14 @@ export default class WorkHeader extends Vue {
   private modifyPwdModal: Boolean = false
   private loginPerson: String = ''
   private loginName: String = ''
+  private operateTime:String = ''
   @Prop() person
   @Action select
 
   created() {
     this.loginPerson = this.$store.state.userData.username
     this.loginName = this.$store.state.userData.realname
+    this.operateTime =  FilterService.dateFormat(this.$store.state.userData.operateTime, 'yyyy-MM-dd hh:mm:ss')
   }
   modifyPwd() {
     this.modifyPwdModal = true
