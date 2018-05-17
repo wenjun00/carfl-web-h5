@@ -45,7 +45,7 @@
           <i-col :span="12">
             <i-form-item label="意向抵押方式" prop="intentionMethod">
               <i-select v-model="applicationModel.intentionMethod">
-                <i-option v-for="{value,label} in $dict.getDictData('0451')" :key="value" :label="label" :value="value"></i-option>
+                <i-option v-for="{value,label} in $dict.getDictData('0462')" :key="value" :label="label" :value="value"></i-option>
               </i-select>
             </i-form-item>
           </i-col>

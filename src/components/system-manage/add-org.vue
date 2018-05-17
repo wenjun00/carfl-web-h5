@@ -31,7 +31,7 @@
       <i-row>
         <i-col :span="24">
           <i-form-item label="公司名称" prop="companyId">
-            <i-select v-model="addModel.companyId">
+            <i-select v-model="addModel.companyId" :disabled = "companyId !== undefined">
               <i-option v-for="item in companyObject" :key="item.id" :value="item.id" :label="item.companyChinaname"></i-option>
             </i-select>
           </i-form-item>
@@ -81,6 +81,7 @@ export default class AddOrg extends Vue {
     deptRemark: "",
     deptPid: 1
   };
+  private companyId:any = '' //判断是否点击的是机构数的添加机构
   created() {}
   confirmAddOrg() {
     let _addOrg: any = this.$refs["add-org-form"];
@@ -110,6 +111,7 @@ export default class AddOrg extends Vue {
   addDept(companyId) {
     this.addModel.deptLevel = this.addOrgModel.deptLevel + 1;
     this.addModel.companyId = companyId;
+    this.companyId = companyId;
     this.getCompanys();
   }
   /**

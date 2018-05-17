@@ -18,7 +18,7 @@
 
     <template>
       <i-modal v-model="addAttachmentModal" title="补传凭证" :width="900" :transfer="false">
-        <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
+        <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two" :hiddenDelete="aaa"></upload-voucher>
         <div slot="footer">
           <i-button @click="cancelOne">取消</i-button>
           <i-button @click="confirmOne" class="blueButton">确定</i-button>
@@ -58,6 +58,7 @@ export default class RepayInfo extends Vue {
   private fodderList: any = []
   private periods: any = '' //当期期数
   private backFile: any = [] //当期返现数据
+  private aaa: Boolean = false;
 
   refresh(row) {
     this.repayList = []
