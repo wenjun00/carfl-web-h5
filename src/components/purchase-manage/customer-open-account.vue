@@ -48,10 +48,8 @@
       </i-col>
       <i-col :span="12">
         <i-form-item label="开户城市" prop="depositCity">
-          <i-select class="open-input" placeholder="选择市" v-model="CustomerOpenAccountModel.depositCity" :disabled="!CustomerOpenAccountModel.depositProvince"
-            clearable>
-            <i-option v-for="{value,label} in this.CustomerOpenAccountModel.depositProvince ? this.$city.getCityData({ level: 1, id: this.CustomerOpenAccountModel.depositProvince }) : []"
-              :key="value" :label="label" :value="value"></i-option>
+          <i-select class="open-input" placeholder="选择市" v-model="CustomerOpenAccountModel.depositCity" :disabled="!CustomerOpenAccountModel.depositProvince" clearable>
+            <i-option v-for="{value,label} in this.CustomerOpenAccountModel.depositProvince ? this.$city.getCityData({ level: 1, id: this.CustomerOpenAccountModel.depositProvince }) : []" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
       </i-col>
@@ -81,126 +79,126 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import Component from "vue-class-component";
-  import {
-    Dependencies
-  } from '~/core/decorator'
-  import {
-    PersonalService
-  } from '~/services/manage-service/personal.service'
-  import {
-    Prop
-  } from "vue-property-decorator";
+import Vue from "vue";
+import Component from "vue-class-component";
+import {
+  Dependencies
+} from '~/core/decorator'
+import {
+  PersonalService
+} from '~/services/manage-service/personal.service'
+import {
+  Prop
+} from "vue-property-decorator";
 
-  @Component({
+@Component({
 
-    components: {}
-  })
-  export default class CustomerOpenAccount extends Vue {
-    @Dependencies(PersonalService) private personalService: PersonalService
-    @Prop() row;
+  components: {}
+})
+export default class CustomerOpenAccount extends Vue {
+  @Dependencies(PersonalService) private personalService: PersonalService
+  @Prop() row;
 
-    private CustomerOpenAccountModel: any = {
-      settleChannel: '', // 开户渠道
-      accountType: '', // 账户类型
-      name: '', // 客户姓名
-      mobileMain: '', // 客户手机号
-      idCard: '', // 身份证号码
-      depositBank: '', // 开户银行
-      depositProvince: '', // 开户省份
-      depositCity: '', // 开户城市
-      cardNumber: '', // 银行卡号
-      reservedPhoneNumber: '', // 银行预留手机号
-      qCode: '', // 验证码
-    };
-    private qCode: any = '';
+  private CustomerOpenAccountModel: any = {
+    settleChannel: '', // 开户渠道
+    accountType: '', // 账户类型
+    name: '', // 客户姓名
+    mobileMain: '', // 客户手机号
+    idCard: '', // 身份证号码
+    depositBank: '', // 开户银行
+    depositProvince: '', // 开户省份
+    depositCity: '', // 开户城市
+    cardNumber: '', // 银行卡号
+    reservedPhoneNumber: '', // 银行预留手机号
+    qCode: '', // 验证码
+  };
+  private qCode: any = '';
 
-    private ruleValidateRule: any = {
-      // cardNumber: [{validator: this.$validator.bankNumber,trigger: "change"}],
-      cardNumber: [{
-        pattern: /^([1-9]{1})(\d{15}|\d{18})$/,
-        message: "请输入正确银行卡号",
-        trigger: "change"
-      }]
+  private ruleValidateRule: any = {
+    // cardNumber: [{validator: this.$validator.bankNumber,trigger: "change"}],
+    cardNumber: [{
+      pattern: /^([1-9]{1})(\d{15}|\d{18})$/,
+      message: "请输入正确银行卡号",
+      trigger: "change"
+    }]
+  }
+
+
+  mounted() {
+    if (this.row) {
+      this.CustomerOpenAccountModel = Object.assign({}, this.row);
     }
-
-
-    mounted() {
-      if (this.row) {
-        this.CustomerOpenAccountModel = Object.assign({}, this.row);
-      }
-    }
-    /**
-     * 发送验证码
-     */
-    sendQcode() {
-      if (!this.CustomerOpenAccountModel.reservedPhoneNumber) {
-        this.$Message.warning('请输入银行预留手机号！')
-      } else {
-        this.personalService.customerOpenAccountVerificationPhone({
-          id: this.row.id,
-          phone: this.CustomerOpenAccountModel.reservedPhoneNumber
-        }).subscribe(
-          data => {
-            this.$Message.success('验证码发送成功！')
-            let qCode: any = data
-            this.qCode = qCode
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg)
-          }
-        )
-      }
-    }
-    openaccountClick() {
-
-        let reg = /^([1-9]{1})(\d{15}|\d{18})$/;
-        if (!reg.test(this.CustomerOpenAccountModel.cardNumber)) {
-          this.$Message.error('请填写正确的银行卡号')
-          return
+  }
+  /**
+   * 发送验证码
+   */
+  sendQcode() {
+    if (!this.CustomerOpenAccountModel.reservedPhoneNumber) {
+      this.$Message.warning('请输入银行预留手机号！')
+    } else {
+      this.personalService.customerOpenAccountVerificationPhone({
+        id: this.row.id,
+        phone: this.CustomerOpenAccountModel.reservedPhoneNumber
+      }).subscribe(
+        data => {
+          this.$Message.success('验证码发送成功！')
+          let qCode: any = data
+          this.qCode = qCode
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
         }
-    
-      return new Promise((resolve, reject) => {
-        this.personalService.customerOpenAccount({
-          rowData: this.CustomerOpenAccountModel,
-          personalId: this.row.id
-        }).subscribe(
-          data => {
-            this.$Message.success('开户成功！')
-            resolve(true)
-          },
-          ({
-            msg
-          }) => {
-            this.$Message.error(msg)
-            reject(false)
-          }
-        )
-      })
-
+      )
     }
+  }
+  openaccountClick() {
+
+    let reg = /^([1-9]{1})(\d{15}|\d{18})$/;
+    if (!!this.CustomerOpenAccountModel.cardNumber) {
+      if (!reg.test(this.CustomerOpenAccountModel.cardNumber)) {
+        this.$Message.error('请填写正确的银行卡号')
+        return
+      }
+    }
+    return new Promise((resolve, reject) => {
+      this.personalService.customerOpenAccount({
+        rowData: this.CustomerOpenAccountModel,
+        personalId: this.row.id
+      }).subscribe(
+        data => {
+          this.$Message.success('开户成功！')
+          resolve(true)
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+          reject(false)
+        }
+      )
+    })
 
   }
 
+}
+
 </script>
 <style lang="less" scoped>
-  //   .component.customer-open-account {
-  .form-window {
-    position: relative;
-    left: 30px;
-    .open-input {
-      width: 160px;
-    }
-    .select-pull-down {
-      width: 80px;
-    }
-    .blue-button {
-      background: #265ea2;
-      color: #fff;
-    }
-  } //   }
-
+//   .component.customer-open-account {
+.form-window {
+  position: relative;
+  left: 30px;
+  .open-input {
+    width: 160px;
+  }
+  .select-pull-down {
+    width: 80px;
+  }
+  .blue-button {
+    background: #265ea2;
+    color: #fff;
+  }
+} //   }
 </style>
