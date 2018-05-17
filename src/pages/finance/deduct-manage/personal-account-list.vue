@@ -51,7 +51,6 @@ import { Dependencies } from "~/core/decorator";
 import { Layout } from "~/core/decorator";
 import { ChargeBackService } from "~/services/manage-service/charge-back.service";
 import { PageService } from "~/utils/page.service";
-import { FilterService } from "~/utils/filter.service"
 
 @Layout("workspace")
 @Component({
@@ -70,8 +69,6 @@ export default class PersonalAccountList extends Page {
   private columns1: any;
   private data1: Array<Object> = [];
   private searchOptions: Boolean = false;
-  private customName: String = "";
-  private checkRadio: String = "融资租赁合同";
   private dialog: any = {
     create: false,
     cardInfo: false
@@ -156,21 +153,6 @@ export default class PersonalAccountList extends Page {
               }
             }
           }, "银行卡信息"),
-        //   h("i-button", {
-        //     props: {
-        //       type: "text"
-        //     },
-        //     style: {
-        //       color: "#265EA2"
-        //     },
-        //     on: {
-        //       click: () => {
-        //         let _deduct: any = this.$refs.deduct
-        //         _deduct.refresh(row)
-        //         this.deductModal = true
-        //       }
-        //     }
-        //   }, "划扣")
           ]);
         }
       },
@@ -180,7 +162,7 @@ export default class PersonalAccountList extends Page {
         minWidth: this.$common.getColumnWidth(4),
         key: "openAccountDate",
         render: (h, { row, column, index }) => {
-          return h('span', FilterService.dateFormat(row.openAccountDate, 'yyyy-MM-dd'))
+          return h('span', this.$filter.dateFormat(row.openAccountDate, 'yyyy-MM-dd'))
         }
       },
       {
@@ -189,7 +171,7 @@ export default class PersonalAccountList extends Page {
         key: "accountType",
         minWidth: this.$common.getColumnWidth(4),
         render: (h, { row, column, index }) => {
-          return h("span", {}, this.$dict.getDictName(Number(row.accountType)));
+          return h("span", {}, this.$filter.dictConvert(Number(row.accountType)));
         }
       },
       {
@@ -207,7 +189,7 @@ export default class PersonalAccountList extends Page {
       {
         align: "center",
         title: "证件号码",
-        key: "certificateNumber",
+        key: "cardNumber",
         minWidth: this.$common.getColumnWidth(6),
       },
       {
