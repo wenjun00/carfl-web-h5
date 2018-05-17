@@ -9,9 +9,18 @@
           <h3 class="modal-item-upload-text">建议大小不超过10M</h3>
         </div>
       </div>
-      <div class="modal-item-upload-col" v-for="(v,i) in financeUploadResources" :key="i">
+      <!--补传的没有删除-->
+      <div class="modal-item-upload-col" v-for="(v,i) in financeUploadVoucher" :key="i">
         <img class="modal-item-upload-img" :src="v.materialUrl">
         <div class="blackFlag">
+          <i-button type="text" icon="eye" @click.native="preview(v)" class="buttonFlag eye"></i-button>
+          <i-button type="text" icon="arrow-down-a" @click.native="download(v)" class="buttonFlag arrow"></i-button>
+        </div>
+      </div>
+      <!--正常上传-->
+      <div class="modal-item-upload-col" v-for="(v,i) in financeUploadResources">
+        <img class="modal-item-upload-img" :src="v.materialUrl">
+        <div class="blackFlag" >
           <i-button type="text" icon="eye" @click.native="preview(v)" class="buttonFlag eye"></i-button>
           <i-button type="text" icon="arrow-down-a" @click.native="download(v)" class="buttonFlag arrow"></i-button>
           <i-button type="text" icon="trash-a" @click.native="handleRemove(v)" class="buttonFlag outline" v-if="!hiddenDelete"></i-button>
@@ -50,8 +59,10 @@ export default class UploadVoucher extends Vue {
     default: false
   })
   hiddenDelete: boolean;
+
   private openUpload: Boolean = false;
   private financeUploadResources: any = [];
+  private financeUploadVoucher:any = [];
   private previewModel: Boolean = false;
   private url: any = ''
 
@@ -112,9 +123,16 @@ export default class UploadVoucher extends Vue {
   reset() {
     this.financeUploadResources = []
   }
+  //正常返显
   Reverse(data) {
     if (data) {
       this.financeUploadResources = data
+    }
+  }
+  // 补传返显
+  reverseType(data){
+    if (data) {
+      this.financeUploadVoucher = data
     }
   }
 }
