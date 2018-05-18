@@ -56,6 +56,7 @@ export default class RepayInfo extends Vue {
   private repayRecordModal: Boolean = false;
   private addAttachmentModal: Boolean = false;
   private fodderList: any = []
+  private fodderAll:any = []
   private periods: any = '' //当期期数
   private backFile: any = [] //当期返现数据
 
@@ -114,7 +115,7 @@ export default class RepayInfo extends Vue {
                   .subscribe(data => {
                     this.backFile = data
                     let uploadVoucherOne = this.$refs['upload-voucher-two'] as UploadVoucher
-                    uploadVoucherOne.Reverse(data)
+                    uploadVoucherOne.reverseType(data)
                   }, ({ msg }) => {
                     this.$Message.error(msg)
                   })
@@ -328,13 +329,16 @@ export default class RepayInfo extends Vue {
     this.addAttachmentModal = false
   }
   confirmOne() {
-    if (this.fodderList.length === 0) {
-      this.fodderList = this.backFile
+    if(this.fodderList.length === 0){
+      this.fodderAll = this.backFile
+    }else{
+      this.fodderAll = this.fodderList.concat(this.backFile)
     }
-    this.paymentScheduleService.saveScheduleUploadResources({ periods: this.periods, orderNumber: this.rowObj.orderNumber, financeUploadResources: this.fodderList })
+    this.paymentScheduleService.saveScheduleUploadResources({ periods: this.periods, orderNumber: this.rowObj.orderNumber, financeUploadResources: this.fodderAll })
       .subscribe(data => {
         this.$Message.success("保存成功")
         this.addAttachmentModal = false
+        this.fodderList = []
         let uploadVoucherOne = this.$refs['upload-voucher-two'] as UploadVoucher
         uploadVoucherOne.reset()
       }, ({ msg }) => {
