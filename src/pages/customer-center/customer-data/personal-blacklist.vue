@@ -195,7 +195,7 @@ export default class PersonalBlacklist extends Page {
       key: 'createTime',
       minWidth: this.$common.getColumnWidth(3),
       align: 'center',
-      render: (h, { row, column, index }) => {
+      render: (h, { row }) => {
         return h(
           'span',
           FilterService.dateFormat(row.createTime, 'yyyy-MM-dd')
