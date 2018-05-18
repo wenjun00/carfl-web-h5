@@ -225,7 +225,7 @@ export default class OrderTransfer extends Page {
         minWidth: this.$common.getColumnWidth(6)
       },
       {
-        title: '联系号码',
+        title: '手机号码',
         editable: true,
         key: 'mobileMain',
         align: 'center',
