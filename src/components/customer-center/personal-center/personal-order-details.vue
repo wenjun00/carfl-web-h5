@@ -36,7 +36,10 @@ export default class PersonalOrderDetails extends Vue {
     {
       title: '订单状态',
       key: 'orderStatus',
-      align: 'center'
+      align: 'center',
+       render: (h, { row }) => {
+        return h("span", {}, this.$dict.getDictName(row.orderStatus));
+      }
     },
     {
       title: '创建时间',
