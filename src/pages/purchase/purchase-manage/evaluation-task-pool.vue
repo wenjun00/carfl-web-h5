@@ -17,7 +17,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="taskpoolColumns" :data="dataSet" :page="pageService" ref="databox"></data-box>
+    <data-box :columns="taskpoolColumns" :data="dataSet" :page="pageService" ref="databox" @onPageChange="getPoolList"></data-box>
 
   </section>
 </template>
