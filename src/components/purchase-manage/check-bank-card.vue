@@ -1,4 +1,4 @@
-<!--合同下载详情-->
+<!--客户开户信息-->
 <template>
   <section class="component compact-download-info">
     <data-box :columns="columns1" :data="data"></data-box>
@@ -30,12 +30,7 @@
 
     created() {
 
-      this.columns1 = [{
-          align: "center",
-          type: "index",
-          title: '序号',
-          minWidth: 60
-        },
+      this.columns1 = [
         {
           align: 'center',
           editable: true,
@@ -56,6 +51,9 @@
           title: '卡户银行',
           key: 'depositBank',
           minWidth: this.$common.getColumnWidth(3),
+          render: (h, { row }) => {
+            return h('span', {}, this.$dict.getDictName(Number(row.depositBank)))
+          }
         },
         {
           align: 'center',
@@ -84,6 +82,9 @@
           title: '账户类型',
           key: 'accountType',
           minWidth: this.$common.getColumnWidth(3),
+          render:(h,{row}) => {
+            return h('span',{},this.$dict.getDictName(row.accountType))
+          }
         },
         // {
         //   align: 'center',
@@ -154,7 +155,7 @@
         {
           align: 'center',
           editable: true,
-          title: '预览手机号',
+          title: '预留手机号',
           key: 'reservedPhoneNumber',
           minWidth: this.$common.getColumnWidth(3),
         },
