@@ -1,6 +1,7 @@
 # flcms-web
 
-> A Vue.js project
+> 汽车金融-融资租赁版本 日常开发库 1.0
+> 汽车金融-抵押贷款版本 日常开发库 2.0
 
 ## Build Setup
 
