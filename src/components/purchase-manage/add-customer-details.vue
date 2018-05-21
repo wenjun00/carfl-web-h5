@@ -1,5 +1,5 @@
 <!--新增客户详情--> 
-<template>
+<template> 
   <section class="component get-customer-details">
     <i-form :rules="customerDetailsRule" :model="customerDetailsModel" ref="form-item" :label-width="90">
       <!-- 基本信息 -->

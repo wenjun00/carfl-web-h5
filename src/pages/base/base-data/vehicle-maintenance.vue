@@ -1,139 +1,139 @@
-<template> 
-    <section class="page vehicle-maintenance">
-        <page-header title="车辆维护" hiddenPrint hiddenExport></page-header>
-        <i-row class="form">
-            <i-col class="data-form" :span="4">
-                <i-row class="data-form-item">
-                    <div class="data-form-item-icon"></div>
-                    <span>车辆品牌</span>
-                </i-row>
-                <div class="data-form-tree">
-                    <i-tree :data="treeData" @on-select-change="cartreeChange"></i-tree>
-                </div>
-            </i-col>
-            <i-col class="command" :span="19">
-                <i-row>
-                    <i-row>
-                        <i-col :span="16" v-if='carId'>
-                            <div>型号名称：{{carName}}</div>
-                            <div class="command-item">可选颜色：
-                                <span v-if="colorListShow" v-for="item in colorPa" :key="item" style="margin-left:10px;">{{item}}</span>
-                            </div>
-                            <div class="command-item">型号参数：</div>
-                        </i-col>
-                        <i-col :span="8">
-                            <i-button class="highButton command-button" @click="editParam" v-if="dataLength">编辑参数</i-button>
-                        </i-col>
-                    </i-row>
-                    <i-row>
-                        <i-col class="parms-container" :span="2">
-                            <div v-for="item in carTypes" :key="item.id" @click="paramDetail(item)" :class="{'carTypesCss':checkId===item.id}">{{item.paramName}}</div>
-                            <span class="textButton" @click="addType" v-if="carId">+添加类别</span>
-                        </i-col>
-                        <div class="command-table">
-                            <i-col :span="22" v-if="dataLength">
-                                <i-table v-if="viewStatus" :columns="carColumns" :data="paramList"></i-table>
-                                <i-form class="table-container" v-else>
-                                    <i-row type="flex">
-                                        <i-col :span="12">参数名称</i-col>
-                                        <i-col :span="12">参数值</i-col>
-                                    </i-row>
-                                    <i-row v-for="item in paramList" :key="item.id" type="flex" align="middle">
-                                        <i-col :span="12">
-                                            <i-form-item>
-                                                <i-input class="canshu-input" v-model="item.name"></i-input>
-                                            </i-form-item>
-                                        </i-col>
-                                        <i-col :span="12">
-                                            <i-form-item>
-                                                <i-input class="canshu-input" v-model="item.value"></i-input>
-                                            </i-form-item>
-                                        </i-col>
-                                    </i-row>
-                                </i-form>
-                                <span class="addParameters" style="color:#265ea2;" @click="addItem" v-if="!viewStatus">+添加参数</span>
-                            </i-col>
-                            <div v-if="!dataLength" class="empty-text">空空如也，请选择车辆^_^</div>
-                        </div>
-                    </i-row>
-
-                </i-row> 
-            </i-col>
+<template>
+  <section class="page vehicle-maintenance">
+    <page-header title="车辆维护" hiddenPrint hiddenExport></page-header>
+    <i-row class="form">
+      <i-col class="data-form" :span="4">
+        <i-row class="data-form-item">
+          <div class="data-form-item-icon"></div>
+          <span>车辆品牌</span>
         </i-row>
-
-        <template>
-            <i-modal v-model="addVehicleModal" title="新增车辆" @on-visible-change="addVehicleChange">
-                <add-vehicle ref="add-vehicle" @close="closeAndRefreshVehicle"></add-vehicle>
-                <div slot="footer">
-                    <i-button @click="cancleAddVehicle">取消</i-button>
-                    <i-button class="blueButton" @click="confirmAddVehicle">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-
-        <template>
-            <i-modal v-model="addSeriesModal" title="新增车系">
-                <add-car-series ref="add-car-series" @closeAndRefreshTree="closeCarSeries"></add-car-series>
-                <div slot="footer">
-                    <i-button @click="cancleSeries">取消</i-button>
-                    <i-button class="blueButton" @click="confirmCarSeries">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
-
-        <template>
-            <i-modal v-model="addBrandModal" title="新增品牌">
-                <i-form>
-                    <i-form-item label="品牌名称">
-                        <i-input v-model="addBrandName" style="width:80%;"></i-input>
-                    </i-form-item>
+        <div class="data-form-tree">
+          <i-tree :data="treeData" @on-select-change="cartreeChange"></i-tree>
+        </div>
+      </i-col>
+      <i-col class="command" :span="19">
+        <i-row>
+          <i-row>
+            <i-col :span="16" v-if='carId'>
+              <div>型号名称：{{carName}}</div>
+              <div class="command-item">可选颜色：
+                <span v-if="colorListShow" v-for="item in colorPa" :key="item" style="margin-left:10px;">{{item}}</span>
+              </div>
+              <div class="command-item">型号参数：</div>
+            </i-col>
+            <i-col :span="8">
+              <i-button class="highButton command-button" @click="editParam" v-if="dataLength">编辑参数</i-button>
+            </i-col>
+          </i-row>
+          <i-row>
+            <i-col class="parms-container" :span="2">
+              <div v-for="item in carTypes" :key="item.id" @click="paramDetail(item)" :class="{'carTypesCss':checkId===item.id}">{{item.paramName}}</div>
+              <span class="textButton" @click="addType" v-if="carId">+添加类别</span>
+            </i-col>
+            <div class="command-table">
+              <i-col :span="22" v-if="dataLength">
+                <i-table v-if="viewStatus" :columns="carColumns" :data="paramList"></i-table>
+                <i-form class="table-container" v-else>
+                  <i-row type="flex">
+                    <i-col :span="12">参数名称</i-col>
+                    <i-col :span="12">参数值</i-col>
+                  </i-row>
+                  <i-row v-for="item in paramList" :key="item.id" type="flex" align="middle">
+                    <i-col :span="12">
+                      <i-form-item>
+                        <i-input class="canshu-input" v-model="item.name"></i-input>
+                      </i-form-item>
+                    </i-col>
+                    <i-col :span="12">
+                      <i-form-item>
+                        <i-input class="canshu-input" v-model="item.value"></i-input>
+                      </i-form-item>
+                    </i-col>
+                  </i-row>
                 </i-form>
-                <div slot="footer">
-                    <i-button @click="cancleAddBrand">取消</i-button>
-                    <i-button class="blueButton" @click="confirmAddBrand">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+                <span class="addParameters" style="color:#265ea2;" @click="addItem" v-if="!viewStatus">+添加参数</span>
+              </i-col>
+              <div v-if="!dataLength" class="empty-text">空空如也，请选择车辆^_^</div>
+            </div>
+          </i-row>
 
-        <template>
-            <i-modal v-model="addCategoryModal" title="添加类别">
-                <add-category ref="add-category" @close="closeAndCategory"></add-category>
-                <div slot="footer">
-                    <i-button @click="cancleAddCategory">取消</i-button>
-                    <i-button class="blueButton" @click="confirmAddCategory">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+        </i-row>
+      </i-col>
+    </i-row>
 
-        <template>
-            <i-modal v-model="repairModal" title="修改品牌">
-                <i-form>
-                    <i-form-item label="品牌名称">
-                        <i-input v-model="repairName" style="width:80%;"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div slot="footer">
-                    <i-button @click="cancleRepair">取消</i-button>
-                    <i-button class="blueButton" @click="confirmRepair">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal v-model="addVehicleModal" title="新增车辆" @on-visible-change="addVehicleChange">
+        <add-vehicle ref="add-vehicle" @close="closeAndRefreshVehicle"></add-vehicle>
+        <div slot="footer">
+          <i-button @click="cancleAddVehicle">取消</i-button>
+          <i-button class="blueButton" @click="confirmAddVehicle">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-        <template>
-            <i-modal v-model="repairServiceModal" title="修改车系">
-                <i-form>
-                    <i-form-item label="车系名称">
-                        <i-input v-model="repairServiceName" style="width:80%;"></i-input>
-                    </i-form-item>
-                </i-form>
-                <div slot="footer">
-                    <i-button @click="cancleServiceRepair">取消</i-button>
-                    <i-button class="blueButton" @click="confirmServiceRepair">确定</i-button>
-                </div>
-            </i-modal>
-        </template>
+    <template>
+      <i-modal v-model="addSeriesModal" title="新增车系">
+        <add-car-series ref="add-car-series" @closeAndRefreshTree="closeCarSeries"></add-car-series>
+        <div slot="footer">
+          <i-button @click="cancleSeries">取消</i-button>
+          <i-button class="blueButton" @click="confirmCarSeries">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
 
-    </section>
+    <template>
+      <i-modal v-model="addBrandModal" title="新增品牌">
+        <i-form :rules="brandNameRule" :model="brandNameModel" ref="form-item" class="brandNameModel">
+          <i-form-item label="品牌名称" prop="addBrandName">
+            <i-input v-model.trim="brandNameModel.addBrandName" style="width:80%;"></i-input>
+          </i-form-item>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="cancleAddBrand">取消</i-button>
+          <i-button class="blueButton" @click="confirmAddBrand">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="repairModal" title="修改品牌">
+        <i-form :rules="amendRule" ref="form-item-confirm">
+          <i-form-item label="品牌名称" prop="repairName">
+            <i-input v-model.trim="repairName" style="width:80%;"></i-input>
+          </i-form-item>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="cancleRepair">取消</i-button>
+          <i-button class="blueButton" @click="confirmRepair">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="addCategoryModal" title="添加类别">
+        <add-category ref="add-category" @close="closeAndCategory"></add-category>
+        <div slot="footer">
+          <i-button @click="cancleAddCategory">取消</i-button>
+          <i-button class="blueButton" @click="confirmAddCategory">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+    <template>
+      <i-modal v-model="repairServiceModal" title="修改车系">
+        <i-form>
+          <i-form-item label="车系名称">
+            <i-input v-model="repairServiceName" style="width:80%;"></i-input>
+          </i-form-item>
+        </i-form>
+        <div slot="footer">
+          <i-button @click="cancleServiceRepair">取消</i-button>
+          <i-button class="blueButton" @click="confirmServiceRepair">确定</i-button>
+        </div>
+      </i-modal>
+    </template>
+
+  </section>
 </template>
 <script lang="ts">
 import Page from '~/core/page'
@@ -143,6 +143,7 @@ import AddVehicle from '~/components/base-data/add-vehicle.vue'
 import AddCategory from '~/components/base-data/add-category.vue'
 import AddCarSeries from '~/components/base-data/add-car-series.vue'
 
+
 import { Dependencies } from '~/core/decorator'
 import { Layout } from '~/core/decorator'
 import SvgIcon from '~/components/common/svg-icon.vue'
@@ -151,6 +152,7 @@ import { CarService } from '~/services/manage-service/car.service'
 import { CarParamTypeControllerService } from '~/services/manage-service/car-param-type-controller.service'
 import { CarParamControllerService } from '~/services/manage-service/car-param-controller.service'
 import { WSASERVICE_NOT_FOUND } from 'constants'
+import { Form } from 'iview'
 
 @Layout('workspace')
 @Component({
@@ -159,7 +161,7 @@ import { WSASERVICE_NOT_FOUND } from 'constants'
     SvgIcon,
     AddVehicle,
     AddCategory,
-    AddCarSeries
+    AddCarSeries,
   }
 })
 export default class VehicleMaintenance extends Page {
@@ -175,7 +177,7 @@ export default class VehicleMaintenance extends Page {
   private carId: Number = 0
   private carDataModel: Array<any> = []
   private carColumns: Array<any> = []
-  private carParam: String = ''
+  private carParam: string = ''
   private editmessage: any = {}
   private editModal: Boolean = false
   private addVehicleModal: Boolean = false // 添加车辆
@@ -185,10 +187,10 @@ export default class VehicleMaintenance extends Page {
   private carTypes: any = {}
   private paramList: Array<any> = []
   private oneParamCode: any = {} //基本参数
-  private typeCode: String = '' //类型码
+  private typeCode: string = '' //类型码
   private colorPa: Array<any> = [] //车身颜色
   private colorModel: any = {}
-  private carName: String = ''
+  private carName: string = ''
   private checkId: Number = 1
   private colorListShow: Boolean = false
   private modifyModel: Array<any> = []
@@ -199,11 +201,21 @@ export default class VehicleMaintenance extends Page {
   private repairServiceModal: Boolean = false
   private carData: any = {}
   private brandId: Number = 0
-  private addBrandName: String = '' // 新增品牌的名称
-  private repairName: String = '' //修改品牌名称
-  private repairServiceName: String = '' //修改车系名称
+  private repairName: string = '' //修改品牌名称
+  private repairServiceName: string = '' //修改车系名称
   private brandOneId: any = ''
   private serviceOneId: any = ''
+  private brandNameModel: any = {
+    addBrandName: ''
+  }
+  //新增车辆品牌
+  private brandNameRule: any = {
+    addBrandName: [{ required: true, message: '请输入车辆品牌名称', trigger: 'blur', }],
+  }
+  // 修改车辆品牌
+  private amendRule: any = {
+    repairName: [{ required: true, message: '请输入车辆品牌名称', trigger: 'blur', }],
+  }
 
   created() {
     this.getCarseries()
@@ -222,7 +234,7 @@ export default class VehicleMaintenance extends Page {
       },
       {
         title: '操作',
-        fixed:'left',
+        fixed: 'left',
         minWidth: this.$common.getColumnWidth(4),
         align: 'center',
         render: (h, { row, column, index }) => {
@@ -655,31 +667,32 @@ export default class VehicleMaintenance extends Page {
    * 确定新增品牌
    */
   confirmAddBrand() {
-    if ((/^[ ]*$/).test(this.addBrandName)) {
-         this.$Message.error("请填写新增品牌名称");
-       return
-      } 
-    this.carService
-      .createCarBrand({
-        brandName: this.addBrandName
-      })
-      .subscribe(
-        data => {
-          this.$Message.success('新增品牌成功！')
-          this.getCarseries()
-          this.cancleAddBrand()
-        },
-        ({ msg }) => {
-          this.$Message.error(msg)
-        }
-      )
+    let form = <Form>this.$refs['form-item']
+    form.validate(valid => {
+      if (!valid) return false
+      this.carService
+        .createCarBrand({
+          brandName: this.brandNameModel.addBrandName
+        })
+        .subscribe(
+          data => {
+            this.$Message.success('新增品牌成功！')
+            this.getCarseries()
+            this.cancleAddBrand()
+          },
+          ({ msg }) => {
+            this.$Message.error(msg)
+          }
+        )
+    })
+
   }
   /**
    * 取消新增品牌
    */
   cancleAddBrand() {
     this.addBrandModal = false
-    this.addBrandName = ''
+    this.brandNameModel.addBrandName = ''
   }
   /**
    * 新增品牌
@@ -708,20 +721,28 @@ export default class VehicleMaintenance extends Page {
    * 确定修改品牌和车系
    */
   confirmRepair() {
-    this.carService
-      .modifyCarInfo({
-        flag: 0,
-        id: this.brandOneId,
-        name: this.repairName
-      })
-      .subscribe(data => {
-        this.$Message.success('修改成功')
-        this.repairName = ''
-        this.repairModal = false
-        this.getCarseries()
-      })
+    let form = <Form>this.$refs['form-item-confirm']
+    form.validate(valid => {
+      if (!valid) return false
+      this.carService
+        .modifyCarInfo({
+          flag: 0,
+          id: this.brandOneId,
+          name: this.repairName
+        })
+        .subscribe(data => {
+          this.$Message.success('修改成功')
+          this.repairName = ''
+          this.repairModal = false
+          this.getCarseries()
+        })
+    })
   }
   confirmServiceRepair() {
+    if ((/^[ ]*$/).test(this.repairServiceName)) {
+         this.$Message.error("请填写车系名称");
+       return
+      } 
     this.carService
       .modifyCarInfo({
         flag: 1,
@@ -758,7 +779,7 @@ export default class VehicleMaintenance extends Page {
 </script>
 <style lang="less" scoped>
 .page.vehicle-maintenance {
-  .addParameters{
+  .addParameters {
     color: rgb(38, 94, 162);
     margin-top: 20px;
     display: inline-block;
@@ -849,7 +870,7 @@ export default class VehicleMaintenance extends Page {
           // text-align-last: center;
           text-align: center;
           border: 1px solid #dddd;
-          .canshu-input{
+          .canshu-input {
             margin-top: 25px;
           }
           .ivu-row-flex {
@@ -869,5 +890,4 @@ export default class VehicleMaintenance extends Page {
     }
   }
 }
-
 </style>
