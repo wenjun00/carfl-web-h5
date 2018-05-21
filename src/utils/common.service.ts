@@ -25,6 +25,10 @@ export class CommonService {
     a.click()
   }
 
+  /**
+   * 批量下载文件
+   * @param pathList 需要下载的文件列表，需要包含 url,filename
+   */
   static downloadAll(pathList) {
     let download = async () => {
       for (let index = 0; index < pathList.length; index++) {
@@ -40,6 +44,8 @@ export class CommonService {
     }
     download()
   }
+
+
 
   /**
   * 用户部门数据
