@@ -51,7 +51,7 @@
             <div>
               <i-button type="text" icon="arrow-down-a" @click="downloadOne(item)"></i-button>
               <i-button type="text" icon="eye" @click="previewOne(item)"></i-button>
-              <i-button type="text" icon="close" @click="handleRemoveOne(item)"></i-button>
+              <!-- <i-button type="text" icon="close" @click="handleRemoveOne(item)"></i-button> -->
             </div>
           </li>
         </ul>
@@ -89,705 +89,701 @@
 </template>
 
 <script lang="ts">
-import Page from '~/core/page';
-import DataBox from '~/components/common/data-box.vue';
-import Component from 'vue-class-component';
-import SvgIcon from '~/components/common/svg-icon.vue';
-import FileUpload from '~/components/common/file-upload.tsx.vue';
-import { Dependencies } from '~/core/decorator';
-import { OrderService } from '~/services/business-service/order.service';
-import { Layout } from '~/core/decorator';
-import { PersonalService } from '~/services/manage-service/personal.service';
-import { PageService } from '~/utils/page.service';
-import { FilterService } from '~/utils/filter.service';
-import { ContractService } from '~/services/contract-service/contract.service';
-import { CommonService } from '~/utils/common.service';
+  import Page from '~/core/page';
+  import DataBox from '~/components/common/data-box.vue';
+  import Component from 'vue-class-component';
+  import SvgIcon from '~/components/common/svg-icon.vue';
+  import FileUpload from '~/components/common/file-upload.tsx.vue';
+  import {
+    Dependencies
+  } from '~/core/decorator';
+  import {
+    OrderService
+  } from '~/services/business-service/order.service';
+  import {
+    Layout
+  } from '~/core/decorator';
+  import {
+    PersonalService
+  } from '~/services/manage-service/personal.service';
+  import {
+    PageService
+  } from '~/utils/page.service';
+  import {
+    FilterService
+  } from '~/utils/filter.service';
+  import {
+    ContractService
+  } from '~/services/contract-service/contract.service';
+  import {
+    CommonService
+  } from '~/utils/common.service';
 
-@Layout('workspace')
-@Component({
-  components: {
-    DataBox,
-    SvgIcon,
-    FileUpload
-  }
-})
-export default class CustomerSign extends Page {
-  @Dependencies(ContractService) private contractService: ContractService
-  @Dependencies(PersonalService) private personalService: PersonalService
-  @Dependencies(PageService) private pageService: PageService
-  private previewModel: Boolean = false
-  private columns1: any
-  private customerSignList: Array<Object> = []
-  private searchOptions: Boolean = false
-  private customName: String = ''
-  private openCreateCompact: Boolean = false
-  private openColumnsConfig: Boolean = false
-  private openCompact: Boolean = false
-  private columns2: any
-  private data2: Array<Object> = []
-  private data3: Array<Object> = []
-  private checkRadio: String = '抵押贷款合同'
-  private columns3: any
-  private rowData: any
-  private type: any
-  private contectEnum: any
-  private multipleSelection: any // 多选数据
-  private openUpload: Boolean = false
-  private dataList: Array<any> = []
-  private url: any = ''
-  private orderId: any = ''
-  private materialUrl: any = []
-  private mertialList: any = []
-  private fileUploadLoadding: Boolean = false;
-  private customerSignModel: any = {
-    orderInfo: '',
-    timeSearch: '',
-    startTime: '',
-    endTime: '',
-    dateRange: []
-  }
+  @Layout('workspace')
+  @Component({
+    components: {
+      DataBox,
+      SvgIcon,
+      FileUpload
+    }
+  })
+  export default class CustomerSign extends Page {
+    @Dependencies(ContractService) private contractService: ContractService
+    @Dependencies(PersonalService) private personalService: PersonalService
+    @Dependencies(PageService) private pageService: PageService
+    private previewModel: Boolean = false
+    private columns1: any
+    private customerSignList: Array < Object > = []
+    private searchOptions: Boolean = false
+    private customName: String = ''
+    private openCreateCompact: Boolean = false
+    private openColumnsConfig: Boolean = false
+    private openCompact: Boolean = false
+    private columns2: any
+    private data2: Array < Object > = []
+    private data3: Array < Object > = []
+    private checkRadio: String = '抵押贷款合同'
+    private columns3: any
+    private rowData: any
+    private type: any
+    private contectEnum: any
+    private multipleSelection: any // 多选数据
+    private openUpload: Boolean = false
+    private dataList: Array < any > = []
+    private url: any = ''
+    private orderId: any = ''
+    private materialUrl: any = []
+    private mertialList: any = []
+    private fileUploadLoadding: Boolean = false;
+    private customerSignModel: any = {
+      orderInfo: '',
+      timeSearch: '',
+      startTime: '',
+      endTime: '',
+      dateRange: []
+    }
 
-  mounted() {
-    this.getSignList()
-  }
-  activated() {
-    this.getSignList()
-  }
-  created() {
-    this.columns1 = [{
-      title: '操作',
-      minWidth: this.$common.getColumnWidth(6),
-      fixed: 'left',
-      align: 'center',
-      render: (h, {
+    mounted() {
+      this.getSignList()
+    }
+    activated() {
+      this.getSignList()
+    }
+    created() {
+      this.columns1 = [{
+          title: '操作',
+          minWidth: this.$common.getColumnWidth(6),
+          fixed: 'left',
+          align: 'center',
+          render: (h, {
             row,
-        column,
-        index
+            column,
+            index
           }) => {
-        return h('div', [
-          h(
-            'i-button', {
-              props: {
-                type: 'text'
-              },
-              style: {
-                color: '#265EA2'
-              },
-              on: {
-                click: () => {
-                  this.createCompact(row)
-                }
-              }
-            },
-            '生成合同'
-          ),
-          h(
-            'i-button', {
-              props: {
-                type: 'text'
-              },
-              style: {
-                color: '#265EA2'
-              },
-              on: {
-                click: () => {
-                  this.openCompactInfos(row)
-                }
-              }
-            },
-            '上传合同'
-          )
-        ])
-      }
-    },
-    {
-      title: '订单编号',
-      align: 'center',
-      editable: true,
-      key: 'orderNumber',
-      minWidth: this.$common.getColumnWidth(6),
-    },
-    {
-      align: 'center',
-      title: '订单创建时间',
-      editable: true,
-      key: 'orderCreateTime',
-      minWidth: this.$common.getColumnWidth(6),
-      render: (h, {
-            row,
-        column,
-        index
-          }) => {
-        return h(
-          'span',
-          FilterService.dateFormat(row.orderCreateTime, 'yyyy-MM-dd hh:mm:ss')
-        )
-      }
-    },
-    {
-      align: 'center',
-      editable: true,
-      title: '订单类型',
-      key: 'orderType',
-      minWidth: this.$common.getColumnWidth(3),
-      render: (h, {
-            row,
-        column,
-        index
-          }) => {
-        return h('span', {}, this.$dict.getDictName(row.orderType))
-      }
-    },
-    {
-      align: 'center',
-      editable: true,
-      title: '产品名称',
-      key: 'productName',
-      minWidth: this.$common.getColumnWidth(4),
-    },
-    {
-      align: 'center',
-      editable: true,
-      title: '客户姓名',
-      key: 'personalName',
-      minWidth: this.$common.getColumnWidth(3),
-    },
-    {
-      align: 'center',
-      editable: true,
-      title: '证件号码',
-      key: 'idCard',
-      minWidth: this.$common.getColumnWidth(6),
-    },
-    {
-      align: 'center',
-      editable: true,
-      title: '联系号码',
-      key: 'mobileMain',
-      minWidth: this.$common.getColumnWidth(5),
-    },
-    {
-      align: 'center',
-      editable: true,
-      title: '最近合同生成日期',
-      key: 'latelyContractTime',
-      minWidth: this.$common.getColumnWidth(5),
-      render: (h, {
-            row,
-        column,
-        index
-          }) => {
-        return h(
-          'span',
-          FilterService.dateFormat(
-            row.latelyContractTime,
-            'yyyy-MM-dd'
-          )
-        )
-      }
-    }
-    ]
-    this.columns2 = [{
-      title: '序号',
-      type: 'index',
-      width: 80,
-      align: 'center'
-    },
-    {
-      title: '列名',
-      key: 'columnsName',
-      align: 'center'
-    },
-    {
-      type: 'selection',
-      width: 80,
-      align: 'center'
-    }
-    ]
-    this.columns3 = [{
-      title: '文件名称',
-      align: 'center',
-      key: 'fileName'
-    },
-    {
-      type: 'selection',
-      align: 'center',
-      width: 80
-    }
-    ]
-    this.data2 = [{
-      columnsName: '订单编号'
-    },
-    {
-      columnsName: '订单创建时间'
-    },
-    {
-      columnsName: '订单类型'
-    },
-    {
-      columnsName: '产品名称'
-    },
-    {
-      columnsName: '客户姓名'
-    },
-    {
-      columnsName: '证件号码'
-    },
-    {
-      columnsName: '最近合同生成日期'
-    }
-    ]
-
-    this.data3 = [{
-      fileName: '融资租赁申请单'
-    }
-      //   {
-      //   fileName: "融资租赁申请单"
-      // },
-      // {
-      //   fileName: "融资租赁合同正文"
-      // },
-      // {
-      //   fileName: "合同附件一(付款时间表)"
-      // },
-      // {
-      //   fileName: "合同附件二(配偶确认书)"
-      // },
-      // {
-      //   fileName: "合同附件三(共同承租人确认书)"
-      // },
-      // {
-      //   fileName: "委托收款合同"
-      // },
-      // {
-      //   fileName: "首付款明细"
-      // },
-      // {
-      //   fileName: "服务确认书"
-      // },
-      // {
-      //   fileName: "责任告知书"
-      // },
-      // {
-      //   fileName: "车辆交接单"
-      // },
-      // {
-      //   fileName: "车辆出库单"
-      // },
-      // {
-      //   fileName: "补充协议（减免）"
-      // }
-    ]
-  }
-  /**
-   * 获取客户签约列表
-   */
-  getSignList() {
-    this.personalService
-      .getCustomerSignList(this.customerSignModel, this.pageService)
-      .subscribe(
-      data => this.customerSignList = data,
-      err => this.$Message.error(err)
-      )
-  }
-  getOrderInfoByTime(val) {
-    this.customerSignModel.timeSearch = val
-    this.customerSignModel.orderInfo = ''
-    this.customerSignModel.startTime = ''
-    this.customerSignModel.endTime = ''
-    this.getSignList()
-    this.customerSignModel.timeSearch = ''
-  }
-  openSearch() {
-    this.searchOptions = !this.searchOptions
-  }
-  oneKeyToConnect() { }
-  columnsConfig() {
-    this.openColumnsConfig = true
-  }
-  /**
-   * 生成合同
-   */
-  createCompact(row) {
-    this.rowData = row
-    this.openCreateCompact = true
-  }
-  openCompactInfos(row) {
-    this.orderId = row.orderId
-    this.openCompact = true
-    this.contractService
-      .getContractResourceAll({
-        orderId: this.orderId
-      })
-      .subscribe(
-      data => {
-        this.mertialList = data
-      },
-      ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      }
-      )
-  }
-  /**
-   * 多选
-   */
-  multipleSelect(selection) { }
-  /**
-   * 切换合同种类
-   */
-  changeCompactType(type) {
-    this.type = type
-    if (type === '全款销售合同') {
-      this.data3 = [{
-        fileName: '融资租赁申请单'
-      }
-        //   {
-        //     fileName: "融资租赁合同正文"
-        //   },
-        //   {
-        //     fileName: "合同附件一(付款时间表)"
-        //   },
-        //   {
-        //     fileName: "合同附件二(配偶确认书)"
-        //   },
-        //   {
-        //     fileName: "合同附件三(共同承租人确认书)"
-        //   }
-      ]
-    } else if (type === '长租合同（银行版）') {
-      this.data3 = [{
-        fileName: '融资租赁申请单'
-      },
-      {
-        fileName: '融资租赁合同正文'
-      },
-      {
-        fileName: '合同附件一(付款时间表)'
-      },
-      {
-        fileName: '合同附件二(配偶确认书)'
-      }
-      ]
-    } else if (type === '长租合同') {
-      this.data3 = [{
-        fileName: '长期租赁申请单'
-      },
-      {
-        fileName: '长期租赁合同正文'
-      },
-      {
-        fileName: '合同附件一(甲乙双方相关责任条款)'
-      },
-      {
-        fileName: '合同附件二(车辆交接清单)'
-      },
-      {
-        fileName: '委托收款合同'
-      },
-      {
-        fileName: '车辆销售协议'
-      },
-      {
-        fileName: '收款明细'
-      },
-      {
-        fileName: '车辆出库单'
-      },
-      {
-        fileName: '补充协议（减免）'
-      }
-      ]
-    } else {
-      this.data3 = [{
-        fileName: '融资租赁申请单'
-      }
-        //   {
-        //     fileName: "融资租赁合同正文"
-        //   },
-        //   {
-        //     fileName: "合同附件一(付款时间表)"
-        //   },
-        //   {
-        //     fileName: "合同附件二(配偶确认书)"
-        //   },
-        //   {
-        //     fileName: "合同附件三(共同承租人确认书)"
-        //   },
-        //   {
-        //     fileName: "委托收款合同"
-        //   },
-        //   {
-        //     fileName: "首付款明细"
-        //   },
-        //   {
-        //     fileName: "服务确认书"
-        //   },
-        //   {
-        //     fileName: "责任告知书"
-        //   },
-        //   {
-        //     fileName: "车辆交接单"
-        //   },
-        //   {
-        //     fileName: "车辆出库单"
-        //   },
-        //   {
-        //     fileName: "补充协议（减免）"
-        //   }
-      ]
-    }
-  }
-  /**
-   * 打印预览
-   */
-  printPreview() {
-    // if (this.checkRadio === '全款销售合同') {
-    //   this.contectEnum = 'FULL_SALES'
-    // }
-    if (this.checkRadio === '抵押贷款合同') {
-      this.contectEnum = 'DIRECT_RENT'
-    }
-    let printData: any = {
-      orderId: this.rowData.orderId,
-      contectEnum: this.contectEnum
-    }
-    if (this.multipleSelection) {
-      this.contractService.createOneContract(printData).subscribe(
-        data => {
-          // if (data.resultJson && data.resultJson.contractInfo) {
-          //   window.open(data.resultJson.contractInfo[0].pdfUrl)
-          // }
-          this.openCreateCompact = false
-          this.getSignList()
-          // this.multipleSelection = []
+            return h('div', [
+              h(
+                'i-button', {
+                  props: {
+                    type: 'text'
+                  },
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.createCompact(row)
+                    }
+                  }
+                },
+                '生成合同'
+              ),
+              h(
+                'i-button', {
+                  props: {
+                    type: 'text'
+                  },
+                  style: {
+                    color: '#265EA2'
+                  },
+                  on: {
+                    click: () => {
+                      this.openCompactInfos(row)
+                    }
+                  }
+                },
+                '上传合同'
+              )
+            ])
+          }
         },
-        ({
+        {
+          title: '订单编号',
+          align: 'center',
+          editable: true,
+          key: 'orderNumber',
+          minWidth: this.$common.getColumnWidth(6),
+        },
+        {
+          align: 'center',
+          title: '订单创建时间',
+          editable: true,
+          key: 'orderCreateTime',
+          minWidth: this.$common.getColumnWidth(6),
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h(
+              'span',
+              FilterService.dateFormat(row.orderCreateTime, 'yyyy-MM-dd hh:mm:ss')
+            )
+          }
+        },
+        {
+          align: 'center',
+          editable: true,
+          title: '订单类型',
+          key: 'orderType',
+          minWidth: this.$common.getColumnWidth(3),
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h('span', {}, this.$dict.getDictName(row.orderType))
+          }
+        },
+        {
+          align: 'center',
+          editable: true,
+          title: '产品名称',
+          key: 'productName',
+          minWidth: this.$common.getColumnWidth(4),
+        },
+        {
+          align: 'center',
+          editable: true,
+          title: '客户姓名',
+          key: 'personalName',
+          minWidth: this.$common.getColumnWidth(3),
+        },
+        {
+          align: 'center',
+          editable: true,
+          title: '证件号码',
+          key: 'idCard',
+          minWidth: this.$common.getColumnWidth(6),
+        },
+        {
+          align: 'center',
+          editable: true,
+          title: '联系号码',
+          key: 'mobileMain',
+          minWidth: this.$common.getColumnWidth(5),
+        },
+        {
+          align: 'center',
+          editable: true,
+          title: '最近合同生成日期',
+          key: 'latelyContractTime',
+          minWidth: this.$common.getColumnWidth(5),
+          render: (h, {
+            row,
+            column,
+            index
+          }) => {
+            return h(
+              'span',
+              FilterService.dateFormat(
+                row.latelyContractTime,
+                'yyyy-MM-dd'
+              )
+            )
+          }
+        }
+      ]
+      this.columns2 = [{
+          title: '序号',
+          type: 'index',
+          width: 80,
+          align: 'center'
+        },
+        {
+          title: '列名',
+          key: 'columnsName',
+          align: 'center'
+        },
+        {
+          type: 'selection',
+          width: 80,
+          align: 'center'
+        }
+      ]
+      this.columns3 = [{
+          title: '文件名称',
+          align: 'center',
+          key: 'fileName'
+        },
+        {
+          type: 'selection',
+          align: 'center',
+          width: 80
+        }
+      ]
+      this.data2 = [{
+          columnsName: '订单编号'
+        },
+        {
+          columnsName: '订单创建时间'
+        },
+        {
+          columnsName: '订单类型'
+        },
+        {
+          columnsName: '产品名称'
+        },
+        {
+          columnsName: '客户姓名'
+        },
+        {
+          columnsName: '证件号码'
+        },
+        {
+          columnsName: '最近合同生成日期'
+        }
+      ]
+
+      this.data3 = [{
+          fileName: '融资租赁申请单'
+        }
+        //   {
+        //   fileName: "融资租赁申请单"
+        // },
+        // {
+        //   fileName: "融资租赁合同正文"
+        // },
+        // {
+        //   fileName: "合同附件一(付款时间表)"
+        // },
+        // {
+        //   fileName: "合同附件二(配偶确认书)"
+        // },
+        // {
+        //   fileName: "合同附件三(共同承租人确认书)"
+        // },
+        // {
+        //   fileName: "委托收款合同"
+        // },
+        // {
+        //   fileName: "首付款明细"
+        // },
+        // {
+        //   fileName: "服务确认书"
+        // },
+        // {
+        //   fileName: "责任告知书"
+        // },
+        // {
+        //   fileName: "车辆交接单"
+        // },
+        // {
+        //   fileName: "车辆出库单"
+        // },
+        // {
+        //   fileName: "补充协议（减免）"
+        // }
+      ]
+    }
+    /**
+     * 获取客户签约列表
+     */
+    getSignList() {
+      this.personalService
+        .getCustomerSignList(this.customerSignModel, this.pageService)
+        .subscribe(
+          data => this.customerSignList = data,
+          err => this.$Message.error(err)
+        )
+    }
+    getOrderInfoByTime(val) {
+      this.customerSignModel.timeSearch = val
+      this.customerSignModel.orderInfo = ''
+      this.customerSignModel.startTime = ''
+      this.customerSignModel.endTime = ''
+      this.getSignList()
+      this.customerSignModel.timeSearch = ''
+    }
+    openSearch() {
+      this.searchOptions = !this.searchOptions
+    }
+    oneKeyToConnect() {}
+    columnsConfig() {
+      this.openColumnsConfig = true
+    }
+    /**
+     * 生成合同
+     */
+    createCompact(row) {
+      this.rowData = row
+      this.openCreateCompact = true
+    }
+    openCompactInfos(row) {
+      this.orderId = row.orderId
+      this.openCompact = true
+      this.contractService
+        .getContractResourceAll({
+          orderId: this.orderId
+        })
+        .subscribe(
+          data => {
+            this.mertialList = data
+          },
+          ({
             msg
           }) => {
-          this.$Message.error(msg)
-        }
-      )
-    } else {
-      this.$Message.warning('请选择文件！')
+            this.$Message.error(msg)
+          }
+        )
     }
-  }
-  currentSelect(selection) {
-    this.multipleSelection = selection
-  }
-  openClick() {
-    this.openUpload = true
-    this.fileUploadLoadding = true
-  }
-  /**
-   * 上传文件
-   */
-  postFile() {
-    let fileUpload = this.$refs['file-upload'] as FileUpload
-    fileUpload.upload()
-  }
-  /**
-   * 上传文件成功回调
-   */
-  uploadSuccess() {
-    this.fileUploadLoadding = false
-    this.openUpload = false
-    this.$nextTick(() => {
+    /**
+     * 多选
+     */
+    multipleSelect(selection) {}
+    /**
+     * 切换合同种类
+     */
+    changeCompactType(type) {
+      this.type = type
+      if (type === '全款销售合同') {
+        this.data3 = [{
+            fileName: '融资租赁申请单'
+          }
+          //   {
+          //     fileName: "融资租赁合同正文"
+          //   },
+          //   {
+          //     fileName: "合同附件一(付款时间表)"
+          //   },
+          //   {
+          //     fileName: "合同附件二(配偶确认书)"
+          //   },
+          //   {
+          //     fileName: "合同附件三(共同承租人确认书)"
+          //   }
+        ]
+      } else if (type === '长租合同（银行版）') {
+        this.data3 = [{
+            fileName: '融资租赁申请单'
+          },
+          {
+            fileName: '融资租赁合同正文'
+          },
+          {
+            fileName: '合同附件一(付款时间表)'
+          },
+          {
+            fileName: '合同附件二(配偶确认书)'
+          }
+        ]
+      } else if (type === '长租合同') {
+        this.data3 = [{
+            fileName: '长期租赁申请单'
+          },
+          {
+            fileName: '长期租赁合同正文'
+          },
+          {
+            fileName: '合同附件一(甲乙双方相关责任条款)'
+          },
+          {
+            fileName: '合同附件二(车辆交接清单)'
+          },
+          {
+            fileName: '委托收款合同'
+          },
+          {
+            fileName: '车辆销售协议'
+          },
+          {
+            fileName: '收款明细'
+          },
+          {
+            fileName: '车辆出库单'
+          },
+          {
+            fileName: '补充协议（减免）'
+          }
+        ]
+      } else {
+        this.data3 = [{
+            fileName: '融资租赁申请单'
+          }
+          //   {
+          //     fileName: "融资租赁合同正文"
+          //   },
+          //   {
+          //     fileName: "合同附件一(付款时间表)"
+          //   },
+          //   {
+          //     fileName: "合同附件二(配偶确认书)"
+          //   },
+          //   {
+          //     fileName: "合同附件三(共同承租人确认书)"
+          //   },
+          //   {
+          //     fileName: "委托收款合同"
+          //   },
+          //   {
+          //     fileName: "首付款明细"
+          //   },
+          //   {
+          //     fileName: "服务确认书"
+          //   },
+          //   {
+          //     fileName: "责任告知书"
+          //   },
+          //   {
+          //     fileName: "车辆交接单"
+          //   },
+          //   {
+          //     fileName: "车辆出库单"
+          //   },
+          //   {
+          //     fileName: "补充协议（减免）"
+          //   }
+        ]
+      }
+    }
+    /**
+     * 打印预览
+     */
+    printPreview() {
+      // if (this.checkRadio === '全款销售合同') {
+      //   this.contectEnum = 'FULL_SALES'
+      // }
+      if (this.checkRadio === '抵押贷款合同') {
+        this.contectEnum = 'DIRECT_RENT'
+      }
+      let printData: any = {
+        orderId: this.rowData.orderId,
+        contectEnum: this.contectEnum
+      }
+      if (this.multipleSelection) {
+        this.contractService.createOneContract(printData).subscribe(
+          data => {
+            // if (data.resultJson && data.resultJson.contractInfo) {
+            //   window.open(data.resultJson.contractInfo[0].pdfUrl)
+            // }
+            this.openCreateCompact = false
+            this.getSignList()
+            // this.multipleSelection = []
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg)
+          }
+        )
+      } else {
+        this.$Message.warning('请选择文件！')
+      }
+    }
+    currentSelect(selection) {
+      this.multipleSelection = selection
+    }
+    openClick() {
+      this.openUpload = true
+      this.fileUploadLoadding = true
+    }
+    /**
+     * 上传文件
+     */
+    postFile() {
       let fileUpload = this.$refs['file-upload'] as FileUpload
-      fileUpload.reset()
-      for (let item of fileUpload.makeList()) {
-        this.dataList.push({
-          name: item.name,
-          uid: item.uid,
-          url: item.response.url,
-          localUrl: item.response.localUrl,
-          type: item.response.type,
-          id: item.response.id,
-          size: item.size,
-          status: item.status,
-          createTime: item.response.createTime
+      fileUpload.upload()
+    }
+    /**
+     * 上传文件成功回调
+     */
+    uploadSuccess() {
+      this.fileUploadLoadding = false
+      this.openUpload = false
+      this.$nextTick(() => {
+        let fileUpload = this.$refs['file-upload'] as FileUpload
+        fileUpload.reset()
+        for (let item of fileUpload.makeList()) {
+          this.dataList.push({
+            name: item.name,
+            uid: item.uid,
+            url: item.response.url,
+            localUrl: item.response.localUrl,
+            type: item.response.type,
+            id: item.response.id,
+            size: item.size,
+            status: item.status,
+            createTime: item.response.createTime
+          })
+        }
+      })
+    }
+    /**
+     * 下载
+     */
+    download(file) {
+      CommonService.downloadFile(file.url, file.name)
+    }
+    /**
+     * 预览
+     */
+    preview(file) {
+      // console.log(file)
+      if (
+        file.type === 'jpg' ||
+        file.type === 'png' ||
+        file.type === 'JPG' ||
+        file.type === 'PNG'
+      ) {
+        this.url = file.url
+        this.previewModel = true
+      } else {
+        window.open(file.url)
+      }
+    }
+    /**
+     * 删除
+     */
+    handleRemove(file) {
+      this.dataList.splice(this.dataList.indexOf(file), 1)
+    }
+    cancelButton() {
+      this.openCompact = false
+      this.dataList = []
+    }
+    /**
+     * 全部下载
+     */
+    async downloadAll() {
+
+       for (let index = 0; index < this.dataList.length; index++) {
+        let v = this.dataList[index];
+        await new Promise((reslove) => {
+          this.$common.downloadFile(v.url, v.name)
+          setTimeout(() => {
+            reslove()
+          }, 100);
         })
       }
-    })
-  }
-  /**
-   * 下载
-   */
-  download(file) {
-    CommonService.downloadFile(file.url, file.name)
-  }
-  /**
-   * 预览
-   */
-  preview(file) {
-    if (
-      file.type === 'jpg' ||
-      file.type === 'png' ||
-      file.type === 'JPG' ||
-      file.type === 'PNG'
-    ) {
-      this.url = file.url
-      this.previewModel = true
-    } else {
-      window.open(file.url)
+
+      for (let index = 0; index < this.mertialList.length; index++) {
+        let v = this.mertialList[index];
+        await new Promise((reslove) => {
+          this.$common.downloadFile(v.pdfUrl, v.contractName)
+          setTimeout(() => {
+            reslove()
+          }, 100);
+        })
+      }
+    
     }
-  }
-  /**
-   * 删除
-   */
-  handleRemove(file) {
-    this.dataList.splice(this.dataList.indexOf(file), 1)
-  }
-  cancelButton() {
-    this.openCompact = false
-    this.dataList = []
-  }
-  /**
-   * 全部下载
-   */
-  downloadAll() {
-    this.dataList.forEach(v => {
-      CommonService.downloadFile(v.url, v.name)
-    })
-    this.mertialList.forEach(v => {
-      CommonService.downloadFile(v.pdfUrl, v.contractName)
-    })
-  }
-  /**
-   * 确定
-   */
-  confirm() {
-    this.dataList.forEach(v => {
-      this.materialUrl.push(v.url)
-    })
-    this.contractService
-      .uploadContractResource({
-        orderId: this.orderId,
-        materialUrls: this.materialUrl
+    /**
+     * 确定
+     */
+    confirm() {
+      this.dataList.forEach(v => {
+        this.materialUrl.push(v.url)
       })
-      .subscribe(
-      data => {
-        this.openCompact = false
-        this.dataList = []
-        this.getSignList()
-        this.$Message.success('签约成功！')
-      },
-      ({
+      this.contractService
+        .uploadContractResource({
+          orderId: this.orderId,
+          materialUrls: this.materialUrl
+        })
+        .subscribe(
+          data => {
+            this.openCompact = false
+            this.dataList = []
+            this.getSignList()
+            this.$Message.success('签约成功！')
+          },
+          ({
             msg
           }) => {
-        this.$Message.error(msg)
-      }
-      )
+            this.$Message.error(msg)
+          }
+        )
+    }
+    downloadOne(file) {
+      CommonService.downloadFile(file.pdfUrl, file.contractName)
+    }
+    previewOne(file) {
+      // console.log(file)
+      this.url = file.pdfUrl
+      this.previewModel = true
+    }
+    handleRemoveOne(file) {
+      this.mertialList.splice(this.mertialList.indexOf(file), 1)
+    }
   }
-  downloadOne(file) {
-    CommonService.downloadFile(file.pdfUrl, file.contractName)
-  }
-  previewOne() { }
-  handleRemoveOne(file) {
-    this.mertialList.splice(this.mertialList.indexOf(file), 1)
-  }
-}
 
 </script>
 <style lang="less" scoped>
-.page.customer-sign {
-  .seek-day {
-    margin-top: 10px;
+  .page.customer-sign {
+    .seek-day {
+      margin-top: 10px;
+    }
+    .preview {
+      width: 100%;
+    }
   }
-  // .command {
-  //   float: right;
-  //   margin-right: 10px;
-  //   margin-top: 10px;
-  //   .command-item {
-  //     cursor: pointer;
-  //     display: inline-block;
-  //     margin-left: 10px;
-  //     color: #3367a7;
-  //     &.dayin {
-  //       font-size: 24px;
-  //       span {
-  //         font-size: 12px;
-  //       }
-  //     }
-  //     &.daochu {
-  //       font-size: 12px;
-  //       span {
-  //         font-size: 12px;
-  //       }
-  //     }
-  //   }
-  // }
-  // .data-form-data {
-  //   margin: 6px;
-  //   span {
-  //     margin-left: 10px;
-  //   }
-  //   .data-picker {
-  //     display: inline-block;
-  //     width: 10%;
-  //   }
-  //   .data-input {
-  //     display: inline-block;
-  //     width: 20%;
-  //   }
-  //   .blue-button {
-  //     margin-left: 10px;
-  //     background: #265ea2;
-  //     color: #fff;
-  //   }
-  // }
-  .preview {
-    width: 100%;
-  }
-}
+
 </style>
 <style lang="less" scoped>
-.contract-types {
-  .order-type {
-    position: relative;
-    /*bottom: 6px;*/
-    margin-right: 10px;
-  }
-  .blue-button {
-    background: #265ea2;
-    color: #fff;
-  }
-}
-
-.upload-contract {
-  .uploading {
+  .contract-types {
+    .order-type {
+      position: relative;
+      /*bottom: 6px;*/
+      margin-right: 10px;
+    }
     .blue-button {
       background: #265ea2;
       color: #fff;
     }
-    .suggest {
-      margin-left: 15px;
-    }
   }
-  .upload-count {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 10px;
-    .upload-count-item {
-      display: inline-block;
-      float: right;
-      .upload-count-icon {
-        font-size: 24px;
-        cursor: pointer;
-        position: relative;
-        left: 18px;
+
+  .upload-contract {
+    .uploading {
+      .blue-button {
+        background: #265ea2;
+        color: #fff;
+      }
+      .suggest {
+        margin-left: 15px;
+      }
+    }
+    .upload-count {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+      .upload-count-item {
+        display: inline-block;
+        float: right;
+        .upload-count-icon {
+          font-size: 24px;
+          cursor: pointer;
+          position: relative;
+          left: 18px;
+        }
+      }
+    }
+    .upload-count-ul {
+      margin-left: 20px;
+      &.one {
+        margin-top: 20px;
+      }
+      &.two {
+        margin-top: 10px;
       }
     }
   }
-  .upload-count-ul {
-    margin-left: 20px;
-    &.one {
-      margin-top: 20px;
-    }
-    &.two {
-      margin-top: 10px;
-    }
-  }
-}
+
 </style>

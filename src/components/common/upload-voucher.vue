@@ -1,4 +1,4 @@
-<template>
+<template> 
   <section class="component upload-voucher">
     <div class="row image-container">
       <div class="modal-item-upload" v-if="!hiddenUpload">

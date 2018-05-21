@@ -25,6 +25,21 @@ export class CommonService {
     a.click()
   }
 
+  static downloadAll(pathList) {
+    let download = async () => {
+      for (let index = 0; index < pathList.length; index++) {
+        let v = pathList[index];
+        await new Promise((reslove) => {
+          CommonService.downloadFile(v.url, v.filename)
+          setTimeout(() => {
+            reslove()
+          }, 100);
+        })
+
+      }
+    }
+    download()
+  }
 
   /**
   * 用户部门数据
@@ -87,7 +102,7 @@ export class CommonService {
     }
 
     let clearObject = (object) => {
-      if(!object) return
+      if (!object) return
       Object.entries(object).forEach(([key, value]) => {
         check(object, key, value)
       })
