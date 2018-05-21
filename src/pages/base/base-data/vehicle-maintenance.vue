@@ -1,4 +1,4 @@
-<template>
+<template> 
     <section class="page vehicle-maintenance">
         <page-header title="车辆维护" hiddenPrint hiddenExport></page-header>
         <i-row class="form">
@@ -655,6 +655,10 @@ export default class VehicleMaintenance extends Page {
    * 确定新增品牌
    */
   confirmAddBrand() {
+    if ((/^[ ]*$/).test(this.addBrandName)) {
+         this.$Message.error("请填写新增品牌名称");
+       return
+      } 
     this.carService
       .createCarBrand({
         brandName: this.addBrandName

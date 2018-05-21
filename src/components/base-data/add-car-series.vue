@@ -25,6 +25,11 @@ export default class AddApprovalReason extends Vue {
    * 确定新增系列
    */
   confirmAddSeries(brandId) {
+    // 判断是否只有空格
+      if ((/^[ ]*$/).test(this.seriesName)) {
+         this.$Message.error("请填写新增车系名称");
+       return
+      } 
     this.carService
       .createCarSeries({
         brandId: brandId,
