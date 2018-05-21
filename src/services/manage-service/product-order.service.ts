@@ -84,9 +84,16 @@ export class ProductOrderService {
    */
   @Debounce(1000)
   saveFinanceApplyInfo(data) {
+    //data.customerModel.birthTime = FilterService.dateFormat(data.customerModel.birthTime)
+    let dateStr = FilterService.dateFormat(data.personal.birthTime)
+    let personal = {...data.personal, birthTime: dateStr }
+
+    let dataStr2 = FilterService.dateFormat(data.personalJob.accessCompanyTime)
+    let personalJob = {...data.personalJob, accessCompanyTime: dataStr2 }
+    // console.log(Object.assign(data, { personal: { birthTime: dateStr } }), 11111111111111)
     return this.netService.send({
       server: manageService.productOrderController.saveFinanceApplyInfo,
-      data
+      data: Object.assign(data, { personal }, {personalJob})
     })
   }
   /**

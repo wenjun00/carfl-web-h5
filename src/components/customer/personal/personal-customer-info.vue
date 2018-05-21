@@ -532,7 +532,7 @@ export default class PersonalCustomerInfo extends Vue {
       this.customerModel,
       Object.assign(data.personal, {
         // 出生日期
-        birthTime: this.$filter.dateFormat(data.personal.birthTime, "yyyy-MM-dd"),
+        birthTime: data.personal.birthTime,
         // 身份证地址
         idCardAddress: Number(data.personal.idCardAddress),
         province: CityService.getCityParent(Number(data.personal.idCardAddress))[0],

@@ -664,7 +664,7 @@ export default class CustomerSign extends Page {
     this.contractService
       .uploadContractResource({
         orderId: this.orderId,
-        materialUrl: this.materialUrl
+        materialUrls: this.materialUrl
       })
       .subscribe(
       data => {

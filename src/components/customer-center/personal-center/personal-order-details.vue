@@ -1,5 +1,5 @@
 <!--个人订单详情-->
-<template>
+<template> 
     <section class="component personal-order-details">
         <!--<div style="font-size: 16px;font-weight: bolder;margin-left: 10px;">订单环节</div>-->
         <!--<i-steps :current="5" style="margin:20px 10px">-->
@@ -20,6 +20,7 @@ import Component from 'vue-class-component'
 import { Dependencies } from '~/core/decorator'
 import { PageService } from '~/utils/page.service'
 import { PersonalService } from '~/services/manage-service/personal.service'
+import { FilterService } from "~/utils/filter.service";
 @Component({
   components: {}
 })
@@ -36,12 +37,21 @@ export default class PersonalOrderDetails extends Vue {
     {
       title: '订单状态',
       key: 'orderStatus',
-      align: 'center'
+      align: 'center',
+       render: (h, { row }) => {
+        return h("span", {}, this.$dict.getDictName(row.orderStatus));
+      }
     },
     {
       title: '创建时间',
       key: 'createTime',
-      align: 'center'
+      align: 'center',
+        render: (h, { row }) => {
+        return h(
+          'span',
+          FilterService.dateFormat(row.createTime, 'yyyy-MM-dd')
+        )
+      }
     },
     {
       title: '归属公司',

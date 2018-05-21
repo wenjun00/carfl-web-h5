@@ -309,10 +309,7 @@ export default class CustomerJob extends Vue {
     this.$common.revert(
       this.jobModel,
       Object.assign(personalJob, {
-        accessCompanyTime: this.$filter.dateFormat(
-          personalJob.accessCompanyTime,
-          "yyyy-MM-dd"
-        ),
+        accessCompanyTime:personalJob.accessCompanyTime,
         companyAddress: personalJob.companyAddress ? Number(personalJob.companyAddress) : null,
         city: personalJob.city ? Number(personalJob.city) : null,
         province: personalJob.province ? Number(personalJob.province) : null
@@ -327,10 +324,7 @@ export default class CustomerJob extends Vue {
       } else {
         this.jobType = 37;
       }
-      data.personal.personalJob.accessCompanyTime = this.$filter.dateFormat(
-        data.personal.personalJob.accessCompanyTime,
-        "yyyy-MM-dd"
-      );
+      data.personal.personalJob.accessCompanyTime = data.personal.personalJob.accessCompanyTime;
       data.personal.personalJob.companyAddress = Number(
         data.personal.personalJob.companyAddress
       );

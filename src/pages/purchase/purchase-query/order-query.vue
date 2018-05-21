@@ -334,6 +334,16 @@ export default class OrderQuery extends Page {
         }
       },
       {
+        align: "center",
+        title: "订单状态",
+        editable: true,
+        key: "orderStatus",
+        minWidth: this.$common.getColumnWidth(5),
+        render: (h, { row, column, index }) => {
+          return h("span", {}, this.$dict.getDictName(row.orderStatus));
+        }
+      },
+      {
         title: "订单号",
         editable: true,
         align: "center",
@@ -489,16 +499,6 @@ export default class OrderQuery extends Page {
             },
             this.$filter.toThousands(row.financingAmount)
           );
-        }
-      },
-      {
-        align: "center",
-        title: "订单状态",
-        editable: true,
-        key: "orderStatus",
-        minWidth: this.$common.getColumnWidth(5),
-        render: (h, { row, column, index }) => {
-          return h("span", {}, this.$dict.getDictName(row.orderStatus));
         }
       }
     ];

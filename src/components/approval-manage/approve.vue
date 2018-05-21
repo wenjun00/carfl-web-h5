@@ -61,7 +61,7 @@
       <data-grid :labelWidth="120" labelAlign="right" contentAlign="left" class="data-form-grid">
         <data-grid-item label="姓名" :span="3">{{personal.name}}</data-grid-item>
         <data-grid-item label="性别" :span="3">{{personal.sex | dictConvert}}</data-grid-item>
-        <data-grid-item label="出生日期" :span="3">{{personal.birthTime|dateFormat('yyyy-MM-dd')}}</data-grid-item>
+        <data-grid-item label="出生日期" :span="3">{{personal.birthTime}}</data-grid-item>
         <data-grid-item label="微信号" :span="3">{{personal.wechat}}</data-grid-item>
         <data-grid-item label="手机号码(主)" :span="3">{{personal.mobileMain}}</data-grid-item>
         <data-grid-item label="手机号码(次)" :span="3">{{personal.mobileMinor}}</data-grid-item>
@@ -113,7 +113,7 @@
         <data-grid-item label="单位地址" :span="6">{{personalJobInfo.companyAddressDetail}}</data-grid-item>
 
         <data-grid-item label="单位固定电话" :span="6">{{personalJobInfo.companyPhone}}</data-grid-item>
-        <data-grid-item label="何时进入公司" :span="6">{{personalJobInfo.accessCompanyTime|dateFormat('yyyy-MM-dd')}}</data-grid-item>
+        <data-grid-item label="何时进入公司" :span="6">{{personalJobInfo.accessCompanyTime}}</data-grid-item>
 
         <data-grid-item label="基本月薪(元)" :span="6">{{personalJobInfo.basicSalary}}</data-grid-item>
         <data-grid-item label="每月发薪日" :span="6">{{personalJobInfo.payDay}}</data-grid-item>
