@@ -331,9 +331,6 @@ export default class MyApproval extends Page {
             h('span', {}, this.$dict.getDictName(row.orderLink)),
             h(
               'Tooltip', {
-                class: {
-                  'auto-warp': true
-                },
                 props: {
                   content: row.riskRemark
                 }
