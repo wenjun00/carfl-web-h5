@@ -168,7 +168,6 @@ export default class ModulePower extends Vue {
   public submit() {
     let menuResourceIds = this.tree.getCheckedKeys()
     let controlResourceIds = this.controlResource.filter(x => x._checked).map(x => x.id)
-    console.log(controlResourceIds)
     return new Promise((resolve, reject) => {
       this.roleService.roleAllocateResources({
         roleId: this.roleId,
