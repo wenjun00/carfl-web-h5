@@ -13,7 +13,7 @@
       <!--表格-->
       <i-col :span="14">
         <i-card title="模块功能">
-          <data-box ref="data-box" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
+          <data-box ref="data-box" @on-selection-change="onSelectionChange" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
         </i-card>
       </i-col>
     </i-row>
@@ -87,6 +87,13 @@ export default class ModulePower extends Vue {
     ];
   }
 
+  /**
+   * 选择项发生改变的时候
+   */
+  onSelectionChange(selection) {
+    let checkdIds = selection.map(v => v.id)
+    this.controlResourceData.forEach(x => x._checked = checkdIds.includes(x.id))
+  }
 
   /**
    * 当前选中节点的checked 发生变化
@@ -125,7 +132,7 @@ export default class ModulePower extends Vue {
       // 菜单资源数据
       this.controlResource = data.filter(x => [423, 424, 425].includes(x.filetype))
       // 转换_checked 属性值为Boolean类型
-      this.controlResource.forEach( v => v._checked = Boolean(v._checked))
+      this.controlResource.forEach(v => v._checked = Boolean(v._checked))
 
       this.createMenuResourceData();
     });
@@ -161,7 +168,7 @@ export default class ModulePower extends Vue {
   public submit() {
     let menuResourceIds = this.tree.getCheckedKeys()
     let controlResourceIds = this.controlResource.filter(x => x._checked).map(x => x.id)
-
+    console.log(controlResourceIds)
     return new Promise((resolve, reject) => {
       this.roleService.roleAllocateResources({
         roleId: this.roleId,
