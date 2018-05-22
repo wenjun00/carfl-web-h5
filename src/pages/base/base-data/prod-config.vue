@@ -63,7 +63,7 @@
                   </div>
                   <div class="item-container">
                     <span class="item-name">产品利率</span>
-                    <span class="item">{{item.productRate | decimalToPrecent}}</span>
+                    <span class="item">{{item.productRate | decimalToPrecent(4)}}</span>
                   </div>
                   <div class="item-container">
                     <span class="item-name">还款方式</span>

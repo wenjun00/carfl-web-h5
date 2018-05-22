@@ -14,6 +14,8 @@
   import {Dependencies} from "~/core/decorator";
   import UploadVoucher from "~/components/common/upload-voucher.vue"
   import {FinanceInvoiceService} from '~/services/manage-service/finance-invoice.service'
+  
+  
 
   @Component({
     components: {
@@ -26,21 +28,25 @@
     @Dependencies(FinanceInvoiceService) private financeInvoiceService: FinanceInvoiceService
     private attachmentList: Array<Object> = [];
     private fodderList: any = [];
+    private examine:any ={
+      periods:null,
+      orderId:null
+    }
 
- 
 
     /**
-     * 获取附件列表
+     * 获取附件
      */
-    checkAccessory(id) {
-      // console.log(id)
-      this.financeInvoiceService
-        .getFinanceUploadResources({collectMoneyDetailId:id})
+    checkAccessory(periods,orderId){
+      this.examine.periods = periods
+      this.examine.orderId = orderId
+      this.paymentScheduleService
+        .getFinanceUploadResourceByOrderId(this.examine)
         .subscribe(
           val => {
-             let uploadFodder: any = this.$refs['upload-voucher']
-              uploadFodder.Reverse(val)
-            // this.fodderList = val.materialUrl
+            let uploadVoucherOne = this.$refs['upload-voucher'] as UploadVoucher
+            uploadVoucherOne.reverseType(val)
+            // console.log(val)
           },
           ({
             msg
@@ -48,7 +54,31 @@
             this.$Message.error(msg)
           }
         )
+
     }
+ 
+
+
+
+
+    /**
+     * 获取附件列表
+     */
+    // checkAccessory(id) { 
+    //   this.financeInvoiceService
+    //     .getFinanceUploadResources({collectMoneyDetailId:id})
+    //     .subscribe(
+    //       val => {
+    //          let uploadFodder: any = this.$refs['upload-voucher']
+    //           uploadFodder.Reverse(val)
+    //       },
+    //       ({
+    //         msg
+    //       }) => {
+    //         this.$Message.error(msg)
+    //       }
+    //     )
+    // }
 
 
 

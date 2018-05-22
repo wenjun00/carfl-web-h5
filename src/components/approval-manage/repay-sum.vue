@@ -125,7 +125,9 @@
     private paymentScheduleService: PaymentScheduleService;
     private applyDerateOpen: Boolean = false;
     private applyFrozenOpen: Boolean = false;
-    private repaySumObj: any = {};
+    private repaySumObj: any = {
+      productOrder:{}
+    };
     private orderId: number = 0;
     @Prop() row: Object;
 

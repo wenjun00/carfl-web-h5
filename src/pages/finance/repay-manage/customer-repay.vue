@@ -173,8 +173,10 @@ export default class CustomerRepay extends Page {
         this.confirmRepaymentModal = false;
         this.pageService.reset();
         this.getCustomerRepayList();
+        _repayment.fodderList=[]
         let _confirmRepayment: any = this.$refs['confirm-repayment']
         _confirmRepayment.uploadFodder.reset()
+        
       },
       ({ msg }) => {
         this.$Message.error(msg);
@@ -247,7 +249,7 @@ export default class CustomerRepay extends Page {
                 on: {
                   click: () => {
                     this.repayInfoModal = true;
-                    let _repay: any = this.$refs["repay-info"];
+                    let _repay: any = this.$refs["repay-info"]; 
                     _repay.refresh(row);
                   }
                 },
@@ -424,7 +426,7 @@ export default class CustomerRepay extends Page {
         title: " 待还总金额",
         editable: true,
         key: "sumReceivable",
-        minWidth: this.$common.getColumnWidth(4),
+        minWidth: this.$common.getColumnWidth(6),
         render: (h, { row }) => {
           return h(
             "div",
@@ -461,7 +463,7 @@ export default class CustomerRepay extends Page {
         title: " 月利率",
         editable: true,
         key: "productRate",
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(4),
         render: (h, { row }) => h('p', this.$filter.decimalToPrecent(row.productRate))
       },
       {
@@ -469,7 +471,7 @@ export default class CustomerRepay extends Page {
         title: " 结算通道",
         editable: true,
         key: "settlementChannel",
-        minWidth: this.$common.getColumnWidth(2),
+        minWidth: this.$common.getColumnWidth(5),
         render: (h, { row, column, index }) => {
           return h("span", {}, this.$dict.getDictName(row.settlementChannel));
         }
@@ -477,7 +479,7 @@ export default class CustomerRepay extends Page {
       {
         align: "center",
         title: " 归属公司",
-        minWidth: this.$common.getColumnWidth(3),
+        minWidth: this.$common.getColumnWidth(5),
         editable: true,
         key: "companyChinaName"
       }

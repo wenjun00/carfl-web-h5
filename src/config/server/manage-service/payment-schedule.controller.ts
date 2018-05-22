@@ -113,5 +113,15 @@ export default {
     controller: CONTROLLER,
     action: 'saveScheduleUploadResources',
     type: requestType.Post
+  },
+  /**
+   * 还款详情 查看凭证
+   */
+  getFinanceUploadResourceByOrderId:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getFinanceUploadResourceByOrderId',
+    type: requestType.Get
   }
+
 }

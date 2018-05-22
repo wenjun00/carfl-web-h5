@@ -753,7 +753,6 @@ export default class VehicleMaintenance extends Page {
   confirmRepair() {
     let form = <Form>this.$refs['form-item-confirm']
     form.validate(valid => {
-      console.log(valid)
       if (!valid) return false
       this.carService
         .modifyCarInfo({
@@ -792,8 +791,6 @@ export default class VehicleMaintenance extends Page {
    * 修改品牌和车系
    */
   repairCar(data) {
-    // console.log(data)
-    // console.log(data.title)
     this.repairModal = true
     this.repairNameModal.repairName = data.title
     this.brandOneId = data.brandId
@@ -802,7 +799,6 @@ export default class VehicleMaintenance extends Page {
    * 修改车系
    */
   repairServiceCar(data) {
-    // console.log(data.title)
     this.repairServiceModal = true
     this.serviceOneId = data.seriesId
     this.carSeriesAmendModel.repairServiceName = data.title
