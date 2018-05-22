@@ -369,7 +369,7 @@ export default class addPeople extends Vue {
         this.customerDetailsModel.certificateType = !!this.customerDetailsModel.certificateType ? Number(this.customerDetailsModel.certificateType) : null;
         this.customerDetailsModel.intentionalLevel = !!this.customerDetailsModel.intentionalLevel ? Number(this.customerDetailsModel.intentionalLevel) : 0;
         this.customerDetailsModel.sex = !!this.customerDetailsModel.sex ? Number(this.customerDetailsModel.sex) : null;
-        this.customerDetailsModel.birthTime = this.$filter.dateFormat(data.birthTime, 'yyyy-MM-dd');
+        this.customerDetailsModel.birthTime = data.birthTime;
         this.customerDetailsModel.healthStatus = !!this.customerDetailsModel.healthStatus ? Number(this.customerDetailsModel.healthStatus) : null;
         this.customerDetailsModel.homeStatus = !!this.customerDetailsModel.homeStatus ? Number(this.customerDetailsModel.homeStatus) : null;
         this.customerDetailsModel.marital = !!this.customerDetailsModel.marital ? Number(this.customerDetailsModel.marital) : null;
@@ -379,8 +379,8 @@ export default class addPeople extends Vue {
         this.customerDetailsModel.personalJob.duty = !!this.customerDetailsModel.personalJob.duty ? Number(this.customerDetailsModel.personalJob.duty) : null;
         this.customerDetailsModel.personalJob.industry = !!this.customerDetailsModel.personalJob.industry ? Number(this.customerDetailsModel.personalJob.industry) : null;
         this.customerDetailsModel.personalJob.companyhostBank = !!this.customerDetailsModel.personalJob.companyhostBank ? Number(this.customerDetailsModel.personalJob.companyhostBank) : null;
-        this.customerDetailsModel.personalJob.companyhostCreatTime = this.$filter.dateFormat(data.personalJob.companyhostCreatTime, 'yyyy-MM-dd');
-        this.customerDetailsModel.personalJob.companyhostCheckTime = this.$filter.dateFormat(data.personalJob.companyhostCheckTime, 'yyyy-MM-dd');
+        this.customerDetailsModel.personalJob.companyhostCreatTime = data.personalJob.companyhostCreatTime;
+        this.customerDetailsModel.personalJob.companyhostCheckTime = data.personalJob.companyhostCheckTime;
         this.customerDetailsModel.personalBank = !!this.customerDetailsModel.personalBank ? this.customerDetailsModel.personalBank : {};
         this.customerDetailsModel.personalBank.depositBank = !!this.customerDetailsModel.personalBank.depositBank ? Number(this.customerDetailsModel.personalBank.depositBank) : null;
         this.customerDetailsModel.personalBank.accountType = !!this.customerDetailsModel.personalBank.accountType ? Number(this.customerDetailsModel.personalBank.accountType) : null;

@@ -163,9 +163,14 @@ export class PersonalService {
      * 个人意向客户新增客户
      */
     createCustomer(data) {
+      let birthTime = !!FilterService.dateFormat(data.birthTime)?FilterService.dateFormat(data.birthTime):null
+      let dateStr = !!FilterService.dateFormat(data.personalJob.companyhostCreatTime)?FilterService.dateFormat(data.personalJob.companyhostCreatTime):null
+      let dateStr2 = !!FilterService.dateFormat(data.personalJob.companyhostCheckTime)?FilterService.dateFormat(data.personalJob.companyhostCheckTime):null
+      let personalJob = {...data.personalJob, companyhostCreatTime: dateStr,companyhostCheckTime: dateStr2 }
+      
         return this.netService.send({
             server: manageService.personalController.createCustomer,
-            data:data
+            data: Object.assign(data, { birthTime },{personalJob})
         })
     }
      /**
@@ -208,9 +213,13 @@ export class PersonalService {
      * 个人意向 客户编辑
      */
     updateCustomer(data) {
+      let birthTime = !!FilterService.dateFormat(data.birthTime)?FilterService.dateFormat(data.birthTime):null
+      let dateStr = !!FilterService.dateFormat(data.personalJob.companyhostCreatTime)?FilterService.dateFormat(data.personalJob.companyhostCreatTime):null
+      let dateStr2 = !!FilterService.dateFormat(data.personalJob.companyhostCheckTime)?FilterService.dateFormat(data.personalJob.companyhostCheckTime):null
+      let personalJob = {...data.personalJob, companyhostCreatTime: dateStr,companyhostCheckTime: dateStr2 }
         return this.netService.send({
             server: manageService.personalController.updateCustomer,
-            data:data
+            data:Object.assign(data, { birthTime },{personalJob})
         })
     }
     /**

@@ -363,7 +363,7 @@ export default class ReviseCustomerDetails extends Vue {
         this.customerDetailsModel.sex = !!data.sex ? Number(data.sex) : null;
         this.customerDetailsModel.certificateType = !!data.certificateType ? Number(data.certificateType) : null;
         this.customerDetailsModel.intentionalLevel = !!data.intentionalLevel ? Number(data.intentionalLevel) : 0;
-        this.customerDetailsModel.birthTime = this.$filter.dateFormat(data.birthTime, 'yyyy-MM-dd');
+        this.customerDetailsModel.birthTime = data.birthTime;
         this.customerDetailsModel.healthStatus = !!data.healthStatus ? Number(data.healthStatus) : null;
         this.customerDetailsModel.homeStatus = !!data.homeStatus ? Number(data.homeStatus) : null;
         this.customerDetailsModel.marital = !!data.marital ? Number(data.marital) : null;
@@ -373,13 +373,13 @@ export default class ReviseCustomerDetails extends Vue {
         this.customerDetailsModel.personalJob.duty = !!data.personalJob.duty ? Number(data.personalJob.duty) : null;
         this.customerDetailsModel.personalJob.industry = !!data.personalJob.industry ? Number(data.personalJob.industry) : null;
         this.customerDetailsModel.personalJob.companyhostBank = !!data.personalJob.companyhostBank ? Number(data.personalJob.companyhostBank) : null;
-        this.customerDetailsModel.personalJob.companyhostCreatTime = this.$filter.dateFormat(data.personalJob.companyhostCreatTime, 'yyyy-MM-dd');
-        this.customerDetailsModel.personalJob.companyhostCheckTime = this.$filter.dateFormat(data.personalJob.companyhostCheckTime, 'yyyy-MM-dd');
+        this.customerDetailsModel.personalJob.companyhostCreatTime = !!data.personalJob.companyhostCreatTime?data.personalJob.companyhostCreatTime:null;
+        this.customerDetailsModel.personalJob.companyhostCheckTime = !!data.personalJob.companyhostCheckTime?data.personalJob.companyhostCheckTime:null;
         this.customerDetailsModel.personalBank = !!data.personalBank ? data.personalBank : {};
-        this.customerDetailsModel.personalBank.depositBank = !!data.personalBank.depositBank ? Number(data.personalBank.depositBank) : null;
-        this.customerDetailsModel.personalBank.accountType = !!data.personalBank.accountType ? Number(data.personalBank.accountType) : null;
-        this.customerDetailsModel.personalBank.accountUse = !!data.personalBank.accountUse ? Number(data.personalBank.accountUse) : null;
-        this.customerDetailsModel.personalJob.basicSalary = !!data.personalJob.basicSalary ? Number(data.personalJob.basicSalary) : null;
+        // this.customerDetailsModel.personalBank.depositBank = !!data.personalBank.depositBank ? Number(data.personalBank.depositBank) : null;
+        // this.customerDetailsModel.personalBank.accountType = !!data.personalBank.accountType ? Number(data.personalBank.accountType) : null;
+        // this.customerDetailsModel.personalBank.accountUse = !!data.personalBank.accountUse ? Number(data.personalBank.accountUse) : null;
+        // this.customerDetailsModel.personalJob.basicSalary = !!data.personalJob.basicSalary ? Number(data.personalJob.basicSalary) : null;
         //   console.log(this.customerDetailsModel)
 
 
