@@ -57,13 +57,13 @@
                 </div>
                 <div class="box-container-content">
                   <div class="item-container">
-                    <span class="item-name">账期类型</span>
+                    <span class="item-name">账期类型6</span>
                     <!-- item.paymentType="387" ? "固定账期" : "正常账期" -->
                     <span class="item">{{getPaymentType(item)}}</span>
                   </div>
                   <div class="item-container">
                     <span class="item-name">产品利率</span>
-                    <span class="item">{{item.productRate | decimalToPrecent}}</span>
+                    <span class="item">{{item.productRate *100}}%</span>
                   </div>
                   <div class="item-container">
                     <span class="item-name">还款方式</span>
