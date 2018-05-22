@@ -4,7 +4,7 @@
       <command-button type="text" label="业务流程图" @click="onShowBusinessFlow"></command-button>
     </page-header>
     <i-form ref="basis-form" :model="basisModel" :rules="basisRules" :label-width="120">
-      <i-row>
+      <i-row :gutter="16">
         <i-col :span="12">
           <i-form-item label="证件号码" prop="cardNumber">
             <i-input v-model="basisModel.cardNumber" :maxlength="18" autofocus @on-change="onCheckHistoryOrder" :disabled="transFlag"></i-input>

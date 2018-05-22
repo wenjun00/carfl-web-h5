@@ -19,7 +19,7 @@ import { CarService } from "~/services/manage-service/car.service";
 })
 export default class AddApprovalReason extends Vue {
   @Dependencies(CarService) private carService: CarService;
-  private seriesName: String = "";
+  private seriesName: string = "";
   created() {}
   /**
    * 确定新增系列

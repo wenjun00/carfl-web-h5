@@ -13,7 +13,7 @@
       <!--表格-->
       <i-col :span="14">
         <i-card title="模块功能">
-          <data-box @on-selection-change="onSelectionChange" ref="data-box" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
+          <data-box ref="data-box" :showConfigColumn="false" :columns="columns" :data="controlResourceData"></data-box>
         </i-card>
       </i-col>
     </i-row>
@@ -101,7 +101,7 @@ export default class ModulePower extends Vue {
   getControlResourcesById(data) {
     this.controlResourceData = this.controlResource.filter(
       x => [423, 424, 425].includes(x.filetype) && x.pid === data.id
-    );
+    )
   }
 
   /**
@@ -124,17 +124,11 @@ export default class ModulePower extends Vue {
 
       // 菜单资源数据
       this.controlResource = data.filter(x => [423, 424, 425].includes(x.filetype))
+      // 转换_checked 属性值为Boolean类型
+      this.controlResource.forEach( v => v._checked = Boolean(v._checked))
 
       this.createMenuResourceData();
     });
-  }
-
-  /**
-   * 当右侧按钮选中项改变的时候
-   * 控制左侧树的节点的checked 值
-  */
-  onSelectionChange(section) {
-    this.tree.currentNode.checked = this.controlResourceData.length === section.length
   }
 
   /**

@@ -199,7 +199,7 @@ export default class VehicleMaintenance extends Page {
   private repairServiceModal: Boolean = false
   private carData: any = {}
   private brandId: Number = 0
-  private addBrandName: String = '' // 新增品牌的名称
+  private addBrandName: string = '' // 新增品牌的名称
   private repairName: String = '' //修改品牌名称
   private repairServiceName: String = '' //修改车系名称
   private brandOneId: any = ''
