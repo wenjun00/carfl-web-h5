@@ -173,8 +173,10 @@ export default class CustomerRepay extends Page {
         this.confirmRepaymentModal = false;
         this.pageService.reset();
         this.getCustomerRepayList();
+        _repayment.fodderList=[]
         let _confirmRepayment: any = this.$refs['confirm-repayment']
         _confirmRepayment.uploadFodder.reset()
+        
       },
       ({ msg }) => {
         this.$Message.error(msg);
@@ -247,7 +249,7 @@ export default class CustomerRepay extends Page {
                 on: {
                   click: () => {
                     this.repayInfoModal = true;
-                    let _repay: any = this.$refs["repay-info"];
+                    let _repay: any = this.$refs["repay-info"]; 
                     _repay.refresh(row);
                   }
                 },
