@@ -138,4 +138,14 @@ export class PaymentScheduleService {
       data
     })
   }
+  /**
+   * 还款详情查看凭证
+   */
+  getFinanceUploadResourceByOrderId(data) {
+    return this.netService.send({
+      server: manageService.paymentScheduleController.getFinanceUploadResourceByOrderId,
+      data
+    })
+  }
+
 }

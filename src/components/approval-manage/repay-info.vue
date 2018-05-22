@@ -41,12 +41,13 @@ export default class RepayInfo extends Vue {
     this.columns1 = [{
       align: "center",
       key: "periods",
+      minWidth: this.$common.getColumnWidth(3),
       title: "期数"
     },
     {
       title: "操作",
       align: "center",
-      minWidth: this.$common.getColumnWidth(1),
+      minWidth: this.$common.getColumnWidth(8),
       render: (h, {
             row,
         column,
@@ -75,6 +76,7 @@ export default class RepayInfo extends Vue {
     {
       align: "center",
       title: "还款状态",
+      minWidth: this.$common.getColumnWidth(5),
       key: "paymentStatus",
       render: (h, {
             row,
@@ -87,79 +89,94 @@ export default class RepayInfo extends Vue {
     {
       align: "center",
       title: "应付款日",
+      minWidth: this.$common.getColumnWidth(7),
       key: "paymentDay",
       render: (h, { row }) => h("span", this.$filter.dateFormat(row.paymentDay, "yyyy-MM-dd"))
     },
     {
       align: "center",
       title: "实际付款日",
+       minWidth: this.$common.getColumnWidth(7),
       key: "actualPaymentDay",
       render: (h, { row }) => h("span", this.$filter.dateFormat(row.actualPaymentDay, "yyyy-MM-dd"))
     },
     {
       align: "center",
       title: " 逾期天数",
+      minWidth: this.$common.getColumnWidth(5),
       key: "overdueDay"
     },
     {
       align: "center",
       title: " 每日罚息",
+      minWidth: this.$common.getColumnWidth(5),
       key: "penaltyDay"
     },
     {
       align: "center",
       title: " 金额",
+       minWidth: this.$common.getColumnWidth(5),
       key: "sum"
     },
     {
       align: "center",
       title: " 罚金",
+       minWidth: this.$common.getColumnWidth(5),
       key: "penalSum"
     },
     {
       align: "center",
       title: " 开票日",
+       minWidth: this.$common.getColumnWidth(7),
       key: "invoiceDay",
       render: (h, { row }) => h("span", this.$filter.dateFormat(row.invoiceDay, "yyyy-MM-dd"))
     },
     {
       align: "center",
       title: " 应收租金",
+       minWidth: this.$common.getColumnWidth(5),
       key: "rentReceivable"
     },
     {
       align: "center",
       title: " 应收本金",
+       minWidth: this.$common.getColumnWidth(5),
       key: "principalReceivable"
     },
     {
       align: "center",
       title: "应收利息",
+       minWidth: this.$common.getColumnWidth(5),
       key: "interestReceivable"
     },
     {
       align: "center",
       title: " 应收罚息",
+       minWidth: this.$common.getColumnWidth(5),
       key: "penaltyReceivable"
     },
     {
       align: "center",
       title: " 减免罚息",
+       minWidth: this.$common.getColumnWidth(5),
       key: "penaltyDerate"
     },
     {
       align: "center",
       title: " 冻结罚息",
+       minWidth: this.$common.getColumnWidth(5),
       key: "penaltyFreeze"
     },
     {
       align: "center",
       title: " 实收本金",
+       minWidth: this.$common.getColumnWidth(5),
       key: "principalReceived"
     },
     {
       align: "center",
       title: " 实收利息",
+      minWidth: this.$common.getColumnWidth(5),
       key: "interestReceived"
     }
     ];
@@ -168,9 +185,12 @@ export default class RepayInfo extends Vue {
    * 查看凭证
    */
   checkProof(row) {
+    // console.log(row)
+    let periods = row.periods
+    let orderId = row.orderId
     this.checkAttachmentModal = true;
-    let _checkAttach: any = this.$refs["check-attach"];
-    _checkAttach.getAttachmentList(row);
+    let checkAttach: any = this.$refs["check-attach"];
+    checkAttach.checkAccessory(periods,orderId);
   }
   getRepayInfo(orderId) {
     this.paymentScheduleService
