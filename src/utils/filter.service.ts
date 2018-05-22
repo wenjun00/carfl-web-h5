@@ -162,6 +162,19 @@ export class FilterService {
   }
 
   /**
+   * 对字符串进行格式化
+   * @param str 要格式化的字符串
+   * @param length 每行字符长度
+   * @param appendStr 要插入的字符串
+   */
+  static strSplit(str: string, length: number = 4, appendStr: string = '-') {
+    if (!str) return ''
+    let r = new RegExp(`.{${length}}`, 'g')
+    let s = new RegExp(`${appendStr}\$`, 'g')
+    return str.replace(r, $0 => $0 + appendStr).replace(s, '')
+  }
+
+  /**
    * 
    * @param value 要解析的金额字符串
    */

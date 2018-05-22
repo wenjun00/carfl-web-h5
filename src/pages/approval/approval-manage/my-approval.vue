@@ -291,10 +291,10 @@ export default class MyApproval extends Page {
       fixed: 'left',
       align: 'center',
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h('div', [
           h(
             'i-button', {
@@ -322,15 +322,18 @@ export default class MyApproval extends Page {
       title: '环节',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, {
-            row,
+        row,
         columns,
         index
-          }) => {
+      }) => {
         if (row.riskStatus) {
           return h('div', [
             h('span', {}, this.$dict.getDictName(row.orderLink)),
             h(
               'Tooltip', {
+                class: {
+                  'auto-warp': true
+                },
                 props: {
                   content: row.riskRemark
                 }
@@ -363,10 +366,10 @@ export default class MyApproval extends Page {
       key: 'orderStatus',
       minWidth: this.$common.getColumnWidth(2),
       render: (h, {
-            row,
+        row,
         columns,
         index
-          }) => {
+      }) => {
         return h('span', {}, this.$dict.getDictName(row.orderStatus))
       }
     },
@@ -377,10 +380,10 @@ export default class MyApproval extends Page {
       minWidth: this.$common.getColumnWidth(6),
       align: 'center',
       render: (h, {
-            row,
+        row,
         columns,
         index
-          }) => {
+      }) => {
         return h(
           'i-button', {
             props: {
@@ -409,10 +412,10 @@ export default class MyApproval extends Page {
       minWidth: this.$common.getColumnWidth(6),
       key: 'createTime',
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h(
           'span',
           this.$filter.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
@@ -426,10 +429,10 @@ export default class MyApproval extends Page {
       key: 'receiveDate',
       minWidth: this.$common.getColumnWidth(6),
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h(
           'span',
           this.$filter.dateFormat(row.receiveDate, 'yyyy-MM-dd hh:mm:ss')
@@ -443,10 +446,10 @@ export default class MyApproval extends Page {
       minWidth: this.$common.getColumnWidth(6),
       key: 'approvalDate',
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h(
           'span',
           this.$filter.dateFormat(row.approvalDate, 'yyyy-MM-dd hh:mm:ss')
@@ -460,10 +463,10 @@ export default class MyApproval extends Page {
       key: 'province',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h('span', CityService.getCityName(row.province))
       }
     },
@@ -474,10 +477,10 @@ export default class MyApproval extends Page {
       key: 'city',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h('span', CityService.getCityName(row.city))
       }
     },
@@ -488,10 +491,10 @@ export default class MyApproval extends Page {
       key: 'orderType',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, {
-            row,
+        row,
         columns,
         index
-          }) => {
+      }) => {
         return h('span', {}, this.$dict.getDictName(row.orderType))
       }
     },
@@ -585,18 +588,18 @@ export default class MyApproval extends Page {
         remark: this.facePassModel.remark
       })
       .subscribe(
-      data => {
-        this.$Message.success('操作成功！')
-        this.approvePassedModal = false
-        this.facePassModel.remark = ''
-        this.approveModal = false
-        this.getMyOrderList()
-      },
-      ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.$Message.success('操作成功！')
+          this.approvePassedModal = false
+          this.facePassModel.remark = ''
+          this.approveModal = false
+          this.getMyOrderList()
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 
@@ -648,8 +651,8 @@ export default class MyApproval extends Page {
         // this.passModel.effectiveType = 1160
       },
       ({
-          msg
-        }) => {
+        msg
+      }) => {
         this.$Message.error(msg)
       }
     )
@@ -666,14 +669,14 @@ export default class MyApproval extends Page {
     this.approveReasonService
       .getApproveReasonByCondition(this.approvalRecordModel)
       .subscribe(
-      data => {
-        this.refuseReason = data
-      },
-      ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.refuseReason = data
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 
@@ -683,14 +686,14 @@ export default class MyApproval extends Page {
     this.approveReasonService
       .getApproveReasonByCondition(this.approvalRecordModel)
       .subscribe(
-      data => {
-        this.refuseDetail = data
-      },
-      ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.refuseDetail = data
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
       )
   }
   reset() {
@@ -723,8 +726,8 @@ export default class MyApproval extends Page {
           this.approveModal = false
         },
         ({
-            msg
-          }) => {
+          msg
+        }) => {
           this.$Message.error(msg)
         }
       )
@@ -749,18 +752,18 @@ export default class MyApproval extends Page {
     this.approvalService
       .submitInternalAuditOrGreyList(this.grayModel)
       .subscribe(
-      val => {
-        this.$Message.success('提交灰名单成功！')
-        this.grayModel.remark = ''
-        this.grayListModal = false
-        // this.approveModal = false;
-        this.getMyOrderList()
-      },
-      ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      }
+        val => {
+          this.$Message.success('提交灰名单成功！')
+          this.grayModel.remark = ''
+          this.grayListModal = false
+          // this.approveModal = false;
+          this.getMyOrderList()
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 
@@ -772,18 +775,18 @@ export default class MyApproval extends Page {
     this.approvalService
       .submitInternalAuditOrGreyList(this.internalModel)
       .subscribe(
-      val => {
-        this.$Message.success('提交内审成功！')
-        this.internalModel.remark = ''
-        // this.approveModal = false;
-        this.submitToInternalModal = false
-        this.getMyOrderList()
-      },
-      ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      }
+        val => {
+          this.$Message.success('提交内审成功！')
+          this.internalModel.remark = ''
+          // this.approveModal = false;
+          this.submitToInternalModal = false
+          this.getMyOrderList()
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 
@@ -819,19 +822,19 @@ export default class MyApproval extends Page {
       this.approvalService
         .submitBlackListOrRefuse(this.approvalRecordModel)
         .subscribe(
-        val => {
-          this.$Message.success('提交拒单成功！')
-          this.blackListModal = false
-          this.approveModal = false
-          this.cancelAddBlack()
-          this.getMyOrderList()
-          this.approvalRecordModel.remark = ''
-        },
-        ({
-              msg
-            }) => {
-          this.$Message.error(msg)
-        }
+          val => {
+            this.$Message.success('提交拒单成功！')
+            this.blackListModal = false
+            this.approveModal = false
+            this.cancelAddBlack()
+            this.getMyOrderList()
+            this.approvalRecordModel.remark = ''
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg)
+          }
         )
     } else {
       this.approvalRecordModel.operateType = 2
@@ -839,19 +842,19 @@ export default class MyApproval extends Page {
       this.approvalService
         .submitBlackListOrRefuse(this.approvalRecordModel)
         .subscribe(
-        val => {
-          this.$Message.success('提交黑名单成功！')
-          this.blackListModal = false
-          this.approveModal = false
-          this.cancelAddBlack()
-          this.getMyOrderList()
-          this.approvalRecordModel.remark = ''
-        },
-        ({
-              msg
-            }) => {
-          this.$Message.error(msg)
-        }
+          val => {
+            this.$Message.success('提交黑名单成功！')
+            this.blackListModal = false
+            this.approveModal = false
+            this.cancelAddBlack()
+            this.getMyOrderList()
+            this.approvalRecordModel.remark = ''
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg)
+          }
         )
     }
   }
@@ -866,16 +869,16 @@ export default class MyApproval extends Page {
             orderId: this.approvalOrderId
           })
           .subscribe(
-          val => {
-            this.$Message.success('退回资源池成功！')
-            this.approveModal = false
-            this.getMyOrderList()
-          },
-          ({
-                msg
-              }) => {
-            this.$Message.error(msg)
-          }
+            val => {
+              this.$Message.success('退回资源池成功！')
+              this.approveModal = false
+              this.getMyOrderList()
+            },
+            ({
+              msg
+            }) => {
+              this.$Message.error(msg)
+            }
           )
       }
     })
@@ -942,8 +945,8 @@ export default class MyApproval extends Page {
     this.approvalService
       .getMyApprovalOrder(this.myOrderModel, this.pageService)
       .subscribe(
-      data => this.myOrderList = data,
-      err => this.$Message.error(err)
+        data => this.myOrderList = data,
+        err => this.$Message.error(err)
       )
   }
 

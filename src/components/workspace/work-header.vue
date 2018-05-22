@@ -1,49 +1,49 @@
 <template>
-    <div class="component work-header row between-span middle-span">
-        <div class="logo">
-            <img class="logo-img" src="/static/images/common/logo2.png" alt="">
-            <h5 class="logo-font">指旺汽车金融系统</h5>
-        </div>
-        <div class="row">
-            <work-theme></work-theme>
-        </div>
-
-        <div class="row  work-header-tow">
-            <i-poptip class="work-header-poptip" trigger="click" placement="bottom">
-                <div class="head-portrait"></div>
-                <div class="head-portrait-content" slot="content">
-                    <div class="portrait-content-one">{{loginPerson}}</div>
-                    <div class="portrait-content-two">上次登录时间</div>
-                    <div class="portrait-content-three">{{operateTime}}</div>
-                    <div class="portrait-content-four">
-                        <i-button class="content-four-button" type="text" @click="modifyPwd">修改密码</i-button>
-                        <i-button type="text" @click="logOut">退出登录</i-button>
-                    </div>
-                </div>
-            </i-poptip>
-            <span class="log-in-title">{{loginName}}</span>
-        </div>
-
-        <template>
-            <i-modal v-model="modifyPwdModal" title="修改密码">
-                <i-form :label-width="110" ref="change-password" :model="repairModel">
-                    <i-form-item label="请输入原密码" prop="oldPassword">
-                        <i-input type="password" v-model="repairModel.oldPassword"></i-input>
-                    </i-form-item>
-                    <i-form-item label="请输入新密码" prop="newPasswordOne">
-                        <i-input type="password" v-model="repairModel.newPasswordOne"></i-input>
-                    </i-form-item>
-                    <i-form-item label="确认新密码" prop="newPassword">
-                        <i-input type="password" v-model="repairModel.newPassword"></i-input>
-                    </i-form-item>
-                </i-form>
-                <template slot="footer">
-                    <i-button @click="workCancel">取消</i-button>
-                    <i-button @click="workRole" class="blueButton">确定</i-button>
-                </template>
-            </i-modal>
-        </template>
+  <div class="component work-header row between-span middle-span">
+    <div class="logo">
+      <img class="logo-img" src="/static/images/common/logo2.png" alt="">
+      <h5 class="logo-font">指旺汽车金融系统</h5>
     </div>
+    <div class="row">
+      <work-theme></work-theme>
+    </div>
+
+    <div class="row  work-header-tow">
+      <i-poptip class="work-header-poptip" trigger="click" placement="bottom">
+        <div class="head-portrait"></div>
+        <div class="head-portrait-content" slot="content">
+          <div class="portrait-content-one">{{loginPerson}}</div>
+          <div class="portrait-content-two">上次登录时间</div>
+          <div class="portrait-content-three">{{operateTime}}</div>
+          <div class="portrait-content-four">
+            <i-button class="content-four-button" type="text" @click="modifyPwd">修改密码</i-button>
+            <i-button type="text" @click="logOut">退出登录</i-button>
+          </div>
+        </div>
+      </i-poptip>
+      <span class="log-in-title">{{loginName}}</span>
+    </div>
+
+    <template>
+      <i-modal v-model="modifyPwdModal" title="修改密码">
+        <i-form :label-width="110" ref="change-password" :model="repairModel">
+          <i-form-item label="请输入原密码" prop="oldPassword">
+            <i-input type="password" v-model="repairModel.oldPassword"></i-input>
+          </i-form-item>
+          <i-form-item label="请输入新密码" prop="newPasswordOne">
+            <i-input type="password" v-model="repairModel.newPasswordOne"></i-input>
+          </i-form-item>
+          <i-form-item label="确认新密码" prop="newPassword">
+            <i-input type="password" v-model="repairModel.newPassword"></i-input>
+          </i-form-item>
+        </i-form>
+        <template slot="footer">
+          <i-button @click="workCancel">取消</i-button>
+          <i-button @click="workRole" class="blueButton">确定</i-button>
+        </template>
+      </i-modal>
+    </template>
+  </div>
 </template>
 
 <script lang="ts">
@@ -56,7 +56,7 @@ import WorkTheme from '~/components/workspace/work-theme.vue'
 import { Dependencies } from '~/core/decorator'
 import { LoginService } from '~/services/manage-service/login.service'
 import md5 from 'md5'
-import {FilterService} from "~/utils/filter.service";
+import { FilterService } from "~/utils/filter.service";
 @Component({
   components: {
     WorkMenu,
@@ -73,14 +73,14 @@ export default class WorkHeader extends Vue {
   private modifyPwdModal: Boolean = false
   private loginPerson: String = ''
   private loginName: String = ''
-  private operateTime:String = ''
+  private operateTime: String = ''
   @Prop() person
   @Action select
 
   created() {
     this.loginPerson = this.$store.state.userData.username
     this.loginName = this.$store.state.userData.realname
-    this.operateTime =  FilterService.dateFormat(this.$store.state.userData.operateTime, 'yyyy-MM-dd hh:mm:ss')
+    this.operateTime = FilterService.dateFormat(this.$store.state.userData.operateTime, 'yyyy-MM-dd hh:mm:ss')
   }
   modifyPwd() {
     this.modifyPwdModal = true
@@ -91,12 +91,15 @@ export default class WorkHeader extends Vue {
       content: '确认退出系统吗？',
       onOk: () => {
         this.loginService.logout().subscribe(
-          () => {},
-          ({ msg }) => {
-            this.$Message.error(msg)
+          () => {
+            this.$router.push('/')
+          },
+          err => {
+            this.$Message.error(err.msg)
+            this.$router.push('/')
           }
         )
-        this.$router.push('/')
+        console.log(3232)
       }
     })
   }
@@ -140,14 +143,14 @@ export default class WorkHeader extends Vue {
     padding: 10px;
     display: flex;
     .logo-img {
-      width:40px;
-      height:40px;
+      width: 40px;
+      height: 40px;
     }
-    .logo-font{
+    .logo-font {
       color: white;
       font-size: 20px;
-      padding-left:18px;
-      letter-spacing:2px;
+      padding-left: 18px;
+      letter-spacing: 2px;
       margin-top: 8px;
     }
   }
@@ -162,7 +165,7 @@ export default class WorkHeader extends Vue {
         height: 20px;
         border: 1px solid #dddddd;
         border-radius: 50%;
-        background-image: url('/static/images/common/headPortrail.png');
+        background-image: url("/static/images/common/headPortrail.png");
       }
       .head-portrait-content {
         text-align: left;
