@@ -72,7 +72,7 @@
     </template>
 
     <template>
-      <i-modal v-model="addSeriesModal" title="新增车系">
+      <i-modal v-model="addSeriesModal" @on-visible-change="closeSeries" title="新增车系">
         <add-car-series ref="add-car-series" @closeAndRefreshTree="closeCarSeries"></add-car-series>
         <div slot="footer">
           <i-button @click="cancleSeries">取消</i-button>
@@ -82,7 +82,7 @@
     </template>
 
     <template>
-      <i-modal v-model="addBrandModal" title="新增品牌">
+      <i-modal v-model="addBrandModal" @on-visible-change="closeBrand" title="新增品牌">
         <i-form :rules="brandNameRule" :model="brandNameModel" ref="form-item" class="brandNameModel">
           <i-form-item label="品牌名称" prop="addBrandName">
             <i-input v-model.trim="brandNameModel.addBrandName" style="width:80%;"></i-input>
@@ -97,9 +97,9 @@
 
     <template>
       <i-modal v-model="repairModal" title="修改品牌">
-        <i-form :rules="amendRule" ref="form-item-confirm">
+        <i-form :rules="amendRule" :model="repairNameModal" ref="form-item-confirm">
           <i-form-item label="品牌名称" prop="repairName">
-            <i-input v-model.trim="repairName" style="width:80%;"></i-input>
+            <i-input v-model.trim="repairNameModal.repairName" style="width:80%;"></i-input>
           </i-form-item>
         </i-form>
         <div slot="footer">
@@ -121,9 +121,9 @@
 
     <template>
       <i-modal v-model="repairServiceModal" title="修改车系">
-        <i-form>
-          <i-form-item label="车系名称">
-            <i-input v-model="repairServiceName" style="width:80%;"></i-input>
+        <i-form :rules="carSeriesAmendRule" :model="carSeriesAmendModel" ref="form-item">
+          <i-form-item label="车系名称" prop="repairServiceName">
+            <i-input v-model="carSeriesAmendModel.repairServiceName" style="width:80%;"></i-input>
           </i-form-item>
         </i-form>
         <div slot="footer">
@@ -201,12 +201,17 @@ export default class VehicleMaintenance extends Page {
   private repairServiceModal: Boolean = false
   private carData: any = {}
   private brandId: Number = 0
-  private repairName: string = '' //修改品牌名称
-  private repairServiceName: string = '' //修改车系名称
   private brandOneId: any = ''
   private serviceOneId: any = ''
+  private carSeriesAmendModel: any = {
+    repairServiceName: ''
+  }
+
   private brandNameModel: any = {
     addBrandName: ''
+  }
+  private repairNameModal: any = {
+    repairName: ''
   }
   //新增车辆品牌
   private brandNameRule: any = {
@@ -215,6 +220,10 @@ export default class VehicleMaintenance extends Page {
   // 修改车辆品牌
   private amendRule: any = {
     repairName: [{ required: true, message: '请输入车辆品牌名称', trigger: 'blur', }],
+  }
+  // 修改车系
+  private carSeriesAmendRule: any = {
+    repairServiceName: [{ required: true, message: '请输入车辆品牌名称', trigger: 'blur', }],
   }
 
   created() {
@@ -295,6 +304,18 @@ export default class VehicleMaintenance extends Page {
     this.addSeriesModal = false
     this.getCarseries()
   }
+  /**
+   * 关闭新增车系弹窗
+   */
+  closeSeries(val) {
+    if (!val) {
+      this.addSeriesModal = false
+      this.getCarseries()
+      let addSeriesModal = this.$refs['add-car-series'] as AddCarSeries
+      addSeriesModal.resetClose()
+    }
+  }
+
   /**
    * 取消新增车系
    */
@@ -688,6 +709,15 @@ export default class VehicleMaintenance extends Page {
 
   }
   /**
+   * 关闭新增品牌
+   */
+  closeBrand(val) {
+    if (!val) {
+      this.brandNameModel.addBrandName = ""
+    }
+  }
+
+  /**
    * 取消新增品牌
    */
   cancleAddBrand() {
@@ -711,11 +741,11 @@ export default class VehicleMaintenance extends Page {
    */
   cancleRepair() {
     this.repairModal = false
-    this.repairName = ''
+    this.repairNameModal.repairName = ''
   }
   cancleServiceRepair() {
     this.repairServiceModal = false
-    this.repairServiceName = ''
+    this.carSeriesAmendModel.repairServiceName = ''
   }
   /**
    * 确定修改品牌和车系
@@ -723,38 +753,40 @@ export default class VehicleMaintenance extends Page {
   confirmRepair() {
     let form = <Form>this.$refs['form-item-confirm']
     form.validate(valid => {
+      console.log(valid)
       if (!valid) return false
       this.carService
         .modifyCarInfo({
           flag: 0,
           id: this.brandOneId,
-          name: this.repairName
+          name: this.repairNameModal.repairName
         })
         .subscribe(data => {
           this.$Message.success('修改成功')
-          this.repairName = ''
+          this.repairNameModal.repairName = ''
           this.repairModal = false
           this.getCarseries()
         })
     })
   }
+  // 修改车系
   confirmServiceRepair() {
-    if ((/^[ ]*$/).test(this.repairServiceName)) {
-         this.$Message.error("请填写车系名称");
-       return
-      } 
-    this.carService
-      .modifyCarInfo({
-        flag: 1,
-        id: this.serviceOneId,
-        name: this.repairServiceName
-      })
-      .subscribe(data => {
-        this.$Message.success('修改成功')
-        this.repairServiceName = ''
-        this.repairServiceModal = false
-        this.getCarseries()
-      })
+    let form = <Form>this.$refs['form-item']
+    form.validate(valid => {
+      if (!valid) return false
+      this.carService
+        .modifyCarInfo({
+          flag: 1,
+          id: this.serviceOneId,
+          name: this.carSeriesAmendModel.repairServiceName
+        })
+        .subscribe(data => {
+          this.$Message.success('修改成功')
+          this.carSeriesAmendModel.repairServiceName = ''
+          this.repairServiceModal = false
+          this.getCarseries()
+        })
+    })
   }
   /**
    * 修改品牌和车系
@@ -763,7 +795,7 @@ export default class VehicleMaintenance extends Page {
     // console.log(data)
     // console.log(data.title)
     this.repairModal = true
-    this.repairName = data.title
+    this.repairNameModal.repairName = data.title
     this.brandOneId = data.brandId
   }
   /**
@@ -773,7 +805,7 @@ export default class VehicleMaintenance extends Page {
     // console.log(data.title)
     this.repairServiceModal = true
     this.serviceOneId = data.seriesId
-    this.repairServiceName = data.title
+    this.carSeriesAmendModel.repairServiceName = data.title
   }
 }
 </script>
