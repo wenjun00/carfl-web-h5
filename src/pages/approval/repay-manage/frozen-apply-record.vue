@@ -27,7 +27,6 @@
 import Page from '~/core/page'
 import DataBox from '~/components/common/data-box.vue'
 import Component from 'vue-class-component'
-import RepaySum from '~/components/approval-manage/repay-sum.vue'
 import PurchaseInformation from '~/components/purchase-manage/purchase-information.vue'
 import SvgIcon from '~/components/common/svg-icon.vue'
 import { Dependencies } from '~/core/decorator'
@@ -39,7 +38,6 @@ import { RemitApplicationService } from '~/services/manage-service/remit-applica
 @Component({
   components: {
     DataBox,
-    RepaySum,
     SvgIcon
   }
 })
@@ -248,8 +246,6 @@ export default class FrozenApplyRecord extends Page {
   openSearch() {
     this.searchOptions = !this.searchOptions
   }
-
-  repaySum(row) { }
 
   trailerCar(row) { }
 

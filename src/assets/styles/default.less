@@ -184,6 +184,16 @@ body,
   }
 }
 
+.tooltop-style(){
+  .ivu-tooltip{
+    .ivu-tooltip-inner{
+      white-space:normal;
+      word-break:break-all;
+      word-wrap:break-word; 
+    }
+  }
+}
+
 .select-style() {
   .ivu-select-dropdown {
     transform-origin: center top 0px;
@@ -223,6 +233,7 @@ body,
     .table-style();
     .select-style();
     .grid-style(); // .radio-style();
+    .tooltop-style()
     // .fixed-style();
   }
   .modal-style();
