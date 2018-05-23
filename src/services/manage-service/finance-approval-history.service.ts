@@ -2,7 +2,8 @@ import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
-
+import {FilterService} from "~/utils/filter.service";
+ 
 export class FinanceApprovalHistoryService {
     @Inject(NetService)
     private netService: NetService
@@ -10,9 +11,16 @@ export class FinanceApprovalHistoryService {
      * 收款审批记录查询
      */
     getWithdrawApprovalList(data, page) {
+      const dateRange = FilterService.dateRanageFormat(data.dateRange)
         return this.netService.send({
             server: manageService.financeApprovalHistoryController.getWithdrawApprovalList,
-            data,
+            data:{
+              startTime: dateRange.start,
+              endTime: dateRange.end,
+              orderNumber:data.orderNumber,
+              applicationType:data.applicationType,
+              
+            },
             page
         })
     }

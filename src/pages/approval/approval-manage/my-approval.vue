@@ -2,10 +2,24 @@
 <template>
   <section class="page my-approval">
     <page-header title="我的审核"></page-header>
-    <data-form date-prop="timeSearch" :model="myOrderModel" @on-search="getMyOrderList" :page="pageService" hidden-reset>
+    <data-form date-prop="timeSearch" :model="myOrderModel" @on-search="getMyOrderList" :page="pageService">
       <template slot="input">
-        <i-form-item prop="personalInfo">
+        <!-- <i-form-item prop="personalInfo">
           <i-input v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
+        </i-form-item> -->
+        <i-form-item prop="personalName" label="客户姓名：">
+          <i-input v-model="myOrderModel.personalName" placeholder="请输入客户姓名"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderNumber" label="订单编号：">
+          <i-input v-model="myOrderModel.orderNumber" placeholder="请输入订单编码"></i-input>
+        </i-form-item>
+        <i-form-item prop="tel" label="手机号码：">
+          <i-input v-model="myOrderModel.tel" placeholder="请输入手机号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderLink" label="环节">
+          <i-select placeholder="请选择环节" v-model="myOrderModel.orderLink" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0303')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
         </i-form-item>
         <i-form-item prop="dateRange" label="日期：">
           <i-date-picker v-model="myOrderModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
@@ -20,9 +34,16 @@
             <i-option v-for="{value,label} in this.myOrderModel.province ? this.$city.getCityData({ level: 1, id: this.myOrderModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="productType" label="产品名称:">
+        <!-- <i-form-item prop="productType" label="产品名称:">
           <i-input v-model="myOrderModel.productType"></i-input>
+        </i-form-item> -->
+
+         <i-form-item prop="productType" label="产品类型">
+          <i-select placeholder="产品类型" v-model="myOrderModel.productType" clearable>
+            <!-- <i-option v-for="{value,label} in $dict.getDictData('0301')" :key="value" :label="label" :value="value"></i-option> -->
+          </i-select>
         </i-form-item>
+
       </template>
     </data-form>
 
@@ -248,11 +269,14 @@ export default class MyApproval extends Page {
     // effectiveType: 1160
   }
   private myOrderModel: any = {
+    personalName: '',    // 客户姓名
+    orderNumber: '',     // 订单编号
+    tel: '',             // 手机号码
+    orderLink: '',       // 环节
     startTime: '',
     endTime: '',
     province: '',
     city: '',
-    personalInfo: '',
     timeSearch: '',
     productType: '',
     dateRange: []
@@ -291,10 +315,10 @@ export default class MyApproval extends Page {
       fixed: 'left',
       align: 'center',
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h('div', [
           h(
             'i-button', {
@@ -322,10 +346,10 @@ export default class MyApproval extends Page {
       title: '环节',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, {
-            row,
+        row,
         columns,
         index
-          }) => {
+      }) => {
         if (row.riskStatus) {
           return h('div', [
             h('span', {}, this.$dict.getDictName(row.orderLink)),
@@ -363,10 +387,10 @@ export default class MyApproval extends Page {
       key: 'orderStatus',
       minWidth: this.$common.getColumnWidth(2),
       render: (h, {
-            row,
+        row,
         columns,
         index
-          }) => {
+      }) => {
         return h('span', {}, this.$dict.getDictName(row.orderStatus))
       }
     },
@@ -377,10 +401,10 @@ export default class MyApproval extends Page {
       minWidth: this.$common.getColumnWidth(6),
       align: 'center',
       render: (h, {
-            row,
+        row,
         columns,
         index
-          }) => {
+      }) => {
         return h(
           'i-button', {
             props: {
@@ -409,10 +433,10 @@ export default class MyApproval extends Page {
       minWidth: this.$common.getColumnWidth(6),
       key: 'createTime',
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h(
           'span',
           this.$filter.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
@@ -421,15 +445,22 @@ export default class MyApproval extends Page {
     },
     {
       align: 'center',
+      title: '滞留天数',
+      editable: true,
+      key: 'detainedDays',
+      minWidth: this.$common.getColumnWidth(6),
+    },
+    {
+      align: 'center',
       title: '领取时间',
       editable: true,
       key: 'receiveDate',
       minWidth: this.$common.getColumnWidth(6),
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h(
           'span',
           this.$filter.dateFormat(row.receiveDate, 'yyyy-MM-dd hh:mm:ss')
@@ -443,10 +474,10 @@ export default class MyApproval extends Page {
       minWidth: this.$common.getColumnWidth(6),
       key: 'approvalDate',
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h(
           'span',
           this.$filter.dateFormat(row.approvalDate, 'yyyy-MM-dd hh:mm:ss')
@@ -460,10 +491,10 @@ export default class MyApproval extends Page {
       key: 'province',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h('span', CityService.getCityName(row.province))
       }
     },
@@ -474,10 +505,10 @@ export default class MyApproval extends Page {
       key: 'city',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h('span', CityService.getCityName(row.city))
       }
     },
@@ -488,10 +519,10 @@ export default class MyApproval extends Page {
       key: 'orderType',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, {
-            row,
+        row,
         columns,
         index
-          }) => {
+      }) => {
         return h('span', {}, this.$dict.getDictName(row.orderType))
       }
     },
@@ -585,18 +616,18 @@ export default class MyApproval extends Page {
         remark: this.facePassModel.remark
       })
       .subscribe(
-      data => {
-        this.$Message.success('操作成功！')
-        this.approvePassedModal = false
-        this.facePassModel.remark = ''
-        this.approveModal = false
-        this.getMyOrderList()
-      },
-      ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.$Message.success('操作成功！')
+          this.approvePassedModal = false
+          this.facePassModel.remark = ''
+          this.approveModal = false
+          this.getMyOrderList()
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 
@@ -648,8 +679,8 @@ export default class MyApproval extends Page {
         // this.passModel.effectiveType = 1160
       },
       ({
-          msg
-        }) => {
+        msg
+      }) => {
         this.$Message.error(msg)
       }
     )
@@ -666,14 +697,14 @@ export default class MyApproval extends Page {
     this.approveReasonService
       .getApproveReasonByCondition(this.approvalRecordModel)
       .subscribe(
-      data => {
-        this.refuseReason = data
-      },
-      ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.refuseReason = data
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 
@@ -683,14 +714,14 @@ export default class MyApproval extends Page {
     this.approveReasonService
       .getApproveReasonByCondition(this.approvalRecordModel)
       .subscribe(
-      data => {
-        this.refuseDetail = data
-      },
-      ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.refuseDetail = data
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
       )
   }
   reset() {
@@ -723,8 +754,8 @@ export default class MyApproval extends Page {
           this.approveModal = false
         },
         ({
-            msg
-          }) => {
+          msg
+        }) => {
           this.$Message.error(msg)
         }
       )
@@ -749,18 +780,18 @@ export default class MyApproval extends Page {
     this.approvalService
       .submitInternalAuditOrGreyList(this.grayModel)
       .subscribe(
-      val => {
-        this.$Message.success('提交灰名单成功！')
-        this.grayModel.remark = ''
-        this.grayListModal = false
-        // this.approveModal = false;
-        this.getMyOrderList()
-      },
-      ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      }
+        val => {
+          this.$Message.success('提交灰名单成功！')
+          this.grayModel.remark = ''
+          this.grayListModal = false
+          // this.approveModal = false;
+          this.getMyOrderList()
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 
@@ -772,18 +803,18 @@ export default class MyApproval extends Page {
     this.approvalService
       .submitInternalAuditOrGreyList(this.internalModel)
       .subscribe(
-      val => {
-        this.$Message.success('提交内审成功！')
-        this.internalModel.remark = ''
-        // this.approveModal = false;
-        this.submitToInternalModal = false
-        this.getMyOrderList()
-      },
-      ({
-            msg
-          }) => {
-        this.$Message.error(msg)
-      }
+        val => {
+          this.$Message.success('提交内审成功！')
+          this.internalModel.remark = ''
+          // this.approveModal = false;
+          this.submitToInternalModal = false
+          this.getMyOrderList()
+        },
+        ({
+          msg
+        }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 
@@ -819,19 +850,19 @@ export default class MyApproval extends Page {
       this.approvalService
         .submitBlackListOrRefuse(this.approvalRecordModel)
         .subscribe(
-        val => {
-          this.$Message.success('提交拒单成功！')
-          this.blackListModal = false
-          this.approveModal = false
-          this.cancelAddBlack()
-          this.getMyOrderList()
-          this.approvalRecordModel.remark = ''
-        },
-        ({
-              msg
-            }) => {
-          this.$Message.error(msg)
-        }
+          val => {
+            this.$Message.success('提交拒单成功！')
+            this.blackListModal = false
+            this.approveModal = false
+            this.cancelAddBlack()
+            this.getMyOrderList()
+            this.approvalRecordModel.remark = ''
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg)
+          }
         )
     } else {
       this.approvalRecordModel.operateType = 2
@@ -839,19 +870,19 @@ export default class MyApproval extends Page {
       this.approvalService
         .submitBlackListOrRefuse(this.approvalRecordModel)
         .subscribe(
-        val => {
-          this.$Message.success('提交黑名单成功！')
-          this.blackListModal = false
-          this.approveModal = false
-          this.cancelAddBlack()
-          this.getMyOrderList()
-          this.approvalRecordModel.remark = ''
-        },
-        ({
-              msg
-            }) => {
-          this.$Message.error(msg)
-        }
+          val => {
+            this.$Message.success('提交黑名单成功！')
+            this.blackListModal = false
+            this.approveModal = false
+            this.cancelAddBlack()
+            this.getMyOrderList()
+            this.approvalRecordModel.remark = ''
+          },
+          ({
+            msg
+          }) => {
+            this.$Message.error(msg)
+          }
         )
     }
   }
@@ -866,16 +897,16 @@ export default class MyApproval extends Page {
             orderId: this.approvalOrderId
           })
           .subscribe(
-          val => {
-            this.$Message.success('退回资源池成功！')
-            this.approveModal = false
-            this.getMyOrderList()
-          },
-          ({
-                msg
-              }) => {
-            this.$Message.error(msg)
-          }
+            val => {
+              this.$Message.success('退回资源池成功！')
+              this.approveModal = false
+              this.getMyOrderList()
+            },
+            ({
+              msg
+            }) => {
+              this.$Message.error(msg)
+            }
           )
       }
     })
@@ -942,8 +973,8 @@ export default class MyApproval extends Page {
     this.approvalService
       .getMyApprovalOrder(this.myOrderModel, this.pageService)
       .subscribe(
-      data => this.myOrderList = data,
-      err => this.$Message.error(err)
+        data => this.myOrderList = data,
+        err => this.$Message.error(err)
       )
   }
 

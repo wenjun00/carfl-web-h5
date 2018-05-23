@@ -1,12 +1,27 @@
-<!--审批资源池-->
+<!--审批资源池-->  
 <template>
   <section class="page approval-resource-pool">
     <page-header title="审核资源池"></page-header>
-    <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getApprovalListByCondition" :page="pageService" hidden-reset>
+    <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getApprovalListByCondition" :page="pageService">
       <template slot="input">
-        <i-form-item prop="personalInfo">
+        <!-- <i-form-item prop="personalInfo">
           <i-input v-model="resourcePoolModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
+        </i-form-item> -->
+        <i-form-item prop="personalName" label="客户姓名：">
+          <i-input v-model="resourcePoolModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
+        <i-form-item prop="orderNumber" label="订单编号：">
+          <i-input v-model="resourcePoolModel.orderNumber" placeholder="请输入订单编码"></i-input>
+        </i-form-item>
+        <i-form-item prop="tel" label="手机号码：">
+          <i-input v-model="resourcePoolModel.tel" placeholder="请输入手机号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderLink" label="环节">
+          <i-select placeholder="请选择环节" v-model="resourcePoolModel.orderLink" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0303')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+
         <i-form-item prop="dateRange" label="日期：">
           <i-date-picker v-model="resourcePoolModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
@@ -20,9 +35,9 @@
             <i-option v-for="{value,label} in this.resourcePoolModel.province ? this.$city.getCityData({ level: 1, id: this.resourcePoolModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="orderType" label="订单类型">
-          <i-select placeholder="订单类型" v-model="resourcePoolModel.orderType" clearable>
-            <i-option v-for="{value,label} in $dict.getDictData('0301')" :key="value" :label="label" :value="value"></i-option>
+        <i-form-item prop="orderType" label="产品类型">
+          <i-select placeholder="产品类型" v-model="resourcePoolModel.orderType" clearable>
+            <!-- <i-option v-for="{value,label} in $dict.getDictData('0301')" :key="value" :label="label" :value="value"></i-option> -->
           </i-select>
         </i-form-item>
       </template>
@@ -73,11 +88,14 @@ export default class ApprovalResourcePool extends Page {
   private scrollTopHeight = 0
   private val: Date
   private resourcePoolModel: any = {
+    personalName: '',    // 客户姓名
+    orderNumber: '',     // 订单编号
+    tel: '',             // 手机号码
+    orderLink: '',       // 环节
     startTime: '',
     endTime: '',
     province: '',
     city: '',
-    personalInfo: '',
     timeSearch: '',
     orderType: '',
     dateRange: []
@@ -217,6 +235,14 @@ export default class ApprovalResourcePool extends Page {
       },
       {
         align: 'center',
+        title: '滞留天数',
+        editable: true,
+        key: 'detainedDays',
+        minWidth: this.$common.getColumnWidth(6),
+      },
+
+      {
+        align: 'center',
         title: '进入资源池时间',
         editable: true,
         key: 'intoPoolDate',
@@ -344,8 +370,8 @@ export default class ApprovalResourcePool extends Page {
     this.approvalService
       .auditResourcePool(this.resourcePoolModel, this.pageService)
       .subscribe(
-      data => this.resourcePoolList = data,
-      err => this.$Message.error(err)
+        data => this.resourcePoolList = data,
+        err => this.$Message.error(err)
       )
   }
 

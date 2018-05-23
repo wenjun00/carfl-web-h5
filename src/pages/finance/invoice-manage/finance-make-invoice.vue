@@ -47,7 +47,8 @@
 
     <template>
       <i-modal title="查看附件" v-model="checkAttachmentModal">
-        <check-attachment ref="check-attachment"></check-attachment>
+        <!-- <check-attachment ref="check-attachment"></check-attachment> -->
+        <attachment-invoice ref="attachment-invoice"></attachment-invoice>
       </i-modal>
     </template>
 
@@ -67,6 +68,7 @@ import ConfirmRepayment from '~/components/finance-manage/confirm-repayment.vue'
 import DeductRecord from '~/components/finance-manage/deduct-record.vue'
 import RepayInfo from '~/components/finance-manage/repay-info.vue'
 import CheckAttachment from '~/components/finance-manage/check-attachment.vue'
+import AttachmentInvoice from '~/components/finance-manage/attachment-invoice.vue'
 import PaymentDetails from '~/components/finance-manage/payment-details.vue'
 import ConfirmMakeInvoice from '~/components/finance-manage/confirm-make-invoice.vue'
 import { Tooltip } from 'iview'
@@ -86,6 +88,7 @@ import { FilterService } from '~/utils/filter.service'
     CheckAttachment,
     ConfirmMakeInvoice,
     PaymentDetails,
+    AttachmentInvoice
   }
 })
 export default class FinanceMakeInvoice extends Page {
@@ -448,7 +451,7 @@ export default class FinanceMakeInvoice extends Page {
    */
   checkAttachment(row) {
     this.checkAttachmentModal = true
-    let checkAttachmentModal = this.$refs['check-attachment'] as CheckAttachment
+    let checkAttachmentModal = this.$refs['attachment-invoice'] as AttachmentInvoice
     checkAttachmentModal.checkAccessory(row.collectMoneyDetailId)
 
   }
