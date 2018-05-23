@@ -449,7 +449,7 @@ export default class FinanceMakeInvoice extends Page {
   checkAttachment(row) {
     this.checkAttachmentModal = true
     let checkAttachmentModal = this.$refs['check-attachment'] as CheckAttachment
-    checkAttachmentModal.checkAccessory(row.collectMoneyDetailId)
+    checkAttachmentModal.checkAccessory(row.collectMoneyDetailId,0)
 
   }
   /**
