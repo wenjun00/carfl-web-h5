@@ -3,12 +3,21 @@
     <page-header title="客户签约" hiddenPrint hiddenExport></page-header>
     <data-form date-prop="timeSearch" :model="customerSignModel" @on-search="getSignList" :page="pageService">
       <template slot="input">
-        <i-form-item prop="orderInfo">
+        <!-- <i-form-item prop="orderInfo">
           <i-input v-model="customerSignModel.orderInfo" placeholder="请输入订单编号\客户姓名\证件号码\联系号码"></i-input>
+        </i-form-item> -->
+         <i-form-item prop="personalName;" label="客户姓名">
+          <i-input v-model="customerSignModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
-        <i-form-item prop="dateRange" label="日期">
+        <i-form-item prop="idCard" label="证件号码">
+          <i-input v-model="customerSignModel.idCard" placeholder="请输入证件号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="tel" label="联系电话">
+          <i-input v-model="customerSignModel.tel" placeholder="请输入联系电话"></i-input>
+        </i-form-item>
+        <!-- <i-form-item prop="dateRange" label="日期">
           <i-date-picker v-model="customerSignModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
-        </i-form-item>
+        </i-form-item> -->
       </template>
     </data-form>
     <data-box :id="184" :columns="columns1" :data="customerSignList" @onPageChange="getSignList" :page="pageService"></data-box>
@@ -140,11 +149,14 @@ export default class CustomerSign extends Page {
   private mertialList: any = []
   private fileUploadLoadding: Boolean = false;
   private customerSignModel: any = {
+    personalName:'', // 客户姓名
+    idCard:'',   // 证件号码
+    tel:'',      // 联系电话
     orderInfo: '',
     timeSearch: '',
-    startTime: '',
-    endTime: '',
-    dateRange: []
+    // startTime: '',
+    // endTime: '',
+    // dateRange: []
   }
 
   mounted() {

@@ -17,9 +17,10 @@ export class CollectMoneyHistoryService {
     return this.netService.send({
       server: manageService.collectMoneyHistoryController.collectMoneyHistoryList,
       data: {
+        orderNumber:data.orderNumber,
         accountName: data.accountName,
-        queryStartDate: dateRange.start,
-        queryEndDate: dateRange.end,
+        startTime: dateRange.start,
+        endTime: dateRange.end,
         timeSearch: data.timeSearch,
       },
       page: page

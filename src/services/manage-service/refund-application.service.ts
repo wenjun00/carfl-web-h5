@@ -24,10 +24,14 @@ export class RefundApplicationService {
    * 进件  付款审批
    */
   getApprovalRecord(data, page) {
+    const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.refundApplicationController.getApprovalRecord,
       data: {
+        startTime: dateRange.start,
+        endTime: dateRange.end,
         getApprovalRecord: data.getApprovalRecord,
+        orderNumber:data.orderNumber,
         refundName: data.refundName,
         timeSearch: data.timeSearch,
         dynamicParams: data.dynamicParams,

@@ -2,19 +2,28 @@
 <template>
   <section class="page derate-apply-record">
     <page-header title="减免申请记录" hiddenPrint></page-header>
-    <data-form date-prop="timeSearch" :model="derateModel" @on-search="getDerateList" :page="pageService" hidden-reset>
+    <data-form date-prop="timeSearch" :model="derateModel" @on-search="getDerateList" :page="pageService">
       <template slot="input">
-        <i-form-item prop="orderInfo">
+        <!-- <i-form-item prop="orderInfo">
           <i-input v-model="derateModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
+        </i-form-item> -->
+        <i-form-item prop="personalName;" label="客户姓名">
+          <i-input v-model="derateModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
-        <i-form-item prop="dateRange" label="日期：">
-          <i-date-picker v-model="derateModel.dateRange" placeholder="请选择日期范围"></i-date-picker>
+        <i-form-item prop="idCard" label="证件号码">
+          <i-input v-model="derateModel.idCard" placeholder="请输入证件号码"></i-input>
         </i-form-item>
-        <i-form-item prop="collectMoneyMethod" label="结算通道">
+        <i-form-item prop="idCard" label="订单编号">
+          <i-input v-model="derateModel.orderNumber" placeholder="请输入证件号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="减免申请日期">
+          <i-date-picker v-model="derateModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+        </i-form-item>
+        <!-- <i-form-item prop="collectMoneyMethod" label="结算通道">
           <i-select placeholder="请选择结算通道" v-model="derateModel.collectMoneyMethod" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
-        </i-form-item>
+        </i-form-item> -->
       </template>
 
     </data-form>
@@ -51,9 +60,12 @@ export default class DerateApplyRecord extends Page {
   private purchaseInfoModal: Boolean = false
   private searchOptions: Boolean = false
   private derateModel: any = {
+    personalName:'', // 客户姓名
+    idCard:'',   // 证件号码
+    tel:'',      // 联系电话
     remitItem: 1121,
-    applyDateStart: '',
-    applyDateEnd: '',
+    startTime: '',
+    endTime: '',
     timeSearch: '',
     collectMoneyMethod: '',
     orderInfo: '',
@@ -259,8 +271,8 @@ export default class DerateApplyRecord extends Page {
     this.remitApplicationService
       .selectApplyForReliefHistory(this.derateModel, this.pageService)
       .subscribe(
-      data => this.derateList = data,
-      err => this.$Message.error(err)
+        data => this.derateList = data,
+        err => this.$Message.error(err)
       )
   }
 
@@ -273,13 +285,13 @@ export default class DerateApplyRecord extends Page {
         applyId: row.applyId
       })
       .subscribe(
-      val => {
-        this.$Message.success('撤销成功！')
-        this.getDerateList()
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
+        val => {
+          this.$Message.success('撤销成功！')
+          this.getDerateList()
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 

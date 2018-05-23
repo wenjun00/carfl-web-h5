@@ -2,18 +2,30 @@
 <template>
   <section class="page frozen-apply-record">
     <page-header title="冻结申请记录" hiddenPrint></page-header>
-    <data-form date-prop="timeSearch" :model="frozenModel" @on-search="getFrozenList" :page="pageService" hidden-reset>
+    <data-form date-prop="timeSearch" :model="frozenModel" @on-search="getFrozenList" :page="pageService">
       <template slot="input">
-        <i-form-item prop="orderInfo">
+        <!-- <i-form-item prop="orderInfo">
           <i-input v-model="frozenModel.orderInfo" placeholder="请录入客户姓名\证件号码\订单号\手机号查询"></i-input>
-        </i-form-item>
-        <i-form-item prop="dateRange" label="日期：">
+        </i-form-item> -->
+        <!-- <i-form-item prop="dateRange" label="日期：">
           <i-date-picker v-model="frozenModel.dateRange" placeholder="请选择日期范围"></i-date-picker>
-        </i-form-item>
-        <i-form-item prop="collectMoneyMethod" label="结算通道">
+        </i-form-item> -->
+        <!-- <i-form-item prop="collectMoneyMethod" label="结算通道">
           <i-select placeholder="请选择结算通道" v-model="frozenModel.collectMoneyMethod" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
+        </i-form-item> -->
+        <i-form-item prop="personalName;" label="客户姓名">
+          <i-input v-model="frozenModel.personalName" placeholder="请输入客户姓名"></i-input>
+        </i-form-item>
+        <i-form-item prop="idCard" label="证件号码">
+          <i-input v-model="frozenModel.idCard" placeholder="请输入证件号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="idCard" label="订单编号">
+          <i-input v-model="frozenModel.orderNumber" placeholder="请输入证件号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="冻结申请日期">
+          <i-date-picker v-model="frozenModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -50,9 +62,12 @@ export default class FrozenApplyRecord extends Page {
   private repayInfo: Boolean = false
   private searchOptions: Boolean = false
   private frozenModel: any = {
+    personalName:'', // 客户姓名
+    idCard:'',   // 证件号码
+    tel:'',      // 联系电话
     remitItem: 1122,
-    applyDateStart: '',
-    applyDateEnd: '',
+    startTime: '',
+    endTime: '',
     timeSearch: '',
     collectMoneyMethod: '',
     orderInfo: '',
@@ -147,7 +162,7 @@ export default class FrozenApplyRecord extends Page {
       {
         align: 'center',
         editable: true,
-        title: '申请时间',
+        title: '冻结申请日期',
         key: 'applyDate',
         minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
@@ -236,7 +251,7 @@ export default class FrozenApplyRecord extends Page {
       {
         align: 'center',
         editable: true,
-        title: '备注',
+        title: '减免备注',
         key: 'remitRemark',
         minWidth: this.$common.getColumnWidth(6)
       }
@@ -258,8 +273,8 @@ export default class FrozenApplyRecord extends Page {
     this.remitApplicationService
       .selectApplyForReliefHistory(this.frozenModel, this.pageService)
       .subscribe(
-      data => this.frozenList = data,
-      err => this.$Message.error(err)
+        data => this.frozenList = data,
+        err => this.$Message.error(err)
       )
   }
 
@@ -273,13 +288,13 @@ export default class FrozenApplyRecord extends Page {
         applyId: row.applyId
       })
       .subscribe(
-      val => {
-        this.$Message.success('解冻成功！')
-        this.getFrozenList()
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
+        val => {
+          this.$Message.success('解冻成功！')
+          this.getFrozenList()
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 

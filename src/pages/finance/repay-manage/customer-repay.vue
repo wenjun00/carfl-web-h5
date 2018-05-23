@@ -4,18 +4,27 @@
     <page-header title="客户还款"></page-header>
     <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList" hidden-reset>
       <template slot="input">
-        <i-form-item prop="dynamicParam">
+        <!-- <i-form-item prop="dynamicParam">
           <i-input class="second-input" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
-        </i-form-item>
-        <i-form-item prop="paymentStatus" label="还款状态">
+        </i-form-item> -->
+        <!-- <i-form-item prop="paymentStatus" label="还款状态">
           <i-select class="second-select" placeholder="请选择还款状态" v-model="customerRepayModel.paymentStatus" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
-        </i-form-item>
-        <i-form-item prop="settlementChannel" label="结算通道">
+        </i-form-item> -->
+        <!-- <i-form-item prop="settlementChannel" label="结算通道">
           <i-select class="second-select" placeholder="请选择结算通道" v-model="customerRepayModel.settlementChannel" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
+        </i-form-item> -->
+        <i-form-item prop="personalName;" label="客户姓名">
+          <i-input v-model="customerRepayModel.personalName" placeholder="请输入客户姓名"></i-input>
+        </i-form-item>
+        <i-form-item prop="idCard" label="证件号码">
+          <i-input v-model="customerRepayModel.idCard" placeholder="请输入证件号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="tel" label="订单编号">
+          <i-input v-model="customerRepayModel.orderNumber" placeholder="请输入订单编号"></i-input>
         </i-form-item>
       </template>
     </data-form>
@@ -95,6 +104,9 @@ export default class CustomerRepay extends Page {
   private deductRecordModal: Boolean = false;
   private customerSettleModal: Boolean = false;
   private customerRepayModel: any = {
+    personalName:'',    // 姓名
+    idCard:'',          // 证件号
+    orderNumber:'',     // 订单编号
     settlementChannel: "",
     paymentStatus: "",
     dynamicParam: "",
@@ -173,10 +185,10 @@ export default class CustomerRepay extends Page {
         this.confirmRepaymentModal = false;
         this.pageService.reset();
         this.getCustomerRepayList();
-        _repayment.fodderList=[]
+        _repayment.fodderList = []
         let _confirmRepayment: any = this.$refs['confirm-repayment']
         _confirmRepayment.uploadFodder.reset()
-        
+
       },
       ({ msg }) => {
         this.$Message.error(msg);
@@ -249,7 +261,7 @@ export default class CustomerRepay extends Page {
                 on: {
                   click: () => {
                     this.repayInfoModal = true;
-                    let _repay: any = this.$refs["repay-info"]; 
+                    let _repay: any = this.$refs["repay-info"];
                     _repay.refresh(row);
                   }
                 },
@@ -265,7 +277,7 @@ export default class CustomerRepay extends Page {
       },
       {
         align: "center",
-        title: "订单号",
+        title: "订单编号",
         editable: true,
         minWidth: this.$common.getColumnWidth(6),
         key: "orderNumber",
@@ -495,12 +507,12 @@ export default class CustomerRepay extends Page {
     this.paymentScheduleService
       .getCustomerPayments(this.customerRepayModel, this.pageService)
       .subscribe(
-      data => {
-        this.customerRepayList = data;
-      },
-      ({ msg }) => {
-        this.$Message.error(msg);
-      }
+        data => {
+          this.customerRepayList = data;
+        },
+        ({ msg }) => {
+          this.$Message.error(msg);
+        }
       );
   }
   /**

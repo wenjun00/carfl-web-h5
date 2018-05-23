@@ -73,10 +73,13 @@ export class PersonalService {
         return this.netService.send({
             server: manageService.personalController.getCustomerSignList,
             data: {
+                personalName:data.personalName,
+                idCard:data.idCard,
+                tel:data.tel,
                 orderInfo: data.orderInfo,
                 timeSearch: data.timeSearch,
-                startTime: dateRange.start,
-                endTime: dateRange.end,
+                // startTime: dateRange.start,
+                // endTime: dateRange.end,
             },
             page: page
         })
@@ -100,6 +103,9 @@ export class PersonalService {
         return this.netService.send({
             server: manageService.personalController.getCustomerDataOrder,
             data: {
+                orderNumber:data.orderNumber,
+                personalName:data.personalName,
+                idCard:data.idCard,
                 orderInfo: data.orderInfo, // 请输入客户姓名/证件号码/联系号码/订单所属人查询
                 startTime: dateRange.start, // 起始日期
                 endTime: dateRange.end, // 终止日期
@@ -228,7 +234,11 @@ export class PersonalService {
     getCustomerList(data,page){
       return this.netService.send({
         server: manageService.personalController.getCustomerList,
-        data:data,
+        data:{
+          personalName:data.personalName,
+          idCard:data.idCard,
+          tel:data.tel,
+        },
         page:page
       })
     }

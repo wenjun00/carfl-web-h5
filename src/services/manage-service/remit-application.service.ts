@@ -16,8 +16,11 @@ export class RemitApplicationService {
       server: manageService.remitApplicationController.selectApplyForReliefHistory,
       data: {
         remitItem: data.remitItem,
-        applyDateStart: dateRange.start,
-        applyDateEnd: dateRange.end,
+        startTime: dateRange.start,
+        endTime: dateRange.end,
+        personalName:data.personalName,
+        idCard:data.idCard,
+        orderNumber:data.orderNumber,
         timeSearch: data.timeSearch,
         collectMoneyMethod: data.collectMoneyMethod,
         orderInfo: data.orderInfo,

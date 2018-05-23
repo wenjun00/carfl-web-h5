@@ -1,4 +1,4 @@
-//财务开票
+//财务开票 
 import { manageService } from '~/config/server/manage-service' 
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
@@ -33,9 +33,10 @@ export class FinanceInvoiceService {
    * 新增财务开票
    */
   saveFinanceInvoiceRecord(data) {
+    let invoicingDate = !!FilterService.dateFormat(data.invoicingDate)?FilterService.dateFormat(data.invoicingDate):null
     return this.netService.send({
       server: manageService.financeInvoiceController.saveFinanceInvoiceRecord,
-      data:data
+      data:Object.assign(data, { invoicingDate })
     })
   }
    /**

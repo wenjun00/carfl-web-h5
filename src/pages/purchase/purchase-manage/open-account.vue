@@ -3,9 +3,19 @@
     <page-header title="客户开户"  hiddenPrint hiddenExport></page-header>
     <data-form hidden-date-search :model="openAccountModel" :page="pageService" @on-search="getCustomerOpenAccount" hidden-reset>
       <template slot="input">
-        <i-form-item prop="keyWord">
+        <!-- <i-form-item prop="keyWord">
           <i-input v-model="openAccountModel.keyWord" placeholder="请输入客户姓名\证件号码\联系号码查询"></i-input>
+        </i-form-item> -->
+        <i-form-item prop="personalName;" label="客户姓名">
+          <i-input v-model="openAccountModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
+        <i-form-item prop="idCard" label="证件号码">
+          <i-input v-model="openAccountModel.idCard" placeholder="请输入证件号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="tel" label="联系电话">
+          <i-input v-model="openAccountModel.tel" placeholder="请输入联系电话"></i-input>
+        </i-form-item>
+
       </template>
     </data-form>
     <data-box :id="180" :columns="columns1" :data="openAccountList" ref="databox" @onPageChange="getCustomerOpenAccount" :page="pageService"></data-box>
@@ -167,8 +177,10 @@
     private settleChannel: any = '' // 结算通道
     private personalBankId: any = '' // 用户账户id
     private openAccountModel: any = {
+      personalName:'', // 客户姓名
+      idCard:'',   // 证件号码
+      tel:'',      // 联系电话
       timeSearch: '',
-      keyWord: ''
     }
     mounted() {
       this.getCustomerOpenAccount()
@@ -238,22 +250,22 @@
               ]);
             } else if (row.accountStatus === 100) {
               return h("div", [
-                //     h(
-                //       'i-button', {
-                //         props: {
-                //           type: 'text'
-                //         },
-                //         style: {
-                //           color: '#265EA2'
-                //         },
-                //         on: {
-                //           click: () => {
-                //             this.bindCard(row)
-                //           }
-                //         }
-                //       },
-                //       '绑卡'
-                //     ),
+                    // h(
+                    //   'i-button', {
+                    //     props: {
+                    //       type: 'text'
+                    //     },
+                    //     style: {
+                    //       color: '#265EA2'
+                    //     },
+                    //     on: {
+                    //       click: () => {
+                    //         this.bindCard(row)
+                    //       }
+                    //     }
+                    //   },
+                    //   '绑卡'
+                    // ),
                 h(
                   'i-button', {
                     props: {
@@ -356,13 +368,19 @@
             )
           }
         },
-        // {
-        //   title: '客户号',
-        // //   editable: true,
-        //   key: 'customId',
-        //   align: 'center',
-        //   minWidth: this.$common.getColumnWidth(5),
-        // },
+        {
+          title: '客户号',
+          editable: true,
+          key: 'customId',
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(5),
+        },
+        {
+          title: '验卡失败原因',
+          key: 'faileReason',
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(5),
+        },
         // {
         //   title: '验卡失败原因',
         //   key: 'faileReason',

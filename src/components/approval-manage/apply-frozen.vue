@@ -76,7 +76,7 @@ export default class ApplyFrozen extends Vue {
     this.applyFrozenModel.orderId = this.orderId;
     if (
       this.applyFrozenModel.remitAmount >
-      this.repaySumObj.paymentSchedule.penaltyCanFreeze
+      this.repaySumObj.paymentSchedule.penaltySurplus
     ) {
       this.$Message.error("申请冻结罚息不能大于可冻结罚息");
     } else if (!this.applyFrozenModel.remitAmount) {

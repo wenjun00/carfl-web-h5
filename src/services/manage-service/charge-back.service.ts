@@ -26,9 +26,11 @@ export class ChargeBackService {
     return this.netService.send({
       server: manageService.chargeBackController.getPersonalAccountList,
       data: {
+        personalName:data.personalName,
+        idCard:data.idCard,
         orderInfo: data.orderInfo,
-        createDateStart: dateRange.start,
-        createDateEnd: dateRange.end,
+        startTime: dateRange.start,
+        endTime: dateRange.end,
         timeSearch: data.timeSearch,
       },
       page: page
@@ -43,6 +45,8 @@ export class ChargeBackService {
     return this.netService.send({
       server: manageService.chargeBackController.getChargeRecordList,
       data: {
+        personalName:data.personalName,
+        orderNumber:data.orderNumber,
         startTime: dataRange.start,
         endTime: dataRange.end,
         payStatus: data.payStatus,

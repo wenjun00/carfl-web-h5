@@ -4,10 +4,13 @@
     <page-header title="收款"></page-header>
     <data-form data-prop="timeSearch" hidden-reset :model="gatherModel" :page="pageService" @on-search="getGatherListByCondition">
       <template slot="input">
-        <i-form-item prop="accountName" label="收款账户">
+        <i-form-item prop="accountName" label="收款账户名">
           <i-input v-model="gatherModel.accountName" class="form-input" placeholder="请录入收款账户名查询"></i-input>
         </i-form-item>
-        <i-form-item prop="dateRange" label="日期：">
+        <i-form-item prop="orderNumber" label="订单编号">
+          <i-input v-model="gatherModel.orderNumber" class="form-input" placeholder="请录入收款账户名查询"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="处理日期">
           <i-date-picker v-model="gatherModel.dateRange" class="title-item" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
@@ -69,9 +72,10 @@
     private confirmGatherModal: Boolean = false;
     private check: Boolean = false;
     private gatherModel: any = {
+      orderNumber:'',
       accountName: '',
-      queryStartDate: '',
-      queryEndDate: '',
+      startTime: '',
+      endTime: '',
       timeSearch: '',
       dateRange:[]
     }

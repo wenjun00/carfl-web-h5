@@ -102,6 +102,7 @@ export default class FinanceMakeInvoice extends Page {
   private paymentDetailsModal:Boolean = false    //收款详情弹窗
   private makeId: any = [] // 开票数组       
   private makeMoney: Number = 0 // 开票金额
+  private ifMake:any = [] //查看是否开票
 
   private model: any = {
     dynamicCondition: '', // 客户姓名
@@ -315,16 +316,6 @@ export default class FinanceMakeInvoice extends Page {
     title: '开票日期',
     minWidth: this.$common.getColumnWidth(5),
     key: 'invoicingDate',
-    render: (h, {
-          row,
-      column,
-      index
-        }) => {
-      return h(
-        'span',
-        FilterService.dateFormat(row.invoicingDate, 'yyyy-MM-dd')
-      )
-    }
   },
   {
     align: 'center',
@@ -346,25 +337,36 @@ export default class FinanceMakeInvoice extends Page {
     if (val.length) {
       let arr = 0
       let array = []
+      let affirm = []
       for (let i in val) {
         arr += Number(val[i].collectMoneyAmount)
         array.push(val[i].collectMoneyDetailId)
+        affirm.push(val[i].invoicingStatus)
       }
       this.makeMoney = arr
       this.makeId = array
+      this.ifMake = affirm
+
     } else {
       this.makeId = []
       this.makeMoney = 0
+      this.ifMake = []
     }
-
   }
   /**
    * 多选确认开票
    */
   allMakeModal() {
-    this.makeInvoiceModal = true
-    let allMakeModal = this.$refs['confirm-make-invoice'] as ConfirmMakeInvoice
-    allMakeModal.allMakeInvoice(this.makeId, this.makeMoney)
+    // console.log(this.ifMake.indexOf(191) )
+    if(this.ifMake.indexOf(191)> -1){
+       this.$Message.error('选择开票有误，请重新选择')
+       return
+    }
+      this.makeInvoiceModal = true
+      let allMakeModal = this.$refs['confirm-make-invoice'] as ConfirmMakeInvoice
+      allMakeModal.allMakeInvoice(this.makeId, this.makeMoney)
+    
+    
   }
 
 

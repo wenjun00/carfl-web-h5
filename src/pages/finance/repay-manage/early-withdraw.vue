@@ -2,10 +2,19 @@
 <template>
   <section class="page early-withdraw">
     <page-header title="提前收回" hiddenPrint hiddenExport></page-header>
-    <data-form data-prop="timeSearch" hidden-reset @on-search="getEarlyPayList">
+    <data-form data-prop="timeSearch" @on-search="getEarlyPayList" :model="customerRepayModel">
       <template slot="input">
-        <i-form-item>
+        <!-- <i-form-item>
           <i-input placeholder="请录入客户姓名\证件号码"></i-input>
+        </i-form-item> -->
+        <i-form-item prop="personalName;" label="客户姓名">
+          <i-input v-model="customerRepayModel.personalName" placeholder="请输入客户姓名"></i-input>
+        </i-form-item>
+        <i-form-item prop="idCard" label="证件号码">
+          <i-input v-model="customerRepayModel.idCard" placeholder="请输入证件号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderNumber" label="订单编号">
+          <i-input v-model="customerRepayModel.orderNumber" placeholder="请输入订单编号"></i-input>
         </i-form-item>
       </template>
     </data-form>
@@ -79,6 +88,9 @@ export default class EarlyWithdraw extends Page {
   private repayInfoModal: Boolean = false;
   private customerSettleModal: Boolean = false;
   private customerRepayModel: any = {
+    personalName:'',    // 姓名
+    idCard:'',          // 证件号
+    orderNumber:'',     // 订单编号
     settlementChannel: '',
     paymentStatus: '',
     dynamicParam: '',
@@ -91,8 +103,8 @@ export default class EarlyWithdraw extends Page {
     this.advanceRevokeService.getAdvanceRevokeList(this.customerRepayModel, this.pageService).subscribe(data => {
       this.data1 = data
     }, ({
-        msg
-      }) => {
+      msg
+    }) => {
         this.$Message.error(msg)
       })
   }
@@ -124,8 +136,8 @@ export default class EarlyWithdraw extends Page {
       this.$Message.info('保存草稿成功！')
       this.confirmWithdrawModal = false
     }, ({
-        msg
-      }) => {
+      msg
+    }) => {
         this.$Message.error(msg)
       })
   }
@@ -149,8 +161,8 @@ export default class EarlyWithdraw extends Page {
       this.pageService.reset()
       this.getEarlyPayList()
     }, ({
-        msg
-      }) => {
+      msg
+    }) => {
         this.$Message.error(msg)
       })
   }
@@ -161,10 +173,10 @@ export default class EarlyWithdraw extends Page {
       align: "center",
       fixed: "left",
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         let arr = (row.approvalStatus === 108) ? [h('i-button', {
           props: {
             type: 'text'
@@ -200,15 +212,15 @@ export default class EarlyWithdraw extends Page {
     },
     {
       align: "center",
-      title: "订单号",
+      title: "订单编号",
       editable: true,
       minWidth: this.$common.getColumnWidth(6),
       key: 'orderNumber',
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h('i-button', {
           props: {
             type: 'text'
@@ -234,10 +246,10 @@ export default class EarlyWithdraw extends Page {
       editable: true,
       minWidth: this.$common.getColumnWidth(6),
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h('i-button', {
           props: {
             type: 'text'
@@ -280,10 +292,10 @@ export default class EarlyWithdraw extends Page {
       key: "createTime",
       minWidth: this.$common.getColumnWidth(6),
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h('span', this.$filter.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss'))
       }
     },
@@ -294,12 +306,33 @@ export default class EarlyWithdraw extends Page {
       key: "contractDate",
       minWidth: this.$common.getColumnWidth(4),
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h('span', this.$filter.dateFormat(row.contractDate, 'yyyy-MM-dd hh:mm:ss'))
       }
+    },
+     {
+      align: "center",
+      title: " 提前收回手续费",
+      minWidth: this.$common.getColumnWidth(4),
+      editable: true,
+      key: "advanceRevokeFee"
+    },
+    {
+      align: "center",
+      title: "违约金",
+      minWidth: this.$common.getColumnWidth(4),
+      editable: true,
+      key: "violateAmount"
+    },
+    {
+      align: "center",
+      title: "提前收回总金额",
+      minWidth: this.$common.getColumnWidth(4),
+      editable: true,
+      key: "totalPayment"
     },
     {
       align: "center",
@@ -308,10 +341,10 @@ export default class EarlyWithdraw extends Page {
       key: "settlementChannel",
       minWidth: this.$common.getColumnWidth(4),
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         return h("span", {}, this.$dict.getDictName(row.settlementChannel));
       }
     },

@@ -4,8 +4,19 @@
     <page-header title="放款审批" hiddenPrint></page-header>
     <data-form hidden-date-search :model="approvalModel" @on-search="openSearch">
       <template slot="input">
-        <i-form-item prop="dynamicParams">
+        <!-- <i-form-item prop="dynamicParams">
           <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="approvalModel.dynamicParams"></i-input>
+        </i-form-item> -->
+         <i-form-item prop="orderNumber" label="订单编号：">
+          <i-input v-model="approvalModel.orderNumber" placeholder="请输入订单编码"></i-input>
+        </i-form-item>
+         <i-form-item prop="applicationType" label="审核状态">
+          <!-- <i-select placeholder="请选择申请类型" v-model="approvalModel.applicationType" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
+          </i-select> -->
+        </i-form-item>
+        <i-form-item prop="dateRange" label="日期：">
+          <i-date-picker v-model="approvalModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
       <template slot="button">
@@ -75,7 +86,11 @@ export default class PaymentApprove extends Page {
   private type: any = "";
   private status: Boolean = true;
   private approvalModel: any = {
-    dynamicParams: "",
+    orderNumber:'',     // 订单编号
+    dateRange:[],       // 时间
+    startTime: '',
+    endTime: '',
+    // dynamicParams: "",
     processStatus: ""
   };
   addNewApply() {
@@ -250,7 +265,7 @@ export default class PaymentApprove extends Page {
         }
       },
       {
-        title: "处理状态",
+        title: "审核状态",
         editable: true,
         key: "processStatus",
         align: "center",

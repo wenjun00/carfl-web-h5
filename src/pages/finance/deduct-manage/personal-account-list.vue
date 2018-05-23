@@ -4,12 +4,19 @@
     <page-header title="个人开户列表" hiddenPrint></page-header>
     <data-form data-prop="timeSearch" :model="gatherModel" :page="pageService" @on-search="getGatherListByCondition" hidden-reset>
       <template slot="input">
-        <i-form-item prop="orderInfo">
+        <!-- <i-form-item prop="orderInfo">
           <i-input class="second-data-one" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="gatherModel.orderInfo"></i-input>
         </i-form-item>
-        <i-form-item prop="dateRange" label="日期：">
-          <i-date-picker class="second-data-three" v-model="gatherModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+       -->
+        <i-form-item prop="personalName;" label="客户姓名">
+          <i-input v-model="gatherModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
+        <i-form-item prop="idCard" label="证件号码">
+          <i-input v-model="gatherModel.idCard" placeholder="请输入证件号码"></i-input>
+        </i-form-item>
+         <i-form-item prop="dateRange" label="开户日期：">
+          <i-date-picker class="second-data-three" v-model="gatherModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
+        </i-form-item> 
       </template>
     </data-form>
 
@@ -76,8 +83,10 @@ export default class PersonalAccountList extends Page {
   private deductModal: Boolean = false;
   private gatherModel: any = {
     orderInfo: '',
-    createDateStart: '',
-    createDateEnd: '',
+    personalName:'',
+    idCard:'',
+    startTime: '',
+    endTime: '',
     timeSearch: '',
     dateRange: []
 
@@ -194,7 +203,7 @@ export default class PersonalAccountList extends Page {
       },
       {
         align: "center",
-        title: "预留手机",
+        title: "手机号码",
         key: "reservedPhoneNumber",
         minWidth: this.$common.getColumnWidth(5),
       }

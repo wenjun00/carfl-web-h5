@@ -9,7 +9,7 @@
         <i-form-item prop="roleName" label="角色名称：">
           <i-input placeholder="请输入角色姓名" v-model="roleModel.roleName"></i-input>
         </i-form-item>
-        <i-form-item prop="roleStatus" label="状态：">
+        <i-form-item prop="roleStatus" label="启用状态：">
           <i-select v-model="roleModel.roleStatus" clearable>
             <i-option label="启用" :value="0" :key="0"></i-option>
             <i-option label="停用" :value="1" :key="1"></i-option>

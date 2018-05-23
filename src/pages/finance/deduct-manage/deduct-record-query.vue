@@ -1,22 +1,36 @@
 <!--划扣记录查询-->
 <template>
   <section class="page deduct-record-query">
-    <page-header title="划扣记录查询" hiddenPrint></page-header>
-    <data-form hiddenDateSearch hidden-reset :model="model" :page="pageService" @on-search="getRecord">
+    <page-header title="还款记录查询" hiddenPrint></page-header>
+    <data-form hiddenDateSearch :model="model" :page="pageService" @on-search="getRecord">
       <template slot="input">
-        <i-form-item label="支付日期" prop="dateRange">
+        <!-- <i-form-item label="支付日期" prop="dateRange">
           <i-date-picker v-model="model.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
-        </i-form-item>
-        <i-form-item prop="personalInfo" label="客户姓名">
+        </i-form-item> -->
+        <!-- <i-form-item prop="personalInfo" label="客户姓名">
           <i-input placeholder="请输入客户姓名、客户号查询" v-model="model.personalInfo"></i-input>
-        </i-form-item>
-        <i-form-item prop="payStatus" label="城市">
+        </i-form-item> -->
+        <!-- <i-form-item prop="payStatus" label="城市">
           <i-select placeholder="全部" v-model="model.payStatus">
             <i-option label="初始" value="西安市" key="西安市"></i-option>
             <i-option label="成功" value="宝鸡市" key="宝鸡市"></i-option>
             <i-option label="失败" value="咸阳市" key="咸阳市"></i-option>
             <i-option label="处理中" value="渭南市" key="渭南市"></i-option>
           </i-select>
+        </i-form-item> -->
+        <i-form-item prop="personalName;" label="客户姓名">
+          <i-input v-model="model.personalName" placeholder="请输入客户姓名"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderNumber" label="订单编号">
+          <i-input v-model="model.orderNumber" placeholder="请输入联系电话"></i-input>
+        </i-form-item>
+         <i-form-item prop="paymentStatus" label="交易状态">
+          <i-select placeholder="请选择交易状态" v-model="model.payStatus" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0114')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
+        </i-form-item>
+        <i-form-item label="还款日期" prop="dateRange">
+          <i-date-picker v-model="model.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
     </data-form>
@@ -52,6 +66,8 @@ export default class DeductRecordQuery extends Page {
   private searchOptions: Boolean = false;
 
   private model: any = {
+    personalName:'',
+    orderNumber:'',
     personalInfo: '',
     startTime: '',
     endTime: '',
@@ -76,15 +92,15 @@ export default class DeductRecordQuery extends Page {
   created() {
     this.getRecord()
     this.columns1 = [{
-      title: "出账日期",
+      title: "还款日期",
       align: "center",
       key: "paymentDate",
       minWidth: this.$common.getColumnWidth(6),
       render: (h, {
-          row,
+        row,
         column,
         index
-        }) => {
+      }) => {
         return h('span', this.$filter.dateFormat(row.paymentDate, 'yyyy-MM-dd'))
       }
     },
@@ -144,7 +160,7 @@ export default class DeductRecordQuery extends Page {
     },
     {
       align: "center",
-      title: "订单号",
+      title: "订单编号",
       key: "orderNumber",
       minWidth: this.$common.getColumnWidth(6),
     },
@@ -154,10 +170,10 @@ export default class DeductRecordQuery extends Page {
       align: 'center',
       minWidth: this.$common.getColumnWidth(3),
       render: (h, {
-            row,
+        row,
         column,
         index
-          }) => {
+      }) => {
         if (row.customerName === '王泽杰') {
           return h('div', {}, [h('span', {}, row.tradingStatus),
           h('Icon', {

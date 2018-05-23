@@ -4,12 +4,22 @@
     <page-header title="资料补充查询" hiddenPrint hiddenExport></page-header>
     <data-form date-prop="timeSearch" :model="ordertransferModel" @on-search="refreshData"  :page="pageService">
       <template slot="input">
-        <i-form-item prop="orderInfo">
+        <!-- <i-form-item prop="orderInfo">
           <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入订单编号/客户姓名/证件号码/联系号码查询"></i-input>
+        </i-form-item> -->
+        <i-form-item prop="orderNumber" label="订单编号">
+          <i-input v-model="ordertransferModel.orderNumber" placeholder="请输入联系电话"></i-input>
         </i-form-item>
-        <i-form-item prop="dateRange" label="订单日期">
+         <i-form-item prop="personalName;" label="客户姓名">
+          <i-input v-model="ordertransferModel.personalName" placeholder="请输入客户姓名"></i-input>
+        </i-form-item>
+        <i-form-item prop="idCard" label="证件号码">
+          <i-input v-model="ordertransferModel.idCard" placeholder="请输入证件号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="dateRange" label="订单创建时间">
           <i-date-picker v-model="ordertransferModel.dateRange" type="daterange" @on-change="startTimeChange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
+        
       </template>
     </data-form>
     <data-box :id="376" :columns="columns1" :data="customerDataSet" :page="pageService" @onPageChange="refreshData"></data-box>
@@ -63,6 +73,9 @@ export default class CustomerDataQuery extends Page {
   private columns2: any;
   private data2: Array<Object>;
   private ordertransferModel: any = {
+    orderNumber:"",
+    personalName:'',
+    idCard:'',
     orderInfo: "", // 请输入客户姓名/证件号码/联系号码/订单所属人查询
     startTime: "", // 起始日期
     endTime: "", // 终止日期

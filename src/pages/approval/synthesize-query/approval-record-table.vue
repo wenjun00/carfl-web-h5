@@ -1,9 +1,12 @@
-<!--审核记录表-->
+<!--审核记录查询-->
 <template> 
   <section class="page approval-record-table">
-    <page-header title="审核记录表" hiddenPrint hiddenExport></page-header>
+    <page-header title="审核记录查询" hiddenPrint hiddenExport></page-header>
     <data-form date-prop="timeSearch" :model="approvalRecordModel" @on-search="getApprovaRecordList" :page="pageService">
       <template slot="input">
+        <!-- <i-form-item prop="orderNumber" label="订单编号">
+          <i-input v-model="approvalRecordModel.orderNumber" placeholder="请输入联系电话"></i-input>
+        </i-form-item> -->
         <i-form-item prop="type" label="审核状态">
           <i-select placeholder="选择状态" v-model="approvalRecordModel.type" @on-change="changeSelectOne" clearable>
             <i-option label="通过" :value="0" :key="0"></i-option>
@@ -89,6 +92,7 @@ export default class ApprovalRecordTable extends Page {
   private refuseReason: Array<Object> = [] // 拒单原因
   private refuseDetail: Array<Object> = [] // 拒单细节
   private approvalRecordModel: any = {
+    orderNumber:'',
     timeSearch: '',
     startTime: '',
     endTime: '',
