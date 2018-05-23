@@ -91,15 +91,12 @@ export default class WorkHeader extends Vue {
       content: '确认退出系统吗？',
       onOk: () => {
         this.loginService.logout().subscribe(
-          () => {
-            this.$router.push('/')
-          },
+          () => { this.$router.push('/') },
           err => {
             this.$Message.error(err.msg)
             this.$router.push('/')
           }
         )
-        console.log(3232)
       }
     })
   }

@@ -1,59 +1,29 @@
 <template>
   <section class="component add-collateral">
+
+    <div class="item-group">
+      <span class="item-title"></span>
+      <span class="information">押品基础信息</span>
+    </div>
+    <data-grid :labelWidth="90" labelAlign="right" contentAlign="left">
+      <data-grid-item label="客户姓名" :span="4">{{customerModel.ownerName}}</data-grid-item>
+      <data-grid-item label="手机号码" :span="4">{{customerModel.ownPhone}}</data-grid-item>
+      <data-grid-item label="证件号码" :span="4">{{customerModel.idCard}}</data-grid-item>
+      <data-grid-item label="所选车辆" :span="4">{{customerModel.carAllName}}</data-grid-item>
+      <data-grid-item label="车身颜色" :span="4">{{customerModel.carColor}}</data-grid-item>
+      <data-grid-item label="车牌号码" :span="4">{{customerModel.carNo}}</data-grid-item>
+      <data-grid-item label="车牌归属" :span="4">{{`${tempShowModel.province} ${tempShowModel.city}`}}</data-grid-item>
+      <data-grid-item label="发动机号" :span="4">{{customerModel.engineNo}}</data-grid-item>
+      <data-grid-item label="车架号" :span="4">{{customerModel.frameNo}}</data-grid-item>
+    </data-grid>
+
     <!-- <span>选购信息</span> -->
-    <i-row class="data-form">
-      <i-col>
-        <div class="data-form-item"></div>
-        <a class="information">选购信息</a>
-      </i-col>
-    </i-row>
+    <div class="item-group">
+      <span class="item-title"></span>
+      <span class="information">选购信息</span>
+    </div>
     <i-form :rules="ruleValidateRule" :model="customerModel" ref="form-item" :label-width="90">
       <i-row type="flex" :gutter="8">
-        <i-col :span="12">
-          <i-form-item label="所选车辆">
-            <i-input disabled v-model="customerModel.carAllName"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="车身颜色">
-            <i-input disabled v-model="customerModel.carColor"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="上牌省份">
-            <i-input disabled v-model="tempShowModel.province"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="上牌城市">
-            <i-input disabled v-model="tempShowModel.city"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="车牌号码">
-            <i-input disabled v-model="customerModel.carNo"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="发动机号">
-            <i-input disabled v-model="customerModel.engineNo"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="客户姓名">
-            <i-input disabled v-model="customerModel.ownerName"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="车架号">
-            <i-input disabled v-model="customerModel.frameNo"></i-input>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="手机号码">
-            <i-input disabled v-model="customerModel.ownPhone"></i-input>
-          </i-form-item>
-        </i-col>
         <i-col :span="12">
           <i-form-item label="出厂日期" prop="factoryTime">
             <i-date-picker type="date" placeholder="出厂日期" v-model="customerModel.factoryTime" :editable="false"></i-date-picker>
@@ -62,11 +32,6 @@
         <i-col :span="12">
           <i-form-item label="初登日期" prop="firstTime">
             <i-date-picker type="date" placeholder="初登日期" v-model="customerModel.firstTime" :editable="false" :disabled="!customerModel.factoryTime"></i-date-picker>
-          </i-form-item>
-        </i-col>
-        <i-col :span="12">
-          <i-form-item label="证件号码">
-            <i-input disabled v-model="customerModel.idCard"></i-input>
           </i-form-item>
         </i-col>
         <i-col :span="12">
@@ -114,67 +79,32 @@
         </i-col>
       </i-row>
 
-      <!-- <span>外观</span> -->
-      <i-row class="data-form">
-        <i-col>
-          <div class="data-form-item"></div>
-          <a class="information">外观</a>
-        </i-col>
-      </i-row>
-      <i-row type="flex" :gutter="85">
-        <i-col v-for="item in appearance" :key="item.attrCode">
-          <i-form-item :label="item.attrName">
-            <i-radio-group v-model="item.attrValue">
-              <i-radio :label="1">正常</i-radio>
-              <i-radio :label="0">异常</i-radio>
-            </i-radio-group>
-          </i-form-item>
-        </i-col>
-      </i-row>
-
-      <!-- <span>内饰检测</span> -->
-      <i-row class="data-form">
-        <i-col>
-          <div class="data-form-item"></div>
-          <a class="information">内饰检验</a>
-        </i-col>
-      </i-row>
-      <i-row type="flex" :gutter="85">
-        <i-col v-for="item in interiorInspection" :key="item.attrCode">
-          <i-form-item :label="item.attrName">
-            <i-radio-group v-model="item.attrValue">
-              <i-radio :label="1">正常</i-radio>
-              <i-radio :label="0">异常</i-radio>
-            </i-radio-group>
-          </i-form-item>
-        </i-col>
-      </i-row>
-
-      <!-- <span>机舱/底盘</span> -->
-      <i-row class="data-form">
-        <i-col>
-          <div class="data-form-item"></div>
-          <a class="information">机舱/底盘</a>
-        </i-col>
-      </i-row>
-      <i-row type="flex" :gutter="85">
-        <i-col v-for="item in engineRoom" :key="item.attrCode">
-          <i-form-item :label="item.attrName">
-            <i-radio-group v-model="item.attrValue">
-              <i-radio :label="1">正常</i-radio>
-              <i-radio :label="0">异常</i-radio>
-            </i-radio-group>
-          </i-form-item>
-        </i-col>
-      </i-row>
+      <i-collapse v-model="currentPanel" accordion>
+        <i-panel name="1">
+          外观
+          <template slot="content">
+            <add-collateral-option v-model="appearance"></add-collateral-option>
+          </template>
+        </i-panel>
+        <i-panel name="2">
+          内饰检测
+          <template slot="content">
+            <add-collateral-option v-model="interiorInspection"></add-collateral-option>
+          </template>
+        </i-panel>
+        <i-panel name="3">
+          机舱/底盘
+          <template slot="content">
+            <add-collateral-option v-model="engineRoom"></add-collateral-option>
+          </template>
+        </i-panel>
+      </i-collapse>
 
       <!-- <span>评估结果</span> -->
-      <i-row class="data-form">
-        <i-col>
-          <div class="data-form-item"></div>
-          <a class="information">评估结果</a>
-        </i-col>
-      </i-row>
+      <div class="item-group">
+        <span class="item-title"></span>
+        <span class="information">评估结果</span>
+      </div>
       <i-row type="flex" :gutter="8">
         <i-col :span="12">
           <i-form-item label="车况" prop="carSituation">
@@ -190,12 +120,16 @@
           </i-form-item>
         </i-col>
         <i-col :span="24">
-          <i-form-item label="备注" class="large">
-            <i-input type="textarea" v-model="customerModel.remarks" :rows="4"></i-input>
+          <i-form-item label="备注">
+            <i-input type="textarea" class="large-input" v-model="customerModel.remarks" :rows="1"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
 
+      <div class="item-group">
+        <span class="item-title"></span>
+        <span class="information">附件信息</span>
+      </div>
       <i-row>
         <i-col>
           <upload-voucher ref="upload-voucher" @financeUploadResources="fileNumber"></upload-voucher>
@@ -210,30 +144,27 @@
 import Vue from "vue";
 import { Dependencies } from '~/core/decorator'
 import Component from "vue-class-component";
-import { Emit } from "vue-property-decorator";
+import { Emit, Prop } from "vue-property-decorator";
 import { AssessMentApplyService } from "~/services/manage-service/assess-ment-apply.service";
-import { CityService } from '~/utils/city.service'
 import UploadVoucher from "~/components/common/upload-voucher.vue"
-import { Form } from 'iview'
+import { DataGrid, DataGridItem } from "@zct1989/vue-component";
+import AddCollateralOption from "~/components/purchase-manage/add-collateral-option.vue";
 
 @Component({
   components: {
-    UploadVoucher
+    UploadVoucher,
+    DataGrid,
+    DataGridItem,
+    AddCollateralOption
   }
 })
 export default class AddCollateral extends Vue {
   @Dependencies(AssessMentApplyService) private assessMentApplyService: AssessMentApplyService
-  @Emit('close')
-  onClose() {
-    let form = this.$refs['form-item'] as Form;
-    form.resetFields();
-    this.tempShowModel.city = '';
-    this.tempShowModel.province = '';
 
-    let uploadVoucher = this.$refs['upload-voucher'] as UploadVoucher;
-    uploadVoucher.reset();
-  }
+  @Prop()
+  assessmentNo
 
+  private currentPanel: string = "1"
   private submitModel: any = {}
 
   private tempShowModel = {
@@ -264,7 +195,7 @@ export default class AddCollateral extends Vue {
     idCard: '',
     carAllName: '',
     carAttrList: [],
-    carFileList:[]
+    carFileList: []
   }
   private basicList: any = [{}]
   private fodderList: any = [] //上传文件列
@@ -315,9 +246,8 @@ export default class AddCollateral extends Vue {
    *
    * @param 查询评估信息
    */
-  getBrash(row) {
-    this.row = row
-    this.assessMentApplyService.beginOrderAssess({ assessmentNo: row.assessmentNo })
+  getBrash() {
+    this.assessMentApplyService.beginOrderAssess({ assessmentNo: this.assessmentNo })
       .subscribe(data => {
         // console.log(data)
         this.appearance = data.basicList[0].carAttrList.filter(v => v.attrType === 1).map(x => ({
@@ -354,32 +284,35 @@ export default class AddCollateral extends Vue {
 
         this.submitModel = data
         this.submitModel.assessmentStatus = 1191 //保存是案件状态变更1191
-      })
+      }, err => this.$Message.error(err.msg))
   }
   /**
    *  确定新增评估
    */
   trueAssessment() {
-    let form = this.$refs['form-item'] as Form
-    form.validate(valid => {
-      if (!valid) return false
-      this.customerModel.carAttrList = this.appearance.concat(this.interiorInspection).concat(this.engineRoom)
-      this.customerModel.carBasicFileList = this.fodderList
-      this.customerModel.firstTime = this.$filter.dateFormat(this.customerModel.firstTime)
-      this.customerModel.factoryTime = this.$filter.dateFormat(this.customerModel.factoryTime)
+    return new Promise((resolve, reject) => {
+      let form = this.$refs['form-item'] as any
+      form.validate(valid => {
+        if (!valid) return reject()
+        this.customerModel.carAttrList = this.appearance.concat(this.interiorInspection).concat(this.engineRoom)
+        this.customerModel.carBasicFileList = this.fodderList
 
-      // 删除原来的basicList
-      delete this.submitModel.basicList
-      // 增加现有数据model
-      this.submitModel.assessmentBasicModel = this.customerModel
-
-      this.assessMentApplyService.saveAssessmentBasicInfo(this.submitModel)
-        .subscribe(data => {
-          this.$Message.success("保存成功！")
-          this.onClose()
-        }, ({ msg }) => {
-          this.$Message.error(msg)
-        })
+        // 删除原来的basicList
+        delete this.submitModel.basicList
+        // 转换时间
+        let firstTime = this.$filter.dateFormat(this.customerModel.firstTime)
+        let factoryTime = this.$filter.dateFormat(this.customerModel.factoryTime)
+        // 增加现有数据model
+        this.submitModel.assessmentBasicModel = Object.assign(this.customerModel, { firstTime: firstTime, factoryTime: factoryTime })
+        this.assessMentApplyService.saveAssessmentBasicInfo(this.submitModel)
+          .subscribe(data => {
+            this.$Message.success("保存成功！")
+            resolve()
+          }, ({ msg }) => {
+            this.$Message.error(msg)
+            reject()
+          })
+      })
     })
   }
   /**
@@ -392,48 +325,61 @@ export default class AddCollateral extends Vue {
    *  取消评估
    */
   cancelAssessment() {
-    this.$Modal.confirm({
-      title: '提示',
-      content: '是否确定不再进行当前评估？',
-      onOk: () => {
-        this.assessMentApplyService.terminationStatus({ orderId: this.row.id, status: this.row.assessmentStatus })
-          .subscribe(data => {
-            this.$Message.success("终止评估成功！")
-            this.$emit('close');
-          }, ({ msg }) => {
-            this.$Message.error(msg)
-          })
-      }
+    return new Promise((resolve, reject) => {
+      this.$Modal.confirm({
+        title: '提示',
+        content: '是否确定不再进行当前评估？',
+        onOk: () => {
+          this.assessMentApplyService.terminationStatus({ orderId: this.row.id, status: this.row.assessmentStatus })
+            .subscribe(data => {
+              this.$Message.success("终止评估成功！")
+              resolve()
+            }, ({ msg }) => {
+              this.$Message.error(msg)
+              reject()
+            })
+        }
+      })
     })
   }
   /**
    *  退件
    */
   backSerice() {
-    this.$Modal.confirm({
-      title: '提示',
-      content: '是否将订单返回修改？再次提交后将继续由您进行评估。',
-      onOk: () => {
-        this.assessMentApplyService.backPieceStatus({ orderId: this.row.id, status: this.row.assessmentStatus })
-          .subscribe(data => {
-            this.$Message.success("退件成功！")
-            this.$emit('close');
-          }, ({ msg }) => {
-            this.$Message.error(msg)
-          })
-      }
+    return new Promise((resolve, reject) => {
+      this.$Modal.confirm({
+        title: '提示',
+        content: '是否将订单返回修改？再次提交后将继续由您进行评估。',
+        onOk: () => {
+          this.assessMentApplyService.backPieceStatus({ orderId: this.row.id, status: this.row.assessmentStatus })
+            .subscribe(data => {
+              this.$Message.success("退件成功！")
+              resolve()
+            }, ({ msg }) => {
+              this.$Message.error(msg)
+              reject()
+            })
+        }
+      })
     })
   }
+
+  mounted() {
+    this.getBrash()
+  }
+
 }
 </script>
 
 <style lang="less" scoped>
 .component.add-collateral {
-  .data-form {
-    margin-top: 5px;
-    .data-form-item {
-      width: 7px;
+  .item-group {
+    line-height: 25px;
+    height: 25px;
+    margin: 10px 0;
+    .item-title {
       height: 25px;
+      width: 7px;
       background: #265ea2;
       display: inline-block;
       margin-right: 6px;
@@ -443,6 +389,22 @@ export default class AddCollateral extends Vue {
     .information {
       font-size: 16px;
       color: black;
+    }
+  }
+}
+</style>
+
+<style lang="less" >
+.component.add-collateral {
+  .ivu-collapse-content,
+  .ivu-collapse-content-box {
+    padding: 0;
+  }
+  .ivu-form-item {
+    .ivu-form-item-content {
+      .large-input {
+        width: 90%;
+      }
     }
   }
 }

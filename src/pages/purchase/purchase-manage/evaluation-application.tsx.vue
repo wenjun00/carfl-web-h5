@@ -20,7 +20,7 @@
         </i-form-item>
       </template>
     </data-form>
-    <data-box :columns="applicationColumns" :data="dataSet" :page="pageService"  @onPageChange="getApplicationList"></data-box>
+    <data-box :columns="applicationColumns" :data="dataSet" :page="pageService" @onPageChange="getApplicationList"></data-box>
 
     <template>
       <i-modal width="680" v-model="applicationModal" title="查看详情" class="apply-for-application">
@@ -258,12 +258,12 @@ export default class EvaluationApplication extends Page {
     this.assessMentApplyService
       .orderSearch(this.applicationModel, this.pageService)
       .subscribe(
-      data => {
-        this.dataSet = data
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.dataSet = data
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
       )
   }
   /**
@@ -271,9 +271,13 @@ export default class EvaluationApplication extends Page {
    */
   getDetailsList(row) {
     if (row.assessmentStatus == 1191) {
-      this.detailsModal = true
-      let AddCollateralDetails = this.$refs['add-collateral-details'] as AddCollateralDetails
-      AddCollateralDetails.getDetailsData(row)
+      this.$dialog.show({
+        title: '查看申请',
+        footer: true,
+        isView: true,
+        width: 800,
+        render: h => h(AddCollateralDetails, { props: { assessmentNo: row.assessmentNo } })
+      })
     } else {
       this.applicationModal = true
       let applyForApplication = this.$refs['apply-for-application'] as ApplyForApplication

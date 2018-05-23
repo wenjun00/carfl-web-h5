@@ -18,7 +18,7 @@
         </div>
       </div>
       <!--正常上传-->
-      <div class="modal-item-upload-col" v-for="(v,i) in financeUploadResources">
+      <div class="modal-item-upload-col" v-for="(v,i) in financeUploadResources" :key="i">
         <img class="modal-item-upload-img" :src="v.materialUrl">
         <div class="blackFlag" >
           <i-button type="text" icon="eye" @click.native="preview(v)" class="buttonFlag eye"></i-button>
