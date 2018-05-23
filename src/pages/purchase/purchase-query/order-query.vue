@@ -2,12 +2,21 @@
 <template>
   <section class="page order-query">
     <page-header title="订单查询" hiddenPrint></page-header>
-    <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getOrderQuery" hidden-reset :page="pageService">
+    <data-form date-prop="timeSearch" :model="approvalModel" @on-search="getOrderQuery" :page="pageService">
       <template slot="input">
-        <i-form-item prop="orderInfo">
-          <i-input placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.orderInfo"></i-input>
+        <!--<i-form-item prop="orderInfo">-->
+        <!--<i-input placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="approvalModel.orderInfo"></i-input>-->
+      <!--</i-form-item>-->
+        <i-form-item prop="orderNumber" label="订单编号">
+          <i-input placeholder="请录入订单编号" v-model="approvalModel.orderNumber"></i-input>
         </i-form-item>
-        <i-form-item prop="dataRange" label="日期">
+        <i-form-item prop="idCard" label="证件号码">
+          <i-input placeholder="请录入客户证件号码" v-model="approvalModel.idCard"></i-input>
+        </i-form-item>
+        <i-form-item prop="tel" label="联系号码">
+          <i-input placeholder="请录入客户联系号码" v-model="approvalModel.tel"></i-input>
+        </i-form-item>
+        <i-form-item label="订单时间" prop="dateRange">
           <i-date-picker v-model="approvalModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
@@ -88,10 +97,15 @@ export default class OrderQuery extends Page {
   private startTime: any;
   private endTime: any;
   private approvalModel: any = {
-    timeSearch: "",
-    orderInfo: "",
-    startTime: "",
-    endTime: ""
+    dateRange: [],
+    startTime: '', // 起始日期
+    endTime: '', // 终止日期
+    timeSearch: '',
+    orderNumber:'',//请输入订单编号
+    idCard:'',//证件号码
+    tel:'',//联系号码
+    personalName:''//客户姓名
+
   };
   get searchDate() {
     return [
@@ -485,7 +499,7 @@ export default class OrderQuery extends Page {
       },
       {
         align: "center",
-        title: "融资总额(元)",
+        title: "贷款总额(元)",
         editable: true,
         key: "financingAmount",
         minWidth: this.$common.getColumnWidth(4),
@@ -552,7 +566,7 @@ export default class OrderQuery extends Page {
   }
   getOrderQuery() {
     this.productOrderService
-      .orderSearch(this.approvalModel, this.pageService)
+      .findTransferOrder(this.approvalModel, this.pageService)
       .subscribe(
       val => {
         this.queryData = val;

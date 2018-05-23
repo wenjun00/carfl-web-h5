@@ -4,14 +4,13 @@ const SERVICE = 'service-manage'
 const CONTROLLER = 'productOrder'
 
 export default {
-
   /**
-   * 进件模块 --订单交接查询
+   * 进件管理-订单交接/订单查询多条件查询
    */
-  getOrderHandover: {
+  findTransferOrder: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'getOrderHandover',
+    action: 'findTransferOrder',
     type: requestType.Get
   },
   /**
