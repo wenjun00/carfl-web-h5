@@ -108,7 +108,7 @@ export class FilterService {
     } else {
       num = Number(number).toFixed(2)
       if (isNaN(num) || num === '' || num === undefined || num === null) {
-        return ''
+        return '0'
       }
       num = num + ''
       if (/^.*\..*$/.test(num)) {

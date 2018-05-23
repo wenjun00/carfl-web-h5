@@ -4,13 +4,19 @@
     <page-header title="收款审批" hiddenPrint></page-header>
     <data-form hidden-date-search :model="receipt" :page="pageService" @on-search="searchReceiptapprove">
       <template slot="input">
-        <i-form-item prop="dynamicCondition">
+        <!-- <i-form-item prop="dynamicCondition">
           <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="receipt.dynamicCondition"></i-input>
+        </i-form-item> -->
+        <i-form-item prop="orderNumber" label="订单编号：">
+          <i-input v-model="receipt.orderNumber" placeholder="请输入订单编码"></i-input>
         </i-form-item>
         <i-form-item prop="applicationType" label="申请类型">
           <i-select placeholder="请选择申请类型" v-model="receipt.applicationType" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
+        </i-form-item>
+         <i-form-item prop="dateRange" label="日期：">
+          <i-date-picker v-model="receipt.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
       <template slot="button">
@@ -92,9 +98,12 @@
     private withdrawId: any = "";
     private type: any = "";
     private receipt: any = {
+      orderNumber:'',      // 订单编号
+      startTime: '',
+      endTime: '',
+      dateRange: [],       // 日期
       applicationType: "", // 全部申请类型
       isIncludeDealt: "", // 包含已处理
-      dynamicCondition: ""
     };
 
     @Watch("paymentRecordFlag")
@@ -185,7 +194,7 @@
           }
         },
         {
-          title: "处理状态",
+          title: "审核状态",
           editable: true,
           key: "approvalDealStatus",
           align: "center",

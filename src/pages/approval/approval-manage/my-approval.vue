@@ -2,10 +2,24 @@
 <template>
   <section class="page my-approval">
     <page-header title="我的审核"></page-header>
-    <data-form date-prop="timeSearch" :model="myOrderModel" @on-search="getMyOrderList" :page="pageService" hidden-reset>
+    <data-form date-prop="timeSearch" :model="myOrderModel" @on-search="getMyOrderList" :page="pageService">
       <template slot="input">
-        <i-form-item prop="personalInfo">
+        <!-- <i-form-item prop="personalInfo">
           <i-input v-model="myOrderModel.personalInfo" placeholder="请录入客户姓名\证件号码\手机号查询"></i-input>
+        </i-form-item> -->
+        <i-form-item prop="personalName" label="客户姓名：">
+          <i-input v-model="myOrderModel.personalName" placeholder="请输入客户姓名"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderNumber" label="订单编号：">
+          <i-input v-model="myOrderModel.orderNumber" placeholder="请输入订单编码"></i-input>
+        </i-form-item>
+        <i-form-item prop="tel" label="手机号码：">
+          <i-input v-model="myOrderModel.tel" placeholder="请输入手机号码"></i-input>
+        </i-form-item>
+        <i-form-item prop="orderLink" label="环节">
+          <i-select placeholder="请选择环节" v-model="myOrderModel.orderLink" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0303')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
         </i-form-item>
         <i-form-item prop="dateRange" label="日期：">
           <i-date-picker v-model="myOrderModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
@@ -20,9 +34,16 @@
             <i-option v-for="{value,label} in this.myOrderModel.province ? this.$city.getCityData({ level: 1, id: this.myOrderModel.province }) : []" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item>
-        <i-form-item prop="productType" label="产品名称:">
+        <!-- <i-form-item prop="productType" label="产品名称:">
           <i-input v-model="myOrderModel.productType"></i-input>
+        </i-form-item> -->
+
+         <i-form-item prop="productType" label="产品类型">
+          <i-select placeholder="产品类型" v-model="myOrderModel.productType" clearable>
+            <!-- <i-option v-for="{value,label} in $dict.getDictData('0301')" :key="value" :label="label" :value="value"></i-option> -->
+          </i-select>
         </i-form-item>
+
       </template>
     </data-form>
 
@@ -248,11 +269,14 @@ export default class MyApproval extends Page {
     // effectiveType: 1160
   }
   private myOrderModel: any = {
+    personalName: '',    // 客户姓名
+    orderNumber: '',     // 订单编号
+    tel: '',             // 手机号码
+    orderLink: '',       // 环节
     startTime: '',
     endTime: '',
     province: '',
     city: '',
-    personalInfo: '',
     timeSearch: '',
     productType: '',
     dateRange: []
@@ -418,6 +442,13 @@ export default class MyApproval extends Page {
           this.$filter.dateFormat(row.createTime, 'yyyy-MM-dd hh:mm:ss')
         )
       }
+    },
+    {
+      align: 'center',
+      title: '滞留天数',
+      editable: true,
+      key: 'detainedDays',
+      minWidth: this.$common.getColumnWidth(6),
     },
     {
       align: 'center',
