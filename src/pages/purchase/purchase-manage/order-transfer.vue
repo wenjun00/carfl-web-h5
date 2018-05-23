@@ -1,14 +1,29 @@
 <!--订单交接-->
 <template>
   <section class="page order-transfer">
-    <page-header title="订单交接" hiddenPrint  hiddenExport></page-header>
-    <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData" hidden-reset>
+    <page-header title="订单交接" hiddenPrint  hiddenExport>
+      <command-button label="一键交接"  @click="oneKeyToConnect"  ></command-button>
+    </page-header>
+    <!--底部操作栏-start-->
+    <!--<div class="fixed-container">-->
+    <!--<i-button size="large" class="highButton" @click="oneKeyToConnect"  >一键交接</i-button>-->
+
+
+    <!--</div>-->
+    <!--底部操作栏-end-->
+    <data-form date-prop="timeSearch" :model="ordertransferModel" :page="pageService" @on-search="refreshData">
       <template slot="input">
+        <i-form-item prop="orderNumber" label="订单编号">
+          <i-input placeholder="请录入订单编号" v-model="ordertransferModel.orderNumber"></i-input>
+        </i-form-item>
+        <i-form-item prop="idCard" label="证件号码">
+          <i-input placeholder="请录入客户证件号码" v-model="ordertransferModel.idCard"></i-input>
+        </i-form-item>
+        <i-form-item prop="tel" label="联系号码">
+          <i-input placeholder="请录入客户联系号码" v-model="ordertransferModel.tel"></i-input>
+        </i-form-item>
         <i-form-item label="订单时间" prop="dateRange">
           <i-date-picker v-model="ordertransferModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
-        </i-form-item>
-        <i-form-item prop="orderInfo">
-          <i-input v-model="ordertransferModel.orderInfo" @on-change="orderInfochange" placeholder="请输入客户姓名/证件号码/联系号码/订单所属人查询"></i-input>
         </i-form-item>
       </template>
     </data-form>
@@ -49,11 +64,6 @@
         <transfer-record ref="transfer" :customerName="customerName" :orderId="orderNumber"></transfer-record>
       </i-modal>
     </template>
-    <!--底部操作栏-start-->
-    <div class="fixed-container">
-      <i-button size="large" class="highButton" @click="oneKeyToConnect">一键交接</i-button>
-    </div>
-    <!--底部操作栏-end-->
   </section>
 </template>
 
@@ -96,11 +106,11 @@ export default class OrderTransfer extends Page {
   private userList: Array<any> = []
   private searchOptions: Boolean = false
   private ordertransferModel: any = {
-    orderInfo: '', // 请输入客户姓名/证件号码/联系号码/订单所属人查询
-    startTime: '', // 起始日期
-    endTime: '', // 终止日期
-    timeSearch: '',
-    dateRange: []
+    dateRange: [],
+    orderNumber:'',//请输入订单编号
+    idCard:'',//证件号码
+    tel:'',//联系号码
+    personalName:''//客户姓名
   }
   private applyPerson: String = '' // 申请人
   private openColumnsConfig: Boolean = false
@@ -115,7 +125,6 @@ export default class OrderTransfer extends Page {
   private mulipleSelection: any = []
   private currentRowuserId: string = ''
   private orderNumber: any = ''
-
 
   created() {
     this.applyPerson = this.$store.state.userData.username
@@ -330,9 +339,9 @@ export default class OrderTransfer extends Page {
 
   refreshData() {
     this.productOrderService
-      .getOrderHandover(this.ordertransferModel, this.pageService)
+      .findTransferOrder(this.ordertransferModel, this.pageService)
       .subscribe(
-      data => (this.ordertransferDataSet = data),
+      data => {this.ordertransferDataSet = data},
       err => this.$Message.error(err)
       )
   }
@@ -456,17 +465,10 @@ export default class OrderTransfer extends Page {
 
 <style lang="less" scoped>
 .page.order-transfer {
-  .fixed-container {
-    height: 65px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #fff;
-    z-index: 10;
-    text-align: right;
-    padding: 10px 20px;
-    box-shadow: 0px -5px 10px #ccc;
+  .highButton {
+    border-radius: 10px;
+    float:right;
+    margin-top: 10px;
   }
   .views-handover-margin {
     margin-bottom: 20px;

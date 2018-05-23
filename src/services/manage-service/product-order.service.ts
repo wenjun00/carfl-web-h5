@@ -8,19 +8,20 @@ export class ProductOrderService {
   @Inject(NetService)
   private netService: NetService
 
-
   /**
    * 获取订单交接列表
    */
-  getOrderHandover(data, page) {
+  findTransferOrder(data, page) {
     const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
-      server: manageService.productOrderController.getOrderHandover,
+      server: manageService.productOrderController.findTransferOrder,
       data:{
-        orderInfo: data.orderInfo, // 请输入客户姓名/证件号码/联系号码/订单所属人查询
-        startTime: dateRange.start, // 起始日期
-        endTime: dateRange.end, // 终止日期
-        timeSearch: data.timeSearch,
+        startTime: dateRange.start,//开始时间
+        endTime: dateRange.end,//结束时间
+        personalName : data.personalName,//客户姓名
+        orderNumber:data.orderNumber,//订单编号
+        idCard  : data.idCard, // 客户证件号码
+        tel   :data.tel,//客户联系号码
       },
       page:page
     })
@@ -54,22 +55,24 @@ export class ProductOrderService {
       }
     })
   }
-  /**
-   * 进件模块--订单查询
-   */
-  orderSearch(data, page) {
-    const dateRange = FilterService.dateRanageFormat(data.dateRange)
-    return this.netService.send({
-      server: manageService.productOrderController.orderSearch,
-      data: {
-        timeSearch: data.timeSearch,
-        orderInfo: data.orderInfo,
-        startTime: dateRange.start,
-        endTime: dateRange.end
-      },
-      page: page
-    })
-  }
+  // /**
+  //  * 进件模块--订单查询
+  //  */
+  // orderSearch(data, page) {
+  //   const dateRange = FilterService.dateRanageFormat(data.dateRange)
+  //   return this.netService.send({
+  //     server: manageService.productOrderController.orderSearch,
+  //     data: {
+  //       orderInfo: data.orderInfo,
+  //       orderNumber:data.orderNumber,//请输入订单编号
+  //       idCard: data.idCard, // 请输入客户证件号码
+  //       tel:data.tel,//请输入客户联系号码
+  //       startTime: dateRange.start,
+  //       endTime: dateRange.end
+  //     },
+  //     page: page
+  //   })
+  // }
   /**
      * 创建全额付款订单
      */
