@@ -132,7 +132,7 @@
       </div>
       <i-row>
         <i-col>
-          <upload-voucher ref="upload-voucher" @financeUploadResources="fileNumber" hiddenUpload hiddenDelete></upload-voucher>
+          <upload-voucher ref="upload-voucher" hiddenUpload hiddenDelete></upload-voucher>
         </i-col>
       </i-row>
 

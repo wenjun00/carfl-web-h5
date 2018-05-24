@@ -79,6 +79,7 @@ export class AssessMentApplyService {
   saveAssessmentBasicInfo(data) {
     return this.netService.send({
       server: manageService.assessmentapply.saveAssessmentBasicInfo,
+      loading: true,
       data: data
     })
   }

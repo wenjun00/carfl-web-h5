@@ -511,7 +511,7 @@ export default class PersonalCustomerInfo extends Vue {
     let sexNumber = Number(data.cardNumber[16])
     this.customerModel.sex = sexNumber % 2 === 1 ? 1 : 2
     let birthDate = data.cardNumber.substr(6, 8)
-    this.customerModel.birthTime = `${birthDate.substr(0, 4)}-${birthDate.substr(4, 2)}-${birthDate.substr(6, 2)}`
+    this.customerModel.birthTime =  new Date(birthDate.substr(0, 4),Number(birthDate.substr(4, 2)) -1,birthDate.substr(6, 2))
   }
 
   /**
@@ -598,18 +598,15 @@ export default class PersonalCustomerInfo extends Vue {
   /**
    * 验证数据
    */
-  async validate() {
+  validate() {
     let customerForm = this.$refs["customer-form"] as Form;
 
     // 基础验证
-    let result = await customerForm
+   return customerForm
       .validate()
       .then(valid => {
-        return valid;
+        return valid
       })
-      .catch(() => { });
-
-    return result;
   }
 
   mounted() { }
