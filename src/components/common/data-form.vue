@@ -93,11 +93,11 @@ export default class DataForm extends Vue {
     0: "昨日",
     1: "今日",
     2: "本周",
-    3: "本月",
-    4: "上月",
-    5: "最近三月",
-    6: "本季度",
-    7: "本年"
+    // 3: "本月",
+    // 4: "上月",
+    // 5: "最近三月",
+    // 6: "本季度",
+    // 7: "本年"
   };
   private currentDateType = null;
 

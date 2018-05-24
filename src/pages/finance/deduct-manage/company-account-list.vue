@@ -4,7 +4,7 @@
     <page-header title="企业开户列表" hiddenPrint hiddenExport>
       <command-button label="企业开户" @click="openCompany"></command-button>
     </page-header>
-    <data-form date-prop="timeSearch" :model="openAccountModel" :page="pageService" @on-search="CompanyAccountSearch" hidden-reset>
+    <data-form date-prop="timeSearch" :model="openAccountModel" :page="pageService" @on-search="CompanyAccountSearch">
       <template slot="input">
         <i-form-item prop="companyName" label="企业名称">
           <i-input v-model="openAccountModel.companyName"></i-input>

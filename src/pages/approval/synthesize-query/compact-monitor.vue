@@ -4,10 +4,10 @@
     <page-header title="合同下载监控" hiddenPrint hiddenExport></page-header>
     <data-form :model="compactMonitorModel" date-prop="timeSearch" @on-search="getPersonalClientList">
       <template slot="input">
-        <i-form-item label="日期：">
+        <i-form-item label="日期：" prop="dateRange">
           <i-date-picker v-model="compactMonitorModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
-        <i-form-item label="姓名">
+        <i-form-item label="姓名" prop="userName">
           <i-input v-model="compactMonitorModel.userName" placeholder="请输入员工姓名"></i-input>
         </i-form-item>
         <i-form-item label="机构">

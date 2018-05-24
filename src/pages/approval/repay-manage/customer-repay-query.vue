@@ -12,7 +12,7 @@
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item> -->
-        <i-form-item prop="personalName;" label="客户姓名">
+        <i-form-item prop="personalName" label="客户姓名">
           <i-input v-model="customerRepayModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
         <i-form-item prop="idCard" label="证件号码">
