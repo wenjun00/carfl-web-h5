@@ -10,18 +10,18 @@
          <i-form-item prop="orderNumber" label="订单编号：">
           <i-input v-model="approvalModel.orderNumber" placeholder="请输入订单编码"></i-input>
         </i-form-item>
-         <i-form-item prop="applicationType" label="审核状态">
-          <!-- <i-select placeholder="请选择申请类型" v-model="approvalModel.applicationType" clearable>
-            <i-option v-for="{value,label} in $dict.getDictData('0109')" :key="value" :label="label" :value="value"></i-option>
-          </i-select> -->
+         <i-form-item prop="approvalStatus" label="处理状态">
+          <i-select placeholder="请选择申请类型" v-model="approvalModel.approvalStatus" clearable>
+            <i-option v-for="{value,label} in $dict.getDictData('0417')" :key="value" :label="label" :value="value"></i-option>
+          </i-select>
         </i-form-item>
         <i-form-item prop="dateRange" label="日期：">
           <i-date-picker v-model="approvalModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item>
       </template>
-      <template slot="button">
+      <!-- <template slot="button">
         <i-checkbox v-model="status">包含已处理</i-checkbox>
-      </template>
+      </template> -->
     </data-form>
     <data-box :id="390" :columns="columns1" :data="refundApproval"></data-box>
 
@@ -84,14 +84,13 @@ export default class PaymentApprove extends Page {
   private addAttachmentShow: Boolean = false;
   private refundId: String = "";
   private type: any = "";
-  private status: Boolean = true;
+  // private status: Boolean = true;
   private approvalModel: any = {
     orderNumber:'',     // 订单编号
     dateRange:[],       // 时间
     startTime: '',
     endTime: '',
-    // dynamicParams: "",
-    processStatus: ""
+    approvalStatus: ""  //处理状态
   };
   addNewApply() {
     this.$Modal.info({
@@ -100,11 +99,11 @@ export default class PaymentApprove extends Page {
     });
   }
   getApproval() {
-    if (this.status) {
-      this.approvalModel.processStatus = 1130;
-    } else {
-      this.approvalModel.processStatus = '';
-    }
+    // if (this.status) {
+    //   this.approvalModel.approvalStatus = 1130;
+    // } else {
+    //   this.approvalModel.approvalStatus = '';
+    // }
     this.refundApplicationService
       .getApprovalRecord(this.approvalModel, this.pageService)
       .subscribe(
@@ -178,7 +177,7 @@ export default class PaymentApprove extends Page {
         align: "center",
         fixed: "left",
         minWidth: this.$common.getColumnWidth(5),
-        render: (h, { row, columns, index }) => {
+        render: (h, { row}) => {
           if ([1130, 1129].includes(row.processStatus)) {
             return h("div", [
               h(

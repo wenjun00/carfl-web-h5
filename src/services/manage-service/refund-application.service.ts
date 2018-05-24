@@ -30,14 +30,9 @@ export class RefundApplicationService {
       data: {
         startTime: dateRange.start,
         endTime: dateRange.end,
-        getApprovalRecord: data.getApprovalRecord,
         orderNumber:data.orderNumber,
-        refundName: data.refundName,
         timeSearch: data.timeSearch,
-        dynamicParams: data.dynamicParams,
-        processStatus: data.processStatus,
-        startDate: FilterService.dateFormat(data.startDate, 'yyyy-MM-dd'),
-        endDate: FilterService.dateFormat(data.endDate, 'yyyy-MM-dd')
+        approvalStatus: data.approvalStatus,
       },
       page: page
     })
