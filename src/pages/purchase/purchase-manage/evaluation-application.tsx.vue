@@ -326,10 +326,11 @@ export default class EvaluationApplication extends Page {
    */
   selectStep() {
     let newApplication = this.$refs['new-application'] as NewApplication
+    
     this.brand = newApplication.fatherId
     this.serice = newApplication.SerciseId
     this.car = newApplication.CarId
-    
+
     if (!!this.brand && !!this.serice && !!this.car) {
       this.selectButton = false
       newApplication.lastStep()
@@ -337,7 +338,7 @@ export default class EvaluationApplication extends Page {
       this.$Message.warning("请选择品牌、车系、车型!")
       return
     }
-   
+
   }
   /**
    * 选择上一步

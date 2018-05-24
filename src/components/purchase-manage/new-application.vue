@@ -193,6 +193,8 @@ export default class NewApplication extends Vue {
    */
   clickBrand(item) {
     this.fatherId = item.id //保存根Id
+    this.SerciseId = ''
+    this.CarId = ''
     this.fatherName = item.brandName
     this.series = this.carList.filter(v => v.id === item.id)[0].series.filter(x => x.brandId == item.id)
     this.car = []
@@ -202,6 +204,7 @@ export default class NewApplication extends Vue {
    */
   clickSeries(item) {
     this.SerciseId = item.id
+    this.CarId =''
     this.SerciseName = item.seriesName
     this.car = this.carList.filter(v => v.id === this.fatherId)[0].series.filter(x => x.id === item.id)[0].cars.filter(m => m.seriesId === item.id)
   }
