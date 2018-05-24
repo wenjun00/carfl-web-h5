@@ -83,7 +83,7 @@
 
     <template>
       <i-modal v-model="addBrandModal" @on-visible-change="closeBrand" title="新增品牌">
-        <i-form :rules="brandNameRule" :model="brandNameModel" ref="form-item" class="brandNameModel">
+        <i-form :rules="brandNameRule" :model="brandNameModel" ref="add-brand-form-item" class="brandNameModel">
           <i-form-item label="品牌名称" prop="addBrandName">
             <i-input v-model.trim="brandNameModel.addBrandName" style="width:80%;"></i-input>
           </i-form-item>
@@ -688,7 +688,7 @@ export default class VehicleMaintenance extends Page {
    * 确定新增品牌
    */
   confirmAddBrand() {
-    let form = <Form>this.$refs['form-item']
+    let form = <Form>this.$refs['add-brand-form-item']
     form.validate(valid => {
       if (!valid) return false
       this.carService

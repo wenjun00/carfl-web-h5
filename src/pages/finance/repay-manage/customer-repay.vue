@@ -354,6 +354,7 @@ export default class CustomerRepay extends Page {
         align: "center",
         title: " 订单创建时间",
         editable: true,
+        sortable: true,
         key: "createTime",
         minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {

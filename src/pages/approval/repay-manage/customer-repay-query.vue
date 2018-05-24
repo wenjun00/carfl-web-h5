@@ -1,6 +1,6 @@
 <!--客户还款查询-->
 <template>
-  <section class="page customer-repay-query"> 
+  <section class="page customer-repay-query">
     <page-header title="客户还款查询" hiddenPrint hiddenExport></page-header>
     <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList" :page="pageService">
       <template slot="input">
@@ -21,7 +21,7 @@
         <i-form-item prop="orderNumber" label="订单编号">
           <i-input v-model="customerRepayModel.orderNumber" placeholder="请输入联系电话"></i-input>
         </i-form-item>
-         <i-form-item prop="paymentStatus" label="还款状态">
+        <i-form-item prop="paymentStatus" label="还款状态">
           <i-select placeholder="请选择还款状态" v-model="customerRepayModel.paymentStatus" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0104')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
@@ -91,9 +91,9 @@ export default class CustomerRepayQuery extends Page {
   private repaySumModal: Boolean = false
   private customerSettleModal: Boolean = false
   private customerRepayModel: any = {
-    personalName:'', // 客户姓名
-    idCard:'',   // 证件号码
-    orderNumber:'',      // 订单编号
+    personalName: '', // 客户姓名
+    idCard: '',   // 证件号码
+    orderNumber: '',      // 订单编号
     settlementChannel: '',
     paymentStatus: '',
     timeSearch: ''
@@ -154,6 +154,7 @@ export default class CustomerRepayQuery extends Page {
       {
         align: 'center',
         title: '订单编号',
+        sortable: true,
         editable: true,
         key: 'orderNumber',
         minWidth: this.$common.getColumnWidth(7),
@@ -353,12 +354,12 @@ export default class CustomerRepayQuery extends Page {
     this.paymentScheduleService
       .getCustomerPayments(this.customerRepayModel, this.pageService)
       .subscribe(
-      data => {
-        this.customerRepayList = data
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          this.customerRepayList = data
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
       )
   }
 
