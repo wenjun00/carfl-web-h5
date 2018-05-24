@@ -88,7 +88,8 @@ export default class RepayInfo extends Vue {
   created() {
     this.columns1 = [{
       key: "periods",
-      title: '序号',
+      title: '期数',
+      fixed: "left",
       align: 'center',
       width: 50
     },
@@ -190,6 +191,19 @@ export default class RepayInfo extends Vue {
       align: 'center',
       width: 90
     },
+     {
+      title: '开票日',
+      key: 'invoiceDay',
+      align: 'center',
+      width: 100,
+      render: (h, {
+            row,
+        column,
+        index
+          }) => {
+        return h('span', this.$filter.dateFormat(row.invoiceDay, 'yyyy-MM-dd'))
+      }
+    },
     {
       title: '每日罚息',
       key: 'penaltyDay',
@@ -207,19 +221,6 @@ export default class RepayInfo extends Vue {
       key: 'penalSum',
       align: 'center',
       width: 90
-    },
-    {
-      title: '开票日',
-      key: 'invoiceDay',
-      align: 'center',
-      width: 100,
-      render: (h, {
-            row,
-        column,
-        index
-          }) => {
-        return h('span', this.$filter.dateFormat(row.invoiceDay, 'yyyy-MM-dd'))
-      }
     },
     {
       title: '应收租金',

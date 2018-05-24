@@ -163,6 +163,7 @@ export default class FrozenApplyRecord extends Page {
         align: 'center',
         editable: true,
         title: '冻结申请日期',
+        sortable: true,
         key: 'applyDate',
         minWidth: this.$common.getColumnWidth(6),
         render: (h, { row, column, index }) => {
@@ -210,6 +211,7 @@ export default class FrozenApplyRecord extends Page {
         align: 'center',
         editable: true,
         title: '订单号',
+        sortable: true,
         key: 'orderNumber',
         minWidth: this.$common.getColumnWidth(5),
         render: (h, { row, column, index }) => {
