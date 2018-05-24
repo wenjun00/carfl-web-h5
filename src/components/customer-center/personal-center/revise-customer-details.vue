@@ -128,7 +128,7 @@
         <i-row type="flex" :gutter="110">
           <i-col :span="24" class="contacts">
             <div v-for="(i,index) in customerDetailsModel.personalContacts" :key="index">
-              <i-form-item label="联系人" :label-width="90">
+              <i-form-item :label="i.attn" :label-width="90">
                 <i-input v-model="i.name"></i-input>
                 <i-select v-model="i.relation " placeholder="请选择关系">
                   <i-option v-for="{value,label} in $dict.getDictData('0457')" :key="value" :label="label" :value="value"></i-option>
@@ -136,9 +136,11 @@
                 <i-input placeholder="请输入手机号" v-model="i.phone"></i-input>
               </i-form-item>
             </div>
-
           </i-col>
         </i-row>
+        <i-col>
+          <span @click="addingBet" class="addingBet">+添加联系人</span>
+        </i-col>
         <i-row class="data-form">
           <i-col>
             <div class="data-form-item"></div>
@@ -349,44 +351,55 @@ export default class ReviseCustomerDetails extends Vue {
     this.personalService
       .getDetailPersonal({ personalDataId: personalId })
       .subscribe(
-      data => {
+        data => {
 
-        //   this.customerDetailsModel = data
-        this.customerDetailsModel.id = data.id;
-        this.customerDetailsModel.name = data.name;
-        this.customerDetailsModel.mobileMain = data.mobileMain;
-        this.customerDetailsModel.idCard = data.idCard;
-        this.customerDetailsModel.intentionHomeAddr = data.intentionHomeAddr;
-        this.customerDetailsModel.nation = data.nation;
-        this.customerDetailsModel.messageAddr = data.messageAddr;
-        this.customerDetailsModel.personalContacts = data.personalContacts
-        this.customerDetailsModel.sex = !!data.sex ? Number(data.sex) : null;
-        this.customerDetailsModel.certificateType = !!data.certificateType ? Number(data.certificateType) : null;
-        this.customerDetailsModel.intentionalLevel = !!data.intentionalLevel ? Number(data.intentionalLevel) : 0;
-        this.customerDetailsModel.birthTime = data.birthTime;
-        this.customerDetailsModel.healthStatus = !!data.healthStatus ? Number(data.healthStatus) : null;
-        this.customerDetailsModel.homeStatus = !!data.homeStatus ? Number(data.homeStatus) : null;
-        this.customerDetailsModel.marital = !!data.marital ? Number(data.marital) : null;
-        this.customerDetailsModel.personalJob = !!data.personalJob ? data.personalJob : {};
-        this.customerDetailsModel.personalJob.companyNature = !!data.personalJob.companyNature ? Number(data.personalJob.companyNature) : null;
-        this.customerDetailsModel.personalJob.jobType = !!data.personalJob.jobType ? Number(data.personalJob.jobType) : null;
-        this.customerDetailsModel.personalJob.duty = !!data.personalJob.duty ? Number(data.personalJob.duty) : null;
-        this.customerDetailsModel.personalJob.industry = !!data.personalJob.industry ? Number(data.personalJob.industry) : null;
-        this.customerDetailsModel.personalJob.companyhostBank = !!data.personalJob.companyhostBank ? Number(data.personalJob.companyhostBank) : null;
-        this.customerDetailsModel.personalJob.companyhostCreatTime = !!data.personalJob.companyhostCreatTime?data.personalJob.companyhostCreatTime:null;
-        this.customerDetailsModel.personalJob.companyhostCheckTime = !!data.personalJob.companyhostCheckTime?data.personalJob.companyhostCheckTime:null;
-        this.customerDetailsModel.personalBank = !!data.personalBank ? data.personalBank : {};
-        // this.customerDetailsModel.personalBank.depositBank = !!data.personalBank.depositBank ? Number(data.personalBank.depositBank) : null;
-        // this.customerDetailsModel.personalBank.accountType = !!data.personalBank.accountType ? Number(data.personalBank.accountType) : null;
-        // this.customerDetailsModel.personalBank.accountUse = !!data.personalBank.accountUse ? Number(data.personalBank.accountUse) : null;
-        // this.customerDetailsModel.personalJob.basicSalary = !!data.personalJob.basicSalary ? Number(data.personalJob.basicSalary) : null;
-        //   console.log(this.customerDetailsModel)
-
-
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
+          //   this.customerDetailsModel = data
+          this.customerDetailsModel.id = data.id;
+          this.customerDetailsModel.name = data.name;
+          this.customerDetailsModel.mobileMain = data.mobileMain;
+          this.customerDetailsModel.idCard = data.idCard;
+          this.customerDetailsModel.intentionHomeAddr = data.intentionHomeAddr;
+          this.customerDetailsModel.nation = data.nation;
+          this.customerDetailsModel.messageAddr = data.messageAddr;
+          this.customerDetailsModel.personalContacts = data.personalContacts
+          this.customerDetailsModel.sex = !!data.sex ? Number(data.sex) : null;
+          this.customerDetailsModel.certificateType = !!data.certificateType ? Number(data.certificateType) : null;
+          this.customerDetailsModel.intentionalLevel = !!data.intentionalLevel ? Number(data.intentionalLevel) : 0;
+          this.customerDetailsModel.birthTime = data.birthTime;
+          this.customerDetailsModel.healthStatus = !!data.healthStatus ? Number(data.healthStatus) : null;
+          this.customerDetailsModel.homeStatus = !!data.homeStatus ? Number(data.homeStatus) : null;
+          this.customerDetailsModel.marital = !!data.marital ? Number(data.marital) : null;
+          this.customerDetailsModel.personalJob = !!data.personalJob ? data.personalJob : {};
+          this.customerDetailsModel.personalJob.companyNature = !!data.personalJob.companyNature ? Number(data.personalJob.companyNature) : null;
+          this.customerDetailsModel.personalJob.jobType = !!data.personalJob.jobType ? Number(data.personalJob.jobType) : null;
+          this.customerDetailsModel.personalJob.duty = !!data.personalJob.duty ? Number(data.personalJob.duty) : null;
+          this.customerDetailsModel.personalJob.industry = !!data.personalJob.industry ? Number(data.personalJob.industry) : null;
+          this.customerDetailsModel.personalJob.companyhostBank = !!data.personalJob.companyhostBank ? Number(data.personalJob.companyhostBank) : null;
+          this.customerDetailsModel.personalJob.companyhostCreatTime = !!data.personalJob.companyhostCreatTime ? data.personalJob.companyhostCreatTime : null;
+          this.customerDetailsModel.personalJob.companyhostCheckTime = !!data.personalJob.companyhostCheckTime ? data.personalJob.companyhostCheckTime : null;
+          this.customerDetailsModel.personalBank = !!data.personalBank ? data.personalBank : {};
+          // this.customerDetailsModel.personalBank.depositBank = !!data.personalBank.depositBank ? Number(data.personalBank.depositBank) : null;
+          // this.customerDetailsModel.personalBank.accountType = !!data.personalBank.accountType ? Number(data.personalBank.accountType) : null;
+          // this.customerDetailsModel.personalBank.accountUse = !!data.personalBank.accountUse ? Number(data.personalBank.accountUse) : null;
+          // this.customerDetailsModel.personalJob.basicSalary = !!data.personalJob.basicSalary ? Number(data.personalJob.basicSalary) : null;
+          for (let i of this.customerDetailsModel.personalContacts) {
+            if (i.level == 1) {
+              i.attn = '第一联系人'
+            } else if (i.level == 2) {
+              i.attn = '第二联系人'
+            } else if (i.level == 3) {
+              i.attn = '第三联系人'
+            } else if (i.level == 4) {
+              i.attn = '第四联系人'
+            } else if (i.level == 5) {
+              i.attn = '第五联系人'
+            }
+          }
+          // console.log(this.customerDetailsModel.personalContacts)
+        },
+        ({ msg }) => {
+          this.$Message.error(msg)
+        }
       )
   }
   /**
@@ -419,7 +432,12 @@ export default class ReviseCustomerDetails extends Vue {
       this.$Message.error('请填写身份号码')
       return
     }
+    for(let leg in this.customerDetailsModel.personalContacts){
+      delete this.customerDetailsModel.personalContacts[leg].attn
+    }
 
+    // console.log(this.customerDetailsModel.personalContacts)
+    // return
     this.personalService.updateCustomer(this.customerDetailsModel).subscribe(
       data => {
         this.$Message.success('修改成功！')
@@ -431,6 +449,58 @@ export default class ReviseCustomerDetails extends Vue {
     )
 
   }
+  /**
+  * 点击添加联系人
+  */
+  addingBet() {
+    console.log(this.customerDetailsModel.personalContacts.length)
+    if (this.customerDetailsModel.personalContacts.length < 5) {
+      let leg =  this.customerDetailsModel.personalContacts.length+1
+      if(leg == 3){
+        this.customerDetailsModel.personalContacts.push({
+        attn: '第三联系人',
+        level: `${leg}`,
+        name: '',
+        phone: '',
+        relation: ''
+      })
+      }else if(leg == 4){
+        this.customerDetailsModel.personalContacts.push({
+        attn: '第四联系人',
+        level: `${leg}`,
+        name: '',
+        phone: '',
+        relation: ''
+      })
+      }else{
+         this.customerDetailsModel.personalContacts.push({
+        attn: '第五联系人',
+        level: `${leg}`,
+        name: '',
+        phone: '',
+        relation: ''
+      })
+      }
+      
+
+      console.log(this.customerDetailsModel.personalContacts)
+    } else {
+      this.$Message.error('温馨提示：最多只可以添加五名联系人！')
+      return
+    }
+  }
+  // addLinkmanConent() {
+   
+  //     this.customerDetailsModel.personalContacts.push({
+  //       attn: '联系人',
+  //       level: 5,
+  //       name: '',
+  //       phone: '',
+  //       relation: ''
+  //     })
+    
+  // }
+
   fold() {
     this.WhetherNotShown = !this.WhetherNotShown
   }

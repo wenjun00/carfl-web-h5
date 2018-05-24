@@ -127,7 +127,7 @@ export default class FrozenApplyRecord extends Page {
                 textAlign: "right"
               }
             },
-            this.$filter.toThousands(row.financingAmount)
+            this.$filter.toThousands(row.remitAmount)
           );
         }
 
@@ -213,7 +213,7 @@ export default class FrozenApplyRecord extends Page {
         title: '订单号',
         sortable: true,
         key: 'orderNumber',
-        minWidth: this.$common.getColumnWidth(5),
+        minWidth: this.$common.getColumnWidth(8),
         render: (h, { row, column, index }) => {
           return h(
             'i-button',
