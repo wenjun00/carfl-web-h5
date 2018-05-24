@@ -406,6 +406,7 @@ export default class ReviseCustomerDetails extends Vue {
    * 编辑保存 
    */
   reviseConfirmData() {
+    console.log(this.customerDetailsModel)
     if (this.customerDetailsModel.name == null || this.customerDetailsModel.name == '') {
       this.$Message.error('请填写姓名')
       return

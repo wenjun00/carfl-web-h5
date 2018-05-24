@@ -219,9 +219,27 @@ export class PersonalService {
      * 个人意向 客户编辑
      */
     updateCustomer(data) {
-      let birthTime = !!FilterService.dateFormat(data.birthTime)?FilterService.dateFormat(data.birthTime):null
-      let dateStr = !!FilterService.dateFormat(data.personalJob.companyhostCreatTime)?FilterService.dateFormat(data.personalJob.companyhostCreatTime):null
-      let dateStr2 = !!FilterService.dateFormat(data.personalJob.companyhostCheckTime)?FilterService.dateFormat(data.personalJob.companyhostCheckTime):null
+      var birthTime = ''
+      var dateStr = ''
+      var dateStr2 = ''
+     
+      if(data.birthTime instanceof Date){
+         birthTime = !!FilterService.dateFormat(data.birthTime)?FilterService.dateFormat(data.birthTime):null
+      }else{
+         birthTime = data.birthTime
+      }
+     if(data.personalJob.companyhostCreatTime instanceof Date){
+         dateStr = !!FilterService.dateFormat(data.personalJob.companyhostCreatTime)?FilterService.dateFormat(data.personalJob.companyhostCreatTime):null 
+     }else{
+        dateStr = data.personalJob.companyhostCreatTime
+     }
+     if(data.personalJob.companyhostCheckTime instanceof Date){
+        dateStr2 = !!FilterService.dateFormat(data.personalJob.companyhostCheckTime)?FilterService.dateFormat(data.personalJob.companyhostCheckTime):null
+     }else{
+       dateStr2 = data.personalJob.companyhostCheckTime
+     }
+     
+
       let personalJob = {...data.personalJob, companyhostCreatTime: dateStr,companyhostCheckTime: dateStr2 }
         return this.netService.send({
             server: manageService.personalController.updateCustomer,
