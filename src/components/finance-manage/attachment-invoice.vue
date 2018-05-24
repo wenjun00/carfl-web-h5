@@ -1,7 +1,7 @@
 <!--查看附件--> 
 <template>
   <section class="component check-attachment">
-      <upload-voucher hiddenUpload ref="upload-voucher"></upload-voucher>
+      <upload-voucher hiddenUpload hiddenDelete ref="upload-voucher"></upload-voucher>
   </section>
 </template>
 
