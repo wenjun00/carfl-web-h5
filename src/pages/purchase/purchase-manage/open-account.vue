@@ -1,12 +1,12 @@
 <template>   
   <section class="page open-account">
     <page-header title="客户开户"  hiddenPrint hiddenExport></page-header>
-    <data-form hidden-date-search :model="openAccountModel" :page="pageService" @on-search="getCustomerOpenAccount" hidden-reset>
+    <data-form hidden-date-search :model="openAccountModel" :page="pageService" @on-search="getCustomerOpenAccount" >
       <template slot="input">
         <!-- <i-form-item prop="keyWord">
           <i-input v-model="openAccountModel.keyWord" placeholder="请输入客户姓名\证件号码\联系号码查询"></i-input>
         </i-form-item> -->
-        <i-form-item prop="personalName;" label="客户姓名">
+        <i-form-item prop="personalName" label="客户姓名">
           <i-input v-model="openAccountModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
         <i-form-item prop="idCard" label="证件号码">

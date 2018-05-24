@@ -7,7 +7,7 @@
         <!-- <i-form-item>
           <i-input placeholder="请录入客户姓名\证件号码"></i-input>
         </i-form-item> -->
-        <i-form-item prop="personalName;" label="客户姓名">
+        <i-form-item prop="personalName" label="客户姓名">
           <i-input v-model="customerRepayModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
         <i-form-item prop="idCard" label="证件号码">

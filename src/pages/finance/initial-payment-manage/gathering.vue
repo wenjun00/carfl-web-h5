@@ -1,8 +1,8 @@
-<!--收款-->
+<!--收款确认-->
 <template>
   <section class="page gathering">
-    <page-header title="收款"></page-header>
-    <data-form data-prop="timeSearch" hidden-reset :model="gatherModel" :page="pageService" @on-search="getGatherListByCondition">
+    <page-header title="收款确认"></page-header>
+    <data-form data-prop="timeSearch" :model="gatherModel" :page="pageService" @on-search="getGatherListByCondition">
       <template slot="input">
         <i-form-item prop="accountName" label="收款账户名">
           <i-input v-model="gatherModel.accountName" class="form-input" placeholder="请录入收款账户名查询"></i-input>

@@ -380,7 +380,7 @@ export default class EarlyRecoverApply extends Page {
         return false
       } else {
         this.getgather()
-        if (this.msg === '该订单有为完成的提前收回申请') {
+        if (this.msg === '该订单有未完成的提前收回申请') {
           this.$Message.warning('请先审批未处理的申请订单！')
           return false
         }

@@ -1,5 +1,5 @@
 <!--合规检查-->
-<template>
+<template> 
   <section class="page meet-condition-check">
     <page-header title="合规检查"></page-header>
     <data-form date-prop="timeSearch" :model="resourcePoolModel" @on-search="getMeetConditionList" :page="pageService">

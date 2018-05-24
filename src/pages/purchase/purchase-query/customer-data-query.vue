@@ -10,7 +10,7 @@
         <i-form-item prop="orderNumber" label="订单编号">
           <i-input v-model="ordertransferModel.orderNumber" placeholder="请输入联系电话"></i-input>
         </i-form-item>
-         <i-form-item prop="personalName;" label="客户姓名">
+         <i-form-item prop="personalName" label="客户姓名">
           <i-input v-model="ordertransferModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
         <i-form-item prop="idCard" label="证件号码">

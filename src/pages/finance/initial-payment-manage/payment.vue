@@ -1,8 +1,8 @@
-<!--放款-->
+<!--放款确认-->
 <template>
   <section class="page payment">
-    <page-header title="放款"></page-header>
-    <data-form data-prop="timeSearch" hidden-reset :model="approvalModel" :page="pageService" @on-search="getOrderQuery">
+    <page-header title="放款确认"></page-header>
+    <data-form data-prop="timeSearch" :model="approvalModel" :page="pageService" @on-search="getOrderQuery">
       <template slot="input">
          <!-- <i-form-item prop="refundName" label="付款账户">
           <i-input v-model="approvalModel.refundName" placeholder="请录入付款账户名查询"></i-input>
@@ -10,7 +10,7 @@
         <i-form-item prop="dateRange" label="日期：">
           <i-date-picker v-model="approvalModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
         </i-form-item> -->
-         <i-form-item prop="accountName" label="放款账户名">
+         <i-form-item prop="refundName" label="放款账户名">
           <i-input v-model="approvalModel.refundName" class="form-input" placeholder="请录入收款账户名查询"></i-input>
         </i-form-item>
         <i-form-item prop="orderNumber" label="订单编号">
@@ -41,24 +41,12 @@
   import Component from "vue-class-component";
   import ConfirmPay from "~/components/finance-manage/confirm-pay.vue"
   import SvgIcon from '~/components/common/svg-icon.vue';
-  import {
-    Tooltip
-  } from 'iview'
-  import {
-    FilterService
-  } from "~/utils/filter.service";
-  import {
-    Dependencies
-  } from "~/core/decorator";
-  import {
-    RefundApplicationService
-  } from "~/services/manage-service/refund-application.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  import {
-    Layout
-  } from "~/core/decorator";
+  import { Tooltip } from 'iview'
+  import { FilterService } from "~/utils/filter.service";
+  import { Dependencies } from "~/core/decorator";
+  import { RefundApplicationService } from "~/services/manage-service/refund-application.service";
+  import { PageService } from "~/utils/page.service";
+  import { Layout } from "~/core/decorator";
 
   @Layout("workspace")
   @Component({
@@ -313,6 +301,10 @@
      * 确定
      */
     confirm() {}
+    // 点击切换加载数据
+      activated() {
+        this.getOrderQuery()
+      }
   }
 
 </script>

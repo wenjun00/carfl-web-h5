@@ -2,13 +2,13 @@
 <template>
   <section class="page personal-account-list">
     <page-header title="个人开户列表" hiddenPrint></page-header>
-    <data-form data-prop="timeSearch" :model="gatherModel" :page="pageService" @on-search="getGatherListByCondition" hidden-reset>
+    <data-form data-prop="timeSearch" :model="gatherModel" :page="pageService" @on-search="getGatherListByCondition">
       <template slot="input">
         <!-- <i-form-item prop="orderInfo">
           <i-input class="second-data-one" placeholder="请录入客户姓名\证件号码\联系号码查询" v-model="gatherModel.orderInfo"></i-input>
         </i-form-item>
        -->
-        <i-form-item prop="personalName;" label="客户姓名">
+        <i-form-item prop="personalName" label="客户姓名">
           <i-input v-model="gatherModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
         <i-form-item prop="idCard" label="证件号码">

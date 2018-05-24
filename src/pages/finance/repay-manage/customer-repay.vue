@@ -2,7 +2,7 @@
 <template>
   <section class="page customer-repay">
     <page-header title="客户还款"></page-header>
-    <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList" hidden-reset>
+    <data-form date-prop="timeSearch" :model="customerRepayModel" @on-search="getCustomerRepayList" >
       <template slot="input">
         <!-- <i-form-item prop="dynamicParam">
           <i-input class="second-input" placeholder="请录入客户姓名\证件号码" v-model="customerRepayModel.dynamicParam"></i-input>
@@ -17,13 +17,13 @@
             <i-option v-for="{value,label} in $dict.getDictData('0107')" :key="value" :label="label" :value="value"></i-option>
           </i-select>
         </i-form-item> -->
-        <i-form-item prop="personalName;" label="客户姓名">
+        <i-form-item prop="personalName" label="客户姓名">
           <i-input v-model="customerRepayModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
         <i-form-item prop="idCard" label="证件号码">
           <i-input v-model="customerRepayModel.idCard" placeholder="请输入证件号码"></i-input>
         </i-form-item>
-        <i-form-item prop="tel" label="订单编号">
+        <i-form-item prop="orderNumber" label="订单编号">
           <i-input v-model="customerRepayModel.orderNumber" placeholder="请输入订单编号"></i-input>
         </i-form-item>
       </template>

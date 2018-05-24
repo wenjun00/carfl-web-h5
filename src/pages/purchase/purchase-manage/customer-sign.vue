@@ -6,7 +6,7 @@
         <!-- <i-form-item prop="orderInfo">
           <i-input v-model="customerSignModel.orderInfo" placeholder="请输入订单编号\客户姓名\证件号码\联系号码"></i-input>
         </i-form-item> -->
-         <i-form-item prop="personalName;" label="客户姓名">
+         <i-form-item prop="personalName" label="客户姓名">
           <i-input v-model="customerSignModel.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
         <i-form-item prop="idCard" label="证件号码">

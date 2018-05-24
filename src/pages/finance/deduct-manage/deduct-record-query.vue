@@ -18,13 +18,13 @@
             <i-option label="处理中" value="渭南市" key="渭南市"></i-option>
           </i-select>
         </i-form-item> -->
-        <i-form-item prop="personalName;" label="客户姓名">
+        <i-form-item prop="personalName" label="客户姓名">
           <i-input v-model="model.personalName" placeholder="请输入客户姓名"></i-input>
         </i-form-item>
         <i-form-item prop="orderNumber" label="订单编号">
           <i-input v-model="model.orderNumber" placeholder="请输入联系电话"></i-input>
         </i-form-item>
-         <i-form-item prop="paymentStatus" label="交易状态">
+         <i-form-item prop="payStatus" label="交易状态">
           <i-select placeholder="请选择交易状态" v-model="model.payStatus" clearable>
             <i-option v-for="{value,label} in $dict.getDictData('0114')" :key="value" :label="label" :value="value"></i-option>
           </i-select>

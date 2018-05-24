@@ -104,6 +104,7 @@ export class ApprovalService {
     return this.netService.send({
       server: manageService.approvalController.getAuditRecord,
       data: {
+        orderNumber:data.orderNumber,
         timeSearch: data.timeSearch,
         startTime: dateRange.start,
         endTime: dateRange.end,
