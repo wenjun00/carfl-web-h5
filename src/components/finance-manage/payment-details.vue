@@ -53,7 +53,7 @@
         </i-col>
       </i-row>
       <i-row class="adjunct">
-        <upload-voucher hiddenUpload ref="upload-voucher"></upload-voucher>
+        <upload-voucher hiddenUpload hiddenDelete ref="upload-voucher"></upload-voucher>
       </i-row>
     </i-form>
 

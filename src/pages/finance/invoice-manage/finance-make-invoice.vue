@@ -34,7 +34,7 @@
       </template>
     </data-form>
 
-    <data-box :columns="columnsData" :data="dataSet" @on-selection-change="headSelect" :page="pageService"></data-box>
+    <data-box :columns="columnsData" :data="dataSet" @on-selection-change="headSelect" :page="pageService" @onPageChange="query"></data-box>
     <template>
       <i-modal v-model="makeInvoiceModal" @on-visible-change="closeEmpty" title="确认开票" :width="700" class="confirmMakeInvoice">
         <confirm-make-invoice @close="close" ref="confirm-make-invoice"></confirm-make-invoice>

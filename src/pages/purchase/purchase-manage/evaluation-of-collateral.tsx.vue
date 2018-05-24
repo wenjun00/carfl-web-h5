@@ -28,7 +28,6 @@ import { PageService } from '~/utils/page.service';
 import SvgIcon from '~/components/common/svg-icon.vue';
 import AddCollateral from '~/components/purchase-manage/add-collateral.vue';
 import { AssessMentApplyService } from "~/services/manage-service/assess-ment-apply.service";
-import { FilterService } from '~/utils/filter.service';
 import AddCollateralDetails from '~/components/purchase-manage/add-collateral-details.vue';
 import DialogBox from "~/components/common/dialog-box.vue";
 import { Button } from "iview";
@@ -188,7 +187,7 @@ export default class EvaluationOfCollateral extends Page {
       minWidth: this.$common.getColumnWidth(4),
       align: 'center',
       render: (h, { row }) => {
-        return h('span', FilterService.dateFormat(row.assessmentTime, 'yyyy-MM-dd'))
+        return h('span', this.$filter.dateFormat(row.assessmentTime, 'yyyy-MM-dd'))
       }
     },
     {
