@@ -10,21 +10,24 @@ export class StagesMatchService {
    * 分期冲抵顺序配置分页查询
    */
   @Debounce()
-  queryStagesMatchPage(data,page) {
+  queryStagesMatchPage(type: Number, page) {
     return this.netService.send({
       server: manageService.stagesMatch.queryStagesMatchPage,
-      data:data,
-      page:page
+      data: { type: type },
+      page: page
     })
   }
   /**
    * 修改分期冲抵顺序配置顺序
    */
   @Debounce()
-  updateStagesMatch(data) {
+  updateStagesMatch(data: Array<any>) {
     return this.netService.send({
       server: manageService.stagesMatch.updateStagesMatch,
-      data:data
+      data: {
+        request: data
+      },
+      loading: true
     })
   }
 }

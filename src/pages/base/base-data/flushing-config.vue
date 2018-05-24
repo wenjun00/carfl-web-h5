@@ -36,7 +36,7 @@ export default class FlushingConfig extends Page {
   @Dependencies(PageService) private pageService: PageService;
   @Dependencies(StagesMatchService) private stagesMatchService: StagesMatchService;
   private dataSet: Array<any> = []
-  private checkId: any = ''
+  private checkId: Number = -1
   private configColumns: any = [{
     title: '费用项',
     key: 'costName',
@@ -59,7 +59,7 @@ export default class FlushingConfig extends Page {
         h('span', {
           on: {
             click: () => {
-              this.upArrow(row)
+              this.upArrow(index)
             }
           }
         }, [
@@ -77,7 +77,7 @@ export default class FlushingConfig extends Page {
         h('span', {
           on: {
             click: () => {
-              this.downArrow(row)
+              this.downArrow(index)
             }
           }
         }, [
@@ -108,7 +108,7 @@ export default class FlushingConfig extends Page {
    *  查询冲抵项目
    */
   check() {
-    this.stagesMatchService.queryStagesMatchPage({ type: this.checkId }, this.pageService)
+    this.stagesMatchService.queryStagesMatchPage(this.checkId, this.pageService)
       .subscribe(data => {
         this.dataSet = data
       }, ({ msg }) => {
@@ -119,11 +119,16 @@ export default class FlushingConfig extends Page {
   /**
    *  向上移动
    */
-  upArrow(val) {
-    if (val.sort <= 0) return;
-    val.sort -= 1
-    this.stagesMatchService.updateStagesMatch(val).subscribe(data => {
+  upArrow(index) {
+    if (index <= 0) return;
+
+    let array = this.dataSet.slice(index - 1, index + 1)
+    array[0].sort += 1
+    array[1].sort -= 1
+
+    this.stagesMatchService.updateStagesMatch(array).subscribe(data => {
       this.$Message.success("修改成功！")
+      this.check()
     }, err => {
       this.$Message.error(err.msg)
     })
@@ -131,13 +136,17 @@ export default class FlushingConfig extends Page {
   /**
    *  向下移动
    */
-  downArrow(val) {
+  downArrow(index) {
     let maxSort = this.dataSet.length - 1
-    if (val.sort === maxSort) return;
+    if (index === maxSort) return;
 
-    val.sort += 1
-    this.stagesMatchService.updateStagesMatch(val).subscribe(data => {
+    let array = this.dataSet.slice(index, index + 2)
+    array[0].sort += 1
+    array[1].sort -= 1
+
+    this.stagesMatchService.updateStagesMatch(array).subscribe(data => {
       this.$Message.success("修改成功！")
+      this.check()
     }, err => {
       this.$Message.error(err.msg)
     })

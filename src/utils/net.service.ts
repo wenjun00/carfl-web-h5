@@ -64,7 +64,7 @@ export class NetService {
       if (sort) {
         console.log(sort)
         targetUrl += '?'
-        targetUrl += Object.entries(sort).map(([k, v]) => `sort=${k},${v}`).join('&')
+        targetUrl += Object.entries(sort.sort).map(([k, v]) => `sort=${k},${v}`).join('&')
       }
 
       return targetUrl
