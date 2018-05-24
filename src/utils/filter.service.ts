@@ -190,6 +190,15 @@ export class FilterService {
     let result = LodashService.round(value as number, 2)
     return `${result}`.replace(/^\d+/g, (m) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
   }
+  /**
+   * 
+   * @param value 要格式化的金额字符串
+   */
+  static moneyFormatFour(value: number) {
+    let result = LodashService.round(value as number, 4)
+    return `${result}`.replace(/^\d+/g, (m) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','))
+  }
+
 
   static safeNumber(value) {
     if (isNaN(value) || value == undefined) {

@@ -19,7 +19,7 @@
       </data-grid-item>
       <data-grid-item label="冻结罚息" :span="6">
         <template>
-          <i-input-number v-model="applyFrozenModel.remitAmount" :formatter="$filter.moneyFormat" :parser="$filter.moneyParse"> </i-input-number>
+          <i-input-number v-model="applyFrozenModel.remitAmount" :formatter="$filter.moneyFormatFour" :parser="$filter.moneyParse"> </i-input-number>
         </template>
       </data-grid-item>
       <data-grid-item label="备注" :span="12">
