@@ -132,7 +132,6 @@ export default class EarlyRecoverApply extends Page {
 
   private checkOrderId: Number = 0
   private personalId: Number = 0
-  private categoryData: Array<Object>
   private loading: Boolean = false
   private isShown: Boolean = true
   private changeGatherItemModal: Boolean = false
@@ -147,59 +146,6 @@ export default class EarlyRecoverApply extends Page {
   private saveDraftModel: any = {}
 
   created() {
-
-
-    this.categoryData = [
-      {
-        title: '所有品牌',
-        expand: true,
-        children: [
-          {
-            title: '别克',
-            expand: true,
-            children: [
-              {
-                title: '君越'
-              },
-              {
-                title: '昂克赛拉',
-                expand: true,
-                children: [
-                  {
-                    title: '君越'
-                  },
-                  {
-                    title: '昂克赛拉'
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            title: '大众',
-            expand: true,
-            children: [
-              {
-                title: '英朗'
-              },
-              {
-                title: '帕萨特',
-                expand: true,
-                children: [
-                  {
-                    title: '英朗'
-                  },
-                  {
-                    title: '帕萨特'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-
     this.applyRule = {
       idCard: { required: true, validator: this.$validator.idCard, trigger: 'blur' },
       customerName: { required: true, message: '请输入客户姓名', trigger: 'blur' },
