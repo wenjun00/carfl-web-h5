@@ -17,7 +17,7 @@
       </i-row>
       <i-row>
         <i-col :span="12">
-          <i-form-item label="选择订单">
+          <i-form-item label="订单编号">
             <i-input v-model="orderNumber" disabled></i-input>
           </i-form-item>
         </i-col>

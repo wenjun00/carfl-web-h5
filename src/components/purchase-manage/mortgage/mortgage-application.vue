@@ -64,7 +64,8 @@
             合计数量: {{carDataSet.length}}
           </i-col>
           <i-col :span="6">
-            合计金额(元): <b>{{productModel.evaluateAmount|toThousands}}</b>
+            合计金额(元):
+            <b>{{productModel.evaluateAmount|toThousands}}</b>
           </i-col>
         </i-row>
       </template>
@@ -173,6 +174,7 @@ import MortgageCarList from "~/components/purchase-manage/mortgage/mortgage-car-
 import ProductList from "~/components/purchase-manage/product-list.tsx.vue";
 import { ProductPlanIssueService } from "~/services/manage-service/product-plan-issue.service";
 import { Form } from "iview";
+import { Array } from "core-js";
 @Component({
   components: {}
 })
@@ -450,12 +452,10 @@ export default class MortgageApplication extends Vue {
           this.$Message.error("请选择待添加的押品");
           return false;
         }
-        if (this.carDataSet.length === 0) {
-          this.carDataSet = [...this.carDataSet, ...currentSelection];
-        } else if (this.carDataSet.map(v => v.assessmentId).forEach((v) => { return v }) === currentSelection.map(v => v.assessmentId).forEach((m) => { return m })) {
-          this.$Message.error("该押品已经添加！");
-          return false;
-        }
+        // 每次对之前选择的数据进行过滤。最后合并
+        let appendIds = this.carDataSet.map(v => v.assessmentId)
+        let tmp  = currentSelection.filter(x => !appendIds.includes(x.assessmentId))
+        this.carDataSet = this.carDataSet.concat(tmp)
       },
       render: h => {
         return h(MortgageCarList, {
