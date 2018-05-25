@@ -106,6 +106,7 @@ export default class OrderTransfer extends Page {
   private userList: Array<any> = []
   private searchOptions: Boolean = false
   private ordertransferModel: any = {
+    timeSearch: '',
     dateRange: [],
     orderNumber:'',//请输入订单编号
     idCard:'',//证件号码

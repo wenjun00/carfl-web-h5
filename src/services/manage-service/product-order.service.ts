@@ -15,15 +15,16 @@ export class ProductOrderService {
     const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.productOrderController.findTransferOrder,
-      data:{
+      data: {
+        timeSearch: data.timeSearch,
         startTime: dateRange.start,//开始时间
         endTime: dateRange.end,//结束时间
-        personalName : data.personalName,//客户姓名
-        orderNumber:data.orderNumber,//订单编号
-        idCard  : data.idCard, // 客户证件号码
-        tel   :data.tel,//客户联系号码
+        personalName: data.personalName,//客户姓名
+        orderNumber: data.orderNumber,//订单编号
+        idCard: data.idCard, // 客户证件号码
+        tel: data.tel,//客户联系号码
       },
-      page:page
+      page: page
     })
   }
   /**
@@ -88,15 +89,15 @@ export class ProductOrderService {
   @Debounce(1000)
   saveFinanceApplyInfo(data) {
     //data.customerModel.birthTime = FilterService.dateFormat(data.customerModel.birthTime)
-    let dateStr = !!FilterService.dateFormat(data.personal.birthTime)?FilterService.dateFormat(data.personal.birthTime):null
-    let personal = {...data.personal, birthTime: dateStr }
+    let dateStr = !!FilterService.dateFormat(data.personal.birthTime) ? FilterService.dateFormat(data.personal.birthTime) : null
+    let personal = { ...data.personal, birthTime: dateStr }
 
-    let dataStr2 = !!FilterService.dateFormat(data.personalJob.accessCompanyTime)?FilterService.dateFormat(data.personalJob.accessCompanyTime):null
-    let personalJob = {...data.personalJob, accessCompanyTime: dataStr2 }
+    let dataStr2 = !!FilterService.dateFormat(data.personalJob.accessCompanyTime) ? FilterService.dateFormat(data.personalJob.accessCompanyTime) : null
+    let personalJob = { ...data.personalJob, accessCompanyTime: dataStr2 }
     // console.log(Object.assign(data, { personal: { birthTime: dateStr } }), 11111111111111)
     return this.netService.send({
       server: manageService.productOrderController.saveFinanceApplyInfo,
-      data: Object.assign(data, { personal }, {personalJob})
+      data: Object.assign(data, { personal }, { personalJob })
     })
   }
   /**
@@ -146,7 +147,7 @@ export class ProductOrderService {
     })
   }
 
-  getPurchaseInfoById(id){
+  getPurchaseInfoById(id) {
     return this.netService.send({
       server: manageService.productOrderController.getPurchaseInfoById,
       data: {
