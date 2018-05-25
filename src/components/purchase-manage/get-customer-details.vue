@@ -1,5 +1,5 @@
 <!--客户详情-->
-<template>
+<template> 
   <section class="component get-customer-details">
     <i-form v-model="customerDetailsModel" :label-width="90">
       <!-- 基本信息 -->
@@ -127,7 +127,7 @@
         <i-row type="flex" :gutter="110">
           <i-col :span="24" class="contacts">
             <div v-for="(i,index) in customerDetailsModel.personalContacts" :key="index">
-              <i-form-item label="联系人">
+              <i-form-item :label="i.attn">
                 <i-input readonly v-model="i.name"></i-input>
                 <i-select disabled v-model="i.relation ">
                   <i-option v-for="{value,label} in $dict.getDictData('0457')" :key="value" :label="label" :value="value"></i-option>
@@ -385,6 +385,19 @@ export default class addPeople extends Vue {
         this.customerDetailsModel.personalBank.depositBank = !!this.customerDetailsModel.personalBank.depositBank ? Number(this.customerDetailsModel.personalBank.depositBank) : null;
         this.customerDetailsModel.personalBank.accountType = !!this.customerDetailsModel.personalBank.accountType ? Number(this.customerDetailsModel.personalBank.accountType) : null;
         this.customerDetailsModel.personalBank.accountUse = !!this.customerDetailsModel.personalBank.accountUse ? Number(this.customerDetailsModel.personalBank.accountUse) : null;
+        for (let i of this.customerDetailsModel.personalContacts) {
+            if (i.level == 1) {
+              i.attn = '第一联系人'
+            } else if (i.level == 2) {
+              i.attn = '第二联系人'
+            } else if (i.level == 3) {
+              i.attn = '第三联系人'
+            } else if (i.level == 4) {
+              i.attn = '第四联系人'
+            } else if (i.level == 5) {
+              i.attn = '第五联系人'
+            }
+          }
       },
       ({ msg }) => {
         this.$Message.error(msg)
