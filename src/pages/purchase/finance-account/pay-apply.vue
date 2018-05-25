@@ -36,21 +36,6 @@
             </i-form-item>
           </i-col>
         </i-row>
-        <!--<i-row :gutter="20">-->
-        <!--<i-col span="12">-->
-        <!--<i-form-item label="付款类型" prop="refundType">-->
-        <!--<i-select v-model="applyModel.refundType" placeholder="请选择付款类型">-->
-        <!--<i-option v-for="{value,label} in $dict.getDictData('0430')" :key="value" :label="label" :value="value"></i-option>-->
-        <!--</i-select>-->
-        <!--</i-form-item>-->
-        <!--</i-col>-->
-        <!--<i-col span="12">-->
-        <!--<i-form-item label="备注" prop="remark">-->
-        <!--<i-input type="text" style="width:77%;" v-model="applyModel.remark" placeholder="请输入备注">-->
-        <!--</i-input>-->
-        <!--</i-form-item>-->
-        <!--</i-col>-->
-        <!--</i-row>-->
       </i-form>
     </div>
 
@@ -70,20 +55,6 @@
     <div class="fixed-container" v-show="applyModel.orderNumber">
       <i-button size="large" class="highButton" @click="saveSubmit">保存并提交</i-button>
     </div>
-
-    <!--编辑收款项-->
-    <!--<template>-->
-    <!--<i-modal v-model="modifyGatherItemModal" title="编辑收款项" :width="300">-->
-    <!--<modify-gather-item></modify-gather-item>-->
-    <!--</i-modal>-->
-    <!--</template>-->
-
-    <!--变更收款项-->
-    <!--<template>-->
-    <!--<i-modal v-model="changeGatherItemModal" title="变更收款项">-->
-    <!--<change-gather-item></change-gather-item>-->
-    <!--</i-modal>-->
-    <!--</template>-->
   </section>
 </template>
 <script lang="ts">
@@ -91,14 +62,10 @@
   import Component from 'vue-class-component'
   import { RefundApplicationService } from '~/services/manage-service/refund-application.service'
   import { Dependencies } from '~/core/decorator'
-  import { ApplyQueryService } from '~/services/business-service/apply-query.service'
   import DataBox from '~/components/common/data-box.vue'
-  import { PageService } from '~/utils/page.service'
   import SvgIcon from '~/components/common/svg-icon.vue'
   import { Layout } from '~/core/decorator'
   import UploadTheMaterial from '~/components/purchase-manage/upload-the-material.tsx.vue'
-  import ModifyGatherItem from '~/components/purchase-manage/modify-gather-item.vue'
-  import ChangeGatherItem from '~/components/purchase-manage/change-gather-item.vue'
   import PayDetail from '~/components/purchase-manage/pay-detail.vue'
   import UploadVoucher from "~/components/common/upload-voucher.vue"
 
@@ -108,15 +75,11 @@
       DataBox,
       SvgIcon,
       UploadVoucher,
-      ModifyGatherItem,
-      ChangeGatherItem,
       PayDetail
     }
   })
   export default class PayApply extends Page {
     @Dependencies(RefundApplicationService) private refundApplicationService: RefundApplicationService;
-    @Dependencies(PageService) private pageService: PageService;
-    @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
 
     private customerForm: any = {}
     private transFlag: boolean = false;

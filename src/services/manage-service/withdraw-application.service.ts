@@ -1,7 +1,7 @@
 import { manageService } from '~/config/server/manage-service'
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
-import {FilterService} from "~/utils/filter.service";
+import { FilterService } from "~/utils/filter.service";
 import { requestType } from "~/config/enum.config";
 import store from "~/store"
 
@@ -36,7 +36,7 @@ export class WithdrawApplicationService {
   /**
  * 获取提前收回信息
  */
-  getAdvanceRevokeApplicationInfo({ personalId, orderId }) {
+  getAdvanceRevokeApplicationInfo(personalId, orderId) {
     return this.netService.send({
       server: manageService.withdrawApplicationController.getAdvanceRevokeApplicationInfo,
       data: {
@@ -100,7 +100,7 @@ export class WithdrawApplicationService {
   /**
    * 获取提前结清收款项
    */
-  getAdvancePayoffItems({ orderId }) {
+  getAdvancePayoffItems(orderId) {
     return this.netService.send({
       server: manageService.withdrawApplicationController.getAdvancePayoffItems,
       data: {
@@ -148,14 +148,14 @@ export class WithdrawApplicationService {
     const dateRange = FilterService.dateRanageFormat(data.dateRange)
     return this.netService.send({
       server: manageService.withdrawApplicationController.getGatheringApprovalList,
-      data:{
+      data: {
         queryStartDate: dateRange.start,
         queryEndDate: dateRange.end,
         applicationType: data.applicationType, // 收款类型
         approvalStatus: data.approvalStatus, // 申请状态
         orderNumber: data.orderNumber, // 订单编号
       },
-      page:page
+      page: page
     })
   }
   /**
@@ -185,7 +185,7 @@ export class WithdrawApplicationService {
   /**
    * 获取提前收回收款项
    */
-  getAdvanceRevokeItems({ orderId }) {
+  getAdvanceRevokeItems(orderId) {
     return this.netService.send({
       server: manageService.withdrawApplicationController.getAdvanceRevokeItems,
       data: {

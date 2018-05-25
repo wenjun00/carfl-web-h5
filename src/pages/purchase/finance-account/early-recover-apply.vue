@@ -59,7 +59,7 @@
 
     <i-tabs v-show="applyModel.orderId" v-model="materialTabs" class="info-container">
       <i-tab-pane name="gather-detail-early-pay" label="收款明细">
-        <gather-detail-early-pay :checkOrderId="checkOrderId" :typeData="typeData" ref="gather-detail-early-pay"></gather-detail-early-pay>
+        <gather-detail-early-pay :typeData="true" ref="gather-detail-early-pay"></gather-detail-early-pay>
       </i-tab-pane>
       <i-tab-pane name="upload-the-fodder" label="上传素材">
         <upload-the-fodder ref="upload-the-fodder"></upload-the-fodder>
@@ -69,56 +69,29 @@
     <div v-show="!applyModel.orderId" class="emptyText">
       请先填写证件信息
     </div>
-    <div v-show="applyModel.orderId" class="fixed-container">
+    <div v-show="applyModel.orderId && !hasApprove" class="fixed-container">
       <i-button size="large" class="highButton" @click="saveAndCommit">保存并提交</i-button>
     </div>
-
-    <!--编辑收款项-->
-    <template>
-      <i-modal v-model="modifyGatherItemModal" title="编辑收款项" :width="300">
-        <modify-gather-item></modify-gather-item>
-      </i-modal>
-    </template>
-    <!--变更收款项-->
-    <template>
-      <i-modal v-model="changeGatherItemModal" title="变更收款项">
-        <change-gather-item></change-gather-item>
-      </i-modal>
-    </template>
   </section>
 </template>
 <script lang="ts">
 import Page from '~/core/page';
 import Component from 'vue-class-component';
 import { Dependencies } from '~/core/decorator';
-import { ApplyQueryService } from '~/services/business-service/apply-query.service';
 import { WithdrawApplicationService } from '~/services/manage-service/withdraw-application.service';
-import { AdvanceRevokeService } from '~/services/manage-service/advance-revoke.service';
-import DataBox from '~/components/common/data-box.vue';
-import { PageService } from '~/utils/page.service';
-import SvgIcon from '~/components/common/svg-icon.vue';
 import { Layout } from '~/core/decorator';
 import UploadTheFodder from '~/components/purchase-manage/upload-the-fodder.vue';
-import ChangeGatherItem from '~/components/purchase-manage/change-gather-item.vue';
-import ModifyGatherItem from '~/components/purchase-manage/modify-gather-item.vue';
 import GatherDetailEarlyPay from '~/components/purchase-manage/gather-detail-early-pay.vue';
 
 @Layout('workspace')
 @Component({
   components: {
-    DataBox,
-    SvgIcon,
     UploadTheFodder,
-    ChangeGatherItem,
-    ModifyGatherItem,
     GatherDetailEarlyPay
   }
 })
 export default class EarlyRecoverApply extends Page {
-  @Dependencies() private pageService: PageService;
-  @Dependencies(ApplyQueryService) private applyQueryService: ApplyQueryService;
   @Dependencies(WithdrawApplicationService) private withdrawApplicationService: WithdrawApplicationService;
-   @Dependencies(AdvanceRevokeService) private advanceRevokeService: AdvanceRevokeService;
   private customerForm: any = {};
   private currentIdCard: string = "";
 
@@ -129,21 +102,12 @@ export default class EarlyRecoverApply extends Page {
 
   private applyModel: any = {}
   private applyRule: Object = {}
-
-  private checkOrderId: Number = 0
   private personalId: Number = 0
-  private loading: Boolean = false
-  private isShown: Boolean = true
-  private changeGatherItemModal: Boolean = false
-  private modifyGatherItemModal: Boolean = false
   private materialTabs: String = 'gather-detail-early-pay'
   private disabledStatus: String = '' // 子组件中输入框禁用flag
   private orderNumberIdModels: Array<Object> = []
-  private orderIdModels: any = {}
-  private single: Boolean = false
-  private typeData: Boolean = true
-  private msg: any = ''
   private saveDraftModel: any = {}
+  private hasApprove = true; // 改订单不可被提交
 
   created() {
     this.applyRule = {
@@ -189,29 +153,9 @@ export default class EarlyRecoverApply extends Page {
   }
 
   /**
-   * 多选
-   */
-  multipleSelect(selection) { }
-  /**
-    是否显示汽车分类
-     */
-  showCategory() {
-    this.isShown = !this.isShown
-  }
-  /**
-   * 变更收款项
-   */
-  changeGatherItem() {
-    this.changeGatherItemModal = true
-  }
-  modifyGatherItem() {
-    this.modifyGatherItemModal = true
-  }
-
-    /**
-   * 清空
-   */
-  clearAll() {
+  * 清空
+  */
+  private clearAll() {
     this.$Modal.confirm({
       title: '提示',
       content:
@@ -220,8 +164,6 @@ export default class EarlyRecoverApply extends Page {
         this.resetPage()
         // 显示遮罩
         this.disabledStatus = 'block'
-        // 清空orderId
-        this.checkOrderId = 0
       }
     })
   }
@@ -229,7 +171,7 @@ export default class EarlyRecoverApply extends Page {
   /**
    * 清空
    */
-  resetPage(newIdCard?: string) {
+  private resetPage(newIdCard?: string) {
     this.transFlag = false
     this.orderNumberIdModels = []
     this.customerForm.resetFields()
@@ -238,17 +180,8 @@ export default class EarlyRecoverApply extends Page {
     this.uploadTheFodder.fodder.reset()
   }
 
-  showTab1() {
-    if (this.applyModel.idCard.length === 18) {
-      this.disabledStatus = 'none'
-      this.getOrderInfo()
-    } else {
-      this.applyModel.customerName = ''
-      this.applyModel.mobileMain = ''
-    }
-  }
 
-  async getUserInfo() {
+  private async getUserInfo() {
     // 检测身份证
     if (!await this.checkIdCardValid()) {
       return;
@@ -266,7 +199,7 @@ export default class EarlyRecoverApply extends Page {
     this.getOrderInfo()
   }
 
-  async checkIdCardValid() {
+  private async checkIdCardValid() {
     if (this.applyModel.idCard.length < 18) {
       return;
     }
@@ -278,60 +211,56 @@ export default class EarlyRecoverApply extends Page {
   /** 
    * 获取订单信息
    */
-  getOrderInfo() {
+  private getOrderInfo() {
     this.withdrawApplicationService
-    .getPersonalProductOrderInfoForAdvance({
+      .getPersonalProductOrderInfoForAdvance({
         idCard: this.applyModel.idCard,
         customerName: this.applyModel.customerName,
         mobileMain: this.applyModel.mobileMain
       })
       .subscribe(
-      data => {
-        if (data[0] && data[0].orderNumberIdModels) {
-          this.orderNumberIdModels = data[0].orderNumberIdModels
-          this.applyModel.customerName = data[0].name
-          this.applyModel.mobileMain = data[0].mobileMain
-          this.personalId = data[0].personalId
-        }
-      },
-      ({ msg }) => {
-        this.$Message.error(msg)
-      }
+        data => {
+          if (data[0] && data[0].orderNumberIdModels) {
+            this.orderNumberIdModels = data[0].orderNumberIdModels
+            this.applyModel.customerName = data[0].name
+            this.applyModel.mobileMain = data[0].mobileMain
+            this.personalId = data[0].personalId
+          }
+        }, err => this.$Message.error(err.msg)
       )
   }
-  selectOrder(val) {
+
+  /**
+   * 订单改变的时候
+  */
+  private selectOrder(val) {
     if (val) {
-      this.checkOrderId = val // 将选择的订单号传给变更收款项按钮点击事件中
       this.saveDraftModel.orderId = val // 保存草稿所需orderId
-      this.withdrawApplicationService
-        .getAdvanceRevokeApplicationInfo({
-          personalId: this.personalId,
-          orderId: val
-        })
-        .subscribe(
-        data => {
-          this.applyModel.remark = data.remark
-          this.applyModel.withdrawType = data.withdrawType
-          // 获取收款项和备注信息
-          let _gatherDetail: any = this.$refs['gather-detail-early-pay']
-          _gatherDetail.makeListdataSet(data)
-          if (data.personalBank && data.personalBank.personalName) {
-            this.saveDraftModel.accountName = data.personalBank.personalName // 获取保存草稿时需要的accountName
-          }
-          if (data.withdrawId) {
-            this.saveDraftModel.applicationId = data.withdrawId // 获取保存草稿时需要的id
-          }
-        },
-        ({ msg }) => {
-          this.msg = msg
-          this.$Message.error(msg)
-        }
-        )
+
+      //先让收费项目获取基础数据，
+      this.gatherDetailEarlyPay.changeGatherItem(val).then(() => {
+        //然后设置还原数据
+        this.withdrawApplicationService
+          .getAdvanceRevokeApplicationInfo(this.personalId, val)
+          .subscribe(
+            data => {
+              this.applyModel.remark = data.remark
+              this.applyModel.withdrawType = data.withdrawType
+              // 获取收款项和备注信息
+              this.gatherDetailEarlyPay.makeListdataSet(data)
+              if (data.personalBank && data.personalBank.personalName) {
+                this.saveDraftModel.accountName = data.personalBank.personalName // 获取保存草稿时需要的accountName
+              }
+              this.hasApprove = false
+            }, err => {
+              this.$Message.error(err.msg)
+
+            })
+      }).catch(() => { })
     }
   }
-  getgather() {
-    let _gatherDetail: any = this.$refs['gather-detail-early-pay']
-    let itemList = _gatherDetail.getItem()
+
+  private getgather() {
     let _uploadthefodder: any = this.$refs['upload-the-fodder']
     this.saveDraftModel.financeUploadResources = _uploadthefodder.fodderList.map(
       v => {
@@ -340,63 +269,41 @@ export default class EarlyRecoverApply extends Page {
         }
       }
     )
-    this.saveDraftModel.otherFee = _gatherDetail.getOtherFee()
     this.saveDraftModel.remark = this.applyModel.remark
-    let surplusManageFee = itemList.find(v => v.itemName === 'surplusManageFee')
-    if (surplusManageFee) {
-      this.saveDraftModel.surplusManageFee = surplusManageFee.itemMoney
+
+    // 获取各项费用
+    for (let key in this.saveDraftModel) {
+      let row = this.gatherDetailEarlyPay.saleItemList.find(v => v.itemName === key && v._checked)
+      if (row) {
+        this.saveDraftModel[key] = row.itemMoney
+      }
     }
-    let surplusPenalty = itemList.find(v => v.itemName === 'surplusPenalty')
-    if (surplusPenalty) {
-      this.saveDraftModel.violateAmount = surplusPenalty.itemMoney
-    }
-    let surplusPenaltyFreeze = itemList.find(
-      v => v.itemName === 'surplusPenaltyFreeze'
-    )
-    if (surplusPenaltyFreeze) {
-      this.saveDraftModel.surplusPenaltyFreeze = surplusPenaltyFreeze.itemMoney
-    }
-    let surplusPrincipal = itemList.find(v => v.itemName === 'surplusPrincipal')
-    if (surplusPrincipal) {
-      this.saveDraftModel.surplusPrincipal = surplusPrincipal.itemMoney
-    }
-    let totalPayment = itemList.find(v => v.itemName === 'totalPayment')
-    if (totalPayment) {
-      this.saveDraftModel.totalPayment = totalPayment.itemMoney
-    }
-    let violateAmount = itemList.find(v => v.itemName === 'violateAmount')
-    if (violateAmount) {
-      this.saveDraftModel.violateAmount = violateAmount.itemMoney
-    }
+    this.saveDraftModel.totalPayment = this.gatherDetailEarlyPay.totalMoney
   }
 
   /**
    * 保存并提交
    */
-  saveAndCommit() {
+  private saveAndCommit() {
     let customerform: any = this.$refs['customer-form']
     customerform.validate(valid => {
       if (!valid) {
         return false
       } else {
-        this.getgather()
-        if (this.msg === '该订单有未完成的提前收回申请') {
-          this.$Message.warning('请先审批未处理的申请订单！')
+        if (this.gatherDetailEarlyPay.totalMoney === 0) {
+          this.$Message.warning('未添加收款项，请添加收款项！')
           return false
         }
+        this.getgather()
         this.saveDraftModel.withdrawType = this.applyModel.withdrawType
         let saveAndCommitModel = this.saveDraftModel
         this.withdrawApplicationService
           .saveAdvanceRevokeApplication(saveAndCommitModel)
           .subscribe(
-          data => {
-            this.$Message.success('保存并提交成功！')
-            this.resetPage()
-          },
-          ({ msg }) => {
-            this.$Message.error(msg)
-          }
-          )
+            data => {
+              this.$Message.success('保存并提交成功！')
+              this.resetPage()
+            }, err => this.$Message.error(err.msg))
       }
     })
   }
