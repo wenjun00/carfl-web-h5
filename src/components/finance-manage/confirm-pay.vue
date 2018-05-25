@@ -1,4 +1,4 @@
-<!--确认放款-->
+<!--确认放款--> 
 <template>
   <section class="component confirm-pay">
     <i-form :label-width="80" :model="repaymentObj" ref="modify-user">
@@ -30,7 +30,7 @@
         </i-col>
       </i-row>
     </i-form>
-    <div v-if="applicationPhaseResources.length">
+    <!-- <div v-if="applicationPhaseResources.length">
       <div class="modal-item-fujian-div"></div>
       <span>附件</span>
     </div>
@@ -40,7 +40,7 @@
         <div class="invoiceItem"></div>
         <div class="invoiceName">{{item.invoiceName}}</div>
       </div>
-    </div>
+    </div> -->
 
     <div>
       <div class="modal-item-shoukuamingxi"></div>
@@ -99,10 +99,16 @@
     <!--<bank-info :dataSet="personalBanks"></bank-info>-->
     <i-table :columns="columns2" :data="personalBanks"></i-table>
 
-    <div v-if="!check||applicationPhaseResources.length">
+    <div  v-if="!check">
       <div class="modal-item-shoukuanpingzheng-div"></div>
       <span>收款凭证</span>
-      <upload-voucher @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
+      <upload-voucher v-if="!check" @financeUploadResources="fileNumber" ref="upload-voucher-two"></upload-voucher>
+    </div>
+
+     <div v-show="applicationPhaseResources.length">
+      <div class="modal-item-shoukuanpingzheng-div"></div>
+      <span>收款凭证</span>
+      <upload-voucher hiddenUpload hiddenDelete ref="upload-voucher"></upload-voucher>
     </div>
   </section>
 </template>
@@ -179,7 +185,11 @@ export default class ConfirmPay extends Vue {
       this.collectMoneyDetails = data.refundRecordItems
       this.personalBanks = data.bankListk
       this.financeUploadResources = data.resourceList.filter(v => v.materialType === 1163)
-      this.applicationPhaseResources = data.resourceList.filter(v => v.materialType === 1162)
+      // this.applicationPhaseResources = data.resourceList.filter(v => v.materialType === 1162)
+      this.applicationPhaseResources = data.resourceList
+      let uploadFodder: any = this.$refs['upload-voucher']
+      uploadFodder.Reverse(this.applicationPhaseResources)
+
       this.inputBlur()
     }, ({
         msg
