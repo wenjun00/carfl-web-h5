@@ -16,9 +16,8 @@
           </i-col>
           <i-col span="12">
             <i-form-item label="性别" prop="sex">
-              <i-select v-model="customerModel.sex">
-                <i-option label="男" :value="1"></i-option>
-                <i-option label="女" :value="2"></i-option>
+              <i-select placeholder="请选择性别" v-model="customerModel.sex ">
+                <i-option v-for="{value,label} in $dict.getDictData('0001')" :key="value" :label="label" :value="value"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
@@ -54,13 +53,7 @@
           <i-col span="12">
             <i-form-item label="教育程度" prop="education">
               <i-select v-model="customerModel.education">
-                <i-option label="博士及以上" :value="3"></i-option>
-                <i-option label="硕士" :value="4"></i-option>
-                <i-option label="本科" :value="5"></i-option>
-                <i-option label="大专" :value="6"></i-option>
-                <i-option label="高中" :value="7"></i-option>
-                <i-option label="中专/技校" :value="8"></i-option>
-                <i-option label="初中及以下" :value="9"></i-option>
+                <i-option v-for="{value,label} in $dict.getDictData('0002')" :key="value" :label="label" :value="value"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
@@ -74,11 +67,8 @@
         <i-row>
           <i-col span="12">
             <i-form-item label="婚姻状况" prop="marital">
-              <i-radio-group v-model="customerModel.marital">
-                <i-radio :label="10" :value="10">未婚</i-radio>
-                <i-radio :label="11" :value="11">已婚</i-radio>
-                <i-radio :label="12" :value="12">离婚</i-radio>
-                <i-radio :label="13" :value="13">丧偶</i-radio>
+              <i-radio-group class="item-chanpin-group" v-model="customerModel.marital">
+                <i-radio v-for="{value,label} in $dict.getDictData('0003')" :key="value" :label="value" class="item-chanpin-radio">{{label}}</i-radio>
               </i-radio-group>
             </i-form-item>
           </i-col>
@@ -199,17 +189,7 @@
           <i-col span="12">
             <i-form-item label="现居住地房产归属" prop="localLiveHouseOwner">
               <i-select v-model="customerModel.localLiveHouseOwner" clearable>
-                <i-option label="本人名下" :value="16"></i-option>
-                <i-option label="配偶名下" :value="17"></i-option>
-                <i-option label="子女名下" :value="18"></i-option>
-                <i-option label="父母名下" :value="19"></i-option>
-                <i-option label="亲属名下" :value="20"></i-option>
-                <i-option label="公司宿舍" :value="21"></i-option>
-                <i-option label="租房" :value="22"></i-option>
-                <i-option label="商品房" :value="23"></i-option>
-                <i-option label="拆迁安置房" :value="24"></i-option>
-                <i-option label="宅基地" :value="25"></i-option>
-                <i-option label="其他" :value="26"></i-option>
+                <i-option v-for="{value,label} in $dict.getDictData('0005')" :key="value" :label="label" :value="value"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
@@ -224,10 +204,7 @@
               <i-col span="12">
                 <i-form-item label="本市自有房产状况及归属" prop="cityOwnhouseCondition">
                   <i-select v-model="customerModel.cityOwnhouseCondition" clearable>
-                    <i-option label="商品房" :value="23"></i-option>
-                    <i-option label="拆迁安置房" :value="24"></i-option>
-                    <i-option label="宅基地" :value="25"></i-option>
-                    <i-option label="其他" :value="26"></i-option>
+                    <i-option v-for="{value,label} in $dict.getDictData('0006')" :key="value" :label="label" :value="value"></i-option>
                   </i-select>
                 </i-form-item>
               </i-col>
@@ -256,8 +233,7 @@
               <i-row type="flex" :gutter="16">
                 <i-col>
                   <i-radio-group v-model="idcardOwn" @on-change="cityidcardChange">
-                    <i-radio :label="29" :value="29">身份证地址</i-radio>
-                    <i-radio :label="30" :value="30">现居住地址</i-radio>
+                     <i-radio v-for="{value,label} in $dict.getDictData('0008')" :key="value" :label="value" class="item-chanpin-radio">{{label}}</i-radio>
                   </i-radio-group>
                 </i-col>
                 <i-col>
@@ -512,7 +488,7 @@ export default class PersonalCustomerInfo extends Vue {
     let sexNumber = Number(data.cardNumber[16])
     this.customerModel.sex = sexNumber % 2 === 1 ? 1 : 2
     let birthDate = data.cardNumber.substr(6, 8)
-    this.customerModel.birthTime =  new Date(birthDate.substr(0, 4),Number(birthDate.substr(4, 2)) -1,birthDate.substr(6, 2))
+    this.customerModel.birthTime = new Date(birthDate.substr(0, 4), Number(birthDate.substr(4, 2)) - 1, birthDate.substr(6, 2))
   }
 
   /**
@@ -603,7 +579,7 @@ export default class PersonalCustomerInfo extends Vue {
     let customerForm = this.$refs["customer-form"] as Form;
 
     // 基础验证
-   return customerForm
+    return customerForm
       .validate()
       .then(valid => {
         return valid

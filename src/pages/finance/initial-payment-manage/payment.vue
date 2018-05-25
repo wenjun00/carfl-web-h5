@@ -220,7 +220,15 @@
           }) => {
             return h("span", {}, this.$dict.getDictName(row.processStatus));
           }
-        }, {
+        },
+        {
+          title: '订单编号',
+          key: 'orderNumber',
+          editable: true,
+          align: 'center',
+          minWidth: this.$common.getColumnWidth(7),
+        },
+        {
           title: '处理时间',
           key: 'processTime',
           editable: true,

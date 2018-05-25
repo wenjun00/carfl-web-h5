@@ -13,7 +13,8 @@
       <i-col :span="12">
         <i-form-item label="账户类型" prop="accountType">
           <i-select class="open-input" v-model="CustomerOpenAccountModel.accountType" placeholder="请选择账户类型">
-            <i-option v-for="{value,label} in $dict.getDictData('0436')" :key="value" :label="label" :value="value"></i-option>
+            <!-- <i-option v-for="{value,label} in $dict.getDictData('0436')" :key="value" :label="label" :value="value"></i-option> -->
+            <i-option label="个人开户" :value="1175"></i-option>
           </i-select>
         </i-form-item>
       </i-col>

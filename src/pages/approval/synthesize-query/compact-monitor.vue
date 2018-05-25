@@ -4,18 +4,18 @@
     <page-header title="合同下载监控" hiddenPrint hiddenExport></page-header>
     <data-form :model="compactMonitorModel" date-prop="timeSearch" @on-search="getPersonalClientList">
       <template slot="input">
-        <i-form-item label="日期：" prop="dateRange">
+        <!-- <i-form-item label="日期：" prop="dateRange">
           <i-date-picker v-model="compactMonitorModel.dateRange" type="daterange" placeholder="请选择日期范围"></i-date-picker>
-        </i-form-item>
-        <i-form-item label="姓名" prop="userName">
+        </i-form-item> -->
+        <i-form-item label="员工姓名" prop="userName">
           <i-input v-model="compactMonitorModel.userName" placeholder="请输入员工姓名"></i-input>
         </i-form-item>
-        <i-form-item label="机构">
-          <i-select placeholder="请选择机构">
+        <i-form-item label="门店">
+          <!-- <i-select placeholder="请选择机构">
             <i-option label="吴小川" value="吴小川" key="吴小川"></i-option>
             <i-option label="黄瑞" value="黄瑞" key="黄瑞"></i-option>
             <i-option label="祁吉贵" value="祁吉贵" key="祁吉贵"></i-option>
-          </i-select>
+          </i-select> -->
         </i-form-item>
       </template>
     </data-form>

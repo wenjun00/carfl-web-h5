@@ -13,7 +13,7 @@
         <i-form-item prop="idCard" label="证件号码">
           <i-input v-model="derateModel.idCard" placeholder="请输入证件号码"></i-input>
         </i-form-item>
-        <i-form-item prop="idCard" label="订单编号">
+        <i-form-item prop="orderNumber" label="订单编号">
           <i-input v-model="derateModel.orderNumber" placeholder="请输入证件号码"></i-input>
         </i-form-item>
         <i-form-item prop="dateRange" label="减免申请日期">

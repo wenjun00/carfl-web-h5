@@ -198,7 +198,7 @@ export default class PersonalAccountList extends Page {
       {
         align: "center",
         title: "证件号码",
-        key: "cardNumber",
+        key: "certificateNumber",
         minWidth: this.$common.getColumnWidth(6),
       },
       {

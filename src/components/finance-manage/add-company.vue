@@ -110,7 +110,7 @@
           <i-col :span="12">
             <i-form-item label="法人证件类型" prop="legpersonCertificate">
               <i-select style="width:160px;" v-model="addCompanyModel.legpersonCertificate" :readonly="companyReadonly">
-                <i-option v-for="{value,label} in $dict.getDictData('0043')" :key="value" :label="label" :value="value"></i-option>
+                <i-option v-for="{value,label} in $dict.getDictData('0433')" :key="value" :label="label" :value="value"></i-option>
               </i-select>
             </i-form-item>
           </i-col>
