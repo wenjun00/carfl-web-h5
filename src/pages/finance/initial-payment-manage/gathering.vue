@@ -226,6 +226,13 @@
             return h("div", [obj]);
           }
         },
+         {
+          title: "订单编号",
+          key: "orderNumber",
+          align: "center",
+          editable: true,
+          minWidth: this.$common.getColumnWidth(4),
+        },
         {
           title: "处理状态",
           key: "collectMoneyDealStatus",
