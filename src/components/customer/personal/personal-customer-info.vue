@@ -1,4 +1,4 @@
-<!--客户资料-->
+<!--客户资料--> 
 <template>
   <section class="component personal-customer-info">
     <i-form ref="customer-form" :rules="customerRules" :model="customerModel" :label-width="110" label-position="left" class="item-xinxi-form">
@@ -505,6 +505,7 @@ export default class PersonalCustomerInfo extends Vue {
   }
 
   setBaseData(data) {
+    console.log(data)
     this.customerModel.idCard = data.cardNumber;
     this.customerModel.name = data.customterName;
     this.customerModel.mobileMain = data.phoneNumber;
