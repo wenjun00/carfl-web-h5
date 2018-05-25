@@ -3,40 +3,40 @@
   <section class="component second-last-approve">
     <data-grid :labelWidth="140">
       <data-grid-item label="抵押贷款估价" :span="6">
-        <div>{{!!carAmount?carAmount:0}}</div>
+        <div>{{carAmount | toThousands}}</div>
       </data-grid-item>
       <data-grid-item label="贷款总额" :span="6">
-        <div>{{!!financingAmount?financingAmount:0}}</div>
+        <div>{{financingAmount| toThousands}}</div>
       </data-grid-item>
       <data-grid-item label="管理费率" :span="6">
         <!--<i-select v-model="passModel.manageCostPercent" clearable @on-change="manageChange">-->
-          <!--<i-option v-for="item in manageCost" :key="item" :value="item" :label="item+'%'"></i-option>-->
+        <!--<i-option v-for="item in manageCost" :key="item" :value="item" :label="item+'%'"></i-option>-->
         <!--</i-select>-->
-        <div>{{!!manageCostPercent? (manageCostPercent | decimalToPrecent):0}}</div>
+        <div>{{manageCostPercent | decimalToPrecent}}</div>
       </data-grid-item>
       <data-grid-item label="管理费金额" :span="6">
-        <div>{{!!manageCost?manageCost:0}}</div>
+        <div>{{manageCost | toThousands}}</div>
       </data-grid-item>
       <data-grid-item label="融资期数" :span="6">
         <div>{{!!periods?$dict.getDictName(periods):0}}</div>
       </data-grid-item>
       <data-grid-item label="月供金额" :span="6">
-        <div>{{!!monthlySupply?monthlySupply:0}}</div>
+        <div>{{monthlySupply | toThousands}}</div>
       </data-grid-item>
       <data-grid-item label="月利率" :span="6">
         <div>{{productRate | decimalToPrecent}}</div>
       </data-grid-item>
       <data-grid-item label="还款方式" :span="6">
         <!--<i-select v-model="passModel.payWay" clearable>-->
-          <!--<i-option v-for="{value,label} in $dict.getDictData('0408')" :key="value" :label="label" :value="value"></i-option>-->
+        <!--<i-option v-for="{value,label} in $dict.getDictData('0408')" :key="value" :label="label" :value="value"></i-option>-->
         <!--</i-select>-->
         <div>{{!!payWay?$dict.getDictName(payWay):''}}</div>
       </data-grid-item>
       <data-grid-item label="GPS费" :span="6">
-        <div>{{!!gpsFee?gpsFee:0}}</div>
+        <div>{{gpsFee | toThousands}}</div>
       </data-grid-item>
       <data-grid-item label="其他费用" :span="6">
-        <div>{{!!otherFee?otherFee:0}}</div>
+        <div>{{otherFee | toThousands}}</div>
       </data-grid-item>
     </data-grid>
   </section>
@@ -66,53 +66,53 @@ export default class SecondLastApprove extends Vue {
   private finalPayment: Number = 0;
   private monthlySupply: Number = 0;
   private periods: String = "";
-  private insuranceExpenses :any = ''; // 保险费
-  private gpsFee :any= ''; // GPS费
-  private installLicenseFee:any = ''; // 上牌费
-  private purchaseTax :any= ''; // 购置税
-  private remark:any =''; // 备注
-  private carAmount :any= ''; // 车辆参考总价1
-  private paymentScale:any = ''; // 首付比例1
-  private depositPercent :any= ''; // 保证金比例1
-  private financingAmount :any = ''; // 融资金额1
-  private finalCash :any = ''; // 尾付金额1
-  private payWay :any = ''; // 还款方式
-  private manageCostPercent :any = ''; // 管理费率
-  private orderId:any = ''
+  private insuranceExpenses: any = ''; // 保险费
+  private gpsFee: any = ''; // GPS费
+  private installLicenseFee: any = ''; // 上牌费
+  private purchaseTax: any = ''; // 购置税
+  private remark: any = ''; // 备注
+  private carAmount: any = ''; // 车辆参考总价1
+  private paymentScale: any = ''; // 首付比例1
+  private depositPercent: any = ''; // 保证金比例1
+  private financingAmount: any = ''; // 融资金额1
+  private finalCash: any = ''; // 尾付金额1
+  private payWay: any = ''; // 还款方式
+  private manageCostPercent: any = ''; // 管理费率
+  private orderId: any = ''
 
 
   private pageData: any = {};
   private passModel: any = {
     initialPayment: '',
-  depositCash: '',
-   manageCost: '',
-   otherFee: '',
-   productRate:'',
-   finalPayment: '',
-   monthlySupply:'',
-   periods: '',
-   insuranceExpenses: '',
-   gpsFee : '',
-   installLicenseFee: '',
-   purchaseTax : '',
-   remark: '',
-    carAmount : '',
-   paymentScale: '',
-   depositPercent : '',
-   financingAmount : '',
-   finalCash : '',
-   payWay : '',
-   manageCostPercent : '',
-    orderId:''
+    depositCash: '',
+    manageCost: '',
+    otherFee: '',
+    productRate: '',
+    finalPayment: '',
+    monthlySupply: '',
+    periods: '',
+    insuranceExpenses: '',
+    gpsFee: '',
+    installLicenseFee: '',
+    purchaseTax: '',
+    remark: '',
+    carAmount: '',
+    paymentScale: '',
+    depositPercent: '',
+    financingAmount: '',
+    finalCash: '',
+    payWay: '',
+    manageCostPercent: '',
+    orderId: ''
   };
   @Prop() row: Object;
 
-  created() {}
+  created() { }
 
   /**
    * 上个组件的传值
    */
-  getPassData(pageData){
+  getPassData(pageData) {
     this.financingAmount = pageData.financingAmount; // 融资金额1
     this.initialPayment = pageData.initialPayment; // 首付金额1
     this.depositCash = pageData.depositCash; // 保证金额1
@@ -188,10 +188,10 @@ export default class SecondLastApprove extends Vue {
     this.passModel.manageCostPercent = this.manageCostPercent; // 管理费率
     this.passModel.orderId = this.orderId
     if (
-      this.passModel.paymentScale !==undefined &&
-      this.passModel.depositPercent!==undefined &&
-      this.passModel.manageCostPercent!==undefined &&
-      this.passModel.payWay!=''
+      this.passModel.paymentScale !== undefined &&
+      this.passModel.depositPercent !== undefined &&
+      this.passModel.manageCostPercent !== undefined &&
+      this.passModel.payWay != ''
     ) {
       this.approvalService.passApproval(this.passModel).subscribe(
         data => {
