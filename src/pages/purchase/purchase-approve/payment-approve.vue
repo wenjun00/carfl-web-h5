@@ -177,7 +177,7 @@ export default class PaymentApprove extends Page {
         align: "center",
         fixed: "left",
         minWidth: this.$common.getColumnWidth(5),
-        render: (h, { row}) => {
+        render: (h, { row, columns, index}) => {
           if ([1130, 1129].includes(row.processStatus)) {
             return h("div", [
               h(
@@ -211,7 +211,7 @@ export default class PaymentApprove extends Page {
                             val.productOrder
                           )
                           value.personalBank = val.bankListk
-                          _applyInfo.getparentreceipt(value, 1);
+                          _applyInfo.getparentreceipt(value,row, 1);
                         });
                     }
                   }

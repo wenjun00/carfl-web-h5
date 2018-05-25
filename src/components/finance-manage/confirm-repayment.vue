@@ -21,51 +21,51 @@
       <tr height="40">
         <td bgcolor="#F2F2F2" width="100px">本金</td>
         <td width="100px">应付本金</td>
-        <td width="150px">{{repaymentObj.principalReceivable}}</td>
+        <td width="150px">{{repaymentObj.principalReceivable | decimalToPrecent}}</td>
         <td width="100px">已还本金</td>
-        <td width="150px">{{repaymentObj.principalReceived}}</td>
+        <td width="150px">{{repaymentObj.principalReceived | decimalToPrecent}}</td>
         <td width="100px">剩余本金</td>
-        <td>{{repaymentObj.principalSurplus}}</td>
+        <td>{{repaymentObj.principalSurplus | decimalToPrecent}}</td>
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">利息</td>
         <td>应还利息</td>
-        <td>{{repaymentObj.interestReceivable}}</td>
+        <td>{{repaymentObj.interestReceivable | decimalToPrecent}}</td>
         <td>已还利息</td>
-        <td>{{repaymentObj.interestReceived}}</td>
+        <td>{{repaymentObj.interestReceived | decimalToPrecent}}</td>
         <td>剩余利息</td>
-        <td>{{repaymentObj.interestSurplus}}</td>
+        <td>{{repaymentObj.interestSurplus | decimalToPrecent}}</td>
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">罚息</td>
         <td>应付罚息</td>
-        <td>{{repaymentObj.penaltyReceivable}}</td>
+        <td>{{repaymentObj.penaltyReceivable | decimalToPrecent}}</td>
         <td>已还罚息</td>
-        <td>{{repaymentObj.penaltyReceived}}</td>
+        <td>{{repaymentObj.penaltyReceived | decimalToPrecent}}</td>
         <td>剩余罚息</td>
         <td>
-          <span class="modal-item-derate">{{repaymentObj.penaltyFreezeAddDerate}}</span>
-          <span class="modal-item-surplus">{{repaymentObj.penaltySurplus}}</span>
+          <span class="modal-item-derate">{{repaymentObj.penaltyFreezeAddDerate | decimalToPrecent}}</span>
+          <span class="modal-item-surplus">{{repaymentObj.penaltySurplus | decimalToPrecent}}</span>
         </td>
         <!--<td><span style="color:red;text-decoration:line-through;margin-right:6px;" >{{repaymentObj.penaltyReceivable}}</span><span>{{repaymentObj.penaltySurplus}}</span></td>-->
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">管理费</td>
         <td>应收管理费</td>
-        <td>{{repaymentObj.manageFeeReceivable}}</td>
+        <td>{{repaymentObj.manageFeeReceivable | decimalToPrecent}}</td>
         <td>实收管理费</td>
-        <td>{{repaymentObj.manageFeeReceived}}</td>
+        <td>{{repaymentObj.manageFeeReceived | decimalToPrecent}}</td>
         <td>剩余管理费</td>
-        <td>{{repaymentObj.manageFeeSurplus}}</td>
+        <td>{{repaymentObj.manageFeeSurplus | decimalToPrecent}}</td>
       </tr>
       <tr height="40">
         <td bgcolor="#F2F2F2">合计</td>
         <td>应付</td>
-        <td>{{repaymentObj.amountReceivable}}</td>
+        <td>{{repaymentObj.amountReceivable | decimalToPrecent}}</td>
         <td>已还</td>
-        <td>{{repaymentObj.amountReceived}}</td>
+        <td>{{repaymentObj.amountReceived | decimalToPrecent}}</td>
         <td>剩余</td>
-        <td>{{repaymentObj.amountSurplus}}</td>
+        <td>{{repaymentObj.amountSurplus | decimalToPrecent}}</td>
       </tr>
     </table>
 
