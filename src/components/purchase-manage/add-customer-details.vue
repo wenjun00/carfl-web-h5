@@ -24,14 +24,14 @@
       <i-row type="flex" :gutter="110">
         <i-col :span="8">
           <i-form-item label="证件类型" prop="certificateType">
-            <i-select placeholder="请选择证件类型" v-model="customerDetailsModel.certificateType">
+            <i-select placeholder="请选择证件类型" @on-change="idType"  v-model="customerDetailsModel.certificateType">
               <i-option v-for="{value,label} in $dict.getDictData('0433')" :key="value" :label="label" :value="value"></i-option>
             </i-select>
           </i-form-item>
         </i-col>
         <i-col :span="8">
           <i-form-item label="证件号码" prop="idCard">
-            <i-input placeholder="请输入证件号码" v-model="customerDetailsModel.idCard"></i-input>
+            <i-input placeholder="请输入证件号码" @on-blur="inspectionCertificate" v-model="customerDetailsModel.idCard"></i-input>
           </i-form-item>
         </i-col>
       </i-row>
@@ -583,6 +583,34 @@ export default class addPeople extends Vue {
       )
     })
   }
+  /**
+   * 检测身份证证件号
+   */
+  inspectionCertificate(val) {
+    let idCard = this.customerDetailsModel.idCard
+    let certificateType = this.customerDetailsModel.certificateType
+    if (/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)/.test(idCard)) {
+      if (certificateType == 1167) {
+        let sexNumber = Number(idCard[16])
+        this.customerDetailsModel.sex = sexNumber % 2 === 1 ? 1 : 2
+        let birthDate = idCard.substr(6, 8)
+        this.customerDetailsModel.birthTime = new Date(birthDate.substr(0, 4), Number(birthDate.substr(4, 2)) - 1, birthDate.substr(6, 2))
+      }
+    }
+  }
+  /**
+   * 检测身份证类型
+   */
+  idType(val){
+    if(val == 1167){
+      this.inspectionCertificate()
+    }else{
+      this.customerDetailsModel.sex =''
+      this.customerDetailsModel.birthTime=''
+    }
+   
+  }
+
 
   /**
    * 清空表单
