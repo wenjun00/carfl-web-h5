@@ -371,7 +371,7 @@ export default class addPeople extends Vue {
     intentionHomeAddr: '', // 居住地址
     intentionalLevel: 0, // 意向级别
     sex: null, // 性别
-    birthTime: '', // 出身日期
+    birthTime: null, // 出身日期
     nation: '', // 民族
     healthStatus: null, // 健康状况
     homeStatus: null, // 居住状况
@@ -586,17 +586,20 @@ export default class addPeople extends Vue {
   /**
    * 检测身份证证件号
    */
-  inspectionCertificate(val) {
+  inspectionCertificate() {
     let idCard = this.customerDetailsModel.idCard
     let certificateType = this.customerDetailsModel.certificateType
-    if (/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)/.test(idCard)) {
-      if (certificateType == 1167) {
+    let form: any = this.$refs['form-item']
+    form.validateField('birthTime',()=>{
+        if (certificateType == 1167) {
         let sexNumber = Number(idCard[16])
         this.customerDetailsModel.sex = sexNumber % 2 === 1 ? 1 : 2
-        let birthDate = idCard.substr(6, 8)
-        this.customerDetailsModel.birthTime = new Date(birthDate.substr(0, 4), Number(birthDate.substr(4, 2)) - 1, birthDate.substr(6, 2))
+
+        let birthDate =  idCard.substr(6, 8)
+        birthDate = `${birthDate.substr(0, 4)}-${(birthDate.substr(4, 2))}-${birthDate.substr(6, 2)}`
+        this.customerDetailsModel.birthTime = new Date(birthDate)
       }
-    }
+    })
   }
   /**
    * 检测身份证类型
@@ -605,8 +608,8 @@ export default class addPeople extends Vue {
     if(val == 1167){
       this.inspectionCertificate()
     }else{
-      this.customerDetailsModel.sex =''
-      this.customerDetailsModel.birthTime=''
+      this.customerDetailsModel.sex =null
+      this.customerDetailsModel.birthTime= ''
     }
    
   }
