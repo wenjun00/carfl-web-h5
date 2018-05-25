@@ -90,8 +90,10 @@ export class ProductOrderService {
   saveFinanceApplyInfo(data) {
     //data.customerModel.birthTime = FilterService.dateFormat(data.customerModel.birthTime)
     let dateStr = !!FilterService.dateFormat(data.personal.birthTime) ? FilterService.dateFormat(data.personal.birthTime) : null
-    let personal = { ...data.personal, birthTime: dateStr }
-
+    let cardStr = !!FilterService.dateFormat(data.personal.idCardValidityPeriodSection)?FilterService.dateFormat(data.personal.idCardValidityPeriodSection):null
+    let personal = { ...data.personal, birthTime: dateStr , idCardValidityPeriodSection:cardStr }
+   
+    
     let dataStr2 = !!FilterService.dateFormat(data.personalJob.accessCompanyTime) ? FilterService.dateFormat(data.personalJob.accessCompanyTime) : null
     let personalJob = { ...data.personalJob, accessCompanyTime: dataStr2 }
     // console.log(Object.assign(data, { personal: { birthTime: dateStr } }), 11111111111111)
