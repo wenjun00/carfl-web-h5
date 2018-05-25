@@ -12,7 +12,7 @@
         <i-form-item prop="status" label="状态:">
           <i-select v-model="userModel.status">
             <i-option label="启用" :value="0" :key="0"></i-option>
-            <i-option label="停用" :value="1" :key="1"></i-option>
+            <!-- <i-option label="停用" :value="1" :key="1"></i-option> -->
           </i-select>
         </i-form-item>
       </template>
