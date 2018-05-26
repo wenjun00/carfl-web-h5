@@ -44,21 +44,11 @@ import DataBox from "~/components/common/data-box.vue";
 import SvgIcon from "~/components/common/svg-icon.vue";
 // 添加新申请
 import ApplyOut from "~/components/purchase-manage/apply-out.vue";
-import {
-  FilterService
-} from "~/utils/filter.service";
-import {
-  RefundApplicationService
-} from "~/services/manage-service/refund-application.service";
-import {
-  PageService
-} from "~/utils/page.service";
-import {
-  Layout
-} from "~/core/decorator";
-import {
-  Dependencies
-} from "~/core/decorator";
+import { FilterService} from "~/utils/filter.service";
+import { RefundApplicationService } from "~/services/manage-service/refund-application.service";
+import { PageService} from "~/utils/page.service";
+import { Layout } from "~/core/decorator";
+import { Dependencies} from "~/core/decorator";
 
 @Layout("workspace")
 @Component({
@@ -243,17 +233,19 @@ export default class PaymentApprove extends Page {
                           let _applyInfo: any = this.$refs["applyOut"];
                           let value = Object.assign(
                             {
-                              applicationType: val.refundType,
+                              // applicationType: val.refundType,
                               collectMoneyItemModels: val.itemList,
                               personalBank: "",
-                              customerName: val.personal.name
+                              customerName: val.personal.name,
+                              refundTotalAmount:val.refundTotalAmount
                             },
                             val.personal,
                             val.productOrder
                           )
                           value.personalBank = val.bankListk
-                          _applyInfo.getparentData(value, row, 0);
-                        });
+                          _applyInfo.getparentreceipt(value,row, 0);;
+                        }
+                        );
                     }
                   }
                 },

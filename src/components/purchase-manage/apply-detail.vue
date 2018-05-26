@@ -1,4 +1,4 @@
-<!--收款审批-->
+<!--收款审批-->  
 <template>
   <section class="component apply-detail">
     <!--收款审批-->
@@ -104,7 +104,11 @@ export default class ApplyDetail extends Vue {
       {
         title: "开户银行",
         align: "center",
-        key: "depositBank"
+        key: "depositBank",
+       render: (h, { row }) => {
+            return h('span', {}, this.$dict.getDictName(Number(row.depositBank)))
+          }
+
       },
       {
         title: "银行卡号",

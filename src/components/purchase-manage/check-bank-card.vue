@@ -48,7 +48,7 @@
         {
           align: 'center',
           editable: true,
-          title: '卡户银行',
+          title: '开户银行',
           key: 'depositBank',
           minWidth: this.$common.getColumnWidth(3),
           render: (h, { row }) => {

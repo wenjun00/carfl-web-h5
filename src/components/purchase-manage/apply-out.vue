@@ -95,23 +95,8 @@
       this.remark = !!val.remark ? val.remark:'' ;
       this.accountDetail = !!val.personalBank ? this.accountDetail.concat(val.personalBank) :[{}]; // 账户信息
       this.refundTotalAmount = !!val.refundTotalAmount ? val.refundTotalAmount:'' ;
-      console.log(this.type)
+      // console.log(this.type)
     }
-    getparentData(val,row,type){
-      this.type = type
-      let _uploadFodder: any = this.$refs['upload-voucher']
-      _uploadFodder.Reverse(val.applicationPhaseUploadResources)
-      this.orderNumber = !!val.orderNumber ? val.orderNumber:'' ; // 订单号
-      this.addNewApplyModal.name = !!val.customerName ? val.customerName:''; // 客户姓名
-      this.payDetail = !!val.collectMoneyItemModels ? val.collectMoneyItemModels:[{}]; // 付款明细
-      this.addNewApplyModal.idCard = !!val.idCard ? val.idCard : ''; // 证件号
-      this.remark = !!val.remark ? val.remark:'' ;
-      this.accountDetail = !!val.personalBank ? this.accountDetail.concat(val.personalBank) :[{}]; // 账户信息
-      this.refundTotalAmount = !!row.refundTotalAmount ? row.refundTotalAmount:'' ;
-      console.log(this.type)
-    }
-
-
     created() {
       this.columns3 = [
         {
@@ -122,7 +107,10 @@
         {
           title: "开户银行",
           align: "center",
-          key: "depositBank"
+          key: "depositBank",
+           render: (h, { row }) => {
+            return h('span', {}, this.$dict.getDictName(Number(row.depositBank)))
+          }
         },
         {
           title: "银行卡号",
