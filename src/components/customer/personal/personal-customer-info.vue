@@ -233,7 +233,7 @@
               <i-row type="flex" :gutter="16">
                 <i-col>
                   <i-radio-group v-model="idcardOwn" @on-change="cityidcardChange">
-                     <i-radio v-for="{value,label} in $dict.getDictData('0008')" :key="value" :label="value" class="item-chanpin-radio">{{label}}</i-radio>
+                    <i-radio v-for="{value,label} in $dict.getDictData('0008')" :key="value" :label="value" class="item-chanpin-radio">{{label}}</i-radio>
                   </i-radio-group>
                 </i-col>
                 <i-col>
@@ -481,7 +481,6 @@ export default class PersonalCustomerInfo extends Vue {
   }
 
   setBaseData(data) {
-    console.log(data)
     this.customerModel.idCard = data.cardNumber;
     this.customerModel.name = data.customterName;
     this.customerModel.mobileMain = data.phoneNumber;

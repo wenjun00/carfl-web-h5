@@ -218,10 +218,8 @@ export default class PersonalMortgageApplication extends Page {
    */
   async onNextStep() {
     let tab = this.$refs[this.currentTab] as any;
-    console.log(tab,'0')
     // 验证当前页面
     let result = await tab.validate();
-    console.log(result,'1')
     if (!result) {
       return;
     }
