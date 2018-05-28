@@ -169,7 +169,7 @@ export default class EarlyWithdraw extends Page {
   created() {
     this.columns1 = [{
       title: "操作",
-      minWidth: this.$common.getColumnWidth(5),
+      minWidth: this.$common.getColumnWidth(6),
       align: "center",
       fixed: "left",
       render: (h, {
@@ -304,7 +304,7 @@ export default class EarlyWithdraw extends Page {
       title: " 合同生效日",
       editable: true,
       key: "contractDate",
-      minWidth: this.$common.getColumnWidth(4),
+      minWidth: this.$common.getColumnWidth(5),
       render: (h, {
         row,
         column,
@@ -351,7 +351,7 @@ export default class EarlyWithdraw extends Page {
     {
       align: "center",
       title: " 归属公司",
-      minWidth: this.$common.getColumnWidth(4),
+      minWidth: this.$common.getColumnWidth(5),
       editable: true,
       key: "companyChinaName"
     }

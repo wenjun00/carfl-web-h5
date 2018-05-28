@@ -199,7 +199,7 @@ export default class EarlyPay extends Page {
   created() {
     this.columns1 = [{
       title: "操作",
-      minWidth: this.$common.getColumnWidth(5),
+      minWidth: this.$common.getColumnWidth(6),
       align: "center",
       fixed: "left",
       render: (h, {
@@ -350,7 +350,7 @@ export default class EarlyPay extends Page {
       title: " 合同生效日",
       key: "contractDate",
       editable: true,
-      minWidth: this.$common.getColumnWidth(4),
+      minWidth: this.$common.getColumnWidth(5),
       render: (h, {
             row,
         column,

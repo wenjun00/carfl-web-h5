@@ -1,4 +1,4 @@
-<!--冻结申请记录-->
+<!--冻结申请记录--> 
 <template>
   <section class="page frozen-apply-record">
     <page-header title="冻结申请记录" hiddenPrint></page-header>
@@ -127,7 +127,8 @@ export default class FrozenApplyRecord extends Page {
                 textAlign: "right"
               }
             },
-            this.$filter.toThousands(row.remitAmount)
+            // this.$filter.toThousands(row.remitAmount)
+            this.$filter.moneyFormatFour(row.remitAmount)
           );
         }
 

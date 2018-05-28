@@ -418,6 +418,7 @@
       }
     }
     .modal-item-origin {
+      min-height: 230px;
       margin-top: 10px;
       margin-bottom: 10px;
       .modal-item-col {
