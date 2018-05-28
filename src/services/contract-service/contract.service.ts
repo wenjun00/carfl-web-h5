@@ -14,7 +14,8 @@ export class ContractService {
     createOneContract(data) {
         return this.netService.send({
             server: contractService.contractController.createOneContract,
-            data
+            data:data,
+            loading: true
         })
     }
   /**

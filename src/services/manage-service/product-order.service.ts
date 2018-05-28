@@ -3,6 +3,7 @@ import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { FilterService } from '~/utils/filter.service';
+import Loading from '~/components/common/loading.vue';
 
 export class ProductOrderService {
   @Inject(NetService)
@@ -99,7 +100,8 @@ export class ProductOrderService {
     // console.log(Object.assign(data, { personal: { birthTime: dateStr } }), 11111111111111)
     return this.netService.send({
       server: manageService.productOrderController.saveFinanceApplyInfo,
-      data: Object.assign(data, { personal }, { personalJob })
+      data: Object.assign(data, { personal }, { personalJob }),
+      loading: true,
     })
   }
   /**

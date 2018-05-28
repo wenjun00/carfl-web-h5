@@ -1,5 +1,5 @@
 <!--确认收款-->
-<template>
+<template> 
   <section class="component confirm-gather">
     <i-form :label-width="110" label-position="left">
       <i-row class="modal-item-shenqing">
@@ -118,13 +118,37 @@ export default class ConfirmGather extends Vue {
   private paymentAmount: any = 0
   private collectMoneyItemModels: any = []
   private collectMoneyId: any = ''
-  private personalBanks: Array<Object> = [];
   private columns3: any;
-  private columns2: any;
   private purchaseInfoModel: Boolean = false;
   private fodderList: any = []
   private huakou: any = '未处理'
   private pipeSelect: any = ''
+  private personalBanks: any = [];
+  private columns2: any =[{
+      title: "户名",
+      align: 'center',
+      key: 'personalName'
+    }, {
+      title: "开户银行",
+      align: 'center',
+      key: 'depositBank',
+       render: (h, { row }) => {
+            return h('span', {}, this.$dict.getDictName(Number(row.depositBank)))
+          }
+    
+    }, {
+      title: "银行卡号",
+      align: 'center',
+      key: 'cardNumber'
+    }, {
+      title: "支行名称",
+      align: 'center',
+      key: 'depositBranch'
+    }, {
+      title: "第三方客户号",
+      align: 'center',
+      key: 'clientNumber'
+    }];;
 
   @Watch('currentRow')
   onChange() {
@@ -144,13 +168,13 @@ export default class ConfirmGather extends Vue {
         this.collectMoneyId = data.collectMoneyId || ''
         this.repaymentObj = data
         this.collectMoneyDetails = data.collectMoneyDetails || []
-        this.personalBanks = data.personalBanks
+        this.personalBanks = [data.personalBank]
         this.financeUploadResources = data.collectMoneyPhaseUploadResources
         this.applicationPhaseResources = data.applicationPhaseUploadResources
-        this.collectMoneyItemModels = data.collectMoneyItemModels
+        this.collectMoneyItemModels = data.collectMoneyItemModelss
         this.$nextTick(() => {
-          let uploadFodder: any = this.$refs['upload-voucher']
-          uploadFodder.Reverse(data.collectMoneyPhaseUploadResources)
+        let uploadFodder: any = this.$refs['upload-voucher']
+        uploadFodder.Reverse(data.collectMoneyPhaseUploadResources)
           // let _uploadFodderTwo:any = this.$refs['upload-voucher-two']
           // _uploadFodderTwo.Reverse(data.applicationPhaseUploadResources)
         })
@@ -193,33 +217,11 @@ export default class ConfirmGather extends Vue {
    * 删除还款对象
    */
   deleteObj(index) {
-    console.log('add')
     this.collectMoneyDetails.splice(index, 1)
     this.inputBlur()
   }
 
   created() {
-    this.columns2 = [{
-      title: "户名",
-      align: 'center',
-      key: 'personalName'
-    }, {
-      title: "开户银行",
-      align: 'center',
-      key: 'depositBank'
-    }, {
-      title: "银行卡号",
-      align: 'center',
-      key: 'cardNumber'
-    }, {
-      title: "支行名称",
-      align: 'center',
-      key: 'depositBranch'
-    }, {
-      title: "第三方客户号",
-      align: 'center',
-      key: 'clientNumber'
-    }];
     this.columns3 = [{
       align: "center",
       width: "60",

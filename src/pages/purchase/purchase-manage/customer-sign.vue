@@ -1,4 +1,4 @@
-<template>
+<template> 
   <section class="page customer-sign">
     <page-header title="客户签约" hiddenPrint hiddenExport></page-header>
     <data-form date-prop="timeSearch" :model="customerSignModel" @on-search="getSignList" :page="pageService">
