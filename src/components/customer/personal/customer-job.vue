@@ -1,4 +1,4 @@
-<!--客户职业-->
+<!--客户职业--> 
 <template>
   <section class="component customer-job">
 
@@ -228,7 +228,7 @@ export default class CustomerJob extends Vue {
     monthOtherIncome: null, // 每月其他收入
     otherIncomeSource: "", // 其他收入来源
     identity: "", // 身份
-    enterpriseManageYears: 1, // 企业经营年限
+    enterpriseManageYears: null, // 企业经营年限
     enterpriseManageBelong: "", // 经营地归属
     employeesNumber: null, // 员工人数
     registeredCapital: null, // 注册资本
@@ -309,7 +309,7 @@ export default class CustomerJob extends Vue {
     this.$common.revert(
       this.jobModel,
       Object.assign(personalJob, {
-        accessCompanyTime:personalJob.accessCompanyTime,
+        accessCompanyTime: personalJob.accessCompanyTime,
         companyAddress: personalJob.companyAddress ? Number(personalJob.companyAddress) : null,
         city: personalJob.city ? Number(personalJob.city) : null,
         province: personalJob.province ? Number(personalJob.province) : null
@@ -338,7 +338,33 @@ export default class CustomerJob extends Vue {
     }
   }
   jobchange() {
-    this.jobModel = {};
+    this.jobModel = {
+      companyName: "", // 单位名称
+      department: "", // 部门
+      companyNature: "", // 单位性质
+      duty: "", // 职务
+      rank: "", // 职级
+      accessCompanyTime: "", // 何时进入公司
+      companyAddress: "", // 单位地址
+      companyAddressDetail: "", // 单位详细地址
+      companyPhone: "", // 单位固定电话
+      basicSalary: null, // 基本月薪
+      payDay: "", // 每月发薪日
+      payWay: "", // 发薪方式
+      yearlySalaries: null, // 年收入
+      monthOtherIncome: null, // 每月其他收入
+      otherIncomeSource: "", // 其他收入来源
+      identity: "", // 身份
+      enterpriseManageYears: null, // 企业经营年限
+      enterpriseManageBelong: "", // 经营地归属
+      employeesNumber: null, // 员工人数
+      registeredCapital: null, // 注册资本
+      industry: 0, // 所属行业
+      otherIndustry: "", // 其他行业
+      pastyearIncome: null, // 过去一年营业收入
+      pastyearProfit: null, // 过去一年利润
+      stockScale: null
+    };
   }
 
   /**
