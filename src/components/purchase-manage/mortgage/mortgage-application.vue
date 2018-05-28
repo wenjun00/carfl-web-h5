@@ -174,7 +174,6 @@ import MortgageCarList from "~/components/purchase-manage/mortgage/mortgage-car-
 import ProductList from "~/components/purchase-manage/product-list.tsx.vue";
 import { ProductPlanIssueService } from "~/services/manage-service/product-plan-issue.service";
 import { Form } from "iview";
-import { Array } from "core-js";
 @Component({
   components: {}
 })
