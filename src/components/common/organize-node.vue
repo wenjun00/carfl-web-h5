@@ -1,6 +1,6 @@
 <template>
   <div style="text-align:left;padding:1px" class="component organize-node">
-    <div draggable="true" @dragstart.stop="handleDragStart($event)" @dragenter="handleDragEnter" @dragleave="handleDragLeave" @dragover.prevent="handleDragOver" @drop.stop="handleDrop($event)" @dragend.prevent="handleDragEnd" id="tree-node" :style="getSubTreeStyle()">
+     <div draggable="true" @dragstart.stop="handleDragStart($event)" @dragenter="handleDragEnter" @dragleave="handleDragLeave" @dragover.prevent="handleDragOver"  @dragend.prevent="handleDragEnd" id="tree-node" :style="getSubTreeStyle()">  <!-- @drop.stop="handleDrop($event)" -->
       <div>
         <span @click="expanedItemHandle" v-show="!data.isLeaf" class="el-tree-node__expand-icon" :class="{expanded:expanded}">
           <Icon v-show="!this.expanded" type="arrow-right-b"></Icon>
@@ -135,46 +135,47 @@ export default class OrganizeNode extends Vue {
   /**
    * 拖动逻辑处理
    */
-  handleDrop(e) {
-    // 获取原始节点
-    const vm = window["__drop_node__"];
+  // handleDrop(e) {
+  //   console.log(e,'111111')
+  //   // 获取原始节点
+  //   const vm = window["__drop_node__"];
 
-    this.$el.style.backgroundColor = "";
-    vm.$el.style.backgroundColor = "";
+  //   this.$el.style.backgroundColor = "";
+  //   vm.$el.style.backgroundColor = "";
 
-    let tparent: any = this;
-    while (tparent !== undefined) {
-      if (tparent === vm) {
-        return;
-      }
-      tparent = tparent.$parent;
-    }
+  //   let tparent: any = this;
+  //   while (tparent !== undefined) {
+  //     if (tparent === vm) {
+  //       return;
+  //     }
+  //     tparent = tparent.$parent;
+  //   }
 
-    const currentNode = vm.data;
+  //   const currentNode = vm.data;
 
-    // 目标节点与原节点相同直接退出
-    // if (vm.$parent.data.depId === this.data.depId) {
-    //   return
-    // }
-    // 从原节点子元素中删除对象
-    vm.$parent.data.children = vm.$parent.data.children.filter(
-      data => data !== currentNode
-    );
-    // 添加到目标对象子元素中
-    if (!this.data.children) {
-      this.data.children = [];
-    }
-    this.data.children.push(currentNode);
-    this.data.isLeaf = false;
-    this.data.expand = true;
-    // 更新新的父ID
-    currentNode.pid = this.data.id;
-    // 父节点强制刷新
-    let targetParent: any = this.parent();
-    targetParent.forceRefresh();
-    // console.log(currentNode, vm.$parent.data)
-    targetParent.$emit("drag", currentNode, vm.$parent.data, this.data);
-  }
+  //   // 目标节点与原节点相同直接退出
+  //   // if (vm.$parent.data.depId === this.data.depId) {
+  //   //   return
+  //   // }
+  //   // 从原节点子元素中删除对象
+  //   vm.$parent.data.children = vm.$parent.data.children.filter(
+  //     data => data !== currentNode
+  //   );
+  //   // 添加到目标对象子元素中
+  //   if (!this.data.children) {
+  //     this.data.children = [];
+  //   }
+  //   this.data.children.push(currentNode);
+  //   this.data.isLeaf = false;
+  //   this.data.expand = true;
+  //   // 更新新的父ID
+  //   currentNode.pid = this.data.id;
+  //   // 父节点强制刷新
+  //   let targetParent: any = this.parent();
+  //   targetParent.forceRefresh();
+  //   // console.log(currentNode, vm.$parent.data)
+  //   targetParent.$emit("drag", currentNode, vm.$parent.data, this.data);
+  // }
   handleDragEnd() {
     this.$el.style.backgroundColor = "";
   }
