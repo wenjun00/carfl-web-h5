@@ -20,7 +20,7 @@
         <i-checkbox v-model="receipt.isIncludeDealt">包含已处理</i-checkbox>
       </template>
     </data-form>
-    <data-box :id="381" :columns="columns1" :data="data1" :page="pageService"></data-box>
+    <data-box :id="381" :columns="columns1" :data="data1" @onPageChange="searchReceiptapprove" :page="pageService"></data-box>
     <!--Model-->
 
     <template>

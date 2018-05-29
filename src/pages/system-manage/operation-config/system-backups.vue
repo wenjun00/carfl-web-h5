@@ -24,8 +24,7 @@
       </template>
     </data-form>
 
-    <data-box :id="69" :columns="columns1" :data="systemBackUpList" @onPageChange="getSystemBackupList"
-              :page="pageService"></data-box>
+    <data-box :id="69" :columns="columns1" :data="systemBackUpList" @onPageChange="getSystemBackupList" :page="pageService"></data-box>
   </section>
 </template>
 

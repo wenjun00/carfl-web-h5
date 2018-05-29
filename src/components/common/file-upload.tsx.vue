@@ -1,7 +1,7 @@
 <!--财务·上传图片-->
 <template>
   <section class="component file-upload">
-    <i-upload :on-progress="onProgress" :on-success="onSuccess"  :on-error="onError" :show-upload-list="false" :accept="acceptFileType" :headers="{'authorization':$store.state.token}" ref="upload" :action="uploadUrl" :before-upload="beforeUpload">
+    <i-upload :on-progress="onProgress" :on-success="onSuccess" :on-exceeded-size="onExceededSize" :on-error="onError" :max-size="1024" :show-upload-list="false" :accept="acceptFileType" :headers="{'authorization':$store.state.token}" ref="upload" :action="uploadUrl" :before-upload="beforeUpload">
       <div class="command">
         <i-button type="primary">选择文件</i-button>
       </div>
@@ -147,6 +147,17 @@ export default class FileUpload extends Vue {
     let target = this.uploadList.find(x => x.file.uid === file.uid);
     target.state = "uploading";
     target.percentage = file.percentage;
+  }
+
+  private onExceededSize(file,fileList){
+    let target = this.uploadList.find(x => x.file.uid === file.uid);
+    target.state = "finish";
+    if (this.uploadList.every(x => x.state === "finish")) {
+      this.fileList = fileList;
+      this.success(this.fileList);
+    }
+
+    this.$Message.warning(`文件 <b>${file.name}</b>  超过限制，最大不能超过1M，请重新上传`)
   }
 
   /**

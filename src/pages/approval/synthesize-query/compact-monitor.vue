@@ -20,7 +20,7 @@
       </template>
     </data-form>
 
-    <data-box :columns="monitorColumns" :data="dataSet" :page="pageService"></data-box>
+    <data-box :columns="monitorColumns" :data="dataSet" :page="pageService" @onPageChange="getPersonalClientList"></data-box>
 
     <template>
       <i-modal title="合同下载详情" v-model="compactDownloadInfoModal" :width="1300">

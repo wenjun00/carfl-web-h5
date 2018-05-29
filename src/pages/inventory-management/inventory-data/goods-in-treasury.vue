@@ -17,7 +17,7 @@
           <i-input placeholder="请输入车架号" v-model="treasuryModel.frameNo"></i-input>
         </i-form-item>
         <i-form-item prop="whetherInclude">
-          <i-checkbox v-model="whetherInclude">包含已提交</i-checkbox>
+          <i-checkbox v-model="whetherInclude">包含已入库</i-checkbox>
         </i-form-item>
       </template>
     </data-form>

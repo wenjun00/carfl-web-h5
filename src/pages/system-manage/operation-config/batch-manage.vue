@@ -4,7 +4,7 @@
         <page-header title="批量管理" hidden-print hidden-export>
             <i-button @click="addManagement" type="text">新增管理</i-button>
         </page-header>
-        <data-box :id="63" :columns="columns1" :data="batchList" :page="pageService"></data-box>
+        <data-box :id="63" :columns="columns1" @onPageChange="getPersonalClientList" :data="batchList" :page="pageService"></data-box>
 
         <template>
             <i-modal width="780" v-model="addmanagementModal" title="新增管理" class="add-management-list">

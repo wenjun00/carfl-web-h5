@@ -17,7 +17,7 @@
                 </i-form-item>
             </template>
         </data-form>
-        <data-box :columns="personalBlacklistColumns" :data="dataSet" :page="pageService"></data-box>
+        <data-box :columns="personalBlacklistColumns" @onPageChange="getPersonalClientList" :data="dataSet" :page="pageService"></data-box>
         <template>
             <i-modal width="780" v-model="personalModal" title="客户详情" class="get-customer-details">
                 <get-customer-details ref="get-customer-details"></get-customer-details>

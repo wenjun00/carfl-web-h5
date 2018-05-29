@@ -17,7 +17,7 @@
                 </i-form-item>
             </template>
         </data-form>                              
-        <data-box :columns="personalClientColumns" :data="dataSet" :page="pageService"></data-box>
+        <data-box :columns="personalClientColumns"  @onPageChange="getPersonalClientList" :data="dataSet" :page="pageService"></data-box>
         <template>
             <i-modal width="780" @on-visible-change="closeDetailsModal" v-model="addCustomerDetailsModal" title="新增客户详情" class="add-customer-details">
                 <add-customer-details @close="close" ref="add-customer-details"></add-customer-details>

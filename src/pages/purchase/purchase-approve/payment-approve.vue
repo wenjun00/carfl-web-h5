@@ -23,7 +23,7 @@
         <i-checkbox v-model="status">包含已处理</i-checkbox>
       </template> -->
     </data-form>
-    <data-box :id="390" :columns="columns1" :data="refundApproval"></data-box>
+    <data-box :id="390" :columns="columns1"  @onPageChange="openSearch" :data="refundApproval"></data-box>
 
     <template>
       <i-modal v-model="checkApplyModal" class="addApply" :title="type===1?'放款审批':'查看'" :width="800" @on-visible-change="resetData">
