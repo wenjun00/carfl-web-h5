@@ -1,4 +1,4 @@
-<template>
+<template> 
   <section class="component upload-the-material ">
     <i-card :title="`上传素材 (${uploadDataSet.length})`">
       <div slot="extra">
@@ -20,6 +20,13 @@
         暂无待上传素材
       </div>
     </i-card>
+
+    <template>
+      <i-modal title="预览" v-model="previewModel" :width="800" class-name="no-footer">
+        <img :src="url" style="width: 100%">
+      </i-modal>
+    </template>
+
   </section>
 </template>
 
@@ -53,6 +60,7 @@ export default class UploadTheMaterial extends Vue {
   private previewModel: Boolean = false;
   private url: any = "";
 
+
   // 回填备用数据
   private revertPersonalDatas: any = [];
 
@@ -85,7 +93,19 @@ export default class UploadTheMaterial extends Vue {
                 this.$common.downloadFile(row.materialUrl, row.uploadName);
               }}
             />
+             <i-button
+              type="text"
+              icon="eye"
+              onClick={() => this.viewImage(row)}
+            />
+            <i-button
+              type="text"
+              icon="close"
+              onClick={() => this.deleteImage(row)}
+            />
           </div>
+
+
         );
       }
     }
@@ -165,6 +185,20 @@ export default class UploadTheMaterial extends Vue {
       })
     }
   }
+  /**
+   * 查看图片
+   */
+  viewImage(file){
+    this.url = file.materialUrl
+    this.previewModel = true
+  }
+  /**
+   * 删除图片
+   */
+  deleteImage(file){ 
+    this.uploadDataSet.splice(file._index, 1);
+  }
+
 
   /**
    * 数据验证

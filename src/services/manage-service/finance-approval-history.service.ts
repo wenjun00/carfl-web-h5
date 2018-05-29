@@ -21,7 +21,7 @@ export class FinanceApprovalHistoryService {
               applicationType:data.applicationType,
               
             },
-            page
+            page:page
         })
     }
     /**

@@ -1,12 +1,9 @@
-<!--收款审批-->
+<!--收款审批--> 
 <template>
   <section class="page receipt-approve">
     <page-header title="收款审批" hiddenPrint></page-header>
-    <data-form hidden-date-search :model="receipt" :page="pageService" @on-search="searchReceiptapprove">
+    <data-form  :model="receipt" :page="pageService" @on-search="searchReceiptapprove" date-prop="timeSearch">
       <template slot="input">
-        <!-- <i-form-item prop="dynamicCondition">
-          <i-input placeholder="请录入订单编号\客户姓名\证件号码\联系号码查询" v-model="receipt.dynamicCondition"></i-input>
-        </i-form-item> -->
         <i-form-item prop="orderNumber" label="订单编号：">
           <i-input v-model="receipt.orderNumber" placeholder="请输入订单编码"></i-input>
         </i-form-item>
@@ -48,29 +45,15 @@
   import Component from "vue-class-component";
   import {Dependencies} from "~/core/decorator";
   import DataBox from "~/components/common/data-box.vue";
-  import {
-    State,
-    Mutation,
-    namespace
-  } from "vuex-class";
+  import {State,Mutation,namespace} from "vuex-class";
   import SvgIcon from "~/components/common/svg-icon.vue";
-  import {
-    Watch
-  } from "vue-property-decorator";
+  import { Watch } from "vue-property-decorator";
   // 添加新申请
   import AddApply from "~/components/purchase-manage/add-apply.vue";
-  import {
-    FinanceApprovalHistoryService
-  } from "~/services/manage-service/finance-approval-history.service";
-  import {
-    PageService
-  } from "~/utils/page.service";
-  import {
-    Layout
-  } from "~/core/decorator";
-  import {
-    FilterService
-  } from "~/utils/filter.service"; // 添加新申请
+  import { FinanceApprovalHistoryService } from "~/services/manage-service/finance-approval-history.service";
+  import { PageService } from '~/utils/page.service'
+  import { Layout } from "~/core/decorator";
+  import { FilterService } from "~/utils/filter.service"; // 添加新申请
   import ApplyDetail from "~/components/purchase-manage/apply-detail.vue";
   const ModuleMutation = namespace('purchase', Mutation)
 
@@ -86,7 +69,7 @@
   export default class ReceiptApprove extends Page {
     @Dependencies(FinanceApprovalHistoryService)
     private financeApprovalHistoryService: FinanceApprovalHistoryService;
-    @Dependencies(PageService) private pageService: PageService;
+    @Dependencies(PageService) private pageService: PageService
     @ModuleMutation paymentRecordFlag;
     private columns1: any;
     private data1: Array < Object > = [];
