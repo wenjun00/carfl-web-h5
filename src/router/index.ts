@@ -6,6 +6,7 @@ import storeInit from '~/core/bootstrap/store.init'
 // import Index from '~/pages/index.vue'
 const Login = () => Promise.resolve(require('~/pages/login.vue'))
 const Index = () => Promise.resolve(require('~/pages/index.vue'))
+const Register = ()=> Promise.resolve(require('~/pages/register.vue'))
 
 Vue.use(Router)
 
@@ -23,6 +24,10 @@ const routes = [
     path: '/home',
     name: 'index',
     component: Index
+  },{
+    path: '/register',
+    name :'register',
+    component: Register
   }
 ]
 

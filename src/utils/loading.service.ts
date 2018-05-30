@@ -1,4 +1,3 @@
-import validator from 'async-validator'
 import Loading from '~/components/common/loading.vue'
 import Vue from 'vue'
 

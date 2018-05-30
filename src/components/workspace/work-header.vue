@@ -85,21 +85,6 @@ export default class WorkHeader extends Vue {
   modifyPwd() {
     this.modifyPwdModal = true
   }
-  logOut() {
-    this.$Modal.confirm({
-      title: '提示',
-      content: '确认退出系统吗？',
-      onOk: () => {
-        this.loginService.logout().subscribe(
-          () => { this.$router.push('/') },
-          err => {
-            this.$Message.error(err.msg)
-            this.$router.push('/')
-          }
-        )
-      }
-    })
-  }
   workCancel() {
     this.modifyPwdModal = false
     let _changePassword: any = this.$refs['change-password']

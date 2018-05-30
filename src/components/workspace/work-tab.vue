@@ -60,15 +60,6 @@ export default class WorkTab extends Vue {
     this.openPage(path);
   }
 
-  closeAllTabs(path) {
-    this.$Modal.confirm({
-      title: "提示",
-      content: "确定关闭所有已打开页面吗？",
-      onOk: () => {
-        this.closeAllPage(path);
-      }
-    });
-  }
   /**
    * 监听当前页面变化
    */

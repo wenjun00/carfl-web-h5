@@ -1,10 +1,10 @@
 <template>
   <div class="component work-theme">
-     <Poptip title="提示标题" content="提示内容">
+     <!-- <Poptip title="提示标题" content="提示内容">
         <Button>
           <Icon type="contrast"></Icon>
         </Button>
-    </Poptip>
+    </Poptip> -->
   </div>
 </template>
 

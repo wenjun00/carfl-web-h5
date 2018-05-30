@@ -6,10 +6,6 @@ import mutations from './mutations'
 import actions from './actions'
 import getters from './getters'
 
-import workspace from './modules/workspace'
-import purchase from './modules/purchase'
-import mortgage from './modules/mortgage'
-
 import injector from 'vue-inject';
 import createPersistedState from 'vuex-persistedstate'
 
@@ -17,11 +13,6 @@ Vue.use(Vuex)
 const filterList = ['ready']
 
 const store = new Vuex.Store({
-  modules: {
-    workspace: workspace,
-    purchase: purchase,
-    mortgage: mortgage
-  },
   state,
   getters,
   mutations,

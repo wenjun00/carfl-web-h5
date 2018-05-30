@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="[theme]">
+  <div id="app">
     <component :is="layout"></component>
   </div>
 </template>
@@ -18,17 +18,11 @@ import WorkspaceLayout from "~/layouts/workspace.vue";
   }
 })
 export default class App extends Vue {
-  @State theme: string;
   @State layout: string;
   created() {}
 }
 </script>
 
 <style lang="less">
-@import "normalize-css/normalize.css";
-@import "@zct1989/vue-component/dist/index.css";
-@import "assets/styles/layout.less";
-@import "assets/styles/common.less";
-@import "assets/styles/default.less";
-@import "assets/styles/theme.less";
+
 </style>

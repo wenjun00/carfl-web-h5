@@ -46,12 +46,6 @@ module.exports = {
               tsx: 'babel-loader!ts-loader'
             }
           })
-        },
-        {
-          loader: 'iview-loader',
-          options: {
-            prefix: true
-          }
         }
       ]
     },
