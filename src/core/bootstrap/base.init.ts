@@ -2,7 +2,6 @@ import Vue from 'vue'
 import injector from 'vue-inject';
 import createProvide from '~/core/provide'
 import createFilters from '~/extension/filter'
-import createDirectives from '~/extension/directive'
 import createPlugins from '~/extension/plugin'
 
 export default async function ({ store }) {
@@ -29,13 +28,6 @@ export default async function ({ store }) {
   if (createFilters) {
     Object.entries(createFilters({ store })).forEach(([key, fun]) => {
       Vue.filter(key, fun)
-    })
-  }
-
-  // 安装指令
-  if (createDirectives) {
-    Object.entries(createDirectives({ store })).forEach(([key, fun]) => {
-      Vue.directive(key, fun)
     })
   }
 

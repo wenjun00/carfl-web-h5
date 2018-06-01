@@ -1,4 +1,4 @@
-// import validator from 'async-validator'
+import validator from 'async-validator'
 export class ValidatorService {
   /**
    * 自定义验证器
@@ -6,21 +6,21 @@ export class ValidatorService {
    * @param descriptor
    * @param callback
    */
-  // static validate(data: any, descriptor: any) {
-  //   let schema = new validator(descriptor);
-  //   let process = new Promise((reslove, reject) => {
-  //     schema.validate(data, (errors, fields) => {
-  //       if (errors && errors.length) {
-  //         let [error] = errors
-  //         // 验证成功
-  //         reslove(error.message)
-  //       } else {
-  //         reslove()
-  //       }
-  //     });
-  //   })
-  //   return process
-  // }
+  static validate(data: any, descriptor: any) {
+    let schema = new validator(descriptor);
+    let process = new Promise((reslove, reject) => {
+      schema.validate(data, (errors, fields) => {
+        if (errors && errors.length) {
+          let [error] = errors
+          // 验证成功
+          reslove(error.message)
+        } else {
+          reslove()
+        }
+      });
+    })
+    return process
+  }
 
   // 验证正则列表
   static regex = {
