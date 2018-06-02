@@ -1,5 +1,5 @@
 <template >
-  <section class="component subscribe">
+  <section class="page subscribe">
     <p class="title">提交购车需求,金牌顾问为您服务</p>
     <div class="buy-form">
       <van-field label="所在城市" v-model="buyModel.cityName" placeholder="请选择所在城市" @focus="show.area = true" />

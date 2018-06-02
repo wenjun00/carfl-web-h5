@@ -124,7 +124,7 @@ export default class Login extends Vue {
       if (!error) {
         StorageService.setItem("account", { phoneNumber: this.loginModel.phoneNumber })
         this.updateUserPhone(this.loginModel.phoneNumber)
-        this.$router.push("/home")
+        this.$router.push("/Index")
       } else {
         this.$toast(error)
       }

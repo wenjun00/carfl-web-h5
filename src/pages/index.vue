@@ -19,11 +19,9 @@ export default class Index extends Vue {
   }
 
   get navTitle() {
-    console.log(this.$route, 'route')
     let title = this.$route.meta.title
     return title || '洋葱汽车'
   }
-
 }
 </script>
 

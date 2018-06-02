@@ -1,6 +1,7 @@
 import Home from "~/pages/home.vue";
 import Subscribe from "~/pages/subscribe.vue";
 import FAQ from "~/pages/faq.vue";
+import BuyCarList from "~/pages/buy-car-list.vue";
 
 // 路由信息配置
 const routes = [
@@ -22,6 +23,10 @@ const routes = [
     path: '/FAQ',
     name: 'FAQ',
     component: FAQ
+  }, {
+    path: '/buy-car-list',
+    name: 'BuyCarList',
+    component: BuyCarList
   }
 ]
 
