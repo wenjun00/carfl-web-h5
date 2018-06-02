@@ -3,16 +3,14 @@ export default {
   ready: false,
   // 布局名称
   layout: 'default',
-  // 菜单资源
-  menuResource: [],
-  // 控件资源
-  controlResource: [],
   // 字典数据
   dictData: '',
   // 用户token
   userToken: '',
   // 用户数据
   userData: '',
+  // 用户手机号
+  userPhone: '',
   // token是否过期
   tokenExpire: false,
   // 页面列表

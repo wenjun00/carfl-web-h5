@@ -92,13 +92,13 @@ export default {
   closePage(state, path) {
     let page = state.pageList.find(x => x.path === path)
 
-    if(!page){
+    if (!page) {
       return
     }
 
     let index = state.pageList.indexOf(page)
     state.currentPage = state.pageList[index - 1].path
-    
+
     if (index > 0) {
       state.pageList.splice(index, 1)
     }
@@ -139,6 +139,14 @@ export default {
   },
   updateCompanyList(state, data) {
     state.companyList = data
+  },
+  /**
+   * 更新用户手机号码
+   * @param state 
+   * @param phoneNumber 手机号码
+   */
+  updateUserPhone(state, phoneNumber) {
+    state.userPhone = phoneNumber
   }
 }
 

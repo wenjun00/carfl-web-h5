@@ -1,24 +1,22 @@
 <template>
   <section class="page login">
-    <van-row>
-      <van-swipe :autoplay="3000">
-        <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img :src="image" />
-        </van-swipe-item>
-      </van-swipe>
-    </van-row>
+    <div>
+      <img src="/static/images/common/register_login.png">
+    </div>
     <van-row class="login-info">
       <van-cell-group>
-        <van-field v-model="loginModel.username" placeholder="请输入用户名" />
-        <van-field v-model="loginModel.password" type="password" placeholder="请输入密码" />
+        <van-field maxlength="11" v-model="loginModel.phoneNumber" label="手机号" placeholder="请输入您的手机号" icon="clear" @click-icon="loginModel.phoneNumber = ''" @focus="keyboardFlag.phone = true" />
+        <van-number-keyboard :show="keyboardFlag.phone" title="洋葱汽车安全键盘" close-button-text="完成" @blur="keyboardFlag.phone = false" @input="onKeyBoardInputPhone" @delete="onKeyBoardDeletePhone" />
+
+        <van-field maxlength="4" center v-model="loginModel.verifyCode" label="验证码" placeholder="请输入短信验证码" icon="clear" @click-icon="loginModel.verifyCode = ''" @focus="keyboardFlag.code = true">
+          <van-button slot="button" size="small" type="primary" @click="onVerifyCodeClick" :disabled="leftTime !== 0">{{leftTime > 0 ? leftTime + '秒后重发' : '获取验证码'}}</van-button>
+        </van-field>
+        <van-number-keyboard :show="keyboardFlag.code" @blur="keyboardFlag.code = false" @input="onKeyBoardInputCode" @delete="onKeyBoardDeleteCode" />
       </van-cell-group>
-      <van-col span="12" offset="12" class="register">
-        <router-link to="/AddDocumentInfor">注册</router-link>
-      </van-col>
     </van-row>
-    <van-row class="login">
-      <van-button type="primary" size="large">登录</van-button>
-    </van-row>
+    <div class="submit">
+      <van-button type="primary" size="large" @click="onSubmit">登录</van-button>
+    </div>
   </section>
 </template>
 
@@ -27,130 +25,118 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { LoginService } from "~/services/manage-service/login.service";
 import { Dependencies } from "~/core/decorator";
-import { Action } from "vuex-class";
+import { Mutation } from "vuex-class";
 import AppConfig from "~/config/app.config";
 import Register from "~/components/common/register.vue";
 import { StorageService } from "~/utils/storage.service";
+import { settings } from "cluster";
+import { setInterval } from "core-js";
 
 @Component({
-  components: {
-    Register
-  }
+  components: {}
 })
 export default class Login extends Vue {
   @Dependencies(LoginService) private loginService: LoginService;
-  @Action("updateUserLoginData") updateUserLoginData;
+  @Mutation updateUserPhone;
 
-  private images = ['/static/images/common/111.jpg', '/static/images/common/111.jpg', '/static/images/common/111.jpg']
+  // 客户手机号码
+  private phoneNumber: string = '';
+  private loginModel = {
+    phoneNumber: '', // 客户手机号码
+    verifyCode: '' //验证码
+  }
 
-  private loginRule: Object = {};
-  private loginModel: any = {
-    username: "",
-    password: "",
-  };
-  private registerModal: Boolean = false;
+  // 键盘展示flag
+  private keyboardFlag = {
+    phone: false,
+    code: false
+  }
+
+  // 验证规则
+  private rules = {
+    phoneNumber: { validator: this.$validator.phoneNumber, message: "请输入正确的手机号" }
+  }
+
+  // 验证码获取剩余时间
+  private leftTime: number = 0
 
   mounted() {
     if (StorageService.getItem("account") !== null) {
-      this.loginModel.username = StorageService.getItem("account").username;
-      this.loginModel.password = StorageService.getItem("account").password;
+      this.loginModel.phoneNumber = StorageService.getItem("account").phoneNumber || '';
     }
   }
-  created() {
-    // 设置表单数据
-    // this.loginModel = {};
 
-    // 设置验证规则
-    this.loginRule = {
-      username: [
-        {
-          required: true,
-          message: "用户名不能为空",
-          trigger: "blur"
+  /**
+   * 键盘输入
+   * @param val 案件内容
+   */
+  private onKeyBoardInputPhone(val) {
+    if (this.loginModel.phoneNumber.length === 11) return
+    this.loginModel.phoneNumber += val.toString()
+  }
+
+  /**
+   * 按钮删除操作
+   */
+  private onKeyBoardDeletePhone() {
+    let length = this.loginModel.phoneNumber.length
+    if (length === 0) return
+    this.loginModel.phoneNumber = this.loginModel.phoneNumber.substring(0, length - 1)
+  }
+
+  /**
+   * 输入验证码
+   */
+  private onKeyBoardInputCode(val) {
+    if (this.loginModel.phoneNumber.length === 4) return
+    this.loginModel.verifyCode += val.toString()
+  }
+
+  /**
+   * 删除验证码
+   */
+  private onKeyBoardDeleteCode() {
+    let length = this.loginModel.verifyCode.length
+    if (length === 0) return
+    this.loginModel.verifyCode = this.loginModel.verifyCode.substring(0, length - 1)
+  }
+
+  private onVerifyCodeClick(time) {
+    //TODO 后台发送获取验证码
+    this.leftTime = 60
+    let _self = this
+    let setTime = () => {
+      setTimeout(() => {
+        if (_self.leftTime > 0) {
+          _self.leftTime--
+          setTime()
         }
-      ],
-      password: [
-        {
-          required: true,
-          message: "密码不能为空",
-          trigger: "blur"
-        }
-      ]
-    };
+      }, 1000);
+    }
+    setTime()
   }
 
   /**
-   * 取消注册
+   * 提交操作
    */
-  cancelRegister() {
-    this.registerModal = false;
-    let _register: any = this.$refs["register"];
-    _register.resetForm();
-  }
-
-  /**
-   * 确定注册
-   */
-  confirmRegister() {
-    let _register: any = this.$refs["register"];
-    _register.registerClick();
-  }
-  /**
-   * 提交登录表单
-   */
-  submitForm() {
-    let loginForm: any = this.$refs["login-form"];
-    loginForm.validate(success => {
-      if (!success) {
-        return;
+  private onSubmit() {
+    this.$validator.validate(this.loginModel, this.rules).then(error => {
+      if (!error) {
+        StorageService.setItem("account", { phoneNumber: this.loginModel.phoneNumber })
+        this.updateUserPhone(this.loginModel.phoneNumber)
+        this.$router.push("/Index")
+      } else {
+        this.$toast(error)
       }
-
-      this.loginService
-        .login({
-          username: this.loginModel.username,
-          password: this.loginModel.password,
-          loginDevice: 414,
-          loginType: 411
-        })
-        .subscribe(
-          async data => {
-            // 更新基础数据
-            await this.updateUserLoginData(data);
-            // 进入首页
-            this.$router.push("/home");
-
-            if (this.loginModel.remember) {
-              StorageService.setItem("account", {
-                username: this.loginModel.username,
-                password: this.loginModel.password,
-                timing: new Date(
-                  +new Date() + 1000 * 60 * 60 * 24 * 7
-                ).valueOf() // 默认七天过期
-              });
-            } else {
-              StorageService.removeItem("account");
-            }
-          },
-          ({ msg }) => {
-            this.$Message.error(msg);
-          }
-        );
-    });
+    })
   }
-
 }
 </script>
 <style lang="less" scoped>
-.login-info {
-  margin-top: 50px;
-}
-.register {
-  font-size: 14px;
-  text-align: right;
-  padding-right: 20px;
-}
-
 .login {
-  margin-top: 20px;
+  text-align: center;
+  .submit {
+    margin-top: 30px;
+  }
 }
 </style>
