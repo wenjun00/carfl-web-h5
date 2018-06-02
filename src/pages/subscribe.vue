@@ -1,6 +1,5 @@
 <template >
   <section class="component subscribe">
-    <van-nav-bar title="洋葱汽车" left-text="返回" left-arrow @click-left="$router.go(-1)" />
     <p class="title">提交购车需求,金牌顾问为您服务</p>
     <div class="buy-form">
       <van-field label="所在城市" v-model="buyModel.cityName" placeholder="请选择所在城市" @focus="show.area = true" />
@@ -102,6 +101,7 @@ export default class Subscribe extends Vue {
     this.show.success = true
     setTimeout(() => {
       this.show.success = false
+      this.$router.push('/home')
     }, 3000);
   }
 }

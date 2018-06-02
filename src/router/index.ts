@@ -20,8 +20,12 @@ const routes = [
       store.dispatch('clearUserLoginData')
       next()
     }
-  },
-  ...Routes
+  }, {
+    path: '/home',
+    name: 'Home',
+    component: Index,
+    children: [...Routes]
+  }
 ]
 
 // 生成路由实体
