@@ -7,7 +7,13 @@ import storeInit from '~/core/bootstrap/store.init'
 const Login = () => Promise.resolve(require('~/pages/login.vue'))
 const Index = () => Promise.resolve(require('~/pages/index.vue'))
 const Register = ()=> Promise.resolve(require('~/pages/register.vue'))
-
+const CustomInformation = ()=> Promise.resolve(require('~/pages/customInformation.vue'))
+const ContactInformation = ()=> Promise.resolve(require('~/pages/contactInformation.vue'))
+const UploadIdPhotoFirst = ()=> Promise.resolve(require('~/pages/uploadIdPhotoFirst.vue'))
+const UploadIdPhotoTwo = ()=> Promise.resolve(require('~/pages/uploadIdPhotoTwo.vue'))
+const UploadIdPhotoThree = ()=> Promise.resolve(require('~/pages/uploadIdPhotoThree.vue'))
+const AddInformation = ()=> Promise.resolve(require('~/pages/addInformation.vue'))
+const AddDocumentInfor = ()=> Promise.resolve(require('~/pages/addDocumentInfor.vue'))
 Vue.use(Router)
 
 // 生成路由配置
@@ -28,6 +34,40 @@ const routes = [
     path: '/register',
     name :'register',
     component: Register
+  },{
+    path: '/customInformation',
+    name :'customInformation',
+    component: CustomInformation
+  },
+  {
+    path: '/contactInformation',
+    name :'contactInformation',
+    component: ContactInformation
+  },
+  {
+    path: '/uploadIdPhotoFirst',
+    name :'uploadIdPhotoFirst',
+    component: UploadIdPhotoFirst
+  },
+  {
+    path: '/uploadIdPhotoTwo',
+    name :'uploadIdPhotoTwo',
+    component: UploadIdPhotoTwo
+  },
+  {
+    path: '/uploadIdPhotoThree',
+    name :'uploadIdPhotoThree',
+    component: UploadIdPhotoThree
+  },
+  {
+    path: '/addInformation',
+    name :'addInformation',
+    component: AddInformation
+  },
+  {
+    path: '/addDocumentInfor',
+    name :'addDocumentInfor',
+    component: AddDocumentInfor
   }
 ]
 

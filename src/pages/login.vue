@@ -13,7 +13,7 @@
         <van-field v-model="loginModel.password" type="password" placeholder="请输入密码" />
       </van-cell-group>
       <van-col span="12" offset="12" class="register">
-        <router-link to="/register">注册</router-link>
+        <router-link to="/AddDocumentInfor">注册</router-link>
       </van-col>
     </van-row>
     <van-row class="login">

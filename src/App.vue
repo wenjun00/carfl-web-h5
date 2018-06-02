@@ -22,7 +22,8 @@ export default class App extends Vue {
   created() {}
 }
 </script>
-
 <style lang="less">
+@import "//at.alicdn.com/t/font_689890_sno689qmewxw29.css";
+
 
 </style>
