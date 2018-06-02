@@ -1,6 +1,6 @@
 <template>
   <section class="main-container full">
-    <van-nav-bar title="洋葱汽车" :left-text="showBack ? '返回' : ''" :left-arrow="showBack" @click-left="$router.go(-1)" />
+    <van-nav-bar :title="navTitle" :left-text="showBack ? '返回' : ''" :left-arrow="showBack" @click-left="$router.go(-1)" />
     <router-view></router-view>
   </section>
 </template>
@@ -16,6 +16,12 @@ export default class Index extends Vue {
   // 是否显示返回按钮
   get showBack() {
     return this.$route.name !== "Home"
+  }
+
+  get navTitle() {
+    console.log(this.$route, 'route')
+    let title = this.$route.meta.title
+    return title || '洋葱汽车'
   }
 
 }

@@ -1,6 +1,5 @@
 <template >
   <section class="component question">
-    <h3>常见问题</h3>
     <van-collapse v-model="activeNames">
       <van-collapse-item v-for="item of dataSet" :key="item.id">
         <div slot="title">

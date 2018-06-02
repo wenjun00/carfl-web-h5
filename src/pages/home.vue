@@ -37,9 +37,7 @@
       </div>
     </section>
 
-    <van-popup v-model="show.navBar" position="right" @click-overlay="show.navBar = false">
-      <nav-bar @nav-item-click="show.navBar = false"></nav-bar>
-    </van-popup>
+    <nav-bar v-model="show.navBar"></nav-bar>
   </section>
 </template>
 
@@ -103,21 +101,6 @@ export default class Home extends Vue {
   margin-top: @marginHight;
   margin-bottom: @marginHight;
 }
-.van-popup {
-  &--right {
-    height: 100%;
-    margin-top: 45px;
-    width: 60%;
-  }
-}
 </style>
 
-<style lang="less">
-.home {
-  .van-modal {
-    /*控制上面导航栏也展示出来 再加1像素*/
-    margin-top: 46px;
-  }
-}
-</style>
 
