@@ -8,8 +8,8 @@
       </van-cell-group>
       <div class="van-hairline--bottom"></div>
       <van-cell-group>
-        <van-cell title="我的订单" to="/home" clickable @click="onNavItemClick" />
-        <van-cell title="月供还款" to="/home" clickable @click="onNavItemClick" />
+        <van-cell title="我的订单" to="/my-order" clickable @click="onNavItemClick" />
+        <van-cell title="还款明细" to="/payment-record" clickable @click="onNavItemClick" />
       </van-cell-group>
       <div class="van-hairline--bottom"></div>
       <van-cell-group>
