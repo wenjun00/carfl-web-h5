@@ -30,7 +30,6 @@ import AppConfig from "~/config/app.config";
 import Register from "~/components/common/register.vue";
 import { StorageService } from "~/utils/storage.service";
 import { settings } from "cluster";
-import { setInterval } from "core-js";
 
 @Component({
   components: {}
@@ -40,29 +39,33 @@ export default class Login extends Vue {
   @Mutation updateUserPhone;
 
   // 客户手机号码
-  private phoneNumber: string = '';
+  private phoneNumber: string = "";
   private loginModel = {
-    phoneNumber: '', // 客户手机号码
-    verifyCode: '' //验证码
-  }
+    phoneNumber: "", // 客户手机号码
+    verifyCode: "" //验证码
+  };
 
   // 键盘展示flag
   private keyboardFlag = {
     phone: false,
     code: false
-  }
+  };
 
   // 验证规则
   private rules = {
-    phoneNumber: { validator: this.$validator.phoneNumber, message: "请输入正确的手机号" }
-  }
+    phoneNumber: {
+      validator: this.$validator.phoneNumber,
+      message: "请输入正确的手机号"
+    }
+  };
 
   // 验证码获取剩余时间
-  private leftTime: number = 0
+  private leftTime: number = 0;
 
   mounted() {
     if (StorageService.getItem("account") !== null) {
-      this.loginModel.phoneNumber = StorageService.getItem("account").phoneNumber || '';
+      this.loginModel.phoneNumber =
+        StorageService.getItem("account").phoneNumber || "";
     }
   }
 
@@ -71,49 +74,55 @@ export default class Login extends Vue {
    * @param val 案件内容
    */
   private onKeyBoardInputPhone(val) {
-    if (this.loginModel.phoneNumber.length === 11) return
-    this.loginModel.phoneNumber += val.toString()
+    if (this.loginModel.phoneNumber.length === 11) return;
+    this.loginModel.phoneNumber += val.toString();
   }
 
   /**
    * 按钮删除操作
    */
   private onKeyBoardDeletePhone() {
-    let length = this.loginModel.phoneNumber.length
-    if (length === 0) return
-    this.loginModel.phoneNumber = this.loginModel.phoneNumber.substring(0, length - 1)
+    let length = this.loginModel.phoneNumber.length;
+    if (length === 0) return;
+    this.loginModel.phoneNumber = this.loginModel.phoneNumber.substring(
+      0,
+      length - 1
+    );
   }
 
   /**
    * 输入验证码
    */
   private onKeyBoardInputCode(val) {
-    if (this.loginModel.phoneNumber.length === 4) return
-    this.loginModel.verifyCode += val.toString()
+    if (this.loginModel.phoneNumber.length === 4) return;
+    this.loginModel.verifyCode += val.toString();
   }
 
   /**
    * 删除验证码
    */
   private onKeyBoardDeleteCode() {
-    let length = this.loginModel.verifyCode.length
-    if (length === 0) return
-    this.loginModel.verifyCode = this.loginModel.verifyCode.substring(0, length - 1)
+    let length = this.loginModel.verifyCode.length;
+    if (length === 0) return;
+    this.loginModel.verifyCode = this.loginModel.verifyCode.substring(
+      0,
+      length - 1
+    );
   }
 
   private onVerifyCodeClick(time) {
     //TODO 后台发送获取验证码
-    this.leftTime = 60
-    let _self = this
+    this.leftTime = 60;
+    let _self = this;
     let setTime = () => {
       setTimeout(() => {
         if (_self.leftTime > 0) {
-          _self.leftTime--
-          setTime()
+          _self.leftTime--;
+          setTime();
         }
       }, 1000);
-    }
-    setTime()
+    };
+    setTime();
   }
 
   /**
@@ -122,13 +131,15 @@ export default class Login extends Vue {
   private onSubmit() {
     this.$validator.validate(this.loginModel, this.rules).then(error => {
       if (!error) {
-        StorageService.setItem("account", { phoneNumber: this.loginModel.phoneNumber })
-        this.updateUserPhone(this.loginModel.phoneNumber)
-        this.$router.push("/Index")
+        StorageService.setItem("account", {
+          phoneNumber: this.loginModel.phoneNumber
+        });
+        this.updateUserPhone(this.loginModel.phoneNumber);
+        this.$router.push("/Index");
       } else {
-        this.$toast(error)
+        this.$toast(error);
       }
-    })
+    });
   }
 }
 </script>
