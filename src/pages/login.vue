@@ -1,7 +1,7 @@
 <template>
   <section class="page login">
-    <div>
-      <img src="/static/images/common/register_login.png">
+    <div class="imgHeaght">
+      <img height="160px" src="/static/images/common/register_login.png">
     </div>
     <van-row class="login-info">
       <van-cell-group>
@@ -133,10 +133,18 @@ export default class Login extends Vue {
 }
 </script>
 <style lang="less" scoped>
-.login {
-  text-align: center;
-  .submit {
-    margin-top: 30px;
+.page.login {
+  .login {
+    text-align: center;
+    .submit {
+      margin-top: 30px;
+    }
+  }
+  .imgHeaght {
+    height: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

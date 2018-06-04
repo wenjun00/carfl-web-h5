@@ -11,7 +11,7 @@
       </form>
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img :src="image" />
+          <img height="200px" :src="image" />
         </van-swipe-item>
       </van-swipe>
     </section>
@@ -21,7 +21,7 @@
     <section>
       <div class="break-line"></div>
       <div>
-        <img src="/static/images/home/ad.png">
+        <img class="siftCar" height="30px" src="/static/images/home/ad.png">
       </div>
       <car-list></car-list>
     </section>
@@ -33,7 +33,8 @@
     <section>
       <div class="break-line"></div>
       <div class="content">
-        <img src="/static/images/common/home_logo.png">
+        <img height="35px" src="/static/images/common/home_logo.png">
+        <van-col class="describe">中业金服旗下洋葱汽车新品上线</van-col>
         <van-button type="primary" size="large" @click="$router.push('/subscribe')">帮我买车</van-button>
       </div>
     </section>
@@ -98,9 +99,17 @@ export default class Home extends Vue {
   background-color: #f2f2f2;
   height: 10px;
 }
+.describe {
+  width: 100%;
+  color: #666666;
+  margin-bottom: 10px;
+}
 .content {
   margin-top: @marginHight;
   margin-bottom: @marginHight;
+}
+.siftCar {
+  margin: 10px;
 }
 </style>
 

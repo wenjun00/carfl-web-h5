@@ -5,7 +5,7 @@
         <div slot="title">
           <van-row>
             <van-col :span="3">
-              <img src="/static/images/home/question-ico.png">
+              <img height="30px" src="/static/images/home/question-ico.png">
             </van-col>
             <van-col :span="21" class="question-title">
               {{item.title}}

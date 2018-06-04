@@ -12,7 +12,7 @@
     </van-cell-group>
     <van-row>
       <div class="appointmentImmediately">
-        <img height="75px" src="/static/images/common/phone.jpg" alt="">
+        <img height="65px" src="/static/images/common/phone.png" alt="">
         <div class="appointmentDescribe">
           <div class="appointmentHend">立即预约</div>
           <span class="appointmentSpan">选好意向车型后,洋葱好车直营店客户经理将在24小时之内为你提供1对1服务</span>
@@ -21,7 +21,7 @@
     </van-row>
     <van-row>
       <div class="appointmentImmediately">
-        <img height="75px" src="/static/images/common/phone.jpg" alt="">
+        <img height="65px" src="/static/images/common/agreement.png" alt="">
         <div class="appointmentDescribe">
           <div class="appointmentHend">签订协议</div>
           <span class="appointmentSpan">选择合适的购车方案,通过征信审核后签订购车协议</span>
@@ -30,7 +30,7 @@
     </van-row>
     <van-row>
       <div class="appointmentImmediately">
-        <img height="75px" src="/static/images/common/phone.jpg" alt="">
+        <img height="65px" src="/static/images/common/cost.png" alt="">
         <div class="appointmentDescribe">
           <div class="appointmentHend">支付费用</div>
           <span class="appointmentSpan">支付首付,第一期月供,违章保证金</span>
@@ -39,7 +39,7 @@
     </van-row>
     <van-row>
       <div class="appointmentImmediately">
-        <img height="75px" src="/static/images/common/phone.jpg" alt="">
+        <img height="65px" src="/static/images/common/vehicle.png" alt="">
         <div class="appointmentDescribe">
           <div class="appointmentHend">到店提车</div>
           <span class="appointmentSpan">免费办理保险与上牌手续后,客户经理将联系您到附近直营店提车</span>
@@ -102,7 +102,7 @@ import Component from "vue-class-component";
   components: {}
 })
 export default class carGoHome extends Vue {
-  private images = '/static/images/common/headerLabel.jpg'
+  private images = '/static/images/common/headerLabel.png'
 
 }
 </script>
@@ -151,6 +151,7 @@ export default class carGoHome extends Vue {
   .appointmentImmediately {
     display: flex;
     justify-content: space-around;
+    height: 80px;
     .appointmentDescribe {
       width: 60%;
       .appointmentHend {

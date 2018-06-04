@@ -5,7 +5,7 @@
     <van-cell-group>
       <van-cell>
         <template slot="title">
-          <img class="someIcon" height="15px" :src="images" alt="">
+          <img class="someIcon" height="17px" :src="images" alt="">
           <span class="van-cell-text basicParameter">分期方案</span>
         </template>
       </van-cell>
@@ -44,7 +44,7 @@
     <van-cell-group>
       <van-cell value="详细配置" is-link>
         <template slot="title">
-          <img class="someIcon" height="15px" :src="images" alt="">
+          <img class="someIcon" height="17px" :src="images" alt="">
           <span class="van-cell-text basicParameter">基本参数</span>
         </template>
       </van-cell>
@@ -84,7 +84,7 @@
     <van-cell-group class="magin10">
       <van-cell>
         <template slot="title">
-          <img class="someIcon" height="15px" :src="images" alt="">
+          <img class="someIcon" height="17px" :src="images" alt="">
           <span class="van-cell-text basicParameter">车型亮点</span>
         </template>
       </van-cell>
@@ -152,7 +152,7 @@ import Component from "vue-class-component";
   components: {}
 })
 export default class detailsScheme extends Vue {
-  private images = '/static/images/common/headerLabel.jpg'
+  private images = '/static/images/common/headerLabel.png'
   private byStages = [{
     val: '24期数',
     label: '0.91'
