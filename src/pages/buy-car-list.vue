@@ -61,7 +61,7 @@ export default class BuyCarList extends Vue {
   }
 
   private scrollTop(val) {
-    document.documentElement.scrollTop = 0
+    window.scrollTo(0,0)
   }
 
 
