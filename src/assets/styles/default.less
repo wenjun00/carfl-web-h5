@@ -1,79 +1,71 @@
 html,
 body,
 #app {
-  height: 100%;
-  width: 100%;
-  overflow-y: hidden;
-  overflow-x: auto;
-  padding: 0;
-  margin: 0;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-}
-
-.page {
-  min-width: 100%;
-  min-height: 100%;
-  background: white;
-  border: 1px solid #DDDDDD;
-  overflow: auto;
-  padding: 5px;
-  .pagination {
-    .ivu-input-type,
-    .ivu-input-wrapper,
-    .ivu-select,
-    .ivu-select-single .ivu-select-selection {
-      width: 80px;
-      display: inline-block;
-    }
-  }
-  .ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab-active {
-    color: black !important;
-    border-top: 2px solid #265ea2 !important;
-  }
-  .submitBar {
-    height: 70px;
+    height: 100%;
     width: 100%;
-    background: #fff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border: 1px solid #ddd;
-  } // 默认按钮内部文字颜色
-  .defaultButton {
-    color: #265EA2;
-  } // 蓝色按钮
-  .blueButton {
-    background: #265EA2;
-    color: #fff;
-    margin-left: 10px;
-  }
-  .blueButton:hover {
-    background: #1D4F8B;
-    color: #fff;
-  } // 页面底部大按钮
-  .highButton {
-    height: 46px;
-    border-radius: 0;
-    background: #265EA2;
-    color: #fff;
-  }
-  .highButton:hover {
-    background: #1D4F8B;
-    color: #fff;
-  }
-  .highDefaultButton {
-    height: 46px;
-    border-radius: 0;
-    background: #E4E4E4;
-    color: #265EA2;
-    ;
-  }
-  .ivu-tabs-nav-scroll {
-    overflow: unset;
-  }
+    overflow-y: auto;
+    overflow-x: auto;
+    padding: 0;
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    .setDefaultStyle()
 }
 
+.color-style() {
+    @primary : yellow;
+    .primary {
+        background: yellow
+    }
+    .primary-color {
+        background: yellow
+    }
+}
 
+.page-style() {
+    .page {
+        min-width: 100%;
+        min-height: 100%;
+        background: white;
+        border: 1px solid #DDDDDD;
+        overflow: auto;
+        padding: 5px;
+    }
+}
 
+// 默认按钮样式
+.button-style() {
+    .van-button {
+        &.full-radius {
+            border-radius: 75%;
+        }
+        &.small-radius {
+            border-radius: 25%;
+        }
+    }
+}
 
+// 默认文本样式
+.text-style() {
+    .ex-large {
+        font-size: 24px;
+    }
+    .large {
+        font-size: 18px;
+    }
+    .normal {
+        font-size: 14px;
+    }
+    .small {
+        font-size: 12px;
+    }
+    .ex-small {
+        font-size: 10px;
+    }
+}
 
+// 默认样式
+.setDefaultStyle() {
+    .page-style();
+    .text-style();
+    .button-style();
+}
