@@ -8,7 +8,6 @@ const UploadIdPhotoFirst = () => Promise.resolve(require('~/pages/upload-id-phot
 const UploadIdPhotoTwo = () => Promise.resolve(require('~/pages/upload-id-photo-two.vue'))
 const UploadIdPhotoThree = () => Promise.resolve(require('~/pages/upload-id-photo-three.vue'))
 const AddInformation = () => Promise.resolve(require('~/pages/add-information.vue'))
-const AddDocumentInfor = () => Promise.resolve(require('~/pages/add-document-infor.vue'))
 import MyOrder from "~/pages/my-order.vue"
 import PaymentRecord from "~/pages/payment-record.vue";
 
@@ -67,10 +66,6 @@ const routes = [
     component: AddInformation
   },
   {
-    path: '/add-document-infor',
-    name: 'add-document-infor',
-    component: AddDocumentInfor
-  }, {
     path: '/my-order',
     name: 'MyOrder',
     meta: {

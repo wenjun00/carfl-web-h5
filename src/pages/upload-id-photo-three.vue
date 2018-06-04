@@ -33,7 +33,7 @@
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @change="onChange" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
     </transition>
-    <van-button type="primary" bottom-action>下一步</van-button>
+    <van-button type="primary" bottom-action @click="$router.push('/custom-information')">下一步</van-button>
   </section>
 </template>
 

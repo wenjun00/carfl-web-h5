@@ -22,7 +22,7 @@
     <van-popup v-model="show.relation2" position="bottom">
       <van-picker :columns="columns.relation2" show-toolbar @change="onChange" @confirm="show.relation2=false" @cancel="show.relation2=false" />
     </van-popup>
-    <van-button type="primary" bottom-action>下一步</van-button>
+    <van-button type="primary" bottom-action @click="$router.push('/add-information')">下一步</van-button>
   </section>
 </template>
 
