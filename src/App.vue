@@ -15,6 +15,6 @@ export default class App extends Vue {}
 <style lang="less">
 @import "./assets/styles/layout.less";
 @import "./assets/styles/default.less";
-// @import "./assets/styles/common.less";
-// @import "~/normalize-css";
+@import "./assets/styles/common.less";
+@import "normalize-css/normalize.css";
 </style>
