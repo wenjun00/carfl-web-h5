@@ -2,16 +2,18 @@ import Home from "~/pages/home.vue";
 import Subscribe from "~/pages/subscribe.vue";
 import FAQ from "~/pages/faq.vue";
 import BuyCarList from "~/pages/buy-car-list.vue";
+import MyOrder from "~/pages/my-order.vue"
+import PaymentRecord from "~/pages/payment-record.vue";
 const CustomInformation = () => Promise.resolve(require('~/pages/custom-information.vue'))
 const ContactInformation = () => Promise.resolve(require('~/pages/contact-information.vue'))
 const UploadIdPhotoFirst = () => Promise.resolve(require('~/pages/upload-id-photo-first.vue'))
 const UploadIdPhotoTwo = () => Promise.resolve(require('~/pages/upload-id-photo-two.vue'))
 const UploadIdPhotoThree = () => Promise.resolve(require('~/pages/upload-id-photo-three.vue'))
 const AddInformation = () => Promise.resolve(require('~/pages/add-information.vue'))
-const AddDocumentInfor = () => Promise.resolve(require('~/pages/add-document-infor.vue'))
+// const AddDocumentInfor = () => Promise.resolve(require('~/pages/add-document-infor.vue'))
 const Details = ()=> Promise.resolve(require('~/pages/details.vue'))
-import MyOrder from "~/pages/my-order.vue"
-import PaymentRecord from "~/pages/payment-record.vue";
+
+
 
 // 路由信息配置
 const routes = [
@@ -68,10 +70,6 @@ const routes = [
     component: AddInformation
   },
   {
-    path: '/add-document-infor',
-    name: 'add-document-infor',
-    component: AddDocumentInfor
-  }, {
     path: '/my-order',
     name: 'MyOrder',
     meta: {

@@ -33,7 +33,7 @@
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @change="onChange" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
     </transition>
-    <van-button type="primary" @click="jump()" bottom-action>下一步</van-button>
+    <van-button type="primary" @click="$router.push('/upload-id-photo-three')" bottom-action>下一步</van-button>
   </section>
 </template>
 
@@ -62,9 +62,6 @@ export default class Login extends Vue {
     } else {
       this.columns = '本科';
     }
-  }
-  jump() {
-    this.$router.push({path:'/upload-id-photo-three'})
   }
   }
 </script>

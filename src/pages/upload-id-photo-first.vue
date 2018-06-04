@@ -35,7 +35,7 @@
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @change="onChange" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
     </transition>
-    <van-button type="primary" @click="jump()" bottom-action>下一步</van-button>
+    <van-button type="primary" @click="$router.push('/upload-id-photo-two')" bottom-action>下一步</van-button>
   </section>
 </template>
 
@@ -71,10 +71,6 @@ export default class Login extends Vue {
     onRead() {
 
     }
-    jump() {
-      this.$router.push({path:'/upload-id-photo-two'})
-    }
-
   }
 </script>
 <style lang="less">

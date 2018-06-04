@@ -47,7 +47,7 @@
         <van-field v-model="inforModel.afterSalary" label="税后月薪" placeholder="请输入您税后的月薪" />
       </van-cell-group>
     </van-row>
-    <van-button type="primary" bottom-action>下一步</van-button>
+    <van-button type="primary" bottom-action @click="$router.push('/contact-information')">下一步</van-button>
   </section>
 </template>
 

@@ -8,7 +8,7 @@
         <van-row class="my-order-title">
           <van-col :span="16">待客户补充资料</van-col>
           <van-col :span="8">
-            <van-button type="primary" size="small">上传资料</van-button>
+            <van-button type="primary" size="small" @click="$router.push('/upload-id-photo-first')">上传资料</van-button>
           </van-col>
         </van-row>
         <van-cell :title="`订单编号：${orderInfo.no}`"></van-cell>
