@@ -3,7 +3,7 @@
     <van-row>
       <van-col span="12" class="car-list-item" v-for="(item,index) of dataSet" :key="index">
         <div>
-          <div><img src="/static/images/home/car.png" width="180px"></div>
+         <router-link to="/details"> <div><img src="/static/images/home/car.png" width="180px"></div> </router-link>
         </div>
         <div class="car">
           <p>{{item.title}}</p>
