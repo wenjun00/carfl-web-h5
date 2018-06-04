@@ -11,6 +11,16 @@ body,
     .setDefaultStyle()
 }
 
+.color-style() {
+    @primary : yellow;
+    .primary {
+        background: yellow
+    }
+    .primary-color {
+        background: yellow
+    }
+}
+
 .page-style() {
     .page {
         min-width: 100%;
@@ -35,7 +45,23 @@ body,
 }
 
 // 默认文本样式
-.text-style() {}
+.text-style() {
+    .ex-large {
+        font-size: 24px;
+    }
+    .large {
+        font-size: 18px;
+    }
+    .normal {
+        font-size: 14px;
+    }
+    .small {
+        font-size: 12px;
+    }
+    .ex-small {
+        font-size: 10px;
+    }
+}
 
 // 默认样式
 .setDefaultStyle() {
