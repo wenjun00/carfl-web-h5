@@ -21,13 +21,16 @@ const routes = [
     // index 页面使用了router-view 这里需要重新定向到home 
     // 以使home组件为router-view的默认值
     redirect: '/home',
-    children:[...Routes]
+    children: [...Routes]
   }
 ]
 
 // 生成路由实体
 const router = new Router({
   mode: 'history',
+  scrollBehavior(to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  },
   routes
 })
 
