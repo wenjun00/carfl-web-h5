@@ -12,12 +12,13 @@ body,
 }
 
 .color-style() {
-    @primary : yellow;
+    @primary : #ffdb00;
     .primary {
-        background: yellow
+        background: @primary;
+        border-color: @primary;
     }
     .primary-color {
-        background: yellow
+        background: @primary;
     }
 }
 
@@ -28,7 +29,6 @@ body,
         background: white;
         border: 1px solid #DDDDDD;
         overflow: auto;
-        padding: 5px;
         box-sizing: border-box;
     }
 }
@@ -36,11 +36,13 @@ body,
 // 默认按钮样式
 .button-style() {
     .van-button {
+        .color-style();
+        .primary();
         &.full-radius {
-            border-radius: 75%;
+            border-radius: 25px;
         }
         &.small-radius {
-            border-radius: 25%;
+            border-radius: 5px;
         }
     }
 }

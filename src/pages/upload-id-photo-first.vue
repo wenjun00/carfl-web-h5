@@ -47,10 +47,12 @@
         <van-cell title="有效期限" is-link :value="value" @click="pickerDialog=true;choose(2)" />
       </van-cell-group>
     </van-row>
-    <transition name="fade">
+    <!-- <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @change="onChange" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
-    </transition>
+    </transition> -->
+      <van-row>
     <van-button type="primary" @click="$router.push('/upload-id-photo-two')" bottom-action>下一步</van-button>
+    </van-row>
   </section>
 </template>
 

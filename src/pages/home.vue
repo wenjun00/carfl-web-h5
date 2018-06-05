@@ -35,7 +35,7 @@
       <div class="content">
         <img height="35px" src="/static/images/common/home_logo.png">
         <van-col class="describe">中业金服旗下洋葱汽车新品上线</van-col>
-        <van-button type="primary" size="large" @click="$router.push('/subscribe')">帮我买车</van-button>
+        <van-button type="primary" class="full-radius" size="large" @click="$router.push('/subscribe')">帮我买车</van-button>
       </div>
     </section>
 
