@@ -12,7 +12,7 @@
       <van-row class="buy-car-list-item" v-for="(item,index) of dataSet" :key="index">
         <van-col span="10">
           <div>
-            <div><img src="/static/images/home/car.png" height="100px"></div>
+            <div @click="vehicleDetails"><img src="/static/images/home/car.png" height="100px"></div>
           </div>
         </van-col>
         <van-col span="14">
@@ -63,7 +63,12 @@ export default class BuyCarList extends Vue {
   private scrollTop(val) {
     window.scrollTo(0,0)
   }
-
+  /**
+   * 点击车辆跳转详情页面
+   */
+  vehicleDetails(){
+     this.$router.push('/details')
+  }
 
   onScrollTopChage() {
     let height = document.documentElement.scrollTop || window.pageYOffset

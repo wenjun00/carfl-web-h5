@@ -25,11 +25,11 @@
         <van-icon name="certificate" />
         <span> 包购置税</span>
       </van-col>
-      <van-col span="8"  class="textCenter">
+      <van-col span="8" class="textCenter">
         <van-icon name="certificate" />
         <span> 送一年保险</span>
       </van-col>
-      <van-col span="8"  class="textCenter">
+      <van-col span="8" class="textCenter">
         <van-icon name="certificate" />
         <span> 全国联保</span>
       </van-col>
@@ -37,7 +37,7 @@
     <van-row>
       <DetailsScheme></DetailsScheme>
     </van-row>
-     <van-row>
+    <van-row>
       <CarGoHome></CarGoHome>
     </van-row>
 
@@ -59,13 +59,23 @@ import CarGoHome from "~/components/common/carGoHome.vue";
 export default class Details extends Vue {
 
   private images = ['/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png']
-
+  BackTop(){
+    document.documentElement.scrollTop = 0
+    window.scrollTo(0,0);
+    console.log( document.documentElement.scrollTop,'123')
+  }
+  created() {
+    this.BackTop()
+    // document.documentElement.scrollTop = 0
+    // window.scrollTo(0, 0);
+    // console.log( document.documentElement.scrollTop,'123')
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .page.details {
-  .textCenter{
+  .textCenter {
     text-align: center;
   }
   .carImg {

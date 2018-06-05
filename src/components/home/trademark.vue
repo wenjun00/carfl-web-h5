@@ -1,6 +1,6 @@
 <template >
   <section class="component trademark">
-    <img v-for="(item,index) of trademarkList" :key="index" :src="item.img" height="60px" />
+    <img v-for="(item,index) of trademarkList" @click="Allcar(index)" :key="index" :src="item.img" height="60px" />
   </section>
 </template>
 
@@ -18,6 +18,16 @@ export default class Trademark extends Vue {
       name: "全部新车"
     })
     return list
+    
+  }
+  Allcar(val){
+    console.log(this.trademarkList)
+    if(val == 9){
+      this.$router.push('/allVehicles')
+    }else{
+      this.$router.push('/buy-car-list')
+    }
+    
   }
 
 
@@ -71,6 +81,7 @@ export default class Trademark extends Vue {
   ]
 
 }
+
 </script>
 
 <style lang="less" scoped>

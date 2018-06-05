@@ -20,13 +20,14 @@
       <van-row class="imgList">
         <van-col span="11">
           <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead" accept="image/gif, image/jpeg" multiple>
-            <van-icon v-if="photo == ''" class="icon iconfont icon-jiahao add" />
+            <van-icon class="vanIcon" v-if="photo == ''" name="add" />
             <img height="100%" width="100%" v-else :src="photo" alt="">
           </van-uploader>
         </van-col>
         <van-col span="11">
           <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onReadTwo" accept="image/gif, image/jpeg" multiple>
-            <van-icon v-if="photoTwo == ''" class="icon iconfont icon-jiahao add" />
+            <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
+            <!-- <van-icon name="success" /> -->
             <img height="100%" width="100%" v-else :src="photoTwo" alt="">
           </van-uploader>
         </van-col>
@@ -103,6 +104,10 @@ export default class Login extends Vue {
 </script>
 <style lang="less" scoped>
 .page.uploadIdPhotoFirst {
+  .vanIcon {
+    font-size: 40px;
+    line-height: 150px;
+  }
   .imgList {
     text-align: center;
     display: flex;
@@ -171,9 +176,6 @@ p {
     position: fixed;
     bottom: 0rem;
   }
-  .icon.iconfont.icon-jiahao.add.van-icon.van-icon-undefined {
-    font-size: 60px;
-    line-height: 150px;
-  }
+  
 }
 </style>

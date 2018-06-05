@@ -105,6 +105,7 @@ export default class Home extends Vue {
   margin-bottom: 10px;
 }
 .content {
+  text-align: center;
   margin-top: @marginHight;
   margin-bottom: @marginHight;
 }

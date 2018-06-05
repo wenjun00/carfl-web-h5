@@ -171,8 +171,8 @@ export default class detailsScheme extends Vue {
     // let scrollTop = document.documentElement.scrollTop || window.pageYOffset
     // scrollTop = 0
  
-    document.documentElement.scrollTop = 0
-    window.scrollTo(0,0);
+    // document.documentElement.scrollTop = 0
+    // window.scrollTo(0,0);
   }
 
 
