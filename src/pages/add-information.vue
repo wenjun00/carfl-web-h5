@@ -3,22 +3,30 @@
     <van-row>
       <p class="base-info-title">
         <span class="star">*</span>承租人手持身份证照片</p>
-      <div class="idPhoto">
-        <div class="infoContent">照片</div>
-        <div class="background">
-          <i class="icon iconfont icon-jianhaob"></i>
-        </div>
-      </div>
+      <van-row class="imgList">
+        <van-col span="11">
+          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun" accept="image/gif, image/jpeg" multiple>
+            <van-icon class="vanIcon" v-if="identityCard == ''" name="add" />
+            <img width="100%" v-else :src="identityCard" alt="">
+          </van-uploader>
+          <van-icon @click="closeIdentityCard" v-if="!identityCard == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCard" v-if="!identityCard == ''" class="lookiconHead" name="password-view" />
+        </van-col>
+      </van-row>
     </van-row>
     <van-row>
       <p class="base-info-title">
         <span class="star">*</span>承租人手持业务员照片</p>
-      <div class="idPhoto">
-        <div class="infoContent">合照</div>
-        <div class="background">
-          <i class="icon iconfont icon-jianhaob"></i>
-        </div>
-      </div>
+      <van-row class="imgList">
+        <van-col span="11">
+          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardTwoFun" accept="image/gif, image/jpeg" multiple>
+            <van-icon class="vanIcon" v-if="identityCardTwo == ''" name="add" />
+            <img width="100%" v-else :src="identityCardTwo" alt="">
+          </van-uploader>
+          <van-icon @click="closeIdentityCardTwo" v-if="!identityCardTwo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCardTwo" v-if="!identityCardTwo == ''" class="lookiconHead" name="password-view" />
+        </van-col>
+      </van-row>
     </van-row>
     <van-cell title="追加担保人（选填）" is-link :value="value" @click="pickerDialog=true" />
     <van-collapse v-model="activeNames">
@@ -30,7 +38,8 @@
               <div class="idPhoto" :ref="item.name">
                 <div class="infoContent">{{item.imgLeft}}</div>
                 <div class="background">
-                  <i class="icon iconfont icon-jianhaob"></i>
+                  <van-icon v-if="item.ShowHidden" @click="closeList(item.name)" class="deleteicon" name="close" />
+                  <van-icon v-if="item.ShowHidden" @click="lookList(item.name)" class="lookicon" name="password-view" />
                 </div>
               </div>
             </van-col>
@@ -38,7 +47,7 @@
               <div class="idPhoto line">
                 <div class="infoContent" @click="getRef(item.name)">
                   <van-uploader :after-read="onRead" accept="image/gif, image/jpeg" multiple>
-                    <van-icon class="icon iconfont icon-jiahao add" />
+                    <van-icon class="vanIcon" name="add" />
                   </van-uploader>
                 </div>
               </div>
@@ -58,6 +67,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { ImagePreview } from 'vant';
 @Component({})
 export default class Login extends Vue {
   private idName: any = null;
@@ -68,59 +78,126 @@ export default class Login extends Vue {
   private columns: any = ['本科', '专科', '博士'];
   private type: any;
   private imageName: any = "";
+  private identityCard: any = '';  // 手持身份证照片
+  private showName: any = ''
+  private identityCardTwo: any = '';
   private photo: any = "";
+
   private list: any = [
     {
       title: "户口本（户主页及个人页）",
       imgLeft: "户口本照片",
-      name: "photo1"
+      name: "photo1",
+      ShowHidden: '',
 
     },
     {
       title: "结婚证",
       imgLeft: "结婚证照片",
+      ShowHidden: '',
       name: "photo2"
     },
     {
       title: "收入证明（劳动合同/收入证明）",
       imgLeft: "收入证明照片",
+      ShowHidden: '',
       name: "photo3"
     },
     {
       title: "近6个月银行流水（柜台打印盖章/网银现场查询）",
       imgLeft: "银行流水",
+      ShowHidden: '',
       name: "photo4"
     },
     {
       title: "社保查询（柜台打印盖章/网上现场查询）",
       imgLeft: "社保查询",
+      ShowHidden: '',
       name: "photo5"
     },
     {
       title: "房产证明（房产证/按揭合同/购房合同）",
       imgLeft: "房产证明",
+      ShowHidden: '',
       name: "photo6"
     },
     {
       title: "居住证明（本人/直系亲属姓名的水电费.物业费等单据）",
       imgLeft: "居住证明",
+      ShowHidden: '',
       name: "photo7"
     },
     {
       title: "其他照片资料",
       imgLeft: "其他照片",
+      ShowHidden: '',
       name: "photo8"
     },
   ]
   getRef(ref) {
     this.photo = this.$refs[ref][0];
-    console.log(this.photo, 22)
+    this.showName = ref
   }
+  /**
+   * 手持身份证图片事件
+   */
+  identityCardFun(val) {
+    this.identityCard = val.content
+  }
+  // 删除手持身份证图片事件
+  closeIdentityCard() {
+    this.identityCard = ''
+  }
+  // 预览手持身份证
+  lookIdentityCard() {
+    ImagePreview([this.identityCard]);
+  }
+  closeIdentityCardTwo() {
+    this.identityCardTwo = ''
+  }
+  lookIdentityCardTwo() {
+    ImagePreview([this.identityCardTwo]);
+  }
+  // 删除户口等每个点击的图片
+  closeList(ref) {
+    this.photo = this.$refs[ref][0];
+    this.photo.style.backgroundImage = 'url("")';
+    // console.log(ref)
+    for (let i in this.list) {
+      if (ref == this.list[i].name) {
+        this.list[i].ShowHidden = 0
+      }
+    }
+  }
+  // 查看户口每个点击的图片
+  lookList(ref) {
+    this.photo = this.$refs[ref][0];
+    let a = this.photo.style.backgroundImage = 'url(' + this.imageName + ')'
+    let b = a.substring(4)
+    let c = b.substring(0, b.length - 1);
+    // console.log(ref)
+    ImagePreview([c]);
+
+  }
+
+
+  identityCardTwoFun(val) {
+    this.identityCardTwo = val.content
+  }
+
+  /**
+   * 页面点击上传图片
+   */
   onRead(file) {
     this.imageName = file.content;
-    console.log(file, 22)
     this.photo.style.backgroundImage = 'url(' + this.imageName + ')';
     this.photo.style.left = "12px;"
+
+    for (let i in this.list) {
+      if (this.showName == this.list[i].name) {
+        this.list[i].ShowHidden = 1
+      }
+    }
 
   }
   choose(type) {
@@ -142,6 +219,56 @@ export default class Login extends Vue {
 </script>
 <style lang="less">
 .page.addInformation {
+  .lookicon {
+    color: cornflowerblue;
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    left: 5px;
+  }
+  .lookiconHead {
+    position: relative;
+    top: -105px;
+    left: -65px;
+    color: cornflowerblue;
+    font-size: 25px;
+  }
+  .deleteiconHead {
+    position: relative;
+    top: -105px;
+    left: 65px;
+    color: cornflowerblue;
+    font-size: 20px;
+  }
+  .imgList {
+    text-align: center;
+    .imgSize {
+      height: 110px;
+      border: 1px solid #6666;
+      width: 100%;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #e7e7e7;
+    }
+  }
+  .idPhoto.line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .vanIcon {
+    font-size: 40px;
+    color: #bebebe;
+  }
+  .deleteicon {
+    color: cornflowerblue;
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 5px;
+  }
   .van-picker {
     position: fixed;
     width: 100%;
@@ -176,12 +303,16 @@ export default class Login extends Vue {
     margin: 0;
   }
   .idPhoto {
-    width: 180px;
+    // width: 180px;
     height: 110px;
     border: 0.1rem solid #e7e7e7;
     margin: 12px;
     position: relative;
     background: #e7e7e7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #bebebe;
   }
   .star {
     color: #ffe44d;
@@ -189,13 +320,7 @@ export default class Login extends Vue {
     vertical-align: middle;
     margin-right: 0.2rem;
   }
-  .background {
-    position: absolute;
-    border: 1px solid #e7e7e7;
 
-    left: 8.4rem;
-    color: #e7e7e7;
-  }
   .iconfont {
     font-size: 1.5rem;
     margin-top: -0.6rem;
@@ -208,12 +333,6 @@ export default class Login extends Vue {
     height: 18px;
     line-height: 18px;
     margin-left: 18px;
-  }
-  .infoContent {
-    position: absolute;
-    left: 42%;
-    top: 40%;
-    color: #bebebe;
   }
   .van-picker {
     position: fixed;
@@ -246,12 +365,12 @@ export default class Login extends Vue {
     background-repeat: no-repeat;
     background-size: contain;
   }
-  .background {
-    position: absolute;
-    border: 1px solid #e7e7e7;
-    left: 8.4rem;
-    color: #e7e7e7;
-  }
+  // .background {
+  //   position: absolute;
+  //   border: 1px solid #e7e7e7;
+  //   left: 8.4rem;
+  //   color: #e7e7e7;
+  // }
   .iconfont {
     font-size: 1.5rem;
     margin-top: -0.6rem;
@@ -266,12 +385,6 @@ export default class Login extends Vue {
     margin-left: 2px;
     box-sizing: border-box;
   }
-  .infoContent {
-    position: absolute;
-    left: 30%;
-    top: 40%;
-    color: #bebebe;
-  }
   .line {
     border: 1px dashed #bababa;
   }
@@ -282,6 +395,9 @@ export default class Login extends Vue {
   }
   .van-collapse-item__content {
     padding: 0;
+    margin-bottom: 50px;
   }
 }
 </style>
+
+

@@ -9,26 +9,22 @@
     </van-row>
     <p class="base-info-title">请扫描上传承租人驾驶证照片</p>
     <van-row>
-      <!-- <van-row class="photo_container">
-        <van-col class="photo_content">
-          <img src="../assets/img/drive1.png" style="width:180px;height:110px">
-        </van-col>
-        <van-col  class="photo_content">
-          <img src="../assets/img/drive2.png" style="width:180px;height:110px">
-        </van-col>
-      </van-row> -->
       <van-row class="imgList">
         <van-col span="11">
           <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photo == ''" name="add" />
-            <img height="100%" width="100%" v-else :src="photo" alt="">
+            <img width="100%" v-else :src="photo" alt="">
           </van-uploader>
+          <van-icon @click="closeIdentityCard" v-if="!photo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCard" v-if="!photo == ''" class="lookiconHead" name="password-view" />
         </van-col>
         <van-col span="11">
           <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onReadTwo" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
-            <img height="100%" width="100%" v-else :src="photoTwo" alt="">
+            <img width="100%" v-else :src="photoTwo" alt="">
           </van-uploader>
+          <van-icon @click="closeIdentityCardTwo" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCardTwo" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
         </van-col>
       </van-row>
       <van-row style="text-align: center">
@@ -54,6 +50,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { ImagePreview } from 'vant';
 @Component({})
 export default class Login extends Vue {
   private idName: any = null;
@@ -89,20 +86,53 @@ export default class Login extends Vue {
     this.photoTwo = val.content
     // console.log(val)
   }
+  closeIdentityCard() {
+    this.photo = ''
+  }
+  lookIdentityCard() {
+    ImagePreview([this.photo]);
+  }
+  closeIdentityCardTwo() {
+    this.photoTwo = ''
+  }
+  lookIdentityCardTwo() {
+    ImagePreview([this.photoTwo]);
+  }
 }
 </script>
 <style lang="less" scoped>
 .page.uploadIdPhotoTwo {
+  .lookiconHead {
+    position: relative;
+    top: -105px;
+    left: -65px;
+    color: cornflowerblue;
+    font-size: 25px;
+  }
+  .deleteiconHead {
+    position: relative;
+    top: -105px;
+    left: 65px;
+    color: cornflowerblue;
+    font-size: 20px;
+  }
+  .headPortrait {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    box-sizing: border-box;
+  }
   .vanIcon {
     font-size: 40px;
     line-height: 150px;
+    color: #bebebe;
   }
   .imgList {
     text-align: center;
     display: flex;
     justify-content: center;
     .imgSize {
-      height: 150px;
+      height: 110px;
       border: 1px solid #6666;
       width: 90%;
       margin-top: 10px;
@@ -178,6 +208,10 @@ export default class Login extends Vue {
   .icon.iconfont.icon-jiahao.add.van-icon.van-icon-undefined {
     font-size: 60px;
     line-height: 150px;
+  }
+  .imgSize.headPortrait.van-uploader {
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

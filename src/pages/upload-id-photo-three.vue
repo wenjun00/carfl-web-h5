@@ -9,26 +9,22 @@
     </van-row>
     <p class="base-info-title">请上传承租人银行卡照片</p>
     <van-row>
-      <!-- <van-row class="photo_container">
-        <van-col class="photo_content">
-          <img src="../assets/img/bankcard1.png" style="width:180px;height:110px">
-        </van-col>
-        <van-col  class="photo_content">
-          <img src="../assets/img/bankcard2.png" style="width:180px;height:110px">
-        </van-col>
-      </van-row> -->
       <van-row class="imgList">
         <van-col span="11">
           <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photo == ''" name="add" />
-            <img height="100%" width="100%" v-else :src="photo" alt="">
+            <img width="100%" v-else :src="photo" alt="">
           </van-uploader>
+          <van-icon @click="closeIdentityCard" v-if="!photo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCard" v-if="!photo == ''" class="lookiconHead" name="password-view" />
         </van-col>
         <van-col span="11">
           <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onReadTwo" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
-            <img height="100%" width="100%" v-else :src="photoTwo" alt="">
+            <img width="100%" v-else :src="photoTwo" alt="">
           </van-uploader>
+          <van-icon @click="closeIdentityCardTwo" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCardTwo" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
         </van-col>
       </van-row>
       <van-row style="text-align: center">
@@ -43,6 +39,7 @@
         <van-field placeholder="请输入开户卡号" v-model="idName" label="银行卡号" required/>
         <van-field v-model="idNumber" label="预留手机号" placeholder="请输入预留手机号" required/>
       </van-cell-group>
+
     </van-row>
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @change="onChange" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
@@ -54,6 +51,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { ImagePreview } from 'vant';
 @Component({})
 export default class Login extends Vue {
   private idName: any = null;
@@ -61,7 +59,6 @@ export default class Login extends Vue {
   private value: any = null;
   private photo: any = "";
   private photoTwo: any = ''
-
   private pickerDialog: boolean = false;
   private columns: any = ['本科', '专科', '博士'];
   private type: any;
@@ -84,7 +81,7 @@ export default class Login extends Vue {
   /**
 * 图片上传
 */
-  onRead(val, b) {
+  onRead(val) {
     // console.log(val)
     this.photo = val.content
   }
@@ -92,21 +89,54 @@ export default class Login extends Vue {
     this.photoTwo = val.content
     // console.log(val)
   }
+  closeIdentityCard() {
+    this.photo = ''
+  }
+  lookIdentityCard() {
+    ImagePreview([this.photo]);
+  }
+  closeIdentityCardTwo() {
+    this.photoTwo = ''
+  }
+  lookIdentityCardTwo() {
+    ImagePreview([this.photoTwo]);
+  }
 
 }
 </script>
 <style lang="less" scoped>
 .page.uploadIdPhotoThree {
+  .lookiconHead {
+    position: relative;
+    top: -105px;
+    left: -65px;
+    color: cornflowerblue;
+    font-size: 25px;
+  }
+  .deleteiconHead {
+    position: relative;
+    top: -105px;
+    left: 65px;
+    color: cornflowerblue;
+    font-size: 20px;
+  }
+  .headPortrait {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    box-sizing: border-box;
+  }
   .vanIcon {
     font-size: 40px;
     line-height: 150px;
+    color: #bebebe;
   }
   .imgList {
     text-align: center;
     display: flex;
     justify-content: center;
     .imgSize {
-      height: 150px;
+      height: 110px;
       border: 1px solid #6666;
       width: 90%;
       margin-top: 10px;
@@ -175,6 +205,9 @@ export default class Login extends Vue {
     position: fixed;
     bottom: 0rem;
   }
-  
+  .imgSize.headPortrait.van-uploader {
+    display: flex;
+    justify-content: center;
+  }
 }
 </style>
