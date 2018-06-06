@@ -127,7 +127,7 @@ export class CommonService {
     }
   }
 
-  static revert(source, ...values) {
+  static revert(source, ...values): Promise<any> {
     let sourceType = typeof source
 
     if (!values.every(x => typeof x === sourceType)) {

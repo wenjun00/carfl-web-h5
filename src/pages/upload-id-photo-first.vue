@@ -23,8 +23,8 @@
             <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
             <img width="100%" v-else :src="photoTwo" alt="">
           </van-uploader>
-           <van-icon @click="closeIdentityCardTwo" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
-           <van-icon @click="lookIdentityCardTwo" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
+          <van-icon @click="closeIdentityCardTwo" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCardTwo" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
         </van-col>
       </van-row>
 
@@ -50,8 +50,8 @@
     <!-- <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @change="onChange" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
     </transition> -->
-      <van-row>
-    <van-button type="primary" @click="$router.push('/upload-id-photo-two')" bottom-action>下一步</van-button>
+    <van-row>
+      <van-button type="primary" @click="$router.push('/upload-id-photo-two')" bottom-action>下一步</van-button>
     </van-row>
   </section>
 </template>
@@ -59,7 +59,8 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { ImagePreview } from 'vant';
+import { ImagePreview } from "vant";
+import { NetService } from "~/utils/net.service";
 
 @Component({})
 export default class Login extends Vue {
@@ -67,15 +68,15 @@ export default class Login extends Vue {
   private idNumber: any = null;
   private value: any = null;
   private photo: any = "";
-  private photoTwo: any = ''
+  private photoTwo: any = "";
   private pickerDialog: boolean = false;
-  private columns: any = ['本科', '专科', '博士'];
+  private columns: any = ["本科", "专科", "博士"];
   private type: any;
   choose(type) {
     if (type === 1) {
       this.columns = ["未婚", "已婚", "丧偶", "离婚"];
     } else {
-      this.columns = ['本科', '专科', '博士'];
+      this.columns = ["本科", "专科", "博士"];
     }
   }
 
@@ -83,29 +84,31 @@ export default class Login extends Vue {
     if (value) {
       this.columns = value;
     } else {
-      this.columns = '本科';
+      this.columns = "本科";
     }
   }
   /**
    * 图片上传
    */
-  onRead(val) {
+  onRead({ file }) {
     // console.log(val)
-    this.photo = val.content
+    NetService.upload(file).then(x => {
+      console.log(x);
+    });
     //  document.getElementsByClassName("headPortrait")[0].style.background = 'url(' + val.content + ')';
   }
   onReadTwo(val) {
-    this.photoTwo = val.content
+    this.photoTwo = val.content;
     // console.log(val)
   }
   closeIdentityCard() {
-    this.photo = ''
+    this.photo = "";
   }
   lookIdentityCard() {
     ImagePreview([this.photo]);
   }
   closeIdentityCardTwo() {
-    this.photoTwo = ''
+    this.photoTwo = "";
   }
   lookIdentityCardTwo() {
     ImagePreview([this.photoTwo]);
