@@ -55,6 +55,7 @@ import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
 @Component({})
 export default class Login extends Vue {
+  
   private idName: any = null;
   private idNumber: any = null;
   private value: any = null;
@@ -84,10 +85,12 @@ export default class Login extends Vue {
     this.columns = this.$dict.getDictData('0456').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-        
+      console.log(this.intoA.PersonalAdditional,'爆炸')  
   }
 
   @Mutation bankCard
+  @Mutation tenantImg
+  @State intoA
 
 
 

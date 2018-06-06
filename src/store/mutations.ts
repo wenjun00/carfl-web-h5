@@ -168,10 +168,10 @@ export default {
   linkman(state,data){
     state.intoA.personalContact = data
   },
-  // 承租人照片
-  // tenantImg(state,data){
-  //   state.intoA.tenantImg = data
-  // }
+  // 所有照片
+  tenantImg(state,data){
+    state.intoA.PersonalAdditional  = data
+  }
 
 }
 

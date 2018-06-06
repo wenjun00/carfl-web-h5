@@ -51,10 +51,13 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { NetService } from "~/utils/net.service";
 import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
 @Component({})
 export default class Login extends Vue {
+  private arrImgTwo:any = []
+  private arrAll : any =[]
   private idName: any = null;
   private idNumber: any = null;
   private value: any = null;
@@ -73,6 +76,8 @@ export default class Login extends Vue {
   }
 
   @Mutation choosePeople
+  @Mutation tenantImg
+  @State intoA
   
   /**
   * 点击准驾车型确定事件
@@ -87,14 +92,40 @@ export default class Login extends Vue {
   /**
   * 图片上传
   */
-  onRead(val, b) {
-    // console.log(val)
-    this.photo = val.content
+   onRead({ file }) {
+    NetService.upload(file).then(x => {
+      console.log(x);
+      this.photo = x.localUrl
+     this.arrAll.push({
+        personalId : x.id,
+        uploadName : x.realName,
+        materialType : x.type,
+        dataSize : x.size,
+        materialUrl : x.url,
+        uploadTime : x.createTime,
+      })
+    });
   }
-  onReadTwo(val) {
-    this.photoTwo = val.content
-    // console.log(val)
+
+  onReadTwo({ file }) {
+    NetService.upload(file).then(x => {
+      console.log(x);
+      this.photoTwo = x.localUrl
+      this.arrAll.push({
+        personalId : x.id,
+        uploadName : x.realName,
+        materialType : x.type,
+        dataSize : x.size,
+        materialUrl : x.url,
+        uploadTime : x.createTime,
+      })
+
+    });
   }
+
+
+
+
   closeIdentityCard() {
     this.photo = ''
   }
@@ -109,6 +140,7 @@ export default class Login extends Vue {
   }
   mounted() {
     this.choosePeople(this.peopleCar)
+    this.arrAll = this.intoA.PersonalAdditional
     this.columns = this.$dict.getDictData('0487').map(v => {
       return Object.assign({ text: v.label }, v)
     })
