@@ -89,7 +89,7 @@
     <van-cell-group class="nullString"></van-cell-group>
     <van-row class="subscribe">
       <van-col span="20">
-        <van-button class="but" size="large">立即预约</van-button>
+        <van-button class="but" size="large">下一步</van-button>
       </van-col>
     </van-row>
   </section>

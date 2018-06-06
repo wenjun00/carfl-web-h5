@@ -5,7 +5,7 @@ import app from '~/config/app.config'
 import { StorageService } from '~/utils/storage.service'
 import { resolve } from "url";
 import { LoadingService } from "~/utils/loading.service";
-// import cookie from 'js-cookie'
+import { fileService } from "~/config/server/file-service"
 
 const getType = ['GET', 'DELETE'] // 使用GET请求类型
 
@@ -23,33 +23,9 @@ export class NetService {
         'Accept': 'application/json'
       }
     })
-    if (app.mock) {
-      let MockAdapter = require('axios-mock-adapter')
-      let mock = new MockAdapter(this.axiosInstance, { delayResponse: 300 });
-      this.createMock(mock)
-    }
   }
 
-
-  /**
-   * 创建mock服务
-   * @param mock
-   */
-  createMock(mock) {
-    let mockServices = require('../../mock')
-
-    Object.values(mockServices).forEach(mockItem => {
-      Object.values(mockItem).forEach(items => {
-        Object.values(items).forEach(({ server, data }) => {
-          let url = NetService.generateRequestUrl(server)
-
-          mock.onAny(url).reply(200, data)
-        })
-      })
-    })
-  }
-
-  public static generateRequestUrl({ service, controller, action, url }: { service: string, controller: string, action: string, url?: string }, append = [], sort?): String {
+  public static generateRequestUrl({ service, controller, action, url }: { service: string, controller: string, action: string, url?: string }, append = [], sort?): string {
     // 自定义url优先级最高
     if (url) return url
 
@@ -226,5 +202,29 @@ export class NetService {
     })
 
     return observable
+  }
+
+  public static upload(file) {
+    let headers = {
+      'Content-Type': 'multipart/form-data'
+    }
+
+    let token = StorageService.getItem('userToken') || ''
+    if (token) {
+      headers = Object.assign(headers, {
+        'authorization': token
+      })
+    }
+
+    let formData = new FormData();
+    formData.append('file', file);
+
+    return axios({
+      baseURL: app.url.server,
+      url: NetService.generateRequestUrl(fileService.fileUploadController.uploadFileGrid),
+      method: 'post',
+      data: formData,
+      headers
+    }).then((res) => { return res.data })
   }
 }

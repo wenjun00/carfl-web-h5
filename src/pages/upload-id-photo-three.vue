@@ -35,15 +35,15 @@
     <van-row>
       <p class="base-info-title">请确认银行卡信息是否一致</p>
       <van-cell-group>
-        <van-cell title="开户银行" is-link :value="value" @click="pickerDialog=true;choose(1)" required/>
-        <van-field placeholder="请输入开户卡号" v-model="idName" label="银行卡号" required/>
-        <van-field v-model="idNumber" label="预留手机号" placeholder="请输入预留手机号" required/>
+        <van-field v-model="depositBank" label="开户银行" placeholder="请选择准开户银行" @click="pickerDialog=true" />
+        <van-field placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
+        <van-field v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
       </van-cell-group>
-
     </van-row>
     <transition name="fade">
-      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @change="onChange" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
+      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
     </transition>
+
     <van-button type="primary" bottom-action @click="$router.push('/custom-information')">下一步</van-button>
   </section>
 </template>
@@ -52,6 +52,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { ImagePreview } from 'vant';
+import { State, Mutation, Action } from "vuex-class";
 @Component({})
 export default class Login extends Vue {
   private idName: any = null;
@@ -60,23 +61,36 @@ export default class Login extends Vue {
   private photo: any = "";
   private photoTwo: any = ''
   private pickerDialog: boolean = false;
-  private columns: any = ['本科', '专科', '博士'];
+  private columns: any = [];
   private type: any;
-  choose(type) {
-    if (type === 1) {
-      this.columns = ["未婚", "已婚", "丧偶", "离婚"];
-    } else {
-      this.columns = ['本科', '专科', '博士'];
-    }
+  private depositBank:string =""
+  private personalBank: any = {
+    reserved_phone_number: '',  //预留手机号
+    deposit_bank: '',   // 开户银行
+    card_number: '',    // 银行卡号
+  }
+  /**
+   * 点击开户银行
+   */
+
+  private onConfirm(val) {
+    this.personalBank.deposit_bank = val.value
+    this.depositBank = this.$dict.getDictName(Number(this.personalBank.deposit_bank))
+    this.pickerDialog = false
   }
 
-  onChange(picker, value, index) {
-    if (value) {
-      this.columns = value;
-    } else {
-      this.columns = '本科';
-    }
+  mounted() {
+    this.bankCard(this.personalBank)
+    this.columns = this.$dict.getDictData('0456').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
+        
   }
+
+  @Mutation bankCard
+
+
+
 
   /**
 * 图片上传

@@ -35,13 +35,14 @@
     <van-row>
       <p class="base-info-title">请确认驾驶证信息是否一致</p>
       <van-cell-group>
-        <van-cell title="有效期限" is-link :value="value" @click="pickerDialog=true;choose(1)" required/>
-        <van-field v-model="idName" placeholder="请输入档案编号" label="档案编号" required/>
-        <van-cell title="准驾车型" is-link :value="value" @click="pickerDialog=true;choose(2)" required/>
+        <van-field v-model="peopleCar.useful_time" placeholder="请输入有效期限" label="有效期限" required/>
+        <van-field v-model="peopleCar.file_number" placeholder="请输入档案编号" label="档案编号" required/>
+        <van-field v-model="drivingType" label="准驾车型" placeholder="请选择准驾车型" @click="pickerDialog=true" />
       </van-cell-group>
     </van-row>
+
     <transition name="fade">
-      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @change="onChange" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
+      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
     </transition>
     <van-button type="primary" @click="$router.push('/upload-id-photo-three')" bottom-action>下一步</van-button>
   </section>
@@ -51,6 +52,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { ImagePreview } from 'vant';
+import { State, Mutation, Action } from "vuex-class";
 @Component({})
 export default class Login extends Vue {
   private idName: any = null;
@@ -59,22 +61,34 @@ export default class Login extends Vue {
   private photo: any = "";
   private photoTwo: any = ''
   private pickerDialog: boolean = false;
-  private columns: any = ['本科', '专科', '博士'];
+  private columns: any = [];
   private type: any;
-  choose(type) {
-    if (type === 1) {
-      this.columns = ["未婚", "已婚", "丧偶", "离婚"];
-    } else {
-      this.columns = ['本科', '专科', '博士'];
-    }
+  private drivingType: string = ''
+  private peopleCar: any = {
+    useful_time: '',  // 有效期限
+    file_number: '',  // 档案编号
+    driving_license: '', // 准驾车型
   }
-  onChange(picker, value, index) {
-    if (value) {
-      this.columns = value;
-    } else {
-      this.columns = '本科';
-    }
+  private driverPhoto = {
+    driverPhoto:''
+  }   //驾驶证正面 
+  private driverVicePhoto ={
+    driverVicePhoto:''
+  } // 驾驶证负面
+
+  @Mutation choosePeople
+  @Mutation idcCard
+  @State intoA
+  /**
+  * 点击准驾车型确定事件
+  */
+
+  private onConfirm(val) {
+    this.peopleCar.driving_license = val.value
+    this.drivingType = this.$dict.getDictName(Number(this.peopleCar.driving_license))
+    this.pickerDialog = false
   }
+
   /**
   * 图片上传
   */
@@ -98,6 +112,17 @@ export default class Login extends Vue {
   lookIdentityCardTwo() {
     ImagePreview([this.photoTwo]);
   }
+  mounted() {
+    this.choosePeople(this.peopleCar)
+    let merge = this.intoA.idcCard
+    this.idcCard(Object.assign(merge,this.driverPhoto,this.driverVicePhoto))
+    
+    this.columns = this.$dict.getDictData('0487').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
+
+  }
+
 }
 </script>
 <style lang="less" scoped>

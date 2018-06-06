@@ -1,4 +1,4 @@
-<template>
+<template> 
   <section class="page uploadIdPhotoFirst">
     <van-row>
       <van-steps :active="0" active-color="#FFE44D">
@@ -23,8 +23,8 @@
             <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
             <img width="100%" v-else :src="photoTwo" alt="">
           </van-uploader>
-           <van-icon @click="closeIdentityCardTwo" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
-           <van-icon @click="lookIdentityCardTwo" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
+          <van-icon @click="closeIdentityCardTwo" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCardTwo" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
         </van-col>
       </van-row>
 
@@ -40,18 +40,18 @@
     <van-row>
       <p class="base-info-title">请确认身份证信息是否一致</p>
       <van-cell-group>
-        <van-field placeholder="请输入证件姓名" v-model="idName" label="证件姓名" />
-        <van-field placeholder="请输入证件号码" v-model="idNumber" label="证件号码" />
-        <van-cell title="民族" is-link :value="value" @click="pickerDialog=true;choose(1)" />
-        <van-cell title="户籍信息" is-link :value="value" @click="pickerDialog=true;choose(2)" />
-        <van-cell title="有效期限" is-link :value="value" @click="pickerDialog=true;choose(2)" />
+        <van-field v-model="idcard.name" placeholder="请输入证件姓名" label="证件姓名" />
+        <van-field v-model="idcard.id_card" placeholder="请输入证件号码" label="证件号码" />
+        <van-field v-model="nation" label="民族" placeholder="请选择民族" @click="pickerDialog=true" />
+        <van-field v-model="idcard.id_card_address" placeholder="请输入户籍信息" label="户籍信息" />
+        <van-field v-model="idcard.id_card_validity_period_section" placeholder="请输入有效期" label="有效期限" />
       </van-cell-group>
     </van-row>
-    <!-- <transition name="fade">
-      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @change="onChange" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
-    </transition> -->
-      <van-row>
-    <van-button type="primary" @click="$router.push('/upload-id-photo-two')" bottom-action>下一步</van-button>
+    <transition name="fade">
+      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker"  @confirm="onConfirm" @cancel="pickerDialog=false" />
+    </transition>
+    <van-row>
+      <van-button type="primary" @click="$router.push('/upload-id-photo-two')" bottom-action>下一步</van-button>
     </van-row>
   </section>
 </template>
@@ -59,56 +59,76 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { NetService } from "~/utils/net.service";
 import { ImagePreview } from 'vant';
+import { State, Mutation, Action } from "vuex-class";
 
 @Component({})
 export default class Login extends Vue {
-  private idName: any = null;
-  private idNumber: any = null;
   private value: any = null;
   private photo: any = "";
-  private photoTwo: any = ''
+  private photoTwo: any = "";
   private pickerDialog: boolean = false;
-  private columns: any = ['本科', '专科', '博士'];
+  private nation:string = ''
+  private columns: any = [];
   private type: any;
-  choose(type) {
-    if (type === 1) {
-      this.columns = ["未婚", "已婚", "丧偶", "离婚"];
-    } else {
-      this.columns = ['本科', '专科', '博士'];
-    }
+  private idcard: any = {
+    id_card: '',  // 身份证号码
+    nation: '',   // 民族
+    id_card_validity_period_section: '', //身份证有效区间
+    name: '',    // 户名
+    id_card_address: '', // 身份证地址
+    headPhoto:'', // 身份证头像地址
+    nationalPhoto:'', // 身份证国徽地址
+
+
   }
 
-  onChange(picker, value, index) {
-    if (value) {
-      this.columns = value;
-    } else {
-      this.columns = '本科';
-    }
+  @Mutation idcCard
+
+  /**
+   * 点击下拉确定事件
+   */
+
+  private onConfirm(val) {
+    this.idcard.nation = val.value
+    this.nation = this.$dict.getDictName(Number(this.idcard.nation))
+    this.pickerDialog = false
   }
+
   /**
    * 图片上传
    */
-  onRead(val) {
+  onRead({ file }) {
     // console.log(val)
-    this.photo = val.content
+    NetService.upload(file).then(x => {
+      console.log(x);
+    });
     //  document.getElementsByClassName("headPortrait")[0].style.background = 'url(' + val.content + ')';
   }
   onReadTwo(val) {
-    this.photoTwo = val.content
+    this.photoTwo = val.content;
     // console.log(val)
   }
   closeIdentityCard() {
-    this.photo = ''
+    this.photo = "";
   }
   lookIdentityCard() {
     ImagePreview([this.photo]);
   }
   closeIdentityCardTwo() {
-    this.photoTwo = ''
+    this.photoTwo = "";
   }
   lookIdentityCardTwo() {
     ImagePreview([this.photoTwo]);
+  }
+
+  mounted(){
+    this.idcCard(this.idcard)
+    this.columns = this.$dict.getDictData('0486').map( v =>{
+      return Object.assign({text: v.label},v)
+    })
+   
   }
 }
 </script>
