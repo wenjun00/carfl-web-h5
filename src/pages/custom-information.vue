@@ -58,15 +58,27 @@ import AreaData from "~/assets/area"
 
 @Component({})
 export default class Login extends Vue {
+  private basicInformation = {
+    mobileMain:"",      // 手机号码
+    mobileMinor:"",     // 联系号码 （次）
+    marital:"",         // 婚姻状态 ！！！
+    education:"",       // 学历信息 ！！！
+    livingSituation:"", // 居住情况 ！！！
+    livingUsefulTime:"", // 居住年限 ！！！
+    localHomeAddr:"",   // 居住地址 ！！！
+    
+  }
+
+
   private inforModel = {
-    phone: "",
-    contactPhone: "",
-    area: "",
-    address: "",
-    companyName: "",
-    companyAdress: "",
-    companyPhone: "",
-    afterSalary: "",
+    phone: "",           // 手机号码
+    contactPhone: "",    // 联系号码（次）
+    area: "",            // 居住地区
+    address: "",         // 居住地址
+    companyName: "",     // 单位名称
+    companyAdress: "",   // 单位地址
+    companyPhone: "",    // 单位电话
+    afterSalary: "",     // 税后月薪
     marital: ""
   }
   private show = {
@@ -85,6 +97,9 @@ export default class Login extends Vue {
   }
   private value: any =null
 
+  mounted(){
+  
+  }
 
   
   /**

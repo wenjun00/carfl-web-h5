@@ -147,7 +147,22 @@ export default {
    */
   updateUserPhone(state, phoneNumber) {
     state.userPhone = phoneNumber
+  },
+  //身份证信息页
+  idcCard(state,data){
+    state.intoA.personal = data
+  },
+  //驾驶者信息页
+  choosePeople(state,data){
+    state.intoA.personal_car = data
+  },
+  //银行卡信息页
+  bankCard(state,data){
+    state.intoA.personal_bank = data
   }
+  
+
+
 }
 
 
