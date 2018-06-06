@@ -1,9 +1,5 @@
 import router from '~/router'
 
-const creatCompanyService = () => import('~/services/manage-service/company.service')
-// const createPrincipalService = () => import('~/services/business-service/principal.service')
-// const createDepartmentService = () => import('~/services/business-service/department.service')
-// const createOutsourceService = () => import('~/services/business-service/outsource.service')
 
 export default {
   /**
@@ -38,7 +34,6 @@ export default {
       operator: user.operator,
       operateTime: user.operateTime
     });
-
     commit('updateTokenExpire', false)
   },
   /**
@@ -47,30 +42,11 @@ export default {
   clearUserLoginData({ commit }) {
     // 重置用户token
     commit('updateUserToken', "");
-    // 更新用户菜单资源
-    commit('updateUserMenuResource', []);
-    // 重置用户控件资源
-    commit('updateUserControlResource', []);
-    // 重置用户数据
-    commit('updateUserData', {})
     // 重置token过期标识
     commit('updateTokenExpire', true);
-    // 关闭页面
-    commit('closeAllPage')
     // 清空数据
     localStorage.removeItem('vuex')
     localStorage.removeItem('userToken')
   },
 
-  /**
-   * 获取公司名称
-   */
-  async getCompanyList({ commit }) {
-    let { CompanyService } = await creatCompanyService()
-    let companyService = new CompanyService()
-    // 获取公司名称
-    companyService.getAllCompany().subscribe(data => {
-      this.commit('updateCompanyList', data)
-    });
-  }
 }

@@ -23,7 +23,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { LoginService } from "~/services/manage-service/login.service";
+import { LoginService } from "~/services/manage-service/applogin.service";
 import { Dependencies } from "~/core/decorator";
 import { Mutation } from "vuex-class";
 import AppConfig from "~/config/app.config";
@@ -109,26 +109,34 @@ export default class Login extends Vue {
       length - 1
     );
   }
-
+  
+  /**
+   * 获取验证码
+   */
   private onVerifyCodeClick(time) {
-    //TODO 后台发送获取验证码
-    this.leftTime = 60;
-    let _self = this;
-    let setTime = () => {
-      setTimeout(() => {
-        if (_self.leftTime > 0) {
-          _self.leftTime--;
-          setTime();
-        }
-      }, 1000);
-    };
-    setTime();
+    this.loginService.getVerifyCode(this.loginModel.phoneNumber).subscribe(
+      data => {
+        this.leftTime = 60;
+        let _self = this;
+        let setTime = () => {
+          setTimeout(() => {
+            if (_self.leftTime > 0) {
+              _self.leftTime--;
+              setTime();
+            }
+          }, 1000);
+        };
+        setTime();
+      },
+      err => this.$toast(err.msg)
+    )
   }
 
   /**
    * 提交操作
    */
   private onSubmit() {
+    this.loginService.verifyCodeLogin(this.loginModel)
     this.$validator.validate(this.loginModel, this.rules).then(error => {
       if (!error) {
         StorageService.setItem("account", {

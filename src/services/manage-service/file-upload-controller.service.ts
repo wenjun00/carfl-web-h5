@@ -1,7 +1,7 @@
 import { NetService } from '~/utils/net.service'
 import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
-import { manageService } from '~/config/server/manage-service'
+import { fileService } from '~/config/server/file-service'
 
 export class FileUploadControllerService {
   @Inject(NetService)
@@ -12,7 +12,7 @@ export class FileUploadControllerService {
    */
   file({ id }) {
     return this.netService.send({
-      server: manageService.fileUploadController.file,
+      server: fileService.fileUploadController.file,
       data: {
         id: id
       }
@@ -23,7 +23,7 @@ export class FileUploadControllerService {
    */
   getAllUploadFileByIdList() {
     return this.netService.send({
-      server: manageService.fileUploadController.getAllUploadFileByIdList,
+      server: fileService.fileUploadController.getAllUploadFileByIdList,
     })
   }
   /**
@@ -31,7 +31,7 @@ export class FileUploadControllerService {
    */
   unZipCaseFile(data) {
     return this.netService.send({
-      server: manageService.fileUploadController.unZipCaseFile,
+      server: fileService.fileUploadController.unZipCaseFile,
       data: data
     })
   }
@@ -40,7 +40,7 @@ export class FileUploadControllerService {
  */
   uploadFileGrid() {
     return this.netService.send({
-      server: manageService.fileUploadController.uploadFileGrid,
+      server: fileService.fileUploadController.uploadFileGrid,
     })
   }
   /**
@@ -48,7 +48,7 @@ export class FileUploadControllerService {
 */
   view({ id }) {
     return this.netService.send({
-      server: manageService.fileUploadController.view,
+      server: fileService.fileUploadController.view,
       data: {
         id: id
       }
@@ -59,7 +59,7 @@ export class FileUploadControllerService {
    */
   delect({ id }) {
     return this.netService.send({
-      server: manageService.fileUploadController.delect,
+      server: fileService.fileUploadController.delect,
       data: {
         id: id
       }

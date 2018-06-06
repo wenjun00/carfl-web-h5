@@ -1,14 +1,11 @@
 import Vue from 'vue'
 
 const creatDataDictService = () => import('~/services/manage-service/data-dict.service')
-const createLoginService = () => import('~/services/manage-service/login.service')
 
 export default async function ({ store, router }) {
   let { DataDictService } = await creatDataDictService()
-  let { LoginService } = await createLoginService()
 
   let dataDictService = new DataDictService()
-  let loginService = new LoginService()
 
   // 启动数据初始化
   let flag = await Promise.all([
@@ -46,16 +43,6 @@ export default async function ({ store, router }) {
         return
       }
 
-      // 更新用户数据
-      loginService.getUserByToken().subscribe((data) => {
-        // 更新用户控件资源
-        store.dispatch('updateUserLoginData', data)
-        reslove()
-      }, () => {
-        // 用户数据获取异常
-        store.commit("updateTokenExpire", true)
-        reject()
-      })
     })
   }
 

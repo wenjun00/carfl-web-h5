@@ -1,8 +1,8 @@
 declare var __REGISTER_PAGE_LIST__: Array<any>
 
 export default {
-  name: '催大人',
-  version: '2.0.0',
+  name: '汽车金融-H5',
+  version: '1.0.0',
   url: {
     server: process.env.URL_SERVER
   },
