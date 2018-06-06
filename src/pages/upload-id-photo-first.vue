@@ -59,6 +59,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { NetService } from "~/utils/net.service";
 import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
 
@@ -66,7 +67,7 @@ import { State, Mutation, Action } from "vuex-class";
 export default class Login extends Vue {
   private value: any = null;
   private photo: any = "";
-  private photoTwo: any = ''
+  private photoTwo: any = "";
   private pickerDialog: boolean = false;
   private nation:string = ''
   private columns: any = [];
@@ -98,23 +99,25 @@ export default class Login extends Vue {
   /**
    * 图片上传
    */
-  onRead(val) {
+  onRead({ file }) {
     // console.log(val)
-    this.photo = val.content
+    NetService.upload(file).then(x => {
+      console.log(x);
+    });
     //  document.getElementsByClassName("headPortrait")[0].style.background = 'url(' + val.content + ')';
   }
   onReadTwo(val) {
-    this.photoTwo = val.content
+    this.photoTwo = val.content;
     // console.log(val)
   }
   closeIdentityCard() {
-    this.photo = ''
+    this.photo = "";
   }
   lookIdentityCard() {
     ImagePreview([this.photo]);
   }
   closeIdentityCardTwo() {
-    this.photoTwo = ''
+    this.photoTwo = "";
   }
   lookIdentityCardTwo() {
     ImagePreview([this.photoTwo]);
