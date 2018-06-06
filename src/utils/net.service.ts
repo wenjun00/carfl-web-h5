@@ -5,7 +5,6 @@ import app from '~/config/app.config'
 import { StorageService } from '~/utils/storage.service'
 import { resolve } from "url";
 import { LoadingService } from "~/utils/loading.service";
-// import cookie from 'js-cookie'
 
 const getType = ['GET', 'DELETE'] // 使用GET请求类型
 
@@ -22,30 +21,6 @@ export class NetService {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
-    })
-    if (app.mock) {
-      let MockAdapter = require('axios-mock-adapter')
-      let mock = new MockAdapter(this.axiosInstance, { delayResponse: 300 });
-      this.createMock(mock)
-    }
-  }
-
-
-  /**
-   * 创建mock服务
-   * @param mock
-   */
-  createMock(mock) {
-    let mockServices = require('../../mock')
-
-    Object.values(mockServices).forEach(mockItem => {
-      Object.values(mockItem).forEach(items => {
-        Object.values(items).forEach(({ server, data }) => {
-          let url = NetService.generateRequestUrl(server)
-
-          mock.onAny(url).reply(200, data)
-        })
-      })
     })
   }
 
