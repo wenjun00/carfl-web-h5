@@ -3,25 +3,29 @@
     <van-row>
       <p class="base-info-title">联系人一</p>
       <van-cell-group>
-        <van-cell title="与承租人关系" is-link :value="value" @click="show.relation1=true" required/>
+        <van-field v-model="contactModel.falseRelation" label="与承租人关系" placeholder="请选择与承租人关系" @click="relationBot=true" />
         <van-field v-model="contactModel.username" label="姓名" placeholder="请输入联系人姓名" required/>
         <van-field v-model="contactModel.phone" label="手机号" placeholder="请输入联系人手机号" required/>
       </van-cell-group>
-      <van-popup v-model="show.relation1" position="bottom">
-        <van-picker :columns="columns.relation1" show-toolbar @change="onChange" @confirm="show.relation1=false" @cancel="show.relation1=false" />
-      </van-popup>
     </van-row>
     <van-row>
       <p class="base-info-title">联系人二</p>
       <van-cell-group>
-        <van-cell title="与承租人关系" is-link :value="value" @click="show.relation2=true" required/>
-        <van-field v-model="conModel.username" label="姓名" placeholder="请输入联系人姓名" required/>
-        <van-field v-model="conModel.phone" label="手机号" placeholder="请输入联系人手机号" required/>
+        <van-field v-model="contactModel.falseRelationTwo" label="与承租人关系" placeholder="请选择与承租人关系" @click="relationBotTwo=true" />
+        <van-field v-model="contactModel.usernameTwo" label="姓名" placeholder="请输入联系人姓名" required/>
+        <van-field v-model="contactModel.phoneTwo" label="手机号" placeholder="请输入联系人手机号" required/>
       </van-cell-group>
     </van-row>
-    <van-popup v-model="show.relation2" position="bottom">
-      <van-picker :columns="columns.relation2" show-toolbar @change="onChange" @confirm="show.relation2=false" @cancel="show.relation2=false" />
-    </van-popup>
+
+        <!-- 与承租人关系 -->
+      <transition name="fade">
+        <van-picker :columns="relations" v-show="relationBot" show-toolbar ref="vanpicker" @confirm="relationfirm" @cancel="relationBot=false" />
+      </transition>
+
+       <transition name="fade">
+        <van-picker :columns="relations" v-show="relationBotTwo" show-toolbar ref="vanpicker" @confirm="relationfirmTwo" @cancel="relationBotTwo=false" />
+      </transition>
+
     <van-button type="primary" bottom-action @click="$router.push('/add-information')">下一步</van-button>
   </section>
 </template>
@@ -29,42 +33,58 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { State, Mutation, Action } from "vuex-class";
 
 @Component({})
 export default class Login extends Vue {
+   @Mutation linkman
+  // 联系人1
+  private relationBot: boolean = false
+  private relations:any = []
+  // 联系人2
+  private relationBotTwo:boolean = false
+
+
   private contactModel = {
-    phone: "",
-    username:""
+    phone: "",    // 手机号
+    username:"",  // 姓名
+    relation:'',  // 与承租人关系id
+    falseRelation:'', // 承租人关系文字
+     phoneTwo: "",
+    usernameTwo:"",
+     relationTwo:'',  // 与承租人关系id
+    falseRelationTwo:'', // 承租人关系文字
   }
-  private conModel = {
-    phone: "",
-    username:""
-  }
-  private columns = {
-    relation1: '',
-    relation2: ''
-  }
-  private show = {
-    relation1: false,
-    relation2: false,
-  }
+
+
   private value: any = null;
   private type: any;
-  // choose(type) {
-  //   if(type===1){
-  //     this.columns = ["未婚", "已婚", "丧偶", "离婚"];
-  //   }else{
-  //     this.columns = ['本科', '专科', '博士'];
-  //   }
-  // }
-
-  onChange(picker, value, index) {
-    if (value) {
-      this.columns.relation1 = value;
-    } else {
-      this.columns.relation2 = '';
-    }
+ 
+  /**
+   * 联系人1 下拉点击确定
+   */
+  relationfirm(val){
+    this.contactModel.relation = val.value
+    this.contactModel.falseRelation = this.$dict.getDictName(Number(this.contactModel.relation))  
+    this.relationBot = false
   }
+  relationfirmTwo(val){
+    this.contactModel.relationTwo = val.value
+    this.contactModel.falseRelationTwo = this.$dict.getDictName(Number(this.contactModel.relationTwo))  
+    this.relationBotTwo = false
+  }
+
+  mounted(){
+       this.linkman(this.contactModel)
+     // 承租人关系
+     this.relations = this.$dict.getDictData('0464').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
+
+
+
+  }
+ 
 
   }
 </script>

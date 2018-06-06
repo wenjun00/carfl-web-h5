@@ -5,8 +5,8 @@
       <van-cell-group>
         <van-field v-model="inforModel.phone" label="手机号码" placeholder="请输入手机号" required @click="show.phone = true" />
         <van-field v-model="inforModel.contactPhone" label="联系号码" placeholder="客户第二个手机号" @click="show.phone = true" />
-        <van-field v-model="marital" label="婚姻状况" placeholder="请选择婚姻状况" @click="marriageBot=true" />
-        <van-field v-model="education" label="学历信息" placeholder="请选择学历信息" @click="educationBot=true" />
+        <van-field v-model="inforModel.falseMarital" label="婚姻状况" placeholder="请选择婚姻状况" @click="marriageBot=true" />
+        <van-field v-model="inforModel.falseeducation" label="学历信息" placeholder="请选择学历信息" @click="educationBot=true" />
       </van-cell-group>
       <van-number-keyboard :show="show.phone" close-button-text="完成" @blur="show.phone = false" @input="inputPhone" @delete="deletePhone"></van-number-keyboard>
       <van-number-keyboard :show="show.contactPhone" close-button-text="完成" @blur="show.contactPhone = false" @input="contactPhone" @delete="deleteContactPhone"></van-number-keyboard>
@@ -18,14 +18,35 @@
       <transition name="fade">
         <van-picker :columns="educations" v-show="educationBot" show-toolbar ref="vanpicker" @confirm="educationfirm" @cancel="educationBot=false" />
       </transition>
+        <!-- 居住情况 -->
+      <transition name="fade">
+        <van-picker :columns="situations" v-show="situationBot" show-toolbar ref="vanpicker" @confirm="situationfirm" @cancel="situationBot=false" />
+      </transition>
+        <!-- 居住年限 -->
+      <transition name="fade">
+        <van-picker :columns="agelimits" v-show="agelimitBot" show-toolbar ref="vanpicker" @confirm="agelimitfirm" @cancel="agelimitBot=false" />
+      </transition>
+       <!-- 工作情况 -->
+      <transition name="fade">
+        <van-picker :columns="workings" v-show="workingBot" show-toolbar ref="vanpicker" @confirm="workingfirm" @cancel="workingBot=false" />
+      </transition>
+       <!-- 单位性质 -->
+      <transition name="fade">
+        <van-picker :columns="natureUnits" v-show="natureUnitBot" show-toolbar ref="vanpicker" @confirm="natureUnitfirm" @cancel="natureUnitBot=false" />
+      </transition>
+       <!-- 工作年限 -->
+      <transition name="fade">
+        <van-picker :columns="yearsWorkings" v-show="yearsWorkingBot" show-toolbar ref="vanpicker" @confirm="yearsWorkingfirm" @cancel="yearsWorkingBot=false" />
+      </transition>
+
     </van-row>
     <van-row>
       <p class="base-info-title">居住信息</p>
       <van-cell-group>
-        <van-cell title="居住情况" is-link :value="value" @click="show.living = true" required/>
-        <van-cell title="居住年限" is-link :value="value" @click="show.livingYear = true" required/>
+        <van-field v-model="inforModel.falseSituation" label="居住情况" placeholder="请选择居住情况" @click="situationBot=true" />
+        <van-field v-model="inforModel.falseAgelimit " label="居住年限" placeholder="请选择居住年限" @click="agelimitBot=true" />
         <van-cell title="居民地区" is-link :value="inforModel.area" @click="show.area = true" required/>
-        <van-field type="textarea" class="address" v-model="inforModel.address" label="居民地址" placeholder="请输入详细的居民地址精确到门牌号" required/>
+        <van-field type="textarea" class="address" v-model="inforModel.address" label="居民地址" placeholder="请输入详细的居民地址精确到门牌号" />
       </van-cell-group>
       <van-popup v-model="show.living" position="bottom">
         <van-picker :columns="columns" show-toolbar @change="onChange" @confirm="show.living=false" @cancel="show.living=false" />
@@ -34,18 +55,18 @@
         <van-picker :columns="columns" show-toolbar @change="onChange" @confirm="show.livingYear=false" @cancel="show.livingYear=false" />
       </van-popup>
       <van-popup v-model="show.area" position="bottom">
-        <van-area title="选择所在城市" :columns-num="3" :area-list="columns.dataList" @cancel="show.area==false" @confirm="onAreaConfirmClick"></van-area>
+        <van-area title="选择所在城市" :columns-num="3"  :area-list="columns.dataList" @cancel="show.area==false" @confirm="onAreaConfirmClick"></van-area>
       </van-popup>
     </van-row>
     <van-row>
       <p class="base-info-title">工作信息</p>
       <van-cell-group>
-        <van-cell title="工作情况" is-link :value="value" @click="pickerDialog=true" required/>
+        <van-field v-model="inforModel.falseWorking" label="工作情况" placeholder="请选择工作情况" @click="workingBot=true" />
         <van-field v-model="inforModel.companyName" label="单位名称" placeholder="请输入完整的公司名称" />
-        <van-cell title="单位性质" is-link :value="value" @click="pickerDialog=true" />
+        <van-field v-model="inforModel.falsenatureUnit " label="单位性质" placeholder="请选择单位性质" @click="natureUnitBot=true" />
         <van-field v-model="inforModel.companyAdress" label="单位地址" />
         <van-field v-model="inforModel.companyPhone" label="单位电话" placeholder="请输入公司电话" />
-        <van-cell title="工作年限" is-link :value="value" @click="pickerDialog=true" />
+        <van-field v-model="inforModel.falseYearsWorking" label="工作年限" placeholder="请选择工作年限" @click="yearsWorkingBot=true" />
         <van-field v-model="inforModel.afterSalary" label="税后月薪" placeholder="请输入您税后的月薪" />
       </van-cell-group>
     </van-row>
@@ -64,28 +85,23 @@ export default class Login extends Vue {
   @State intoA
   @Mutation going
   private marriageBot: boolean = false   // 婚姻状况
+  private marriages:any = []
   private educationBot: boolean = false   // 学历信息
+  private educations:any = []
+  private situationBot:boolean = false  // 居住情况
+  private situations:any = [] 
+  private agelimitBot:boolean = false  // 居住年限
+  private agelimits:any = []
+  private workingBot:boolean = false  // 工作情况
+  private workings:any = []
+  private natureUnitBot:boolean = false // 单位性质
+  private natureUnits:any = [] 
+  private yearsWorkingBot:boolean = false // 工作年限
+  private yearsWorkings:any = []
+
+
+
   private value: any = null
-// 和后端字段相同
-  private basicInformation = {  
-    mobileMain: "",      // 手机号码
-    mobileMinor: "",     // 联系号码 （次）
-    marital: "",         // 婚姻状态 ！！！
-    education: "",       // 学历信息 ！！！
-    livingSituation: "", // 居住情况 ！！！
-    livingUsefulTime: "", // 居住年限 ！！！
-    localHomeAddr: "",   // 居住地址 ！！！
-  }
-  private goIng = {
-    workingCondition: "", // 工作情况！！！
-    notes: "",     //单位名称  
-    company_nature: '',   // 单位性质！！！
-    company_address_detail: '', // 单位地址
-    company_phone: '',    // 单位电话  
-    workingYears: '',      // 工作年限 !!!
-    basicSalary: '',       // 税后月薪
-  }
-// 和后端字段相同 
 
   private inforModel = {
     phone: "",           // 手机号码
@@ -96,7 +112,22 @@ export default class Login extends Vue {
     companyAdress: "",   // 单位地址
     companyPhone: "",    // 单位电话
     afterSalary: "",     // 税后月薪
-    marital: ""
+    falseMarital:'',     // 婚姻状况文字
+    marital: "",         // 婚姻状况id
+    falseeducation:'',   // 学历信息文字
+    education:'',        // 学历信息id
+    falseSituation:'',   // 居住情况文字
+    situation:'',        // 居住情况id
+    falseAgelimit:'',    // 居住年限文字
+    agelimit:'',         // 居住年限
+    falseWorking:'',     // 工作情况文字
+    working:'',          // 工作情况id
+    falsenatureUnit:"",  // 单位性质文字
+    natureUnit:'',       // 单位性质id
+    falseYearsWorking:'', // 工作年限制文字
+    yearsWorking:'',      // 工作年限id
+
+
   }
   private show = {
     phone: false, // 电话键盘
@@ -118,19 +149,92 @@ export default class Login extends Vue {
    * 婚姻状况点击确定
    */
   marriagefirm(val){
-
+    this.inforModel.marital = val.value
+    this.inforModel.falseMarital = this.$dict.getDictName(Number(this.inforModel.marital))  
+    this.marriageBot = false
   }
   /**
    * 学历信息点击确定
    */
   educationfirm(val){
+    this.inforModel.education = val.value
+    this.inforModel.falseeducation = this.$dict.getDictName(Number(this.inforModel.education))  
+    this.educationBot =false
+  }
+  /**
+   * 居住情况点击确定
+   */
+  situationfirm(val){
+    this.inforModel.situation = val.value
+    this.inforModel.falseSituation = this.$dict.getDictName(Number(this.inforModel.situation))  
+    this.situationBot = false
+  }
 
+ 
+  /**
+   * 居住年限
+   */
+  agelimitfirm(val){
+    this.inforModel.agelimit = val.value
+    this.inforModel.falseAgelimit = this.$dict.getDictName(Number(this.inforModel.agelimit))  
+    this.agelimitBot = false
+  }
+  /**
+   * 工作情况
+   */
+  workingfirm(val){
+    this.inforModel.working = val.value
+    this.inforModel.falseWorking = this.$dict.getDictName(Number(this.inforModel.working))  
+    this.workingBot = false
+  }
+  /**
+   * 单位性质点击确定
+   */
+  natureUnitfirm(val){
+    this.inforModel.natureUnit = val.value
+    this.inforModel.falsenatureUnit = this.$dict.getDictName(Number(this.inforModel.natureUnit))  
+  }
+  /**
+   * 工作年限点击确定
+   */
+  yearsWorkingfirm(val){
+    this.inforModel.yearsWorking = val.value
+    this.inforModel.falseYearsWorking = this.$dict.getDictName(Number(this.inforModel.yearsWorking))  
+    this.yearsWorkingBot = false
   }
  
 
   mounted() {
-    // console.log(this.intoA)
-    // console.log(666)
+    // 获取婚姻状况
+     this.marriages = this.$dict.getDictData('0003').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
+    // 获取学历信息
+     this.educations = this.$dict.getDictData('0002').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
+     // 居住情况
+     this.situations = this.$dict.getDictData('0462').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
+     // 居住年限
+     this.agelimits = this.$dict.getDictData('0463').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
+    // 工作情况
+     this.workings = this.$dict.getDictData('0460').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
+     // 工作性质
+     this.natureUnits = this.$dict.getDictData('0012').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
+     // 工作年限
+     this.yearsWorkings = this.$dict.getDictData('0461').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
+
+
   }
 
 
@@ -174,6 +278,7 @@ export default class Login extends Vue {
   }
 
   onAreaConfirmClick(val) {
+    console.log(val)
     if (val && val.length >= 2) {
       this.inforModel.area = val[0].name + " " + val[1].name + " " + val[2].name
     }

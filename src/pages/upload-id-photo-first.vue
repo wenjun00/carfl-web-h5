@@ -98,7 +98,6 @@ export default class Login extends Vue {
    * 图片上传
    */
   onRead({ file }) {
-    // console.log(val)
     NetService.upload(file).then(x => {
       console.log(x);
     });

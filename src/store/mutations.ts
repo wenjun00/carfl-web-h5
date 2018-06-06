@@ -154,18 +154,24 @@ export default {
   },
   //驾驶者信息页
   choosePeople(state,data){
-    state.intoA.personal_car = data
+    state.intoA.personalCar = data
   },
   //银行卡信息页
   bankCard(state,data){
-    state.intoA.personal_bank = data
+    state.intoA.personalBank = data
   },
   //工作情况
   going(state,data){
     state.intoA.PersonalJob = data
-  }
-  
-
+  },
+  // 联系人
+  linkman(state,data){
+    state.intoA.personalContact = data
+  },
+  // 承租人照片
+  // tenantImg(state,data){
+  //   state.intoA.tenantImg = data
+  // }
 
 }
 

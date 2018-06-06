@@ -68,17 +68,12 @@ export default class Login extends Vue {
     useful_time: '',  // 有效期限
     file_number: '',  // 档案编号
     driving_license: '', // 准驾车型
+    driverPhoto:'',   // 驾驶证正面
+    driverVicePhoto:'', // 驾驶证负面
   }
-  private driverPhoto = {
-    driverPhoto:''
-  }   //驾驶证正面 
-  private driverVicePhoto ={
-    driverVicePhoto:''
-  } // 驾驶证负面
 
   @Mutation choosePeople
-  @Mutation idcCard
-  @State intoA
+  
   /**
   * 点击准驾车型确定事件
   */
@@ -114,10 +109,6 @@ export default class Login extends Vue {
   }
   mounted() {
     this.choosePeople(this.peopleCar)
-    let merge = this.intoA.personal
-     this.idcCard (Object.assign(merge,this.driverPhoto,this.driverVicePhoto))
-    console.log(merge)
-    
     this.columns = this.$dict.getDictData('0487').map(v => {
       return Object.assign({ text: v.label }, v)
     })
