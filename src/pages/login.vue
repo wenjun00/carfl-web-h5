@@ -7,8 +7,7 @@
       <van-cell-group>
         <van-field maxlength="11" v-model="loginModel.phoneNumber" label="手机号" placeholder="请输入您的手机号" icon="clear" @click-icon="loginModel.phoneNumber = ''" @focus="keyboardFlag.phone = true" />
         <van-number-keyboard :show="keyboardFlag.phone" title="洋葱汽车安全键盘" close-button-text="完成" @blur="keyboardFlag.phone = false" @input="onKeyBoardInputPhone" @delete="onKeyBoardDeletePhone" />
-
-        <van-field maxlength="4" center v-model="loginModel.verifyCode" label="验证码" placeholder="请输入短信验证码" icon="clear" @click-icon="loginModel.verifyCode = ''" @focus="keyboardFlag.code = true">
+        <van-field maxlength="6" center v-model="loginModel.verifyCode" label="验证码" placeholder="请输入短信验证码" icon="clear" @click-icon="loginModel.verifyCode = ''" @focus="keyboardFlag.code = true">
           <van-button slot="button" size="small" type="primary" @click="onVerifyCodeClick" :disabled="leftTime !== 0">{{leftTime > 0 ? leftTime + '秒后重发' : '获取验证码'}}</van-button>
         </van-field>
         <van-number-keyboard :show="keyboardFlag.code" @blur="keyboardFlag.code = false" @input="onKeyBoardInputCode" @delete="onKeyBoardDeleteCode" />
@@ -25,11 +24,13 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { LoginService } from "~/services/manage-service/applogin.service";
 import { Dependencies } from "~/core/decorator";
-import { Mutation } from "vuex-class";
+import { Action,Mutation } from "vuex-class";
 import AppConfig from "~/config/app.config";
 import Register from "~/components/common/register.vue";
 import { StorageService } from "~/utils/storage.service";
-import { settings } from "cluster";
+
+
+
 
 @Component({
   components: {}
@@ -37,6 +38,7 @@ import { settings } from "cluster";
 export default class Login extends Vue {
   @Dependencies(LoginService) private loginService: LoginService;
   @Mutation updateUserPhone;
+  @Action updateUserLoginData;
 
   // 客户手机号码
   private phoneNumber: string = "";
@@ -136,14 +138,17 @@ export default class Login extends Vue {
    * 提交操作
    */
   private onSubmit() {
-    this.loginService.verifyCodeLogin(this.loginModel)
+    
     this.$validator.validate(this.loginModel, this.rules).then(error => {
       if (!error) {
-        StorageService.setItem("account", {
-          phoneNumber: this.loginModel.phoneNumber
-        });
-        this.updateUserPhone(this.loginModel.phoneNumber);
-        this.$router.push("/Index");
+        this.loginService.verifyCodeLogin(this.loginModel).subscribe(
+          data =>{
+            this.updateUserLoginData(data)
+            this.$router.push("/Index");
+          },
+          err =>this.$toast(err.msg)
+        )
+      
       } else {
         this.$toast(error);
       }

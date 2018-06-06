@@ -27,8 +27,8 @@ export class LoginService {
     return this.netService.send({
       server: manageService.appLoginController.verifyCodeLogin,
       data: {
-        mobileMain: data.phone,
-        verificationCode: data.code
+        mobileMain: data.phoneNumber,
+        verificationCode: data.verifyCode
       },
       loading: true
     })

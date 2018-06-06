@@ -34,5 +34,21 @@ const router = new Router({
   routes
 })
 
+router.beforeEach(async ({ matched, path }, from, next) => {
+  if (!store.state.ready) {
+    await storeInit({
+      store,
+      router
+    })
+  }
+
+  if (store.state.tokenExpire && path !== "/") {
+    // 重置用户过期状态
+    store.commit('updateTokenExpire', false)
+    return next("/")
+  }
+
+  next()
+})
 
 export default router

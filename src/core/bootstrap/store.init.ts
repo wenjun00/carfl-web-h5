@@ -6,22 +6,16 @@ export default async function ({ store, router }) {
   let { DataDictService } = await creatDataDictService()
 
   let dataDictService = new DataDictService()
-
+  console.log(111)
   // 启动数据初始化
   let flag = await Promise.all([
-    updateDictData(),
-    updateUserData()
+    updateDictData()
   ]).then(() => {
     return true
   }).catch(ex => {
     // 基础数据初始化失败
     return false
   })
-
-  // 初始化业务数据
-  if (flag) {
-    await updateBusinessData()
-  }
 
   store.commit('ready', true)
 
@@ -58,21 +52,6 @@ export default async function ({ store, router }) {
       }, () => {
         reject()
       })
-    })
-  }
-
-  /**
-   * 全局业务数据
-   */
-  function updateBusinessData() {
-    return new Promise(async (reslove, reject) => {
-      if (!store.state.userData || !store.state.userToken) {
-        reslove()
-        return
-      }
-      // 全局业务数据 - 与用户无关
-
-      reslove()
     })
   }
 }
