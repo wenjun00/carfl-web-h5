@@ -80,8 +80,6 @@ export default class Login extends Vue {
     id_card_address: '', // 身份证地址
     headPhoto:'', // 身份证头像地址
     nationalPhoto:'', // 身份证国徽地址
-
-
   }
 
   @Mutation idcCard

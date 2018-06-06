@@ -159,6 +159,10 @@ export default {
   //银行卡信息页
   bankCard(state,data){
     state.intoA.personal_bank = data
+  },
+  //工作情况
+  going(state,data){
+    state.intoA.PersonalJob = data
   }
   
 

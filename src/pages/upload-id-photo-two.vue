@@ -114,8 +114,9 @@ export default class Login extends Vue {
   }
   mounted() {
     this.choosePeople(this.peopleCar)
-    let merge = this.intoA.idcCard
-    this.idcCard(Object.assign(merge,this.driverPhoto,this.driverVicePhoto))
+    let merge = this.intoA.personal
+     this.idcCard (Object.assign(merge,this.driverPhoto,this.driverVicePhoto))
+    console.log(merge)
     
     this.columns = this.$dict.getDictData('0487').map(v => {
       return Object.assign({ text: v.label }, v)
