@@ -56,8 +56,8 @@ import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
 @Component({})
 export default class Login extends Vue {
-  private arrImgTwo:any = []
-  private arrAll : any =[]
+  private arrImgTwo: any = []
+  private arrAll: any = []
   private idName: any = null;
   private idNumber: any = null;
   private value: any = null;
@@ -71,14 +71,14 @@ export default class Login extends Vue {
     useful_time: '',  // 有效期限
     file_number: '',  // 档案编号
     driving_license: '', // 准驾车型
-    driverPhoto:'',   // 驾驶证正面
-    driverVicePhoto:'', // 驾驶证负面
+    driverPhoto: '',   // 驾驶证正面
+    driverVicePhoto: '', // 驾驶证负面
   }
 
   @Mutation choosePeople
   @Mutation tenantImg
   @State intoA
-  
+
   /**
   * 点击准驾车型确定事件
   */
@@ -92,32 +92,42 @@ export default class Login extends Vue {
   /**
   * 图片上传
   */
-   onRead({ file }) {
+  onRead({ file }) {
     NetService.upload(file).then(x => {
-      console.log(x);
       this.photo = x.localUrl
-     this.arrAll.push({
-        personalId : x.id,
-        uploadName : x.realName,
-        materialType : x.type,
-        dataSize : x.size,
-        materialUrl : x.url,
-        uploadTime : x.createTime,
+      for (let i in this.arrAll) {
+        if (this.arrAll[i].typeName == 1371) {
+          this.arrAll.splice(i, 1)
+        }
+      }
+      this.arrAll.push({
+        personalId: x.id,
+        uploadName: x.realName,
+        materialType: x.type,
+        dataSize: x.size,
+        materialUrl: x.url,
+        uploadTime: x.createTime,
+        typeName: 1371,
       })
     });
   }
 
   onReadTwo({ file }) {
     NetService.upload(file).then(x => {
-      console.log(x);
       this.photoTwo = x.localUrl
+      for (let i in this.arrAll) {
+        if (this.arrAll[i].typeName == 1372) {
+          this.arrAll.splice(i, 1)
+        }
+      }
       this.arrAll.push({
-        personalId : x.id,
-        uploadName : x.realName,
-        materialType : x.type,
-        dataSize : x.size,
-        materialUrl : x.url,
-        uploadTime : x.createTime,
+        personalId: x.id,
+        uploadName: x.realName,
+        materialType: x.type,
+        dataSize: x.size,
+        materialUrl: x.url,
+        uploadTime: x.createTime,
+        typeName: 1372,
       })
 
     });

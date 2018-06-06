@@ -1,4 +1,4 @@
-<template> 
+<template>
   <section class="page uploadIdPhotoFirst">
     <van-row>
       <van-steps :active="0" active-color="#FFE44D">
@@ -11,7 +11,7 @@
     <van-row>
       <van-row class="imgList">
         <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead" accept="image/gif, image/jpeg" multiple>
+          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photo',1369)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photo == ''" name="add" />
             <img width="100%" v-else :src="photo" alt="">
           </van-uploader>
@@ -19,7 +19,7 @@
           <van-icon @click="lookIdentityCard" v-if="!photo == ''" class="lookiconHead" name="password-view" />
         </van-col>
         <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onReadTwo" accept="image/gif, image/jpeg" multiple>
+          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photoTwo',1370)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
             <img width="100%" v-else :src="photoTwo" alt="">
           </van-uploader>
@@ -27,7 +27,6 @@
           <van-icon @click="lookIdentityCardTwo" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
         </van-col>
       </van-row>
-
       <van-row style="text-align: center">
         <van-col span="12">
           <p style="font-size:14px">头像页</p>
@@ -48,7 +47,7 @@
       </van-cell-group>
     </van-row>
     <transition name="fade">
-      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker"  @confirm="onConfirm" @cancel="pickerDialog=false" />
+      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
     </transition>
     <van-row>
       <van-button type="primary" @click="$router.push('/upload-id-photo-two')" bottom-action>下一步</van-button>
@@ -66,10 +65,11 @@ import { State, Mutation, Action } from "vuex-class";
 @Component({})
 export default class Login extends Vue {
   private value: any = null;
+  private arrImg: any = [];
   private photo: any = "";
   private photoTwo: any = "";
   private pickerDialog: boolean = false;
-  private nation:string = ''
+  private nation: string = ''
   private columns: any = [];
   private type: any;
   private idcard: any = {
@@ -78,11 +78,14 @@ export default class Login extends Vue {
     id_card_validity_period_section: '', //身份证有效区间
     name: '',    // 户名
     id_card_address: '', // 身份证地址
-    headPhoto:'', // 身份证头像地址
-    nationalPhoto:'', // 身份证国徽地址
+    headPhoto: '', // 身份证头像地址
+    nationalPhoto: '', // 身份证国徽地址
   }
 
   @Mutation idcCard
+  @Mutation tenantImg
+  @State intoA
+
 
   /**
    * 点击下拉确定事件
@@ -93,20 +96,78 @@ export default class Login extends Vue {
     this.nation = this.$dict.getDictName(Number(this.idcard.nation))
     this.pickerDialog = false
   }
+  //测试图片上传
+  onRead(val, number) {
+    return ({ file }) => {
+      NetService.upload(file).then(x => {
+        this[val] = x.localUrl
+        for (let i in this.arrImg) {
+          if (this.arrImg[i].typeName == number) {
+            this.arrImg.splice(i, 1)
+          }
+        }
+        this.arrImg.push({
+          personalId: x.id,
+          uploadName: x.realName,
+          materialType: x.type,
+          dataSize: x.size,
+          materialUrl: x.url,
+          uploadTime: x.createTime,
+          typeName: number,
+        })
+      })
+    }
+  }
+
+
 
   /**
    * 图片上传
    */
-  onRead({ file }) {
-    NetService.upload(file).then(x => {
-      console.log(x);
-    });
-    //  document.getElementsByClassName("headPortrait")[0].style.background = 'url(' + val.content + ')';
-  }
-  onReadTwo(val) {
-    this.photoTwo = val.content;
-    // console.log(val)
-  }
+  //  onRead({ file }) {
+  //   NetService.upload(file).then(x => {
+  //     // console.log(x);
+  //     for(let i in this.arrImg){
+  //      if(this.arrImg[i].typeName == 1369){
+  //         this.arrImg.splice(i,1)
+  //      }
+  //     }
+  //     this.photo = x.localUrl
+  //    this.arrImg.push({
+  //       personalId : x.id,
+  //       uploadName : x.realName,
+  //       materialType : x.type,
+  //       dataSize : x.size,
+  //       materialUrl : x.url,
+  //       uploadTime : x.createTime,
+  //       typeName:1369,
+  //     })
+  //   });
+  // }
+
+
+  // onReadTwo({ file }) {
+  //   NetService.upload(file).then(x => {
+  //     // console.log(x);
+  //     this.photoTwo = x.localUrl
+  //      for(let i in this.arrImg){
+  //      if(this.arrImg[i].typeName == 1370){
+  //         this.arrImg.splice(i,1)
+  //      }
+  //     }
+  //     this.arrImg.push({
+  //       personalId : x.id,
+  //       uploadName : x.realName,
+  //       materialType : x.type,
+  //       dataSize : x.size,
+  //       materialUrl : x.url,
+  //       uploadTime : x.createTime,
+  //       typeName:1370,
+  //     })
+
+  //   });
+  // }
+
   closeIdentityCard() {
     this.photo = "";
   }
@@ -120,12 +181,13 @@ export default class Login extends Vue {
     ImagePreview([this.photoTwo]);
   }
 
-  mounted(){
+  mounted() {
+    this.arrImg = this.intoA.PersonalAdditional
     this.idcCard(this.idcard)
-    this.columns = this.$dict.getDictData('0486').map( v =>{
-      return Object.assign({text: v.label},v)
+    this.columns = this.$dict.getDictData('0486').map(v => {
+      return Object.assign({ text: v.label }, v)
     })
-   
+
   }
 }
 </script>

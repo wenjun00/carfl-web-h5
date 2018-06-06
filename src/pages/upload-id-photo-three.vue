@@ -53,10 +53,12 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
+import { NetService } from "~/utils/net.service";
 @Component({})
 export default class Login extends Vue {
   
   private idName: any = null;
+  private arrAll: any = []
   private idNumber: any = null;
   private value: any = null;
   private photo: any = "";
@@ -82,6 +84,7 @@ export default class Login extends Vue {
 
   mounted() {
     this.bankCard(this.personalBank)
+    this.arrAll = this.intoA.PersonalAdditional
     this.columns = this.$dict.getDictData('0456').map(v => {
       return Object.assign({ text: v.label }, v)
     })
@@ -98,13 +101,44 @@ export default class Login extends Vue {
   /**
 * 图片上传
 */
-  onRead(val) {
-    // console.log(val)
-    this.photo = val.content
+  onRead({ file }) {
+    NetService.upload(file).then(x => {
+      this.photo = x.localUrl
+      for (let i in this.arrAll) {
+        if (this.arrAll[i].typeName == 1373) {
+          this.arrAll.splice(i, 1)
+        }
+      }
+      this.arrAll.push({
+        personalId: x.id,
+        uploadName: x.realName,
+        materialType: x.type,
+        dataSize: x.size,
+        materialUrl: x.url,
+        uploadTime: x.createTime,
+        typeName: 1371,
+      })
+    });
   }
-  onReadTwo(val) {
-    this.photoTwo = val.content
-    // console.log(val)
+ onReadTwo({ file }) {
+    NetService.upload(file).then(x => {
+      this.photoTwo = x.localUrl
+      for (let i in this.arrAll) {
+        if (this.arrAll[i].typeName == 1374) {
+          this.arrAll.splice(i, 1)
+        }
+      }
+      this.arrAll.push({
+        personalId: x.id,
+        uploadName: x.realName,
+        materialType: x.type,
+        dataSize: x.size,
+        materialUrl: x.url,
+        uploadTime: x.createTime,
+        typeName: 1374,
+      })
+
+    });
   }
   closeIdentityCard() {
     this.photo = ''

@@ -1,11 +1,12 @@
 <template>
   <section class="page addInformation">
     <van-row>
+      <!-- <div @click="aaa">123123123123123</div> -->
       <p class="base-info-title">
         <span class="star">*</span>承租人手持身份证照片</p>
       <van-row class="imgList">
         <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun" accept="image/gif, image/jpeg" multiple>
+          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCard',1363)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="identityCard == ''" name="add" />
             <img width="100%" v-else :src="identityCard" alt="">
           </van-uploader>
@@ -19,7 +20,7 @@
         <span class="star">*</span>承租人手持业务员照片</p>
       <van-row class="imgList">
         <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardTwoFun" accept="image/gif, image/jpeg" multiple>
+          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCardTwo',1364)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="identityCardTwo == ''" name="add" />
             <img width="100%" v-else :src="identityCardTwo" alt="">
           </van-uploader>
@@ -31,32 +32,114 @@
     <van-cell title="追加担保人（选填）" is-link :value="value" @click="pickerDialog=true" />
     <van-collapse v-model="activeNames">
       <van-collapse-item title="追加资料（选填）">
-        <van-row v-for="(item,index) in list" :key="index">
-          <p class="base-info-title">{{item.title}}</p>
-          <van-row class="base-idPhoto">
-            <van-col span="12">
-              <div class="idPhoto" :ref="item.name">
-                <div class="infoContent">{{item.imgLeft}}</div>
-                <div class="background">
-                  <van-icon v-if="item.ShowHidden" @click="closeList(item.name)" class="deleteicon" name="close" />
-                  <van-icon v-if="item.ShowHidden" @click="lookList(item.name)" class="lookicon" name="password-view" />
-                </div>
-              </div>
-            </van-col>
-            <van-col span="12">
-              <div class="idPhoto line">
-                <div class="infoContent" @click="getRef(item.name)">
-                  <van-uploader :after-read="onRead" accept="image/gif, image/jpeg" multiple>
-                    <van-icon class="vanIcon" name="add" />
-                  </van-uploader>
-                </div>
-              </div>
-            </van-col>
-          </van-row>
+
+        <van-row class="heandClass">
+          <van-col>户口本（户主页及个人页</van-col>
         </van-row>
-        <van-button type="primary" bottom-action>确认</van-button>
+        <van-row class="imgList">
+          <van-col span="11">
+            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg',1354)" accept="image/gif, image/jpeg" multiple>
+              <van-icon class="vanIcon" v-if="listImg == ''" name="add" />
+              <img width="100%" v-else :src="listImg" alt="">
+            </van-uploader>
+            <van-icon @click="closeIdentityCard" v-if="!listImg == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard" v-if="!listImg == ''" class="lookiconHead" name="password-view" />
+          </van-col>
+        </van-row>
+       <van-row class="heandClass">
+          <van-col>结婚证</van-col>
+        </van-row>
+        <van-row class="imgList imglistTwo">
+          <van-col span="11">
+            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg2',1355)" accept="image/gif, image/jpeg" multiple>
+              <van-icon class="vanIcon" v-if="listImg2 == ''" name="add" />
+              <img width="100%" v-else :src="listImg2" alt="">
+            </van-uploader>
+            <van-icon @click="closeIdentityCard" v-if="!listImg2 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard" v-if="!listImg2 == ''" class="lookiconHead" name="password-view" />
+          </van-col>
+        </van-row>
+         <van-row class="heandClass">
+          <van-col>收入证明（劳动合同/收入证明</van-col>
+        </van-row>
+        <van-row class="imgList imglistTwo">
+          <van-col span="11">
+            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg3',1356)" accept="image/gif, image/jpeg" multiple>
+              <van-icon class="vanIcon" v-if="listImg3 == ''" name="add" />
+              <img width="100%" v-else :src="listImg3" alt="">
+            </van-uploader>
+            <van-icon @click="closeIdentityCard" v-if="!listImg3 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard" v-if="!listImg3 == ''" class="lookiconHead" name="password-view" />
+          </van-col>
+        </van-row>
+         <van-row class="heandClass">
+          <van-col>近6个月银行流水（柜台打印盖章/网银现场查询）</van-col>
+        </van-row>
+        <van-row class="imgList imglistTwo">
+          <van-col span="11">
+            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg4',1357)" accept="image/gif, image/jpeg" multiple>
+              <van-icon class="vanIcon" v-if="listImg4 == ''" name="add" />
+              <img width="100%" v-else :src="listImg4" alt="">
+            </van-uploader>
+            <van-icon @click="closeIdentityCard" v-if="!listImg4 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard" v-if="!listImg4 == ''" class="lookiconHead" name="password-view" />
+          </van-col>
+        </van-row>
+         <van-row class="heandClass">
+          <van-col>社保查询（柜台打印盖章/网上现场查询）</van-col>
+        </van-row>
+        <van-row class="imgList imglistTwo">
+          <van-col span="11">
+            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg5',1358)" accept="image/gif, image/jpeg" multiple>
+              <van-icon class="vanIcon" v-if="listImg5 == ''" name="add" />
+              <img width="100%" v-else :src="listImg5" alt="">
+            </van-uploader>
+            <van-icon @click="closeIdentityCard" v-if="!listImg5 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard" v-if="!listImg5 == ''" class="lookiconHead" name="password-view" />
+          </van-col>
+        </van-row>
+         <van-row class="heandClass">
+          <van-col>房产证明（房产证/按揭合同/购房合同）</van-col>
+        </van-row>
+        <van-row class="imgList imglistTwo">
+          <van-col span="11">
+            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg6',1359)" accept="image/gif, image/jpeg" multiple>
+              <van-icon class="vanIcon" v-if="listImg6 == ''" name="add" />
+              <img width="100%" v-else :src="listImg6" alt="">
+            </van-uploader>
+            <van-icon @click="closeIdentityCard" v-if="!listImg6 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard" v-if="!listImg6 == ''" class="lookiconHead" name="password-view" />
+          </van-col>
+        </van-row>
+         <van-row class="heandClass">
+          <van-col>居住证明（本人/直系亲属姓名的水电费.物业费等单据）</van-col>
+        </van-row>
+        <van-row class="imgList imglistTwo">
+          <van-col span="11">
+            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg7',1360)" accept="image/gif, image/jpeg" multiple>
+              <van-icon class="vanIcon" v-if="listImg7 == ''" name="add" />
+              <img width="100%" v-else :src="listImg7" alt="">
+            </van-uploader>
+            <van-icon @click="closeIdentityCard" v-if="!listImg7 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard" v-if="!listImg7 == ''" class="lookiconHead" name="password-view" />
+          </van-col>
+        </van-row>
+         <van-row class="heandClass">
+          <van-col>其他照片资料</van-col>
+        </van-row>
+        <van-row class="imgList imglistTwo">
+          <van-col span="11">
+            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg8',1361)" accept="image/gif, image/jpeg" multiple>
+              <van-icon class="vanIcon" v-if="listImg8 == ''" name="add" />
+              <img width="100%" v-else :src="listImg8" alt="">
+            </van-uploader>
+            <van-icon @click="closeIdentityCard" v-if="!listImg8 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard" v-if="!listImg8 == ''" class="lookiconHead" name="password-view" />
+          </van-col>
+        </van-row>
       </van-collapse-item>
     </van-collapse>
+    <van-button type="primary" bottom-action>确认</van-button>
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @change="onChange" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
     </transition>
@@ -68,8 +151,13 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { ImagePreview } from 'vant';
+import { State, Mutation, Action } from "vuex-class";
+import { NetService } from "~/utils/net.service";
 @Component({})
 export default class Login extends Vue {
+  @Mutation tenantImg
+  @State intoA
+  private arrImg: any = []
   private idName: any = null;
   private idNumber: any = null;
   private value: any = null;
@@ -82,6 +170,15 @@ export default class Login extends Vue {
   private showName: any = ''
   private identityCardTwo: any = '';
   private photo: any = "";
+  private listImg:string = ''
+  private listImg2:string = ''
+  private listImg3:string = ''
+  private listImg4:string = ''
+  private listImg5:string = ''
+  private listImg6:string = ''
+  private listImg7:string = ''
+  private listImg8:string = ''
+  
 
   private list: any = [
     {
@@ -138,12 +235,38 @@ export default class Login extends Vue {
     this.photo = this.$refs[ref][0];
     this.showName = ref
   }
+  aaa() {
+    console.log(this.arrImg)
+  }
   /**
    * 手持身份证图片事件
    */
-  identityCardFun(val) {
-    this.identityCard = val.content
+  identityCardFun(val, number) {
+    return ({ file }) => {
+      NetService.upload(file).then(x => {
+        this[val] = x.localUrl
+        for (let i in this.arrImg) {
+          if (this.arrImg[i].typeName == number) {
+            this.arrImg.splice(i, 1)
+          }
+        }
+        this.arrImg.push({
+          personalId: x.id,
+          uploadName: x.realName,
+          materialType: x.type,
+          dataSize: x.size,
+          materialUrl: x.url,
+          uploadTime: x.createTime,
+          typeName: number,
+        })
+      })
+    }
   }
+
+
+
+
+
   // 删除手持身份证图片事件
   closeIdentityCard() {
     this.identityCard = ''
@@ -158,48 +281,13 @@ export default class Login extends Vue {
   lookIdentityCardTwo() {
     ImagePreview([this.identityCardTwo]);
   }
-  // 删除户口等每个点击的图片
-  closeList(ref) {
-    this.photo = this.$refs[ref][0];
-    this.photo.style.backgroundImage = 'url("")';
-    // console.log(ref)
-    for (let i in this.list) {
-      if (ref == this.list[i].name) {
-        this.list[i].ShowHidden = 0
-      }
-    }
-  }
-  // 查看户口每个点击的图片
-  lookList(ref) {
-    this.photo = this.$refs[ref][0];
-    let a = this.photo.style.backgroundImage = 'url(' + this.imageName + ')'
-    let b = a.substring(4)
-    let c = b.substring(0, b.length - 1);
-    // console.log(ref)
-    ImagePreview([c]);
-
-  }
 
 
-  identityCardTwoFun(val) {
-    this.identityCardTwo = val.content
-  }
 
-  /**
-   * 页面点击上传图片
-   */
-  onRead(file) {
-    this.imageName = file.content;
-    this.photo.style.backgroundImage = 'url(' + this.imageName + ')';
-    this.photo.style.left = "12px;"
 
-    for (let i in this.list) {
-      if (this.showName == this.list[i].name) {
-        this.list[i].ShowHidden = 1
-      }
-    }
 
-  }
+
+
   choose(type) {
     if (type === 1) {
       this.columns = ["未婚", "已婚", "丧偶", "离婚"];
@@ -215,10 +303,22 @@ export default class Login extends Vue {
       this.columns = '本科';
     }
   }
+
+  mounted() {
+    this.arrImg = this.intoA.PersonalAdditional
+  }
+
+
 }
 </script>
 <style lang="less">
 .page.addInformation {
+  .heandClass {
+    display: flex;
+    margin: 10px 0 0 0;
+    background-color: #e6e6e6;
+    padding: 5px;
+  }
   .lookicon {
     color: cornflowerblue;
     font-size: 20px;
@@ -365,12 +465,7 @@ export default class Login extends Vue {
     background-repeat: no-repeat;
     background-size: contain;
   }
-  // .background {
-  //   position: absolute;
-  //   border: 1px solid #e7e7e7;
-  //   left: 8.4rem;
-  //   color: #e7e7e7;
-  // }
+ 
   .iconfont {
     font-size: 1.5rem;
     margin-top: -0.6rem;
@@ -395,7 +490,7 @@ export default class Login extends Vue {
   }
   .van-collapse-item__content {
     padding: 0;
-    margin-bottom: 50px;
+    margin-bottom: 60px;
   }
 }
 </style>
