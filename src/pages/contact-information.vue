@@ -23,7 +23,7 @@
       </transition>
 
        <transition name="fade">
-        <van-picker :columns="relations" v-show="relationBotTwo" show-toolbar ref="vanpicker" @confirm="relationfirmTwo" @cancel="relationBotTwo=false" />
+        <van-picker :columns="relationsTwo" v-show="relationBotTwo" show-toolbar ref="vanpicker" @confirm="relationfirmTwo" @cancel="relationBotTwo=false" />
       </transition>
 
     <van-button type="primary" @click="relationAffirm" bottom-action>下一步</van-button>
@@ -44,6 +44,7 @@ export default class Login extends Vue {
   private relations:any = []
   // 联系人2
   private relationBotTwo:boolean = false
+  private relationsTwo:any = []
 
 
   private contactModel = {
@@ -83,11 +84,14 @@ export default class Login extends Vue {
   }
 
   mounted(){
-     // 承租人关系
-     this.relations = this.$dict.getDictData('0464').map(v => {
+     // 承租人关系 直系亲属
+     this.relations = this.$dict.getDictData('0015').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-
+     // 承租人关系 非直系亲属
+     this.relationsTwo = this.$dict.getDictData('0016').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
 
 
   }

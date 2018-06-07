@@ -2,6 +2,7 @@ import store from '~/store'
 import * as enumData from '~/config/enum.config'
 import moment from 'moment'
 import { LodashService } from './lodash.service'
+import { CityService } from "~/utils/city.service";
 
 export class FilterService {
   /**
@@ -248,5 +249,21 @@ export class FilterService {
   static formatBankCardNumber(value) {
     let result = new String(value)
     return result.replace(/(\d{4})(?=\d)/g, "$1" + "-")
+  }
+
+  /**
+   * 城市文字转换
+   * @param values 要转换的城市ID 数组或者单个ID
+   */
+  static cityConvert(values) {
+    let citys = []
+    if (values){
+      let index = 0;
+      while (index < values.length) {
+        citys.push(CityService.getCityName(values[index]))
+        index++
+      }
+    }
+    return citys.join(' ')
   }
 }

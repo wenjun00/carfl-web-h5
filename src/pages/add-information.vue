@@ -259,13 +259,6 @@ export default class Login extends Vue {
       },
       err => this.$toast(err.msg)
     )
-
-
-
-
-
-
-
   }
 
   /**

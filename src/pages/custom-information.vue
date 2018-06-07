@@ -10,7 +10,7 @@
       </van-cell-group>
       <van-number-keyboard :show="show.phone" close-button-text="完成" @blur="show.phone = false" @input="inputPhone" @delete="deletePhone"></van-number-keyboard>
       <van-number-keyboard :show="show.contactPhone" close-button-text="完成" @blur="show.contactPhone = false" @input="contactPhone" @delete="deleteContactPhone"></van-number-keyboard>
-       <!-- 婚姻状况 -->
+      <!-- 婚姻状况 -->
       <transition name="fade">
         <van-picker :columns="marriages" v-show="marriageBot" show-toolbar ref="vanpicker" @confirm="marriagefirm" @cancel="marriageBot=false" />
       </transition>
@@ -18,23 +18,23 @@
       <transition name="fade">
         <van-picker :columns="educations" v-show="educationBot" show-toolbar ref="vanpicker" @confirm="educationfirm" @cancel="educationBot=false" />
       </transition>
-        <!-- 居住情况 -->
+      <!-- 居住情况 -->
       <transition name="fade">
         <van-picker :columns="situations" v-show="situationBot" show-toolbar ref="vanpicker" @confirm="situationfirm" @cancel="situationBot=false" />
       </transition>
-        <!-- 居住年限 -->
+      <!-- 居住年限 -->
       <transition name="fade">
         <van-picker :columns="agelimits" v-show="agelimitBot" show-toolbar ref="vanpicker" @confirm="agelimitfirm" @cancel="agelimitBot=false" />
       </transition>
-       <!-- 工作情况 -->
+      <!-- 工作情况 -->
       <transition name="fade">
         <van-picker :columns="workings" v-show="workingBot" show-toolbar ref="vanpicker" @confirm="workingfirm" @cancel="workingBot=false" />
       </transition>
-       <!-- 单位性质 -->
+      <!-- 单位性质 -->
       <transition name="fade">
         <van-picker :columns="natureUnits" v-show="natureUnitBot" show-toolbar ref="vanpicker" @confirm="natureUnitfirm" @cancel="natureUnitBot=false" />
       </transition>
-       <!-- 工作年限 -->
+      <!-- 工作年限 -->
       <transition name="fade">
         <van-picker :columns="yearsWorkings" v-show="yearsWorkingBot" show-toolbar ref="vanpicker" @confirm="yearsWorkingfirm" @cancel="yearsWorkingBot=false" />
       </transition>
@@ -45,7 +45,10 @@
       <van-cell-group>
         <van-field v-model="inforModel.falseSituation" label="居住情况" placeholder="请选择居住情况" @click="situationBot=true" />
         <van-field v-model="inforModel.falseAgelimit " label="居住年限" placeholder="请选择居住年限" @click="agelimitBot=true" />
-        <van-cell title="居民地区" is-link :value="inforModel.area" @click="show.area = true" required/>
+
+        <van-cell title="居民地区" is-link :value="inforModel.area | cityConvert " @click="$refs['cityPicker'].show()" required/>
+        <city-picker ref="cityPicker"  @on-confirm="onCityPickerConfirm"></city-picker>
+
         <van-field type="textarea" class="address" v-model="inforModel.address" label="居民地址" placeholder="请输入详细的居民地址精确到门牌号" />
       </van-cell-group>
       <van-popup v-model="show.living" position="bottom">
@@ -54,9 +57,7 @@
       <van-popup v-model="show.livingYear" position="bottom">
         <van-picker :columns="columns" show-toolbar @change="onChange" @confirm="show.livingYear=false" @cancel="show.livingYear=false" />
       </van-popup>
-      <van-popup v-model="show.area" position="bottom">
-        <van-area title="选择所在城市" :columns-num="3"  :area-list="columns.dataList" @cancel="show.area==false" @confirm="onAreaConfirmClick"></van-area>
-      </van-popup>
+
     </van-row>
     <van-row>
       <p class="base-info-title">工作信息</p>
@@ -79,25 +80,38 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import AreaData from "~/assets/area"
 import { State, Mutation, Action } from "vuex-class";
+import CityPicker from "~/components/common/city-picker.vue";
+import { CityService } from "~/utils/city.service";
 
-@Component({})
+@Component({
+  components: {
+    CityPicker,
+  }
+  // ,
+  // filters:{
+  //   cityConvert: (values:Array<Number>) =>{
+  //     let citys:any = CityService.getCityName(values[0],values[1],values[2])
+  //     return citys.join(' ')
+  //   }
+  // }
+})
 export default class Login extends Vue {
   @State intoA
   @Mutation going
   private marriageBot: boolean = false   // 婚姻状况
-  private marriages:any = []
+  private marriages: any = []
   private educationBot: boolean = false   // 学历信息
-  private educations:any = []
-  private situationBot:boolean = false  // 居住情况
-  private situations:any = [] 
-  private agelimitBot:boolean = false  // 居住年限
-  private agelimits:any = []
-  private workingBot:boolean = false  // 工作情况
-  private workings:any = []
-  private natureUnitBot:boolean = false // 单位性质
-  private natureUnits:any = [] 
-  private yearsWorkingBot:boolean = false // 工作年限
-  private yearsWorkings:any = []
+  private educations: any = []
+  private situationBot: boolean = false  // 居住情况
+  private situations: any = []
+  private agelimitBot: boolean = false  // 居住年限
+  private agelimits: any = []
+  private workingBot: boolean = false  // 工作情况
+  private workings: any = []
+  private natureUnitBot: boolean = false // 单位性质
+  private natureUnits: any = []
+  private yearsWorkingBot: boolean = false // 工作年限
+  private yearsWorkings: any = []
 
 
 
@@ -112,23 +126,23 @@ export default class Login extends Vue {
     companyAdress: "",   // 单位地址
     companyPhone: "",    // 单位电话
     afterSalary: "",     // 税后月薪
-    falseMarital:'',     // 婚姻状况文字
+    falseMarital: '',     // 婚姻状况文字
     marital: "",         // 婚姻状况id
-    falseeducation:'',   // 学历信息文字
-    education:'',        // 学历信息id
-    falseSituation:'',   // 居住情况文字
-    situation:'',        // 居住情况id
-    falseAgelimit:'',    // 居住年限文字
-    agelimit:'',         // 居住年限
-    falseWorking:'',     // 工作情况文字
-    working:'',          // 工作情况id
-    falsenatureUnit:"",  // 单位性质文字
-    natureUnit:'',       // 单位性质id
-    falseYearsWorking:'', // 工作年限制文字
-    yearsWorking:'',      // 工作年限id
-    province1:'',         // 居住地区省市
-    city1:'',             // 居住地区城市
-    district1:'',         // 居住地区区域
+    falseeducation: '',   // 学历信息文字
+    education: '',        // 学历信息id
+    falseSituation: '',   // 居住情况文字
+    situation: '',        // 居住情况id
+    falseAgelimit: '',    // 居住年限文字
+    agelimit: '',         // 居住年限
+    falseWorking: '',     // 工作情况文字
+    working: '',          // 工作情况id
+    falsenatureUnit: "",  // 单位性质文字
+    natureUnit: '',       // 单位性质id
+    falseYearsWorking: '', // 工作年限制文字
+    yearsWorking: '',      // 工作年限id
+    province1: '',         // 居住地区省市
+    city1: '',             // 居住地区城市
+    district1: '',         // 居住地区区域
 
 
 
@@ -150,99 +164,107 @@ export default class Login extends Vue {
   /**
    * 基本信息 点击下一步
    */
-  informationAffirm(){
+  informationAffirm() {
     this.going(this.inforModel)
     this.$router.push('/contact-information')
   }
 
+  private onCityPickerConfirm(currentCitys) {
+    this.inforModel.province1 = currentCitys[0]
+    this.inforModel.city1 = currentCitys[1]
+    this.inforModel.district1 = currentCitys[2]
+    
+   
+    this.inforModel.area = currentCitys
+  }
 
   /**
    * 婚姻状况点击确定
    */
-  marriagefirm(val){
+  marriagefirm(val) {
     this.inforModel.marital = val.value
-    this.inforModel.falseMarital = this.$dict.getDictName(Number(this.inforModel.marital))  
+    this.inforModel.falseMarital = this.$dict.getDictName(Number(this.inforModel.marital))
     this.marriageBot = false
   }
   /**
    * 学历信息点击确定
    */
-  educationfirm(val){
+  educationfirm(val) {
     this.inforModel.education = val.value
-    this.inforModel.falseeducation = this.$dict.getDictName(Number(this.inforModel.education))  
-    this.educationBot =false
+    this.inforModel.falseeducation = this.$dict.getDictName(Number(this.inforModel.education))
+    this.educationBot = false
   }
   /**
    * 居住情况点击确定
    */
-  situationfirm(val){
+  situationfirm(val) {
     this.inforModel.situation = val.value
-    this.inforModel.falseSituation = this.$dict.getDictName(Number(this.inforModel.situation))  
+    this.inforModel.falseSituation = this.$dict.getDictName(Number(this.inforModel.situation))
     this.situationBot = false
   }
 
- 
+
   /**
    * 居住年限
    */
-  agelimitfirm(val){
+  agelimitfirm(val) {
     this.inforModel.agelimit = val.value
-    this.inforModel.falseAgelimit = this.$dict.getDictName(Number(this.inforModel.agelimit))  
+    this.inforModel.falseAgelimit = this.$dict.getDictName(Number(this.inforModel.agelimit))
     this.agelimitBot = false
   }
   /**
    * 工作情况
    */
-  workingfirm(val){
+  workingfirm(val) {
     this.inforModel.working = val.value
-    this.inforModel.falseWorking = this.$dict.getDictName(Number(this.inforModel.working))  
+    this.inforModel.falseWorking = this.$dict.getDictName(Number(this.inforModel.working))
     this.workingBot = false
   }
   /**
    * 单位性质点击确定
    */
-  natureUnitfirm(val){
+  natureUnitfirm(val) {
     this.inforModel.natureUnit = val.value
-    this.inforModel.falsenatureUnit = this.$dict.getDictName(Number(this.inforModel.natureUnit))  
+    this.inforModel.falsenatureUnit = this.$dict.getDictName(Number(this.inforModel.natureUnit))
     this.natureUnitBot = false
   }
   /**
    * 工作年限点击确定
    */
-  yearsWorkingfirm(val){
+  yearsWorkingfirm(val) {
     this.inforModel.yearsWorking = val.value
-    this.inforModel.falseYearsWorking = this.$dict.getDictName(Number(this.inforModel.yearsWorking))  
+    this.inforModel.falseYearsWorking = this.$dict.getDictName(Number(this.inforModel.yearsWorking))
     this.yearsWorkingBot = false
   }
- 
+
 
   mounted() {
     // 获取婚姻状况
-     this.marriages = this.$dict.getDictData('0003').map(v => {
+    this.marriages = this.$dict.getDictData('0003').map(v => {
       return Object.assign({ text: v.label }, v)
     })
     // 获取学历信息
-     this.educations = this.$dict.getDictData('0002').map(v => {
+    this.educations = this.$dict.getDictData('0002').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-     // 居住情况
-     this.situations = this.$dict.getDictData('0462').map(v => {
+    // 居住情况
+    this.situations = this.$dict.getDictData('0462').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-     // 居住年限
-     this.agelimits = this.$dict.getDictData('0463').map(v => {
+    // 居住年限
+    this.agelimits = this.$dict.getDictData('0463').map(v => {
       return Object.assign({ text: v.label }, v)
     })
     // 工作情况
-     this.workings = this.$dict.getDictData('0460').map(v => {
+    this.workings = this.$dict.getDictData('0460').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-     // 工作性质
-     this.natureUnits = this.$dict.getDictData('0012').map(v => {
+    // 工作性质
+    this.natureUnits = this.$dict.getDictData('0012').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-     // 工作年限
-     this.yearsWorkings = this.$dict.getDictData('0461').map(v => {
+    // 工作年限
+    this.yearsWorkings = this.$dict.getDictData('0461').map(v => {
       return Object.assign({ text: v.label }, v)
     })
 
@@ -289,16 +311,16 @@ export default class Login extends Vue {
     }
   }
 
-  onAreaConfirmClick(val) {
-    // console.log(val)
-    this.inforModel.province1 = val[0].name 
-    this.inforModel.city1 = val[1].name             
-    this.inforModel.district1 = val[2].name         
-    if (val && val.length >= 2) {
-      this.inforModel.area = val[0].name + " " + val[1].name + " " + val[2].name
-    }
-    this.show.area = false
-  }
+  // onAreaConfirmClick(val) {
+  //   // console.log(val)
+  //   this.inforModel.province1 = val[0].name
+  //   this.inforModel.city1 = val[1].name
+  //   this.inforModel.district1 = val[2].name
+  //   if (val && val.length >= 2) {
+  //     this.inforModel.area = val[0].name + " " + val[1].name + " " + val[2].name
+  //   }
+  //   this.show.area = false
+  // }
 
 }
 </script>

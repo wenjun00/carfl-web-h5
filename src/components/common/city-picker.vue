@@ -18,8 +18,12 @@ const cityData = CityService.getCityData();
 })
 export default class CityPicker extends Vue {
   @Emit("on-confirm")
-  emitConfirm(currentCitys) {}
-  private visible = true;
+  emitConfirm(currentCitys) { }
+
+  @Emit("on-cancel")
+  emitCancel() { }
+
+  private visible = false;
   private columns: any = [];
 
   onChange(picker, value, index) {
@@ -36,6 +40,7 @@ export default class CityPicker extends Vue {
 
   onCancel() {
     this.reset();
+    this.emitCancel()
     this.visible = false;
   }
 

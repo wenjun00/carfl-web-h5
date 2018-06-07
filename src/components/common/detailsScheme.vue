@@ -41,41 +41,39 @@
       </van-row>
     </div>
     <!-- 基本参数 -->
-    <van-cell-group>
-      <van-cell value="详细配置" is-link>
-        <template slot="title">
-          <img class="someIcon" height="17px" :src="images" alt="">
-          <span class="van-cell-text basicParameter">基本参数</span>
-        </template>
-      </van-cell>
-    </van-cell-group>
+
+    <van-collapse v-model="activeNames">
+      <van-collapse-item name="2">
+        <div slot="title">基本参数
+          <span style="float: right;">详细配置</span>
+        </div>
+        <van-cell-group class="dropDown" v-for="(item,index) in detailsList" :key="index">
+          <van-cell :title="item.name" :value="item.value" />
+        </van-cell-group>
+      </van-collapse-item>
+    </van-collapse>
+
     <div class="carDetails">
       <van-cell-group>
-        <van-cell title="车身结构" value="5门5座SUV" />
+        <van-cell title="车身结构" :value="basicEquipment.carStructure" />
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="上/宽/高(mm)" value="4415/1819/1625" />
+        <van-cell title="上/宽/高(mm)" :value="basicEquipment.carSize" />
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="发动机" value="1.4T 165马力 L4" />
+        <van-cell title="发动机" :value="basicEquipment.carEmissions" />
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="变速箱" value="7档双离合" />
+        <van-cell title="驱动方式" :value="basicEquipment.drivingMode" />
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="驱动方式" value="前置前驱" />
+        <van-cell title="燃料形式" :value="basicEquipment.fuel" />
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="燃料形式" value="汽油" />
+        <van-cell title="综合油耗(L/100km)" :value="basicEquipment.fuelConsumption" />
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="综合油耗(L/100km)" value="7.3" />
-      </van-cell-group>
-      <van-cell-group>
-        <van-cell title="车辆配色" />
-      </van-cell-group>
-      <van-cell-group>
-        <van-cell title="级别" value="紧凑型SUV" />
+        <van-cell title="车辆配色" :value="basicEquipment.carColour" />
       </van-cell-group>
     </div>
     <!-- 空行 -->
@@ -89,58 +87,11 @@
         </template>
       </van-cell>
     </van-cell-group>
-    <!-- 四大优势 -->
-    <div class="carLightspot">
-      <img width="100%" src="/static/images/common/car1.png" alt="">
-      <van-row>
-        <img width="100%" src="/static/images/common/car2.png" alt="">
-      </van-row>
-      <div class="advantage">
-        <div class="carLeft">
-          <img width="100%" src="/static/images/common/car.png" alt="">
-          <span>霸气前脸设计</span>
-        </div>
-        <div class="carRight">
-          <img width="100%" src="/static/images/common/car1.png" alt="">
-          <span>流线型大灯</span>
-        </div>
-      </div>
-      <div class="advantage">
-        <div class="carLeft">
-          <img width="100%" src="/static/images/common/car1.png" alt="">
-          <span>霸气前脸设计</span>
-        </div>
-        <div class="carRight">
-          <img width="100%" src="/static/images/common/car.png" alt="">
-          <span>流线型大灯</span>
-        </div>
-      </div>
-    </div>
-    <!-- 细节设计 -->
-    <div class="carLightspot">
-      <van-row>
-        <img width="100%" src="/static/images/common/car3.png" alt="">
-      </van-row>
-      <div class="absut magin10">
-        <img width="100%" src="/static/images/common/car1.png" alt="">
-        <van-tag>豪华宽敞中控1</van-tag>
-      </div>
-      <div class="advantage ">
-        <div class="carLeft absut">
-          <img width="100%" src="/static/images/common/car1.png" alt="">
-          <van-tag>豪华宽敞中控2</van-tag>
-        </div>
-        <div class="carRight absut">
-          <img width="100%" src="/static/images/common/car1.png" alt="">
-          <van-tag>豪华宽敞中控3</van-tag>
-        </div>
-      </div>
-      <div class="absut magin10">
-        <img width="100%" src="/static/images/common/car1.png" alt="">
-        <van-tag>豪华宽敞中控4</van-tag>
-      </div>
-
-    </div>
+    <van-row class="imgCenter" v-for="(item,index) in carImg" :key="index">
+      <van-col class="mar10" span="24">{{item.name}}</van-col>
+      <van-col span="12" v-for="(itemTwo,indexTwo) in item.materialList" :key="indexTwo"><img width="90%" :src="itemTwo.url" alt=""></van-col>
+      <van-col class="mar10" span="24">{{item.introduce}}</van-col>
+    </van-row>
 
   </section>
 </template>
@@ -148,10 +99,23 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Collapse, CollapseItem } from 'vant';
+import { carManagementService } from "~/services/manage-service/carManagement.service";
+import { Dependencies } from "~/core/decorator";
+
 @Component({
   components: {}
 })
 export default class detailsScheme extends Vue {
+  @Dependencies(carManagementService) private carManagementService: carManagementService;
+  private showDetails: boolean = false
+  private activeNames: any = ['1']
+  private detailsList: any = []   // 车辆详情配置
+  private basicEquipment: any = [] // 车辆基本配置
+  private carImg: any = []      // 车辆图片
+  private carName: any = []
+
+
   private images = '/static/images/common/headerLabel.png'
   private byStages = [{
     val: '24期数',
@@ -161,18 +125,55 @@ export default class detailsScheme extends Vue {
     label: '1.36'
   }, {
     val: '48期数',
-    label:'1.82'
+    label: '1.82'
   }, {
     val: '60期数',
     label: '2.27'
   }]
 
-  mounted(){
-    // let scrollTop = document.documentElement.scrollTop || window.pageYOffset
-    // scrollTop = 0
- 
-    // document.documentElement.scrollTop = 0
-    // window.scrollTo(0,0);
+  /**
+   * 获取车辆详细配置 
+   */
+  getCarDetails() {
+    this.carManagementService.getCarParamList({ carId: 8 }).subscribe(
+      data => {
+        this.detailsList = data
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+  /**
+  * 获取车辆基本配置
+  */
+  getBasicEquipment() {
+    this.carManagementService.getCarDetail({ carId: 8 }).subscribe(
+      data => {
+        this.basicEquipment = data
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+
+  /**
+  * 获取车辆图片 （栏目信息）
+  */
+  getCarColumnImg() {
+    this.carManagementService.getCarColumnCollectModel({ carId: 8 }).subscribe(
+      data => {
+        // this.basicEquipment = data
+        console.log(data, '车型亮点')
+        // this.carName = data
+        this.carImg = data.columnList
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+
+
+  mounted() {
+    this.getCarDetails()
+    this.getBasicEquipment()
+    this.getCarColumnImg()
   }
 
 
@@ -181,6 +182,15 @@ export default class detailsScheme extends Vue {
 
 <style lang="less" scoped>
 .page.detailsScheme {
+  .mar10 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .imgCenter {
+    text-align: center;
+  }
   .magin10 {
     margin-bottom: 10px;
   }
@@ -225,6 +235,7 @@ export default class detailsScheme extends Vue {
     padding-left: 20px;
     color: gray;
     margin-top: 15px;
+    margin-bottom: 15px;
   }
   .basicParameter {
     line-height: 30px !important;
@@ -256,6 +267,20 @@ export default class detailsScheme extends Vue {
 </style>
 <style lang="less">
 .page.detailsScheme {
+  .dropDown {
+    padding-left: 13px;
+    font-weight: 600;
+    font-size: 13px;
+    .van-cell__title {
+      color: grey;
+    }
+    .van-cell__value {
+      color: #666666;
+    }
+  }
+  .van-collapse-item__content {
+    padding: 2px 0px 2px 0px;
+  }
   .van-cell.van-cell--clickable.van-hairline {
     display: flex;
     align-items: center;

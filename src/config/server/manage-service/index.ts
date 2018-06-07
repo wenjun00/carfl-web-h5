@@ -4,6 +4,7 @@ import dataDictTypeController from './data-dict-type.controller'
 import dataDictController from './data-dict.controller'
 import productOrderController from './product-order.controller'
 import carShowManagementController from './carShowManagement.controller'
+import carManagementController from './carManagement.controller'
 
 
 export const manageService = {
@@ -13,6 +14,6 @@ export const manageService = {
   dataDictController,
   productOrderController,
   carShowManagementController,
-
+  carManagementController
 
 }

@@ -1,4 +1,4 @@
-<template>
+<template> 
   <section class="page home">
     <section>
       <form action="/">

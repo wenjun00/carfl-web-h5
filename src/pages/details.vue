@@ -49,6 +49,8 @@ import Vue from 'vue'
 import Component from "vue-class-component";
 import DetailsScheme from "~/components/common/detailsScheme.vue";
 import CarGoHome from "~/components/common/carGoHome.vue";
+import { carManagementService } from "~/services/manage-service/carManagement.service";
+import { Dependencies } from "~/core/decorator";
 
 @Component({
   components: {
@@ -57,18 +59,18 @@ import CarGoHome from "~/components/common/carGoHome.vue";
   }
 })
 export default class Details extends Vue {
-
+   @Dependencies(carManagementService) private carManagementService: carManagementService;
   private images = ['/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png']
-  BackTop(){
+  BackTop() {
     document.documentElement.scrollTop = 0
-    window.scrollTo(0,0);
-    console.log( document.documentElement.scrollTop,'123')
+    window.scrollTo(0, 0);
+    // console.log(document.documentElement.scrollTop, '123')
   }
-  created() {
+
+
+  mounted() {
     this.BackTop()
-    // document.documentElement.scrollTop = 0
-    // window.scrollTo(0, 0);
-    // console.log( document.documentElement.scrollTop,'123')
+  
   }
 }
 </script>
