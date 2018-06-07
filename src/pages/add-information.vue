@@ -1,12 +1,11 @@
 <template>
   <section class="page addInformation">
     <van-row>
-      <!-- <div @click="aaa">123123123123123</div> -->
       <p class="base-info-title">
         <span class="star">*</span>承租人手持身份证照片</p>
       <van-row class="imgList">
         <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCard',1363)" accept="image/gif, image/jpeg" multiple>
+          <van-uploader class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCard',1363)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="identityCard == ''" name="add" />
             <img width="100%" v-else :src="identityCard" alt="">
           </van-uploader>
@@ -20,7 +19,7 @@
         <span class="star">*</span>承租人手持业务员照片</p>
       <van-row class="imgList">
         <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCardTwo',1364)" accept="image/gif, image/jpeg" multiple>
+          <van-uploader class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCardTwo',1364)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="identityCardTwo == ''" name="add" />
             <img width="100%" v-else :src="identityCardTwo" alt="">
           </van-uploader>
@@ -29,16 +28,19 @@
         </van-col>
       </van-row>
     </van-row>
-    <van-cell title="追加担保人（选填）" is-link :value="value" @click="pickerDialog=true" />
+    <!-- <van-field class="suretyClass" v-model="surety" label="追加担保人（选填）" placeholder="请选择追加担保人" @click="suretyBot=true" /> -->
+    <!-- 追加担保人 -->
+    <!-- <transition name="fade">
+      <van-picker :columns="suretys" v-show="suretyBot" show-toolbar ref="vanpicker" @confirm="suretyfirm" @cancel="suretyBot=false" />
+    </transition> -->
     <van-collapse v-model="activeNames">
       <van-collapse-item title="追加资料（选填）">
-
-        <van-row class="heandClass">
+        <van-row class="heandClass ">
           <van-col>户口本（户主页及个人页</van-col>
         </van-row>
         <van-row class="imgList">
           <van-col span="11">
-            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg',1354)" accept="image/gif, image/jpeg" multiple>
+            <van-uploader class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg',1354)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg == ''" name="add" />
               <img width="100%" v-else :src="listImg" alt="">
             </van-uploader>
@@ -46,7 +48,7 @@
             <van-icon @click="lookIdentityCard" v-if="!listImg == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
-       <van-row class="heandClass">
+        <van-row class="heandClass">
           <van-col>结婚证</van-col>
         </van-row>
         <van-row class="imgList imglistTwo">
@@ -59,7 +61,7 @@
             <van-icon @click="lookIdentityCard" v-if="!listImg2 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
-         <van-row class="heandClass">
+        <van-row class="heandClass">
           <van-col>收入证明（劳动合同/收入证明</van-col>
         </van-row>
         <van-row class="imgList imglistTwo">
@@ -72,7 +74,7 @@
             <van-icon @click="lookIdentityCard" v-if="!listImg3 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
-         <van-row class="heandClass">
+        <van-row class="heandClass">
           <van-col>近6个月银行流水（柜台打印盖章/网银现场查询）</van-col>
         </van-row>
         <van-row class="imgList imglistTwo">
@@ -85,7 +87,7 @@
             <van-icon @click="lookIdentityCard" v-if="!listImg4 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
-         <van-row class="heandClass">
+        <van-row class="heandClass">
           <van-col>社保查询（柜台打印盖章/网上现场查询）</van-col>
         </van-row>
         <van-row class="imgList imglistTwo">
@@ -98,7 +100,7 @@
             <van-icon @click="lookIdentityCard" v-if="!listImg5 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
-         <van-row class="heandClass">
+        <van-row class="heandClass">
           <van-col>房产证明（房产证/按揭合同/购房合同）</van-col>
         </van-row>
         <van-row class="imgList imglistTwo">
@@ -111,7 +113,7 @@
             <van-icon @click="lookIdentityCard" v-if="!listImg6 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
-         <van-row class="heandClass">
+        <van-row class="heandClass">
           <van-col>居住证明（本人/直系亲属姓名的水电费.物业费等单据）</van-col>
         </van-row>
         <van-row class="imgList imglistTwo">
@@ -124,7 +126,7 @@
             <van-icon @click="lookIdentityCard" v-if="!listImg7 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
-         <van-row class="heandClass">
+        <van-row class="heandClass">
           <van-col>其他照片资料</van-col>
         </van-row>
         <van-row class="imgList imglistTwo">
@@ -141,9 +143,9 @@
     </van-collapse>
     <van-button type="primary" bottom-action>确认</van-button>
     <transition name="fade">
-      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @change="onChange" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
+      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
     </transition>
-    <van-button type="primary" bottom-action>确认并提交</van-button>
+    <van-button @click="IntoASubmit" type="primary" bottom-action>确认并提交</van-button>
   </section>
 </template>
 
@@ -153,10 +155,18 @@ import Component from "vue-class-component";
 import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
 import { NetService } from "~/utils/net.service";
+import { ProductOrderService } from "~/services/manage-service/product-order.service";
+import { Dependencies } from "~/core/decorator";
 @Component({})
 export default class Login extends Vue {
+  @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
+
   @Mutation tenantImg
+  @Mutation clearIntoA
   @State intoA
+
+
+
   private arrImg: any = []
   private idName: any = null;
   private idNumber: any = null;
@@ -170,74 +180,94 @@ export default class Login extends Vue {
   private showName: any = ''
   private identityCardTwo: any = '';
   private photo: any = "";
-  private listImg:string = ''
-  private listImg2:string = ''
-  private listImg3:string = ''
-  private listImg4:string = ''
-  private listImg5:string = ''
-  private listImg6:string = ''
-  private listImg7:string = ''
-  private listImg8:string = ''
-  
+  private listImg: string = ''
+  private listImg2: string = ''
+  private listImg3: string = ''
+  private listImg4: string = ''
+  private listImg5: string = ''
+  private listImg6: string = ''
+  private listImg7: string = ''
+  private listImg8: string = ''
+  private suretyBot: boolean = false
+  private suretys: any = []
+  private personalAll: any = {}
 
-  private list: any = [
-    {
-      title: "户口本（户主页及个人页）",
-      imgLeft: "户口本照片",
-      name: "photo1",
-      ShowHidden: '',
 
-    },
-    {
-      title: "结婚证",
-      imgLeft: "结婚证照片",
-      ShowHidden: '',
-      name: "photo2"
-    },
-    {
-      title: "收入证明（劳动合同/收入证明）",
-      imgLeft: "收入证明照片",
-      ShowHidden: '',
-      name: "photo3"
-    },
-    {
-      title: "近6个月银行流水（柜台打印盖章/网银现场查询）",
-      imgLeft: "银行流水",
-      ShowHidden: '',
-      name: "photo4"
-    },
-    {
-      title: "社保查询（柜台打印盖章/网上现场查询）",
-      imgLeft: "社保查询",
-      ShowHidden: '',
-      name: "photo5"
-    },
-    {
-      title: "房产证明（房产证/按揭合同/购房合同）",
-      imgLeft: "房产证明",
-      ShowHidden: '',
-      name: "photo6"
-    },
-    {
-      title: "居住证明（本人/直系亲属姓名的水电费.物业费等单据）",
-      imgLeft: "居住证明",
-      ShowHidden: '',
-      name: "photo7"
-    },
-    {
-      title: "其他照片资料",
-      imgLeft: "其他照片",
-      ShowHidden: '',
-      name: "photo8"
-    },
-  ]
-  getRef(ref) {
-    this.photo = this.$refs[ref][0];
-    this.showName = ref
+  /**
+   * 进件点击确认提交
+   */
+  IntoASubmit() {
+    //  personal类
+    //  （证件页面）
+    this.personalAll = {
+      ///
+      personal: {
+        name: this.intoA.personal.name,    //证件姓名
+        id_card: this.intoA.personal.id_card,  //证件号码
+        nation: this.intoA.personal.nation,   // 民族
+        id_card_address: this.intoA.personal.id_card_address,  // 户籍信息
+        id_card_validity_period_section: this.intoA.personal.id_card_validity_period_section, // 有效期限
+        mobileMain: this.intoA.PersonalJob.phone,
+        mobileMinor: this.intoA.PersonalJob.contactPhone,
+        marital: this.intoA.PersonalJob.marital,    // 婚姻状况
+        education: this.intoA.PersonalJob.education,    // 学历信息
+        livingSituation: this.intoA.PersonalJob.situation,    // 居住情况
+        livingUsefulTime: this.intoA.PersonalJob.agelimit,    // 居住年限
+        province1: this.intoA.PersonalJob.province1,    // 居住地区 省
+        city1: this.intoA.PersonalJob.city1,    // 居住地区 市
+        district1: this.intoA.PersonalJob.district1,    // 居住地区 区
+        localHomeAddr: this.intoA.PersonalJob.address,    // 居住地址
+      },
+      personalCar: {
+        useful_time: this.intoA.personalCar.useful_time,    // 有效期限
+        file_number: this.intoA.personalCar.file_number,    // 档案编号
+        driving_license: this.intoA.personalCar.driving_license,    // 准驾车型
+      },
+      personalBank: {
+        depositBank: this.intoA.personalBank.deposit_bank,    // 开户银行
+        cardNumber: this.intoA.personalBank.card_number,    // 银行卡号
+        reservedPhoneNumber: this.intoA.personalBank.reserved_phone_number,    // 预留手机号
+      },
+      PersonalJob: {
+        workingCondition: this.intoA.PersonalJob.working,    // 工作情况
+        companyName: this.intoA.PersonalJob.companyName,    // 单位名称
+        companyNature: this.intoA.PersonalJob.natureUnit,    // 单位性质
+        companyAddressDetail: this.intoA.PersonalJob.companyAdress,    // 单位地址
+        companyPhone: this.intoA.PersonalJob.companyPhone,    // 单位电话
+        workingYears: this.intoA.PersonalJob.yearsWorking,    // 工作年限
+        basicSalary: this.intoA.PersonalJob.afterSalary,    // 税后月薪
+      },
+      PersonalContact: [
+        {
+          relation: this.intoA.PersonalContact.relation,    // 承租人关系
+          name: this.intoA.PersonalContact.username,    // 联系人姓名
+          phone: this.intoA.PersonalContact.phone    // 联系人姓名
+        }, {
+          relation: this.intoA.PersonalContact.relationTwo,    // 承租人关系
+          name: this.intoA.PersonalContact.usernameTwo,    // 联系人姓名
+          phone: this.intoA.PersonalContact.phoneTwo    // 联系人姓名
+        }
+      ],
+    }
+
+    this.personalAll.PersonalAdditional = this.intoA.PersonalAdditional
+    this.clearIntoA()
+    this.productOrderService.createOrder(this.personalAll).subscribe(
+      data => {
+        console.log(data)
+
+      },
+      err => this.$toast(err.msg)
+    )
+
+
+
+
+
+
+
   }
-  aaa() {
-    console.log(this.arrImg)
-  }
+
   /**
    * 手持身份证图片事件
    */
@@ -263,9 +293,10 @@ export default class Login extends Vue {
     }
   }
 
+  // 点击追加担保人确定事件
+  suretyfirm() {
 
-
-
+  }
 
   // 删除手持身份证图片事件
   closeIdentityCard() {
@@ -283,29 +314,9 @@ export default class Login extends Vue {
   }
 
 
-
-
-
-
-
-  choose(type) {
-    if (type === 1) {
-      this.columns = ["未婚", "已婚", "丧偶", "离婚"];
-    } else {
-      this.columns = ['本科', '专科', '博士'];
-    }
-  }
-
-  onChange(picker, value, index) {
-    if (value) {
-      this.columns = value;
-    } else {
-      this.columns = '本科';
-    }
-  }
-
   mounted() {
     this.arrImg = this.intoA.PersonalAdditional
+
   }
 
 
@@ -313,11 +324,18 @@ export default class Login extends Vue {
 </script>
 <style lang="less">
 .page.addInformation {
+  .imglistTwo {
+    margin-left: 15px;
+  }
+  .van-cell__title {
+    max-width: 100%;
+  }
   .heandClass {
     display: flex;
     margin: 10px 0 0 0;
     background-color: #e6e6e6;
     padding: 5px;
+    font-size: 14px;
   }
   .lookicon {
     color: cornflowerblue;
@@ -465,7 +483,7 @@ export default class Login extends Vue {
     background-repeat: no-repeat;
     background-size: contain;
   }
- 
+
   .iconfont {
     font-size: 1.5rem;
     margin-top: -0.6rem;
