@@ -50,6 +50,8 @@ import Trademark from "~/components/home/trademark.vue";
 import Question from "~/components/home/question.vue";
 import CarList from "~/components/home/car-list.vue";
 import NavBar from "~/components/common/nav-bar.vue";
+import { Dependencies } from "~/core/decorator";
+
 
 @Component({
   components: {
@@ -60,7 +62,6 @@ import NavBar from "~/components/common/nav-bar.vue";
   }
 })
 export default class Home extends Vue {
-
   private serachKeyWord: string = ''
 
   get keyWord() {
@@ -82,6 +83,7 @@ export default class Home extends Vue {
   private onSearch() {
     console.log(this.serachKeyWord)
   }
+
 }
 </script>
 

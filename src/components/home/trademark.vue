@@ -1,91 +1,80 @@
 <template >
   <section class="component trademark">
-    <img v-for="(item,index) of trademarkList" @click="Allcar(index)" :key="index" :src="item.img" height="60px" />
+    <!-- <img v-for="(item,index) of trademarkList" @click="Allcar(index)" :key="index" :src="item.img" height="60px" /> -->
+
+    <div class="logo" v-for="(item,index) in trademarkList" :key="index">
+      <div @click="Allcar(index,item.id)">
+        <img height="40px" :src="item.logoUrl" alt="">
+        <div class="logoDetails">{{item.brandName}}</div>
+      </div>
+    </div>
+
   </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from "vue-class-component";
-
+import { Dependencies } from "~/core/decorator";
+import { carShowManagementService } from "~/services/manage-service/carShowManagement.service";
 @Component({})
 export default class Trademark extends Vue {
+  @Dependencies(carShowManagementService) private carShowManagementService: carShowManagementService;
+  private trademarks = []
 
   get trademarkList() {
     let list = this.trademarks.slice(0, 9)
     list.push({
-      img: "/static/images/home/trademarks/all.png",
-      name: "全部新车"
+      logoUrl: "/static/images/home/trademarks/all.png",
+      brandName: "全部新车"
     })
     return list
-    
+
   }
-  Allcar(val){
-    console.log(this.trademarkList)
-    if(val == 9){
-      this.$router.push('/allVehicles')
-    }else{
+  /**
+   * 点击当前品牌 进入相对应的品牌车辆
+   */
+  Allcar(index,id) {
+    
+    if (index < 9) {
       this.$router.push('/buy-car-list')
+    } else {
+      this.$router.push('/allVehicles')
     }
-    
+
+  }
+  fristVehicleBrand() {
+    this.carShowManagementService.getTopTenCarBrandList().subscribe(
+      data => {
+        console.log(data)
+        this.trademarks = data
+
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+  mounted() {
+    this.fristVehicleBrand()
   }
 
 
-  private trademarks = [
-    {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    },
-    {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    },
-    {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    },
-    {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    },
-    {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    },
-    {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    }, {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    },
-    {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    },
-    {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    }, {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    },
-    {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    },
-    {
-      img: "/static/images/home/trademarks/xuefulan.png",
-      name: "雪佛兰"
-    }
-  ]
+
+
+
 
 }
 
 </script>
 
 <style lang="less" scoped>
-.trademark {
+.component.trademark {
+  .logo {
+    width: 20%;
+    float: left;
+    .logoDetails {
+      font-size: 12px;
+    }
+  }
 }
 </style>
 
