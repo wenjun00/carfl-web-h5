@@ -37,39 +37,39 @@ export class CityService {
     return fun(id)
   }
 
-  // /**
-  //  * 获取城市节点父元素
-  //  * @param id
-  //  */
-  // static getCityParent(id) {
-  //   let result: Array<any> = []
+  /**
+   * 获取城市节点父元素
+   * @param id
+   */
+  static getCityParent(id) {
+    let result: Array<any> = []
 
-  //   // 向根节点遍历
-  //   let fun = (itemId) => {
-  //     let item: any = cityData.find(x => x.id === itemId)
-  //     if (item && item.pid !== 1) {
-  //       result.unshift(item.pid)
-  //       fun(item.pid)
-  //     }
-  //   }
+    // 向根节点遍历
+    let fun = (itemId) => {
+      let item: any = cityData.find(x => x.id === itemId)
+      if (item && item.pid !== 1) {
+        result.unshift(item.pid)
+        fun(item.pid)
+      }
+    }
 
-  //   fun(id)
+    fun(id)
 
-  //   return result
-  // }
+    return result
+  }
 
-  // /**
-  //  * 获取城市名称
-  //  * @param id
-  //  */
-  // static getCityName(...ids) {
-  //   let results: Array<string> = []
+  /**
+   * 获取城市名称
+   * @param id
+   */
+  static getCityName(...ids) {
+    let results: Array<string> = []
 
-  //   ids.forEach(id => {
-  //     let item = cityData.find(c => c.id === id) || {}
-  //     results.push(item.name)
-  //   })
+    ids.forEach(id => {
+      let item = cityData.find(c => c.id === id) || {}
+      results.push(item.name)
+    })
 
-  //   return results.length < 2 ? results[0] : results
-  // }
+    return results.length < 2 ? results[0] : results
+  }
 }
