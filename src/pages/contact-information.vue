@@ -26,7 +26,7 @@
         <van-picker :columns="relations" v-show="relationBotTwo" show-toolbar ref="vanpicker" @confirm="relationfirmTwo" @cancel="relationBotTwo=false" />
       </transition>
 
-    <van-button type="primary" bottom-action @click="$router.push('/add-information')">下一步</van-button>
+    <van-button type="primary" @click="relationAffirm" bottom-action>下一步</van-button>
   </section>
 </template>
 
@@ -38,6 +38,7 @@ import { State, Mutation, Action } from "vuex-class";
 @Component({})
 export default class Login extends Vue {
    @Mutation linkman
+   @State intoA
   // 联系人1
   private relationBot: boolean = false
   private relations:any = []
@@ -73,9 +74,15 @@ export default class Login extends Vue {
     this.contactModel.falseRelationTwo = this.$dict.getDictName(Number(this.contactModel.relationTwo))  
     this.relationBotTwo = false
   }
+  /**
+   * 联系人点击下一步
+   */
+  relationAffirm(){
+    this.$router.push('/add-information')
+    this.linkman(this.contactModel)
+  }
 
   mounted(){
-       this.linkman(this.contactModel)
      // 承租人关系
      this.relations = this.$dict.getDictData('0464').map(v => {
       return Object.assign({ text: v.label }, v)

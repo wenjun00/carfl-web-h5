@@ -44,7 +44,7 @@
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
     </transition>
 
-    <van-button type="primary" bottom-action @click="$router.push('/custom-information')">下一步</van-button>
+    <van-button type="primary" bottom-action @click="addAffirm">下一步</van-button>
   </section>
 </template>
 
@@ -56,7 +56,7 @@ import { State, Mutation, Action } from "vuex-class";
 import { NetService } from "~/utils/net.service";
 @Component({})
 export default class Login extends Vue {
-  
+
   private idName: any = null;
   private arrAll: any = []
   private idNumber: any = null;
@@ -66,12 +66,21 @@ export default class Login extends Vue {
   private pickerDialog: boolean = false;
   private columns: any = [];
   private type: any;
-  private depositBank:string =""
+  private depositBank: string = ""
   private personalBank: any = {
     reserved_phone_number: '',  //预留手机号
     deposit_bank: '',   // 开户银行
     card_number: '',    // 银行卡号
   }
+  /**
+   * 点击下一步
+   */
+  addAffirm() {
+    this.$router.push('/custom-information')
+    this.bankCard(this.personalBank)
+  }
+
+
   /**
    * 点击开户银行
    */
@@ -83,12 +92,11 @@ export default class Login extends Vue {
   }
 
   mounted() {
-    this.bankCard(this.personalBank)
     this.arrAll = this.intoA.PersonalAdditional
+     console.log(this.intoA,'456545')
     this.columns = this.$dict.getDictData('0456').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-      console.log(this.intoA.PersonalAdditional,'爆炸')  
   }
 
   @Mutation bankCard
@@ -120,7 +128,7 @@ export default class Login extends Vue {
       })
     });
   }
- onReadTwo({ file }) {
+  onReadTwo({ file }) {
     NetService.upload(file).then(x => {
       this.photoTwo = x.localUrl
       for (let i in this.arrAll) {

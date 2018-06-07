@@ -44,7 +44,7 @@
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
     </transition>
-    <van-button type="primary" @click="$router.push('/upload-id-photo-three')" bottom-action>下一步</van-button>
+    <van-button type="primary" @click="nextStep" bottom-action>下一步</van-button>
   </section>
 </template>
 
@@ -87,6 +87,13 @@ export default class Login extends Vue {
     this.peopleCar.driving_license = val.value
     this.drivingType = this.$dict.getDictName(Number(this.peopleCar.driving_license))
     this.pickerDialog = false
+  }
+  /**
+   * 点击下一步
+   */
+  nextStep(){
+    this.$router.push('/upload-id-photo-three')
+    this.choosePeople(this.peopleCar)
   }
 
   /**
@@ -149,7 +156,6 @@ export default class Login extends Vue {
     ImagePreview([this.photoTwo]);
   }
   mounted() {
-    this.choosePeople(this.peopleCar)
     this.arrAll = this.intoA.PersonalAdditional
     this.columns = this.$dict.getDictData('0487').map(v => {
       return Object.assign({ text: v.label }, v)

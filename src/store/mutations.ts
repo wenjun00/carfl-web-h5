@@ -149,28 +149,32 @@ export default {
     state.userPhone = phoneNumber
   },
   //身份证信息页
-  idcCard(state,data){
+  idcCard(state, data) {
     state.intoA.personal = data
   },
   //驾驶者信息页
-  choosePeople(state,data){
+  choosePeople(state, data) {
     state.intoA.personalCar = data
   },
   //银行卡信息页
-  bankCard(state,data){
+  bankCard(state, data) {
     state.intoA.personalBank = data
   },
   //工作情况
-  going(state,data){
+  going(state, data) {
     state.intoA.PersonalJob = data
   },
   // 联系人
-  linkman(state,data){
-    state.intoA.personalContact = data
+  linkman(state, data) {
+    state.intoA.PersonalContact = data
   },
   // 所有照片
-  tenantImg(state,data){
-    state.intoA.PersonalAdditional  = data
+  tenantImg(state, data) {
+    state.intoA.PersonalAdditional = data
+  },
+  // 清空intoA
+  clearIntoA(state) {
+    state.intoA = {}
   }
 
 }

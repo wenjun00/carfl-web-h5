@@ -70,7 +70,7 @@
         <van-field v-model="inforModel.afterSalary" label="税后月薪" placeholder="请输入您税后的月薪" />
       </van-cell-group>
     </van-row>
-    <van-button type="primary" bottom-action @click="$router.push('/contact-information')">下一步</van-button>
+    <van-button type="primary" bottom-action @click="informationAffirm">下一步</van-button>
   </section>
 </template>
 
@@ -126,6 +126,10 @@ export default class Login extends Vue {
     natureUnit:'',       // 单位性质id
     falseYearsWorking:'', // 工作年限制文字
     yearsWorking:'',      // 工作年限id
+    province1:'',         // 居住地区省市
+    city1:'',             // 居住地区城市
+    district1:'',         // 居住地区区域
+
 
 
   }
@@ -142,6 +146,13 @@ export default class Login extends Vue {
     educate: ['本科', '专科', '博士'],
     dataList: AreaData,
     marital: ["未婚", "已婚", "丧偶", "离婚"]
+  }
+  /**
+   * 基本信息 点击下一步
+   */
+  informationAffirm(){
+    this.going(this.inforModel)
+    this.$router.push('/contact-information')
   }
 
 
@@ -193,6 +204,7 @@ export default class Login extends Vue {
   natureUnitfirm(val){
     this.inforModel.natureUnit = val.value
     this.inforModel.falsenatureUnit = this.$dict.getDictName(Number(this.inforModel.natureUnit))  
+    this.natureUnitBot = false
   }
   /**
    * 工作年限点击确定
@@ -278,7 +290,10 @@ export default class Login extends Vue {
   }
 
   onAreaConfirmClick(val) {
-    console.log(val)
+    // console.log(val)
+    this.inforModel.province1 = val[0].name 
+    this.inforModel.city1 = val[1].name             
+    this.inforModel.district1 = val[2].name         
     if (val && val.length >= 2) {
       this.inforModel.area = val[0].name + " " + val[1].name + " " + val[2].name
     }
