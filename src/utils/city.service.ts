@@ -1,41 +1,41 @@
-//const cityData = require('~/assets/json/city.json');
-import AreaData from "~/assets/area";
+const cityData = require('~/assets/json/city.json');
+// import AreaData from "~/assets/area";
 
 export class CityService {
-  // /**
-  //  * 获取城市信息
-  //  * @param level
-  //  * @param id
-  //  */
-  // static getCityData({ level = 3, id = 1 } = {}) {
-  //   let fun = (id, currentLevel = 1) => {
-  //     let items = new Array()
+  /**
+   * 获取城市信息
+   * @param level
+   * @param id
+   */
+  static getCityData({ level = 3, id = 1 } = {}) {
+    let fun = (id, currentLevel = 1) => {
+      let items = new Array()
 
-  //     cityData
-  //       .filter(x => x.pid === id)
-  //       .forEach(x => {
-  //         // 生成城市对象
-  //         let item: any = {
-  //           value: x.id,
-  //           label: x.name
-  //         }
+      cityData
+        .filter(x => x.pid === id)
+        .forEach(x => {
+          // 生成城市对象
+          let item: any = {
+            value: x.id,
+            label: x.name
+          }
 
-  //         // 检测获取级别
-  //         if (currentLevel < level) {
-  //           let children = fun(x.id, currentLevel + 1)
-  //           if (children && children.length > 0) {
-  //             item.children = children
-  //           }
-  //         }
+          // 检测获取级别
+          if (currentLevel < level) {
+            let children = fun(x.id, currentLevel + 1)
+            if (children && children.length > 0) {
+              item.children = children
+            }
+          }
 
-  //         items.push(item)
-  //       })
+          items.push(item)
+        })
 
-  //     return items
-  //   }
+      return items
+    }
 
-  //   return fun(id)
-  // }
+    return fun(id)
+  }
 
   // /**
   //  * 获取城市节点父元素
@@ -72,25 +72,4 @@ export class CityService {
 
   //   return results.length < 2 ? results[0] : results
   // }
-
-  /**
-   * 获取省市县数据
-   * @param level 
-   * @param parent 
-   */
-  static getCityData(level: number, parent: number) {
-    let data = {}
-    switch (level) {
-      case 2:
-        data = AreaData.province_list
-        break;
-      case 3:
-        data = AreaData.city_list
-        break;
-      default:
-        data = AreaData.county_list
-        break
-    }
-    return data
-  }
 }

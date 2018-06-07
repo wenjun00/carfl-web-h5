@@ -38,7 +38,7 @@
         <van-button type="primary" class="full-radius" size="large" @click="$router.push('/subscribe')">帮我买车</van-button>
       </div>
     </section>
-
+    <city-picker></city-picker>
     <nav-bar v-model="show.navBar"></nav-bar>
   </section>
 </template>
@@ -50,37 +50,40 @@ import Trademark from "~/components/home/trademark.vue";
 import Question from "~/components/home/question.vue";
 import CarList from "~/components/home/car-list.vue";
 import NavBar from "~/components/common/nav-bar.vue";
-
+import CityPicker from "~/components/common/city-picker.vue";
 @Component({
   components: {
     Trademark,
     CarList,
     Question,
-    NavBar
+    NavBar,
+    CityPicker
   }
 })
 export default class Home extends Vue {
-
-  private serachKeyWord: string = ''
+  private serachKeyWord: string = "";
 
   get keyWord() {
-    return this.serachKeyWord
+    return this.serachKeyWord;
   }
   set keyWord(val) {
-    this.serachKeyWord = val
-    this.show.search = val !== ""
+    this.serachKeyWord = val;
+    this.show.search = val !== "";
   }
 
-  private images: Array<string> = ['/static/images/home/home01.png', '/static/images/home/home01.png']
+  private images: Array<string> = [
+    "/static/images/home/home01.png",
+    "/static/images/home/home01.png"
+  ];
 
   // 控制各个组件显示flag
   private show = {
     navBar: false,
     search: false
-  }
+  };
 
   private onSearch() {
-    console.log(this.serachKeyWord)
+    console.log(this.serachKeyWord);
   }
 }
 </script>
