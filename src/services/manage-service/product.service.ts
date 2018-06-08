@@ -3,18 +3,17 @@ import { Inject, Debounce } from "~/core/decorator";
 import { requestType } from "~/config/enum.config";
 import { manageService } from '~/config/server/manage-service'
 
-export class DataDictTypeService {
+export class ProductService {
     @Inject(NetService)
     private netService: NetService
 
-    getAllDictType() {
+    /**
+     * 
+     * 查询车辆信息首付月供
+     */
+    getCarProductResultModelList(data) {
         return this.netService.send({
-            server: manageService.dataDictTypeController.getAllDictType,
-        })
-    }
-    createOrModifyDataDictType(data) {
-        return this.netService.send({
-            server: manageService.dataDictTypeController.createOrModifyDataDictType,
+            server: manageService.productController.getCarProductResultModelList,
             data
         })
     }

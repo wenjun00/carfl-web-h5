@@ -33,5 +33,15 @@ export class carManagementService {
       data
     })
   }
+  
+  /**
+   * 获取车辆详情首页图片
+   */
+  getCarPictureList(data) {
+    return this.netService.send({
+      server: manageService.carManagementController.getCarPictureList,
+      data
+    })
+  }
 
 }

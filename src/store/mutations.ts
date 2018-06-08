@@ -172,6 +172,14 @@ export default {
   tenantImg(state, data) {
     state.intoA.PersonalAdditional = data
   },
+  //车辆详情
+  carDetails(state, data){
+    state.intoA.orderCar = data
+  },
+  carDetailTwo(state, data){
+    state.intoA.orderCarTwo = data
+  },
+
   // 清空intoA
   clearIntoA(state) {
     state.intoA = {}

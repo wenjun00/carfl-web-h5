@@ -4,11 +4,11 @@
     <van-popup v-model="showNavBar " position="right" @click-overlay="onNavItemClick(false)">
       <van-cell-group>
         <van-cell title="首页" to="/home" clickable @click="onNavItemClick" />
-        <van-cell title="买新车" to="/buy-car-list" clickable @click="onNavItemClick" />
+        <van-cell title="买新车" to="/buy-car-list/9999" clickable @click="onNavItemClick" />
       </van-cell-group>
       <div class="van-hairline--bottom"></div>
       <van-cell-group>
-        <van-cell title="我的订单" to="/my-order" clickable @click="onNavItemClick" />
+        <van-cell title="我的订单" to="/upload-id-photo-first" clickable @click="onNavItemClick" />
         <van-cell title="还款明细" to="/payment-record" clickable @click="onNavItemClick" />
       </van-cell-group>
       <div class="van-hairline--bottom"></div>

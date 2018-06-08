@@ -14,34 +14,46 @@
       <van-row>
         <van-col class="payment">首付</van-col>
       </van-row>
-      <van-row class="headSwitch">
-        <van-tabs type="card">
-          <van-tab v-for="(item,index) in byStages" :key="index" :title="item.label">
-            <van-row>
-              <van-col class="paymentTwo">期数</van-col>
-            </van-row>
-            <span class="periods"> {{ item.val }}</span>
-          </van-tab>
-        </van-tabs>
+      <van-row>
+        <van-col v-for="(item,index) in carPeriodsOne" :key="index">
+          <span class="downPayment" @click="paymentOne(item.firstPayment)">{{item.firstPayment}}</span>
+        </van-col>
+      </van-row>
+      <van-row>
+        <van-col class="payment">期数</van-col>
+      </van-row>
+      <van-row>
+        <van-col v-for="(item,index) in carPeriodsTwo" :key="index">
+          <span class="downPayment" @click="paymentTwo(item.planType)">{{$dict.getDictName(item.planType)}}</span>
+        </van-col>
       </van-row>
       <van-row>
         <van-col class="payment">月供详情</van-col>
       </van-row>
-      <van-row class="monthly">
-        <van-col>第一月供:
-          <span>3263.55</span>元 第二月供:
-          <span>3254.66</span>元
+      <van-row class="monthly" v-show="carPeriodsThree.length > 0">
+        <van-col span="12" v-show="carPeriodsThree.length > 0 ? carPeriodsThree[0].firstYearMonthrent:null">
+          第一年月供:
+          <span class="colred">{{ carPeriodsThree.length > 0 ? carPeriodsThree[0].firstYearMonthrent:null}}</span>元
         </van-col>
-      </van-row>
-      <van-row class="monthly">
-        <van-col> 第一月供:
-          <span>3263.55</span>元 第二月供:
-          <span>3254.66</span>元
+        <van-col span="12" v-show="carPeriodsThree.length > 0?carPeriodsThree[0].secondYearMonthrent:null">
+          第二年月供:
+          <span class="colred">{{ carPeriodsThree.length > 0?carPeriodsThree[0].secondYearMonthrent:null }}</span>元
+        </van-col>
+        <van-col span="12" v-show="carPeriodsThree.length > 0 ? carPeriodsThree[0].thirdYearMonthrent:null">
+          第三年月供:
+          <span class="colred">{{ carPeriodsThree.length > 0 ? carPeriodsThree[0].thirdYearMonthrent:null }}</span>元
+        </van-col>
+        <van-col span="12" v-show="carPeriodsThree.length > 0? carPeriodsThree[0].fourthYearMonthrent:null">
+          第四年月供:
+          <span class="colred">{{ carPeriodsThree.length > 0? carPeriodsThree[0].fourthYearMonthrent:null }}</span>元
+        </van-col>
+        <van-col span="12" v-show="carPeriodsThree.length > 0? carPeriodsThree[0].fifthYearMonthrent:null">
+          第五年月供:
+          <span class="colred">{{ carPeriodsThree.length > 0? carPeriodsThree[0].fifthYearMonthrent:null }}</span>元
         </van-col>
       </van-row>
     </div>
     <!-- 基本参数 -->
-
     <van-collapse v-model="activeNames">
       <van-collapse-item name="2">
         <div slot="title">基本参数
@@ -92,7 +104,99 @@
       <van-col span="12" v-for="(itemTwo,indexTwo) in item.materialList" :key="indexTwo"><img width="90%" :src="itemTwo.url" alt=""></van-col>
       <van-col class="mar10" span="24">{{item.introduce}}</van-col>
     </van-row>
-
+    <div class="carGoHome">
+      <!-- 四步提车回家 -->
+      <van-cell-group class="magin10">
+        <van-cell>
+          <template slot="title">
+            <img class="someIcon" height="15px" :src="images" alt="">
+            <span class="van-cell-text basicParameter">四步提车回家</span>
+          </template>
+        </van-cell>
+      </van-cell-group>
+      <van-row>
+        <div class="appointmentImmediately">
+          <img height="65px" src="/static/images/common/phone.png" alt="">
+          <div class="appointmentDescribe">
+            <div class="appointmentHend">立即预约</div>
+            <span class="appointmentSpan">选好意向车型后,洋葱好车直营店客户经理将在24小时之内为你提供1对1服务</span>
+          </div>
+        </div>
+      </van-row>
+      <van-row>
+        <div class="appointmentImmediately">
+          <img height="65px" src="/static/images/common/agreement.png" alt="">
+          <div class="appointmentDescribe">
+            <div class="appointmentHend">签订协议</div>
+            <span class="appointmentSpan">选择合适的购车方案,通过征信审核后签订购车协议</span>
+          </div>
+        </div>
+      </van-row>
+      <van-row>
+        <div class="appointmentImmediately">
+          <img height="65px" src="/static/images/common/cost.png" alt="">
+          <div class="appointmentDescribe">
+            <div class="appointmentHend">支付费用</div>
+            <span class="appointmentSpan">支付首付,第一期月供,违章保证金</span>
+          </div>
+        </div>
+      </van-row>
+      <van-row>
+        <div class="appointmentImmediately">
+          <img height="65px" src="/static/images/common/vehicle.png" alt="">
+          <div class="appointmentDescribe">
+            <div class="appointmentHend">到店提车</div>
+            <span class="appointmentSpan">免费办理保险与上牌手续后,客户经理将联系您到附近直营店提车</span>
+          </div>
+        </div>
+      </van-row>
+      <!-- 空行 -->
+      <van-cell-group class="nullString"></van-cell-group>
+      <!-- 购买须知 -->
+      <van-cell-group class="magin10">
+        <van-cell>
+          <template slot="title">
+            <img class="someIcon" height="15px" :src="images" alt="">
+            <span class="van-cell-text basicParameter">购买须知</span>
+          </template>
+        </van-cell>
+      </van-cell-group>
+      <van-row class="purchaseNotes">
+        <van-col class="noticeHeand" span="8">购车资料</van-col>
+        <van-col class="noticeEnd" span="16">洋葱汽车由各大汽车品牌厂商供应,车源品质有保障</van-col>
+      </van-row>
+      <van-row class="purchaseNotes">
+        <van-col class="noticeHeand" span="8">车源保障</van-col>
+        <van-col class="noticeEnd" span="16">二代身份证、驾驶证、征信报告</van-col>
+      </van-row>
+      <van-row class="purchaseNotes">
+        <van-col class="noticeHeand" span="8">车辆归属</van-col>
+        <van-col class="noticeEnd" span="16">用车期间,车辆以及车牌所有权归属洋葱汽车;结清全部费用后即办理车辆过户</van-col>
+      </van-row>
+      <van-row class="purchaseNotes">
+        <van-col class="noticeHeand" span="8">额外费用</van-col>
+        <van-col class="noticeEnd" span="16">除违章保证金无需支付额外费用</van-col>
+      </van-row>
+      <van-row class="purchaseNotes">
+        <van-col class="noticeHeand" span="8">随车保险</van-col>
+        <van-col class="noticeEnd" span="16">洋葱汽车帮您办理好保险</van-col>
+      </van-row>
+      <van-row class="purchaseNotes">
+        <van-col class="noticeHeand" span="8">上牌</van-col>
+        <van-col class="noticeEnd" span="16">洋葱汽车负责办理车辆上牌,您无需到场,无需支付额外费用</van-col>
+      </van-row>
+      <van-row class="purchaseNotes">
+        <van-col class="noticeHeand" span="8">还款</van-col>
+        <van-col class="noticeEnd" span="16">购车后通过绑定的银行卡按时还款</van-col>
+      </van-row>
+      <!-- 空行 -->
+      <van-cell-group class="nullString"></van-cell-group>
+      <van-row class="subscribe">
+        <van-col span="20">
+          <van-button @click="skipNextStep " class="but" size="large">下一步</van-button>
+        </van-col>
+      </van-row>
+    </div>
   </section>
 </template>
 
@@ -101,41 +205,51 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Collapse, CollapseItem } from 'vant';
 import { carManagementService } from "~/services/manage-service/carManagement.service";
+import { ProductService } from "~/services/manage-service/product.service";
 import { Dependencies } from "~/core/decorator";
+import { State, Mutation, Action } from "vuex-class";
+import { print } from "util";
+
 
 @Component({
   components: {}
 })
 export default class detailsScheme extends Vue {
   @Dependencies(carManagementService) private carManagementService: carManagementService;
+  @Dependencies(ProductService) private productService: ProductService;
+  @Mutation carDetailTwo
+  @Mutation carDetails
   private showDetails: boolean = false
   private activeNames: any = ['1']
   private detailsList: any = []   // 车辆详情配置
   private basicEquipment: any = [] // 车辆基本配置
   private carImg: any = []      // 车辆图片
   private carName: any = []
+  private carInfo: any = []      // 汽车详情
+  private paramsId = ''     //车辆id
+  private carPeriodsOne: any = []    // 还款期数1
+  private carPeriodsTwo: any = []    //还款期数2、
+  private carPeriodsThree: any = []  // 还款期数3
+  private carIntoA: any = {}   // 进件需要用的数据
+
+
 
 
   private images = '/static/images/common/headerLabel.png'
-  private byStages = [{
-    val: '24期数',
-    label: '0.91'
-  }, {
-    val: '36期数',
-    label: '1.36'
-  }, {
-    val: '48期数',
-    label: '1.82'
-  }, {
-    val: '60期数',
-    label: '2.27'
-  }]
+
+
+  /**
+   * 获取当前页面路由id
+   */
+  private getParamsid() {
+    this.paramsId = this.$route.params.id
+  }
 
   /**
    * 获取车辆详细配置 
    */
   getCarDetails() {
-    this.carManagementService.getCarParamList({ carId: 8 }).subscribe(
+    this.carManagementService.getCarParamList({ carId: this.paramsId }).subscribe(
       data => {
         this.detailsList = data
       },
@@ -146,9 +260,16 @@ export default class detailsScheme extends Vue {
   * 获取车辆基本配置
   */
   getBasicEquipment() {
-    this.carManagementService.getCarDetail({ carId: 8 }).subscribe(
+    this.carManagementService.getCarDetail({ carId: this.paramsId }).subscribe(
       data => {
         this.basicEquipment = data
+         this.carInfo = {
+          brandName: data.brandName,
+          interiorColor: data.interiorColor,
+          modelName: data.modelName,
+          seriesName: data.seriesName,
+          vehicleColor: data.carColour,
+        }
       },
       err => this.$toast(err.msg)
     )
@@ -158,22 +279,81 @@ export default class detailsScheme extends Vue {
   * 获取车辆图片 （栏目信息）
   */
   getCarColumnImg() {
-    this.carManagementService.getCarColumnCollectModel({ carId: 8 }).subscribe(
+    this.carManagementService.getCarColumnCollectModel({ carId: this.paramsId }).subscribe(
       data => {
-        // this.basicEquipment = data
-        console.log(data, '车型亮点')
-        // this.carName = data
         this.carImg = data.columnList
       },
       err => this.$toast(err.msg)
     )
   }
+  /**
+  * 获取车辆首付 期数1
+  */
+  getCarPeriods() {
+    this.productService.getCarProductResultModelList({ carId: this.paramsId }).subscribe(
+      data => {
+        this.carPeriodsOne = data
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+  /***
+   * 还款期数 期数2
+   */
+  paymentOne(val) {
+    let a = {
+      carId: this.paramsId,
+      firstPayment: val
+    }
+    this.productService.getCarProductResultModelList(a).subscribe(
+      data => {
+        this.carPeriodsTwo = data
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+  /**
+   * 点击期数 期数3
+   */
+  paymentTwo(val) {
+    let a = {
+      carId: this.paramsId,
+      planType: val
+    }
+    this.productService.getCarProductResultModelList(a).subscribe(
+      data => {
+        this.carPeriodsThree = data
+        this.carIntoA={
+          productResultId: data[0].resultId,
+          productId: data[0].relationId,
+          initialPayment: data[0].firstPayment,
+          finalCash: data[0].endPayment,
+          financingAmount: data[0].firstYearPrincipal,
+          monthlySupply: data[0].firstYearMonthrent,
+          periods: data[0].planType,
+        }
+        console.log(data, '进件需要用的')
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+ /***
+   * 点击下一步
+   */
+  skipNextStep(){
+    this.carDetails(this.carInfo)
+    this.carDetailTwo(this.carIntoA)
+    this.$router.push('/upload-id-photo-first')
 
+  }
 
   mounted() {
+    this.getParamsid()
     this.getCarDetails()
     this.getBasicEquipment()
     this.getCarColumnImg()
+    this.getCarPeriods()
+
   }
 
 
@@ -182,6 +362,71 @@ export default class detailsScheme extends Vue {
 
 <style lang="less" scoped>
 .page.detailsScheme {
+  .carGoHome {
+    .subscribe {
+      display: flex;
+      justify-content: center;
+      .but {
+        background: #ffdb00;
+        border-radius: 25px;
+        font-size: 15px;
+        font-weight: 600;
+        margin: 10px 0px 10px 0px;
+      }
+    }
+    .purchaseNotes {
+      padding: 0px 25px;
+      font-size: 13px;
+      font-weight: 600;
+      margin: 10px 0px 10px 0px;
+      height: 45px;
+      .noticeHeand {
+        color: #333;
+      }
+      .noticeEnd {
+        color: #666;
+      }
+    }
+    .nullString {
+      height: 15px;
+      background: #f5f6f5;
+    }
+    .basicParameter {
+      line-height: 30px !important;
+      font-weight: 600 !important;
+    }
+    .someIcon {
+      position: relative;
+      top: 3px;
+    }
+    .magin10 {
+      margin-bottom: 10px;
+    }
+    .appointmentImmediately {
+      display: flex;
+      justify-content: space-around;
+      height: 80px;
+      .appointmentDescribe {
+        width: 60%;
+        .appointmentHend {
+          font-size: 14px;
+          font-weight: 600;
+          height: 22px;
+        }
+        .appointmentSpan {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  .colred {
+    color: red;
+  }
+  .downPayment {
+    border: 1px solid gray;
+    padding: 5px;
+    box-sizing: border-box;
+  }
   .mar10 {
     margin-top: 10px;
     margin-bottom: 10px;

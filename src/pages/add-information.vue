@@ -201,12 +201,33 @@ export default class Login extends Vue {
     //  （证件页面）
     this.personalAll = {
       ///
+      city: 902,
+      productResultId: this.intoA.orderCarTwo.productResultId,
+      productId: this.intoA.orderCarTwo.productId,
+      initialPayment: this.intoA.orderCarTwo.initialPayment,
+      finalCash: this.intoA.orderCarTwo.finalCash,
+      financingAmount: this.intoA.orderCarTwo.financingAmount,
+      monthlySupply: this.intoA.orderCarTwo.monthlySupply,
+      periods: this.intoA.orderCarTwo.periods,
       personal: {
+        certificateType: null,  
+        city: null,      
+        driverModel: null, 
+        driverNo: null,        
+        driverPhoto:null,
+        driverTerm:null,
+        driverVicePhoto:null,
+        headPhoto:null,
+        idCardAddressDetail:null,
+        idCardTerm:null,
+        nationalPhoto:null,
+        province:null,
+
         name: this.intoA.personal.name,    //证件姓名
-        id_card: this.intoA.personal.id_card,  //证件号码
+        idCard: this.intoA.personal.id_card,  //证件号码
         nation: this.intoA.personal.nation,   // 民族
-        id_card_address: this.intoA.personal.id_card_address,  // 户籍信息
-        id_card_validity_period_section: this.intoA.personal.id_card_validity_period_section, // 有效期限
+        idCardAddress: this.intoA.personal.id_card_address,  // 户籍信息
+        idCardValidity_period_section: this.intoA.personal.id_card_validity_period_section, // 有效期限
         mobileMain: this.intoA.PersonalJob.phone,
         mobileMinor: this.intoA.PersonalJob.contactPhone,
         marital: this.intoA.PersonalJob.marital,    // 婚姻状况
@@ -217,27 +238,32 @@ export default class Login extends Vue {
         city1: this.intoA.PersonalJob.city1,    // 居住地区 市
         district1: this.intoA.PersonalJob.district1,    // 居住地区 区
         localHomeAddr: this.intoA.PersonalJob.address,    // 居住地址
+        personalBank: {
+          depositBank: this.intoA.personalBank.deposit_bank,    // 开户银行
+          cardNumber: this.intoA.personalBank.card_number,    // 银行卡号
+          reservedPhoneNumber: this.intoA.personalBank.reserved_phone_number,    // 预留手机号
+        },
+        personalJob: {
+          workingCondition: this.intoA.PersonalJob.working,    // 工作情况
+          companyName: this.intoA.PersonalJob.companyName,    // 单位名称
+          companyNature: this.intoA.PersonalJob.natureUnit,    // 单位性质
+          companyAddressDetail: this.intoA.PersonalJob.companyAdress,    // 单位地址
+          companyPhone: this.intoA.PersonalJob.companyPhone,    // 单位电话
+          workingYears: this.intoA.PersonalJob.yearsWorking,    // 工作年限
+          basicSalary: Number(this.intoA.PersonalJob.afterSalary) ,    // 税后月薪
+          companyhostAddr: null,        
+          jobType: null,                             
+          localHomeAddrDetail: null,     
+        },
       },
       personalCar: {
-        useful_time: this.intoA.personalCar.useful_time,    // 有效期限
-        file_number: this.intoA.personalCar.file_number,    // 档案编号
-        driving_license: this.intoA.personalCar.driving_license,    // 准驾车型
+        usefulTime: this.intoA.personalCar.useful_time,    // 有效期限
+        fileNumber: this.intoA.personalCar.file_number,    // 档案编号
+        drivingLicense: this.intoA.personalCar.driving_license,    // 准驾车型
       },
-      personalBank: {
-        depositBank: this.intoA.personalBank.deposit_bank,    // 开户银行
-        cardNumber: this.intoA.personalBank.card_number,    // 银行卡号
-        reservedPhoneNumber: this.intoA.personalBank.reserved_phone_number,    // 预留手机号
-      },
-      PersonalJob: {
-        workingCondition: this.intoA.PersonalJob.working,    // 工作情况
-        companyName: this.intoA.PersonalJob.companyName,    // 单位名称
-        companyNature: this.intoA.PersonalJob.natureUnit,    // 单位性质
-        companyAddressDetail: this.intoA.PersonalJob.companyAdress,    // 单位地址
-        companyPhone: this.intoA.PersonalJob.companyPhone,    // 单位电话
-        workingYears: this.intoA.PersonalJob.yearsWorking,    // 工作年限
-        basicSalary: this.intoA.PersonalJob.afterSalary,    // 税后月薪
-      },
-      PersonalContact: [
+      
+
+      personalContacts: [
         {
           relation: this.intoA.PersonalContact.relation,    // 承租人关系
           name: this.intoA.PersonalContact.username,    // 联系人姓名
@@ -250,11 +276,12 @@ export default class Login extends Vue {
       ],
     }
 
-    this.personalAll.PersonalAdditional = this.intoA.PersonalAdditional
+    this.personalAll.personalAdditionals = this.intoA.PersonalAdditional
+    this.personalAll.orderCar = this.intoA.orderCar
     this.clearIntoA()
     this.productOrderService.createOrder(this.personalAll).subscribe(
       data => {
-        console.log(data)
+        // console.log(data)
 
       },
       err => this.$toast(err.msg)

@@ -125,7 +125,7 @@ export default class Login extends Vue {
     companyName: "",     // 单位名称
     companyAdress: "",   // 单位地址
     companyPhone: "",    // 单位电话
-    afterSalary: "",     // 税后月薪
+    afterSalary: null,     // 税后月薪
     falseMarital: '',     // 婚姻状况文字
     marital: "",         // 婚姻状况id
     falseeducation: '',   // 学历信息文字

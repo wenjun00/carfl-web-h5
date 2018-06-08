@@ -6,7 +6,6 @@ export default async function ({ store, router }) {
   let { DataDictService } = await creatDataDictService()
 
   let dataDictService = new DataDictService()
-  console.log(111)
   // 启动数据初始化
   let flag = await Promise.all([
     updateDictData()

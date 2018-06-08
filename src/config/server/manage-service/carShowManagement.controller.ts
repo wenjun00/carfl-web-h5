@@ -15,11 +15,32 @@ export default {
         action: 'getTopTenCarBrandList',
         type: requestType.Get
     },
+    /**
+     * 获取全部品牌
+     */
     getAllCarBrandList: {
       service: SERVICE,
       controller: CONTROLLER,
       action: 'getAllCarBrandList',
       type: requestType.Get
   },
+  /**
+   * 获取热门车辆
+   */
+  getGoodCarShowModelList: { 
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getGoodCarShowModelList',
+    type: requestType.Get
+},
+/***
+ * 根据车辆id 获取当前品牌车辆
+ */
+getCarShowModelListByBrandId: { 
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCarShowModelListByBrandId',
+    type: requestType.Get
+},
    
 }

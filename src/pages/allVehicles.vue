@@ -24,7 +24,7 @@ export default class allVehicles extends Vue {
   private trademarks: any = []
 
   Allcar(index, id) {
-      this.$router.push('/buy-car-list')
+      this.$router.push(`/buy-car-list/${id}`)
     
   }
 

@@ -34,5 +34,14 @@ export default {
     type: requestType.Get
   },
 
+  /***
+   * 获取车辆详情首页图片
+   */
+  getCarPictureList: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCarPictureList',
+    type: requestType.Get
+  },
 
 }

@@ -9,22 +9,21 @@
       </van-search>
     </form>
     <van-list v-model="show.loading" :finished="show.finished" @load="loadMore">
-      <van-row class="buy-car-list-item" v-for="(item,index) of dataSet" :key="index">
+      <van-row class="buy-car-list-item" v-for="(item,index) of LogoCar" :key="index">
         <van-col span="10">
           <div>
-            <div @click="vehicleDetails"><img src="/static/images/home/car.png" height="100px"></div>
+            <div @click="vehicleDetails(item.carId)"><img src="/static/images/home/car.png" height="100px"></div>
           </div>
         </van-col>
         <van-col span="14">
           <div class="car">
-            <span>{{item.title}}</span>
+            <span>{{item.brandSeriesName}}</span>
             <br/>
-            <span class="car-info">{{item.info}}</span>
-            <p class="car-price">厂商指导价{{item.price}}万</p>
+            <span class="car-info">{{item.modelName}}</span>
           </div>
           <van-row>
-            <van-col span="12" class="car-first">首付{{item.firstMoney | toThousands}}万</van-col>
-            <van-col span="12" class="car-month">月供{{item.monthMoney}}元</van-col>
+            <van-col span="12" class="car-first">首付{{item.firstPayment/1000 | toThousands}}万</van-col>
+            <van-col span="12" class="car-month">月供{{item.monthRent}}元</van-col>
           </van-row>
         </van-col>
       </van-row>
@@ -42,6 +41,8 @@ import Component from "vue-class-component";
 import { LodashService } from "~/utils/lodash.service";
 import NavBar from "~/components/common/nav-bar.vue";
 import { Watch } from "vue-property-decorator";
+import { carShowManagementService } from "~/services/manage-service/carShowManagement.service";
+import { Dependencies } from "~/core/decorator";
 
 @Component({
   components: {
@@ -49,8 +50,10 @@ import { Watch } from "vue-property-decorator";
   }
 })
 export default class BuyCarList extends Vue {
-
+  @Dependencies(carShowManagementService) private carShowManagementService: carShowManagementService;
+  private paramsId = ''
   private serachKeyWord: string = ''
+  private LogoCar = []  // 品牌车辆
 
   get keyWord() {
     return this.serachKeyWord
@@ -61,13 +64,14 @@ export default class BuyCarList extends Vue {
   }
 
   private scrollTop(val) {
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0)
   }
   /**
    * 点击车辆跳转详情页面
    */
-  vehicleDetails(){
-     this.$router.push('/details')
+  vehicleDetails(val) {
+    // console.log(val)
+    this.$router.push(`/details/${val}`)
   }
 
   onScrollTopChage() {
@@ -110,7 +114,7 @@ export default class BuyCarList extends Vue {
   private onSearch() {
 
   }
-
+  //加载
   private loadMore() {
 
     let loaded = new Promise((resolve, reject) => {
@@ -130,18 +134,38 @@ export default class BuyCarList extends Vue {
         this.show.finished = true;
       }
     })
-
+  }
+  /**
+   * 获取当前页面路由id
+   */
+  getParamsid() {
+    this.paramsId = this.$route.params.id
+  }
+  /**
+   * 获取当前品牌车辆
+   */
+  getImgCarLogo() {
+    this.carShowManagementService.getCarShowModelListByBrandId({ brandId: this.paramsId }).subscribe(
+      data => {
+        this.LogoCar = data
+        // console.log(data,'当前车辆对应id')
+      },
+      err => this.$toast(err.msg)
+    )
   }
 
+
   mounted() {
+    this.getParamsid()
+    this.getImgCarLogo()
     this.dataSet = []
     let index = 0
     while (index < 10) {
       this.dataSet.push(this.carIntro)
       index++
     }
-
     window.addEventListener('scroll', this.onScrollTopChage)
+
   }
 
   beforeDestroy() {

@@ -38,7 +38,7 @@ const routes = [
     name: 'FAQ',
     component: FAQ
   }, {
-    path: '/buy-car-list',
+    path: '/buy-car-list/:id',
     name: 'BuyCarList',
     component: BuyCarList
   }, {
@@ -86,7 +86,7 @@ const routes = [
     },
     component: PaymentRecord
   },{
-    path: '/details',
+    path: '/details/:id',
     name :'details',
     component: Details
   },{

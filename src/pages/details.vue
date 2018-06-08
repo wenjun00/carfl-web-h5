@@ -1,12 +1,13 @@
 <template>
-  <section class="page details">
+  <section class="page details"> 
     <van-row>
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img class="carImg" :src="image" />
+          <img class="carImg" :src="image.url" />
         </van-swipe-item>
       </van-swipe>
     </van-row>
+    
     <van-row class="carDetails">
       <van-col class="detailsOne" span="20">车辆照片仅供参考,已配置描述为准</van-col>
       <van-col class="imgLength" span="4">
@@ -14,11 +15,11 @@
       </van-col>
     </van-row>
     <van-row class="textDescription">
-      <van-col span="24">JEEP 指南者2017款1.4T家享版5座</van-col>
-      <van-col class="price">
+      <van-col span="24">{{carList.modelName}}</van-col>
+      <!-- <van-col class="price">
         <span>商场指导价:</span>
         <span>17.98万</span>
-      </van-col>
+      </van-col> -->
     </van-row>
     <van-row class="guarantee">
       <van-col span="8" class="textCenter">
@@ -37,9 +38,7 @@
     <van-row>
       <DetailsScheme></DetailsScheme>
     </van-row>
-    <van-row>
-      <CarGoHome></CarGoHome>
-    </van-row>
+
 
   </section>
 </template>
@@ -48,29 +47,59 @@
 import Vue from 'vue'
 import Component from "vue-class-component";
 import DetailsScheme from "~/components/common/detailsScheme.vue";
-import CarGoHome from "~/components/common/carGoHome.vue";
 import { carManagementService } from "~/services/manage-service/carManagement.service";
 import { Dependencies } from "~/core/decorator";
 
 @Component({
   components: {
     DetailsScheme,
-    CarGoHome
   }
 })
 export default class Details extends Vue {
    @Dependencies(carManagementService) private carManagementService: carManagementService;
-  private images = ['/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png']
+  private paramsId = '' 
+  private carList = []
+  private images = []
   BackTop() {
     document.documentElement.scrollTop = 0
     window.scrollTo(0, 0);
-    // console.log(document.documentElement.scrollTop, '123')
+  }
+  /**
+   * 获取当前页面路由id
+   */
+  private getParamsid() {
+    this.paramsId = this.$route.params.id
+  }
+
+  /**
+  * 获取车辆基本配置
+  */
+  getBasicEquipment() {
+    this.carManagementService.getCarDetail({ carId: this.paramsId }).subscribe(
+      data => {
+        this.carList = data
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+  /**
+  * 获取车辆首页图片
+  */
+  getCarPictureFun() {
+    this.carManagementService.getCarPictureList({ carId: this.paramsId }).subscribe(
+      data => {
+        this.images = data
+      },
+      err => this.$toast(err.msg)
+    )
   }
 
 
   mounted() {
+    this.getParamsid()
     this.BackTop()
-  
+    this.getBasicEquipment()
+    this.getCarPictureFun()
   }
 }
 </script>

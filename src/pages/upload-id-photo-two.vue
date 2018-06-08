@@ -157,7 +157,7 @@ export default class Login extends Vue {
   }
   mounted() {
     this.arrAll = this.intoA.PersonalAdditional
-    this.columns = this.$dict.getDictData('0487').map(v => {
+    this.columns = this.$dict.getDictData('0478').map(v => {
       return Object.assign({ text: v.label }, v)
     })
 

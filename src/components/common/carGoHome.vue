@@ -89,7 +89,7 @@
     <van-cell-group class="nullString"></van-cell-group>
     <van-row class="subscribe">
       <van-col span="20">
-        <van-button class="but" size="large">下一步</van-button>
+        <van-button @click="skipNextStep " class="but" size="large">下一步</van-button>
       </van-col>
     </van-row>
   </section>
@@ -98,11 +98,47 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { carManagementService } from "~/services/manage-service/carManagement.service";
+import { Dependencies } from "~/core/decorator";
+import { State, Mutation, Action } from "vuex-class";
 @Component({
   components: {}
 })
 export default class carGoHome extends Vue {
+  @Dependencies(carManagementService) private carManagementService: carManagementService;
+  @Mutation orderCar
   private images = '/static/images/common/headerLabel.png'
+  private carInfo: any = []      // 汽车详情
+  /**
+  * 获取车辆基本配置
+  */
+  getBasicEquipment() {
+    this.carManagementService.getCarDetail({ carId: 8 }).subscribe(
+      data => {
+        this.carInfo = {
+          brandName: data.brandName,
+          interiorColor: data.interiorColor,
+          modelName: data.modelName,
+          seriesName: data.seriesName,
+          vehicleColor: data.carColour,
+        }
+
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+  /***
+   * 点击下一步
+   */
+  skipNextStep(){
+    this.orderCar(this.carInfo)
+    this.$router.push('/upload-id-photo-first')
+
+  }
+
+  mounted() {
+    this.getBasicEquipment()
+  }
 
 }
 </script>

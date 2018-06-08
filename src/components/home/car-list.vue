@@ -1,18 +1,17 @@
 <template >
   <section class="component car-list">
     <van-row>
-      <van-col span="12" class="car-list-item" v-for="(item,index) of dataSet" :key="index">
+      <van-col span="12" class="car-list-item" v-for="(item,index) of carIntro" :key="index">
         <div>
-         <router-link to="/details"> <div><img src="/static/images/home/car.png" width="180px"></div> </router-link>
+            <div @click="carInfoClick(item.carId) "><img :src="item.carPictures.length > 0 ?item.carPictures[0].url:null " width="100%"></div>
         </div>
         <div class="car">
-          <p>{{item.title}}</p>
-          <p class="car-info">{{item.info}}</p>
-          <span></span>
+          <p class="beyondLittle">{{item.brandSeriesName}}</p>
+          <p class="car-info">{{item.modelName}}</p>
         </div>
         <van-row>
-          <van-col span="12" class="car-first">首付{{item.firstMoney | toThousands}}万</van-col>
-          <van-col span="12" class="car-month">月供{{item.monthMoney}}元</van-col>
+          <van-col span="12" class="car-first">首付{{item.firstPayment/10000| toThousands}}万</van-col>
+          <van-col span="12" class="car-month">月供{{item.monthRent |toThousands}}元</van-col>
         </van-row>
       </van-col>
     </van-row>
@@ -23,62 +22,75 @@
 import Vue from 'vue'
 import Component from "vue-class-component";
 import { LodashService } from "~/utils/lodash.service";
+import { carShowManagementService } from "~/services/manage-service/carShowManagement.service";
+import { Dependencies } from "~/core/decorator";
 
 @Component({})
 export default class CarList extends Vue {
+  @Dependencies(carShowManagementService) private carShowManagementService: carShowManagementService;
 
-  private carIntro = {
-    id: 1,
-    factory: "上汽通用",
-    brand: "雪佛兰",
-    seriesName: "科鲁兹",
-    model: "2017款",
-    cc: "1.5L",
-    speedModel: "自动",
-    character: "先锋天窗版",
-    firstMoney: 1.30,
-    monthMoney: 3640,
-    get title() {
-      return this.factory + this.brand + this.seriesName
-    },
-    get info() {
-      return `${this.model} ${this.cc} ${this.speedModel} ${this.character}`
-    }
+  private carIntro = []
+  private dataSet = []
+  /**
+   * 获取精品车辆
+   */
+  getBoutiqueCar() {
+    this.carShowManagementService.getGoodCarShowModelList().subscribe(
+      data => {
+        this.carIntro = data
+        console.log(data,'77777777777777777777')
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+  /**
+   * 点击车辆跳转
+   */
+  carInfoClick(id){
+    this.$router.push(`/details/${id}`)
+
   }
 
-  private dataSet = []
-
   mounted() {
-    this.dataSet = []
-    let index = 0
-    while (index < 10) {
-      this.dataSet.push(this.carIntro)
-      index++
-    }
+    this.getBoutiqueCar()
+
   }
 }
 </script>
 
 <style lang="less" scoped>
-.car-list {
-  &-item {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-}
-.car {
-  text-align: left;
-  &-info {
-    font-size: 0.8rem;
-    color: gray;
-  }
-  &-first {
-    font-size: 0.9rem;
-    color: goldenrod;
-  }
-  &-month {
-    font-size: 0.8rem;
-    color: gray;
+.component.car-list {
+  .car {
+    text-align: left;
+    &-list-item {
+      width: 50%;
+      border: 1px solid rgba(0, 0, 0, 0);
+      padding-left: 5px;
+      padding-right: 5px;
+      height: 230px;
+    }
+    &-info {
+      font-size: 0.8rem;
+      color: gray;
+      margin-left: 15px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    &-first {
+      font-size: 0.7rem;
+      color: goldenrod;
+    }
+    &-month {
+      font-size: 0.7rem;
+      color: gray;
+    }
+    .beyondLittle {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-left: 15px;
+    }
   }
 }
 </style>
