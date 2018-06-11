@@ -2,8 +2,8 @@
   <section class="component car-list">
     <van-row>
       <van-col span="12" class="car-list-item" v-for="(item,index) of carIntro" :key="index">
-        <div>
-            <div @click="carInfoClick(item.carId) "><img :src="item.carPictures.length > 0 ?item.carPictures[0].url:null " width="100%"></div>
+        <div class="car-list-img" @click="carInfoClick(item.carId) ">
+          <img :src="item.carPictures.length > 0 ?item.carPictures[0].url:null" :alt="item.modelName" height="100%">
         </div>
         <div class="car">
           <p class="beyondLittle">{{item.brandSeriesName}}</p>
@@ -38,7 +38,6 @@ export default class CarList extends Vue {
     this.carShowManagementService.getGoodCarShowModelList().subscribe(
       data => {
         this.carIntro = data
-        console.log(data,'77777777777777777777')
       },
       err => this.$toast(err.msg)
     )
@@ -46,20 +45,23 @@ export default class CarList extends Vue {
   /**
    * 点击车辆跳转
    */
-  carInfoClick(id){
+  carInfoClick(id) {
     this.$router.push(`/details/${id}`)
 
   }
 
   mounted() {
     this.getBoutiqueCar()
-
   }
 }
 </script>
 
 <style lang="less" scoped>
 .component.car-list {
+  .car-list-img{
+    height: 120px;
+    max-height: 120px;
+  }
   .car {
     text-align: left;
     &-list-item {

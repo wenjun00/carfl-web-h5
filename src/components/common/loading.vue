@@ -1,12 +1,6 @@
 <template>
   <section class="component loading">
-    <i-modal :value="true" :transfer="false" :mask-closable="false">
-      <div slot="header">
-
-      </div>
-      <div slot="footer">
-
-      </div>
+    <van-popup>
       <div class="content row middle-span center-span">
         <div class="sk-cube-grid">
           <div class="sk-cube sk-cube1"></div>
@@ -20,7 +14,7 @@
           <div class="sk-cube sk-cube9"></div>
         </div>
       </div>
-    </i-modal>
+    </van-popup>
   </section>
 </template>
 
