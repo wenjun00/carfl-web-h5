@@ -9,8 +9,6 @@ export default {
   userToken: '',
   // 用户数据
   userData: '',
-  // 用户手机号
-  userPhone: '',
   // token是否过期
   tokenExpire: false,
   // 页面列表

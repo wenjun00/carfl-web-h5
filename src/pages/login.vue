@@ -24,7 +24,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { LoginService } from "~/services/manage-service/applogin.service";
 import { Dependencies } from "~/core/decorator";
-import { Action,Mutation } from "vuex-class";
+import { Action, Mutation } from "vuex-class";
 import AppConfig from "~/config/app.config";
 import Register from "~/components/common/register.vue";
 import { StorageService } from "~/utils/storage.service";
@@ -111,7 +111,7 @@ export default class Login extends Vue {
       length - 1
     );
   }
-  
+
   /**
    * 获取验证码
    */
@@ -138,17 +138,17 @@ export default class Login extends Vue {
    * 提交操作
    */
   private onSubmit() {
-    
+
     this.$validator.validate(this.loginModel, this.rules).then(error => {
       if (!error) {
         this.loginService.verifyCodeLogin(this.loginModel).subscribe(
-          data =>{
-            this.updateUserLoginData(data)
+          data => {
+            this.updateUserLoginData(Object.assign({ userPhone: this.loginModel.phoneNumber }, data))
             this.$router.push("/Index");
           },
-          err =>this.$toast(err.msg)
+          err => this.$toast(err.msg)
         )
-      
+
       } else {
         this.$toast(error);
       }
