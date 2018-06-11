@@ -42,7 +42,10 @@
         <van-field v-model="idcard.name" placeholder="请输入证件姓名" required label="证件姓名" />
         <van-field v-model="idcard.id_card" placeholder="请输入证件号码" required label="证件号码" />
         <van-field v-model="nation" label="民族" placeholder="请选择民族" required @click="pickerDialog=true" />
-        <van-field v-model="idcard.id_card_address" placeholder="请输入户籍信息" required label="户籍信息" />
+        <!-- <van-field v-model="idcard.id_card_address" placeholder="请输入户籍信息" required label="户籍信息" /> -->
+        <van-cell title="户籍信息" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
+        <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
+
         <van-field v-model="idcard.id_card_validity_period_section" placeholder="请输入有效期" required label="有效期限" />
       </van-cell-group>
     </van-row>
@@ -61,8 +64,13 @@ import Component from "vue-class-component";
 import { NetService } from "~/utils/net.service";
 import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
+import CityPicker from "~/components/common/city-picker.vue";
 
-@Component({})
+@Component({
+  components: {
+    CityPicker,
+  }
+})
 export default class Login extends Vue {
   private value: any = null;
   private arrImg: any = [];
@@ -80,6 +88,8 @@ export default class Login extends Vue {
     id_card_address: '', // 身份证地址
     headPhoto: '', // 身份证头像地址
     nationalPhoto: '', // 身份证国徽地址
+    province: '',  // 身份证省份
+    city: '',    // 身份证城市
   }
 
   @Mutation idcCard
@@ -91,9 +101,16 @@ export default class Login extends Vue {
     name: { required: true, message: '请输入用户姓名' },
     id_card: [{ required: true, message: "请输入正确的身份证号码" }, { validator: this.$validator.idCard }],
     nation: { required: true, message: '请选择民族' },
+     id_card_address: { required: true, message: '请选择户籍信息' },
     id_card_validity_period_section: { required: true, message: '请输入身份证有效区间', },
-    id_card_address: { required: true, message: '请输入用户身份证地址' },
   };
+  // 选择城市点击事件
+  private onCityPickerConfirm(currentCitys) {
+    console.log(currentCitys)
+    this.idcard.province = currentCitys[0]
+    this.idcard.city = currentCitys[1]
+    this.idcard.id_card_address = currentCitys
+  }
 
 
   /**
@@ -103,6 +120,13 @@ export default class Login extends Vue {
 
     this.$validator.validate(this.idcard, this.rules).then(error => {
       if (!error) {
+        for(let i in this.arrImg){
+          if(this.arrImg[i].typeName == 1369){
+            this.idcard.headPhoto = this.arrImg[i].materialUrl
+          } else if (this.arrImg[i].typeName == 1370){
+            this.idcard.nationalPhoto = this.arrImg[i].materialUrl
+          }
+        }
         this.$router.push('/upload-id-photo-two')
         this.idcCard(this.idcard)
         this.tenantImg(this.arrImg)
