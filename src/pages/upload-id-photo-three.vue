@@ -35,7 +35,7 @@
     <van-row>
       <p class="base-info-title">请确认银行卡信息是否一致</p>
       <van-cell-group>
-        <van-field v-model="depositBank" label="开户银行" placeholder="请选择准开户银行" @click="pickerDialog=true" />
+        <van-field v-model="depositBank"  required label="开户银行" placeholder="请选择准开户银行" @click="pickerDialog=true" />
         <van-field placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
         <van-field v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
       </van-cell-group>
@@ -76,8 +76,15 @@ export default class Login extends Vue {
    * 点击下一步
    */
   addAffirm() {
-    this.$router.push('/custom-information')
-    this.bankCard(this.personalBank)
+    this.$validator.validate(this.personalBank, this.rules).then(error => {
+      if (!error) {
+        this.$router.push('/custom-information')
+        this.bankCard(this.personalBank)
+
+      } else {
+        this.$toast(error);
+      }
+    });
   }
 
 
@@ -93,7 +100,7 @@ export default class Login extends Vue {
 
   mounted() {
     this.arrAll = this.intoA.PersonalAdditional
-     console.log(this.intoA,'456545')
+    console.log(this.intoA, '456545')
     this.columns = this.$dict.getDictData('0456').map(v => {
       return Object.assign({ text: v.label }, v)
     })
@@ -103,6 +110,13 @@ export default class Login extends Vue {
   @Mutation tenantImg
   @State intoA
 
+  // 验证规则
+  private rules = {
+    deposit_bank: { required: true, message: '请选择开户银行' },
+    card_number: [{ required: true, message: "请输入正确的银行卡号" }, { validator: this.$validator.bankNumber }],
+    reserved_phone_number: [{ required: true, message: "请输入正确的手机号" }, { validator: this.$validator.phoneNumber }],
+
+  };
 
 
 

@@ -37,7 +37,7 @@
       <van-cell-group>
         <van-field v-model="peopleCar.useful_time" placeholder="请输入有效期限" label="有效期限" required/>
         <van-field v-model="peopleCar.file_number" placeholder="请输入档案编号" label="档案编号" required/>
-        <van-field v-model="drivingType" label="准驾车型" placeholder="请选择准驾车型" @click="pickerDialog=true" />
+        <van-field v-model="drivingType" required label="准驾车型" placeholder="请选择准驾车型" @click="pickerDialog=true" />
       </van-cell-group>
     </van-row>
 
@@ -74,6 +74,12 @@ export default class Login extends Vue {
     driverPhoto: '',   // 驾驶证正面
     driverVicePhoto: '', // 驾驶证负面
   }
+  // 验证规则
+  private rules = {
+    useful_time: { required: true, message: '请输入有效期限' },
+    file_number: { required: true, message: '请输入档案编号' },
+    driving_license: { required: true, message: '请选择准驾车型' },
+  };
 
   @Mutation choosePeople
   @Mutation tenantImg
@@ -91,9 +97,17 @@ export default class Login extends Vue {
   /**
    * 点击下一步
    */
-  nextStep(){
-    this.$router.push('/upload-id-photo-three')
-    this.choosePeople(this.peopleCar)
+  nextStep() {
+    this.$validator.validate(this.peopleCar, this.rules).then(error => {
+      if (!error) {
+        this.$router.push('/upload-id-photo-three')
+        this.choosePeople(this.peopleCar)
+
+      } else {
+        this.$toast(error);
+      }
+    });
+
   }
 
   /**

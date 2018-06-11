@@ -3,10 +3,10 @@
     <van-row>
       <p class="base-info-title">基本信息</p>
       <van-cell-group>
-        <van-field v-model="inforModel.phone" label="手机号码" placeholder="请输入手机号" required @click="show.phone = true" />
+        <van-field v-model="inforModel.phone" disabled label="手机号码" placeholder="请输入手机号" required @click="show.phone = true" />
         <van-field v-model="inforModel.contactPhone" label="联系号码" placeholder="客户第二个手机号" @click="show.phone = true" />
-        <van-field v-model="inforModel.falseMarital" label="婚姻状况" placeholder="请选择婚姻状况" @click="marriageBot=true" />
-        <van-field v-model="inforModel.falseeducation" label="学历信息" placeholder="请选择学历信息" @click="educationBot=true" />
+        <van-field v-model="inforModel.falseMarital" label="婚姻状况" placeholder="请选择婚姻状况" required @click="marriageBot=true" />
+        <van-field v-model="inforModel.falseeducation" label="学历信息" placeholder="请选择学历信息" required @click="educationBot=true" />
       </van-cell-group>
       <van-number-keyboard :show="show.phone" close-button-text="完成" @blur="show.phone = false" @input="inputPhone" @delete="deletePhone"></van-number-keyboard>
       <van-number-keyboard :show="show.contactPhone" close-button-text="完成" @blur="show.contactPhone = false" @input="contactPhone" @delete="deleteContactPhone"></van-number-keyboard>
@@ -43,13 +43,13 @@
     <van-row>
       <p class="base-info-title">居住信息</p>
       <van-cell-group>
-        <van-field v-model="inforModel.falseSituation" label="居住情况" placeholder="请选择居住情况" @click="situationBot=true" />
-        <van-field v-model="inforModel.falseAgelimit " label="居住年限" placeholder="请选择居住年限" @click="agelimitBot=true" />
+        <van-field v-model="inforModel.falseSituation" required label="居住情况" placeholder="请选择居住情况" @click="situationBot=true" />
+        <van-field v-model="inforModel.falseAgelimit " required label="居住年限" placeholder="请选择居住年限" @click="agelimitBot=true" />
 
-        <van-cell title="居民地区" is-link :value="inforModel.area | cityConvert " @click="$refs['cityPicker'].show()" required/>
-        <city-picker ref="cityPicker"  @on-confirm="onCityPickerConfirm"></city-picker>
+        <van-cell title="居民地区" required is-link :value="inforModel.area | cityConvert " @click="$refs['cityPicker'].show()" />
+        <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
 
-        <van-field type="textarea" class="address" v-model="inforModel.address" label="居民地址" placeholder="请输入详细的居民地址精确到门牌号" />
+        <van-field type="textarea" class="address" v-model="inforModel.address" label="居民地址" required placeholder="请输入详细的居民地址精确到门牌号" />
       </van-cell-group>
       <van-popup v-model="show.living" position="bottom">
         <van-picker :columns="columns" show-toolbar @change="onChange" @confirm="show.living=false" @cancel="show.living=false" />
@@ -62,7 +62,7 @@
     <van-row>
       <p class="base-info-title">工作信息</p>
       <van-cell-group>
-        <van-field v-model="inforModel.falseWorking" label="工作情况" placeholder="请选择工作情况" @click="workingBot=true" />
+        <van-field required v-model="inforModel.falseWorking" label="工作情况" placeholder="请选择工作情况" @click="workingBot=true" />
         <van-field v-model="inforModel.companyName" label="单位名称" placeholder="请输入完整的公司名称" />
         <van-field v-model="inforModel.falsenatureUnit " label="单位性质" placeholder="请选择单位性质" @click="natureUnitBot=true" />
         <van-field v-model="inforModel.companyAdress" label="单位地址" />
@@ -98,6 +98,7 @@ import { CityService } from "~/utils/city.service";
 export default class Login extends Vue {
   @State intoA
   @Mutation going
+  @State userData
   private marriageBot: boolean = false   // 婚姻状况
   private marriages: any = []
   private educationBot: boolean = false   // 学历信息
@@ -144,9 +145,8 @@ export default class Login extends Vue {
     city1: '',             // 居住地区城市
     district1: '',         // 居住地区区域
 
-
-
   }
+
   private show = {
     phone: false, // 电话键盘
     contactPhone: false,
@@ -161,20 +161,12 @@ export default class Login extends Vue {
     dataList: AreaData,
     marital: ["未婚", "已婚", "丧偶", "离婚"]
   }
-  /**
-   * 基本信息 点击下一步
-   */
-  informationAffirm() {
-    this.going(this.inforModel)
-    this.$router.push('/contact-information')
-  }
+
 
   private onCityPickerConfirm(currentCitys) {
     this.inforModel.province1 = currentCitys[0]
     this.inforModel.city1 = currentCitys[1]
     this.inforModel.district1 = currentCitys[2]
-    
-   
     this.inforModel.area = currentCitys
   }
 
@@ -236,6 +228,45 @@ export default class Login extends Vue {
     this.inforModel.falseYearsWorking = this.$dict.getDictName(Number(this.inforModel.yearsWorking))
     this.yearsWorkingBot = false
   }
+  // 验证规则
+  private rules = {
+    contactPhone: [{ message: "请输入正确的联系号码" }, { validator: this.$validator.phoneNumber }],
+    falseMarital: { required: true, message: '请选择婚姻状况' },
+    falseeducation: { required: true, message: '请选择学历信息' },
+    falseSituation: { required: true, message: '请选择居住情况' },
+    falseAgelimit: { required: true, message: '请选择居住年限' },
+    area: { required: true, message: '请选择居民地区' },
+    address: { required: true, message: '请输入居民地址' },
+    falseWorking: { required: true, message: '请选择工作情况' },
+    companyPhone: [{ message: "请输入正确的单位电话" }, { validator: this.verifyPhone }],
+    // companyName:{ required: true, message: '请输入单位名称' },
+    // falsenatureUnit:{ required: true, message: '请选择单位性质' },
+  };
+  verifyPhone(rule, value, callback) {
+    if (value !== '') {
+      if (!(/^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/).test(value)) {
+        callback(new Error('请输入正确的单位电话'));
+      } 
+    }else{
+      callback()
+    }
+  }
+
+  /**
+  * 基本信息 点击下一步
+  */
+  informationAffirm() {
+    this.$validator.validate(this.inforModel, this.rules).then(error => {
+      if (!error) {
+        this.going(this.inforModel)
+        this.$router.push('/contact-information')
+
+      } else {
+        this.$toast(error);
+      }
+    });
+
+  }
 
 
   mounted() {
@@ -267,6 +298,9 @@ export default class Login extends Vue {
     this.yearsWorkings = this.$dict.getDictData('0461').map(v => {
       return Object.assign({ text: v.label }, v)
     })
+    // 获取登陆人手机号
+    this.inforModel.phone = this.userData.userPhone
+    // console.log(this.userData,'phone')
 
 
   }
@@ -325,6 +359,9 @@ export default class Login extends Vue {
 }
 </script>
 <style lang="less" scoped>
+.address {
+  height: 50px;
+}
 .van-cell--required::before {
   left: -0.3rem;
   bottom: 0.3rem;

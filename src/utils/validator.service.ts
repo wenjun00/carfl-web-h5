@@ -1,4 +1,4 @@
-import validator from 'async-validator'
+import validator from 'async-validator'  
 export class ValidatorService {
   /**
    * 自定义验证器

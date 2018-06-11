@@ -5,7 +5,7 @@ export default {
   /**
    * 更新用户登录数据
    */
-  updateUserLoginData({ state, commit, dispatch }, { token, personalId, personalName }) {
+  updateUserLoginData({ state, commit, dispatch }, { token, personalId, personalName,userPhone }) {
     // 更新用户token
     if (!!token) {
       commit('updateUserToken', token);
@@ -13,7 +13,8 @@ export default {
     // 更新用户数据
     commit('updateUserData', {
       id: personalId,
-      personalName: personalName || ""
+      personalName: personalName || "",
+      userPhone: userPhone
     });
     commit('updateTokenExpire', false)
   },
