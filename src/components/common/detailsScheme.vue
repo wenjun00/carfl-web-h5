@@ -204,7 +204,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Collapse, CollapseItem } from 'vant';
-import { carManagementService } from "~/services/manage-service/carManagement.service";
+import { carManagementService } from "~/services/manage-service/car-management.service";
 import { ProductService } from "~/services/manage-service/product.service";
 import { Dependencies } from "~/core/decorator";
 import { State, Mutation, Action } from "vuex-class";

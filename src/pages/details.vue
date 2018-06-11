@@ -1,5 +1,5 @@
 <template>
-  <section class="page details"> 
+  <section class="page details">
     <van-row>
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(image, index) in images" :key="index">
@@ -7,7 +7,7 @@
         </van-swipe-item>
       </van-swipe>
     </van-row>
-    
+
     <van-row class="carDetails">
       <van-col class="detailsOne" span="20">车辆照片仅供参考,已配置描述为准</van-col>
       <van-col class="imgLength" span="4">
@@ -39,7 +39,6 @@
       <DetailsScheme></DetailsScheme>
     </van-row>
 
-
   </section>
 </template>
 
@@ -47,7 +46,7 @@
 import Vue from 'vue'
 import Component from "vue-class-component";
 import DetailsScheme from "~/components/common/detailsScheme.vue";
-import { carManagementService } from "~/services/manage-service/carManagement.service";
+import { carManagementService } from "~/services/manage-service/car-management.service";
 import { Dependencies } from "~/core/decorator";
 
 @Component({
@@ -56,8 +55,8 @@ import { Dependencies } from "~/core/decorator";
   }
 })
 export default class Details extends Vue {
-   @Dependencies(carManagementService) private carManagementService: carManagementService;
-  private paramsId = '' 
+  @Dependencies(carManagementService) private carManagementService: carManagementService;
+  private paramsId = ''
   private carList = []
   private images = []
   BackTop() {

@@ -16,12 +16,11 @@
 import Vue from 'vue'
 import Component from "vue-class-component";
 import { Dependencies } from "~/core/decorator";
-import { carShowManagementService } from "~/services/manage-service/carShowManagement.service";
+import { carShowManagementService } from "~/services/manage-service/car-show-management.service";
 @Component({})
 export default class Trademark extends Vue {
   @Dependencies(carShowManagementService) private carShowManagementService: carShowManagementService;
   private trademarks = []
-
   get trademarkList() {
     let list = this.trademarks.slice(0, 9)
     list.push({
@@ -34,15 +33,11 @@ export default class Trademark extends Vue {
   /**
    * 点击当前品牌 进入相对应的品牌车辆
    */
-  Allcar(index,id) {
-
-    if (index < 9) {  
-      this.$router.push(`/buy-car-list/${id}`)
-    } else {
-      this.$router.push('/allVehicles')
-    }
-
+  Allcar(index, id) {
+    let brandId = index < 9 ? id : -1
+    this.$router.push(`/buy-car-list/${brandId}`)
   }
+
   fristVehicleBrand() {
     this.carShowManagementService.getTopTenCarBrandList().subscribe(
       data => {

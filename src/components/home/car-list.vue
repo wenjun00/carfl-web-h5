@@ -22,7 +22,7 @@
 import Vue from 'vue'
 import Component from "vue-class-component";
 import { LodashService } from "~/utils/lodash.service";
-import { carShowManagementService } from "~/services/manage-service/carShowManagement.service";
+import { carShowManagementService } from "~/services/manage-service/car-show-management.service";
 import { Dependencies } from "~/core/decorator";
 
 @Component({})

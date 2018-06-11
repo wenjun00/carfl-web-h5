@@ -14,7 +14,7 @@
 import Vue from 'vue'
 import Component from "vue-class-component";
 import { Dependencies } from "~/core/decorator";
-import { carShowManagementService } from "~/services/manage-service/carShowManagement.service";
+import { carShowManagementService } from "~/services/manage-service/car-show-management.service";
 @Component({
   components: {
   }

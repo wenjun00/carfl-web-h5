@@ -1,33 +1,33 @@
 <template >
   <section class="component buy-car-list">
     <form action="/">
-      <van-search v-model="keyWord" placeholder="寻找您想要买的爱车" @click-icon="keyWord = ''" show-action @search="onSearch">
+      <van-search v-model.lazy="keyWord" placeholder="寻找您想要买的爱车" @click-icon="onClearClick" show-action @search="searchCarList">
         <div slot="action">
           <van-icon class="buy-car-list-nav-bar" v-if="!show.search" name="wap-nav" @click="show.navBar = true" />
-          <div class="buy-car-list-nav-bar" v-else @click="onSearch">搜索</div>
+          <div class="buy-car-list-nav-bar" v-else @click="searchCarList">搜索</div>
         </div>
       </van-search>
     </form>
-    <van-list v-model="show.loading" :finished="show.finished" @load="loadMore">
-      <van-row class="buy-car-list-item" v-for="(item,index) of LogoCar" :key="index">
-        <van-col span="10">
-          <div>
-            <div @click="vehicleDetails(item.carId)"><img src="/static/images/home/car.png" height="100px"></div>
-          </div>
-        </van-col>
-        <van-col span="14">
-          <div class="car">
-            <span>{{item.brandSeriesName}}</span>
-            <br/>
-            <span class="car-info">{{item.modelName}}</span>
-          </div>
-          <van-row>
-            <van-col span="12" class="car-first">首付{{item.firstPayment/1000 | toThousands}}万</van-col>
-            <van-col span="12" class="car-month">月供{{item.monthRent}}元</van-col>
-          </van-row>
-        </van-col>
-      </van-row>
-    </van-list>
+
+    <van-row class="buy-car-list-item" v-for="(item,index) of carDataSet" :key="index">
+      <van-col span="10">
+        <div>
+          <div @click="$router.push(`/details/${item.carId}`)"><img src="/static/images/home/car.png" height="100px"></div>
+        </div>
+      </van-col>
+      <van-col span="14">
+        <div class="car">
+          <span>{{item.brandSeriesName}}</span>
+          <br/>
+          <span class="car-info">{{item.modelName}}</span>
+        </div>
+        <van-row>
+          <van-col span="12" class="car-first">首付{{item.firstPayment/1000 | toThousands}}万</van-col>
+          <van-col span="12" class="car-month">月供{{item.monthRent | toThousands}}元</van-col>
+        </van-row>
+      </van-col>
+    </van-row>
+
     <div class="to-top" v-show="show.toTop" @click="scrollTop">
       <van-icon name="upgrade" color="#f2f2f2" />
     </div>
@@ -40,8 +40,8 @@ import Vue from 'vue'
 import Component from "vue-class-component";
 import { LodashService } from "~/utils/lodash.service";
 import NavBar from "~/components/common/nav-bar.vue";
-import { Watch } from "vue-property-decorator";
-import { carShowManagementService } from "~/services/manage-service/carShowManagement.service";
+import { Prop, Watch } from "vue-property-decorator";
+import { carShowManagementService } from "~/services/manage-service/car-show-management.service";
 import { Dependencies } from "~/core/decorator";
 
 @Component({
@@ -51,28 +51,29 @@ import { Dependencies } from "~/core/decorator";
 })
 export default class BuyCarList extends Vue {
   @Dependencies(carShowManagementService) private carShowManagementService: carShowManagementService;
-  private paramsId = ''
-  private serachKeyWord: string = ''
-  private LogoCar = []  // 品牌车辆
+  @Prop({
+    default: -1
+  }) brandId
+
+  private searchModel = {
+    brandId: '',
+    name: ''
+  }
+
+  private carDataSet = []  // 查询到的车辆 
 
   get keyWord() {
-    return this.serachKeyWord
+    return this.searchModel.name
   }
   set keyWord(val) {
-    this.serachKeyWord = val
+    this.searchModel.name = val
     this.show.search = val !== ""
   }
 
   private scrollTop(val) {
     window.scrollTo(0, 0)
   }
-  /**
-   * 点击车辆跳转详情页面
-   */
-  vehicleDetails(val) {
-    // console.log(val)
-    this.$router.push(`/details/${val}`)
-  }
+
 
   onScrollTopChage() {
     let height = document.documentElement.scrollTop || window.pageYOffset
@@ -88,89 +89,43 @@ export default class BuyCarList extends Vue {
     toTop: false
   }
 
-  private carIntro = {
-    id: 1,
-    factory: "上汽通用",
-    brand: "雪佛兰",
-    seriesName: "科鲁兹",
-    model: "2017款",
-    cc: "1.5L",
-    speedModel: "自动",
-    character: "先锋天窗版",
-    firstMoney: 1.30,
-    price: 13.39,
-    monthMoney: 3640,
-    get title() {
-      return this.factory + this.brand + this.seriesName
-    },
-    get info() {
-      return `${this.model} ${this.cc} ${this.speedModel} ${this.character}`
-    }
-  }
 
   private dataSet = []
 
-
-  private onSearch() {
-
-  }
-  //加载
-  private loadMore() {
-
-    let loaded = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        let index = 0
-        while (index < 10) {
-          this.dataSet.push(this.carIntro)
-          index++
-        }
-        resolve()
-      }, 3000);
-    })
-
-    loaded.then(() => {
-      this.show.loading = false;
-      if (this.dataSet.length > 100) {
-        this.show.finished = true;
-      }
-    })
-  }
   /**
-   * 获取当前页面路由id
+   * 点击清空按钮
    */
-  getParamsid() {
-    this.paramsId = this.$route.params.id
+  private onClearClick(){
+    this.keyWord = ''
+    this.searchCarList()
   }
+
   /**
    * 获取当前品牌车辆
    */
-  getImgCarLogo() {
-    this.carShowManagementService.getCarShowModelListByBrandId({ brandId: this.paramsId }).subscribe(
-      data => {
-        this.LogoCar = data
-        // console.log(data,'当前车辆对应id')
-      },
-      err => this.$toast(err.msg)
-    )
+  searchCarList() {
+    this.carShowManagementService.searchCarList(this.searchModel)
+      .subscribe(
+        data => {
+          this.carDataSet = data
+        },
+        err => {
+          this.$toast(err.msg)
+        }
+      )
   }
 
 
   mounted() {
-    this.getParamsid()
-    this.getImgCarLogo()
     this.dataSet = []
-    let index = 0
-    while (index < 10) {
-      this.dataSet.push(this.carIntro)
-      index++
-    }
+    if(this.brandId > 0) this.searchModel.brandId = this.brandId
+    this.searchCarList()
     window.addEventListener('scroll', this.onScrollTopChage)
 
   }
 
   beforeDestroy() {
     window.removeEventListener('scroll', this.onScrollTopChage)
-
   }
 
 }
@@ -219,6 +174,7 @@ export default class BuyCarList extends Vue {
   &-month {
     font-size: 0.8rem;
     color: gray;
+    text-align: right;
   }
 }
 </style>

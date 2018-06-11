@@ -3,8 +3,8 @@ import appLoginController from "./app-login.controller";
 import dataDictTypeController from './data-dict-type.controller'
 import dataDictController from './data-dict.controller'
 import productOrderController from './product-order.controller'
-import carShowManagementController from './carShowManagement.controller'
-import carManagementController from './carManagement.controller'
+import carShowManagementController from './car-show-management.controller'
+import carManagementController from './car-management.controller'
 import productController from './product.controller'
 
 

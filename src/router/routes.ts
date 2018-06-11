@@ -10,7 +10,7 @@ const UploadIdPhotoFirst = () => Promise.resolve(require('~/pages/upload-id-phot
 const UploadIdPhotoTwo = () => Promise.resolve(require('~/pages/upload-id-photo-two.vue'))
 const UploadIdPhotoThree = () => Promise.resolve(require('~/pages/upload-id-photo-three.vue'))
 const AddInformation = () => Promise.resolve(require('~/pages/add-information.vue'))
-const Details = ()=> Promise.resolve(require('~/pages/details.vue'))
+const Details = () => Promise.resolve(require('~/pages/details.vue'))
 const AllVehicles = () => Promise.resolve(require('~/pages/allVehicles.vue'))
 // const AddDocumentInfor = () => Promise.resolve(require('~/pages/add-document-infor.vue'))
 
@@ -38,9 +38,10 @@ const routes = [
     name: 'FAQ',
     component: FAQ
   }, {
-    path: '/buy-car-list/:id',
+    path: '/buy-car-list/:brandId',
     name: 'BuyCarList',
-    component: BuyCarList
+    component: BuyCarList,
+    props: true
   }, {
     path: '/custom-information',
     name: 'custom-information',
@@ -85,13 +86,13 @@ const routes = [
       title: '还款明细'
     },
     component: PaymentRecord
-  },{
+  }, {
     path: '/details/:id',
-    name :'details',
+    name: 'details',
     component: Details
-  },{
+  }, {
     path: '/allVehicles',
-    name :'allVehicles',
+    name: 'allVehicles',
     component: AllVehicles
   }
 
