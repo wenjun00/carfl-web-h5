@@ -14,7 +14,7 @@
       <van-row>
         <van-col class="payment">首付</van-col>
       </van-row>
-      <van-row>
+      <van-row class="downPaymentRow">
         <van-col v-for="(item,index) in carPeriodsOne" :key="index">
           <span class="downPayment" @click="paymentOne(item.firstPayment)">{{item.firstPayment}}</span>
         </van-col>
@@ -22,7 +22,7 @@
       <van-row>
         <van-col class="payment">期数</van-col>
       </van-row>
-      <van-row>
+      <van-row class="periodsRow">
         <van-col v-for="(item,index) in carPeriodsTwo" :key="index">
           <span class="downPayment" @click="paymentTwo(item.planType)">{{$dict.getDictName(item.planType)}}</span>
         </van-col>
@@ -263,7 +263,7 @@ export default class detailsScheme extends Vue {
     this.carManagementService.getCarDetail({ carId: this.paramsId }).subscribe(
       data => {
         this.basicEquipment = data
-         this.carInfo = {
+        this.carInfo = {
           brandName: data.brandName,
           interiorColor: data.interiorColor,
           modelName: data.modelName,
@@ -323,7 +323,7 @@ export default class detailsScheme extends Vue {
     this.productService.getCarProductResultModelList(a).subscribe(
       data => {
         this.carPeriodsThree = data
-        this.carIntoA={
+        this.carIntoA = {
           productResultId: data[0].resultId,
           productId: data[0].relationId,
           initialPayment: data[0].firstPayment,
@@ -337,10 +337,10 @@ export default class detailsScheme extends Vue {
       err => this.$toast(err.msg)
     )
   }
- /***
-   * 点击下一步
-   */
-  skipNextStep(){
+  /***
+    * 点击下一步
+    */
+  skipNextStep() {
     this.carDetails(this.carInfo)
     this.carDetailTwo(this.carIntoA)
     this.$router.push('/upload-id-photo-first')
@@ -512,6 +512,16 @@ export default class detailsScheme extends Vue {
 </style>
 <style lang="less">
 .page.detailsScheme {
+  .periodsRow {
+    .van-col {
+      margin-left: 10px;
+    }
+  }
+  .downPaymentRow {
+    .van-col {
+      margin: 10px;
+    }
+  }
   .dropDown {
     padding-left: 13px;
     font-weight: 600;

@@ -48,7 +48,7 @@ import Component from "vue-class-component";
 import DetailsScheme from "~/components/common/detailsScheme.vue";
 import { carManagementService } from "~/services/manage-service/car-management.service";
 import { Dependencies } from "~/core/decorator";
-
+import { State, Mutation, Action } from "vuex-class";
 @Component({
   components: {
     DetailsScheme,
@@ -56,6 +56,9 @@ import { Dependencies } from "~/core/decorator";
 })
 export default class Details extends Vue {
   @Dependencies(carManagementService) private carManagementService: carManagementService;
+
+  @Mutation clearSelectCity
+
   private paramsId = ''
   private carList = []
   private images = []
@@ -69,7 +72,6 @@ export default class Details extends Vue {
   private getParamsid() {
     this.paramsId = this.$route.params.id
   }
-
   /**
   * 获取车辆基本配置
   */
@@ -99,6 +101,7 @@ export default class Details extends Vue {
     this.BackTop()
     this.getBasicEquipment()
     this.getCarPictureFun()
+    this.clearSelectCity()
   }
 }
 </script>

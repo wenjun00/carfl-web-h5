@@ -164,6 +164,8 @@ export default class Login extends Vue {
   @Mutation tenantImg
   @Mutation clearIntoA
   @State intoA
+  @Mutation selectCity
+  @State IntoACity
 
 
 
@@ -201,7 +203,7 @@ export default class Login extends Vue {
     //  （证件页面）idcard
     this.personalAll = {
       ///
-      city: 902,
+      city: this.IntoACity[0],
       productResultId: this.intoA.orderCarTwo.productResultId,
       productId: this.intoA.orderCarTwo.productId,
       initialPayment: this.intoA.orderCarTwo.initialPayment,
@@ -343,7 +345,6 @@ export default class Login extends Vue {
 
   mounted() {
     this.arrImg = this.intoA.PersonalAdditional
-
   }
 
 

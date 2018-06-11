@@ -29,6 +29,5 @@ export default {
     // 清空数据
     localStorage.removeItem('vuex')
     localStorage.removeItem('userToken')
-  },
-
+  }
 }

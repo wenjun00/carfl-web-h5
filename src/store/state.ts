@@ -7,6 +7,8 @@ export default {
   dictData: '',
   // 用户token
   userToken: '',
+  // 用户订单信息
+  orderInfo:'',
   // 用户数据
   userData: '',
   // token是否过期
@@ -29,5 +31,6 @@ export default {
     color: '#18879B'
   }],
   companyList: [],
-  intoA:{},
+  intoA:{}, // 进件
+  IntoACity:'' // 进件城市 
 }

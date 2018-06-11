@@ -38,7 +38,7 @@ const routes = [
     name: 'FAQ',
     component: FAQ
   }, {
-    path: '/buy-car-list/:brandId',
+    path: '/buy-car-list/:brandId/:transKeyWord',
     name: 'BuyCarList',
     component: BuyCarList,
     props: true

@@ -42,6 +42,7 @@ import Component from "vue-class-component";
 import NavBar from "~/components/common/nav-bar.vue";
 import OrderContract from "~/components/order/order-contract.vue";
 import OrderRecord from "~/components/order/order-record.vue";
+import { Getter } from "vuex-class";
 
 @Component({
   components: {
@@ -50,11 +51,7 @@ import OrderRecord from "~/components/order/order-record.vue";
   }
 })
 export default class MyOrder extends Vue {
-
-
-  get hasOrder() {
-    return this.orderInfo.id !== undefined
-  }
+  @Getter hasOrder;
 
   private orderInfo: any = {}
   private activatedCollapse = []
