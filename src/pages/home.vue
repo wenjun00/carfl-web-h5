@@ -52,6 +52,7 @@ import CarList from "~/components/home/car-list.vue";
 import NavBar from "~/components/common/nav-bar.vue";
 import CityPicker from "~/components/common/city-picker.vue";
 import { Dependencies } from "~/core/decorator";
+import { State, Mutation, Action } from "vuex-class";
 
 @Component({
   components: {
@@ -63,6 +64,7 @@ import { Dependencies } from "~/core/decorator";
   }
 })
 export default class Home extends Vue {
+  @State intoA
   private serachKeyWord: string = "";
 
   get keyWord() {
@@ -86,6 +88,9 @@ export default class Home extends Vue {
 
   private onSearch() {
     console.log(this.serachKeyWord);
+  }
+  mounted(){
+    console.log(this.intoA,'看这里')
   }
 
 }

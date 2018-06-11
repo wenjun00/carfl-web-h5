@@ -227,7 +227,7 @@ export default class Login extends Vue {
         idCard: this.intoA.personal.id_card,  //证件号码
         nation: this.intoA.personal.nation,   // 民族
         idCardAddress: this.intoA.personal.id_card_address,  // 户籍信息
-        idCardValidity_period_section: this.intoA.personal.id_card_validity_period_section, // 有效期限
+        idCardValidityPeriodSection: this.intoA.personal.id_card_validity_period_section, // 有效期限
         mobileMain: this.intoA.PersonalJob.phone,
         mobileMinor: this.intoA.PersonalJob.contactPhone,
         marital: this.intoA.PersonalJob.marital,    // 婚姻状况
@@ -256,13 +256,22 @@ export default class Login extends Vue {
           localHomeAddrDetail: null,     
         },
       },
-      personalCar: {
+      // personalCar: {
+      //   usefulTime: this.intoA.personalCar.useful_time,    // 有效期限
+      //   fileNumber: this.intoA.personalCar.file_number,    // 档案编号
+      //   drivingLicense: this.intoA.personalCar.driving_license,    // 准驾车型
+      // },
+      orderCar:{
+        brandName: this.intoA.orderCar.brandName,
+        interiorColor: this.intoA.orderCar.interiorColor,
+        modelName: this.intoA.orderCar.modelName,
+        seriesName: this.intoA.orderCar.seriesName,
+        vehicleColor: this.intoA.orderCar.vehicleColor,
         usefulTime: this.intoA.personalCar.useful_time,    // 有效期限
         fileNumber: this.intoA.personalCar.file_number,    // 档案编号
         drivingLicense: this.intoA.personalCar.driving_license,    // 准驾车型
       },
       
-
       personalContacts: [
         {
           relation: this.intoA.PersonalContact.relation,    // 承租人关系
@@ -277,7 +286,7 @@ export default class Login extends Vue {
     }
 
     this.personalAll.personalAdditionals = this.intoA.PersonalAdditional
-    this.personalAll.orderCar = this.intoA.orderCar
+    // this.personalAll.orderCar = this.intoA.orderCar
     this.clearIntoA()
     this.productOrderService.createOrder(this.personalAll).subscribe(
       data => {
@@ -301,7 +310,7 @@ export default class Login extends Vue {
           }
         }
         this.arrImg.push({
-          personalId: x.id,
+          // personalId: x.id,
           uploadName: x.realName,
           materialType: x.type,
           dataSize: x.size,

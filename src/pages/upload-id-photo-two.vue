@@ -108,7 +108,7 @@ export default class Login extends Vue {
         }
       }
       this.arrAll.push({
-        personalId: x.id,
+        // personalId: x.id,
         uploadName: x.realName,
         materialType: x.type,
         dataSize: x.size,
@@ -128,7 +128,7 @@ export default class Login extends Vue {
         }
       }
       this.arrAll.push({
-        personalId: x.id,
+        // personalId: x.id,
         uploadName: x.realName,
         materialType: x.type,
         dataSize: x.size,
