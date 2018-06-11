@@ -26,7 +26,7 @@ export default class Trademark extends Vue {
     let list = this.trademarks.slice(0, 9)
     list.push({
       logoUrl: "/static/images/home/trademarks/all.png",
-      brandName: "全部新车"
+      brandName: "全部品牌"
     })
     return list
 

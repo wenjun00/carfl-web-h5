@@ -110,9 +110,9 @@ export default class BuyCarList extends Vue {
 
   private dataSet = []
 
-
+  // 搜索 点击
   private onSearch() {
-
+    this.getImgCarLogo()
   }
   //加载
   private loadMore() {
@@ -121,7 +121,7 @@ export default class BuyCarList extends Vue {
       setTimeout(() => {
         let index = 0
         while (index < 10) {
-          this.dataSet.push(this.carIntro)
+          this.dataSet.push(this.LogoCar)
           index++
         }
         resolve()
@@ -145,13 +145,25 @@ export default class BuyCarList extends Vue {
    * 获取当前品牌车辆
    */
   getImgCarLogo() {
-    this.carShowManagementService.getCarShowModelListByBrandId({ brandId: this.paramsId }).subscribe(
-      data => {
-        this.LogoCar = data
-        // console.log(data,'当前车辆对应id')
-      },
-      err => this.$toast(err.msg)
-    )
+    if (this.paramsId == '9999') {
+      this.carShowManagementService.getCarShowModelListByName({}).subscribe(
+        data => {
+          // console.log('这是所有车辆')
+          this.LogoCar = data
+          // console.log(data,'当前车辆对应id')
+        },
+        err => this.$toast(err.msg)
+      )
+    } else {
+      this.carShowManagementService.getCarShowModelListByBrandId({ brandId: this.paramsId }).subscribe(
+        data => {
+          this.LogoCar = data
+          // console.log('这是当前车辆')
+        },
+        err => this.$toast(err.msg)
+      )
+    }
+
   }
 
 

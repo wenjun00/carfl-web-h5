@@ -100,6 +100,13 @@ export default class Login extends Vue {
   nextStep() {
     this.$validator.validate(this.peopleCar, this.rules).then(error => {
       if (!error) {
+        for (let i in this.arrAll) {
+          if (this.arrAll[i].typeName == 1371) {
+            this.peopleCar.driverPhoto = this.arrAll[i].materialUrl
+          } else if (this.arrAll[i].typeName == 1372) {
+            this.peopleCar.driverVicePhoto = this.arrAll[i].materialUrl
+          }
+        }
         this.$router.push('/upload-id-photo-three')
         this.choosePeople(this.peopleCar)
 

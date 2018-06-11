@@ -198,7 +198,7 @@ export default class Login extends Vue {
    */
   IntoASubmit() {
     //  personal类
-    //  （证件页面）
+    //  （证件页面）idcard
     this.personalAll = {
       ///
       city: 902,
@@ -210,24 +210,22 @@ export default class Login extends Vue {
       monthlySupply: this.intoA.orderCarTwo.monthlySupply,
       periods: this.intoA.orderCarTwo.periods,
       personal: {
-        certificateType: null,  
-        city: null,      
-        driverModel: null, 
-        driverNo: null,        
-        driverPhoto:null,
-        driverTerm:null,
-        driverVicePhoto:null,
-        headPhoto:null,
-        idCardAddressDetail:null,
-        idCardTerm:null,
-        nationalPhoto:null,
-        province:null,
+        // certificateType: null,  
+        // driverModel: null, 
+        // driverNo: null,        
+        // driverTerm:null,
+        // idCardAddressDetail:null,
 
+        headPhoto: this.intoA.personal.headPhoto, // 身份证头像地址
+        nationalPhoto: this.intoA.personal.nationalPhoto,  // 身份证国徽地址
+        driverPhoto: this.intoA.personalCar.driverPhoto,    // 驾驶证正面
+        driverVicePhoto: this.intoA.personalCar.driverVicePhoto,    // 驾驶证副页
         name: this.intoA.personal.name,    //证件姓名
         idCard: this.intoA.personal.id_card,  //证件号码
         nation: this.intoA.personal.nation,   // 民族
-        idCardAddress: this.intoA.personal.id_card_address,  // 户籍信息
-        idCardValidityPeriodSection: this.intoA.personal.id_card_validity_period_section, // 有效期限
+        province: this.intoA.personal.province,  // 户籍信息省市
+        city: this.intoA.personal.city,       // 户籍信息城市
+        idCardTerm: this.intoA.personal.id_card_validity_period_section, // 有效期限
         mobileMain: this.intoA.PersonalJob.phone,
         mobileMinor: this.intoA.PersonalJob.contactPhone,
         marital: this.intoA.PersonalJob.marital,    // 婚姻状况
@@ -238,6 +236,9 @@ export default class Login extends Vue {
         city1: this.intoA.PersonalJob.city1,    // 居住地区 市
         district1: this.intoA.PersonalJob.district1,    // 居住地区 区
         localHomeAddr: this.intoA.PersonalJob.address,    // 居住地址
+        usefulTime: this.intoA.personalCar.useful_time,    // 有效期限
+        fileNumber: this.intoA.personalCar.file_number,    // 档案编号
+        drivingLicense: this.intoA.personalCar.driving_license,  // 准驾车型
         personalBank: {
           depositBank: this.intoA.personalBank.deposit_bank,    // 开户银行
           cardNumber: this.intoA.personalBank.card_number,    // 银行卡号
@@ -250,10 +251,10 @@ export default class Login extends Vue {
           companyAddressDetail: this.intoA.PersonalJob.companyAdress,    // 单位地址
           companyPhone: this.intoA.PersonalJob.companyPhone,    // 单位电话
           workingYears: this.intoA.PersonalJob.yearsWorking,    // 工作年限
-          basicSalary: Number(this.intoA.PersonalJob.afterSalary) ,    // 税后月薪
-          companyhostAddr: null,        
-          jobType: null,                             
-          localHomeAddrDetail: null,     
+          basicSalary: Number(this.intoA.PersonalJob.afterSalary),    // 税后月薪
+          // companyhostAddr: null,        
+          // jobType: null,                             
+          // localHomeAddrDetail: null,     
         },
       },
       // personalCar: {
@@ -261,17 +262,14 @@ export default class Login extends Vue {
       //   fileNumber: this.intoA.personalCar.file_number,    // 档案编号
       //   drivingLicense: this.intoA.personalCar.driving_license,    // 准驾车型
       // },
-      orderCar:{
+      orderCar: {
         brandName: this.intoA.orderCar.brandName,
         interiorColor: this.intoA.orderCar.interiorColor,
         modelName: this.intoA.orderCar.modelName,
         seriesName: this.intoA.orderCar.seriesName,
         vehicleColor: this.intoA.orderCar.vehicleColor,
-        usefulTime: this.intoA.personalCar.useful_time,    // 有效期限
-        fileNumber: this.intoA.personalCar.file_number,    // 档案编号
-        drivingLicense: this.intoA.personalCar.driving_license,    // 准驾车型
       },
-      
+
       personalContacts: [
         {
           relation: this.intoA.PersonalContact.relation,    // 承租人关系

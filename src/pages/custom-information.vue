@@ -1,4 +1,4 @@
-<template>
+<template>  
   <section class="page customInformation">
     <van-row>
       <p class="base-info-title">基本信息</p>
@@ -238,19 +238,19 @@ export default class Login extends Vue {
     area: { required: true, message: '请选择居民地区' },
     address: { required: true, message: '请输入居民地址' },
     falseWorking: { required: true, message: '请选择工作情况' },
-    companyPhone: [{ message: "请输入正确的单位电话" }, { validator: this.verifyPhone }],
+    // companyPhone: [{ message: "请输入正确的单位电话" }, { validator: this.verifyPhone }],
     // companyName:{ required: true, message: '请输入单位名称' },
     // falsenatureUnit:{ required: true, message: '请选择单位性质' },
   };
-  verifyPhone(rule, value, callback) {
-    if (value !== '') {
-      if (!(/^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/).test(value)) {
-        callback(new Error('请输入正确的单位电话'));
-      } 
-    }else{
-      callback()
-    }
-  }
+  // verifyPhone(rule, value, callback) {
+  //   if (value !== '') {
+  //     if (!(/^((\d{3,4}-)|\d{3.4}-)?\d{7,8}$/).test(value)) {
+  //       callback(new Error('请输入正确的单位电话'));
+  //     } 
+  //   }else{
+  //     callback()
+  //   }
+  // }
 
   /**
   * 基本信息 点击下一步

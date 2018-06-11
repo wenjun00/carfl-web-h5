@@ -31,4 +31,13 @@ export class carShowManagementService {
             data
         })
     }
+     /**
+     * 获取所有车辆接口
+     */
+    getCarShowModelListByName(data) {
+        return this.netService.send({
+            server: manageService.carShowManagementController.getCarShowModelListByName,
+            data
+        })
+    }
 }
