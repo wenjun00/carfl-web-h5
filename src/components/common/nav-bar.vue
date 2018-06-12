@@ -14,7 +14,7 @@
       <div class="van-hairline--bottom"></div>
       <van-cell-group>
         <van-cell title="常见问题" to="/FAQ" clickable @click="onNavItemClick" />
-        <van-cell title="了解洋葱汽车" to="/home" clickable @click="onNavItemClick" />
+        <van-cell title="了解洋葱汽车" to="/knowOnionCar" clickable @click="onNavItemClick" />
         <van-cell title="退出" to="/home" clickable @click="onNavItemClick" />
       </van-cell-group>
     </van-popup>

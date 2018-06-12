@@ -12,6 +12,7 @@ const UploadIdPhotoThree = () => Promise.resolve(require('~/pages/upload-id-phot
 const AddInformation = () => Promise.resolve(require('~/pages/add-information.vue'))
 const Details = () => Promise.resolve(require('~/pages/details.vue'))
 const AllVehicles = () => Promise.resolve(require('~/pages/allVehicles.vue'))
+const KnowOnionCar = () => Promise.resolve(require('~/pages/KnowOnionCar.vue'))
 // const AddDocumentInfor = () => Promise.resolve(require('~/pages/add-document-infor.vue'))
 
 
@@ -94,6 +95,10 @@ const routes = [
     path: '/allVehicles',
     name: 'allVehicles',
     component: AllVehicles
+  },{
+    path: '/knowOnionCar',
+    name: 'knowOnionCar',
+    component: KnowOnionCar
   }
 
 ]

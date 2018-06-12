@@ -98,7 +98,7 @@ export default class Home extends Vue {
     })
   }
   mounted(){
-    console.log(this.intoA,'看这里')
+    // console.log(this.intoA,'看这里')
   }
 
 }
