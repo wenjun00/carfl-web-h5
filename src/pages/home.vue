@@ -86,8 +86,16 @@ export default class Home extends Vue {
     search: false
   };
 
+  /**
+   * 搜索页面
+   */
   private onSearch() {
-    console.log(this.serachKeyWord);
+    this.$router.push({
+      name:'BuyCarList',
+      params:{
+        transKeyWord: this.keyWord
+      }
+    })
   }
   mounted(){
     console.log(this.intoA,'看这里')

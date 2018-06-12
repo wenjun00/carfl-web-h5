@@ -48,7 +48,7 @@ import DetailsScheme from "~/components/common/detailsScheme.vue";
 import { carManagementService } from "~/services/manage-service/car-management.service";
 import { Dependencies } from "~/core/decorator";
 import { Prop } from "vue-property-decorator";
-
+import {State, Mutation, Action } from "vuex-class";
 @Component({
   components: {
     DetailsScheme,
@@ -66,7 +66,6 @@ export default class Details extends Vue {
     document.documentElement.scrollTop = 0
     window.scrollTo(0, 0);
   }
-
   /**
    * 获取车辆基本配置
    */

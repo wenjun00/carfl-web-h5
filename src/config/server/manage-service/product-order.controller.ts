@@ -1,7 +1,7 @@
 // 进件
 import { requestType } from "~/config/enum.config";
 const SERVICE = 'service-manage'
-const CONTROLLER = 'productOrder' 
+const CONTROLLER = 'productOrder'
 
 
 
@@ -15,5 +15,14 @@ export default {
         action: 'createOrder',
         type: requestType.Post
     },
-   
+    /**
+     * 获取订单
+     */
+    getOrder: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'TODO:',
+        type: requestType.Get
+    }
+
 }

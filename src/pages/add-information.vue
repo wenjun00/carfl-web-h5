@@ -164,6 +164,8 @@ export default class Login extends Vue {
   @Mutation tenantImg
   @Mutation clearIntoA
   @State intoA
+  @Mutation selectCity
+  @State IntoACity
 
 
 
@@ -201,7 +203,7 @@ export default class Login extends Vue {
     //  （证件页面）idcard
     this.personalAll = {
       ///
-      city: 902,
+      city: this.IntoACity[0],
       productResultId: this.intoA.orderCarTwo.productResultId,
       productId: this.intoA.orderCarTwo.productId,
       initialPayment: this.intoA.orderCarTwo.initialPayment,
@@ -240,6 +242,8 @@ export default class Login extends Vue {
         fileNumber: this.intoA.personalCar.file_number,    // 档案编号
         drivingLicense: this.intoA.personalCar.driving_license,  // 准驾车型
         personalBank: {
+          depositProvince:this.intoA.personalBank.locationProvince, // 银行开户省份
+          depositCity:this.intoA.personalBank.locationCity,    // 银行开户市
           depositBank: this.intoA.personalBank.deposit_bank,    // 开户银行
           cardNumber: this.intoA.personalBank.card_number,    // 银行卡号
           reservedPhoneNumber: this.intoA.personalBank.reserved_phone_number,    // 预留手机号
@@ -343,7 +347,6 @@ export default class Login extends Vue {
 
   mounted() {
     this.arrImg = this.intoA.PersonalAdditional
-
   }
 
 

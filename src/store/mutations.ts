@@ -179,10 +179,27 @@ export default {
   carDetailTwo(state, data){
     state.intoA.orderCarTwo = data
   },
+  // 改变进件城市选择
+  selectCity(state, data){
+    state.IntoACity = data
+  },
+
+  // 清空进件城市
+  clearSelectCity(state){
+    state.IntoACity = ''
+  },
 
   // 清空intoA
   clearIntoA(state) {
     state.intoA = {}
+  },
+  /**
+   * 更新用户订单数据
+   * @param state 
+   * @param data 
+   */
+  updateUserOrder(state,data){
+    state.orderInfo = data
   }
 
 }

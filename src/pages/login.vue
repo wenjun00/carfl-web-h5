@@ -133,6 +133,10 @@ export default class Login extends Vue {
       err => this.$toast(err.msg)
     )
   }
+  // 获取当前用户有没有订单
+  getOrderInfo(){
+    
+  }
 
   /**
    * 提交操作

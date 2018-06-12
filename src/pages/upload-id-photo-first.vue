@@ -1,5 +1,7 @@
 <template>
   <section class="page uploadIdPhotoFirst">
+    <!-- <van-field v-model="heandCity" label="选择城市" placeholder="请选择城市" required @click="optionCity=true" /> -->
+    <van-cell title="选择城市" required is-link :value="IntoACity | cityConvert " @click="optionCity=true" />
     <van-row>
       <van-steps :active="0" active-color="#FFE44D">
         <van-step>身份证信息</van-step>
@@ -45,16 +47,20 @@
         <!-- <van-field v-model="idcard.id_card_address" placeholder="请输入户籍信息" required label="户籍信息" /> -->
         <van-cell title="户籍信息" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
         <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
-
         <van-field v-model="idcard.id_card_validity_period_section" placeholder="请输入有效期" required label="有效期限" />
       </van-cell-group>
     </van-row>
-    <transition name="fade">
-      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
-    </transition>
     <van-row>
       <van-button type="primary" @click="addAffirm" bottom-action>下一步</van-button>
     </van-row>
+    <!-- 选择民族 -->
+    <transition name="fade">
+      <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
+    </transition>
+    <!-- 选择下单城市 -->
+    <transition name="fade">
+      <van-picker :columns="columnsTwo" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" />
+    </transition>
   </section>
 </template>
 
@@ -65,20 +71,30 @@ import { NetService } from "~/utils/net.service";
 import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
 import CityPicker from "~/components/common/city-picker.vue";
-
 @Component({
   components: {
     CityPicker,
   }
+ 
 })
 export default class Login extends Vue {
   private value: any = null;
   private arrImg: any = [];
   private photo: any = "";
   private photoTwo: any = "";
-  private pickerDialog: boolean = false;
+  private pickerDialog: boolean = false;  //  民族弹窗
+  private optionCity: boolean = false;     // 城市选择弹窗
   private nation: string = ''
   private columns: any = [];
+  private columnsTwo: any = [
+    {
+      text: '郑州',
+      val: '902'
+    }, {
+      text: '南宁',
+      val: '3125'
+    }
+  ];
   private type: any;
   private idcard: any = {
     id_card: '',  // 身份证号码
@@ -95,23 +111,28 @@ export default class Login extends Vue {
   @Mutation idcCard
   @Mutation tenantImg
   @State intoA
+  @Mutation clearSelectCity
+  @Mutation selectCity
+  @State IntoACity
 
+   private heandCity = '' // 选择城市
   // 验证规则
   private rules = {
     name: { required: true, message: '请输入用户姓名' },
     id_card: [{ required: true, message: "请输入正确的身份证号码" }, { validator: this.$validator.idCard }],
     nation: { required: true, message: '请选择民族' },
-     id_card_address: { required: true, message: '请选择户籍信息' },
+    id_card_address: { required: true, message: '请选择户籍信息' },
     id_card_validity_period_section: { required: true, message: '请输入身份证有效区间', },
   };
   // 选择城市点击事件
   private onCityPickerConfirm(currentCitys) {
-    console.log(currentCitys)
+   
     this.idcard.province = currentCitys[0]
     this.idcard.city = currentCitys[1]
     this.idcard.id_card_address = currentCitys
+    
   }
-
+ 
 
   /**
    * 点击下一步
@@ -120,10 +141,10 @@ export default class Login extends Vue {
 
     this.$validator.validate(this.idcard, this.rules).then(error => {
       if (!error) {
-        for(let i in this.arrImg){
-          if(this.arrImg[i].typeName == 1369){
+        for (let i in this.arrImg) {
+          if (this.arrImg[i].typeName == 1369) {
             this.idcard.headPhoto = this.arrImg[i].materialUrl
-          } else if (this.arrImg[i].typeName == 1370){
+          } else if (this.arrImg[i].typeName == 1370) {
             this.idcard.nationalPhoto = this.arrImg[i].materialUrl
           }
         }
@@ -146,6 +167,15 @@ export default class Login extends Vue {
     this.nation = this.$dict.getDictName(Number(this.idcard.nation))
     this.pickerDialog = false
   }
+  /***
+   * 选择下单城市确定事件
+   */
+  private onConfirmTwo(val){ 
+     this.selectCity([Number(val.val)]) 
+    //  console.log(this.IntoACity)
+     this.optionCity = false
+  }
+
   //测试图片上传
   onRead(val, number) {
     return ({ file }) => {
@@ -190,10 +220,11 @@ export default class Login extends Vue {
   }
 
   mounted() {
+    this.IntoACity = []
     this.columns = this.$dict.getDictData('0486').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-
+    
   }
 }
 </script>

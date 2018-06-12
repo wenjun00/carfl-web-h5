@@ -42,6 +42,7 @@ import Component from "vue-class-component";
 import NavBar from "~/components/common/nav-bar.vue";
 import OrderContract from "~/components/order/order-contract.vue";
 import OrderRecord from "~/components/order/order-record.vue";
+import { Getter,State } from "vuex-class";
 
 @Component({
   components: {
@@ -50,37 +51,11 @@ import OrderRecord from "~/components/order/order-record.vue";
   }
 })
 export default class MyOrder extends Vue {
+  @Getter hasOrder;
+  @State orderInfo
 
 
-  get hasOrder() {
-    return this.orderInfo.id !== undefined
-  }
-
-  private orderInfo: any = {}
   private activatedCollapse = []
-
-
-
-  private getOrder() {
-    //this.orderInfo = {}
-    this.orderInfo = {
-      id: 11023,
-      no: 'NT20180302118855',
-      carModle: '2017款 福睿斯 1.5L 自动舒适型',
-      city: '深圳',
-      firstPayment: 30000,
-      periods: 48,
-      monthPayment: [3263.25, 3725.25, 3500.25, 3300.25]
-    }
-  }
-
-  activated() {
-    this.getOrder()
-  }
-
-  mounted() {
-    this.getOrder()
-  }
 
 }
 </script>

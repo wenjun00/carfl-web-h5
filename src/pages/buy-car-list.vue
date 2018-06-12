@@ -55,6 +55,10 @@ export default class BuyCarList extends Vue {
     default: -1
   }) brandId
 
+  @Prop({
+    default: ''
+  }) transKeyWord
+
   private searchModel = {
     brandId: '',
     name: ''
@@ -119,6 +123,7 @@ export default class BuyCarList extends Vue {
   mounted() {
     this.dataSet = []
     if(this.brandId > 0) this.searchModel.brandId = this.brandId
+    if(this.transKeyWord !== '') this.keyWord = this.transKeyWord
     this.searchCarList()
     window.addEventListener('scroll', this.onScrollTopChage)
 

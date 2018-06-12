@@ -1,5 +1,6 @@
 <template>
   <section class="page uploadIdPhotoTwo">
+    <van-cell title="选择城市" required is-link :value="IntoACity | cityConvert " @click="optionCity=true" />
     <van-row>
       <van-steps :active="1" active-color="#FFE44D">
         <van-step>身份证信息</van-step>
@@ -40,6 +41,10 @@
         <van-field v-model="drivingType" required label="准驾车型" placeholder="请选择准驾车型" @click="pickerDialog=true" />
       </van-cell-group>
     </van-row>
+    <!-- 选择下单城市 -->
+    <transition name="fade">
+      <van-picker :columns="columnsTwo" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" />
+    </transition>
 
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
@@ -74,6 +79,24 @@ export default class Login extends Vue {
     driverPhoto: '',   // 驾驶证正面
     driverVicePhoto: '', // 驾驶证负面
   }
+  private optionCity: boolean = false;     // 城市选择弹窗
+  private columnsTwo: any = [
+    {
+      text: '郑州',
+      val: '902'
+    }, {
+      text: '南宁',
+      val: '3125'
+    }
+  ];
+   /***
+   * 选择下单城市确定事件
+   */
+  private onConfirmTwo(val){ 
+     this.selectCity([Number(val.val)]) 
+    //  console.log(this.IntoACity)
+     this.optionCity = false
+  }
   // 验证规则
   private rules = {
     useful_time: { required: true, message: '请输入有效期限' },
@@ -84,6 +107,8 @@ export default class Login extends Vue {
   @Mutation choosePeople
   @Mutation tenantImg
   @State intoA
+  @Mutation selectCity
+  @State IntoACity
 
   /**
   * 点击准驾车型确定事件
@@ -181,7 +206,7 @@ export default class Login extends Vue {
     this.columns = this.$dict.getDictData('0478').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-
+    console.log(this.IntoACity)
   }
 
 }
