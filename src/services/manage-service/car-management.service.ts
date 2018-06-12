@@ -20,10 +20,12 @@ export class carManagementService {
    * 获取车辆信息
    */
   @Debounce()
-  getCarDetail(data) {
+  getCarDetail(carId) {
     return this.netService.send({
       server: manageService.carManagementController.getCarDetail,
-      data
+      data: {
+        carId: carId
+      }
     })
   }
   /**
@@ -41,13 +43,15 @@ export class carManagementService {
    * 获取车辆详情首页图片
    */
   @Debounce()
-  getCarPictureList(data) {
+  getCarPictureList(carId) {
     return this.netService.send({
       server: manageService.carManagementController.getCarPictureList,
-      data
+      data:{
+        carId: carId
+      }
     })
   }
 
- 
+
 
 }
