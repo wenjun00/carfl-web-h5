@@ -4,7 +4,7 @@
     <van-popup v-model="showNavBar " position="right" @click-overlay="onNavItemClick(false)">
       <van-cell-group>
         <van-cell title="首页" to="/home" clickable @click="onNavItemClick" />
-        <van-cell title="买新车" to="/buy-car-list/9999" clickable @click="onNavItemClick" />
+        <van-cell title="买新车" clickable @click="toBuyCarList" />
       </van-cell-group>
       <div class="van-hairline--bottom"></div>
       <van-cell-group>
@@ -28,6 +28,16 @@ import { Model, Emit } from "vue-property-decorator";
 
 @Component({})
 export default class NavBar extends Vue {
+  // 点击买新车
+    toBuyCarList(){
+      this.$router.push({
+      name:'BuyCarList',
+      params:{
+        brandId: '-1'
+      }
+    })
+    this.onNavItemClick()
+    }
 
   /**
    * 因为popup 的 v-model 绑定的当前model/属性  

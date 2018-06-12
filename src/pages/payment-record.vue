@@ -10,10 +10,10 @@
       </van-row>
       <div class="van-hairline--bottom"></div>
       <van-row class="payment-record-table-content" v-for="item in dataSet" :key="item.period">
-        <van-col :span="4">{{`${item.period}/${dataSet.length}`}}</van-col>
-        <van-col :span="8">{{item.payDate | dateFormat('yyyy-MM-dd')}}</van-col>
-        <van-col class="payment-record-table-content-money" :span="6">￥{{item.payment | toThousands}}</van-col>
-        <van-col :class="`payment-record-table-content-state${item.state}`" :span="6">{{item.state | convertState}}</van-col>
+        <van-col :span="4">{{`${item.periods}/${dataSet.length}`}}</van-col>
+        <van-col :span="8">{{item.minRepayDate | dateFormat('yyyy-MM-dd')}}</van-col>
+        <van-col class="payment-record-table-content-money" :span="6">￥{{item.sumAmount | toThousands}}</van-col>
+        <van-col :class="`payment-record-table-content-state${item.state}`" :span="6">{{item.status | convertState}}</van-col>
       </van-row>
     </div>
   </section>
@@ -22,7 +22,9 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-
+import { PaymentScheduleControllerService } from "~/services/manage-service/payment-schedule-controller.service";
+import { Dependencies } from "~/core/decorator";
+import { State, Mutation, Action } from "vuex-class";
 @Component({
   components: {
   },
@@ -48,26 +50,40 @@ import Component from "vue-class-component";
   }
 })
 export default class PaymentRecord extends Vue {
-
+  @Dependencies(PaymentScheduleControllerService) private paymentScheduleControllerService: PaymentScheduleControllerService;
+  
+  @State  userData
   private dataSet: any = []
 
-  private createTmpData(index) {
-    let rand = Math.random()
-    return {
-      period: index,
-      payDate: new Date(),
-      payment: rand * 10000,
-      state: 4
-    }
+  // private createTmpData(index) {
+  //   let rand = Math.random()
+  //   return {
+  //     period: index,
+  //     payDate: new Date(),
+  //     payment: rand * 10000,
+  //     state: 4
+  //   }
+  // }
+  // 查询还款详情
+  getPaymentDetails() {
+    this.paymentScheduleControllerService.getPaymentScheduleList(9999).subscribe(
+      data => {
+       this.dataSet = data
+       console.log(this.dataSet)
+      },
+      err => this.$toast(err.msg)
+    )
   }
 
   mounted() {
-    this.dataSet = [];
-    let index = 1;
-    while (index <= 24) {
-      this.dataSet.push(this.createTmpData(index))
-      index++
-    }
+    this.getPaymentDetails()
+    // console.log(this.userData,'123')
+    // this.dataSet = [];
+    // let index = 1;
+    // while (index <= 24) {
+    //   this.dataSet.push(this.createTmpData(index))
+    //   index++
+    // }
   }
 
 }

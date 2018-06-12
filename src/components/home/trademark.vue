@@ -1,4 +1,4 @@
-<template >
+<template > 
   <section class="component trademark">
     <!-- <img v-for="(item,index) of trademarkList" @click="Allcar(index)" :key="index" :src="item.img" height="60px" /> -->
 
@@ -34,8 +34,12 @@ export default class Trademark extends Vue {
    * 点击当前品牌 进入相对应的品牌车辆
    */
   Allcar(index, id) {
-    let brandId = index < 9 ? id : -1
-    this.$router.push(`/buy-car-list/${brandId}`)
+    this.$router.push({
+      name:'BuyCarList',
+      params:{
+        brandId: id
+      }
+    })
   }
 
   fristVehicleBrand() {
