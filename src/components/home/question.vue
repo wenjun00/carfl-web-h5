@@ -47,7 +47,7 @@ export default class Question extends Vue {
     {
       id: 4,
       title: "其他疑问谁能解答?",
-      content: "拨打全国客户热线400-6666-***,也可以留下联系方式，预约直营店客户经理1对1服务，解答购车疑问"
+      content: "关注 '云南洋葱汽车科技有限公司' 微信公众号"
     },
   ]
 
