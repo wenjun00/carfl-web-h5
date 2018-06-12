@@ -242,6 +242,8 @@ export default class Login extends Vue {
         fileNumber: this.intoA.personalCar.file_number,    // 档案编号
         drivingLicense: this.intoA.personalCar.driving_license,  // 准驾车型
         personalBank: {
+          depositProvince:this.intoA.personalBank.locationProvince, // 银行开户省份
+          depositCity:this.intoA.personalBank.locationCity,    // 银行开户市
           depositBank: this.intoA.personalBank.deposit_bank,    // 开户银行
           cardNumber: this.intoA.personalBank.card_number,    // 银行卡号
           reservedPhoneNumber: this.intoA.personalBank.reserved_phone_number,    // 预留手机号

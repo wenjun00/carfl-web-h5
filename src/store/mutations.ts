@@ -192,6 +192,14 @@ export default {
   // 清空intoA
   clearIntoA(state) {
     state.intoA = {}
+  },
+  /**
+   * 更新用户订单数据
+   * @param state 
+   * @param data 
+   */
+  updateUserOrder(state,data){
+    state.orderInfo = data
   }
 
 }

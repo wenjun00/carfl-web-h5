@@ -38,6 +38,11 @@
       <van-cell-group>
         <van-field v-model="depositBank" required label="开户银行" placeholder="请选择准开户银行" @click="pickerDialog=true" />
         <van-field placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
+
+         <van-cell title="银行开户所在地" required is-link :value="personalBank.location | cityConvert " @click="$refs['cityPicker'].show()" />
+        <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
+
+
         <van-field v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
       </van-cell-group>
     </van-row>
@@ -59,7 +64,13 @@ import Component from "vue-class-component";
 import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
 import { NetService } from "~/utils/net.service";
-@Component({})
+import CityPicker from "~/components/common/city-picker.vue";
+@Component({
+  components: {
+    CityPicker,
+  }
+ 
+})
 export default class Login extends Vue {
 
   private idName: any = null;
@@ -76,6 +87,9 @@ export default class Login extends Vue {
     reserved_phone_number: '',  //预留手机号
     deposit_bank: '',   // 开户银行
     card_number: '',    // 银行卡号
+    location: '',        // 开户地区汉子
+    locationProvince: '',  // 开户省 id
+    locationCity: '',      // 开户市 id
   }
   private optionCity: boolean = false;     // 城市选择弹窗
   private columnsTwo: any = [
@@ -95,12 +109,21 @@ export default class Login extends Vue {
     //  console.log(this.IntoACity)
     this.optionCity = false
   }
+  // 选择银行户籍点击确定
+  private onCityPickerConfirm(currentCitys) {
+
+    this.personalBank.locationProvince = currentCitys[0]
+    this.personalBank.locationCity = currentCitys[1]
+    this.personalBank.location = currentCitys
+
+  }
+
   /**
    * 点击下一步
    */
   addAffirm() {
-   
-    if(!this.IntoACity){
+
+    if (!this.IntoACity) {
       this.$toast('请选择城市');
       return
     }

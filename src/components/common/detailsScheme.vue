@@ -341,9 +341,15 @@ export default class detailsScheme extends Vue {
     * 点击下一步
     */
   skipNextStep() {
-    this.carDetails(this.carInfo)
-    this.carDetailTwo(this.carIntoA)
-    this.$router.push('/upload-id-photo-first')
+    if(!!this.carIntoA.productResultId){
+     
+      this.carDetails(this.carInfo)
+      this.carDetailTwo(this.carIntoA)
+      this.$router.push('/upload-id-photo-first')  
+    }else{
+      this.$toast('请先选择车辆首付、期数')
+    }
+    
 
   }
 
