@@ -10,10 +10,12 @@ export class carManagementService {
    * 根据车辆id查询车辆属性列表
    */
   @Debounce()
-  getCarParamList(data) {
+  getCarParamList(carId) {
     return this.netService.send({
       server: manageService.carManagementController.getCarParamList,
-      data
+      data:{
+        carId:carId
+      }
     })
   }
   /**
@@ -32,10 +34,12 @@ export class carManagementService {
    * 通过carId查找出栏目信息
    */
   @Debounce()
-  getCarColumnCollectModel(data) {
+  getCarColumnCollectModel(carId) {
     return this.netService.send({
       server: manageService.carManagementController.getCarColumnCollectModel,
-      data
+      data:{
+        carId:carId
+      }
     })
   }
 

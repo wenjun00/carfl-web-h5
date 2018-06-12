@@ -35,7 +35,7 @@
       </van-col>
     </van-row>
     <van-row>
-      <DetailsScheme></DetailsScheme>
+      <DetailsScheme :carId="carId"></DetailsScheme>
     </van-row>
 
   </section>
