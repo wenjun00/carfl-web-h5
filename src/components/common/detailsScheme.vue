@@ -279,7 +279,7 @@ export default class detailsScheme extends Vue {
   * 获取车辆首付 期数1
   */
   getCarPeriods() {
-    this.productService.getCarProductResultModelList(this.carId).subscribe(
+    this.productService.getCarProductResultModelList({carId:this.carId}).subscribe(
       data => {
         this.carPeriodsOne = data
       },
