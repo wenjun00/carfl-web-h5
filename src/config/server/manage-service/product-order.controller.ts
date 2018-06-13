@@ -23,6 +23,15 @@ export default {
         controller: CONTROLLER,
         action: 'getAppProductOrderInfo',
         type: requestType.Get
+    },
+     /**
+     * 获取订单基本数据
+     */
+    findOrderInfoByOrderNumber: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'findOrderInfoByOrderNumber',
+        type: requestType.Get
     }
 
 }

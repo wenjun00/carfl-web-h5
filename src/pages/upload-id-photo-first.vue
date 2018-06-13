@@ -181,7 +181,7 @@ export default class Login extends Vue {
    */
   private onConfirmTwo(val) {
     this.selectCity([Number(val.val)])
-    //  console.log(this.IntoACity)
+    //  console.log(this.IntoACity,'下单成')
     this.optionCity = false
   }
 

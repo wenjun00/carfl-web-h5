@@ -21,8 +21,20 @@ export class ProductOrderService {
         return this.netService.send({
             server: manageService.productOrderController.getOrder,
             data:{
-                personalId: personalId
+                personalId: 9999
             }
         })
     }
+    /**
+     * 根据用户订单号查询订单基本信息
+     */
+    findOrderInfoByOrderNumber(orderNumber){
+        return this.netService.send({
+            server: manageService.productOrderController.findOrderInfoByOrderNumber,
+            data:{
+                orderNumber: orderNumber
+            }
+        })
+    }
+
 }
