@@ -14,7 +14,7 @@
       </van-cell-group>
     </van-row>
     <div class="submit">
-      <van-button type="primary" size="large" @click="onSubmit">登录</van-button>
+      <van-button class="full-radius" type="primary" size="large" @click="onSubmit">登录</van-button>
     </div>
   </section>
 </template>
@@ -134,8 +134,8 @@ export default class Login extends Vue {
     )
   }
   // 获取当前用户有没有订单
-  getOrderInfo(){
-    
+  getOrderInfo() {
+
   }
 
   /**
@@ -147,7 +147,13 @@ export default class Login extends Vue {
       if (!error) {
         this.loginService.verifyCodeLogin(this.loginModel).subscribe(
           data => {
-            this.updateUserLoginData(Object.assign({ userPhone: this.loginModel.phoneNumber }, data))
+            let resultData = {
+              token: data.token,
+              personalId: data.personalId,
+              personalName: data.personalName,
+              userPhone: this.loginModel.phoneNumber
+            }
+            this.updateUserLoginData(resultData)
             this.$router.push("/Index");
           },
           err => this.$toast(err.msg)
@@ -162,11 +168,9 @@ export default class Login extends Vue {
 </script>
 <style lang="less" scoped>
 .page.login {
-  .login {
-    text-align: center;
-    .submit {
-      margin-top: 30px;
-    }
+  text-align: center;
+  .submit {
+    margin-top: 30px;
   }
   .imgHeaght {
     height: 320px;

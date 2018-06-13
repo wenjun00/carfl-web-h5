@@ -39,10 +39,13 @@ const routes = [
     name: 'FAQ',
     component: FAQ
   }, {
-    path: '/buy-car-list/:brandId/:transKeyWord',
+    path: '/buy-car-list',
     name: 'BuyCarList',
     component: BuyCarList,
-    props: true
+    props: (route) => ({
+      brandId: route.query.b,
+      transKeyWord: route.query.k
+    })
   }, {
     path: '/custom-information',
     name: 'custom-information',
@@ -96,7 +99,7 @@ const routes = [
     path: '/allVehicles',
     name: 'allVehicles',
     component: AllVehicles
-  },{
+  }, {
     path: '/knowOnionCar',
     name: 'knowOnionCar',
     component: KnowOnionCar

@@ -4,6 +4,7 @@ import store from '~/store'
 import storeInit from '~/core/bootstrap/store.init'
 const Login = () => import('~/pages/login.vue')
 const Index = () => import('~/pages/index.vue')
+const NotFound = () => import('~/pages/not-found.vue')
 import Routes from "./routes";
 
 Vue.use(Router)
@@ -14,6 +15,10 @@ const routes = [
     path: '/',
     name: 'Login',
     component: Login,
+    beforeEnter: (to, from, next) => {
+      store.dispatch('clearUserLoginData')
+      next()
+    }
   }, {
     path: '/index',
     name: 'Index',
@@ -22,6 +27,10 @@ const routes = [
     // 以使home组件为router-view的默认值
     redirect: '/home',
     children: [...Routes]
+  }, {
+    path: '*',
+    name: 'notfound',
+    component: NotFound
   }
 ]
 
@@ -42,7 +51,7 @@ router.beforeEach(async ({ matched, path }, from, next) => {
     })
   }
 
-  if (store.state.tokenExpire && path !== "/") {
+  if ((store.state.tokenExpire || store.state.userToken === '') && path !== "/") {
     // 重置用户过期状态
     store.commit('updateTokenExpire', false)
     return next("/")
@@ -50,5 +59,6 @@ router.beforeEach(async ({ matched, path }, from, next) => {
 
   next()
 })
+
 
 export default router

@@ -1,21 +1,27 @@
 <template>
   <section class="page payment-record">
-    <div class="break-line"> </div>
-    <div class="payment-record-table">
-      <van-row class="payment-record-table-title">
-        <van-col :span="4">期数</van-col>
-        <van-col :span="8">还款日期</van-col>
-        <van-col :span="6">还款金额</van-col>
-        <van-col :span="6">还款状态</van-col>
-      </van-row>
-      <div class="van-hairline--bottom"></div>
-      <van-row class="payment-record-table-content" v-for="item in dataSet" :key="item.period">
-        <van-col :span="4">{{`${item.periods}/${dataSet.length}`}}</van-col>
-        <van-col :span="8">{{item.minRepayDate | dateFormat('yyyy-MM-dd')}}</van-col>
-        <van-col class="payment-record-table-content-money" :span="6">￥{{item.sumAmount | toThousands}}</van-col>
-        <van-col :class="`payment-record-table-content-state${item.state}`" :span="6">{{item.status | convertState}}</van-col>
-      </van-row>
+    <div v-if="!hasOrder" class="my-order-no" key="no-order">
+      <img src="/static/images/home/no-order.png" />
     </div>
+    <div v-else key="has-order">
+      <div class="break-line"> </div>
+      <div class="payment-record-table">
+        <van-row class="payment-record-table-title">
+          <van-col :span="4">期数</van-col>
+          <van-col :span="8">还款日期</van-col>
+          <van-col :span="6">还款金额</van-col>
+          <van-col :span="6">还款状态</van-col>
+        </van-row>
+        <div class="van-hairline--bottom"></div>
+        <van-row class="payment-record-table-content" v-for="item in dataSet" :key="item.period">
+          <van-col :span="4">{{`${item.periods}/${dataSet.length}`}}</van-col>
+          <van-col :span="8">{{item.minRepayDate | dateFormat('yyyy-MM-dd')}}</van-col>
+          <van-col :span="6">￥{{item.sumAmount | toThousands}}</van-col>
+          <van-col :span="6">{{item.status }}</van-col>
+        </van-row>
+      </div>
+    </div>
+
   </section>
 </template>
 
@@ -24,7 +30,8 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { PaymentScheduleControllerService } from "~/services/manage-service/payment-schedule-controller.service";
 import { Dependencies } from "~/core/decorator";
-import { State, Mutation, Action } from "vuex-class";
+import { State, Mutation, Action, Getter } from "vuex-class";
+
 @Component({
   components: {
   },
@@ -51,39 +58,23 @@ import { State, Mutation, Action } from "vuex-class";
 })
 export default class PaymentRecord extends Vue {
   @Dependencies(PaymentScheduleControllerService) private paymentScheduleControllerService: PaymentScheduleControllerService;
-  
-  @State  userData
+
+  @State userData
+  @Getter hasOrder
   private dataSet: any = []
 
-  // private createTmpData(index) {
-  //   let rand = Math.random()
-  //   return {
-  //     period: index,
-  //     payDate: new Date(),
-  //     payment: rand * 10000,
-  //     state: 4
-  //   }
-  // }
   // 查询还款详情
   getPaymentDetails() {
-    this.paymentScheduleControllerService.getPaymentScheduleList(9999).subscribe(
+    this.paymentScheduleControllerService.getPaymentScheduleList(this.userData.id).subscribe(
       data => {
-       this.dataSet = data
-       console.log(this.dataSet)
+        this.dataSet = data
       },
       err => this.$toast(err.msg)
     )
   }
 
   mounted() {
-    this.getPaymentDetails()
-    // console.log(this.userData,'123')
-    // this.dataSet = [];
-    // let index = 1;
-    // while (index <= 24) {
-    //   this.dataSet.push(this.createTmpData(index))
-    //   index++
-    // }
+    if (this.hasOrder) this.getPaymentDetails()
   }
 
 }
@@ -118,6 +109,10 @@ export default class PaymentRecord extends Vue {
         }
       }
     }
+  }
+  .my-order-no {
+    margin-top: 20%;
+    text-align: center;
   }
 }
 </style>

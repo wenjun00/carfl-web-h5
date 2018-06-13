@@ -34,12 +34,11 @@ export default class Trademark extends Vue {
    * 点击当前品牌 进入相对应的品牌车辆
    */
   Allcar(index, id) {
-    this.$router.push({
-      name:'BuyCarList',
-      params:{
-        brandId: id
-      }
-    })
+    if(index < 9){
+      this.$router.push(`/buy-car-list/?b=${id}`)
+    }else{
+      this.$router.push(`/buy-car-list`)
+    }
   }
 
   fristVehicleBrand() {

@@ -15,7 +15,7 @@
       <van-cell-group>
         <van-cell title="常见问题" to="/FAQ" clickable @click="onNavItemClick" />
         <van-cell title="了解洋葱汽车" to="/knowOnionCar" clickable @click="onNavItemClick" />
-        <van-cell title="退出" to="/home" clickable @click="onNavItemClick" />
+        <van-cell title="退出" to="/" clickable @click="onNavItemClick" />
       </van-cell-group>
     </van-popup>
   </section>
@@ -28,16 +28,17 @@ import { Model, Emit } from "vue-property-decorator";
 
 @Component({})
 export default class NavBar extends Vue {
+
   // 点击买新车
-    toBuyCarList(){
-      this.$router.push({
-      name:'BuyCarList',
-      params:{
+  toBuyCarList() {
+    this.$router.push({
+      name: 'BuyCarList',
+      params: {
         brandId: '-1'
       }
     })
     this.onNavItemClick()
-    }
+  }
 
   /**
    * 因为popup 的 v-model 绑定的当前model/属性  
@@ -59,7 +60,6 @@ export default class NavBar extends Vue {
 
   @Emit('change')
   onNavItemClick(val = !this.show) { }
-
 
 }
 </script>

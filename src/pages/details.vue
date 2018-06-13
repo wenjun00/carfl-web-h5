@@ -3,7 +3,9 @@
     <van-row>
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img class="carImg" :src="image.url" :alt="image.introduce" />
+          <div class="car-main-img">
+            <img :src="image.url" :alt="image.introduce" height="250px"/>
+          </div>
         </van-swipe-item>
       </van-swipe>
     </van-row>
@@ -101,9 +103,8 @@ export default class Details extends Vue {
   .textCenter {
     text-align: center;
   }
-  .carImg {
-    height: 200px;
-    width: 100%;
+  .car-main-img {
+    text-align: center;
   }
   .carDetails {
     border-bottom: 1px solid darkgray;

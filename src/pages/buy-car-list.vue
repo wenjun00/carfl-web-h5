@@ -9,10 +9,10 @@
       </van-search>
     </form>
 
-    <van-row class="buy-car-list-item" v-for="(item,index) of carDataSet" :key="index">
+    <van-row class="buy-car-list-item" v-if="carDataSet.length > 0" v-for="(item,index) of carDataSet" :key="index" @click="$router.push(`/details/${item.carId}`)">
       <van-col span="10">
         <div>
-          <div @click="$router.push(`/details/${item.carId}`)"><img src="/static/images/home/car.png" height="100px"></div>
+          <img :src="(item.carPictures[0] || {}).url" height="80px">
         </div>
       </van-col>
       <van-col span="14">
@@ -27,6 +27,10 @@
         </van-row>
       </van-col>
     </van-row>
+
+    <div class="no-cars" v-else>
+      <p>新车型即将上架，敬请期待</p>
+    </div>
 
     <div class="to-top" v-show="show.toTop" @click="scrollTop">
       <van-icon name="upgrade" color="#f2f2f2" />
@@ -99,7 +103,7 @@ export default class BuyCarList extends Vue {
   /**
    * 点击清空按钮
    */
-  private onClearClick(){
+  private onClearClick() {
     this.keyWord = ''
     this.searchCarList()
   }
@@ -122,8 +126,8 @@ export default class BuyCarList extends Vue {
 
   mounted() {
     this.dataSet = []
-    if(this.brandId > 0) this.searchModel.brandId = this.brandId
-    if(this.transKeyWord !== '') this.keyWord = this.transKeyWord
+    if (this.brandId > 0) this.searchModel.brandId = this.brandId
+    if (this.transKeyWord !== '') this.keyWord = this.transKeyWord
     this.searchCarList()
     window.addEventListener('scroll', this.onScrollTopChage)
 
@@ -161,6 +165,11 @@ export default class BuyCarList extends Vue {
     bottom: @paddingNum*3;
     right: @paddingNum*3;
     z-index: 2001;
+  }
+  .no-cars {
+    font-size: 2rem;
+    padding-top: 10%;
+    text-align: center;
   }
 }
 .car {
