@@ -75,7 +75,7 @@ import CityPicker from "~/components/common/city-picker.vue";
   components: {
     CityPicker,
   }
- 
+
 })
 export default class Login extends Vue {
   private value: any = null;
@@ -115,7 +115,7 @@ export default class Login extends Vue {
   @Mutation selectCity
   @State IntoACity
 
-   private heandCity = '' // 选择城市
+  private heandCity = '' // 选择城市
   // 验证规则
   private rules = {
     name: { required: true, message: '请输入用户姓名' },
@@ -126,13 +126,13 @@ export default class Login extends Vue {
   };
   // 选择城市点击事件
   private onCityPickerConfirm(currentCitys) {
-   
+
     this.idcard.province = currentCitys[0]
     this.idcard.city = currentCitys[1]
     this.idcard.id_card_address = currentCitys
-    
+
   }
- 
+
 
   /**
    * 点击下一步
@@ -148,6 +148,14 @@ export default class Login extends Vue {
             this.idcard.nationalPhoto = this.arrImg[i].materialUrl
           }
         }
+        if (this.idcard.headPhoto == '') {
+          this.$toast('请先上传身份证头像面');
+          return
+        }
+         if (this.idcard.nationalPhoto == '') {
+          this.$toast('请先上传身份证国徽面');
+          return
+        }
         this.$router.push('/upload-id-photo-two')
         this.idcCard(this.idcard)
         this.tenantImg(this.arrImg)
@@ -156,6 +164,7 @@ export default class Login extends Vue {
         this.$toast(error);
       }
     });
+
   }
 
   /**
@@ -170,10 +179,10 @@ export default class Login extends Vue {
   /***
    * 选择下单城市确定事件
    */
-  private onConfirmTwo(val){ 
-     this.selectCity([Number(val.val)]) 
+  private onConfirmTwo(val) {
+    this.selectCity([Number(val.val)])
     //  console.log(this.IntoACity)
-     this.optionCity = false
+    this.optionCity = false
   }
 
   //测试图片上传
@@ -220,11 +229,11 @@ export default class Login extends Vue {
   }
 
   mounted() {
-    this.IntoACity = []
+    // this.IntoACity = []
     this.columns = this.$dict.getDictData('0486').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-    
+
   }
 }
 </script>
@@ -259,6 +268,7 @@ export default class Login extends Vue {
     text-align: center;
     display: flex;
     justify-content: center;
+    height: 120px;
     .imgSize {
       height: 110px;
       border: 1px solid #6666;

@@ -12,20 +12,20 @@
     <van-row>
       <van-row class="imgList">
         <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead" accept="image/gif, image/jpeg" multiple>
+          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photo',1371)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photo == ''" name="add" />
             <img width="100%" v-else :src="photo" alt="">
           </van-uploader>
-          <van-icon @click="closeIdentityCard" v-if="!photo == ''" class="deleteiconHead" name="close" />
-          <van-icon @click="lookIdentityCard" v-if="!photo == ''" class="lookiconHead" name="password-view" />
+          <van-icon @click="closeIdentityCard('photo',1371)" v-if="!photo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCard('photo')" v-if="!photo == ''" class="lookiconHead" name="password-view" />
         </van-col>
         <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onReadTwo" accept="image/gif, image/jpeg" multiple>
+          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photoTwo',1372)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
             <img width="100%" v-else :src="photoTwo" alt="">
           </van-uploader>
-          <van-icon @click="closeIdentityCardTwo" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
-          <van-icon @click="lookIdentityCardTwo" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
+          <van-icon @click="closeIdentityCard('photoTwo',1372)" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCard('photoTwo')" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
         </van-col>
       </van-row>
       <van-row style="text-align: center">
@@ -89,13 +89,13 @@ export default class Login extends Vue {
       val: '3125'
     }
   ];
-   /***
-   * 选择下单城市确定事件
-   */
-  private onConfirmTwo(val){ 
-     this.selectCity([Number(val.val)]) 
+  /***
+  * 选择下单城市确定事件
+  */
+  private onConfirmTwo(val) {
+    this.selectCity([Number(val.val)])
     //  console.log(this.IntoACity)
-     this.optionCity = false
+    this.optionCity = false
   }
   // 验证规则
   private rules = {
@@ -132,6 +132,15 @@ export default class Login extends Vue {
             this.peopleCar.driverVicePhoto = this.arrAll[i].materialUrl
           }
         }
+        if (this.peopleCar.driverPhoto == '') {
+          this.$toast('请先上传驾驶证正面');
+          return
+        }
+        if (this.peopleCar.driverVicePhoto == '') {
+          this.$toast('请先上传驾驶证负面');
+          return
+        }
+
         this.$router.push('/upload-id-photo-three')
         this.choosePeople(this.peopleCar)
 
@@ -141,66 +150,47 @@ export default class Login extends Vue {
     });
 
   }
+  //图片上传
+  onRead(val, number) {
+    return ({ file }) => {
+      NetService.upload(file).then(x => {
+        console.log(x)
+        this[val] = x.localUrl
+        for (let i in this.arrAll) {
+          if (this.arrAll[i].typeName == number) {
+            this.arrAll.splice(i, 1)
+          }
+        }
+        this.arrAll.push({
+          uploadName: x.realName,
+          materialType: x.type,
+          dataSize: x.size,
+          materialUrl: x.url,
+          uploadTime: x.createTime,
+          typeName: number,
+        })
+      })
+    }
+  }
 
   /**
-  * 图片上传
-  */
-  onRead({ file }) {
-    NetService.upload(file).then(x => {
-      this.photo = x.localUrl
-      for (let i in this.arrAll) {
-        if (this.arrAll[i].typeName == 1371) {
-          this.arrAll.splice(i, 1)
-        }
+    * 图片删除
+    */
+  closeIdentityCard(val, number) {
+    this[val] = ''
+    for (let i in this.arrAll) {
+      if (this.arrAll[i].typeName == number) {
+        this.arrAll.splice(i, 1)
       }
-      this.arrAll.push({
-        // personalId: x.id,
-        uploadName: x.realName,
-        materialType: x.type,
-        dataSize: x.size,
-        materialUrl: x.url,
-        uploadTime: x.createTime,
-        typeName: 1371,
-      })
-    });
+    }
+  }
+  /**
+ * 图片预览
+ */
+  lookIdentityCard(val) {
+    ImagePreview([this[val]]);
   }
 
-  onReadTwo({ file }) {
-    NetService.upload(file).then(x => {
-      this.photoTwo = x.localUrl
-      for (let i in this.arrAll) {
-        if (this.arrAll[i].typeName == 1372) {
-          this.arrAll.splice(i, 1)
-        }
-      }
-      this.arrAll.push({
-        // personalId: x.id,
-        uploadName: x.realName,
-        materialType: x.type,
-        dataSize: x.size,
-        materialUrl: x.url,
-        uploadTime: x.createTime,
-        typeName: 1372,
-      })
-
-    });
-  }
-
-
-
-
-  closeIdentityCard() {
-    this.photo = ''
-  }
-  lookIdentityCard() {
-    ImagePreview([this.photo]);
-  }
-  closeIdentityCardTwo() {
-    this.photoTwo = ''
-  }
-  lookIdentityCardTwo() {
-    ImagePreview([this.photoTwo]);
-  }
   mounted() {
     this.arrAll = this.intoA.PersonalAdditional
     this.columns = this.$dict.getDictData('0478').map(v => {
@@ -242,6 +232,7 @@ export default class Login extends Vue {
     text-align: center;
     display: flex;
     justify-content: center;
+    height: 120px;
     .imgSize {
       height: 110px;
       border: 1px solid #6666;

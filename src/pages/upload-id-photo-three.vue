@@ -16,16 +16,16 @@
             <van-icon class="vanIcon" v-if="photo == ''" name="add" />
             <img width="100%" v-else :src="photo" alt="">
           </van-uploader>
-          <van-icon @click="closeIdentityCard" v-if="!photo == ''" class="deleteiconHead" name="close" />
-          <van-icon @click="lookIdentityCard" v-if="!photo == ''" class="lookiconHead" name="password-view" />
+          <van-icon @click="closeIdentityCard('photo',1373)" v-if="!photo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCard('photo')" v-if="!photo == ''" class="lookiconHead" name="password-view" />
         </van-col>
         <van-col span="11">
           <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onReadTwo" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
             <img width="100%" v-else :src="photoTwo" alt="">
           </van-uploader>
-          <van-icon @click="closeIdentityCardTwo" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
-          <van-icon @click="lookIdentityCardTwo" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
+          <van-icon @click="closeIdentityCard('photoTwo',1374)" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCard('photoTwo')" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
         </van-col>
       </van-row>
       <van-row style="text-align: center">
@@ -39,9 +39,8 @@
         <van-field v-model="depositBank" required label="开户银行" placeholder="请选择准开户银行" @click="pickerDialog=true" />
         <van-field placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
 
-         <van-cell title="银行开户所在地" required is-link :value="personalBank.location | cityConvert " @click="$refs['cityPicker'].show()" />
+        <van-cell title="银行开户所在地" required is-link :value="personalBank.location | cityConvert " @click="$refs['cityPicker'].show()" />
         <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
-
 
         <van-field v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
       </van-cell-group>
@@ -65,11 +64,12 @@ import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
 import { NetService } from "~/utils/net.service";
 import CityPicker from "~/components/common/city-picker.vue";
+import { elementAt } from "rxjs/operators";
 @Component({
   components: {
     CityPicker,
   }
- 
+
 })
 export default class Login extends Vue {
 
@@ -122,7 +122,19 @@ export default class Login extends Vue {
    * 点击下一步
    */
   addAffirm() {
-
+    // console.log(this.arrAll)
+    let arr = []
+    for (let i in this.arrAll) {
+      arr.push(this.arrAll[i].typeName)
+    }
+    if (arr.indexOf(1373) < 0) {
+      this.$toast('请上传银行卡正面信息');
+      return
+    }
+    if (arr.indexOf(1374) < 0) {
+      this.$toast('请上传银行卡负面信息');
+      return
+    }
     if (!this.IntoACity) {
       this.$toast('请选择城市');
       return
@@ -185,13 +197,12 @@ export default class Login extends Vue {
         }
       }
       this.arrAll.push({
-        // personalId: x.id,
         uploadName: x.realName,
         materialType: x.type,
         dataSize: x.size,
         materialUrl: x.url,
         uploadTime: x.createTime,
-        typeName: 1371,
+        typeName: 1373,
       })
     });
   }
@@ -215,18 +226,26 @@ export default class Login extends Vue {
 
     });
   }
-  closeIdentityCard() {
-    this.photo = ''
+  /**
+ * 图片删除
+ */
+  closeIdentityCard(val, number) {
+    this[val] = ''
+    for (let i in this.arrAll) {
+      if (this.arrAll[i].typeName == number) {
+        this.arrAll.splice(i, 1)
+      }
+    }
+
   }
-  lookIdentityCard() {
-    ImagePreview([this.photo]);
+
+  /**
+   * 图片预览
+   */
+  lookIdentityCard(val) {
+    ImagePreview([this[val]]);
   }
-  closeIdentityCardTwo() {
-    this.photoTwo = ''
-  }
-  lookIdentityCardTwo() {
-    ImagePreview([this.photoTwo]);
-  }
+
 
 }
 </script>
@@ -261,6 +280,7 @@ export default class Login extends Vue {
     text-align: center;
     display: flex;
     justify-content: center;
+    height: 120px;
     .imgSize {
       height: 110px;
       border: 1px solid #6666;

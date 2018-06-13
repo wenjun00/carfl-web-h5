@@ -66,7 +66,7 @@ export default class PaymentRecord extends Vue {
   // }
   // 查询还款详情
   getPaymentDetails() {
-    this.paymentScheduleControllerService.getPaymentScheduleList(9999).subscribe(
+    this.paymentScheduleControllerService.getPaymentScheduleList(this.userData.id).subscribe(
       data => {
        this.dataSet = data
        console.log(this.dataSet)

@@ -10,7 +10,7 @@ export default {
     service: SERVICE,
     controller: CONTROLLER,
     action: 'appGetPersonalVericationCode',
-    type: requestType.Post
+    type: requestType.Get
   },
   /**
    * 根据验证码登陆

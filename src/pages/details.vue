@@ -1,9 +1,9 @@
 <template>
   <section class="page details">
     <van-row>
-      <van-swipe :autoplay="3000">
-        <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img class="carImg" :src="image.url" />
+      <van-swipe class="carouselImg" :autoplay="3000">
+        <van-swipe-item class="carImgBox" v-for="(image, index) in images" :key="index">
+          <img class="carImgs" :src="image.url" />
         </van-swipe-item>
       </van-swipe>
     </van-row>
@@ -108,13 +108,17 @@ export default class Details extends Vue {
 
 <style lang="less" scoped>
 .page.details {
+  .carImgs {
+    height: 100%;
+    box-sizing: border-box;
+  }
   .textCenter {
     text-align: center;
   }
-  .carImg {
+  .carouselImg {
     height: 200px;
-    width: 100%;
   }
+
   .carDetails {
     border-bottom: 1px solid darkgray;
     padding: 10px;
@@ -155,4 +159,13 @@ export default class Details extends Vue {
   }
 }
 </style>
+<style lang="less">
+.page.details {
+  .carImgBox {
+    display: flex;
+    justify-content: center;
+  }
+}
+</style>
+
 
