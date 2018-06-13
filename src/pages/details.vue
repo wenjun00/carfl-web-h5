@@ -1,9 +1,9 @@
 <template>
   <section class="page details">
     <van-row>
-      <van-swipe :autoplay="3000">
-        <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img class="carImg" :src="image.url" :alt="image.introduce" />
+      <van-swipe class="carouselImg" :autoplay="3000">
+        <van-swipe-item class="carImgBox" v-for="(image, index) in images" :key="index">
+          <img class="carImgs" :src="image.url" :alt="image.introduce" />
         </van-swipe-item>
       </van-swipe>
     </van-row>
