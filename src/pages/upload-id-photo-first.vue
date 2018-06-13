@@ -111,9 +111,9 @@ export default class Login extends Vue {
   @Mutation idcCard
   @Mutation tenantImg
   @State intoA
-  @Mutation clearSelectCity
   @Mutation selectCity
   @State IntoACity
+  @Mutation clearSelectCity
 
   private heandCity = '' // 选择城市
   // 验证规则
@@ -181,7 +181,7 @@ export default class Login extends Vue {
    */
   private onConfirmTwo(val) {
     this.selectCity([Number(val.val)])
-    //  console.log(this.IntoACity,'下单成')
+     console.log(this.IntoACity,'下单成')
     this.optionCity = false
   }
 
@@ -229,6 +229,7 @@ export default class Login extends Vue {
   }
 
   mounted() {
+    this.clearSelectCity()
     // this.IntoACity = []
     this.columns = this.$dict.getDictData('0486').map(v => {
       return Object.assign({ text: v.label }, v)

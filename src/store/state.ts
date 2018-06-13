@@ -33,4 +33,5 @@ export default {
   companyList: [],
   intoA:{}, // 进件
   IntoACity:'' // 进件城市 
+  
 }

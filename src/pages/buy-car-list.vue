@@ -9,23 +9,25 @@
       </van-search>
     </form>
 
-    <van-row class="buy-car-list-item" v-if="carDataSet.length > 0" v-for="(item,index) of carDataSet" :key="index" @click="$router.push(`/details/${item.carId}`)">
-      <van-col span="10">
-        <div>
-          <img :src="(item.carPictures[0] || {}).url" height="80px">
-        </div>
-      </van-col>
-      <van-col span="14" class="carStyle">
-        <div class="car">
-          <span>{{item.brandSeriesName}}</span>
-          <br/>
-          <span class="car-info">{{item.modelName}}</span>
-        </div>
-        <van-row>
-          <van-col span="12" class="car-first">首付{{item.firstPayment/1000 | toThousands}}万</van-col>
-          <van-col span="12" class="car-month">月供{{item.monthRent | toThousands}}元</van-col>
-        </van-row>
-      </van-col>
+    <van-row class="buy-car-list-item" v-if="carDataSet.length > 0" v-for="(item,index) of carDataSet" :key="index">
+      <div @click="$router.push(`/details/${item.carId}`)">
+        <van-col span="10">
+          <div>
+            <img :src="(item.carPictures[0] || {}).url" height="80px">
+          </div>
+        </van-col>
+        <van-col span="14" class="carStyle">
+          <div class="car">
+            <span>{{item.brandSeriesName}}</span>
+            <br/>
+            <span class="car-info">{{item.modelName}}</span>
+          </div>
+          <van-row>
+            <van-col span="12" class="car-first">首付{{item.firstPayment/1000 | toThousands}}万</van-col>
+            <van-col span="12" class="car-month">月供{{item.monthRent | toThousands}}元</van-col>
+          </van-row>
+        </van-col>
+      </div>
     </van-row>
 
     <div class="no-cars" v-else>
@@ -143,7 +145,7 @@ export default class BuyCarList extends Vue {
 <style lang="less" scoped>
 @paddingNum: 10px;
 .buy-car-list {
-  .carStyle{
+  .carStyle {
     line-height: 30px;
   }
   &-item {

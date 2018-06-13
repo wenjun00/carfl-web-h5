@@ -1,37 +1,26 @@
-<template> 
+<template>
   <section class="page my-order">
-    <div v-if="hasOrder" class="my-order-no" key="no-order">
+    <div v-if="!hasOrder" class="my-order-no" key="no-order">
       <img src="/static/images/home/no-order.png" />
     </div>
     <div v-else key="has-order">
       <van-cell-group>
-        <!-- <van-row class="my-order-title">
-          <van-col :span="16">待客户补充资料</van-col>
-          <van-col :span="8">
-            <van-button type="primary" size="small" @click="$router.push('/upload-id-photo-first')">上传资料</van-button>
-          </van-col>
-        </van-row> -->
         <van-cell :title="`订单编号：${productOrderInfo.orderNumber}`"></van-cell>
         <van-cell :title="`车型：${productOrderInfo.orderCar.modelName}`"></van-cell>
-        <van-cell :title="`下单城市：${ [902] |cityConvert}`"></van-cell>
+        <van-cell title="下单城市" is-link :value="[productOrderInfo.city] | cityConvert " />
         <van-cell :title="`首付：${productOrderInfo.schedulePlanResultModel.schedulePlanResult.firstPayment} 元`"></van-cell>
         <van-cell :title="`期数：${productOrderInfo.schedulePlanResultModel.schedulePlanResult.planType} 期`"></van-cell>
-         <van-cell :title="`月供信息：${productOrderInfo.schedulePlanResultModel.schedulePlanResult.firstYearMonthrent}元 `"></van-cell>
-        <!-- <van-panel title="月供信息：">
-          <div class="my-order-month-pay">
-            <van-row>
-              <van-col :span="12" v-for="(item,index) of orderInfo.monthPayment" :key="index">第{{index + 1}}年月供：{{ item | toThousands}}元</van-col>
-            </van-row>
-          </div>
-        </van-panel> -->
+        <van-cell :title="`月供信息：${productOrderInfo.schedulePlanResultModel.schedulePlanResult.firstYearMonthrent}元 `"></van-cell>
       </van-cell-group>
       <van-collapse v-model="activatedCollapse">
         <van-collapse-item title="合同详情" name="contract">
           <order-contract :orderId="orderInfo.id"></order-contract>
         </van-collapse-item>
-        <van-collapse-item title="订单操作记录" name="record">
-          <order-record :orderId="orderInfo.id"></order-record>
-        </van-collapse-item>
+        <div @click="operating">
+          <van-collapse-item title="订单操作记录" name="record">
+            <order-record ref="order-record" :orderId="orderInfo.id"></order-record>
+          </van-collapse-item>
+        </div>
       </van-collapse>
     </div>
   </section>
@@ -47,6 +36,7 @@ import { Getter, State } from "vuex-class";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { Dependencies } from "~/core/decorator";
 import { CityService } from "~/utils/city.service";
+import { setTimeout } from "core-js";
 @Component({
   components: {
     OrderContract,
@@ -58,23 +48,32 @@ export default class MyOrder extends Vue {
   @Getter hasOrder;
   @State orderInfo
 
-  private orderNumber:any =''  // 获取当前订单号
+  private orderNumber: any = ''  // 获取当前订单号
   private activatedCollapse = []
-  private productOrderInfo:any = {} // 订单基本信息 存储
+  private productOrderInfo: any = {} // 订单基本信息 存储
 
   getOredrMessage() {
-    this.productOrderService.findOrderInfoByOrderNumber( this.orderNumber).subscribe(
+    this.productOrderService.findOrderInfoByOrderNumber(this.orderNumber).subscribe(
       data => {
         this.productOrderInfo = data
-        console.log(data, '789789789')
       },
       err => this.$toast(err.msg)
     )
   }
+  /**
+   * 操作记录
+   */
+  operating() {
+    let a = this.productOrderInfo.orderProcessRecord
+    let orderRecord = this.$refs['order-record'] as OrderRecord
+    orderRecord.orderRecordfun(a)
+  }
+
+
 
 
   mounted() {
-    this.orderNumber = this.orderInfo.orderNumber 
+    this.orderNumber = this.orderInfo.orderNumber
     this.getOredrMessage()
   }
 

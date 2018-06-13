@@ -9,8 +9,8 @@
             <van-icon class="vanIcon" v-if="identityCard == ''" name="add" />
             <img width="100%" v-else :src="identityCard" alt="">
           </van-uploader>
-          <van-icon @click="closeIdentityCard" v-if="!identityCard == ''" class="deleteiconHead" name="close" />
-          <van-icon @click="lookIdentityCard" v-if="!identityCard == ''" class="lookiconHead" name="password-view" />
+          <van-icon @click="closeIdentityCard('identityCard',1363)" v-if="!identityCard == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCard('identityCard')" v-if="!identityCard == ''" class="lookiconHead" name="password-view" />
         </van-col>
       </van-row>
     </van-row>
@@ -23,8 +23,8 @@
             <van-icon class="vanIcon" v-if="identityCardTwo == ''" name="add" />
             <img width="100%" v-else :src="identityCardTwo" alt="">
           </van-uploader>
-          <van-icon @click="closeIdentityCardTwo" v-if="!identityCardTwo == ''" class="deleteiconHead" name="close" />
-          <van-icon @click="lookIdentityCardTwo" v-if="!identityCardTwo == ''" class="lookiconHead" name="password-view" />
+          <van-icon @click="closeIdentityCard('identityCardTwo',1364)" v-if="!identityCardTwo == ''" class="deleteiconHead" name="close" />
+          <van-icon @click="lookIdentityCard('identityCardTwo')" v-if="!identityCardTwo == ''" class="lookiconHead" name="password-view" />
         </van-col>
       </van-row>
     </van-row>
@@ -44,8 +44,8 @@
               <van-icon class="vanIcon" v-if="listImg == ''" name="add" />
               <img width="100%" v-else :src="listImg" alt="">
             </van-uploader>
-            <van-icon @click="closeIdentityCard" v-if="!listImg == ''" class="deleteiconHead" name="close" />
-            <van-icon @click="lookIdentityCard" v-if="!listImg == ''" class="lookiconHead" name="password-view" />
+            <van-icon @click="closeIdentityCard('listImg',1345)" v-if="!listImg == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard('listImg')" v-if="!listImg == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
         <van-row class="heandClass">
@@ -57,8 +57,8 @@
               <van-icon class="vanIcon" v-if="listImg2 == ''" name="add" />
               <img width="100%" v-else :src="listImg2" alt="">
             </van-uploader>
-            <van-icon @click="closeIdentityCard" v-if="!listImg2 == ''" class="deleteiconHead" name="close" />
-            <van-icon @click="lookIdentityCard" v-if="!listImg2 == ''" class="lookiconHead" name="password-view" />
+            <van-icon @click="closeIdentityCard('listImg2',1355)" v-if="!listImg2 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard('listImg2')" v-if="!listImg2 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
         <van-row class="heandClass">
@@ -70,8 +70,8 @@
               <van-icon class="vanIcon" v-if="listImg3 == ''" name="add" />
               <img width="100%" v-else :src="listImg3" alt="">
             </van-uploader>
-            <van-icon @click="closeIdentityCard" v-if="!listImg3 == ''" class="deleteiconHead" name="close" />
-            <van-icon @click="lookIdentityCard" v-if="!listImg3 == ''" class="lookiconHead" name="password-view" />
+            <van-icon @click="closeIdentityCard('listImg3',1356)" v-if="!listImg3 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard('listImg3')" v-if="!listImg3 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
         <van-row class="heandClass">
@@ -83,8 +83,8 @@
               <van-icon class="vanIcon" v-if="listImg4 == ''" name="add" />
               <img width="100%" v-else :src="listImg4" alt="">
             </van-uploader>
-            <van-icon @click="closeIdentityCard" v-if="!listImg4 == ''" class="deleteiconHead" name="close" />
-            <van-icon @click="lookIdentityCard" v-if="!listImg4 == ''" class="lookiconHead" name="password-view" />
+            <van-icon @click="closeIdentityCard('listImg4',1357)" v-if="!listImg4 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard('listImg4')" v-if="!listImg4 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
         <van-row class="heandClass">
@@ -96,8 +96,8 @@
               <van-icon class="vanIcon" v-if="listImg5 == ''" name="add" />
               <img width="100%" v-else :src="listImg5" alt="">
             </van-uploader>
-            <van-icon @click="closeIdentityCard" v-if="!listImg5 == ''" class="deleteiconHead" name="close" />
-            <van-icon @click="lookIdentityCard" v-if="!listImg5 == ''" class="lookiconHead" name="password-view" />
+            <van-icon @click="closeIdentityCard('listImg5',1358)" v-if="!listImg5 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard('listImg5')" v-if="!listImg5 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
         <van-row class="heandClass">
@@ -109,8 +109,8 @@
               <van-icon class="vanIcon" v-if="listImg6 == ''" name="add" />
               <img width="100%" v-else :src="listImg6" alt="">
             </van-uploader>
-            <van-icon @click="closeIdentityCard" v-if="!listImg6 == ''" class="deleteiconHead" name="close" />
-            <van-icon @click="lookIdentityCard" v-if="!listImg6 == ''" class="lookiconHead" name="password-view" />
+            <van-icon @click="closeIdentityCard('listImg6',1359)" v-if="!listImg6 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard('listImg6')" v-if="!listImg6 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
         <van-row class="heandClass">
@@ -122,8 +122,8 @@
               <van-icon class="vanIcon" v-if="listImg7 == ''" name="add" />
               <img width="100%" v-else :src="listImg7" alt="">
             </van-uploader>
-            <van-icon @click="closeIdentityCard" v-if="!listImg7 == ''" class="deleteiconHead" name="close" />
-            <van-icon @click="lookIdentityCard" v-if="!listImg7 == ''" class="lookiconHead" name="password-view" />
+            <van-icon @click="closeIdentityCard('listImg7',1360)" v-if="!listImg7 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard('listImg7')" v-if="!listImg7 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
         <van-row class="heandClass">
@@ -135,8 +135,8 @@
               <van-icon class="vanIcon" v-if="listImg8 == ''" name="add" />
               <img width="100%" v-else :src="listImg8" alt="">
             </van-uploader>
-            <van-icon @click="closeIdentityCard" v-if="!listImg8 == ''" class="deleteiconHead" name="close" />
-            <van-icon @click="lookIdentityCard" v-if="!listImg8 == ''" class="lookiconHead" name="password-view" />
+            <van-icon @click="closeIdentityCard('listImg8',1361)" v-if="!listImg8 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard('listImg8')" v-if="!listImg8 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
       </van-collapse-item>
@@ -199,6 +199,19 @@ export default class Login extends Vue {
    * 进件点击确认提交
    */
   IntoASubmit() {
+    let arr = []
+    for (let i in this.arrImg) {
+      arr.push(this.arrImg[i].typeName)
+    }
+    if (arr.indexOf(1363) < 0) {
+      this.$toast('请上传承租人手持身份证照片')
+      return
+    }
+    if (arr.indexOf(1364) < 0) {
+      this.$toast('请上传承租人手持业务员照片')
+      return
+    }
+
     //  personal类
     //  （证件页面）idcard
     this.personalAll = {
@@ -242,8 +255,8 @@ export default class Login extends Vue {
         fileNumber: this.intoA.personalCar.file_number,    // 档案编号
         drivingLicense: this.intoA.personalCar.driving_license,  // 准驾车型
         personalBank: {
-          depositProvince:this.intoA.personalBank.locationProvince, // 银行开户省份
-          depositCity:this.intoA.personalBank.locationCity,    // 银行开户市
+          depositProvince: this.intoA.personalBank.locationProvince, // 银行开户省份
+          depositCity: this.intoA.personalBank.locationCity,    // 银行开户市
           depositBank: this.intoA.personalBank.deposit_bank,    // 开户银行
           cardNumber: this.intoA.personalBank.card_number,    // 银行卡号
           reservedPhoneNumber: this.intoA.personalBank.reserved_phone_number,    // 预留手机号
@@ -261,11 +274,7 @@ export default class Login extends Vue {
           // localHomeAddrDetail: null,     
         },
       },
-      // personalCar: {
-      //   usefulTime: this.intoA.personalCar.useful_time,    // 有效期限
-      //   fileNumber: this.intoA.personalCar.file_number,    // 档案编号
-      //   drivingLicense: this.intoA.personalCar.driving_license,    // 准驾车型
-      // },
+
       orderCar: {
         brandName: this.intoA.orderCar.brandName,
         interiorColor: this.intoA.orderCar.interiorColor,
@@ -292,7 +301,9 @@ export default class Login extends Vue {
     this.clearIntoA()
     this.productOrderService.createOrder(this.personalAll).subscribe(
       data => {
-        // console.log(data)
+        this.$router.push({
+          name: 'MyOrder',
+        })
 
       },
       err => this.$toast(err.msg)
@@ -329,20 +340,26 @@ export default class Login extends Vue {
 
   }
 
-  // 删除手持身份证图片事件
-  closeIdentityCard() {
-    this.identityCard = ''
+  /**
+   * 图片删除
+   */
+  closeIdentityCard(val, number) {
+    this[val] = ''
+    for (let i in this.arrImg) {
+      if (this.arrImg[i].typeName == number) {
+        this.arrImg.splice(i, 1)
+      }
+    }
+
   }
-  // 预览手持身份证
-  lookIdentityCard() {
-    ImagePreview([this.identityCard]);
+  /**
+   * 图片预览
+   */
+  lookIdentityCard(val) {
+    ImagePreview([this[val]]);
   }
-  closeIdentityCardTwo() {
-    this.identityCardTwo = ''
-  }
-  lookIdentityCardTwo() {
-    ImagePreview([this.identityCardTwo]);
-  }
+
+
 
 
   mounted() {

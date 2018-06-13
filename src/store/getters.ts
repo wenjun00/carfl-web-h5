@@ -7,7 +7,7 @@ export default {
    * @param state 
    */
   hasOrder(state){
-    return state.orderInfo !== ''
+    return state.orderInfo && state.orderInfo !== ''
   }
 
 }

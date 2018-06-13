@@ -15,7 +15,7 @@
         <van-col class="payment">首付</van-col>
       </van-row>
       <van-row class="downPaymentRow">
-        <van-col v-for="(item,index) in carPeriodsOne" :key="index" >
+        <van-col v-for="(item,index) in carPeriodsOne" :key="index">
           <span :class="{'active':index ==checkindex }" class="downPayment" @click="paymentOne(item.firstPayment,index)">{{item.firstPayment}}</span>
         </van-col>
       </van-row>
@@ -24,7 +24,7 @@
       </van-row>
       <van-row class="periodsRow">
         <van-col v-for="(item,index) in carPeriodsTwo" :key="index">
-          <span  :class="{'active':index ==checkindexTwo }" class="downPayment" @click="paymentTwo(item.planType,index)">{{$dict.getDictName(item.planType)}}</span>
+          <span :class="{'active':index ==checkindexTwo }" class="downPayment" @click="paymentTwo(item.planType,index)">{{$dict.getDictName(item.planType)}}</span>
         </van-col>
       </van-row>
       <van-row>
@@ -89,7 +89,8 @@
     </van-cell-group>
     <van-row class="imgCenter" v-for="(item,index) in carImg" :key="index">
       <van-col class="mar10" span="24">{{item.name}}</van-col>
-      <van-col span="12" v-for="(itemTwo,indexTwo) in item.materialList" :key="indexTwo"><img width="90%" :src="itemTwo.url" alt=""></van-col>
+      <van-col span="24"><img width="90%" :src="imgOne" alt=""></van-col>
+      <van-col span="12" v-for="(itemTwo,indexTwo) in imgTwo" :key="indexTwo"><img width="90%" :src="itemTwo" alt=""></van-col>
       <van-col class="mar10" span="24">{{item.introduce}}</van-col>
     </van-row>
     <div class="carGoHome">
@@ -226,11 +227,11 @@ export default class detailsScheme extends Vue {
   private carPeriodsTwo: any = []    //还款期数2、
   private carPeriodsThree: any = []  // 还款期数3
   private carIntoA: any = {}   // 进件需要用的数据
-  private checkindex:any = null    // 首付点击获取calss 
-  private checkindexTwo:any = null  // 期数点击当前获取class
-
-
-
+  private checkindex: any = null    // 首付点击获取calss 
+  private checkindexTwo: any = null  // 期数点击当前获取class
+  private aaaList:any = ['/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png']
+  private imgOne:any = ''
+  private imgTwo:any = []
 
   private images = '/static/images/common/headerLabel.png'
 
@@ -271,6 +272,12 @@ export default class detailsScheme extends Vue {
     this.carManagementService.getCarColumnCollectModel(this.carId).subscribe(
       data => {
         this.carImg = data.columnList
+        this.imgOne = this.carImg[0].materialList[0].url
+        for(let i = 1; i<this.carImg[0].materialList.length;i++){
+           this.imgTwo.push(this.carImg[0].materialList[i].url)
+        }
+        
+        // console.log(this.carImg,'78978978')
       },
       err => this.$toast(err.msg)
     )
@@ -279,7 +286,8 @@ export default class detailsScheme extends Vue {
   * 获取车辆首付 期数1
   */
   getCarPeriods() {
-    this.productService.getCarProductResultModelList({carId:this.carId}).subscribe(
+
+    this.productService.getCarProductResultModelList({ carId: this.carId }).subscribe(
       data => {
         this.carPeriodsOne = data
       },
@@ -289,8 +297,8 @@ export default class detailsScheme extends Vue {
   /***
    * 还款期数 期数2
    */
-  paymentOne(val,index) {
-     this.checkindex = index
+  paymentOne(val, index) {
+    this.checkindex = index
     let a = {
       carId: this.carId,
       firstPayment: val
@@ -305,8 +313,8 @@ export default class detailsScheme extends Vue {
   /**
    * 点击期数 期数3
    */
-  paymentTwo(val,index) {
-     this.checkindexTwo = index
+  paymentTwo(val, index) {
+    this.checkindexTwo = index
     let a = {
       carId: this.carId,
       planType: val
@@ -357,10 +365,10 @@ export default class detailsScheme extends Vue {
 
 <style lang="less" scoped>
 .page.detailsScheme {
-  .active{
-   color: #fcdf2b;
-   border-color: #fcdf2b !important;
-  };
+  .active {
+    color: #fcdf2b;
+    border-color: #fcdf2b !important;
+  }
   .carGoHome {
     .purchaseNotes {
       padding: 0px 25px;
