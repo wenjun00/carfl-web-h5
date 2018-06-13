@@ -87,12 +87,16 @@
         </template>
       </van-cell>
     </van-cell-group>
-    <van-row class="imgCenter" v-for="(item,index) in carImg" :key="index">
+    <van-row>
+      <carImgShow ref="car-img-show"></carImgShow>
+    </van-row>
+
+    <!-- <van-row class="imgCenter" v-for="(item,index) in carImg" :key="index">
       <van-col class="mar10" span="24">{{item.name}}</van-col>
       <van-col span="24"><img width="90%" :src="imgOne" alt=""></van-col>
       <van-col span="12" v-for="(itemTwo,indexTwo) in imgTwo" :key="indexTwo"><img width="90%" :src="itemTwo" alt=""></van-col>
       <van-col class="mar10" span="24">{{item.introduce}}</van-col>
-    </van-row>
+    </van-row> -->
     <div class="carGoHome">
       <!-- 四步提车回家 -->
       <van-cell-group class="magin10">
@@ -197,10 +201,12 @@ import { ProductService } from "~/services/manage-service/product.service";
 import { Dependencies } from "~/core/decorator";
 import { Prop } from "vue-property-decorator";
 import { State, Mutation, Action } from "vuex-class";
-
+import carImgShow from "~/components/common/car-img-show.vue";
 
 @Component({
-  components: {}
+  components: {
+    carImgShow
+  }
 })
 export default class detailsScheme extends Vue {
   @Dependencies(carManagementService) private carManagementService: carManagementService;
@@ -229,9 +235,8 @@ export default class detailsScheme extends Vue {
   private carIntoA: any = {}   // 进件需要用的数据
   private checkindex: any = null    // 首付点击获取calss 
   private checkindexTwo: any = null  // 期数点击当前获取class
-  private aaaList:any = ['/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png','/static/images/common/car.png']
-  private imgOne:any = ''
-  private imgTwo:any = []
+  private aaaList: any = ['/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png']
+
 
   private images = '/static/images/common/headerLabel.png'
 
@@ -272,11 +277,10 @@ export default class detailsScheme extends Vue {
     this.carManagementService.getCarColumnCollectModel(this.carId).subscribe(
       data => {
         this.carImg = data.columnList
-        this.imgOne = this.carImg[0].materialList[0].url
-        for(let i = 1; i<this.carImg[0].materialList.length;i++){
-           this.imgTwo.push(this.carImg[0].materialList[i].url)
-        }
-        
+        let carImgModule = this.$refs['car-img-show'] as carImgShow
+        carImgModule.carImgFun(this.carImg)
+      
+
         // console.log(this.carImg,'78978978')
       },
       err => this.$toast(err.msg)
@@ -348,7 +352,6 @@ export default class detailsScheme extends Vue {
     } else {
       this.$toast('请先选择车辆首付、期数')
     }
-
 
   }
 
