@@ -15,7 +15,7 @@
           <img :src="(item.carPictures[0] || {}).url" height="80px">
         </div>
       </van-col>
-      <van-col span="14">
+      <van-col span="14" class="carStyle">
         <div class="car">
           <span>{{item.brandSeriesName}}</span>
           <br/>
@@ -143,6 +143,9 @@ export default class BuyCarList extends Vue {
 <style lang="less" scoped>
 @paddingNum: 10px;
 .buy-car-list {
+  .carStyle{
+    line-height: 30px;
+  }
   &-item {
     padding: @paddingNum;
     border-bottom: solid 1px #f2f2f2;

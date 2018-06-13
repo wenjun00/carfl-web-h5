@@ -100,12 +100,17 @@ export default class Details extends Vue {
 
 <style lang="less" scoped>
 .page.details {
+  .carImgs {
+    height: 100%;
+    box-sizing: border-box;
+  }
   .textCenter {
     text-align: center;
   }
   .car-main-img {
     text-align: center;
   }
+
   .carDetails {
     border-bottom: 1px solid darkgray;
     padding: 10px;
@@ -136,4 +141,13 @@ export default class Details extends Vue {
   }
 }
 </style>
+<style lang="less">
+.page.details {
+  .carImgBox {
+    display: flex;
+    justify-content: center;
+  }
+}
+</style>
+
 

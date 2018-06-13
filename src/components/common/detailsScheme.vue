@@ -15,8 +15,8 @@
         <van-col class="payment">首付</van-col>
       </van-row>
       <van-row class="downPaymentRow">
-        <van-col v-for="(item,index) in carPeriodsOne" :key="index">
-          <span class="downPayment" @click="paymentOne(item.firstPayment)">{{item.firstPayment}}</span>
+        <van-col v-for="(item,index) in carPeriodsOne" :key="index" >
+          <span :class="{'active':index ==checkindex }" class="downPayment" @click="paymentOne(item.firstPayment,index)">{{item.firstPayment}}</span>
         </van-col>
       </van-row>
       <van-row>
@@ -24,7 +24,7 @@
       </van-row>
       <van-row class="periodsRow">
         <van-col v-for="(item,index) in carPeriodsTwo" :key="index">
-          <span class="downPayment" @click="paymentTwo(item.planType)">{{$dict.getDictName(item.planType)}}</span>
+          <span  :class="{'active':index ==checkindexTwo }" class="downPayment" @click="paymentTwo(item.planType,index)">{{$dict.getDictName(item.planType)}}</span>
         </van-col>
       </van-row>
       <van-row>
@@ -226,6 +226,8 @@ export default class detailsScheme extends Vue {
   private carPeriodsTwo: any = []    //还款期数2、
   private carPeriodsThree: any = []  // 还款期数3
   private carIntoA: any = {}   // 进件需要用的数据
+  private checkindex:any = null    // 首付点击获取calss 
+  private checkindexTwo:any = null  // 期数点击当前获取class
 
 
 
@@ -287,7 +289,8 @@ export default class detailsScheme extends Vue {
   /***
    * 还款期数 期数2
    */
-  paymentOne(val) {
+  paymentOne(val,index) {
+     this.checkindex = index
     let a = {
       carId: this.carId,
       firstPayment: val
@@ -302,7 +305,8 @@ export default class detailsScheme extends Vue {
   /**
    * 点击期数 期数3
    */
-  paymentTwo(val) {
+  paymentTwo(val,index) {
+     this.checkindexTwo = index
     let a = {
       carId: this.carId,
       planType: val
@@ -353,6 +357,10 @@ export default class detailsScheme extends Vue {
 
 <style lang="less" scoped>
 .page.detailsScheme {
+  .active{
+   color: #fcdf2b;
+   border-color: #fcdf2b !important;
+  };
   .carGoHome {
     .purchaseNotes {
       padding: 0px 25px;
@@ -486,7 +494,7 @@ export default class detailsScheme extends Vue {
 .page.detailsScheme {
   .periodsRow {
     .van-col {
-      margin-left: 10px;
+      margin: 10px;
     }
   }
   .downPaymentRow {

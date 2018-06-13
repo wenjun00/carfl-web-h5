@@ -9,7 +9,7 @@ export class ContractDetailsControllerService {
 
 
     /**
-     * 获取还款详情
+     * 获取订单合同数据
      */
     getContractDetailsListByOrderId(orderId){
         return this.netService.send({

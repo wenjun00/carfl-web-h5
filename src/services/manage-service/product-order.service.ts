@@ -21,7 +21,7 @@ export class ProductOrderService {
         return this.netService.send({
             server: manageService.productOrderController.getOrder,
             data:{
-                id: personalId
+                personalId: personalId
             }
         })
     }

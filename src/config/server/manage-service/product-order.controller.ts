@@ -21,7 +21,7 @@ export default {
     getOrder: {
         service: SERVICE,
         controller: CONTROLLER,
-        action: 'TODO:',
+        action: 'getAppProductOrderInfo',
         type: requestType.Get
     }
 
