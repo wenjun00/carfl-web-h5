@@ -59,7 +59,7 @@
         <div slot="title">基本参数
           <span style="float: right;">详细配置</span>
         </div>
-        <van-cell-group class="dropDown" v-for="(item,index) in detailsList" :key="index">
+        <van-cell-group class="dropDown" v-for="(item,index) in paramList" :key="index">
           <van-cell :title="item.name" :value="item.value" />
         </van-cell-group>
       </van-collapse-item>
@@ -68,28 +68,16 @@
     <div class="carDetails">
       <van-cell-group>
         <van-cell title="车身结构" :value="basicEquipment.carStructure" />
-      </van-cell-group>
-      <van-cell-group>
         <van-cell title="上/宽/高(mm)" :value="basicEquipment.carSize" />
-      </van-cell-group>
-      <van-cell-group>
         <van-cell title="发动机" :value="basicEquipment.carEmissions" />
-      </van-cell-group>
-      <van-cell-group>
         <van-cell title="驱动方式" :value="basicEquipment.drivingMode" />
-      </van-cell-group>
-      <van-cell-group>
         <van-cell title="燃料形式" :value="basicEquipment.fuel" />
-      </van-cell-group>
-      <van-cell-group>
         <van-cell title="综合油耗(L/100km)" :value="basicEquipment.fuelConsumption" />
-      </van-cell-group>
-      <van-cell-group>
         <van-cell title="车辆配色" :value="basicEquipment.carColour" />
       </van-cell-group>
     </div>
     <!-- 空行 -->
-    <van-cell-group class="nullString"></van-cell-group>
+    <div class="break-line"></div>
     <!-- 车型亮点 -->
     <van-cell-group class="magin10">
       <van-cell>
@@ -151,7 +139,7 @@
         </div>
       </van-row>
       <!-- 空行 -->
-      <van-cell-group class="nullString"></van-cell-group>
+      <div class="break-line"></div>
       <!-- 购买须知 -->
       <van-cell-group class="magin10">
         <van-cell>
@@ -190,12 +178,11 @@
         <van-col class="noticeEnd" span="16">购车后通过绑定的银行卡按时还款</van-col>
       </van-row>
       <!-- 空行 -->
-      <van-cell-group class="nullString"></van-cell-group>
-      <van-row class="subscribe">
-        <van-col span="20">
-          <van-button @click="skipNextStep " class="but" size="large">下一步</van-button>
-        </van-col>
-      </van-row>
+      <div class="break-line"></div>
+
+      <div>
+        <van-button @click="skipNextStep" size="large">下一步</van-button>
+      </div>
     </div>
   </section>
 </template>
@@ -207,8 +194,8 @@ import { Collapse, CollapseItem } from 'vant';
 import { carManagementService } from "~/services/manage-service/car-management.service";
 import { ProductService } from "~/services/manage-service/product.service";
 import { Dependencies } from "~/core/decorator";
+import { Prop } from "vue-property-decorator";
 import { State, Mutation, Action } from "vuex-class";
-import { print } from "util";
 
 
 @Component({
@@ -217,16 +204,24 @@ import { print } from "util";
 export default class detailsScheme extends Vue {
   @Dependencies(carManagementService) private carManagementService: carManagementService;
   @Dependencies(ProductService) private productService: ProductService;
+
+  /**
+   * 车辆ID 必需属性
+   */
+  @Prop({
+    type: Number,
+    required: true,
+  }) carId
+
   @Mutation carDetailTwo
   @Mutation carDetails
   private showDetails: boolean = false
   private activeNames: any = ['1']
-  private detailsList: any = []   // 车辆详情配置
+  private paramList: any = []   // 车辆详情配置
   private basicEquipment: any = [] // 车辆基本配置
   private carImg: any = []      // 车辆图片
   private carName: any = []
   private carInfo: any = []      // 汽车详情
-  private paramsId = ''     //车辆id
   private carPeriodsOne: any = []    // 还款期数1
   private carPeriodsTwo: any = []    //还款期数2、
   private carPeriodsThree: any = []  // 还款期数3
@@ -239,21 +234,13 @@ export default class detailsScheme extends Vue {
 
   private images = '/static/images/common/headerLabel.png'
 
-
-  /**
-   * 获取当前页面路由id
-   */
-  private getParamsid() {
-    this.paramsId = this.$route.params.id
-  }
-
   /**
    * 获取车辆详细配置 
    */
   getCarDetails() {
-    this.carManagementService.getCarParamList({ carId: this.paramsId }).subscribe(
+    this.carManagementService.getCarParamList(this.carId).subscribe(
       data => {
-        this.detailsList = data
+        this.paramList = data
       },
       err => this.$toast(err.msg)
     )
@@ -262,7 +249,7 @@ export default class detailsScheme extends Vue {
   * 获取车辆基本配置
   */
   getBasicEquipment() {
-    this.carManagementService.getCarDetail({ carId: this.paramsId }).subscribe(
+    this.carManagementService.getCarDetail(this.carId).subscribe(
       data => {
         this.basicEquipment = data
         this.carInfo = {
@@ -281,7 +268,7 @@ export default class detailsScheme extends Vue {
   * 获取车辆图片 （栏目信息）
   */
   getCarColumnImg() {
-    this.carManagementService.getCarColumnCollectModel({ carId: this.paramsId }).subscribe(
+    this.carManagementService.getCarColumnCollectModel(this.carId).subscribe(
       data => {
         this.carImg = data.columnList
       },
@@ -292,7 +279,7 @@ export default class detailsScheme extends Vue {
   * 获取车辆首付 期数1
   */
   getCarPeriods() {
-    this.productService.getCarProductResultModelList({ carId: this.paramsId }).subscribe(
+    this.productService.getCarProductResultModelList(this.carId).subscribe(
       data => {
         this.carPeriodsOne = data
       },
@@ -305,7 +292,7 @@ export default class detailsScheme extends Vue {
   paymentOne(val,index) {
      this.checkindex = index
     let a = {
-      carId: this.paramsId,
+      carId: this.carId,
       firstPayment: val
     }
     this.productService.getCarProductResultModelList(a).subscribe(
@@ -321,7 +308,7 @@ export default class detailsScheme extends Vue {
   paymentTwo(val,index) {
      this.checkindexTwo = index
     let a = {
-      carId: this.paramsId,
+      carId: this.carId,
       planType: val
     }
     this.productService.getCarProductResultModelList(a).subscribe(
@@ -345,25 +332,23 @@ export default class detailsScheme extends Vue {
     * 点击下一步
     */
   skipNextStep() {
-    if(!!this.carIntoA.productResultId){
-     
+    if (!!this.carIntoA.productResultId) {
+
       this.carDetails(this.carInfo)
       this.carDetailTwo(this.carIntoA)
-      this.$router.push('/upload-id-photo-first')  
-    }else{
+      this.$router.push('/upload-id-photo-first')
+    } else {
       this.$toast('请先选择车辆首付、期数')
     }
-    
+
 
   }
 
   mounted() {
-    this.getParamsid()
     this.getCarDetails()
     this.getBasicEquipment()
     this.getCarColumnImg()
     this.getCarPeriods()
-
   }
 
 
@@ -377,17 +362,6 @@ export default class detailsScheme extends Vue {
    border-color: #fcdf2b !important;
   };
   .carGoHome {
-    .subscribe {
-      display: flex;
-      justify-content: center;
-      .but {
-        background: #ffdb00;
-        border-radius: 25px;
-        font-size: 15px;
-        font-weight: 600;
-        margin: 10px 0px 10px 0px;
-      }
-    }
     .purchaseNotes {
       padding: 0px 25px;
       font-size: 13px;
@@ -400,10 +374,6 @@ export default class detailsScheme extends Vue {
       .noticeEnd {
         color: #666;
       }
-    }
-    .nullString {
-      height: 15px;
-      background: #f5f6f5;
     }
     .basicParameter {
       line-height: 30px !important;
@@ -503,10 +473,6 @@ export default class detailsScheme extends Vue {
   .someIcon {
     position: relative;
     top: 3px;
-  }
-  .nullString {
-    height: 15px;
-    background: #f5f6f5;
   }
   .carLightspot {
     width: 85%;

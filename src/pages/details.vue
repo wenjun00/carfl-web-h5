@@ -1,17 +1,16 @@
 <template>
   <section class="page details">
     <van-row>
-      <van-swipe class="carouselImg" :autoplay="3000">
-        <van-swipe-item class="carImgBox" v-for="(image, index) in images" :key="index">
-          <img class="carImgs" :src="image.url" />
+      <van-swipe :autoplay="3000">
+        <van-swipe-item v-for="(image, index) in images" :key="index">
+          <img class="carImg" :src="image.url" :alt="image.introduce" />
         </van-swipe-item>
       </van-swipe>
     </van-row>
 
     <van-row class="carDetails">
       <van-col class="detailsOne" span="20">车辆照片仅供参考,已配置描述为准</van-col>
-      <van-col class="imgLength" span="4">
-        <span>3/1</span>
+      <van-col span="4">
       </van-col>
     </van-row>
     <van-row class="textDescription">
@@ -36,7 +35,7 @@
       </van-col>
     </van-row>
     <van-row>
-      <DetailsScheme></DetailsScheme>
+      <DetailsScheme :carId="carId"></DetailsScheme>
     </van-row>
 
   </section>
@@ -48,7 +47,8 @@ import Component from "vue-class-component";
 import DetailsScheme from "~/components/common/detailsScheme.vue";
 import { carManagementService } from "~/services/manage-service/car-management.service";
 import { Dependencies } from "~/core/decorator";
-import { State, Mutation, Action } from "vuex-class";
+import { Prop } from "vue-property-decorator";
+import {State, Mutation, Action } from "vuex-class";
 @Component({
   components: {
     DetailsScheme,
@@ -57,26 +57,20 @@ import { State, Mutation, Action } from "vuex-class";
 export default class Details extends Vue {
   @Dependencies(carManagementService) private carManagementService: carManagementService;
 
-  @Mutation clearSelectCity
+  @Prop() carId
 
-  private paramsId = ''
   private carList = []
   private images = []
+
   BackTop() {
     document.documentElement.scrollTop = 0
     window.scrollTo(0, 0);
   }
   /**
-   * 获取当前页面路由id
+   * 获取车辆基本配置
    */
-  private getParamsid() {
-    this.paramsId = this.$route.params.id
-  }
-  /**
-  * 获取车辆基本配置
-  */
   getBasicEquipment() {
-    this.carManagementService.getCarDetail({ carId: this.paramsId }).subscribe(
+    this.carManagementService.getCarDetail(this.carId).subscribe(
       data => {
         this.carList = data
       },
@@ -87,21 +81,17 @@ export default class Details extends Vue {
   * 获取车辆首页图片
   */
   getCarPictureFun() {
-    this.carManagementService.getCarPictureList({ carId: this.paramsId }).subscribe(
-      data => {
-        this.images = data
-      },
+    this.carManagementService.getCarPictureList(this.carId).subscribe(
+      data => this.images = data,
       err => this.$toast(err.msg)
     )
   }
 
 
   mounted() {
-    this.getParamsid()
     this.BackTop()
     this.getBasicEquipment()
     this.getCarPictureFun()
-    this.clearSelectCity()
   }
 }
 </script>
@@ -125,16 +115,6 @@ export default class Details extends Vue {
     font-size: 12px;
     .detailsOne {
       color: gray;
-    }
-    .imgLength {
-      display: inline-block;
-      background: darkgray;
-      color: white;
-      border-radius: 45%;
-      height: 20px;
-      width: 40px;
-      text-align: center;
-      line-height: 20px;
     }
   }
   .textDescription {

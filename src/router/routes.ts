@@ -88,9 +88,10 @@ const routes = [
     },
     component: PaymentRecord
   }, {
-    path: '/details/:id',
+    path: '/details/:carId',
     name: 'details',
-    component: Details
+    component: Details,
+    props: true
   }, {
     path: '/allVehicles',
     name: 'allVehicles',
