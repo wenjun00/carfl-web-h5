@@ -1,12 +1,12 @@
-<template>  
+<template>
   <section class="page customInformation">
     <van-row>
       <p class="base-info-title">基本信息</p>
       <van-cell-group>
-        <van-field v-model="inforModel.phone" disabled label="手机号码" placeholder="请输入手机号" required @click="show.phone = true" />
-        <van-field v-model="inforModel.contactPhone" label="联系号码" placeholder="客户第二个手机号" @click="show.phone = true" />
-        <van-field v-model="inforModel.falseMarital" label="婚姻状况" placeholder="请选择婚姻状况" required @click="marriageBot=true" />
-        <van-field v-model="inforModel.falseeducation" label="学历信息" placeholder="请选择学历信息" required @click="educationBot=true" />
+        <van-field v-model="inforModel.phone" disabled label="手机号码" placeholder="请输入手机号"  required @click="show.phone = true" />
+        <van-field v-model="inforModel.contactPhone" label="联系号码" placeholder="客户第二个手机号" @focus="onCodeNumberFocus"  @click="show.phone = true" />
+         <van-cell title="婚姻状况" required is-link :value="inforModel.falseMarital" @click="marriageBot=true" />
+        <van-cell title="学历信息" required is-link :value="inforModel.falseeducation" @click="educationBot=true" />
       </van-cell-group>
       <van-number-keyboard :show="show.phone" close-button-text="完成" @blur="show.phone = false" @input="inputPhone" @delete="deletePhone"></van-number-keyboard>
       <van-number-keyboard :show="show.contactPhone" close-button-text="完成" @blur="show.contactPhone = false" @input="contactPhone" @delete="deleteContactPhone"></van-number-keyboard>
@@ -43,9 +43,8 @@
     <van-row>
       <p class="base-info-title">居住信息</p>
       <van-cell-group>
-        <van-field v-model="inforModel.falseSituation" required label="居住情况" placeholder="请选择居住情况" @click="situationBot=true" />
-        <van-field v-model="inforModel.falseAgelimit " required label="居住年限" placeholder="请选择居住年限" @click="agelimitBot=true" />
-
+         <van-cell title="居住情况" required is-link :value="inforModel.falseSituation" @click="situationBot=true" />
+         <van-cell title="居住年限" required is-link :value="inforModel.falseAgelimit" @click="agelimitBot=true" />
         <van-cell title="居民地区" required is-link :value="inforModel.area | cityConvert " @click="$refs['cityPicker'].show()" />
         <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
 
@@ -62,12 +61,12 @@
     <van-row>
       <p class="base-info-title">工作信息</p>
       <van-cell-group>
-        <van-field required v-model="inforModel.falseWorking" label="工作情况" placeholder="请选择工作情况" @click="workingBot=true" />
+        <van-cell title="工作情况" required is-link :value="inforModel.falseWorking" @click="workingBot=true" />
         <van-field v-model="inforModel.companyName" label="单位名称" placeholder="请输入完整的公司名称" />
-        <van-field v-model="inforModel.falsenatureUnit " label="单位性质" placeholder="请选择单位性质" @click="natureUnitBot=true" />
+        <van-cell title="单位性质" required is-link :value="inforModel.falsenatureUnit" @click="natureUnitBot=true" />
         <van-field v-model="inforModel.companyAdress" label="单位地址" />
         <van-field v-model="inforModel.companyPhone" label="单位电话" placeholder="请输入公司电话" />
-        <van-field v-model="inforModel.falseYearsWorking" label="工作年限" placeholder="请选择工作年限" @click="yearsWorkingBot=true" />
+        <van-cell title="工作年限" required is-link :value="inforModel.falseYearsWorking" @click="yearsWorkingBot=true" />
         <van-field v-model="inforModel.afterSalary" label="税后月薪" placeholder="请输入您税后的月薪" />
       </van-cell-group>
     </van-row>
@@ -343,6 +342,11 @@ export default class Login extends Vue {
     } else {
       this.inforModel.marital = "";
     }
+  }
+  private onCodeNumberFocus() {
+    (document.activeElement as HTMLElement).blur()
+    this.show.contactPhone = true
+    this.show.phone = true
   }
 
   // onAreaConfirmClick(val) {

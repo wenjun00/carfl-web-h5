@@ -47,6 +47,8 @@ export default class MyOrder extends Vue {
   @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
   @Getter hasOrder;
   @State orderInfo
+  @State userData
+
 
   private orderNumber: any = ''  // 获取当前订单号
   private activatedCollapse = []
@@ -69,10 +71,22 @@ export default class MyOrder extends Vue {
     orderRecord.orderRecordfun(a)
   }
 
+  // /**
+  //  * 查询订单
+  //  */
+   getOrderNumber() {
+    this.productOrderService.getOrder(this.userData.userPhone).subscribe(
+      data => {
+        console.log(data,'123')
+      },
+      err => this.$toast(err.msg)
+    )
+  }
 
 
 
   mounted() {
+    this.getOrderNumber()
     this.orderNumber = this.orderInfo.orderNumber
     this.getOredrMessage()
   }

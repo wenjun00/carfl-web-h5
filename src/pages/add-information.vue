@@ -250,14 +250,14 @@ export default class Login extends Vue {
         province1: this.intoA.PersonalJob.province1,    // 居住地区 省
         city1: this.intoA.PersonalJob.city1,    // 居住地区 市
         district1: this.intoA.PersonalJob.district1,    // 居住地区 区
-        localHomeAddr: this.intoA.PersonalJob.address,    // 居住地址
+        localHomeAddrDetail: this.intoA.PersonalJob.address,    // 居住地址
         usefulTime: this.intoA.personalCar.useful_time,    // 有效期限
         fileNumber: this.intoA.personalCar.file_number,    // 档案编号
         drivingLicense: this.intoA.personalCar.driving_license,  // 准驾车型
         personalBank: {
           depositProvince: this.intoA.personalBank.locationProvince, // 银行开户省份
           depositCity: this.intoA.personalBank.locationCity,    // 银行开户市
-          depositBank: this.intoA.personalBank.deposit_bank,    // 开户银行
+          depositBank:  this.intoA.personalBank.deposit_bank,    // 开户银行
           cardNumber: this.intoA.personalBank.card_number,    // 银行卡号
           reservedPhoneNumber: this.intoA.personalBank.reserved_phone_number,    // 预留手机号
         },
@@ -282,7 +282,6 @@ export default class Login extends Vue {
         seriesName: this.intoA.orderCar.seriesName,
         vehicleColor: this.intoA.orderCar.vehicleColor,
       },
-
       personalContacts: [
         {
           relation: this.intoA.PersonalContact.relation,    // 承租人关系
@@ -298,15 +297,18 @@ export default class Login extends Vue {
 
     this.personalAll.personalAdditionals = this.intoA.PersonalAdditional
     // this.personalAll.orderCar = this.intoA.orderCar
-    this.clearIntoA()
     this.productOrderService.createOrder(this.personalAll).subscribe(
       data => {
+        this.clearIntoA()
         this.$router.push({
           name: 'MyOrder',
         })
 
       },
-      err => this.$toast(err.msg)
+      err =>{
+        this.$toast(err.msg)
+      } 
+   
     )
   }
 
@@ -435,9 +437,7 @@ export default class Login extends Vue {
     right: 5px;
   }
   .van-picker {
-    position: fixed;
     width: 100%;
-    bottom: 0;
     z-index: 100;
   }
   .fade-enter-active,

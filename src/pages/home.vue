@@ -11,7 +11,7 @@
       </form>
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img height="200px" :src="image" />
+          <img width="100%" :src="image" />
         </van-swipe-item>
       </van-swipe>
     </section>
@@ -76,8 +76,8 @@ export default class Home extends Vue {
   }
 
   private images: Array<string> = [
-    "/static/images/home/home01.png",
-    "/static/images/home/home02.png"
+    "/static/images/home/home_1.jpg",
+    "/static/images/home/home_2.jpg"
   ];
 
   // 控制各个组件显示flag

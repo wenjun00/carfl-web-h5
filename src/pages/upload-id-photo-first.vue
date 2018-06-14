@@ -1,54 +1,57 @@
-<template>
+<template> 
   <section class="page uploadIdPhotoFirst">
     <!-- <van-field v-model="heandCity" label="选择城市" placeholder="请选择城市" required @click="optionCity=true" /> -->
-    <van-cell title="选择城市" required is-link :value="IntoACity | cityConvert " @click="optionCity=true" />
-    <van-row>
-      <van-steps :active="0" active-color="#FFE44D">
-        <van-step>身份证信息</van-step>
-        <van-step>驾驶证信息</van-step>
-        <van-step>银行卡信息</van-step>
-      </van-steps>
-    </van-row>
-    <p class="base-info-title">请扫描上传承租人身份证照片</p>
-    <van-row>
-      <van-row class="imgList">
-        <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photo',1369)" accept="image/gif, image/jpeg" multiple>
-            <van-icon class="vanIcon" v-if="photo == ''" name="add" />
-            <img width="100%" v-else :src="photo" alt="">
-          </van-uploader>
-          <van-icon @click="closeIdentityCard('photo',1369)" v-if="!photo == ''" class="deleteiconHead" name="close" />
-          <van-icon @click="lookIdentityCard('photo')" v-if="!photo == ''" class="lookiconHead" name="password-view" />
-        </van-col>
-        <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photoTwo',1370)" accept="image/gif, image/jpeg" multiple>
-            <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
-            <img width="100%" v-else :src="photoTwo" alt="">
-          </van-uploader>
-          <van-icon @click="closeIdentityCard('photoTwo',1370)" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
-          <van-icon @click="lookIdentityCard('photoTwo')" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
-        </van-col>
+    <div>
+      <van-cell title="选择城市" required is-link :value="IntoACity | cityConvert " @click="optionCity=true" />
+      <van-row>
+        <van-steps :active="0" active-color="#FFE44D">
+          <van-step>身份证信息</van-step>
+          <van-step>驾驶证信息</van-step>
+          <van-step>银行卡信息</van-step>
+        </van-steps>
       </van-row>
-      <van-row style="text-align: center">
-        <van-col span="12">
-          <p style="font-size:14px">头像页</p>
-        </van-col>
-        <van-col span="12">
-          <p style="font-size:14px">国徽页</p>
-        </van-col>
+      <p class="base-info-title">请扫描上传承租人身份证照片</p>
+      <van-row>
+        <van-row class="imgList">
+          <van-col span="11">
+            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photo',1369)" accept="image/gif, image/jpeg" multiple>
+              <van-icon class="vanIcon" v-if="photo == ''" name="add" />
+              <img width="100%" v-else :src="photo" alt="">
+            </van-uploader>
+            <van-icon @click="closeIdentityCard('photo',1369)" v-if="!photo == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard('photo')" v-if="!photo == ''" class="lookiconHead" name="password-view" />
+          </van-col>
+          <van-col span="11">
+            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photoTwo',1370)" accept="image/gif, image/jpeg" multiple>
+              <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
+              <img width="100%" v-else :src="photoTwo" alt="">
+            </van-uploader>
+            <van-icon @click="closeIdentityCard('photoTwo',1370)" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard('photoTwo')" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
+          </van-col>
+        </van-row>
+        <van-row style="text-align: center">
+          <van-col span="12">
+            <p style="font-size:14px">头像页</p>
+          </van-col>
+          <van-col span="12">
+            <p style="font-size:14px">国徽页</p>
+          </van-col>
+        </van-row>
       </van-row>
-    </van-row>
-    <van-row>
-      <p class="base-info-title">请确认身份证信息是否一致</p>
-      <van-cell-group>
-        <van-field v-model="idcard.name" placeholder="请输入证件姓名" required label="证件姓名" />
-        <van-field v-model="idcard.id_card" placeholder="请输入证件号码" required label="证件号码" />
-        <van-field v-model="nation" label="民族" placeholder="请选择民族" required @click="pickerDialog=true" />
-        <van-cell title="户籍信息" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
-        <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
-        <van-field v-model="idcard.id_card_validity_period_section" placeholder="请输入有效期" required label="有效期限" />
-      </van-cell-group>
-    </van-row>
+      <van-row>
+        <p class="base-info-title">请确认身份证信息是否一致</p>
+        <van-cell-group>
+          <van-field v-model="idcard.name" placeholder="请输入证件姓名" required label="证件姓名" />
+          <van-field v-model="idcard.id_card" placeholder="请输入证件号码" required label="证件号码" />
+          <!-- <van-field v-model="nation" label="民族" placeholder="请选择民族" required @click="pickerDialog=true" /> -->
+          <van-cell title="民族" required is-link :value="nation" @click="pickerDialog=true" />
+          <van-cell title="户籍信息" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
+          <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
+          <van-field v-model="idcard.id_card_validity_period_section" placeholder="请输入有效期" required label="有效期限" />
+        </van-cell-group>
+      </van-row>
+    </div>
     <van-row>
       <van-button type="primary" @click="addAffirm" bottom-action>下一步</van-button>
     </van-row>
@@ -121,7 +124,7 @@ export default class Login extends Vue {
     id_card: [{ required: true, message: "请输入正确的身份证号码" }, { validator: this.$validator.idCard }],
     nation: { required: true, message: '请选择民族' },
     id_card_address: { required: true, message: '请选择户籍信息' },
-    id_card_validity_period_section: { required: true, message: '请输入身份证有效区间', },
+    id_card_validity_period_section: { required: true, message: '请输入有效期限', },
   };
   // 选择城市点击事件
   private onCityPickerConfirm(currentCitys) {
@@ -151,7 +154,7 @@ export default class Login extends Vue {
           this.$toast('请先上传身份证头像面');
           return
         }
-         if (this.idcard.nationalPhoto == '') {
+        if (this.idcard.nationalPhoto == '') {
           this.$toast('请先上传身份证国徽面');
           return
         }
@@ -180,7 +183,7 @@ export default class Login extends Vue {
    */
   private onConfirmTwo(val) {
     this.selectCity([Number(val.val)])
-     console.log(this.IntoACity,'下单成')
+    console.log(this.IntoACity, '下单成')
     this.optionCity = false
   }
 
@@ -264,6 +267,13 @@ export default class Login extends Vue {
     line-height: 150px;
     color: #bebebe;
   }
+  .van-picker {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    z-index: 100;
+  }
+
   .imgList {
     text-align: center;
     display: flex;
@@ -275,12 +285,6 @@ export default class Login extends Vue {
       width: 90%;
       margin-top: 10px;
     }
-  }
-  .van-picker {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    z-index: 100;
   }
   .fade-enter-active,
   .fade-leave-active {
@@ -330,8 +334,6 @@ p {
   }
   .van-button--bottom-action.van-button--primary {
     background-color: #ffe44d;
-    position: fixed;
-    bottom: 0rem;
   }
   .imgSize.headPortrait.van-uploader {
     display: flex;

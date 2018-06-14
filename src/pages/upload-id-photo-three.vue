@@ -36,7 +36,9 @@
     <van-row>
       <p class="base-info-title">请确认银行卡信息是否一致</p>
       <van-cell-group>
-        <van-field v-model="depositBank" required label="开户银行" placeholder="请选择准开户银行" @click="pickerDialog=true" />
+        <!-- <van-field v-model="depositBank" required label="开户银行" placeholder="请选择准开户银行" @click="pickerDialog=true" /> -->
+         <van-cell title="开户银行" required is-link :value="depositBank" @click="pickerDialog=true" />
+
         <van-field placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
 
         <van-cell title="银行开户所在地" required is-link :value="personalBank.location | cityConvert " @click="$refs['cityPicker'].show()" />
@@ -65,6 +67,7 @@ import { State, Mutation, Action } from "vuex-class";
 import { NetService } from "~/utils/net.service";
 import CityPicker from "~/components/common/city-picker.vue";
 import { elementAt } from "rxjs/operators";
+import { String } from "core-js";
 @Component({
   components: {
     CityPicker,
@@ -157,13 +160,14 @@ export default class Login extends Vue {
 
   private onConfirm(val) {
     this.personalBank.deposit_bank = val.value
-    this.depositBank = this.$dict.getDictName(Number(this.personalBank.deposit_bank))
+    this.depositBank = this.$dict.getDictName(this.personalBank.deposit_bank)
+    console.log(this.personalBank.deposit_bank)
+
     this.pickerDialog = false
   }
 
   mounted() {
     this.arrAll = this.intoA.PersonalAdditional
-    console.log(this.intoA, '456545')
     this.columns = this.$dict.getDictData('0456').map(v => {
       return Object.assign({ text: v.label }, v)
     })
@@ -348,8 +352,7 @@ export default class Login extends Vue {
   }
   .van-button--bottom-action.van-button--primary {
     background-color: #ffe44d;
-    position: fixed;
-    bottom: 0rem;
+ 
   }
   .imgSize.headPortrait.van-uploader {
     display: flex;

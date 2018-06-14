@@ -18,8 +18,8 @@ export default {
   verifyCodeLogin: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'appVerificationLogin',
-    type: requestType.Post
+    action: 'H5VerificationLogin',
+    type: requestType.Get
   },
    /**
    * 检测验证码

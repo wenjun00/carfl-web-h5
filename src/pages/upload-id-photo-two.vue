@@ -38,7 +38,9 @@
       <van-cell-group>
         <van-field v-model="peopleCar.useful_time" placeholder="请输入有效期限" label="有效期限" required/>
         <van-field v-model="peopleCar.file_number" placeholder="请输入档案编号" label="档案编号" required/>
-        <van-field v-model="drivingType" required label="准驾车型" placeholder="请选择准驾车型" @click="pickerDialog=true" />
+        <!-- <van-field v-model="drivingType" required label="准驾车型" placeholder="请选择准驾车型" @click="pickerDialog=true" /> -->
+         <van-cell title="准驾车型" required is-link :value="drivingType" @click="pickerDialog=true" />
+
       </van-cell-group>
     </van-row>
     <!-- 选择下单城市 -->
