@@ -1,6 +1,6 @@
 <!-- 车辆详情分期方案-->
 <template>
-  <section class="page  details-scheme">
+  <section class="page details-scheme">
     <!-- 分期方案 -->
     <van-cell-group>
       <van-cell>
@@ -14,7 +14,7 @@
       <van-row>
         <van-col class="payment">首付</van-col>
       </van-row>
-      <van-row class="downPaymentRow">
+      <van-row class="downPaymentRow small">
         <van-col v-for="(item,index) in carPeriodsOne" :key="index">
           <span :class="{'active':index ==checkindex }" class="downPayment" @click="paymentOne(item.firstPayment,index)">{{item.firstPayment}}</span>
         </van-col>
@@ -22,11 +22,11 @@
       <van-row>
         <van-col class="payment">期数</van-col>
       </van-row>
-      <van-row class="periodsRow">
+      <van-row class="periodsRow small">
         <van-col v-for="(item,index) in carPeriodsTwo" :key="index">
           <span :class="{'active':index ==checkindexTwo }" class="downPayment" @click="paymentTwo(item.planType,index)">{{$dict.getDictName(item.planType)}}</span>
         </van-col>
-      </van-row> 
+      </van-row>
       <van-row>
         <van-col class="payment">月供详情</van-col>
       </van-row>
@@ -88,15 +88,8 @@
       </van-cell>
     </van-cell-group>
     <van-row>
-      <carImgShow ref="car-img-show"></carImgShow>
+      <carImgShow v-for="(item,index) of carColumns" :key="index" :carColumn="item"></carImgShow>
     </van-row>
-
-    <!-- <van-row class="imgCenter" v-for="(item,index) in carImg" :key="index">
-      <van-col class="mar10" span="24">{{item.name}}</van-col>
-      <van-col span="24"><img width="90%" :src="imgOne" alt=""></van-col>
-      <van-col span="12" v-for="(itemTwo,indexTwo) in imgTwo" :key="indexTwo"><img width="90%" :src="itemTwo" alt=""></van-col>
-      <van-col class="mar10" span="24">{{item.introduce}}</van-col>
-    </van-row> -->
     <div class="carGoHome">
       <!-- 四步提车回家 -->
       <van-cell-group class="magin10">
@@ -216,7 +209,6 @@ export default class detailsScheme extends Vue {
    * 车辆ID 必需属性
    */
   @Prop({
-    type: Number,
     required: true,
   }) carId
 
@@ -239,6 +231,8 @@ export default class detailsScheme extends Vue {
 
 
   private images = '/static/images/common/headerLabel.png'
+
+  private carColumns = []
 
   /**
    * 获取车辆详细配置 
@@ -275,14 +269,7 @@ export default class detailsScheme extends Vue {
   */
   getCarColumnImg() {
     this.carManagementService.getCarColumnCollectModel(this.carId).subscribe(
-      data => {
-        this.carImg = data.columnList
-        let carImgModule = this.$refs['car-img-show'] as carImgShow
-        carImgModule.carImgFun(this.carImg)
-      
-
-        // console.log(this.carImg,'78978978')
-      },
+      data => this.carColumns = data.columnList,
       err => this.$toast(err.msg)
     )
   }
