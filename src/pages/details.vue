@@ -11,7 +11,7 @@
     </van-row>
 
     <van-row class="carDetails">
-      <van-col class="detailsOne" span="20">车辆照片仅供参考,已配置描述为准</van-col>
+      <van-col class="detailsOne" span="20">车辆照片仅供参考,以配置描述为准</van-col>
       <van-col span="4">
       </van-col>
     </van-row>

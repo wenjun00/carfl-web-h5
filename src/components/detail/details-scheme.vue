@@ -14,16 +14,16 @@
       <van-row>
         <van-col class="payment">首付</van-col>
       </van-row>
-      <van-row class="downPaymentRow small">
-        <van-col v-for="(item,index) in carPeriodsOne" :key="index">
+      <van-row class="small">
+        <van-col v-for="(item,index) in carPeriodsOne" :key="index" :span="6">
           <span :class="{'active':index ==checkindex }" class="downPayment" @click="paymentOne(item.firstPayment,index)">{{item.firstPayment}}</span>
         </van-col>
       </van-row>
       <van-row>
         <van-col class="payment">期数</van-col>
       </van-row>
-      <van-row class="periodsRow small">
-        <van-col v-for="(item,index) in carPeriodsTwo" :key="index">
+      <van-row class="small">
+        <van-col v-for="(item,index) in carPeriodsTwo" :key="index" :span="6">
           <span :class="{'active':index ==checkindexTwo }" class="downPayment" @click="paymentTwo(item.planType,index)">{{$dict.getDictName(item.planType)}}</span>
         </van-col>
       </van-row>
@@ -31,25 +31,25 @@
         <van-col class="payment">月供详情</van-col>
       </van-row>
       <van-row class="monthly" v-show="carPeriodsThree.length > 0">
-        <van-col span="12" v-show="carPeriodsThree.length > 0 ? carPeriodsThree[0].firstYearMonthrent:null">
+        <van-col span="12" v-show="(carPeriodsThree[0] || {}).firstYearMonthrent">
           第一年月供:
-          <span class="colred">{{ carPeriodsThree.length > 0 ? carPeriodsThree[0].firstYearMonthrent:null}}</span>元
+          <span class="colred">{{ (carPeriodsThree[0] || {}).firstYearMonthrent | toThousands}}</span>元
         </van-col>
-        <van-col span="12" v-show="carPeriodsThree.length > 0?carPeriodsThree[0].secondYearMonthrent:null">
+        <van-col span="12" v-show="(carPeriodsThree[0] || {}).secondYearMonthrent">
           第二年月供:
-          <span class="colred">{{ carPeriodsThree.length > 0?carPeriodsThree[0].secondYearMonthrent:null }}</span>元
+          <span class="colred">{{ (carPeriodsThree[0] || {}).secondYearMonthrent | toThousands}}</span>元
         </van-col>
-        <van-col span="12" v-show="carPeriodsThree.length > 0 ? carPeriodsThree[0].thirdYearMonthrent:null">
+        <van-col span="12" v-show="(carPeriodsThree[0] || {}).thirdYearMonthrent">
           第三年月供:
-          <span class="colred">{{ carPeriodsThree.length > 0 ? carPeriodsThree[0].thirdYearMonthrent:null }}</span>元
+          <span class="colred">{{ (carPeriodsThree[0] || {}).thirdYearMonthrent | toThousands}}</span>元
         </van-col>
-        <van-col span="12" v-show="carPeriodsThree.length > 0? carPeriodsThree[0].fourthYearMonthrent:null">
+        <van-col span="12" v-show="(carPeriodsThree[0] || {}).fourthYearMonthrent">
           第四年月供:
-          <span class="colred">{{ carPeriodsThree.length > 0? carPeriodsThree[0].fourthYearMonthrent:null }}</span>元
+          <span class="colred">{{ (carPeriodsThree[0] || {}).fourthYearMonthrent | toThousands}}</span>元
         </van-col>
-        <van-col span="12" v-show="carPeriodsThree.length > 0? carPeriodsThree[0].fifthYearMonthrent:null">
+        <van-col span="12" v-show="(carPeriodsThree[0] || {}).fifthYearMonthrent">
           第五年月供:
-          <span class="colred">{{ carPeriodsThree.length > 0? carPeriodsThree[0].fifthYearMonthrent:null }}</span>元
+          <span class="colred">{{ (carPeriodsThree[0] || {}).fifthYearMonthrent | toThousands}}</span>元
         </van-col>
       </van-row>
     </div>
@@ -405,9 +405,13 @@ export default class detailsScheme extends Vue {
     color: red;
   }
   .downPayment {
+    text-align: center;
     border: 1px solid gray;
-    padding: 5px;
+    padding: 5px 2px;
     box-sizing: border-box;
+    display: inline-block;
+    min-width: 50px;
+    margin: 5px;
   }
   .mar10 {
     margin-top: 10px;
@@ -490,16 +494,6 @@ export default class detailsScheme extends Vue {
 </style>
 <style lang="less">
 .page.details-scheme {
-  .periodsRow {
-    .van-col {
-      margin: 10px;
-    }
-  }
-  .downPaymentRow {
-    .van-col {
-      margin: 10px;
-    }
-  }
   .dropDown {
     padding-left: 13px;
     font-weight: 600;
