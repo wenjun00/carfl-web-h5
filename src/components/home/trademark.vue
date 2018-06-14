@@ -4,7 +4,7 @@
 
     <div class="logo" v-for="(item,index) in trademarkList" :key="index">
       <div @click="Allcar(index,item.id)">
-        <img height="40px" :src="item.logoUrl" alt="">
+        <img height="30px" :src="item.logoUrl" alt="">
         <div class="logoDetails">{{item.brandName}}</div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <section class="page knowOnionCar">
+  <section class="page know-onion-car">
     <van-row v-for="(item,index) in carImg" :key="index">
       <van-col class="backgroundColor" span="24"><img width="100%" :src="item" alt=""></van-col>
     </van-row>
@@ -26,7 +26,7 @@ export default class MyOrder extends Vue {
 </script>
 
 <style lang="less" scoped>
-  .page.knowOnionCar{
+  .page.know-onion-car{
     .backgroundColor{
       background-color: #fafafa
     }
