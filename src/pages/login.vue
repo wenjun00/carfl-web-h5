@@ -118,7 +118,7 @@ export default class Login extends Vue {
   private onVerifyCodeClick(time) {
     this.loginService.getVerifyCode(this.loginModel.phoneNumber).subscribe(
       data => {
-        this.loginModel.verifyCode = data
+        // this.loginModel.verifyCode = data
         this.leftTime = 60;
         let _self = this;
         let setTime = () => {
