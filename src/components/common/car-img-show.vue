@@ -1,60 +1,62 @@
 <template>
-  <section class="component carImgShow">
-    <!-- 奇数  上面大图-->
-    <van-row class="imgCenter" v-for="(item,index) in carImg" :key="index">
-      <van-col class="mar10" span="24">{{item.name}}</van-col>
-      <div v-if="item.materialList.length %2 !== 0">
-        <van-col  span="24">
-          <img width="90%" :src="item.materialList[0].url" alt="">
+  <section class="component car-img-show">
+    <div class="img-center">
+      <div class="ex-large">{{carColumn.name}}</div>
+      <van-row>
+        <van-col v-show="bigImg" :span="24">
+          <img :src="bigImg.url" :alt="bigImg.name" height="100%">
         </van-col>
-        <van-col  span="12" v-for="(itemTwo,indexTwo) in item.materialList.splice(1)" :key="indexTwo">
-          <img width="90%" :src="itemTwo.url" alt="">
+        <van-col v-for="(item,index) of doubleColShowImages" :key="index" :span="12">
+          <img :src="item.url" :alt="item.name" width="100%">
         </van-col>
-      </div>
-      <div>
-
-      </div>
-      
-      <van-col v-if="item.materialList.length%2  == 0" span="12" v-for="(itemTwo,indexTwo) in item.materialList" :key="indexTwo"><img width="90%" :src="itemTwo.url" alt=""></van-col>
-      <van-col class="mar10" span="24">{{item.introduce}}</van-col>
-    </van-row>
-    
+      </van-row>
+      <div class="small">{{carColumn.introduce}}</div>
+    </div>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-@Component({
-  components: {
+import { Prop } from "vue-property-decorator";
 
-  }
+@Component({
+  components: {}
 })
 export default class carImgShow extends Vue {
-  private carImg: any = []  // 车辆图片 
-  private imgOne: any = ''
-  private imgTwo: any = []
-  private evenNumber: any = null
+  @Prop() carColumn // 车辆图片 
 
-  /**
-   * 获取当前数组图片
-   */
-  carImgFun(val) {
-    this.carImg = val
-    console.log(this.carImg, 'niubi')
-
+  get imageList() {
+    return this.carColumn.materialList || []
   }
 
+  /**
+   * 获取第一个Image 大图显示
+   */
+  get bigImg() {
+    let result = {}
+    if (this.imageList.length % 2 === 1) {
+      result = this.imageList[0]
+    }
+    return result
+  }
 
-
-
-
+  /**
+   * 获取双列显示图片
+   */
+  get doubleColShowImages() {
+    let result = this.imageList
+    if (this.imageList.length % 2 === 1) {
+      result = this.imageList.splice(1)
+    }
+    return result
+  }
 }
 </script>
 
 <style lang="less" scoped>
-.component.carImgShow {
-  .imgCenter {
+.component.car-img-show {
+  .img-center {
     text-align: center;
   }
   .mar10 {
