@@ -77,7 +77,7 @@ export default class Home extends Vue {
 
   private images: Array<string> = [
     "/static/images/home/home01.png",
-    "/static/images/home/home01.png"
+    "/static/images/home/home02.png"
   ];
 
   // 控制各个组件显示flag
