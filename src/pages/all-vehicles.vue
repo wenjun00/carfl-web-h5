@@ -1,5 +1,5 @@
 <template>
-  <section class="page allVehicles">
+  <section class="page all-vehicles">
 
     <div class="logo" v-for="(item,index) in trademarks" :key="index">
       <div @click="Allcar(index,item.id)">
@@ -48,7 +48,7 @@ export default class allVehicles extends Vue {
 </script>
 
 <style lang="less" scoped>
-.page.allVehicles {
+.page.all-vehicles {
   .logo {
     width: 20%;
     float: left;

@@ -11,8 +11,8 @@ const UploadIdPhotoTwo = () => Promise.resolve(require('~/pages/upload-id-photo-
 const UploadIdPhotoThree = () => Promise.resolve(require('~/pages/upload-id-photo-three.vue'))
 const AddInformation = () => Promise.resolve(require('~/pages/add-information.vue'))
 const Details = () => Promise.resolve(require('~/pages/details.vue'))
-const AllVehicles = () => Promise.resolve(require('~/pages/allVehicles.vue'))
-const KnowOnionCar = () => Promise.resolve(require('~/pages/KnowOnionCar.vue'))
+const AllVehicles = () => Promise.resolve(require('~/pages/all-vehicles.vue'))
+const KnowOnionCar = () => Promise.resolve(require('~/pages/know-onion-car.vue'))
 // const AddDocumentInfor = () => Promise.resolve(require('~/pages/add-document-infor.vue'))
 
 
@@ -96,12 +96,12 @@ const routes = [
     component: Details,
     props: true
   }, {
-    path: '/allVehicles',
-    name: 'allVehicles',
+    path: '/all-vehicles',
+    name: 'AllVehicles',
     component: AllVehicles
   }, {
-    path: '/knowOnionCar',
-    name: 'knowOnionCar',
+    path: '/know-onion-car',
+    name: 'KnowOnionCar',
     component: KnowOnionCar
   }
 

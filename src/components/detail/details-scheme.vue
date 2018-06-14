@@ -194,7 +194,7 @@ import { ProductService } from "~/services/manage-service/product.service";
 import { Dependencies } from "~/core/decorator";
 import { Prop } from "vue-property-decorator";
 import { State, Mutation, Action } from "vuex-class";
-import carImgShow from "~/components/common/car-img-show.vue";
+import carImgShow from "~/components/detail/car-img-show.vue";
 
 @Component({
   components: {

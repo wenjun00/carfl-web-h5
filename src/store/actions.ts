@@ -17,7 +17,8 @@ export default {
       personalName: personalName || "",
       userPhone: userPhone
     });
-    dispatch('getOrderInfo', personalId)
+    // 执行 getOrderInfo 方法 传 userPhone
+    dispatch('getOrderInfo', userPhone)
     commit('updateTokenExpire', false)
   },
   /**
@@ -38,12 +39,12 @@ export default {
   /**
    * 获取用户订单
    * @param param0  commit 方法
-   * @param userPersonalId  用户ID
+   * @param userPhone  用户手机号
    */
-  async getOrderInfo({ commit }, userPersonalId) {
+  async getOrderInfo({ commit }, userPhone) {
     let { ProductOrderService } = await productOrderService()
     let productService = new ProductOrderService()
-    productService.getOrder(userPersonalId).subscribe(
+    productService.getOrder(userPhone).subscribe(
       data => {
         // 更新用户订单数据
         commit('updateUserOrder', data)

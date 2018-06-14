@@ -51,6 +51,7 @@ export default class carImgShow extends Vue {
     }
     return result
   }
+
 }
 </script>
 

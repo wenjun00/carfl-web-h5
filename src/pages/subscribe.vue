@@ -8,7 +8,7 @@
       </van-popup> -->
       <van-cell class="cityLive" title="所在城市" is-link :value="buyModel.cityName | cityConvert " @click="$refs['cityPicker'].show()" />
       <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
-      <van-field class="shop" label="预约门店" v-model="buyModel.appointmentShop" placeholder="请选择要预约的门店" />
+      <!-- <van-field class="shop" label="预约门店" v-model="buyModel.appointmentShop" placeholder="请选择要预约的门店" /> -->
       <van-field class="phoneText" maxlength="11" v-model="buyModel.phone" label="手机号码" placeholder="请输入您的手机号" icon="clear" @click-icon="buyModel.phone = ''" @focus="show.phone = true" />
       <van-number-keyboard :show="show.phone" title="洋葱汽车安全键盘" close-button-text="完成" @blur="show.phone = false" @input="onKeyBoardInputPhone" @delete="onKeyBoardDeletePhone" />
     </div>
@@ -18,7 +18,7 @@
       <div class="buy-info">
         <p>您的电话：{{buyModel.phone}}</p>
         <p>所在城市：{{buyModel.cityName | cityConvert}}</p>
-        <p>预约门店：暂时为空</p>
+        <!-- <p>预约门店：暂时为空</p> -->
       </div>
     </van-dialog>
 

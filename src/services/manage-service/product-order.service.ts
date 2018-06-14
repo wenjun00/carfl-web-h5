@@ -14,14 +14,14 @@ export class ProductOrderService {
         })
     }
     /**
-     * 根据用户ID获取用户订单
-     * @param personalId 用户ID
+     * 根据用户手机号 获取用户订单
+     * @param personalId 
      */
-    getOrder(personalId){
+    getOrder(mobileMain){
         return this.netService.send({
             server: manageService.productOrderController.getOrder,
             data:{
-                personalId: 9999
+                mobileMain: mobileMain
             }
         })
     }
