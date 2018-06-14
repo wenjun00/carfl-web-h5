@@ -44,7 +44,6 @@
         <van-field v-model="idcard.name" placeholder="请输入证件姓名" required label="证件姓名" />
         <van-field v-model="idcard.id_card" placeholder="请输入证件号码" required label="证件号码" />
         <van-field v-model="nation" label="民族" placeholder="请选择民族" required @click="pickerDialog=true" />
-        <!-- <van-field v-model="idcard.id_card_address" placeholder="请输入户籍信息" required label="户籍信息" /> -->
         <van-cell title="户籍信息" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
         <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
         <van-field v-model="idcard.id_card_validity_period_section" placeholder="请输入有效期" required label="有效期限" />

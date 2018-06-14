@@ -46,7 +46,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from "vue-class-component";
-import DetailsScheme from "~/components/common/detailsScheme.vue";
+import DetailsScheme from "~/components/common/details-scheme.vue";
 import { carManagementService } from "~/services/manage-service/car-management.service";
 import { Dependencies } from "~/core/decorator";
 import { Prop } from "vue-property-decorator";
