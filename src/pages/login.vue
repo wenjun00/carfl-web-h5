@@ -1,13 +1,13 @@
 <template>
   <section class="page login">
-    <div class="imgHeaght">
+    <div :class="keyboardFlag.phone || keyboardFlag.code ? 'move-top' : ''" class="imgHeaght">
       <img height="160px" src="/static/images/common/register_login.png">
     </div>
     <van-row class="login-info">
       <van-cell-group>
-        <van-field maxlength="11" v-model="loginModel.phoneNumber" label="手机号" placeholder="请输入您的手机号" icon="clear" @click-icon="loginModel.phoneNumber = ''" @focus="keyboardFlag.phone = true" />
+        <van-field maxlength="11" v-model="loginModel.phoneNumber" label="手机号" placeholder="请输入您的手机号" icon="clear" @click-icon="loginModel.phoneNumber = ''" @focus="onPhoneNumberFocus" />
         <van-number-keyboard :show="keyboardFlag.phone" title="洋葱汽车安全键盘" close-button-text="完成" @blur="keyboardFlag.phone = false" @input="onKeyBoardInputPhone" @delete="onKeyBoardDeletePhone" />
-        <van-field maxlength="6" center v-model="loginModel.verifyCode" label="验证码" placeholder="请输入短信验证码" icon="clear" @click-icon="loginModel.verifyCode = ''" @focus="keyboardFlag.code = true">
+        <van-field maxlength="6" center v-model="loginModel.verifyCode" label="验证码" placeholder="请输入短信验证码" icon="clear" @click-icon="loginModel.verifyCode = ''" @focus="onCodeNumberFocus">
           <van-button slot="button" size="small" type="primary" @click="onVerifyCodeClick" :disabled="leftTime !== 0">{{leftTime > 0 ? leftTime + '秒后重发' : '获取验证码'}}</van-button>
         </van-field>
         <van-number-keyboard :show="keyboardFlag.code" @blur="keyboardFlag.code = false" @input="onKeyBoardInputCode" @delete="onKeyBoardDeleteCode" />
@@ -28,9 +28,6 @@ import { Action, Mutation } from "vuex-class";
 import AppConfig from "~/config/app.config";
 import Register from "~/components/common/register.vue";
 import { StorageService } from "~/utils/storage.service";
-
-
-
 
 @Component({
   components: {}
@@ -165,6 +162,16 @@ export default class Login extends Vue {
       }
     });
   }
+
+  private onPhoneNumberFocus(v) {
+    (document.activeElement as HTMLElement).blur()
+    this.keyboardFlag.phone = true
+  }
+
+  private onCodeNumberFocus() {
+    (document.activeElement as HTMLElement).blur()
+    this.keyboardFlag.code = true
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -178,6 +185,9 @@ export default class Login extends Vue {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .move-top{
+    margin-top: -80px;
   }
 }
 </style>
