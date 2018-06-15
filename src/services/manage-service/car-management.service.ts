@@ -15,7 +15,8 @@ export class carManagementService {
       server: manageService.carManagementController.getCarParamList,
       data:{
         carId:carId
-      }
+      },
+      loading: true
     })
   }
   /**
@@ -27,7 +28,8 @@ export class carManagementService {
       server: manageService.carManagementController.getCarDetail,
       data: {
         carId: carId
-      }
+      },
+      loading: true
     })
   }
   /**
@@ -39,7 +41,8 @@ export class carManagementService {
       server: manageService.carManagementController.getCarColumnCollectModel,
       data:{
         carId:carId
-      }
+      },
+      loading: true
     })
   }
 
@@ -52,7 +55,8 @@ export class carManagementService {
       server: manageService.carManagementController.getCarPictureList,
       data:{
         carId: carId
-      }
+      },
+      loading: true
     })
   }
 
