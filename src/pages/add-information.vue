@@ -304,6 +304,7 @@ export default class Login extends Vue {
         this.clearIntoA()
         //调用登陆接口获取订单信息
         // this.$toast('数据正在审核中，请稍后请重新登陆')
+        this.$toast("提交成功")
         this.$router.push({
           name: 'Home',
         })
@@ -415,14 +416,14 @@ export default class Login extends Vue {
   .lookiconHead {
     position: relative;
     top: -105px;
-    left: -65px;
+    left: -55px;
     color: cornflowerblue;
     font-size: 25px;
   }
   .deleteiconHead {
     position: relative;
     top: -105px;
-    left: 65px;
+    left: 80px;
     color: cornflowerblue;
     font-size: 20px;
   }

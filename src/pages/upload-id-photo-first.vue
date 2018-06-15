@@ -252,7 +252,7 @@ export default class Login extends Vue {
   .deleteiconHead {
     position: relative;
     top: -105px;
-    left: 65px;
+    left: 55px;
     color: cornflowerblue;
     font-size: 20px;
   }
