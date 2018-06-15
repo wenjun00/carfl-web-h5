@@ -12,7 +12,7 @@ export default {
     createOrder: {
         service: SERVICE,
         controller: CONTROLLER,
-        action: 'createOrder',
+        action: 'createOrderByH5',
         type: requestType.Post
     },
     /**

@@ -1,5 +1,5 @@
 <template>
-  <section class="page login"> 
+  <section class="page login">
     <div :class="keyboardFlag.phone || keyboardFlag.code ? 'move-top' : ''" class="imgHeaght">
       <img height="160px" src="/static/images/common/register_login.png">
     </div>
@@ -24,7 +24,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { LoginService } from "~/services/manage-service/applogin.service";
 import { Dependencies } from "~/core/decorator";
-import { Action, Mutation } from "vuex-class";
+import { State, Action, Mutation } from "vuex-class";
 import AppConfig from "~/config/app.config";
 import Register from "~/components/common/register.vue";
 import { StorageService } from "~/utils/storage.service";
@@ -36,6 +36,7 @@ export default class Login extends Vue {
   @Dependencies(LoginService) private loginService: LoginService;
   @Mutation updateUserPhone;
   @Action updateUserLoginData;
+  @Mutation updateUserOrder;
 
   // 客户手机号码
   private phoneNumber: string = "";
@@ -43,6 +44,7 @@ export default class Login extends Vue {
     phoneNumber: "", // 客户手机号码
     verifyCode: "" //验证码
   };
+  private authCode:'' // 存store 验证码 
 
   // 键盘展示flag
   private keyboardFlag = {
@@ -115,6 +117,7 @@ export default class Login extends Vue {
   private onVerifyCodeClick(time) {
     this.loginService.getVerifyCode(this.loginModel.phoneNumber).subscribe(
       data => {
+        this.authCode = data
         // this.loginModel.verifyCode = data
         this.leftTime = 60;
         let _self = this;
@@ -140,26 +143,28 @@ export default class Login extends Vue {
    * 提交操作
    */
   private onSubmit() {
-
     this.$validator.validate(this.loginModel, this.rules).then(error => {
-      if (!error) {
-        this.loginService.verifyCodeLogin(this.loginModel).subscribe(
-          data => {
-            let resultData = {
-              token: data.token,
-              personalId: data.personalId,
-              personalName: data.personalName,
-              userPhone: this.loginModel.phoneNumber
-            }
-            this.updateUserLoginData(resultData)
-            this.$router.push("/Index");
-          },
-          err => this.$toast(err.msg)
-        )
-
-      } else {
-        this.$toast(error);
+      if (error) {
+        return this.$toast(error);
       }
+
+      this.loginService.verifyCodeLogin(this.loginModel).subscribe(
+        data => {
+          let resultData = {
+            token: data.token,
+            personalId: data.personalId,
+            personalName: data.personalName,
+            userPhone: this.loginModel.phoneNumber,
+            authCode:this.authCode
+          }
+          this.updateUserLoginData(resultData)
+          this.updateUserOrder(data)
+          this.$router.push("/Index");
+        },
+        err => this.$toast(err.msg)
+      )
+
+
     });
   }
 
@@ -186,7 +191,7 @@ export default class Login extends Vue {
     justify-content: center;
     align-items: center;
   }
-  .move-top{
+  .move-top {
     margin-top: -80px;
   }
 }

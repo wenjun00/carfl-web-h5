@@ -1,12 +1,12 @@
 import router from '~/router'
-
+ 
 const productOrderService = () => import('~/services/manage-service/product-order.service');
 
 export default {
   /**
    * 更新用户登录数据
    */
-  updateUserLoginData({ state, commit, dispatch }, { token, personalId, personalName, userPhone }) {
+  updateUserLoginData({ state, commit, dispatch }, { token, personalId, personalName, userPhone,authCode }) {
     // 更新用户token
     if (!!token) {
       commit('updateUserToken', token);
@@ -15,10 +15,11 @@ export default {
     commit('updateUserData', {
       id: personalId,
       personalName: personalName || "",
-      userPhone: userPhone
+      userPhone: userPhone,
+      authCode:authCode
     });
     // 执行 getOrderInfo 方法 传 userPhone
-    dispatch('getOrderInfo', userPhone)
+    // dispatch('getOrderInfo', userPhone)
     commit('updateTokenExpire', false)
   },
   /**
@@ -41,16 +42,16 @@ export default {
    * @param param0  commit 方法
    * @param userPhone  用户手机号
    */
-  async getOrderInfo({ commit }, userPhone) {
-    let { ProductOrderService } = await productOrderService()
-    let productService = new ProductOrderService()
-    productService.getOrder(userPhone).subscribe(
-      data => {
-        // 更新用户订单数据
-        commit('updateUserOrder', data)
-      },
-      err => console.error('获取用户订单出错')
-    )
-  }
+  // async getOrderInfo({ commit }, userPhone) {
+  //   let { ProductOrderService } = await productOrderService()
+  //   let productService = new ProductOrderService()
+  //   productService.getOrder(userPhone).subscribe(
+  //     data => {
+  //       // 更新用户订单数据
+  //       commit('updateUserOrder', data)
+  //     },
+  //     err => console.error('获取用户订单出错')
+  //   )
+  // }
 
 }

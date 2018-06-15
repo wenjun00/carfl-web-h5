@@ -5,12 +5,12 @@
     </div>
     <div v-else key="has-order">
       <van-cell-group>
-        <van-cell :title="`订单编号：${productOrderInfo.orderNumber}`"></van-cell>
-        <van-cell :title="`车型：${productOrderInfo.orderCar.modelName}`"></van-cell>
-        <van-cell title="下单城市" is-link :value="[productOrderInfo.city] | cityConvert " />
-        <van-cell :title="`首付：${productOrderInfo.schedulePlanResultModel.schedulePlanResult.firstPayment} 元`"></van-cell>
-        <van-cell :title="`期数：${productOrderInfo.schedulePlanResultModel.schedulePlanResult.planType} 期`"></van-cell>
-        <van-cell :title="`月供信息：${productOrderInfo.schedulePlanResultModel.schedulePlanResult.firstYearMonthrent}元 `"></van-cell>
+        <van-cell :title="`订单编号：${productOrderInfo.orderReference }`"></van-cell>
+        <van-cell :title="`车型：${productOrderInfo.carType}`"></van-cell>
+        <van-cell title="下单城市" is-link :value="productOrderInfo.placeCity | cityConvert" />
+        <van-cell :title="`首付：${productOrderInfo.downPayment} 元`"></van-cell>
+        <van-cell :title="`期数：${productOrderInfo.periods} 期`"></van-cell>
+        <van-cell :title="`月供信息：${productOrderInfo.informationOn}元 `"></van-cell>
       </van-cell-group>
       <van-collapse v-model="activatedCollapse">
         <van-collapse-item title="合同详情" name="contract">
@@ -37,6 +37,7 @@ import { ProductOrderService } from "~/services/manage-service/product-order.ser
 import { Dependencies } from "~/core/decorator";
 import { CityService } from "~/utils/city.service";
 import { setTimeout } from "core-js";
+
 @Component({
   components: {
     OrderContract,
@@ -50,14 +51,35 @@ export default class MyOrder extends Vue {
   @State userData
 
 
+
   private orderNumber: any = ''  // 获取当前订单号
   private activatedCollapse = []
-  private productOrderInfo: any = {} // 订单基本信息 存储
+  private productOrderInfo: any = {
+    orderReference: '',    // 订单编号
+    carType: '',  //车型
+    placeCity: '',  // 下单城市
+    downPayment: '',  // 首付
+    periods: '',   // 期数
+    informationOn: '', // 月供信息
 
+
+
+  } // 订单基本信息 存储
+
+
+  /**
+   * 通过订单号查询订单信息
+   */
   getOredrMessage() {
-    this.productOrderService.findOrderInfoByOrderNumber(this.orderNumber).subscribe(
+    this.productOrderService.findOrderInfoByOrderNumber(this.orderInfo.orderNo).subscribe(
       data => {
-        this.productOrderInfo = data
+        // this.productOrderInfo = data
+        this.productOrderInfo.orderReference = data.orderNumber
+        this.productOrderInfo.carType = data.orderCar.modelName
+        this.productOrderInfo.placeCity = [data.city]
+        this.productOrderInfo.downPayment = data.schedulePlanResultModel.schedulePlanResult.firstPayment
+        this.productOrderInfo.periods = data.schedulePlanResultModel.schedulePlanResult.planType
+        this.productOrderInfo.informationOn = data.schedulePlanResultModel.schedulePlanResult.firstYearMonthrent
       },
       err => this.$toast(err.msg)
     )
@@ -71,23 +93,11 @@ export default class MyOrder extends Vue {
     orderRecord.orderRecordfun(a)
   }
 
-  // /**
-  //  * 查询订单
-  //  */
-   getOrderNumber() {
-    this.productOrderService.getOrder(this.userData.userPhone).subscribe(
-      data => {
-        console.log(data,'123')
-      },
-      err => this.$toast(err.msg)
-    )
-  }
 
 
 
   mounted() {
-    this.getOrderNumber()
-    this.orderNumber = this.orderInfo.orderNumber
+    this.$loading.show()
     this.getOredrMessage()
   }
 

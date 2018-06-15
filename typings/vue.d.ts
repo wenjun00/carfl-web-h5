@@ -10,5 +10,6 @@ declare module 'vue/types/vue' {
     $validator: any
     $Message: any
     $common: any
+    $loading: any
   }
 }

@@ -157,17 +157,18 @@ import { State, Mutation, Action } from "vuex-class";
 import { NetService } from "~/utils/net.service";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { Dependencies } from "~/core/decorator";
+import { LoginService } from "~/services/manage-service/applogin.service";
 @Component({})
 export default class Login extends Vue {
   @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
-
+  @Dependencies(LoginService) private loginService: LoginService;
   @Mutation tenantImg
   @Mutation clearIntoA
   @State intoA
   @Mutation selectCity
   @State IntoACity
-
-
+  @State userData
+  @Mutation updateUserOrder
 
   private arrImg: any = []
   private idName: any = null;
@@ -262,6 +263,7 @@ export default class Login extends Vue {
           reservedPhoneNumber: this.intoA.personalBank.reserved_phone_number,    // 预留手机号
         },
         personalJob: {
+          jobType:this.intoA.PersonalJob.working,     //还是工作情况
           workingCondition: this.intoA.PersonalJob.working,    // 工作情况
           companyName: this.intoA.PersonalJob.companyName,    // 单位名称
           companyNature: this.intoA.PersonalJob.natureUnit,    // 单位性质
@@ -300,6 +302,9 @@ export default class Login extends Vue {
     this.productOrderService.createOrder(this.personalAll).subscribe(
       data => {
         this.clearIntoA()
+        //调用登陆接口获取订单信息
+        this.getLogoIndent()
+        // this.$toast('数据正在审核中，请稍后请重新登陆')
         this.$router.push({
           name: 'MyOrder',
         })
@@ -309,6 +314,22 @@ export default class Login extends Vue {
         this.$toast(err.msg)
       } 
    
+    )
+  }
+
+  // 进件成功调用登陆接口 查看订单等数据(进件成功，拿不到订单号先注释)
+  getLogoIndent(){
+    let userAll = {
+      phoneNumber :this.userData.userPhone,
+      verifyCode : this.userData.authCode
+    } 
+  
+     this.loginService.verifyCodeLogin(userAll).subscribe(
+      data => {
+        console.log(data)
+        this.updateUserOrder(data)
+      },
+      err => this.$toast(err.msg)
     )
   }
 
@@ -325,7 +346,6 @@ export default class Login extends Vue {
           }
         }
         this.arrImg.push({
-          // personalId: x.id,
           uploadName: x.realName,
           materialType: x.type,
           dataSize: x.size,
