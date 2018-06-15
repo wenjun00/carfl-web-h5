@@ -69,7 +69,8 @@
       info.style.display = "none"
       formatQueryStr()
       var oAjax = new XMLHttpRequest();
-      var url = 'http://192.168.3.192:8762/service-manage/contractDetailsController/updateOrderLinkToIsSigning?orderId=' + params.orderId
+      
+      var url = 'http://cphyw921.vicp.cc:21338/service-manage/contractDetailsController/updateOrderLinkToIsSigning?orderId=' + params.orderId
       oAjax.open("GET", url, true)
       oAjax.send()
 

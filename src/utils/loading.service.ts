@@ -35,8 +35,10 @@ export class LoadingService {
     const modal: any = Instance.$children[0];
 
     modal.remove = () => {
+      console.log(123)
       modal.$parent.remove()
     }
+    
 
     return modal
   }

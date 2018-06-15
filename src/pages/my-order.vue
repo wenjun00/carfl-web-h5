@@ -93,9 +93,6 @@ export default class MyOrder extends Vue {
     orderRecord.orderRecordfun(a)
   }
 
-
-
-
   mounted() {
     // this.$loading.show()
     this.getOredrMessage()

@@ -118,7 +118,7 @@ export class NetService {
 
     // 发送通讯结果
     let emitResult = (fn) => {
-      return function (loading) {
+      return (loading) => {
         if (loading) {
           loading.remove()
         }
@@ -197,7 +197,15 @@ export class NetService {
               //
             }
             break;
+          case 400:
+            {
+              loadingPromise.then(emitResult(() => {
+                // observer.error(error)
+              }))
+            }
         }
+
+
       })
     })
 

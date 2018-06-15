@@ -1,20 +1,18 @@
 <template>
-  <section class="component loading">
-    <van-popup>
-      <div class="content row middle-span center-span">
-        <div class="sk-cube-grid">
-          <div class="sk-cube sk-cube1"></div>
-          <div class="sk-cube sk-cube2"></div>
-          <div class="sk-cube sk-cube3"></div>
-          <div class="sk-cube sk-cube4"></div>
-          <div class="sk-cube sk-cube5"></div>
-          <div class="sk-cube sk-cube6"></div>
-          <div class="sk-cube sk-cube7"></div>
-          <div class="sk-cube sk-cube8"></div>
-          <div class="sk-cube sk-cube9"></div>
-        </div>
+  <section class="component loading full row middle-span center-span ">
+    <div class="content row middle-span center-span">
+      <div class="sk-cube-grid">
+        <div class="sk-cube sk-cube1"></div>
+        <div class="sk-cube sk-cube2"></div>
+        <div class="sk-cube sk-cube3"></div>
+        <div class="sk-cube sk-cube4"></div>
+        <div class="sk-cube sk-cube5"></div>
+        <div class="sk-cube sk-cube6"></div>
+        <div class="sk-cube sk-cube7"></div>
+        <div class="sk-cube sk-cube8"></div>
+        <div class="sk-cube sk-cube9"></div>
       </div>
-    </van-popup>
+    </div>
   </section>
 </template>
 
@@ -26,21 +24,24 @@ import { Prop, Model, Emit, Watch } from "vue-property-decorator";
 @Component({
   components: {}
 })
-export default class Loading extends Vue {}
+export default class Loading extends Vue { }
 </script>
 
 <style lang="less" scoped>
 .component.loading {
+  position: fixed;
+  top: 0;
+
   .sk-cube-grid {
-    width: 40px;
-    height: 40px;
-    margin: 100px auto;
+    width: 100px;
+    height: 100px;
+    margin: 150px auto;
   }
 
   .sk-cube-grid .sk-cube {
     width: 33%;
     height: 33%;
-    background-color: #4b79bd;
+    background-color: #fadc4b;
     float: left;
     -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
     animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
