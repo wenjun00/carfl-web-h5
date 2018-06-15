@@ -303,12 +303,11 @@ export default class Login extends Vue {
       data => {
         this.clearIntoA()
         //调用登陆接口获取订单信息
-        this.getLogoIndent()
         // this.$toast('数据正在审核中，请稍后请重新登陆')
         this.$router.push({
-          name: 'MyOrder',
+          name: 'Home',
         })
-
+        this.getLogoIndent()
       },
       err =>{
         this.$toast(err.msg)

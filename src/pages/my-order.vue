@@ -97,7 +97,7 @@ export default class MyOrder extends Vue {
 
 
   mounted() {
-    this.$loading.show()
+    // this.$loading.show()
     this.getOredrMessage()
   }
 
