@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>合同签署通知</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+  <meta name="imagemode" content="force">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no">
+  <style type="text/css">
+    body {
+      padding: 2px;
+    }
+
+    .h3 {
+      padding-top: 20%;
+      font-size: 1.2rem;
+      padding-bottom: 20px;
+    }
+
+    .h1 {
+      text-indent: 3rem;
+      font-size: 2rem;
+    }
+
+    .submit {
+      margin-top: 30px;
+      font-size: 1rem;
+      width: 75px;
+      height: 35px;
+      border-radius: 5px;
+      border: 1px solid orange;
+      background-color: orange;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .loading {
+      display: "";
+      padding-top: 40%;
+      font-size: 2rem;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="loading" class="loading center">
+    正在处理...
+  </div>
+  <div id="info">
+    <div class="h3">电子合同签署通知：</div>
+    <div class="h1">电子合同已经签署完毕，正在归档中，预计10分钟后和查看详情。</div>
+    <div class="center">
+      <button class="submit" onClick="onClick()">确定</button>
+    </div>
+  </div>
+
+  <script>
+    // 参数数组
+    var params;
+    window.onload = function () {
+      var loading = document.getElementById("loading")
+      var info = document.getElementById("info")
+      info.style.display = "none"
+      formatQueryStr()
+      var oAjax = new XMLHttpRequest();
+      var url = 'http://192.168.3.192:8762/service-manage/contractDetailsController/updateOrderLinkToIsSigning?orderId=' + params.orderId
+      oAjax.open("GET", url, true)
+      oAjax.send()
+
+      oAjax.onreadystatechange = function () {
+        if (oAjax.readyState === 4) {
+          info.style.display = ""
+          loading.style.display = "none"
+          if (oAjax.status === 200) {
+            console.log(oAjax.response)
+          } else {
+            window.alert("error")
+          }
+        }
+      }
+    }
+
+
+    function onClick() {
+      webView.close()
+    }
+
+    function formatQueryStr() {
+      params = {}
+      var queryStr = window.location.search.substr(1);
+      var list = queryStr.split("&");
+
+      var getkeyWord = function (str) {
+        var key = str.split("=")[0]
+        var value = str.split("=")[1]
+        params[key] = value
+      }
+      list.forEach(getkeyWord)
+    }
+
+
+  </script>
+
+</body>
+
+</html>
