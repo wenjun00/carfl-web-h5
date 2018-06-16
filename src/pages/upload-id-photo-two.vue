@@ -36,10 +36,11 @@
     <van-row>
       <p class="base-info-title">请确认驾驶证信息是否一致</p>
       <van-cell-group>
-        <van-field v-model="peopleCar.useful_time" placeholder="请输入有效期限" label="有效期限" required/>
+        <van-cell title="有效期限" required is-link :value="peopleCar.useful_time" @click="validPeriod=true" />
+        <van-datetime-picker v-show="validPeriod" type="date" @cancel="validPeriodCancel" @confirm="validPeriodAffirm" />
         <van-field v-model="peopleCar.file_number" placeholder="请输入档案编号" label="档案编号" required/>
         <!-- <van-field v-model="drivingType" required label="准驾车型" placeholder="请选择准驾车型" @click="pickerDialog=true" /> -->
-         <van-cell title="准驾车型" required is-link :value="drivingType" @click="pickerDialog=true" />
+        <van-cell title="准驾车型" required is-link :value="drivingType" @click="pickerDialog=true" />
 
       </van-cell-group>
     </van-row>
@@ -72,6 +73,7 @@ export default class Login extends Vue {
   private photoTwo: any = ''
   private pickerDialog: boolean = false;
   private columns: any = [];
+  private validPeriod: boolean = false   // 有效期限
   private type: any;
   private drivingType: string = ''
   private peopleCar: any = {
@@ -105,6 +107,20 @@ export default class Login extends Vue {
     file_number: { required: true, message: '请输入档案编号' },
     driving_license: { required: true, message: '请选择准驾车型' },
   };
+
+  /**
+ * 点击有效期 确定事件
+ */
+  validPeriodAffirm(val) {
+    this.peopleCar.useful_time = this.$filter.dateFormat(val, "yyyy-MM-dd")
+    this.validPeriod = false
+  }
+  /**
+   * 点击有效期取消事件
+   */
+  validPeriodCancel() {
+    this.validPeriod = false
+  }
 
   @Mutation choosePeople
   @Mutation tenantImg
@@ -300,7 +316,6 @@ export default class Login extends Vue {
   }
   .van-button--bottom-action.van-button--primary {
     background-color: #ffe44d;
-   
   }
   .van-picker {
     position: fixed;
@@ -315,6 +330,11 @@ export default class Login extends Vue {
   .imgSize.headPortrait.van-uploader {
     display: flex;
     justify-content: center;
+  }
+  .van-field__control {
+    text-align: right;
+    padding-left: 24px;
+    box-sizing: border-box;
   }
 }
 </style>

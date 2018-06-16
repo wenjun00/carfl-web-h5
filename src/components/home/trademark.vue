@@ -4,7 +4,7 @@
 
     <div class="logo" v-for="(item,index) in trademarkList" :key="index">
       <div @click="Allcar(index,item.id)">
-        <img height="30px" :src="item.logoUrl" alt="">
+        <img height="30px" width="30px" :src="item.logoUrl" alt="">
         <div class="logoDetails">{{item.brandName}}</div>
       </div>
     </div>
@@ -25,7 +25,7 @@ export default class Trademark extends Vue {
     let list = this.trademarks.slice(0, 9)
     list.push({
       logoUrl: "/static/images/home/trademarks/all.png",
-      brandName: "全部品牌"
+      brandName: "全部车辆"
     })
     return list
 

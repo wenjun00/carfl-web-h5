@@ -144,6 +144,15 @@ export default class Login extends Vue {
 }
 .van-button--bottom-action.van-button--primary {
   background-color: #ffe44d;
+}
+</style>
 
+<style  lang="less">
+.page.contactInformation {
+  .van-field__control {
+    text-align: right;
+    padding-left: 24px;
+    box-sizing: border-box;
+  }
 }
 </style>

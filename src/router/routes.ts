@@ -13,6 +13,7 @@ const AddInformation = () => Promise.resolve(require('~/pages/add-information.vu
 const Details = () => Promise.resolve(require('~/pages/details.vue'))
 const AllVehicles = () => Promise.resolve(require('~/pages/all-vehicles.vue'))
 const KnowOnionCar = () => Promise.resolve(require('~/pages/know-onion-car.vue'))
+const supportBank = () => Promise.resolve(require('~/pages/support-bank.vue'))
 // const AddDocumentInfor = () => Promise.resolve(require('~/pages/add-document-infor.vue'))
 
 
@@ -103,6 +104,10 @@ const routes = [
     path: '/know-onion-car',
     name: 'KnowOnionCar',
     component: KnowOnionCar
+  }, {
+    path: '/support-bank',
+    name: 'supportBank',
+    component: supportBank
   }
 
 ]

@@ -32,6 +32,16 @@ export default {
         controller: CONTROLLER,
         action: 'findOrderInfoByOrderNumber',
         type: requestType.Get
+    },
+    /****
+     * 获取支持银行
+     */
+    getBankCodeList: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getBankCodeList',
+        type: requestType.Get
     }
+    
 
 }
