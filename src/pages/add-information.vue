@@ -481,8 +481,7 @@ export default class Login extends Vue {
   }
   .van-button--bottom-action.van-button--primary {
     background-color: #ffe44d;
-    position: fixed;
-    bottom: 0rem;
+    
   }
   p {
     margin: 0;
