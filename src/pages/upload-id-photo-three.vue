@@ -8,7 +8,9 @@
         <van-step>银行卡信息</van-step>
       </van-steps>
     </van-row>
-    <p class="base-info-title">请上传承租人银行卡照片</p>
+    <p class="base-info-title">请上传承租人银行卡照片
+      <router-link to="/support-bank"><span class="supportBank">支持银行</span></router-link>
+    </p>
     <van-row>
       <van-row class="imgList">
         <van-col span="11">
@@ -37,7 +39,7 @@
       <p class="base-info-title">请确认银行卡信息是否一致</p>
       <van-cell-group>
         <!-- <van-field v-model="depositBank" required label="开户银行" placeholder="请选择准开户银行" @click="pickerDialog=true" /> -->
-         <van-cell title="开户银行" required is-link :value="depositBank" @click="pickerDialog=true" />
+        <van-cell title="开户银行" required is-link :value="depositBank" @click="pickerDialog=true" />
 
         <van-field placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
 
@@ -255,6 +257,12 @@ export default class Login extends Vue {
 </script>
 <style lang="less" scoped>
 .page.uploadIdPhotoThree {
+  .supportBank {
+    color: #ffdd44;
+    font-weight: 600;
+    float: right;
+    padding-right: 12px;
+  }
   .lookiconHead {
     position: relative;
     top: -105px;
@@ -352,11 +360,15 @@ export default class Login extends Vue {
   }
   .van-button--bottom-action.van-button--primary {
     background-color: #ffe44d;
- 
   }
   .imgSize.headPortrait.van-uploader {
     display: flex;
     justify-content: center;
+  }
+  .van-field__control {
+    text-align: right;
+    padding-left: 24px;
+    box-sizing: border-box;
   }
 }
 </style>

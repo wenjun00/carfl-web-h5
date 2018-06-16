@@ -1,4 +1,4 @@
-<template> 
+<template>
   <section class="page uploadIdPhotoFirst">
     <!-- <van-field v-model="heandCity" label="选择城市" placeholder="请选择城市" required @click="optionCity=true" /> -->
     <div>
@@ -48,7 +48,8 @@
           <van-cell title="民族" required is-link :value="nation" @click="pickerDialog=true" />
           <van-cell title="户籍信息" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
           <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
-          <van-field v-model="idcard.id_card_validity_period_section" placeholder="请输入有效期" required label="有效期限" />
+           <van-cell title="有效期限" required is-link :value="idcard.id_card_validity_period_section" @click="validPeriod=true" />
+          <van-datetime-picker v-show="validPeriod" type="date" @cancel="validPeriodCancel" @confirm="validPeriodAffirm" />
         </van-cell-group>
       </van-row>
     </div>
@@ -88,6 +89,7 @@ export default class Login extends Vue {
   private optionCity: boolean = false;     // 城市选择弹窗
   private nation: string = ''
   private columns: any = [];
+  private validPeriod :boolean = false   // 有效期限
   private columnsTwo: any = [
     {
       text: '郑州',
@@ -134,7 +136,19 @@ export default class Login extends Vue {
     this.idcard.id_card_address = currentCitys
 
   }
-
+ /**
+  * 点击有效期 确定事件
+  */
+  validPeriodAffirm(val){
+    this.idcard.id_card_validity_period_section = this.$filter.dateFormat(val, "yyyy-MM-dd")
+    this.validPeriod = false
+  }
+  /**
+   * 点击有效期取消事件
+   */
+   validPeriodCancel(){
+      this.validPeriod = false
+   }
 
   /**
    * 点击下一步
@@ -327,6 +341,10 @@ p {
     font-size: 36px;
     color: #ffe44d;
   }
+  .van-cell__title {
+    max-width: 90px;
+  }
+
   .van-cell {
     margin: 0 auto 0 3%;
     border-bottom: 1px solid #e8e8e8;
@@ -338,6 +356,11 @@ p {
   .imgSize.headPortrait.van-uploader {
     display: flex;
     justify-content: center;
+  }
+  .van-field__control {
+    text-align: right;
+    padding-left: 24px;
+    box-sizing: border-box;
   }
 }
 </style>

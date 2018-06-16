@@ -38,5 +38,16 @@ export class ProductOrderService {
       loading: true
     })
   }
+  /**
+   * 查询支持银行
+   */
+  getBankCodeList() {
+    return this.netService.send({
+      server: manageService.productOrderController.getBankCodeList,
+    
+     
+    })
+  }
+
 
 }

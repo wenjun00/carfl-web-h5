@@ -3,9 +3,9 @@
     <van-row>
       <p class="base-info-title">基本信息</p>
       <van-cell-group>
-        <van-field v-model="inforModel.phone" disabled label="手机号码" placeholder="请输入手机号"  required />
+        <van-field v-model="inforModel.phone" disabled label="手机号码" placeholder="请输入手机号" required />
         <van-field v-model="inforModel.contactPhone" label="联系号码" placeholder="客户第二个手机号" />
-         <van-cell title="婚姻状况" required is-link :value="inforModel.falseMarital" @click="marriageBot=true" />
+        <van-cell title="婚姻状况" required is-link :value="inforModel.falseMarital" @click="marriageBot=true" />
         <van-cell title="学历信息" required is-link :value="inforModel.falseeducation" @click="educationBot=true" />
       </van-cell-group>
       <van-number-keyboard :show="show.phone" close-button-text="完成" @blur="show.phone = false" @input="inputPhone" @delete="deletePhone"></van-number-keyboard>
@@ -43,8 +43,8 @@
     <van-row>
       <p class="base-info-title">居住信息</p>
       <van-cell-group>
-         <van-cell title="居住情况" required is-link :value="inforModel.falseSituation" @click="situationBot=true" />
-         <van-cell title="居住年限" required is-link :value="inforModel.falseAgelimit" @click="agelimitBot=true" />
+        <van-cell title="居住情况" required is-link :value="inforModel.falseSituation" @click="situationBot=true" />
+        <van-cell title="居住年限" required is-link :value="inforModel.falseAgelimit" @click="agelimitBot=true" />
         <van-cell title="居民地区" required is-link :value="inforModel.area | cityConvert " @click="$refs['cityPicker'].show()" />
         <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
 
@@ -394,5 +394,15 @@ export default class Login extends Vue {
 }
 .van-cell--required[data-v-21fd4166]::before {
   top: 0.9rem;
+}
+</style>
+ 
+ <style lang="less" >
+.page.customInformation {
+  .van-field__control {
+    text-align: right;
+    padding-left: 24px;
+    box-sizing: border-box;
+  }
 }
 </style>
