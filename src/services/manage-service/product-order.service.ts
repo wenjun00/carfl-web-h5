@@ -44,7 +44,6 @@ export class ProductOrderService {
   getBankCodeList() {
     return this.netService.send({
       server: manageService.productOrderController.getBankCodeList,
-    
      
     })
   }

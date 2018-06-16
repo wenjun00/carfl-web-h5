@@ -179,8 +179,16 @@
       <div class="break-line"></div>
 
       <div>
-        <van-button @click="skipNextStep" size="large">下一步</van-button>
+        <div v-if="!promptlyMake">
+            <van-button  size="large" class="falseButton">下一步</van-button>
+        </div>
+        <div v-else>
+          <van-button v-if="!hasOrder" @click="skipNextStep" size="large">下一步</van-button>
+          <van-button v-else size="large" class="falseButton">下一步</van-button>
+        </div>
+
       </div>
+
     </div>
   </section>
 </template>
@@ -193,7 +201,7 @@ import { carManagementService } from "~/services/manage-service/car-management.s
 import { ProductService } from "~/services/manage-service/product.service";
 import { Dependencies } from "~/core/decorator";
 import { Prop } from "vue-property-decorator";
-import { State, Mutation, Action } from "vuex-class";
+import { Getter, State, Mutation, Action } from "vuex-class";
 import carImgShow from "~/components/detail/car-img-show.vue";
 
 @Component({
@@ -211,7 +219,8 @@ export default class detailsScheme extends Vue {
   @Prop({
     required: true,
   }) carId
-
+  @State promptlyMake
+  @Getter hasOrder;
   @Mutation carDetailTwo
   @Mutation carDetails
   private showDetails: boolean = false
@@ -355,6 +364,11 @@ export default class detailsScheme extends Vue {
 
 <style lang="less" scoped>
 .page.details-scheme {
+  .falseButton {
+    background: #eeeeee !important;
+    color: grey !important;
+    border-color: #eeeeee !important;
+  }
   .active {
     color: #fcdf2b;
     border-color: #fcdf2b !important;

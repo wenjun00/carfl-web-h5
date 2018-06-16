@@ -37,6 +37,7 @@ import Vue from 'vue'
 import Component from "vue-class-component";
 import AreaData from "~/assets/area";
 import CityPicker from "~/components/common/city-picker.vue";
+import { State, Mutation, Action } from "vuex-class";
 @Component({
   components: {
     CityPicker,
@@ -44,7 +45,8 @@ import CityPicker from "~/components/common/city-picker.vue";
 
 })
 export default class Subscribe extends Vue {
-
+  @Mutation promptlyMakeControl
+  
   private dataList = AreaData
   private showForm: boolean = false
   private show = {
@@ -128,6 +130,7 @@ export default class Subscribe extends Vue {
   }
 
   private onConfirmClick() {
+  this.promptlyMakeControl(true)
     this.show.success = true
     setTimeout(() => {
       this.show.success = false
