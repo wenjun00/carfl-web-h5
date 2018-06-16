@@ -141,7 +141,6 @@
         </van-row>
       </van-collapse-item>
     </van-collapse>
-    <van-button type="primary" bottom-action>确认</van-button>
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
     </transition>
@@ -535,11 +534,11 @@ export default class Login extends Vue {
     border-bottom: 1px solid #e8e8e8;
     width: 97%;
   }
-  .van-button--bottom-action.van-button--primary {
-    background-color: #ffe44d;
-    position: fixed;
-    bottom: 0rem;
-  }
+  // .van-button--bottom-action.van-button--primary {
+  //   background-color: #ffe44d;
+  //   position: fixed;
+  //   bottom: 0rem;
+  // }
   .idPhoto {
     height: 110px;
     border: 0.1rem solid #e7e7e7;
