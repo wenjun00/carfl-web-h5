@@ -6,8 +6,10 @@ import App from '~/App.vue'
 import store from './store'
 import router from './router'
 import bootstrap from '~/core/bootstrap'
+import "babel-polyfill";
+import ES6Promise from "es6-promise";
 
-
+ES6Promise.polyfill()
 async function startUp() {
   // 启动主体业务逻辑
   await bootstrap({ store, router })

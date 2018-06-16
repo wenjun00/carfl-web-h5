@@ -1,6 +1,6 @@
 <template>
   <section class="page login">
-    <div :class="keyboardFlag.phone || keyboardFlag.code ? 'move-top' : ''" class="imgHeaght">
+    <div :class="{'move-top' : keyboardFlag.phone || keyboardFlag.code }" class="imgHeaght">
       <img height="160px" src="/static/images/common/register_login.png">
     </div>
     <van-row class="login-info">
@@ -44,7 +44,7 @@ export default class Login extends Vue {
     phoneNumber: "", // 客户手机号码
     verifyCode: "" //验证码
   };
-  private authCode:'' // 存store 验证码 
+  private authCode: '' // 存store 验证码 
 
   // 键盘展示flag
   private keyboardFlag = {
@@ -155,7 +155,7 @@ export default class Login extends Vue {
             personalId: data.personalId,
             personalName: data.personalName,
             userPhone: this.loginModel.phoneNumber,
-            authCode:this.authCode
+            authCode: this.authCode
           }
           this.updateUserLoginData(resultData)
           this.updateUserOrder(data)
@@ -183,7 +183,7 @@ export default class Login extends Vue {
 .page.login {
   text-align: center;
   .submit {
-    margin-top: 30px;
+    margin-top: 0px;
   }
   .imgHeaght {
     height: 320px;
@@ -192,7 +192,7 @@ export default class Login extends Vue {
     align-items: center;
   }
   .move-top {
-    margin-top: -80px;
+    margin-top: -100px;
   }
 }
 </style>
