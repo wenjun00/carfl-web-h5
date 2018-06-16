@@ -171,6 +171,7 @@ export default class Login extends Vue {
   @State userData
   @Mutation updateUserOrder
   @State orderInfo
+  @Mutation promptlyMakeControl
 
   private arrImg: any = []
   private idName: any = null;
@@ -310,6 +311,7 @@ export default class Login extends Vue {
     this.productOrderService.createOrder(this.personalAll).subscribe(
       data => {
         this.clearIntoA()
+        this.promptlyMakeControl(false)
         //调用登陆接口获取订单信息
         // this.$toast('数据正在审核中，请稍后请重新登陆')
         this.$toast("提交成功")
@@ -373,7 +375,6 @@ export default class Login extends Vue {
     this.appCustomerService.getIntentionCustomerDetail(this.orderInfo.personalId).subscribe(
       data => {
         this.clientType = data.personalType
-        console.log(data,'456456')
       },
       err => this.$toast(err.msg)
     )
