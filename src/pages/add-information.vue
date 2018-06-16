@@ -7,7 +7,7 @@
         <van-col span="11">
           <van-uploader class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCard',1363)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="identityCard == ''" name="add" />
-            <img width="100%" v-else :src="identityCard" alt="">
+            <img height="100%" v-else :src="identityCard" alt="">
           </van-uploader>
           <van-icon @click="closeIdentityCard('identityCard',1363)" v-if="!identityCard == ''" class="deleteiconHead" name="close" />
           <van-icon @click="lookIdentityCard('identityCard')" v-if="!identityCard == ''" class="lookiconHead" name="password-view" />
@@ -21,7 +21,7 @@
         <van-col span="11">
           <van-uploader class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCardTwo',1364)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="identityCardTwo == ''" name="add" />
-            <img width="100%" v-else :src="identityCardTwo" alt="">
+            <img height="100%" v-else :src="identityCardTwo" alt="">
           </van-uploader>
           <van-icon @click="closeIdentityCard('identityCardTwo',1364)" v-if="!identityCardTwo == ''" class="deleteiconHead" name="close" />
           <van-icon @click="lookIdentityCard('identityCardTwo')" v-if="!identityCardTwo == ''" class="lookiconHead" name="password-view" />
@@ -42,7 +42,7 @@
           <van-col span="11">
             <van-uploader class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg',1354)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg == ''" name="add" />
-              <img width="100%" v-else :src="listImg" alt="">
+              <img height="100%" v-else :src="listImg" alt="">
             </van-uploader>
             <van-icon @click="closeIdentityCard('listImg',1345)" v-if="!listImg == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg')" v-if="!listImg == ''" class="lookiconHead" name="password-view" />
@@ -55,7 +55,7 @@
           <van-col span="11">
             <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg2',1355)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg2 == ''" name="add" />
-              <img width="100%" v-else :src="listImg2" alt="">
+              <img height="100%" v-else :src="listImg2" alt="">
             </van-uploader>
             <van-icon @click="closeIdentityCard('listImg2',1355)" v-if="!listImg2 == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg2')" v-if="!listImg2 == ''" class="lookiconHead" name="password-view" />
@@ -68,7 +68,7 @@
           <van-col span="11">
             <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg3',1356)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg3 == ''" name="add" />
-              <img width="100%" v-else :src="listImg3" alt="">
+              <img height="100%" v-else :src="listImg3" alt="">
             </van-uploader>
             <van-icon @click="closeIdentityCard('listImg3',1356)" v-if="!listImg3 == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg3')" v-if="!listImg3 == ''" class="lookiconHead" name="password-view" />
@@ -81,7 +81,7 @@
           <van-col span="11">
             <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg4',1357)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg4 == ''" name="add" />
-              <img width="100%" v-else :src="listImg4" alt="">
+              <img height="100%" v-else :src="listImg4" alt="">
             </van-uploader>
             <van-icon @click="closeIdentityCard('listImg4',1357)" v-if="!listImg4 == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg4')" v-if="!listImg4 == ''" class="lookiconHead" name="password-view" />
@@ -94,7 +94,7 @@
           <van-col span="11">
             <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg5',1358)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg5 == ''" name="add" />
-              <img width="100%" v-else :src="listImg5" alt="">
+              <img height="100%" v-else :src="listImg5" alt="">
             </van-uploader>
             <van-icon @click="closeIdentityCard('listImg5',1358)" v-if="!listImg5 == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg5')" v-if="!listImg5 == ''" class="lookiconHead" name="password-view" />
@@ -107,7 +107,7 @@
           <van-col span="11">
             <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg6',1359)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg6 == ''" name="add" />
-              <img width="100%" v-else :src="listImg6" alt="">
+              <img height="100%" v-else :src="listImg6" alt="">
             </van-uploader>
             <van-icon @click="closeIdentityCard('listImg6',1359)" v-if="!listImg6 == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg6')" v-if="!listImg6 == ''" class="lookiconHead" name="password-view" />
@@ -120,7 +120,7 @@
           <van-col span="11">
             <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg7',1360)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg7 == ''" name="add" />
-              <img width="100%" v-else :src="listImg7" alt="">
+              <img height="100%" v-else :src="listImg7" alt="">
             </van-uploader>
             <van-icon @click="closeIdentityCard('listImg7',1360)" v-if="!listImg7 == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg7')" v-if="!listImg7 == ''" class="lookiconHead" name="password-view" />
@@ -133,7 +133,7 @@
           <van-col span="11">
             <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg8',1361)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg8 == ''" name="add" />
-              <img width="100%" v-else :src="listImg8" alt="">
+              <img height="100%" v-else :src="listImg8" alt="">
             </van-uploader>
             <van-icon @click="closeIdentityCard('listImg8',1361)" v-if="!listImg8 == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg8')" v-if="!listImg8 == ''" class="lookiconHead" name="password-view" />
@@ -157,9 +157,11 @@ import { NetService } from "~/utils/net.service";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { Dependencies } from "~/core/decorator";
 import { LoginService } from "~/services/manage-service/applogin.service";
+import { AppCustomerService } from "~/services/manage-service/app-customer.service";
 @Component({})
 export default class Login extends Vue {
   @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
+  @Dependencies(AppCustomerService) private appCustomerService: AppCustomerService;
   @Dependencies(LoginService) private loginService: LoginService;
   @Mutation tenantImg
   @Mutation clearIntoA
@@ -168,6 +170,7 @@ export default class Login extends Vue {
   @State IntoACity
   @State userData
   @Mutation updateUserOrder
+  @State orderInfo
 
   private arrImg: any = []
   private idName: any = null;
@@ -193,12 +196,18 @@ export default class Login extends Vue {
   private suretyBot: boolean = false
   private suretys: any = []
   private personalAll: any = {}
+  private clientType:any= ''
 
 
   /**
    * 进件点击确认提交
    */
   IntoASubmit() {
+    if(this.clientType == 1315){
+       this.$toast('当前用户为自由用户，不能进件')
+       return
+    }
+
     let arr = []
     for (let i in this.arrImg) {
       arr.push(this.arrImg[i].typeName)
@@ -257,12 +266,12 @@ export default class Login extends Vue {
         personalBank: {
           depositProvince: this.intoA.personalBank.locationProvince, // 银行开户省份
           depositCity: this.intoA.personalBank.locationCity,    // 银行开户市
-          depositBank:  this.intoA.personalBank.deposit_bank,    // 开户银行
+          depositBank: this.intoA.personalBank.deposit_bank,    // 开户银行
           cardNumber: this.intoA.personalBank.card_number,    // 银行卡号
           reservedPhoneNumber: this.intoA.personalBank.reserved_phone_number,    // 预留手机号
         },
         personalJob: {
-          jobType:this.intoA.PersonalJob.working,     //还是工作情况
+          jobType: this.intoA.PersonalJob.working,     //还是工作情况
           workingCondition: this.intoA.PersonalJob.working,    // 工作情况
           companyName: this.intoA.PersonalJob.companyName,    // 单位名称
           companyNature: this.intoA.PersonalJob.natureUnit,    // 单位性质
@@ -309,21 +318,21 @@ export default class Login extends Vue {
         })
         this.getLogoIndent()
       },
-      err =>{
+      err => {
         this.$toast(err.msg)
-      } 
-   
+      }
+
     )
   }
 
   // 进件成功调用登陆接口 查看订单等数据(进件成功，拿不到订单号先注释)
-  getLogoIndent(){
+  getLogoIndent() {
     let userAll = {
-      phoneNumber :this.userData.userPhone,
-      verifyCode : this.userData.authCode
-    } 
-  
-     this.loginService.verifyCodeLogin(userAll).subscribe(
+      phoneNumber: this.userData.userPhone,
+      verifyCode: this.userData.authCode
+    }
+
+    this.loginService.verifyCodeLogin(userAll).subscribe(
       data => {
         console.log(data)
         this.updateUserOrder(data)
@@ -338,7 +347,7 @@ export default class Login extends Vue {
   identityCardFun(val, number) {
     return ({ file }) => {
       NetService.upload(file).then(x => {
-        this[val] = x.localUrl
+        this[val] = x.url
         for (let i in this.arrImg) {
           if (this.arrImg[i].typeName == number) {
             this.arrImg.splice(i, 1)
@@ -357,8 +366,17 @@ export default class Login extends Vue {
   }
 
   // 点击追加担保人确定事件
-  suretyfirm() {
+  suretyfirm() { }
 
+  // 查询当前用户状态
+  getUserType() {
+    this.appCustomerService.getIntentionCustomerDetail(this.orderInfo.personalId).subscribe(
+      data => {
+        this.clientType = data.personalType
+        console.log(data,'456456')
+      },
+      err => this.$toast(err.msg)
+    )
   }
 
   /**
@@ -384,6 +402,7 @@ export default class Login extends Vue {
 
 
   mounted() {
+    this.getUserType()
     this.arrImg = this.intoA.PersonalAdditional
   }
 
@@ -480,7 +499,6 @@ export default class Login extends Vue {
   }
   .van-button--bottom-action.van-button--primary {
     background-color: #ffe44d;
-    
   }
   p {
     margin: 0;

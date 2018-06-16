@@ -8,6 +8,8 @@ import carManagementController from './car-management.controller'
 import productController from './product.controller'
 import paymentScheduleController from './payment-schedule-controller.controller'
 import contractDetailsController from './contract-details-controller.controller'
+import appCustomerController from './app-customer.controller'
+
 
 export const manageService = {
   appLoginController,
@@ -19,4 +21,5 @@ export const manageService = {
   productController,
   paymentScheduleController,
   contractDetailsController,
+  appCustomerController
 }
