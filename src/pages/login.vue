@@ -1,6 +1,6 @@
 <template>
   <section class="page login">
-    <div :class="{'move-top' : keyboardFlag.phone || keyboardFlag.code }" class="imgHeaght">
+    <div :class="{'move-top1' : keyboardFlag.phone, 'move-top2': keyboardFlag.code }" class="imgHeaght">
       <img height="160px" src="/static/images/common/register_login.png">
     </div>
     <van-row class="login-info">
@@ -192,7 +192,12 @@ export default class Login extends Vue {
     align-items: center;
   }
   .move-top {
-    margin-top: -100px;
+    &1 {
+      margin-top: -200px;
+    }
+    &2 {
+      margin-top: -230px;
+    }
   }
 }
 </style>
