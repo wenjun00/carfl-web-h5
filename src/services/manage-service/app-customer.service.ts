@@ -19,5 +19,16 @@ export class AppCustomerService {
             }
         })
     }
+    /**
+     * 领取用户订单
+     */
+    customerReservation(personalId){
+        return this.netService.send({
+            server: manageService.appCustomerController.customerReservation,
+            data:{
+                personalId: personalId
+            }
+        })
+    }
   
 }

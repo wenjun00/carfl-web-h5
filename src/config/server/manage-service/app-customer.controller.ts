@@ -12,5 +12,13 @@ export default {
     action: 'checkCustomerType',
     type: requestType.Get
   },
+  /**
+   * 领取客户订单
+   */
+  customerReservation: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'customerReservation',
+    type: requestType.Get
+  }
 }
-  

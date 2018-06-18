@@ -177,9 +177,7 @@
       </van-row>
       <!-- 空行 -->
       <div class="break-line"></div>
-     
-           
-        
+
       <div>
         <van-button @click="skipNextStep" size="large">下一步</van-button>
       </div>
@@ -336,20 +334,17 @@ export default class detailsScheme extends Vue {
   /**
    * 查询订单是否被领取
    */
-
- 
-
   getIndentType() {
+    if (!this.promptlyMake) {
+      this.$toast('请先进行预约')
+      return
+    }
     let Indent = {
       authorization: this.orderInfo.token,
       personalDataId: this.orderInfo.personalId,
     }
     this.appCustomerService.checkCustomerType(this.orderInfo.personalId).subscribe(
       data => {
-        if(!this.promptlyMake){
-           this.$toast('请先进行预约')
-           return
-        }
 
         if (!!this.carIntoA.productResultId) {
           this.carDetails(this.carInfo)
