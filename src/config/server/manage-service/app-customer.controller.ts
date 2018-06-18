@@ -6,12 +6,11 @@ export default {
   /**
    * 获取客户订单状态
    */
-  getIntentionCustomerDetail: {
+  checkCustomerType: {
     service: SERVICE,
     controller: CONTROLLER,
-    action: 'getIntentionCustomerDetail',
+    action: 'checkCustomerType',
     type: requestType.Get
-  }
-
+  },
 }
   

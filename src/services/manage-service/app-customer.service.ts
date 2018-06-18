@@ -11,12 +11,13 @@ export class AppCustomerService {
     /**
      * 用户状态
      */
-    getIntentionCustomerDetail(personalDataId){
+    checkCustomerType(personalDataId){
         return this.netService.send({
-            server: manageService.appCustomerController.getIntentionCustomerDetail,
+            server: manageService.appCustomerController.checkCustomerType,
             data:{
               personalDataId: personalDataId
             }
         })
     }
+  
 }

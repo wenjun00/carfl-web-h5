@@ -177,16 +177,11 @@
       </van-row>
       <!-- 空行 -->
       <div class="break-line"></div>
-
+     
+           
+        
       <div>
-        <div v-if="!promptlyMake">
-            <van-button  size="large" class="falseButton">下一步</van-button>
-        </div>
-        <div v-else>
-          <van-button v-if="!hasOrder" @click="skipNextStep" size="large">下一步</van-button>
-          <van-button v-else size="large" class="falseButton">下一步</van-button>
-        </div>
-
+        <van-button @click="skipNextStep" size="large">下一步</van-button>
       </div>
 
     </div>
@@ -203,6 +198,7 @@ import { Dependencies } from "~/core/decorator";
 import { Prop } from "vue-property-decorator";
 import { Getter, State, Mutation, Action } from "vuex-class";
 import carImgShow from "~/components/detail/car-img-show.vue";
+import { AppCustomerService } from "~/services/manage-service/app-customer.service";
 
 @Component({
   components: {
@@ -212,17 +208,17 @@ import carImgShow from "~/components/detail/car-img-show.vue";
 export default class detailsScheme extends Vue {
   @Dependencies(carManagementService) private carManagementService: carManagementService;
   @Dependencies(ProductService) private productService: ProductService;
-
+  @Dependencies(AppCustomerService) private appCustomerService: AppCustomerService;
   /**
    * 车辆ID 必需属性
    */
   @Prop({
     required: true,
   }) carId
-  @State promptlyMake
-  @Getter hasOrder;
   @Mutation carDetailTwo
   @Mutation carDetails
+  @State orderInfo
+  @State promptlyMake
   private showDetails: boolean = false
   private activeNames: any = ['1']
   private paramList: any = []   // 车辆详情配置
@@ -336,19 +332,44 @@ export default class detailsScheme extends Vue {
       err => this.$toast(err.msg)
     )
   }
+
+  /**
+   * 查询订单是否被领取
+   */
+
+ 
+
+  getIndentType() {
+    let Indent = {
+      authorization: this.orderInfo.token,
+      personalDataId: this.orderInfo.personalId,
+    }
+    this.appCustomerService.checkCustomerType(this.orderInfo.personalId).subscribe(
+      data => {
+        if(!this.promptlyMake){
+           this.$toast('请先进行预约')
+           return
+        }
+
+        if (!!this.carIntoA.productResultId) {
+          this.carDetails(this.carInfo)
+          this.carDetailTwo(this.carIntoA)
+          this.$router.push('/upload-id-photo-first')
+        } else {
+          this.$toast('请先选择车辆首付、期数')
+        }
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+
+
+
   /***
     * 点击下一步
     */
   skipNextStep() {
-    if (!!this.carIntoA.productResultId) {
-
-      this.carDetails(this.carInfo)
-      this.carDetailTwo(this.carIntoA)
-      this.$router.push('/upload-id-photo-first')
-    } else {
-      this.$toast('请先选择车辆首付、期数')
-    }
-
+    this.getIndentType()
   }
 
   mounted() {

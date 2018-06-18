@@ -171,7 +171,7 @@ export default class Login extends Vue {
   @State userData
   @Mutation updateUserOrder
   @State orderInfo
-  @Mutation promptlyMakeControl
+ 
 
   private arrImg: any = []
   private idName: any = null;
@@ -204,11 +204,7 @@ export default class Login extends Vue {
    * 进件点击确认提交
    */
   IntoASubmit() {
-    if(this.clientType == 1315){
-       this.$toast('当前用户为自由用户，不能进件')
-       return
-    }
-
+ 
     let arr = []
     for (let i in this.arrImg) {
       arr.push(this.arrImg[i].typeName)
@@ -311,7 +307,6 @@ export default class Login extends Vue {
     this.productOrderService.createOrder(this.personalAll).subscribe(
       data => {
         this.clearIntoA()
-        this.promptlyMakeControl(false)
         //调用登陆接口获取订单信息
         // this.$toast('数据正在审核中，请稍后请重新登陆')
         this.$toast("提交成功")
@@ -370,15 +365,6 @@ export default class Login extends Vue {
   // 点击追加担保人确定事件
   suretyfirm() { }
 
-  // 查询当前用户状态
-  getUserType() {
-    this.appCustomerService.getIntentionCustomerDetail(this.orderInfo.personalId).subscribe(
-      data => {
-        this.clientType = data.personalType
-      },
-      err => this.$toast(err.msg)
-    )
-  }
 
   /**
    * 图片删除
@@ -403,7 +389,6 @@ export default class Login extends Vue {
 
 
   mounted() {
-    this.getUserType()
     this.arrImg = this.intoA.PersonalAdditional
   }
 

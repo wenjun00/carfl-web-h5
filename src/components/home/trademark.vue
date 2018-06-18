@@ -8,6 +8,8 @@
         <div class="logoDetails">{{item.brandName}}</div>
       </div>
     </div>
+  
+
 
   </section>
 </template>
@@ -20,6 +22,7 @@ import { carShowManagementService } from "~/services/manage-service/car-show-man
 @Component({})
 export default class Trademark extends Vue {
   @Dependencies(carShowManagementService) private carShowManagementService: carShowManagementService;
+
   private trademarks = []
   get trademarkList() {
     let list = this.trademarks.slice(0, 9)
@@ -68,6 +71,7 @@ export default class Trademark extends Vue {
   .logo {
     width: 20%;
     float: left;
+    margin-top: 15px;
     .logoDetails {
       font-size: 12px;
     }
