@@ -69,6 +69,7 @@ export default class Trademark extends Vue {
 <style lang="less" scoped>
 .component.trademark {
   min-height: 130px;
+  margin-bottom: 10px;
   .logo {
     width: 20%;
     float: left;
