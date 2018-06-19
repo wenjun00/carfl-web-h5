@@ -18,34 +18,6 @@ export default class OrderContract extends Vue {
   @Dependencies(ContractDetailsControllerService) private contractDetailsControllerService: ContractDetailsControllerService;
 
   private dataCompact: any = []
-  // private dataSet: any = []
-  // @Prop() orderId: number;
-  // @Watch('orderId', { immediate: true })
-  // onOrderIdChange() {
-  //   // TODO  重新获取合同列表
-  //   this.dataSet = []
-  //   let index = 0
-  //   while (index < 4) {
-  //     this.dataSet.push(this.createTmpContrace())
-  //     index++
-  //   }
-  // }
-
-  // private createTmpContrace() {
-  //   return {
-  //     id: 1,
-  //     title: "租赁合同",
-  //     state: false,
-  //     content: "balabala租赁合同balabala租赁合同balabala租赁合同balabala租赁合同" +
-  //       "balabala租赁合同balabala租赁合同balabala租赁合同balabala租赁合同" +
-  //       "balabala租赁合同balabala租赁合同balabala租赁合同balabala租赁合同" +
-  //       "balabala租赁合同balabala租赁合同balabala租赁合同balabala租赁合同" +
-  //       "balabala租赁合同balabala租赁合同balabala租赁合同balabala租赁合同" +
-  //       "balabala租赁合同balabala租赁合同balabala租赁合同balabala租赁合同" +
-  //       "balabala租赁合同balabala租赁合同balabala租赁合同balabala租赁合同"
-  //   }
-  // }
-
   private onitemClick(item, code) {
 
     if (code == 1000) {
@@ -62,8 +34,6 @@ export default class OrderContract extends Vue {
     this.contractDetailsControllerService.getContractDetailsListByOrderId(156).subscribe(
       data => {
         this.dataCompact = data
-
-        // console.log(this.dataCompact, '789789789')
       },
       err => this.$toast(err.msg)
     )
