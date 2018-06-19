@@ -63,14 +63,14 @@
       <van-cell-group>
         <van-cell title="工作情况" required is-link :value="inforModel.falseWorking" @click="workingBot=true" />
         <van-field v-model="inforModel.companyName" label="单位名称" placeholder="请输入完整的公司名称" />
-        <van-cell title="单位性质" required is-link :value="inforModel.falsenatureUnit" @click="natureUnitBot=true" />
+        <van-cell title="单位性质" is-link :value="inforModel.falsenatureUnit" @click="natureUnitBot=true" />
         <van-field v-model="inforModel.companyAdress" label="单位地址" />
         <van-field v-model="inforModel.companyPhone" label="单位电话" placeholder="请输入公司电话" />
-        <van-cell title="工作年限" required is-link :value="inforModel.falseYearsWorking" @click="yearsWorkingBot=true" />
+        <van-cell title="工作年限" is-link :value="inforModel.falseYearsWorking" @click="yearsWorkingBot=true" />
         <van-field v-model="inforModel.afterSalary" label="税后月薪" placeholder="请输入您税后的月薪" />
       </van-cell-group>
     </van-row>
-    <van-button type="primary" bottom-action @click="informationAffirm">下一步</van-button>
+    <van-button type="primary" class="nextStepSty" bottom-action @click="informationAffirm">下一步</van-button>
   </section>
 </template>
 
@@ -363,6 +363,9 @@ export default class Login extends Vue {
 }
 </script>
 <style lang="less" scoped>
+.nextStepSty{
+  margin-top: 30px;
+}
 .address {
   height: 50px;
 }

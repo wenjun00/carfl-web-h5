@@ -145,6 +145,7 @@ export default class Subscribe extends Vue {
     this.show.phone = true
   }
 
+//点击帮我买车
   private onSubmitClick() {
     this.$validator.validate(this.buyModel, this.rules).then(error => {
       if (!error) {

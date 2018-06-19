@@ -36,7 +36,7 @@
     <van-collapse v-model="activeNames">
       <van-collapse-item title="追加资料（选填）">
         <van-row class="heandClass ">
-          <van-col>户口本（户主页及个人页</van-col>
+          <van-col>户口本（户主页及个人页）</van-col>
         </van-row>
         <van-row class="imgList">
           <van-col span="11">
@@ -62,7 +62,7 @@
           </van-col>
         </van-row>
         <van-row class="heandClass">
-          <van-col>收入证明（劳动合同/收入证明</van-col>
+          <van-col>收入证明（劳动合同/收入证明）</van-col>
         </van-row>
         <van-row class="imgList imglistTwo">
           <van-col span="11">
@@ -171,7 +171,7 @@ export default class Login extends Vue {
   @State userData
   @Mutation updateUserOrder
   @State orderInfo
- 
+
 
   private arrImg: any = []
   private idName: any = null;
@@ -197,14 +197,14 @@ export default class Login extends Vue {
   private suretyBot: boolean = false
   private suretys: any = []
   private personalAll: any = {}
-  private clientType:any= ''
+  private clientType: any = ''
 
 
   /**
    * 进件点击确认提交
    */
   IntoASubmit() {
- 
+
     let arr = []
     for (let i in this.arrImg) {
       arr.push(this.arrImg[i].typeName)
@@ -272,7 +272,7 @@ export default class Login extends Vue {
           workingCondition: this.intoA.PersonalJob.working,    // 工作情况
           companyName: this.intoA.PersonalJob.companyName,    // 单位名称
           companyNature: this.intoA.PersonalJob.natureUnit,    // 单位性质
-          companyAddressDetail: this.intoA.PersonalJob.companyAdress,    // 单位地址
+          companyhostAddr: this.intoA.PersonalJob.companyAdress,    // 单位地址
           companyPhone: this.intoA.PersonalJob.companyPhone,    // 单位电话
           workingYears: this.intoA.PersonalJob.yearsWorking,    // 工作年限
           basicSalary: Number(this.intoA.PersonalJob.afterSalary),    // 税后月薪
@@ -397,6 +397,13 @@ export default class Login extends Vue {
 </script>
 <style lang="less">
 .page.addInformation {
+  .headPortrait {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
   .imglistTwo {
     margin-left: 15px;
   }

@@ -49,12 +49,12 @@
           <van-cell title="户籍信息" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
           <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
            <van-cell title="有效期限" required is-link :value="idcard.id_card_validity_period_section" @click="validPeriod=true" />
-          <van-datetime-picker v-show="validPeriod" type="date" @cancel="validPeriodCancel" @confirm="validPeriodAffirm" />
+          <van-datetime-picker  v-show="validPeriod" type="date" v-model="currentDate" :min-date="minDate" @cancel="validPeriodCancel" @confirm="validPeriodAffirm" />
         </van-cell-group>
       </van-row>
     </div>
     <van-row>
-      <van-button type="primary" @click="addAffirm" bottom-action>下一步</van-button>
+      <van-button type="primary" class="nextStepSty" @click="addAffirm" bottom-action>下一步</van-button>
     </van-row>
     <!-- 选择民族 -->
     <transition name="fade">
@@ -89,7 +89,9 @@ export default class Login extends Vue {
   private optionCity: boolean = false;     // 城市选择弹窗
   private nation: string = ''
   private columns: any = [];
+  private minDate:any = new Date(1949, 0, 1);
   private validPeriod :boolean = false   // 有效期限
+  private currentDate:any = new Date()
   private columnsTwo: any = [
     {
       text: '郑州',
@@ -256,6 +258,9 @@ export default class Login extends Vue {
 </script>
 <style lang="less" scoped>
 .page.uploadIdPhotoFirst {
+  .nextStepSty{
+    margin-top: 30px
+  }
   .lookiconHead {
     position: relative;
     top: -105px;
@@ -275,6 +280,7 @@ export default class Login extends Vue {
     align-items: center;
     padding: 5px;
     box-sizing: border-box;
+    overflow: hidden;
   }
   .vanIcon {
     font-size: 40px;
@@ -298,6 +304,7 @@ export default class Login extends Vue {
       border: 1px solid #6666;
       width: 90%;
       margin-top: 10px;
+      background: #e7e7e7;
     }
   }
   .fade-enter-active,

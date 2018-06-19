@@ -37,7 +37,7 @@
       <p class="base-info-title">请确认驾驶证信息是否一致</p>
       <van-cell-group>
         <van-cell title="有效期限" required is-link :value="peopleCar.useful_time" @click="validPeriod=true" />
-        <van-datetime-picker v-show="validPeriod" type="date" @cancel="validPeriodCancel" @confirm="validPeriodAffirm" />
+        <van-datetime-picker v-show="validPeriod"   v-model="currentDate" type="date" :min-date="minDate" @cancel="validPeriodCancel" @confirm="validPeriodAffirm" />
         <van-field v-model="peopleCar.file_number" placeholder="请输入档案编号" label="档案编号" required/>
         <!-- <van-field v-model="drivingType" required label="准驾车型" placeholder="请选择准驾车型" @click="pickerDialog=true" /> -->
         <van-cell title="准驾车型" required is-link :value="drivingType" @click="pickerDialog=true" />
@@ -52,7 +52,7 @@
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
     </transition>
-    <van-button type="primary" @click="nextStep" bottom-action>下一步</van-button>
+    <van-button type="primary" class="nextStepSty" @click="nextStep" bottom-action>下一步</van-button>
   </section>
 </template>
 
@@ -74,10 +74,12 @@ export default class Login extends Vue {
   private pickerDialog: boolean = false;
   private columns: any = [];
   private validPeriod: boolean = false   // 有效期限
+  private minDate: any = new Date(1949, 0, 1);
   private type: any;
+  private currentDate:any = new Date()
   private drivingType: string = ''
   private peopleCar: any = {
-    useful_time: '',  // 有效期限
+    useful_time:'' ,  // 有效期限
     file_number: '',  // 档案编号
     driving_license: '', // 准驾车型
     driverPhoto: '',   // 驾驶证正面
@@ -221,6 +223,9 @@ export default class Login extends Vue {
 </script>
 <style lang="less" scoped>
 .page.uploadIdPhotoTwo {
+  .nextStepSty{
+    margin-top: 30px;
+  }
   .lookiconHead {
     position: relative;
     top: -105px;
@@ -240,6 +245,7 @@ export default class Login extends Vue {
     align-items: center;
     padding: 5px;
     box-sizing: border-box;
+    overflow: hidden;
   }
   .vanIcon {
     font-size: 40px;
@@ -256,6 +262,7 @@ export default class Login extends Vue {
       border: 1px solid #6666;
       width: 90%;
       margin-top: 10px;
+      background: #e7e7e7;
     }
   }
   .fade-enter-active,

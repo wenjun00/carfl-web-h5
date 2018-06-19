@@ -26,7 +26,7 @@
       <van-picker :columns="relationsTwo" v-show="relationBotTwo" show-toolbar ref="vanpicker" @confirm="relationfirmTwo" @cancel="relationBotTwo=false" />
     </transition>
 
-    <van-button type="primary" @click="relationAffirm" bottom-action>下一步</van-button>
+    <van-button type="primary" class="nextStepSty" @click="relationAffirm" bottom-action>下一步</van-button>
   </section>
 </template>
 
@@ -119,6 +119,9 @@ export default class Login extends Vue {
 }
 </script>
 <style lang="less" scoped>
+.nextStepSty{
+  margin-top: 30px;
+}
 .van-picker {
   position: fixed;
   width: 100%;

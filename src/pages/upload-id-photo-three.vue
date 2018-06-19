@@ -9,14 +9,16 @@
       </van-steps>
     </van-row>
     <p class="base-info-title">请上传承租人银行卡照片
-      <router-link to="/support-bank"><span class="supportBank">支持银行</span></router-link>
+      <router-link to="/support-bank">
+        <span class="supportBank">支持银行</span>
+      </router-link>
     </p>
     <van-row>
       <van-row class="imgList">
         <van-col span="11">
           <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photo == ''" name="add" />
-            <img height="100%"  v-else :src="photo" alt="">
+            <img height="100%" v-else :src="photo" alt="">
           </van-uploader>
           <van-icon @click="closeIdentityCard('photo',1373)" v-if="!photo == ''" class="deleteiconHead" name="close" />
           <van-icon @click="lookIdentityCard('photo')" v-if="!photo == ''" class="lookiconHead" name="password-view" />
@@ -43,12 +45,13 @@
 
         <van-field placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
 
-        <van-cell title="银行开户所在地" required is-link :value="personalBank.location | cityConvert " @click="$refs['cityPicker'].show()" />
+        <van-cell title="开户地址" required is-link :value="personalBank.location | cityConvert " @click="$refs['cityPicker'].show()" />
         <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
 
         <van-field v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
       </van-cell-group>
     </van-row>
+    <!-- 开户银行 -->
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
     </transition>
@@ -57,7 +60,7 @@
       <van-picker :columns="columnsTwo" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" />
     </transition>
 
-    <van-button type="primary" bottom-action @click="addAffirm">下一步</van-button>
+    <van-button type="primary" class="nextStepSty" bottom-action @click="addAffirm">下一步</van-button>
   </section>
 </template>
 
@@ -70,6 +73,8 @@ import { NetService } from "~/utils/net.service";
 import CityPicker from "~/components/common/city-picker.vue";
 import { elementAt } from "rxjs/operators";
 import { String } from "core-js";
+import { ProductOrderService } from "~/services/manage-service/product-order.service";
+import { Dependencies } from "~/core/decorator";
 @Component({
   components: {
     CityPicker,
@@ -77,7 +82,7 @@ import { String } from "core-js";
 
 })
 export default class Login extends Vue {
-
+  @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
   private idName: any = null;
   private arrAll: any = []
   private idNumber: any = null;
@@ -92,7 +97,7 @@ export default class Login extends Vue {
     reserved_phone_number: '',  //预留手机号
     deposit_bank: '',   // 开户银行
     card_number: '',    // 银行卡号
-    location: '',        // 开户地区汉子
+    location: '',        // 开户地区汉字
     locationProvince: '',  // 开户省 id
     locationCity: '',      // 开户市 id
   }
@@ -161,18 +166,30 @@ export default class Login extends Vue {
    */
 
   private onConfirm(val) {
-    this.personalBank.deposit_bank = val.value
-    this.depositBank = this.$dict.getDictName(this.personalBank.deposit_bank)
-    console.log(this.personalBank.deposit_bank)
 
+    this.personalBank.deposit_bank = val.bankCode
+    this.depositBank = val.bankName
     this.pickerDialog = false
   }
+  /***
+   * 获取开户银行
+   */
+  getOredrMessage() {
+    this.productOrderService.getBankCodeList().subscribe(
+      data => {
+        this.columns = data.map(v => {
+          return Object.assign({ text: v.bankName }, v)
+        })
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+
+
 
   mounted() {
+    this.getOredrMessage()
     this.arrAll = this.intoA.PersonalAdditional
-    this.columns = this.$dict.getDictData('0456').map(v => {
-      return Object.assign({ text: v.label }, v)
-    })
   }
 
   @Mutation bankCard
@@ -186,7 +203,7 @@ export default class Login extends Vue {
     deposit_bank: { required: true, message: '请选择开户银行' },
     card_number: [{ required: true, message: "请输入正确的银行卡号" }, { validator: this.$validator.bankNumber }],
     reserved_phone_number: [{ required: true, message: "请输入正确的手机号" }, { validator: this.$validator.phoneNumber }],
-
+    location: { required: true, message: '请选择开户地址' },
   };
 
 
@@ -257,6 +274,9 @@ export default class Login extends Vue {
 </script>
 <style lang="less" scoped>
 .page.uploadIdPhotoThree {
+  .nextStepSty{
+    margin-top: 30px;
+  }
   .supportBank {
     color: #ffdd44;
     font-weight: 600;
@@ -282,6 +302,7 @@ export default class Login extends Vue {
     align-items: center;
     padding: 5px;
     box-sizing: border-box;
+    overflow: hidden;
   }
   .vanIcon {
     font-size: 40px;
@@ -298,6 +319,7 @@ export default class Login extends Vue {
       border: 1px solid #6666;
       width: 90%;
       margin-top: 10px;
+      background: #e7e7e7;
     }
   }
 

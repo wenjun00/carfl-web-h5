@@ -9,7 +9,7 @@
         <van-cell :title="`车型：${productOrderInfo.carType}`"></van-cell>
         <van-cell title="下单城市" is-link :value="productOrderInfo.placeCity | cityConvert" />
         <van-cell :title="`首付：${productOrderInfo.downPayment} 元`"></van-cell>
-        <van-cell :title="`期数：${productOrderInfo.periods} 期`"></van-cell>
+        <van-cell :title="`期数：${productOrderInfo.periods}`"></van-cell>
         <van-cell :title="`月供信息：${productOrderInfo.informationOn}元 `"></van-cell>
       </van-cell-group>
       <van-collapse v-model="activatedCollapse">
@@ -78,7 +78,7 @@ export default class MyOrder extends Vue {
         this.productOrderInfo.carType = data.orderCar.modelName
         this.productOrderInfo.placeCity = [data.city]
         this.productOrderInfo.downPayment = data.schedulePlanResultModel.schedulePlanResult.firstPayment
-        this.productOrderInfo.periods = data.schedulePlanResultModel.schedulePlanResult.planType
+        this.productOrderInfo.periods = this.$dict.getDictName(data.schedulePlanResultModel.schedulePlanResult.planType) 
         this.productOrderInfo.informationOn = data.schedulePlanResultModel.schedulePlanResult.firstYearMonthrent
       },
       err => this.$toast(err.msg)
