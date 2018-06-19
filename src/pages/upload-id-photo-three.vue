@@ -43,12 +43,12 @@
         <!-- <van-field v-model="depositBank" required label="开户银行" placeholder="请选择准开户银行" @click="pickerDialog=true" /> -->
         <van-cell title="开户银行" required is-link :value="depositBank" @click="pickerDialog=true" />
 
-        <van-field placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
+        <van-field name="center" placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
 
         <van-cell title="开户地址" required is-link :value="personalBank.location | cityConvert " @click="$refs['cityPicker'].show()" />
         <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
 
-        <van-field v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
+        <van-field name="center" v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
       </van-cell-group>
     </van-row>
     <!-- 开户银行 -->
@@ -188,6 +188,15 @@ export default class Login extends Vue {
 
 
   mounted() {
+    let els: any = document.getElementsByName("center")
+    els.forEach(v => {
+      v.onclick = () => {
+        setTimeout(() => {
+          (v as HTMLElement).scrollIntoView(true)
+        }, 300);
+      }
+    })
+
     this.getOredrMessage()
     this.arrAll = this.intoA.PersonalAdditional
   }
@@ -274,7 +283,7 @@ export default class Login extends Vue {
 </script>
 <style lang="less" scoped>
 .page.uploadIdPhotoThree {
-  .nextStepSty{
+  .nextStepSty {
     margin-top: 30px;
   }
   .supportBank {

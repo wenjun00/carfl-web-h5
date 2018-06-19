@@ -42,14 +42,14 @@
       <van-row>
         <p class="base-info-title">请确认身份证信息是否一致</p>
         <van-cell-group>
-          <van-field v-model="idcard.name" placeholder="请输入证件姓名" required label="证件姓名" />
-          <van-field v-model="idcard.id_card" placeholder="请输入证件号码" required label="证件号码" />
+          <van-field v-model="idcard.name" name="center" placeholder="请输入证件姓名" required label="证件姓名" />
+          <van-field v-model="idcard.id_card" name="center" placeholder="请输入证件号码" required label="证件号码" />
           <!-- <van-field v-model="nation" label="民族" placeholder="请选择民族" required @click="pickerDialog=true" /> -->
-          <van-cell title="民族" required is-link :value="nation" @click="pickerDialog=true" />
-          <van-cell title="户籍信息" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
+          <van-cell title="民族" name="center" required is-link :value="nation" @click="pickerDialog=true" />
+          <van-cell title="户籍信息" name="center" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
           <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
-           <van-cell title="有效期限" required is-link :value="idcard.id_card_validity_period_section" @click="validPeriod=true" />
-          <van-datetime-picker  v-show="validPeriod" type="date" v-model="currentDate" :min-date="minDate" @cancel="validPeriodCancel" @confirm="validPeriodAffirm" />
+          <van-cell title="有效期限" name="center" required is-link :value="idcard.id_card_validity_period_section" @click="validPeriod=true" />
+          <van-datetime-picker v-show="validPeriod" type="date" v-model="currentDate" :min-date="minDate" @cancel="validPeriodCancel" @confirm="validPeriodAffirm" />
         </van-cell-group>
       </van-row>
     </div>
@@ -89,9 +89,9 @@ export default class Login extends Vue {
   private optionCity: boolean = false;     // 城市选择弹窗
   private nation: string = ''
   private columns: any = [];
-  private minDate:any = new Date(1949, 0, 1);
-  private validPeriod :boolean = false   // 有效期限
-  private currentDate:any = new Date()
+  private minDate: any = new Date(1949, 0, 1);
+  private validPeriod: boolean = false   // 有效期限
+  private currentDate: any = new Date()
   private columnsTwo: any = [
     {
       text: '郑州',
@@ -138,19 +138,19 @@ export default class Login extends Vue {
     this.idcard.id_card_address = currentCitys
 
   }
- /**
-  * 点击有效期 确定事件
-  */
-  validPeriodAffirm(val){
+  /**
+   * 点击有效期 确定事件
+   */
+  validPeriodAffirm(val) {
     this.idcard.id_card_validity_period_section = this.$filter.dateFormat(val, "yyyy-MM-dd")
     this.validPeriod = false
   }
   /**
    * 点击有效期取消事件
    */
-   validPeriodCancel(){
-      this.validPeriod = false
-   }
+  validPeriodCancel() {
+    this.validPeriod = false
+  }
 
   /**
    * 点击下一步
@@ -252,14 +252,21 @@ export default class Login extends Vue {
     this.columns = this.$dict.getDictData('0486').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-
+    let els: any = document.getElementsByName("center")
+    els.forEach(v => {
+      v.onclick = () => {
+        setTimeout(() => {
+          (v as HTMLElement).scrollIntoView(true)
+        }, 300);
+      }
+    })
   }
 }
 </script>
 <style lang="less" scoped>
 .page.uploadIdPhotoFirst {
-  .nextStepSty{
-    margin-top: 30px
+  .nextStepSty {
+    margin-top: 30px;
   }
   .lookiconHead {
     position: relative;

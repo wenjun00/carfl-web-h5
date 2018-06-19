@@ -4,7 +4,7 @@
       <p class="base-info-title">基本信息</p>
       <van-cell-group>
         <van-field v-model="inforModel.phone" disabled label="手机号码" placeholder="请输入手机号" required />
-        <van-field v-model="inforModel.contactPhone" label="联系号码" placeholder="客户第二个手机号" />
+        <van-field name="center" v-model="inforModel.contactPhone" label="联系号码" placeholder="客户第二个手机号" />
         <van-cell title="婚姻状况" required is-link :value="inforModel.falseMarital" @click="marriageBot=true" />
         <van-cell title="学历信息" required is-link :value="inforModel.falseeducation" @click="educationBot=true" />
       </van-cell-group>
@@ -48,7 +48,7 @@
         <van-cell title="居民地区" required is-link :value="inforModel.area | cityConvert " @click="$refs['cityPicker'].show()" />
         <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
 
-        <van-field type="textarea" class="address" v-model="inforModel.address" label="居民地址" required placeholder="请输入详细的居民地址精确到门牌号" />
+        <van-field name="center" type="textarea" class="address" v-model="inforModel.address" label="居民地址" required placeholder="请输入详细的居民地址精确到门牌号" />
       </van-cell-group>
       <van-popup v-model="show.living" position="bottom">
         <van-picker :columns="columns" show-toolbar @change="onChange" @confirm="show.living=false" @cancel="show.living=false" />
@@ -62,12 +62,12 @@
       <p class="base-info-title">工作信息</p>
       <van-cell-group>
         <van-cell title="工作情况" required is-link :value="inforModel.falseWorking" @click="workingBot=true" />
-        <van-field v-model="inforModel.companyName" label="单位名称" placeholder="请输入完整的公司名称" />
+        <van-field name="center" v-model="inforModel.companyName" label="单位名称" placeholder="请输入完整的公司名称" />
         <van-cell title="单位性质" is-link :value="inforModel.falsenatureUnit" @click="natureUnitBot=true" />
-        <van-field v-model="inforModel.companyAdress" label="单位地址" />
-        <van-field v-model="inforModel.companyPhone" label="单位电话" placeholder="请输入公司电话" />
+        <van-field name="center" v-model="inforModel.companyAdress" label="单位地址" />
+        <van-field name="center" v-model="inforModel.companyPhone" label="单位电话" placeholder="请输入公司电话" />
         <van-cell title="工作年限" is-link :value="inforModel.falseYearsWorking" @click="yearsWorkingBot=true" />
-        <van-field v-model="inforModel.afterSalary" label="税后月薪" placeholder="请输入您税后的月薪" />
+        <van-field name="center" v-model="inforModel.afterSalary" label="税后月薪" placeholder="请输入您税后的月薪" />
       </van-cell-group>
     </van-row>
     <van-button type="primary" class="nextStepSty" bottom-action @click="informationAffirm">下一步</van-button>
@@ -269,6 +269,14 @@ export default class Login extends Vue {
 
 
   mounted() {
+    let els: any = document.getElementsByName("center")
+    els.forEach(v => {
+      v.onclick = () => {
+        setTimeout(() => {
+          (v as HTMLElement).scrollIntoView(true)
+        }, 300);
+      }
+    })
     // 获取婚姻状况
     this.marriages = this.$dict.getDictData('0003').map(v => {
       return Object.assign({ text: v.label }, v)
@@ -363,7 +371,7 @@ export default class Login extends Vue {
 }
 </script>
 <style lang="less" scoped>
-.nextStepSty{
+.nextStepSty {
   margin-top: 30px;
 }
 .address {

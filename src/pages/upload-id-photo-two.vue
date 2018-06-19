@@ -36,9 +36,9 @@
     <van-row>
       <p class="base-info-title">请确认驾驶证信息是否一致</p>
       <van-cell-group>
-        <van-cell title="有效期限" required is-link :value="peopleCar.useful_time" @click="validPeriod=true" />
-        <van-datetime-picker v-show="validPeriod"   v-model="currentDate" type="date" :min-date="minDate" @cancel="validPeriodCancel" @confirm="validPeriodAffirm" />
-        <van-field v-model="peopleCar.file_number" placeholder="请输入档案编号" label="档案编号" required/>
+        <van-cell title="有效期限" name="center" required is-link :value="peopleCar.useful_time" @click="validPeriod=true" />
+        <van-datetime-picker v-show="validPeriod" v-model="currentDate" type="date" :min-date="minDate" @cancel="validPeriodCancel" @confirm="validPeriodAffirm" />
+        <van-field name="center" v-model="peopleCar.file_number" placeholder="请输入档案编号" label="档案编号" required/>
         <!-- <van-field v-model="drivingType" required label="准驾车型" placeholder="请选择准驾车型" @click="pickerDialog=true" /> -->
         <van-cell title="准驾车型" required is-link :value="drivingType" @click="pickerDialog=true" />
 
@@ -76,10 +76,10 @@ export default class Login extends Vue {
   private validPeriod: boolean = false   // 有效期限
   private minDate: any = new Date(1949, 0, 1);
   private type: any;
-  private currentDate:any = new Date()
+  private currentDate: any = new Date()
   private drivingType: string = ''
   private peopleCar: any = {
-    useful_time:'' ,  // 有效期限
+    useful_time: '',  // 有效期限
     file_number: '',  // 档案编号
     driving_license: '', // 准驾车型
     driverPhoto: '',   // 驾驶证正面
@@ -212,6 +212,14 @@ export default class Login extends Vue {
   }
 
   mounted() {
+    let els: any = document.getElementsByName("center")
+    els.forEach(v => {
+      v.onclick = () => {
+        setTimeout(() => {
+          (v as HTMLElement).scrollIntoView(true)
+        }, 300);
+      }
+    })
     this.arrAll = this.intoA.PersonalAdditional
     this.columns = this.$dict.getDictData('0478').map(v => {
       return Object.assign({ text: v.label }, v)
@@ -223,7 +231,7 @@ export default class Login extends Vue {
 </script>
 <style lang="less" scoped>
 .page.uploadIdPhotoTwo {
-  .nextStepSty{
+  .nextStepSty {
     margin-top: 30px;
   }
   .lookiconHead {

@@ -1,4 +1,4 @@
-import Home from "~/pages/home.vue";
+import Home from "~/pages/home.vue"; 
 import Subscribe from "~/pages/subscribe.vue";
 import FAQ from "~/pages/faq.vue";
 import BuyCarList from "~/pages/buy-car-list.vue";

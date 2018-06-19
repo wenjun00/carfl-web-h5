@@ -288,6 +288,7 @@ export default class Login extends Vue {
         modelName: this.intoA.orderCar.modelName,
         seriesName: this.intoA.orderCar.seriesName,
         vehicleColor: this.intoA.orderCar.vehicleColor,
+        vehicleId:this.intoA.orderCar.vehicleId,
       },
       personalContacts: [
         {

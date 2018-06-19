@@ -29,10 +29,10 @@
         </van-col>
       </div>
     </van-row>
-
-    <div class="no-cars" v-else>
-      <p>新车型即将上架，敬请期待</p>
-    </div>
+      <div v-if="carDataSet.length == 0"  class="no-cars">
+        <p>新车型即将上架，敬请期待</p>
+      </div>
+    
 
     <div class="to-top" v-show="show.toTop" @click="scrollTop">
       <van-icon name="upgrade" color="#f2f2f2" />
@@ -118,6 +118,7 @@ export default class BuyCarList extends Vue {
       .subscribe(
         data => {
           this.carDataSet = data
+
         },
         err => {
           this.$toast(err.msg)
@@ -172,7 +173,7 @@ export default class BuyCarList extends Vue {
     z-index: 2001;
   }
   .no-cars {
-    font-size: 2rem;
+    font-size: 1rem;
     padding-top: 10%;
     text-align: center;
   }

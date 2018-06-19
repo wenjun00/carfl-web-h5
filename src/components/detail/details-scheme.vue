@@ -1,5 +1,5 @@
 <!-- 车辆详情分期方案-->
-<template>
+<template> 
   <section class="page details-scheme">
     <!-- 分期方案 -->
     <van-cell-group>
@@ -261,6 +261,7 @@ export default class detailsScheme extends Vue {
           modelName: data.modelName,
           seriesName: data.seriesName,
           vehicleColor: data.carColour,
+          vehicleId:this.carId 
         }
       },
       err => this.$toast(err.msg)
