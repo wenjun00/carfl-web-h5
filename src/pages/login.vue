@@ -37,6 +37,7 @@ export default class Login extends Vue {
   @Mutation updateUserPhone;
   @Action updateUserLoginData;
   @Mutation updateUserOrder;
+  @Mutation promptlyMakeControl
 
   // 客户手机号码
   private phoneNumber: string = "";
@@ -157,6 +158,7 @@ export default class Login extends Vue {
             userPhone: this.loginModel.phoneNumber,
             authCode: this.authCode
           }
+          this.promptlyMakeControl(false)
           this.updateUserLoginData(resultData)
           this.updateUserOrder(data)
           this.$router.push("/Index");

@@ -16,7 +16,7 @@
         <van-col span="11">
           <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photo == ''" name="add" />
-            <img width="100%" v-else :src="photo" alt="">
+            <img height="100%"  v-else :src="photo" alt="">
           </van-uploader>
           <van-icon @click="closeIdentityCard('photo',1373)" v-if="!photo == ''" class="deleteiconHead" name="close" />
           <van-icon @click="lookIdentityCard('photo')" v-if="!photo == ''" class="lookiconHead" name="password-view" />
@@ -24,7 +24,7 @@
         <van-col span="11">
           <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onReadTwo" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
-            <img width="100%" v-else :src="photoTwo" alt="">
+            <img height="100%" v-else :src="photoTwo" alt="">
           </van-uploader>
           <van-icon @click="closeIdentityCard('photoTwo',1374)" v-if="!photoTwo == ''" class="deleteiconHead" name="close" />
           <van-icon @click="lookIdentityCard('photoTwo')" v-if="!photoTwo == ''" class="lookiconHead" name="password-view" />
@@ -196,7 +196,7 @@ export default class Login extends Vue {
 */
   onRead({ file }) {
     NetService.upload(file).then(x => {
-      this.photo = x.localUrl
+      this.photo = x.url
       for (let i in this.arrAll) {
         if (this.arrAll[i].typeName == 1373) {
           this.arrAll.splice(i, 1)
@@ -214,7 +214,7 @@ export default class Login extends Vue {
   }
   onReadTwo({ file }) {
     NetService.upload(file).then(x => {
-      this.photoTwo = x.localUrl
+      this.photoTwo = x.url
       for (let i in this.arrAll) {
         if (this.arrAll[i].typeName == 1374) {
           this.arrAll.splice(i, 1)

@@ -193,6 +193,11 @@ export default {
   clearIntoA(state) {
     state.intoA = {}
   },
+  // 点击立即预约改变状态
+  promptlyMakeControl(state, data){
+    state.promptlyMake = data
+  },
+
   /**
    * 更新用户订单数据
    * @param state 

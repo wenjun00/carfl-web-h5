@@ -37,6 +37,9 @@ import Vue from 'vue'
 import Component from "vue-class-component";
 import AreaData from "~/assets/area";
 import CityPicker from "~/components/common/city-picker.vue";
+import { State, Mutation, Action } from "vuex-class";
+import { AppCustomerService } from "~/services/manage-service/app-customer.service";
+import { Dependencies } from "~/core/decorator";
 @Component({
   components: {
     CityPicker,
@@ -44,6 +47,12 @@ import CityPicker from "~/components/common/city-picker.vue";
 
 })
 export default class Subscribe extends Vue {
+  @Dependencies(AppCustomerService) private appCustomerService: AppCustomerService;
+  @Mutation promptlyMakeControl
+  @State orderInfo
+
+
+
 
   private dataList = AreaData
   private showForm: boolean = false
@@ -74,6 +83,35 @@ export default class Subscribe extends Vue {
     cityName: { required: true, message: "请选择所在城市" },
     phone: [{ required: true, message: "请输入正确的手机号" }, { validator: this.$validator.phoneNumber }]
   }
+  /**
+   * 点击立即预约
+   */
+
+  private onConfirmClick() {
+    this.getPromptlySubscribe()
+
+  }
+
+  /**
+   * 点击立即预约
+   */
+  getPromptlySubscribe() {
+    this.appCustomerService.customerReservation(this.orderInfo.personalId).subscribe(
+      data => {
+        this.$toast('预约成功')
+        this.promptlyMakeControl(true)
+        this.show.success = true
+        setTimeout(() => {
+          this.show.success = false
+          this.$router.push('/home')
+        }, 3000);
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+
+
+
 
   /**
   * 键盘输入
@@ -127,13 +165,6 @@ export default class Subscribe extends Vue {
 
   }
 
-  private onConfirmClick() {
-    this.show.success = true
-    setTimeout(() => {
-      this.show.success = false
-      this.$router.push('/home')
-    }, 3000);
-  }
 }
 </script>
 
