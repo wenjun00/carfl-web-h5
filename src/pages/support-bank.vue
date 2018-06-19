@@ -57,7 +57,7 @@ export default class supportBank extends Vue {
     -ms-flex-pack: justify;
     justify-content: space-between;
     width: 100%;
-    border-bottom: 2px solid gray;
+    border-bottom: 5px solid #eeeeee;
     height: 30px;
     line-height: 30px;
     padding: 5px;
