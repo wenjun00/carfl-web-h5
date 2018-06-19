@@ -185,7 +185,7 @@ export default class Login extends Vue {
 .page.login {
   text-align: center;
   .submit {
-    margin-top: 0px;
+    margin-top: 20px;
   }
   .imgHeaght {
     height: 320px;
@@ -203,3 +203,4 @@ export default class Login extends Vue {
   }
 }
 </style>
+
