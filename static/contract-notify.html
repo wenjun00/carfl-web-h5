@@ -69,17 +69,15 @@
       info.style.display = "none"
       formatQueryStr()
       var oAjax = new XMLHttpRequest();
-      
+      // 后端服务地址
       var url = 'http://cphyw921.vicp.cc:21338/service-manage/contractDetailsController/updateOrderLinkToIsSigning?orderId=' + params.orderId
       oAjax.open("GET", url, true)
       oAjax.send()
-
       oAjax.onreadystatechange = function () {
         if (oAjax.readyState === 4) {
-          info.style.display = ""
-          loading.style.display = "none"
           if (oAjax.status === 200) {
-            console.log(oAjax.response)
+            info.style.display = ""
+            loading.style.display = "none"
           } else {
             window.alert("error")
           }
@@ -89,7 +87,13 @@
 
 
     function onClick() {
-      webView.close()
+      try {
+        // 关闭webView
+        webView.close()
+      } catch (error) {
+        // 苹果手机需要使用此方法
+        close()
+      }
     }
 
     function formatQueryStr() {
