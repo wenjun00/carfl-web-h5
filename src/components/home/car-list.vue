@@ -61,6 +61,7 @@ export default class CarList extends Vue {
   .car-list-img{
     height: 120px;
     max-height: 120px;
+    overflow: hidden;
   }
   .car {
     text-align: left;
