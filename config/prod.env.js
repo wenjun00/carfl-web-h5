@@ -3,7 +3,7 @@
 const merge = require('webpack-merge')
 
 // 获取编译环境
-let build_env = process.env.env || "demo"
+let build_env = process.env.env || "prod"
 const envConfig = require(`../environment/${build_env}.env`)
 
 module.exports = merge({

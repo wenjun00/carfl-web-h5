@@ -1,3 +1,3 @@
 module.exports = {
-  URL_SERVER: JSON.stringify("http://carfl-server-test.daocloudapp.com")
+  URL_SERVER: JSON.stringify("https://manager.yichefenqi.com:8762")
 }
