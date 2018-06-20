@@ -118,8 +118,7 @@ export default class Login extends Vue {
   private onVerifyCodeClick(time) {
     this.loginService.getVerifyCode(this.loginModel.phoneNumber).subscribe(
       data => {
-        this.authCode = data
-        // this.loginModel.verifyCode = data
+        // this.authCode = data
         this.leftTime = 60;
         let _self = this;
         let setTime = () => {
@@ -144,6 +143,7 @@ export default class Login extends Vue {
    * 提交操作
    */
   private onSubmit() {
+   
     this.$validator.validate(this.loginModel, this.rules).then(error => {
       if (error) {
         return this.$toast(error);
@@ -156,7 +156,8 @@ export default class Login extends Vue {
             personalId: data.personalId,
             personalName: data.personalName,
             userPhone: this.loginModel.phoneNumber,
-            authCode: this.authCode
+            // authCode: this.authCode
+            authCode:this.loginModel.verifyCode,
           }
           this.promptlyMakeControl(false)
           this.updateUserLoginData(resultData)
