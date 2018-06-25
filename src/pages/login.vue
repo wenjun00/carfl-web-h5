@@ -143,6 +143,9 @@ export default class Login extends Vue {
    * 提交操作
    */
   private onSubmit() {
+    if(this.loginModel.verifyCode ==''){
+       this.$toast('请输入验证码')
+    }
    
     this.$validator.validate(this.loginModel, this.rules).then(error => {
       if (error) {
@@ -164,7 +167,10 @@ export default class Login extends Vue {
           this.updateUserOrder(data)
           this.$router.push("/Index");
         },
-        err => this.$toast(err.msg)
+        err => {
+          this.$toast(err.msg)
+          this.loginModel.verifyCode = ''
+        }
       )
 
 
