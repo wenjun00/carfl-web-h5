@@ -96,7 +96,7 @@ export default class Login extends Vue {
    * 输入验证码
    */
   private onKeyBoardInputCode(val) {
-    if (this.loginModel.phoneNumber.length === 4) return;
+    if (this.loginModel.verifyCode.length === 6) return;
     this.loginModel.verifyCode += val.toString();
   }
 
