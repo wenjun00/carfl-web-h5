@@ -39,7 +39,8 @@ export class carShowManagementService {
       data: {
         brandId: brandId || '',
         name: name || ''
-      }
+      },
+      loading: true
     })
   }
 }

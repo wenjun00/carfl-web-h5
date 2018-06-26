@@ -9,7 +9,7 @@
       </van-search>
     </form>
 
-    <van-row class="buy-car-list-item" v-if="carDataSet.length > 0" v-for="(item,index) of carDataSet" :key="index">
+    <van-row class="buy-car-list-item"  v-for="(item,index) of carDataSet" :key="index">
       <div @click="$router.push(`/details/${item.carId}`)">
         <van-col span="10">
           <div>
@@ -78,6 +78,10 @@ export default class BuyCarList extends Vue {
   set keyWord(val) {
     this.searchModel.name = val
     this.show.search = val !== ""
+    console.log(val.length)
+    if(val.length === 0){
+      this.searchCarList()
+    }
   }
 
   private scrollTop(val) {
@@ -118,7 +122,6 @@ export default class BuyCarList extends Vue {
       .subscribe(
         data => {
           this.carDataSet = data
-
         },
         err => {
           this.$toast(err.msg)
