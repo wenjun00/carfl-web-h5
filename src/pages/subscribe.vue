@@ -50,10 +50,11 @@ export default class Subscribe extends Vue {
   @Dependencies(AppCustomerService) private appCustomerService: AppCustomerService;
   @Mutation promptlyMakeControl
   @State orderInfo
+  @State userData
 
 
 
-
+ 
   private dataList = AreaData
   private showForm: boolean = false
   private show = {
@@ -96,7 +97,7 @@ export default class Subscribe extends Vue {
    * 点击立即预约
    */
   getPromptlySubscribe() {
-    this.appCustomerService.customerReservation(this.orderInfo.personalId).subscribe(
+    this.appCustomerService.customerReservation(this.buyModel.phone).subscribe(
       data => {
         this.$toast('预约成功')
         this.promptlyMakeControl(true)

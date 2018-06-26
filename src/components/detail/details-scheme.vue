@@ -1,5 +1,5 @@
 <!-- 车辆详情分期方案-->
-<template> 
+<template>
   <section class="page details-scheme">
     <!-- 分期方案 -->
     <van-cell-group>
@@ -54,7 +54,7 @@
       </van-row>
     </div>
     <!-- 基本参数 -->
-    <van-collapse v-model="activeNames">
+    <!-- <van-collapse v-model="activeNames">
       <van-collapse-item name="2">
         <div slot="title">基本参数
           <span style="float: right;">详细配置</span>
@@ -63,7 +63,16 @@
           <van-cell :title="item.name" :value="item.value" />
         </van-cell-group>
       </van-collapse-item>
-    </van-collapse>
+    </van-collapse> -->
+    
+    <van-cell-group>
+      <van-cell>
+        <template slot="title">
+          <img class="someIcon" height="15px" :src="images" alt="">
+          <span class="van-cell-text basicParameter">基本参数</span>
+        </template>
+      </van-cell>
+    </van-cell-group>
 
     <div class="carDetails">
       <van-cell-group>
@@ -83,7 +92,7 @@
       <van-cell>
         <template slot="title">
           <img class="someIcon" height="17px" :src="images" alt="">
-          <span class="van-cell-text basicParameter">车型亮点</span>
+          <span class="van-cell-text basicParameter fontWeight">车型亮点</span>
         </template>
       </van-cell>
     </van-cell-group>
@@ -255,13 +264,15 @@ export default class detailsScheme extends Vue {
     this.carManagementService.getCarDetail(this.carId).subscribe(
       data => {
         this.basicEquipment = data
+        let carColour = this.basicEquipment.carColour.split(';')
+        this.basicEquipment.carColour = carColour[0]
         this.carInfo = {
           brandName: data.brandName,
           interiorColor: data.interiorColor,
           modelName: data.modelName,
           seriesName: data.seriesName,
           vehicleColor: data.carColour,
-          vehicleId:this.carId 
+          vehicleId: this.carId
         }
       },
       err => this.$toast(err.msg)
@@ -381,6 +392,9 @@ export default class detailsScheme extends Vue {
 
 <style lang="less" scoped>
 .page.details-scheme {
+  .fontWeight{
+    font-weight: 600;
+  }
   .falseButton {
     background: #eeeeee !important;
     color: grey !important;
