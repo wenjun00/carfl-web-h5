@@ -21,7 +21,7 @@ export class LoginService {
   }
 
   /**
-   * 通过验证码登录
+   * 获取订单信息
    */
   verifyCodeLogin(data) {
     return this.netService.send({
@@ -56,6 +56,19 @@ export class LoginService {
       }
     })
   }
+  /**
+   * 进件后查看订单号
+   */
+  loginByToken(data) {
+    return this.netService.send({
+      server: manageService.appLoginController.loginByToken,
+      data: {
+        userId: data.userId,
+        token:data.token
+      }
+    })
+  }
+
 
 }
 

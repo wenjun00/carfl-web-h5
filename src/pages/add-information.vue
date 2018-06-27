@@ -168,9 +168,10 @@ export default class Login extends Vue {
   @State intoA
   @Mutation selectCity
   @State IntoACity
-  @State userData
   @Mutation updateUserOrder
   @State orderInfo
+  @State userToken
+  @State userData
 
 
   private arrImg: any = []
@@ -222,7 +223,8 @@ export default class Login extends Vue {
     //  （证件页面）idcard
     this.personalAll = {
       ///
-      city: this.IntoACity[0],
+      city: this.IntoACity.id,
+      province:this.IntoACity.pid,
       productResultId: this.intoA.orderCarTwo.productResultId,
       productId: this.intoA.orderCarTwo.productId,
       initialPayment: this.intoA.orderCarTwo.initialPayment,
@@ -231,12 +233,11 @@ export default class Login extends Vue {
       monthlySupply: this.intoA.orderCarTwo.monthlySupply,
       periods: this.intoA.orderCarTwo.periods,
       personal: {
-        // certificateType: null,  
         // driverModel: null, 
         // driverNo: null,        
         // driverTerm:null,
         // idCardAddressDetail:null,
-
+        certificateType:1167,
         headPhoto: this.intoA.personal.headPhoto, // 身份证头像地址
         nationalPhoto: this.intoA.personal.nationalPhoto,  // 身份证国徽地址
         driverPhoto: this.intoA.personalCar.driverPhoto,    // 驾驶证正面
@@ -246,6 +247,7 @@ export default class Login extends Vue {
         nation: this.intoA.personal.nation,   // 民族
         province: this.intoA.personal.province,  // 户籍信息省市
         city: this.intoA.personal.city,       // 户籍信息城市
+        district:this.intoA.personal.district, // 户籍信息区
         idCardTerm: this.intoA.personal.id_card_validity_period_section, // 有效期限
         mobileMain: this.intoA.PersonalJob.phone,
         mobileMinor: this.intoA.PersonalJob.contactPhone,
@@ -323,14 +325,14 @@ export default class Login extends Vue {
     )
   }
 
-  // 进件成功调用登陆接口 查看订单等数据(进件成功，拿不到订单号先注释)
+  // 进件成功后,查询订单号
   getLogoIndent() {
     let userAll = {
-      phoneNumber: this.userData.userPhone,
-      verifyCode: this.userData.authCode
+      userId: this.userData.id,
+      token: this.userToken
     }
 
-    this.loginService.verifyCodeLogin(userAll).subscribe(
+    this.loginService.loginByToken(userAll).subscribe(
       data => {
         console.log(data)
         this.updateUserOrder(data)

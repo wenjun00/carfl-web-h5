@@ -89,17 +89,24 @@ export default class Login extends Vue {
   private columnsTwo: any = [
     {
       text: '郑州',
-      val: '902'
+      val: '902',
+      pid: '734',
     }, {
       text: '南宁',
-      val: '3125'
+      val: '3125',
+      pid: '3021',
     }
   ];
   /***
   * 选择下单城市确定事件
   */
   private onConfirmTwo(val) {
-    this.selectCity([Number(val.val)])
+    let catyAll = {
+      id: Number(val.val),
+      pid: Number(val.pid),
+    }
+
+    this.selectCity(catyAll)
     //  console.log(this.IntoACity)
     this.optionCity = false
   }

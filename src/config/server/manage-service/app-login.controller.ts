@@ -38,5 +38,15 @@ export default {
    controller: CONTROLLER,
    action: 'exit',
    type: requestType.Post
- }
+ },
+ /**
+  *进件后查看订单号
+  */
+ loginByToken: {
+  service: SERVICE,
+  controller: CONTROLLER,
+  action: 'loginByToken',
+  type: requestType.Get
+}
+
 }

@@ -105,18 +105,23 @@ export default class Login extends Vue {
   private columnsTwo: any = [
     {
       text: '郑州',
-      val: '902'
+      val: '902',
+      pid: '734',
     }, {
       text: '南宁',
-      val: '3125'
+      val: '3125',
+      pid: '3021',
     }
   ];
   /***
   * 选择下单城市确定事件
   */
   private onConfirmTwo(val) {
-    this.selectCity([Number(val.val)])
-    //  console.log(this.IntoACity)
+    let catyAll = {
+      id: Number(val.val),
+      pid: Number(val.pid),
+    }
+    this.selectCity(catyAll)
     this.optionCity = false
   }
   // 选择银行户籍点击确定
@@ -283,6 +288,12 @@ export default class Login extends Vue {
 </script>
 <style lang="less" scoped>
 .page.uploadIdPhotoThree {
+  .van-picker {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    z-index: 100;
+  }
   .nextStepSty {
     margin-top: 30px;
   }
@@ -365,12 +376,6 @@ export default class Login extends Vue {
 </style>
 <style lang="less">
 .page.uploadIdPhotoThree {
-  .van-picker {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    z-index: 100;
-  }
   .van-step--horizontal.van-step--finish .van-step__circle,
   .van-step--horizontal.van-step--finish .van-step__line {
     background-color: #ffe44d;

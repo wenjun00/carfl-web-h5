@@ -95,10 +95,12 @@ export default class Login extends Vue {
   private columnsTwo: any = [
     {
       text: '郑州',
-      val: '902'
+      val: '902',
+      pid: '734',
     }, {
       text: '南宁',
-      val: '3125'
+      val: '3125',
+      pid: '3021',
     }
   ];
   private type: any;
@@ -112,6 +114,9 @@ export default class Login extends Vue {
     nationalPhoto: '', // 身份证国徽地址
     province: '',  // 身份证省份
     city: '',    // 身份证城市
+    district: '', // 身份证区
+    provinceTop: '',// 身份城市 顶部
+
   }
 
   @Mutation idcCard
@@ -132,9 +137,10 @@ export default class Login extends Vue {
   };
   // 选择城市点击事件
   private onCityPickerConfirm(currentCitys) {
-
+    console.log(currentCitys)
     this.idcard.province = currentCitys[0]
     this.idcard.city = currentCitys[1]
+    this.idcard.district = currentCitys[2]
     this.idcard.id_card_address = currentCitys
 
   }
@@ -198,8 +204,12 @@ export default class Login extends Vue {
    * 选择下单城市确定事件
    */
   private onConfirmTwo(val) {
-    this.selectCity([Number(val.val)])
-    console.log(this.IntoACity, '下单成')
+    let catyAll = {
+      id: Number(val.val),
+      pid: Number(val.pid),
+    }
+    this.selectCity(catyAll)
+    // console.log(this.IntoACity, '下单成')
     this.optionCity = false
   }
 
