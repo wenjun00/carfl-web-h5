@@ -271,7 +271,7 @@ export default class detailsScheme extends Vue {
           interiorColor: data.interiorColor,
           modelName: data.modelName,
           seriesName: data.seriesName,
-          vehicleColor: data.carColour,
+          vehicleColor: carColour,
           vehicleId: this.carId
         }
       },
