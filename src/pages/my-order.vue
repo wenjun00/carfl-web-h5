@@ -71,7 +71,7 @@ export default class MyOrder extends Vue {
    * 通过订单号查询订单信息
    */
   getOredrMessage() {
-    this.productOrderService.findOrderInfoByOrderNumber(this.orderInfo.orderNo).subscribe(
+    this.productOrderService.findOrderInfoByOrderNumber(this.orderInfo).subscribe(
       data => {
         // this.productOrderInfo = data
         this.productOrderInfo.orderReference = data.orderNumber

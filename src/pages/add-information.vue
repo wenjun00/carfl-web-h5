@@ -333,7 +333,7 @@ export default class Login extends Vue {
 
     this.loginService.getOrderNoByToken(userAll).subscribe(
       data => {
-        console.log(data)
+        // console.log(data)
         this.updateUserOrder(data)
       },
       err => this.$toast(err.msg)
@@ -391,6 +391,7 @@ export default class Login extends Vue {
 
 
   mounted() {
+    this.getLogoIndent()
     this.arrImg = this.intoA.PersonalAdditional
    
   }
