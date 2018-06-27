@@ -74,7 +74,7 @@ export default class Subscribe extends Vue {
   // 选择城市点击事件
   private onCityPickerConfirm(currentCitys) {
     // console.log(currentCitys)
-    currentCitys.pop()
+    // currentCitys.pop()   // 不需要区时使用
     this.buyModel.cityName = currentCitys
     this.buyModel.city = currentCitys[1]
 

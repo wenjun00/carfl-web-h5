@@ -42,10 +42,10 @@ export default {
  /**
   *进件后查看订单号
   */
- loginByToken: {
+ getOrderNoByToken: {
   service: SERVICE,
   controller: CONTROLLER,
-  action: 'loginByToken',
+  action: 'getOrderNoByToken',
   type: requestType.Get
 }
 

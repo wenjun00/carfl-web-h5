@@ -137,7 +137,6 @@ export default class Login extends Vue {
   };
   // 选择城市点击事件
   private onCityPickerConfirm(currentCitys) {
-    console.log(currentCitys)
     this.idcard.province = currentCitys[0]
     this.idcard.city = currentCitys[1]
     this.idcard.district = currentCitys[2]
@@ -209,7 +208,6 @@ export default class Login extends Vue {
       pid: Number(val.pid),
     }
     this.selectCity(catyAll)
-    // console.log(this.IntoACity, '下单成')
     this.optionCity = false
   }
 
@@ -217,7 +215,6 @@ export default class Login extends Vue {
   onRead(val, number) {
     return ({ file }) => {
       NetService.upload(file).then(x => {
-        console.log(x)
         this[val] = x.url
         for (let i in this.arrImg) {
           if (this.arrImg[i].typeName == number) {

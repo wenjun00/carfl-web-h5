@@ -328,11 +328,10 @@ export default class Login extends Vue {
   // 进件成功后,查询订单号
   getLogoIndent() {
     let userAll = {
-      userId: this.userData.id,
       token: this.userToken
     }
 
-    this.loginService.loginByToken(userAll).subscribe(
+    this.loginService.getOrderNoByToken(userAll).subscribe(
       data => {
         console.log(data)
         this.updateUserOrder(data)
@@ -393,6 +392,7 @@ export default class Login extends Vue {
 
   mounted() {
     this.arrImg = this.intoA.PersonalAdditional
+   
   }
 
 

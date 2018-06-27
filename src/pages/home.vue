@@ -1,4 +1,4 @@
-<template> 
+<template>
   <section class="page home">
     <section>
       <form action="/">
@@ -53,7 +53,6 @@ import NavBar from "~/components/common/nav-bar.vue";
 import CityPicker from "~/components/common/city-picker.vue";
 import { Dependencies } from "~/core/decorator";
 import { State, Mutation, Action } from "vuex-class";
-
 @Component({
   components: {
     Trademark,
@@ -65,6 +64,7 @@ import { State, Mutation, Action } from "vuex-class";
 })
 export default class Home extends Vue {
   @State intoA
+
   private serachKeyWord: string = "";
 
   get keyWord() {
@@ -86,14 +86,15 @@ export default class Home extends Vue {
     search: false
   };
 
+
   /**
    * 搜索页面
    */
   private onSearch() {
     this.$router.push(`/buy-car-list/?k=${this.keyWord}`)
   }
-  mounted(){
-    // console.log(this.intoA,'看这里')
+  mounted() {
+    // console.log(this.intoA,'看这里')z
   }
 
 }

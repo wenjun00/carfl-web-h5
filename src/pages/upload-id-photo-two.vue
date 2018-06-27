@@ -107,7 +107,6 @@ export default class Login extends Vue {
     }
 
     this.selectCity(catyAll)
-    //  console.log(this.IntoACity)
     this.optionCity = false
   }
   // 验证规则
@@ -181,7 +180,6 @@ export default class Login extends Vue {
   onRead(val, number) {
     return ({ file }) => {
       NetService.upload(file).then(x => {
-        console.log(x)
         this[val] = x.url
         for (let i in this.arrAll) {
           if (this.arrAll[i].typeName == number) {

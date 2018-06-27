@@ -1,11 +1,11 @@
-<template>
+<template> 
   <section class="page contactInformation">
     <van-row>
       <p class="base-info-title">联系人一</p>
       <van-cell-group>
         <van-cell title="与承租人关系" required is-link :value="contactModel.falseRelation" @click="relationBot=true" />
         <van-field name="center" v-model="contactModel.username" label="姓名" placeholder="请输入联系人姓名" required/>
-        <van-field name="center"  v-model="contactModel.phone" label="手机号" placeholder="请输入联系人手机号" required/>
+        <van-field name="center" maxlength="11"  v-model="contactModel.phone" label="手机号" placeholder="请输入联系人手机号" required/>
       </van-cell-group>
     </van-row>
     <van-row>
@@ -13,7 +13,7 @@
       <van-cell-group>
         <van-cell title="与承租人关系" required is-link :value="contactModel.falseRelationTwo" @click="relationBotTwo=true" />
         <van-field name="center" v-model="contactModel.usernameTwo" label="姓名" placeholder="请输入联系人姓名" required/>
-        <van-field name="center" v-model="contactModel.phoneTwo" label="手机号" placeholder="请输入联系人手机号" required/>
+        <van-field name="center" maxlength="11" v-model="contactModel.phoneTwo" label="手机号" placeholder="请输入联系人手机号" required/>
       </van-cell-group>
     </van-row>
 

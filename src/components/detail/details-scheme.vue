@@ -337,7 +337,6 @@ export default class detailsScheme extends Vue {
           monthlySupply: data[0].firstYearMonthrent,
           periods: data[0].planType,
         }
-        console.log(data, '进件需要用的')
       },
       err => this.$toast(err.msg)
     )

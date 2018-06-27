@@ -58,12 +58,11 @@ export class LoginService {
   }
   /**
    * 进件后查看订单号
-   */
-  loginByToken(data) {
+   */ 
+  getOrderNoByToken(data) {
     return this.netService.send({
-      server: manageService.appLoginController.loginByToken,
+      server: manageService.appLoginController.getOrderNoByToken,
       data: {
-        userId: data.userId,
         token:data.token
       }
     })

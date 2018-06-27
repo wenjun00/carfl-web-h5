@@ -4,7 +4,7 @@
       <p class="base-info-title">基本信息</p>
       <van-cell-group>
         <van-field v-model="inforModel.phone" disabled label="手机号码" placeholder="请输入手机号" required />
-        <van-field name="center" v-model="inforModel.contactPhone" label="联系号码" placeholder="客户第二个手机号" />
+        <van-field name="center" maxlength="11" v-model="inforModel.contactPhone" label="联系号码" placeholder="客户第二个手机号" />
         <van-cell title="婚姻状况" required is-link :value="inforModel.falseMarital" @click="marriageBot=true" />
         <van-cell title="学历信息" required is-link :value="inforModel.falseeducation" @click="educationBot=true" />
       </van-cell-group>

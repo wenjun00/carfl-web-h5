@@ -48,7 +48,7 @@
         <van-cell title="开户地址" required is-link :value="personalBank.location | cityConvert " @click="$refs['cityPicker'].show()" />
         <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
 
-        <van-field name="center" v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
+        <van-field name="center" maxlength="11" v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
       </van-cell-group>
     </van-row>
     <!-- 开户银行 -->
@@ -74,6 +74,7 @@ import CityPicker from "~/components/common/city-picker.vue";
 import { elementAt } from "rxjs/operators";
 import { String } from "core-js";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
+import { FddApiService } from "~/services/manage-service/fdd-api.service";
 import { Dependencies } from "~/core/decorator";
 @Component({
   components: {
@@ -83,6 +84,7 @@ import { Dependencies } from "~/core/decorator";
 })
 export default class Login extends Vue {
   @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
+  @Dependencies(FddApiService) private fddApiService: FddApiService;
   private idName: any = null;
   private arrAll: any = []
   private idNumber: any = null;
@@ -132,12 +134,32 @@ export default class Login extends Vue {
     this.personalBank.location = currentCitys
 
   }
+  /**
+   * 四要素判断
+   */
+  // elementsValidation() {
+  //   let fourElements = {
+  //     customerName: this.intoA.personal.name,  // 客户姓名
+  //     idCard: this.intoA.personal.id_card,        // 身份证号
+  //     bankNo: this.personalBank.card_number,        // 银行卡号
+  //     mobile:this.personalBank.reserved_phone_number,        // 电话号码
+  //   }
+  //   this.fddApiService.getInvokeFourElementVerify(fourElements).subscribe(
+  //     data => {
+  //       console.log('看这里')
+  //     },
+  //     err => {
+  //       console.log('错误这里')
+  //       this.$toast(err.msg)
+  //     }
+  //   )
+  // }
+
 
   /**
    * 点击下一步
    */
   addAffirm() {
-    // console.log(this.arrAll)
     let arr = []
     for (let i in this.arrAll) {
       arr.push(this.arrAll[i].typeName)
