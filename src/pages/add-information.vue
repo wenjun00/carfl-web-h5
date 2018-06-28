@@ -174,6 +174,7 @@ export default class Login extends Vue {
   @State userData
 
 
+
   private arrImg: any = []
   private idName: any = null;
   private idNumber: any = null;
@@ -259,9 +260,14 @@ export default class Login extends Vue {
         city1: this.intoA.PersonalJob.city1,    // 居住地区 市
         district1: this.intoA.PersonalJob.district1,    // 居住地区 区
         localHomeAddrDetail: this.intoA.PersonalJob.address,    // 居住地址
-        driverTerm: this.intoA.personalCar.useful_time,    // 有效期限
-        driverNo: this.intoA.personalCar.file_number,    // 档案编号
-        driverModel: this.intoA.personalCar.driving_license,  // 准驾车型
+        // usefulTime: this.intoA.personalCar.useful_time,    // 有效期限
+        // fileNumber: this.intoA.personalCar.file_number,    // 档案编号
+        // drivingLicense: this.intoA.personalCar.driving_license,  // 准驾车型
+
+        driverTerm: this.intoA.personalCar.useful_time, // 有效期限
+        driverNo: this.intoA.personalCar.file_number, // 档案编号
+        driverModel: this.intoA.personalCar.driving_license, // 准驾车型
+
         personalBank: {
           depositProvince: this.intoA.personalBank.locationProvince, // 银行开户省份
           depositCity: this.intoA.personalBank.locationCity,    // 银行开户市
@@ -333,8 +339,8 @@ export default class Login extends Vue {
 
     this.loginService.getOrderNoByToken(userAll).subscribe(
       data => {
-        // console.log(data)
-        this.updateUserOrder(data)
+        this.orderInfo.orderNo = data
+        // this.updateUserOrder(data)
       },
       err => this.$toast(err.msg)
     )
@@ -391,7 +397,6 @@ export default class Login extends Vue {
 
 
   mounted() {
-    this.getLogoIndent()
     this.arrImg = this.intoA.PersonalAdditional
    
   }
