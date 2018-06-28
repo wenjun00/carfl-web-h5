@@ -37,6 +37,7 @@ import { ProductOrderService } from "~/services/manage-service/product-order.ser
 import { Dependencies } from "~/core/decorator";
 import { CityService } from "~/utils/city.service";
 import { setTimeout } from "core-js";
+import { LoginService } from "~/services/manage-service/applogin.service";
 
 @Component({
   components: {
@@ -46,9 +47,12 @@ import { setTimeout } from "core-js";
 })
 export default class MyOrder extends Vue {
   @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
+  @Dependencies(LoginService) private loginService: LoginService;
   @Getter hasOrder;
   @State orderInfo
   @State userData
+  @State userToken
+
 
 
 
@@ -78,7 +82,7 @@ export default class MyOrder extends Vue {
         this.productOrderInfo.carType = data.orderCar.modelName
         this.productOrderInfo.placeCity = [data.city]
         this.productOrderInfo.downPayment = data.schedulePlanResultModel.schedulePlanResult.firstPayment
-        this.productOrderInfo.periods = this.$dict.getDictName(data.schedulePlanResultModel.schedulePlanResult.planType) 
+        this.productOrderInfo.periods = this.$dict.getDictName(data.schedulePlanResultModel.schedulePlanResult.planType)
         this.productOrderInfo.informationOn = data.schedulePlanResultModel.schedulePlanResult.firstYearMonthrent
       },
       err => this.$toast(err.msg)
@@ -92,10 +96,27 @@ export default class MyOrder extends Vue {
     let orderRecord = this.$refs['order-record'] as OrderRecord
     orderRecord.orderRecordfun(a)
   }
+  // 进件成功后,查询订单号
+  // getLogoIndent() {
+  //   let userAll = {
+  //     token: this.userToken
+  //   }
+
+  //   this.loginService.getOrderNoByToken(userAll).subscribe(
+  //     data => {
+  //       this.orderInfo.orderNo = data
+  //       // this.updateUserOrder(data)
+        
+  //     },
+  //     err => this.$toast(err.msg)
+  //   )
+  // }
+
 
   mounted() {
-    // this.$loading.show()
-    this.getOredrMessage()
+     this.getOredrMessage()
+    // this.getLogoIndent()
+   
   }
 
 }

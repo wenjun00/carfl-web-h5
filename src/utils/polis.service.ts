@@ -1,37 +1,41 @@
-const cityData = require('~/assets/json/city.json');
+const polisData = require('~/assets/json/dict.json');
 // import AreaData from "~/assets/area";
  
-export class CityService {
+export class PolisService {
   /**
    * 获取城市信息
    * @param level
    * @param id
    */
-  static getCityData({ level = 3, id = 1 } = {}) {
+  static getCityData({ level = 2, id = 1 } = {}) {
     let fun = (id, currentLevel = 1) => {
       let items = new Array()
+      
 
-      cityData
-        .filter(x => x.pid === id)
+      polisData
+        // .map(x => x.pid === id)
         .forEach(x => {
           // 生成城市对象
           let item: any = {
-            value: x.id,
-            label: x.name
+            value: x.province_code,
+            label: x.province_name
           }
 
           // 检测获取级别
-          if (currentLevel < level) {
-            let children = fun(x.id, currentLevel + 1)
-            if (children && children.length > 0) {
-              item.children = children
-            }
-          }
+          // if (currentLevel < level) {
+          //   let children = fun(x.id, currentLevel + 1)
+          //   if (children && children.length > 0) {
+          //     item.children = children
+          //   }
+          // }
 
           items.push(item)
+          
         })
+        let bbb = Array.from(new Set(items))
+        console.log(bbb,22222)
 
-      return items
+      // return items
     }
 
     return fun(id)
@@ -46,7 +50,7 @@ export class CityService {
 
     // 向根节点遍历
     let fun = (itemId) => {
-      let item: any = cityData.find(x => x.id === itemId)
+      let item: any = polisData.find(x => x.id === itemId)
       if (item && item.pid !== 1) {
         result.unshift(item.pid)
         fun(item.pid)
@@ -66,10 +70,10 @@ export class CityService {
     let results: Array<string> = []
 
     ids.forEach(id => {
-      let item = cityData.find(c => c.id === id) || {}
+      let item = polisData.find(c => c.id === id) || {}
       results.push(item.name)
     })
 
-    return results.length < 2 ? results[0] : results
+    return results.length < 1 ? results[0] : results
   }
 }

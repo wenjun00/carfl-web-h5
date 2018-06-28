@@ -2,7 +2,7 @@
   <section class="page uploadIdPhotoFirst">
     <!-- <van-field v-model="heandCity" label="选择城市" placeholder="请选择城市" required @click="optionCity=true" /> -->
     <div>
-      <van-cell title="选择城市" required is-link :value="IntoACity | cityConvert " @click="optionCity=true" />
+      <van-cell title="选择城市" required is-link :value="[IntoACity.id] | cityConvert " @click="optionCity=true" />
       <van-row>
         <van-steps :active="0" active-color="#FFE44D">
           <van-step>身份证信息</van-step>
@@ -203,10 +203,12 @@ export default class Login extends Vue {
    * 选择下单城市确定事件
    */
   private onConfirmTwo(val) {
+   
     let catyAll = {
       id: Number(val.val),
       pid: Number(val.pid),
     }
+ 
     this.selectCity(catyAll)
     this.optionCity = false
   }

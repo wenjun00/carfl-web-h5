@@ -339,8 +339,7 @@ export default class Login extends Vue {
 
     this.loginService.getOrderNoByToken(userAll).subscribe(
       data => {
-        this.orderInfo.orderNo = data
-        // this.updateUserOrder(data)
+        this.updateUserOrder(data)
       },
       err => this.$toast(err.msg)
     )

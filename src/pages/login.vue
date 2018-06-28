@@ -164,7 +164,7 @@ export default class Login extends Vue {
           }
           this.promptlyMakeControl(false)
           this.updateUserLoginData(resultData)
-          this.updateUserOrder(data)
+          this.updateUserOrder(data.orderNo)
           this.$router.push("/Index");
         },
         err => {

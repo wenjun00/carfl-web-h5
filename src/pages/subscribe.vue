@@ -8,6 +8,13 @@
       </van-popup> -->
       <van-cell class="cityLive" title="所在城市" is-link :value="buyModel.cityName | cityConvert " @click="$refs['cityPicker'].show()" />
       <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
+
+    <!-- 测试城市 -->
+      <!-- <van-area :area-list="areaList" :columns-num="2" /> -->
+       <!-- <polis-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></polis-picker> -->
+
+    <!-- 测试城市结束 -->
+
       <!-- <van-field class="shop" label="预约门店" v-model="buyModel.appointmentShop" placeholder="请选择要预约的门店" /> -->
       <van-field class="phoneText" maxlength="11" v-model="buyModel.phone" label="手机号码" placeholder="请输入您的手机号" icon="clear" @click-icon="buyModel.phone = ''" @focus="onCodeNumberFocus" />
       <van-number-keyboard :show="show.phone" title="洋葱汽车安全键盘" close-button-text="完成" @blur="show.phone = false" @input="onKeyBoardInputPhone" @delete="onKeyBoardDeletePhone" />
@@ -40,9 +47,13 @@ import CityPicker from "~/components/common/city-picker.vue";
 import { State, Mutation, Action } from "vuex-class";
 import { AppCustomerService } from "~/services/manage-service/app-customer.service";
 import { Dependencies } from "~/core/decorator";
+
+import PolisPicker from "~/components/common/polis-picker.vue";
+
 @Component({
   components: {
     CityPicker,
+    PolisPicker
   }
 
 })
@@ -54,7 +65,32 @@ export default class Subscribe extends Vue {
 
 
 
- 
+  private areaList ={
+  province_list: {
+    110000: '北京市',
+    120000: '天津市'
+  },
+  city_list: {
+    110100: '北京市',
+    110200: '县',
+    120100: '天津市',
+    120200: '县'
+  },
+  county_list: {
+    110101: '东城区',
+    110102: '西城区',
+    110105: '朝阳区',
+    110106: '丰台区',
+    120101: '和平区',
+    120102: '河东区',
+    120103: '河西区',
+    120104: '南开区',
+    120105: '河北区',
+    // ....
+  }
+}
+
+
   private dataList = AreaData
   private showForm: boolean = false
   private show = {

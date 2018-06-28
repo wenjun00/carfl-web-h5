@@ -226,6 +226,7 @@ export default class detailsScheme extends Vue {
   @Mutation carDetails
   @State orderInfo
   @State promptlyMake
+  @State userData
   private showDetails: boolean = false
   private activeNames: any = ['1']
   private paramList: any = []   // 车辆详情配置
@@ -350,11 +351,8 @@ export default class detailsScheme extends Vue {
     //   this.$toast('请先进行预约')
     //   return
     // }
-    let Indent = {
-      authorization: this.orderInfo.token,
-      personalDataId: this.orderInfo.personalId,
-    }
-    this.appCustomerService.checkCustomerType(this.orderInfo.personalId).subscribe(
+  
+    this.appCustomerService.checkCustomerType(this.userData.id).subscribe(
       data => {
 
         if (!!this.carIntoA.productResultId) {

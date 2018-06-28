@@ -1,6 +1,6 @@
 <template>
   <section class="page uploadIdPhotoTwo">
-    <van-cell title="选择城市" required is-link :value="IntoACity | cityConvert " @click="optionCity=true" />
+    <van-cell title="选择城市" required is-link :value="[IntoACity.id] | cityConvert " @click="optionCity=true" />
     <van-row>
       <van-steps :active="1" active-color="#FFE44D">
         <van-step>身份证信息</van-step>
