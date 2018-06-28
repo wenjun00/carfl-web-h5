@@ -36,7 +36,6 @@ import { Getter, State } from "vuex-class";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { Dependencies } from "~/core/decorator";
 import { CityService } from "~/utils/city.service";
-import { setTimeout } from "core-js";
 import { LoginService } from "~/services/manage-service/applogin.service";
 
 @Component({
@@ -46,27 +45,24 @@ import { LoginService } from "~/services/manage-service/applogin.service";
   }
 })
 export default class MyOrder extends Vue {
-  @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
+  @Dependencies(ProductOrderService)
+  private productOrderService: ProductOrderService;
   @Dependencies(LoginService) private loginService: LoginService;
   @Getter hasOrder;
-  @State orderInfo
-  @State userData
-  @State userToken
+  @State orderInfo;
+  @State userData;
+  @State userToken;
 
   private orderNumber: any = ''  // 获取当前订单号
   private activatedCollapse = []
   private productOrderInfo: any = {
-    orderReference: '',    // 订单编号
-    carType: '',  //车型
-    placeCity: '',  // 下单城市
-    downPayment: '',  // 首付
-    periods: '',   // 期数
-    informationOn: '', // 月供信息
-
-
-
-  } // 订单基本信息 存储
-
+    orderReference: "", // 订单编号
+    carType: "", //车型
+    placeCity: "", // 下单城市
+    downPayment: "", // 首付
+    periods: "", // 期数
+    informationOn: "" // 月供信息
+  }; // 订单基本信息 存储
 
   /**
    * 通过订单号查询订单信息
@@ -104,19 +100,16 @@ export default class MyOrder extends Vue {
   //     data => {
   //       this.orderInfo.orderNo = data
   //       // this.updateUserOrder(data)
-        
+
   //     },
   //     err => this.$toast(err.msg)
   //   )
   // }
 
-
   mounted() {
-     this.getOredrMessage()
+    this.getOredrMessage();
     // this.getLogoIndent()
-   
   }
-
 }
 </script>
 

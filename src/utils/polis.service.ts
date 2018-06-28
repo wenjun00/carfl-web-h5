@@ -1,44 +1,43 @@
 const polisData = require('~/assets/json/dict.json');
 // import AreaData from "~/assets/area";
- 
+
 export class PolisService {
+  private static citys
+
   /**
    * 获取城市信息
    * @param level
    * @param id
    */
-  static getCityData({ level = 2, id = 1 } = {}) {
-    let fun = (id, currentLevel = 1) => {
-      let items = new Array()
-      
-
-      polisData
-        // .map(x => x.pid === id)
-        .forEach(x => {
-          // 生成城市对象
-          let item: any = {
-            value: x.province_code,
-            label: x.province_name
-          }
-
-          // 检测获取级别
-          // if (currentLevel < level) {
-          //   let children = fun(x.id, currentLevel + 1)
-          //   if (children && children.length > 0) {
-          //     item.children = children
-          //   }
-          // }
-
-          items.push(item)
-          
-        })
-        let bbb = Array.from(new Set(items))
-        console.log(bbb,22222)
-
-      // return items
+  static getCityData() {
+    if (PolisService.citys) {
+      return PolisService.citys
     }
 
-    return fun(id)
+    let data = []
+
+    polisData.forEach(city => {
+      let province = data.find(x => x.value === city.province_code)
+
+      if (!province) {
+        province = {
+          value: city.province_code,
+          label: city.province_name,
+          children: []
+        }
+
+        data.push(province)
+      }
+
+      province.children.push({
+        value: city.city_code,
+        label: city.city_name,
+      })
+    })
+
+    PolisService.citys = data
+
+    return data
   }
 
   /**
