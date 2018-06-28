@@ -13,10 +13,11 @@ import { Prop, Watch } from "vue-property-decorator";
 import { ContractDetailsControllerService } from "~/services/manage-service/contract-details-controller.service";
 import { Dependencies } from "~/core/decorator";
 import { ImagePreview } from 'vant';
+import { Getter, State } from "vuex-class";
 @Component({})
 export default class OrderContract extends Vue {
   @Dependencies(ContractDetailsControllerService) private contractDetailsControllerService: ContractDetailsControllerService;
-
+  @State orderInfo
   private dataCompact: any = []
   private onitemClick(item, code) {
 
@@ -31,7 +32,7 @@ export default class OrderContract extends Vue {
   }
 
   getContractDetails() {
-    this.contractDetailsControllerService.getContractDetailsListByOrderId(156).subscribe(
+    this.contractDetailsControllerService.getOrderContractListByOrderNumber(this.orderInfo).subscribe(
       data => {
         this.dataCompact = data
       },

@@ -25,7 +25,7 @@
     </div>
   </section>
 </template>
-
+ 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
@@ -53,9 +53,6 @@ export default class MyOrder extends Vue {
   @State userData
   @State userToken
 
-
-
-
   private orderNumber: any = ''  // 获取当前订单号
   private activatedCollapse = []
   private productOrderInfo: any = {
@@ -78,6 +75,7 @@ export default class MyOrder extends Vue {
     this.productOrderService.findOrderInfoByOrderNumber(this.orderInfo).subscribe(
       data => {
         // this.productOrderInfo = data
+        this.productOrderInfo.orderProcessRecord = data.orderProcessRecord
         this.productOrderInfo.orderReference = data.orderNumber
         this.productOrderInfo.carType = data.orderCar.modelName
         this.productOrderInfo.placeCity = [data.city]
@@ -92,9 +90,9 @@ export default class MyOrder extends Vue {
    * 操作记录
    */
   operating() {
-    let a = this.productOrderInfo.orderProcessRecord
+    let record = this.productOrderInfo.orderProcessRecord
     let orderRecord = this.$refs['order-record'] as OrderRecord
-    orderRecord.orderRecordfun(a)
+    orderRecord.orderRecordfun(record)
   }
   // 进件成功后,查询订单号
   // getLogoIndent() {

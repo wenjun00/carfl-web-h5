@@ -9,10 +9,10 @@ export default {
     /**
      *  查看订单合同
      */
-    getContractDetailsListByOrderId: {
+    getOrderContractListByOrderNumber: {
         service: SERVICE,
         controller: CONTROLLER,
-        action: 'getContractDetailsListByOrderId',
+        action: 'getOrderContractListByOrderNumber',
         type: requestType.Get
     },
    

@@ -11,11 +11,11 @@ export class ContractDetailsControllerService {
     /**
      * 获取订单合同数据
      */
-    getContractDetailsListByOrderId(orderId){
+    getOrderContractListByOrderNumber(orderNumber){
         return this.netService.send({
-            server: manageService.contractDetailsController.getContractDetailsListByOrderId,
+            server: manageService.contractDetailsController.getOrderContractListByOrderNumber,
             data:{
-              orderId: orderId
+              orderNumber: orderNumber
             }
         })
     }
