@@ -2,20 +2,10 @@
   <section class="page subscribe">
     <p class="title">提交购车需求,金牌顾问为您服务</p>
     <div class="buy-form">
-      <!-- <van-field label="所在城市" v-model="buyModel.cityName" placeholder="请选择所在城市" @focus="show.area = true" />
-      <van-popup v-model="show.area" position="bottom">
-        <van-area title="选择所在城市" :columns-num="2" :area-list="dataList" @cancel="show.area = false" @confirm="onAreaConfirmClick"></van-area>
-      </van-popup> -->
+    
       <van-cell class="cityLive" title="所在城市" is-link :value="buyModel.cityName | cityConvert " @click="$refs['cityPicker'].show()" />
       <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
 
-    <!-- 测试城市 -->
-      <!-- <van-area :area-list="areaList" :columns-num="2" /> -->
-       <!-- <polis-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></polis-picker> -->
-
-    <!-- 测试城市结束 -->
-
-      <!-- <van-field class="shop" label="预约门店" v-model="buyModel.appointmentShop" placeholder="请选择要预约的门店" /> -->
       <van-field class="phoneText" maxlength="11" v-model="buyModel.phone" label="手机号码" placeholder="请输入您的手机号" icon="clear" @click-icon="buyModel.phone = ''" @focus="onCodeNumberFocus" />
       <van-number-keyboard :show="show.phone" title="洋葱汽车安全键盘" close-button-text="完成" @blur="show.phone = false" @input="onKeyBoardInputPhone" @delete="onKeyBoardDeletePhone" />
     </div>

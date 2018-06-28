@@ -3,6 +3,7 @@ import * as enumData from '~/config/enum.config'
 import moment from 'moment'
 import { LodashService } from './lodash.service'
 import { CityService } from "~/utils/city.service";
+import { PolisService } from "~/utils/polis.service";
 
 export class FilterService {
   /**
@@ -266,4 +267,21 @@ export class FilterService {
     }
     return citys.join(' ')
   }
+
+  /**
+   * 法大大城市文字转换
+   * @param values 要转换的城市ID 数组或者单个ID
+   */
+  static polisConvert(values) {
+    let cityTwo = []
+    if (values){
+      let index = 0;
+      while (index < values.length) {
+        cityTwo.push(PolisService.getCityName(values[index]))
+        index++
+      }
+    }
+    return cityTwo.join(' ')
+  }
+
 }

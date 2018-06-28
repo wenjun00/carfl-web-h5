@@ -69,7 +69,6 @@ export class CityService {
       let item = cityData.find(c => c.id === id) || {}
       results.push(item.name)
     })
-
     return results.length < 2 ? results[0] : results
   }
 }

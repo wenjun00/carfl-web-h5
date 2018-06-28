@@ -67,12 +67,10 @@ export class PolisService {
    */
   static getCityName(...ids) {
     let results: Array<string> = []
-
     ids.forEach(id => {
-      let item = polisData.find(c => c.id === id) || {}
-      results.push(item.name)
+      let item = polisData.find(c => c.city_code === id) || {}
+      results.push(item.city_name)
     })
-
     return results.length < 1 ? results[0] : results
   }
 }

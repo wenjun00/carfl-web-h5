@@ -45,8 +45,8 @@
 
         <van-field name="center" placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
 
-        <van-cell title="开户地址" required is-link :value="personalBank.location | cityConvert " @click="$refs['cityPicker'].show()" />
-        <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
+        <van-cell title="开户地址" required is-link :value="personalBank.location | polisConvert " @click="$refs['cityPicker'].show()" />
+        <polis-Picker  required ref="cityPicker" @on-confirm="onCityPickerConfirm"></polis-picker>
 
         <van-field name="center" maxlength="11" v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
       </van-cell-group>
@@ -75,9 +75,11 @@ import { elementAt } from "rxjs/operators";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { FddApiService } from "~/services/manage-service/fdd-api.service";
 import { Dependencies } from "~/core/decorator";
+import PolisPicker from "~/components/common/polis-picker.vue";
 @Component({
   components: {
-    CityPicker
+    CityPicker,
+    PolisPicker
   }
 })
 export default class Login extends Vue {

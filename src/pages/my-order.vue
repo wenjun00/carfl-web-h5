@@ -88,7 +88,7 @@ export default class MyOrder extends Vue {
   operating() {
     let record = this.productOrderInfo.orderProcessRecord
     let orderRecord = this.$refs['order-record'] as OrderRecord
-    orderRecord.orderRecordfun(record)
+    orderRecord.orderRecordfun(record) 
   }
   // 进件成功后,查询订单号
   // getLogoIndent() {
