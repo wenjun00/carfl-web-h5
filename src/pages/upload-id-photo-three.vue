@@ -67,72 +67,70 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { ImagePreview } from 'vant';
+import { ImagePreview } from "vant";
 import { State, Mutation, Action } from "vuex-class";
 import { NetService } from "~/utils/net.service";
 import CityPicker from "~/components/common/city-picker.vue";
 import { elementAt } from "rxjs/operators";
-import { String } from "core-js";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { FddApiService } from "~/services/manage-service/fdd-api.service";
 import { Dependencies } from "~/core/decorator";
 @Component({
   components: {
-    CityPicker,
+    CityPicker
   }
-
 })
 export default class Login extends Vue {
-  @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
+  @Dependencies(ProductOrderService)
+  private productOrderService: ProductOrderService;
   @Dependencies(FddApiService) private fddApiService: FddApiService;
   private idName: any = null;
-  private arrAll: any = []
+  private arrAll: any = [];
   private idNumber: any = null;
   private value: any = null;
   private photo: any = "";
-  private photoTwo: any = ''
+  private photoTwo: any = "";
   private pickerDialog: boolean = false;
   private columns: any = [];
   private type: any;
-  private depositBank: string = ""
+  private depositBank: string = "";
   private personalBank: any = {
-    reserved_phone_number: '',  //预留手机号
-    deposit_bank: '',   // 开户银行
-    card_number: '',    // 银行卡号
-    location: '',        // 开户地区汉字
-    locationProvince: '',  // 开户省 id
-    locationCity: '',      // 开户市 id
-  }
-  private optionCity: boolean = false;     // 城市选择弹窗
+    reserved_phone_number: "", //预留手机号
+    deposit_bank: "", // 开户银行
+    card_number: "", // 银行卡号
+    location: "", // 开户地区汉字
+    locationProvince: "", // 开户省 id
+    locationCity: "" // 开户市 id
+  };
+  private optionCity: boolean = false; // 城市选择弹窗
   private columnsTwo: any = [
     {
-      text: '郑州',
-      val: '902',
-      pid: '734',
-    }, {
-      text: '南宁',
-      val: '3125',
-      pid: '3021',
+      text: "郑州",
+      val: "902",
+      pid: "734"
+    },
+    {
+      text: "南宁",
+      val: "3125",
+      pid: "3021"
     }
   ];
   /***
-  * 选择下单城市确定事件
-  */
+   * 选择下单城市确定事件
+   */
   private onConfirmTwo(val) {
     let catyAll = {
       id: Number(val.val),
-      pid: Number(val.pid),
-    }
-    this.selectCity(catyAll)
-    this.optionCity = false
+      pid: Number(val.pid)
+    };
+    this.selectCity(catyAll);
+    this.optionCity = false;
   }
   // 选择银行户籍点击确定
   private onCityPickerConfirm(currentCitys) {
-
-    this.personalBank.locationProvince = currentCitys[0]
-    this.personalBank.locationCity = currentCitys[1]
-    this.personalBank.location = currentCitys
-
+    this.personalBank.locationProvince = currentCitys[0];
+    this.personalBank.locationCity = currentCitys[1];
+    this.personalBank.location = currentCitys;
   }
   /**
    * 四要素判断
@@ -155,48 +153,44 @@ export default class Login extends Vue {
   //   )
   // }
 
-
   /**
    * 点击下一步
    */
   addAffirm() {
-    let arr = []
+    let arr = [];
     for (let i in this.arrAll) {
-      arr.push(this.arrAll[i].typeName)
+      arr.push(this.arrAll[i].typeName);
     }
     if (arr.indexOf(1373) < 0) {
-      this.$toast('请上传银行卡正面信息');
-      return
+      this.$toast("请上传银行卡正面信息");
+      return;
     }
     if (arr.indexOf(1374) < 0) {
-      this.$toast('请上传银行卡负面信息');
-      return
+      this.$toast("请上传银行卡负面信息");
+      return;
     }
     if (!this.IntoACity) {
-      this.$toast('请选择城市');
-      return
+      this.$toast("请选择城市");
+      return;
     }
     this.$validator.validate(this.personalBank, this.rules).then(error => {
       if (!error) {
-        this.$router.push('/custom-information')
-        this.bankCard(this.personalBank)
-
+        this.$router.push("/custom-information");
+        this.bankCard(this.personalBank);
       } else {
         this.$toast(error);
       }
     });
   }
 
-
   /**
    * 点击开户银行
    */
 
   private onConfirm(val) {
-
-    this.personalBank.deposit_bank = val.bankCode
-    this.depositBank = val.bankName
-    this.pickerDialog = false
+    this.personalBank.deposit_bank = val.bankCode;
+    this.depositBank = val.bankName;
+    this.pickerDialog = false;
   }
   /***
    * 获取开户银行
@@ -205,54 +199,56 @@ export default class Login extends Vue {
     this.productOrderService.getBankCodeList().subscribe(
       data => {
         this.columns = data.map(v => {
-          return Object.assign({ text: v.bankName }, v)
-        })
+          return Object.assign({ text: v.bankName }, v);
+        });
       },
       err => this.$toast(err.msg)
-    )
+    );
   }
 
-
-
   mounted() {
-    let els: any = document.getElementsByName("center")
+    let els: any = document.getElementsByName("center");
     els.forEach(v => {
       v.onclick = () => {
         setTimeout(() => {
-          (v as HTMLElement).scrollIntoView(true)
+          (v as HTMLElement).scrollIntoView(true);
         }, 300);
-      }
-    })
+      };
+    });
 
-    this.getOredrMessage()
-    this.arrAll = this.intoA.PersonalAdditional
+    this.getOredrMessage();
+    this.arrAll = this.intoA.PersonalAdditional;
   }
 
-  @Mutation bankCard
-  @Mutation tenantImg
-  @State intoA
-  @Mutation selectCity
-  @State IntoACity
+  @Mutation bankCard;
+  @Mutation tenantImg;
+  @State intoA;
+  @Mutation selectCity;
+  @State IntoACity;
 
   // 验证规则
   private rules = {
-    deposit_bank: { required: true, message: '请选择开户银行' },
-    card_number: [{ required: true, message: "请输入正确的银行卡号" }, { validator: this.$validator.bankNumber }],
-    reserved_phone_number: [{ required: true, message: "请输入正确的手机号" }, { validator: this.$validator.phoneNumber }],
-    location: { required: true, message: '请选择开户地址' },
+    deposit_bank: { required: true, message: "请选择开户银行" },
+    card_number: [
+      { required: true, message: "请输入正确的银行卡号" },
+      { validator: this.$validator.bankNumber }
+    ],
+    reserved_phone_number: [
+      { required: true, message: "请输入正确的手机号" },
+      { validator: this.$validator.phoneNumber }
+    ],
+    location: { required: true, message: "请选择开户地址" }
   };
 
-
-
   /**
-* 图片上传
-*/
+   * 图片上传
+   */
   onRead({ file }) {
     NetService.upload(file).then(x => {
-      this.photo = x.url
+      this.photo = x.url;
       for (let i in this.arrAll) {
         if (this.arrAll[i].typeName == 1373) {
-          this.arrAll.splice(i, 1)
+          this.arrAll.splice(i, 1);
         }
       }
       this.arrAll.push({
@@ -261,16 +257,16 @@ export default class Login extends Vue {
         dataSize: x.size,
         materialUrl: x.url,
         uploadTime: x.createTime,
-        typeName: 1373,
-      })
+        typeName: 1373
+      });
     });
   }
   onReadTwo({ file }) {
     NetService.upload(file).then(x => {
-      this.photoTwo = x.url
+      this.photoTwo = x.url;
       for (let i in this.arrAll) {
         if (this.arrAll[i].typeName == 1374) {
-          this.arrAll.splice(i, 1)
+          this.arrAll.splice(i, 1);
         }
       }
       this.arrAll.push({
@@ -280,22 +276,20 @@ export default class Login extends Vue {
         dataSize: x.size,
         materialUrl: x.url,
         uploadTime: x.createTime,
-        typeName: 1374,
-      })
-
+        typeName: 1374
+      });
     });
   }
   /**
- * 图片删除
- */
+   * 图片删除
+   */
   closeIdentityCard(val, number) {
-    this[val] = ''
+    this[val] = "";
     for (let i in this.arrAll) {
       if (this.arrAll[i].typeName == number) {
-        this.arrAll.splice(i, 1)
+        this.arrAll.splice(i, 1);
       }
     }
-
   }
 
   /**
@@ -304,8 +298,6 @@ export default class Login extends Vue {
   lookIdentityCard(val) {
     ImagePreview([this[val]]);
   }
-
-
 }
 </script>
 <style lang="less" scoped>

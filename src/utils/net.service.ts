@@ -3,7 +3,6 @@ import axios from 'axios'
 import Qs from 'qs'
 import app from '~/config/app.config'
 import { StorageService } from '~/utils/storage.service'
-import { resolve } from "url";
 import { LoadingService } from "~/utils/loading.service";
 import { fileService } from "~/config/server/file-service"
 
