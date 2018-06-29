@@ -40,7 +40,6 @@
     <van-row>
       <p class="base-info-title">请确认银行卡信息是否一致</p>
       <van-cell-group>
-        <!-- <van-field v-model="depositBank" required label="开户银行" placeholder="请选择准开户银行" @click="pickerDialog=true" /> -->
         <van-cell title="开户银行" required is-link :value="depositBank" @click="pickerDialog=true" />
 
         <van-field name="center" placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
