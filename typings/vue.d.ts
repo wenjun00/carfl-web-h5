@@ -11,5 +11,6 @@ declare module 'vue/types/vue' {
     $Message: any
     $common: any
     $loading: any
+    $polis:any
   }
 }
