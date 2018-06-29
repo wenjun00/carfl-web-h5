@@ -260,9 +260,9 @@ export default class Login extends Vue {
         city1: this.intoA.PersonalJob.city1,    // 居住地区 市
         district1: this.intoA.PersonalJob.district1,    // 居住地区 区
         localHomeAddrDetail: this.intoA.PersonalJob.address,    // 居住地址
-        // usefulTime: this.intoA.personalCar.useful_time,    // 有效期限
-        // fileNumber: this.intoA.personalCar.file_number,    // 档案编号
-        // drivingLicense: this.intoA.personalCar.driving_license,  // 准驾车型
+        // usefulTime: this.intoA.personalCar.useful_time,    // 有效期限 暂时不用
+        // fileNumber: this.intoA.personalCar.file_number,    // 档案编号 暂时不用
+        // drivingLicense: this.intoA.personalCar.driving_license,  // 准驾车型 暂时不用
 
         driverTerm: this.intoA.personalCar.useful_time, // 有效期限
         driverNo: this.intoA.personalCar.file_number, // 档案编号

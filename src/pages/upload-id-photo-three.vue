@@ -46,7 +46,7 @@
         <van-field name="center" placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
 
         <van-cell title="开户地址" required is-link :value="personalBank.location | polisConvert " @click="$refs['cityPicker'].show()" />
-        <polis-Picker  required ref="cityPicker" @on-confirm="onCityPickerConfirm"></polis-picker>
+        <polis-Picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></polis-picker>
 
         <van-field name="center" maxlength="11" v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
       </van-cell-group>
@@ -57,7 +57,7 @@
     </transition>
     <!-- 选择下单城市 -->
     <transition name="fade">
-      <van-picker :columns="columnsTwo" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" />
+      <van-area :area-list="cityTop" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" :columns-num="2" />
     </transition>
 
     <van-button type="primary" class="nextStepSty" bottom-action @click="addAffirm">下一步</van-button>
@@ -105,28 +105,40 @@ export default class Login extends Vue {
     locationCity: "" // 开户市 id
   };
   private optionCity: boolean = false; // 城市选择弹窗
-  private columnsTwo: any = [
-    {
-      text: "郑州",
-      val: "902",
-      pid: "734"
+  // 顶部下拉数据
+  private cityTop = {
+    province_list: {
+      110000: '河南',
+      120000: '广西',
     },
-    {
-      text: "南宁",
-      val: "3125",
-      pid: "3021"
+    city_list: {
+      110100: '郑州',
+      120100: '南宁',
+    },
+    county_list: {
+      110101: '东城区',
     }
-  ];
+  }
   /***
    * 选择下单城市确定事件
    */
-  private onConfirmTwo(val) {
-    let catyAll = {
-      id: Number(val.val),
-      pid: Number(val.pid)
-    };
-    this.selectCity(catyAll);
-    this.optionCity = false;
+  //  顶部城市点击事件
+  onConfirmTwo(val) {
+    if (val[0].code == 110000) {
+      let catyAll = {
+        id: 902,
+        pid: 734,
+      }
+      this.selectCity(catyAll)
+
+    } else {
+      let catyAll = {
+        id: 3125,
+        pid: 3021,
+      }
+      this.selectCity(catyAll)
+    }
+    this.optionCity = false
   }
   // 选择银行户籍点击确定
   private onCityPickerConfirm(currentCitys) {

@@ -46,7 +46,7 @@
     </van-row>
     <!-- 选择下单城市 -->
     <transition name="fade">
-      <van-picker :columns="columnsTwo" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" />
+      <van-area :area-list="cityTop" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" :columns-num="2" />
     </transition>
 
     <transition name="fade">
@@ -86,27 +86,39 @@ export default class Login extends Vue {
     driverVicePhoto: '', // 驾驶证负面
   }
   private optionCity: boolean = false;     // 城市选择弹窗
-  private columnsTwo: any = [
-    {
-      text: '郑州',
-      val: '902',
-      pid: '734',
-    }, {
-      text: '南宁',
-      val: '3125',
-      pid: '3021',
+  // 顶部下拉数据
+  private cityTop = {
+    province_list: {
+      110000: '河南',
+      120000: '广西',
+    },
+    city_list: {
+      110100: '郑州',
+      120100: '南宁',
+    },
+    county_list: {
+      110101: '东城区',
     }
-  ];
+  }
   /***
   * 选择下单城市确定事件
   */
-  private onConfirmTwo(val) {
-    let catyAll = {
-      id: Number(val.val),
-      pid: Number(val.pid),
-    }
+  //  顶部城市点击事件
+  onConfirmTwo(val) {
+    if (val[0].code == 110000) {
+      let catyAll = {
+        id: 902,
+        pid: 734,
+      }
+      this.selectCity(catyAll)
 
-    this.selectCity(catyAll)
+    } else {
+      let catyAll = {
+        id: 3125,
+        pid: 3021,
+      }
+      this.selectCity(catyAll)
+    }
     this.optionCity = false
   }
   // 验证规则

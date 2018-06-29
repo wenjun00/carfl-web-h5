@@ -1,6 +1,5 @@
 <template>
   <section class="page uploadIdPhotoFirst">
-    <!-- <van-field v-model="heandCity" label="选择城市" placeholder="请选择城市" required @click="optionCity=true" /> -->
     <div>
       <van-cell title="选择城市" required is-link :value="[IntoACity.id] | cityConvert " @click="optionCity=true" />
       <van-row>
@@ -44,7 +43,6 @@
         <van-cell-group>
           <van-field v-model="idcard.name" name="center" placeholder="请输入证件姓名" required label="证件姓名" />
           <van-field v-model="idcard.id_card" name="center" placeholder="请输入证件号码" required label="证件号码" />
-          <!-- <van-field v-model="nation" label="民族" placeholder="请选择民族" required @click="pickerDialog=true" /> -->
           <van-cell title="民族" name="center" required is-link :value="nation" @click="pickerDialog=true" />
           <van-cell title="户籍信息" name="center" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
           <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
@@ -60,9 +58,12 @@
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
     </transition>
+  
+
     <!-- 选择下单城市 -->
     <transition name="fade">
-      <van-picker :columns="columnsTwo" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" />
+      <!-- <van-picker :columns="columnsTwo" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" /> -->
+        <van-area :area-list="cityTop" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" :columns-num="2" />
     </transition>
   </section>
 </template>
@@ -92,17 +93,17 @@ export default class Login extends Vue {
   private minDate: any = new Date(1949, 0, 1);
   private validPeriod: boolean = false   // 有效期限
   private currentDate: any = new Date()
-  private columnsTwo: any = [
-    {
-      text: '郑州',
-      val: '902',
-      pid: '734',
-    }, {
-      text: '南宁',
-      val: '3125',
-      pid: '3021',
-    }
-  ];
+  // private columnsTwo: any = [
+  //   {
+  //     text: '郑州',
+  //     val: '902',
+  //     pid: '734',
+  //   }, {
+  //     text: '南宁',
+  //     val: '3125',
+  //     pid: '3021',
+  //   }
+  // ];
   private type: any;
   private idcard: any = {
     id_card: '',  // 身份证号码
@@ -125,6 +126,40 @@ export default class Login extends Vue {
   @Mutation selectCity
   @State IntoACity
   @Mutation clearSelectCity
+
+  // 顶部下拉数据
+  private cityTop = {
+    province_list: {
+      110000: '河南',
+      120000: '广西',
+    },
+    city_list: {
+      110100: '郑州',
+      120100: '南宁',
+    },
+    county_list: {
+      110101: '东城区',
+    }
+  }
+
+  //  顶部城市点击事件
+  onConfirmTwo(val) {
+    if (val[0].code == 110000) {
+      let catyAll = {
+        id: 902,
+        pid: 734,
+      }
+       this.selectCity(catyAll)
+
+    } else {
+      let catyAll = {
+        id: 3125,
+        pid: 3021,
+      }
+       this.selectCity(catyAll)
+    }
+    this.optionCity = false
+  }
 
   private heandCity = '' // 选择城市
   // 验证规则
@@ -202,16 +237,16 @@ export default class Login extends Vue {
   /***
    * 选择下单城市确定事件
    */
-  private onConfirmTwo(val) {
-   
-    let catyAll = {
-      id: Number(val.val),
-      pid: Number(val.pid),
-    }
- 
-    this.selectCity(catyAll)
-    this.optionCity = false
-  }
+  // private onConfirmTwo(val) {
+
+  //   let catyAll = {
+  //     id: Number(val.val),
+  //     pid: Number(val.pid),
+  //   }
+
+  //   this.selectCity(catyAll)
+  //   this.optionCity = false
+  // }
 
   //测试图片上传
   onRead(val, number) {
