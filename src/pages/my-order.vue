@@ -14,7 +14,7 @@
       </van-cell-group>
       <van-collapse v-model="activatedCollapse">
         <van-collapse-item title="合同详情" name="contract">
-          <order-contract :orderId="orderInfo.id"></order-contract>
+          <order-contract></order-contract>
         </van-collapse-item>
         <div @click="operating">
           <van-collapse-item title="订单操作记录" name="record">
@@ -32,7 +32,7 @@ import Component from "vue-class-component";
 import NavBar from "~/components/common/nav-bar.vue";
 import OrderContract from "~/components/order/order-contract.vue";
 import OrderRecord from "~/components/order/order-record.vue";
-import { Getter, State } from "vuex-class";
+import { Getter, State,Mutation } from "vuex-class";
 import { ProductOrderService } from "~/services/manage-service/product-order.service";
 import { Dependencies } from "~/core/decorator";
 import { CityService } from "~/utils/city.service";
@@ -52,6 +52,7 @@ export default class MyOrder extends Vue {
   @State orderInfo;
   @State userData;
   @State userToken;
+  @Mutation getOrderIdFun
 
   private orderNumber: any = ''  // 获取当前订单号
   private activatedCollapse = []
@@ -71,6 +72,7 @@ export default class MyOrder extends Vue {
     this.productOrderService.findOrderInfoByOrderNumber(this.orderInfo).subscribe(
       data => {
         // this.productOrderInfo = data
+        this.getOrderIdFun(data.id)
         this.productOrderInfo.orderProcessRecord = data.orderProcessRecord
         this.productOrderInfo.orderReference = data.orderNumber
         this.productOrderInfo.carType = data.orderCar.modelName

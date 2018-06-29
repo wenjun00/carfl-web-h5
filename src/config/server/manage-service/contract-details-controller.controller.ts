@@ -15,6 +15,15 @@ export default {
         action: 'getOrderContractListByOrderNumber',
         type: requestType.Get
     },
+    /**
+     *  查看订单合同
+     */
+    getOrderContractListByOrderId: {
+        service: SERVICE,
+        controller: CONTROLLER,
+        action: 'getOrderContractListByOrderId',
+        type: requestType.Get
+    },
    
 
 }

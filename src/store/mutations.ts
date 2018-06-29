@@ -184,6 +184,10 @@ export default {
     state.IntoACity = data
   },
 
+  getOrderIdFun(state,data){
+    state.getOrderId = data
+  },
+
   // 清空进件城市
   clearSelectCity(state){
     state.IntoACity = ''

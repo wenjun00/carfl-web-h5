@@ -19,4 +19,15 @@ export class ContractDetailsControllerService {
             }
         })
     }
+     /**
+     * 获取订单合同数据
+     */
+    getOrderContractListByOrderId(id){
+        return this.netService.send({
+            server: manageService.contractDetailsController.getOrderContractListByOrderId,
+            data:{
+              orderId: id
+            }
+        })
+    }
 }

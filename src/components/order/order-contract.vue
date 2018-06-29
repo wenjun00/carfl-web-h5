@@ -14,10 +14,12 @@ import { ContractDetailsControllerService } from "~/services/manage-service/cont
 import { Dependencies } from "~/core/decorator";
 import { ImagePreview } from 'vant';
 import { Getter, State } from "vuex-class";
+import { setTimeout } from "core-js";
 @Component({})
 export default class OrderContract extends Vue {
   @Dependencies(ContractDetailsControllerService) private contractDetailsControllerService: ContractDetailsControllerService;
-  @State orderInfo
+  @State getOrderId
+
   private dataCompact: any = []
   private onitemClick(item, code) {
 
@@ -28,11 +30,10 @@ export default class OrderContract extends Vue {
     } else {
       this.$toast('当前合同暂未生成')
     }
-
   }
 
   getContractDetails() {
-    this.contractDetailsControllerService.getOrderContractListByOrderNumber(this.orderInfo).subscribe(
+    this.contractDetailsControllerService.getOrderContractListByOrderId(this.getOrderId).subscribe(
       data => {
         this.dataCompact = data
       },
@@ -41,7 +42,8 @@ export default class OrderContract extends Vue {
   }
 
   mounted() {
-    this.getContractDetails()
+      this.getContractDetails()
+      
   }
 
 }

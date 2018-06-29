@@ -33,6 +33,7 @@ export default {
   companyList: [],
   intoA:{}, // 进件
   IntoACity:'',// 进件城市 
-  promptlyMake:false // 立即预约
+  promptlyMake:false ,// 立即预约
+  getOrderId:'',   // 订单id
   
 }
