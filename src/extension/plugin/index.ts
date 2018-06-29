@@ -6,6 +6,7 @@ import filterPlugin from './filter.plugin'
 import commonPlugin from './common.plugin'
 import validatorPlugin from './validator.plugin'
 import loadingPlugin from './loading.plugin'
+import polisPlugin from './polis.plugin'
 
 export default ({ store }) => ({
   cityPlugin,
@@ -13,5 +14,6 @@ export default ({ store }) => ({
   filterPlugin,
   commonPlugin,
   validatorPlugin,
-  loadingPlugin
+  loadingPlugin,
+  polisPlugin
 })

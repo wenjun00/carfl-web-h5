@@ -48,8 +48,7 @@
         <van-cell title="居住地区" required is-link :value="inforModel.area | cityConvert " @click="$refs['cityPicker'].show()" />
         <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
 
-        <van-field name="center" type="textarea" class="address" v-model="inforModel.address" label="居住
-        地址" required placeholder="请输入详细的居民地址精确到门牌号" />
+        <van-field name="center" type="textarea" class="address" v-model="inforModel.address" label="居住地址" required placeholder="请输入详细的居住地址,精确到门牌号" />
       </van-cell-group>
       <van-popup v-model="show.living" position="bottom">
         <van-picker :columns="columns" show-toolbar @change="onChange" @confirm="show.living=false" @cancel="show.living=false" />

@@ -44,7 +44,7 @@
 
         <van-field name="center" placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
 
-        <van-cell title="开户地址" required is-link :value="personalBank.location | polisConvert " @click="$refs['cityPicker'].show()" />
+        <van-cell title="开户地址" required is-link :value="province+city" @click="$refs['cityPicker'].show()" />
         <polis-Picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></polis-picker>
 
         <van-field name="center" maxlength="11" v-model="personalBank.reserved_phone_number" label="预留手机号" placeholder="请输入预留手机号" required/>
@@ -75,6 +75,7 @@ import { ProductOrderService } from "~/services/manage-service/product-order.ser
 import { FddApiService } from "~/services/manage-service/fdd-api.service";
 import { Dependencies } from "~/core/decorator";
 import PolisPicker from "~/components/common/polis-picker.vue";
+import { FilterService } from '~/utils/filter.service'
 @Component({
   components: {
     CityPicker,
@@ -140,12 +141,19 @@ export default class Login extends Vue {
     }
     this.optionCity = false
   }
-  // 选择银行户籍点击确定
+  // 选择银行户籍点击确定 
   private onCityPickerConfirm(currentCitys) {
     this.personalBank.locationProvince = currentCitys[0];
     this.personalBank.locationCity = currentCitys[1];
     this.personalBank.location = currentCitys;
   }
+   get province(){
+     return FilterService.polisConvertTwo(this.personalBank.location)
+   }
+   get city(){
+     return FilterService.polisConvert(this.personalBank.location)
+   }
+
   /**
    * 四要素判断
    */

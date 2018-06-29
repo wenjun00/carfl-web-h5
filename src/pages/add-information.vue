@@ -16,7 +16,7 @@
     </van-row>
     <van-row>
       <p class="base-info-title">
-        <span class="star">*</span>承租人跟业务员的合照</p>
+        <span class="star">*</span>承租人与业务员合照</p>
       <van-row class="imgList">
         <van-col span="11">
           <van-uploader class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCardTwo',1364)" accept="image/gif, image/jpeg" multiple>

@@ -269,7 +269,7 @@ export class FilterService {
   }
 
   /**
-   * 法大大城市文字转换
+   * 法大大城市文字转换 城市
    * @param values 要转换的城市ID 数组或者单个ID
    */
   static polisConvert(values) {
@@ -278,6 +278,21 @@ export class FilterService {
       let index = 0;
       while (index < values.length) {
         cityTwo.push(PolisService.getCityName(values[index]))
+        index++
+      }
+    }
+    return cityTwo.join(' ')
+  }
+   /**
+   * 法大大城市文字转换省
+   * @param values 要转换的城市ID 数组或者单个ID
+   */
+  static polisConvertTwo(values) {
+    let cityTwo = []
+    if (values){
+      let index = 0;
+      while (index < values.length) {
+        cityTwo.push(PolisService.getProvinceName(values[index]))
         index++
       }
     }

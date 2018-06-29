@@ -73,4 +73,15 @@ export class PolisService {
     })
     return results.length < 1 ? results[0] : results
   }
+  /**
+   * 获取省名称
+   */
+  static getProvinceName(...ids) {
+    let results: Array<string> = []
+    ids.forEach(id => {
+      let item = polisData.find(c => c.province_code === id) || {}
+      results.push(item.province_name)
+    })
+    return results.length < 1 ? results[0] : results
+  }
 }
