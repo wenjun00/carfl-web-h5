@@ -103,6 +103,11 @@ export default class Login extends Vue {
   }
 
   mounted() {
+
+     if(!!this.intoA.PersonalContact){
+      this.contactModel = this.intoA.PersonalContact
+    }
+
     let els: any = document.getElementsByName("center")
     els.forEach(v => {
       v.onclick = () => {

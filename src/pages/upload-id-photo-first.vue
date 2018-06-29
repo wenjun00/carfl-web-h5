@@ -43,7 +43,7 @@
         <van-cell-group>
           <van-field v-model="idcard.name" name="center" placeholder="请输入证件姓名" required label="证件姓名" />
           <van-field v-model="idcard.id_card" name="center" placeholder="请输入证件号码" required label="证件号码" />
-          <van-cell title="民族" name="center" required is-link :value="nation" @click="pickerDialog=true" />
+          <van-cell title="民族" name="center" required is-link :value="idcard.nationText" @click="pickerDialog=true" />
           <van-cell title="户籍信息" name="center" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
           <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
           <van-cell title="有效期限" name="center" required is-link :value="idcard.id_card_validity_period_section" @click="validPeriod=true" />
@@ -88,26 +88,16 @@ export default class Login extends Vue {
   private photoTwo: any = "";
   private pickerDialog: boolean = false;  //  民族弹窗
   private optionCity: boolean = false;     // 城市选择弹窗
-  private nation: string = ''
+  // private nation: string = ''
   private columns: any = [];
   private minDate: any = new Date(1949, 0, 1);
   private validPeriod: boolean = false   // 有效期限
   private currentDate: any = new Date()
-  // private columnsTwo: any = [
-  //   {
-  //     text: '郑州',
-  //     val: '902',
-  //     pid: '734',
-  //   }, {
-  //     text: '南宁',
-  //     val: '3125',
-  //     pid: '3021',
-  //   }
-  // ];
   private type: any;
   private idcard: any = {
     id_card: '',  // 身份证号码
     nation: '',   // 民族
+    nationText:'', // 民族汉子
     id_card_validity_period_section: '', //身份证有效区间
     name: '',    // 户名
     id_card_address: '', // 身份证地址
@@ -231,23 +221,10 @@ export default class Login extends Vue {
 
   private onConfirm(val) {
     this.idcard.nation = val.value
-    this.nation = this.$dict.getDictName(Number(this.idcard.nation))
+    this.idcard.nationText = this.$dict.getDictName(Number(this.idcard.nation))
     this.pickerDialog = false
   }
-  /***
-   * 选择下单城市确定事件
-   */
-  // private onConfirmTwo(val) {
-
-  //   let catyAll = {
-  //     id: Number(val.val),
-  //     pid: Number(val.pid),
-  //   }
-
-  //   this.selectCity(catyAll)
-  //   this.optionCity = false
-  // }
-
+ 
   //测试图片上传
   onRead(val, number) {
     return ({ file }) => {
@@ -291,6 +268,13 @@ export default class Login extends Vue {
   }
 
   mounted() {
+    
+    if(!!this.intoA.personal){
+      this.idcard = this.intoA.personal
+      this.photo = this.idcard.headPhoto
+      this.photoTwo = this.idcard.nationalPhoto
+    }
+
     this.clearSelectCity()
     // this.IntoACity = []
     this.columns = this.$dict.getDictData('0486').map(v => {

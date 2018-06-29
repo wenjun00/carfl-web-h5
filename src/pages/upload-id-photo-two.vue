@@ -40,7 +40,7 @@
         <van-datetime-picker v-show="validPeriod" v-model="currentDate" type="date" :min-date="minDate" @cancel="validPeriodCancel" @confirm="validPeriodAffirm" />
         <van-field name="center" v-model="peopleCar.file_number" placeholder="请输入档案编号" label="档案编号" required/>
         <!-- <van-field v-model="drivingType" required label="准驾车型" placeholder="请选择准驾车型" @click="pickerDialog=true" /> -->
-        <van-cell title="准驾车型" required is-link :value="drivingType" @click="pickerDialog=true" />
+        <van-cell title="准驾车型" required is-link :value="peopleCar.drivingType" @click="pickerDialog=true" />
 
       </van-cell-group>
     </van-row>
@@ -77,13 +77,14 @@ export default class Login extends Vue {
   private minDate: any = new Date(1949, 0, 1);
   private type: any;
   private currentDate: any = new Date()
-  private drivingType: string = ''
+  // private drivingType: string = ''
   private peopleCar: any = {
     useful_time: '',  // 有效期限
     file_number: '',  // 档案编号
     driving_license: '', // 准驾车型
     driverPhoto: '',   // 驾驶证正面
     driverVicePhoto: '', // 驾驶证负面
+    drivingType:'',   // 准假车型汉子
   }
   private optionCity: boolean = false;     // 城市选择弹窗
   // 顶部下拉数据
@@ -154,7 +155,7 @@ export default class Login extends Vue {
 
   private onConfirm(val) {
     this.peopleCar.driving_license = val.value
-    this.drivingType = this.$dict.getDictName(Number(this.peopleCar.driving_license))
+    this.peopleCar.drivingType = this.$dict.getDictName(Number(this.peopleCar.driving_license))
     this.pickerDialog = false
   }
   /**
@@ -229,6 +230,12 @@ export default class Login extends Vue {
   }
 
   mounted() {
+     if(!!this.intoA.personalCar){
+       this.peopleCar = this.intoA.personalCar
+       this.photo = this.peopleCar.driverPhoto
+       this.photoTwo = this.peopleCar.driverVicePhoto
+    }
+
     let els: any = document.getElementsByName("center")
     els.forEach(v => {
       v.onclick = () => {

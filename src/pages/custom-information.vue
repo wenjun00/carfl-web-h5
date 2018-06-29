@@ -269,6 +269,11 @@ export default class Login extends Vue {
 
 
   mounted() {
+    if (!!this.intoA.PersonalJob) {
+      this.inforModel = this.intoA.PersonalJob
+    
+    }
+
     let els: any = document.getElementsByName("center")
     els.forEach(v => {
       v.onclick = () => {

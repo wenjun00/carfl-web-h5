@@ -16,7 +16,7 @@
     </van-row>
     <van-row>
       <p class="base-info-title">
-        <span class="star">*</span>承租人手持业务员照片</p>
+        <span class="star">*</span>承租人跟业务员的合照</p>
       <van-row class="imgList">
         <van-col span="11">
           <van-uploader class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCardTwo',1364)" accept="image/gif, image/jpeg" multiple>
@@ -396,6 +396,31 @@ export default class Login extends Vue {
 
 
   mounted() {
+
+      for(let i of this.intoA.PersonalAdditional){
+         if(i.typeName === 1363){
+           this.identityCard = i.materialUrl
+         }else if(i.typeName === 1364){
+            this.identityCardTwo = i.materialUrl
+         }else if(i.typeName === 1345){
+            this.listImg = i.materialUrl
+         }else if(i.typeName === 1355){
+            this.listImg2 = i.materialUrl
+         }else if(i.typeName === 1356){
+            this.listImg3 = i.materialUrl
+         }else if(i.typeName === 1357){
+            this.listImg4 = i.materialUrl
+         }else if(i.typeName === 1358){
+            this.listImg5 = i.materialUrl
+         }else if(i.typeName === 1359){
+            this.listImg6 = i.materialUrl
+         }else if(i.typeName === 1360){
+            this.listImg7 = i.materialUrl
+         }else if(i.typeName === 1361){
+            this.listImg8 = i.materialUrl
+         }
+      }
+
     this.arrImg = this.intoA.PersonalAdditional
    
   }

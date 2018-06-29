@@ -40,7 +40,7 @@
     <van-row>
       <p class="base-info-title">请确认银行卡信息是否一致</p>
       <van-cell-group>
-        <van-cell title="开户银行" required is-link :value="depositBank" @click="pickerDialog=true" />
+        <van-cell title="开户银行" required is-link :value="personalBank.depositBank" @click="pickerDialog=true" />
 
         <van-field name="center" placeholder="请输入开户卡号" v-model="personalBank.card_number" label="银行卡号" required/>
 
@@ -94,14 +94,15 @@ export default class Login extends Vue {
   private pickerDialog: boolean = false;
   private columns: any = [];
   private type: any;
-  private depositBank: string = "";
+  // private depositBank: string = "";
   private personalBank: any = {
     reserved_phone_number: "", //预留手机号
     deposit_bank: "", // 开户银行
     card_number: "", // 银行卡号
     location: "", // 开户地区汉字
     locationProvince: "", // 开户省 id
-    locationCity: "" // 开户市 id
+    locationCity: "" ,// 开户市 id
+    depositBank:"", // 开户银行
   };
   private optionCity: boolean = false; // 城市选择弹窗
   // 顶部下拉数据
@@ -202,7 +203,7 @@ export default class Login extends Vue {
 
   private onConfirm(val) {
     this.personalBank.deposit_bank = val.bankCode;
-    this.depositBank = val.bankName;
+    this.personalBank.depositBank = val.bankName;
     this.pickerDialog = false;
   }
   /***
@@ -220,6 +221,21 @@ export default class Login extends Vue {
   }
 
   mounted() {
+    if(!!this.intoA.personalBank){
+      console.log(this.intoA.personalBank)
+       this.personalBank = this.intoA.personalBank
+
+       for(let i of this.intoA.PersonalAdditional){
+          if(i.typeName === 1373){
+              this.photo = i.materialUrl
+          }
+          if(i.typeName === 1374){
+             this.photoTwo = i.materialUrl
+          }
+       }
+      
+    }
+
     let els: any = document.getElementsByName("center");
     els.forEach(v => {
       v.onclick = () => {
