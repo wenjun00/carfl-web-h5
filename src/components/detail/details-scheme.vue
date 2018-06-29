@@ -64,7 +64,7 @@
         </van-cell-group>
       </van-collapse-item>
     </van-collapse> -->
-    
+
     <van-cell-group>
       <van-cell>
         <template slot="title">
@@ -82,9 +82,21 @@
         <van-cell title="驱动方式" :value="basicEquipment.drivingMode" />
         <van-cell title="燃料形式" :value="basicEquipment.fuel" />
         <van-cell title="综合油耗(L/100km)" :value="basicEquipment.fuelConsumption" />
-        <van-cell title="车辆配色" :value="basicEquipment.carColour" />
+        <!-- <van-cell title="车辆配色" :value="basicEquipment.carColour" />  -->
+        <van-cell title="车辆颜色" name="center"  is-link :value="basicEquipment.carColour" @click="pickerDialog=true" />
+        <van-cell title="内饰颜色" name="center"  is-link :value="basicEquipment.carInteriorColor" @click="pickerDialogTwo=true" />
       </van-cell-group>
     </div>
+
+    <!-- 车辆配色 -->
+    <transition name="fade">
+      <van-picker class="carColorSty" :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
+    </transition>
+       <!-- 内饰配色 -->
+    <transition name="fade">
+      <van-picker class="carColorSty" :columns="columnsTwo" v-show="pickerDialogTwo" show-toolbar ref="vanpicker" @confirm="onConfirmTwo" @cancel="pickerDialogTwo=false" />
+    </transition>
+
     <!-- 空行 -->
     <div class="break-line"></div>
     <!-- 车型亮点 -->
@@ -227,6 +239,10 @@ export default class detailsScheme extends Vue {
   @State orderInfo
   @State promptlyMake
   @State userData
+  private columnsTwo:any=[] // 内饰颜色
+  private columns: any = [];  // 车辆颜色内容
+  private pickerDialog: boolean = false;  //  车辆颜色弹窗
+   private pickerDialogTwo: boolean = false;  //  内饰颜色
   private showDetails: boolean = false
   private activeNames: any = ['1']
   private paramList: any = []   // 车辆详情配置
@@ -257,7 +273,7 @@ export default class detailsScheme extends Vue {
       },
       err => this.$toast(err.msg)
     )
-  }
+  } 
   /**
   * 获取车辆基本配置
   */
@@ -266,15 +282,14 @@ export default class detailsScheme extends Vue {
       data => {
         this.basicEquipment = data
         let carColour = this.basicEquipment.carColour.split(';')
+        this.columns = carColour
+        let carInteriorColor = this.basicEquipment.interiorColor.split(';')
+        this.columnsTwo = carInteriorColor
+
+
         this.basicEquipment.carColour = carColour[0]
-        this.carInfo = {
-          brandName: data.brandName,
-          interiorColor: data.interiorColor,
-          modelName: data.modelName,
-          seriesName: data.seriesName,
-          vehicleColor: this.basicEquipment.carColour,
-          vehicleId: this.carId
-        }
+        this.basicEquipment.carInteriorColor = carInteriorColor[0]
+       
       },
       err => this.$toast(err.msg)
     )
@@ -342,7 +357,7 @@ export default class detailsScheme extends Vue {
       err => this.$toast(err.msg)
     )
   }
- 
+
   /**
    * 查询订单是否被领取
    */
@@ -351,9 +366,17 @@ export default class detailsScheme extends Vue {
       this.$toast('请先进行预约')
       return
     }
-  
+
     this.appCustomerService.checkCustomerType(this.userData.id).subscribe(
       data => {
+         this.carInfo = {
+          brandName:  this.basicEquipment.brandName,
+          interiorColor: this.basicEquipment.carInteriorColor,
+          modelName:  this.basicEquipment.modelName,
+          seriesName:  this.basicEquipment.seriesName,
+          vehicleColor: this.basicEquipment.carColour,
+          vehicleId: this.carId,
+        }
 
         if (!!this.carIntoA.productResultId) {
           this.carDetails(this.carInfo)
@@ -367,7 +390,21 @@ export default class detailsScheme extends Vue {
     )
   }
 
+  /**
+   * 点击车身颜色 确定
+   */
 
+  private onConfirm(val) {
+    this.pickerDialog = false
+    this.basicEquipment.carColour = val
+  }
+ /**
+  * 点击车身颜色 确定
+  */
+ private onConfirmTwo(val) {
+    this.pickerDialogTwo = false
+    this.basicEquipment.carInteriorColor = val
+  }
 
   /***
     * 点击下一步
@@ -389,7 +426,7 @@ export default class detailsScheme extends Vue {
 
 <style lang="less" scoped>
 .page.details-scheme {
-  .fontWeight{
+  .fontWeight {
     font-weight: 600;
   }
   .falseButton {
@@ -536,6 +573,12 @@ export default class detailsScheme extends Vue {
 </style>
 <style lang="less">
 .page.details-scheme {
+  .carColorSty {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+  }
   .dropDown {
     padding-left: 13px;
     font-weight: 600;

@@ -45,10 +45,11 @@
       <van-cell-group>
         <van-cell title="居住情况" required is-link :value="inforModel.falseSituation" @click="situationBot=true" />
         <van-cell title="居住年限" required is-link :value="inforModel.falseAgelimit" @click="agelimitBot=true" />
-        <van-cell title="居民地区" required is-link :value="inforModel.area | cityConvert " @click="$refs['cityPicker'].show()" />
+        <van-cell title="居住地区" required is-link :value="inforModel.area | cityConvert " @click="$refs['cityPicker'].show()" />
         <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
 
-        <van-field name="center" type="textarea" class="address" v-model="inforModel.address" label="居民地址" required placeholder="请输入详细的居民地址精确到门牌号" />
+        <van-field name="center" type="textarea" class="address" v-model="inforModel.address" label="居住
+        地址" required placeholder="请输入详细的居民地址精确到门牌号" />
       </van-cell-group>
       <van-popup v-model="show.living" position="bottom">
         <van-picker :columns="columns" show-toolbar @change="onChange" @confirm="show.living=false" @cancel="show.living=false" />

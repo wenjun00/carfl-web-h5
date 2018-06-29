@@ -336,12 +336,10 @@ export default class Login extends Vue {
     let userAll = {
       token: this.userToken
     }
-
     this.loginService.getOrderNoByToken(userAll).subscribe(
       data => {
         this.updateUserOrder(data)
-      },
-      err => this.$toast(err.msg)
+      }    
     )
   }
 
