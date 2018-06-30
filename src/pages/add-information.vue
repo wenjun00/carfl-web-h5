@@ -44,7 +44,7 @@
               <van-icon class="vanIcon" v-if="listImg == ''" name="add" />
               <img height="100%" v-else :src="listImg" alt="">
             </van-uploader>
-            <van-icon @click="closeIdentityCard('listImg',1345)" v-if="!listImg == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="closeIdentityCard('listImg',1354)" v-if="!listImg == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg')" v-if="!listImg == ''" class="lookiconHead" name="password-view" />
           </van-col>
           <van-col span="11" class="marleft">
@@ -52,7 +52,7 @@
               <van-icon class="vanIcon" v-if="listImg1 == ''" name="add" />
               <img height="100%" v-else :src="listImg1" alt="">
             </van-uploader>
-            <van-icon @click="closeIdentityCard('listImg1',1345)" v-if="!listImg1 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="closeIdentityCard('listImg1',1354)" v-if="!listImg1 == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg1')" v-if="!listImg1 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
