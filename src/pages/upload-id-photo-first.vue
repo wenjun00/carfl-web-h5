@@ -246,7 +246,7 @@ export default class Login extends Vue {
           uploadTime: x.createTime,
           typeName: number,
         })
-      }).catch(ex=>{
+      }).catch(ex => {
       })
     }
   }

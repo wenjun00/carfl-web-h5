@@ -39,13 +39,21 @@
           <van-col>户口本（户主页及个人页）</van-col>
         </van-row>
         <van-row class="imgList">
-          <van-col span="11">
+          <van-col span="11" >
             <van-uploader capture="camera" class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg',1354)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg == ''" name="add" />
               <img height="100%" v-else :src="listImg" alt="">
             </van-uploader>
             <van-icon @click="closeIdentityCard('listImg',1345)" v-if="!listImg == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg')" v-if="!listImg == ''" class="lookiconHead" name="password-view" />
+          </van-col>
+          <van-col span="11" class="marleft">
+            <van-uploader capture="camera" class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg1',1354)" accept="image/gif, image/jpeg" multiple>
+              <van-icon class="vanIcon" v-if="listImg1 == ''" name="add" />
+              <img height="100%" v-else :src="listImg1" alt="">
+            </van-uploader>
+            <van-icon @click="closeIdentityCard('listImg1',1345)" v-if="!listImg1 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="lookIdentityCard('listImg1')" v-if="!listImg1 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
         <van-row class="heandClass">
@@ -189,6 +197,7 @@ export default class Login extends Vue {
   private identityCardTwo: any = '';
   private photo: any = "";
   private listImg: string = ''
+  private listImg1: string = ''
   private listImg2: string = ''
   private listImg3: string = ''
   private listImg4: string = ''
@@ -225,7 +234,7 @@ export default class Login extends Vue {
     this.personalAll = {
       ///
       city: this.IntoACity.id,
-      province:this.IntoACity.pid,
+      province: this.IntoACity.pid,
       productResultId: this.intoA.orderCarTwo.productResultId,
       productId: this.intoA.orderCarTwo.productId,
       initialPayment: this.intoA.orderCarTwo.initialPayment,
@@ -238,7 +247,7 @@ export default class Login extends Vue {
         // driverNo: null,        
         // driverTerm:null,
         // idCardAddressDetail:null,
-        certificateType:1167,
+        certificateType: 1167,
         headPhoto: this.intoA.personal.headPhoto, // 身份证头像地址
         nationalPhoto: this.intoA.personal.nationalPhoto,  // 身份证国徽地址
         driverPhoto: this.intoA.personalCar.driverPhoto,    // 驾驶证正面
@@ -248,7 +257,7 @@ export default class Login extends Vue {
         nation: this.intoA.personal.nation,   // 民族
         province: this.intoA.personal.province,  // 户籍信息省市
         city: this.intoA.personal.city,       // 户籍信息城市
-        district:this.intoA.personal.district, // 户籍信息区
+        district: this.intoA.personal.district, // 户籍信息区
         idCardTerm: this.intoA.personal.id_card_validity_period_section, // 有效期限
         mobileMain: this.intoA.PersonalJob.phone,
         mobileMinor: this.intoA.PersonalJob.contactPhone,
@@ -296,7 +305,7 @@ export default class Login extends Vue {
         modelName: this.intoA.orderCar.modelName,
         seriesName: this.intoA.orderCar.seriesName,
         vehicleColor: this.intoA.orderCar.vehicleColor,
-        vehicleId:this.intoA.orderCar.vehicleId,
+        vehicleId: this.intoA.orderCar.vehicleId,
       },
       personalContacts: [
         {
@@ -325,6 +334,9 @@ export default class Login extends Vue {
         this.getLogoIndent()
       },
       err => {
+        if (err.msg === null) {
+          this.$toast('进件失败')
+        }
         this.$toast(err.msg)
       }
 
@@ -339,7 +351,7 @@ export default class Login extends Vue {
     this.loginService.getOrderNoByToken(userAll).subscribe(
       data => {
         this.updateUserOrder(data)
-      }    
+      }
     )
   }
 
@@ -395,32 +407,32 @@ export default class Login extends Vue {
 
   mounted() {
 
-      for(let i of this.intoA.PersonalAdditional){
-         if(i.typeName === 1363){
-           this.identityCard = i.materialUrl
-         }else if(i.typeName === 1364){
-            this.identityCardTwo = i.materialUrl
-         }else if(i.typeName === 1345){
-            this.listImg = i.materialUrl
-         }else if(i.typeName === 1355){
-            this.listImg2 = i.materialUrl
-         }else if(i.typeName === 1356){
-            this.listImg3 = i.materialUrl
-         }else if(i.typeName === 1357){
-            this.listImg4 = i.materialUrl
-         }else if(i.typeName === 1358){
-            this.listImg5 = i.materialUrl
-         }else if(i.typeName === 1359){
-            this.listImg6 = i.materialUrl
-         }else if(i.typeName === 1360){
-            this.listImg7 = i.materialUrl
-         }else if(i.typeName === 1361){
-            this.listImg8 = i.materialUrl
-         }
+    for (let i of this.intoA.PersonalAdditional) {
+      if (i.typeName === 1363) {
+        this.identityCard = i.materialUrl
+      } else if (i.typeName === 1364) {
+        this.identityCardTwo = i.materialUrl
+      } else if (i.typeName === 1345) {
+        this.listImg = i.materialUrl
+      } else if (i.typeName === 1355) {
+        this.listImg2 = i.materialUrl
+      } else if (i.typeName === 1356) {
+        this.listImg3 = i.materialUrl
+      } else if (i.typeName === 1357) {
+        this.listImg4 = i.materialUrl
+      } else if (i.typeName === 1358) {
+        this.listImg5 = i.materialUrl
+      } else if (i.typeName === 1359) {
+        this.listImg6 = i.materialUrl
+      } else if (i.typeName === 1360) {
+        this.listImg7 = i.materialUrl
+      } else if (i.typeName === 1361) {
+        this.listImg8 = i.materialUrl
       }
+    }
 
     this.arrImg = this.intoA.PersonalAdditional
-   
+
   }
 
 
@@ -428,6 +440,10 @@ export default class Login extends Vue {
 </script>
 <style lang="less">
 .page.addInformation {
+  .marleft {
+    position: relative;
+    left: 5px;
+  }
   .headPortrait {
     display: flex;
     align-items: center;

@@ -5,6 +5,7 @@ import app from '~/config/app.config'
 import { StorageService } from '~/utils/storage.service'
 import { LoadingService } from "~/utils/loading.service";
 import { fileService } from "~/config/server/file-service"
+import Loading from '~/components/common/loading.vue';
 
 const getType = ['GET', 'DELETE'] // 使用GET请求类型
 
@@ -212,10 +213,12 @@ export class NetService {
   }
 
   public static async upload(file, toZip = true) {
-    console.log('原始图片文件',file)
+    // console.log('原始图片文件',file)
+    let Loading = LoadingService.show()
     if (toZip) {
       file = await NetService.zipPicture(file)
-      console.log('压缩后图片文件',file)
+      // console.log('压缩后图片文件',file)
+      Loading.remove()
     }
 
     let headers = {
