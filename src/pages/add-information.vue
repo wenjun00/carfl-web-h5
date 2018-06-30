@@ -39,7 +39,7 @@
           <van-col>户口本（户主页及个人页）</van-col>
         </van-row>
         <van-row class="imgList">
-          <van-col span="11" >
+          <van-col span="11">
             <van-uploader capture="camera" class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg',1354)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg == ''" name="add" />
               <img height="100%" v-else :src="listImg" alt="">
@@ -48,11 +48,11 @@
             <van-icon @click="lookIdentityCard('listImg')" v-if="!listImg == ''" class="lookiconHead" name="password-view" />
           </van-col>
           <van-col span="11" class="marleft">
-            <van-uploader capture="camera" class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg1',1354)" accept="image/gif, image/jpeg" multiple>
+            <van-uploader capture="camera" class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg1',13544)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg1 == ''" name="add" />
               <img height="100%" v-else :src="listImg1" alt="">
             </van-uploader>
-            <van-icon @click="closeIdentityCard('listImg1',1354)" v-if="!listImg1 == ''" class="deleteiconHead" name="close" />
+            <van-icon @click="closeIdentityCard('listImg1',13544)" v-if="!listImg1 == ''" class="deleteiconHead" name="close" />
             <van-icon @click="lookIdentityCard('listImg1')" v-if="!listImg1 == ''" class="lookiconHead" name="password-view" />
           </van-col>
         </van-row>
@@ -321,7 +321,12 @@ export default class Login extends Vue {
     }
 
     this.personalAll.personalAdditionals = this.intoA.PersonalAdditional
-    // this.personalAll.orderCar = this.intoA.orderCar
+    for (let i in this.personalAll.personalAdditionals) {
+      if (this.personalAll.personalAdditionals[i].typeName === 13544) {
+        this.personalAll.personalAdditionals[i].typeName = 1354
+      }
+    }
+
     this.productOrderService.createOrder(this.personalAll).subscribe(
       data => {
         this.clearIntoA()
@@ -412,9 +417,12 @@ export default class Login extends Vue {
         this.identityCard = i.materialUrl
       } else if (i.typeName === 1364) {
         this.identityCardTwo = i.materialUrl
-      } else if (i.typeName === 1345) {
+      } else if (i.typeName === 1354) {
         this.listImg = i.materialUrl
-      } else if (i.typeName === 1355) {
+      } else if (i.typeName === 13544) {
+        this.listImg1 = i.materialUrl
+      }
+      else if (i.typeName === 1355) {
         this.listImg2 = i.materialUrl
       } else if (i.typeName === 1356) {
         this.listImg3 = i.materialUrl

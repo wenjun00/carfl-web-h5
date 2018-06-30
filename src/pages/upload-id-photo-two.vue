@@ -226,6 +226,12 @@ export default class Login extends Vue {
     */
   closeIdentityCard(val, number) {
     this[val] = ''
+     if (number === 1371) {
+        this.peopleCar.driverPhoto = ''
+      }
+      if (number === 1372) {
+        this.peopleCar.driverVicePhoto = ''
+      }
     for (let i in this.arrAll) {
       if (this.arrAll[i].typeName == number) {
         this.arrAll.splice(i, 1)

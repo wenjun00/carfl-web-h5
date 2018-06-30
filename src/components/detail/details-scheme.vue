@@ -285,8 +285,6 @@ export default class detailsScheme extends Vue {
         this.columns = carColour
         let carInteriorColor = this.basicEquipment.interiorColor.split(';')
         this.columnsTwo = carInteriorColor
-
-
         this.basicEquipment.carColour = carColour[0]
         this.basicEquipment.carInteriorColor = carInteriorColor[0]
        

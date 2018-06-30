@@ -188,7 +188,7 @@ export default class Login extends Vue {
    * 点击下一步
    */
   addAffirm() {
-
+    console.log(this.idcard)
     this.$validator.validate(this.idcard, this.rules).then(error => {
       if (!error) {
         for (let i in this.arrImg) {
@@ -198,6 +198,8 @@ export default class Login extends Vue {
             this.idcard.nationalPhoto = this.arrImg[i].materialUrl
           }
         }
+
+
         if (this.idcard.headPhoto == '') {
           this.$toast('请先上传身份证头像面');
           return
@@ -267,12 +269,18 @@ export default class Login extends Vue {
    */
   closeIdentityCard(val, number) {
     this[val] = ''
+     if (number === 1369) {
+        this.idcard.headPhoto = ''
+      }
+      if (number === 1370) {
+        this.idcard.nationalPhoto = ''
+      }
     for (let i in this.arrImg) {
       if (this.arrImg[i].typeName == number) {
         this.arrImg.splice(i, 1)
       }
-    }
 
+    }
   }
   /**
    * 图片预览
