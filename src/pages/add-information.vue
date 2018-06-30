@@ -114,7 +114,7 @@
           </van-col>
         </van-row>
         <van-row class="heandClass">
-          <van-col>居住证明（本人/直系亲属姓名的水电费.物业费等单据）</van-col>
+          <van-col>居住证明（本人/直系亲属姓名的水电费、物业费等单据）</van-col>
         </van-row>
         <van-row class="imgList imglistTwo">
           <van-col span="11">
