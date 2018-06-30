@@ -362,7 +362,6 @@ export default class detailsScheme extends Vue {
    * 查询订单是否被领取
    */
   getIndentType() {
-  
     this.appCustomerService.checkCustomerType(this.userData.id).subscribe(
       data => {
          this.carInfo = {

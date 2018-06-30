@@ -5,7 +5,7 @@
         <span class="star">*</span>承租人手持身份证照片</p>
       <van-row class="imgList">
         <van-col span="11">
-          <van-uploader class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCard',1363)" accept="image/gif, image/jpeg" multiple>
+          <van-uploader capture="camera" class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCard',1363)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="identityCard == ''" name="add" />
             <img height="100%" v-else :src="identityCard" alt="">
           </van-uploader>
@@ -19,7 +19,7 @@
         <span class="star">*</span>承租人与业务员合照</p>
       <van-row class="imgList">
         <van-col span="11">
-          <van-uploader class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCardTwo',1364)" accept="image/gif, image/jpeg" multiple>
+          <van-uploader capture="camera" class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('identityCardTwo',1364)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="identityCardTwo == ''" name="add" />
             <img height="100%" v-else :src="identityCardTwo" alt="">
           </van-uploader>
@@ -40,7 +40,7 @@
         </van-row>
         <van-row class="imgList">
           <van-col span="11">
-            <van-uploader class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg',1354)" accept="image/gif, image/jpeg" multiple>
+            <van-uploader capture="camera" class="imgSize imglistTwo headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg',1354)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg == ''" name="add" />
               <img height="100%" v-else :src="listImg" alt="">
             </van-uploader>
@@ -53,7 +53,7 @@
         </van-row>
         <van-row class="imgList imglistTwo">
           <van-col span="11">
-            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg2',1355)" accept="image/gif, image/jpeg" multiple>
+            <van-uploader capture="camera" class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg2',1355)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg2 == ''" name="add" />
               <img height="100%" v-else :src="listImg2" alt="">
             </van-uploader>
@@ -66,7 +66,7 @@
         </van-row>
         <van-row class="imgList imglistTwo">
           <van-col span="11">
-            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg3',1356)" accept="image/gif, image/jpeg" multiple>
+            <van-uploader capture="camera" class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg3',1356)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg3 == ''" name="add" />
               <img height="100%" v-else :src="listImg3" alt="">
             </van-uploader>
@@ -79,7 +79,7 @@
         </van-row>
         <van-row class="imgList imglistTwo">
           <van-col span="11">
-            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg4',1357)" accept="image/gif, image/jpeg" multiple>
+            <van-uploader capture="camera" class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg4',1357)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg4 == ''" name="add" />
               <img height="100%" v-else :src="listImg4" alt="">
             </van-uploader>
@@ -92,7 +92,7 @@
         </van-row>
         <van-row class="imgList imglistTwo">
           <van-col span="11">
-            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg5',1358)" accept="image/gif, image/jpeg" multiple>
+            <van-uploader capture="camera" class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg5',1358)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg5 == ''" name="add" />
               <img height="100%" v-else :src="listImg5" alt="">
             </van-uploader>
@@ -105,7 +105,7 @@
         </van-row>
         <van-row class="imgList imglistTwo">
           <van-col span="11">
-            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg6',1359)" accept="image/gif, image/jpeg" multiple>
+            <van-uploader capture="camera" class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg6',1359)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg6 == ''" name="add" />
               <img height="100%" v-else :src="listImg6" alt="">
             </van-uploader>
@@ -118,7 +118,7 @@
         </van-row>
         <van-row class="imgList imglistTwo">
           <van-col span="11">
-            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg7',1360)" accept="image/gif, image/jpeg" multiple>
+            <van-uploader capture="camera" class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg7',1360)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg7 == ''" name="add" />
               <img height="100%" v-else :src="listImg7" alt="">
             </van-uploader>
@@ -131,7 +131,7 @@
         </van-row>
         <van-row class="imgList imglistTwo">
           <van-col span="11">
-            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg8',1361)" accept="image/gif, image/jpeg" multiple>
+            <van-uploader capture="camera" class="imgSize headPortrait" result-type="dataUrl" :after-read="identityCardFun('listImg8',1361)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="listImg8 == ''" name="add" />
               <img height="100%" v-else :src="listImg8" alt="">
             </van-uploader>

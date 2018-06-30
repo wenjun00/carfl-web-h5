@@ -12,7 +12,7 @@
     <van-row>
       <van-row class="imgList">
         <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photo',1371)" accept="image/gif, image/jpeg" multiple>
+          <van-uploader capture="camera" class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photo',1371)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photo == ''" name="add" />
             <img height="100%" v-else :src="photo" alt="">
           </van-uploader>
@@ -20,7 +20,7 @@
           <van-icon @click="lookIdentityCard('photo')" v-if="!photo == ''" class="lookiconHead" name="password-view" />
         </van-col>
         <van-col span="11">
-          <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photoTwo',1372)" accept="image/gif, image/jpeg" multiple>
+          <van-uploader capture="camera" class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photoTwo',1372)" accept="image/gif, image/jpeg" multiple>
             <van-icon class="vanIcon" v-if="photoTwo == ''" name="add" />
             <img height="100%" v-else :src="photoTwo" alt="">
           </van-uploader>
