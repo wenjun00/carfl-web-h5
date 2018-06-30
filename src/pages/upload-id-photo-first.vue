@@ -1,7 +1,7 @@
 <template>
   <section class="page uploadIdPhotoFirst">
     <div>
-      <van-cell title="选择城市" required is-link :value="[IntoACity.id] | cityConvert " @click="optionCity=true" />
+      <van-cell title="选择城市" required is-link :value=" provinceTip + balnk + cityTip " @click="optionCity=true" />
       <van-row>
         <van-steps :active="0" active-color="#FFE44D">
           <van-step>身份证信息</van-step>
@@ -58,12 +58,11 @@
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
     </transition>
-  
 
     <!-- 选择下单城市 -->
     <transition name="fade">
       <!-- <van-picker :columns="columnsTwo" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" /> -->
-        <van-area :area-list="cityTop" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" :columns-num="2" />
+      <van-area :area-list="cityTop" v-show="optionCity" show-toolbar @confirm="onConfirmTwo" @cancel="optionCity=false" :columns-num="2" />
     </transition>
   </section>
 </template>
@@ -89,7 +88,7 @@ export default class Login extends Vue {
   private photoTwo: any = "";
   private pickerDialog: boolean = false;  //  民族弹窗
   private optionCity: boolean = false;     // 城市选择弹窗
-  // private nation: string = ''
+  private balnk:any = " " 
   private columns: any = [];
   private minDate: any = new Date(1949, 0, 1);
   private validPeriod: boolean = false   // 有效期限
@@ -98,7 +97,7 @@ export default class Login extends Vue {
   private idcard: any = {
     id_card: '',  // 身份证号码
     nation: '',   // 民族
-    nationText:'', // 民族汉子
+    nationText: '', // 民族汉子
     id_card_validity_period_section: '', //身份证有效区间
     name: '',    // 户名
     id_card_address: '', // 身份证地址
@@ -140,15 +139,18 @@ export default class Login extends Vue {
         id: 902,
         pid: 734,
       }
-       this.selectCity(catyAll)
+      this.selectCity(catyAll)
 
-    } else {
+    } else if (val[0].code == 120000) {
       let catyAll = {
         id: 3125,
         pid: 3021,
       }
-       this.selectCity(catyAll)
+      this.selectCity(catyAll)
+    } else {
+      this.$toast('请选择省市');
     }
+
     this.optionCity = false
   }
 
@@ -225,7 +227,7 @@ export default class Login extends Vue {
     this.idcard.nationText = this.$dict.getDictName(Number(this.idcard.nation))
     this.pickerDialog = false
   }
- 
+
   //测试图片上传
   onRead(val, number) {
     return ({ file }) => {
@@ -248,6 +250,14 @@ export default class Login extends Vue {
       })
     }
   }
+  get provinceTip() {
+    return FilterService.cityConvert([this.IntoACity.pid])
+  }
+  get cityTip() {
+    return FilterService.cityConvert([this.IntoACity.id])
+  }
+
+ 
 
   /**
    * 图片删除
@@ -269,8 +279,8 @@ export default class Login extends Vue {
   }
 
   mounted() {
-    
-    if(!!this.intoA.personal){
+
+    if (!!this.intoA.personal) {
       this.idcard = this.intoA.personal
       this.photo = this.idcard.headPhoto
       this.photoTwo = this.idcard.nationalPhoto

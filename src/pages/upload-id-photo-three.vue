@@ -1,6 +1,6 @@
 <template>
   <section class="page uploadIdPhotoThree">
-    <van-cell title="选择城市" required is-link :value="[IntoACity.id] | cityConvert " @click="optionCity=true" />
+    <van-cell title="选择城市" required is-link :value="provinceTip + balnk + cityTip " @click="optionCity=true" />
     <van-row>
       <van-steps :active="2" active-color="#FFE44D">
         <van-step>身份证信息</van-step>
@@ -87,6 +87,7 @@ export default class Login extends Vue {
   private productOrderService: ProductOrderService;
   @Dependencies(FddApiService) private fddApiService: FddApiService;
   private idName: any = null;
+  private balnk: any = " "
   private arrAll: any = [];
   private idNumber: any = null;
   private value: any = null;
@@ -102,8 +103,8 @@ export default class Login extends Vue {
     card_number: "", // 银行卡号
     location: "", // 开户地区汉字
     locationProvince: "", // 开户省 id
-    locationCity: "" ,// 开户市 id
-    depositBank:"", // 开户银行
+    locationCity: "",// 开户市 id
+    depositBank: "", // 开户银行
   };
   private optionCity: boolean = false; // 城市选择弹窗
   // 顶部下拉数据
@@ -147,12 +148,18 @@ export default class Login extends Vue {
     this.personalBank.locationCity = currentCitys[1];
     this.personalBank.location = currentCitys;
   }
-   get province(){
-     return FilterService.polisConvertTwo(this.personalBank.location)
-   }
-   get city(){
-     return FilterService.polisConvert(this.personalBank.location)
-   }
+  get province() {
+    return FilterService.polisConvertTwo(this.personalBank.location)
+  }
+  get city() {
+    return FilterService.polisConvert(this.personalBank.location)
+  }
+  get provinceTip() {
+    return FilterService.cityConvert([this.IntoACity.pid])
+  }
+  get cityTip() {
+    return FilterService.cityConvert([this.IntoACity.id])
+  }
 
   /**
    * 四要素判断
@@ -230,18 +237,18 @@ export default class Login extends Vue {
 
   mounted() {
     this.getOredrMessage();
-    if(!!this.intoA.personalBank){
-       this.personalBank = this.intoA.personalBank
+    if (!!this.intoA.personalBank) {
+      this.personalBank = this.intoA.personalBank
 
-       for(let i of this.intoA.PersonalAdditional){
-          if(i.typeName === 1373){
-              this.photo = i.materialUrl
-          }
-          if(i.typeName === 1374){
-             this.photoTwo = i.materialUrl
-          }
-       }
-      
+      for (let i of this.intoA.PersonalAdditional) {
+        if (i.typeName === 1373) {
+          this.photo = i.materialUrl
+        }
+        if (i.typeName === 1374) {
+          this.photoTwo = i.materialUrl
+        }
+      }
+
     }
 
     let els: any = document.getElementsByName("center");

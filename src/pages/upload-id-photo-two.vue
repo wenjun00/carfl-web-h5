@@ -1,6 +1,6 @@
 <template>
   <section class="page uploadIdPhotoTwo">
-    <van-cell title="选择城市" required is-link :value="[IntoACity.id] | cityConvert " @click="optionCity=true" />
+    <van-cell title="选择城市" required is-link :value="provinceTip + balnk + cityTip  " @click="optionCity=true" />
     <van-row>
       <van-steps :active="1" active-color="#FFE44D">
         <van-step>身份证信息</van-step>
@@ -62,8 +62,10 @@ import Component from "vue-class-component";
 import { NetService } from "~/utils/net.service";
 import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
+import { FilterService } from '~/utils/filter.service'
 @Component({})
 export default class Login extends Vue {
+  private balnk: any = " "
   private arrImgTwo: any = []
   private arrAll: any = []
   private idName: any = null;
@@ -84,7 +86,7 @@ export default class Login extends Vue {
     driving_license: '', // 准驾车型
     driverPhoto: '',   // 驾驶证正面
     driverVicePhoto: '', // 驾驶证负面
-    drivingType:'',   // 准假车型汉子
+    drivingType: '',   // 准假车型汉子
   }
   private optionCity: boolean = false;     // 城市选择弹窗
   // 顶部下拉数据
@@ -128,6 +130,12 @@ export default class Login extends Vue {
     file_number: { required: true, message: '请输入档案编号' },
     driving_license: { required: true, message: '请选择准驾车型' },
   };
+  get provinceTip() {
+    return FilterService.cityConvert([this.IntoACity.pid])
+  }
+  get cityTip() {
+    return FilterService.cityConvert([this.IntoACity.id])
+  }
 
   /**
  * 点击有效期 确定事件
@@ -233,10 +241,10 @@ export default class Login extends Vue {
     this.columns = this.$dict.getDictData('0478').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-     if(!!this.intoA.personalCar){
-       this.peopleCar = this.intoA.personalCar
-       this.photo = this.peopleCar.driverPhoto
-       this.photoTwo = this.peopleCar.driverVicePhoto
+    if (!!this.intoA.personalCar) {
+      this.peopleCar = this.intoA.personalCar
+      this.photo = this.peopleCar.driverPhoto
+      this.photoTwo = this.peopleCar.driverVicePhoto
     }
 
     let els: any = document.getElementsByName("center")
@@ -248,7 +256,7 @@ export default class Login extends Vue {
       }
     })
     this.arrAll = this.intoA.PersonalAdditional
-    
+
     // console.log(this.IntoACity)
   }
 
