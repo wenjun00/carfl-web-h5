@@ -13,7 +13,7 @@
       <van-row>
         <van-row class="imgList">
           <van-col span="11">
-            <van-uploader capture="camera" class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photo',1369)" accept="image/gif, image/jpeg" multiple>
+            <van-uploader class="imgSize headPortrait" result-type="dataUrl" :after-read="onRead('photo',1369)" accept="image/gif, image/jpeg" multiple>
               <van-icon class="vanIcon" v-if="photo == ''" name="add" />
               <img height="100%" v-else :src="photo" alt="">
             </van-uploader>
@@ -75,6 +75,7 @@ import { NetService } from "~/utils/net.service";
 import { ImagePreview } from 'vant';
 import { State, Mutation, Action } from "vuex-class";
 import CityPicker from "~/components/common/city-picker.vue";
+import { FilterService } from '~/utils/filter.service'
 @Component({
   components: {
     CityPicker,

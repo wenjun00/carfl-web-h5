@@ -64,6 +64,7 @@ import { State, Mutation, Action } from "vuex-class";
 })
 export default class Home extends Vue {
   @State intoA
+  @Mutation clearIntoA
 
   private serachKeyWord: string = "";
 
@@ -94,7 +95,7 @@ export default class Home extends Vue {
     this.$router.push(`/buy-car-list/?k=${this.keyWord}`)
   }
   mounted() {
-    // console.log(this.intoA,'看这里')z
+    this.clearIntoA()
   }
 
 }

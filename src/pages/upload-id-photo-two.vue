@@ -230,6 +230,9 @@ export default class Login extends Vue {
   }
 
   mounted() {
+    this.columns = this.$dict.getDictData('0478').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
      if(!!this.intoA.personalCar){
        this.peopleCar = this.intoA.personalCar
        this.photo = this.peopleCar.driverPhoto
@@ -245,9 +248,7 @@ export default class Login extends Vue {
       }
     })
     this.arrAll = this.intoA.PersonalAdditional
-    this.columns = this.$dict.getDictData('0478').map(v => {
-      return Object.assign({ text: v.label }, v)
-    })
+    
     // console.log(this.IntoACity)
   }
 

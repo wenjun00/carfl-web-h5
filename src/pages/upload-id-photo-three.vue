@@ -229,8 +229,8 @@ export default class Login extends Vue {
   }
 
   mounted() {
+    this.getOredrMessage();
     if(!!this.intoA.personalBank){
-      console.log(this.intoA.personalBank)
        this.personalBank = this.intoA.personalBank
 
        for(let i of this.intoA.PersonalAdditional){
@@ -253,7 +253,6 @@ export default class Login extends Vue {
       };
     });
 
-    this.getOredrMessage();
     this.arrAll = this.intoA.PersonalAdditional;
   }
 

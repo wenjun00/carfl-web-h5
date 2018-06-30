@@ -3,7 +3,7 @@
     <van-row>
       <p class="base-info-title">基本信息</p>
       <van-cell-group>
-        <van-field v-model="inforModel.phone" disabled label="手机号码" placeholder="请输入手机号" required />
+        <van-field v-model="inforModel.phone" disabled label="手机号码" required />
         <van-field name="center" maxlength="11" v-model="inforModel.contactPhone" label="联系号码" placeholder="客户第二个手机号" />
         <van-cell title="婚姻状况" required is-link :value="inforModel.falseMarital" @click="marriageBot=true" />
         <van-cell title="学历信息" required is-link :value="inforModel.falseeducation" @click="educationBot=true" />
@@ -269,19 +269,12 @@ export default class Login extends Vue {
 
 
   mounted() {
+    // 获取登陆人手机号
+    this.inforModel.phone = this.userData.userPhone
+
     if (!!this.intoA.PersonalJob) {
       this.inforModel = this.intoA.PersonalJob
-    
     }
-
-    let els: any = document.getElementsByName("center")
-    els.forEach(v => {
-      v.onclick = () => {
-        setTimeout(() => {
-          (v as HTMLElement).scrollIntoView(true)
-        }, 300);
-      }
-    })
     // 获取婚姻状况
     this.marriages = this.$dict.getDictData('0003').map(v => {
       return Object.assign({ text: v.label }, v)
@@ -310,8 +303,17 @@ export default class Login extends Vue {
     this.yearsWorkings = this.$dict.getDictData('0461').map(v => {
       return Object.assign({ text: v.label }, v)
     })
-    // 获取登陆人手机号
-    this.inforModel.phone = this.userData.userPhone
+
+    let els: any = document.getElementsByName("center")
+    els.forEach(v => {
+      v.onclick = () => {
+        setTimeout(() => {
+          (v as HTMLElement).scrollIntoView(true)
+        }, 300);
+      }
+    })
+
+
     // console.log(this.userData,'phone')
 
 

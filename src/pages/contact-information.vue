@@ -1,11 +1,11 @@
-<template> 
+<template>
   <section class="page contactInformation">
     <van-row>
       <p class="base-info-title">联系人一</p>
       <van-cell-group>
         <van-cell title="与承租人关系" required is-link :value="contactModel.falseRelation" @click="relationBot=true" />
         <van-field name="center" v-model="contactModel.username" label="姓名" placeholder="请输入联系人姓名" required/>
-        <van-field name="center" maxlength="11"  v-model="contactModel.phone" label="手机号" placeholder="请输入联系人手机号" required/>
+        <van-field name="center" maxlength="11" v-model="contactModel.phone" label="手机号" placeholder="请输入联系人手机号" required/>
       </van-cell-group>
     </van-row>
     <van-row>
@@ -104,9 +104,17 @@ export default class Login extends Vue {
 
   mounted() {
 
-     if(!!this.intoA.PersonalContact){
+    if (!!this.intoA.PersonalContact) {
       this.contactModel = this.intoA.PersonalContact
     }
+    // 承租人关系 直系亲属
+    this.relations = this.$dict.getDictData('0015').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
+    // 承租人关系 非直系亲属
+    this.relationsTwo = this.$dict.getDictData('0016').map(v => {
+      return Object.assign({ text: v.label }, v)
+    })
 
     let els: any = document.getElementsByName("center")
     els.forEach(v => {
@@ -116,14 +124,7 @@ export default class Login extends Vue {
         }, 300);
       }
     })
-    // 承租人关系 直系亲属
-    this.relations = this.$dict.getDictData('0015').map(v => {
-      return Object.assign({ text: v.label }, v)
-    })
-    // 承租人关系 非直系亲属
-    this.relationsTwo = this.$dict.getDictData('0016').map(v => {
-      return Object.assign({ text: v.label }, v)
-    })
+
 
 
   }
