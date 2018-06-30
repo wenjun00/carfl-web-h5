@@ -362,11 +362,7 @@ export default class detailsScheme extends Vue {
    * 查询订单是否被领取
    */
   getIndentType() {
-    if (!this.promptlyMake) {
-      this.$toast('请先进行预约')
-      return
-    }
-
+  
     this.appCustomerService.checkCustomerType(this.userData.id).subscribe(
       data => {
          this.carInfo = {

@@ -31,7 +31,7 @@ export default class OrderContract extends Vue {
       this.$toast('当前合同暂未生成')
     }
   }
-
+ // 合同id
   getContractDetails() {
     this.contractDetailsControllerService.getOrderContractListByOrderId(this.getOrderId).subscribe(
       data => {
@@ -42,7 +42,10 @@ export default class OrderContract extends Vue {
   }
 
   mounted() {
-      this.getContractDetails()
+    if(this.getOrderId){
+      this.getContractDetails() 
+    }
+     
       
   }
 

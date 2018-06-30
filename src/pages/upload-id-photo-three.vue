@@ -1,6 +1,6 @@
 <template>
   <section class="page uploadIdPhotoThree">
-    <van-cell title="选择城市" required is-link :value="provinceTip + balnk + cityTip " @click="optionCity=true" />
+    <van-cell title="选择城市" required is-link :value=" provinceCity " @click="optionCity=true" />
     <van-row>
       <van-steps :active="2" active-color="#FFE44D">
         <van-step>身份证信息</van-step>
@@ -87,7 +87,6 @@ export default class Login extends Vue {
   private productOrderService: ProductOrderService;
   @Dependencies(FddApiService) private fddApiService: FddApiService;
   private idName: any = null;
-  private balnk: any = " "
   private arrAll: any = [];
   private idNumber: any = null;
   private value: any = null;
@@ -159,6 +158,9 @@ export default class Login extends Vue {
   }
   get cityTip() {
     return FilterService.cityConvert([this.IntoACity.id])
+  }
+  get provinceCity() {
+    return `${this.provinceTip} ${this.cityTip}`
   }
 
   /**

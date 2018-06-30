@@ -1,7 +1,7 @@
 <template>
   <section class="page uploadIdPhotoFirst">
     <div>
-      <van-cell title="选择城市" required is-link :value=" provinceTip + balnk + cityTip " @click="optionCity=true" />
+      <van-cell title="选择城市" required is-link :value="provinceCity" @click="optionCity=true" />
       <van-row>
         <van-steps :active="0" active-color="#FFE44D">
           <van-step>身份证信息</van-step>
@@ -88,7 +88,6 @@ export default class Login extends Vue {
   private photoTwo: any = "";
   private pickerDialog: boolean = false;  //  民族弹窗
   private optionCity: boolean = false;     // 城市选择弹窗
-  private balnk:any = " " 
   private columns: any = [];
   private minDate: any = new Date(1949, 0, 1);
   private validPeriod: boolean = false   // 有效期限
@@ -256,8 +255,11 @@ export default class Login extends Vue {
   get cityTip() {
     return FilterService.cityConvert([this.IntoACity.id])
   }
+  get provinceCity() {
+    return `${this.provinceTip} ${this.cityTip}`
+  }
 
- 
+
 
   /**
    * 图片删除

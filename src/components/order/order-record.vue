@@ -1,3 +1,4 @@
+
 <template> 
   <section class="component order-record">
     <van-cell-group>
@@ -15,7 +16,7 @@ import { Getter, State } from "vuex-class";
 export default class OrderRecord extends Vue {
   @State orderInfo
   private dataSet: any = []
-
+// 订单操作记录
   orderRecordfun(val){
     this.dataSet = val
    

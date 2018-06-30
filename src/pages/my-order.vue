@@ -18,7 +18,7 @@
         </van-collapse-item>
         <div @click="operating">
           <van-collapse-item title="订单操作记录" name="record">
-            <order-record ref="order-record" :orderId="orderInfo.id"></order-record>
+            <order-record ref="order-record"></order-record>
           </van-collapse-item>
         </div>
       </van-collapse>
@@ -53,6 +53,7 @@ export default class MyOrder extends Vue {
   @State userData;
   @State userToken;
   @Mutation getOrderIdFun
+
 
   private orderNumber: any = ''  // 获取当前订单号
   private activatedCollapse = []
