@@ -67,7 +67,7 @@
   </section>
 </template>
 
-<script lang="ts"> 
+<script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
 import { NetService } from "~/utils/net.service";
@@ -246,6 +246,7 @@ export default class Login extends Vue {
           uploadTime: x.createTime,
           typeName: number,
         })
+      }).catch(ex=>{
       })
     }
   }

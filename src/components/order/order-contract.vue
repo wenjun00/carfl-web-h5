@@ -14,7 +14,6 @@ import { ContractDetailsControllerService } from "~/services/manage-service/cont
 import { Dependencies } from "~/core/decorator";
 import { ImagePreview } from 'vant';
 import { Getter, State } from "vuex-class";
-import { setTimeout } from "core-js";
 @Component({})
 export default class OrderContract extends Vue {
   @Dependencies(ContractDetailsControllerService) private contractDetailsControllerService: ContractDetailsControllerService;
@@ -43,10 +42,10 @@ export default class OrderContract extends Vue {
 
   mounted() {
     if(this.getOrderId){
-      this.getContractDetails() 
+      this.getContractDetails()
     }
-     
-      
+
+
   }
 
 }

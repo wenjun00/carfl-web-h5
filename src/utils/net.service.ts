@@ -211,7 +211,13 @@ export class NetService {
     return observable
   }
 
-  public static upload(file) {
+  public static async upload(file, toZip = true) {
+    console.log('原始图片文件',file)
+    if (toZip) {
+      file = await NetService.zipPicture(file)
+      console.log('压缩后图片文件',file)
+    }
+
     let headers = {
       'Content-Type': 'multipart/form-data'
     }
@@ -234,4 +240,47 @@ export class NetService {
       headers
     }).then((res) => { return res.data })
   }
+
+  /**
+   * 压缩图片
+   * @param file
+   * @param ratio
+   */
+  public static zipPicture(file, ratio = 0.8) {
+    return new Promise((resolve, reject) => {
+
+      var reader = new FileReader();
+      var img = new Image();
+
+      img.onload = function () {
+        // 通过canvas压缩图片
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        canvas.width = img.naturalWidth * ratio;
+        canvas.height = img.naturalHeight * ratio;
+        context.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // 转换为文件格式
+        try {
+          canvas.toBlob((blob) => {
+            let result = new File([blob], file.name, { type: 'image/jpeg' })
+            resolve(result)
+          }, 'image/jpeg')
+        } catch (ex) {
+          reject(ex)
+        }
+      }
+
+      // 读文件成功的回调
+      reader.onload = function (e: any) {
+        // e.target.result就是图片的base64地址信息
+        img.src = e.target.result;
+      };
+
+      //  将图片读取为base64
+      reader.readAsDataURL(file);
+    })
+
+  }
+
 }
