@@ -9,7 +9,7 @@ export class FddApiService {
 
     /**
      * 
-     * 查询车辆信息首付月供
+     * 四要素验证
      */
     getInvokeFourElementVerify(data) {
         return this.netService.send({

@@ -188,7 +188,7 @@ export default class Login extends Vue {
    * 点击下一步
    */
   addAffirm() {
-    console.log(this.idcard)
+    // console.log(this.idcard)
     this.$validator.validate(this.idcard, this.rules).then(error => {
       if (!error) {
         for (let i in this.arrImg) {
