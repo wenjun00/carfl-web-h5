@@ -154,7 +154,7 @@ export default class BuyCarList extends Vue {
     box-sizing: border-box;
   }
   .carStyle {
-    line-height: 30px;
+    line-height: 28px;
   }
   &-item {
     padding: @paddingNum;
