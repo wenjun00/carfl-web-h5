@@ -4,10 +4,10 @@
       <div class="ex-large">{{carColumn.name}}</div>
       <van-row>
         <van-col v-show="bigImg" :span="24">
-          <img :src="bigImg.url" :alt="bigImg.name" height="100%">
+          <img class="bigImgSty" :src="bigImg.url" :alt="bigImg.name" width="100%" height="100%">
         </van-col>
         <van-col v-for="(item,index) of doubleColShowImages" :key="index" :span="12">
-            <img :src="item.url" :alt="item.name" width="100%">
+          <img class="smallImgSty" :src="item.url" :alt="item.name" width="100%">
         </van-col>
       </van-row>
       <div class="small">{{carColumn.introduce}}</div>
@@ -57,6 +57,14 @@ export default class carImgShow extends Vue {
 
 <style lang="less" scoped>
 .component.car-img-show {
+  .bigImgSty {
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  .smallImgSty {
+    padding: 5px;
+    box-sizing: border-box;
+  }
   .img-center {
     text-align: center;
     padding-top: 30px;

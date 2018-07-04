@@ -13,7 +13,7 @@
       <div @click="$router.push(`/details/${item.carId}`)">
         <van-col span="10">
           <div>
-            <img :src="(item.carPictures[0] || {}).url" height="80px">
+            <img class="imgPad" :src="(item.carPictures[0] || {}).url" height="80px">
           </div>
         </van-col>
         <van-col span="14" class="carStyle">
@@ -149,6 +149,10 @@ export default class BuyCarList extends Vue {
 <style lang="less" scoped>
 @paddingNum: 10px;
 .buy-car-list {
+  .imgPad{
+    padding: 5px;
+    box-sizing: border-box;
+  }
   .carStyle {
     line-height: 30px;
   }

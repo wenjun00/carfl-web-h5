@@ -1,6 +1,6 @@
 <template>
   <section class="page details">
-    <van-row>
+    <van-row class="headpad">
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(image, index) in images" :key="index">
           <div class="car-main-img">
@@ -100,6 +100,9 @@ export default class Details extends Vue {
 
 <style lang="less" scoped>
 .page.details {
+  .headpad{
+    padding: 10px;
+  }
   .carImgs {
     height: 100%;
     box-sizing: border-box;
