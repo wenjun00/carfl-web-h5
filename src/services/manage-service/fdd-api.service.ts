@@ -11,10 +11,11 @@ export class FddApiService {
      * 
      * 四要素验证
      */
-    getInvokeFourElementVerify(data) {
+    getInvokeFourElementVerifyForH5(data) {
         return this.netService.send({
-            server: manageService.fddApiController.getInvokeFourElementVerify,
-            data
+            server: manageService.fddApiController.getInvokeFourElementVerifyForH5,
+            data,
+            loading: true
         })
     }
 }

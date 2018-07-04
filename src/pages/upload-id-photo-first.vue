@@ -199,7 +199,7 @@ export default class Login extends Vue {
           }
         }
 
-
+        console.log(this.idcard)
         if (this.idcard.headPhoto == '') {
           this.$toast('请先上传身份证头像面');
           return
@@ -269,12 +269,12 @@ export default class Login extends Vue {
    */
   closeIdentityCard(val, number) {
     this[val] = ''
-     if (number === 1369) {
-        this.idcard.headPhoto = ''
-      }
-      if (number === 1370) {
-        this.idcard.nationalPhoto = ''
-      }
+    if (number === 1369) {
+      this.idcard.headPhoto = ''
+    }
+    if (number === 1370) {
+      this.idcard.nationalPhoto = ''
+    }
     for (let i in this.arrImg) {
       if (this.arrImg[i].typeName == number) {
         this.arrImg.splice(i, 1)
@@ -290,7 +290,10 @@ export default class Login extends Vue {
   }
 
   mounted() {
-
+    // 判断当前是不是有PersonalAdditional
+    if (this.intoA.PersonalAdditional) {
+      this.arrImg = this.intoA.PersonalAdditional
+    }
     if (!!this.intoA.personal) {
       this.idcard = this.intoA.personal
       this.photo = this.idcard.headPhoto

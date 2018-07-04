@@ -152,7 +152,7 @@
     <transition name="fade">
       <van-picker :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="pickerDialog=false" @cancel="pickerDialog=false" />
     </transition>
-    <van-button @click="IntoASubmit" type="primary" bottom-action>确认并提交</van-button>
+    <van-button @click="elementsValidation" type="primary" bottom-action>确认并提交</van-button>
   </section>
 </template>
 
@@ -166,11 +166,13 @@ import { ProductOrderService } from "~/services/manage-service/product-order.ser
 import { Dependencies } from "~/core/decorator";
 import { LoginService } from "~/services/manage-service/applogin.service";
 import { AppCustomerService } from "~/services/manage-service/app-customer.service";
+import { FddApiService } from "~/services/manage-service/fdd-api.service";
 @Component({})
 export default class Login extends Vue {
   @Dependencies(ProductOrderService) private productOrderService: ProductOrderService;
   @Dependencies(AppCustomerService) private appCustomerService: AppCustomerService;
   @Dependencies(LoginService) private loginService: LoginService;
+  @Dependencies(FddApiService) private fddApiService: FddApiService;
   @Mutation tenantImg
   @Mutation clearIntoA
   @State intoA
@@ -210,12 +212,36 @@ export default class Login extends Vue {
   private personalAll: any = {}
   private clientType: any = ''
 
+  /**
+   * 四要素判断
+   */
+  elementsValidation() {
+    let fourElements = {
+      customerName: this.intoA.personal.name,  // 客户姓名
+      idCard: this.intoA.personal.id_card,        // 身份证号
+      bankNo: this.intoA.personalBank.card_number,        // 银行卡号
+      mobile:this.intoA.personalBank.reserved_phone_number,        // 电话号码
+    }
+    this.fddApiService.getInvokeFourElementVerifyForH5(fourElements).subscribe(
+      data => {
+        if(data.code === '1000'){
+         this.IntoASubmit()
+        }else{
+          this.$toast(data.msg)
+        }
+       
+      },
+      ({msg}) => {
+        this.$toast(msg)
+      }
+    )
+  }
+
 
   /**
    * 进件点击确认提交
    */
   IntoASubmit() {
-
     let arr = []
     for (let i in this.arrImg) {
       arr.push(this.arrImg[i].typeName)
@@ -243,9 +269,6 @@ export default class Login extends Vue {
       monthlySupply: this.intoA.orderCarTwo.monthlySupply,
       periods: this.intoA.orderCarTwo.periods,
       personal: {
-        // driverModel: null, 
-        // driverNo: null,        
-        // driverTerm:null,
         // idCardAddressDetail:null,
         certificateType: 1167,
         headPhoto: this.intoA.personal.headPhoto, // 身份证头像地址
@@ -269,10 +292,6 @@ export default class Login extends Vue {
         city1: this.intoA.PersonalJob.city1,    // 居住地区 市
         district1: this.intoA.PersonalJob.district1,    // 居住地区 区
         localHomeAddrDetail: this.intoA.PersonalJob.address,    // 居住地址
-        // usefulTime: this.intoA.personalCar.useful_time,    // 有效期限 暂时不用
-        // fileNumber: this.intoA.personalCar.file_number,    // 档案编号 暂时不用
-        // drivingLicense: this.intoA.personalCar.driving_license,  // 准驾车型 暂时不用
-
         driverTerm: this.intoA.personalCar.useful_time, // 有效期限
         driverNo: this.intoA.personalCar.file_number, // 档案编号
         driverModel: this.intoA.personalCar.driving_license, // 准驾车型
@@ -292,10 +311,7 @@ export default class Login extends Vue {
           companyhostAddr: this.intoA.PersonalJob.companyAdress,    // 单位地址
           companyPhone: this.intoA.PersonalJob.companyPhone,    // 单位电话
           workingYears: this.intoA.PersonalJob.yearsWorking,    // 工作年限
-          basicSalary: Number(this.intoA.PersonalJob.afterSalary),    // 税后月薪
-          // companyhostAddr: null,        
-          // jobType: null,                             
-          // localHomeAddrDetail: null,     
+          basicSalary: Number(this.intoA.PersonalJob.afterSalary),    // 税后月薪                                
         },
       },
 

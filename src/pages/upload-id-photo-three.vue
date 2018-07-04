@@ -164,27 +164,6 @@ export default class Login extends Vue {
   }
 
   /**
-   * 四要素判断
-   */
-  // elementsValidation() {
-  //   let fourElements = {
-  //     customerName: this.intoA.personal.name,  // 客户姓名
-  //     idCard: this.intoA.personal.id_card,        // 身份证号
-  //     bankNo: this.personalBank.card_number,        // 银行卡号
-  //     mobile:this.personalBank.reserved_phone_number,        // 电话号码
-  //   }
-  //   this.fddApiService.getInvokeFourElementVerify(fourElements).subscribe(
-  //     data => {
-  //       console.log('看这里')
-  //     },
-  //     err => {
-  //       console.log('错误这里')
-  //       this.$toast(err.msg)
-  //     }
-  //   )
-  // }
-
-  /**
    * 点击下一步
    */
   addAffirm() {

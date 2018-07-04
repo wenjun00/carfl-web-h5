@@ -18,7 +18,6 @@ export class PolisService {
 
     polisData.forEach(city => {
       let province = data.find(x => x.value === city.province_code)
-
       if (!province) {
         province = {
           value: city.province_code,

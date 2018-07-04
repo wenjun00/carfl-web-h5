@@ -9,10 +9,10 @@ export default {
     /**
      * 四要素验证
      */
-    getInvokeFourElementVerify: {
+    getInvokeFourElementVerifyForH5: {
         service: SERVICE,
         controller: CONTROLLER,
-        action: 'getInvokeFourElementVerify',
+        action: 'getInvokeFourElementVerifyForH5',
         type: requestType.Get
     },    
 
