@@ -70,7 +70,7 @@
       formatQueryStr()
       var oAjax = new XMLHttpRequest();
       // 后端服务地址
-      var url = 'http://47.106.149.231:8762/service-manage/contractDetailsController/updateOrderLinkToIsSigning?orderId=' + params.orderId
+      var url = 'http://manager.onioncarstaging.com/service-manage/contractDetailsController/updateOrderLinkToIsSigning?orderId=' + params.orderId
       oAjax.open("GET", url, true)
       oAjax.send()
       oAjax.onreadystatechange = function () {
