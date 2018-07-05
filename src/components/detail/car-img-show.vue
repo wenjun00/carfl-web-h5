@@ -1,7 +1,7 @@
 <template>
   <section class="component car-img-show">
     <div class="img-center">
-      <div class="ex-large">{{carColumn.name}}</div>
+      <div class="ex-large"><img class="hendImg hendImg1" src="\static\images\common\headLeftImg.jpg" alt=""> {{carColumn.name}} <img class="hendImg hendImg2" src="\static\images\common\headRightImg.jpg" alt=""> </div>
       <van-row>
         <van-col v-show="bigImg" :span="24">
           <img class="bigImgSty" :src="bigImg.url" :alt="bigImg.name" width="100%" height="100%">
@@ -57,6 +57,22 @@ export default class carImgShow extends Vue {
 
 <style lang="less" scoped>
 .component.car-img-show {
+  .hendImg {
+    height: 4px;
+    width: 65px;
+  }
+  .hendImg2 {
+    margin-left: 5px;
+  }
+  .hendImg1 {
+    margin-right: 5px;
+  }
+  .ex-large {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px !important;
+  }
   .bigImgSty {
     padding: 7px;
     box-sizing: border-box;
