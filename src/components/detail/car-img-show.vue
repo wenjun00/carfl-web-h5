@@ -58,11 +58,11 @@ export default class carImgShow extends Vue {
 <style lang="less" scoped>
 .component.car-img-show {
   .bigImgSty {
-    padding: 10px;
+    padding: 7px;
     box-sizing: border-box;
   }
   .smallImgSty {
-    padding: 8px;
+    padding: 7px;
     box-sizing: border-box;
   }
   .img-center {
