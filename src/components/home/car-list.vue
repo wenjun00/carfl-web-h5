@@ -82,7 +82,7 @@ export default class CarList extends Vue {
     }
     &-first {
       font-size: 0.7rem;
-      color: goldenrod;
+      color: #ffdb00;
     }
     &-month {
       font-size: 0.7rem;

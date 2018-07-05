@@ -35,7 +35,20 @@ export class ValidatorService {
     // 车牌照正则表达式
     carCardNo: /^(([\u4e00-\u9fa5][a-zA-Z]|[\u4e00-\u9fa5]{2}\d{2}|[\u4e00-\u9fa5]{2}[a-zA-Z])[-]?|([wW][Jj][\u4e00-\u9fa5]{1}[-]?)|([a-zA-Z]{2}))([A-Za-z0-9]{5}|[DdFf][A-HJ-NP-Za-hj-np-z0-9][0-9]{4}|[0-9]{5}[DdFf])$/,
     //验证银行卡号
-    bankNumber:/^\d{16}|\d{19}$/
+    bankNumber:/^\d{16}|\d{19}$/,
+    // 人物姓名
+    CharacterName:/^[\u4E00-\u9FA5A-Za-z]+$/,
+  }
+
+   /**
+   * 验证姓名
+   */
+  static CharacterName(rule, value, callback) {
+    if (ValidatorService.regex.CharacterName.test(value) || !value) {
+      callback();
+    } else {
+      callback(new Error("请输入正确姓名"));
+    }
   }
 
   /**

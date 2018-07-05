@@ -65,7 +65,8 @@ export default class Question extends Vue {
     }
 
     &-icon {
-      background-color: yellow;
+      color: white;
+      background-color: #ffdb00;
       width: 30px;
       border-radius: 5px;
       .center();

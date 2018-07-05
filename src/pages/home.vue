@@ -129,5 +129,12 @@ export default class Home extends Vue {
   margin: 10px;
 }
 </style>
+<style lang="less">
+.page.home {
+  .van-field__body {
+    height: 25px;
+  }
+}
+</style>
 
 

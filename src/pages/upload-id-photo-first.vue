@@ -157,9 +157,9 @@ export default class Login extends Vue {
   }
 
   private heandCity = '' // 选择城市
-  // 验证规则
-  private rules = {
-    name: { required: true, message: '请输入用户姓名' },
+  // 验证规则 
+  private rules = { 
+    name:[ { required: true, message: '请输入用户姓名' },{ validator: this.$validator.CharacterName }],
     id_card: [{ required: true, message: "请输入正确的身份证号码" }, { validator: this.$validator.idCard }],
     nation: { required: true, message: '请选择民族' },
     id_card_address: { required: true, message: '请选择户籍信息' },
