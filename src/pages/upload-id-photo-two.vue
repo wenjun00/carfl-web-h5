@@ -91,15 +91,17 @@ export default class Login extends Vue {
   // 顶部下拉数据
   private cityTop = {
     province_list: {
-      110000: '河南',
-      120000: '广西',
+      110000: '云南',
     },
     city_list: {
-      110100: '郑州',
-      120100: '南宁',
+      110100: '昆明',
+      110101: '大理',
+      110102: '宣威市',
+      110103: '玉溪市',
+      110104: '红河哈尼族彝族自治州',
     },
     county_list: {
-      110101: '东城区',
+      110121: '东城区',
     }
   }
   /***
@@ -107,20 +109,25 @@ export default class Login extends Vue {
   */
   //  顶部城市点击事件
   onConfirmTwo(val) {
-    if (val[0].code == 110000) {
-      let catyAll = {
-        id: 902,
-        pid: 734,
-      }
-      this.selectCity(catyAll)
-
-    } else {
-      let catyAll = {
-        id: 3125,
-        pid: 3021,
-      }
-      this.selectCity(catyAll)
+    let catyAll = {
+      id: null,
+      pid: 3248,
     }
+    if (val[1].code == 110100) {
+      catyAll.id = 3306
+    } else if (val[1].code == 110101) {
+      catyAll.id = 3374
+    } else if (val[1].code == 110102) {
+      catyAll.id = 3291
+    } else if (val[1].code == 110103) {
+      catyAll.id = 3384
+    } else if (val[1].code == 110104) {
+      catyAll.id = 3321
+    }
+    else {
+      this.$toast('请选择省市');
+    }
+    this.selectCity(catyAll)
     this.optionCity = false
   }
   // 验证规则
@@ -226,12 +233,12 @@ export default class Login extends Vue {
     */
   closeIdentityCard(val, number) {
     this[val] = ''
-     if (number === 1371) {
-        this.peopleCar.driverPhoto = ''
-      }
-      if (number === 1372) {
-        this.peopleCar.driverVicePhoto = ''
-      }
+    if (number === 1371) {
+      this.peopleCar.driverPhoto = ''
+    }
+    if (number === 1372) {
+      this.peopleCar.driverVicePhoto = ''
+    }
     for (let i in this.arrAll) {
       if (this.arrAll[i].typeName == number) {
         this.arrAll.splice(i, 1)

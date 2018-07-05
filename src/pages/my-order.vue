@@ -1,13 +1,13 @@
 <template>
   <section class="page my-order">
     <div v-if="!hasOrder" class="my-order-no" key="no-order">
-      <img src="/static/images/home/no-order.png" />
+      <img height="200px" src="/static/images/home/no-order.png" />
     </div>
     <div v-else key="has-order">
       <van-cell-group>
         <van-cell :title="`订单编号：${productOrderInfo.orderReference }`"></van-cell>
         <van-cell :title="`车型：${productOrderInfo.carType}`"></van-cell>
-        <van-cell title="下单城市" is-link :value="productOrderInfo.placeCity | cityConvert" />
+        <van-cell title="下单城市"  :value="productOrderInfo.placeCity | cityConvert" />
         <van-cell :title="`首付：${productOrderInfo.downPayment} 元`"></van-cell>
         <van-cell :title="`期数：${productOrderInfo.periods}`"></van-cell>
         <van-cell :title="`月供信息：${productOrderInfo.informationOn}元 `"></van-cell>

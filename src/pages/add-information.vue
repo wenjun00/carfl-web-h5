@@ -182,6 +182,7 @@ export default class Login extends Vue {
   @State orderInfo
   @State userToken
   @State userData
+  @Mutation clearSelectCity
 
 
 
@@ -220,18 +221,18 @@ export default class Login extends Vue {
       customerName: this.intoA.personal.name,  // 客户姓名
       idCard: this.intoA.personal.id_card,        // 身份证号
       bankNo: this.intoA.personalBank.card_number,        // 银行卡号
-      mobile:this.intoA.personalBank.reserved_phone_number,        // 电话号码
+      mobile: this.intoA.personalBank.reserved_phone_number,        // 电话号码
     }
     this.fddApiService.getInvokeFourElementVerifyForH5(fourElements).subscribe(
       data => {
-        if(data.code === '1000'){
-         this.IntoASubmit()
-        }else{
+        if (data.code === '1000') {
+          this.IntoASubmit()
+        } else {
           this.$toast(data.msg)
         }
-       
+
       },
-      ({msg}) => {
+      ({ msg }) => {
         this.$toast(msg)
       }
     )
@@ -346,6 +347,7 @@ export default class Login extends Vue {
     this.productOrderService.createOrder(this.personalAll).subscribe(
       data => {
         this.clearIntoA()
+        this.clearSelectCity()
         //调用登陆接口获取订单信息
         // this.$toast('数据正在审核中，请稍后请重新登陆')
         this.$toast("提交成功")

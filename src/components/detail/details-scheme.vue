@@ -20,14 +20,14 @@
         </van-col>
       </van-row>
       <van-row>
-        <van-col class="payment">期数</van-col>
+        <van-col v-show="carPeriodsTwo.length" class="payment">期数</van-col>
       </van-row>
       <van-row class="small">
         <van-col v-for="(item,index) in carPeriodsTwo" :key="index" :span="6">
           <span :class="{'active':index ==checkindexTwo }" class="downPayment" @click="paymentTwo(item.planType,index)">{{$dict.getDictName(item.planType)}}</span>
         </van-col>
       </van-row>
-      <van-row>
+      <van-row v-show="carPeriodsThree.length">
         <van-col class="payment">月供详情</van-col>
       </van-row>
       <van-row class="monthly" v-show="carPeriodsThree.length > 0">

@@ -109,7 +109,7 @@ export default class Details extends Vue {
   }
 
   .carDetails {
-    border-bottom: 1px solid darkgray;
+    border-bottom: 1px solid gainsboro;
     padding: 10px;
     font-size: 12px;
     .detailsOne {
@@ -118,7 +118,7 @@ export default class Details extends Vue {
   }
   .textDescription {
     padding: 5px;
-    border-bottom: 1px solid darkgray;
+    border-bottom: 1px solid gainsboro;
     span {
       height: 25px;
       line-height: 25px;
@@ -132,9 +132,9 @@ export default class Details extends Vue {
     font-weight: 600;
     height: 25px;
     line-height: 25px;
-    border-bottom: 1px solid darkgray;
     color: lightslategrey;
     padding-left: 5px;
+    border: none;
   }
 }
 </style>

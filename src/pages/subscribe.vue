@@ -133,7 +133,10 @@ export default class Subscribe extends Vue {
           this.$router.push('/home')
         }, 3000);
       },
-      err => this.$toast(err.msg)
+      err => {
+        this.$toast(err.msg)
+        this.$router.push('/home')
+      }
     )
   }
 

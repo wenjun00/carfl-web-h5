@@ -1,7 +1,7 @@
 <template>
   <section class="page payment-record">
     <div v-if="!hasOrder" class="my-order-no" key="no-order">
-      <img src="/static/images/home/no-order.png" />
+      <img height="200px" src="/static/images/home/no-order.png" />
     </div>
     <div v-else key="has-order">
       <div class="break-line"> </div>

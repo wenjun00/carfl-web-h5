@@ -1,8 +1,11 @@
 <template>
   <section class="component order-contract">
-    <van-cell-group>
+    <van-cell-group v-if="dataCompact.length">
       <van-cell v-for="(item,index) of this.dataCompact" :key="index" :title="`《${item.contractName}》`" :value="$dict.getDictName(item.signContract)" is-link @click="onitemClick(item.viewpdfUrl,item.code)" />
     </van-cell-group>
+    <div class="noContract" v-else>
+      暂无合同
+    </div>
   </section>
 </template>
 
@@ -23,14 +26,15 @@ export default class OrderContract extends Vue {
   private onitemClick(item, code) {
 
     if (code == 1000) {
-      ImagePreview([
-        item
-      ], 1);
+      window.open(item)
+      // ImagePreview([
+      //   item
+      // ], 1);
     } else {
       this.$toast('当前合同暂未生成')
     }
   }
- // 合同id
+  // 合同id
   getContractDetails() {
     this.contractDetailsControllerService.getOrderContractListByOrderId(this.getOrderId).subscribe(
       data => {
@@ -41,7 +45,7 @@ export default class OrderContract extends Vue {
   }
 
   mounted() {
-    if(this.getOrderId){
+    if (this.getOrderId) {
       this.getContractDetails()
     }
 
@@ -53,6 +57,9 @@ export default class OrderContract extends Vue {
 
 <style lang="less" scoped>
 .order-contract {
+  .noContract {
+    color: darkgray;
+  }
 }
 </style>
 

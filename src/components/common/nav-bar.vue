@@ -9,7 +9,7 @@
       <div class="van-hairline--bottom"></div>
       <van-cell-group>
         <van-cell title="我的订单" to="/my-order" clickable @click="onNavItemClick" />
-        <van-cell title="还款明细" to="/payment-record" clickable @click="onNavItemClick" />
+        <van-cell title="月供还款" to="/payment-record" clickable @click="onNavItemClick" />
       </van-cell-group>
       <div class="van-hairline--bottom"></div>
       <van-cell-group>
@@ -82,6 +82,9 @@ export default class NavBar extends Vue {
   .van-modal {
     /*控制上面导航栏也展示出来 再加1像素*/
     margin-top: 46px;
+  }
+  .van-cell {
+    position: initial;
   }
 }
 </style>
