@@ -78,10 +78,10 @@ export default class Login extends Vue {
   // 验证规则
   private rules = {
     falseRelation: { required: true, message: '请选择与承租人关系' },
-    username: { required: true, message: '请输入联系人姓名' },
+    username:[ { required: true, message: '请输入联系人姓名' },{ validator: this.$validator.CharacterName }],
     phone: [{ required: true, message: "请输入正确的联系人手机号" }, { validator: this.$validator.phoneNumber }],
     falseRelationTwo: { required: true, message: '请选择与承租人关系' },
-    usernameTwo: { required: true, message: '请输入联系人姓名' },
+    usernameTwo:[{ required: true, message: '请输入联系人姓名' },{ validator: this.$validator.CharacterName }], 
     phoneTwo: [{ required: true, message: "请输入正确的联系人手机号" }, { validator: this.$validator.phoneNumber }],
 
 

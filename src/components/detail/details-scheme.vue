@@ -370,27 +370,28 @@ export default class detailsScheme extends Vue {
    * 查询订单是否被领取
    */
   getIndentType() {
-    this.appCustomerService.checkCustomerType(this.userData.id).subscribe(
-      data => {
-        this.carInfo = {
-          brandName: this.basicEquipment.brandName,
-          interiorColor: this.basicEquipment.carInteriorColor,
-          modelName: this.basicEquipment.modelName,
-          seriesName: this.basicEquipment.seriesName,
-          vehicleColor: this.basicEquipment.carColour,
-          vehicleId: this.carId,
-        }
+     this.$router.push('/upload-id-photo-first')
+    // this.appCustomerService.checkCustomerType(this.userData.id).subscribe(
+    //   data => {
+    //     this.carInfo = {
+    //       brandName: this.basicEquipment.brandName,
+    //       interiorColor: this.basicEquipment.carInteriorColor,
+    //       modelName: this.basicEquipment.modelName,
+    //       seriesName: this.basicEquipment.seriesName,
+    //       vehicleColor: this.basicEquipment.carColour,
+    //       vehicleId: this.carId,
+    //     }
 
-        if (!!this.carIntoA.productResultId) {
-          this.carDetails(this.carInfo)
-          this.carDetailTwo(this.carIntoA)
-          this.$router.push('/upload-id-photo-first')
-        } else {
-          this.$toast('请先选择车辆首付、期数')
-        }
-      },
-      err => this.$toast(err.msg)
-    )
+    //     if (!!this.carIntoA.productResultId) {
+    //       this.carDetails(this.carInfo)
+    //       this.carDetailTwo(this.carIntoA)
+    //       this.$router.push('/upload-id-photo-first')
+    //     } else {
+    //       this.$toast('请先选择车辆首付、期数')
+    //     }
+    //   },
+    //   err => this.$toast(err.msg)
+    // )
   }
 
   /**

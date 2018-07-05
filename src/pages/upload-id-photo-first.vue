@@ -41,7 +41,7 @@
       <van-row>
         <p class="base-info-title">请确认身份证信息是否一致</p>
         <van-cell-group>
-          <van-field v-model="idcard.name" name="center" placeholder="请输入证件姓名" required label="证件姓名" />
+          <van-field v-model="idcard.name" name="center" pattern="\w*" placeholder="请输入证件姓名" required label="证件姓名" />
           <van-field v-model="idcard.id_card" name="center" placeholder="请输入证件号码" required label="证件号码" />
           <van-cell title="民族" name="center" required is-link :value="idcard.nationText" @click="pickerDialog=true" />
           <van-cell title="户籍信息" name="center" required is-link :value="idcard.id_card_address | cityConvert " @click="$refs['cityPicker'].show()" />
