@@ -35,5 +35,6 @@ export default {
   IntoACity:'',// 进件城市 
   promptlyMake:false ,// 立即预约
   getOrderId:'',   // 订单id
+  carData:'',   // 车辆详情数据
   
 }

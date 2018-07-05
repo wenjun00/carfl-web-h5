@@ -1,6 +1,6 @@
 <template >
   <section class="page subscribe">
-    <p class="title">提交购车需求,金牌顾问为您服务</p>
+    <p class="title">提交购车需求，金牌顾问为您服务</p>
     <div class="buy-form">
     
       <van-cell class="cityLive" title="所在城市" is-link :value="buyModel.cityName | cityConvert " @click="$refs['cityPicker'].show()" />

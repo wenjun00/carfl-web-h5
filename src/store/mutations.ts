@@ -201,6 +201,14 @@ export default {
   promptlyMakeControl(state, data){
     state.promptlyMake = data
   },
+  // 获取车辆详情数据
+  getcarData(state, data){
+    state.carData = data
+  },
+  // 清空车辆详情数据
+  clearCarDate(state){
+    state.carData = {}
+  },
 
   /**
    * 更新用户订单数据

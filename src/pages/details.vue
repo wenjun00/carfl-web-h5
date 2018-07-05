@@ -4,7 +4,7 @@
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(image, index) in images" :key="index">
           <div class="car-main-img">
-            <img :src="image.url" :alt="image.introduce" height="250px"/>
+            <img :src="image.url" :alt="image.introduce" height="250px" />
           </div>
         </van-swipe-item>
       </van-swipe>
@@ -16,7 +16,7 @@
       </van-col>
     </van-row>
     <van-row class="textDescription">
-      <van-col span="24">{{carList.modelName}}</van-col>
+      <van-col class="carName" span="24">{{carData.modelName}}</van-col>
       <!-- <van-col class="price">
         <span>商场指导价:</span>
         <span>17.98万</span>
@@ -50,7 +50,7 @@ import DetailsScheme from "~/components/detail/details-scheme.vue";
 import { carManagementService } from "~/services/manage-service/car-management.service";
 import { Dependencies } from "~/core/decorator";
 import { Prop } from "vue-property-decorator";
-import {State, Mutation, Action } from "vuex-class";
+import { State, Mutation, Action } from "vuex-class";
 @Component({
   components: {
     DetailsScheme,
@@ -60,6 +60,7 @@ export default class Details extends Vue {
   @Dependencies(carManagementService) private carManagementService: carManagementService;
 
   @Prop() carId
+  @State carData
 
   private carList = []
   private images = []
@@ -68,17 +69,7 @@ export default class Details extends Vue {
     document.documentElement.scrollTop = 0
     window.scrollTo(0, 0);
   }
-  /**
-   * 获取车辆基本配置
-   */
-  getBasicEquipment() {
-    this.carManagementService.getCarDetail(this.carId).subscribe(
-      data => {
-        this.carList = data
-      },
-      err => this.$toast(err.msg)
-    )
-  }
+
   /**
   * 获取车辆首页图片
   */
@@ -92,7 +83,6 @@ export default class Details extends Vue {
 
   mounted() {
     this.BackTop()
-    this.getBasicEquipment()
     this.getCarPictureFun()
   }
 }
@@ -100,7 +90,11 @@ export default class Details extends Vue {
 
 <style lang="less" scoped>
 .page.details {
-  .headpad{
+  .carName {
+    font-weight: 600;
+    margin-left: 5px;
+  }
+  .headpad {
     padding: 10px;
   }
   .carImgs {

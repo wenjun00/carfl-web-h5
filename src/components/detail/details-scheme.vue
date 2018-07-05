@@ -83,8 +83,8 @@
         <van-cell title="燃料形式" :value="basicEquipment.fuel" />
         <van-cell title="综合油耗(L/100km)" :value="basicEquipment.fuelConsumption" />
         <!-- <van-cell title="车辆配色" :value="basicEquipment.carColour" />  -->
-        <van-cell title="车辆颜色" name="center"  is-link :value="basicEquipment.carColour" @click="pickerDialog=true" />
-        <van-cell title="内饰颜色" name="center"  is-link :value="basicEquipment.carInteriorColor" @click="pickerDialogTwo=true" />
+        <van-cell title="车辆颜色" name="center" is-link :value="basicEquipment.carColour" @click="pickerDialog=true" />
+        <van-cell title="内饰颜色" name="center" is-link :value="basicEquipment.carInteriorColor" @click="pickerDialogTwo=true" />
       </van-cell-group>
     </div>
 
@@ -92,7 +92,7 @@
     <transition name="fade">
       <van-picker class="carColorSty" :columns="columns" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
     </transition>
-       <!-- 内饰配色 -->
+    <!-- 内饰配色 -->
     <transition name="fade">
       <van-picker class="carColorSty" :columns="columnsTwo" v-show="pickerDialogTwo" show-toolbar ref="vanpicker" @confirm="onConfirmTwo" @cancel="pickerDialogTwo=false" />
     </transition>
@@ -239,10 +239,11 @@ export default class detailsScheme extends Vue {
   @State orderInfo
   @State promptlyMake
   @State userData
-  private columnsTwo:any=[] // 内饰颜色
+  @Mutation getcarData
+  private columnsTwo: any = [] // 内饰颜色
   private columns: any = [];  // 车辆颜色内容
   private pickerDialog: boolean = false;  //  车辆颜色弹窗
-   private pickerDialogTwo: boolean = false;  //  内饰颜色
+  private pickerDialogTwo: boolean = false;  //  内饰颜色
   private showDetails: boolean = false
   private activeNames: any = ['1']
   private paramList: any = []   // 车辆详情配置
@@ -257,7 +258,7 @@ export default class detailsScheme extends Vue {
   private checkindex: any = null    // 首付点击获取calss 
   private checkindexTwo: any = null  // 期数点击当前获取class
   private aaaList: any = ['/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png']
-
+  private getFirstPayment:any = '' // 获取还款期数使用
 
   private images = '/static/images/common/headerLabel.png'
 
@@ -273,13 +274,14 @@ export default class detailsScheme extends Vue {
       },
       err => this.$toast(err.msg)
     )
-  } 
+  }
   /**
   * 获取车辆基本配置
   */
   getBasicEquipment() {
     this.carManagementService.getCarDetail(this.carId).subscribe(
       data => {
+        this.getcarData(data)
         this.basicEquipment = data
         let carColour = this.basicEquipment.carColour.split(';')
         this.columns = carColour
@@ -287,7 +289,7 @@ export default class detailsScheme extends Vue {
         this.columnsTwo = carInteriorColor
         this.basicEquipment.carColour = carColour[0]
         this.basicEquipment.carInteriorColor = carInteriorColor[0]
-       
+
       },
       err => this.$toast(err.msg)
     )
@@ -306,7 +308,6 @@ export default class detailsScheme extends Vue {
   * 获取车辆首付 期数1
   */
   getCarPeriods() {
-
     this.productService.getCarProductResultModelList({ carId: this.carId }).subscribe(
       data => {
         this.carPeriodsOne = data
@@ -318,17 +319,24 @@ export default class detailsScheme extends Vue {
    * 还款期数 期数2
    */
   paymentOne(val, index) {
+    this.carPeriodsTwo = []
+    this.carPeriodsThree = []
+    this.checkindexTwo = null
+
     this.checkindex = index
     let a = {
       carId: this.carId,
       firstPayment: val
     }
+    this.getFirstPayment = val
+
     this.productService.getCarProductResultModelList(a).subscribe(
       data => {
         this.carPeriodsTwo = data
       },
       err => this.$toast(err.msg)
     )
+    
   }
   /**
    * 点击期数 期数3
@@ -337,8 +345,10 @@ export default class detailsScheme extends Vue {
     this.checkindexTwo = index
     let a = {
       carId: this.carId,
-      planType: val
+      planType: val,
+      firstPayment: this.getFirstPayment,
     }
+    
     this.productService.getCarProductResultModelList(a).subscribe(
       data => {
         this.carPeriodsThree = data
@@ -362,11 +372,11 @@ export default class detailsScheme extends Vue {
   getIndentType() {
     this.appCustomerService.checkCustomerType(this.userData.id).subscribe(
       data => {
-         this.carInfo = {
-          brandName:  this.basicEquipment.brandName,
+        this.carInfo = {
+          brandName: this.basicEquipment.brandName,
           interiorColor: this.basicEquipment.carInteriorColor,
-          modelName:  this.basicEquipment.modelName,
-          seriesName:  this.basicEquipment.seriesName,
+          modelName: this.basicEquipment.modelName,
+          seriesName: this.basicEquipment.seriesName,
           vehicleColor: this.basicEquipment.carColour,
           vehicleId: this.carId,
         }
@@ -391,10 +401,10 @@ export default class detailsScheme extends Vue {
     this.pickerDialog = false
     this.basicEquipment.carColour = val
   }
- /**
-  * 点击车身颜色 确定
-  */
- private onConfirmTwo(val) {
+  /**
+   * 点击车身颜色 确定
+   */
+  private onConfirmTwo(val) {
     this.pickerDialogTwo = false
     this.basicEquipment.carInteriorColor = val
   }

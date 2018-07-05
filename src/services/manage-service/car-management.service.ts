@@ -15,8 +15,7 @@ export class carManagementService {
       server: manageService.carManagementController.getCarParamList,
       data:{
         carId:carId
-      },
-      loading: true
+      }
     })
   }
   /**

@@ -49,6 +49,7 @@ import NavBar from "~/components/common/nav-bar.vue";
 import { Prop, Watch } from "vue-property-decorator";
 import { carShowManagementService } from "~/services/manage-service/car-show-management.service";
 import { Dependencies } from "~/core/decorator";
+import { Getter, State, Mutation, Action } from "vuex-class";
 
 @Component({
   components: {
@@ -64,6 +65,7 @@ export default class BuyCarList extends Vue {
   @Prop({
     default: ''
   }) transKeyWord
+  @Mutation clearCarDate
 
   private searchModel = {
     brandId: '',
@@ -131,6 +133,8 @@ export default class BuyCarList extends Vue {
 
 
   mounted() {
+    // 返回到列表时，清空存储车辆详情数据
+    this.clearCarDate() 
     this.dataSet = []
     if (this.brandId > 0) this.searchModel.brandId = this.brandId
     if (this.transKeyWord !== '') this.keyWord = this.transKeyWord
