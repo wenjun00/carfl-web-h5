@@ -80,7 +80,7 @@ export default class MyOrder extends Vue {
         this.productOrderInfo.placeCity = [data.city]
         this.productOrderInfo.downPayment = data.schedulePlanResultModel.schedulePlanResult.firstPayment
         this.productOrderInfo.periods = this.$dict.getDictName(data.schedulePlanResultModel.schedulePlanResult.planType)
-        this.productOrderInfo.informationOn = data.schedulePlanResultModel.schedulePlanResult.firstYearMonthrent
+        this.productOrderInfo.informationOn = data.schedulePlanResultModel.schedulePlanResult.firstYearMonthrent.toFixed(2)
       },
       err => this.$toast(err.msg)
     )
