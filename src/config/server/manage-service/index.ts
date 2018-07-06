@@ -10,6 +10,7 @@ import paymentScheduleController from './payment-schedule-controller.controller'
 import contractDetailsController from './contract-details-controller.controller'
 import appCustomerController from './app-customer.controller'
 import fddApiController from './fdd-api.controller'
+import departmentController from './department.controller'
 
 
 export const manageService = {
@@ -23,5 +24,6 @@ export const manageService = {
   paymentScheduleController,
   contractDetailsController,
   appCustomerController,
-  fddApiController
+  fddApiController,
+  departmentController
 }

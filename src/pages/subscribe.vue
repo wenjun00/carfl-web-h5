@@ -2,10 +2,11 @@
   <section class="page subscribe">
     <p class="title">提交购车需求，金牌顾问为您服务</p>
     <div class="buy-form">
-    
-      <van-cell class="cityLive" title="所在城市" is-link :value="buyModel.cityName | cityConvert " @click="$refs['cityPicker'].show()" />
-      <city-picker required ref="cityPicker" @on-confirm="onCityPickerConfirm"></city-picker>
-
+      <van-cell class="cityLive" title="所属机构" is-link :value="buyModel.cityName" @click="pickerDialog=true" />
+      <!-- 选择所属机构 -->
+      <transition name="fade">
+        <van-picker class="subsidiaryOrgan " :columns="subsidiaryOrganList" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
+      </transition>
       <van-field class="phoneText" maxlength="11" v-model="buyModel.phone" label="手机号码" placeholder="请输入您的手机号" icon="clear" @click-icon="buyModel.phone = ''" @focus="onCodeNumberFocus" />
       <van-number-keyboard :show="show.phone" title="洋葱汽车安全键盘" close-button-text="完成" @blur="show.phone = false" @input="onKeyBoardInputPhone" @delete="onKeyBoardDeletePhone" />
     </div>
@@ -14,7 +15,7 @@
     <van-dialog v-model="show.confirm" confirmButtonText="立即预约" @confirm="onConfirmClick">
       <div class="buy-info">
         <p>您的电话：{{buyModel.phone}}</p>
-        <p>所在城市：{{buyModel.cityName | cityConvert}}</p>
+        <p>所属机构：{{buyModel.cityName}}</p>
         <!-- <p>预约门店：暂时为空</p> -->
       </div>
     </van-dialog>
@@ -37,9 +38,8 @@ import CityPicker from "~/components/common/city-picker.vue";
 import { State, Mutation, Action } from "vuex-class";
 import { AppCustomerService } from "~/services/manage-service/app-customer.service";
 import { Dependencies } from "~/core/decorator";
-
 import PolisPicker from "~/components/common/polis-picker.vue";
-
+import { DepartmentService } from "~/services/manage-service/department.service";
 @Component({
   components: {
     CityPicker,
@@ -49,38 +49,36 @@ import PolisPicker from "~/components/common/polis-picker.vue";
 })
 export default class Subscribe extends Vue {
   @Dependencies(AppCustomerService) private appCustomerService: AppCustomerService;
+  @Dependencies(DepartmentService) private departmentService: DepartmentService;
   @Mutation promptlyMakeControl
   @State orderInfo
   @State userData
-
-
-
-  private areaList ={
-  province_list: {
-    110000: '北京市',
-    120000: '天津市'
-  },
-  city_list: {
-    110100: '北京市',
-    110200: '县',
-    120100: '天津市',
-    120200: '县'
-  },
-  county_list: {
-    110101: '东城区',
-    110102: '西城区',
-    110105: '朝阳区',
-    110106: '丰台区',
-    120101: '和平区',
-    120102: '河东区',
-    120103: '河西区',
-    120104: '南开区',
-    120105: '河北区',
-    // ....
+  private subsidiaryOrganList: any = [];
+  private areaList = {
+    province_list: {
+      110000: '北京市',
+      120000: '天津市'
+    },
+    city_list: {
+      110100: '北京市',
+      110200: '县',
+      120100: '天津市',
+      120200: '县'
+    },
+    county_list: {
+      110101: '东城区',
+      110102: '西城区',
+      110105: '朝阳区',
+      110106: '丰台区',
+      120101: '和平区',
+      120102: '河东区',
+      120103: '河西区',
+      120104: '南开区',
+      120105: '河北区',
+      // ....
+    }
   }
-}
-
-
+  private pickerDialog: Boolean = false
   private dataList = AreaData
   private showForm: boolean = false
   private show = {
@@ -93,21 +91,13 @@ export default class Subscribe extends Vue {
   private buyModel = {
     cityName: "",  // 所在城市 汉子显示
     phone: "",     //手机号
-    city: "",      // 城市code   
+    subsidiaryId: "",      //机构id
     appointmentShop: ""  // 预约门店
   }
 
-  // 选择城市点击事件
-  private onCityPickerConfirm(currentCitys) {
-    // console.log(currentCitys)
-    // currentCitys.pop()   // 不需要区时使用
-    this.buyModel.cityName = currentCitys
-    this.buyModel.city = currentCitys[1]
-
-  }
 
   private rules = {
-    cityName: { required: true, message: "请选择所在城市" },
+    cityName: { required: true, message: "请选择所属机构" },
     phone: [{ required: true, message: "请输入正确的手机号" }, { validator: this.$validator.phoneNumber }]
   }
   /**
@@ -123,7 +113,11 @@ export default class Subscribe extends Vue {
    * 点击立即预约
    */
   getPromptlySubscribe() {
-    this.appCustomerService.customerReservation(this.buyModel.phone).subscribe(
+    let dataAll = {
+      mobileMain:this.buyModel.phone,
+      departmentId:this.buyModel.subsidiaryId
+    }
+    this.appCustomerService.customerReservation(dataAll).subscribe(
       data => {
         this.$toast('预约成功')
         this.promptlyMakeControl(true)
@@ -139,6 +133,35 @@ export default class Subscribe extends Vue {
       }
     )
   }
+  /**
+    * 查询所属机构
+    */
+  getSubsidiaryOrgan() {
+    this.departmentService.getAllDepartment().subscribe(
+      data => {
+        for (let i of data) {
+          this.subsidiaryOrganList.push({
+            text: i.deptName,
+            value: i.id
+          })
+        }
+        this.subsidiaryOrganList = this.subsidiaryOrganList.filter(x => x.value !== 1)
+      },
+      err => {
+        this.$toast(err.msg)
+      }
+    )
+  }
+  /**
+  * 点击所属机构确定事件
+  */
+
+  private onConfirm(val) {
+    this.buyModel.cityName = val.text 
+    this.buyModel.subsidiaryId = val.value
+    this.pickerDialog = false
+  }
+
 
 
 
@@ -160,22 +183,12 @@ export default class Subscribe extends Vue {
     if (length === 0) return
     this.buyModel.phone = this.buyModel.phone.substring(0, length - 1)
   }
-
-  // private onAreaConfirmClick(val) {
-  //   console.log(val)
-  //   if (val && val.length >= 2) {
-  //     let city = val[1]
-  //     this.buyModel.city = city.code
-  //     this.buyModel.cityName = city.name
-  //   }
-  //   this.show.area = false
-  // }
   private onCodeNumberFocus() {
     (document.activeElement as HTMLElement).blur()
     this.show.phone = true
   }
 
-//点击帮我买车
+  //点击帮我买车
   private onSubmitClick() {
     this.$validator.validate(this.buyModel, this.rules).then(error => {
       if (!error) {
@@ -184,16 +197,10 @@ export default class Subscribe extends Vue {
         this.$toast(error);
       }
     });
+  }
 
-    // TODO 测试。先注释
-    // this.$validator.validate(this.buyModel, this.rules).then(err => {
-    //   if (err) {
-    //     this.$toast(err)
-    //     return
-    //   }
-    //   this.show.confirm = true
-    // })
-
+  mounted() {
+    this.getSubsidiaryOrgan()
   }
 
 }
@@ -203,6 +210,12 @@ export default class Subscribe extends Vue {
 @marginHight: 20px;
 .subscribe {
   text-align: center;
+}
+.subsidiaryOrgan {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  z-index: 100;
 }
 
 .title {

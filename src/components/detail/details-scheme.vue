@@ -200,7 +200,7 @@
       <div class="break-line"></div>
 
       <div>
-        <van-button @click="skipNextStep" size="large">下一步</van-button>
+        <van-button @click="$router.push('/subscribe')" size="large">立即预约</van-button>
       </div>
 
     </div>
@@ -412,9 +412,9 @@ export default class detailsScheme extends Vue {
   /***
     * 点击下一步
     */
-  skipNextStep() {
-    this.getIndentType()
-  }
+  // skipNextStep() {
+  //   this.getIndentType()
+  // }
 
   mounted() {
     this.getCarDetails()
