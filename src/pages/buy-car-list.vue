@@ -23,7 +23,7 @@
             <span class="car-info">{{item.modelName}}</span>
           </div>
           <van-row>
-            <van-col span="12" class="car-first">首付{{item.firstPayment/1000 | toThousands}}万</van-col>
+            <van-col span="12" class="car-first">首付{{item.firstPayment/10000 | toThousands}}万</van-col>
             <van-col span="12" class="car-month">月供{{item.monthRent | toThousands}}元</van-col>
           </van-row>
         </van-col>
