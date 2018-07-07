@@ -2,8 +2,8 @@
   <section class="page subscribe">
     <p class="title">提交购车需求，金牌顾问为您服务</p>
     <div class="buy-form">
-      <van-cell class="cityLive" title="所属机构" is-link :value="buyModel.cityName" @click="pickerDialog=true" />
-      <!-- 选择所属机构 -->
+      <van-cell class="cityLive" title="选择门店" is-link :value="buyModel.cityName" @click="pickerDialog=true" />
+      <!-- 选择选择门店 -->
       <transition name="fade">
         <van-picker class="subsidiaryOrgan " :columns="subsidiaryOrganList" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
       </transition>
@@ -15,7 +15,7 @@
     <van-dialog v-model="show.confirm" confirmButtonText="立即预约" @confirm="onConfirmClick">
       <div class="buy-info">
         <p>您的电话：{{buyModel.phone}}</p>
-        <p>所属机构：{{buyModel.cityName}}</p>
+        <p>选择门店：{{buyModel.cityName}}</p>
         <!-- <p>预约门店：暂时为空</p> -->
       </div>
     </van-dialog>
@@ -97,7 +97,7 @@ export default class Subscribe extends Vue {
 
 
   private rules = {
-    cityName: { required: true, message: "请选择所属机构" },
+    cityName: { required: true, message: "请选择门店" },
     phone: [{ required: true, message: "请输入正确的手机号" }, { validator: this.$validator.phoneNumber }]
   }
   /**
