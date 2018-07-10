@@ -9,10 +9,14 @@
           <p class="beyondLittle">{{item.brandSeriesName}}</p>
           <p class="car-info">{{item.modelName}}</p>
         </div>
-        <van-row>
+        <div class="car">
+          <span class="car-first">首付{{item.firstPayment/10000| toThousands}}万</span>
+          <span class="car-month">月供{{item.monthRent |toThousands}}元</span>
+        </div>
+        <!-- <van-row>
           <van-col span="12" class="car-first">首付{{item.firstPayment/10000| toThousands}}万</van-col>
           <van-col span="12" class="car-month">月供{{item.monthRent |toThousands}}元</van-col>
-        </van-row>
+        </van-row> -->
       </van-col>
     </van-row>
   </section>
@@ -58,7 +62,7 @@ export default class CarList extends Vue {
 
 <style lang="less" scoped>
 .component.car-list {
-  .car-list-img{
+  .car-list-img {
     height: 120px;
     max-height: 120px;
     overflow: hidden;
@@ -83,10 +87,12 @@ export default class CarList extends Vue {
     &-first {
       font-size: 0.7rem;
       color: #ffdb00;
+      margin-left: 15px;
     }
     &-month {
       font-size: 0.7rem;
       color: gray;
+      margin-left: 15px;
     }
     .beyondLittle {
       overflow: hidden;

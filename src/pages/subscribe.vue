@@ -7,10 +7,13 @@
       <transition name="fade">
         <van-picker class="subsidiaryOrgan " :columns="subsidiaryOrganList" v-show="pickerDialog" show-toolbar ref="vanpicker" @confirm="onConfirm" @cancel="pickerDialog=false" />
       </transition>
-      <van-field class="phoneText" maxlength="11" v-model="buyModel.phone" label="手机号码" placeholder="请输入您的手机号" icon="clear" @click-icon="buyModel.phone = ''" @focus="onCodeNumberFocus" />
+      <van-field name="center" class="phoneText" maxlength="11" v-model="buyModel.phone" label="手机号码" placeholder="请输入您的手机号" icon="clear" @click-icon="buyModel.phone = ''" />
       <van-number-keyboard :show="show.phone" title="洋葱汽车安全键盘" close-button-text="完成" @blur="show.phone = false" @input="onKeyBoardInputPhone" @delete="onKeyBoardDeletePhone" />
     </div>
-    <van-button type="primary" class="full-radius" size="large" @click="onSubmitClick">帮我买车</van-button>
+    <div class="buttonBox">
+       <van-button type="primary" class="full-radius" size="large" @click="onSubmitClick">帮我买车</van-button>
+    </div>
+   
 
     <van-dialog v-model="show.confirm" confirmButtonText="立即预约" @confirm="onConfirmClick">
       <div class="buy-info">
@@ -114,8 +117,8 @@ export default class Subscribe extends Vue {
    */
   getPromptlySubscribe() {
     let dataAll = {
-      mobileMain:this.buyModel.phone,
-      departmentId:this.buyModel.subsidiaryId
+      mobileMain: this.buyModel.phone,
+      departmentId: this.buyModel.subsidiaryId
     }
     this.appCustomerService.customerReservation(dataAll).subscribe(
       data => {
@@ -157,15 +160,10 @@ export default class Subscribe extends Vue {
   */
 
   private onConfirm(val) {
-    this.buyModel.cityName = val.text 
+    this.buyModel.cityName = val.text
     this.buyModel.subsidiaryId = val.value
     this.pickerDialog = false
   }
-
-
-
-
-
   /**
   * 键盘输入
   * @param val 案件内容
@@ -183,10 +181,10 @@ export default class Subscribe extends Vue {
     if (length === 0) return
     this.buyModel.phone = this.buyModel.phone.substring(0, length - 1)
   }
-  private onCodeNumberFocus() {
-    (document.activeElement as HTMLElement).blur()
-    this.show.phone = true
-  }
+  // private onCodeNumberFocus() {
+  //   (document.activeElement as HTMLElement).blur()
+  //   this.show.phone = true
+  // }
 
   //点击帮我买车
   private onSubmitClick() {
@@ -200,7 +198,16 @@ export default class Subscribe extends Vue {
   }
 
   mounted() {
+    this.buyModel.phone = this.userData.userPhone
     this.getSubsidiaryOrgan()
+    let els: any = document.getElementsByName("center");
+    els.forEach(v => {
+      v.onclick = () => {
+        setTimeout(() => {
+          (v as HTMLElement).scrollIntoView(true);
+        }, 300);
+      };
+    });
   }
 
 }
@@ -217,7 +224,9 @@ export default class Subscribe extends Vue {
   width: 100%;
   z-index: 100;
 }
-
+.buttonBox{
+  height: 80px;
+}
 .title {
   margin-top: @marginHight * 2;
   margin-bottom: @marginHight;

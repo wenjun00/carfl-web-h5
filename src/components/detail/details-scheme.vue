@@ -199,8 +199,8 @@
       <!-- 空行 -->
       <div class="break-line"></div>
 
-      <div>
-        <van-button @click="$router.push('/subscribe')" size="large">立即预约</van-button>
+      <div class="bottomBox">
+        <van-button class="fixedBottom" @click="$router.push('/subscribe')" size="large">立即预约</van-button>
       </div>
 
     </div>
@@ -258,7 +258,7 @@ export default class detailsScheme extends Vue {
   private checkindex: any = null    // 首付点击获取calss 
   private checkindexTwo: any = null  // 期数点击当前获取class
   private aaaList: any = ['/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png', '/static/images/common/car.png']
-  private getFirstPayment:any = '' // 获取还款期数使用
+  private getFirstPayment: any = '' // 获取还款期数使用
 
   private images = '/static/images/common/headerLabel.png'
 
@@ -336,7 +336,7 @@ export default class detailsScheme extends Vue {
       },
       err => this.$toast(err.msg)
     )
-    
+
   }
   /**
    * 点击期数 期数3
@@ -348,7 +348,6 @@ export default class detailsScheme extends Vue {
       planType: val,
       firstPayment: this.getFirstPayment,
     }
-    
     this.productService.getCarProductResultModelList(a).subscribe(
       data => {
         this.carPeriodsThree = data
@@ -429,13 +428,13 @@ export default class detailsScheme extends Vue {
 
 <style lang="less" scoped>
 .page.details-scheme {
+  .fixedBottom {
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+  }
   .fontWeight {
     font-weight: 600;
-  }
-  .falseButton {
-    background: #eeeeee !important;
-    color: grey !important;
-    border-color: #eeeeee !important;
   }
   .active {
     color: #fcdf2b;
@@ -454,10 +453,6 @@ export default class detailsScheme extends Vue {
       .noticeEnd {
         color: #666;
       }
-    }
-    .basicParameter {
-      line-height: 30px !important;
-      font-weight: 600 !important;
     }
     .someIcon {
       position: relative;
@@ -494,30 +489,6 @@ export default class detailsScheme extends Vue {
     display: inline-block;
     min-width: 50px;
     margin: 5px;
-  }
-  .mar10 {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .imgCenter {
-    text-align: center;
-  }
-  .magin10 {
-    margin-bottom: 10px;
-  }
-  .advantage {
-    display: flex;
-    justify-content: space-between;
-    .carLeft,
-    .carRight {
-      width: 48%;
-      font-size: 13px;
-      text-align: center;
-      color: gray;
-      margin-bottom: 10px;
-    }
   }
   .payment {
     font-weight: 600;
@@ -564,18 +535,16 @@ export default class detailsScheme extends Vue {
     .absut {
       position: relative;
     }
-    .van-hairline--surround.van-tag {
-      position: absolute;
-      bottom: 10px;
-      left: 5px;
-      background: #2d2e30;
-      font-size: 12px;
-    }
   }
 }
 </style>
 <style lang="less">
 .page.details-scheme {
+  .bottomBox {
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+  }
   .carColorSty {
     position: fixed;
     bottom: 0;
