@@ -17,10 +17,10 @@
     </van-row>
     <van-row class="textDescription">
       <van-col class="carName" span="24">{{carData.modelName}}</van-col>
-      <!-- <van-col class="price">
+      <van-col class="price">
         <span>商场指导价:</span>
-        <span>17.98万</span>
-      </van-col> -->
+        <span>{{carData.guidePrice/10000 | toThousands}}万</span>
+      </van-col>
     </van-row>
     <van-row class="guarantee">
       <van-col span="8" class="textCenter">
@@ -124,7 +124,8 @@ export default class Details extends Vue {
       line-height: 25px;
     }
     .price {
-      font-size: 12px;
+      font-size: 13px;
+      margin-left: 5px;
     }
   }
   .guarantee {

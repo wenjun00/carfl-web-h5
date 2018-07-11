@@ -82,7 +82,6 @@
         <van-cell title="驱动方式" :value="basicEquipment.drivingMode" />
         <van-cell title="燃料形式" :value="basicEquipment.fuel" />
         <van-cell title="综合油耗(L/100km)" :value="basicEquipment.fuelConsumption" />
-        <!-- <van-cell title="车辆配色" :value="basicEquipment.carColour" />  -->
         <van-cell title="车辆颜色" name="center" is-link :value="basicEquipment.carColour" @click="pickerDialog=true" />
         <van-cell title="内饰颜色" name="center" is-link :value="basicEquipment.carInteriorColor" @click="pickerDialogTwo=true" />
       </van-cell-group>
@@ -281,6 +280,7 @@ export default class detailsScheme extends Vue {
   getBasicEquipment() {
     this.carManagementService.getCarDetail(this.carId).subscribe(
       data => {
+        console.log(data)
         this.getcarData(data)
         this.basicEquipment = data
         let carColour = this.basicEquipment.carColour.split(';')

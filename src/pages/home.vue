@@ -65,6 +65,7 @@ import { State, Mutation, Action } from "vuex-class";
 export default class Home extends Vue {
   @State intoA
   @Mutation clearIntoA
+  @Mutation clearCarDate
 
   private serachKeyWord: string = "";
 
@@ -96,6 +97,7 @@ export default class Home extends Vue {
   }
   mounted() {
     this.clearIntoA()
+    this.clearCarDate()
   }
 
 }
