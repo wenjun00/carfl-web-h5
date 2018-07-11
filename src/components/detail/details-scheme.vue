@@ -125,7 +125,7 @@
           <img height="65px" src="/static/images/common/phone.png" alt="">
           <div class="appointmentDescribe">
             <div class="appointmentHend">立即预约</div>
-            <span class="appointmentSpan">选好意向车型后,洋葱好车直营店客户经理将在24小时之内为你提供1对1服务</span>
+            <span class="appointmentSpan">选好意向车型后，洋葱汽车直营店客户经理将在24小时之内为你提供1对1服务</span>
           </div>
         </div>
       </van-row>
@@ -134,7 +134,7 @@
           <img height="65px" src="/static/images/common/agreement.png" alt="">
           <div class="appointmentDescribe">
             <div class="appointmentHend">签订协议</div>
-            <span class="appointmentSpan">选择合适的购车方案,通过征信审核后签订购车协议</span>
+            <span class="appointmentSpan">选择合适的购车方案，通过征信审核后签订购车协议</span>
           </div>
         </div>
       </van-row>
@@ -143,7 +143,7 @@
           <img height="65px" src="/static/images/common/cost.png" alt="">
           <div class="appointmentDescribe">
             <div class="appointmentHend">支付费用</div>
-            <span class="appointmentSpan">支付首付,第一期月供,违章保证金</span>
+            <span class="appointmentSpan">支付首付，第一期月供,违章保证金</span>
           </div>
         </div>
       </van-row>
@@ -152,7 +152,7 @@
           <img height="65px" src="/static/images/common/vehicle.png" alt="">
           <div class="appointmentDescribe">
             <div class="appointmentHend">到店提车</div>
-            <span class="appointmentSpan">免费办理保险与上牌手续后,客户经理将联系您到附近直营店提车</span>
+            <span class="appointmentSpan">免费办理保险与上牌手续后，客户经理将联系您到附近直营店提车</span>
           </div>
         </div>
       </van-row>
@@ -168,16 +168,16 @@
         </van-cell>
       </van-cell-group>
       <van-row class="purchaseNotes">
-        <van-col class="noticeHeand" span="8">购车资料</van-col>
-        <van-col class="noticeEnd" span="16">洋葱汽车由各大汽车品牌厂商供应,车源品质有保障</van-col>
+        <van-col class="noticeHeand" span="8">车源保障</van-col>
+        <van-col class="noticeEnd" span="16">洋葱汽车由各大汽车品牌厂商供应，车源品质有保障</van-col>
       </van-row>
       <van-row class="purchaseNotes">
-        <van-col class="noticeHeand" span="8">车源保障</van-col>
+        <van-col class="noticeHeand" span="8">购车资料</van-col>
         <van-col class="noticeEnd" span="16">二代身份证、驾驶证、征信报告</van-col>
       </van-row>
       <van-row class="purchaseNotes">
         <van-col class="noticeHeand" span="8">车辆归属</van-col>
-        <van-col class="noticeEnd" span="16">用车期间,车辆以及车牌所有权归属洋葱汽车;结清全部费用后即办理车辆过户</van-col>
+        <van-col class="noticeEnd" span="16">用车期间,车辆以及车牌所有权归属洋葱汽车；结清全部费用后即办理车辆过户</van-col>
       </van-row>
       <van-row class="purchaseNotes">
         <van-col class="noticeHeand" span="8">额外费用</van-col>
@@ -189,7 +189,7 @@
       </van-row>
       <van-row class="purchaseNotes">
         <van-col class="noticeHeand" span="8">上牌</van-col>
-        <van-col class="noticeEnd" span="16">洋葱汽车负责办理车辆上牌,您无需到场,无需支付额外费用</van-col>
+        <van-col class="noticeEnd" span="16">洋葱汽车负责办理车辆上牌，您无需到场、无需额外支付费用</van-col>
       </van-row>
       <van-row class="purchaseNotes">
         <van-col class="noticeHeand" span="8">还款</van-col>
