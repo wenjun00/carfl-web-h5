@@ -49,7 +49,6 @@ export default class CityPicker extends Vue {
   }
 
   mounted() {
-    console.log(polisData,1111)
     this.reset();
   }
 

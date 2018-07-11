@@ -280,7 +280,6 @@ export default class detailsScheme extends Vue {
   getBasicEquipment() {
     this.carManagementService.getCarDetail(this.carId).subscribe(
       data => {
-        console.log(data)
         this.getcarData(data)
         this.basicEquipment = data
         let carColour = this.basicEquipment.carColour.split(';')

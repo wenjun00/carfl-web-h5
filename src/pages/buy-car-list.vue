@@ -80,7 +80,7 @@ export default class BuyCarList extends Vue {
   set keyWord(val) {
     this.searchModel.name = val
     this.show.search = val !== ""
-    console.log(val.length)
+    // console.log(val.length)
     if(val.length === 0){
       this.searchCarList()
     }

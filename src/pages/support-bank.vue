@@ -33,7 +33,6 @@ export default class supportBank extends Vue {
           arr.push(data.slice(i, i + 3));
         }
         this.bankList = arr
-        console.log(arr)
       },
       err => this.$toast(err.msg)
     )
