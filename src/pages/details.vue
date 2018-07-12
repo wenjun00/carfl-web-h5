@@ -18,7 +18,7 @@
     <van-row class="textDescription">
       <van-col class="carName" span="24">{{carData.modelName}}</van-col>
       <van-col class="price">
-        <span>商场指导价:</span>
+        <span>厂商指导价:</span>
         <span>{{carData.guidePrice/10000 | toThousands}}万</span>
       </van-col>
     </van-row>

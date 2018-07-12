@@ -5,8 +5,8 @@
     </div>
     <van-row class="login-info">
       <van-cell-group>
-        <van-field maxlength="11" v-model="loginModel.phoneNumber" type="number" label="手机号" placeholder="请输入您的手机号" icon="clear" @click-icon="loginModel.phoneNumber = ''" />
-        <van-field maxlength="6" center v-model="loginModel.verifyCode" label="验证码" type="number" placeholder="请输入短信验证码" icon="clear" @click-icon="loginModel.verifyCode = ''">
+        <van-field v-model.lazy="loginModel.phoneNumber" type="number" label="手机号" placeholder="请输入您的手机号" icon="clear" @click-icon="loginModel._phoneNumber = ''" />
+        <van-field :maxlength="6" center v-model.lazy="loginModel.verifyCode" label="验证码" type="number" placeholder="请输入短信验证码" icon="clear" @click-icon="loginModel._verifyCode = ''">
           <van-button slot="button" size="small" type="primary" @click="onVerifyCodeClick" :disabled="leftTime !== 0">{{leftTime > 0 ? leftTime + '秒后重发' : '获取验证码'}}</van-button>
         </van-field>
       </van-cell-group>
@@ -40,8 +40,31 @@ export default class Login extends Vue {
   // 客户手机号码
   private phoneNumber: string = "";
   private loginModel = {
-    phoneNumber: "", // 客户手机号码
-    verifyCode: "" //验证码
+    _phoneNumber: "",
+    get phoneNumber() {
+      return this._phoneNumber
+    },
+    set phoneNumber(val) {
+      if (val && val.length <= 11) {
+        this._phoneNumber = val
+      }
+      if(val.length === 0){
+         this._phoneNumber = ''
+      }
+      
+    }, // 客户手机号码
+    _verifyCode: "",
+    get verifyCode(): string {
+      return this._verifyCode
+    },
+    set verifyCode(v: string) {
+      if (v && v.length <= 6) {
+        this._verifyCode = v;
+      }
+      if(v.length === 0){
+        this._verifyCode = '';
+      }
+    }
   };
   private authCode: '' // 存store 验证码 
 
@@ -67,47 +90,6 @@ export default class Login extends Vue {
       this.loginModel.phoneNumber =
         StorageService.getItem("account").phoneNumber || "";
     }
-  }
-
-  /**
-   * 键盘输入
-   * @param val 案件内容
-   */
-  private onKeyBoardInputPhone(val) {
-    if (this.loginModel.phoneNumber.length === 11) return;
-    this.loginModel.phoneNumber += val.toString();
-  }
-
-  /**
-   * 按钮删除操作
-   */
-  private onKeyBoardDeletePhone() {
-    let length = this.loginModel.phoneNumber.length;
-    if (length === 0) return;
-    this.loginModel.phoneNumber = this.loginModel.phoneNumber.substring(
-      0,
-      length - 1
-    );
-  }
-
-  /**
-   * 输入验证码
-   */
-  private onKeyBoardInputCode(val) {
-    if (this.loginModel.verifyCode.length === 6) return;
-    this.loginModel.verifyCode += val.toString();
-  }
-
-  /**
-   * 删除验证码
-   */
-  private onKeyBoardDeleteCode() {
-    let length = this.loginModel.verifyCode.length;
-    if (length === 0) return;
-    this.loginModel.verifyCode = this.loginModel.verifyCode.substring(
-      0,
-      length - 1
-    );
   }
 
   /**
@@ -171,15 +153,6 @@ export default class Login extends Vue {
     });
   }
 
-  // private onPhoneNumberFocus(v) {
-  //   (document.activeElement as HTMLElement).blur()
-  //   this.keyboardFlag.phone = true
-  // }
-
-  // private onCodeNumberFocus() {
-  //   (document.activeElement as HTMLElement).blur()
-  //   this.keyboardFlag.code = true
-  // }
 }
 </script>
 <style lang="less" scoped>
