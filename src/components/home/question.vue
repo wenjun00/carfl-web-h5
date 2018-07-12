@@ -47,7 +47,7 @@ export default class Question extends Vue {
     {
       id: 4,
       title: "其他疑问谁能解答？",
-      content: "“关注’云南洋葱汽车科技有限公司’微信公众号”"
+      content: "“关注’云南洋葱汽车科技有限公司’微信公众号”。"
      
     },
   ]

@@ -6,7 +6,7 @@
     <van-row class="login-info">
       <van-cell-group>
         <van-field v-model.lazy="loginModel.phoneNumber" type="number" label="手机号" placeholder="请输入您的手机号" icon="clear" @click-icon="loginModel._phoneNumber = ''" />
-        <van-field :maxlength="6" center v-model.lazy="loginModel.verifyCode" label="验证码" type="number" placeholder="请输入短信验证码" icon="clear" @click-icon="loginModel._verifyCode = ''">
+        <van-field v-model.lazy="loginModel.verifyCode" type="number" label="验证码" placeholder="请输入短信验证码" icon="clear" @click-icon="loginModel._verifyCode = ''">
           <van-button slot="button" size="small" type="primary" @click="onVerifyCodeClick" :disabled="leftTime !== 0">{{leftTime > 0 ? leftTime + '秒后重发' : '获取验证码'}}</van-button>
         </van-field>
       </van-cell-group>
@@ -48,10 +48,10 @@ export default class Login extends Vue {
       if (val && val.length <= 11) {
         this._phoneNumber = val
       }
-      if(val.length === 0){
-         this._phoneNumber = ''
+      if (val.length === 0) {
+        this._phoneNumber = ''
       }
-      
+
     }, // 客户手机号码
     _verifyCode: "",
     get verifyCode(): string {
@@ -61,7 +61,7 @@ export default class Login extends Vue {
       if (v && v.length <= 6) {
         this._verifyCode = v;
       }
-      if(v.length === 0){
+      if (v.length === 0) {
         this._verifyCode = '';
       }
     }
@@ -119,10 +119,14 @@ export default class Login extends Vue {
    * 提交操作
    */
   private onSubmit() {
+    if (this.loginModel.phoneNumber == '') {
+      this.$toast('请输入手机号')
+      return
+    }
     if (this.loginModel.verifyCode == '') {
       this.$toast('请输入验证码')
+      return
     }
-
     this.$validator.validate(this.loginModel, this.rules).then(error => {
       if (error) {
         return this.$toast(error);

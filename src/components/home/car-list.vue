@@ -79,7 +79,7 @@ export default class CarList extends Vue {
     &-info {
       font-size: 0.8rem;
       color: gray;
-      margin-left: 15px;
+      margin-left: 5px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -87,18 +87,18 @@ export default class CarList extends Vue {
     &-first {
       font-size: 0.7rem;
       color: #ffdb00;
-      margin-left: 15px;
+      margin-left: 5px;
     }
     &-month {
       font-size: 0.7rem;
       color: gray;
-      margin-left: 15px;
+      margin-left: 5px;
     }
     .beyondLittle {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      margin-left: 15px;
+      margin-left: 5px;
     }
   }
 }

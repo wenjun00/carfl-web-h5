@@ -177,7 +177,7 @@
       </van-row>
       <van-row class="purchaseNotes">
         <van-col class="noticeHeand" span="8">车辆归属</van-col>
-        <van-col class="noticeEnd" span="16">用车期间,车辆以及车牌所有权归属洋葱汽车；结清全部费用后即办理车辆过户</van-col>
+        <van-col class="noticeEnd" span="16">用车期间，车辆以及车牌所有权归属洋葱汽车；结清全部费用后即办理车辆过户</van-col>
       </van-row>
       <van-row class="purchaseNotes">
         <van-col class="noticeHeand" span="8">额外费用</van-col>
