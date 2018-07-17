@@ -139,7 +139,6 @@ export default class Login extends Vue {
             personalId: data.personalId,
             personalName: data.personalName,
             userPhone: this.loginModel.phoneNumber,
-            // authCode: this.authCode
             authCode: this.loginModel.verifyCode,
           }
           this.promptlyMakeControl(false)
