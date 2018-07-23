@@ -13,7 +13,7 @@
       <div @click="$router.push(`/details/${item.carId}`)">
         <van-col span="10">
           <div>
-            <img class="imgPad" :src="(item.carPictures[0] || {}).url" height="80px">
+            <img class="imgPad" :src="(item.carPictures[0] || {}).url" height="100%" width="100%">
           </div>
         </van-col>
         <van-col span="14" class="carStyle">

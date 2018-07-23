@@ -3,7 +3,7 @@
     <van-row>
       <van-col span="12" class="car-list-item" v-for="(item,index) of carIntro" :key="index">
         <div class="car-list-img" @click="carInfoClick(item.carId) ">
-          <img :src="item.carPictures.length > 0 ?item.carPictures[0].url:null" :alt="item.modelName" height="100%">
+          <img :src="item.carPictures.length > 0 ?item.carPictures[0].url:null" :alt="item.modelName" height="100%" width="100%">
         </div>
         <div class="car">
           <p class="beyondLittle">{{item.brandSeriesName}}</p>

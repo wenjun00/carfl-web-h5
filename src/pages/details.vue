@@ -4,7 +4,7 @@
       <van-swipe :autoplay="3000">
         <van-swipe-item v-for="(image, index) in images" :key="index">
           <div class="car-main-img">
-            <img :src="image.url" :alt="image.introduce" height="250px" />
+            <img :src="image.url" :alt="image.introduce" height="100%" width="100%" />
           </div>
         </van-swipe-item>
       </van-swipe>
