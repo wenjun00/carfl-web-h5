@@ -199,7 +199,7 @@
       <div class="break-line"></div>
 
       <div class="bottomBox">
-        <van-button class="fixedBottom" @click="$router.push('/subscribe')" size="large">立即预约</van-button>
+        <van-button class="fixedBottom" @click="buyCars" size="large">立即预约</van-button>
       </div>
 
     </div>
@@ -262,6 +262,17 @@ export default class detailsScheme extends Vue {
   private images = '/static/images/common/headerLabel.png'
 
   private carColumns = []
+
+  // 点击立即预约
+  buyCars(){
+    if(!!this.userData){
+      this.$router.push('/subscribe')
+    }else{
+       this.$toast('请先进行登陆');
+    }
+    
+  }
+
 
   /**
    * 获取车辆详细配置 

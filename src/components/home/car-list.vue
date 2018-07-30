@@ -63,8 +63,8 @@ export default class CarList extends Vue {
 <style lang="less" scoped>
 .component.car-list {
   .car-list-img {
-    height: 120px;
-    max-height: 120px;
+    // height: 110px;
+    // max-height: 110px;
     overflow: hidden;
   }
   .car {

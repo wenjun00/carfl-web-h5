@@ -35,7 +35,7 @@
       <div class="content">
         <img height="35px" src="/static/images/common/home_logo.png">
         <p class="describe">中业金服旗下洋葱汽车新品上线</p>
-        <van-button type="primary" class="full-radius" size="large" @click="$router.push('/subscribe')">帮我买车</van-button>
+        <van-button type="primary" class="full-radius" size="large"  @click="buyCars">帮我买车</van-button>
       </div>
     </section>
     <city-picker></city-picker>
@@ -66,6 +66,7 @@ export default class Home extends Vue {
   @State intoA
   @Mutation clearIntoA
   @Mutation clearCarDate
+  @State userData
 
   private serachKeyWord: string = "";
 
@@ -75,6 +76,15 @@ export default class Home extends Vue {
   set keyWord(val) {
     this.serachKeyWord = val;
     this.show.search = val !== "";
+  }
+  // 点击帮我买车
+  buyCars(){
+    if(!!this.userData){
+      this.$router.push('/subscribe')
+    }else{
+       this.$toast('请先进行登陆');
+    }
+    
   }
 
   private images: Array<string> = [

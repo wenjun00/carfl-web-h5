@@ -33,6 +33,7 @@ const routes = [
     name: 'Subscribe',
     component: Subscribe,
     meta: {
+      requireAuth:true,
       title: '帮我买车'
     }
   }, {
@@ -81,6 +82,7 @@ const routes = [
     path: '/my-order',
     name: 'MyOrder',
     meta: {
+      requireAuth:true,
       title: '我的订单'
     },
     component: MyOrder
@@ -88,6 +90,7 @@ const routes = [
     path: '/payment-record',
     name: 'PaymentRecord',
     meta: {
+      requireAuth:true,
       title: '还款明细'
     },
     component: PaymentRecord

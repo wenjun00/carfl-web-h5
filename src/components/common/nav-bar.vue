@@ -7,15 +7,16 @@
         <van-cell title="买新车" clickable @click="toBuyCarList" />
       </van-cell-group>
       <div class="van-hairline--bottom"></div>
-      <van-cell-group>
+      <van-cell-group v-if="!!userData">
         <van-cell title="我的订单" to="/my-order" clickable @click="onNavItemClick" />
         <van-cell title="月供还款" to="/payment-record" clickable @click="onNavItemClick" />
       </van-cell-group>
       <div class="van-hairline--bottom"></div>
-      <van-cell-group>
+      <van-cell-group >
         <van-cell title="常见问题" to="/FAQ" clickable @click="onNavItemClick" />
         <van-cell title="了解洋葱汽车" to="/know-onion-car" clickable @click="onNavItemClick" />
-        <van-cell title="退出" to="/" clickable @click="onNavItemClick" />
+        <van-cell v-if="!!userData" title="退出" to="/" clickable @click="quit" />
+        <van-cell v-else title="登陆" to="/login" clickable @click="onNavItemClick" />
       </van-cell-group>
     </van-popup>
   </section>
@@ -25,10 +26,11 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Model, Emit } from "vue-property-decorator";
+import { State, Mutation, Action } from "vuex-class";
 
 @Component({})
 export default class NavBar extends Vue {
-
+  @State userData
   // 点击买新车
   toBuyCarList() {
     this.$router.push({
@@ -38,6 +40,13 @@ export default class NavBar extends Vue {
       }
     })
     this.onNavItemClick()
+  }
+  // 洋葱点击退出
+  quit() {
+    this.onNavItemClick()
+    window.localStorage.clear()
+    window.sessionStorage.clear()
+    window.location.reload()
   }
 
   /**

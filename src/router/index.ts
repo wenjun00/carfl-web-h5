@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import store from '~/store'
 import storeInit from '~/core/bootstrap/store.init'
 const Login = () => import('~/pages/login.vue')
+const Home = () => import('~/pages/home.vue')
 const Index = () => import('~/pages/index.vue')
 const NotFound = () => import('~/pages/not-found.vue')
 import Routes from "./routes";
@@ -13,6 +14,10 @@ Vue.use(Router)
 const routes = [
   {
     path: '/',
+    redirect: '/home'
+  },
+  {
+    path: '/login',
     name: 'Login',
     component: Login,
     beforeEnter: (to, from, next) => {
@@ -20,12 +25,11 @@ const routes = [
       next()
     }
   }, {
-    path: '/index',
+    path: '/',
     name: 'Index',
     component: Index,
     // index 页面使用了router-view 这里需要重新定向到home 
     // 以使home组件为router-view的默认值
-    redirect: '/home',
     children: [...Routes]
   }, {
     path: '*',
@@ -50,15 +54,24 @@ router.beforeEach(async ({ matched, path }, from, next) => {
       router
     })
   }
-
-  if ((store.state.tokenExpire || store.state.userToken === '') && path !== "/") {
-    // 重置用户过期状态
-    store.commit('updateTokenExpire', false)
-    return next("/")
+  // console.log(matched)
+  if(matched[1].meta.requireAuth){
+    if(store.state.tokenExpire || store.state.userToken === ''){
+      return next("/")
+    }
   }
+
+  // if ((store.state.tokenExpire || store.state.userToken === '') && path !== "/") {
+  //   // 重置用户过期状态
+  //   store.commit('updateTokenExpire', false)
+  //   return next("/")
+  // }
 
   next()
 })
+
+
+
 
 
 export default router
