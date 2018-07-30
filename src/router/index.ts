@@ -54,12 +54,17 @@ router.beforeEach(async ({ matched, path }, from, next) => {
       router
     })
   }
-  // console.log(matched)
-  if(matched[1].meta.requireAuth){
-    if(store.state.tokenExpire || store.state.userToken === ''){
-      return next("/")
+  // console.log(matched[0].name == "Login")
+  if(!(matched[0].name == "Login")){
+    if(!!matched[1].meta.requireAuth){
+      if(store.state.tokenExpire || store.state.userToken === ''){
+        return next("/")
+      }
     }
   }
+    
+  
+  
 
   // if ((store.state.tokenExpire || store.state.userToken === '') && path !== "/") {
   //   // 重置用户过期状态
