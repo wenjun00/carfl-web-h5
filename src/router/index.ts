@@ -55,10 +55,10 @@ router.beforeEach(async ({ matched, path }, from, next) => {
     })
   }
   // console.log(matched[0].name == "Login")
-  if(!(matched[0].name == "Login")){
+  if(!(matched[0].name === "Login")){
     if(!!matched[1].meta.requireAuth){
       if(store.state.tokenExpire || store.state.userToken === ''){
-        return next("/")
+        return next("/login")
       }
     }
   }
