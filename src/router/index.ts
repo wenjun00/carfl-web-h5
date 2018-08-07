@@ -54,22 +54,20 @@ router.beforeEach(async ({ matched, path }, from, next) => {
       router
     })
   }
+
   // console.log(matched[0].name == "Login")
-  if(!(matched[0].name === "Login")){
-    if(!!matched[1].meta.requireAuth){
-      if(store.state.tokenExpire || store.state.userToken === ''){
+  if (!(matched[0].name === "Login")) {
+    if (!!matched[1].meta.requireAuth) {
+      if (store.state.tokenExpire || store.state.userToken === '') {
         return next("/login")
       }
     }
   }
-    
-  
-  
 
-  // if ((store.state.tokenExpire || store.state.userToken === '') && path !== "/") {
+  // if ((store.state.tokenExpire || store.state.userToken === '') && path !== "/login") {
   //   // 重置用户过期状态
   //   store.commit('updateTokenExpire', false)
-  //   return next("/")
+  //   return next("/login")
   // }
 
   next()

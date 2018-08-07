@@ -21,9 +21,9 @@ export default {
     action: 'H5VerificationLogin',
     type: requestType.Get
   },
-   /**
-   * 检测验证码
-   */
+  /**
+  * 检测验证码
+  */
   checkToken: {
     service: SERVICE,
     controller: CONTROLLER,
@@ -33,20 +33,28 @@ export default {
   /**
   * 退出
   */
- exit: {
-   service: SERVICE,
-   controller: CONTROLLER,
-   action: 'exit',
-   type: requestType.Post
- },
- /**
-  *进件后查看订单号
-  */
- getOrderNoByToken: {
-  service: SERVICE,
-  controller: CONTROLLER,
-  action: 'getOrderNoByToken',
-  type: requestType.Get
-}
-
+  exit: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'exit',
+    type: requestType.Post
+  },
+  /**
+   *进件后查看订单号
+   */
+  getOrderNoByToken: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getOrderNoByToken',
+    type: requestType.Get
+  },
+  /**
+   * 验证token
+   */
+  checkBackToken:{
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'checkBackToken',
+    type: requestType.Get
+  }
 }

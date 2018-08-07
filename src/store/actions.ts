@@ -1,12 +1,12 @@
 import router from '~/router'
- 
+
 const productOrderService = () => import('~/services/manage-service/product-order.service');
 
 export default {
   /**
    * 更新用户登录数据
    */
-  updateUserLoginData({ state, commit, dispatch }, { token, personalId, personalName, userPhone,authCode }) {
+  updateUserLoginData({ state, commit, dispatch }, { token, personalId, personalName, userPhone, authCode }) {
     // 更新用户token
     if (!!token) {
       commit('updateUserToken', token);
@@ -16,7 +16,7 @@ export default {
       id: personalId,
       personalName: personalName || "",
       userPhone: userPhone,
-      authCode:authCode
+      authCode: authCode
     });
     // 执行 getOrderInfo 方法 传 userPhone
     // dispatch('getOrderInfo', userPhone)
@@ -32,26 +32,11 @@ export default {
     commit('updateUserOrder', '')
     // 重置token过期标识
     commit('updateTokenExpire', true);
+    // 清除用户数据
+    commit('updateUserData', "");
     // 清空数据
     localStorage.removeItem('vuex')
     localStorage.removeItem('userToken')
-  },
-
-  /**
-   * 获取用户订单
-   * @param param0  commit 方法
-   * @param userPhone  用户手机号
-   */
-  // async getOrderInfo({ commit }, userPhone) {
-  //   let { ProductOrderService } = await productOrderService()
-  //   let productService = new ProductOrderService()
-  //   productService.getOrder(userPhone).subscribe(
-  //     data => {
-  //       // 更新用户订单数据
-  //       commit('updateUserOrder', data)
-  //     },
-  //     err => console.error('获取用户订单出错')
-  //   )
-  // }
+  }
 
 }

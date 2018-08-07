@@ -16,7 +16,7 @@
         <van-cell title="常见问题" to="/FAQ" clickable @click="onNavItemClick" />
         <van-cell title="了解洋葱汽车" to="/know-onion-car" clickable @click="onNavItemClick" />
         <van-cell v-if="!!userData" title="退出" to="/" clickable @click="quit" />
-        <van-cell v-else title="登陆" to="/login" clickable @click="onNavItemClick" />
+        <van-cell v-else title="登录" to="/login" clickable @click="onNavItemClick" />
       </van-cell-group>
     </van-popup>
   </section>

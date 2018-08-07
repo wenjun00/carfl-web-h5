@@ -58,16 +58,28 @@ export class LoginService {
   }
   /**
    * 进件后查看订单号
-   */ 
+   */
   getOrderNoByToken(data) {
     return this.netService.send({
       server: manageService.appLoginController.getOrderNoByToken,
       data: {
-        token:data.token
+        token: data.token
       }
     })
   }
 
+  /**
+   * 对token进行验证，返回登录数据
+   * @param token 
+   */
+  checkBackToken(token: string) {
+    return this.netService.send({
+      server: manageService.appLoginController.checkBackToken,
+      data: {
+        token: token
+      }
+    })
+  }
 
 }
 

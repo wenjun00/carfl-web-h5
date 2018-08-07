@@ -7,7 +7,7 @@
       <van-cell-group>
         <van-field v-model.lazy="loginModel.phoneNumber" type="number" label="手机号" placeholder="请输入您的手机号" icon="clear" @click-icon="loginModel._phoneNumber = ''" />
         <van-field v-model.lazy="loginModel.verifyCode" type="number" label="验证码" placeholder="请输入短信验证码" icon="clear" @click-icon="loginModel._verifyCode = ''">
-          <van-button slot="button" size="small" type="primary" @click="onVerifyCodeClick" :disabled="leftTime !== 0">{{leftTime > 0 ? leftTime + '秒后重发' : '获取验证码'}}</van-button>
+          <van-button slot="button" size="small" type="primary" @click="onVerifyCodeClick" :disabled="leftTime > 0">{{leftTime > 0 ? leftTime + '秒后重发' : '获取验证码'}}</van-button>
         </van-field>
       </van-cell-group>
     </van-row>
@@ -98,13 +98,11 @@ export default class Login extends Vue {
   private onVerifyCodeClick(time) {
     this.loginService.getVerifyCode(this.loginModel.phoneNumber).subscribe(
       data => {
-        // this.authCode = data
         this.leftTime = 60;
-        let _self = this;
         let setTime = () => {
           setTimeout(() => {
-            if (_self.leftTime > 0) {
-              _self.leftTime--;
+            if (this.leftTime > 0) {
+              this.leftTime--;
               setTime();
             }
           }, 1000);

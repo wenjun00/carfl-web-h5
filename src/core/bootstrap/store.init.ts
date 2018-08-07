@@ -1,14 +1,18 @@
 import Vue from 'vue'
 
 const creatDataDictService = () => import('~/services/manage-service/data-dict.service')
+const createLoginService = () => import('~/services/manage-service/applogin.service')
 
 export default async function ({ store, router }) {
   let { DataDictService } = await creatDataDictService()
+  let { LoginService } = await createLoginService()
 
   let dataDictService = new DataDictService()
+  let loginService = new LoginService()
   // 启动数据初始化
   let flag = await Promise.all([
-    updateDictData()
+    updateDictData(),
+    updateUserData()
   ]).then(() => {
     return true
   }).catch(ex => {
@@ -21,21 +25,32 @@ export default async function ({ store, router }) {
   /**
    * 检测用户数据
    */
-  async function updateUserData() {
+  function updateUserData() {
+    console.log(111)
     return new Promise((reslove, reject) => {
-      // 登录页面不更新用户数据
-      if (!store.state.userToken && window.location.pathname == "/") {
-        reslove()
-        return
+      let token = localStorage.getItem("userToken");
+      // 如果检测到localStorage 有token存在，并且token没有过期，就根据token获取用户数据
+      if (token && !store.state.tokenExpire) {
+        loginService.checkBackToken(token).subscribe(
+          data => {
+            let resultData = {
+              token: data.token,
+              personalId: data.personalId,
+              personalName: data.personalName,
+              userPhone: data.phone,
+            }
+            store.commit('updateUserOrder', data.orderNo)
+            store.dispatch('updateUserLoginData', resultData)
+            reslove()
+          },
+          err => {
+            // 登录失败，设置用户token过期
+            store.dispatch('clearUserLoginData')
+            reslove()
+          }
+        )
       }
-
-      // 不存在token不更新用户数据
-      if (!store.state.userToken && window.location.pathname != "/") {
-        store.commit("updateTokenExpire", true)
-        reject()
-        return
-      }
-
+      reslove()
     })
   }
 
