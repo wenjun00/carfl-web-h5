@@ -24,6 +24,15 @@ export default {
         action: 'getOrderContractListByOrderId',
         type: requestType.Get
     },
-   
+    /**
+    *  查看交车合同
+    */
+   getCarContractListByOrderId: {
+    service: SERVICE,
+    controller: CONTROLLER,
+    action: 'getCarContractListByOrderId',
+    type: requestType.Get
+},
+
 
 }

@@ -16,9 +16,9 @@
         <van-collapse-item title="合同详情" name="contract">
           <order-contract></order-contract>
         </van-collapse-item>
-        <div @click="operating">
+        <div>
           <van-collapse-item title="订单操作记录" name="record">
-            <order-record ref="order-record"></order-record>
+            <order-record  :operatingData="this.productOrderInfo.orderProcessRecord"  ></order-record>
           </van-collapse-item>
         </div>
       </van-collapse>
@@ -85,33 +85,9 @@ export default class MyOrder extends Vue {
       err => this.$toast(err.msg)
     )
   }
-  /**
-   * 操作记录
-   */
-  operating() {
-    let record = this.productOrderInfo.orderProcessRecord
-    let orderRecord = this.$refs['order-record'] as OrderRecord
-    orderRecord.orderRecordfun(record) 
-  }
-  // 进件成功后,查询订单号
-  // getLogoIndent() {
-  //   let userAll = {
-  //     token: this.userToken
-  //   }
-
-  //   this.loginService.getOrderNoByToken(userAll).subscribe(
-  //     data => {
-  //       this.orderInfo.orderNo = data
-  //       // this.updateUserOrder(data)
-
-  //     },
-  //     err => this.$toast(err.msg)
-  //   )
-  // }
 
   mounted() {
     this.getOredrMessage();
-    // this.getLogoIndent()
   }
 }
 </script>

@@ -23,6 +23,8 @@ export default class OrderContract extends Vue {
   @State getOrderId
 
   private dataCompact: any = []
+  private dataCompactTwo:any = []
+
   private onitemClick(item, code) {
 
     if (code == 1000) {
@@ -34,18 +36,31 @@ export default class OrderContract extends Vue {
       this.$toast('当前合同暂未生成')
     }
   }
-  // 合同id
+  // 获取订单合同
   getContractDetails() {
     this.contractDetailsControllerService.getOrderContractListByOrderId(this.getOrderId).subscribe(
       data => {
         this.dataCompact = data
+        this.getCarContract()
       },
       err => this.$toast(err.msg)
     )
   }
+  // 获取交车合同详情
+  getCarContract() {
+    this.contractDetailsControllerService.getCarContractListByOrderId(this.getOrderId).subscribe(
+      data => {
+        for(let i of data){
+          this.dataCompact.push(i)
+        }
+      },
+      err => this.$toast(err.msg)
+    )
+  }
+  
 
   mounted() {
-    if (this.getOrderId) {
+    if (!!this.getOrderId) {
       this.getContractDetails()
     }
 

@@ -11,22 +11,33 @@ export class ContractDetailsControllerService {
     /**
      * 获取订单合同数据
      */
-    getOrderContractListByOrderNumber(orderNumber){
+    getOrderContractListByOrderNumber(orderNumber) {
         return this.netService.send({
             server: manageService.contractDetailsController.getOrderContractListByOrderNumber,
-            data:{
-              orderNumber: orderNumber
+            data: {
+                orderNumber: orderNumber
             }
         })
     }
-     /**
-     * 获取订单合同数据
-     */
-    getOrderContractListByOrderId(id){
+    /**
+    * 获取订单合同数据
+    */
+    getOrderContractListByOrderId(id) {
         return this.netService.send({
             server: manageService.contractDetailsController.getOrderContractListByOrderId,
-            data:{
-              orderId: id
+            data: {
+                orderId: id
+            }
+        })
+    }
+    /**
+    * 获取交车合同
+    */
+    getCarContractListByOrderId(id) {
+        return this.netService.send({
+            server: manageService.contractDetailsController.getCarContractListByOrderId,
+            data: {
+                orderId: id
             }
         })
     }

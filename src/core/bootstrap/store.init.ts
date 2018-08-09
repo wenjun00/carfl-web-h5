@@ -39,7 +39,7 @@ export default async function ({ store, router }) {
               personalName: data.personalName,
               userPhone: data.phone,
             }
-            store.commit('updateUserOrder', data.orderNo)
+            // store.commit('updateUserOrder', data.orderNo)
             store.dispatch('updateUserLoginData', resultData)
             reslove()
           },
