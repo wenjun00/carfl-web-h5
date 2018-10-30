@@ -1,93 +1,19 @@
 <template>
   <section class="page my-order">
-    <div v-if="!hasOrder" class="my-order-no" key="no-order">
-      <img height="200px" src="/static/images/home/no-order.png" />
-    </div>
-    <div v-else key="has-order">
-      <van-cell-group>
-        <van-cell :title="`订单编号：${productOrderInfo.orderReference }`"></van-cell>
-        <van-cell :title="`车型：${productOrderInfo.carType}`"></van-cell>
-        <van-cell title="下单城市"  :value="productOrderInfo.placeCity | cityConvert" />
-        <van-cell :title="`首付：${productOrderInfo.downPayment} 元`"></van-cell>
-        <van-cell :title="`期数：${productOrderInfo.periods}`"></van-cell>
-        <van-cell :title="`月供信息：${productOrderInfo.informationOn}元 `"></van-cell>
-      </van-cell-group>
-      <van-collapse v-model="activatedCollapse">
-        <van-collapse-item title="合同详情" name="contract">
-          <order-contract></order-contract>
-        </van-collapse-item>
-        <div>
-          <van-collapse-item title="订单操作记录" name="record">
-            <order-record  :operatingData="this.productOrderInfo.orderProcessRecord"  ></order-record>
-          </van-collapse-item>
-        </div>
-      </van-collapse>
-    </div>
+
   </section>
 </template>
- 
+
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import NavBar from "~/components/common/nav-bar.vue";
-import OrderContract from "~/components/order/order-contract.vue";
-import OrderRecord from "~/components/order/order-record.vue";
-import { Getter, State,Mutation } from "vuex-class";
-import { ProductOrderService } from "~/services/manage-service/product-order.service";
-import { Dependencies } from "~/core/decorator";
-import { CityService } from "~/utils/city.service";
-import { LoginService } from "~/services/manage-service/applogin.service";
-
 @Component({
   components: {
-    OrderContract,
-    OrderRecord
   }
 })
 export default class MyOrder extends Vue {
-  @Dependencies(ProductOrderService)
-  private productOrderService: ProductOrderService;
-  @Dependencies(LoginService) private loginService: LoginService;
-  @Getter hasOrder;
-  @State orderInfo;
-  @State userData;
-  @State userToken;
-  @Mutation getOrderIdFun
-
-
-  private orderNumber: any = ''  // 获取当前订单号
-  private activatedCollapse = []
-  private productOrderInfo: any = {
-    orderReference: "", // 订单编号
-    carType: "", //车型
-    placeCity: "", // 下单城市
-    downPayment: "", // 首付
-    periods: "", // 期数
-    informationOn: "" // 月供信息
-  }; // 订单基本信息 存储
-
-  /**
-   * 通过订单号查询订单信息
-   */
-  getOredrMessage() {
-    this.productOrderService.findOrderInfoByOrderNumber(this.orderInfo).subscribe(
-      data => {
-        // this.productOrderInfo = data
-        this.getOrderIdFun(data.id)
-        this.productOrderInfo.orderProcessRecord = data.orderProcessRecord
-        this.productOrderInfo.orderReference = data.orderNumber
-        this.productOrderInfo.carType = data.orderCar.modelName
-        this.productOrderInfo.placeCity = [data.city]
-        this.productOrderInfo.downPayment = data.schedulePlanResultModel.schedulePlanResult.firstPayment
-        this.productOrderInfo.periods = this.$dict.getDictName(data.schedulePlanResultModel.schedulePlanResult.planType)
-        this.productOrderInfo.informationOn = data.schedulePlanResultModel.schedulePlanResult.firstYearMonthrent.toFixed(2)
-      },
-      err => this.$toast(err.msg)
-    )
-  }
-
   mounted() {
-    this.getOredrMessage();
+
   }
 }
 </script>

@@ -28,7 +28,7 @@ const routes = [
     path: '/',
     name: 'Index',
     component: Index,
-    // index 页面使用了router-view 这里需要重新定向到home 
+    // index 页面使用了router-view 这里需要重新定向到home
     // 以使home组件为router-view的默认值
     children: [...Routes]
   }, {
@@ -56,13 +56,13 @@ router.beforeEach(async ({ matched, path }, from, next) => {
   }
 
   // console.log(matched[0].name == "Login")
-  if (!(matched[0].name === "Login")) {
-    if (!!matched[1].meta.requireAuth) {
-      if (store.state.tokenExpire || store.state.userToken === '') {
-        return next("/login")
-      }
-    }
-  }
+  // if (!(matched[0].name === "Login")) {
+  //   if (!!matched[1].meta.requireAuth) {
+  //     if (store.state.tokenExpire || store.state.userToken === '') {
+  //       return next("/login")
+  //     }
+  //   }
+  // }
 
   // if ((store.state.tokenExpire || store.state.userToken === '') && path !== "/login") {
   //   // 重置用户过期状态

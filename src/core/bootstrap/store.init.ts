@@ -11,7 +11,7 @@ export default async function ({ store, router }) {
   let loginService = new LoginService()
   // 启动数据初始化
   let flag = await Promise.all([
-    updateDictData(),
+    // updateDictData(),
     updateUserData()
   ]).then(() => {
     return true
@@ -58,14 +58,14 @@ export default async function ({ store, router }) {
    * 检查数据字典
    * @param reslove
    */
-  function updateDictData() {
-    return new Promise((reslove, reject) => {
-      dataDictService.getAll().subscribe((data) => {
-        store.commit('updateDictData', data)
-        reslove()
-      }, () => {
-        reject()
-      })
-    })
-  }
+  // function updateDictData() {
+  //   return new Promise((reslove, reject) => {
+  //     dataDictService.getAll().subscribe((data) => {
+  //       store.commit('updateDictData', data)
+  //       reslove()
+  //     }, () => {
+  //       reject()
+  //     })
+  //   })
+  // }
 }

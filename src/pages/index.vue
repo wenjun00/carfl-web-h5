@@ -1,7 +1,7 @@
 <template>
   <section class="main-container full">
     <van-nav-bar :title="navTitle" :left-text="showBack ? '' : ''" :left-arrow="showBack" @click-left="$router.go(-1)" />
-    <router-view></router-view>
+    <router-view ></router-view>
   </section>
 </template>
 

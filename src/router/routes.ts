@@ -1,4 +1,4 @@
-import Home from "~/pages/home.vue"; 
+import Home from "~/pages/home.vue";
 import Subscribe from "~/pages/subscribe.vue";
 import FAQ from "~/pages/faq.vue";
 import BuyCarList from "~/pages/buy-car-list.vue";
@@ -14,6 +14,7 @@ const Details = () => Promise.resolve(require('~/pages/details.vue'))
 const AllVehicles = () => Promise.resolve(require('~/pages/all-vehicles.vue'))
 const KnowOnionCar = () => Promise.resolve(require('~/pages/know-onion-car.vue'))
 const supportBank = () => Promise.resolve(require('~/pages/support-bank.vue'))
+const hotLoading = () => Promise.resolve(require('~/pages/hot-loading.vue'))
 // const AddDocumentInfor = () => Promise.resolve(require('~/pages/add-document-infor.vue'))
 
 
@@ -26,7 +27,7 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      title: '洋葱汽车'
+      title: '小旺估车'
     }
   }, {
     path: '/subscribe',
@@ -34,7 +35,7 @@ const routes = [
     component: Subscribe,
     meta: {
       requireAuth:true,
-      title: '帮我买车'
+      title: '小旺估车'
     }
   }, {
     path: '/FAQ',
@@ -83,7 +84,7 @@ const routes = [
     name: 'MyOrder',
     meta: {
       requireAuth:true,
-      title: '我的订单'
+      title: '小旺估车'
     },
     component: MyOrder
   }, {
@@ -111,8 +112,15 @@ const routes = [
     path: '/support-bank',
     name: 'supportBank',
     component: supportBank
+  }, {
+    path: '/hot-loading',
+    name: 'hotLoading',
+    component: hotLoading,
+    meta: {
+      requireAuth:true,
+      title: '小旺估车'
+    }
   }
 
 ]
-
 export default routes;
