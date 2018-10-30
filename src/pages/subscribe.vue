@@ -2,7 +2,7 @@
   <section class="page subscribe">
     <p class="title">输入车辆信息</p>
     <van-cell-group>
-      <van-field v-model="model.car" required disabled icon="arrow" placeholder="请选择车辆" @click-icon="$toast('question')"/>
+      <van-field v-model="model.car" required disabled icon="arrow" placeholder="请选择车辆" @click-icon="carClick"/>
       <van-field v-model="model.name" required disabled icon="arrow" placeholder="请选择所在地" @click-icon="$toast('question')"/>
       <van-field v-model="model.huo" required disabled icon="arrow" placeholder="首次上牌时间" @click-icon="$toast('question')"/>
       <van-field v-model="model.gujia" center required placeholder="请输入行驶公里">
@@ -34,6 +34,9 @@ export default class Subscribe extends Vue {
   }
   private addAffirm(){
     this.$router.push('/hot-loading')
+  }
+  private carClick(){
+    this.$router.push('/buy-car-list')
   }
 
 }

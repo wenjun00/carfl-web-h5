@@ -45,6 +45,10 @@ const routes = [
     path: '/buy-car-list',
     name: 'BuyCarList',
     component: BuyCarList,
+    meta: {
+      requireAuth:true,
+      title: '小旺估车'
+    },
     props: (route) => ({
       brandId: route.query.b,
       transKeyWord: route.query.k

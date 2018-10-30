@@ -1,213 +1,83 @@
 <template >
-  <section class="component buy-car-list">
-    <form action="/">
-      <van-search v-model.lazy="keyWord" placeholder="寻找您想要买的爱车" @click-icon="onClearClick" show-action @search="searchCarList">
-        <div slot="action">
-          <van-icon class="buy-car-list-nav-bar" v-if="!show.search" name="wap-nav" @click="show.navBar = true" />
-          <div class="buy-car-list-nav-bar" v-else @click="searchCarList">搜索</div>
-        </div>
-      </van-search>
-    </form>
-
-    <van-row class="buy-car-list-item"  v-for="(item,index) of carDataSet" :key="index">
-      <div @click="$router.push(`/details/${item.carId}`)">
-        <van-col span="10">
-          <div>
-            <img class="imgPad" :src="(item.carPictures[0] || {}).url" height="100%" width="100%">
-          </div>
-        </van-col>
-        <van-col span="14" class="carStyle">
-          <div class="car">
-            <span>{{item.brandSeriesName}}</span>
-            <br/>
-            <span class="car-info">{{item.modelName}}</span>
-          </div>
-          <van-row>
-            <van-col span="12" class="car-first">首付{{item.firstPayment/10000 | toThousands}}万</van-col>
-            <van-col span="12" class="car-month">月供{{item.monthRent | toThousands}}元</van-col>
-          </van-row>
-        </van-col>
-      </div>
-    </van-row>
-      <div v-if="carDataSet.length == 0"  class="no-cars">
-        <p>新车型即将上架，敬请期待</p>
-      </div>
-    
-
-    <div class="to-top" v-show="show.toTop" @click="scrollTop">
-      <van-icon name="upgrade" color="#f2f2f2" />
+  <section class="page buy-car-list">
+    <!-- 车牌 -->
+    <div v-for="(item,index) in carBrand" :key="index">
+      <div class="brandHeand" :class=item.value>{{item.value}}</div>
+      <div>是代表发士大夫</div>
+      <div>符合规范的观点</div>
+      <!-- <ul class="brandContent" v-for="(itemTwo,index) in item.children" :key="index">
+        <li @click="chooseBrand(itemTwo.id,itemTwo.brandName)">
+          <img v-if="!itemTwo.brandPhotoUrl" class="siftCar" height="20px" src="/images/car.png">
+          <img v-else class="siftCar" height="20px" :src="itemTwo.brandPhotoUrl">
+          <span> {{itemTwo.brandName}}</span>
+        </li>
+      </ul> -->
     </div>
-    <nav-bar v-model="show.navBar"></nav-bar>
+   <!-- 左侧字母 -->
+    <div class="left-side-fixed">
+      <ul v-for="(item,index) in carBrandTwo" :key="index">
+        <li @click="onClickBrand(item.value)" style="display:inline-block;margin-top:5px">{{item.value}}</li>
+      </ul>
+    </div>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from "vue-class-component";
-import { LodashService } from "~/utils/lodash.service";
-import NavBar from "~/components/common/nav-bar.vue";
-import { Prop, Watch } from "vue-property-decorator";
-import { carShowManagementService } from "~/services/manage-service/car-show-management.service";
-import { Dependencies } from "~/core/decorator";
-import { Getter, State, Mutation, Action } from "vuex-class";
 
 @Component({
-  components: {
-    NavBar
-  }
+  components: {}
 })
 export default class BuyCarList extends Vue {
-  @Dependencies(carShowManagementService) private carShowManagementService: carShowManagementService;
-  @Prop({
-    default: -1
-  }) brandId
-
-  @Prop({
-    default: ''
-  }) transKeyWord
-  @Mutation clearCarDate
-
-  private searchModel = {
-    brandId: '',
-    name: ''
+ // 车牌
+  private carBrand = [
+    { value: "A", id: "A" }, { value: "B", id: "B" }, { value: "C", id: "C" }, { value: "D", id: "D" }, { value: "E", id: "E" }, { value: "F", id: "F" },
+    { value: "G", id: "G" }, { value: "H", id: "H" }, { value: "I", id: "I" }, { value: "J", id: "J" }, { value: "K", id: "K" }, { value: "L", id: "L" },
+    { value: "M", id: "M" }, { value: "N", id: "N" }, { value: "O", id: "O" }, { value: "P", id: "P" }, { value: "Q", id: "Q" }, { value: "R", id: "R" },
+    { value: "S", id: "S" }, { value: "T", id: "T" }, { value: "U", id: "U" }, { value: "V", id: "V" }, { value: "W", id: "W" }, { value: "X", id: "X" },
+    { value: "Y", id: "Y" }, { value: "Z", id: "Z" },
+  ]
+  // 左侧字母
+  private carBrandTwo = [
+    { value: "A", id: "A" }, { value: "B", id: "B" }, { value: "C", id: "C" }, { value: "D", id: "D" }, { value: "E", id: "E" }, { value: "F", id: "F" },
+    { value: "G", id: "G" }, { value: "H", id: "H" }, { value: "I", id: "I" }, { value: "J", id: "J" }, { value: "K", id: "K" }, { value: "L", id: "L" },
+    { value: "M", id: "M" }, { value: "N", id: "N" }, { value: "O", id: "O" }, { value: "P", id: "P" }, { value: "Q", id: "Q" }, { value: "R", id: "R" },
+    { value: "S", id: "S" }, { value: "T", id: "T" }, { value: "U", id: "U" }, { value: "V", id: "V" }, { value: "W", id: "W" }, { value: "X", id: "X" },
+    { value: "Y", id: "Y" }, { value: "Z", id: "Z" },
+  ]
+  private onClickBrand(item){
+    let scroll:any =  document.querySelector(`.${item}`)
+    scroll.scrollIntoView({block:'start',behavior:'smooth'})
   }
-
-  private carDataSet = []  // 查询到的车辆 
-
-  get keyWord() {
-    return this.searchModel.name
-  }
-  set keyWord(val) {
-    this.searchModel.name = val
-    this.show.search = val !== ""
-    // console.log(val.length)
-    if(val.length === 0){
-      this.searchCarList()
-    }
-  }
-
-  private scrollTop(val) {
-    window.scrollTo(0, 0)
-  }
-
-
-  onScrollTopChage() {
-    let height = document.documentElement.scrollTop || window.pageYOffset
-    this.show.toTop = height > 300
-  }
-
-  // 控制各个组件显示flag
-  private show = {
-    navBar: false,
-    search: false,
-    loading: false,
-    finished: false,
-    toTop: false
-  }
-
-
-  private dataSet = []
-
-  /**
-   * 点击清空按钮
-   */
-  private onClearClick() {
-    this.keyWord = ''
-    this.searchCarList()
-  }
-
-  /**
-   * 获取当前品牌车辆
-   */
-  searchCarList() {
-    this.carShowManagementService.searchCarList(this.searchModel)
-      .subscribe(
-        data => {
-          this.carDataSet = data
-        },
-        err => {
-          this.$toast(err.msg)
-        }
-      )
-  }
-
-
-  mounted() {
-    // 返回到列表时，清空存储车辆详情数据
-    this.clearCarDate() 
-    this.dataSet = []
-    if (this.brandId > 0) this.searchModel.brandId = this.brandId
-    if (this.transKeyWord !== '') this.keyWord = this.transKeyWord
-    this.searchCarList()
-    window.addEventListener('scroll', this.onScrollTopChage)
-
-  }
-
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.onScrollTopChage)
-  }
-
 }
 </script>
 
 <style lang="less" scoped>
-@paddingNum: 10px;
-.buy-car-list {
-  .imgPad{
-    padding: 5px;
-    box-sizing: border-box;
+  .page.buy-car-list{
+    .brandHeand {
+      padding-left: 10px;
+      background: #f1f1f1;
+      height: 30px;
+      line-height: 30px;
+      font-size: 16px;
+      // ul {
+      //   padding-left: 20px !important;
+      //   font-size: 14px !important;
+      //   line-height: 35px !important;
+      // }
+    }
+    .left-side-fixed {
+      cursor: pointer;
+      width: 50px;
+      text-align: right;
+      position: fixed;
+      top: 10%;
+      right: 10px;
+      font-size: 12px;
+      color: rgb(153, 153, 153)
+    }
   }
-  .carStyle {
-    line-height: 28px;
-  }
-  &-item {
-    padding: @paddingNum;
-    border-bottom: solid 1px #f2f2f2;
-  }
-  &-nav-bar {
-    padding-left: @paddingNum;
-    padding-right: @paddingNum;
-  }
-  .to-top {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: gray;
-    border-radius: 25px;
-    opacity: 0.5;
-    font-size: 2rem;
-    height: 30px;
-    width: 30px;
-    position: fixed;
-    bottom: @paddingNum*3;
-    right: @paddingNum*3;
-    z-index: 2001;
-  }
-  .no-cars {
-    font-size: 1rem;
-    padding-top: 10%;
-    text-align: center;
-  }
-}
-.car {
-  text-align: left;
-  &-info {
-    font-size: 0.9rem;
-  }
-  &-price {
-    font-size: 0.8rem;
-    color: gray;
-  }
-  &-first {
-    font-size: 0.9rem;
-    color: goldenrod;
-  }
-  &-month {
-    font-size: 0.8rem;
-    color: gray;
-    text-align: right;
-  }
-}
 </style>
 
 

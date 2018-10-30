@@ -16,7 +16,7 @@ import { State, Mutation, Action } from "vuex-class";
 export default class Index extends Vue {
   @State carData
 
-  private name:Array<string> = ["MyOrder","Home"]
+  private name:Array<string> = ["MyOrder","Home","hotLoading"]
   // 是否显示返回按钮
   get showBack() {
     return  !this.name.includes(this.$route.name)
