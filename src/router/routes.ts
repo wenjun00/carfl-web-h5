@@ -83,7 +83,6 @@ const routes = [
     path: '/my-order',
     name: 'MyOrder',
     meta: {
-      requireAuth:true,
       title: '小旺估车'
     },
     component: MyOrder

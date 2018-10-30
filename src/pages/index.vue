@@ -16,9 +16,10 @@ import { State, Mutation, Action } from "vuex-class";
 export default class Index extends Vue {
   @State carData
 
+  private name:Array<string> = ["MyOrder","Home"]
   // 是否显示返回按钮
   get showBack() {
-    return this.$route.name !== "Home"
+    return  !this.name.includes(this.$route.name)
   }
 
   get navTitle() {
