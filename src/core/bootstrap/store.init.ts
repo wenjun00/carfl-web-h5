@@ -12,7 +12,7 @@ export default async function ({ store, router }) {
   // 启动数据初始化
   let flag = await Promise.all([
     // updateDictData(),
-    updateUserData()
+    // updateUserData()
   ]).then(() => {
     return true
   }).catch(ex => {

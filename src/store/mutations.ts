@@ -19,8 +19,8 @@ export default {
   },
   /**
    * 更新布局
-   * @param state 
-   * @param layout 
+   * @param state
+   * @param layout
    */
   updateLayout(state, layout) {
     state.layout = layout || 'default'
@@ -28,15 +28,15 @@ export default {
   /**
    * 更新数据字典
    * @param state/
-   * @param data 
+   * @param data
    */
   updateDictData(state, data) {
     state.dictData = data
   },
   /**
    * 更新用户token
-   * @param state 
-   * @param token 
+   * @param state
+   * @param token
    */
   updateUserToken(state, token) {
     state.userToken = token
@@ -44,16 +44,16 @@ export default {
   },
   /**
    * 更新用户数据
-   * @param state 
-   * @param user 
+   * @param state
+   * @param user
    */
   updateUserData(state, user) {
     state.userData = user
   },
   /**
    * 打开页面
-   * @param state 
-   * @param page 
+   * @param state
+   * @param page
    */
   openPage(state, target) {
     let page, path, params
@@ -86,8 +86,8 @@ export default {
   },
   /**
    * 关闭页面
-   * @param state 
-   * @param path 
+   * @param state
+   * @param path
    */
   closePage(state, path) {
     let page = state.pageList.find(x => x.path === path)
@@ -105,7 +105,7 @@ export default {
   },
   /**
    * 关闭所有
-   * @param state 
+   * @param state
    */
   closeAllPage(state) {
     state.pageList = [{
@@ -116,8 +116,8 @@ export default {
   },
   /**
    * 更新主题
-   * @param state 
-   * @param theme 
+   * @param state
+   * @param theme
    */
   updateTheme(state, theme) {
     state.theme = theme
@@ -133,7 +133,7 @@ export default {
   /**
    * 更新初始化状态
    * @param state
-   */ 
+   */
   ready(state) {
     state.ready = true
   },
@@ -142,7 +142,7 @@ export default {
   },
   /**
    * 更新用户手机号码
-   * @param state 
+   * @param state
    * @param phoneNumber 手机号码
    */
   updateUserPhone(state, phoneNumber) {
@@ -212,13 +212,31 @@ export default {
 
   /**
    * 更新用户订单数据
-   * @param state 
-   * @param data 
+   * @param state
+   * @param data
    */
   updateUserOrder(state,data){
     state.orderInfo = data
-  }
+  },
 
+  updateCarbrand(state,data){
+    state.carBrand = data
+  },
+  updateSeries(state,data){
+    state.carSeries = data
+  },
+  updateProduct(state,data){
+    state.carProduct = data
+  },
+  updataCity(state,data){
+    state.carCity = data
+  },
+  updateInformation(state,data){
+    state.carInformation = data
+  },
+  updateSubmit(state,data){
+    state.carSubmit = data
+  },
 }
 
 

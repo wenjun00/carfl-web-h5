@@ -2,21 +2,17 @@
   <section class="page buy-car-list">
     <!-- 车牌 -->
     <div v-for="(item,index) in carBrand" :key="index">
-      <div class="brandHeand" :class=item.value>{{item.value}}</div>
-      <div>是代表发士大夫</div>
-      <div>符合规范的观点</div>
-      <!-- <ul class="brandContent" v-for="(itemTwo,index) in item.children" :key="index">
-        <li @click="chooseBrand(itemTwo.id,itemTwo.brandName)">
-          <img v-if="!itemTwo.brandPhotoUrl" class="siftCar" height="20px" src="/images/car.png">
-          <img v-else class="siftCar" height="20px" :src="itemTwo.brandPhotoUrl">
+      <div class="brandHeand" :class=item.titleCase>{{item.titleCase}}</div>
+      <ul class="brandContent" v-for="(itemTwo,index) in item.data" :key="index">
+        <li @click="carService(itemTwo.id,itemTwo.brandName)">
           <span> {{itemTwo.brandName}}</span>
         </li>
-      </ul> -->
+      </ul>
     </div>
    <!-- 左侧字母 -->
     <div class="left-side-fixed">
       <ul v-for="(item,index) in carBrandTwo" :key="index">
-        <li @click="onClickBrand(item.value)" style="display:inline-block;margin-top:5px">{{item.value}}</li>
+        <li @click="onClickBrand(item)" style="display:inline-block;margin-top:5px">{{item}}</li>
       </ul>
     </div>
   </section>
@@ -25,30 +21,53 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from "vue-class-component";
+import { Dependencies } from "~/core/decorator";
+import { VehicleRoughService } from "~/services/manage-service/vehicle-rough.service";
+import { State, Mutation, Action, Getter } from "vuex-class";
 
 @Component({
   components: {}
 })
 export default class BuyCarList extends Vue {
- // 车牌
-  private carBrand = [
-    { value: "A", id: "A" }, { value: "B", id: "B" }, { value: "C", id: "C" }, { value: "D", id: "D" }, { value: "E", id: "E" }, { value: "F", id: "F" },
-    { value: "G", id: "G" }, { value: "H", id: "H" }, { value: "I", id: "I" }, { value: "J", id: "J" }, { value: "K", id: "K" }, { value: "L", id: "L" },
-    { value: "M", id: "M" }, { value: "N", id: "N" }, { value: "O", id: "O" }, { value: "P", id: "P" }, { value: "Q", id: "Q" }, { value: "R", id: "R" },
-    { value: "S", id: "S" }, { value: "T", id: "T" }, { value: "U", id: "U" }, { value: "V", id: "V" }, { value: "W", id: "W" }, { value: "X", id: "X" },
-    { value: "Y", id: "Y" }, { value: "Z", id: "Z" },
-  ]
-  // 左侧字母
-  private carBrandTwo = [
-    { value: "A", id: "A" }, { value: "B", id: "B" }, { value: "C", id: "C" }, { value: "D", id: "D" }, { value: "E", id: "E" }, { value: "F", id: "F" },
-    { value: "G", id: "G" }, { value: "H", id: "H" }, { value: "I", id: "I" }, { value: "J", id: "J" }, { value: "K", id: "K" }, { value: "L", id: "L" },
-    { value: "M", id: "M" }, { value: "N", id: "N" }, { value: "O", id: "O" }, { value: "P", id: "P" }, { value: "Q", id: "Q" }, { value: "R", id: "R" },
-    { value: "S", id: "S" }, { value: "T", id: "T" }, { value: "U", id: "U" }, { value: "V", id: "V" }, { value: "W", id: "W" }, { value: "X", id: "X" },
-    { value: "Y", id: "Y" }, { value: "Z", id: "Z" },
-  ]
+  @Dependencies(VehicleRoughService) private vehicleRoughService: VehicleRoughService;
+  @Mutation updateCarbrand;
+  private carBrand:Array<any> = []
+  private carBrandTwo = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+  private mounted(){
+    this.vehicleRoughService.getAllCarBrand()
+      .subscribe((data)=>{
+        let pageCode:Array<any> = []
+        let map:any = {}
+        for(let i=0;i<data.length;i++){
+          if(!map[data[i].titleCase]){
+            pageCode.push({
+              titleCase:data[i].titleCase,
+              data: [data[i]]
+            })
+            map[data[i].titleCase] = data[i]
+          }else{
+            for(let j=0;j<pageCode.length;j++){
+              if(pageCode[j].titleCase == data[i].titleCase){
+                pageCode[j].data.push(data[i]);
+                break;
+              }
+            }
+          }
+        }
+        this.carBrand = pageCode
+      },({msg}) =>{
+        this.$toast.fail(msg)
+      })
+  }
   private onClickBrand(item){
     let scroll:any =  document.querySelector(`.${item}`)
-    scroll.scrollIntoView({block:'start',behavior:'smooth'})
+    if(scroll !== null){
+      scroll.scrollIntoView({block:'start',behavior:'smooth'})
+    }
+  }
+  private carService(brandId,brandName){
+    this.updateCarbrand({brandId:brandId,brandName:brandName})
+    this.$router.push({ path: '/all-vehicles/', query: { brandId: brandId, brandName: brandName } })
   }
 }
 </script>
@@ -60,12 +79,7 @@ export default class BuyCarList extends Vue {
       background: #f1f1f1;
       height: 30px;
       line-height: 30px;
-      font-size: 16px;
-      // ul {
-      //   padding-left: 20px !important;
-      //   font-size: 14px !important;
-      //   line-height: 35px !important;
-      // }
+      font-size: 14px;
     }
     .left-side-fixed {
       cursor: pointer;
@@ -76,6 +90,15 @@ export default class BuyCarList extends Vue {
       right: 10px;
       font-size: 12px;
       color: rgb(153, 153, 153)
+    }
+    .brandContent {
+      padding-left: 20px !important;
+      font-size: 12px !important;
+      line-height: 35px !important;
+    }
+    .siftCar {
+      position: relative;
+      top: 5px;
     }
   }
 </style>

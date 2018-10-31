@@ -34,6 +34,12 @@ export default {
     commit('updateTokenExpire', true);
     // 清除用户数据
     commit('updateUserData', "");
+    commit('updateCarbrand', "");
+    commit('updateSeries', "");
+    commit('updateProduct', "");
+    commit('updataCity', "");
+    commit('updateInformation', "");
+    commit('updateSubmit', "");
     // 清空数据
     localStorage.removeItem('vuex')
     localStorage.removeItem('userToken')

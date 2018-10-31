@@ -7,12 +7,14 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { State, Mutation, Action, Getter } from "vuex-class";
 @Component({
   components: {}
 })
 export default class Home extends Vue {
-
+  @Action clearUserLoginData
   private aaa(){
+    this.clearUserLoginData()
     this.$router.push('/subscribe')
   }
 }

@@ -11,6 +11,7 @@ import contractDetailsController from './contract-details-controller.controller'
 import appCustomerController from './app-customer.controller'
 import fddApiController from './fdd-api.controller'
 import departmentController from './department.controller'
+import vehicleRoughController from './vehicle-rough.controller'
 
 
 export const manageService = {
@@ -25,5 +26,6 @@ export const manageService = {
   contractDetailsController,
   appCustomerController,
   fddApiController,
-  departmentController
+  departmentController,
+  vehicleRoughController
 }

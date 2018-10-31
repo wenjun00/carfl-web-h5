@@ -49,10 +49,10 @@ const routes = [
       requireAuth:true,
       title: '小旺估车'
     },
-    props: (route) => ({
-      brandId: route.query.b,
-      transKeyWord: route.query.k
-    })
+    // props: (route) => ({
+    //   brandId: route.query.b,
+    //   brandName: route.query.k
+    // })
   }, {
     path: '/custom-information',
     name: 'custom-information',
@@ -81,7 +81,11 @@ const routes = [
   {
     path: '/add-information',
     name: 'add-information',
-    component: AddInformation
+    component: AddInformation,
+    meta: {
+      requireAuth:true,
+      title: '返回车系'
+    }
   },
   {
     path: '/my-order',
@@ -106,7 +110,11 @@ const routes = [
   }, {
     path: '/all-vehicles',
     name: 'AllVehicles',
-    component: AllVehicles
+    component: AllVehicles,
+    meta: {
+      requireAuth:true,
+      title: '返回品牌'
+    }
   }, {
     path: '/know-onion-car',
     name: 'KnowOnionCar',
@@ -114,7 +122,11 @@ const routes = [
   }, {
     path: '/support-bank',
     name: 'supportBank',
-    component: supportBank
+    component: supportBank,
+    meta: {
+      requireAuth:true,
+      title: '小旺估车'
+    }
   }, {
     path: '/hot-loading',
     name: 'hotLoading',
