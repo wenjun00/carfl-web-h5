@@ -1,14 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '~/store'
+import store  from '~/store'
 import storeInit from '~/core/bootstrap/store.init'
 const Login = () => import('~/pages/login.vue')
 const Home = () => import('~/pages/home.vue')
 const Index = () => import('~/pages/index.vue')
 const NotFound = () => import('~/pages/not-found.vue')
 import Routes from "./routes";
+import {debug} from "util";
 
 Vue.use(Router)
+
 
 // 生成路由配置
 const routes = [
@@ -54,6 +56,12 @@ router.beforeEach(async ({ matched, path }, from, next) => {
       router
     })
   }
+  if(from.path === "/my-order"&&path != '/subscribe'){
+    store.dispatch('clearUserLoginData')
+    next("/subscribe")
+
+  }
+  next()
 
   // console.log(matched[0].name == "Login")
   // if (!(matched[0].name === "Login")) {
@@ -70,7 +78,6 @@ router.beforeEach(async ({ matched, path }, from, next) => {
   //   return next("/login")
   // }
 
-  next()
 })
 
 

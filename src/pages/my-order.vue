@@ -13,7 +13,7 @@
           <img src="/static/images/common/index3.png" style="width:100%;height:100%"/>
           <p style="position:absolute;top:-10px;right:30px;z-index:999;font-size:26px;color:white">车况优秀</p>
           <p style="position:absolute;top:45px;right:30px;z-index:999;font-size:12px;color:white">无任何事故，全程4S店保养</p>
-          <p style="position:absolute;top:80px;right:30px;z-index:999;color:white"><span style="font-size:24px">{{highPrice}}</span><span style="display:inline-block;margin-left:12px">万元</span></p>
+          <p style="position:absolute;top:80px;right:30px;z-index:999;color:white"><span style="font-size:24px">{{highPrice}}</span><span style="display:inline-block;margin-left:12px">万元左右</span></p>
         </div>
       </div>
       <div style="width:100%;margin-top:10px">
@@ -21,7 +21,7 @@
           <img src="/static/images/common/index1.png" style="width:100%;height:100%"/>
           <p style="position:absolute;top:-10px;right:30px;z-index:999;font-size:26px;color:white">车况良好</p>
           <p style="position:absolute;top:45px;right:30px;z-index:999;font-size:12px;color:white">有过轻微刮蹭，定期修理店保养</p>
-          <p style="position:absolute;top:80px;right:30px;z-index:999;color:white"><span style="font-size:24px">{{goodPrice}}</span><span style="display:inline-block;margin-left:12px">万元</span></p>
+          <p style="position:absolute;top:80px;right:30px;z-index:999;color:white"><span style="font-size:24px">{{goodPrice}}</span><span style="display:inline-block;margin-left:12px">万元左右</span></p>
         </div>
       </div>
       <div style="width:100%;margin-top:10px">
@@ -29,7 +29,7 @@
           <img src="/static/images/common/index2.png" style="width:100%;height:100%"/>
           <p style="position:absolute;top:-10px;right:30px;z-index:999;font-size:26px;color:white">车况一般</p>
           <p style="position:absolute;top:45px;right:30px;z-index:999;font-size:12px;color:white">有过较大事故，出保额在5000元以上</p>
-          <p style="position:absolute;top:80px;right:30px;z-index:999;color:white"><span style="font-size:24px">{{lowPrice}}</span><span style="display:inline-block;margin-left:12px">万元</span></p>
+          <p style="position:absolute;top:80px;right:30px;z-index:999;color:white"><span style="font-size:24px">{{lowPrice}}</span><span style="display:inline-block;margin-left:12px">万元左右</span></p>
         </div>
       </div>
       <div style="display:flex;justify-content: center">

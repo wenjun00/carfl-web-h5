@@ -2,9 +2,9 @@
   <section class="page subscribe">
     <p class="title">输入车辆信息</p>
     <van-cell-group>
-      <van-field v-model="model.car" required disabled icon="arrow" placeholder="请选择车辆" @click-icon="carClick"/>
-      <van-field v-model="model.address" required disabled icon="arrow" placeholder="请选择所在地" @click-icon="getCity"/>
-      <van-field v-model="model.regDate" required disabled icon="arrow" placeholder="首次上牌时间"  @click-icon="boardDate"/>
+      <van-field v-model="model.car" required readonly icon="arrow" placeholder="请选择车辆" @click="carClick"/>
+      <van-field v-model="model.address" required readonly icon="arrow" placeholder="请选择所在地" @click="getCity"/>
+      <van-field v-model="model.regDate" required readonly icon="arrow" placeholder="首次上牌时间"  @click="boardDate"/>
       <van-field v-model="model.mile" center required placeholder="请输入行驶公里">
         <p slot="button" size="small" text >万公里</p>
       </van-field>
@@ -85,6 +85,7 @@ export default class Subscribe extends Vue {
     this.$router.push('/support-bank')
   }
   private boardDate(){
+    let mounth:any = new Date()
     if(!this.model.car){
       this.$toast.fail("请先选择车辆")
       return
@@ -93,7 +94,7 @@ export default class Subscribe extends Vue {
       .subscribe((data)=>{
         this.validPeriod = true
         this.minDate = new Date(Number(data.minRegYear), 0, 1)
-        this.maxDate = new Date(Number(data.maxRegYear), 0, 1)
+        this.maxDate = new Date(Number(data.maxRegYear), mounth.getMonth(), 1)
         this.currentDate = this.minDate
       },({msg}) =>{
         this.$toast.fail(msg)

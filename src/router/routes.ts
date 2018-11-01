@@ -15,7 +15,8 @@ const routes = [
     meta: {
       title: '小旺估车'
     }
-  }, {
+  },
+  {
     path: '/subscribe',
     name: 'Subscribe',
     component: Subscribe,
