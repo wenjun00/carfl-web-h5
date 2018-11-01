@@ -1,4 +1,4 @@
-import validator from 'async-validator'  
+import validator from 'async-validator'
 export class ValidatorService {
   /**
    * 自定义验证器
@@ -21,7 +21,6 @@ export class ValidatorService {
     })
     return process
   }
-
   // 验证正则列表
   static regex = {
     // 手机号
