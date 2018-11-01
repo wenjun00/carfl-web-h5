@@ -53,6 +53,8 @@ export default class SupportBank extends Vue {
 <style lang="less">
 .page.support-bank {
   .fixed {
+    display: inline-block;
+    line-height: 20px;
     height: 20px;
     width:17%;
     border: 1px solid rgb(201,201,201);
