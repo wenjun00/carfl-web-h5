@@ -56,10 +56,9 @@ router.beforeEach(async ({ matched, path }, from, next) => {
       router
     })
   }
-  if(from.path === "/my-order"&&path != '/subscribe'){
+  if(from.path === "/my-order"&&path != '/home'){
     store.dispatch('clearUserLoginData')
-    next("/subscribe")
-
+    next("/home")
   }
   next()
 

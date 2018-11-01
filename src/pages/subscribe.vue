@@ -94,12 +94,13 @@ export default class Subscribe extends Vue {
       .subscribe((data)=>{
         this.validPeriod = true
         this.minDate = new Date(Number(data.minRegYear), 0, 1)
-        this.maxDate = new Date(Number(data.maxRegYear), mounth.getMonth(), 1)
+        this.maxDate = new Date(Number(data.maxRegYear),(Number(data.maxRegYear) === mounth.getFullYear())? (mounth.getMonth()):11, 1)
         this.currentDate = this.minDate
       },({msg}) =>{
         this.$toast.fail(msg)
       })
   }
+
   private validPeriodAffirm(val) {
     this.model.regDate = this.$filter.dateFormat(val, "yyyy-MM")
     this.validPeriod = false
