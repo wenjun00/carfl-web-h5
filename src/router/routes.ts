@@ -13,7 +13,7 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      title: '小旺估车'
+      // title: '小旺估车'
     }
   },
   {

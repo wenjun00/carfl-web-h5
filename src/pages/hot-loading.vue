@@ -37,14 +37,16 @@
     }
   }
 </script>
+<!--<style lang="less" scoped>-->
+  <!--.page.hot-loading {-->
+    <!--height: calc(~ '100vh - 46px') !important;-->
+    <!--overflow: hidden !important;-->
+  <!--}-->
+<!--</style>-->
 <style lang="less" scoped>
   .page.hot-loading {
-    height: calc(~ '100vh - 46px') !important;
-    overflow: hidden !important;
-  }
-</style>
-<style lang="less">
-  .page.hot-loading {
+    width:100%;
+    height:100%;
     .fontbottom{
       width:100%;
       height: 20px;
@@ -64,7 +66,7 @@
     .fixed{
       z-index: 999;
       position: fixed;
-      top:24%;
+      top:20%;
       left:15%
     }
     .bottom{

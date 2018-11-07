@@ -1,6 +1,8 @@
 <template>
   <section class="page home">
-    <img  src="/static/images/common/wehome.png" class="homeSize" @click="aaa">
+    <div style="width: 100%;height: 100%;">
+      <img  src="/static/images/common/wehome.png" class="homeSize" @click="aaa">
+    </div>
   </section>
 </template>
 
@@ -21,8 +23,9 @@ export default class Home extends Vue {
 </script>
 <style lang="less" scoped>
   .page.home {
-    height: calc(~ '100vh - 46px') !important;
-    overflow: hidden !important;
+    background: #92caf5!important;
+    /*height: calc(~ '100vh - 46px') !important;*/
+    /*overflow: hidden !important;*/
     .homeSize{
       height:100%;
       width:100%;

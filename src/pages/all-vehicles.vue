@@ -1,5 +1,6 @@
 <template>
   <section class="page all-vehicles">
+    <p class="title">选择车辆系列</p>
     <ul class="brandContent" v-for="(itemTwo,index) in carSeries" :key="index">
       <li @click="carService(itemTwo.id,itemTwo.seriesName)">
         <span> {{itemTwo.seriesName}}</span>
@@ -42,6 +43,12 @@ export default class allVehicles extends Vue {
 
 <style lang="less" scoped>
 .page.all-vehicles {
+  .title {
+    color: #3799E3;
+    font-size: 18px;
+    margin-left: 15px;
+    margin-top:20px;
+  }
   .brandContent {
     padding-left: 20px !important;
     font-size: 14px !important;

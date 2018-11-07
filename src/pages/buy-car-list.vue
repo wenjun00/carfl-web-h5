@@ -1,6 +1,7 @@
 <template >
   <section class="page buy-car-list">
     <!-- 车牌 -->
+    <p class="title">选择车辆品牌</p>
     <div v-for="(item,index) in carBrand" :key="index">
       <div class="brandHeand" :class=item.titleCase>{{item.titleCase}}</div>
       <ul class="brandContent" v-for="(itemTwo,index) in item.data" :key="index">
@@ -74,6 +75,12 @@ export default class BuyCarList extends Vue {
 
 <style lang="less" scoped>
   .page.buy-car-list{
+    .title {
+      color: #3799E3;
+      font-size: 18px;
+      margin-left: 15px;
+      margin-top:20px;
+    }
     .brandHeand {
       padding-left: 10px;
       background: #f1f1f1;

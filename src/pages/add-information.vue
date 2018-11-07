@@ -1,5 +1,6 @@
 <template>
   <section class="page addInformation">
+    <p class="title">选择车辆型号</p>
     <ul class="brandContent" v-for="(itemTwo,index) in carProduct" :key="index">
       <li @click="carService(itemTwo.modelId,itemTwo.modelName)">
         <span> {{itemTwo.modelName}}</span>
@@ -41,6 +42,12 @@ export default class AddInformation extends Vue {
 </script>
 <style lang="less">
 .page.addInformation {
+  .title {
+    color: #3799E3;
+    font-size: 18px;
+    margin-left: 15px;
+    margin-top:20px;
+  }
   .brandContent {
     padding-left: 20px !important;
     font-size: 14px !important;

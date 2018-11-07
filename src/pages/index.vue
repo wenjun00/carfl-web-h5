@@ -1,6 +1,6 @@
 <template>
   <section class="main-container full">
-    <van-nav-bar :title="navTitle" :left-text="carService" :left-arrow="showBack" @click-left="$router.go(-1)" :right-text="rightText"/>
+    <!--<van-nav-bar :title="navTitle" :left-text="carService" :left-arrow="showBack" @click-left="$router.go(-1)" :right-text="rightText"/>-->
     <router-view ></router-view>
   </section>
 </template>
